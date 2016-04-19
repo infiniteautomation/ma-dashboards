@@ -1,3 +1,16 @@
+*Version 3.0.1*
+* Update demo virtual data sources JSON file
+* Slight tweak of color scheme
+* Updates to examples
+* Add JavaScript Math library to root scope of maDashboards app
+* Add timeout attribute to ma-point-values and ma-point-statistics directives
+* Improve boostrap.js to allow more configuration for bootstrapping app
+* Add a templates section to the menu and add more template examples
+* Add page explaining how to create a dashboard in overrides
+* Add a bare bones angular material admin template
+* Add ma-point-hierarchy directive and examples
+* Include md-data-table in maMaterialDashboards
+
 *Version 3.0.0*
 * Complete rebuild of the module to use AngularJS and Material Design Template
 * Moved from JavaScript v2 Library to Mango 3.0 Angular library

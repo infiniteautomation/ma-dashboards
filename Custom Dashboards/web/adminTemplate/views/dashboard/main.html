@@ -9,7 +9,7 @@
         <span class="email">{{user.email}}</span>
     </md-toolbar>
 
-    <md-content flex role="navigation">
+    <md-content flex role="navigation" md-colors="{background: 'background-A100'}">
       <ul class="dashboard-menu">
         <li ng-repeat="item in pages" ng-if="item.menuType">
           <menu-link page="item" ng-if="item.menuType === 'link'"></menu-link>

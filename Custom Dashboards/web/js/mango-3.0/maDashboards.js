@@ -36,12 +36,13 @@ define(['./maServices',
         './directives/fn',
         './directives/pointHierarchy',
         './filters/trFilter',
-        'angular'
+        'angular',
+        'require'
 ], function(maServices, maFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, now, fn, pointHierarchy, trFilter, angular) {
+        jsonStore, focusOn, enter, now, fn, pointHierarchy, trFilter, angular, require) {
 'use strict';
 
 var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters']);
@@ -78,14 +79,23 @@ maDashboards.directive('maFn', fn);
 maDashboards.directive('maPointHierarchy', pointHierarchy);
 maDashboards.filter('tr', trFilter);
 
+maServices.constant('maDashboardsInsertCss', true);
+
 maDashboards.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');
 }]);
 
-maDashboards.run(['$rootScope', 'mangoWatchdog', function($rootScope, mangoWatchdog) {
+maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', function($rootScope, mangoWatchdog, maDashboardsInsertCss) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
 	mangoWatchdog.reset();
+	
+	if (maDashboardsInsertCss) {
+	    var link = angular.element('<link rel="stylesheet">');
+	    link.attr('href', require.toUrl('./maDashboards.css'));
+        var head = document.querySelector('head');
+	    angular.element(head).append(link);
+	}
 	
 	$rootScope.range = function(start, end) {
 		var result = [];

@@ -12,7 +12,7 @@ define([
     'mango-3.0/maAppComponents',
     'angular-ui-router',
     'angular-loading-bar'
-], function(angular, menuLink, menuToggle, login, maDashboards, maAppComponents) {
+], function(angular, menuLink, menuToggle, login, maMaterialDashboards, maAppComponents) {
 'use strict';
 
 var myAdminApp = angular.module('myAdminApp', [
@@ -169,9 +169,25 @@ myAdminApp.run([
     '$state',
     '$timeout',
     '$mdSidenav',
-function(PAGES, $rootScope, $state, $timeout, $mdSidenav) {
+    '$mdColors',
+    '$MD_THEME_CSS',
+function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS) {
     $rootScope.pages = PAGES;
     $rootScope.Math = Math;
+    
+    // inserts a style tag to style <a> tags with accent color
+    if ($MD_THEME_CSS) {
+        var acc = $mdColors.getThemeColor('accent-500-1.0');
+        var accT = $mdColors.getThemeColor('accent-500-0.2');
+        var accD = $mdColors.getThemeColor('accent-700-1.0');
+        var styleContent =
+            'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
+            'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
+        
+        var style = document.createElement('style');
+        style.appendChild(document.createTextNode(styleContent));
+        document.head.appendChild(style);
+    }
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         if (error && (error.status === 401 || error.status === 403)) {

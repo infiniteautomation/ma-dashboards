@@ -1,0 +1,49 @@
+<h1 ma-tr="dashboards.v3.dox.displayTree"></h1>
+
+<p>Check the box to expand the tree, click the text to send the points to the table.</p>
+
+<dual-pane-editor>
+
+<style>
+    .hide-bullets li {
+        list-style:none;
+    }
+</style>
+
+<script type="text/ng-template" id="folder.html">
+    <md-checkbox ng-model="folder.show" ng-disabled="!folder.subfolders.length"></md-checkbox>
+    <span ng-click="page.points=folder.points">
+      {{folder.name}} -
+      <em>{{folder.points.length}} points</em>
+    </span>
+
+    <ul ng-if="folder.show">
+        <li ng-repeat="folder in folder.subfolders" ng-include="'folder.html'"></li>
+    </ul>
+</script>
+
+<ma-point-hierarchy path="[]" hierarchy="hierarchy"></ma-point-hierarchy>
+<div ng-init="page={}"></div>
+
+<h3>Point hierarchy tree</h3>
+<div class="hide-bullets" ng-repeat="folder in [hierarchy]" ng-include="'folder.html'"></div>
+
+<h3>Points table</h3>
+<md-table-container ng-init="page.tableOrder='name'">
+  <table md-table>
+    <thead md-head md-order="page.tableOrder">
+      <th md-column md-order-by="deviceName">Device name</th>
+      <th md-column md-order-by="name">Point name</th>
+      <th md-column md-order-by="xid">XID</th>
+    </thead>
+    <tbody md-body>
+      <tr ng-repeat="point in page.points | orderBy: page.tableOrder">
+          <td md-cell>{{point.deviceName}}</td>
+          <td md-cell>{{point.name}}</td>
+          <td md-cell>{{point.xid}}</td>
+      </tr>
+    </tbody>
+  </table>
+</md-table-container>
+
+</dual-pane-editor>

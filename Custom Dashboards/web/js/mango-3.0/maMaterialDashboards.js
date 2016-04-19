@@ -3,9 +3,13 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', './maDashboards', 'angular-material', 'mdPickers'], function(angular, maDashboards) {
+define(['angular',
+        './maDashboards',
+        'angular-material',
+        'mdPickers',
+        'angular-material-data-table'], function(angular, maDashboards) {
 'use strict';
 
-return angular.module('maMaterialDashboards', ['maDashboards', 'ngMaterial', 'mdPickers']);
+return angular.module('maMaterialDashboards', ['maDashboards', 'ngMaterial', 'mdPickers', 'md.data.table']);
 
 }); // define

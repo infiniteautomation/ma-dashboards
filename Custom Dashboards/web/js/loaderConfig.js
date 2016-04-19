@@ -47,7 +47,8 @@ require.config({
         'moment': vendor + '/moment/moment-with-locales',
         'moment-timezone': vendor + '/moment-timezone/moment-timezone-with-data',
         'jquery': vendor + '/jquery/jquery',
-        'mdPickers': vendor + '/mdPickers/mdPickers'
+        'mdPickers': vendor + '/mdPickers/mdPickers',
+        'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table'
     },
     shim : {
         'angular-route' : {
@@ -88,6 +89,9 @@ require.config({
             init: function(moment) {
                 window.moment = moment;
             }
+        },
+        'angular-material-data-table': {
+            deps: ['angular', 'angular-material']
         }
     }
 });

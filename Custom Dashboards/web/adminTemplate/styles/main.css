@@ -178,16 +178,12 @@ body {
 a {
   text-decoration: none;
   font-weight: 400;
-  border-bottom: 1px solid rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(0,0,0,0);
   -webkit-transition: color 0.5s, border-bottom 0.5s;
   -moz-transition: color 0.5s, border-bottom 0.5s;
   -ms-transition: color 0.5s, border-bottom 0.5s;
   -o-transition: color 0.5s, border-bottom 0.5s;
   transition: color 0.5s, border-bottom 0.5s;
-}
-
-a:hover, a:focus {
-  border-bottom: 1px solid currentColor;
 }
 
 a.md-button, .md-button a {
@@ -391,10 +387,6 @@ code:not(.highlight) {
 .mdp-timepicker.portrait .mdp-timepicker-selected-time {
   font-size: 6.4rem;
   margin-right: 2.4rem;
-}
-
-md-sidenav md-content {
-	background-color: #FAFAFA !important;
 }
 
 .dashboard-menu .md-button.menu-link a {

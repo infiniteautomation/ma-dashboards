@@ -114,11 +114,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             		
             		if (!points[i].pointLocator) {
             		    var queryPromise = Point.get({xid: points[i].xid}).$promise
-            		        .then(function(point) {
-                		        var query = doQuery(point);
-                                cancels.push(query.cancel);
-                                return query.promise;
-            		        });
+            		        .then(chainedQuery);
             		    promises.push(queryPromise);
             		} else {
             		    var query = doQuery(points[i]);
@@ -126,6 +122,12 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                         cancels.push(query.cancel);
             		}
             	}
+            	
+            	function chainedQuery(point) {
+                    var query = doQuery(point);
+                    cancels.push(query.cancel);
+                    return query.promise;
+                }
             	
             	$q.all(promises).then(function(results) {
             		pendingRequest = null;

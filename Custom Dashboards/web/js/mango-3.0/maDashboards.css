@@ -145,6 +145,8 @@ img.point-disabled {
     width: 15px;
 }
 
+/* Styles for Angular Material components used in maDashboards directives */
+
 .no-errors-spacer .md-errors-spacer {
 	display: none;
 }

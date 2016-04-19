@@ -11,20 +11,27 @@ function pointHierarchy(PointHierarchy) {
         scope: {
         	path: '=',
             hierarchy: '=',
-            points: '=?'
+            points: '=?',
+            subfolders: '='
         },
         link: function ($scope, $element, attrs) {
-            $scope.$watchCollection('path', function(value) {
-                if (!value) {
+            $scope.$watch('[path, subfolders]', function() {
+                var path = $scope.path;
+                if (!path) {
                     delete $scope.hierarchy;
                     delete $scope.points;
+                    return;
                 }
                 
                 if (typeof value === 'string') {
-                    value = value.split(',');
+                    path = path.split(',');
                 }
                 
-            	$scope.hierarchy = value.length ? PointHierarchy.byPath({path: value}) : PointHierarchy.getRoot();
+                var subfolders = typeof attrs.subfolders === 'undefined' ? true : !!$scope.subfolders;
+                
+            	$scope.hierarchy = path.length ?
+            	        PointHierarchy.byPath({path: path, subfolders: subfolders}) :
+            	        PointHierarchy.getRoot({subfolders: subfolders});
             	$scope.hierarchy.$promise.then(null, function() {
             	    delete $scope.hierarchy;
                     delete $scope.points;
@@ -36,7 +43,7 @@ function pointHierarchy(PointHierarchy) {
                         $scope.points = getPoints(folder);
             	    });
             	}
-            });
+            }, true);
         }
     };
     

@@ -5,26 +5,22 @@
 
 define([
     'angular',
-    'mango-3.0/maDashboards',
+    'mango-3.0/maMaterialDashboards',
     'mango-3.0/maAppComponents',
     'require',
     'angular-ui-router',
     'oclazyload',
-    'angular-loading-bar',
-    'angular-material',
-    'mdPickers'
-], function(angular, maDashboards, maAppComponents, require) {
+    'angular-loading-bar'
+], function(angular, maMaterialDashboards, maAppComponents, require) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
     'oc.lazyLoad',
     'ui.router',
     'angular-loading-bar',
-    'maDashboards',
+    'maMaterialDashboards',
     'maAppComponents',
-    'ngMaterial',
-    'ngMessages',
-    'mdPickers'
+    'ngMessages'
 ]);
 
 mdAdminApp.constant('require', require);
@@ -93,8 +89,6 @@ mdAdminApp.constant('PAGES', [
                         .directive('livePreview', livePreview)
                         .directive('dualPaneEditor', dualPaneEditor);
                     $ocLazyLoad.inject('dashboard.examples');
-                    
-                    return $ocLazyLoad.load('styles/examples.css');
                 });
             }]
         }
@@ -411,11 +405,27 @@ mdAdminApp.constant('PAGES', [
                 url: '/templating',
                 menuTr: 'dashboards.v3.dox.templating',
                 menuType: 'link'
+            }
+        ]
+    },
+    {
+        state: 'dashboard.examples.pointHierarchy',
+        url: '/point-hierarchy',
+        menuTr: 'dashboards.v3.dox.pointHierarchy',
+        menuIcon: 'fa fa-sitemap',
+        menuType: 'toggle',
+        children: [
+            {
+                state: 'dashboard.examples.pointHierarchy.displayTree',
+                templateUrl: 'views/examples/displayTree.html',
+                url: '/display-tree',
+                menuTr: 'dashboards.v3.dox.displayTree',
+                menuType: 'link'
             },
             {
-                state: 'dashboard.examples.pointArrays.pointHierarchyLineChart',
+                state: 'dashboard.examples.pointHierarchy.pointHierarchyLineChart',
                 templateUrl: 'views/examples/pointHierarchyLineChart.html',
-                url: '/point-hierarchy-line-chart',
+                url: '/line-chart',
                 menuTr: 'dashboards.v3.dox.pointHierarchyLineChart',
                 menuType: 'link'
             }
@@ -600,9 +610,25 @@ mdAdminApp.run([
     '$state',
     '$timeout',
     '$mdSidenav',
-function(PAGES, $rootScope, $state, $timeout, $mdSidenav) {
+    '$mdColors',
+    '$MD_THEME_CSS',
+function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS) {
     $rootScope.pages = PAGES;
     $rootScope.Math = Math;
+    
+    // inserts a style tag to style <a> tags with accent color
+    if ($MD_THEME_CSS) {
+        var acc = $mdColors.getThemeColor('accent-500-1.0');
+        var accT = $mdColors.getThemeColor('accent-500-0.2');
+        var accD = $mdColors.getThemeColor('accent-700-1.0');
+        var styleContent =
+            'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
+            'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
+        
+        var style = document.createElement('style');
+        style.appendChild(document.createTextNode(styleContent));
+        document.head.appendChild(style);
+    }
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         if (error && (error.status === 401 || error.status === 403)) {
