@@ -36,8 +36,8 @@ of values on a data point. The <code>realtime</code> attribute can be set to <co
           </thead>
           <tbody md-body="">
                 <tr ng-repeat="value in point1Values | orderBy:'-timestamp'">
-                      <td>{{value.timestamp | moment:'format':'ll LTS'}}</td>
-                      <td>{{value.value}}</td>
+                      <td md-cell="">{{value.timestamp | moment:'format':'ll LTS'}}</td>
+                      <td md-cell="">{{value.value}}</td>
                 </tr>
           </tbody>
     </table>
