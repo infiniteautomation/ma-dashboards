@@ -1,5 +1,20 @@
 <h1 ma-tr="dashboards.v3.dox.liveValues"></h1>
 
+<p>
+    This example shows the differences between <code>&lt;ma-point-value&gt;</code> and <code>&lt;ma-get-point-value&gt;</code>.
+</p>
+
+<p>
+    The <code>&lt;ma-point-value&gt;</code> directive will render the live value and other data from the data point. You can optionally supply the <code>display-type</code>
+    attribute to get the unit converted value or data/time of the update.
+</p>
+
+<p>
+    The <code>&lt;ma-get-point-value&gt;</code> will provide a point variable (named 'myPoint' in this example) that you can use in the scope of your
+    angular app. Live values can be displayed as text within your HTML by using <code ng-non-bindable>{{myPoint.value}}</code> or
+    <code ng-non-bindable>{{myPoint.renderedValue}}</code> syntax.
+</p>
+
 <dual-pane-editor>
 
 <md-input-container class="md-block no-errors-spacer">

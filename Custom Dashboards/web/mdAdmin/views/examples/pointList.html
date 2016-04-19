@@ -1,9 +1,12 @@
 <h1 ma-tr="dashboards.v3.dox.pointList"></h1>
 
-<p>The <code>&lt;ma-point-list&gt;</code> directive displays a list of data points which you can select from.</p>
+<p>The <code>&lt;ma-point-list&gt;</code> directive displays a list of data points which you can select from.
+    All data points added to your Mango system will display by defualt.</p>
 
-<p>You can use the <code>query</code> attribute to filter the list of points using <a href="http://www.persvr.org/rql/" target="_blank">RQL</a>.</p>
+<p>You can optionally supply the <code>query</code> attribute to filter the list of points using <a href="http://www.persvr.org/rql/" target="_blank">RQL</a>.</p>
 
+<p>The <code>&lt;ma-filtering-point-list&gt;</code> directive allows you to select a data point using fuzzy searching by device name or point name.
+    Search results will update as you type.</p>
 <dual-pane-editor>
 
 <div layout="column">
@@ -11,23 +14,23 @@
         <label>Choose a point</label>
         <ma-point-list ng-model="myPoint"></ma-point-list>
     </md-input-container>
-    
+
     <p>You have chosen point "{{myPoint.name}}". It is {{myPoint.enabled ? 'enabled' : 'disabled'}} and belongs to device {{myPoint.deviceName}}</p>
-    
+
     <h3>Filter using second input</h3>
-    
+
     <md-input-container class="md-block no-errors-spacer">
         <label>Search by point name</label>
         <input ng-model="nameFilter" ng-model-options="{debounce:500}">
     </md-input-container>
-    
+
     <md-input-container class="md-block no-errors-spacer">
         <label>Filtered point list</label>
         <ma-point-list ng-model="myPoint2" query="name=like=*{{nameFilter}}*"></ma-point-list>
     </md-input-container>
-    
+
     <h3>Self filtering input</h3>
-    
+
     <ma-filtering-point-list ng-model="myPoint3" query="sort(deviceName,name)" ma-tr="dashboards.v3.app.searchBy" ma-tr-args="['points', 'name and device']"></ma-filtering-point-list>
 </div>
 
