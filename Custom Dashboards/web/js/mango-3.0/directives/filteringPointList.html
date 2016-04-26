@@ -1,4 +1,5 @@
 <md-autocomplete
+  md-selected-item-change="changed()"
   md-selected-item="ngModel"
   md-search-text="searchText"
   md-items="item in querySearch(searchText)"

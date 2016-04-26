@@ -6,16 +6,23 @@
 define(['require'], function(require) {
 'use strict';
 
-function startsAndRuntimesTable() {
+function startsAndRuntimesTable($injector) {
     return {
         restrict: 'E',
         scope: {
         	startsAndRuntimes: '='
         },
         replace: true,
-        templateUrl: require.toUrl('./startsAndRuntimesTable.html')
+        templateUrl: function() {
+            if ($injector.has('$mdUtil')) {
+                return require.toUrl('./startsAndRuntimesTable-md.html');
+            }
+            return require.toUrl('./startsAndRuntimesTable.html');
+        }
     };
 }
+
+startsAndRuntimesTable.$inject = ['$injector'];
 
 return startsAndRuntimesTable;
 

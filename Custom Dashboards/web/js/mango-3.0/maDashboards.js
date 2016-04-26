@@ -85,16 +85,14 @@ maDashboards.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');
 }]);
 
-maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', function($rootScope, mangoWatchdog, maDashboardsInsertCss) {
+maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssInjector',
+                  function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
 	mangoWatchdog.reset();
 	
 	if (maDashboardsInsertCss) {
-	    var link = angular.element('<link rel="stylesheet">');
-	    link.attr('href', require.toUrl('./maDashboards.css'));
-        var head = document.querySelector('head');
-	    angular.element(head).append(link);
+	    cssInjector.injectLink(require.toUrl('./maDashboards.css'));
 	}
 	
 	$rootScope.range = function(start, end) {

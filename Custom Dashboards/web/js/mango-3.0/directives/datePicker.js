@@ -6,7 +6,7 @@
 define(['angular', 'moment'], function(angular, moment) {
 'use strict';
 
-function datePicker($injector, mangoDefaultDateFormat) {
+function datePicker($injector, mangoDefaultDateFormat, maDashboardsInsertCss, cssInjector) {
     return {
         scope: {
             format: '@',
@@ -22,12 +22,10 @@ function datePicker($injector, mangoDefaultDateFormat) {
         },
         compile: function($element, attributes) {
             if (!$injector.has('$mdpDatePicker')) {
+                if (maDashboardsInsertCss) {
+                    cssInjector.injectLink(require.toUrl('jquery-ui/jquery.datetimepicker.css'), this.name);
+                }
                 require(['jquery', 'jquery-ui/jquery.datetimepicker'], function($) {
-                    if ($('#datetimpicker-style').length === 0) {
-                        var url = require.toUrl('jquery-ui/jquery.datetimepicker.css');
-                        $('head').append('<link id="datetimpicker-style" rel="stylesheet" href="' + url + '"></link>');
-                    }
-                    
                     $element.datetimepicker();
                 });
             }
@@ -74,7 +72,7 @@ function datePicker($injector, mangoDefaultDateFormat) {
     }
 }
 
-datePicker.$inject = ['$injector', 'mangoDefaultDateFormat'];
+datePicker.$inject = ['$injector', 'mangoDefaultDateFormat', 'maDashboardsInsertCss', 'cssInjector'];
 
 return datePicker;
 

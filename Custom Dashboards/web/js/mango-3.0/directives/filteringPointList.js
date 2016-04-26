@@ -6,15 +6,23 @@
 define(['require'], function(require) {
 'use strict';
 
-function pointList(Point, $filter, $injector) {
+function pointList(Point, $filter, $injector, $parse, $timeout) {
     return {
         restrict: 'E',
         require: 'ngModel',
         scope: {
-            ngModel: '='
+            ngModel: '=',
+            ngChange: '@'
         },
         templateUrl: require.toUrl('./filteringPointList.html'),
         link: function ($scope, $element, attrs) {
+            var change = $parse(attrs.ngChange);
+            $scope.changed = function() {
+                $timeout(function() {
+                    change($scope.$parent);
+                }, 0);
+            };
+            
             $scope.querySearch = function(queryStr) {
                 var query = 'or(name=like=*' + queryStr +'*,deviceName=like=*' + queryStr + '*)';
                 if (attrs.query) {
@@ -34,7 +42,7 @@ function pointList(Point, $filter, $injector) {
     };
 }
 
-pointList.$inject = ['Point', '$filter', '$injector'];
+pointList.$inject = ['Point', '$filter', '$injector', '$parse', '$timeout'];
 return pointList;
 
 }); // define

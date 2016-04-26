@@ -26,7 +26,7 @@
 
     <md-input-container class="md-block no-errors-spacer">
         <label>Filtered point list</label>
-        <ma-point-list ng-model="myPoint2" query="name=like=*{{nameFilter}}*"></ma-point-list>
+        <ma-point-list ng-model="myPoint2" query="{name:nameFilter}"></ma-point-list>
     </md-input-container>
 
     <h3>Self filtering input</h3>

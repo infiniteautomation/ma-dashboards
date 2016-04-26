@@ -7,7 +7,7 @@
 <div layout="row">
   <md-input-container class="no-errors-spacer">
     <label>Preset</label>
-    <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="5 seconds"></ma-date-range-picker>
+    <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="15 minutes"></ma-date-range-picker>
   </md-input-container>
   <md-input-container class="no-errors-spacer" flex>
     <label>From date</label>
@@ -31,7 +31,7 @@
 </div>
 
 <!-- Server side query for points with given device name, and server side sort -->
-<ma-point-query query="deviceName=like=*{{deviceName}}*&sort(name)" points="points"></ma-point-query>
+<ma-point-query query="{deviceName:deviceName}" sort="'name'" points="points"></ma-point-query>
 <ma-get-point-value points="points"></ma-get-point-value>
 
 <!-- Client side filter by name -->
@@ -93,7 +93,7 @@
 </div>
 
 <ma-point-values point="energy" values="energyValues" from="from" to="to"
-    rollup="DELTA" rollup-interval="15 minutes"
+    rollup="DELTA" rollup-interval="1 hours"
 ></ma-point-values>
 
 <h2>Energy</h2>

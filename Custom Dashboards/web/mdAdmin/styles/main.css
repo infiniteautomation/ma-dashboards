@@ -405,3 +405,8 @@ code:not(.highlight) {
 .dashboard-menu .md-button.menu-link.menu-active a {
 	color: rgba(255,255,255,0.87);
 }
+
+table.md-table td.md-cell,
+table.md-table th.md-column {
+	font-size: 1.6rem;
+}

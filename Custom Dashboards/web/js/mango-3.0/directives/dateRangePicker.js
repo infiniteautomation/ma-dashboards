@@ -24,7 +24,7 @@ function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
                 '</md-select>';
             }
             
-            return '<select ng-options="t.type as " ng-model="preset"></select>';
+            return '<select ng-options="p.type as p.label for p in presets" ng-model="preset"></select>';
         },
         link: function ($scope, $element) {
             var mdPickers = $injector.has('$mdpDatePicker');
@@ -46,7 +46,7 @@ function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
         	
         	function isSame(m, check) {
                 if (typeof check === 'string') {
-                    check = moment(check, $scope.format || mangoDefaultDateFormat);
+                    return m.format($scope.format || mangoDefaultDateFormat) === check;
                 }
                 return m.isSame(check);
         	}

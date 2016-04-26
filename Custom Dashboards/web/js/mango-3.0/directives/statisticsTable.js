@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-function statisticsTable() {
+function statisticsTable($injector) {
     return {
         restrict: 'E',
         scope: {
@@ -14,9 +14,16 @@ function statisticsTable() {
             hideStartsAndRuntimes: '@'
         },
         replace: true,
-        templateUrl: require.toUrl('./statisticsTable.html')
+        templateUrl: function() {
+            if ($injector.has('$mdUtil')) {
+                return require.toUrl('./statisticsTable-md.html');
+            }
+            return require.toUrl('./statisticsTable.html');
+        }
     };
 }
+
+statisticsTable.$inject = ['$injector'];
 
 return statisticsTable;
 

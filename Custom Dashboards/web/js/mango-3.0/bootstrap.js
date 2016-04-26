@@ -11,6 +11,7 @@ contentLoaded(window, findMangoConnections);
 function findMangoConnections() {
 
 	var i, connectionElement, mangoConnection;
+	var defaultModule = 'maDashboards';
 	var dependencies = ['angular', './maDashboards'];
 
 	var connectionElements = document.querySelectorAll("[ma-app], ma-app");
@@ -34,10 +35,16 @@ function findMangoConnections() {
 		var logout = connectionElement.getAttribute('ma-logout');
 		mangoConnection.logout = logout === null ? false : true;
 		
-        var module = mangoConnection.module = connectionElement.getAttribute('ma-app') || 'maDashboards';
+        var module = mangoConnection.module = connectionElement.getAttribute('ma-app') || 'maMaterialDashboards';
         dependencies.push('./' + module);
 		
 		connectionElement.mangoConnection = mangoConnection;
+	}
+	
+	if (!connectionElements.length) {
+	    // no ma-app config, load maMaterialDashboards by default
+	    defaultModule = 'maMaterialDashboards';
+	    dependencies[1] = './maMaterialDashboards';
 	}
 	
 	var scriptSourceServer;
@@ -56,7 +63,7 @@ function findMangoConnections() {
 	    }
 	    
 		if (!connectionElements.length) {
-			doBootstrap(document.documentElement, 'maDashboards');
+			doBootstrap(document.documentElement, defaultModule);
 			return;
 		}
 		

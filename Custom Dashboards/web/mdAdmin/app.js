@@ -386,6 +386,13 @@ mdAdminApp.constant('PAGES', [
         menuType: 'toggle',
         children: [
             {
+                state: 'dashboard.examples.pointArrays.buildPointArray',
+                templateUrl: 'views/examples/buildPointArray.html',
+                url: '/build-point-array',
+                menuTr: 'dashboards.v3.dox.buildPointArray',
+                menuType: 'link'
+            },
+            {
                 state: 'dashboard.examples.pointArrays.pointArrayTable',
                 templateUrl: 'views/examples/pointArrayTable.html',
                 url: '/point-array-table',
@@ -404,6 +411,13 @@ mdAdminApp.constant('PAGES', [
                 templateUrl: 'views/examples/templating.html',
                 url: '/templating',
                 menuTr: 'dashboards.v3.dox.templating',
+                menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.pointArrays.dataPointTable',
+                templateUrl: 'views/examples/dataPointTable.html',
+                url: '/data-point-table',
+                menuTr: 'dashboards.v3.dox.dataPointTable',
                 menuType: 'link'
             }
         ]
@@ -612,7 +626,8 @@ mdAdminApp.run([
     '$mdSidenav',
     '$mdColors',
     '$MD_THEME_CSS',
-function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS) {
+    'cssInjector',
+function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
     $rootScope.pages = PAGES;
     $rootScope.Math = Math;
     
@@ -625,9 +640,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
             'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
             'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
         
-        var style = document.createElement('style');
-        style.appendChild(document.createTextNode(styleContent));
-        document.head.appendChild(style);
+        cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
     }
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
