@@ -12,7 +12,13 @@ define([], function() {
  */
 function trFilter(Translate) {
     return function(key) {
-    	var args = Array.prototype.slice.call(arguments, 1);
+        var args;
+        if (angular.isArray(key)) {
+            args = Array.prototype.slice.call(key, 1);
+            key = key[0];
+        } else {
+            args = Array.prototype.slice.call(arguments, 1);
+        }
     	var text;
     	try {
         	text = Translate.trSync(key, args);

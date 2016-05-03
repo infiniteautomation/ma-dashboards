@@ -1,4 +1,4 @@
-<md-button class="menu-link" ui-sref-active="menu-active md-accent">
+<md-button class="menu-link" ui-sref-active="menu-active md-accent" aria-label="{{page.menuTr | tr}}">
   <a ui-sref="{{page.state}}">
     <i ng-if="page.menuIcon" class="menu-icon fa-fw {{page.menuIcon}}"></i> <span class="menu-text" ma-tr="{{page.menuTr}}">{{page.menuText}}</span>
   </a>

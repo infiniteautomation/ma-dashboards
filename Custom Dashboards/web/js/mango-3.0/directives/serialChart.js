@@ -14,7 +14,10 @@ function serialChart() {
 	    timeFormat: '@',
 	    stackType: '@',
 	    values: '=?',
-	    points: '=?'
+	    points: '=?',
+	    defaultType: '@',
+	    defaultColor: '@',
+        defaultAxis: '@'
 	};
 	
 	for (var j = 1; j <= MAX_SERIES; j++) {
@@ -53,6 +56,12 @@ function serialChart() {
             	$.extend(true, chart, newValue);
             	chart.validateNow();
             }, true);
+            
+            $scope.$watchGroup([
+                'defaultType',
+                'defaultColor',
+                'defaultAxis'
+            ], typeOrTitleChanged.bind(null, null));
             
             var i;
             if (valueArray) {
@@ -115,7 +124,14 @@ function serialChart() {
             function typeOrTitleChanged(graphNum, values) {
             	if (isAllUndefined(values)) return;
             	
-            	setupGraph(graphNum);
+            	if (graphNum === null) {
+            	    for (var i = 0; i < chart.graphs.length; i++) {
+            	        setupGraph(i);
+            	    }
+            	} else {
+            	    setupGraph(graphNum);
+            	}
+            	
             	sortGraphs();
             	chart.validateData();
             }
@@ -143,7 +159,7 @@ function serialChart() {
             	
                 var graph = findGraph('graphNum', graphNum);
                 
-                var graphType = $scope['series' + graphNum + 'Type'] ||
+                var graphType = $scope['series' + graphNum + 'Type'] || $scope.defaultType ||
                 	(point && point.plotType && point.plotType.toLowerCase()) ||
                 	'smoothedLine';
                 
@@ -167,10 +183,10 @@ function serialChart() {
                 	(point && point.name) ||
                 	('Series ' + graphNum);
                 graph.type = graphType;
-                graph.lineColor = $scope['series' + graphNum + 'Color'] ||
+                graph.lineColor = $scope['series' + graphNum + 'Color'] || $scope.defaultColor ||
                 	(point && point.chartColour) ||
                 	null;
-                graph.valueAxis = $scope['series' + graphNum + 'Axis'] || 'left';
+                graph.valueAxis = $scope['series' + graphNum + 'Axis'] ||  $scope.defaultAxis || 'left';
                 var stackType = options.valueAxes[0].stackType;
                 if (stackType && stackType !== 'none') {
                 	graph.fillAlphas = 0.8;

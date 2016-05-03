@@ -5,6 +5,7 @@
 * Return total, start, limit, page and pages as properties of point arrays to enable pagination
 * Add material design data point table example
 * Convert statistics tables directives to use material design tables
+* Load translations up-front in mdAdmin so they can be used by translation filter
 
 *Version 3.0.1*
 * Update demo virtual data sources JSON file

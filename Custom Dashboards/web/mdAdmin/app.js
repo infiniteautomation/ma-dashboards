@@ -44,6 +44,9 @@ mdAdminApp.constant('PAGES', [
                         .directive('menuToggle', menuToggle);
                     $ocLazyLoad.inject('dashboard');
                 });
+            }],
+            dashboardTranslations: ['Translate', function(Translate) {
+                return Translate.loadNamespaces('dashboards');
             }]
         }
     },
@@ -58,6 +61,9 @@ mdAdminApp.constant('PAGES', [
                         .directive('login', login);
                     $ocLazyLoad.inject('login');
                 });
+            }],
+            loginTranslations: ['Translate', function(Translate) {
+                return Translate.loadNamespaces('login');
             }]
         }
     },
