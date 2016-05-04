@@ -498,8 +498,11 @@ mdAdminApp.config([
     '$httpProvider',
     '$mdThemingProvider',
     '$injector',
-function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector) {
+    '$compileProvider',
+function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider) {
 
+    $compileProvider.debugInfoEnabled(false);
+    
     $mdThemingProvider.definePalette('mango-orange', {
         '50': '#ffffff',
         '100': '#ffdfbd',

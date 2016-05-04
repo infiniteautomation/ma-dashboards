@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 
 function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
@@ -57,8 +57,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	
             	return {
             		xids: xids,
-            		from: $scope.from,
-            		to: $scope.to,
+            		from: moment.isMoment($scope.from) ? $scope.from.valueOf() : $scope.from,
+            		to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to,
             		latest: $scope.latest,
             		rollup: $scope.rollup,
             		rollupInterval: $scope.rollupInterval,

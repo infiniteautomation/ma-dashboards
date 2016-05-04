@@ -126,6 +126,43 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
         return data.resource;
     };
     
+    /**
+     * Extremely simple memoize function that works on === equality
+     * Used to prevent infinite digest loops in filters etc
+     */
+    Util.prototype.memoize = function(fn, cacheSize) {
+        var cache = [];
+        cacheSize = cacheSize || 10;
+        do {
+            cache.push(undefined);
+        } while (--cacheSize > 0);
+        
+        return function() {
+            var args = Array.prototype.slice.call(arguments, 0);
+
+            searchCache: for (var i = 0; i < cache.length; i++) {
+                var cacheItem = cache[i];
+                if (!cacheItem) break;
+                
+                var cachedArgs = cacheItem.input;
+                if (cachedArgs.length !== args.length) continue;
+                
+                for (var j = 0; j < cachedArgs.length; j++) {
+                    if (cachedArgs[j] !== args[j]) continue searchCache;
+                }
+
+                return cacheItem.output;
+            }
+
+            var result = fn.apply(null, args);
+
+            cache.unshift({input: args, output: result});
+            cache.pop();
+            
+            return result;
+        };
+    };
+    
     return new Util();
 }
 

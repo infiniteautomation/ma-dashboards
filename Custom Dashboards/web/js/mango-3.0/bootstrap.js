@@ -35,6 +35,9 @@ function findMangoConnections() {
 		var logout = connectionElement.getAttribute('ma-logout');
 		mangoConnection.logout = logout === null ? false : true;
 		
+		var debug = connectionElement.getAttribute('ma-debug');
+		mangoConnection.debug = !debug || debug === 'true';
+		
         var module = mangoConnection.module = connectionElement.getAttribute('ma-app') || 'maMaterialDashboards';
         dependencies.push('./' + module);
 		
@@ -82,6 +85,10 @@ function findMangoConnections() {
 			if (mangoConnection.watchdogTimeout)
 				app.constant('mangoWatchdogTimeout', mangoConnection.watchdogTimeout);
 			
+			if (!mangoConnection.debug) {
+			    app.config(['$compileProvider', disableDebug]);
+			}
+			
 			if (mangoConnection.username) {
 				var injector = angular.injector([appName], true);
 				var User = injector.get('User');
@@ -93,6 +100,10 @@ function findMangoConnections() {
 			} else {
 				doBootstrap(connectionElement, appName);
 			}
+		}
+		
+		function disableDebug($compileProvider) {
+		    $compileProvider.debugInfoEnabled(false);
 		}
 		
 		function doBootstrap(element, appName) {

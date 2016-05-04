@@ -1,6 +1,6 @@
 <div ui-sref-active="menu-active" ng-class="{'menu-open': isOpen}" class="menu-toggle">
     <a ui-sref="{{section.state}}" style="display:none"></a>
-    <md-button class="menu-toggle-button" ng-click="toggle()" aria-label="{{section.menuTr | tr}}">
+    <md-button class="menu-toggle-button" ng-click="toggle()" aria-label="{{section.menuText || (section.menuTr | tr)}}">
       <div flex layout="row">
         <span>
             <i ng-if="section.menuIcon" class="menu-icon fa-fw {{section.menuIcon}}"></i>

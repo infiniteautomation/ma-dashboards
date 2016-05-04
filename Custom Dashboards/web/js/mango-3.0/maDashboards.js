@@ -79,7 +79,7 @@ maDashboards.directive('maFn', fn);
 maDashboards.directive('maPointHierarchy', pointHierarchy);
 maDashboards.filter('tr', trFilter);
 
-maServices.constant('maDashboardsInsertCss', true);
+maDashboards.constant('maDashboardsInsertCss', true);
 
 maDashboards.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');

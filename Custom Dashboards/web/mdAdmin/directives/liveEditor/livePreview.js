@@ -12,8 +12,6 @@ var livePreview = function($compile, $timeout) {
         link: function($scope, $element, $attrs) {
             var childScope = $scope.$new();
             var timeoutPromise;
-            $element.data('scope', childScope);
-            $element.addClass('ng-scope');
             
             var debounceTimeout = 1000;
             if ($attrs.debounce) {
@@ -37,7 +35,6 @@ var livePreview = function($compile, $timeout) {
                 
                 childScope.$destroy();
                 childScope = $scope.$new();
-                $element.data('scope', childScope);
                 
                 if (text) {
                     $element.html($compile(text)(childScope));

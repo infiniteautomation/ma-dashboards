@@ -37,13 +37,23 @@ myAdminApp.constant('PAGES', [
             auth: ['$rootScope', 'User', function($rootScope, User) {
                 $rootScope.user = User.current();
                 return $rootScope.user.$promise;
+            }],
+            dashboardTranslations: ['Translate', function(Translate) {
+                // load any translation namespaces you want to use in your app up-front
+                // so they can be used by the 'tr' filter
+                return Translate.loadNamespaces(['dashboards']);
             }]
         }
     },
     {
         state: 'login',
         url: '/login',
-        templateUrl: 'views/login.html'
+        templateUrl: 'views/login.html',
+        resolve: {
+            loginTranslations: ['Translate', function(Translate) {
+                return Translate.loadNamespaces('login');
+            }]
+        }
     },
     {
         state: 'dashboard.home',
@@ -114,8 +124,11 @@ myAdminApp.config([
     '$httpProvider',
     '$mdThemingProvider',
     '$injector',
-function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $injector) {
+    '$compileProvider',
+function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider) {
 
+    $compileProvider.debugInfoEnabled(false);
+    
     $mdThemingProvider
         .theme('default')
         .primaryPalette('yellow')

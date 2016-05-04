@@ -6,12 +6,8 @@
 define(['moment-timezone'], function(moment) {
 'use strict';
 
-// Be careful that last filter in an expression doesn't return a date or a moment.
-// It will cause an infinite digest loop due to angular checking for equality
-// with === operator instead of deep object comparison.
-
-function momentFilter() {
-    return function(input, fnName) {
+function momentFilter(Util) {
+    return Util.memoize(function(input, fnName) {
         var m;
         if (!input || (typeof input === 'string' && input.toLowerCase().trim() === 'now')) {
             m = moment().milliseconds(0);
@@ -25,10 +21,10 @@ function momentFilter() {
         var fn = m[fnName];
         if (typeof fn !== 'function') return input;
         return fn.apply(m, fnArgs);
-    };
+    });
 }
 
-momentFilter.$inject = [];
+momentFilter.$inject = ['Util'];
 return momentFilter;
 
 }); // define
