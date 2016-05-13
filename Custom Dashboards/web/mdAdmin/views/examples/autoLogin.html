@@ -1,13 +1,18 @@
 <h1 ma-tr="dashboards.v3.dox.autoLogin"></h1>
 
 <p>You can add a <code>ma-username</code> and <code>ma-username</code> to your <code>ma-app</code> element to
-auto log a user in.
-<a href="../templates/autoLogin.html" target="_blank">Click here to view the page.</a></p>
+auto log a user in.</p>
+
+<p>These attributes will only work when used in conjunction with the default application boostrap <code>require(['mango-3.0/bootstrap'])</code>,
+if you are extending the app and bootstrapping yourself please see the commented section in
+<a href="../templates/extendApp.js" target="_blank">extendApp.js</a> for how to auto-login.</p>
+
+<p><a href="../templates/autoLogin.html" target="_blank">Click here to view the page.</a></p>
 
 <md-card>
     <md-card-content layout="column">
         <div flex>
-            <div style="height:400px" live-editor="template1" src="../templates/autoLogin.html" target="_blank"></div>
+            <div style="height:400px" live-editor="template1" src="../templates/autoLogin.html"></div>
         </div>
     </md-card-content>
 </md-card>

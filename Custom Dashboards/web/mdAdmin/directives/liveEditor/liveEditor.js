@@ -17,7 +17,8 @@ var liveEditor = function($templateRequest, $sce) {
         },
         scope: {
             src: '@',
-            text: '=liveEditor'
+            text: '=liveEditor',
+            mode: '@'
         },
         controller: function($scope, $element) {
             
@@ -34,7 +35,7 @@ var liveEditor = function($templateRequest, $sce) {
                     useWrapMode : true,
                     showGutter: false,
                     theme:'chrome',
-                    mode: 'html',
+                    mode: $scope.mode || 'html',
                     onLoad: function(editor_) {
                         editor = editor_;
                         editor.$blockScrolling = Infinity;

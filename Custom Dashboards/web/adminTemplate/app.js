@@ -5,16 +5,17 @@
 
 define([
     'angular',
-    './directives/menu/menuLink',
+    './directives/menu/menuLink', // load directives from the directives folder
     './directives/menu/menuToggle',
     './directives/login/login',
-    'mango-3.0/maMaterialDashboards',
+    'mango-3.0/maMaterialDashboards', // load mango-3.0 angular modules
     'mango-3.0/maAppComponents',
-    'angular-ui-router',
+    'angular-ui-router', // load external angular modules
     'angular-loading-bar'
 ], function(angular, menuLink, menuToggle, login, maMaterialDashboards, maAppComponents) {
 'use strict';
 
+// create an angular app with our desired dependencies
 var myAdminApp = angular.module('myAdminApp', [
     'ui.router',
     'angular-loading-bar',
@@ -23,11 +24,13 @@ var myAdminApp = angular.module('myAdminApp', [
     'ngMessages'
 ]);
 
+// add our directives to the app
 myAdminApp
     .directive('menuLink', menuLink)
     .directive('menuToggle', menuToggle)
     .directive('login', login);
 
+// define our pages, these are added to the $stateProvider in the config block below
 myAdminApp.constant('PAGES', [
     {
         state: 'dashboard',
@@ -35,6 +38,8 @@ myAdminApp.constant('PAGES', [
         templateUrl: 'views/dashboard/main.html',
         resolve: {
             auth: ['$rootScope', 'User', function($rootScope, User) {
+                // retrieves the current user when we navigate to a dashboard page
+                // if an error occurs the $stateChangeError listener redirects to the login page
                 $rootScope.user = User.current();
                 return $rootScope.user.$promise;
             }],
@@ -60,7 +65,7 @@ myAdminApp.constant('PAGES', [
         url: '/home',
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'dashboards.v3.dox.home',
-        menuIcon: 'fa fa-home',
+        menuIcon: 'fa fa-home', // font awesome css classes for icon
         menuType: 'link'
     },
     {
@@ -70,7 +75,7 @@ myAdminApp.constant('PAGES', [
         menuTr: 'dashboards.v3.dox.apiErrors'
     },
     {
-        state: 'dashboard.section1',
+        state: 'dashboard.section1', // define some nested pages
         url: '/section-1',
         menuText: 'Section 1',
         menuIcon: 'fa fa-building',
@@ -78,7 +83,7 @@ myAdminApp.constant('PAGES', [
         children: [
             {
                 state: 'dashboard.section1.page1',
-                templateUrl: 'views/section1/page1.html',
+                templateUrl: 'views/section1/page1.html', // html file to display
                 url: '/page-1',
                 menuText: 'Page 1',
                 menuType: 'link'
@@ -123,22 +128,27 @@ myAdminApp.config([
     '$urlRouterProvider',
     '$httpProvider',
     '$mdThemingProvider',
-    '$injector',
     '$compileProvider',
-function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider) {
+function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider) {
 
+    // disable angular debug info to speed up app
     $compileProvider.debugInfoEnabled(false);
     
+    // configure the angular material colors
     $mdThemingProvider
         .theme('default')
         .primaryPalette('yellow')
         .accentPalette('red');
 
+    // add the error interceptor to show REST errors on the error page
     $httpProvider.interceptors.push('errorInterceptor');
 
+    // set the default state
     $urlRouterProvider.otherwise('/dashboard/home');
+
+    // add the pages to $stateProvider
     addStates(PAGES);
-    
+
     function addStates(pages, parent) {
         angular.forEach(pages, function(page, area) {
             if (page.state) {
@@ -184,8 +194,11 @@ myAdminApp.run([
     '$mdSidenav',
     '$mdColors',
     '$MD_THEME_CSS',
-function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS) {
+    'cssInjector',
+function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
+    // add pages to the root scope so we can use them in the template
     $rootScope.pages = PAGES;
+    // enables use of Javascript Math functions in the templates
     $rootScope.Math = Math;
     
     // inserts a style tag to style <a> tags with accent color
@@ -197,11 +210,10 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
             'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
             'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
         
-        var style = document.createElement('style');
-        style.appendChild(document.createTextNode(styleContent));
-        document.head.appendChild(style);
+        cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
     }
 
+    // redirect to login page if we can't retrieve the current user when changing state
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         if (error && (error.status === 401 || error.status === 403)) {
             event.preventDefault();
@@ -210,6 +222,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
         }
     });
 
+    // change the bread-crumbs on the toolbar when we change state
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
         var crumbs = [];
         var state = toState;
@@ -223,6 +236,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
         $rootScope.crumbs = crumbs;
     });
     
+    // close the menu when we change state
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
         if ($state.includes('dashboard')) {
             $rootScope.closeMenu();
@@ -240,6 +254,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
 
 }]);
 
+// bootstrap the angular application
 angular.element(document).ready(function() {
     angular.bootstrap(document.documentElement, ['myAdminApp']);
 });

@@ -7,6 +7,8 @@
 * Convert statistics tables directives to use material design tables
 * Load translations up-front in mdAdmin so they can be used by translation filter
 * Disable angular debug info in mdAdmin app and add option to bootstrap
+* Update documentation and add more comments to example code
+* Add single page app template with login page
 
 *Version 3.0.1*
 * Update demo virtual data sources JSON file

@@ -121,17 +121,17 @@ mdAdminApp.constant('PAGES', [
         menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.basics.angular',
-                templateUrl: 'views/examples/angular.html',
-                url: '/angular',
-                menuTr: 'dashboards.v3.dox.angular',
-                menuType: 'link'
-            },
-            {
                 state: 'dashboard.examples.basics.createDashboard',
                 templateUrl: 'views/examples/createDashboard.html',
                 url: '/create-dashboard',
                 menuTr: 'dashboards.v3.dox.createDashboard',
+                menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.basics.angular',
+                templateUrl: 'views/examples/angular.html',
+                url: '/angular',
+                menuTr: 'dashboards.v3.dox.angular',
                 menuType: 'link'
             },
             {
@@ -232,6 +232,20 @@ mdAdminApp.constant('PAGES', [
                 templateUrl: 'views/examples/extendApp.html',
                 url: '/extend-app',
                 menuTr: 'dashboards.v3.dox.extendApp',
+                menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.templates.loginPage',
+                templateUrl: 'views/examples/loginPageTemplate.html',
+                url: '/login-page',
+                menuTr: 'dashboards.v3.dox.loginPageTemplate',
+                menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.templates.adminTemplate',
+                templateUrl: 'views/examples/adminTemplate.html',
+                url: '/admin-template',
+                menuTr: 'dashboards.v3.dox.adminTemplate',
                 menuType: 'link'
             }
         ]

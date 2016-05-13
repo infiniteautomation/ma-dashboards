@@ -31,4 +31,20 @@ angular.element(document).ready(function() {
     angular.bootstrap(document.documentElement, ['myApp']);
 });
 
+/*
+ * Replace the block above with the following if you want to auto-login a user
+ * 
+var injector = angular.injector(['myApp']);
+var User = injector.get('User');
+User.login({
+    username: 'username',
+    password: 'password',
+    logout: true
+}).$promise.then(function() {
+    angular.element(document).ready(function() {
+        angular.bootstrap(document.documentElement, ['myApp']);
+    });
+});
+*/
+
 }); // define
