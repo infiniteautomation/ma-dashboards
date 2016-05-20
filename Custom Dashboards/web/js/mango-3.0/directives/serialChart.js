@@ -126,7 +126,7 @@ function serialChart() {
             	
             	if (graphNum === null) {
             	    for (var i = 0; i < chart.graphs.length; i++) {
-            	        setupGraph(i);
+            	        setupGraph(i + 1); // we number the graphs from 1
             	    }
             	} else {
             	    setupGraph(graphNum);
