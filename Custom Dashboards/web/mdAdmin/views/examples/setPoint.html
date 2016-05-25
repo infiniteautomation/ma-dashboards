@@ -1,5 +1,13 @@
 <h1 ma-tr="dashboards.v3.dox.input"></h1>
-
+<p>
+    The <code>&lt;ma-set-point-value&gt;</code> directive will create a form input element to set
+    the value of a point. It can handle numeric, binary, and multistate point types and will create
+    an appropriate interface element for each point type.
+</p>
+<p>
+    Alternatively you can set the value of a point by calling the <code>setValue</code> method on a point.
+    This function can be called from withing a <code>ng-click</code> expression for example.
+</p>
 <dual-pane-editor>
 
 <ma-get-point-value point="myPoint"></ma-get-point-value>

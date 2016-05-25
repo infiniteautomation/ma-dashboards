@@ -1,5 +1,14 @@
 <h1 ma-tr="dashboards.v3.dox.toggle"></h1>
-
+<p>
+    Binary data points can be set using various methods, some of which are shown below.
+    The <code>toggleValue()</code> method can be used on a point, which works great via
+    a <code>ng-click</code> on a <code>&lt;ma-switch-img&gt;</code> directive.
+</p>
+<p>
+    HTML checkbox and angular material switch components can be used as well.
+    Set the <code>ng-model</code> to the points <code>valueFn</code> property and
+    set <code ng-nonbinding>ng-model-options="{getterSetter:true}"</code>.
+</p>
 <dual-pane-editor>
 
 <div layout="column">
