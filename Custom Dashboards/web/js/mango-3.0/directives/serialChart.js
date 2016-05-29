@@ -17,7 +17,8 @@ function serialChart() {
 	    points: '=?',
 	    defaultType: '@',
 	    defaultColor: '@',
-        defaultAxis: '@'
+        defaultAxis: '@',
+        defaultBalloonText: '@'
 	};
 	
 	for (var j = 1; j <= MAX_SERIES; j++) {
@@ -27,6 +28,7 @@ function serialChart() {
 		scope['series' + j + 'Color'] = '@';
 		scope['series' + j + 'Point'] = '=?';
 		scope['series' + j + 'Axis'] = '@';
+        scope['series' + j + 'BalloonText'] = '@';
 	}
 	
     return {
@@ -60,7 +62,8 @@ function serialChart() {
             $scope.$watchGroup([
                 'defaultType',
                 'defaultColor',
-                'defaultAxis'
+                'defaultAxis',
+                'defaultBalloonText'
             ], typeOrTitleChanged.bind(null, null));
             
             var i;
@@ -73,7 +76,8 @@ function serialChart() {
 	        		    'series' + i + 'Type',
 	        		    'series' + i + 'Title',
 	        		    'series' + i + 'Color',
-	        		    'series' + i + 'Axis'
+	        		    'series' + i + 'Axis',
+                        'series' + i + 'BalloonText'
 	        		], typeOrTitleChanged.bind(null, i));
 	        	}
             } else {
@@ -83,7 +87,8 @@ function serialChart() {
 	        		    'series' + i + 'Title',
 	        		    'series' + i + 'Color',
 	        		    'series' + i + 'Point',
-	        		    'series' + i + 'Axis'
+	        		    'series' + i + 'Axis',
+                        'series' + i + 'BalloonText'
 	        		], typeOrTitleChanged.bind(null, i));
 	        		
 	        		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
@@ -125,8 +130,9 @@ function serialChart() {
             	if (isAllUndefined(values)) return;
             	
             	if (graphNum === null) {
+            	    // update all graphs
             	    for (var i = 0; i < chart.graphs.length; i++) {
-            	        setupGraph(i + 1); // we number the graphs from 1
+            	        setupGraph(chart.graphs[i]);
             	    }
             	} else {
             	    setupGraph(graphNum);
@@ -149,6 +155,16 @@ function serialChart() {
             }
 
             function setupGraph(graphNum, point) {
+                var graph;
+                
+                // first arg can be the graph itself
+                if (typeof graphNum === 'object') {
+                    graph = graphNum;
+                    graphNum = graph.graphNum;
+                } else {
+                    graph = findGraph('graphNum', graphNum);
+                }
+                
             	if (!point) {
                 	if (valueArray) {
                 		point = $scope.points[graphNum - 1];
@@ -156,8 +172,6 @@ function serialChart() {
                 		point = $scope['series' + graphNum + 'Point'];
                 	}
                 }
-            	
-                var graph = findGraph('graphNum', graphNum);
                 
                 var graphType = $scope['series' + graphNum + 'Type'] || $scope.defaultType ||
                 	(point && point.plotType && point.plotType.toLowerCase()) ||
@@ -187,6 +201,7 @@ function serialChart() {
                 	(point && point.chartColour) ||
                 	null;
                 graph.valueAxis = $scope['series' + graphNum + 'Axis'] ||  $scope.defaultAxis || 'left';
+                graph.balloonText = $scope['series' + graphNum + 'BalloonText'] ||  $scope.defaultBalloonText || '[[value]]';
                 var stackType = options.valueAxes[0].stackType;
                 if (stackType && stackType !== 'none') {
                 	graph.fillAlphas = 0.8;
