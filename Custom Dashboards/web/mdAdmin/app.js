@@ -247,6 +247,13 @@ mdAdminApp.constant('PAGES', [
                 url: '/admin-template',
                 menuTr: 'dashboards.v3.dox.adminTemplate',
                 menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.templates.adaptiveLayouts',
+                templateUrl: 'views/examples/adaptiveLayouts.html',
+                url: '/adaptive-layouts',
+                menuText: 'Adaptive Layouts',
+                menuType: 'link'
             }
         ]
     },
@@ -516,7 +523,7 @@ mdAdminApp.config([
 function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider) {
 
     $compileProvider.debugInfoEnabled(false);
-    
+
     $mdThemingProvider.definePalette('mango-orange', {
         '50': '#ffffff',
         '100': '#ffdfbd',
@@ -594,48 +601,48 @@ function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
         $mdpTimePickerProvider.setCancelButtonLabel();
         */
     }
-    
+
     $ocLazyLoadProvider.config({
         debug: false,
         events: true,
     });
 
     $urlRouterProvider.otherwise('/dashboard/home');
-    
+
     addStates(PAGES);
-    
+
     function addStates(pages, parent) {
         angular.forEach(pages, function(page, area) {
             if (page.state) {
                 var state = {
                     url: page.url
                 }
-                
+
                 if (page.menuTr) {
                     state.menuTr = page.menuTr;
                 }
                 if (page.menuText) {
                     state.menuText = page.menuText;
                 }
-                
+
                 if (parent) {
                     state.parentPage = parent;
                 }
-                
+
                 if (page.templateUrl) {
                     state.templateUrl = page.templateUrl;
                 } else {
                     state.template = '<div ui-view></div>';
                     state['abstract'] = true;
                 }
-                
+
                 if (page.resolve) {
                     state.resolve = page.resolve;
                 }
-                
+
                 $stateProvider.state(page.state, state);
             }
-            
+
             addStates(page.children, page);
         });
     }
@@ -653,7 +660,7 @@ mdAdminApp.run([
 function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
     $rootScope.pages = PAGES;
     $rootScope.Math = Math;
-    
+
     // inserts a style tag to style <a> tags with accent color
     if ($MD_THEME_CSS) {
         var acc = $mdColors.getThemeColor('accent-500-1.0');
@@ -662,7 +669,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
         var styleContent =
             'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
             'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
-        
+
         cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
     }
 
@@ -686,7 +693,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
         } while (state = state.parentPage);
         $rootScope.crumbs = crumbs;
     });
-    
+
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
         if ($state.includes('dashboard')) {
             $rootScope.closeMenu();

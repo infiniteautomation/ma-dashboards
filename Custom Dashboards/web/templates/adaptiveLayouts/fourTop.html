@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>4 Widget Top Layout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/resources/angular-csp.css"></link>
+    <link rel="stylesheet" href="../../vendor/angular-material/angular-material.css">
+    <link rel="stylesheet" href="../../vendor/material-design-icons/iconfont/material-icons.css">
+    <link rel="stylesheet" href="../../vendor/mdPickers/mdPickers.css">
+</head>
+
+<body layout="column">
+    <div ng-if="appLoading">
+        <span>App is loading..</span>
+    </div>
+
+    <div ng-cloak layout="column" flex layout-fill>
+        <!-- Your content here -->
+
+        <md-toolbar md-whiteframe="2"><h2 class="md-toolbar-tools"><span>4 Widget Top Layout</span></h2></md-toolbar>
+
+        <div flex layout="column" layout-fill>
+            <div flex-gt-sm="33" flex="50" layout="column" layout-gt-sm="row">
+                <div layout="row" flex>
+                    <md-card flex="50">
+                        <md-card-content>
+                            Card 1
+                        </md-card-content>
+                    </md-card>
+
+                    <md-card  flex="50">
+                        <md-card-content>
+                            Card 2
+                        </md-card-content>
+                    </md-card>
+                </div>
+
+                <div layout="row" flex>
+                    <md-card  flex="50">
+                        <md-card-content>
+                            Card 3
+                        </md-card-content>
+                    </md-card>
+
+                    <md-card  flex="50">
+                        <md-card-content>
+                            Card 4
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </div>
+            <div flex layout="column" layout-fill>
+                <md-card flex>
+                    <md-card-content>
+                        Card 5
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </div>
+
+    <script src="/resources/require.js"></script>
+    <script src="/resources/loaderConfig.js"></script>
+    <script src="../../js/loaderConfig.js"></script>
+	<script>require(['mango-3.0/bootstrap']);</script>
+</body>
+</html>
