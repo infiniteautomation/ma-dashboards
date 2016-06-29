@@ -118,8 +118,6 @@ body {
 
 .dashboard-menu .md-button.menu-link a {
   padding: 0px 16px;
-  width: 100%;
-  height: 100%;
   display: block;
   text-decoration: none;
 }
@@ -138,8 +136,8 @@ body {
   -webkit-transform: rotate(0deg);
 }
 
-.dashboard-menu .menu-toggle-list .menu-link {
-	padding-left: 24px;
+.dashboard-menu .menu-toggle-list .menu-link a {
+	padding-left: 48px;
 }
 
 .dashboard-menu .menu-icon {
@@ -398,11 +396,11 @@ code:not(.highlight) {
 }
 
 .dashboard-menu .md-button.menu-link.menu-active:hover {
-	background-color: currentColor;
 	cursor: initial;
 }
 
-.dashboard-menu .md-button.menu-link.menu-active a {
+.dashboard-menu .md-button.menu-link.menu-active .menu-text,
+.dashboard-menu .md-button.menu-link.menu-active .menu-icon {
 	color: rgba(255,255,255,0.87);
 }
 

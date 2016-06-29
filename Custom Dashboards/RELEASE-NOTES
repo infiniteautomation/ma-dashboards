@@ -1,3 +1,6 @@
+*Version 3.1.1*
+* Fix admin template menu in Firefox
+
 *Version 3.1.0*
 * Point lists and point queries are queried using an object now, you can still pass a string by enclosing in single quotes
 * Add a separate sort, start and limit attributes to point lists and point queries
@@ -9,6 +12,7 @@
 * Disable angular debug info in mdAdmin app and add option to bootstrap
 * Update documentation and add more comments to example code
 * Add single page app template with login page
+* Add some layout examples
 
 *Version 3.0.1*
 * Update demo virtual data sources JSON file

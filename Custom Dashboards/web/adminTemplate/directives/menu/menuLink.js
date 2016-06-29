@@ -6,16 +6,21 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuLink = function() {
+var menuLink = function($state) {
     return {
         scope: {
             page: '='
         },
-        templateUrl: require.toUrl('./menuLink.html')
+        templateUrl: require.toUrl('./menuLink.html'),
+        link: function($scope, $element) {
+            $scope.followLink = function() {
+                $state.go(this.page.state);
+            }
+        }
     };
 };
 
-menuLink.$inject = [];
+menuLink.$inject = ['$state'];
 
 return menuLink;
 
