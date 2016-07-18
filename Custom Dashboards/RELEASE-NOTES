@@ -1,3 +1,8 @@
+*Version 3.1.2*
+* Set a point limit for ma-point-list in examples
+* Add auto-init option to ma-filtering-point-list
+* Add daily comparison chart example
+
 *Version 3.1.1*
 * Fix admin template menu in Firefox
 

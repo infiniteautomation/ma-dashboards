@@ -15,10 +15,12 @@ define(['./services/Point',
         './services/mangoWatchdog',
         './services/EventManager',
         './services/cssInjector',
+        './services/DataSource',
+        './services/DeviceName',
         'angular',
         'angular-resource'
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
-        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, angular) {
+        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, angular) {
 'use strict';
 
 var maServices = angular.module('maServices', ['ngResource']);
@@ -35,6 +37,8 @@ maServices.factory('Util', Util);
 maServices.factory('mangoWatchdog', mangoWatchdog);
 maServices.factory('EventManager', EventManager);
 maServices.factory('cssInjector', cssInjector);
+maServices.factory('DataSource', DataSourceFactory);
+maServices.factory('DeviceName', DeviceNameFactory);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);

@@ -372,6 +372,13 @@ mdAdminApp.constant('PAGES', [
                 url: '/pie-chart',
                 menuTr: 'dashboards.v3.dox.pieChart',
                 menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.charts.dailyComparison',
+                templateUrl: 'views/examples/dailyComparisonChart.html',
+                url: '/daily-comparison',
+                menuTr: 'dashboards.v3.dox.dailyComparisonChart',
+                menuType: 'link'
             }
         ]
     },

@@ -12,7 +12,7 @@
 <div layout="column">
     <md-input-container class="md-block no-errors-spacer">
         <label>Choose a point</label>
-        <ma-point-list ng-model="myPoint"></ma-point-list>
+        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
     </md-input-container>
 
     <p>You have chosen point "{{myPoint.name}}". It is {{myPoint.enabled ? 'enabled' : 'disabled'}} and belongs to device {{myPoint.deviceName}}</p>
@@ -26,12 +26,12 @@
 
     <md-input-container class="md-block no-errors-spacer">
         <label>Filtered point list</label>
-        <ma-point-list ng-model="myPoint2" query="{name:nameFilter}"></ma-point-list>
+        <ma-point-list limit="200" ng-model="myPoint2" query="{name:nameFilter}"></ma-point-list>
     </md-input-container>
 
     <h3>Self filtering input</h3>
 
-    <ma-filtering-point-list ng-model="myPoint3" query="sort(deviceName,name)" ma-tr="dashboards.v3.app.searchBy" ma-tr-args="['points', 'name and device']"></ma-filtering-point-list>
+    <ma-filtering-point-list ng-model="myPoint3"></ma-filtering-point-list>
 </div>
 
 </dual-pane-editor>

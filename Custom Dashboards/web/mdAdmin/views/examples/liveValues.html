@@ -19,7 +19,7 @@
 
 <md-input-container class="md-block no-errors-spacer">
     <label>Choose a point</label>
-    <ma-point-list ng-model="myPoint"></ma-point-list>
+    <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
 </md-input-container>
 
 <label>Rendered point value:</label> <ma-point-value point="myPoint"></ma-point-value><br>

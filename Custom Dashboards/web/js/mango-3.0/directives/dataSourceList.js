@@ -6,40 +6,32 @@
 define([], function() {
 'use strict';
 
-function pointList(Point, $injector) {
-    var DEFAULT_SORT = ['deviceName', 'name'];
+function dataSourceList(DataSource, $injector) {
+    var DEFAULT_SORT = ['name'];
     
     return {
         restrict: 'E',
         require: 'ngModel',
         scope: {
             ngModel: '=',
-            initPoint: '=?',
+            autoInit: '=?',
             query: '=',
             start: '=',
             limit: '=',
             sort: '='
         },
         template: function(element, attrs) {
-          var optionsExpr = 'pointLabel(point) for point in points';
-          if (attrs.xidAsModel === 'true') {
-            optionsExpr = 'point.xid as ' + optionsExpr;
-          } else {
-            optionsExpr += ' track by point.id';
-          }
-          
           if ($injector.has('$mdUtil')) {
               return '<md-select md-on-open="onOpen()">' +
-              '<md-option ng-value="point" ng-repeat="point in points track by point.id">{{pointLabel(point)}}</md-option>' +
+              '<md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.id">{{dataSourceLabel(dataSource)}}</md-option>' +
               '</md-select>';
           }
-          
-          return '<select ng-options="' + optionsExpr + '"></select>';
+          return '<select ng-options="dataSourceLabel(dataSource) for dataSource in dataSources track by dataSource.id"></select>';
         },
         replace: true,
         link: function ($scope, $element, attrs) {
-            if (angular.isUndefined($scope.initPoint)) {
-                $scope.initPoint = true;
+            if (angular.isUndefined($scope.autoInit)) {
+                $scope.autoInit = true;
             }
             
             var promise;
@@ -55,27 +47,26 @@ function pointList(Point, $injector) {
                     sort: $scope.sort
                 };
             }, function(value) {
-                $scope.points = [];
+                $scope.dataSources = [];
                 value.sort = value.sort || DEFAULT_SORT;
-                promise = Point.objQuery(value).$promise;
-                
-                promise.then(function(points) {
-                    $scope.points = points;
+                promise = DataSource.objQuery(value).$promise;
+                promise.then(function(dataSources) {
+                    $scope.dataSources = dataSources;
                     
-                    if ($scope.initPoint && !$scope.ngModel && $scope.points.length) {
-                        $scope.ngModel = $scope.points[0];
+                    if ($scope.autoInit && !$scope.ngModel && $scope.dataSources.length) {
+                        $scope.ngModel = $scope.dataSources[0];
                     }
                 });
             }, true);
             
-            $scope.pointLabel = function(point) {
-                return point.deviceName + ' - ' + point.name;
+            $scope.dataSourceLabel = function(dataSource) {
+                return dataSource.name;
             };
         }
     };
 }
 
-pointList.$inject = ['Point', '$injector'];
-return pointList;
+dataSourceList.$inject = ['DataSource', '$injector'];
+return dataSourceList;
 
 }); // define

@@ -6,7 +6,7 @@
 <div layout="row" ng-init="points=[]">
     <md-input-container flex class="md-block no-errors-spacer">
         <label>Add a point</label>
-        <ma-point-list ng-model="point" init-point="false" ng-change="point && points.push(point); point=null"></ma-point-list>
+        <ma-point-list limit="200" ng-model="point" init-point="false" ng-change="point && points.push(point); point=null"></ma-point-list>
     </md-input-container>
     <md-input-container flex="33" class="no-errors-spacer">
         <label>Time period</label>

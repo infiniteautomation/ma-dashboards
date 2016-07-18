@@ -5,8 +5,10 @@
   md-items="item in querySearch(searchText)"
   md-item-text="pointLabel(item)"
   md-no-cache="true"
-  md-min-length="1"
-  md-floating-label="Test">
+  md-min-length="0"
+  placeholder="{{'dashboards.v3.app.searchBy' | tr:'points':'name or device'}}"
+  md-delay="1000"
+  md-autoselect="true">
     <md-item-template>
       <span md-highlight-text="searchText" md-highlight-flags="^i">{{pointLabel(item)}}</span>
     </md-item-template>

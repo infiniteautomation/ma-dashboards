@@ -35,6 +35,9 @@ define(['./maServices',
         './directives/now',
         './directives/fn',
         './directives/pointHierarchy',
+        './directives/pagingPointList',
+        './directives/dataSourceList',
+        './directives/deviceNameList',
         './filters/trFilter',
         'angular',
         'require'
@@ -42,7 +45,7 @@ define(['./maServices',
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, now, fn, pointHierarchy, trFilter, angular, require) {
+        jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList, trFilter, angular, require) {
 'use strict';
 
 var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters']);
@@ -77,6 +80,9 @@ maDashboards.directive('maEnter', enter);
 maDashboards.directive('maNow', now);
 maDashboards.directive('maFn', fn);
 maDashboards.directive('maPointHierarchy', pointHierarchy);
+maDashboards.directive('maPagingPointList', pagingPointList);
+maDashboards.directive('maDataSourceList', dataSourceList);
+maDashboards.directive('maDeviceNameList', deviceNameList);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);
