@@ -15,7 +15,7 @@ gulp.task('default', function() {
 	  var newPath = path.replace(/.([^.]+)$/g, '.min.$1');
 	  return exists(newPath) ? newPath : path;
 	});
-	
+
 	return gulp.src(mainFiles, {base: 'bower_components'})
 		.pipe(plugins.rename(function(path) {
 			path.dirname = path.dirname.replace(/^ace-builds(\\|\/)src-min-noconflict/g, 'ace');
@@ -30,4 +30,22 @@ gulp.task('default', function() {
 gulp.task('clean', function() {
 	return gulp.src(paths.dest, {read: false})
 		.pipe(plugins.clean());
+});
+
+
+gulp.task('ngdocs', [], function () {
+  var gulpDocs = require('gulp-ngdocs');
+
+  var options = {
+    title: "Mango - Custom Dashboard 3.0 API Docs",
+	startPage: "/",
+	scripts: [
+      'web/vendor/angular/angular.min.js',
+      'web/vendor/angular-animate/angular-animate.min.js',
+    ]
+  }
+
+  return gulp.src('web/js/mango-3.0/directives/pagingPointList.js')
+    .pipe(gulpDocs.process(options))
+    .pipe(gulp.dest('web/docs/mango-3.0'));
 });
