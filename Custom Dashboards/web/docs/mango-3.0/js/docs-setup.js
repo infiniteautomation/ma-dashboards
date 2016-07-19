@@ -101,8 +101,6 @@ NG_DOCS={
   "__options": {
     "startPage": "/",
     "scripts": [
-      "js/angular.min.js",
-      "js/angular-animate.min.js",
       "js/marked.js",
       "../../vendor/angular/angular.js",
       "../../vendor/angular-animate/angular-animate.js"
@@ -115,8 +113,8 @@ NG_DOCS={
     "navContent": "",
     "navTemplateData": {},
     "loadDefaults": {
-      "angular": true,
-      "angularAnimate": true,
+      "angular": false,
+      "angularAnimate": false,
       "marked": true
     }
   },
@@ -124,8 +122,6 @@ NG_DOCS={
   "editExample": true,
   "startPage": "/",
   "scripts": [
-    "js/angular.min.js",
-    "js/angular-animate.min.js",
     "js/marked.js",
     "../../vendor/angular/angular.js",
     "../../vendor/angular-animate/angular-animate.js"

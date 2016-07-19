@@ -40,15 +40,19 @@ gulp.task('clean', function() {
 gulp.task('ngdocs', [], function() {
     var gulpDocs = require('gulp-ngdocs');
 
-	console.log('Compiling Docs');
+    console.log('Compiling Docs');
 
     var options = {
         title: "Mango - Custom Dashboard 3.0 API Docs",
         startPage: "/",
         html5Mode: false,
+        loadDefaults: {
+            angular: false,
+            angularAnimate: false
+        },
         scripts: [
             '../../../vendor/angular/angular.js',
-            '../../../vendor/angular-animate/angular-animate.js',
+            '../../../vendor/angular-animate/angular-animate.js'
         ]
     }
 
