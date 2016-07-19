@@ -10,17 +10,15 @@ define([], function() {
 /**
  * @ngdoc directive
  * @name maDashboards.maCalc
- * @restrict E
- * @description
- * `<ma-calc input="" output="">` - This directive allows you to evaluate an Angular expression and store the result in a variable.
  *
- * ## input
- * - The `input` attribute takes in the expression to store
+ * @description
+ * `<ma-calc input="" output="">`
+ * - This directive allows you to evaluate an Angular expression and store the result in a variable.
  * - In the example below an array from the model is passed through a filter on the name property of objects in the array.
  *
- * ## output
- * - The `output` attribute defines the name of the variable to hold the result of the evaluated expression.
- * - Once evaluated it will be availble to use anywhere in your App.
+ *
+ * @param {expression} input The expression to be evaluated
+ * @param {string} output Defines the name of the variable to hold the result of the evaluated expression.
  *
  * @usage
  * <ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | first" output="power">

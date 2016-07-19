@@ -5,10 +5,33 @@
 
 define([], function() {
 'use strict';
-
+/**
+ * @ngdoc directive
+ * @name maDashboards.maDataSourceList
+ * @restrict E
+ * @description
+ * `<ma-clock time="" timezone="" text="">`
+ * - This directive will display an analog style clock.
+ * - Note, you will need to set a width and height on the element.
+ * [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/clocks-and-timezones)
+ *
+ * @param {object} ngModel sort
+ * @param {object=} autoInit sort
+ * @param {object} query sort
+ * @param {object} start sort
+ * @param {object} limit sort
+ * @param {object} sort sort
+ *
+ * @usage
+ * <ma-clock style="width: 100%; height: 200px;" time="time1" text="Browser timezone"></ma-clock>
+ * <ma-clock style="width: 100%; height: 200px;" time="time2" timezone="{{user.getTimezone()}}" text="User timezone"></ma-clock>
+ * <ma-clock style="width: 100%; height: 200px;" time="time3" timezone="Australia/Sydney" text="Sydney"></ma-clock>
+ * <span>{{time1|moment:'format':'ll LTS Z'}}</span>
+ *
+ */
 function dataSourceList(DataSource, $injector) {
     var DEFAULT_SORT = ['name'];
-    
+
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -33,7 +56,7 @@ function dataSourceList(DataSource, $injector) {
             if (angular.isUndefined($scope.autoInit)) {
                 $scope.autoInit = true;
             }
-            
+
             var promise;
             $scope.onOpen = function onOpen() {
                 return promise;
@@ -52,13 +75,13 @@ function dataSourceList(DataSource, $injector) {
                 promise = DataSource.objQuery(value).$promise;
                 promise.then(function(dataSources) {
                     $scope.dataSources = dataSources;
-                    
+
                     if ($scope.autoInit && !$scope.ngModel && $scope.dataSources.length) {
                         $scope.ngModel = $scope.dataSources[0];
                     }
                 });
             }, true);
-            
+
             $scope.dataSourceLabel = function(dataSource) {
                 return dataSource.name;
             };

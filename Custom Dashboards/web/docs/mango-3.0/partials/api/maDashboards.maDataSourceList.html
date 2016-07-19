@@ -1,0 +1,26 @@
+<h1><code ng:non-bindable="">maDataSourceList</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-madatasourcelist-page"><p><code>&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt;</code></p>
+<ul>
+<li>This directive will display an analog style clock.</li>
+<li>Note, you will need to set a width and height on the element.
+<a href="/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/clocks-and-timezones">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-clock style="width: 100%; height: 200px;" time="time1" text="Browser timezone"&gt;&lt;/ma-clock&gt;
+&lt;ma-clock style="width: 100%; height: 200px;" time="time2" timezone="<span>{{</span>user.getTimezone()<span>}}</span>" text="User timezone"&gt;&lt;/ma-clock&gt;
+&lt;ma-clock style="width: 100%; height: 200px;" time="time3" timezone="Australia/Sydney" text="Sydney"&gt;&lt;/ma-clock&gt;
+&lt;span&gt;<span>{{</span>time1|moment:'format':'ll LTS Z'<span>}}</span>&lt;/span&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ngModel</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-madatasourcelist-page"><p>sort</p>
+</div></td></tr><tr><td>autoInit <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-madatasourcelist-page"><p>sort</p>
+</div></td></tr><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-madatasourcelist-page"><p>sort</p>
+</div></td></tr><tr><td>start</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-madatasourcelist-page"><p>sort</p>
+</div></td></tr><tr><td>limit</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-madatasourcelist-page"><p>sort</p>
+</div></td></tr><tr><td>sort</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-madatasourcelist-page"><p>sort</p>
+</div></td></tr></tbody></table></div>
+</div>

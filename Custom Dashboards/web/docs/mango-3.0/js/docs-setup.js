@@ -18,8 +18,8 @@ NG_DOCS={
       "shortName": "maDashboards.maCalc",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;ma-calc input=&quot;&quot; output=&quot;&quot;&gt; - This directive allows you to evaluate an Angular expression and store the result in a variable.",
-      "keywords": "allows angular api app array attribute availble defines directive evaluate evaluated example expression filter hold input macalc madashboards model objects output passed phase points power property real result store takes variable"
+      "shortDescription": "&lt;ma-calc input=&quot;&quot; output=&quot;&quot;&gt;",
+      "keywords": "allows angular api array defines directive evaluate evaluated example expression filter hold input macalc madashboards model objects output passed phase points power property real result store variable"
     },
     {
       "section": "api",
@@ -27,8 +27,26 @@ NG_DOCS={
       "shortName": "maDashboards.maClock",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt; - This directive will display an analog style clock. Note, you will need to set a width and height on the element.",
-      "keywords": "analog api attribute australia browser clock current currently defines directive display displaying element filtered format gettimezone height holds label ll logged lts maclock madashboards mango note org provided set sets string style switch sydney text time time1 time2 time3 timestamp timezone user variable width wikipedia"
+      "shortDescription": "&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt;",
+      "keywords": "amcharts analog api australia browser clock configuartion current currently customizing defines demo design directive display displaying element evaluating expression extend filtered format formatted gettimezone hand height holds label ll logged lts maclock madashboards mango note object options org provided return seconds set sets show-seconds string style switch sydney text time time1 time2 time3 timestamp timezone turns user variable width wikipedia"
+    },
+    {
+      "section": "api",
+      "id": "maDashboards.maCopyBlurred",
+      "shortName": "maDashboards.maCopyBlurred",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;input type=&quot;text&quot; ng-model=&quot;input.value&quot; ma-copy-blurred=&quot;point.value&quot;&gt;",
+      "keywords": "api changing copies directive focus input inputs live ma-copy-blurred macopyblurred madashboards ng-disabled ng-model point pointlocator prevent settable text type typing"
+    },
+    {
+      "section": "api",
+      "id": "maDashboards.maDataSourceList",
+      "shortName": "maDashboards.maDataSourceList",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt;",
+      "keywords": "analog api australia autoinit browser clock demo directive display element format gettimezone height limit ll lts madashboards madatasourcelist ngmodel note query set sort start style sydney text time time1 time2 time3 timezone user width"
     },
     {
       "section": "api",
