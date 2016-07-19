@@ -38,6 +38,8 @@ define(['./maServices',
         './directives/pagingPointList',
         './directives/dataSourceList',
         './directives/deviceNameList',
+        './directives/dataSourceQuery',
+        './directives/deviceNameQuery',
         './filters/trFilter',
         'angular',
         'require'
@@ -45,7 +47,8 @@ define(['./maServices',
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList, trFilter, angular, require) {
+        jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList,
+        dataSourceQuery, deviceNameQuery, trFilter, angular, require) {
 'use strict';
 /**
  * @ngdoc overview
@@ -92,6 +95,8 @@ maDashboards.directive('maPointHierarchy', pointHierarchy);
 maDashboards.directive('maPagingPointList', pagingPointList);
 maDashboards.directive('maDataSourceList', dataSourceList);
 maDashboards.directive('maDeviceNameList', deviceNameList);
+maDashboards.directive('maDataSourceQuery', dataSourceQuery);
+maDashboards.directive('maDeviceNameQuery', deviceNameQuery);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);

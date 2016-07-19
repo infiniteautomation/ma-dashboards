@@ -14,9 +14,11 @@ This is called interpolation.</p>
 <p>Use the <code>ng-bind</code> attribute to one-way bind the contents of a tag to a variable.
 Use the <code>ng-model</code> attribute to two-way bind a variable with an input.</p>
 
+<p>Insert the following code on your dashboards to see the contents of a variable <code>&lt;pre ng-bind="variableName | json"&gt;&lt;/pre&gt;</code></p>
+
 <dual-pane-editor>
 
-<div layout="column" ng-init="myVar = 'Hello'">
+<div layout="column" ng-init="myVar = 'Hello'; myObj = {property1: 'test', property2: 433.555}">
   <div>Using interpolation, your variable is {{myVar}}</div>
   <div>Using ng-bind, your variable is <span ng-bind="myVar"></span></div>
 
@@ -26,6 +28,10 @@ Use the <code>ng-model</code> attribute to two-way bind a variable with an input
   </md-input-container>
 
   <div>Your number plus 10 is {{myNumber + 10}}.</div>
+
+  <h2>Output an object to the page as JSON</h2>
+  <pre ng-bind="myObj | json"></pre>
+
 </div>
 
 </dual-pane-editor>

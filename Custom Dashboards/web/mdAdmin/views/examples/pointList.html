@@ -1,9 +1,10 @@
 <h1 ma-tr="dashboards.v3.dox.pointList"></h1>
 
 <p>The <code>&lt;ma-point-list&gt;</code> directive displays a list of data points which you can select from.
-    All data points added to your Mango system will display by defualt.</p>
+    All data points added to your Mango system will display by default.</p>
 
-<p>You can optionally supply the <code>query</code> attribute to filter the list of points using <a href="http://www.persvr.org/rql/" target="_blank">RQL</a>.</p>
+<p>You can optionally supply the <code>query</code> attribute to filter the list of points using an object where the keys are the property names to filter on, or
+supply a <a href="http://www.persvr.org/rql/" target="_blank">RQL</a> query string inside single quotes.</p>
 
 <p>The <code>&lt;ma-filtering-point-list&gt;</code> directive allows you to select a data point using fuzzy searching by device name or point name.
     Search results will update as you type.</p>
@@ -27,6 +28,11 @@
     <md-input-container class="md-block no-errors-spacer">
         <label>Filtered point list</label>
         <ma-point-list limit="200" ng-model="myPoint2" query="{name:nameFilter}"></ma-point-list>
+    </md-input-container>
+    
+    <md-input-container class="md-block no-errors-spacer">
+        <label>Filtered point list using RQL</label>
+        <ma-point-list ng-model="myPoint3" query="'name=like=*'+nameFilter+'*&amp;limit(100)'"></ma-point-list>
     </md-input-container>
 
     <h3>Self filtering input</h3>

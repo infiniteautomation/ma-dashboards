@@ -149,6 +149,13 @@ mdAdminApp.constant('PAGES', [
                 menuType: 'link'
             },
             {
+                state: 'dashboard.examples.basics.dataSourceAndDeviceList',
+                templateUrl: 'views/examples/dataSourceAndDeviceList.html',
+                url: '/data-source-and-device-list',
+                menuTr: 'dashboards.v3.dox.dataSourceAndDeviceList',
+                menuType: 'link'
+            },
+            {
                 state: 'dashboard.examples.basics.liveValues',
                 templateUrl: 'views/examples/liveValues.html',
                 url: '/live-values',
