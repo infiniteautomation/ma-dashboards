@@ -104,8 +104,8 @@ NG_DOCS={
       "js/angular.min.js",
       "js/angular-animate.min.js",
       "js/marked.js",
-      "js/web/vendor/angular/angular.min.js",
-      "js/web/vendor/angular-animate/angular-animate.min.js"
+      "../../vendor/angular/angular.js",
+      "../../vendor/angular-animate/angular-animate.js"
     ],
     "styles": [],
     "title": "Mango - Custom Dashboard 3.0 API Docs",
@@ -127,7 +127,7 @@ NG_DOCS={
     "js/angular.min.js",
     "js/angular-animate.min.js",
     "js/marked.js",
-    "js/web/vendor/angular/angular.min.js",
-    "js/web/vendor/angular-animate/angular-animate.min.js"
+    "../../vendor/angular/angular.js",
+    "../../vendor/angular-animate/angular-animate.js"
   ]
 };
