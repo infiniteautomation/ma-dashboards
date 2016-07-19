@@ -39,13 +39,14 @@ gulp.task('ngdocs', [], function () {
   var options = {
     title: "Mango - Custom Dashboard 3.0 API Docs",
 	startPage: "/",
+	html5Mode: false,
 	scripts: [
       'web/vendor/angular/angular.min.js',
       'web/vendor/angular-animate/angular-animate.min.js',
     ]
   }
 
-  return gulp.src('web/js/mango-3.0/directives/pagingPointList.js')
+  return gulp.src('web/js/mango-3.0/**/*.js')
     .pipe(gulpDocs.process(options))
     .pipe(gulp.dest('web/docs/mango-3.0'));
 });

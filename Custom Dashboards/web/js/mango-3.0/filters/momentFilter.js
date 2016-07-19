@@ -5,7 +5,14 @@
 
 define(['moment-timezone'], function(moment) {
 'use strict';
-
+/**
+ * @ngdoc filter
+ * @name maFilters.momentFilter
+ *
+ * @description
+ *
+ *
+ */
 function momentFilter(Util) {
     return Util.memoize(function(input, fnName) {
         var m;

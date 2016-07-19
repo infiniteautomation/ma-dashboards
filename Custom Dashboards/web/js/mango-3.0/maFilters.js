@@ -8,7 +8,17 @@ define(['./filters/momentFilter',
         'angular'
 ], function(momentFilter, durationFilter, angular) {
 'use strict';
-
+/**
+ * @ngdoc overview
+ * @name maFilters
+ *
+ *
+ * @description
+ * The maFilters module handles loading of the custom filters used for formatting and manipulating data in
+   a Mango 3.0 dashboard.
+ *
+ *
+ **/
 var maFilters = angular.module('maFilters', []);
 
 maFilters.filter('moment', momentFilter);
@@ -83,13 +93,13 @@ maFilters.filter('first', function() {
 });
 
 maFilters.filter('unique', function() {
-	
+
 	function addUnique(result, item, propName) {
 		var propValue = item[propName];
 		if (result.indexOf(propValue) >= 0) return;
 		result.push(propValue);
 	}
-	
+
 	return function(collection, propName) {
 		if (!collection) return;
 		var result = [];

@@ -8,20 +8,24 @@
 define([], function() {
 'use strict';
 /**
-* @ngdoc directive
-* @name Calc
-*
-* @description
-* Resize textarea automatically to the size of its text content.
-*
-* @example
-  <example module="rfx">
-    <file name="index.html">
-        <textarea ng-model="text"rx-autogrow class="input-block-level"></textarea>
-        <pre>{{text}}</pre>
-    </file>
-  </example>
-*/
+ * @ngdoc directive
+ * @name maDashboards.maCalc
+ * @restrict E
+ * @description
+ * `<ma-calc input="" output="">` - This directive allows you to evaluate an Angular expression and store the result in a variable.
+ *
+ * ## input
+ * - The `input` attribute takes in the expression to store
+ * - In the example below an array from the model is passed through a filter on the name property of objects in the array.
+ *
+ * ## output
+ * - The `output` attribute defines the name of the variable to hold the result of the evaluated expression.
+ * - Once evaluated it will be availble to use anywhere in your App.
+ *
+ * @usage
+ * <ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | first" output="power">
+ * </ma-calc>
+ */
 function calc() {
     return {
         scope: {

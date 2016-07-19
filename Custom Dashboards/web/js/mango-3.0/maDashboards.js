@@ -47,7 +47,16 @@ define(['./maServices',
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList, trFilter, angular, require) {
 'use strict';
-
+/**
+ * @ngdoc overview
+ * @name maDashboards
+ *
+ *
+ * @description
+ * The maDashboards module handles loading of the custom directives used for creating a Mango 3.0 dashboard.
+ *
+ *
+**/
 var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters']);
 
 maDashboards.directive('maFilteringPointList', filteringPointList);
@@ -96,11 +105,11 @@ maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssIn
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
 	mangoWatchdog.reset();
-	
+
 	if (maDashboardsInsertCss) {
 	    cssInjector.injectLink(require.toUrl('./maDashboards.css'));
 	}
-	
+
 	$rootScope.range = function(start, end) {
 		var result = [];
 		for (var i = start; i <= end; i++)
@@ -122,7 +131,7 @@ maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssIn
         {type: 'INTEGRAL', nonNumeric: false, label: 'Integral'}
         //{name: 'FFT', nonNumeric: false}
     ];
-    
+
     $rootScope.timePeriodTypes = [
         {type: 'SECONDS', label: 'Seconds'},
         {type: 'MINUTES', label: 'Minutes'},
@@ -132,14 +141,14 @@ maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssIn
         {type: 'MONTHS', label: 'Months'},
         {type: 'YEARS', label: 'Years'}
     ];
-    
+
     $rootScope.chartTypes = [
         {type: 'line', label: 'Line'},
         {type: 'smoothedLine', label: 'Smoothed'},
         {type: 'step', label: 'Step'},
         {type: 'column', label: 'Bar'}
     ];
-    
+
     $rootScope.relativeDateTypes = [
         {type: "", label: 'Now'},
         {type: "moment:'subtract':5:'minutes'", label: '5 minutes ago'},
@@ -165,7 +174,7 @@ maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssIn
         {type: "moment:'subtract':1:'years'|moment:'startOf':'year'", label: 'Start of last year'},
         {type: "moment:'subtract':1:'years'", label: '1 year ago'}
     ];
-    
+
     $rootScope.dateRangePresets = [
         {type: "LAST_5_MINUTES", label: 'Last 5 minutes'},
         {type: "LAST_15_MINUTES", label: 'Last 15 minutes'},

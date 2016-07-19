@@ -1,0 +1,22 @@
+<h1><code ng:non-bindable="">maCalc</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="macalc-page"><p><code>&lt;ma-calc input=&quot;&quot; output=&quot;&quot;&gt;</code> - This directive allows you to evaluate an Angular expression and store the result in a variable.</p>
+<h4 id="input" id="description_input">input</h4>
+<ul>
+<li>The <code>input</code> attribute takes in the expression to store</li>
+<li>In the example below an array from the model is passed through a filter on the name property of objects in the array.</li>
+</ul>
+<h4 id="output" id="description_output">output</h4>
+<ul>
+<li>The <code>output</code> attribute defines the name of the variable to hold the result of the evaluated expression.</li>
+<li>Once evaluated it will be availble to use anywhere in your App.</li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | first" output="power"&gt;
+&lt;/ma-calc&gt;</pre>
+</div>
+</div>

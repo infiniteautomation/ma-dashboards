@@ -1,0 +1,36 @@
+<h1><code ng:non-bindable="">mdDialog</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="mddialog-page"><p><code>&lt;md-dialog&gt;</code> - The dialog&#39;s template must be inside this element.</p>
+<p>Inside, use an <code>&lt;md-dialog-content&gt;</code> element for the dialog&#39;s content, and use
+an <code>&lt;md-dialog-actions&gt;</code> element for the dialog&#39;s actions.</p>
+<h4 id="css" id="description_css">CSS</h4>
+<ul>
+<li><code>.md-dialog-content</code> - class that sets the padding on the content as the spec file</li>
+</ul>
+<h4 id="notes" id="description_notes">Notes</h4>
+<ul>
+<li>If you specify an <code>id</code> for the <code>&lt;md-dialog&gt;</code>, the <code>&lt;md-dialog-content&gt;</code> will have the same <code>id</code>
+prefixed with <code>dialogContent_</code>.</li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">### Dialog template
+&lt;hljs lang="html"&gt;
+&lt;md-dialog aria-label="List dialog"&gt;
+  &lt;md-dialog-content&gt;
+    &lt;md-list&gt;
+      &lt;md-list-item ng-repeat="item in items"&gt;
+        &lt;p&gt;Number <span>{{</span>item<span>}}</span>&lt;/p&gt;
+      &lt;/md-list-item&gt;
+    &lt;/md-list&gt;
+  &lt;/md-dialog-content&gt;
+  &lt;md-dialog-actions&gt;
+    &lt;md-button ng-click="closeDialog()" class="md-primary"&gt;Close Dialog&lt;/md-button&gt;
+  &lt;/md-dialog-actions&gt;
+&lt;/md-dialog&gt;
+&lt;/hljs&gt;</pre>
+</div>
+</div>

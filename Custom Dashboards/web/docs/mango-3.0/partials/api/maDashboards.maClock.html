@@ -1,0 +1,30 @@
+<h1><code ng:non-bindable="">maClock</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-maclock-page"><p><code>&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt;</code> - This directive will display an analog style clock. Note, you will need to set a width and height on the element.</p>
+<h4 id="time" id="description_time">time</h4>
+<ul>
+<li>The <code>time</code> attribute defines a variable that holds the current timestamp</li>
+<li>The timestamp can be filtered with <a href="http://momentjs.com/">momentJs</a> to display as a date time on the page</li>
+</ul>
+<h4 id="timezone" id="description_timezone">timezone</h4>
+<ul>
+<li>The <code>timezone</code> attribute, if provided, will switch which timezone is used for displaying the current time.</li>
+<li>It can be set as a <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">TZ string</a> or you can use the timezone of the user
+currently logged into Mango</li>
+</ul>
+<h4 id="text" id="description_text">text</h4>
+<ul>
+<li>Sets the label text</li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-clock style="width: 100%; height: 200px;" time="time1" text="Browser timezone"&gt;&lt;/ma-clock&gt;
+&lt;ma-clock style="width: 100%; height: 200px;" time="time2" timezone="<span>{{</span>user.getTimezone()<span>}}</span>" text="User timezone"&gt;&lt;/ma-clock&gt;
+&lt;ma-clock style="width: 100%; height: 200px;" time="time3" timezone="Australia/Sydney" text="Sydney"&gt;&lt;/ma-clock&gt;
+&lt;span&gt;<span>{{</span>time1|moment:'format':'ll LTS Z'<span>}}</span>&lt;/span&gt;</pre>
+</div>
+</div>

@@ -5,7 +5,14 @@
 
 define(['moment-timezone'], function(moment) {
 'use strict';
-
+/**
+ * @ngdoc filter
+ * @name maFilters.durationFilter
+ *
+ * @description
+ * 
+ *
+ */
 function durationFilter(Util) {
     return Util.memoize(function(input, fnName) {
         var d = moment.duration(input);

@@ -5,7 +5,14 @@
 
 define([], function() {
 'use strict';
-
+/**
+ * @ngdoc filter
+ * @name maFilters.trFilter
+ *
+ * @description
+ *
+ *
+ */
 /*
  * The translate filter cannot asynchronously load the translation namespace and display the translation.
  * Translation namespace must be loaded into Globalize prior to filter being run.

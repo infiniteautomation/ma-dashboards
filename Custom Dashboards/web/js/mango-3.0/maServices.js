@@ -22,7 +22,16 @@ define(['./services/Point',
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, angular) {
 'use strict';
-
+/**
+ * @ngdoc overview
+ * @name maServices
+ *
+ *
+ * @description
+ * The maServices module handles loading of services and providers that make API calls to the mango backend.
+ *
+ *
+**/
 var maServices = angular.module('maServices', ['ngResource']);
 
 maServices.factory('Point', Point);
