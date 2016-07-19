@@ -10,14 +10,14 @@ Then set the <code>time-format</code> attribute of <code>&lt;ma-serial-chart&gt;
 <div ng-init="page={rollup:'5 minutes', rollupType:'AVERAGE', week:0, values:{}}"></div>
 
 <div layout="row">
-    <md-input-container flex="" class="no-errors-spacer">
+    <md-input-container flex="">
         <label>Choose a point</label>
         <ma-point-list limit="200" ng-model="page.point"></ma-point-list>
     </md-input-container>
 </div>
 
 <div layout="row">
-    <md-input-container flex class="no-errors-spacer">
+    <md-input-container flex>
        <label>Select a week</label>
        
        <md-select ng-model="page.week">

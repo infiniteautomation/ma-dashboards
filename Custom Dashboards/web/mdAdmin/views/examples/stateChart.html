@@ -3,15 +3,15 @@
 <dual-pane-editor>
 
 <div layout="row">
-    <md-input-container flex="33" class="no-errors-spacer">
+    <md-input-container flex="33">
        <label>From date</label>
        <ma-date-range-picker from="from" to="to" preset="LAST_5_MINUTES" update-interval="1 minutes"></ma-date-range-picker>
     </md-input-container>
-    <md-input-container flex class="no-errors-spacer">
+    <md-input-container flex>
         <label>Multi-state point 1</label>
         <ma-point-list limit="200" ng-model="point1"></ma-point-list>
     </md-input-container>
-    <md-input-container flex class="no-errors-spacer">
+    <md-input-container flex>
         <label>Multi-state point 2</label>
         <ma-point-list limit="200" ng-model="point2"></ma-point-list>
     </md-input-container>

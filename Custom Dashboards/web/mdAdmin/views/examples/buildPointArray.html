@@ -4,11 +4,11 @@
 <dual-pane-editor>
 
 <div layout="row" ng-init="points=[]">
-    <md-input-container flex class="md-block no-errors-spacer">
+    <md-input-container flex>
         <label>Add a point</label>
         <ma-point-list limit="200" ng-model="point" init-point="false" ng-change="point && points.push(point); point=null"></ma-point-list>
     </md-input-container>
-    <md-input-container flex="33" class="no-errors-spacer">
+    <md-input-container flex="33">
         <label>Time period</label>
         <ma-date-range-picker from="from" to="to" preset="LAST_5_MINUTES" update-interval="1 minutes"></ma-date-range-picker>
     </md-input-container>

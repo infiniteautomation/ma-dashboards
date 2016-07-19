@@ -9,7 +9,7 @@ a <code>|</code> character.
 <dual-pane-editor>
 
 <div layout="row">
-    <md-input-container flex="" class="no-errors-spacer">
+    <md-input-container flex="">
         <label>Time period</label>
         <ma-date-range-picker from="from" to="to" preset="LAST_5_MINUTES" update-interval="15 minutes"></ma-date-range-picker>
     </md-input-container>
@@ -17,13 +17,13 @@ a <code>|</code> character.
 
 <h3>Build path</h3>
 <div layout="row" ng-init="segments=['Demo', '*', 'Meter 1|Meter 2']">
-    <md-input-container flex class="md-block no-errors-spacer">
+    <md-input-container flex>
         <label>Choose subfolder</label>
         <md-select ng-model="segment">
             <md-option ng-value="f.name" ng-repeat="f in hierarchy.subfolders">{{f.name}}</md-option>
         </md-select>
     </md-input-container>
-    <md-input-container flex class="md-block no-errors-spacer">
+    <md-input-container flex>
         <label>Enter manually</label>
         <input type="text" ng-model="segment">
     </md-input-container>

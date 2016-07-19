@@ -12,19 +12,19 @@ and device name strings respectively.</p>
 <dual-pane-editor>
 
 <div layout="column">
-    <md-input-container class="md-block no-errors-spacer">
+    <md-input-container>
         <label>Choose a data source</label>
         <ma-data-source-list ng-model="myDataSource"></ma-data-source-list>
     </md-input-container>
 
     <p>You have chosen data source "{{myDataSource.name}}". It is {{myDataSource.enabled ? 'enabled' : 'disabled'}} and has an XID of {{myDataSource.xid}}.</p>
     
-    <md-input-container class="md-block no-errors-spacer">
+    <md-input-container>
         <label>Device names for selected data source</label>
         <ma-device-name-list ng-model="myDeviceName" data-source-xid="myDataSource.xid"></ma-device-name-list>
     </md-input-container>
     
-    <md-input-container class="md-block no-errors-spacer">
+    <md-input-container>
         <label>Points for selected device name</label>
         <ma-point-list query="{deviceName: myDeviceName}" limit="100" ng-model="myPoint"></ma-point-list>
     </md-input-container>

@@ -14,35 +14,35 @@ may cause the chart rendering to fail.</p>
 <dual-pane-editor>
 
 <div layout="row">
-    <md-input-container flex="50" class="no-errors-spacer">
+    <md-input-container flex="50">
     	<label>Point 1</label>
     	<ma-point-list limit="200" ng-model="point1"></ma-point-list>
     </md-input-container>
-    <md-input-container flex="50" class="no-errors-spacer">
+    <md-input-container flex="50">
         <label>Point 2</label>
         <ma-point-list limit="200" ng-model="point2"></ma-point-list>
     </md-input-container>
 </div>
 
 <div layout="row">
-    <md-input-container flex="50" class="no-errors-spacer" ng-init="point1Color='#ffaa00'">
+    <md-input-container flex="50" ng-init="point1Color='#ffaa00'">
     	<label>Point 1 Color</label>
     	<input type="color" ng-model="point1Color">
     </md-input-container>
-    <md-input-container flex="50" class="no-errors-spacer" ng-init="point2Color='#0000aa'">
+    <md-input-container flex="50" ng-init="point2Color='#0000aa'">
     	<label>Point 2 Color</label>
     	<input type="color" ng-model="point2Color">
     </md-input-container>
 </div>
 
 <div layout="row">
-    <md-input-container flex="50" class="no-errors-spacer" ng-init="point1ChartType='line'">
+    <md-input-container flex="50" ng-init="point1ChartType='line'">
     	<label>Point 1 Chart Type</label>
     	<md-select ng-model="point1ChartType">
             <md-option ng-value="t.type" ng-repeat="t in chartTypes">{{t.label}}</md-option>
         </md-select>
     </md-input-container>
-    <md-input-container flex="50" class="no-errors-spacer" ng-init="point2ChartType='column'">
+    <md-input-container flex="50" ng-init="point2ChartType='column'">
     	<label>Point 2 Chart Type</label>
     	<md-select ng-model="point2ChartType">
             <md-option ng-value="t.type" ng-repeat="t in chartTypes">{{t.label}}</md-option>
@@ -51,41 +51,41 @@ may cause the chart rendering to fail.</p>
 </div>
 
 <div layout="row">
-    <md-input-container flex class="no-errors-spacer">
+    <md-input-container flex>
     	<label>Update interval</label>
     	<input type="number" step="1" min="1" ng-model="updateInterval" ng-init="updateInterval=1">
     </md-input-container>
-    <md-input-container class="no-errors-spacer">
+    <md-input-container>
     	<label>Interval type</label>
     	<ma-interval-type-picker ng-model="updateIntervalType" ng-init="updateIntervalType='MINUTES'"></ma-interval-type-picker>
     </md-input-container>
-    <md-input-container flex="50" class="no-errors-spacer">
+    <md-input-container flex="50">
     	<label>Date range preset</label>
     	<ma-date-range-picker from="from" to="to" preset="LAST_30_MINUTES" update-interval="{{updateInterval}} {{updateIntervalType}}"></ma-date-range-picker>
     </md-input-container>
 </div>
 
 <div layout="row">
-    <md-input-container flex="50" class="no-errors-spacer">
+    <md-input-container flex="50">
     	<label>From date</label>
     	<ma-date-picker ng-model="from"></ma-date-picker>
     </md-input-container>
-    <md-input-container flex="50" class="no-errors-spacer">
+    <md-input-container flex="50">
     	<label>To date</label>
     	<ma-date-picker ng-model="to"></ma-date-picker>
     </md-input-container>
 </div>
 
 <div layout="row">
-    <md-input-container flex class="no-errors-spacer">
+    <md-input-container flex>
     	<label>Rollup interval</label>
     	<input type="number" step="1" min="1" ng-model="rollupInterval" ng-init="rollupInterval=1">
     </md-input-container>
-    <md-input-container class="no-errors-spacer">
+    <md-input-container>
     	<label>Interval type</label>
     	<ma-interval-type-picker ng-model="rollupIntervalType" ng-init="rollupIntervalType='MINUTES'">></ma-interval-type-picker>
     </md-input-container>
-    <md-input-container flex="50" class="no-errors-spacer" ng-init="rollupType='AVERAGE'">
+    <md-input-container flex="50" ng-init="rollupType='AVERAGE'">
     	<label>Rollup type</label>
         <md-select ng-model="rollupType">
             <md-option ng-value="t.type" ng-repeat="t in rollupTypes">{{t.label}}</md-option>

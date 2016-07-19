@@ -9,15 +9,15 @@
 <dual-pane-editor>
 
 <div layout="row">
-    <md-input-container flex="33" class="no-errors-spacer">
+    <md-input-container flex="33">
         <label>Device name</label>
         <input ng-model="dvName" ng-model-options="{debounce:1000}">
     </md-input-container>
-    <md-input-container flex="33" class="no-errors-spacer">
+    <md-input-container flex="33">
         <label>Point name</label>
         <input ng-model="ptName" ng-model-options="{debounce:1000}">
     </md-input-container>
-    <md-input-container flex="33" class="no-errors-spacer">
+    <md-input-container flex="33">
         <label>Time period</label>
         <ma-date-range-picker from="from" to="to" preset="LAST_5_MINUTES" update-interval="1 minutes"></ma-date-range-picker>
     </md-input-container>

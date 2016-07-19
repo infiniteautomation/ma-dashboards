@@ -6,14 +6,14 @@ of values on a data point. The <code>realtime</code> attribute can be set to <co
 <dual-pane-editor>
 
 <div layout="row">
-    <md-input-container flex="" class="no-errors-spacer">
+    <md-input-container flex="">
           <label>Choose a point</label>
           <ma-point-list limit="200" ng-model="point1"></ma-point-list>
     </md-input-container>
 </div>
 
 <div layout="row">
-    <md-input-container flex="33" class="no-errors-spacer">
+    <md-input-container flex="33">
           <label>Number of latest values</label>
           <input ng-init="latestX=10" type="number" step="1" min="1" max="20" ng-model="latestX" ng-model-options="{debounce:500}">
     </md-input-container>

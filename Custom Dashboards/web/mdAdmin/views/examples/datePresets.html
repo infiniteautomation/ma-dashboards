@@ -13,15 +13,15 @@ and the <code>ng-model</code> attributes.</p>
 <dual-pane-editor>
 
 <div layout="row">
-  <md-input-container class="no-errors-spacer">
+  <md-input-container>
     <label>Preset</label>
     <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="5 seconds"></ma-date-range-picker>
   </md-input-container>
-  <md-input-container class="no-errors-spacer">
+  <md-input-container>
     <label>From date</label>
     <ma-date-picker ng-model="from"></ma-date-picker>
   </md-input-container>
-  <md-input-container class="no-errors-spacer">
+  <md-input-container>
     <label>To date</label>
     <ma-date-picker ng-model="to"></ma-date-picker>
   </md-input-container>
@@ -29,12 +29,12 @@ and the <code>ng-model</code> attributes.</p>
 
 <p>Alternatively use the date and time pickers individually</p>
 <div layout="row">
-    <mdp-date-picker mdp-placeholder="From date" mdp-open-on-click mdp-format="ll" ng-model="from" class="no-errors-spacer"></mdp-date-picker>
-	<mdp-time-picker mdp-placeholder="From time" mdp-open-on-click mdp-auto-switch="true" ng-model="from" mdp-format="LTS" class="no-errors-spacer"></mdp-time-picker>
+    <mdp-date-picker mdp-placeholder="From date" mdp-open-on-click mdp-format="ll" ng-model="from"></mdp-date-picker>
+	<mdp-time-picker mdp-placeholder="From time" mdp-open-on-click mdp-auto-switch="true" ng-model="from" mdp-format="LTS"></mdp-time-picker>
 </div>
 <div layout="row">
-    <mdp-date-picker mdp-placeholder="To date" mdp-open-on-click mdp-format="ll" ng-model="to" class="no-errors-spacer"></mdp-date-picker>
-	<mdp-time-picker mdp-placeholder="To time" mdp-open-on-click mdp-auto-switch="true" ng-model="to" mdp-format="LTS" class="no-errors-spacer"></mdp-time-picker>
+    <mdp-date-picker mdp-placeholder="To date" mdp-open-on-click mdp-format="ll" ng-model="to"></mdp-date-picker>
+	<mdp-time-picker mdp-placeholder="To time" mdp-open-on-click mdp-auto-switch="true" ng-model="to" mdp-format="LTS"></mdp-time-picker>
 </div>
 
 <p>

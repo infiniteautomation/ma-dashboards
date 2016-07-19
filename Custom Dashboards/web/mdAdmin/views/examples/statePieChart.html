@@ -7,21 +7,21 @@
 
 <dual-pane-editor>
 
-<md-input-container class="md-block no-errors-spacer">
+<md-input-container>
     <label>Choose a point</label>
     <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
 </md-input-container>
 
 <div layout="row">
-    <md-input-container class="md-block no-errors-spacer">
+    <md-input-container>
         <label>Date preset</label>
         <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker>
     </md-input-container>
-    <md-input-container class="md-block no-errors-spacer">
+    <md-input-container>
         <label>From date</label>
         <ma-date-picker ng-model="from"></ma-date-picker>
     </md-input-container>
-    <md-input-container class="md-block no-errors-spacer">
+    <md-input-container>
         <label>To date</label>
         <ma-date-picker ng-model="to"></ma-date-picker>
     </md-input-container>
