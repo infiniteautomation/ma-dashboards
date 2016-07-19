@@ -10,12 +10,11 @@ define([], function() {
  * @name maDashboards.maDataSourceList
  * @restrict E
  * @description
- * `<ma-clock time="" timezone="" text="">`
- * - This directive will display an analog style clock.
- * - Note, you will need to set a width and height on the element.
- * [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/clocks-and-timezones)
+ * `<ma-data-source-list ng-model="myDataSource"></ma-data-source-list>`
+ * - Displays a list of Mango data sources. The selected data source will be outputed to the variable specified by the `ng-model` attribute.
+ * [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/data-source-and-device-list)
  *
- * @param {object} ngModel sort
+ * @param {object} ngModel Variable to hold the selected data source
  * @param {object=} autoInit sort
  * @param {object} query sort
  * @param {object} start sort
@@ -23,10 +22,12 @@ define([], function() {
  * @param {object} sort sort
  *
  * @usage
- * <ma-clock style="width: 100%; height: 200px;" time="time1" text="Browser timezone"></ma-clock>
- * <ma-clock style="width: 100%; height: 200px;" time="time2" timezone="{{user.getTimezone()}}" text="User timezone"></ma-clock>
- * <ma-clock style="width: 100%; height: 200px;" time="time3" timezone="Australia/Sydney" text="Sydney"></ma-clock>
- * <span>{{time1|moment:'format':'ll LTS Z'}}</span>
+ * <md-input-container class="md-block no-errors-spacer">
+ *        <label>Choose a data source</label>
+ *        <ma-data-source-list ng-model="myDataSource"></ma-data-source-list>
+ * </md-input-container>
+ *
+ * <p>You have chosen data source "{{myDataSource.name}}". It is {{myDataSource.enabled ? 'enabled' : 'disabled'}} and has an XID of {{myDataSource.xid}}.</p>
  *
  */
 function dataSourceList(DataSource, $injector) {
@@ -46,10 +47,10 @@ function dataSourceList(DataSource, $injector) {
         template: function(element, attrs) {
           if ($injector.has('$mdUtil')) {
               return '<md-select md-on-open="onOpen()">' +
-              '<md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.id">{{dataSourceLabel(dataSource)}}</md-option>' +
+              '<md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.xid">{{dataSourceLabel(dataSource)}}</md-option>' +
               '</md-select>';
           }
-          return '<select ng-options="dataSourceLabel(dataSource) for dataSource in dataSources track by dataSource.id"></select>';
+          return '<select ng-options="dataSourceLabel(dataSource) for dataSource in dataSources track by dataSource.xid"></select>';
         },
         replace: true,
         link: function ($scope, $element, attrs) {

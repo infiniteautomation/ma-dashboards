@@ -45,8 +45,8 @@ NG_DOCS={
       "shortName": "maDashboards.maDataSourceList",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt;",
-      "keywords": "analog api australia autoinit browser clock demo directive display element format gettimezone height limit ll lts madashboards madatasourcelist ngmodel note query set sort start style sydney text time time1 time2 time3 timezone user width"
+      "shortDescription": "&lt;ma-data-source-list ng-model=&quot;myDataSource&quot;&gt;&lt;/ma-data-source-list&gt;",
+      "keywords": "api attribute autoinit chosen class data demo directive disabled displays enabled hold limit list madashboards madatasourcelist mango md-block mydatasource ng-model ngmodel no-errors-spacer outputed query selected sort source sources start variable xid"
     },
     {
       "section": "api",
