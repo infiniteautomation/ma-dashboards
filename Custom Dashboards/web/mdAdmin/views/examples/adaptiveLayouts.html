@@ -3,83 +3,117 @@
 <p>
     We have added several example layouts that demonstrate the power of Angular Material's
     <a href="https://material.angularjs.org/latest/layout/introduction" target="_blank">Adaptive Layout</a> API.
-    With no need for complex CSS code, and using just simple HTML properties, you can create advanced flexbox layouts. 
-    You can use these as starting points for a beautiful, responsive dashboard.
+    With no need for complex CSS media queries, and using just simple HTML properties, you can create advanced flexbox layouts. 
+    You can use these as starting points for a creating an adaptive layout within your pages.
 </p>
 
 <p>
-    Click the thumbnail below to preview, and view source to learn how it works.
-    Below is the HTML source of the 9 square layout.
+    Click <code>PREVIEW</code> to see the page in a new tab. Click <code>VIEW CODE</code> to see the source code in the box below.
+    Or you can view all the files in your <code>web/templates/adaptiveLayouts</code> folder.
 </p>
 
 
-<div flex layout="row" layout-align="space-between" layout-fill layout-wrap>
+<div flex layout="row" layout-align="space-between" layout-fill layout-wrap ng-init="baseURL='../templates/adaptiveLayouts/'; page = 'threeCardA.html'">
+    
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/threeCardA.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/threeCardA.png" alt="Three Card A Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/threeCardA.png" alt="Three Card A Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='threeCardA.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/threeCardA.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/threeCardB.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/threeCardB.png" alt="Three Card B Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/threeCardB.png" alt="Three Card B Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='threeCardB.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/threeCardB.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/nineSquare.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/nineCard.png" alt="Nine Card Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fourCardC.png" alt="Four Card C Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fourCardC.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fourCardC.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
+    </md-card>
+    
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fourCardA.png" alt="Four Card A Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fourCardA.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fourCardA.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fourCardA.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fourCardA.png" alt="Four Card A Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fourCardB.png" alt="Four Card B Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fourCardB.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fourCardB.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fourCardB.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fourCardB.png" alt="Four Card B Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/nineCard.png" alt="Nine Card Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='nineSquare.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/nineSquare.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
+    </md-card>
+    
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fourSquare.png" alt="Four Square Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fourSquare.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fourSquare.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fourCardC.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fourCardC.png" alt="Four Card C Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fourTop.png" alt="Four Top Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fourTop.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fourTop.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fourSquare.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fourSquare.png" alt="Four Square Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fiveCardA.png" alt="Five Card A Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fiveCardA.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fiveCardA.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
+    </md-card>
+    
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fiveCardB.png" alt="Five Card B Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fiveCardB.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fiveCardB.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fourTop.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fourTop.png" alt="Four Card Top Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fiveCardC.png" alt="Five Card C Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fiveCardC.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fiveCardC.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
     <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fiveCardA.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fiveCardA.png" alt="Five Card A Layout">
-        </a>
+        <img ng-src="../templates/adaptiveLayouts/thumbnails/fiveCardD.png" alt="Five Card D Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="page='fiveCardD.html'">View Code</md-button>
+          <a href="../templates/adaptiveLayouts/fiveCardD.html" target="_blank" class="md-button">Preview</a>
+        </md-card-actions>
     </md-card>
-    <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fiveCardB.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fiveCardB.png" alt="Five Card B Layout">
-        </a>
-    </md-card>
-    <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fiveCardC.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fiveCardC.png" alt="Five Card C Layout">
-        </a>
-    </md-card>
-    <md-card flex="30" flex-xs="100">
-        <a href="../templates/adaptiveLayouts/fiveCardD.html" target="_blank">
-            <img src="../templates/adaptiveLayouts/thumbnails/fiveCardD.png" alt="Five Card D Layout">
-        </a>
-    </md-card>
+    
 </div>
 
 <md-card>
     <md-card-content layout="column">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Source Code For: {{page}}</span>
+          </md-card-title-text>
+        </md-card-title>
         <div flex>
-            <div style="height:400px" live-editor="template1" src="../templates/adaptiveLayouts/nineSquare.html"></div>
+            <div style="height:400px" live-editor="template1" ng-src="{{baseURL + page}}"></div>
         </div>
     </md-card-content>
 </md-card>
