@@ -141,6 +141,33 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'fa fa-home'
     },
     {
+        name: 'dashboard.watchlist',
+        url: '/watchlist',
+        templateUrl: 'views/dashboard/watchlist.html',
+        menuTr: 'dashboards.v3.dox.watchList',
+        menuIcon: 'fa fa-eye',
+        resolve: {
+            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                return rQ(['./directives/watchList/watchListTable',
+                           './directives/watchList/watchListChart',
+                           './filters/maxFilter'
+                ], function(watchListTable, watchListChart, maxFilter) {
+                    angular.module('watchlist', [])
+                        .directive('watchListTable', watchListTable)
+                        .directive('watchListChart', watchListChart)
+                        .filter('noNaN', function () {
+                                return function (input, suffix) {
+                                      if (isNaN(input)) { return '...'; }
+                                      else { return input.toFixed(1) + suffix; }
+                                }
+                          })
+                          .filter('max', maxFilter);
+                    $ocLazyLoad.inject('watchlist');
+                });
+            }]
+        }
+    },
+    {
         name: 'dashboard.apiErrors',
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',

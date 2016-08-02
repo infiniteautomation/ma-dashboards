@@ -1,0 +1,146 @@
+<ma-point-query query="'name=like=*' + initQuery + '*&name=like=*unit*'" start="0" points="points"></ma-point-query>
+
+<md-toolbar class="md-whiteframe-glow-z1">
+    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+        <h2 flex>
+              <span>Historical Analysis</span>
+        </h2>
+        <md-button class="md-raised" ng-click="points=[]; stats=[]; addPoints=[]; addChecked=[];">Clear</md-button>
+    </div>
+</md-toolbar>
+
+<div layout="row">
+    <md-tabs md-selected="currentTab" md-stretch-tabs="never" flex>
+        <md-tab id="tab1">CHART</md-tab>
+        <md-tab id="tab2">STATS</md-tab>
+    </md-tabs>
+
+    <md-select ng-model="chartType" ng-init="chartType='smoothedLine';" flex="10" aria-label="Chart Type">
+        <md-option value="smoothedLine">
+            Smooth
+        </md-option>
+        <md-option value="line">
+            Line
+        </md-option>
+        <md-option value="step">
+            Step
+        </md-option>
+        <md-option value="column">
+            Bar
+        </md-option>
+        <md-option value="stacked">
+            Stacked
+        </md-option>
+        <md-option value="area">
+            Area
+        </md-option>
+    </md-select>
+</div>
+
+<md-tabs md-dynamic-height md-swipe-content md-selected="currentTab" class="noTabPanel">
+    <md-tab label="Chart">
+        <md-content>
+            <ma-point-values points="points" values="chartValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupIntervalNumber}} {{rollupIntervalPeriod}}">
+            </ma-point-values>
+
+
+            <div class="chart-content" ng-class="{'lg-screen': $mdMedia('gt-md')}">
+                <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;"  points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
+                </ma-serial-chart>
+                <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;"  points="points" values="chartValues" default-type="column" stack-type="regular" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
+                </ma-serial-chart>
+                <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;"  points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
+                </ma-serial-chart>
+            </div>
+
+            <div layout="row" layout-align="end" flex>
+                <md-input-container>
+                    <label>Rollup Type</label>
+                    <md-select ng-model="rollupType" ng-init="rollupType='AVERAGE'">
+                        <md-option value="MINIMUM">
+                            Minimum
+                        </md-option>
+                        <md-option value="MAXIMUM">
+                            Maximum
+                        </md-option>
+                        <md-option value="AVERAGE">
+                            Average
+                        </md-option>
+                        <md-option value="DELTA">
+                            Delta
+                        </md-option>
+                        <md-option value="NONE">
+                            None
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                    <label>Rollup Time</label>
+                    <input ng-model="rollupIntervalNumber" type="number" step="1" ng-init="rollupIntervalNumber=5"  ng-disabled="rollupType=='NONE'">
+                </md-input-container>
+                <md-input-container>
+                    <label>Rollup Unit</label>
+                    <md-select ng-model="rollupIntervalPeriod" ng-init="rollupIntervalPeriod='MINUTES'" ng-disabled="rollupType=='NONE'">
+                        <md-option value="SECONDS">
+                            Seconds
+                        </md-option>
+                        <md-option value="MINUTES">
+                            Minutes
+                        </md-option>
+                        <md-option value="HOURS">
+                            Hours
+                        </md-option>
+                        <md-option value="DAYS">
+                            Days
+                        </md-option>
+                        <md-option value="WEEKS">
+                            Weeks
+                        </md-option>
+                        <md-option value="MONTHS">
+                            Months
+                        </md-option>
+                        <md-option value="YEARS">
+                            Years
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </md-content>
+    </md-tab>
+
+    <md-tab label="Statistics">
+        <md-content class="md-padding" ng-if="data.type=='power' || data.type=='water+'">
+            <md-table-container>
+                <div ng-repeat="point in points" style="display:none;">
+                    <ma-get-point-value point-xid="{{point.xid}}" point="liveValue">
+                    </ma-get-point-value>
+                    <ma-point-statistics point="point" from="from" to="to" statistics="stats"></ma-point-statistics>
+                    {{ $parent.stats[$index].name = point.name }} {{ $parent.stats[$index].device = point.deviceName }} {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }}
+                    {{ $parent.stats[$index].val = parseInt(liveValue.value) }} {{ $parent.stats[$index].avg = parseInt(stats.average.value) }}
+                    {{ $parent.stats[$index].min = parseInt(stats.minimum.value) }} {{ $parent.stats[$index].max = parseInt(stats.maximum.value) }}
+                </div>
+                <table md-table>
+                    <thead md-head md-order="tableOrder">
+                        <tr>
+                            <th md-column md-order-by="name">Name</th>
+                            <th md-column md-numeric md-order-by="val">Live</th>
+                            <th md-column md-numeric md-order-by="avg">Avg</th>
+                            <th md-column md-numeric md-order-by="max">Max</th>
+                            <th md-column md-numeric md-order-by="min">Min</th>
+                        </tr>
+                    </thead>
+                    <tbody md-body ng-init="tableOrder='-val'">
+                        <tr md-row ng-repeat="point in stats | orderBy: tableOrder">
+
+                            <td md-cell>{{point.name}}</td>
+                            <td md-cell>{{point.val | noNaN:point.suffix }}</td>
+                            <td md-cell>{{point.avg | noNaN:point.suffix }}</td>
+                            <td md-cell>{{point.max | noNaN:point.suffix }}</td>
+                            <td md-cell>{{point.min | noNaN:point.suffix }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-content>
+    </md-tab>
+</md-tabs>
