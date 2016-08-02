@@ -10,7 +10,6 @@ define(['require'], function(require) {
         return {
             restrict: 'E',
             scope: {
-                data: '=',
                 to: '=',
                 from: '=',
                 addChecked: '=',
@@ -23,66 +22,35 @@ define(['require'], function(require) {
             link: function link(scope, element, attrs) {
 
                 scope.parseInt = parseInt; // Make parseInt availble to scope
-                scope.stats = []; // Set up array for storing stats
+                scope.parseFloat = parseFloat; // Make parseFloat availble to scope
+                scope.stats = []; // Set up array for storing stats for stats tab
                 scope.points = []; // Set up array for storing charted points
-                //scope.addPoints = [];
-
-                scope.initQuery = scope.data.type;
-
-                scope.$mdMedia = $mdMedia;
+                scope.$mdMedia = $mdMedia; // Make $mdMedia service availble to scope
 
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues) return;
 
-                    // Enables the ability to add points to the drill down chart by checking the item in the big table
+                    // Enables the ability to add points to the drill down chart by checking items in the table
                     //console.log('addChecked:', newValues);
-                    //scope.addPoints.push.apply(scope.addPoints, newValues);
 
-                    // In this new method we just assign the chart's points equal to the checked from table
-
-
-                    // Refresh stats
+                    // Clear Stats Tab
                     scope.stats = [];
-
+                    
+                    // assign the chart's points equal to the checked from table
                     scope.points = newValues;
-
-
-
-
                 });
-
-                // Changes to resource type will trigger chart to change graph type and rollup
-                scope.$watch('data.type', function(newValue, oldValue) {
+                
+                
+                // Watch for changes to date preset to update rollup interval
+                scope.$watch('datePreset', function(newValue, oldValue) {
                     if (newValue === undefined || newValue === oldValue) return;
-
-                    console.log('data type changed', newValue);
-
-                    // Clear checked
-                    scope.addChecked = [];
-
-                    // Clear selected points in chart and stats
-                    //scope.addPoints = [];
-                    scope.points = [];
-                    scope.stats = [];
-
-                    // Refresh query for campus level init chart NEED TIMEOUT TO WAIT FOR ADDCHECKED TO Clear
-                    $timeout(function() {
-                        scope.initQuery = newValue;
-                    }, 200);
-
-
-                    if (newValue == 'power' || newValue == 'water+') {
-                        scope.chartType = 'smoothedLine';
-                        scope.rollupType = 'AVERAGE';
-                    } else {
-                        scope.chartType = 'column';
-                        scope.rollupType = 'DELTA';
-                    }
+                    //console.log('date preset changed', newValue);
 
                     updateRollup();
                 });
 
+                
                 function updateRollup() {
                     //console.log('Update Rollup called');
                     if (scope.datePreset == 'DAY_SO_FAR' || scope.datePreset == 'PREVIOUS_DAY') {
@@ -136,21 +104,12 @@ define(['require'], function(require) {
                             scope.rollupType = 'AVERAGE';
                         }
                     }
-                };
-
-                // Watch for changes to date preset to update rollup interval
-                scope.$watch('datePreset', function(newValue, oldValue) {
-                    if (newValue === undefined || newValue === oldValue) return;
-                    //console.log('date preset changed', newValue);
-
-                    updateRollup();
-                });
+                }; // End updateRollup()
 
 
-
-            }
-        };
-    };
+            } // End Link
+        }; // End return
+    }; // End DDO
 
     watchListChart.$inject = ['$mdMedia', '$timeout'];
 

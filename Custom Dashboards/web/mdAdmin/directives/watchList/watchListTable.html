@@ -1,84 +1,61 @@
 <md-toolbar class="md-whiteframe-glow-z1">
-      <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-            <h2 flex>
-                  <span>Real-time Analysis</span>
-            </h2>
-            <md-button  class="md-raised md-primary md-hue-1" ng-class="{'md-hue-3': data.mode=='campus', 'active-button': data.mode=='campus', 'sm-bt': $mdMedia('xs')}" ng-click="data.mode='campus';"><span hide-gt-xs>Cmp</span><span hide show-gt-xs>Campus</span></md-button>
-            <md-button  class="md-raised md-primary md-hue-1" ng-class="{'md-hue-3': data.mode=='total', 'active-button': data.mode=='total', 'sm-bt': $mdMedia('xs')}" ng-click="data.mode='total';"><span hide-gt-xs>Blg</span><span hide show-gt-xs>Building</span></md-button>
-            <md-button  class="md-raised md-primary md-hue-1" ng-class="{'md-hue-3': data.mode=='unit', 'active-button': data.mode=='unit', 'sm-bt': $mdMedia('xs')}" ng-click="data.mode='unit';"><span hide-gt-xs>Unit</span><span hide show-gt-xs>Units</span></md-button>
+    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+        <h2 flex>
+            <span>Watchlist</span>
+        </h2>
+        <md-button class="md-icon-button" ng-click="showSearch=true">
+            <md-icon>search</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
 
-            <md-button class="md-icon-button" ng-click="showSearch=true">
-                  <md-icon>search</md-icon>
+<md-card-content layout="column" ng-init="query={limit:15, page:1}; page={tableOrder:'deviceName', searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];">
+
+    <!-- <ma-point-query query="{name:searchQuery}" limit="query.limit" start="(query.page-1)*query.limit" points="points" promise="promise"></ma-point-query> -->
+    <ma-point-query ng-if="page.searchQuery" query="page.searchQuery" start="0" points="page.points" promise="page.promise"></ma-point-query>
+
+    <md-toolbar class="md-table-toolbar md-default" ng-show="showSearch">
+        <div class="md-toolbar-tools">
+            <md-icon>search</md-icon>
+            <form flex="" name="filter.form">
+                <input type="text" ng-model="page.searchQuery" ng-model-options="{debounce:1000}" placeholder="search">
+            </form>
+            <md-button class="md-icon-button" ng-click="showSearch=false">
+                <md-icon>close</md-icon>
             </md-button>
-      </div>
-      </md-toolbar>
+        </div>
+    </md-toolbar>
 
-<md-card-content layout="column">
+    <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}">
+        <div ng-repeat="point in page.points" style="display: none;">
+            <ma-get-point-value point-xid="{{point.xid}}" point="liveValue">
+            </ma-get-point-value>
+            {{ $parent.stats[$index].name = point.name }} 
+            {{ $parent.stats[$index].xid = point.xid }} 
+            {{ $parent.stats[$index].deviceName = point.deviceName }}
+            {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }} 
+            {{ $parent.stats[$index].val = parseFloat(liveValue.value) }} 
+            {{ $parent.stats[$index].valTime = (liveValue.time | moment:'format':'LTS') }}
+        </div>
+        <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise">
+            <thead md-head md-order="page.tableOrder">
+                <tr md-row>
+                    <th md-column md-order-by="deviceName">Device</th>
+                    <th md-column md-order-by="name">Name</th>
+                    <th md-column md-numeric md-order-by="val">Value</th>
+                    <th md-column md-numeric md-order-by="valTime">Time</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row md-select="point" md-select-id="id" md-auto-select ng-repeat="point in stats | orderBy: page.tableOrder">
+                    <td md-cell>{{point.deviceName}}</td>
+                    <td md-cell>{{point.name}}</td>
+                    <td md-cell>{{point.val | noNaN:point.suffix }} </td>
+                    <td md-cell>{{point.valTime}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
 
-      <div ng-init="query={limit:15, page:1}; page={tableOrder:'-val', searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];"></div>
-
-      <!-- <ma-point-query query="{name:searchQuery}" limit="query.limit" start="(query.page-1)*query.limit" points="points" promise="promise"></ma-point-query> -->
-      <ma-point-query ng-if="page.searchQuery" query="page.searchQuery" start="0" points="page.points" promise="page.promise"></ma-point-query>
-
-      <!-- <md-toolbar class="md-table-toolbar md-default" ng-hide="showSearch">
-            <div class="md-toolbar-tools">
-                  <div flex=""></div>
-                  <div flex=""></div>
-
-            </div>
-      </md-toolbar> -->
-
-      <md-toolbar class="md-table-toolbar md-default" ng-show="showSearch">
-            <div class="md-toolbar-tools">
-                  <md-icon>search</md-icon>
-                  <form flex="" name="filter.form">
-                        <input type="text" ng-model="page.searchQuery" ng-model-options="{debounce:1000}" placeholder="search">
-                  </form>
-                  <md-button class="md-icon-button" ng-click="showSearch=false">
-                        <md-icon>close</md-icon>
-                  </md-button>
-            </div>
-      </md-toolbar>
-
-      <md-table-container ng-if="data.type=='power' || data.type=='water+'" ng-class="{'lg-screen': $mdMedia('gt-md')}">
-            <div ng-repeat="point in page.points" ng-init="page.tableOrder='-avg'" style="display: none;">
-                  <ma-get-point-value point-xid="{{point.xid}}" point="liveValue">
-                  </ma-get-point-value>
-                  <ma-point-statistics point="point" from="from" to="to" statistics="stats"></ma-point-statistics>
-                  {{ $parent.stats[$index].name = point.name }} {{ $parent.stats[$index].xid = point.xid }} {{ $parent.stats[$index].deviceName = point.deviceName }}
-                  {{ $parent.stats[$index].val = parseFloat(liveValue.value) }} {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }}
-                  {{ $parent.stats[$index].valTime = (liveValue.time | moment:'format':'LTS') }} {{ $parent.stats[$index].avg = parseFloat(stats.average.value) }}
-                  {{ $parent.stats[$index].min = parseFloat(stats.minimum.value) }} {{ $parent.stats[$index].minTime = (stats.minimum.timestamp | moment:'format':'LTS') }}
-                  {{ $parent.stats[$index].max = parseFloat(stats.maximum.value) }} {{ $parent.stats[$index].maxTime = (stats.maximum.timestamp | moment:'format':'LTS') }}
-            </div>
-            <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise">
-                  <thead md-head md-order="page.tableOrder">
-                        <tr md-row>
-                              <th md-column md-order-by="name">Name</th>
-                              <th md-column md-numeric md-order-by="val">Live</th>
-                              <th md-column md-numeric md-order-by="avg">Avg</th>
-                              <th md-column md-numeric md-order-by="max">Max</th>
-                              <th md-column md-numeric md-order-by="min">Min</th>
-                              <th md-column style="padding:0 0 0 20px !important;">Ranking</th>
-                        </tr>
-                  </thead>
-                  <tbody md-body>
-                        <tr md-row md-select="point" md-select-id="id" md-auto-select ng-repeat="point in stats | orderBy: page.tableOrder">
-                              <td md-cell>{{point.name}}</td>
-                              <td md-cell>{{point.val | noNaN:point.suffix }}<!--<md-tooltip md-direction="left" md-autohide>Value at: {{point.valTime}}</md-tooltip>--></td>
-                              <td md-cell>{{point.avg | noNaN:point.suffix }}</td>
-                              <td md-cell>{{point.max | noNaN:point.suffix }}<!--<md-tooltip md-direction="left" md-autohide>Max value at: {{point.maxTime}}</md-tooltip>--></td>
-                              <td md-cell>{{point.min | noNaN:point.suffix }}<!--<md-tooltip md-direction="left" md-autohide>Min value at: {{point.minTime}}</md-tooltip>--></td>
-                              <td md-cell style="padding:0 0 0 20px !important;">
-                                    <md-progress-linear ng-if="point[sparkType]>=0" class="md-accent md-hue-3 spark" md-mode="determinate" ng-value="point[sparkType] / ($parent.stats | max:sparkType) * 100" ng-class="{'xsSpark': $mdMedia('xs'), 'smSpark': $mdMedia('sm'), 'mdSpark': $mdMedia('lg'), 'lgSpark': $mdMedia('md')}" >
-                                    </md-progress-linear>
-                                    <md-progress-linear ng-if="point[sparkType]<0" class="md-warn md-hue-3 spark" md-mode="determinate" ng-value="(point[sparkType]*-1) / ($parent.stats | max:sparkType) * 100" ng-class="{'xsSpark': $mdMedia('xs'), 'smSpark': $mdMedia('sm'), 'mdSpark': $mdMedia('lg'), 'lgSpark': $mdMedia('md')}" >
-                                    </md-progress-linear>
-                              </td>
-                        </tr>
-                  </tbody>
-            </table>
-      </md-table-container>
-
-      <!-- <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15, 20, 25, 50, 100]" md-page="query.page" md-total="{{page.points.$total}}" md-page-select=""></md-table-pagination> -->
+    <!-- <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15, 20, 25, 50, 100]" md-page="query.page" md-total="{{page.points.$total}}" md-page-select=""></md-table-pagination> -->
 </md-card-content>
