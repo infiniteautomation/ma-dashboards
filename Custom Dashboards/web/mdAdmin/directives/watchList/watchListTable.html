@@ -34,7 +34,8 @@
             {{ $parent.stats[$index].xid = point.xid }} 
             {{ $parent.stats[$index].deviceName = point.deviceName }}
             {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }} 
-            {{ $parent.stats[$index].val = parseFloat(liveValue.value) }} 
+            {{ $parent.stats[$index].val = (liveValue.value) }}
+            {{ $parent.stats[$index].render = (liveValue.renderedValue) }} 
             {{ $parent.stats[$index].valTime = (liveValue.time | moment:'format':'LTS') }}
         </div>
         <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise">
@@ -50,7 +51,7 @@
                 <tr md-row md-select="point" md-select-id="id" md-auto-select ng-repeat="point in stats | orderBy: page.tableOrder">
                     <td md-cell>{{point.deviceName}}</td>
                     <td md-cell>{{point.name}}</td>
-                    <td md-cell>{{point.val | noNaN:point.suffix }} </td>
+                    <td md-cell>{{point.render }} </td>
                     <td md-cell>{{point.valTime}}</td>
                 </tr>
             </tbody>

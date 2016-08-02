@@ -113,27 +113,40 @@
                     <ma-get-point-value point-xid="{{point.xid}}" point="liveValue">
                     </ma-get-point-value>
                     <ma-point-statistics point="point" from="from" to="to" statistics="stats"></ma-point-statistics>
-                    {{ $parent.stats[$index].name = point.name }} {{ $parent.stats[$index].device = point.deviceName }} {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }} {{ $parent.stats[$index].val = parseFloat(liveValue.value) }} {{ $parent.stats[$index].avg
-                    = parseInt(stats.average.value) }} {{ $parent.stats[$index].min = parseInt(stats.minimum.value) }} {{ $parent.stats[$index].max = parseInt(stats.maximum.value) }}
+                    {{ $parent.stats[$index].name = point.name }} 
+                    {{ $parent.stats[$index].device = point.deviceName }} 
+                    {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }}
+                    {{ $parent.stats[$index].avg = parseFloat(stats.average.value) }} 
+                    {{ $parent.stats[$index].min = parseFloat(stats.minimum.value) }} 
+                    {{ $parent.stats[$index].max = parseFloat(stats.maximum.value) }}
+                    {{ $parent.stats[$index].sum = parseFloat(stats.sum.value) }}
+                    {{ $parent.stats[$index].first = parseFloat(stats.first.value) }}
+                    {{ $parent.stats[$index].last = parseFloat(stats.last.value) }}
+                    {{ $parent.stats[$index].count = stats.count }}
                 </div>
                 <table md-table>
                     <thead md-head md-order="tableOrder">
                         <tr>
                             <th md-column md-order-by="name">Name</th>
-                            <th md-column md-numeric md-order-by="val">Live</th>
                             <th md-column md-numeric md-order-by="avg">Avg</th>
                             <th md-column md-numeric md-order-by="max">Max</th>
                             <th md-column md-numeric md-order-by="min">Min</th>
+                            <th md-column md-numeric md-order-by="sum">Sum</th>
+                            <th md-column md-numeric md-order-by="first">First</th>
+                            <th md-column md-numeric md-order-by="last">Last</th>
+                            <th md-column md-numeric md-order-by="count">Count</th>
                         </tr>
                     </thead>
-                    <tbody md-body ng-init="tableOrder='-val'">
+                    <tbody md-body ng-init="tableOrder='name'">
                         <tr md-row ng-repeat="point in stats | orderBy: tableOrder">
-
                             <td md-cell>{{point.name}}</td>
-                            <td md-cell>{{point.val | noNaN:point.suffix }}</td>
                             <td md-cell>{{point.avg | noNaN:point.suffix }}</td>
                             <td md-cell>{{point.max | noNaN:point.suffix }}</td>
                             <td md-cell>{{point.min | noNaN:point.suffix }}</td>
+                            <td md-cell>{{point.sum | noNaN:point.suffix }}</td>
+                            <td md-cell>{{point.first | noNaN:point.suffix }}</td>
+                            <td md-cell>{{point.last | noNaN:point.suffix }}</td>
+                            <td md-cell>{{point.count}}</td>
                         </tr>
                     </tbody>
                 </table>
