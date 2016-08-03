@@ -119,10 +119,10 @@ md-tabs.noTabPanel md-tabs-wrapper {
 }
 </style>
 <div layout="column" layout-gt-xs="row" layout-align="center center" layout-align-gt-xs="center end" flex>
-    <ma-date-range-picker from="from" to="to" preset="{{datePreset}}" update-interval="1 minutes" style="display:none;" aria-label="Date Preset"></ma-date-range-picker>
+    <ma-date-range-picker from="from" to="to" preset="{{datePreset}}" update-interval="10 seconds" style="display:none;" aria-label="Date Preset"></ma-date-range-picker>
     <md-input-container class="date-picker" ng-class="{'mobile': $mdMedia('xs')}" flex>
         <label>Date Preset</label>
-        <md-select ng-model="datePreset" ng-init="datePreset = 'LAST_1_HOURS'">
+        <md-select ng-model="datePreset" ng-init="datePreset = 'DAY_SO_FAR'">
             <md-option value="LAST_15_MINUTES">
                 15 Minutes
             </md-option>

@@ -30,9 +30,11 @@
         <div ng-repeat="point in page.points" style="display: none;">
             <ma-get-point-value point-xid="{{point.xid}}" point="liveValue">
             </ma-get-point-value>
-            {{ $parent.stats[$index].name = point.name }} 
-            {{ $parent.stats[$index].xid = point.xid }} 
-            {{ $parent.stats[$index].deviceName = point.deviceName }}
+            <div ng-if="point.pointLocator.settable">{{ $parent.stats[$index].settable = true; $parent.stats[$index].point = liveValue  }} </div>
+            {{ $parent.stats[$index].name = liveValue.name }} 
+            {{ $parent.stats[$index].xid = liveValue.xid }}
+            {{ $parent.stats[$index].id = liveValue.id }}
+            {{ $parent.stats[$index].deviceName = liveValue.deviceName }}
             {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }} 
             {{ $parent.stats[$index].val = (liveValue.value) }}
             {{ $parent.stats[$index].render = (liveValue.renderedValue) }} 
@@ -41,6 +43,7 @@
         <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise">
             <thead md-head md-order="page.tableOrder">
                 <tr md-row>
+                    <th md-column>Tools</th>
                     <th md-column md-order-by="deviceName">Device</th>
                     <th md-column md-order-by="name">Name</th>
                     <th md-column md-numeric md-order-by="val">Value</th>
@@ -48,9 +51,16 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row md-select="point" md-select-id="id" md-auto-select ng-repeat="point in stats | orderBy: page.tableOrder">
+                <tr md-row md-select="point" md-select-id="id" ng-repeat="point in stats | orderBy: page.tableOrder">
+                    <td md-cell>
+                        <i class="fa fa-table fa-lg" ng-click="showStats($event, point.point, from, to)" style="padding: 5px 5px 0 0;"></i> 
+                        <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank" style="color: black !important;">
+                            <i class="fa fa-pencil fa-lg"></i>
+                        </a> 
+                        <i ng-if="point.settable" class="fa fa-wrench fa-lg" ng-click="showSetPoint($event, point.point)"></i>
+                    </td>
                     <td md-cell>{{point.deviceName}}</td>
-                    <td md-cell>{{point.name}}</td>
+                    <td md-cell>{{point.name}}</span></td>
                     <td md-cell>{{point.render }} </td>
                     <td md-cell>{{point.valTime}}</td>
                 </tr>

@@ -1,0 +1,19 @@
+<md-dialog aria-label="{{point.name}} Statistics">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{point.name}} Statistics</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <ma-point-statistics point="point" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+        <ma-statistics-table statistics="statsObj"></ma-statistics-table>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>
