@@ -1,0 +1,181 @@
+<style>
+html {
+    overflow-y: hidden
+}
+.active-button {
+    border: solid 2px;
+}
+.sm-bt {
+    min-width: 35px;
+}
+md-select, .md-input {
+    margin: 0 !important;
+    min-width: 110px !important;
+    width: 110px !important;
+}
+md-input-container {
+    margin: 8px 0;
+}
+.date-picker-to-from input {
+    margin: 0 !important;
+    min-width: 200px !important;
+    width: 200px !important;
+}
+.date-picker-to-from.mobile input {
+    min-width: 165px !important;
+    width: 165px !important;
+    font-size: 13px;
+}
+.date-picker {
+    font-size: 16px;
+}
+.date-picker md-select {
+    margin: 0 !important;
+    min-width: 180px !important;
+    width: 180px !important;
+}
+.date-picker.mobile md-select {
+    margin: 0 !important;
+    min-width: 80px !important;
+    width: 80px !important;
+}
+h2.project-header {
+    margin: 1rem;
+    font-size: 28px;
+}
+
+/* Table Component */
+/*md-table-container {
+    height: 300px;
+}
+md-table-container.lg-screen {
+    height: 350px;
+}*/
+.md-toolbar-tools.mobile h2 span {
+    font-size: 16px;
+}
+.md-toolbar-tools.mobile h2 {
+    line-height: 18px;
+}
+md-toolbar.md-table-toolbar form> input:focus {
+    outline: none;
+}
+md-toolbar.md-table-toolbar form> input {
+    width: 100%;
+    margin-left: 16px;
+    border: none;
+}
+md-toolbar.ng-animate {
+    transition: none;
+}
+md-toolbar.md-table-toolbar em {
+    font-size: 1.6rem;
+}
+table.md-table td.md-cell {
+    font-size: 12px;
+}
+table.md-table tbody.md-body>tr.md-row,
+table.md-table tfoot.md-foot>tr.md-row {
+    height: 38px;
+}
+table.md-table td.md-cell,
+table.md-table th.md-column {
+    padding: 0 10px 0 5px !important;
+}
+.xsSpark {
+    width: 100px;
+}
+.smSpark {
+    width: 120px;
+}
+.mdSpark {
+    width: 150px;
+}
+.lgSpark {
+    width: 300px;
+}
+md-body md-progress-linear.spark,
+md-body md-progress-linear.spark ._md-container,
+md-body md-progress-linear.spark ._md-container ._md-bar {
+    height: 10px;
+}
+
+/* Chart Component */
+.chart-content {
+    height: 300px;
+}
+.chart-content.lg-screen {
+    height: 400px;
+}
+path.amcharts-graph-stroke {
+    stroke-width: 2.5px;
+    stroke-opacity: .7;
+}
+path.amcharts-graph-fill {
+    fill-opacity: 0.5;
+}
+md-tabs.noTabPanel md-tabs-wrapper {
+    display: none !important;
+}
+</style>
+<div layout="column" layout-gt-xs="row" layout-align="center center" layout-align-gt-xs="center end" flex>
+    <ma-date-range-picker from="from" to="to" preset="{{datePreset}}" update-interval="10 seconds" style="display:none;" aria-label="Date Preset"></ma-date-range-picker>
+    <md-input-container class="date-picker" ng-class="{'mobile': $mdMedia('xs')}" flex>
+        <label>Date Preset</label>
+        <md-select ng-model="datePreset" ng-init="datePreset = 'DAY_SO_FAR'">
+            <md-option value="LAST_15_MINUTES">
+                15 Minutes
+            </md-option>
+            <md-option value="LAST_1_HOURS">
+                1 Hour
+            </md-option>
+            <md-option value="LAST_3_HOURS">
+                3 Hours
+            </md-option>
+            <md-option value="LAST_6_HOURS">
+                6 Hours
+            </md-option>
+            <md-option value="DAY_SO_FAR">
+                Today
+            </md-option>
+            <md-option value="PREVIOUS_DAY">
+                Yesterday
+            </md-option>
+            <md-option value="WEEK_SO_FAR">
+                This Week
+            </md-option>
+            <md-option value="PREVIOUS_WEEK">
+                Previous Week
+            </md-option>
+            <md-option value="MONTH_SO_FAR">
+                This Month
+            </md-option>
+            <md-option value="PREVIOUS_MONTH">
+                Previous Month
+            </md-option>
+            <md-option value="YEAR_SO_FAR">
+                This Year
+            </md-option>
+        </md-select>
+    </md-input-container>
+      <div layout="row">
+            <md-input-container class="date-picker-to-from" ng-class="{'mobile': $mdMedia('xs')}">
+                  <label>From Date</label>
+                  <ma-date-picker ng-model="from"></ma-date-picker>
+            </md-input-container>
+            <md-input-container class="date-picker-to-from" ng-class="{'mobile': $mdMedia('xs')}">
+                  <label>To Date</label>
+                  <ma-date-picker ng-model="to"></ma-date-picker>
+            </md-input-container>
+      </div>
+</div>
+
+<div layout="column">
+    <md-card flex>
+        <watch-list-table data="dummy" to="to" from="from" selected="selected"></watch-list-table>
+    </md-card>
+
+    <md-card flex>
+        <watch-list-chart to="to" from="from" add-checked="selected" date-preset="datePreset" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod"></watch-list-chart>
+    </md-card>
+</div>

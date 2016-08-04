@@ -1,0 +1,19 @@
+<md-dialog aria-label="Set {{point.name}} Value">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Set {{point.name}} Value</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <!-- <ma-point-value point="point"></ma-point-value>         -->
+        <ma-set-point-value point="point"></ma-set-point-value>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

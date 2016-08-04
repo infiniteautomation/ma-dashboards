@@ -1,0 +1,74 @@
+<md-toolbar class="md-whiteframe-glow-z1">
+    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+        <h2 flex>
+            <span>Watchlist</span>
+        </h2>
+        <md-button class="md-icon-button" ng-click="showSearch=true">
+            <md-icon>search</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<md-card-content layout="column" ng-init="query={limit:15, page:1}; page={tableOrder:'deviceName', searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];">
+
+    <!-- <ma-point-query query="{name:searchQuery}" limit="query.limit" start="(query.page-1)*query.limit" points="points" promise="promise"></ma-point-query> -->
+    <ma-point-query ng-if="page.searchQuery" query="page.searchQuery" start="0" points="page.points" promise="page.promise"></ma-point-query>
+
+    <md-toolbar class="md-table-toolbar md-default" ng-show="showSearch">
+        <div class="md-toolbar-tools">
+            <md-icon>search</md-icon>
+            <form flex="" name="filter.form">
+                <input type="text" ng-model="page.searchQuery" ng-model-options="{debounce:1000}" placeholder="search">
+            </form>
+            <md-button class="md-icon-button" ng-click="showSearch=false">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}">
+        <!-- For now using ng-repeat containing get-point-value is necesarry to enable sorting on resulting rows array -->
+        <div ng-repeat="point in page.points" style="display: none;">
+            <ma-get-point-value point-xid="{{point.xid}}" point="pointValue">
+            </ma-get-point-value>
+            <div ng-if="pointValue.pointLocator.settable">{{ $parent.rows[$index].settable = true; 
+            $parent.rows[$index].point = pointValue  }} </div>
+            {{ $parent.rows[$index].name = pointValue.name }} 
+            {{ $parent.rows[$index].xid = pointValue.xid }}
+            {{ $parent.rows[$index].id = pointValue.id }}
+            {{ $parent.rows[$index].deviceName = pointValue.deviceName }}
+            {{ $parent.rows[$index].suffix = pointValue.textRenderer.suffix }} 
+            {{ $parent.rows[$index].val = (pointValue.value) }}
+            {{ $parent.rows[$index].render = (pointValue.renderedValue) }} 
+            {{ $parent.rows[$index].valTime = (pointValue.time | moment:'format':'LTS') }}
+        </div>
+        <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise">
+            <thead md-head md-order="page.tableOrder">
+                <tr md-row>
+                    <th md-column>Tools</th>
+                    <th md-column md-order-by="deviceName">Device</th>
+                    <th md-column md-order-by="name">Name</th>
+                    <th md-column md-numeric md-order-by="val">Value</th>
+                    <th md-column md-numeric md-order-by="valTime">Time</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row md-select="point" md-select-id="id" ng-repeat="point in rows | orderBy: page.tableOrder">
+                    <td md-cell>
+                        <i class="fa fa-table fa-lg" ng-click="showStats($event, point.point, from, to)" style="padding: 5px 5px 0 0;"></i> 
+                        <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank" style="color: black !important;">
+                            <i class="fa fa-pencil fa-lg"></i>
+                        </a> 
+                        <i ng-if="point.settable" class="fa fa-wrench fa-lg" ng-click="showSetPoint($event, point.point)"></i>
+                    </td>
+                    <td md-cell>{{point.deviceName}}</td>
+                    <td md-cell>{{point.name}}</td>
+                    <td md-cell>{{point.render }} </td>
+                    <td md-cell>{{point.valTime}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <!-- <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15, 20, 25, 50, 100]" md-page="query.page" md-total="{{page.points.$total}}" md-page-select=""></md-table-pagination> -->
+</md-card-content>
