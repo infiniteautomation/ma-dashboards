@@ -20,7 +20,7 @@ define(['require'], function(require) {
 
                     scope.parseInt = parseInt; // Make parseInt availble to scope
                     scope.parseFloat = parseFloat; // Make parseFloat availble to scope
-                    scope.stats = []; // Set up array for storing stats
+                    scope.rows = []; // Set up array for storing rows
                     scope.page.points = [];
                     scope.page.searchQuery = "xid=like=*" + scope.data + "*";
                     scope.sparkType = 'val';
@@ -99,7 +99,7 @@ define(['require'], function(require) {
                     scope.$watch('page.points', function(newValue, oldValue) {
                         if (newValue === undefined || newValue === oldValue) return;
                         //console.log('Table Points', newValue);
-                        scope.stats = []; // Clears stats if points are updated
+                        scope.rows = []; // Clears rows if points are updated
                     });
 
                     // scope.$watch('stats', function(newValue, oldValue) {

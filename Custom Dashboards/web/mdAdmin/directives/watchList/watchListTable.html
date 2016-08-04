@@ -27,18 +27,20 @@
     </md-toolbar>
 
     <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}">
+        <!-- For now using ng-repeat containing get-point-value is necesarry to enable sorting on resulting rows array -->
         <div ng-repeat="point in page.points" style="display: none;">
-            <ma-get-point-value point-xid="{{point.xid}}" point="liveValue">
+            <ma-get-point-value point-xid="{{point.xid}}" point="pointValue">
             </ma-get-point-value>
-            <div ng-if="point.pointLocator.settable">{{ $parent.stats[$index].settable = true; $parent.stats[$index].point = liveValue  }} </div>
-            {{ $parent.stats[$index].name = liveValue.name }} 
-            {{ $parent.stats[$index].xid = liveValue.xid }}
-            {{ $parent.stats[$index].id = liveValue.id }}
-            {{ $parent.stats[$index].deviceName = liveValue.deviceName }}
-            {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }} 
-            {{ $parent.stats[$index].val = (liveValue.value) }}
-            {{ $parent.stats[$index].render = (liveValue.renderedValue) }} 
-            {{ $parent.stats[$index].valTime = (liveValue.time | moment:'format':'LTS') }}
+            <div ng-if="pointValue.pointLocator.settable">{{ $parent.rows[$index].settable = true; 
+            $parent.rows[$index].point = pointValue  }} </div>
+            {{ $parent.rows[$index].name = pointValue.name }} 
+            {{ $parent.rows[$index].xid = pointValue.xid }}
+            {{ $parent.rows[$index].id = pointValue.id }}
+            {{ $parent.rows[$index].deviceName = pointValue.deviceName }}
+            {{ $parent.rows[$index].suffix = pointValue.textRenderer.suffix }} 
+            {{ $parent.rows[$index].val = (pointValue.value) }}
+            {{ $parent.rows[$index].render = (pointValue.renderedValue) }} 
+            {{ $parent.rows[$index].valTime = (pointValue.time | moment:'format':'LTS') }}
         </div>
         <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise">
             <thead md-head md-order="page.tableOrder">
@@ -51,7 +53,7 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row md-select="point" md-select-id="id" ng-repeat="point in stats | orderBy: page.tableOrder">
+                <tr md-row md-select="point" md-select-id="id" ng-repeat="point in rows | orderBy: page.tableOrder">
                     <td md-cell>
                         <i class="fa fa-table fa-lg" ng-click="showStats($event, point.point, from, to)" style="padding: 5px 5px 0 0;"></i> 
                         <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank" style="color: black !important;">
