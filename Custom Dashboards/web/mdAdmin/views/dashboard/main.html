@@ -1,7 +1,7 @@
 <div layout="row" flex>
 
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-print
-        md-is-locked-open="$mdMedia('gt-sm')" md-swipe-left="closeMenu()">
+        md-is-locked-open="lockLeft && $mdMedia('gt-sm')" md-swipe-left="closeMenu()">
     <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header md-whiteframe-glow-z1">
         <span flex></span>
         <img src="/modules/dashboards/web/img/logo.svg" ma-tr="header.dashboards.v3.dox.heading">
@@ -18,7 +18,7 @@
     <md-toolbar class="md-whiteframe-glow-z1 dashboard-main-toolbar">
 
       <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
-        <md-button id="menu-button" class="md-icon-button" ng-click="openMenu()" hide-gt-sm aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
+        <md-button id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
         </md-button>
         <div layout="row" flex class="fill-height">
           <h2 class="md-toolbar-item dashboard-breadcrumb" ng-class="{'gt-sm': $mdMedia('gt-sm')}">

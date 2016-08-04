@@ -734,10 +734,11 @@ mdAdminApp.run([
     '$state',
     '$timeout',
     '$mdSidenav',
+    '$mdMedia',
     '$mdColors',
     '$MD_THEME_CSS',
     'cssInjector',
-function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector) {
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
 
@@ -779,7 +780,19 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_TH
             $rootScope.closeMenu();
         }
     });
-
+    
+    $rootScope.lockLeft = true;
+    $rootScope.toggleMenu = function() {
+        if ($mdMedia('gt-sm')) {
+            $rootScope.lockLeft = !$rootScope.lockLeft;
+        }
+        else {
+            $mdSidenav('left').toggle();
+        }
+        
+        angular.element('#menu-button').blur();
+    }
+    
     $rootScope.closeMenu = function() {
         $mdSidenav('left').close();
     }
