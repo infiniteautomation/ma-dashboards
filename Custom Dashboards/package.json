@@ -10,6 +10,7 @@
     "gulp-rename": "*"
   },
   "devDependencies": {
+    "gulp-ignore": "^2.0.1",
     "gulp-ngdocs": "^0.2.13"
   }
 }

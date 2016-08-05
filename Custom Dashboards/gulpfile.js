@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var exists = require('path-exists').sync;
+var gulpIgnore = require('gulp-ignore');
 
 var plugins = require("gulp-load-plugins")({
     pattern: ['gulp-*', 'gulp.*', 'main-bower-files'],
@@ -56,12 +57,22 @@ gulp.task('build-ngdocs', [], function() {
         ]
     }
 
+    
     return gulp.src('web/js/mango-3.0/**/*.js')
         .pipe(gulpDocs.process(options))
-        .pipe(gulp.dest('web/docs/mango-3.0'));
+        .pipe(gulp.dest('docs/mango-3.2'));
+});
+
+gulp.task('copy-docs', [], function() {
+    var gulpDocs = require('gulp-ngdocs');
+
+    console.log('Copying Doc Partials');
+    
+    return gulp.src(['docs/mango-3.2/partials/api/*.html','docs/mango-3.2/js/docs-setup.js'])
+        .pipe(gulp.dest('web/mdAdmin/views/docs'));
 });
 
 gulp.task('watchDocs', function() {
     // Watch .js files
-    gulp.watch('web/js/mango-3.0/**/*.js', ['build-ngdocs']);
+    gulp.watch('web/js/mango-3.0/**/*.js', ['build-ngdocs', 'copy-docs']);
 });
