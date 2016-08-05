@@ -771,7 +771,7 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     var docsParent = {
         name: 'dashboard.docs',
         url: '/docs',
-        menuText: 'Angular Docs',
+        menuText: 'API Docs',
         children: []
     };
     MENU_ITEMS.push(docsParent);
@@ -779,10 +779,14 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     for (var i = 0; i < DASHBOARDS_NG_DOCS.pages.length; i++) {
         var item = DASHBOARDS_NG_DOCS.pages[i];
         
+        var dashCase = item.id.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
+        var cleanUrl = dashCase.replace(/\./g,'/');
+        console.log(dashCase,cleanUrl);
+        
         var menuItem = {
-            name: 'dashboard.docs.' + item.id,
+            name: 'dashboard.docs.' + dashCase,
             templateUrl: require.toUrl('./views/docs/' + item.id + '.html'),
-            url: item.id,
+            url: '/' + cleanUrl,
             menuText: item.shortName
         };
         
