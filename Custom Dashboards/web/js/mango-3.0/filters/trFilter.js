@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc filter
- * @name maFilters.trFilter**
+ * @name maFilters.trFilter
  *
  * @description
  *

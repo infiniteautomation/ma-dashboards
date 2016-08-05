@@ -11,7 +11,7 @@ define([
     'angular-ui-router',
     'oclazyload',
     'angular-loading-bar',
-    './views/docs-setup'
+    './views/docs/docs-setup'
 ], function(angular, maMaterialDashboards, maAppComponents, require) {
 'use strict';
 
@@ -780,9 +780,9 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var item = DASHBOARDS_NG_DOCS.pages[i];
         
         var menuItem = {
-            name: 'dashboard.docs' + item.id,
+            name: 'dashboard.docs.' + item.id,
             templateUrl: require.toUrl('./views/docs/' + item.id + '.html'),
-            //url: ??
+            url: item.id,
             menuText: item.shortName
         };
         

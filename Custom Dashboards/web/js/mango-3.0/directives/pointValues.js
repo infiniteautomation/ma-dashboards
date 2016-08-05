@@ -7,7 +7,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maPointValues**
+ * @name maDashboards.maPointValues
  *
  * @description
  * `<ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">

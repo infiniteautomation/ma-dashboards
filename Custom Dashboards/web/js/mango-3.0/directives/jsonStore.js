@@ -7,7 +7,7 @@ define(['angular'], function(angular) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maJsonStore**
+ * @name maDashboards.maJsonStore
  * @restrict E
  * @description
  * `<ma-json-store xid="phoneData" item="myItem" value="myValue"></ma-json-store>`

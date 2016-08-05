@@ -1,0 +1,24 @@
+<h1><code ng:non-bindable="">maTankLevel</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-matanklevel-page"><p><code>&lt;ma-tank-level point=&quot;myPoint&quot; color=&quot;&quot; max=&quot;&quot; style=&quot;width:300px; height:200px;&quot;&gt;&lt;/ma-tank-level&gt;</code></p>
+<ul>
+<li>This directive will display a custom data visualization which represents a tank.</li>
+<li>The volume of &#39;liquid&#39; within the tank increases in height with increases in point value.</li>
+<li>Not you must set a width and height on the element.</li>
+<li><a href="/modules/dashboards/web/mdAdmin/#/dashboard/examples/single-value-displays/tanks">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-tank-level point="myPoint" color="<span>{{</span>choosenColor<span>}}</span>" max="<span>{{</span>max<span>}}</span>" style="width:300px; height:200px; position:absolute; top:0; left:0px; z-index:2"&gt;
+&lt;/ma-tank-level&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-matanklevel-page"><p>The point object with the live value provided by <code>&lt;ma-get-point-value&gt;</code>.</p>
+</div></td></tr><tr><td>max <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-matanklevel-page"><p>Sets the max value for a 100% filled tank.</p>
+</div></td></tr><tr><td>color <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="madashboards-matanklevel-page"><p>Sets the fill color for the tank visualization.</p>
+</div></td></tr><tr><td>options <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-matanklevel-page"><p>Extend <a href="https://www.amcharts.com/">amCharts</a> configuration object for customizing the design of the tank.</p>
+</div></td></tr><tr><td>value <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-matanklevel-page"><p>Allows you to set the tank&#39;s fill height to a value that is not provided by the <code>point</code> attribute. Only use without the <code>point</code> attribute.</p>
+</div></td></tr></tbody></table></div>
+</div>
