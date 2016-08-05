@@ -7,7 +7,7 @@ define(['amcharts/serial', 'jquery'], function(AmCharts, $) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maTankLevel**
+ * @name maDashboards.maTankLevel
  * @restrict E
  * @description
  * `<ma-tank-level point="myPoint" color="" max="" style="width:300px; height:200px;"></ma-tank-level>`
