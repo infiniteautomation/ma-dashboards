@@ -772,6 +772,7 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         name: 'dashboard.docs',
         url: '/docs',
         menuText: 'API Docs',
+        menuIcon: 'fa fa-book',
         children: []
     };
     MENU_ITEMS.push(docsParent);

@@ -63,8 +63,7 @@ gulp.task('build-ngdocs', [], function() {
         .pipe(gulp.dest('docs/mango-3.2'));
 });
 
-gulp.task('copy-docs', [], function() {
-    var gulpDocs = require('gulp-ngdocs');
+gulp.task('copy-docs', ['build-ngdocs'], function() {
 
     console.log('Copying Doc Partials');
     
@@ -74,5 +73,5 @@ gulp.task('copy-docs', [], function() {
 
 gulp.task('watchDocs', function() {
     // Watch .js files
-    gulp.watch('web/js/mango-3.0/**/*.js', ['build-ngdocs', 'copy-docs']);
+    gulp.watch('web/js/mango-3.0/**/*.js', ['copy-docs']);
 });

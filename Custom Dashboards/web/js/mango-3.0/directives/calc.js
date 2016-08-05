@@ -13,7 +13,7 @@ define([], function() {
  *
  * @description
  * `<ma-calc input="" output="">`
- * - This directive allows you to evaluate an Angular expression and store the result in a variable. HEY YO
+ * - This directive allows you to evaluate an Angular expression and store the result in a variable.
  * - In the example below an array from the model is passed through a filter on the name property of objects in the array.
  *
  *
