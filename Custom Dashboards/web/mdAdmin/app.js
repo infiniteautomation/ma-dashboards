@@ -776,23 +776,60 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     };
     MENU_ITEMS.push(docsParent);
     
-    for (var i = 0; i < DASHBOARDS_NG_DOCS.pages.length; i++) {
-        var item = DASHBOARDS_NG_DOCS.pages[i];
-        
-        var dashCase = item.id.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
-        var cleanUrl = dashCase.replace(/\./g,'/');
-        console.log(dashCase,cleanUrl);
+    var DOCS_PAGES = DASHBOARDS_NG_DOCS.pages;
+    var moduleItem = {};
+    
+    // Loop through and create array of children based on moduleName
+    var modules = DOCS_PAGES.map(function(page) {return page.moduleName})
+    .filter(function(item, index, array) {
+        return index == array.indexOf(item);
+    });
+    
+    // Create module menu items & states
+    modules.forEach(function(item, index, array) {
+        var dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
         
         var menuItem = {
-            name: 'dashboard.docs.' + dashCase,
-            templateUrl: require.toUrl('./views/docs/' + item.id + '.html'),
-            url: '/' + cleanUrl,
-            menuText: item.shortName
+            name: 'dashboard.docs.' + item,
+            url: '/' + dashCaseUrl,
+            menuText: item,
+            children: []
         };
         
+        moduleItem[item] = menuItem; 
+        
         docsParent.children.push(menuItem);
-    }
+    });
     
+    // Create 3rd level directives/services/filters docs pages
+    // First remove module items
+    var components = DOCS_PAGES.map(function(page) {return page.id})
+    .filter(function(item, index, array) {
+        return item.indexOf('.') !== -1;
+    });
+    console.log(components);
+    
+    // Add each component item
+    components.forEach(function(item, index, array) {
+        var splitAtDot = item.split('.');
+        console.log(splitAtDot);
+        
+        var dashCaseUrl = splitAtDot[1].replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
+        console.log(dashCaseUrl);
+            
+        var menuItem = {
+            name: 'dashboard.docs.' + item,
+            templateUrl: require.toUrl('./views/docs/' + item + '.html'),
+            url: '/' + dashCaseUrl,
+            menuText: splitAtDot[1]
+        };
+        
+        console.log(menuItem);
+        
+        moduleItem[splitAtDot[0]].children.push(menuItem);
+    });
+    
+    console.log(docsParent);
     // CUSTOM_MENU_ITEMS will nearly always contain all of the MENU_ITEMS
     mangoStateProvider.addStates(MENU_ITEMS);
     if (CUSTOM_MENU_ITEMS)
