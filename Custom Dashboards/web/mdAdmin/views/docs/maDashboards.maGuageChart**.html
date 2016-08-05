@@ -1,0 +1,48 @@
+<h1><code ng:non-bindable="">maGuageChart**</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-maguagechart--page"><p><code>&lt;ma-gauge-chart point=&quot;myPoint&quot; style=&quot;width:100%; height:200px&quot;&gt;&lt;/ma-gauge-chart&gt;</code></p>
+<ul>
+<li>This directive will display a gauge that can be tied to a data point&#39;s live value.</li>
+<li>You must use <code>&lt;ma-get-point-value&gt;</code> to provide a point value to <code>&lt;ma-gauge-chart&gt;</code></li>
+<li>Note, you will need to set a width and height on the element.</li>
+<li>Options have been exposed via attributes, allowing you to set colors and ranges of multiple bands.</li>
+<li><a href="/modules/dashboards/web/mdAdmin/#/dashboard/examples/single-value-displays/gauges">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;md-input-container flex&gt;
+&lt;label&gt;Choose a point&lt;/label&gt;
+&lt;ma-point-list limit="200" ng-model="myPoint"&gt;&lt;/ma-point-list&gt;
+&lt;/md-input-container&gt;
+
+&lt;ma-get-point-value point="myPoint"&gt;&lt;/ma-get-point-value&gt;
+
+&lt;p&gt;Basic (defaults to 0-100)&lt;/p&gt;
+&lt;ma-gauge-chart point="myPoint" style="width:100%; height:200px"&gt;&lt;/ma-gauge-chart&gt;
+
+&lt;p&gt;Set axis interval and start and end value&lt;/p&gt;
+&lt;ma-gauge-chart point="myPoint" interval="10" start="-20" end="120"
+style="width:100%; height:200px"&gt;&lt;/ma-gauge-chart&gt;
+
+&lt;p&gt;Set color bands&lt;/p&gt;
+&lt;ma-gauge-chart point="myPoint" start="-20" interval="20" band-1-end="20"
+band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:100%; height:200px"&gt;
+&lt;/ma-gauge-chart&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-maguagechart--page"><p>The point object with the live value provided by <code>&lt;ma-get-point-value&gt;</code>.</p>
+</div></td></tr><tr><td>start <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the starting value for the gauge.</p>
+</div></td></tr><tr><td>end <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the ending value for the gauge.</p>
+</div></td></tr><tr><td>interval <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the interval for each numbered tick on the gauge.</p>
+</div></td></tr><tr><td>band-1-end <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the ending value for the first band.</p>
+</div></td></tr><tr><td>band-1-color <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the color for the first band.</p>
+</div></td></tr><tr><td>band-2-end <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the ending value for the second band.</p>
+</div></td></tr><tr><td>band-2-color <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the color for the second band.</p>
+</div></td></tr><tr><td>band-3-end <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the ending value for the third band.</p>
+</div></td></tr><tr><td>band-3-color <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="madashboards-maguagechart--page"><p>Sets the color for the third band.</p>
+</div></td></tr><tr><td>options <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-maguagechart--page"><p>Extend <a href="https://www.amcharts.com/demos/angular-gauge/">amCharts</a> configuration object for customizing design of the gauge.</p>
+</div></td></tr><tr><td>value <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-maguagechart--page"><p>Allows you to set the gauge to a value that is not provided by the <code>point</code> attribute. Only use without the <code>point</code> attribute.</p>
+</div></td></tr></tbody></table></div>
+</div>

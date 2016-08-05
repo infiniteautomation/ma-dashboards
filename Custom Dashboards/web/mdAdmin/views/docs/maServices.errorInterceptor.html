@@ -1,0 +1,40 @@
+<h1><code ng:non-bindable="">errorInterceptor</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maServices</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="maservices-errorinterceptor-page"><p>Provides the error interceptor to show REST errors on the error page.</p>
+<ul>
+<li>Used in <code>app.js</code> and pushed to <code>$httpProvider.interceptors</code> array.</li>
+<li>Adds errors <code>array</code> and <code>clearErrors()</code> method to the rootScope of the app.</li>
+<li>See <code>/web/mdAdmin/views/dashboard/errors.html</code> to see how these are used in a view to display errors.</li>
+</ul>
+<h5 id="example" id="description_example">Example</h5>
+<pre class="prettyprint linenums">
+    $httpProvider.interceptors.push('errorInterceptor');
+</pre>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_clearerrors">clearErrors()</h3>
+<div class="clearerrors"><div class="clearerrors-page"><p>Clears the errors array by setting <code>$rootScope.errors = [];</code></p>
+</div></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_errors">errors</h3>
+<div class="errors"><div class="errors-page"><p>An array of error objects intercepted by this service.
+Each error object will have the following properties:
+<pre class="prettyprint linenums">
+&lt;span flex="15"&gt;{{error.time | moment:'format':'lll'}}&lt;/span&gt;
+&lt;span flex="15"&gt;{{error.status}} {{error.msg}}&lt;/span&gt;
+&lt;span flex="45"&gt;{{error.config.method}} {{error.config.url}}&lt;/span&gt;
+&lt;span flex="25"&gt;{{error.data.message}}&lt;/span&gt;
+</pre>
+</div><h5 id="properties_errors_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="errors-page"><p>Array of error objects</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

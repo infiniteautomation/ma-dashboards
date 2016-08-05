@@ -1,0 +1,21 @@
+<h1><code ng:non-bindable="">maStatisticsTable</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-mastatisticstable-page"><p><code>&lt;ma-statistics-table statistics=&quot;statsObj&quot;&gt;&lt;/ma-statistics-table&gt;</code></p>
+<ul>
+<li>The data point must be settable.</li>
+<li><code>&lt;ma-statistics-table&gt;</code> will display a formatted data table with the values and timestamps from a <code>statistics</code> object.</li>
+<li><a href="/modules/dashboards/web/mdAdmin/#/dashboard/examples/statistics/statistics-table">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"&gt;&lt;/ma-point-statistics&gt;
+&lt;ma-statistics-table statistics="statsObj"&gt;&lt;/ma-statistics-table&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>statistics</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-mastatisticstable-page"><p>Input the statistics object from <code>&lt;ma-point-statistics&gt;</code></p>
+</div></td></tr><tr><td>hide-starts-and-runtimes <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="madashboards-mastatisticstable-page"><p>If set to <code>false</code>, <code>starts</code> and <code>runtimes</code> statistics will not display for a binary/multistate point
+(Defaults to <code>true</code>)</p>
+</div></td></tr></tbody></table></div>
+</div>

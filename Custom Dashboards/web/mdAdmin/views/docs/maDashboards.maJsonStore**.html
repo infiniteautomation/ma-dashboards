@@ -1,0 +1,34 @@
+<h1><code ng:non-bindable="">maJsonStore**</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-majsonstore--page"><p><code>&lt;ma-json-store xid=&quot;phoneData&quot; item=&quot;myItem&quot; value=&quot;myValue&quot;&gt;&lt;/ma-json-store&gt;</code></p>
+<ul>
+<li>You can use this directive to store arbitrary data in Mango&#39;s JSON store.</li>
+<li>Updates to the JSON store will sync realtime over websockets with your dashboard, no refresh needed.</li>
+<li>You can set a unique <code>xid</code> and <code>item</code> to store multiple objects in the JSON store.</li>
+<li>Any data you want to store should be added to the <code>value</code> object and can be retrieved using <code>{{myItem.jsonData.myProperty}}</code>.</li>
+<li>Note that if you do not set <code>myItem.editPermission</code> / <code>myItem.readPermission</code> permission of the item, only the Admin will have access to it.
+You can set these permissions to <code>&#39;user&#39;</code> to allow guests to use the data in the JSON store.
+The &#39;user&#39; group is included by default in a Mango system.</li>
+<li><a href="/modules/dashboards/web/mdAdmin/#/dashboard/examples/utilities/json-store">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-json-store xid="phoneData" item="myItem" value="myValue"&gt;&lt;/ma-json-store&gt;
+&lt;input ng-model="myValue.phone"&gt;
+&lt;md-button class="md-raised md-primary md-hue-3" ng-click="myItem.$save()"&gt;
+    &lt;md-icon&gt;save&lt;/md-icon&gt; Save
+&lt;/md-button&gt;
+&lt;p&gt;Phone # from JSON store: <span>{{</span>myItem.jsonData.phone<span>}}</span>&lt;/p&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>xid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="madashboards-majsonstore--page"><p>Sets the <code>xid</code> used for each unique object in the JSON store.</p>
+</div></td></tr><tr><td>item</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-majsonstore--page"><p>Object used when accessing the stored data. You can also call the following methods:</p>
+<ul>
+    <li><code>myItem.$save()</code> - Saves the data from myItem in the model to the JSON store.</li>
+    <li><code>myItem.$delete()</code> - Deletes the jsonData stored at the given <code>xid</code></li>
+    <li><code>myItem.$get()</code> - Reverts the data from myItem that has been modified in the local model to the the values from the JSON store.</li>
+</ul></div></td></tr><tr><td>value</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-majsonstore--page"><p>Name of the object used in the model to hold the data to be stored.</p>
+</div></td></tr></tbody></table></div>
+</div>
