@@ -48,18 +48,10 @@
         <md-card class="watchlist-table" ng-include="$ctrl.baseUrl + '/watchListTable.html'">
         </md-card>
         <md-card class="watchlist-chart" ng-show="$ctrl.selected.length > 0">
-            <md-toolbar class="md-whiteframe-1dp md-hue-3">
-                <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-                    <h2 flex>
-                        <span>{{'dashboards.v3.app.chart' | tr}} &amp; {{'dashboards.v3.app.compare' | tr}}</span>
-                    </h2>
-                    <md-button class="md-raised" ng-click="clearChart()" ng-if="editMode" ma-tr="dashboards.v3.app.clear"></md-button>
-                </div>
-            </md-toolbar>
             <ma-watch-list-chart edit-mode="true" stats-tab="true" export="true" add-checked="$ctrl.selected" chart-config="$ctrl.chartConfig" to="$ctrl.dateBar.to"
                 from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals"
                 rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="400px">
-                </watch-list-chart>
+            </ma-watch-list-chart>
         </md-card>
     </div>
 </div>

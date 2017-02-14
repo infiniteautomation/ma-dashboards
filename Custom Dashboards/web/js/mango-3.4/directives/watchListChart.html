@@ -14,6 +14,16 @@ ma-watch-list-chart md-input-container, watch-list-chart md-checkbox {
 }
 </style>
 
+
+<md-toolbar class="md-whiteframe-1dp md-hue-3" ng-if="editMode">
+    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+        <h2 flex>
+            <span>{{'dashboards.v3.app.chart' | tr}} &amp; {{'dashboards.v3.app.compare' | tr}}</span>
+        </h2>
+        <md-button class="md-raised" ng-click="clearChart()" ma-tr="dashboards.v3.app.clear"></md-button>
+    </div>
+</md-toolbar>
+
 <div layout="row">
     <md-tabs md-selected="currentTab" md-stretch-tabs="auto" flex="40" ng-show="statsTab">
         <md-tab id="tab1">{{'dashboards.v3.app.chart' | tr}}</md-tab>
