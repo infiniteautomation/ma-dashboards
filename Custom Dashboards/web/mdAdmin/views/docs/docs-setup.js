@@ -343,7 +343,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-user-notes-table&gt;&lt;/ma-user-notes-table&gt;",
-      "keywords": "api directive displaying displays initial limit list madashboards mausernotestable notes pagination query reference-id referenceid set stamps time timezone user"
+      "keywords": "api comment-type configured directive displaying displays event initial limit list load madashboards mausernotestable notes pagination point query reference-id referenceid set specific stamps table time timezone user"
     },
     {
       "section": "api",

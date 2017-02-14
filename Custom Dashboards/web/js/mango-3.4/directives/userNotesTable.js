@@ -11,14 +11,16 @@ define(['require', 'moment-timezone'], function(require, moment) {
  * @restrict E
  * @description
  * `<ma-user-notes-table></ma-user-notes-table>`
- * - Displays a list of User Notes
+ * - Displays a list of User Notes in a table
+ * - Can be configured to load a specific `reference-id`
  *
  * @param {string} reference-id Query via referenceId
+ * @param {string} comment-type Can be `POINT` or `EVENT`
  * @param {string} timezone Timezone for displaying time stamps
  * @param {string} limit Set the initial limit of the pagination
  *
  * @usage
- * <ma-user-notes-table></ma-user-notes-table>`
+ * <ma-user-notes-table></ma-user-notes-table>
  *
  */
 userNotesTable.$inject = ['UserNotes', '$injector', 'mangoDateFormats'];
@@ -28,6 +30,7 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
         replace: true,
         scope: {
             referenceId: '=?',
+            commentType: '@',
             timezone: '@'
         },
         templateUrl: require.toUrl('./userNotesTable.html'),
@@ -50,10 +53,10 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
             $scope.$watch('referenceId', function(newValue, oldValue) {
                 if (newValue === undefined) return;
                 UserNotes.query({
-                    commentType: 'POINT', 
+                    commentType: $scope.commentType, 
                     referenceId: newValue
-                }).$promise.then(function(events) {
-                    $scope.userNotes = events;
+                }).$promise.then(function(notes) {
+                    $scope.userNotes = notes;
                 });
             });
             

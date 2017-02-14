@@ -102,7 +102,7 @@ function UserNotesFactory($resource, Util, $mdDialog) {
             .cancel('Cancel');
             
         $mdDialog.show(confirm).then(function(result) {
-            // console.log(commentType, referenceId, result);
+            console.log(commentType, referenceId, result);
             UserNotes.save({referenceId: referenceId, comment: result, commentType: commentType}).$promise.then(
                 function (data) {
                     // console.log('Success', data, referenceId);
