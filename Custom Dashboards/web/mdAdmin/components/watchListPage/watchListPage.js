@@ -73,21 +73,14 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     this.watchListChanged = function watchListChanged() {
         this.watchList = this.selectWatchList;
         if (this.watchList) {
-            
+            this.selected = [];
+
             // clear checked points from table/chart or Load from watchList
             if (this.watchList.data && this.watchList.data.selectedPoints.length > 0) {
                 this.selected = this.watchList.data.selectedPoints;
             }
-            else {
-                this.selected = [];
-            }
 			
-			if (this.watchList.data && this.watchList.data.chartConfig) {
-                this.chartConfig = this.watchList.data.chartConfig;
-            }
-            else {
-                this.chartConfig = defaultChartConfig;
-            }
+            this.chartConfig = this.watchList.data ? this.watchList.data.chartConfig : defaultChartConfig;
             
             if (this.watchList.data && this.watchList.data.paramValues) {
                 this.watchListParams = this.watchList.data.paramValues;

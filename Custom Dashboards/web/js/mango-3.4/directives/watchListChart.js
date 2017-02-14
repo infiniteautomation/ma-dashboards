@@ -88,38 +88,42 @@ define(['require'], function(require) {
                     scope.addChecked=[]; 
                     scope.chartConfig = defaultChartConfig;
                 };
+
+                if (scope.editMode) {
+                    scope.$watch('chartConfig.stackType.selected', function(newValue, oldValue) {
+                        if (newValue === undefined || newValue === oldValue) return;
+                        // console.log('stackType Updated:', newValue, scope.chartConfig.selectedAxis);
+                        
+                        scope.chartConfig.stackType[scope.chartConfig.selectedAxis] = newValue;
+
+                        // console.log(scope.chartConfig);
+                    });
+
+                    scope.$watch('chartConfig.chartType', function(newValue, oldValue) {
+                        if (newValue === undefined || newValue === oldValue) return;
+                        // console.log('chartType Updated:', newValue, scope.chartConfig.selectedAxis);
+                        
+                        scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === scope.chartConfig.selectedAxis}).forEach(function(obj) {obj.type = newValue});
+
+                        // console.log(scope.chartConfig);
+                    });
+
+                    scope.$watch('chartConfig.selectedAxis', function(newValue, oldValue) {
+                        if (newValue === undefined || newValue === oldValue) return;
+                        // console.log('selectedAxis Updated:', newValue);
+                        
+                        // Set stackType control to that matching axis selected
+                        scope.chartConfig.stackType.selected = scope.chartConfig.stackType ? scope.chartConfig.stackType[newValue] : 'none';
+
+                        // Set chartType control to that matching axis selected
+                        var selectedAxisGraphOption = scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === newValue})[0];
+                        scope.chartConfig.chartType = selectedAxisGraphOption ? selectedAxisGraphOption.type : 'smoothedLine';
+
+                        // console.log(scope.chartConfig);
+                    });
+                }
                 
-                scope.$watch('chartConfig.stackType.selected', function(newValue, oldValue) {
-                    if (newValue === undefined || newValue === oldValue) return;
-                    // console.log('stackType Updated:', newValue, scope.chartConfig.selectedAxis);
-                    
-                    scope.chartConfig.stackType[scope.chartConfig.selectedAxis] = newValue;
-
-                    // console.log(scope.chartConfig);
-                });
-
-                scope.$watch('chartConfig.chartType', function(newValue, oldValue) {
-                    if (newValue === undefined || newValue === oldValue) return;
-                    // console.log('chartType Updated:', newValue, scope.chartConfig.selectedAxis);
-                    
-                    scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === scope.chartConfig.selectedAxis}).forEach(function(obj) {obj.type = newValue});
-
-                    // console.log(scope.chartConfig);
-                });
-
-                scope.$watch('chartConfig.selectedAxis', function(newValue, oldValue) {
-                    if (newValue === undefined || newValue === oldValue) return;
-                    // console.log('selectedAxis Updated:', newValue);
-                    
-                    // Set stackType control to that matching axis selected
-                    scope.chartConfig.stackType.selected = scope.chartConfig.stackType ? scope.chartConfig.stackType[newValue] : 'none';
-
-                    // Set chartType control to that matching axis selected
-                    var selectedAxisGraphOption = scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === newValue})[0];
-                    scope.chartConfig.chartType = selectedAxisGraphOption ? selectedAxisGraphOption.type : 'smoothedLine';
-
-                    // console.log(scope.chartConfig);
-                });
+                
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues || (oldValues === undefined && newValues.length === 0)) return;
@@ -133,6 +137,7 @@ define(['require'], function(require) {
 
                     // If cleared clear chartConfig.graphOptions
                     if (newValues.length === 0) {
+                        console.log('cleared');
                         scope.chartConfig.graphOptions = [];
                     }
                     
@@ -140,7 +145,7 @@ define(['require'], function(require) {
                     var xidExists = scope.chartConfig.graphOptions.some(function(obj){return obj.xid === newValues[newValues.length-1].xid});
 
                     // Check if adding or removing before updating graphOptions array
-                    if ( (oldValues === undefined && newValues.length >= 0 && !xidExists) || (oldValues !== undefined && newValues.length > oldValues.length && !xidExists) ) {
+                    if ( (oldValues === undefined && newValues.length >= 0 && !xidExists && scope.editMode) || (oldValues !== undefined && newValues.length > oldValues.length && !xidExists  && scope.editMode) ) {
 
                         // Set graphOption with current selcted Axis and newest added xid
                         var graphOption = {valueAxis: scope.chartConfig.selectedAxis, xid: newValues[newValues.length-1].xid};
@@ -157,7 +162,7 @@ define(['require'], function(require) {
                         scope.chartConfig.graphOptions.push(graphOption);
                         // console.log('Adding', newValues[newValues.length-1].xid);
                     }
-                    else if (oldValues !== undefined && newValues.length < oldValues.length) {
+                    else if (oldValues !== undefined && newValues.length < oldValues.length && scope.editMode) {
                         var arrayDiff = oldValues.filter(function(x) { return newValues.indexOf(x) < 0 });
                         var removedXid = arrayDiff[0].xid;
                         var removedIndex = oldValues.map(function(x) {return x.xid; }).indexOf(removedXid);
