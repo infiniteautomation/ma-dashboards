@@ -7,9 +7,9 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
   
-    dashboardStoreController.$inject = ['$scope', '$timeout'];
+    mapSiteStoreController.$inject = ['$scope', '$timeout'];
 
-    function dashboardStoreController($scope, $timeout) {
+    function mapSiteStoreController($scope, $timeout) {
         var $ctrl = this;
 
         $ctrl.markerIcons = [
@@ -104,7 +104,7 @@ define(['angular', 'require'], function(angular, require) {
         bindings: {
             selectedDashboard: '=?'
         },
-        controller: dashboardStoreController,
-        templateUrl: require.toUrl('./dashboardStore.html')
+        controller: mapSiteStoreController,
+        templateUrl: require.toUrl('./mapSiteStore.html')
     };
 }); // define
