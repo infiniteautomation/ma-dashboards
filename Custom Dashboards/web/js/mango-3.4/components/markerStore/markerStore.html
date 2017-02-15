@@ -1,4 +1,4 @@
-<ma-json-store xid="{{$ctrl.dashboardId}}" item="markerStoreItem" value="$ctrl.markerList"></ma-json-store>
+<ma-json-store xid="{{$ctrl.dashboardId}}" item="$ctrl.markerStoreItem" value="$ctrl.markerList"></ma-json-store>
 
 <div layout="column" layout-gt-md="row" flex ng-init="$ctrl.markerList.markers=[];">
     <div layout="row" flex layout-align="start center">
@@ -32,11 +32,11 @@
         <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedMarker.xid}}" watch-list="addWatchList" select-first="false" disabled="!$ctrl.markerList.markers.length"></ma-watch-list-select>
         <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedMarker.name || !$ctrl.selectedMarker.lat || !$ctrl.selectedMarker.long 
         || !$ctrl.selectedMarker.markerIcon || !addWatchList.xid || !$ctrl.markerList.markers.length" 
-        ng-click="$ctrl.selectedMarker.xid = addWatchList.xid; $ctrl.selectedMarker.watchlistName = addWatchList.name; markerStoreItem.$save()">
+        ng-click="$ctrl.selectedMarker.xid = addWatchList.xid; $ctrl.selectedMarker.watchlistName = addWatchList.name; $ctrl.markerStoreItem.$save()">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
         </md-button>
-        <md-button class="md-raised md-warn" ng-disabled="!$ctrl.selectedMarker" ng-click="$ctrl.deleteMarker(); markerStoreItem.$save()">
+        <md-button class="md-raised md-warn" ng-disabled="!$ctrl.selectedMarker" ng-click="$ctrl.deleteMarker(); $ctrl.markerStoreItem.$save()">
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>
