@@ -1,0 +1,46 @@
+<ma-json-store xid="dashboardStore" item="dashboardStoreItem" value="$ctrl.dashboardList"></ma-json-store>
+
+<div layout="column" layout-gt-md="row" flex ng-init="$ctrl.dashboardList.dashboards=[];">
+    <div layout="row" flex layout-align="start center">
+        <md-input-container flex>
+            <label>Choose Dashboard</label>
+            <md-select ng-model="$ctrl.selectedDashboard" ng-model-options="{trackBy: '$value.name'}" ng-disabled="!$ctrl.dashboardList.dashboards.length">
+                <md-option ng-repeat="dashboard in $ctrl.dashboardList.dashboards track by dashboard.name" ng-value="dashboard" ng-bind="dashboard.name"></md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="dashboards.v3.app.name"></label>
+            <input ng-disabled="!$ctrl.dashboardList.dashboards.length" ng-model="$ctrl.selectedDashboard.name" md-select-on-focus id="dashboard-name-input">
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="dashboards.v3.app.lat"></label>
+            <input ng-disabled="!$ctrl.dashboardList.dashboards.length" type="number" ng-model="$ctrl.selectedDashboard.lat" md-select-on-focus>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="dashboards.v3.app.long"></label>
+            <input ng-disabled="!$ctrl.dashboardList.dashboards.length" type="number" ng-model="$ctrl.selectedDashboard.long" md-select-on-focus>
+        </md-input-container>
+
+        <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[0]}}" watch-list="addWatchList1" select-first="false" disabled="!$ctrl.dashboardList.dashboards.length"></ma-watch-list-select>
+    </div>
+    
+    <div layout="row" flex layout-align="start center">
+        <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[1]}}" watch-list="addWatchList2" select-first="false" disabled="!$ctrl.dashboardList.dashboards.length"></ma-watch-list-select>
+        <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[2]}}" watch-list="addWatchList3" select-first="false" disabled="!$ctrl.dashboardList.dashboards.length"></ma-watch-list-select>
+
+        <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedDashboard.name || !$ctrl.selectedDashboard.lat || !$ctrl.selectedDashboard.long || !addWatchList1.xid 
+        || !addWatchList2.xid || !addWatchList3.xid || !$ctrl.dashboardList.dashboards.length" 
+        ng-click="$ctrl.selectedDashboard.watchLists[0] = addWatchList1.xid; $ctrl.selectedDashboard.watchLists[1] = addWatchList2.xid; $ctrl.selectedDashboard.watchLists[2] = addWatchList3.xid; dashboardStoreItem.$save()">
+            <md-icon>save</md-icon>
+            <span ma-tr="common.save"></span>
+        </md-button>
+        <md-button class="md-raised md-warn" ng-disabled="!$ctrl.selectedDashboard" ng-click="$ctrl.deleteDashboard(); dashboardStoreItem.$save()">
+            <md-icon>delete</md-icon>
+            <span ma-tr="common.delete"></span>
+        </md-button>
+        <md-button class="md-raised md-accent" ng-click="$ctrl.addDashboard()">
+            <md-icon>add</md-icon>
+            <span>New Dashboard</span>
+        </md-button>
+    </div>
+</div>

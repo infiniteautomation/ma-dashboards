@@ -1,6 +1,6 @@
 <ma-json-store xid="{{$ctrl.dashboardId}}" item="markerStoreItem" value="$ctrl.markerList"></ma-json-store>
 
-<div layout="column" layout-gt-md="row" flex ng-init="$ctrl.markerList.markers=[]; $ctrl.markerList.id = $ctrl.dashboardId">
+<div layout="column" layout-gt-md="row" flex ng-init="$ctrl.markerList.markers=[];">
     <div layout="row" flex layout-align="start center">
         <md-input-container flex>
             <label ma-tr="dashboards.v3.app.chooseMarker"></label>
