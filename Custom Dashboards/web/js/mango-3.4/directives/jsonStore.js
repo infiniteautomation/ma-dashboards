@@ -52,7 +52,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
         link: function ($scope, $element, attr) {
             $scope.$watch('xid', function(newXid, oldXid) {
             	if (!newXid) return;
-                console.log(newXid);
+                // console.log(newXid);
             	JsonStore.get({xid: newXid}).$promise.then(function(item) {
             		return item;
             	}, function() {

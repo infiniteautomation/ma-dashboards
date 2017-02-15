@@ -126,7 +126,7 @@ define(['require'], function(require) {
                 
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
-                    if (newValues === undefined || newValues === oldValues || (oldValues === undefined && newValues.length === 0)) return;
+                    if (newValues === undefined || (oldValues === undefined && newValues.length === 0) || !scope.chartConfig) return;
                     // console.log('addChecked Watcher:', newValues, oldValues);
                     
                     // Clear Stats before new ones are generated
@@ -137,7 +137,6 @@ define(['require'], function(require) {
 
                     // If cleared clear chartConfig.graphOptions
                     if (newValues.length === 0) {
-                        console.log('cleared');
                         scope.chartConfig.graphOptions = [];
                     }
                     

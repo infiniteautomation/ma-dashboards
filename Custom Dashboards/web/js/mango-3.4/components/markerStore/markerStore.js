@@ -101,7 +101,7 @@ define(['angular', 'require'], function(angular, require) {
 
         $scope.$watch('$ctrl.dashboardId', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
-            console.log(oldValue, newValue);
+            // console.log(oldValue, newValue);
             $ctrl.selectedMarker = {};
             $ctrl.markerList.markers=[];
         });
