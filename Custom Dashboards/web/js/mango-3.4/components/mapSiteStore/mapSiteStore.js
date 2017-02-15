@@ -102,7 +102,8 @@ define(['angular', 'require'], function(angular, require) {
 
     return {
         bindings: {
-            selectedDashboard: '=?'
+            selectedDashboard: '=?',
+            selectOnlyMode: '@'
         },
         controller: mapSiteStoreController,
         templateUrl: require.toUrl('./mapSiteStore.html')

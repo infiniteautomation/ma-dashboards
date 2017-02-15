@@ -1,6 +1,13 @@
 <ma-json-store xid="dashboardStore" item="dashboardStoreItem" value="$ctrl.dashboardList"></ma-json-store>
 
-<div layout="column" layout-gt-md="row" flex ng-init="$ctrl.dashboardList.dashboards=[];">
+<md-input-container flex ng-if="$ctrl.selectOnlyMode">
+    <label>Choose Site</label>
+    <md-select ng-model="$ctrl.selectedDashboard" ng-model-options="{trackBy: '$value.name'}" ng-disabled="!$ctrl.dashboardList.dashboards.length">
+        <md-option ng-repeat="dashboard in $ctrl.dashboardList.dashboards track by dashboard.name" ng-value="dashboard" ng-bind="dashboard.name"></md-option>
+    </md-select>
+</md-input-container>
+
+<div layout="column" layout-gt-md="row" flex ng-init="$ctrl.dashboardList.dashboards=[];" ng-if="!$ctrl.selectOnlyMode">
     <div layout="row" flex layout-align="start center">
         <md-input-container flex>
             <label>Choose Site</label>
