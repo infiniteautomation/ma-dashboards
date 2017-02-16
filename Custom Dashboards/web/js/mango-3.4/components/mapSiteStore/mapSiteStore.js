@@ -11,6 +11,7 @@ define(['angular', 'require'], function(angular, require) {
 
     function mapSiteStoreController($scope, $timeout) {
         var $ctrl = this;
+        var index;
 
         $ctrl.markerIcons = [
             {
@@ -80,23 +81,50 @@ define(['angular', 'require'], function(angular, require) {
                 return dashboard.name !== $ctrl.selectedDashboard.name;
             });
 
-            $ctrl.selectedDashboard = $ctrl.dashboardList.dashboards[0];
+            $ctrl.selectedDashboard = angular.copy($ctrl.dashboardList.dashboards[0]);
+            $ctrl.storedDashboard = angular.copy($ctrl.dashboardList.dashboards[0]);
+            index = 0;
+
+            $ctrl.dashboardStoreItem.$save();
         };
 
         $ctrl.addDashboard = function() {
-            $ctrl.dashboardList.dashboards.push({});
-            $ctrl.selectedDashboard = $ctrl.dashboardList.dashboards[$ctrl.dashboardList.dashboards.length-1];
+            $ctrl.dashboardList.dashboards.push({watchLists: []});
+            index = $ctrl.dashboardList.dashboards.length - 1;
+            console.log(index)
+            
+            $ctrl.selectedDashboard = angular.copy($ctrl.dashboardList.dashboards[index]);
+            $ctrl.storedDashboard = angular.copy($ctrl.dashboardList.dashboards[index]);
 
             $timeout(function() {
                 angular.element(document.querySelector('#dashboard-name-input')).focus();
             }, 500);
         };
 
+         $ctrl.changedDashboard = function() {
+            index = $ctrl.dashboardList.dashboards.indexOf($ctrl.storedDashboard);
+            $ctrl.selectedDashboard = angular.copy($ctrl.dashboardList.dashboards[index]);
+        };
+        
+        $ctrl.saveSite = function() {
+            $ctrl.selectedDashboard.watchLists[0] = $ctrl.addWatchList[0].xid; 
+            $ctrl.selectedDashboard.watchLists[1] = $ctrl.addWatchList[1].xid; 
+            $ctrl.selectedDashboard.watchLists[2] = $ctrl.addWatchList[2].xid; 
+            $ctrl.selectedDashboard.xid = $ctrl.addWatchList[0].xid; 
+            $ctrl.selectedDashboard.watchlistName = $ctrl.addWatchList[0].name;
+
+            $ctrl.storedDashboard = angular.copy($ctrl.dashboardList.dashboards[0]);
+            $ctrl.dashboardList.dashboards[index] = angular.copy($ctrl.selectedDashboard);
+            $ctrl.dashboardStoreItem.$save();
+        };
+        
         $scope.$watch('$ctrl.dashboardList.dashboards', function(newValue, oldValue) {
             if (newValue === undefined || oldValue === undefined) return;
             // console.log('watch dashboardList.dashboards', newValue, oldValue);
             if (newValue.length && !oldValue.length) {
-                $ctrl.selectedDashboard = $ctrl.dashboardList.dashboards[0];
+                $ctrl.selectedDashboard = angular.copy($ctrl.dashboardList.dashboards[0]);
+                $ctrl.storedDashboard = angular.copy($ctrl.dashboardList.dashboards[0]);
+                index = 0;
             }
         });
     }
