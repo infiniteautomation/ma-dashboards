@@ -17,7 +17,7 @@
         </md-input-container>
         <md-input-container flex>
             <label ma-tr="dashboards.v3.app.name"></label>
-            <input ng-disabled="!$ctrl.dashboardList.dashboards.length" ng-model="$ctrl.selectedDashboard.name" md-select-on-focus id="dashboard-name-input">
+            <input ng-disabled="!$ctrl.dashboardList.dashboards.length" ng-model="$ctrl.selectedDashboard.name" ng-model-options="{debounce: 1000}" md-select-on-focus id="dashboard-name-input">
         </md-input-container>
         <md-input-container flex>
             <label ma-tr="dashboards.v3.app.lat"></label>

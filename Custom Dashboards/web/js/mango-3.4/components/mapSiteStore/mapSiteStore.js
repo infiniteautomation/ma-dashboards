@@ -93,6 +93,7 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $scope.$watch('$ctrl.dashboardList.dashboards', function(newValue, oldValue) {
+            if (newValue === undefined || oldValue === undefined) return;
             // console.log('watch dashboardList.dashboards', newValue, oldValue);
             if (newValue.length && !oldValue.length) {
                 $ctrl.selectedDashboard = $ctrl.dashboardList.dashboards[0];
