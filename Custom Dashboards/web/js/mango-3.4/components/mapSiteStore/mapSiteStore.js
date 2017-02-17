@@ -7,9 +7,9 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
   
-    mapSiteStoreController.$inject = ['$scope', '$timeout'];
+    mapSiteStoreController.$inject = ['$scope', '$timeout', 'Util'];
 
-    function mapSiteStoreController($scope, $timeout) {
+    function mapSiteStoreController($scope, $timeout, Util) {
         var $ctrl = this;
 
         $ctrl.markerIcons = [
@@ -96,7 +96,7 @@ define(['angular', 'require'], function(angular, require) {
             index = $ctrl.localDashboardList.dashboards.length-1;
 
             $ctrl.selectedDashboard = $ctrl.localDashboardList.dashboards[index];
-            console.log(index);
+            $ctrl.selectedDashboard.uid = 'Markers-' + Util.uuid();
 
             $timeout(function() {
                 angular.element(document.querySelector('#dashboard-name-input')).focus();
@@ -120,9 +120,9 @@ define(['angular', 'require'], function(angular, require) {
         
         $scope.$watch('$ctrl.dashboardList.dashboards', function(newValue, oldValue) {
             if (newValue === undefined || oldValue === undefined) return;
-            console.log('watch dashboardList.dashboards', newValue, oldValue);
+            // console.log('watch dashboardList.dashboards', newValue, oldValue);
             if (newValue.length && !oldValue.length) {
-                console.log('init load');
+                // console.log('init load');
                 $ctrl.localDashboardList = angular.copy($ctrl.dashboardList);
                 $ctrl.selectedDashboard = angular.copy($ctrl.dashboardList.dashboards[0]);
             }
