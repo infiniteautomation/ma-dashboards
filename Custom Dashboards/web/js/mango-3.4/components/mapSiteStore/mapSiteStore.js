@@ -77,25 +77,30 @@ define(['angular', 'require'], function(angular, require) {
 
         var index = 0;
 
+        $ctrl.$onInit = function() {
+            $ctrl.localDashboardList = {list: []};
+            $ctrl.dashboardList = {list: []};
+        };
+
         $ctrl.deleteDashboard = function() {
-            $ctrl.dashboardList.dashboards = $ctrl.dashboardList.dashboards.filter(function(dashboard) {
+            $ctrl.dashboardList.list = $ctrl.dashboardList.list.filter(function(dashboard) {
                 return dashboard.uid !== $ctrl.selectedDashboard.uid;
             });
 
-            $ctrl.localDashboardList.dashboards = $ctrl.dashboardList.dashboards.filter(function(dashboard) {
+            $ctrl.localDashboardList.list = $ctrl.localDashboardList.filter(function(dashboard) {
                 return dashboard.uid !== $ctrl.selectedDashboard.uid;
             });
 
-            $ctrl.selectedDashboard = $ctrl.localDashboardList.dashboards[0];
+            $ctrl.selectedDashboard = $ctrl.localDashboardList.list[0];
 
             $ctrl.dashboardStoreItem.$save();
         };
 
         $ctrl.addDashboard = function() {
-            $ctrl.localDashboardList.dashboards.push({watchLists: []});
-            index = $ctrl.localDashboardList.dashboards.length-1;
+            $ctrl.localDashboardList.list.push({watchLists: []});
+            index = $ctrl.localDashboardList.list.length-1;
 
-            $ctrl.selectedDashboard = $ctrl.localDashboardList.dashboards[index];
+            $ctrl.selectedDashboard = $ctrl.localDashboardList.list[index];
             $ctrl.selectedDashboard.uid = 'Markers-' + Util.uuid();
 
             $timeout(function() {
@@ -104,7 +109,7 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.dashboardChanged = function() {
-            index = $ctrl.localDashboardList.dashboards.indexOf($ctrl.selectedDashboard);
+            index = $ctrl.localDashboardList.list.indexOf($ctrl.selectedDashboard);
         };
 
         $ctrl.save = function() {
@@ -114,17 +119,16 @@ define(['angular', 'require'], function(angular, require) {
             $ctrl.selectedDashboard.xid = $ctrl.addWatchList1.xid; 
             $ctrl.selectedDashboard.watchlistName = $ctrl.addWatchList1.name;
 
-            $ctrl.dashboardList.dashboards[index] = angular.copy($ctrl.selectedDashboard);
+            $ctrl.dashboardList.list[index] = angular.copy($ctrl.selectedDashboard);
             $ctrl.dashboardStoreItem.$save();
         };
         
-        $scope.$watch('$ctrl.dashboardList.dashboards', function(newValue, oldValue) {
+        $scope.$watch('$ctrl.dashboardList.list', function(newValue, oldValue) {
             if (newValue === undefined || oldValue === undefined) return;
-            // console.log('watch dashboardList.dashboards', newValue, oldValue);
+            // console.log('watch dashboardList.list', newValue, oldValue);
             if (newValue.length && !oldValue.length) {
-                // console.log('init load');
-                $ctrl.localDashboardList = angular.copy($ctrl.dashboardList);
-                $ctrl.selectedDashboard = angular.copy($ctrl.dashboardList.dashboards[0]);
+                $ctrl.localDashboardList.list = angular.copy($ctrl.dashboardList.list);
+                $ctrl.selectedDashboard = $ctrl.localDashboardList.list[0];
             }
         });
     }

@@ -7,9 +7,9 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
   
-    markerStoreController.$inject = ['$scope', '$timeout'];
+    markerStoreController.$inject = ['$scope', '$timeout', 'Util'];
 
-    function markerStoreController($scope, $timeout) {
+    function markerStoreController($scope, $timeout, Util) {
         var $ctrl = this;
 
         $ctrl.markerIcons = [
@@ -75,27 +75,57 @@ define(['angular', 'require'], function(angular, require) {
             }
         ];
 
+        var index = 0;
+
+        $ctrl.$onInit = function() {
+            $ctrl.localMarkerList = {markers: []};
+            $ctrl.markerList = {markers: []};
+        };
+
         $ctrl.deleteMarker = function() {
             $ctrl.markerList.markers = $ctrl.markerList.markers.filter(function(marker) {
-                return marker.name !== $ctrl.selectedMarker.name;
+                return marker.uid !== $ctrl.selectedMarker.uid;
             });
 
-            $ctrl.selectedMarker = $ctrl.markerList.markers[0];
+            $ctrl.localMarkerList.markers = $ctrl.localMarkerList.markers.filter(function(marker) {
+                return marker.uid !== $ctrl.selectedMarker.uid;
+            });
+
+            $ctrl.selectedMarker = $ctrl.localMarkerList.markers[0];
+
+            $ctrl.markerStoreItem.$save();
         };
 
         $ctrl.addMarker = function() {
-            $ctrl.markerList.markers.push({});
-            $ctrl.selectedMarker = $ctrl.markerList.markers[$ctrl.markerList.markers.length-1];
+            $ctrl.localMarkerList.markers.push({});
+            index = $ctrl.localMarkerList.markers.length-1;
 
+            $ctrl.selectedMarker = $ctrl.localMarkerList.markers[index];
+            $ctrl.selectedMarker.uid = 'Marker-' + Util.uuid();
+            
             $timeout(function() {
-                angular.element(document.querySelector('#name-input')).focus();
+                angular.element(document.querySelector('#marker-name-input')).focus();
             }, 500);
         };
 
+        $ctrl.markerChanged = function() {
+            index = $ctrl.localMarkerList.markers.indexOf($ctrl.selectedMarker);
+        };
+        
+        $ctrl.save = function() {
+            $ctrl.selectedMarker.xid = $ctrl.addWatchList.xid; 
+            $ctrl.selectedMarker.watchlistName = $ctrl.addWatchList.name;
+
+            $ctrl.markerList.markers[index] = angular.copy($ctrl.selectedMarker);
+            $ctrl.markerStoreItem.$save();
+        };
+
         $scope.$watch('$ctrl.markerList.markers', function(newValue, oldValue) {
+            if (newValue === undefined || oldValue === undefined) return;
             // console.log('watch markerList.markers', newValue, oldValue);
             if (newValue.length && !oldValue.length) {
-                $ctrl.selectedMarker = $ctrl.markerList.markers[0];
+                $ctrl.localMarkerList = angular.copy($ctrl.markerList);
+                $ctrl.selectedMarker = $ctrl.localMarkerList.markers[0];
             }
         });
 
@@ -103,7 +133,7 @@ define(['angular', 'require'], function(angular, require) {
             if (newValue === undefined || newValue === oldValue) return;
             // console.log('DashboardId changed', oldValue, newValue);
             $ctrl.selectedMarker = {};
-            $ctrl.markerList.markers=[];
+            $ctrl.localMarkerList.markers=[];
 
             delete $ctrl.markerStoreItem;
         });
@@ -112,7 +142,7 @@ define(['angular', 'require'], function(angular, require) {
     return {
         bindings: {
             dashboardId: '@',
-            markerList: '=?'
+            localMarkerList: '=?'
         },
         controller: markerStoreController,
         templateUrl: require.toUrl('./markerStore.html')
