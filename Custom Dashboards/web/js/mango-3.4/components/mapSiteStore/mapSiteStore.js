@@ -75,28 +75,56 @@ define(['angular', 'require'], function(angular, require) {
             }
         ];
 
+        var index = 0;
+
         $ctrl.deleteDashboard = function() {
             $ctrl.dashboardList.dashboards = $ctrl.dashboardList.dashboards.filter(function(dashboard) {
                 return dashboard.name !== $ctrl.selectedDashboard.name;
             });
 
-            $ctrl.selectedDashboard = $ctrl.dashboardList.dashboards[0];
+            $ctrl.localDashboardList.dashboards = $ctrl.dashboardList.dashboards.filter(function(dashboard) {
+                return dashboard.name !== $ctrl.selectedDashboard.name;
+            });
+
+            $ctrl.selectedDashboard = $ctrl.localDashboardList.dashboards[0];
+
+            $ctrl.dashboardStoreItem.$save();
         };
 
         $ctrl.addDashboard = function() {
-            $ctrl.dashboardList.dashboards.push({});
-            $ctrl.selectedDashboard = $ctrl.dashboardList.dashboards[$ctrl.dashboardList.dashboards.length-1];
+            $ctrl.localDashboardList.dashboards.push({watchLists: []});
+            index = $ctrl.localDashboardList.dashboards.length-1;
+
+            $ctrl.selectedDashboard = $ctrl.localDashboardList.dashboards[index];
+            console.log(index);
 
             $timeout(function() {
                 angular.element(document.querySelector('#dashboard-name-input')).focus();
             }, 500);
         };
 
+        $ctrl.dashboardChanged = function() {
+            index = $ctrl.localDashboardList.dashboards.indexOf($ctrl.selectedDashboard);
+        };
+
+        $ctrl.save = function() {
+            $ctrl.selectedDashboard.watchLists[0] = $ctrl.addWatchList1.xid; 
+            $ctrl.selectedDashboard.watchLists[1] = $ctrl.addWatchList2.xid; 
+            $ctrl.selectedDashboard.watchLists[2] = $ctrl.addWatchList3.xid; 
+            $ctrl.selectedDashboard.xid = $ctrl.addWatchList1.xid; 
+            $ctrl.selectedDashboard.watchlistName = $ctrl.addWatchList1.name;
+
+            $ctrl.dashboardList.dashboards[index] = angular.copy($ctrl.selectedDashboard);
+            $ctrl.dashboardStoreItem.$save();
+        };
+        
         $scope.$watch('$ctrl.dashboardList.dashboards', function(newValue, oldValue) {
             if (newValue === undefined || oldValue === undefined) return;
-            // console.log('watch dashboardList.dashboards', newValue, oldValue);
+            console.log('watch dashboardList.dashboards', newValue, oldValue);
             if (newValue.length && !oldValue.length) {
-                $ctrl.selectedDashboard = $ctrl.dashboardList.dashboards[0];
+                console.log('init load');
+                $ctrl.localDashboardList = angular.copy($ctrl.dashboardList);
+                $ctrl.selectedDashboard = angular.copy($ctrl.dashboardList.dashboards[0]);
             }
         });
     }
