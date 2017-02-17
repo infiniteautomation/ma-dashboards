@@ -79,11 +79,11 @@ define(['angular', 'require'], function(angular, require) {
 
         $ctrl.deleteDashboard = function() {
             $ctrl.dashboardList.dashboards = $ctrl.dashboardList.dashboards.filter(function(dashboard) {
-                return dashboard.name !== $ctrl.selectedDashboard.name;
+                return dashboard.uid !== $ctrl.selectedDashboard.uid;
             });
 
             $ctrl.localDashboardList.dashboards = $ctrl.dashboardList.dashboards.filter(function(dashboard) {
-                return dashboard.name !== $ctrl.selectedDashboard.name;
+                return dashboard.uid !== $ctrl.selectedDashboard.uid;
             });
 
             $ctrl.selectedDashboard = $ctrl.localDashboardList.dashboards[0];
