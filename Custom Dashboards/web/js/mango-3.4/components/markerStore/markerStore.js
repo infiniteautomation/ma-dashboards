@@ -121,28 +121,33 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $scope.$watch('$ctrl.markerList.markers', function(newValue, oldValue) {
-            if (newValue === undefined || oldValue === undefined) return;
+            if (!newValue.length || newValue === undefined || oldValue === undefined) return;
             // console.log('watch markerList.markers', newValue, oldValue);
+            
+            $ctrl.localMarkerList = angular.copy($ctrl.markerList);
+
             if (newValue.length && !oldValue.length) {
-                $ctrl.localMarkerList = angular.copy($ctrl.markerList);
                 $ctrl.selectedMarker = $ctrl.localMarkerList.markers[0];
             }
         });
 
         $scope.$watch('$ctrl.dashboardId', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
-            // console.log('DashboardId changed', oldValue, newValue);
-            $ctrl.selectedMarker = {};
-            $ctrl.localMarkerList.markers=[];
-
+            // console.log('DashboardId changed', newValue, oldValue);
             delete $ctrl.markerStoreItem;
+
+            $ctrl.markerList.markers=[];
+            $ctrl.localMarkerList.markers=[];
+            $ctrl.selectedMarker = {};
+            
+            
         });
     }
 
     return {
         bindings: {
             dashboardId: '@',
-            localMarkerList: '=?'
+            markerList: '=?'
         },
         controller: markerStoreController,
         templateUrl: require.toUrl('./markerStore.html')
