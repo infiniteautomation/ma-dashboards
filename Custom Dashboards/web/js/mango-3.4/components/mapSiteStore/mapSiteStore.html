@@ -1,12 +1,5 @@
 <ma-json-store xid="dashboardStore" item="$ctrl.dashboardStoreItem" value="$ctrl.dashboardList"></ma-json-store>
 
-<!--<md-input-container flex ng-if="$ctrl.selectOnlyMode">
-    <label>Choose Site</label>
-    <md-select ng-model="$ctrl.selectedDashboard" ng-model-options="{trackBy: '$value.uid'}" ng-disabled="!$ctrl.localDashboardList.list.length" ng-change="$ctrl.dashboardChanged()">
-        <md-option ng-repeat="dashboard in $ctrl.localDashboardList.list track by dashboard.uid" ng-value="dashboard" ng-bind="dashboard.name"></md-option>
-    </md-select>
-</md-input-container>-->
-
 <div layout="column" layout-gt-md="row" flex>
     <div layout="row" flex layout-align="start center">
         <md-input-container flex>
