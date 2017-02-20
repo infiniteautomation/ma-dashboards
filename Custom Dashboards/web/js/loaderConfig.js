@@ -78,7 +78,8 @@ requirejs.config({
         'amcharts/plugins/dataloader/dataloader': vendor + '/amcharts/plugins/dataloader/dataloader.min',
         'amcharts/plugins/animate/animate': vendor + '/amcharts/plugins/animate/animate.min',
         'tinycolor' : vendor + '/tinycolor/tinycolor',
-        'md-color-picker' : vendor + '/md-color-picker'
+        'md-color-picker' : vendor + '/md-color-picker',
+        'sha512' : vendor + '/js-sha512/sha512'
     },
     shim : {
         'angular': {

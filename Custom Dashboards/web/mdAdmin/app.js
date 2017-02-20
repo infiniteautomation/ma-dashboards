@@ -1528,6 +1528,7 @@ var angularModulesPromise = $http({
     require(response.data.urls, function () {
         deferred.resolve(Array.prototype.slice.apply(arguments));
     }, function() {
+        console.log(arguments);
         deferred.reject();
     });
     return deferred.promise;
