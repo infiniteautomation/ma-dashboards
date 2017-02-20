@@ -29,7 +29,7 @@
         </md-input-container>
         <md-input-container flex>
             <label ma-tr="dashboards.v3.app.selectMarkerIcon"></label>
-            <md-select ng-model="$ctrl.selectedDashboard.markerIcon" ng-disabled="!$ctrl.localDashboardList.list.length">
+            <md-select ng-model="$ctrl.selectedDashboard.myMarkerIcon" ng-disabled="!$ctrl.localDashboardList.list.length" ng-change="$ctrl.markerChanged()">
                 <md-option ng-repeat="markerIcon in $ctrl.markerIcons" ng-value="markerIcon.image" ng-bind="markerIcon.name"></md-option>
             </md-select>
         </md-input-container>

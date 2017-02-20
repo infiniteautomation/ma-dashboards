@@ -110,6 +110,15 @@ define(['angular', 'require'], function(angular, require) {
 
         $ctrl.dashboardChanged = function() {
             index = $ctrl.localDashboardList.list.indexOf($ctrl.selectedDashboard);
+            delete $ctrl.selectedDashboard.markerIcon;
+
+            $timeout(function() {
+                $ctrl.selectedDashboard.markerIcon = $ctrl.selectedDashboard.myMarkerIcon;
+            }, 500);
+        };
+
+        $ctrl.markerChanged = function() {
+            $ctrl.selectedDashboard.markerIcon = $ctrl.selectedDashboard.myMarkerIcon;
         };
 
         $ctrl.save = function() {
@@ -118,6 +127,7 @@ define(['angular', 'require'], function(angular, require) {
             $ctrl.selectedDashboard.watchLists[2] = $ctrl.addWatchList3.xid; 
             $ctrl.selectedDashboard.xid = $ctrl.addWatchList1.xid; 
             $ctrl.selectedDashboard.watchlistName = $ctrl.addWatchList1.name;
+            $ctrl.selectedDashboard.markerIcon = $ctrl.selectedDashboard.myMarkerIcon;
 
             $ctrl.dashboardList.list[index] = angular.copy($ctrl.selectedDashboard);
             $ctrl.dashboardStoreItem.$save();
