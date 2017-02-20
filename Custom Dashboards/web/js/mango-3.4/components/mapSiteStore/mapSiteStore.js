@@ -117,6 +117,14 @@ define(['angular', 'require'], function(angular, require) {
             }, 500);
         };
 
+        $ctrl.markerNameChanged = function() {
+            delete $ctrl.selectedDashboard.markerIcon;
+
+            $timeout(function() {
+                $ctrl.selectedDashboard.markerIcon = $ctrl.selectedDashboard.myMarkerIcon;
+            }, 500);
+        };
+
         $ctrl.markerChanged = function() {
             $ctrl.selectedDashboard.markerIcon = $ctrl.selectedDashboard.myMarkerIcon;
         };
@@ -145,8 +153,8 @@ define(['angular', 'require'], function(angular, require) {
 
     return {
         bindings: {
-            selectedDashboard: '=?',
-            selectOnlyMode: '@'
+            selectedDashboard: '=',
+            selectOnlyMode: '=?'
         },
         controller: mapSiteStoreController,
         templateUrl: require.toUrl('./mapSiteStore.html')
