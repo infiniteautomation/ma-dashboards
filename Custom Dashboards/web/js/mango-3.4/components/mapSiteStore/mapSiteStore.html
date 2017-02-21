@@ -29,11 +29,11 @@
     </div>
     
     <div layout="row" flex layout-align="start center" ng-show="!$ctrl.selectOnlyMode">
-        <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[0]}}" watch-list="$ctrl.addWatchList1" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
-        <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[1]}}" watch-list="$ctrl.addWatchList2" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
-        <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[2]}}" watch-list="$ctrl.addWatchList3" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
+        <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 1" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[0]}}" watch-list="$ctrl.addWatchList1" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
+        <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 2" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[1]}}" watch-list="$ctrl.addWatchList2" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
+        <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 3" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[2]}}" watch-list="$ctrl.addWatchList3" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
 
-        <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedDashboard.name || !$ctrl.selectedDashboard.lat || !$ctrl.selectedDashboard.long || !$ctrl.addWatchList1.xid || !$ctrl.addWatchList2.xid || !$ctrl.addWatchList3.xid || !$ctrl.localDashboardList.list.length" 
+        <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedDashboard.name || !$ctrl.selectedDashboard.lat || !$ctrl.selectedDashboard.long || ($ctrl.numWatchLists >= 1 && !$ctrl.addWatchList1.xid)" 
         ng-click="$ctrl.save()">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>

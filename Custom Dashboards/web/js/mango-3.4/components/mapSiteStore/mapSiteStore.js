@@ -87,7 +87,7 @@ define(['angular', 'require'], function(angular, require) {
                 return dashboard.uid !== $ctrl.selectedDashboard.uid;
             });
 
-            $ctrl.localDashboardList.list = $ctrl.localDashboardList.filter(function(dashboard) {
+            $ctrl.localDashboardList.list = $ctrl.localDashboardList.list.filter(function(dashboard) {
                 return dashboard.uid !== $ctrl.selectedDashboard.uid;
             });
 
@@ -130,11 +130,18 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.save = function() {
-            $ctrl.selectedDashboard.watchLists[0] = $ctrl.addWatchList1.xid; 
-            $ctrl.selectedDashboard.watchLists[1] = $ctrl.addWatchList2.xid; 
-            $ctrl.selectedDashboard.watchLists[2] = $ctrl.addWatchList3.xid; 
-            $ctrl.selectedDashboard.xid = $ctrl.addWatchList1.xid; 
-            $ctrl.selectedDashboard.watchlistName = $ctrl.addWatchList1.name;
+            if ($ctrl.addWatchList1 && $ctrl.addWatchList1.xid) {
+                $ctrl.selectedDashboard.watchLists[0] = $ctrl.addWatchList1.xid;
+                $ctrl.selectedDashboard.xid = $ctrl.addWatchList1.xid; 
+                $ctrl.selectedDashboard.watchlistName = $ctrl.addWatchList1.name;
+            }
+            if ($ctrl.addWatchList2 && $ctrl.addWatchList2.xid) {
+                $ctrl.selectedDashboard.watchLists[1] = $ctrl.addWatchList2.xid;
+            }
+            if ($ctrl.addWatchList3 && $ctrl.addWatchList3.xid) {
+                $ctrl.selectedDashboard.watchLists[2] = $ctrl.addWatchList3.xid;
+            }
+            
             $ctrl.selectedDashboard.markerIcon = $ctrl.selectedDashboard.myMarkerIcon;
 
             $ctrl.dashboardList.list[index] = angular.copy($ctrl.selectedDashboard);
@@ -154,7 +161,8 @@ define(['angular', 'require'], function(angular, require) {
     return {
         bindings: {
             selectedDashboard: '=',
-            selectOnlyMode: '=?'
+            selectOnlyMode: '=?',
+            numWatchLists: '@'
         },
         controller: mapSiteStoreController,
         templateUrl: require.toUrl('./mapSiteStore.html')
