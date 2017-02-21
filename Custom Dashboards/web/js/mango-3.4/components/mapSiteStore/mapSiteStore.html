@@ -20,9 +20,19 @@
             <label ma-tr="dashboards.v3.app.long"></label>
             <input ng-disabled="!$ctrl.localDashboardList.list.length" type="number" ng-model="$ctrl.selectedDashboard.long" md-select-on-focus>
         </md-input-container>
+
         <md-input-container flex ng-show="!$ctrl.selectOnlyMode">
             <label ma-tr="dashboards.v3.app.selectMarkerIcon"></label>
             <md-select ng-model="$ctrl.selectedDashboard.myMarkerIcon" ng-disabled="!$ctrl.localDashboardList.list.length" ng-change="$ctrl.markerChanged()">
+                <md-option ng-repeat="markerIcon in $ctrl.markerIcons" ng-value="markerIcon.image" ng-bind="markerIcon.name"></md-option>
+            </md-select>
+        </md-input-container>
+
+        <ma-filtering-point-list ng-show="!$ctrl.selectOnlyMode" ng-if="$ctrl.binaryMarkerMode" ng-model="$ctrl.markersBinaryPoint" point-xid="{{$ctrl.selectedDashboard.markersBinaryPoint}}" auto-init="true"></ma-filtering-point-list>
+        
+        <md-input-container flex ng-if="$ctrl.binaryMarkerMode && $ctrl.markersBinaryPoint" ng-show="!$ctrl.selectOnlyMode">
+            <label ma-tr="dashboards.v3.app.selectMarkerIcon"></label>
+            <md-select ng-model="$ctrl.selectedDashboard.myMarkerIconFalse" ng-disabled="!$ctrl.localDashboardList.list.length" ng-change="$ctrl.markerChanged()">
                 <md-option ng-repeat="markerIcon in $ctrl.markerIcons" ng-value="markerIcon.image" ng-bind="markerIcon.name"></md-option>
             </md-select>
         </md-input-container>

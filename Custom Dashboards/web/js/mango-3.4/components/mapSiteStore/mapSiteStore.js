@@ -144,6 +144,10 @@ define(['angular', 'require'], function(angular, require) {
             
             $ctrl.selectedDashboard.markerIcon = $ctrl.selectedDashboard.myMarkerIcon;
 
+            if ($ctrl.markersBinaryPoint) {
+                $ctrl.selectedDashboard.markersBinaryPoint = $ctrl.markersBinaryPoint.xid;
+            }
+
             $ctrl.dashboardList.list[index] = angular.copy($ctrl.selectedDashboard);
             $ctrl.dashboardStoreItem.$save();
         };
@@ -162,6 +166,7 @@ define(['angular', 'require'], function(angular, require) {
         bindings: {
             selectedDashboard: '=',
             selectOnlyMode: '=?',
+            binaryMarkerMode: '=?',
             numWatchLists: '@'
         },
         controller: mapSiteStoreController,
