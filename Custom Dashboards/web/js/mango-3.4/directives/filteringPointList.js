@@ -56,19 +56,26 @@ function pointList(Point, $filter, $injector, Translate, $timeout) {
                         $scope.selectedItem = item[0];
                     });
                 }
-                else if ($scope.pointXid) {
-                    Point.rql({query: 'xid='+$scope.pointXid}).$promise.then(function(item) {
+
+                $scope.$watch('pointXid', function(newValue, oldValue) {
+                    if (newValue === undefined) return;
+                    // console.log(oldValue, newValue);
+
+                    Point.rql({query: 'xid='+newValue}).$promise.then(function(item) {
                         $scope.ngModel = item[0];
                         $scope.selectedItem = item[0];
                     });
-                }
-                else if ($scope.pointId) {
-                    Point.rql({query: 'id='+$scope.pointId}).$promise.then(function(item) {
+                });
+
+                $scope.$watch('pointId', function(newValue, oldValue) {
+                    if (newValue === undefined) return;
+                    // console.log(oldValue, newValue);
+
+                    Point.rql({query: 'id='+newValue}).$promise.then(function(item) {
                         $scope.ngModel = item[0];
                         $scope.selectedItem = item[0];
                     });
-                }
-                
+                });
             }
 
             $scope.storeItem = function(selectedItem) {
