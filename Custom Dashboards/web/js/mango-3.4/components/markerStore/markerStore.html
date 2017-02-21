@@ -4,7 +4,7 @@
     <div layout="row" flex layout-align="start center">
         <md-input-container flex>
             <label ma-tr="dashboards.v3.app.chooseMarker"></label>
-            <md-select ng-model="$ctrl.selectedMarker" ng-disabled="!$ctrl.localMarkerList.markers.length" ng-change="$ctrl.markerChanged()">
+            <md-select ng-model="$ctrl.selectedMarker" ng-model-options="{trackBy: '$value.uid'}" ng-disabled="!$ctrl.localMarkerList.markers.length" ng-change="$ctrl.markerChanged()">
                 <md-option ng-repeat="marker in $ctrl.localMarkerList.markers track by marker.uid" ng-value="marker" ng-bind="marker.name"></md-option>
             </md-select>
         </md-input-container>
