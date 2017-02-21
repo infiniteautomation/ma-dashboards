@@ -1,12 +1,12 @@
 /**
  * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
- */ 
+ */
 
 define(['angular', 'require'], function(angular, require) {
     'use strict';
 
-  
+
     markerStoreController.$inject = ['$scope', '$timeout', 'Util'];
 
     function markerStoreController($scope, $timeout, Util) {
@@ -102,7 +102,7 @@ define(['angular', 'require'], function(angular, require) {
 
             $ctrl.selectedMarker = $ctrl.localMarkerList.markers[index];
             $ctrl.selectedMarker.uid = 'Marker-' + Util.uuid();
-            
+
             $timeout(function() {
                 angular.element(document.querySelector('#marker-name-input')).focus();
             }, 500);
@@ -111,10 +111,14 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.markerChanged = function() {
             index = $ctrl.localMarkerList.markers.indexOf($ctrl.selectedMarker);
         };
-        
+
         $ctrl.save = function() {
-            $ctrl.selectedMarker.xid = $ctrl.addWatchList.xid; 
+            $ctrl.selectedMarker.xid = $ctrl.addWatchList.xid;
             $ctrl.selectedMarker.watchlistName = $ctrl.addWatchList.name;
+
+            if ($ctrl.markersBinaryPoint) {
+                $ctrl.selectedMarker.markersBinaryPoint = $ctrl.markersBinaryPoint.xid;
+            }
 
             $ctrl.markerList.markers[index] = angular.copy($ctrl.selectedMarker);
             $ctrl.markerStoreItem.$save();
@@ -123,7 +127,7 @@ define(['angular', 'require'], function(angular, require) {
         $scope.$watch('$ctrl.markerList.markers', function(newValue, oldValue) {
             if (!newValue.length || newValue === undefined || oldValue === undefined) return;
             // console.log('watch markerList.markers', newValue, oldValue);
-            
+
             $ctrl.localMarkerList = angular.copy($ctrl.markerList);
 
             if (newValue.length && !oldValue.length) {
@@ -139,14 +143,15 @@ define(['angular', 'require'], function(angular, require) {
             $ctrl.markerList.markers=[];
             $ctrl.localMarkerList.markers=[];
             $ctrl.selectedMarker = {};
-            
-            
+
+
         });
     }
 
     return {
         bindings: {
             dashboardId: '@',
+            binaryMarkerMode: '=?',
             markerList: '=?'
         },
         controller: markerStoreController,

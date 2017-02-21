@@ -20,18 +20,28 @@
             <label ma-tr="dashboards.v3.app.long"></label>
             <input ng-disabled="!$ctrl.localMarkerList.markers.length" type="number" ng-model="$ctrl.selectedMarker.long" md-select-on-focus>
         </md-input-container>
+
         <md-input-container flex>
             <label ma-tr="dashboards.v3.app.selectMarkerIcon"></label>
             <md-select ng-model="$ctrl.selectedMarker.markerIcon" ng-disabled="!$ctrl.localMarkerList.markers.length">
                 <md-option ng-repeat="markerIcon in $ctrl.markerIcons" ng-value="markerIcon.image" ng-bind="markerIcon.name"></md-option>
             </md-select>
         </md-input-container>
+
+        <ma-filtering-point-list ng-if="$ctrl.binaryMarkerMode" ng-model="$ctrl.markersBinaryPoint" point-xid="{{$ctrl.selectedMarker.markersBinaryPoint}}" auto-init="true"></ma-filtering-point-list>
+
+        <md-input-container flex ng-if="$ctrl.binaryMarkerMode && $ctrl.markersBinaryPoint">
+            <label ma-tr="dashboards.v3.app.selectMarkerIcon"></label>
+            <md-select ng-model="$ctrl.selectedMarker.myMarkerIconFalse" ng-disabled="!$ctrl.localMarkerList.markers.length">
+                <md-option ng-repeat="markerIcon in $ctrl.markerIcons" ng-value="markerIcon.image" ng-bind="markerIcon.name"></md-option>
+            </md-select>
+        </md-input-container>
     </div>
-    
+
     <div layout="row" flex layout-align="start center">
         <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedMarker.xid}}" watch-list="$ctrl.addWatchList" select-first="false" disabled="!$ctrl.localMarkerList.markers.length"></ma-watch-list-select>
 
-        <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedMarker.name || !$ctrl.selectedMarker.lat || !$ctrl.selectedMarker.long 
+        <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedMarker.name || !$ctrl.selectedMarker.lat || !$ctrl.selectedMarker.long
         || !$ctrl.selectedMarker.markerIcon || !$ctrl.addWatchList.xid || !$ctrl.localMarkerList.markers.length" ng-click="$ctrl.save();">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
