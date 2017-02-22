@@ -82,6 +82,7 @@ define(['./maServices',
         './components/maMap/maMap',
         './components/markerStore/markerStore',
         './components/mapSiteStore/mapSiteStore',
+        './components/chartReports/chartReports',
         'ng-map',
         './filters/trFilter',
         './animations/slideUp',
@@ -100,7 +101,7 @@ define(['./maServices',
         dropzone, barDisplay, indicator, validationMessages, scaleTo, change,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, maMarkerStore, maMapSiteStore, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
+        maMap, maMarkerStore, maMapSiteStore, chartReports, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -191,6 +192,7 @@ maDashboards.component('maConfigImportDialog', configImportDialog);
 maDashboards.component('maMap', maMap);
 maDashboards.component('maMapMarkerStore', maMarkerStore);
 maDashboards.component('maMapSiteStore', maMapSiteStore);
+maDashboards.component('maChartReports', chartReports);
 maDashboards.filter('tr', trFilter);
 maDashboards.filter('noNaN', function () {
                                 return function (input, suffix) {
@@ -345,12 +347,12 @@ function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLU
 
     moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
     moment.locale(MA_DEFAULT_LOCALE || window.navigator.languages || window.navigator.language);
-    
+
     AmCharts._formatDate = AmCharts.formatDate;
     AmCharts.formatDate = function(date, format, chart) {
         return moment(date).format(format);
     };
-    
+
     AmCharts._resetDateToMin = AmCharts.resetDateToMin;
     AmCharts.resetDateToMin = function(date, period, count, firstDateOfWeek) {
         var m = moment(date);

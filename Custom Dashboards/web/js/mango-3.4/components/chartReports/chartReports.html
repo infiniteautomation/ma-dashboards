@@ -1,0 +1,16 @@
+<div layout="column" layout-gt-md="row" ng-if="$ctrl.reportWatchlistXid">
+    <ma-watch-list-select no-select="true" watch-list-xid="{{$ctrl.reportWatchlistXid}}" watch-list="reportWatchlist"></ma-watch-list-select>
+    <md-card flex>
+        <md-toolbar class="md-whiteframe-1dp md-hue-3">
+    			<div class="md-toolbar-tools">
+    				<h2 flex>
+    	              <span>Report Based On {{reportWatchlist.name}}</span>
+    		        </h2>
+    			</div>
+    		</md-toolbar>
+
+        <ma-watch-list-chart flex add-checked="reportWatchlist.data.selectedPoints" chart-config="reportWatchlist.data.chartConfig" export="true" to="dateBar.to" from="dateBar.from" rollup-type="dateBar.rollupType" rollup-interval-number="dateBar.rollupIntervals" rollup-interval-period="dateBar.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>
+    </md-card>
+
+    <ma-user-notes-table style="min-width: 400px" reference-id="$ctrl.reportWatchlistXid" comment-type="WATCHLIST"></ma-user-notes-table>
+</div>
