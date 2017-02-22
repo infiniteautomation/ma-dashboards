@@ -16,7 +16,8 @@ define(['angular', 'require'], function(angular, require) {
     return {
         bindings: {
             reportWatchlistXid: '@',
-            dateBar: '='
+            dateBar: '=',
+            markerData: '='
         },
         controller: chartReportsController,
         templateUrl: require.toUrl('./chartReports.html')
