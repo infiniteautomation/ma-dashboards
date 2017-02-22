@@ -29,6 +29,7 @@ define(['angular', 'require'], function(angular, require) {
   * @param {string=} info-window-theme Can optionally be set to `dark` to use a dark theme on all `<info-window>` components. Defaults to a white background theme.
   * @param {string=} desktop-height Sets the height of the map at a desktop width (>1280px). Set with px. Eg `800px`. Defaults to `500px`.
   * @param {string=} mobile-height Sets the height of the map at a mobile/tablet width (<1280px). Set with px. Eg `400px`.
+  * @param {object=} styles Optionally add a google map styles object to change colors and features of map details.
   * @param {string=} output-data Defines the name of a variable used to hold output data to be passed to other components on the page. From a marker you should the following syntax to set output-data: `on-click="$parent.$ctrl.setOutputData('newValue')"`.
   *
   * @usage
@@ -101,6 +102,7 @@ define(['angular', 'require'], function(angular, require) {
             zoom: '<',
             center: '@',
             mapType: '@',
+            styles: '<',
             infoWindowTheme: '@',
             desktopHeight: '@',
             mobileHeight: '@',
