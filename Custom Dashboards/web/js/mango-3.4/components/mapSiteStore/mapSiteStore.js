@@ -92,7 +92,8 @@ define(['angular', 'require'], function(angular, require) {
             });
 
             $ctrl.selectedDashboard = $ctrl.localDashboardList.list[0];
-
+            index = 0;
+            
             $ctrl.dashboardStoreItem.$save();
         };
 

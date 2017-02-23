@@ -22,24 +22,28 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.$onChanges = function(changes) {
             // console.log(changes);
             if (changes.markerUid.currentValue) {
+              $ctrl.localReportStore.reports = [];
+              $ctrl.reportStore.reports = [];
+              $ctrl.selectedReport = {};
+
               $ctrl.reportJsonStoreXid = 'Rpt-' + $ctrl.markerUid;
             }
         };
 
         $ctrl.reportChanged = function() {
+            console.log($ctrl.selectedReport)
           index = $ctrl.localReportStore.reports.indexOf($ctrl.selectedReport);
-
-          DateBar.data = $ctrl.selectedReport.dateBar.data;
+          DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
         }
 
         $ctrl.saveReport = function() {
-          $ctrl.selectedReport.dateBar.data = DateBar.data;
+          $ctrl.selectedReport.dateBar.data = angular.copy(DateBar.data);
           $ctrl.reportStore.reports[index] = angular.copy($ctrl.selectedReport);
           $ctrl.reportStoreItem.$save();
         }
 
         $ctrl.addReport = function() {
-          $ctrl.localReportStore.reports.push({});
+          $ctrl.localReportStore.reports.push({dateBar: {}});
           index = $ctrl.localReportStore.reports.length-1;
 
           $ctrl.selectedReport = $ctrl.localReportStore.reports[index];
@@ -51,7 +55,18 @@ define(['angular', 'require'], function(angular, require) {
         }
 
         $ctrl.deleteReport = function() {
+          $ctrl.reportStore.reports = $ctrl.reportStore.reports.filter(function(report) {
+              return report.uid !== $ctrl.selectedReport.uid;
+          });
 
+          $ctrl.localReportStore.reports = $ctrl.localReportStore.reports.filter(function(report) {
+              return report.uid !== $ctrl.selectedReport.uid;
+          });
+
+          $ctrl.selectedReport = $ctrl.localReportStore.reports[0];
+          index = 0;
+
+          $ctrl.reportStoreItem.$save();
         }
 
         $scope.$watch('$ctrl.reportStore.reports', function(newValue, oldValue) {
@@ -62,7 +77,7 @@ define(['angular', 'require'], function(angular, require) {
                 $ctrl.localReportStore.reports = angular.copy($ctrl.reportStore.reports);
                 $ctrl.selectedReport = $ctrl.localReportStore.reports[0];
 
-                DateBar.data = $ctrl.selectedReport.dateBar.data;
+                DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
             }
         });
     }
@@ -71,6 +86,7 @@ define(['angular', 'require'], function(angular, require) {
         bindings: {
             reportWatchlistXid: '@',
             markerUid: '@',
+            markerName: '@',
             dateBar: '='
         },
         controller: chartReportsController,

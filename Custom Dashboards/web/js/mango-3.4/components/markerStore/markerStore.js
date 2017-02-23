@@ -92,6 +92,7 @@ define(['angular', 'require'], function(angular, require) {
             });
 
             $ctrl.selectedMarker = $ctrl.localMarkerList.markers[0];
+            index = 0;
 
             $ctrl.markerStoreItem.$save();
         };

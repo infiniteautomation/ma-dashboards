@@ -5,29 +5,29 @@
         <md-toolbar class="md-whiteframe-1dp md-hue-3">
     			<div class="md-toolbar-tools">
     				<h2 flex>
-	              <span>Report Based On {{reportWatchlist.name}}</span>
+	              <span>{{$ctrl.markerName}}'s Reports</span>
 		        </h2>
     			</div>
     		</md-toolbar>
 
         <md-card-content>
           <div layout="row" flex layout-align="start center">
-            <md-input-container flex>
+            <md-input-container flex ng-hide="!$ctrl.localReportStore.reports.length">
                 <label>Choose Report</label>
-                <md-select ng-disabled="!$ctrl.localReportStore.reports.length" ng-model="$ctrl.selectedReport" ng-change="$ctrl.reportChanged()">
+                <md-select ng-model="$ctrl.selectedReport" ng-change="$ctrl.reportChanged()">
                     <md-option ng-repeat="report in $ctrl.localReportStore.reports track by report.uid" ng-value="report" ng-bind="report.name"></md-option>
                 </md-select>
             </md-input-container>
-            <md-input-container flex>
+            <md-input-container flex ng-hide="!$ctrl.localReportStore.reports.length">
                 <label ma-tr="dashboards.v3.app.name"></label>
-                <input ng-disabled="!$ctrl.localReportStore.reports.length" ng-model="$ctrl.selectedReport.name" ng-model-options="{debounce: 1000}" md-select-on-focus id="report-name-input">
+                <input ng-model="$ctrl.selectedReport.name" ng-model-options="{debounce: 1000}" md-select-on-focus id="report-name-input">
             </md-input-container>
 
-              <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()">
+              <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()" ng-disabled="!$ctrl.localReportStore.reports.length">
                   <md-icon>save</md-icon>
                   <span ma-tr="common.save"></span>
               </md-button>
-              <md-button class="md-raised md-warn"  ng-click="$ctrl.deleteReport();">
+              <md-button class="md-raised md-warn"  ng-click="$ctrl.deleteReport();" ng-disabled="!$ctrl.localReportStore.reports.length">
                   <md-icon>delete</md-icon>
                   <span ma-tr="common.delete"></span>
               </md-button>
@@ -36,7 +36,7 @@
                   <span>New Report</span>
               </md-button>
           </div>
-
+          
           <ma-watch-list-select no-select="true" watch-list-xid="{{$ctrl.reportWatchlistXid}}" watch-list="reportWatchlist"></ma-watch-list-select>
 
           <ma-watch-list-chart flex add-checked="reportWatchlist.data.selectedPoints" chart-config="reportWatchlist.data.chartConfig" export="true" to="$ctrl.dateBar.to" from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals" rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>
