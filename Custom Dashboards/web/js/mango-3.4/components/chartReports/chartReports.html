@@ -1,18 +1,48 @@
-<ma-json-store xid="$ctrl.markerData.uid" item="$ctrl.reportStoreItem" value="$ctrl.reportStore"></ma-json-store>
+<ma-json-store xid="{{$ctrl.reportJsonStoreXid}}" item="$ctrl.reportStoreItem" value="$ctrl.reportStore"></ma-json-store>
 
 <div layout="column" layout-gt-md="row" ng-if="$ctrl.reportWatchlistXid">
     <md-card flex>
         <md-toolbar class="md-whiteframe-1dp md-hue-3">
     			<div class="md-toolbar-tools">
     				<h2 flex>
-    	              <span>Report Based On {{reportWatchlist.name}}</span>
-    		        </h2>
+	              <span>Report Based On {{reportWatchlist.name}}</span>
+		        </h2>
     			</div>
     		</md-toolbar>
 
-        <ma-watch-list-select watch-list-xid="{{$ctrl.reportWatchlistXid}}" watch-list="reportWatchlist"></ma-watch-list-select>
+        <md-card-content>
+          <div layout="row" flex layout-align="start center">
+            <md-input-container flex>
+                <label>Choose Report</label>
+                <md-select ng-disabled="!$ctrl.localReportStore.reports.length" ng-model="$ctrl.selectedReport" ng-change="$ctrl.reportChanged()">
+                    <md-option ng-repeat="report in $ctrl.localReportStore.reports track by report.uid" ng-value="report" ng-bind="report.name"></md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex>
+                <label ma-tr="dashboards.v3.app.name"></label>
+                <input ng-disabled="!$ctrl.localReportStore.reports.length" ng-model="$ctrl.selectedReport.name" ng-model-options="{debounce: 1000}" md-select-on-focus id="report-name-input">
+            </md-input-container>
 
-        <ma-watch-list-chart flex add-checked="reportWatchlist.data.selectedPoints" chart-config="reportWatchlist.data.chartConfig" export="true" to="$ctrl.dateBar.to" from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals" rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>
+              <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()">
+                  <md-icon>save</md-icon>
+                  <span ma-tr="common.save"></span>
+              </md-button>
+              <md-button class="md-raised md-warn"  ng-click="$ctrl.deleteReport();">
+                  <md-icon>delete</md-icon>
+                  <span ma-tr="common.delete"></span>
+              </md-button>
+              <md-button class="md-raised md-accent" ng-click="$ctrl.addReport()">
+                  <md-icon>add</md-icon>
+                  <span>New Report</span>
+              </md-button>
+          </div>
+
+          <ma-watch-list-select no-select="true" watch-list-xid="{{$ctrl.reportWatchlistXid}}" watch-list="reportWatchlist"></ma-watch-list-select>
+
+          <ma-watch-list-chart flex add-checked="reportWatchlist.data.selectedPoints" chart-config="reportWatchlist.data.chartConfig" export="true" to="$ctrl.dateBar.to" from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals" rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>
+        </md-card-content>
+
+
     </md-card>
 
     <ma-user-notes-table style="min-width: 400px" reference-id="$ctrl.reportWatchlistXid" comment-type="WATCHLIST"></ma-user-notes-table>
