@@ -88,7 +88,7 @@ function UserNotesFactory($resource, Util, $mdDialog) {
                 response: Util.arrayResponseInterceptor
             },
             withCredentials: true,
-            cache: true
+            cache: false
         }
     });
     
