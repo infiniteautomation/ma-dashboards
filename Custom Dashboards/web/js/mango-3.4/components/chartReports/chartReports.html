@@ -1,6 +1,8 @@
 <ma-json-store xid="{{$ctrl.reportJsonStoreXid}}" item="$ctrl.reportStoreItem" value="$ctrl.reportStore"></ma-json-store>
 
-<div layout="column" layout-gt-md="row" ng-if="$ctrl.reportWatchlistXid">
+<ma-json-store xid="{{$ctrl.selectedReport.uid}}" item="$ctrl.reportItem" value="$ctrl.report"></ma-json-store>
+
+<div layout="column" layout-gt-md="row">
     <md-card flex>
         <md-toolbar class="md-whiteframe-1dp md-hue-3">
     			<div class="md-toolbar-tools">
@@ -23,11 +25,11 @@
                 <input ng-model="$ctrl.selectedReport.name" ng-model-options="{debounce: 1000}" md-select-on-focus id="report-name-input">
             </md-input-container>
 
-              <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()" ng-disabled="!$ctrl.localReportStore.reports.length">
+              <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
                   <md-icon>save</md-icon>
                   <span ma-tr="common.save"></span>
               </md-button>
-              <md-button class="md-raised md-warn"  ng-click="$ctrl.deleteReport();" ng-disabled="!$ctrl.localReportStore.reports.length">
+              <md-button class="md-raised md-warn"  ng-click="$ctrl.deleteReport();" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
                   <md-icon>delete</md-icon>
                   <span ma-tr="common.delete"></span>
               </md-button>
@@ -41,9 +43,7 @@
 
           <ma-watch-list-chart flex add-checked="reportWatchlist.data.selectedPoints" chart-config="reportWatchlist.data.chartConfig" export="true" to="$ctrl.dateBar.to" from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals" rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>
         </md-card-content>
-
-
     </md-card>
-
-    <ma-user-notes-table style="min-width: 400px" reference-id="$ctrl.reportWatchlistXid" comment-type="WATCHLIST"></ma-user-notes-table>
+    
+    <ma-user-notes-table disabled="!$ctrl.reportItem.id" style="min-width: 400px" reference-id="$ctrl.reportItem.id" comment-type="JSON_DATA"></ma-user-notes-table>
 </div>

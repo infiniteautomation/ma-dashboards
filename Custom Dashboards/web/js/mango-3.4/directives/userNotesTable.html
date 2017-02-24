@@ -4,7 +4,7 @@
                   <h2 flex>
                   <span ma-tr="dashboards.v3.app.userComments"></span>
             </h2>
-                  <md-button class="md-accent md-raised" aria-label="New Note" ng-click="addNote($event, commentType, referenceId, updateWithNewNote)">
+                  <md-button ng-hide="disabled" class="md-accent md-raised" aria-label="New Note" ng-click="addNote($event, commentType, referenceId, updateWithNewNote)">
                         {{'dashboards.v3.app.add' | tr}}
                   </md-button>
             </div>
@@ -23,7 +23,7 @@
                             <td md-cell colspan="3" style="height:60px; font-weight: bold;" ma-tr="dashboards.v3.app.noCommentsFound"></td>
                         </tr>
                    </tbody>
-                  <tbody md-body ng-show="userNotes.length > 0">
+                  <tbody md-body ng-show="userNotes.length > 0 && !disabled">
                         <tr md-row ng-repeat="note in userNotes | orderBy: myOrder">
                               <td md-cell ng-bind="formatDate(note.timestamp)"></td>
                               <td md-cell ng-bind="note.comment"></td>

@@ -22,8 +22,11 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.$onChanges = function(changes) {
             // console.log(changes);
             if (changes.markerUid.currentValue) {
-              $ctrl.localReportStore.reports = [];
-              $ctrl.reportStore.reports = [];
+              delete $ctrl.reportItem;
+              delete $ctrl.report;
+
+              $ctrl.localReportStore = {reports: []};
+              $ctrl.reportStore = {reports: []};
               $ctrl.selectedReport = {};
 
               $ctrl.reportJsonStoreXid = 'Rpt-' + $ctrl.markerUid;
@@ -31,7 +34,9 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.reportChanged = function() {
-            console.log($ctrl.selectedReport)
+          delete $ctrl.reportItem;
+          delete $ctrl.report;
+
           index = $ctrl.localReportStore.reports.indexOf($ctrl.selectedReport);
           DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
         }
@@ -40,9 +45,18 @@ define(['angular', 'require'], function(angular, require) {
           $ctrl.selectedReport.dateBar.data = angular.copy(DateBar.data);
           $ctrl.reportStore.reports[index] = angular.copy($ctrl.selectedReport);
           $ctrl.reportStoreItem.$save();
+
+          // Also store chartReport into it's own Json_Data row
+          $ctrl.report.report = angular.copy($ctrl.selectedReport);
+          console.log($ctrl.report);
+          $ctrl.reportItem.$save();
+
         }
 
         $ctrl.addReport = function() {
+          delete $ctrl.reportItem;
+          delete $ctrl.report;
+
           $ctrl.localReportStore.reports.push({dateBar: {}});
           index = $ctrl.localReportStore.reports.length-1;
 
@@ -55,25 +69,33 @@ define(['angular', 'require'], function(angular, require) {
         }
 
         $ctrl.deleteReport = function() {
+          // delete Report row from jsondata
+          var reportUid = $ctrl.selectedReport.uid;
+          $ctrl.reportItem.$delete();
+
+          // and remove from reports array
+
           $ctrl.reportStore.reports = $ctrl.reportStore.reports.filter(function(report) {
-              return report.uid !== $ctrl.selectedReport.uid;
+              return report.uid !== reportUid;
           });
 
           $ctrl.localReportStore.reports = $ctrl.localReportStore.reports.filter(function(report) {
-              return report.uid !== $ctrl.selectedReport.uid;
+              return report.uid !== reportUid;
           });
 
           $ctrl.selectedReport = $ctrl.localReportStore.reports[0];
           index = 0;
 
           $ctrl.reportStoreItem.$save();
+
+          
         }
 
         $scope.$watch('$ctrl.reportStore.reports', function(newValue, oldValue) {
             if (newValue === undefined || oldValue === undefined) return;
-            // console.log('watch reportStore.reports', newValue, oldValue);
+            console.log('watch reportStore.reports', newValue, oldValue);
 
-            if (newValue.length && !oldValue.length) {
+            if ( newValue.length && !oldValue.length) {
                 $ctrl.localReportStore.reports = angular.copy($ctrl.reportStore.reports);
                 $ctrl.selectedReport = $ctrl.localReportStore.reports[0];
 

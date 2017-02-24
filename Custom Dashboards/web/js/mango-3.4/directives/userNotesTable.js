@@ -31,7 +31,8 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
         scope: {
             referenceId: '=?',
             commentType: '@',
-            timezone: '@'
+            timezone: '@',
+            disabled: '=?'
         },
         templateUrl: require.toUrl('./userNotesTable.html'),
         link: function ($scope, $element, attrs) {
@@ -52,11 +53,16 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
             
             $scope.$watch('referenceId', function(newValue, oldValue) {
                 if (newValue === undefined) return;
+                // console.log(newValue);
                 UserNotes.query({
                     commentType: $scope.commentType, 
                     referenceId: newValue
                 }).$promise.then(function(notes) {
+                    // console.log(notes);
                     $scope.userNotes = notes;
+                }, function(error) {
+                    console.log(error);
+                    $scope.userNotes = [];
                 });
             });
             
