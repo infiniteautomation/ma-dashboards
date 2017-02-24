@@ -93,7 +93,7 @@ define(['angular', 'require'], function(angular, require) {
 
         $scope.$watch('$ctrl.reportStore.reports', function(newValue, oldValue) {
             if (newValue === undefined || oldValue === undefined) return;
-            console.log('watch reportStore.reports', newValue, oldValue);
+            // console.log('watch reportStore.reports', newValue, oldValue);
 
             if ( newValue.length && !oldValue.length) {
                 $ctrl.localReportStore.reports = angular.copy($ctrl.reportStore.reports);
