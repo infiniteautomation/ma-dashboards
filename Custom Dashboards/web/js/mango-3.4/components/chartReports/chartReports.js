@@ -31,6 +31,10 @@ define(['angular', 'require'], function(angular, require) {
 
               $ctrl.reportJsonStoreXid = 'Rpt-' + $ctrl.markerUid;
             }
+
+            // if (changes.reportWatchlistXid.currentValue) {
+            //   $ctrl.initialWatchListXid = $ctrl.reportWatchlistXid;
+            // }
         };
 
         $ctrl.reportChanged = function() {
@@ -39,16 +43,20 @@ define(['angular', 'require'], function(angular, require) {
 
           index = $ctrl.localReportStore.reports.indexOf($ctrl.selectedReport);
           DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
+
+          $ctrl.initialWatchListXid = $ctrl.selectedReport.watchList || $ctrl.reportWatchlistXid;
         }
 
         $ctrl.saveReport = function() {
           $ctrl.selectedReport.dateBar.data = angular.copy(DateBar.data);
+          $ctrl.selectedReport.watchList = $ctrl.watchList.xid;
+
           $ctrl.reportStore.reports[index] = angular.copy($ctrl.selectedReport);
           $ctrl.reportStoreItem.$save();
 
           // Also store chartReport into it's own Json_Data row
           $ctrl.report.report = angular.copy($ctrl.selectedReport);
-          console.log($ctrl.report);
+          
           $ctrl.reportItem.$save();
 
         }
@@ -62,6 +70,8 @@ define(['angular', 'require'], function(angular, require) {
 
           $ctrl.selectedReport = $ctrl.localReportStore.reports[index];
           $ctrl.selectedReport.uid = 'Report-' + Util.uuid();
+
+          $ctrl.initialWatchListXid = $ctrl.reportWatchlistXid;
 
           $timeout(function() {
               angular.element(document.querySelector('#report-name-input')).focus();
@@ -98,6 +108,8 @@ define(['angular', 'require'], function(angular, require) {
             if ( newValue.length && !oldValue.length) {
                 $ctrl.localReportStore.reports = angular.copy($ctrl.reportStore.reports);
                 $ctrl.selectedReport = $ctrl.localReportStore.reports[0];
+
+                $ctrl.initialWatchListXid = $ctrl.selectedReport.watchList || $ctrl.reportWatchlistXid;
 
                 DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
             }

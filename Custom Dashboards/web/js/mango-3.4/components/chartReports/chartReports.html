@@ -22,9 +22,10 @@
                 </md-input-container>
                 <md-input-container flex ng-hide="!$ctrl.localReportStore.reports.length">
                     <label ma-tr="dashboards.v3.app.name"></label>
-                    <input ng-model="$ctrl.selectedReport.name" ng-model-options="{debounce: 1000}" md-select-on-focus id="report-name-input">
+                    <input ng-model="$ctrl.selectedReport.name" md-select-on-focus id="report-name-input">
                 </md-input-container>
-                <ma-watch-list-select flex layout="row" ng-hide="!$ctrl.localReportStore.reports.length" watch-list-xid="{{$ctrl.reportWatchlistXid}}" watch-list="$ctrl.watchList" select-first="false"></ma-watch-list-select>
+
+                <ma-watch-list-select flex layout="row" ng-hide="!$ctrl.localReportStore.reports.length" watch-list-xid="{{$ctrl.initialWatchListXid}}" watch-list="$ctrl.watchList" select-first="false"></ma-watch-list-select>
 
                 <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
                     <md-icon>save</md-icon>
@@ -39,9 +40,7 @@
                     <span>New Report</span>
                 </md-button>
             </div>
-
-            <!--<ma-watch-list-select no-select="true" watch-list-xid="{{$ctrl.reportWatchlistXid}}" watch-list="reportWatchlist"></ma-watch-list-select>-->
-
+            
             <ma-watch-list-chart flex add-checked="$ctrl.watchList.data.selectedPoints" chart-config="$ctrl.watchList.data.chartConfig"
                 export="true" to="$ctrl.dateBar.to" from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals"
                 rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>

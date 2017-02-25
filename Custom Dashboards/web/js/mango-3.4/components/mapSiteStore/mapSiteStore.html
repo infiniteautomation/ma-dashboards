@@ -10,7 +10,7 @@
         </md-input-container>
         <md-input-container flex ng-show="!$ctrl.selectOnlyMode">
             <label ma-tr="dashboards.v3.app.name"></label>
-            <input ng-disabled="!$ctrl.localDashboardList.list.length" ng-model="$ctrl.selectedDashboard.name" ng-model-options="{debounce: 1000}" md-select-on-focus id="dashboard-name-input" ng-change="$ctrl.markerNameChanged()">
+            <input ng-disabled="!$ctrl.localDashboardList.list.length" ng-model="$ctrl.selectedDashboard.name" md-select-on-focus id="dashboard-name-input" ng-change="$ctrl.markerNameChanged()">
         </md-input-container>
         <md-input-container flex ng-show="!$ctrl.selectOnlyMode">
             <label ma-tr="dashboards.v3.app.lat"></label>
