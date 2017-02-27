@@ -22,14 +22,19 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.$onChanges = function(changes) {
             // console.log(changes);
             if (changes.markerUid.currentValue) {
+              delete $ctrl.reportStoreItem;
+
               delete $ctrl.reportItem;
               delete $ctrl.report;
+              
 
               $ctrl.localReportStore = {reports: []};
               $ctrl.reportStore = {reports: []};
               $ctrl.selectedReport = {};
 
               $ctrl.reportJsonStoreXid = 'Rpt-' + $ctrl.markerUid;
+
+              // console.log('markerUid updated, new Rpt- xid is', $ctrl.reportJsonStoreXid);
             }
 
             // if (changes.reportWatchlistXid.currentValue) {
@@ -45,7 +50,7 @@ define(['angular', 'require'], function(angular, require) {
           DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
 
           $ctrl.initialWatchListXid = $ctrl.selectedReport.watchList || $ctrl.reportWatchlistXid;
-        }
+        };
 
         $ctrl.saveReport = function() {
           $ctrl.selectedReport.dateBar.data = angular.copy(DateBar.data);
@@ -58,8 +63,7 @@ define(['angular', 'require'], function(angular, require) {
           $ctrl.report.report = angular.copy($ctrl.selectedReport);
           
           $ctrl.reportItem.$save();
-
-        }
+        };
 
         $ctrl.addReport = function() {
           delete $ctrl.reportItem;
@@ -76,7 +80,7 @@ define(['angular', 'require'], function(angular, require) {
           $timeout(function() {
               angular.element(document.querySelector('#report-name-input')).focus();
           }, 500);
-        }
+        };
 
         $ctrl.deleteReport = function() {
           // delete Report row from jsondata
@@ -84,7 +88,6 @@ define(['angular', 'require'], function(angular, require) {
           $ctrl.reportItem.$delete();
 
           // and remove from reports array
-
           $ctrl.reportStore.reports = $ctrl.reportStore.reports.filter(function(report) {
               return report.uid !== reportUid;
           });
@@ -97,9 +100,7 @@ define(['angular', 'require'], function(angular, require) {
           index = 0;
 
           $ctrl.reportStoreItem.$save();
-
-          
-        }
+        };
 
         $scope.$watch('$ctrl.reportStore.reports', function(newValue, oldValue) {
             if (newValue === undefined || oldValue === undefined) return;
