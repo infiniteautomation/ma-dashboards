@@ -1,19 +1,25 @@
-<ma-json-store xid="{{$ctrl.reportJsonStoreXid}}" item="$ctrl.reportStoreItem" value="$ctrl.reportStore"></ma-json-store>
+<ma-json-store ng-if="!$ctrl.displayMode" xid="{{$ctrl.reportJsonStoreXid}}" item="$ctrl.reportStoreItem" value="$ctrl.reportStore"></ma-json-store>
 
-<ma-json-store xid="{{$ctrl.selectedReport.uid}}" item="$ctrl.reportItem" value="$ctrl.report"></ma-json-store>
+<ma-json-store ng-if="!$ctrl.displayMode" xid="allChartReports" item="$ctrl.allChartReportsItem" value="$ctrl.allChartReports"></ma-json-store>
+
+<ma-json-store xid="{{$ctrl.displayMode ? $ctrl.displayMode.xid : $ctrl.selectedReport.uid}}" item="$ctrl.reportItem" value="$ctrl.report"></ma-json-store>
+
+<ma-watch-list-select ng-if="$ctrl.displayMode" no-select="true" watch-list-xid="{{$ctrl.report.report.watchList}}" watch-list="$ctrl.watchList" select-first="false"></ma-watch-list-select>
+
 
 <div layout="column" layout-gt-md="row">
     <md-card flex>
         <md-toolbar class="md-whiteframe-1dp md-hue-3">
             <div class="md-toolbar-tools">
                 <h2 flex>
-                    <span>{{$ctrl.markerName}}'s Reports</span>
+                    <span ng-if="!$ctrl.displayMode">{{$ctrl.markerName}}'s Reports</span>
+                    <span ng-if="$ctrl.displayMode">{{$ctrl.displayMode.name}} Report</span>
                 </h2>
             </div>
         </md-toolbar>
 
         <md-card-content>
-            <div layout="row" flex layout-align="start center">
+            <div layout="row" flex layout-align="start center" ng-if="!$ctrl.displayMode">
                 <md-input-container flex ng-hide="!$ctrl.localReportStore.reports.length">
                     <label>Choose Report</label>
                     <md-select ng-model="$ctrl.selectedReport" ng-change="$ctrl.reportChanged()">
@@ -41,11 +47,15 @@
                 </md-button>
             </div>
             
-            <ma-watch-list-chart flex add-checked="$ctrl.watchList.data.selectedPoints" chart-config="$ctrl.watchList.data.chartConfig"
+            <ma-watch-list-chart ng-if="!$ctrl.displayMode" flex add-checked="$ctrl.watchList.data.selectedPoints" chart-config="$ctrl.watchList.data.chartConfig"
                 export="true" to="$ctrl.dateBar.to" from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals"
                 rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>
+                
+            <ma-watch-list-chart ng-if="$ctrl.displayMode" flex add-checked="$ctrl.watchList.data.selectedPoints" chart-config="$ctrl.watchList.data.chartConfig"
+                export="true" to="$ctrl.report.report.dateBar.data.to" from="$ctrl.report.report.dateBar.data.from" rollup-type="$ctrl.report.report.dateBar.data.rollupType" rollup-interval-number="$ctrl.report.report.dateBar.data.rollupIntervals"
+                rollup-interval-period="$ctrl.report.report.dateBar.data.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>
         </md-card-content>
     </md-card>
-
+    {{$ctrl.report.dateBar}}
     <ma-user-notes-table disabled="!$ctrl.reportItem.id" style="min-width: 400px" reference-id="$ctrl.reportItem.id" comment-type="JSON_DATA"></ma-user-notes-table>
 </div>

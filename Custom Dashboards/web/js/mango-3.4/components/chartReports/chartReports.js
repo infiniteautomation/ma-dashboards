@@ -14,9 +14,10 @@ define(['angular', 'require'], function(angular, require) {
         var index = 0;
 
 
-        $ctrl.$onInit = function(changes) {
+        $ctrl.$onInit = function() {
             $ctrl.localReportStore = {reports: []};
             $ctrl.reportStore = {reports: []};
+            $ctrl.allChartReports = {reports: []};
         };
 
         $ctrl.$onChanges = function(changes) {
@@ -61,8 +62,24 @@ define(['angular', 'require'], function(angular, require) {
 
           // Also store chartReport into it's own Json_Data row
           $ctrl.report.report = angular.copy($ctrl.selectedReport);
-          
           $ctrl.reportItem.$save();
+
+          // Also add to allChartReportsItem, if it doesn't already exist
+          var alreadyExistsIndex = $ctrl.allChartReports.reports.map(function(report) {
+            return report.xid;
+          }).indexOf($ctrl.selectedReport.uid);
+
+          if (alreadyExistsIndex === -1) {
+            $ctrl.allChartReports.reports.push({name: $ctrl.selectedReport.name, xid: $ctrl.selectedReport.uid});
+            $ctrl.allChartReportsItem.$save();
+          }
+          else {
+            // exists so update name in case changed
+            // console.log(alreadyExistsIndex)
+            $ctrl.allChartReports.reports[alreadyExistsIndex].name = $ctrl.selectedReport.name;
+            $ctrl.allChartReportsItem.$save();
+          }
+          
         };
 
         $ctrl.addReport = function() {
@@ -87,7 +104,7 @@ define(['angular', 'require'], function(angular, require) {
           var reportUid = $ctrl.selectedReport.uid;
           $ctrl.reportItem.$delete();
 
-          // and remove from reports array
+          // and remove from reports arrays
           $ctrl.reportStore.reports = $ctrl.reportStore.reports.filter(function(report) {
               return report.uid !== reportUid;
           });
@@ -96,10 +113,15 @@ define(['angular', 'require'], function(angular, require) {
               return report.uid !== reportUid;
           });
 
+          $ctrl.allChartReports.reports = $ctrl.allChartReports.reports.filter(function(report) {
+              return report.xid !== reportUid;
+          });
+
           $ctrl.selectedReport = $ctrl.localReportStore.reports[0];
           index = 0;
 
           $ctrl.reportStoreItem.$save();
+          $ctrl.allChartReportsItem.$save();
         };
 
         $scope.$watch('$ctrl.reportStore.reports', function(newValue, oldValue) {
@@ -122,7 +144,8 @@ define(['angular', 'require'], function(angular, require) {
             reportWatchlistXid: '@',
             markerUid: '@',
             markerName: '@',
-            dateBar: '='
+            dateBar: '=',
+            displayMode: '='
         },
         controller: chartReportsController,
         templateUrl: require.toUrl('./chartReports.html')
