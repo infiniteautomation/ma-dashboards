@@ -35,7 +35,7 @@
                     <md-icon>delete</md-icon>
                     <span ma-tr="common.delete"></span>
                 </md-button>
-                <md-button class="md-raised md-accent" ng-click="$ctrl.addReport()">
+                <md-button class="md-raised md-accent" ng-click="$ctrl.addReport()" ng-disabled="$ctrl.localReportStore.reports.length && !$ctrl.selectedReport.watchList">
                     <md-icon>add</md-icon>
                     <span>New Report</span>
                 </md-button>
