@@ -142,7 +142,8 @@ define(['angular', 'require'], function(angular, require) {
             marker: '=',
             markerUid: '@',
             dateBar: '=',
-            displayMode: '='
+            displayMode: '=',
+            chartHeight: '@'
         },
         controller: chartReportsController,
         templateUrl: require.toUrl('./chartReports.html')
