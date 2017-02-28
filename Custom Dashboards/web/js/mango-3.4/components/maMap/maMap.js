@@ -18,7 +18,8 @@ define(['angular', 'require'], function(angular, require) {
   * - <a ui-sref="dashboard.examples.utilities.googleMaps">View Demo</a>
   *
   * @param {number} zoom Sets the zoom level of the map.
-  * @param {numbers=} center Sets the lat/long coordinates of the center of the map. Set as two comma seperated values. Eg. `-12.95, -38.45`. <br> Not necessary if `<ma-map>` contains a `<marker>` component with a `position` property set and `centered="true"`.
+  * @param {number} lat Sets the latitude coordinate of the center of the map. Eg. `-12.95`.
+  * @param {number} long Sets the longitude coordinate of the center of the map. Eg. `38.42`.
   * @param {string=} map-type Sets the map type. Possible options are:
 <ul>
     <li>`roadmap` displays the default road map view</li>
@@ -74,8 +75,6 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.onMapLoaded = function() {
-            console.log($ctrl.mapId);
-
             NgMap.getMap($ctrl.mapId).then(function(map) {
                 $ctrl.map = map;
 
@@ -87,7 +86,6 @@ define(['angular', 'require'], function(angular, require) {
                     $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long));
                 });
             });
-
         };
 
 
