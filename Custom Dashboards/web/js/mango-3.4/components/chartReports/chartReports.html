@@ -33,6 +33,10 @@
 
                 <ma-watch-list-select flex layout="row" ng-hide="!$ctrl.localReportStore.reports.length" watch-list-xid="{{$ctrl.initialWatchListXid}}" watch-list="$ctrl.watchList" select-first="false"></ma-watch-list-select>
 
+                <md-button class="md-raised md-accent md-hue-3" ui-sref="dashboard.watchList({watchListXid: $ctrl.watchList.xid})" target="_blank" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
+                    <md-icon>edit</md-icon>
+                    <span>Edit Chart</span>
+                </md-button>
                 <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
                     <md-icon>save</md-icon>
                     <span ma-tr="common.save"></span>
