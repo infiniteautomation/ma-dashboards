@@ -12,8 +12,8 @@
         <md-toolbar class="md-whiteframe-1dp md-hue-3">
             <div class="md-toolbar-tools">
                 <h2 flex>
-                    <span ng-if="!$ctrl.displayMode">{{$ctrl.markerName}}'s Reports</span>
-                    <span ng-if="$ctrl.displayMode">{{$ctrl.displayMode.name}} Report</span>
+                    <span ng-if="!$ctrl.displayMode">{{$ctrl.marker.name}}'s Reports</span>
+                    <span ng-if="$ctrl.displayMode">{{$ctrl.displayMode.name}} Report - {{$ctrl.report.report.dateBar.data.preset}}</span>
                 </h2>
             </div>
         </md-toolbar>
@@ -53,9 +53,9 @@
                 
             <ma-watch-list-chart ng-if="$ctrl.displayMode" flex add-checked="$ctrl.watchList.data.selectedPoints" chart-config="$ctrl.watchList.data.chartConfig"
                 export="true" to="$ctrl.report.report.dateBar.data.to" from="$ctrl.report.report.dateBar.data.from" rollup-type="$ctrl.report.report.dateBar.data.rollupType" rollup-interval-number="$ctrl.report.report.dateBar.data.rollupIntervals"
-                rollup-interval-period="$ctrl.report.report.dateBar.data.rollupIntervalPeriod" chart-height="500px"></ma-watch-list-chart>
+                rollup-interval-period="$ctrl.report.report.dateBar.data.rollupIntervalPeriod" chart-height="400px"></ma-watch-list-chart>
         </md-card-content>
     </md-card>
-    {{$ctrl.report.dateBar}}
-    <ma-user-notes-table disabled="!$ctrl.reportItem.id" style="min-width: 400px" reference-id="$ctrl.reportItem.id" comment-type="JSON_DATA"></ma-user-notes-table>
+    
+    <ma-user-notes-table disabled="!$ctrl.reportItem.id" style="min-width: 350px" reference-id="$ctrl.reportItem.id" comment-type="JSON_DATA"></ma-user-notes-table>
 </div>

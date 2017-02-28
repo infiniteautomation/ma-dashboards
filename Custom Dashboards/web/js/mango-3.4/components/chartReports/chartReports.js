@@ -13,7 +13,6 @@ define(['angular', 'require'], function(angular, require) {
         var $ctrl = this;
         var index = 0;
 
-
         $ctrl.$onInit = function() {
             $ctrl.localReportStore = {reports: []};
             $ctrl.reportStore = {reports: []};
@@ -24,7 +23,6 @@ define(['angular', 'require'], function(angular, require) {
             // console.log(changes);
             if (changes.markerUid.currentValue) {
               delete $ctrl.reportStoreItem;
-
               delete $ctrl.reportItem;
               delete $ctrl.report;
               
@@ -34,13 +32,8 @@ define(['angular', 'require'], function(angular, require) {
               $ctrl.selectedReport = {};
 
               $ctrl.reportJsonStoreXid = 'Rpt-' + $ctrl.markerUid;
-
               // console.log('markerUid updated, new Rpt- xid is', $ctrl.reportJsonStoreXid);
             }
-
-            // if (changes.reportWatchlistXid.currentValue) {
-            //   $ctrl.initialWatchListXid = $ctrl.reportWatchlistXid;
-            // }
         };
 
         $ctrl.reportChanged = function() {
@@ -50,7 +43,7 @@ define(['angular', 'require'], function(angular, require) {
           index = $ctrl.localReportStore.reports.indexOf($ctrl.selectedReport);
           DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
 
-          $ctrl.initialWatchListXid = $ctrl.selectedReport.watchList || $ctrl.reportWatchlistXid;
+          $ctrl.initialWatchListXid = $ctrl.selectedReport.watchList || $ctrl.marker.xid;
         };
 
         $ctrl.saveReport = function() {
@@ -70,13 +63,14 @@ define(['angular', 'require'], function(angular, require) {
           }).indexOf($ctrl.selectedReport.uid);
 
           if (alreadyExistsIndex === -1) {
-            $ctrl.allChartReports.reports.push({name: $ctrl.selectedReport.name, xid: $ctrl.selectedReport.uid});
+            $ctrl.allChartReports.reports.push({name: $ctrl.selectedReport.name, xid: $ctrl.selectedReport.uid, marker: $ctrl.marker});
             $ctrl.allChartReportsItem.$save();
           }
           else {
             // exists so update name in case changed
             // console.log(alreadyExistsIndex)
             $ctrl.allChartReports.reports[alreadyExistsIndex].name = $ctrl.selectedReport.name;
+            $ctrl.allChartReports.reports[alreadyExistsIndex].marker = $ctrl.marker;
             $ctrl.allChartReportsItem.$save();
           }
           
@@ -92,7 +86,7 @@ define(['angular', 'require'], function(angular, require) {
           $ctrl.selectedReport = $ctrl.localReportStore.reports[index];
           $ctrl.selectedReport.uid = 'Report-' + Util.uuid();
 
-          $ctrl.initialWatchListXid = $ctrl.reportWatchlistXid;
+          $ctrl.initialWatchListXid = $ctrl.marker.xid;
 
           $timeout(function() {
               angular.element(document.querySelector('#report-name-input')).focus();
@@ -132,7 +126,7 @@ define(['angular', 'require'], function(angular, require) {
                 $ctrl.localReportStore.reports = angular.copy($ctrl.reportStore.reports);
                 $ctrl.selectedReport = $ctrl.localReportStore.reports[0];
 
-                $ctrl.initialWatchListXid = $ctrl.selectedReport.watchList || $ctrl.reportWatchlistXid;
+                $ctrl.initialWatchListXid = $ctrl.selectedReport.watchList || $ctrl.marker.xid;
 
                 DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
             }
@@ -141,9 +135,8 @@ define(['angular', 'require'], function(angular, require) {
 
     return {
         bindings: {
-            reportWatchlistXid: '@',
+            marker: '=',
             markerUid: '@',
-            markerName: '@',
             dateBar: '=',
             displayMode: '='
         },
