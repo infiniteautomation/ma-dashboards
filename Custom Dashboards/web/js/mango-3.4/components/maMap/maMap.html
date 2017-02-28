@@ -17,11 +17,14 @@
   }
 </style>
 
-<ng-map ng-if="$ctrl.render" center="{{$ctrl.center}}" style="display:block; height: {{$ctrl.height}}; min-height: 100%" trigger-resize="true" map-initialized="$ctrl.onMapLoaded()" zoom="{{$ctrl.zoom}}" 
- map-type-id="{{$ctrl.mapType}}" styles="{{$ctrl.styles}}">
+<ng-map ng-if="$ctrl.render" center="{{$ctrl.lat + ', ' + $ctrl.long}}" style="display:block; height: {{$ctrl.height}}; min-height: 100%" trigger-resize="true" 
+ map-initialized="$ctrl.onMapLoaded()" zoom="{{$ctrl.zoom}}" 
+ map-type-id="{{$ctrl.mapType}}" styles="{{$ctrl.styles}}" id="{{$ctrl.mapId}}">
   <ng-transclude></ng-transclude>
 </ng-map>
 
 <strong ng-if="!$ctrl.render &&  !$ctrl.apiKeySet"><em>
-  In order to user our &lt;ma-map&gt; component you must set up your own Google Maps API Key. You can <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">get your key</a> from Google then enter it into the <a ui-sref="dashboard.settings.dashboardSettings">Dashboard Settings</a> page.</em>
+  In order to user our &lt;ma-map&gt; component you must set up your own Google Maps API Key. You can 
+  <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">get your key</a> 
+  from Google then enter it into the <a ui-sref="dashboard.settings.dashboardSettings">Dashboard Settings</a> page.</em>
 </strong>

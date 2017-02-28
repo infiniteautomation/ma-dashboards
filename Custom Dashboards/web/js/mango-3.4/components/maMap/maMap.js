@@ -74,10 +74,20 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.onMapLoaded = function() {
-            NgMap.getMap().then(function(map) {
+            console.log($ctrl.mapId);
+
+            NgMap.getMap($ctrl.mapId).then(function(map) {
                 $ctrl.map = map;
+
                 google.maps.event.trigger($ctrl.map, 'resize');
+                $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long));
+
+                google.maps.event.addListener($ctrl.map, "idle", function() {
+                    google.maps.event.trigger($ctrl.map, 'resize');
+                    $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long));
+                });
             });
+
         };
 
 
@@ -100,13 +110,15 @@ define(['angular', 'require'], function(angular, require) {
     return {
         bindings: {
             zoom: '<',
-            center: '@',
+            lat: '<',
+            long: '<',
             mapType: '@',
             styles: '<',
             infoWindowTheme: '@',
             desktopHeight: '@',
             mobileHeight: '@',
-            outputData: '='
+            outputData: '=',
+            mapId: '@'
         },
         controller: maMapController,
         templateUrl: require.toUrl('./maMap.html'),
