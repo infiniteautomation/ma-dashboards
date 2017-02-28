@@ -122,6 +122,8 @@ define(['angular', 'require'], function(angular, require) {
             }
 
             $ctrl.markerList.markers[index] = angular.copy($ctrl.selectedMarker);
+
+            $ctrl.markerStoreItem.readPermission = 'user';
             $ctrl.markerStoreItem.$save();
         };
 

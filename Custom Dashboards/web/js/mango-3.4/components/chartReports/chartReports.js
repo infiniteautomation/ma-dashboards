@@ -47,6 +47,10 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.saveReport = function() {
+          $ctrl.reportStoreItem.readPermission = 'user';
+          $ctrl.allChartReportsItem.readPermission = 'user';
+          $ctrl.reportItem.readPermission = 'user';
+
           $ctrl.selectedReport.dateBar.data = angular.copy(DateBar.data);
           $ctrl.selectedReport.watchList = $ctrl.watchList.xid;
 

@@ -150,6 +150,8 @@ define(['angular', 'require'], function(angular, require) {
             }
 
             $ctrl.dashboardList.list[index] = angular.copy($ctrl.selectedDashboard);
+
+            $ctrl.dashboardStoreItem.readPermission = 'user';
             $ctrl.dashboardStoreItem.$save();
         };
         
