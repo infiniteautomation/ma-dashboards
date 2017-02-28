@@ -28,20 +28,22 @@
             </md-select>
         </md-input-container>
 
-        <ma-filtering-point-list ng-show="!$ctrl.selectOnlyMode" ng-if="$ctrl.binaryMarkerMode" ng-model="$ctrl.markersBinaryPoint" point-xid="{{$ctrl.selectedDashboard.markersBinaryPoint}}" auto-init="true"></ma-filtering-point-list>
+        <ma-watch-list-select ng-show="!$ctrl.selectOnlyMode" flex layout="row" ng-if="$ctrl.numWatchLists >= 1" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[0]}}" watch-list="$ctrl.addWatchList1" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
+    </div>
+    
+    <div layout="row" flex layout-align="start center" ng-show="!$ctrl.selectOnlyMode">
         
-        <md-input-container flex ng-if="$ctrl.binaryMarkerMode && $ctrl.markersBinaryPoint" ng-show="!$ctrl.selectOnlyMode">
+        <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 2" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[1]}}" watch-list="$ctrl.addWatchList2" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
+        <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 3" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[2]}}" watch-list="$ctrl.addWatchList3" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
+        
+        <ma-filtering-point-list ng-if="$ctrl.binaryMarkerMode" ng-model="$ctrl.markersBinaryPoint" point-xid="{{$ctrl.selectedDashboard.markersBinaryPoint}}" auto-init="true"></ma-filtering-point-list>
+        
+        <md-input-container flex ng-if="$ctrl.binaryMarkerMode && $ctrl.markersBinaryPoint">
             <label ma-tr="dashboards.v3.app.selectMarkerIcon"></label>
             <md-select ng-model="$ctrl.selectedDashboard.myMarkerIconFalse" ng-disabled="!$ctrl.localDashboardList.list.length" ng-change="$ctrl.markerChanged()">
                 <md-option ng-repeat="markerIcon in $ctrl.markerIcons" ng-value="markerIcon.image" ng-bind="markerIcon.name"></md-option>
             </md-select>
         </md-input-container>
-    </div>
-    
-    <div layout="row" flex layout-align="start center" ng-show="!$ctrl.selectOnlyMode">
-        <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 1" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[0]}}" watch-list="$ctrl.addWatchList1" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
-        <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 2" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[1]}}" watch-list="$ctrl.addWatchList2" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
-        <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 3" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[2]}}" watch-list="$ctrl.addWatchList3" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
 
         <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedDashboard.name || !$ctrl.selectedDashboard.lat || !$ctrl.selectedDashboard.long || ($ctrl.numWatchLists >= 1 && !$ctrl.addWatchList1.xid)" 
         ng-click="$ctrl.save()">
