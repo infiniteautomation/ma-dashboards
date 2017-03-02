@@ -7,11 +7,12 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
 
-    chartReportsController.$inject = ['$scope', '$timeout', 'Util', 'DateBar'];
+    chartReportsController.$inject = ['$scope', '$timeout', 'Util', 'DateBar', 'User'];
 
-    function chartReportsController($scope, $timeout, Util, DateBar) {
+    function chartReportsController($scope, $timeout, Util, DateBar, User) {
         var $ctrl = this;
         var index = 0;
+        $ctrl.user = User;
 
         $ctrl.$onInit = function() {
             $ctrl.localReportStore = {reports: []};

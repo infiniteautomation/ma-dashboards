@@ -26,29 +26,32 @@
                         <md-option ng-repeat="report in $ctrl.localReportStore.reports track by report.uid" ng-value="report" ng-bind="report.name"></md-option>
                     </md-select>
                 </md-input-container>
-                <md-input-container flex ng-hide="!$ctrl.localReportStore.reports.length">
-                    <label ma-tr="dashboards.v3.app.name"></label>
-                    <input ng-model="$ctrl.selectedReport.name" md-select-on-focus id="report-name-input">
-                </md-input-container>
 
-                <ma-watch-list-select flex layout="row" ng-hide="!$ctrl.localReportStore.reports.length" watch-list-xid="{{$ctrl.initialWatchListXid}}" watch-list="$ctrl.watchList" select-first="false"></ma-watch-list-select>
+                <div layout flex layout-align="start center" ng-show="$ctrl.user.current.hasPermission('superadmin')">
+                    <md-input-container flex ng-hide="!$ctrl.localReportStore.reports.length">
+                        <label ma-tr="dashboards.v3.app.name"></label>
+                        <input ng-model="$ctrl.selectedReport.name" md-select-on-focus id="report-name-input">
+                    </md-input-container>
 
-                <md-button class="md-raised md-accent md-hue-3" ui-sref="dashboard.watchList({watchListXid: $ctrl.watchList.xid})" target="_blank" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
-                    <md-icon>edit</md-icon>
-                    <span>Edit Chart</span>
-                </md-button>
-                <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
-                    <md-icon>save</md-icon>
-                    <span ma-tr="common.save"></span>
-                </md-button>
-                <md-button class="md-raised md-warn" ng-click="$ctrl.deleteReport();" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
-                    <md-icon>delete</md-icon>
-                    <span ma-tr="common.delete"></span>
-                </md-button>
-                <md-button class="md-raised md-accent" ng-click="$ctrl.addReport()" ng-disabled="$ctrl.localReportStore.reports.length && !$ctrl.selectedReport.watchList">
-                    <md-icon>add</md-icon>
-                    <span>New Report</span>
-                </md-button>
+                    <ma-watch-list-select flex layout="row" ng-hide="!$ctrl.localReportStore.reports.length" watch-list-xid="{{$ctrl.initialWatchListXid}}" watch-list="$ctrl.watchList" select-first="false"></ma-watch-list-select>
+
+                    <md-button class="md-raised md-accent md-hue-3" ui-sref="dashboard.watchList({watchListXid: $ctrl.watchList.xid})" target="_blank" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
+                        <md-icon>edit</md-icon>
+                        <span>Edit Chart</span>
+                    </md-button>
+                    <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveReport()" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
+                        <md-icon>save</md-icon>
+                        <span ma-tr="common.save"></span>
+                    </md-button>
+                    <md-button class="md-raised md-warn" ng-click="$ctrl.deleteReport();" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
+                        <md-icon>delete</md-icon>
+                        <span ma-tr="common.delete"></span>
+                    </md-button>
+                    <md-button class="md-raised md-accent" ng-click="$ctrl.addReport()" ng-disabled="$ctrl.localReportStore.reports.length && !$ctrl.selectedReport.watchList">
+                        <md-icon>add</md-icon>
+                        <span>New Report</span>
+                    </md-button>
+                </div>
             </div>
             
             <ma-watch-list-chart ng-if="!$ctrl.displayMode" flex add-checked="$ctrl.watchList.data.selectedPoints" chart-config="$ctrl.watchList.data.chartConfig"
