@@ -32,6 +32,10 @@
     </div>
     
     <div layout="row" flex layout-align="start center" ng-show="!$ctrl.selectOnlyMode">
+        <md-input-container flex>
+            <label ma-tr="dashboards.v3.app.readPermission"></label>
+            <input ng-disabled="!$ctrl.localDashboardList.list.length" ng-model="$ctrl.selectedDashboard.readPermission" md-select-on-focus>
+        </md-input-container>
         
         <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 2" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[1]}}" watch-list="$ctrl.addWatchList2" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>
         <ma-watch-list-select flex layout="row" ng-if="$ctrl.numWatchLists >= 3" watch-list-xid="{{$ctrl.selectedDashboard.watchLists[2]}}" watch-list="$ctrl.addWatchList3" select-first="false" disabled="!$ctrl.localDashboardList.list.length"></ma-watch-list-select>

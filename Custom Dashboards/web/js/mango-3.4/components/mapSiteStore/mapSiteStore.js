@@ -7,11 +7,12 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
   
-    mapSiteStoreController.$inject = ['$scope', '$timeout', 'Util'];
+    mapSiteStoreController.$inject = ['$scope', '$timeout', 'Util', 'User'];
 
-    function mapSiteStoreController($scope, $timeout, Util) {
+    function mapSiteStoreController($scope, $timeout, Util, User) {
         var $ctrl = this;
-
+        $ctrl.user = User;
+        
         $ctrl.markerIcons = [
             {
                 name: 'Red Dot',
@@ -159,7 +160,15 @@ define(['angular', 'require'], function(angular, require) {
             if (newValue === undefined || oldValue === undefined) return;
             // console.log('watch dashboardList.list', newValue, oldValue);
             if (newValue.length && !oldValue.length) {
-                $ctrl.localDashboardList.list = angular.copy($ctrl.dashboardList.list);
+                if ($ctrl.user.current.hasPermission('superadmin')) {
+                    $ctrl.localDashboardList.list = angular.copy($ctrl.dashboardList.list);
+                }
+                else {
+                    $ctrl.localDashboardList.list = angular.copy( $ctrl.dashboardList.list.filter(function(dashbaord) {
+                        return $ctrl.user.current.hasPermission(dashbaord.readPermission);
+                    }) );
+                }
+
                 $ctrl.selectedDashboard = $ctrl.localDashboardList.list[0];
             }
         });
