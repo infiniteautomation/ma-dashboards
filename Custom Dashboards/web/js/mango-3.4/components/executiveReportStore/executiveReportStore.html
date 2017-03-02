@@ -1,8 +1,16 @@
-<ma-json-store xid="allChartReports" item="$ctrl.allChartReportsItem" value="$ctrl.allChartReports"></ma-json-store>
+<ma-json-store ng-if="$ctrl.user.current.hasPermission('superadmin')" xid="allChartReports" item="$ctrl.allChartReportsItem" value="$ctrl.allChartReports"></ma-json-store>
 <ma-json-store xid="executiveReports" item="$ctrl.executiveReportsItem" value="$ctrl.executiveReports"></ma-json-store>
-<ma-json-store xid="{{$ctrl.selectedExecutiveReport.uid}}" item="$ctrl.executiveReportListItem" value="$ctrl.executiveReportList"></ma-json-store>
 
-<div layout="row" layout-align="start center">
+<div layout="row" layout-align="start center" ng-if="!$ctrl.user.current.hasPermission('superadmin')">
+    <md-input-container flex>
+        <label>Choose an Exectuive Report</label>
+        <md-select ng-model="$ctrl.selectedExecutiveReport" ng-model-options="{trackBy: '$value.uid'}" ng-disabled="!$ctrl.nonAdminExecutiveReportList.reports.length" ng-change="$ctrl.reportChanged()">
+            <md-option ng-repeat="report in $ctrl.nonAdminExecutiveReportList.reports track by report.uid" ng-value="report" ng-bind="report.name"></md-option>
+        </md-select>
+    </md-input-container>
+</div>
+
+<div layout="row" layout-align="start center" ng-if="$ctrl.user.current.hasPermission('superadmin')">
     <md-input-container flex>
         <label>Choose an Exectuive Report</label>
         <md-select ng-model="$ctrl.selectedExecutiveReport" ng-model-options="{trackBy: '$value.uid'}" ng-disabled="!$ctrl.localExecutiveReportList.reports.length" ng-change="$ctrl.reportChanged()">

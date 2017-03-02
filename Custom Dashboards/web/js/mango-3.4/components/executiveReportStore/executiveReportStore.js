@@ -7,21 +7,30 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
 
-    executiveReportStoreController.$inject = ['$scope', '$timeout', 'Util'];
+    executiveReportStoreController.$inject = ['$scope', '$timeout', 'Util', 'User'];
 
-    function executiveReportStoreController($scope, $timeout, Util) {
+    function executiveReportStoreController($scope, $timeout, Util, User) {
         var $ctrl = this;
-        var index = 0;
+        var runAsNonAdmin = false;
+
+        $ctrl.user = User;
 
         $ctrl.$onInit = function() {
-            $ctrl.localExecutiveReportList = {reports: []};
-            $ctrl.executiveReportList = {reports: []};
             $ctrl.executiveReports = {reports: []};
+
+            if(!$ctrl.user.current.hasPermission('superadmin')) {
+                $ctrl.nonAdminExecutiveReportList = {reports: []};
+                runAsNonAdmin = true;
+
+                return;
+            }
+
+            $ctrl.localExecutiveReportList = {reports: []};
         };
 
         $ctrl.deleteExecutiveReport = function() {
-            console.log($ctrl.localExecutiveReportList);
-            $ctrl.executiveReportListItem.$delete();
+            
+            // Remove via filtering on report.uid
 
             $ctrl.localExecutiveReportList.reports = $ctrl.localExecutiveReportList.reports.filter(function(report) {
                 return report.uid !== $ctrl.selectedExecutiveReport.uid;
@@ -32,19 +41,14 @@ define(['angular', 'require'], function(angular, require) {
             });
 
             $ctrl.selectedExecutiveReport = $ctrl.localExecutiveReportList.reports[0];
-            index = 0;
-
             $ctrl.selectedChartReports = $ctrl.selectedExecutiveReport.chartReports;
 
             $ctrl.executiveReportsItem.$save();
         };
 
         $ctrl.addExecutiveReport = function() {
-            delete $ctrl.executiveReportListItem;
-            delete $ctrl.executiveReportList;
-            
             $ctrl.localExecutiveReportList.reports.push({});
-            index = $ctrl.localExecutiveReportList.reports.length-1;
+            var index = $ctrl.localExecutiveReportList.reports.length-1;
 
             $ctrl.selectedExecutiveReport = $ctrl.localExecutiveReportList.reports[index];
             $ctrl.selectedExecutiveReport.uid = 'ExRpt-' + Util.uuid();
@@ -57,17 +61,14 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.reportChanged = function() {
-            index = $ctrl.localExecutiveReportList.reports.indexOf($ctrl.selectedExecutiveReport);
             $ctrl.selectedChartReports =  $ctrl.selectedExecutiveReport.chartReports;
         };
 
         $ctrl.saveExecutiveReport = function() {
             $ctrl.selectedExecutiveReport.chartReports = $ctrl.selectedChartReports;
 
-            $ctrl.executiveReportList.reports = angular.copy($ctrl.selectedExecutiveReport);
-
-            $ctrl.executiveReportListItem.readPermission =  $ctrl.selectedExecutiveReport.readPermission;
-            $ctrl.executiveReportListItem.$save();
+            // Make sure all exectuiveReports are readable by any user
+            $ctrl.executiveReportsItem.readPermission = 'user';
 
             // Also add to executiveReportsItem, if it doesn't already exist
             var alreadyExistsIndex = $ctrl.executiveReports.reports.map(function(report) {
@@ -76,14 +77,14 @@ define(['angular', 'require'], function(angular, require) {
 
             if (alreadyExistsIndex === -1) {
                 $ctrl.executiveReports.reports.push($ctrl.selectedExecutiveReport);
-
                 $ctrl.executiveReportsItem.$save();
             }
             else {
-                // exists so update name in case changed
+                // exists so update name, readPermission, chartReports, in case changed
                 // console.log(alreadyExistsIndex)
                 $ctrl.executiveReports.reports[alreadyExistsIndex].name = $ctrl.selectedExecutiveReport.name;
                 $ctrl.executiveReports.reports[alreadyExistsIndex].readPermission = $ctrl.selectedExecutiveReport.readPermission;
+                $ctrl.executiveReports.reports[alreadyExistsIndex].chartReports = $ctrl.selectedExecutiveReport.chartReports;
                 $ctrl.executiveReportsItem.$save();
             }
         };
@@ -92,10 +93,19 @@ define(['angular', 'require'], function(angular, require) {
             if (newValue === undefined || oldValue === undefined) return;
             // console.log('watch executiveReports.reports', newValue, oldValue);
 
+            // Should run on initial fetch of all executiveReports from jsonStore
             if ( newValue.length && !oldValue.length) {
-                $ctrl.localExecutiveReportList.reports = angular.copy($ctrl.executiveReports.reports);
-                $ctrl.selectedExecutiveReport = $ctrl.localExecutiveReportList.reports[0];
-
+                if (runAsNonAdmin) {
+                    $ctrl.nonAdminExecutiveReportList.reports = $ctrl.executiveReports.reports.filter(function(report) {
+                        return $ctrl.user.current.hasPermission(report.readPermission);
+                    });
+                    $ctrl.selectedExecutiveReport = $ctrl.nonAdminExecutiveReportList.reports[0];
+                }
+                else {
+                    $ctrl.localExecutiveReportList.reports = angular.copy($ctrl.executiveReports.reports);
+                    $ctrl.selectedExecutiveReport = $ctrl.localExecutiveReportList.reports[0];
+                }
+                
                 $ctrl.selectedChartReports = $ctrl.selectedExecutiveReport.chartReports;
             }
         });
