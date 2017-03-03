@@ -22,8 +22,7 @@ function loginFactory($state, User, $rootScope, $window) {
             $scope.doLogin = function() {
                 var user = User.login({
                     username: $scope.username,
-                    password: $scope.password,
-                    logout: true
+                    password: $scope.password
                 });
                 user.$promise.then(function() {
                     var redirectUrl = '/dashboards/';
@@ -32,7 +31,7 @@ function loginFactory($state, User, $rootScope, $window) {
                     }
                     $window.location = redirectUrl;
                 }, function(error) {
-                    if (error.status === 406) {
+                    if (error.status === 401) {
                         $scope.errors.invalidLogin = true;
                         $scope.errors.otherError = false;
                     }

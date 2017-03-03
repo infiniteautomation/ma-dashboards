@@ -213,20 +213,8 @@ function UserProvider() {
                 }
             },
             login: {
-                url: '/rest/v1/login/:username',
-                method: 'GET',
-                headers: {
-                    password: function(config) {
-                        var password = config.params.password;
-                        delete config.params.password;
-                        return password;
-                    },
-                    logout: function(config) {
-                        var logout = config.params.logout;
-                        delete config.params.logout;
-                        return !!logout;
-                    }
-                },
+                url: '/rest/v1/login',
+                method: 'POST',
                 isArray: false,
                 withCredentials: true,
                 cache: false,
@@ -246,7 +234,7 @@ function UserProvider() {
             },
             logout: {
                 url: '/rest/v1/logout',
-                method: 'GET',
+                method: 'POST',
                 isArray: false,
                 withCredentials: true,
                 cache: false,
