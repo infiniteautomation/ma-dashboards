@@ -136,6 +136,13 @@ define(['angular', 'require'], function(angular, require) {
                 DateBar.data = angular.copy($ctrl.selectedReport.dateBar.data);
             }
         });
+
+        $scope.$watch('$ctrl.report', function(newValue, oldValue) {
+            if (newValue === undefined) return;
+
+            $ctrl.timeRange = 
+            moment.duration(moment($ctrl.report.report.dateBar.data.to).diff(moment($ctrl.report.report.dateBar.data.from))).humanize();
+        });
     }
 
     return {

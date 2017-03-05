@@ -13,7 +13,7 @@
             <div class="md-toolbar-tools">
                 <h2 flex>
                     <span ng-if="!$ctrl.displayMode">{{$ctrl.marker.name}}'s Reports</span>
-                    <span ng-if="$ctrl.displayMode">{{$ctrl.displayMode.name}} Report - {{$ctrl.report.report.dateBar.data.preset}}</span>
+                    <span ng-if="$ctrl.displayMode">{{$ctrl.displayMode.name}} Report - <span ma-tr="dashboards.v3.app.overTimeRange" ma-tr-args="[$ctrl.timeRange]"></span></span>
                 </h2>
             </div>
         </md-toolbar>
