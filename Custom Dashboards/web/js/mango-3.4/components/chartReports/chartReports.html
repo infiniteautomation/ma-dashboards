@@ -19,22 +19,24 @@
         </md-toolbar>
 
         <md-card-content>
-            <div layout="row" flex layout-align="start center" ng-if="!$ctrl.displayMode">
-                <md-input-container flex ng-hide="!$ctrl.localReportStore.reports.length">
-                    <label>Choose Report</label>
-                    <md-select ng-model="$ctrl.selectedReport" ng-change="$ctrl.reportChanged()">
-                        <md-option ng-repeat="report in $ctrl.localReportStore.reports track by report.uid" ng-value="report" ng-bind="report.name"></md-option>
-                    </md-select>
-                </md-input-container>
-
-                <div layout flex layout-align="start center" ng-show="$ctrl.user.current.hasPermission('superadmin')">
+            <div layout="column" layout-gt-md="row" flex layout-align="start start" layout-align-gt-md="start center" ng-if="!$ctrl.displayMode">
+                <div flex="60" layout="row">
                     <md-input-container flex ng-hide="!$ctrl.localReportStore.reports.length">
+                        <label>Choose Report</label>
+                        <md-select ng-model="$ctrl.selectedReport" ng-change="$ctrl.reportChanged()">
+                            <md-option ng-repeat="report in $ctrl.localReportStore.reports track by report.uid" ng-value="report" ng-bind="report.name"></md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container flex ng-show="$ctrl.user.current.hasPermission('superadmin')" ng-disabled="!$ctrl.localReportStore.reports.length">
                         <label ma-tr="dashboards.v3.app.name"></label>
                         <input ng-model="$ctrl.selectedReport.name" md-select-on-focus id="report-name-input">
                     </md-input-container>
 
-                    <ma-watch-list-select flex layout="row" ng-hide="!$ctrl.localReportStore.reports.length" watch-list-xid="{{$ctrl.initialWatchListXid}}" watch-list="$ctrl.watchList" select-first="false"></ma-watch-list-select>
+                    <ma-watch-list-select flex layout="row" ng-show="$ctrl.user.current.hasPermission('superadmin')" ng-disabled="!$ctrl.localReportStore.reports.length" watch-list-xid="{{$ctrl.initialWatchListXid}}" watch-list="$ctrl.watchList" select-first="false"></ma-watch-list-select>
+                </div>
 
+                <div flex="40" layout="row" layout-align="end" ng-show="$ctrl.user.current.hasPermission('superadmin')">
                     <md-button class="md-raised md-accent md-hue-3" ui-sref="dashboard.watchList({watchListXid: $ctrl.watchList.xid})" target="_blank" ng-disabled="!$ctrl.localReportStore.reports.length || !$ctrl.selectedReport.name">
                         <md-icon>edit</md-icon>
                         <span>Edit Chart</span>
