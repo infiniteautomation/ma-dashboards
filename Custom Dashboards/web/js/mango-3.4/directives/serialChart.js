@@ -39,7 +39,10 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
  * @param {string=} series-X-title Sets the text in the legend for the given series (replace `X` with series number starting with 1).
  * @param {object=} series-X-graph-options Config object for the series, see [AmGraph](https://docs.amcharts.com/3/javascriptcharts/AmGraph)
  * @param {boolean=} export If set to true, chart export functionality will be turned on. Defaults to off.
- * @param {boolean=} balloon If set to true, chart's cursor and balloon will be turned on. Defaults to off.
+ * @param {boolean=} one-balloon If set to true, display only one balloon at a time. Defaults to all graphs display balloon.
+ * @param {string=} bullet Set to add bullets to values on graphs. Options are: `"circle"`, `"square"`, `"diamond"`, `"triangleUp"`, `"triangleDown"`, `"triangleLeft"`, `"triangleRight"`, `"bubble"`, `"xError"`, and `"yError"`.
+ * @param {string=} custom-bullet Set to image path of a custom bullet image.
+ * @param {boolean=} annotate-mode If set to true, clicking on value of a graph will open annotation dialog.
  * @param {boolean=} legend If set to true, chart's legend will be turned on. Defaults to off.
  * @param {object=} options extend AmCharts configuration object for customizing design of the chart (see [amCharts](https://docs.amcharts.com/3/javascriptcharts/AmSerialChart))
  * 
@@ -48,8 +51,8 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 </ma-serial-chart>`
  *
  */
-serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util'];
-function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util) {
+serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util', 'serialChartAnnotationDialog'];
+function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util, serialChartAnnotationDialog) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -66,8 +69,12 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         defaultBalloonText: '@',
         defaultGraphOptions: '<?',
         'export': '<?',
-        balloon: '<?',
-        legend: '<?'
+        oneBalloon: '<?',
+        legend: '<?',
+        customBullet: '@',
+        bullet: '@',
+        annotateMode: '<?',
+        lineThickness: '@'
 	};
 
 	for (var j = 1; j <= MAX_SERIES; j++) {
@@ -115,6 +122,47 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
     function postLink($scope, $element, attrs) {
         var options = defaultOptions();
 
+        if ($scope.annotateMode) {
+            // console.log('Entering annotate mode');
+            options.listeners = [ {
+                    "event": "init",
+                    "method": function( e ) {
+
+                    e.chart.addListener( "clickGraphItem", function(clickEvent) {
+                        // we track cursor's last known position by "changed" event
+                        if ( e.chart.lastCursorPosition !== undefined ) {
+                        
+                        var clickedGraphId = clickEvent.graph.valueField;
+                        // console.log(clickedGraphId);
+
+                        var chartPoint = e.chart.dataProvider[ e.chart.lastCursorPosition ];
+                        var date = chartPoint[ e.chart.categoryField ];
+                        var prevText = chartPoint[clickedGraphId + 'AnnotationText'];
+
+                        var annotateCallBack = function (data) {
+                            console.log(data);
+                            
+                            chartPoint[clickedGraphId + 'AnnotationText'] = data.title;
+                            chartPoint[clickedGraphId + 'AnnotationBalloonText'] = data.description;
+                            chartPoint[clickedGraphId + 'AnnotationBulletSize'] = 15;
+                            chartPoint[clickedGraphId + 'AnnotationBullet'] = 'diamond';
+                            chartPoint[clickedGraphId + 'AnnotationTextColor'] = '#FFF';
+
+                            e.chart.validateData();
+                        };
+
+                        serialChartAnnotationDialog.addNote({clickedGraphId: clickedGraphId}, annotateCallBack);
+                        }
+                    })
+                    }
+                }, {
+                    "event": "changed",
+                    "method": function( e ) {
+                    e.chart.lastCursorPosition = e.index;
+                    }
+                } ];
+        }
+
         if ($scope.timeFormat) {
             options.categoryAxis.parseDates = false;
         }
@@ -140,10 +188,16 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             options['export'].enabled = true;
         }
         
-        if ($scope.balloon) {
+        if ($scope.oneBalloon) {
             options.chartCursor = {
-                categoryBalloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon,
-                oneBalloonOnly: false
+                oneBalloonOnly: true
+            };
+        }
+
+        if ($scope.annotateMode) {
+            options.chartCursor = {
+                oneBalloonOnly: true,
+                graphBulletSize: 2
             };
         }
 
@@ -306,7 +360,14 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 type: 'smoothedLine',
                 valueAxis: 'left',
                 balloonFunction: function(dataItem, graph) {
-                    return (dataItem.dataContext[graph.valueField + '_rendered'] || dataItem.dataContext[graph.valueField]).toString();
+                    var valueForBalloon = (dataItem.dataContext[graph.valueField + '_rendered'] || dataItem.dataContext[graph.valueField]).toString();
+
+                    if ($scope.annotateMode) {
+                        return dataItem.dataContext[graph.valueField + 'AnnotationBalloonText'] || valueForBalloon;
+                    }
+                    else {
+                        return valueForBalloon;
+                    }
                 }
         	};
 
@@ -327,12 +388,15 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     pointDefaults.type = 'smoothedLine';
                 }
         	}
+            
 
             var defaultAttributes = {
                 type: $scope.defaultType,
                 lineColor: $scope.defaultColor,
+                lineThickness: $scope.lineThickness,
                 valueAxis: $scope.defaultAxis,
-                balloonText: $scope.defaultBalloonText
+                bullet: $scope.bullet,
+                customBullet: $scope.customBullet
             };
             
         	var attributeOptions = {
@@ -346,7 +410,27 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	var graphOptions = $scope['series' + graphNum + 'GraphOptions'] ||
         	    ($scope.graphOptions && $scope.graphOptions[graphNum - 1]);
 
-            var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions);
+            var annotateOptions = {}
+
+            if ($scope.annotateMode) {
+                annotateOptions = {
+                    bulletSizeField: graph.valueField + 'AnnotationBulletSize',
+                    labelText: '[[' + graph.valueField + 'AnnotationText]]',
+                    labelRotation: 120,
+                    labelPosition: 'top',
+                    labelColorField: graph.valueField + 'AnnotationTextColor',
+                    bulletSize: 0,
+                    bullet: 'round',
+                    bulletField: graph.valueField + 'AnnotationBullet',
+                    bulletAlpha: 1,
+                    
+                }
+            }
+
+            var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions, annotateOptions);
+            
+            
+            
             if (opts.balloonText)
                 delete opts.balloonFunction;
             if (angular.isUndefined(opts.fillAlphas)) {
@@ -480,6 +564,9 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 equalSpacing: true,
                 axisThickness: 0,
                 dateFormats: MA_AMCHARTS_DATE_FORMATS.categoryAxis
+            },
+            chartCursor: {
+                categoryBalloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon
             },
             startDuration: 0,
             graphs: [],

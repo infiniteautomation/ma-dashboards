@@ -1,0 +1,37 @@
+<md-dialog aria-label="Set Annotation">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Set Annotation</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column">
+                <md-input-container>
+                    <label>Title</label>
+                    <input type="text" ng-model="$ctrl.title" md-autofocus md-select-on-focus>
+                </md-input-container>
+                <md-input-container>
+                    <label>Description</label>
+                    <textarea ng-model="$ctrl.description" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+
+                <div layout="row">
+                    <md-button ng-click="$ctrl.addNote()" ng-disabled="!$ctrl.title || !$ctrl.description">
+                        <md-icon>add</md-icon>
+                        Add Note
+                    </md-button>
+
+                    <md-button ng-click="$ctrl.cancel()">
+                        <md-icon>close</md-icon>
+                        Cancel
+                    </md-button>
+                </div>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>
