@@ -21,8 +21,8 @@ define([], function() {
  * The translate filter cannot asynchronously load the translation namespace and display the translation.
  * Translation namespace must be loaded into Globalize prior to filter being run.
  */
-function trFilter(Translate) {
-    return function(key) {
+function trFilterFactory(Translate) {
+    return function trFilter(key) {
         var args;
         if (angular.isArray(key)) {
             args = Array.prototype.slice.call(key, 1);
@@ -40,7 +40,7 @@ function trFilter(Translate) {
     };
 }
 
-trFilter.$inject = ['Translate'];
-return trFilter;
+trFilterFactory.$inject = ['Translate'];
+return trFilterFactory;
 
 }); // define

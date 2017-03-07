@@ -6,8 +6,8 @@
 define(['require', 'angular-ui-ace'], function(require) {
 'use strict';
 
-LiveEditorController.$inject = ['$element', 'mdAdminSettings', '$templateRequest', '$sce', '$scope'];
-function LiveEditorController($element, mdAdminSettings, $templateRequest, $sce, $scope) {
+LiveEditorController.$inject = ['$element', 'mdAdminSettings', '$templateRequest', '$sce', '$scope', '$timeout'];
+function LiveEditorController($element, mdAdminSettings, $templateRequest, $sce, $scope, $timeout) {
     this.initialText = $element.data('htmlContent');
     $element.removeData('htmlContent');
     
@@ -30,6 +30,7 @@ function LiveEditorController($element, mdAdminSettings, $templateRequest, $sce,
     this.mdAdminSettings = mdAdminSettings;
     this.$templateRequest = $templateRequest;
     this.$sce = $sce;
+    this.$timeout = $timeout;
 }
 
 LiveEditorController.prototype.$onInit = function() {
@@ -62,9 +63,15 @@ LiveEditorController.prototype.$onChanges = function(changes) {
 LiveEditorController.prototype.aceLoaded = function aceLoaded(editor) {
     this.editor = editor;
     editor.$blockScrolling = Infinity;
+
     if (this.initialText) {
         this.setEditorText(this.initialText);
     }
+        
+    this.$timeout(function() {
+        this.editor.resize();
+    }.bind(this), 0);
+
 };
 
 LiveEditorController.prototype.aceChanged = function aceChanged() {
