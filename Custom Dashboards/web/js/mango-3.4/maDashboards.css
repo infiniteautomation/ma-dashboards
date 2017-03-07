@@ -285,14 +285,6 @@ ma-badge {
     font-weight: bold;
 }
 
-md-autocomplete[md-floating-label][ma-clearable] button {
-  margin: 0;
-  position: absolute;
-  top: 19px;
-  bottom: auto;
-  right: 0;
-}
-
 /* Accordions */
 
 ma-accordion-section {

@@ -79,14 +79,14 @@ function pointList(Point, $filter, $injector, Translate, $timeout) {
             }
 
             $scope.storeItem = function(selectedItem) {
-                // jshint eqnull:true
-                if (selectedItem && selectedItem != null) {
-                    $scope.ngModel = selectedItem;
-                    if ($scope.ngChange) {
-                        $timeout(function() {
-                            $scope.ngChange();
-                        }, 0);
-                    }
+                var oldXid = $scope.ngModel && $scope.ngModel.xid;
+                var newXid = selectedItem && selectedItem.xid;
+                $scope.ngModel = selectedItem;
+
+                if ($scope.ngChange && newXid != oldXid) {
+                    $timeout(function() {
+                        $scope.ngChange();
+                    }, 0);
                 }
             };
 
