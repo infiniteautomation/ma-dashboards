@@ -133,16 +133,19 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                         if ( e.chart.lastCursorPosition !== undefined ) {
                         
                         var clickedGraphId = clickEvent.graph.valueField;
-                        // console.log(clickedGraphId);
+                        // console.log(clickEvent.graph);
 
                         var chartPoint = e.chart.dataProvider[ e.chart.lastCursorPosition ];
+                        // console.log(chartPoint);
+
                         var date = chartPoint[ e.chart.categoryField ];
-                        var prevText = chartPoint[clickedGraphId + 'AnnotationText'];
+                        var prevTitle = chartPoint[clickedGraphId + 'AnnotationText'] || '';
+                        var prevDescription = chartPoint[clickedGraphId + 'AnnotationBalloonText'] || '';
 
                         var annotateCallBack = function (data) {
-                            console.log(data);
+                            // console.log(data);
                             
-                            chartPoint[clickedGraphId + 'AnnotationText'] = data.title;
+                            chartPoint[clickedGraphId + 'AnnotationText'] = data.title + ' - - ';
                             chartPoint[clickedGraphId + 'AnnotationBalloonText'] = data.description;
                             chartPoint[clickedGraphId + 'AnnotationBulletSize'] = 15;
                             chartPoint[clickedGraphId + 'AnnotationBullet'] = 'bubble';
@@ -151,8 +154,15 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                             e.chart.validateData();
                         };
 
-                        serialChartAnnotationDialog.addNote({clickedGraphId: clickedGraphId}, annotateCallBack);
+                        serialChartAnnotationDialog.addNote({
+                                pointName: clickEvent.graph.title, 
+                                value: chartPoint[clickedGraphId], 
+                                date: date, 
+                                title: prevTitle, 
+                                description: prevDescription
+                            }, annotateCallBack);
                         }
+
                     })
                     }
                 }, {
@@ -415,9 +425,9 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             if ($scope.annotateMode) {
                 annotateOptions = {
                     labelText: '[[' + graph.valueField + 'AnnotationText]]',
-                    labelRotation: 75,
+                    labelRotation: 70,
                     labelPosition: 'left',
-                    labelOffset: 2,
+                    labelOffset: -10,
                     labelColorField: graph.valueField + 'AnnotationTextColor',
                     bulletSize: 0,
                     bulletSizeField: graph.valueField + 'AnnotationBulletSize',
