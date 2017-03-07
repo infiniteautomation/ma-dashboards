@@ -145,8 +145,8 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                             chartPoint[clickedGraphId + 'AnnotationText'] = data.title;
                             chartPoint[clickedGraphId + 'AnnotationBalloonText'] = data.description;
                             chartPoint[clickedGraphId + 'AnnotationBulletSize'] = 15;
-                            chartPoint[clickedGraphId + 'AnnotationBullet'] = 'diamond';
-                            chartPoint[clickedGraphId + 'AnnotationTextColor'] = '#FFF';
+                            chartPoint[clickedGraphId + 'AnnotationBullet'] = 'bubble';
+                            chartPoint[clickedGraphId + 'AnnotationTextColor'] = 'white';
 
                             e.chart.validateData();
                         };
@@ -197,7 +197,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         if ($scope.annotateMode) {
             options.chartCursor = {
                 oneBalloonOnly: true,
-                graphBulletSize: 2
+                graphBulletSize: 3
             };
         }
 
@@ -363,7 +363,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     var valueForBalloon = (dataItem.dataContext[graph.valueField + '_rendered'] || dataItem.dataContext[graph.valueField]).toString();
 
                     if ($scope.annotateMode) {
-                        return dataItem.dataContext[graph.valueField + 'AnnotationBalloonText'] || valueForBalloon;
+                        return dataItem.dataContext[graph.valueField + 'AnnotationBalloonText'] ? dataItem.dataContext[graph.valueField + 'AnnotationBalloonText'] + ' - ' + valueForBalloon : valueForBalloon;
                     }
                     else {
                         return valueForBalloon;
@@ -414,16 +414,17 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
 
             if ($scope.annotateMode) {
                 annotateOptions = {
-                    bulletSizeField: graph.valueField + 'AnnotationBulletSize',
                     labelText: '[[' + graph.valueField + 'AnnotationText]]',
-                    labelRotation: 120,
-                    labelPosition: 'top',
+                    labelRotation: 75,
+                    labelPosition: 'left',
+                    labelOffset: 2,
                     labelColorField: graph.valueField + 'AnnotationTextColor',
                     bulletSize: 0,
-                    bullet: 'round',
-                    bulletField: graph.valueField + 'AnnotationBullet',
+                    bulletSizeField: graph.valueField + 'AnnotationBulletSize',
+                    bulletHitAreaSize: 15,
                     bulletAlpha: 1,
-                    
+                    bullet: 'diamond',
+                    bulletField: graph.valueField + 'AnnotationBullet'
                 }
             }
 
