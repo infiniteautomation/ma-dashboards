@@ -79,7 +79,8 @@ requirejs.config({
         'amcharts/plugins/animate/animate': vendor + '/amcharts/plugins/animate/animate.min',
         'tinycolor' : vendor + '/tinycolor/tinycolor',
         'md-color-picker' : vendor + '/md-color-picker',
-        'sha512' : vendor + '/js-sha512/sha512'
+        'sha512' : vendor + '/js-sha512/sha512',
+        'papaparse' : vendor + '/papaparse/papaparse'
     },
     shim : {
         'angular': {

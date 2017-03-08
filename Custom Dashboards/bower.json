@@ -34,7 +34,8 @@
     "jqueryui-touch-punch": "master",
     "md-color-picker": "~0.2.6",
     "ngmap": "~1.17.7",
-    "js-sha512": "~0.3.0"
+    "js-sha512": "~0.3.0",
+    "papaparse": "~4.1.4"
   },
   "overrides": {
     "ace-builds": {
