@@ -29,7 +29,6 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.deleteMasterReport = function() {
-            
             // Remove via filtering on report.uid
 
             $ctrl.localMasterReportList.reports = $ctrl.localMasterReportList.reports.filter(function(report) {
@@ -41,7 +40,7 @@ define(['angular', 'require'], function(angular, require) {
             });
 
             $ctrl.selectedMasterReport = $ctrl.localMasterReportList.reports[0];
-            $ctrl.selectedChartReports = $ctrl.selectedMasterReport.chartReports;
+            // $ctrl.selectedChartReports = $ctrl.selectedMasterReport.chartReports;
 
             $ctrl.masterReportsItem.$save();
         };
@@ -51,21 +50,21 @@ define(['angular', 'require'], function(angular, require) {
             var index = $ctrl.localMasterReportList.reports.length-1;
 
             $ctrl.selectedMasterReport = $ctrl.localMasterReportList.reports[index];
-            $ctrl.selectedMasterReport.uid = 'ExRpt-' + Util.uuid();
+            $ctrl.selectedMasterReport.uid = 'MasterRpt-' + Util.uuid();
 
-            $ctrl.selectedChartReports = [];
+            // $ctrl.selectedChartReports = [];
 
             $timeout(function() {
-                angular.element(document.querySelector('#Master-report-name-input')).focus();
+                angular.element(document.querySelector('#master-report-name-input')).focus();
             }, 500);
         };
 
         $ctrl.reportChanged = function() {
-            $ctrl.selectedChartReports =  $ctrl.selectedMasterReport.chartReports;
+            
         };
 
         $ctrl.saveMasterReport = function() {
-            $ctrl.selectedMasterReport.chartReports = $ctrl.selectedChartReports;
+            // $ctrl.selectedMasterReport.chartReports = $ctrl.selectedChartReports;
 
             // Make sure all exectuiveReports are readable by any user
             $ctrl.masterReportsItem.readPermission = 'user';
@@ -105,8 +104,6 @@ define(['angular', 'require'], function(angular, require) {
                     $ctrl.localMasterReportList.reports = angular.copy($ctrl.masterReports.reports);
                     $ctrl.selectedMasterReport = $ctrl.localMasterReportList.reports[0];
                 }
-                
-                $ctrl.selectedChartReports = $ctrl.selectedMasterReport.chartReports;
             }
         });
     }

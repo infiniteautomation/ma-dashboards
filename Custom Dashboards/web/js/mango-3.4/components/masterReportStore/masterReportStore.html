@@ -1,5 +1,6 @@
-<!--<ma-json-store ng-if="$ctrl.user.current.hasPermission('superadmin')" xid="allChartReports" item="$ctrl.allChartReportsItem" value="$ctrl.allChartReports"></ma-json-store>-->
-<!--<ma-json-store xid="MasterReports" item="$ctrl.MasterReportsItem" value="$ctrl.MasterReports"></ma-json-store>-->
+<ma-json-store xid="masterReports" item="$ctrl.masterReportsItem" value="$ctrl.masterReports"></ma-json-store>
+<ma-json-store xid="dashboardStore" item="$ctrl.dashboardStoreItem" value="$ctrl.dashboardStore"></ma-json-store>
+<ma-json-store xid="{{$ctrl.selectedMasterReport.selectedSite.uid}}" item="$ctrl.subSiteStoreItem" value="$ctrl.subSiteStore"></ma-json-store>
 
 <div layout="row" layout-align="start center" ng-if="!$ctrl.user.current.hasPermission('superadmin')">
     <md-input-container flex>
@@ -24,9 +25,16 @@
     </md-input-container>
 
     <md-input-container flex>
-        <label>Select a Report to Add</label>
-        <md-select ng-disabled="!$ctrl.localMasterReportList.reports.length" ng-model="$ctrl.selectedChartReports" ng-model-options="{trackBy: '$value.xid'}" multiple>
-            <md-option ng-repeat="report in $ctrl.allChartReports.reports track by report.xid" ng-value="report" ng-bind="report.name"></md-option>
+        <label>Select Site</label>
+        <md-select ng-disabled="!$ctrl.localMasterReportList.reports.length" ng-model="$ctrl.selectedMasterReport.selectedSite" ng-model-options="{trackBy: '$value.uid'}">
+            <md-option ng-repeat="site in $ctrl.dashboardStore.list track by site.uid" ng-value="site" ng-bind="site.name"></md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container flex>
+        <label>Add Sub-Sites</label>
+        <md-select ng-disabled="!$ctrl.subSiteStore.markers.length" ng-model="$ctrl.selectedMasterReport.selectedSubSites" ng-model-options="{trackBy: '$value.uid'}" multiple>
+            <md-option ng-repeat="subSite in $ctrl.subSiteStore.markers track by subSite.uid" ng-value="subSite" ng-bind="subSite.name"></md-option>
         </md-select>
     </md-input-container>
 
@@ -35,7 +43,7 @@
       <input ng-disabled="!$ctrl.localMasterReportList.reports.length" ng-model="$ctrl.selectedMasterReport.readPermission" md-select-on-focus>
     </md-input-container>
 
-    <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedMasterReport.name || !$ctrl.selectedChartReports.length || !$ctrl.localMasterReportList.reports.length" 
+    <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedMasterReport.name || !$ctrl.selectedMasterReport.selectedSite || !$ctrl.localMasterReportList.reports.length" 
     ng-click="$ctrl.saveMasterReport()">
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
