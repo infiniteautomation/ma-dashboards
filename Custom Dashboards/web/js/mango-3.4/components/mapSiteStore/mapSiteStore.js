@@ -143,6 +143,13 @@ define(['angular', 'require'], function(angular, require) {
             if ($ctrl.addWatchList3 && $ctrl.addWatchList3.xid) {
                 $ctrl.selectedDashboard.watchLists[2] = $ctrl.addWatchList3.xid;
             }
+
+            if ($ctrl.selectedDashboard.watchLists[1] && !$ctrl.addWatchList2) {
+                $ctrl.selectedDashboard.watchLists.splice(1, 1)
+            }
+            if ($ctrl.selectedDashboard.watchLists[2] && !$ctrl.addWatchList3) {
+                $ctrl.selectedDashboard.watchLists.splice(2, 1)
+            }
             
             $ctrl.selectedDashboard.markerIcon = $ctrl.selectedDashboard.myMarkerIcon;
 
