@@ -1,12 +1,11 @@
 <div ui-sref-active="menu-active" ng-class="{'menu-open': $ctrl.isOpen, 'menu-submenu': $ctrl.item.submenu}" class="menu-toggle">
     <a ui-sref="{{$ctrl.item.name}}" style="display:none"></a>
-    <md-button class="menu-toggle-button menu-indent" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | tr)}}">
+    <md-button class="menu-toggle-button menu-indent" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.menuText}}">
       <div flex layout="row">
         <span>
             <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') === 0" class="menu-icon fa fa-fw {{$ctrl.item.menuIcon}}"></md-icon>
             <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') !== 0" class="menu-icon">{{$ctrl.item.menuIcon}}</md-icon>
-            <span ng-if="$ctrl.item.menuText" class="menu-text">{{$ctrl.item.menuText}}</span>
-            <span ng-if="!$ctrl.item.menuText" class="menu-text" ma-tr="{{$ctrl.item.menuTr}}"></span>
+            <span class="menu-text">{{$ctrl.menuText}}</span>
         </span>
         <span flex></span>
         <span class="menu-toggle-icon" ng-if="!$ctrl.item.submenu">

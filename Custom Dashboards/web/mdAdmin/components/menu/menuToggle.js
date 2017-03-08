@@ -6,7 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuToggleController = function menuToggleController($state, $timeout, $element, $scope) {
+menuToggleController.$inject = ['$state', '$timeout', '$element', '$scope', 'Translate'];
+function menuToggleController($state, $timeout, $element, $scope, Translate) {
 
     this.$onInit = function() {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
@@ -35,6 +36,13 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
                 $timeout(function() {
                     this.calcHeight();
                 }.bind(this), 0);
+            }
+
+            this.menuText = this.item.menuText;
+            if (!this.menuText) {
+                Translate.tr(this.item.menuTr).then(function(text) {
+                    this.menuText = text;
+                }.bind(this));
             }
         }
     };
@@ -137,8 +145,6 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
         });
     };
 };
-
-menuToggleController.$inject = ['$state', '$timeout', '$element', '$scope'];
 
 return {
     controller: menuToggleController,

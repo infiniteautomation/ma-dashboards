@@ -6,7 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuLinkController = function menuLinkController($state) {
+menuLinkController.$inject = ['$state', 'Translate'];
+function menuLinkController($state, Translate) {
     this.$onInit = function() {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
         this.classes = [];
@@ -15,6 +16,13 @@ var menuLinkController = function menuLinkController($state) {
     this.$onChanges = function(changes) {
         if (changes.item) {
             this.href = $state.href(this.item.name);
+            
+            this.menuText = this.item.menuText;
+            if (!this.menuText) {
+                Translate.tr(this.item.menuTr).then(function(text) {
+                    this.menuText = text;
+                }.bind(this));
+            }
         }
     };
     
@@ -30,8 +38,6 @@ var menuLinkController = function menuLinkController($state) {
         }
     };
 };
-
-menuLinkController.$inject = ['$state'];
 
 return {
     controller: menuLinkController,
