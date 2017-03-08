@@ -19,7 +19,6 @@
     <md-button class="md-raised md-primary ma-label-button" layout="column" layout-align="start stretch">
       <label for="json-file-upload" flex><md-icon>file_upload</md-icon> <span ma-tr="dashboards.v3.app.uploadJsonFile"></span></label>
     </md-button>
-    <input id="json-file-upload" type="file" accept=".json,text/*" ma-change="$ctrl.fileSelected($event)" style="display:none">
-    <pre ng-bind="fileUpload | json"></pre>
+    <input id="json-file-upload" type="file" accept=".json,text/*,application/json" ma-change="$ctrl.fileSelected($event)" style="display:none">
   </md-card-actions>
 </md-card>
