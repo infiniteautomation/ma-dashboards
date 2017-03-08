@@ -32,14 +32,13 @@ define(['./services/Point',
         './services/Permissions',
         './services/SystemSettings',
         './services/ImportExport',
-        './services/serialChartAnnotationDialog',
         'angular',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
-        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider, ImportExportFactory, serialChartAnnotationDialog, angular) {
+        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider, ImportExportFactory, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -81,7 +80,6 @@ maServices.factory('Modules', ModulesFactory);
 maServices.factory('Permissions', PermissionsFactory);
 maServices.provider('SystemSettings', SystemSettingsProvider);
 maServices.factory('ImportExport', ImportExportFactory);
-maServices.factory('serialChartAnnotationDialog', serialChartAnnotationDialog);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);
