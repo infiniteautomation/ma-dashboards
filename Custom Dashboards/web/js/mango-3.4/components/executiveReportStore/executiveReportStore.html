@@ -35,7 +35,7 @@
       <input ng-disabled="!$ctrl.localExecutiveReportList.reports.length" ng-model="$ctrl.selectedExecutiveReport.readPermission" md-select-on-focus>
     </md-input-container>
 
-    <md-button class="md-raised md-primy md-hue-1" ng-disabled="!$ctrl.selectedExecutiveReport.name || !$ctrl.selectedChartReports.length || !$ctrl.localExecutiveReportList.reports.length" 
+    <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedExecutiveReport.name || !$ctrl.selectedChartReports.length || !$ctrl.localExecutiveReportList.reports.length" 
     ng-click="$ctrl.saveExecutiveReport()">
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
