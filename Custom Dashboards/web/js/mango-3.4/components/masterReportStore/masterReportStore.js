@@ -40,7 +40,6 @@ define(['angular', 'require'], function(angular, require) {
             });
 
             $ctrl.selectedMasterReport = $ctrl.localMasterReportList.reports[0];
-            // $ctrl.selectedChartReports = $ctrl.selectedMasterReport.chartReports;
 
             $ctrl.masterReportsItem.$save();
         };
@@ -52,20 +51,16 @@ define(['angular', 'require'], function(angular, require) {
             $ctrl.selectedMasterReport = $ctrl.localMasterReportList.reports[index];
             $ctrl.selectedMasterReport.uid = 'MasterRpt-' + Util.uuid();
 
-            // $ctrl.selectedChartReports = [];
-
             $timeout(function() {
                 angular.element(document.querySelector('#master-report-name-input')).focus();
             }, 500);
         };
 
-        $ctrl.reportChanged = function() {
-            
+        $ctrl.siteChanged = function() {
+            $ctrl.selectedMasterReport.selectedSubSites = [];
         };
 
         $ctrl.saveMasterReport = function() {
-            // $ctrl.selectedMasterReport.chartReports = $ctrl.selectedChartReports;
-
             // Make sure all exectuiveReports are readable by any user
             $ctrl.masterReportsItem.readPermission = 'user';
 

@@ -14,7 +14,7 @@
 <div layout="row" layout-align="start center" ng-if="$ctrl.user.current.hasPermission('superadmin')">
     <md-input-container flex>
         <label>Choose an Executive Report</label>
-        <md-select ng-model="$ctrl.selectedMasterReport" ng-model-options="{trackBy: '$value.uid'}" ng-disabled="!$ctrl.localMasterReportList.reports.length" ng-change="$ctrl.reportChanged()">
+        <md-select ng-model="$ctrl.selectedMasterReport" ng-model-options="{trackBy: '$value.uid'}" ng-disabled="!$ctrl.localMasterReportList.reports.length">
             <md-option ng-repeat="report in $ctrl.localMasterReportList.reports track by report.uid" ng-value="report" ng-bind="report.name"></md-option>
         </md-select>
     </md-input-container>
@@ -26,7 +26,7 @@
 
     <md-input-container flex>
         <label>Select Site</label>
-        <md-select ng-disabled="!$ctrl.localMasterReportList.reports.length" ng-model="$ctrl.selectedMasterReport.selectedSite" ng-model-options="{trackBy: '$value.uid'}">
+        <md-select ng-disabled="!$ctrl.localMasterReportList.reports.length" ng-model="$ctrl.selectedMasterReport.selectedSite" ng-model-options="{trackBy: '$value.uid'}" ng-change="$ctrl.siteChanged()">
             <md-option ng-repeat="site in $ctrl.dashboardStore.list track by site.uid" ng-value="site" ng-bind="site.name"></md-option>
         </md-select>
     </md-input-container>
