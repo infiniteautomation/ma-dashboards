@@ -51,8 +51,8 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 </ma-serial-chart>`
  *
  */
-serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util', 'serialChartAnnotationDialog'];
-function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util, serialChartAnnotationDialog) {
+serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util'];
+function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -74,7 +74,8 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         customBullet: '@',
         bullet: '@',
         annotateMode: '<?',
-        lineThickness: '@'
+        lineThickness: '@',
+        graphItemClicked: '&?'
 	};
 
 	for (var j = 1; j <= MAX_SERIES; j++) {
@@ -124,53 +125,24 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
 
         if ($scope.annotateMode) {
             // console.log('Entering annotate mode');
-            options.listeners = [ {
-                    "event": "init",
-                    "method": function( e ) {
-
-                    e.chart.addListener( "clickGraphItem", function(clickEvent) {
-                        // we track cursor's last known position by "changed" event
-                        if ( e.chart.lastCursorPosition !== undefined ) {
-                        
-                        var clickedGraphId = clickEvent.graph.valueField;
-                        // console.log(clickEvent.graph);
-
-                        var chartPoint = e.chart.dataProvider[ e.chart.lastCursorPosition ];
-                        // console.log(chartPoint);
-
-                        var date = chartPoint[ e.chart.categoryField ];
-                        var prevTitle = chartPoint[clickedGraphId + 'AnnotationText'] || '';
-                        var prevDescription = chartPoint[clickedGraphId + 'AnnotationBalloonText'] || '';
-
-                        var annotateCallBack = function (data) {
-                            // console.log(data);
-                            
-                            chartPoint[clickedGraphId + 'AnnotationText'] = data.title + ' - - ';
-                            chartPoint[clickedGraphId + 'AnnotationBalloonText'] = data.description;
-                            chartPoint[clickedGraphId + 'AnnotationBulletSize'] = 15;
-                            chartPoint[clickedGraphId + 'AnnotationBullet'] = 'bubble';
-                            chartPoint[clickedGraphId + 'AnnotationTextColor'] = 'white';
-
-                            e.chart.validateData();
-                        };
-
-                        serialChartAnnotationDialog.addNote({
-                                pointName: clickEvent.graph.title, 
-                                value: chartPoint[clickedGraphId], 
-                                date: date, 
-                                title: prevTitle, 
-                                description: prevDescription
-                            }, annotateCallBack);
+            options.listeners = [
+                {
+                    event: 'init',
+                    method: function(e) {
+                        if ($scope.graphItemClicked) {
+                            e.chart.addListener('clickGraphItem', function(clickEvent) {
+                                $scope.graphItemClicked({$e: e, $clickEvent: clickEvent});
+                            });
                         }
-
-                    })
                     }
-                }, {
-                    "event": "changed",
-                    "method": function( e ) {
-                    e.chart.lastCursorPosition = e.index;
+                },
+                {
+                    event: 'changed',
+                    method: function(e) {
+                        e.chart.lastCursorPosition = e.index;
                     }
-                } ];
+                }
+            ];
         }
 
         if ($scope.timeFormat) {
@@ -420,7 +392,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	var graphOptions = $scope['series' + graphNum + 'GraphOptions'] ||
         	    ($scope.graphOptions && $scope.graphOptions[graphNum - 1]);
 
-            var annotateOptions = {}
+            var annotateOptions = {};
 
             if ($scope.annotateMode) {
                 annotateOptions = {
@@ -435,7 +407,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     bulletAlpha: 1,
                     bullet: 'diamond',
                     bulletField: graph.valueField + 'AnnotationBullet'
-                }
+                };
             }
 
             var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions, annotateOptions);
