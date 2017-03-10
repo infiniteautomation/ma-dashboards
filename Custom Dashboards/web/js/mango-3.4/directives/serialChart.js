@@ -345,7 +345,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     var valueForBalloon = (dataItem.dataContext[graph.valueField + '_rendered'] || dataItem.dataContext[graph.valueField]).toString();
 
                     if ($scope.annotateMode) {
-                        return dataItem.dataContext[graph.valueField + 'AnnotationBalloonText'] ? dataItem.dataContext[graph.valueField + 'AnnotationBalloonText'] + ' - ' + valueForBalloon : valueForBalloon;
+                        return dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] ? dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] + ' - ' + valueForBalloon : valueForBalloon;
                     }
                     else {
                         return valueForBalloon;
@@ -396,20 +396,20 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
 
             if ($scope.annotateMode) {
                 annotateOptions = {
-                    labelText: '[[' + graph.valueField + 'AnnotationText]]',
+                    labelText: '[[' + graph.xid + 'AnnotationText]]',
                     labelRotation: 0,
                     labelPosition: 'left',
                     labelOffset: 5,
-                    labelColorField: graph.valueField + 'AnnotationTextColor',
+                    labelColorField: graph.xid + 'AnnotationTextColor',
                     bulletSize: 0,
-                    bulletSizeField: graph.valueField + 'AnnotationBulletSize',
+                    bulletSizeField: graph.xid + 'AnnotationBulletSize',
                     bulletHitAreaSize: 15,
                     bulletAlpha: 1,
                     bulletBorderColor: 'black',
-                    bulletBorderAlpha: .5,
+                    bulletBorderAlpha: .2,
                     bulletBorderThickness: 1,
                     bullet: 'diamond',
-                    bulletField: graph.valueField + 'AnnotationBullet'
+                    bulletField: graph.xid + 'AnnotationBullet'
                 };
             }
 
