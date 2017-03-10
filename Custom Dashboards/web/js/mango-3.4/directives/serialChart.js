@@ -75,6 +75,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         bullet: '@',
         annotateMode: '<?',
         lineThickness: '@',
+        onChartInit: '&?',
         graphItemClicked: '&?'
 	};
 
@@ -123,28 +124,6 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
     function postLink($scope, $element, attrs) {
         var options = defaultOptions();
 
-        if ($scope.annotateMode) {
-            // console.log('Entering annotate mode');
-            options.listeners = [
-                {
-                    event: 'init',
-                    method: function(e) {
-                        if ($scope.graphItemClicked) {
-                            e.chart.addListener('clickGraphItem', function(clickEvent) {
-                                $scope.graphItemClicked({$e: e, $clickEvent: clickEvent});
-                            });
-                        }
-                    }
-                },
-                {
-                    event: 'changed',
-                    method: function(e) {
-                        e.chart.lastCursorPosition = e.index;
-                    }
-                }
-            ];
-        }
-
         if ($scope.timeFormat) {
             options.categoryAxis.parseDates = false;
         }
@@ -188,6 +167,16 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         $.extend(true, options, $scope.options);
 
         var chart = AmCharts.makeChart($element[0], options);
+        
+        if ($scope.onChartInit) {
+            $scope.onChartInit({$chart: chart});
+        }
+        
+        if ($scope.graphItemClicked) {
+            chart.addListener('clickGraphItem', function(event) {
+                $scope.graphItemClicked({$chart: chart, $event: event});
+            });
+        }
 
         $scope.$watch('options', function(newValue, oldValue) {
         	if (newValue === undefined) return;
@@ -406,7 +395,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     bulletHitAreaSize: 15,
                     bulletAlpha: 1,
                     bulletBorderColor: 'black',
-                    bulletBorderAlpha: .2,
+                    bulletBorderAlpha: 0.2,
                     bulletBorderThickness: 1,
                     bullet: 'diamond',
                     bulletField: graph.xid + 'AnnotationBullet'
