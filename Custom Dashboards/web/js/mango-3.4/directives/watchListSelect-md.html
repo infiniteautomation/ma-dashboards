@@ -1,7 +1,7 @@
 <md-input-container ng-if="$ctrl.showSelect" flex>
   <label ma-tr="dashboards.v3.app.chooseWatchList"></label>
   <md-select md-on-open="$ctrl.onOpen()" ng-model="$ctrl.watchList" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.onSelectChange()" ng-disabled="$ctrl.disabled">
-    <md-option ng-value=""><em>None</em></md-option>
+    <md-option ng-value="null"><em>None</em></md-option>
     <md-option ng-value="wl" ng-repeat="wl in $ctrl.watchLists track by wl.xid" ng-bind="wl.name"></md-option>
   </md-select>
 </md-input-container>

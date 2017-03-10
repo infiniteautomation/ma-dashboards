@@ -31,42 +31,28 @@ define(['angular', 'require'], function(angular, require) {
 
 var UPDATE_TYPES = ['update'];
 
-WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point', 'WatchListEventManager'];
-function WatchListSelectController($scope, $element, $attrs, WatchList, $stateParams, $state, Point, WatchListEventManager) {
-    var xid = $stateParams.watchListXid || this.watchListXid;
+WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'WatchList', '$state', 'Point', 'WatchListEventManager'];
+function WatchListSelectController($scope, $element, $attrs, WatchList, $state, Point, WatchListEventManager) {
 
-    this.showSelect = !this.noSelect;
-    if (this.showSelect) {
-        this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
-            this.watchLists = watchLists;
-            
-            if (xid) {
-                var found = false;
-                for (var i = 0; i < watchLists.length; i++) {
-                    if (watchLists[i].xid === xid) {
-                        found = true;
-                        this.setWatchList(watchLists[i]);
-                        break;
-                    }
-                }
-                if (!found) {
-                    WatchList.get({xid: xid}).$promise.then(function(watchList) {
-                        this.setWatchList(watchList);
-                    }.bind(this));
-                }
-            } else if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
-                this.setWatchList(watchLists[0]);
-            }
-            
-            return watchLists;
-        }.bind(this));
-    } else if (xid) {
-        WatchList.get({xid: xid}).$promise.then(function(watchList) {
-            this.setWatchList(watchList);
-        }.bind(this));
-    }
-    
+    this.disableGetPoints = !$attrs.points;
+
     this.$onInit = function() {
+        if (!this.watchListXid && !this.watchList && $state.params.watchListXid) {
+            this.watchListXid = $state.params.watchListXid;
+            this.setWatchListFromXid();
+        }
+
+        this.showSelect = !this.noSelect;
+        if (this.showSelect) {
+            this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
+                this.watchLists = watchLists;
+                if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length && !this.watchListXid && !this.watchList) {
+                    this.setWatchList(watchLists[0]);
+                }
+                return watchLists;
+            }.bind(this));
+        }
+        
         if (this.onInit) {
             this.onInit({$ctrl: this});
         }
@@ -74,13 +60,24 @@ function WatchListSelectController($scope, $element, $attrs, WatchList, $statePa
 
     this.$onChanges = function(changes) {
         if (changes.watchListXid) {
-            WatchList.get({xid: this.watchListXid}).$promise.then(function(watchList) {
-                this.setWatchList(watchList);
-            }.bind(this));
+            if (this.watchListXid) {
+                this.setWatchListFromXid();
+            } else {
+                this.setWatchList(null);
+            }
         }
-        if (changes.parameters && this.watchList && this.parameters) {
+        if (changes.watchList) {
+            this.setWatchList(this.watchList);
+        }
+        if (changes.parameters && this.watchList) {
             this.getPoints();
         }
+    };
+    
+    this.setWatchListFromXid = function() {
+        WatchList.get({xid: this.watchListXid}).$promise.then(function(watchList) {
+            this.setWatchList(watchList);
+        }.bind(this));
     };
     
     this.onSelectChange = function() {
@@ -101,15 +98,16 @@ function WatchListSelectController($scope, $element, $attrs, WatchList, $statePa
             unsubscribe = null;
         }
         
+        this.watchList = watchList;
+        
         if (!watchList) {
             this.points = [];
             return;
         }
         
-        $state.go('.', {watchListXid: watchList.xid}, {location: 'replace', notify: false});
-        
-        this.watchList = watchList;
-        
+        $state.params.watchListXid = watchList.xid;
+        $state.go('.', $state.params, {location: 'replace', notify: false});
+
         unsubscribe = WatchListEventManager.smartSubscribe($scope, this.watchList.xid, UPDATE_TYPES, this.updateHandler);
         this.getPoints();
     };
@@ -122,9 +120,13 @@ function WatchListSelectController($scope, $element, $attrs, WatchList, $statePa
     }.bind(this);
     
     this.getPoints = function() {
-        //this.points = [];
+        if (this.disableGetPoints) return;
+
         this.watchList.$getPoints(this.parameters).then(function(watchList) {
             this.points = watchList.points;
+            if (this.onPointsChange) {
+                this.onPointsChange({$point: this.points});
+            }
         }.bind(this));
     };
 }
@@ -151,6 +153,7 @@ function watchListSelectFactory($injector) {
             parameters: '<?',
             onInit: '&?',
             onChange: '&?',
+            onPointsChange: '&?',
             disableGetPointValue: '<?'
         },
         controller: WatchListSelectController
