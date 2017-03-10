@@ -428,6 +428,9 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuIcon: 'dashboard',
                 permission: 'edit-pages',
                 params: {
+                    dateBar: {
+                        rollupControls: true
+                    },
                     markup: null,
                     templateUrl: null,
                     helpPage: 'dashboard.help.customPages'
@@ -1109,6 +1112,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         }
     }
     
+    MD_ADMIN_SETTINGS.UI_PREFERENCES_KEY = 'uiPreferences';
+    
     // need to store a reference to the theming provider in order to generate themes at runtime
     MD_ADMIN_SETTINGS.themingProvider = $mdThemingProvider;
 
@@ -1255,6 +1260,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     });
 }]);
 
+mdAdminApp.constant('MA_UI_PREFS_KEY', 'uiPreferences');
+
 mdAdminApp.run([
     'MENU_ITEMS',
     '$rootScope',
@@ -1262,6 +1269,7 @@ mdAdminApp.run([
     '$timeout',
     '$mdSidenav',
     '$mdMedia',
+    'localStorageService',
     '$mdToast',
     'User',
     'mdAdminSettings',
@@ -1270,7 +1278,7 @@ mdAdminApp.run([
     '$stateParams',
     'DateBar',
     '$document',
-function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar, $document) {
 
     mdAdminSettings.generateTheme();
@@ -1360,7 +1368,10 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
     $rootScope.$on('$viewContentLoaded', function(event, view) {
         if (view === '@dashboard') {
             if ($mdMedia('gt-sm')) {
-                $rootScope.openMenu();
+                var uiPrefs = localStorageService.get(mdAdminSettings.UI_PREFERENCES_KEY);
+                if (!uiPrefs || !uiPrefs.menuClosed) {
+                    $rootScope.openMenu();
+                }
             }
             
             // the closeMenu() function already does this but we need this for when the ESC key is pressed
@@ -1395,12 +1406,20 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
     };
 
     $rootScope.closeMenu = function() {
+        var uiPrefs = localStorageService.get(mdAdminSettings.UI_PREFERENCES_KEY) || {};
+        uiPrefs.menuClosed = true;
+        localStorageService.set(mdAdminSettings.UI_PREFERENCES_KEY, uiPrefs);
+        
         angular.element('#menu-button').blur();
         $rootScope.navLockedOpen = false;
         $mdSidenav('left').close();
     };
 
     $rootScope.openMenu = function() {
+        var uiPrefs = localStorageService.get(mdAdminSettings.UI_PREFERENCES_KEY) || {};
+        uiPrefs.menuClosed = false;
+        localStorageService.set(mdAdminSettings.UI_PREFERENCES_KEY, uiPrefs);
+        
         angular.element('#menu-button').blur();
         if ($mdMedia('gt-sm')) {
             $rootScope.navLockedOpen = true;

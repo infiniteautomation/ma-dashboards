@@ -48,13 +48,6 @@ function dateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
             this.updateIntervalFromRollupInterval();
         }
     };
-    
-    this.saveSettings = function saveSettings() {
-        localStorageService.set('storedCredentials', {
-            username: username,
-            password: password
-        });
-    };
 }
 
 return {
