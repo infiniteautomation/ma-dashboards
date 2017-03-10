@@ -171,6 +171,10 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         if ($scope.onChartInit) {
             $scope.onChartInit({$chart: chart});
         }
+
+        chart.addListener('changed', function(event) {
+            chart.lastCursorPosition = event.index;
+        });
         
         if ($scope.graphItemClicked) {
             chart.addListener('clickGraphItem', function(event) {
