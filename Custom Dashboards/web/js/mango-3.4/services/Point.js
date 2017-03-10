@@ -352,6 +352,26 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     	}
     	return {text: value};
     };
+    
+    Point.prototype.websocketHandler = function(payload) {
+        if (payload.xid !== this.xid) return;
+
+        // short circuit, reduce processing if we get the same payload multiple times as we do currently
+        if (this.lastPayload === payload) return;
+        this.lastPayload = payload;
+        
+        this.enabled = !!payload.enabled;
+        if (payload.value) {
+            var valueRenderer = this.valueRenderer(payload.value.value);
+            var color = valueRenderer ? valueRenderer.color : null;
+
+            this.value = payload.value.value;
+            this.time = payload.value.timestamp;
+            this.convertedValue = payload.convertedValue;
+            this.renderedValue = payload.renderedValue;
+            this.renderedColor = color;
+        }
+    };
 
     return Point;
 }

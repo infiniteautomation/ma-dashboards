@@ -71,7 +71,21 @@ function pointValue(mangoDateFormats) {
                 if ($scope.valueUpdated) {
                     $scope.valueUpdated({point: $scope.point});
                 }
-                
+                updateDisplayValue();
+            };
+
+            $scope.$watch('point.xid', function(newXid, oldXid) {
+                // jshint eqnull:true
+                if ($scope.point && $scope.point.value != null) {
+                    updateDisplayValue();
+                } else {
+                    delete $scope.displayValue;
+                    $scope.valueStyle = {};
+                    delete $scope.classes['point-disabled'];
+                }
+            });
+
+            function updateDisplayValue() {
                 var point = $scope.point;
                 $scope.classes['point-disabled'] = !point.enabled;
 
@@ -99,15 +113,7 @@ function pointValue(mangoDateFormats) {
                 default:
                     $scope.displayValue = point.value;
                 }
-            };
-
-            $scope.$watch('point.xid', function(newXid, oldXid) {
-                if (oldXid && oldXid !== newXid) {
-                    delete $scope.displayValue;
-                    $scope.valueStyle = {};
-                    delete $scope.classes['point-disabled'];
-                }
-            });
+            }
         }
     };
 }

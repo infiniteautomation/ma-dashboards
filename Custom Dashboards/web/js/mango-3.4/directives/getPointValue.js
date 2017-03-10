@@ -55,38 +55,17 @@ function getPointValue(pointEventManager, Point, Util) {
 
             function websocketHandler(event, payload) {
                 $scope.$applyAsync(function() {
-                	if ($scope.point && payload.xid !== $scope.point.xid) return;
-
-                	var point;
-
-                	if ($scope.points) {
-	                	for (var i = 0; i < $scope.points.length; i++) {
-	                		var tmpPoint = $scope.points[i];
-	                		if (payload.xid === tmpPoint.xid) {
-	                			point = tmpPoint;
-	                			break;
-	                		}
-	                	}
-                	} else {
-                		point = $scope.point;
-                	}
-
-                	if (!point) return;
-
-	                point.enabled = !!payload.enabled;
-	                if (payload.value && point.valueRenderer) {
-	                	var valueRenderer = point.valueRenderer(payload.value.value);
-	                    var color = valueRenderer ? valueRenderer.color : null;
-
-	                    point.value = payload.value.value;
-	                    point.time = payload.value.timestamp;
-	                    point.convertedValue = payload.convertedValue;
-	                	point.renderedValue = payload.renderedValue;
-	                	point.renderedColor = color;
-	                	
-	                	if ($scope.valueUpdated)
-	                	    $scope.valueUpdated({point: point});
-	                }
+                	var points = $scope.points || [$scope.point];
+                	for (var i = 0; i < points.length; i++) {
+                        var point = points[i];
+                        if (payload.xid === point.xid) {
+                            point.websocketHandler(payload);
+                            if ($scope.valueUpdated) {
+                                $scope.valueUpdated({point: point});
+                            }
+                            break;
+                        }
+                    }
                 });
             }
 

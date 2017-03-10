@@ -19,7 +19,7 @@
     </div>
 </md-toolbar>
 
-<ma-watch-list-parameters watch-list="$ctrl.watchList" parameters-changed="$ctrl.updateWatchListParameters(parameters)"
+<ma-watch-list-parameters watch-list="$ctrl.watchList" parameters-changed="$ctrl.updateWatchListParameters($parameters)"
   ng-if="$ctrl.watchList.type === 'query' && $ctrl.watchList.params.length"
   class="parameter-inputs md-padding" parameters="$ctrl.watchListParams" layout layout-wrap>
 </ma-watch-list-parameters>

@@ -39,20 +39,13 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
     WatchList.objQuery = Util.objQuery;
     
     WatchList.prototype.setPoints = function(points) {
-        this.points.length = points.length;
-        this.points.$limit = points.$limit;
-        this.points.$page = points.$page;
-        this.points.$pages = points.$pages;
-        this.points.$start = points.$start;
-        this.points.$total = points.$total;
-        
         for (var i = 0; i < points.length; i++) {
             var pt = points[i];
             if (!(pt instanceof Point)) {
-                pt = angular.merge(new Point(), pt);
+                points[i] = angular.merge(new Point(), pt);
             }
-            this.points[i] = pt;
         }
+        this.points = points;
     };
 
     WatchList.prototype.$getPoints = function(params) {

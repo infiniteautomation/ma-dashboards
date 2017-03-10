@@ -6,15 +6,15 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListParametersController.$inject = ['$parse', '$interpolate', 'Util'];
-function watchListParametersController($parse, $interpolate, Util) {
+WatchListParametersController.$inject = ['$parse', '$interpolate', 'Util'];
+function WatchListParametersController($parse, $interpolate, Util) {
     
     if (!this.parameters) {
         this.parameters = {};
     }
 
     this.inputChanged = function inputChanged() {
-        this.parametersChanged({parameters: this.parameters});
+        this.parametersChanged({$parameters: angular.extend({}, this.parameters)});
     };
     
     this.createDsQuery = Util.memoize(function createDsQuery(options) {
@@ -52,7 +52,7 @@ function watchListParametersController($parse, $interpolate, Util) {
 }
 
 return {
-    controller: watchListParametersController,
+    controller: WatchListParametersController,
     templateUrl: require.toUrl('./watchListParameters.html'),
     bindings: {
         watchList: '<',

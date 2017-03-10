@@ -92,27 +92,33 @@ maFilters.filter('first', function() {
 	  };
 });
 
-maFilters.filter('unique', function() {
+maFilters.filter('unique', ['Util', function(Util) {
+	var uniqueFilter = Util.memoize(function uniqueFilter(collection, propName) {
+	    
+	    var result = [];
+	    
+        if (collection.length !== undefined) {
+            for (var i = 0; i < collection.length; i++)
+                addUnique(collection[i]);
+        } else {
+            for (var key in collection)
+                addUnique(collection[key]);
+        }
+        
+        return result;
 
-	function addUnique(result, item, propName) {
-		var propValue = item[propName];
-		if (result.indexOf(propValue) >= 0) return;
-		result.push(propValue);
-	}
+        function addUnique(item) {
+            var propValue = item[propName];
+            if (result.indexOf(propValue) >= 0) return;
+            result.push(propValue);
+        }
+	});
 
 	return function(collection, propName) {
-		if (!collection) return;
-		var result = [];
-		if (collection.length !== undefined) {
-			for (var i = 0; i < collection.length; i++)
-				addUnique(result, collection[i], propName);
-		} else {
-			for (var key in collection)
-				addUnique(result, collection[key], propName);
-		}
-		return result;
+		if (!collection) return collection;
+		return uniqueFilter.apply(null, arguments);
 	};
-});
+}]);
 
 maFilters.filter('range', function() {
     return function(input, start, end, step) {
@@ -135,6 +141,10 @@ maFilters.filter('property', ['Util', function(Util) {
         if (!input || !angular.isArray(input)) return input;
         return propertyFilter.apply(null, arguments);
     };
+}]);
+
+maFilters.filter('maFilter', ['Util', '$filter', function(Util, $filter) {
+    return Util.memoize($filter('filter'));
 }]);
 
 return maFilters;
