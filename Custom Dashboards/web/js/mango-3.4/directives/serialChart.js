@@ -138,7 +138,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 valueFunction: function(dataItem, valueString) {
                     if (dataItem.dataContext) {
                         var graph = dataItem.graph;
-                        return (dataItem.dataContext[graph.valueField + '_rendered'] || dataItem.dataContext[graph.valueField]).toString();
+                        return (dataItem.dataContext[graph.valueField + '_rendered'] || (dataItem.dataContext[graph.valueField] ? dataItem.dataContext[graph.valueField].toString() : '') );
                     }
                     return '';
                 }
@@ -335,7 +335,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 type: 'smoothedLine',
                 valueAxis: 'left',
                 balloonFunction: function(dataItem, graph) {
-                    var valueForBalloon = (dataItem.dataContext[graph.valueField + '_rendered'] || dataItem.dataContext[graph.valueField]).toString();
+                    var valueForBalloon = (dataItem.dataContext[graph.valueField + '_rendered'] || (dataItem.dataContext[graph.valueField] ? dataItem.dataContext[graph.valueField].toString() : ''));
 
                     if ($scope.annotateMode) {
                         return dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] ? dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] + ' - ' + valueForBalloon : valueForBalloon;
