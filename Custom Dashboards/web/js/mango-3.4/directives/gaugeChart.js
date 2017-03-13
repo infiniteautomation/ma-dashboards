@@ -156,18 +156,27 @@ function gaugeChart(Point) {
                 $scope.classes['point-disabled'] = disabled;
             });
 
+            var pointRequest;
             $scope.$watch('pointXid', function(newXid, oldXid) {
                 if (newXid === undefined && newXid === oldXid) return;
                 if ($scope.point && $scope.point.xid === newXid) return;
                 
-                if ($scope.point && $scope.point.$cancelRequest) {
-                    $scope.point.$cancelRequest();
+                if (pointRequest) {
+                    pointRequest.$cancelRequest();
                 }
                 if (!newXid) {
+                    pointRequest = null;
                     $scope.point = null;
                     return;
                 }
-                $scope.point = Point.get({xid: newXid});
+                pointRequest = Point.get({xid: newXid});
+                pointRequest.$promise.then(function(point) {
+                    pointRequest = null;
+                    $scope.point = point;
+                }, function() {
+                    pointRequest = null;
+                    $scope.point = null;
+                });
             });
 
             function axisChanged() {

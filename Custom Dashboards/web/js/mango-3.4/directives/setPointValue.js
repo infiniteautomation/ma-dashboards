@@ -27,18 +27,24 @@ define(['require', 'angular'], function(require, angular) {
  <ma-set-point-value point="myPoint"></ma-set-point-value>
  *
  */
-function setPointValue(Translate, $q, $injector) {
+setPointValue.$inject = ['Translate', '$q', '$injector', 'Point'];
+function setPointValue(Translate, $q, $injector, Point) {
     return {
         restrict: 'E',
         designerInfo: {
             translation: 'dashboards.v3.components.setPointValue',
             icon: 'touch_app',
-            category: 'pointValue'
+            category: 'pointValue',
+            attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'}
+            }
         },
         scope: {
-            point: '=',
-            showButton: '=?',
-            setOnChange: '='
+            point: '<?',
+            pointXid: '@?',
+            showButton: '<?',
+            setOnChange: '<?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -70,12 +76,51 @@ function setPointValue(Translate, $q, $injector) {
         	};
             
             $scope.convertRendered = function() {
-                if ($scope.point.unit.length>0) {
-                    // return $scope.point.renderedValue.replace($scope.point.textRenderer.unit, '') * 1;
-                    return Math.round($scope.point.value * 100) / 100;
+                if (!$scope.point) return;
+                
+                var result;
+                // jshint eqnull:true
+                if ($scope.point.renderedValue != null) {
+                    result = parseFloat($scope.point.renderedValue.trim());
+                    if (isFinite(result))
+                        return result;
                 }
-        	    return $scope.point.renderedValue * 1;
+                if ($scope.point.convertedValue != null) {
+                    return round($scope.point.convertedValue, 2);
+                }
+                if ($scope.point.value != null) {
+                    return round($scope.point.value, 2);
+                }
+                
+                function round(num, places) {
+                    places = places || 1;
+                    var multiplier = Math.pow(10, places);
+                    return Math.round(num * multiplier) / multiplier;
+                }
         	};
+        	
+        	var pointRequest;
+            $scope.$watch('pointXid', function(newXid, oldXid) {
+                if (newXid === undefined && newXid === oldXid) return;
+                if ($scope.point && $scope.point.xid === newXid) return;
+                
+                if (pointRequest) {
+                    pointRequest.$cancelRequest();
+                }
+                if (!newXid) {
+                    pointRequest = null;
+                    $scope.point = null;
+                    return;
+                }
+                pointRequest = Point.get({xid: newXid});
+                pointRequest.$promise.then(function(point) {
+                    pointRequest = null;
+                    $scope.point = point;
+                }, function() {
+                    pointRequest = null;
+                    $scope.point = null;
+                });
+            });
 
         	$scope.$watch('point', function(newValue) {
         		if (newValue === undefined) return;
@@ -89,10 +134,9 @@ function setPointValue(Translate, $q, $injector) {
 
         		if (type === 'MULTISTATE') {
         			var values = textRenderer.multistateValues;
-        			var i;
-                    if (values != undefined) {
+                    if (values) {
                         $scope.options = [];
-            			for (i = 0; i < values.length; i++) {
+            			for (var i = 0; i < values.length; i++) {
             				var label = values[i].text;
             				var option = {
             					id: values[i].key,
@@ -129,8 +173,6 @@ function setPointValue(Translate, $q, $injector) {
         }
     };
 }
-
-setPointValue.$inject = ['Translate', '$q', '$injector'];
 
 return setPointValue;
 
