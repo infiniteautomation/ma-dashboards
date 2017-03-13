@@ -1,4 +1,4 @@
-<div class="input-group">
+<div class="input-group live-value">
 	<input ng-if="point.pointLocator.dataType === 'NUMERIC' || (point.pointLocator.dataType === 'MULTISTATE' && point.textRenderer.type === 'textRendererPlain')" type="number" step="any"
 		ng-model="input.value" class="form-control"
 		ma-copy-blurred="convertRendered()" ng-disabled="!point.pointLocator.settable"

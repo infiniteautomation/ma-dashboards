@@ -157,17 +157,17 @@ ma-bar-display .bar-display-fill {
     width: 15px;
 }
 
-.ma-set-point-value md-input-container,
-.ma-set-point-value md-select {
+ma-set-point-value md-input-container,
+ma-set-point-value md-select {
 	margin: 6px;
 }
 
-.ma-set-point-value button.md-button {
+ma-set-point-value button.md-button {
 	margin: 6px 6px 6px 0;
 }
 
-.ma-set-point-value button md-icon,
-.ma-set-point-value button md-progress-circular {
+ma-set-point-value button md-icon,
+ma-set-point-value button md-progress-circular {
 	margin: 0 0 0 8px;
 }
 

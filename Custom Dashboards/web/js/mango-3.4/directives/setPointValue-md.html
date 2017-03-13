@@ -1,5 +1,5 @@
-<form class="ma-set-point-value">
-    <div layout="row">
+<form>
+    <div layout="row" class="live-value">
         <md-input-container flex ng-if="point.pointLocator.dataType === 'NUMERIC' || (point.pointLocator.dataType === 'MULTISTATE' && point.textRenderer.type === 'textRendererPlain')">
             <input type="number" step="any" ng-model="input.value"  aria-label="{{'common.value' | tr}}"
                 ma-copy-blurred="convertRendered()" ng-disabled="!point.pointLocator.settable" md-select-on-focus>
