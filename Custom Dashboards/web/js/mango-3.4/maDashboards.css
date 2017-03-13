@@ -378,6 +378,27 @@ ma-user-select, ma-system-setting-editor {
   flex-direction: column;
 }
 
+ma-gauge-chart,
+ma-tank-level {
+  display: block;
+}
+
+ma-gauge-chart .amchart,
+ma-tank-level .amchart {
+  height: 100%;
+  width: 100%;
+}
+
+ma-tank-level .amcharts-graph-tank-remainder .amcharts-graph-column-bottom {
+  display: none;
+}
+
+ma-get-point-value,
+ma-point-values,
+ma-point-statistics {
+  display: none;
+}
+
 /* SVG and animations */
 
 [ng-include] > svg {

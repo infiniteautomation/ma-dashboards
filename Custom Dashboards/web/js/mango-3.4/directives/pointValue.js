@@ -42,13 +42,19 @@ Time: <ma-point-value point="myPoint1" display-type="dateTime" date-time-format=
 </ma-point-value>
  *
  */
-function pointValue(mangoDateFormats) {
+pointValue.$inject = ['mangoDateFormats', 'Point'];
+function pointValue(mangoDateFormats, Point) {
     return {
         restrict: 'E',
         designerInfo: {
             translation: 'dashboards.v3.components.pointValue',
             icon: 'label',
-            category: 'pointValue'
+            category: 'pointValue',
+            attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                displayType: {options: ['rendered', 'raw', 'converted', 'image', 'dateTime']}
+            }
         },
         scope: {
             point: '<?',
@@ -56,7 +62,7 @@ function pointValue(mangoDateFormats) {
             displayType: '@?',
             dateTimeFormat: '@?',
             timezone: '@?',
-            valueUpdated: '&?'
+            onValueUpdated: '&?'
         },
         templateUrl: require.toUrl('./pointValue.html'),
         link: function ($scope, $element, attrs) {
@@ -67,15 +73,11 @@ function pointValue(mangoDateFormats) {
                 'live-value': true
             };
 
-            $scope.onValueUpdated = function() {
-                if ($scope.valueUpdated) {
-                    $scope.valueUpdated({point: $scope.point});
+            $scope.valueUpdatedHandler = function() {
+                if ($scope.onValueUpdated) {
+                    $scope.onValueUpdated({point: $scope.point});
                 }
                 updateDisplayValue();
-            };
-            
-            $scope.setPoint = function(point) {
-                this.point = point;
             };
 
             $scope.$watch('point.xid', function(newXid, oldXid) {
@@ -87,6 +89,20 @@ function pointValue(mangoDateFormats) {
                     $scope.valueStyle = {};
                     delete $scope.classes['point-disabled'];
                 }
+            });
+            
+            $scope.$watch('pointXid', function(newXid, oldXid) {
+                if (newXid === undefined && newXid === oldXid) return;
+                if ($scope.point && $scope.point.xid === newXid) return;
+                
+                if ($scope.point && $scope.point.$cancelRequest) {
+                    $scope.point.$cancelRequest();
+                }
+                if (!newXid) {
+                    $scope.point = null;
+                    return;
+                }
+                $scope.point = Point.get({xid: newXid});
             });
 
             function updateDisplayValue() {
@@ -122,7 +138,6 @@ function pointValue(mangoDateFormats) {
     };
 }
 
-pointValue.$inject = ['mangoDateFormats'];
 return pointValue;
 
 }); // define

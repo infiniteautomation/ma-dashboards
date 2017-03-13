@@ -9,7 +9,7 @@
  * @author Jared Wiltshire
  */
 
-define(['jquery'], function($) {
+define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
@@ -112,7 +112,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
         // array of event types active for all xids
         this.activeAllEventTypes = [];
 
-	    $.extend(this, options);
+	    angular.extend(this, options);
 
 	    $rootScope.$on('mangoWatchdog', function(event, current, previous) {
 	        if (current.loggedIn) {

@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/pie', 'jquery'], function(AmCharts, $) {
+define(['amcharts/pie', 'angular'], function(AmCharts, angular) {
 'use strict';
 /**
  * @ngdoc directive
@@ -46,7 +46,7 @@ function pieChart($http) {
         },
         template: '<div class="amchart"></div>',
         link: function ($scope, $element, attributes) {
-            var options = $.extend(defaultOptions(), $scope.options);
+            var options = angular.extend(defaultOptions(), $scope.options);
             var chart = AmCharts.makeChart($element[0], options);
 
             var labelFn = createLabelFn();

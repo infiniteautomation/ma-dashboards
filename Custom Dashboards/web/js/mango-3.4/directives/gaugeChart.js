@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/gauge', 'jquery'], function(AmCharts, $) {
+define(['amcharts/gauge', 'require', 'angular'], function(AmCharts, require, angular) {
 'use strict';
 /**
  * @ngdoc directive
@@ -64,29 +64,39 @@ band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:100%; height
 
  *
  */
-function gaugeChart() {
+gaugeChart.$inject = ['Point'];
+function gaugeChart(Point) {
     return {
         restrict: 'E',
-        replace: true,
         designerInfo: {
             translation: 'dashboards.v3.components.gaugeChart',
             icon: 'donut_large',
-            category: 'pointValue'
+            category: 'pointValue',
+            size: {
+                width: '200px',
+                height: '200px'
+            },
+            attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                band1Color: {type: 'color'},
+                band2Color: {type: 'color'},
+                band3Color: {type: 'color'}
+            }
         },
         scope: {
-          value: '=?',
-          pointXid: '@?',
           point: '<?',
-          options: '=?',
+          pointXid: '@?',
+          value: '<?',
           start: '@',
           end: '@',
+          interval: '@',
           band1End: '@',
           band1Color: '@',
           band2End: '@',
           band2Color: '@',
           band3End: '@',
           band3Color: '@',
-          interval: '@',
           radius: '@',
           valueOffset: '@',
           valueFontSize: '@',
@@ -95,18 +105,70 @@ function gaugeChart() {
           tickInterval: '@',
           arrowInnerRadius: '@',
           arrowAlpha: '@',
-          axisAlpha: '@' 
+          axisAlpha: '@',
+          options: '<?'
         },
-        template: '<div ng-class="classes" class="amchart"></div>',
+        templateUrl: require.toUrl('./gaugeChart.html'),
         link: function ($scope, $element, attributes) {
         	$scope.classes = {
     	        'live-value': true
         	};
 
             var options = defaultOptions();
-            $.extend(options, $scope.options);
+            angular.extend(options, $scope.options);
             axisChanged();
-            var chart = AmCharts.makeChart($element[0], options);
+            var chart = AmCharts.makeChart($element.find('.amchart')[0], options);
+
+            $scope.$watchGroup(['start', 'end', 'band1End', 'band2End', 'band3End', 'end', 'interval',
+                                'band1Color', 'band2Color', 'band3Color'], axisChanged);
+
+            $scope.$watch('value', function(newValue, oldValue) {
+                chart.arrows[0].setValue(newValue || 0);
+                chart.axes[0].setBottomText(typeof newValue === 'number' ? newValue.toFixed(2) : '');
+            });
+
+            $scope.$watch('point.value', function(newValue, oldValue) {
+                // if gauge already has value set and newValue is undefined just ignore
+                if (newValue === undefined && chart.arrows[0].value) return;
+
+                var arrowValue = newValue || 0;
+                if ($scope.point && typeof $scope.point.convertedValue === 'number' && isFinite($scope.point.convertedValue)) {
+                    arrowValue = $scope.point.convertedValue;
+                }
+                chart.arrows[0].setValue(arrowValue);
+                
+                var rendered;
+                if ($scope.point && typeof $scope.point.renderedValue === 'string') {
+                    rendered = $scope.point.renderedValue;
+                } else if ($scope.point && typeof $scope.point.convertedValue === 'number' && isFinite($scope.point.convertedValue)) {
+                    rendered = $scope.point.convertedValue.toFixed(2);
+                } else if (typeof newValue === 'number' && isFinite(newValue)) {
+                    rendered = newValue.toFixed(2);
+                } else {
+                    rendered = '';
+                }
+                chart.axes[0].setBottomText(rendered);
+            });
+
+            $scope.$watch('point.enabled', function(newValue) {
+                // jshint eqnull:true
+                var disabled = newValue != null && !newValue;
+                $scope.classes['point-disabled'] = disabled;
+            });
+
+            $scope.$watch('pointXid', function(newXid, oldXid) {
+                if (newXid === undefined && newXid === oldXid) return;
+                if ($scope.point && $scope.point.xid === newXid) return;
+                
+                if ($scope.point && $scope.point.$cancelRequest) {
+                    $scope.point.$cancelRequest();
+                }
+                if (!newXid) {
+                    $scope.point = null;
+                    return;
+                }
+                $scope.point = Point.get({xid: newXid});
+            });
 
             function axisChanged() {
                 if ($scope.options && $scope.options.axes.length) {
@@ -173,35 +235,6 @@ function gaugeChart() {
                 
                 if (chart) chart.validateNow();
             }
-
-            $scope.$watchGroup(['start', 'end', 'band1End', 'band2End', 'band3End', 'end', 'interval',
-                                'band1Color', 'band2Color', 'band3Color'], axisChanged);
-
-            $scope.$watch('value', function(newValue, oldValue) {
-                chart.arrows[0].setValue(newValue || 0);
-                chart.axes[0].setBottomText(typeof newValue === 'number' ? newValue.toFixed(2) : '');
-            });
-
-            $scope.$watch('point.value', function(newValue, oldValue) {
-                // if gauge already has value set and newValue is undefined just ignore
-                if (newValue === undefined && chart.arrows[0].value) return;
-
-                chart.arrows[0].setValue(newValue || 0);
-                var rendered;
-                if ($scope.point && typeof $scope.point.renderedValue === 'string') {
-                    rendered = $scope.point.renderedValue;
-                } else if (typeof newValue === 'number') {
-                    rendered = newValue.toFixed(2);
-                } else {
-                    rendered = '';
-                }
-                chart.axes[0].setBottomText(rendered);
-            });
-
-            $scope.$watch('point.enabled', function(newValue) {
-            	var disabled = newValue !== undefined && !newValue;
-            	$scope.classes['point-disabled'] = disabled;
-            });
         }
     };
 }

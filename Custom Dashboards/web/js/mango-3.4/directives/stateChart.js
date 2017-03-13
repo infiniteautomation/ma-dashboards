@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/gantt', 'jquery', 'moment'], function(AmCharts, $, moment) {
+define(['amcharts/gantt', 'angular', 'moment'], function(AmCharts, angular, moment) {
 'use strict';
 /**
  * @ngdoc directive
@@ -51,7 +51,7 @@ function stateChart(mangoDateFormats) {
         template: '<div class="amchart"></div>',
         link: function ($scope, $element, attributes) {
             var options = defaultOptions();
-            options = $.extend(options, $scope.options);
+            options = angular.extend(options, $scope.options);
             var chart = AmCharts.makeChart($element[0], options);
             
             for (var i = 1; i <= MAX_SERIES; i++) {

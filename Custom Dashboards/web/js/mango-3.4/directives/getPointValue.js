@@ -43,14 +43,17 @@ function getPointValue(pointEventManager, Point, Util) {
         designerInfo: {
             translation: 'dashboards.v3.components.getPointValue',
             icon: 'label_outline',
-            category: 'pointValue'
+            category: 'pointValue',
+            attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'}
+            }
         },
         scope: {
-        	points: '<?',
             point: '<?',
             pointXid: '@?',
-            valueUpdated: '&?',
-            onGetPoint: '&?'
+            points: '<?',
+            onValueUpdated: '&?'
         },
         link: function ($scope, $element, attrs) {
 
@@ -61,8 +64,8 @@ function getPointValue(pointEventManager, Point, Util) {
                         var point = points[i];
                         if (payload.xid === point.xid) {
                             point.websocketHandler(payload);
-                            if ($scope.valueUpdated) {
-                                $scope.valueUpdated({point: point});
+                            if ($scope.onValueUpdated) {
+                                $scope.onValueUpdated({point: point});
                             }
                             break;
                         }
@@ -72,23 +75,18 @@ function getPointValue(pointEventManager, Point, Util) {
 
             var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
 
-            var pointPromise;
-            $scope.$watch('pointXid', function(newXid) {
+            $scope.$watch('pointXid', function(newXid, oldXid) {
+                if (newXid === undefined && newXid === oldXid) return;
                 if ($scope.point && $scope.point.xid === newXid) return;
                 
-                delete $scope.point;
-                if (pointPromise) {
-                    pointPromise.reject();
-                    pointPromise = null;
+                if ($scope.point && $scope.point.$cancelRequest) {
+                    $scope.point.$cancelRequest();
                 }
-
-                if (!newXid) return;
-                pointPromise = Point.get({xid: newXid}).$promise;
-                pointPromise.then(function(point) {
-                    pointPromise = null;
-                    $scope.point = point;
-                    $scope.onGetPoint({$point: point});
-                });
+                if (!newXid) {
+                    $scope.point = null;
+                    return;
+                }
+                $scope.point = Point.get({xid: newXid});
             });
 
             $scope.$watch('point.xid', function(newXid, oldXid) {

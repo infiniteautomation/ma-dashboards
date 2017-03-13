@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/serial', 'jquery'], function(AmCharts, $) {
+define(['amcharts/serial', 'require', 'angular'], function(AmCharts, require, angular) {
 'use strict';
 /**
  * @ngdoc directive
@@ -27,89 +27,107 @@ define(['amcharts/serial', 'jquery'], function(AmCharts, $) {
 </ma-tank-level>
  *
  */
-function tankLevel(maDashboardsInsertCss, cssInjector) {
-    var cssContent = '.amcharts-graph-tank-remainder .amcharts-graph-column-bottom {display: none}';
-
+tankLevel.$inject = ['Point'];
+function tankLevel(Point) {
     return {
         restrict: 'E',
-        replace: true,
         designerInfo: {
             translation: 'dashboards.v3.components.tankLevel',
             icon: 'battery_full',
             category: 'pointValue',
             attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
                 color: {type: 'color'}
+            },
+            size: {
+                width: '200px',
+                height: '200px'
             }
         },
         scope: {
-          value: '=',
-          point: '=',
-          options: '=?',
-          max: '@',
-          color: '@'
+          point: '<?',
+          pointXid: '@?',
+          max: '@?',
+          color: '@?',
+          value: '<?',
+          options: '<?'
         },
-        template: '<div class="amchart" ng-class="classes"></div>',
-        compile: function($element, attributes) {
-            if (maDashboardsInsertCss) {
-                cssInjector.injectStyle(cssContent, this.name);
-            }
-
-            // post-link
-            return function ($scope, $element, attributes) {
-                $scope.classes = {
-                    'live-value': true
-                };
-
-                var options = defaultOptions();
-                var chart = AmCharts.makeChart($element[0], $.extend(options, $scope.options));
-                var max = 100;
-                var tankLevel = 0;
-
-                $scope.$watch('max', function(newValue, oldValue) {
-                	if (newValue === undefined) return;
-                	max = parseFloat(newValue);
-                    chart.dataProvider[0].remainder = max - tankLevel;
-                    chart.validateData();
-                });
-
-                $scope.$watch('color', function(newValue, oldValue) {
-                	if (newValue === undefined) return;
-                	options.graphs[0].fillColors = newValue;
-                    chart.validateData();
-                });
-
-                $scope.$watch('value', function(newValue, oldValue) {
-                    tankLevel = newValue || 0;
-                    chart.dataProvider[0].tankLevel = tankLevel;
-                    chart.dataProvider[0].remainder = max - tankLevel;
-                    chart.validateData();
-                });
-
-                $scope.$watch('point.value', function(newValue, oldValue) {
-                    // if gauge already has value set and newValue is undefined just ignore
-                    if (newValue === undefined) return;
-                    
-                    var rendered;
-                    if ($scope.point && typeof $scope.point.renderedValue === 'string') {
-                        rendered = $scope.point.renderedValue;
-                    } else if (typeof newValue === 'number') {
-                        rendered = newValue.toFixed(2);
-                    } else {
-                        rendered = '';
-                    }
-                    tankLevel = newValue || 0;
-
-                    chart.dataProvider[0].tankLevel = tankLevel;
-                    chart.dataProvider[0].remainder = max - tankLevel;
-                    chart.dataProvider[0].renderedValue = rendered;
-                    chart.validateData();
-                });
-
-                $scope.$watch('point.enabled', function(newValue) {
-                	var disabled = newValue !== undefined && !newValue;
-                	$scope.classes['point-disabled'] = disabled;
-                });
+        templateUrl: require.toUrl('./tankLevel.html'),
+        link: function($scope, $element, attributes) {
+            $scope.classes = {
+                'live-value': true
             };
+
+            var options = defaultOptions();
+            var chart = AmCharts.makeChart($element.find('.amchart')[0], angular.extend(options, $scope.options));
+            var max = 100;
+            var tankLevel = 0;
+
+            $scope.$watch('max', function(newValue, oldValue) {
+            	if (newValue === undefined) return;
+            	max = parseFloat(newValue);
+                chart.dataProvider[0].remainder = max - tankLevel;
+                chart.validateData();
+            });
+
+            $scope.$watch('color', function(newValue, oldValue) {
+            	if (newValue === undefined) return;
+            	options.graphs[0].fillColors = newValue;
+                chart.validateData();
+            });
+
+            $scope.$watch('value', function(newValue, oldValue) {
+                tankLevel = newValue || 0;
+                chart.dataProvider[0].tankLevel = tankLevel;
+                chart.dataProvider[0].remainder = max - tankLevel;
+                chart.validateData();
+            });
+
+            $scope.$watch('point.value', function(newValue, oldValue) {
+                // if gauge already has value set and newValue is undefined just ignore
+                if (newValue === undefined) return;
+
+                tankLevel = newValue || 0;
+                if ($scope.point && typeof $scope.point.convertedValue === 'number' && isFinite($scope.point.convertedValue)) {
+                    tankLevel = $scope.point.convertedValue;
+                }
+                
+                var rendered;
+                if ($scope.point && typeof $scope.point.renderedValue === 'string') {
+                    rendered = $scope.point.renderedValue;
+                } else if ($scope.point && typeof $scope.point.convertedValue === 'number' && isFinite($scope.point.convertedValue)) {
+                    rendered = $scope.point.convertedValue.toFixed(2);
+                } else if (typeof newValue === 'number' && isFinite(newValue)) {
+                    rendered = newValue.toFixed(2);
+                } else {
+                    rendered = '';
+                }
+
+                chart.dataProvider[0].tankLevel = tankLevel;
+                chart.dataProvider[0].remainder = max - tankLevel;
+                chart.dataProvider[0].renderedValue = rendered;
+                chart.validateData();
+            });
+
+            $scope.$watch('point.enabled', function(newValue) {
+            	var disabled = newValue !== undefined && !newValue;
+            	$scope.classes['point-disabled'] = disabled;
+            });
+            
+            $scope.$watch('pointXid', function(newXid, oldXid) {
+                if (newXid === undefined && newXid === oldXid) return;
+                if ($scope.point && $scope.point.xid === newXid) return;
+                
+                if ($scope.point && $scope.point.$cancelRequest) {
+                    $scope.point.$cancelRequest();
+                }
+                if (!newXid) {
+                    $scope.point = null;
+                    return;
+                }
+                $scope.point = Point.get({xid: newXid});
+            });
         }
     };
 }
@@ -175,8 +193,6 @@ function defaultOptions() {
         }
     };
 }
-
-tankLevel.$inject = ['maDashboardsInsertCss', 'cssInjector'];
 
 return tankLevel;
 

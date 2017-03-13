@@ -18,10 +18,10 @@
 				<div layout="row" layout-wrap class="point-details">
 					<div ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" flex="100" layout>
                       <label flex="35">{{'dashboards.v3.app.value' | tr}}:</label>
-                      <div class="point-value" flex="65"><ma-point-value point="myPoint" value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value></div>
+                      <div class="point-value" flex="65"><ma-point-value point="myPoint" on-value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value></div>
                     </div>
 					<ma-point-value ng-if="myPoint.pointLocator.dataType == 'IMAGE'" flex="100"
-                      point="myPoint" value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value>
+                      point="myPoint" on-value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value>
                     <label flex="35">XID:</label> <div flex="65" ng-bind="myPoint.xid"></div>
 					<label flex="35">{{'dashboards.v3.app.time' | tr}}:</label> <div class="point-time" flex="65" ng-bind="$ctrl.pointTime"></div>
 					<label flex="35">{{'dashboards.v3.app.path' | tr}}:</label>  <div flex="65"><span ng-repeat="folder in $ctrl.path">{{folder}} <span ng-if="!$last"> &gt; </span></span></div>

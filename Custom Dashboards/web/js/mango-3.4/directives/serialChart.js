@@ -109,6 +109,10 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 series8Color: {type: 'color'},
                 series9Color: {type: 'color'},
                 series10Color: {type: 'color'}
+            },
+            size: {
+                width: '400px',
+                height: '200px'
             }
         },
         scope: scope,
