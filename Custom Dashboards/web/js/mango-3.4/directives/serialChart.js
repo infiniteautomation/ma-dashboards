@@ -399,9 +399,10 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     bulletHitAreaSize: 15,
                     bulletAlpha: 1,
                     bulletBorderColor: 'black',
-                    bulletBorderAlpha: 0.2,
+                    bulletBorderAlpha: 0.5,
                     bulletBorderThickness: 1,
                     bullet: 'diamond',
+                    // bulletColor: '[[' + graph.xid + 'AnnotationBulletColor]]',
                     bulletField: graph.xid + 'AnnotationBullet'
                 };
             }
