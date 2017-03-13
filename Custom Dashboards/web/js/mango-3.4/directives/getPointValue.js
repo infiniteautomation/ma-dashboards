@@ -46,10 +46,11 @@ function getPointValue(pointEventManager, Point, Util) {
             category: 'pointValue'
         },
         scope: {
-        	points: '=?',
-            point: '=?',
-            pointXid: '@',
-            valueUpdated: '&?'
+        	points: '<?',
+            point: '<?',
+            pointXid: '@?',
+            valueUpdated: '&?',
+            onGetPoint: '&?'
         },
         link: function ($scope, $element, attrs) {
 
@@ -86,6 +87,7 @@ function getPointValue(pointEventManager, Point, Util) {
                 pointPromise.then(function(point) {
                     pointPromise = null;
                     $scope.point = point;
+                    $scope.onGetPoint({$point: point});
                 });
             });
 

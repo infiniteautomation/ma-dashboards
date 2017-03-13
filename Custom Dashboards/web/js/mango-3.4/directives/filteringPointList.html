@@ -3,7 +3,7 @@
   md-selected-item="selectedItem"
   md-search-text="searchText"
   md-items="item in querySearch(searchText)"
-  md-item-text="pointLabel(item)"
+  md-item-text="displayText({$point: item})"
   md-no-cache="true"
   md-min-length="0"
   md-floating-label="{{label}}"
@@ -13,7 +13,7 @@
   md-clear-button="true">
 
     <md-item-template>
-      <span md-highlight-text="searchText" md-highlight-flags="gi">{{pointLabel(item)}}</span>
+      <span md-highlight-text="searchText" md-highlight-flags="gi">{{listText({$point: item})}}</span>
     </md-item-template>
 
     <md-not-found>

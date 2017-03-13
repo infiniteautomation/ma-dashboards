@@ -75,7 +75,8 @@ function gaugeChart() {
         },
         scope: {
           value: '=?',
-          point: '=',
+          pointXid: '@?',
+          point: '<?',
           options: '=?',
           start: '@',
           end: '@',

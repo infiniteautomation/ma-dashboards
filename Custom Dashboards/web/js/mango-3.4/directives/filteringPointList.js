@@ -25,8 +25,8 @@ define(['require', 'rql/query'], function(require, query) {
  * @usage
  * <ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>
  */
-pointList.$inject = ['Point', '$filter', '$injector', 'Translate', '$timeout'];
-function pointList(Point, $filter, $injector, Translate, $timeout) {
+filteringPointList.$inject = ['Point', '$filter', '$injector', 'Translate', '$timeout'];
+function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -42,95 +42,107 @@ function pointList(Point, $filter, $injector, Translate, $timeout) {
             autoInit: '=?',
             pointXid: '@',
             pointId: '@',
-            label: '@'
+            label: '@',
+            listText: '&?',
+            displayText: '&?'
         },
         templateUrl: require.toUrl('./filteringPointList.html'),
-        link: function ($scope, $element, attrs) {
-            if (!$scope.label)
-                $scope.label = Translate.trSync('dashboards.v3.app.searchBy', 'points', 'name or device');
-            
-            if ($scope.autoInit) {
-                if (!$scope.pointXid && !$scope.pointId) {
-                    Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
-                        $scope.ngModel = item[0];
-                        $scope.selectedItem = item[0];
-                    });
-                }
+        link: filteringPointListPostLink
+    };
 
-                $scope.$watch('pointXid', function(newValue, oldValue) {
-                    if (newValue === undefined) return;
-                    // console.log(oldValue, newValue);
-
-                    Point.rql({query: 'xid='+newValue}).$promise.then(function(item) {
-                        $scope.ngModel = item[0];
-                        $scope.selectedItem = item[0];
-                    });
-                });
-
-                $scope.$watch('pointId', function(newValue, oldValue) {
-                    if (newValue === undefined) return;
-                    // console.log(oldValue, newValue);
-
-                    Point.rql({query: 'id='+newValue}).$promise.then(function(item) {
-                        $scope.ngModel = item[0];
-                        $scope.selectedItem = item[0];
-                    });
+    function filteringPointListPostLink($scope, $element, attrs) {
+        if (!$scope.label)
+            $scope.label = Translate.trSync('dashboards.v3.app.searchBy', 'points', 'name or device');
+        
+        if ($scope.autoInit) {
+            if (!$scope.pointXid && !$scope.pointId) {
+                Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
+                    $scope.ngModel = item[0];
+                    $scope.selectedItem = item[0];
                 });
             }
 
-            $scope.storeItem = function(selectedItem) {
-                var oldXid = $scope.ngModel && $scope.ngModel.xid;
-                var newXid = selectedItem && selectedItem.xid;
-                $scope.ngModel = selectedItem;
+            $scope.$watch('pointXid', function(newValue, oldValue) {
+                if (newValue === undefined) return;
+                // console.log(oldValue, newValue);
 
-                if ($scope.ngChange && newXid != oldXid) {
-                    $timeout(function() {
-                        $scope.ngChange();
-                    }, 0);
-                }
-            };
-
-            $scope.querySearch = function(inputText) {
-                var rqlQuery, queryString;
-                
-                if (inputText) {
-                    rqlQuery = new query.Query();
-                    var nameLike = new query.Query({name: 'like', args: ['name', '*' + inputText + '*']});
-                    var deviceName = new query.Query({name: 'like', args: ['deviceName', '*' + inputText + '*']});
-                    rqlQuery.push(nameLike);
-                    rqlQuery.push(deviceName);
-                    rqlQuery.name = 'or';
-                }
-
-                if (attrs.query) {
-                    if (rqlQuery) {
-                        queryString = rqlQuery.toString();
-                    }
-                    queryString =+ attrs.query;
-                } else {
-                    var q = new query.Query();
-                    if (rqlQuery)
-                        q.push(rqlQuery);
-
-                    queryString = q.sort('deviceName', 'name')
-                        .limit($scope.limit || 150)
-                        .toString();
-                }
-                
-                return Point.rql({
-                    rqlQuery: queryString
-                }).$promise.then(null, function() {
-                    return [];
+                Point.rql({query: 'xid='+newValue}).$promise.then(function(item) {
+                    $scope.ngModel = item[0];
+                    $scope.selectedItem = item[0];
                 });
-            };
+            });
 
-            $scope.pointLabel = function(point) {
-                return point.deviceName + ' - ' + point.name;
-            };
+            $scope.$watch('pointId', function(newValue, oldValue) {
+                if (newValue === undefined) return;
+                // console.log(oldValue, newValue);
+
+                Point.rql({query: 'id='+newValue}).$promise.then(function(item) {
+                    $scope.ngModel = item[0];
+                    $scope.selectedItem = item[0];
+                });
+            });
         }
-    };
+
+        $scope.storeItem = function(selectedItem) {
+            var oldXid = $scope.ngModel && $scope.ngModel.xid;
+            var newXid = selectedItem && selectedItem.xid;
+            $scope.ngModel = selectedItem;
+
+            if ($scope.ngChange && newXid != oldXid) {
+                $timeout(function() {
+                    $scope.ngChange();
+                }, 0);
+            }
+        };
+
+        $scope.querySearch = function(inputText) {
+            var rqlQuery, queryString;
+            
+            if (inputText) {
+                rqlQuery = new query.Query();
+                var nameLike = new query.Query({name: 'like', args: ['name', '*' + inputText + '*']});
+                var deviceName = new query.Query({name: 'like', args: ['deviceName', '*' + inputText + '*']});
+                rqlQuery.push(nameLike);
+                rqlQuery.push(deviceName);
+                rqlQuery.name = 'or';
+            }
+
+            if (attrs.query) {
+                if (rqlQuery) {
+                    queryString = rqlQuery.toString();
+                }
+                queryString =+ attrs.query;
+            } else {
+                var q = new query.Query();
+                if (rqlQuery)
+                    q.push(rqlQuery);
+
+                queryString = q.sort('deviceName', 'name')
+                    .limit($scope.limit || 150)
+                    .toString();
+            }
+            
+            return Point.rql({
+                rqlQuery: queryString
+            }).$promise.then(null, function() {
+                return [];
+            });
+        };
+        
+        if (!$scope.listText) {
+            $scope.listText = defaultText;
+        }
+        
+        if (!$scope.displayText) {
+            $scope.displayText = defaultText;
+        }
+        
+        function defaultText(opts) {
+            return opts.$point.deviceName + ' - ' + opts.$point.name;
+        }
+    }
 }
 
-return pointList;
+return filteringPointList;
 
 }); // define

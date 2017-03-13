@@ -51,11 +51,11 @@ function pointValue(mangoDateFormats) {
             category: 'pointValue'
         },
         scope: {
-            point: '=?',
-            pointXid: '@',
-            displayType: '@',
-            dateTimeFormat: '@',
-            timezone: '@',
+            point: '<?',
+            pointXid: '@?',
+            displayType: '@?',
+            dateTimeFormat: '@?',
+            timezone: '@?',
             valueUpdated: '&?'
         },
         templateUrl: require.toUrl('./pointValue.html'),
@@ -72,6 +72,10 @@ function pointValue(mangoDateFormats) {
                     $scope.valueUpdated({point: $scope.point});
                 }
                 updateDisplayValue();
+            };
+            
+            $scope.setPoint = function(point) {
+                this.point = point;
             };
 
             $scope.$watch('point.xid', function(newXid, oldXid) {
