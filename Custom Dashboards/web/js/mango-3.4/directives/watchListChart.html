@@ -54,7 +54,7 @@ ma-watch-list-chart md-input-container, watch-list-chart md-checkbox {
 
 <md-tabs md-dynamic-height md-swipe-content md-selected="currentTab" class="noTabPanel">
     <md-tab label="Chart">
-        <ma-point-values points="points" values="chartValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupIntervalNumber}} {{rollupIntervalPeriod}}">
+        <ma-point-values points="points" values="chartValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupIntervalNumber}} {{rollupIntervalPeriod}}" rendered="true">
         </ma-point-values>
         <div style="height: {{chartHeight}};" ng-if="points.length">
             <ma-serial-chart default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" legend="true" 
