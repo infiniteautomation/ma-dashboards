@@ -3,8 +3,9 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/gauge', 'require', 'angular'], function(AmCharts, require, angular) {
+define(['amcharts/gauge', 'require', 'angular', './PointValueController'], function(AmCharts, require, angular, PointValueController) {
 'use strict';
+
 /**
  * @ngdoc directive
  * @name maDashboards.maGaugeChart
@@ -64,10 +65,37 @@ band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:100%; height
 
  *
  */
-gaugeChart.$inject = ['Point'];
-function gaugeChart(Point) {
+function gaugeChart() {
     return {
         restrict: 'E',
+        template: '<div ng-class="classes" class="amchart"></div>',
+        scope: {},
+        controller: GaugeChartController,
+        controllerAs: '$ctrl',
+        bindToController: {
+          point: '<?',
+          pointXid: '@?',
+          start: '<?',
+          end: '<?',
+          interval: '<?',
+          band1End: '<?',
+          band1Color: '@',
+          band2End: '<?',
+          band2Color: '@',
+          band3End: '<?',
+          band3Color: '@',
+          radius: '@',
+          valueOffset: '<?',
+          valueFontSize: '<?',
+          axisLabelFontSize: '<?',
+          axisThickness: '<?',
+          tickInterval: '<?',
+          arrowInnerRadius: '<?',
+          arrowAlpha: '<?',
+          axisAlpha: '<?',
+          options: '<?',
+          value: '<?'
+        },
         designerInfo: {
             translation: 'dashboards.v3.components.gaugeChart',
             icon: 'donut_large',
@@ -83,169 +111,135 @@ function gaugeChart(Point) {
                 band2Color: {type: 'color'},
                 band3Color: {type: 'color'}
             }
-        },
-        scope: {
-          point: '<?',
-          pointXid: '@?',
-          value: '<?',
-          start: '@',
-          end: '@',
-          interval: '@',
-          band1End: '@',
-          band1Color: '@',
-          band2End: '@',
-          band2Color: '@',
-          band3End: '@',
-          band3Color: '@',
-          radius: '@',
-          valueOffset: '@',
-          valueFontSize: '@',
-          axisLabelFontSize: '@',
-          axisThickness: '@',
-          tickInterval: '@',
-          arrowInnerRadius: '@',
-          arrowAlpha: '@',
-          axisAlpha: '@',
-          options: '<?'
-        },
-        templateUrl: require.toUrl('./gaugeChart.html'),
-        link: function ($scope, $element, attributes) {
-        	$scope.classes = {
-    	        'live-value': true
-        	};
-
-            var options = defaultOptions();
-            angular.extend(options, $scope.options);
-            axisChanged();
-            var chart = AmCharts.makeChart($element.find('.amchart')[0], options);
-
-            $scope.$watchGroup(['start', 'end', 'band1End', 'band2End', 'band3End', 'end', 'interval',
-                                'band1Color', 'band2Color', 'band3Color'], axisChanged);
-
-            $scope.$watch('value', function(newValue, oldValue) {
-                chart.arrows[0].setValue(newValue || 0);
-                chart.axes[0].setBottomText(typeof newValue === 'number' ? newValue.toFixed(2) : '');
-            });
-
-            $scope.$watch('point.value', function(newValue, oldValue) {
-                // if gauge already has value set and newValue is undefined just ignore
-                if (newValue === undefined && chart.arrows[0].value) return;
-
-                var arrowValue = newValue || 0;
-                if ($scope.point && typeof $scope.point.convertedValue === 'number' && isFinite($scope.point.convertedValue)) {
-                    arrowValue = $scope.point.convertedValue;
-                }
-                chart.arrows[0].setValue(arrowValue);
-                
-                var rendered;
-                if ($scope.point && typeof $scope.point.renderedValue === 'string') {
-                    rendered = $scope.point.renderedValue;
-                } else if ($scope.point && typeof $scope.point.convertedValue === 'number' && isFinite($scope.point.convertedValue)) {
-                    rendered = $scope.point.convertedValue.toFixed(2);
-                } else if (typeof newValue === 'number' && isFinite(newValue)) {
-                    rendered = newValue.toFixed(2);
-                } else {
-                    rendered = '';
-                }
-                chart.axes[0].setBottomText(rendered);
-            });
-
-            $scope.$watch('point.enabled', function(newValue) {
-                // jshint eqnull:true
-                var disabled = newValue != null && !newValue;
-                $scope.classes['point-disabled'] = disabled;
-            });
-
-            var pointRequest;
-            $scope.$watch('pointXid', function(newXid, oldXid) {
-                if (newXid === undefined && newXid === oldXid) return;
-                if ($scope.point && $scope.point.xid === newXid) return;
-                
-                if (pointRequest) {
-                    pointRequest.$cancelRequest();
-                }
-                if (!newXid) {
-                    pointRequest = null;
-                    $scope.point = null;
-                    return;
-                }
-                pointRequest = Point.get({xid: newXid});
-                pointRequest.$promise.then(function(point) {
-                    pointRequest = null;
-                    $scope.point = point;
-                }, function() {
-                    pointRequest = null;
-                    $scope.point = null;
-                });
-            });
-
-            function axisChanged() {
-                if ($scope.options && $scope.options.axes.length) {
-                    return;
-                }
-                var axis = options.axes[0];
-                var arrow = options.arrows[0];
-                axis.bands = [];
-                axis.startValue = parseFloat($scope.start) || 0;
-                axis.endValue = parseFloat($scope.end) || 100;
-                if ($scope.band1End) {
-                    var stop1 = parseFloat($scope.band1End);
-                    axis.bands.push({
-                        id: 'band1',
-                        color: $scope.band1Color || "#84b761",
-                        startValue: axis.startValue,
-                        endValue: stop1
-                    });
-                    if (!$scope.end)
-                        axis.endValue = stop1;
-                }
-                if ($scope.band1End && $scope.band2End) {
-                    var stop2 = parseFloat($scope.band2End);
-                    axis.bands.push({
-                        id: 'band2',
-                        color: $scope.band2Color || "#fdd400",
-                        startValue: axis.bands[0].endValue,
-                        endValue: stop2
-                    });
-                    if (!$scope.end)
-                        axis.endValue = stop2;
-                }
-                if ($scope.band1End && $scope.band2End && $scope.band3End) {
-                    var stop3 = parseFloat($scope.band3End);
-                    axis.bands.push({
-                        id: 'band3',
-                        color: $scope.band3Color || "#cc4748",
-                        startValue: axis.bands[1].endValue,
-                        endValue: stop3
-                    });
-                    if (!$scope.end)
-                        axis.endValue = stop3;
-                }
-                axis.valueInterval = parseFloat($scope.interval) || (axis.endValue - axis.startValue) / 5;
-				
-				axis.radius = $scope.radius || '95%';
-				axis.bottomTextYOffset =  parseFloat($scope.valueOffset) || -20;
-                axis.bottomTextFontSize =  parseFloat($scope.valueFontSize) || 12;
-                axis.axisThickness =  parseFloat($scope.axisThickness) || 1;
-                axis.axisAlpha =  parseFloat($scope.axisAlpha) || 0.5;
-                axis.tickAlpha =  parseFloat($scope.axisAlpha) || 0.5;
-                
-                if ($scope.axisLabelFontSize) {
-                    axis.fontSize = parseFloat($scope.axisLabelFontSize);
-                }
-                if ($scope.tickInterval) {
-                    axis.minorTickInterval = parseFloat($scope.tickInterval);
-                }
-                
-                arrow.nailRadius = parseFloat($scope.arrowInnerRadius) || 8;
-                arrow.innerRadius = parseFloat($scope.arrowInnerRadius)+3 || 10;
-                arrow.alpha = parseFloat($scope.arrowAlpha) || 1;
-                arrow.nailBorderAlpha = parseFloat($scope.arrowAlpha) || 1;
-                
-                if (chart) chart.validateNow();
-            }
         }
     };
+}
+
+
+GaugeChartController.$inject = PointValueController.$inject;
+function GaugeChartController() {
+    PointValueController.apply(this, arguments);
+    
+    this.chartOptions = defaultOptions();
+}
+
+GaugeChartController.prototype = Object.create(PointValueController.prototype);
+GaugeChartController.prototype.constructor = GaugeChartController;
+
+GaugeChartController.prototype.$onInit = function() {
+    this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
+    this.setGaugeValue();
+};
+
+GaugeChartController.prototype.$onChanges = function(changes) {
+    var optionsChanged = false;
+    for (var key in changes) {
+        if (key !== 'value') {
+            optionsChanged = true;
+            break;
+        }
+    }
+    
+    if (optionsChanged) {
+        this.updateGauge();
+    }
+    
+    PointValueController.prototype.$onChanges.apply(this, arguments);
+};
+
+GaugeChartController.prototype.valueChangeHandler = function() {
+    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
+    this.setGaugeValue();
+};
+
+GaugeChartController.prototype.setGaugeValue = function() {
+    if (!this.chart) return;
+    
+    var value = this.getValue();
+    var textValue = this.getTextValue();
+    
+    this.chart.arrows[0].setValue(value || 0);
+    this.chart.axes[0].setBottomText(textValue);
+};
+
+GaugeChartController.prototype.updateGauge = function() {
+    var options = angular.merge(this.chartOptions, this.options);
+    var axis = options.axes[0];
+    var arrow = options.arrows[0];
+    
+    axis.bands = [];
+    axis.startValue = asNumber(this.start);
+    axis.endValue = asNumber(this.end, 100);
+    
+    // jshint eqnull:true
+    if (this.band1End != null) {
+        var stop1 = asNumber(this.band1End);
+        axis.bands.push({
+            id: 'band1',
+            color: this.band1Color || "#84b761",
+            startValue: axis.startValue,
+            endValue: stop1
+        });
+        if (!this.end)
+            axis.endValue = stop1;
+    }
+    if (this.band1End != null && this.band2End != null) {
+        var stop2 = asNumber(this.band2End);
+        axis.bands.push({
+            id: 'band2',
+            color: this.band2Color || "#fdd400",
+            startValue: axis.bands[0].endValue,
+            endValue: stop2
+        });
+        if (!this.end)
+            axis.endValue = stop2;
+    }
+    if (this.band1End != null && this.band2End != null && this.band3End != null) {
+        var stop3 = asNumber(this.band3End);
+        axis.bands.push({
+            id: 'band3',
+            color: this.band3Color || "#cc4748",
+            startValue: axis.bands[1].endValue,
+            endValue: stop3
+        });
+        if (!this.end)
+            axis.endValue = stop3;
+    }
+    axis.valueInterval = asNumber(this.interval, (axis.endValue - axis.startValue) / 5);
+    
+    axis.radius = this.radius || '100%';
+    axis.bottomTextYOffset =  asNumber(this.valueOffset, -20);
+    axis.bottomTextFontSize =  asNumber(this.valueFontSize, 12);
+    axis.axisThickness =  asNumber(this.axisThickness, 1);
+    axis.axisAlpha =  asNumber(this.axisAlpha, 0.5);
+    axis.tickAlpha =  asNumber(this.axisAlpha, 0.5);
+    
+    if (this.axisLabelFontSize != null) {
+        axis.fontSize = asNumber(this.axisLabelFontSize);
+    }
+    if (this.tickInterval != null) {
+        axis.minorTickInterval = asNumber(this.tickInterval);
+    }
+    
+    arrow.nailRadius = asNumber(this.arrowInnerRadius, 8);
+    arrow.innerRadius = arrow.nailRadius + 3;
+    arrow.alpha = asNumber(this.arrowAlpha, 1);
+    arrow.nailBorderAlpha = arrow.alpha;
+
+    if (this.chart) {
+        this.chart.validateNow();
+    }
+};
+
+function asNumber(value, defaultValue) {
+    if (typeof value === 'number' && isFinite(value)) {
+        return value;
+    } else if (typeof value === 'string') {
+        try {
+            return parseFloat(value);
+        } catch (e) {}
+    }
+    return defaultValue || 0;
 }
 
 function defaultOptions() {

@@ -6,6 +6,40 @@
 define(['angular', './PointValueController'], function(angular, PointValueController) {
 'use strict';
 
+function barDisplay() {
+    return {
+        restrict: 'E',
+        template: '<div class="bar-display-fill" ng-style="$ctrl.style"></div>',
+        scope: {},
+        controller: BarDisplayController,
+        controllerAs: '$ctrl',
+        bindToController: {
+            point: '<?',
+            pointXid: '@?',
+            direction: '@?',
+            maximum: '<?',
+            minimum: '<?',
+            value: '<?'
+        },
+        designerInfo: {
+            translation: 'dashboards.v3.components.barDisplay',
+            icon: 'trending_flat',
+            category: 'pointValue',
+            attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                direction: {
+                    options: ['left-to-right', 'bottom-to-top', 'right-to-left', 'top-to-bottom']
+                }
+            },
+            size: {
+                width: '200px',
+                height: '30px'
+            }
+        }
+    };
+}
+
 BarDisplayController.$inject = PointValueController.$inject;
 function BarDisplayController() {
     PointValueController.apply(this, arguments);
@@ -31,15 +65,7 @@ BarDisplayController.prototype.valueChangeHandler = function() {
 };
 
 BarDisplayController.prototype.updateBar = function() {
-    // jshint eqnull:true
-    var value = 0;
-    if (this.value != null) {
-        value = this.value;
-    } else if (this.point && this.point.convertedValue != null) {
-        value = this.point.convertedValue;
-    } else if (this.point && this.point.value != null) {
-        value = this.point.value;
-    }
+    var value = this.getValue() || 0;
     
     var maximum = this.maximum || 100;
     var minimum = this.minimum || 0;
@@ -68,40 +94,6 @@ BarDisplayController.prototype.updateBar = function() {
         this.style.height = '100%';
     }
 };
-
-function barDisplay() {
-    return {
-        restrict: 'E',
-        designerInfo: {
-            translation: 'dashboards.v3.components.barDisplay',
-            icon: 'trending_flat',
-            category: 'pointValue',
-            attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
-                direction: {
-                    options: ['left-to-right', 'bottom-to-top', 'right-to-left', 'top-to-bottom']
-                }
-            },
-            size: {
-                width: '200px',
-                height: '30px'
-            }
-        },
-        bindToController: {
-            point: '<?',
-            pointXid: '@?',
-            direction: '@?',
-            maximum: '<?',
-            minimum: '<?',
-            value: '<?'
-        },
-        template: '<div class="bar-display-fill" ng-style="$ctrl.style"></div>',
-        scope: {},
-        controller: BarDisplayController,
-        controllerAs: '$ctrl'
-    };
-}
 
 return barDisplay;
 

@@ -58,6 +58,20 @@ PointValueController.prototype.getValue = function() {
     return null;
 };
 
+PointValueController.prototype.getTextValue = function() {
+    // jshint eqnull:true
+    if (this.value != null) {
+        return this.value.toFixed(2);
+    } else if (this.point && this.point.renderedValue != null) {
+        return this.point.renderedValue;
+    } else if (this.point && this.point.convertedValue != null) {
+        return this.point.convertedValue.toFixed(2);
+    } else if (this.point && this.point.value != null) {
+        return this.point.value.toFixed(2);
+    }
+    return '';
+};
+
 PointValueController.prototype.websocketHandler = function(event, payload) {
     if (!this.point) {
         console.error('No point but got websocket msg', payload);

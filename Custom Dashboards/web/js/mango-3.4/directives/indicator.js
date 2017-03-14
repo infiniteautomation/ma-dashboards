@@ -6,6 +6,38 @@
 define(['angular', './PointValueController'], function(angular, PointValueController) {
 'use strict';
 
+function indicator() {
+    return {
+        restrict: 'E',
+        scope: {},
+        controller: IndicatorController,
+        bindToController: {
+            point: '<?',
+            pointXid: '@?',
+            value: '<?'
+        },
+        designerInfo: {
+            translation: 'dashboards.v3.components.indicator',
+            icon: 'lightbulb_outline',
+            category: 'pointValue',
+            attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                colorTrue: {
+                    type: 'color'
+                },
+                colorFalse: {
+                    type: 'color'
+                }
+            },
+            size: {
+                width: '30px',
+                height: '30px'
+            }
+        }
+    };
+}
+
 IndicatorController.$inject = PointValueController.$inject.concat('Util');
 function IndicatorController() {
     PointValueController.apply(this, arguments);
@@ -30,38 +62,6 @@ IndicatorController.prototype.valueChangeHandler = function() {
     }
     this.$element.css('background-color', color);
 };
-
-function indicator() {
-    return {
-        restrict: 'E',
-        designerInfo: {
-            translation: 'dashboards.v3.components.indicator',
-            icon: 'lightbulb_outline',
-            category: 'pointValue',
-            attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
-                colorTrue: {
-                    type: 'color'
-                },
-                colorFalse: {
-                    type: 'color'
-                }
-            },
-            size: {
-                width: '30px',
-                height: '30px'
-            }
-        },
-        bindToController: {
-            point: '<?',
-            pointXid: '@?',
-            value: '<?'
-        },
-        scope: {},
-        controller: IndicatorController
-    };
-}
 
 return indicator;
 
