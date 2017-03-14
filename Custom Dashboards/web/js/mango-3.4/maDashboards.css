@@ -36,6 +36,7 @@ img.point-disabled {
 ma-bar-display {
   display: block;
   position: relative;
+  overflow: hidden;
 }
 
 ma-bar-display .bar-display-fill {

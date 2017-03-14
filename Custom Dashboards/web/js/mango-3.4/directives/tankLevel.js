@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/serial', 'require', 'angular'], function(AmCharts, require, angular) {
+define(['amcharts/serial', 'require', 'angular', './PointValueController'], function(AmCharts, require, angular, PointValueController) {
 'use strict';
 /**
  * @ngdoc directive
@@ -27,10 +27,21 @@ define(['amcharts/serial', 'require', 'angular'], function(AmCharts, require, an
 </ma-tank-level>
  *
  */
-tankLevel.$inject = ['Point'];
-function tankLevel(Point) {
+function tankLevel() {
     return {
         restrict: 'E',
+        template: '<div class="amchart"></div>',
+        scope: {},
+        controller: TankLevelController,
+        bindToController: {
+          point: '<?',
+          pointXid: '@?',
+          max: '<?',
+          min: '<?',
+          color: '@?',
+          value: '<?',
+          options: '<?'
+        },
         designerInfo: {
             translation: 'dashboards.v3.components.tankLevel',
             icon: 'battery_full',
@@ -44,102 +55,73 @@ function tankLevel(Point) {
                 width: '200px',
                 height: '200px'
             }
-        },
-        scope: {
-          point: '<?',
-          pointXid: '@?',
-          max: '@?',
-          color: '@?',
-          value: '<?',
-          options: '<?'
-        },
-        templateUrl: require.toUrl('./tankLevel.html'),
-        link: function($scope, $element, attributes) {
-            $scope.classes = {
-                'live-value': true
-            };
-
-            var options = defaultOptions();
-            var chart = AmCharts.makeChart($element.find('.amchart')[0], angular.extend(options, $scope.options));
-            var max = 100;
-            var tankLevel = 0;
-
-            $scope.$watch('max', function(newValue, oldValue) {
-            	if (newValue === undefined) return;
-            	max = parseFloat(newValue);
-                chart.dataProvider[0].remainder = max - tankLevel;
-                chart.validateData();
-            });
-
-            $scope.$watch('color', function(newValue, oldValue) {
-            	if (newValue === undefined) return;
-            	options.graphs[0].fillColors = newValue;
-                chart.validateData();
-            });
-
-            $scope.$watch('value', function(newValue, oldValue) {
-                tankLevel = newValue || 0;
-                chart.dataProvider[0].tankLevel = tankLevel;
-                chart.dataProvider[0].remainder = max - tankLevel;
-                chart.validateData();
-            });
-
-            $scope.$watch('point.value', function(newValue, oldValue) {
-                // if gauge already has value set and newValue is undefined just ignore
-                if (newValue === undefined) return;
-
-                tankLevel = newValue || 0;
-                if ($scope.point && typeof $scope.point.convertedValue === 'number' && isFinite($scope.point.convertedValue)) {
-                    tankLevel = $scope.point.convertedValue;
-                }
-                
-                var rendered;
-                if ($scope.point && typeof $scope.point.renderedValue === 'string') {
-                    rendered = $scope.point.renderedValue;
-                } else if ($scope.point && typeof $scope.point.convertedValue === 'number' && isFinite($scope.point.convertedValue)) {
-                    rendered = $scope.point.convertedValue.toFixed(2);
-                } else if (typeof newValue === 'number' && isFinite(newValue)) {
-                    rendered = newValue.toFixed(2);
-                } else {
-                    rendered = '';
-                }
-
-                chart.dataProvider[0].tankLevel = tankLevel;
-                chart.dataProvider[0].remainder = max - tankLevel;
-                chart.dataProvider[0].renderedValue = rendered;
-                chart.validateData();
-            });
-
-            $scope.$watch('point.enabled', function(newValue) {
-            	var disabled = newValue !== undefined && !newValue;
-            	$scope.classes['point-disabled'] = disabled;
-            });
-            
-            var pointRequest;
-            $scope.$watch('pointXid', function(newXid, oldXid) {
-                if (newXid === undefined && newXid === oldXid) return;
-                if ($scope.point && $scope.point.xid === newXid) return;
-                
-                if (pointRequest) {
-                    pointRequest.$cancelRequest();
-                }
-                if (!newXid) {
-                    pointRequest = null;
-                    $scope.point = null;
-                    return;
-                }
-                pointRequest = Point.get({xid: newXid});
-                pointRequest.$promise.then(function(point) {
-                    pointRequest = null;
-                    $scope.point = point;
-                }, function() {
-                    pointRequest = null;
-                    $scope.point = null;
-                });
-            });
         }
     };
 }
+
+TankLevelController.$inject = PointValueController.$inject;
+function TankLevelController() {
+    PointValueController.apply(this, arguments);
+    
+    this.chartOptions = defaultOptions();
+}
+
+TankLevelController.prototype = Object.create(PointValueController.prototype);
+TankLevelController.prototype.constructor = TankLevelController;
+
+TankLevelController.prototype.$onInit = function() {
+    this.updateChart();
+    this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
+    this.updateChartValue();
+};
+
+TankLevelController.prototype.$onChanges = function(changes) {
+    PointValueController.prototype.$onChanges.apply(this, arguments);
+    
+    if (changes.max && !changes.max.isFirstChange() || changes.min && !changes.min.isFirstChange()) {
+        this.updateChartValue();
+    }
+    if (changes.color && !changes.color.isFirstChange() || changes.options && !changes.options.isFirstChange()) {
+        this.updateChart();
+    }
+};
+
+TankLevelController.prototype.valueChangeHandler = function() {
+    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
+    this.updateChartValue();
+};
+
+TankLevelController.prototype.updateChartValue = function() {
+    if (!this.chart) return;
+    
+    var value = this.getValue() || 0;
+    var textValue = this.getTextValue();
+    
+    // jshint eqnull:true
+    var max = this.max != null ? this.max : 100;
+    var min = this.min != null ? this.min : 0;
+    var range = max - min;
+    
+    var tankLevel = (value - min) / range * 100;
+    var remainder = 100 - tankLevel;
+    
+    this.chart.dataProvider[0].tankLevel = tankLevel;
+    this.chart.dataProvider[0].remainder = remainder;
+    this.chart.dataProvider[0].renderedValue = textValue;
+    this.chart.validateData();
+};
+
+TankLevelController.prototype.updateChart = function() {
+    var options = angular.merge(this.chartOptions, this.options);
+
+    if (this.color) {
+        options.graphs[0].fillColors = this.color;
+    }
+    
+    if (this.chart) {
+        this.chart.validateNow();
+    }
+};
 
 function defaultOptions() {
     return {

@@ -20,10 +20,10 @@ function PointValueController($scope, $element, $attrs, pointEventManager, Point
 }
 
 PointValueController.prototype.$onChanges = function(changes) {
-    if (changes.value) {
+    if (changes.value && !(!changes.value.currentValue && changes.value.isFirstChange())) {
         this.valueChangeHandler();
     }
-    if (changes.point) {
+    if (changes.point && !(!changes.point.currentValue && changes.point.isFirstChange())) {
         this.setPoint();
     }
     if (changes.pointXid && !(!changes.pointXid.currentValue && changes.pointXid.isFirstChange())) {

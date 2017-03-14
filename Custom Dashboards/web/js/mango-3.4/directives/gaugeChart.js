@@ -115,7 +115,6 @@ function gaugeChart() {
     };
 }
 
-
 GaugeChartController.$inject = PointValueController.$inject;
 function GaugeChartController() {
     PointValueController.apply(this, arguments);
@@ -127,32 +126,33 @@ GaugeChartController.prototype = Object.create(PointValueController.prototype);
 GaugeChartController.prototype.constructor = GaugeChartController;
 
 GaugeChartController.prototype.$onInit = function() {
+    this.updateChart();
     this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
-    this.setGaugeValue();
+    this.updateChartValue();
 };
 
 GaugeChartController.prototype.$onChanges = function(changes) {
+    PointValueController.prototype.$onChanges.apply(this, arguments);
+    
     var optionsChanged = false;
     for (var key in changes) {
-        if (key !== 'value') {
+        if (key !== 'point' && key !== 'pointXid' && key !== 'value' && !changes[key].isFirstChange()) {
             optionsChanged = true;
             break;
         }
     }
     
     if (optionsChanged) {
-        this.updateGauge();
+        this.updateChart();
     }
-    
-    PointValueController.prototype.$onChanges.apply(this, arguments);
 };
 
 GaugeChartController.prototype.valueChangeHandler = function() {
     PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-    this.setGaugeValue();
+    this.updateChartValue();
 };
 
-GaugeChartController.prototype.setGaugeValue = function() {
+GaugeChartController.prototype.updateChartValue = function() {
     if (!this.chart) return;
     
     var value = this.getValue();
@@ -162,7 +162,7 @@ GaugeChartController.prototype.setGaugeValue = function() {
     this.chart.axes[0].setBottomText(textValue);
 };
 
-GaugeChartController.prototype.updateGauge = function() {
+GaugeChartController.prototype.updateChart = function() {
     var options = angular.merge(this.chartOptions, this.options);
     var axis = options.axes[0];
     var arrow = options.arrows[0];

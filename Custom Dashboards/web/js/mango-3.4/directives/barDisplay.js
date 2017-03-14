@@ -70,7 +70,7 @@ BarDisplayController.prototype.updateBar = function() {
     var maximum = this.maximum || 100;
     var minimum = this.minimum || 0;
     var range = maximum - minimum;
-    var percent = (value / range * 100) + '%';
+    var percent = ((value - minimum) / range * 100) + '%';
     
     delete this.style.top;
     delete this.style.bottom;
