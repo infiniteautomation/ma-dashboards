@@ -1,4 +1,3 @@
-<ma-get-point-value point="point" on-value-updated="valueUpdatedHandler($point)"></ma-get-point-value>
-<span ng-if="displayType !== 'image'" ng-style="valueStyle" ng-class="classes" class="value" ng-bind="displayValue"></span>
-<img ng-if="displayType == 'image'" ng-style="valueStyle" ng-class="classes" class="value" ng-src="{{point.value}}" alt="Image point value">
-<span ng-if="point && !point.enabled" class="disabled-text" ma-tr="common.disabled"></span>
+<span ng-if="$ctrl.displayType !== 'image'" ng-style="$ctrl.valueStyle" ng-class="classes" class="value" ng-bind="$ctrl.displayValue"></span>
+<img ng-if="$ctrl.displayType === 'image'" ng-style="$ctrl.valueStyle" ng-class="classes" class="value" ng-src="{{$ctrl.point.value}}" alt="Image point value">
+<span ng-if="$ctrl.point && !$ctrl.point.enabled" class="disabled-text" ma-tr="common.disabled"></span>

@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require', 'moment-timezone'], function(require, moment) {
+define(['require', 'moment-timezone', './PointValueController'], function(require, moment, PointValueController) {
 'use strict';
 /**
  * @ngdoc directive 
@@ -42,10 +42,21 @@ Time: <ma-point-value point="myPoint1" display-type="dateTime" date-time-format=
 </ma-point-value>
  *
  */
-pointValue.$inject = ['mangoDateFormats', 'Point'];
-function pointValue(mangoDateFormats, Point) {
+function pointValue() {
     return {
         restrict: 'E',
+        templateUrl: require.toUrl('./pointValue.html'),
+        scope: {},
+        controller: PointValueDirectiveController,
+        controllerAs: '$ctrl',
+        bindToController: {
+            point: '<?',
+            pointXid: '@?',
+            displayType: '@?',
+            dateTimeFormat: '@?',
+            timezone: '@?',
+            onValueUpdated: '&?'
+        },
         designerInfo: {
             translation: 'dashboards.v3.components.pointValue',
             icon: 'label',
@@ -55,97 +66,75 @@ function pointValue(mangoDateFormats, Point) {
                 pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
                 displayType: {options: ['rendered', 'raw', 'converted', 'image', 'dateTime']}
             }
-        },
-        scope: {
-            point: '<?',
-            pointXid: '@?',
-            displayType: '@?',
-            dateTimeFormat: '@?',
-            timezone: '@?',
-            onValueUpdated: '&?'
-        },
-        templateUrl: require.toUrl('./pointValue.html'),
-        link: function ($scope, $element, attrs) {
-            var dateTimeFormat = $scope.dateTimeFormat || mangoDateFormats.dateTimeSeconds;
-
-            $scope.valueStyle = {};
-            $scope.classes = {
-                'live-value': true
-            };
-
-            $scope.valueUpdatedHandler = function() {
-                if ($scope.onValueUpdated) {
-                    $scope.onValueUpdated({point: $scope.point});
-                }
-                updateDisplayValue();
-            };
-
-            $scope.$watch('point.xid', function(newXid, oldXid) {
-                // jshint eqnull:true
-                if ($scope.point && $scope.point.value != null) {
-                    updateDisplayValue();
-                } else {
-                    delete $scope.displayValue;
-                    $scope.valueStyle = {};
-                    delete $scope.classes['point-disabled'];
-                }
-            });
-            
-            var pointRequest;
-            $scope.$watch('pointXid', function(newXid, oldXid) {
-                if (newXid === undefined && newXid === oldXid) return;
-                if ($scope.point && $scope.point.xid === newXid) return;
-                
-                if (pointRequest) {
-                    pointRequest.$cancelRequest();
-                }
-                if (!newXid) {
-                    pointRequest = null;
-                    $scope.point = null;
-                    return;
-                }
-                pointRequest = Point.get({xid: newXid});
-                pointRequest.$promise.then(function(point) {
-                    pointRequest = null;
-                    $scope.point = point;
-                }, function() {
-                    pointRequest = null;
-                    $scope.point = null;
-                });
-            });
-
-            function updateDisplayValue() {
-                var point = $scope.point;
-                $scope.classes['point-disabled'] = !point.enabled;
-
-                var valueRenderer = point.valueRenderer(point.value);
-                var color = valueRenderer ? valueRenderer.color : null;
-                if (!$scope.displayType) {
-                    $scope.displayType = point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered';
-                }
-
-                switch($scope.displayType) {
-                case 'converted':
-                    $scope.displayValue = point.convertedValue;
-                    break;
-                case 'rendered':
-                    $scope.displayValue = point.renderedValue;
-                    $scope.valueStyle.color = color;
-                    break;
-                case 'dateTime':
-                    if ($scope.timezone) {
-                        $scope.displayValue = moment.tz(point.time, $scope.timezone).format(dateTimeFormat);
-                    } else {
-                        $scope.displayValue = moment(point.time).format(dateTimeFormat);
-                    }
-                    break;
-                default:
-                    $scope.displayValue = point.value;
-                }
-            }
         }
     };
 }
+
+PointValueDirectiveController.$inject = PointValueController.$inject.concat('mangoDateFormats');
+function PointValueDirectiveController() {
+    PointValueController.apply(this, arguments);
+    var firstArg = PointValueController.$inject.length;
+    
+    this.mangoDateFormats = arguments[firstArg];
+    this.valueStyle = {};
+}
+
+PointValueDirectiveController.prototype = Object.create(PointValueController.prototype);
+PointValueDirectiveController.prototype.constructor = PointValueDirectiveController;
+
+PointValueDirectiveController.prototype.$onChanges = function(changes) {
+    PointValueController.prototype.$onChanges.apply(this, arguments);
+    
+    if (changes.displayType && !changes.displayType.isFirstChange() || changes.dateTimeFormat && !changes.dateTimeFormat.isFirstChange() ||
+            changes.timezone && !changes.timezone.isFirstChange()) {
+        this.updateText();
+    }
+};
+
+PointValueDirectiveController.prototype.valueChangeHandler = function() {
+    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
+    
+    this.updateText();
+};
+
+PointValueDirectiveController.prototype.updateText = function() {
+    delete this.valueStyle.color;
+    if (!this.point) {
+        this.displayValue = '';
+        return;
+    }
+    
+    var dateTimeFormat = this.dateTimeFormat || this.mangoDateFormats.dateTimeSeconds;
+
+    var valueRenderer = this.point.valueRenderer(this.point.value);
+    var color = valueRenderer ? valueRenderer.color : null;
+    
+    if (!this.displayType) {
+        this.displayType = this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered';
+    }
+
+    delete this.valueStyle.color;
+
+    switch(this.displayType) {
+    case 'converted':
+        this.displayValue = this.point.convertedValue;
+        break;
+    case 'rendered':
+        this.displayValue = this.point.renderedValue;
+        this.valueStyle.color = color;
+        break;
+    case 'dateTime':
+        if (this.timezone) {
+            this.displayValue = moment.tz(this.point.time, this.timezone).format(dateTimeFormat);
+        } else {
+            this.displayValue = moment(this.point.time).format(dateTimeFormat);
+        }
+        break;
+    default:
+        this.displayValue = this.point.value;
+    }
+};
+
 
 return pointValue;
 
