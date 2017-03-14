@@ -3,40 +3,31 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', './PointValueController'], function(angular, PointValueController) {
 'use strict';
 
-BarDisplayController.$inject = ['$element'];
-function BarDisplayController($element) {
-    this.$element = $element;
+BarDisplayController.$inject = PointValueController.$inject;
+function BarDisplayController() {
+    PointValueController.apply(this, arguments);
     
-    $element.addClass('live-value');
-    this.prevValues = {};
     this.style = {};
 }
 
+BarDisplayController.prototype = Object.create(PointValueController.prototype);
+BarDisplayController.prototype.constructor = BarDisplayController;
+
 BarDisplayController.prototype.$onChanges = function(changes) {
-    if (changes.value || changes.point || changes.maximum || changes.minimum || changes.direction) {
+    PointValueController.prototype.$onChanges.apply(this, arguments);
+    
+    if (changes.maximum || changes.minimum || changes.direction) {
         this.updateBar();
     }
 };
 
-BarDisplayController.prototype.$doCheck = function() {
-    if (this.point) {
-        if (this.point.enabled !== this.prevValues.enabled) {
-            this.prevValues.enabled = this.point.enabled;
-            if (this.point.enabled) {
-                this.$element.removeClass('point-disabled');
-            } else {
-                this.$element.addClass('point-disabled');
-            }
-        }
-        
-        if (this.point.value !== this.prevValues.value) {
-            this.prevValues.value = this.point.value;
-            this.updateBar();
-        }
-    }
+BarDisplayController.prototype.valueChangeHandler = function() {
+    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
+    
+    this.updateBar();
 };
 
 BarDisplayController.prototype.updateBar = function() {
@@ -86,17 +77,24 @@ function barDisplay() {
             icon: 'trending_flat',
             category: 'pointValue',
             attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
                 direction: {
                     options: ['left-to-right', 'bottom-to-top', 'right-to-left', 'top-to-bottom']
                 }
+            },
+            size: {
+                width: '200px',
+                height: '30px'
             }
         },
         bindToController: {
+            point: '<?',
+            pointXid: '@?',
             direction: '@?',
-            point: '=?',
-            value: '=?',
-            maximum: '=?',
-            minimum: '=?'
+            maximum: '<?',
+            minimum: '<?',
+            value: '<?'
         },
         template: '<div class="bar-display-fill" ng-style="$ctrl.style"></div>',
         scope: {},

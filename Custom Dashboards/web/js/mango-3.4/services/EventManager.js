@@ -314,7 +314,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
         function scopeApply($scope, fn) {
             var args = Array.prototype.slice.call(arguments, 2);
             var boundFn = fn.bind.apply(fn, [null].concat(args));
-            $scope.$apply(boundFn);
+            $scope.$applyAsync(boundFn);
         }
 	};
 

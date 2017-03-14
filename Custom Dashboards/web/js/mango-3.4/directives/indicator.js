@@ -3,44 +3,23 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', './PointValueController'], function(angular, PointValueController) {
 'use strict';
 
-IndicatorController.$inject = ['$element', '$attrs', 'Util'];
-function IndicatorController($element, $attrs, Util) {
-    this.$element = $element;
-    this.$attrs = $attrs;
-    this.Util = Util;
-    
-    $element.addClass('live-value');
-    this.prevValues = {};
+IndicatorController.$inject = PointValueController.$inject.concat('Util');
+function IndicatorController() {
+    PointValueController.apply(this, arguments);
+    var firstArg = PointValueController.$inject.length;
+
+    this.Util = arguments[firstArg];
 }
 
-IndicatorController.prototype.$onChanges = function(changes) {
-    if (changes.value || changes.point) {
-        this.updateIndicator();
-    }
-};
+IndicatorController.prototype = Object.create(PointValueController.prototype);
+IndicatorController.prototype.constructor = IndicatorController;
 
-IndicatorController.prototype.$doCheck = function() {
-    if (this.point) {
-        if (this.point.enabled !== this.prevValues.enabled) {
-            this.prevValues.enabled = this.point.enabled;
-            if (this.point.enabled) {
-                this.$element.removeClass('point-disabled');
-            } else {
-                this.$element.addClass('point-disabled');
-            }
-        }
-        
-        if (this.point.value !== this.prevValues.value) {
-            this.prevValues.value = this.point.value;
-            this.updateIndicator();
-        }
-    }
-};
-
-IndicatorController.prototype.updateIndicator = function() {
+IndicatorController.prototype.valueChangeHandler = function() {
+    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
+    
     // jshint eqnull:true
     var value;
     if (this.value != null) {
@@ -67,19 +46,26 @@ function indicator() {
             icon: 'lightbulb_outline',
             category: 'pointValue',
             attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
                 colorTrue: {
                     type: 'color'
                 },
                 colorFalse: {
                     type: 'color'
                 }
+            },
+            size: {
+                width: '30px',
+                height: '30px'
             }
         },
         bindToController: {
-            point: '=?',
-            value: '=?'
+            point: '<?',
+            pointXid: '@?',
+            value: '<?'
         },
-        scope: false,
+        scope: {},
         controller: IndicatorController
     };
 }
