@@ -39,7 +39,7 @@ PointValueController.prototype.setPoint = function(point) {
         this.unsubscribe();
     }
     
-    this.valueChangeHandler();
+    this.valueChangeHandler(true);
     
     if (this.point) {
         this.unsubscribe = this.pointEventManager.smartSubscribe(this.$scope, this.point.xid, SUBSCRIPTION_TYPES, this.websocketHandler.bind(this));

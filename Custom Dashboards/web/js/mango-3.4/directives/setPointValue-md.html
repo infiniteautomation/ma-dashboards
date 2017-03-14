@@ -1,29 +1,28 @@
 <form>
-    <div layout="row" class="live-value">
-        <md-input-container flex ng-if="point.pointLocator.dataType === 'NUMERIC' || (point.pointLocator.dataType === 'MULTISTATE' && point.textRenderer.type === 'textRendererPlain')">
-            <input type="number" step="any" ng-model="input.value"  aria-label="{{'common.value' | tr}}"
-                ma-copy-blurred="convertRendered()" ng-disabled="!point.pointLocator.settable" md-select-on-focus>
+    <div layout="row">
+        <md-input-container flex ng-if="$ctrl.inputType === 'numeric'">
+            <input type="number" step="{{$ctrl.step}}" ng-model="$ctrl.inputValue"  aria-label="{{'common.value' | tr}}"
+              ng-disabled="!$ctrl.point.pointLocator.settable" md-select-on-focus>
         </md-input-container>
-        <md-input-container flex ng-if="point.pointLocator.dataType === 'ALPHANUMERIC'">
-            <input type="text" ng-model="input.value" aria-label="{{'common.value' | tr}}"
-                ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable" md-select-on-focus>
+        <md-input-container flex ng-if="$ctrl.inputType === 'text'">
+            <input type="text" ng-model="$ctrl.inputValue" aria-label="{{'common.value' | tr}}"
+              ng-disabled="!$ctrl.point.pointLocator.settable" md-select-on-focus>
         </md-input-container>
-        <md-select flex ng-if="point.pointLocator.dataType === 'BINARY' || (point.pointLocator.dataType === 'MULTISTATE' && point.textRenderer.type === 'textRendererMultistate')"
-            ng-model="input.value" ng-change="selectChanged()"
-            ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable" aria-label="{{'common.value' | tr}}">
-            <md-option ng-value="option.id" ng-repeat="option in options track by option.id" ng-style="option.style">{{option.label}}</md-option>
+        <md-select flex ng-if="$ctrl.inputType === 'select'"
+            ng-model="$ctrl.inputValue" ng-change="$ctrl.selectChanged()"
+              ng-disabled="!$ctrl.point.pointLocator.settable" aria-label="{{'common.value' | tr}}">
+            <md-option ng-repeat="option in $ctrl.options track by option.id" ng-style="option.style" ng-value="option.id" ng-bind="option.label"></md-option>
         </md-select>
-        <md-button type="submit" class="md-raised md-accent" ng-if="showButton"
-                ng-disabled="!point.pointLocator.settable || result.pending" ng-click="result=point.setValueResult(input.value)"
-                ng-class="{'set-pending': result.pending, 'set-success': result.success, 'set-error': result.error, 'md-warn': result.error}"
+        <md-button type="submit" class="md-raised md-accent" ng-show="$ctrl.showButton"
+                ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.result.pending" ng-click="$ctrl.result=$ctrl.point.setValueResult($ctrl.inputValue)"
+                ng-class="{'set-pending': $ctrl.result.pending, 'set-success': $ctrl.result.success, 'set-error': $ctrl.result.error, 'md-warn': $ctrl.result.error}"
                 aria-label="{{'common.set' | tr}}">
             <div layout="row" layout-align="center center">
                 <span ma-tr="common.set"></span>
-                <md-progress-circular md-diameter="18px" md-mode="indeterminate" ng-if="result.pending"></md-progress-circular>
-                <md-icon ng-if="result.success" class="md-primary">check</md-icon>
-                <md-icon ng-if="result.error" class="md-primary">error</md-icon>
+                <md-progress-circular md-diameter="18px" md-mode="indeterminate" ng-if="$ctrl.result.pending"></md-progress-circular>
+                <md-icon ng-if="$ctrl.result.success" class="md-primary">check</md-icon>
+                <md-icon ng-if="$ctrl.result.error" class="md-primary">error</md-icon>
             </div>
         </md-button>
     </div>
 </form>
-<ma-get-point-value point="point" on-value-updated="valueUpdatedHandler($point)"></ma-get-point-value>
