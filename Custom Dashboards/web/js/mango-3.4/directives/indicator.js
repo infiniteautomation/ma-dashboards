@@ -19,18 +19,11 @@ IndicatorController.prototype.constructor = IndicatorController;
 
 IndicatorController.prototype.valueChangeHandler = function() {
     PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-    
-    // jshint eqnull:true
-    var value;
-    if (this.value != null) {
-        value = this.value;
-    } else if (this.point && this.point.convertedValue != null) {
-        value = this.point.convertedValue;
-    } else if (this.point && this.point.value != null) {
-        value = this.point.value;
-    }
-    
+
+    var value = this.getValue();
     var color = '';
+
+    // jshint eqnull:true
     if (value != null) {
         var attrName = this.Util.camelCase('color-' + value);
         color = this.$attrs[attrName];

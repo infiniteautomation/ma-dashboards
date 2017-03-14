@@ -3,8 +3,60 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', './PointValueController'], function(angular, PointValueController) {
 'use strict';
+
+SwitchImgController.$inject = PointValueController.$inject.concat('Util');
+function SwitchImgController() {
+    PointValueController.apply(this, arguments);
+    var firstArg = PointValueController.$inject.length;
+    
+    this.Util = arguments[firstArg];
+}
+
+SwitchImgController.prototype = Object.create(PointValueController.prototype);
+SwitchImgController.prototype.constructor = SwitchImgController;
+
+SwitchImgController.prototype.$onChanges = function(changes) {
+    PointValueController.prototype.$onChanges.apply(this, arguments);
+    
+    if (changes.srcMap && !changes.srcMap.isFirstChange() || changes.defaultSrc && !changes.defaultSrc.isFirstChange()) {
+        this.updateImage();
+    }
+};
+
+SwitchImgController.prototype.valueChangeHandler = function() {
+    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
+    
+    this.updateImage();
+};
+
+SwitchImgController.prototype.updateImage = function() {
+    var value = this.getValue();
+    
+    // jshint eqnull:true
+    if (value == null) {
+        delete this.src;
+    } else {
+        // TODO better conversion to attr name for symbols etc
+        var valueString = typeof value === 'string' ? replaceAll(value, ' ', '-').toLowerCase() : value.toString();
+        
+        var attrName = this.Util.camelCase('src-' + valueString);
+        this.src = this.$attrs[attrName];
+
+        if (!this.src && this.srcMap) {
+            this.src = this.srcMap[value];
+        }
+    }
+    if (!this.src) {
+        this.src = this.defaultSrc || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+    }
+};
+
+function replaceAll(target, search, replacement) {
+    return target.replace(new RegExp(search, 'g'), replacement);
+}
+
 /**
  * @ngdoc directive
  * @name maDashboards.maSwitchImg
@@ -51,52 +103,29 @@ define(['angular'], function(angular) {
 function switchImg() {
     return {
         restrict: 'E',
+        template: '<img ng-src="{{$ctrl.src}}">',
+        scope: {},
+        controller: SwitchImgController,
+        controllerAs: '$ctrl',
+        bindToController: {
+            point: '<?',
+            pointXid: '@?',
+        	srcMap: '<?',
+        	defaultSrc: '@?',
+            value: '<?'
+        },
         designerInfo: {
             translation: 'dashboards.v3.components.switchImg',
             icon: 'image',
             category: 'pointValue',
             attributes: {
+                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
                 srcTrue: {type: 'string', optional: true},
                 srcFalse: {type: 'string', optional: true}
             }
-        },
-        scope: {
-        	point: '=',
-        	srcMap: '=?',
-        	defaultSrc: '@'
-        },
-        template: '<img ng-src="{{src}}" ng-class="classes">',
-        link: function ($scope, $element, attributes) {
-            $scope.classes = {
-                'live-value': true
-            };
-
-            $scope.$watch('point.value', function(newValue, oldValue) {
-                if (newValue === undefined) {
-                	delete $scope.src;
-                } else {
-                	// TODO better conversion to attr name for symbols etc
-                	var attrName = typeof newValue === 'string' ? replaceAll(newValue, ' ', '-').toLowerCase() : newValue;
-                	$scope.src = $element.attr('src-' + attrName);
-                    if (!$scope.src && $scope.srcMap) {
-                    	$scope.src = $scope.srcMap[newValue];
-                    }
-                }
-                if (!$scope.src) {
-                	$scope.src = $scope.defaultSrc || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-                }
-            });
-
-            $scope.$watch('point.enabled', function(newValue) {
-            	var disabled = newValue !== undefined && !newValue;
-            	$scope.classes['point-disabled'] = disabled;
-            });
         }
     };
-}
-
-function replaceAll(target, search, replacement) {
-    return target.replace(new RegExp(search, 'g'), replacement);
 }
 
 return switchImg;

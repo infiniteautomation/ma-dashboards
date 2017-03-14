@@ -379,7 +379,9 @@ ma-user-select, ma-system-setting-editor {
 }
 
 ma-gauge-chart,
-ma-tank-level {
+ma-tank-level,
+ma-indicator,
+ma-switch-img {
   display: block;
 }
 

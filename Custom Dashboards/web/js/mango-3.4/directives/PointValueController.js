@@ -46,6 +46,18 @@ PointValueController.prototype.setPoint = function(point) {
     }
 };
 
+PointValueController.prototype.getValue = function() {
+    // jshint eqnull:true
+    if (this.value != null) {
+        return this.value;
+    } else if (this.point && this.point.convertedValue != null) {
+        return this.point.convertedValue;
+    } else if (this.point && this.point.value != null) {
+        return this.point.value;
+    }
+    return null;
+};
+
 PointValueController.prototype.websocketHandler = function(event, payload) {
     if (!this.point) {
         console.error('No point but got websocket msg', payload);
