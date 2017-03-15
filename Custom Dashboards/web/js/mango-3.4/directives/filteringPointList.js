@@ -39,12 +39,10 @@ function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
             }
         },
         scope: {
-            ngModel: '=',
-            ngChange: '&?',
-            limit: '=?',
-            autoInit: '=?',
+            limit: '<?',
+            autoInit: '<?',
             pointXid: '@',
-            pointId: '@',
+            pointId: '<?',
             label: '@',
             listText: '&?',
             displayText: '&?',
@@ -54,49 +52,44 @@ function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
         link: filteringPointListPostLink
     };
 
-    function filteringPointListPostLink($scope, $element, attrs) {
+    function filteringPointListPostLink($scope, $element, attrs, ngModelCtrl) {
         if (!$scope.label)
             $scope.label = Translate.trSync('dashboards.v3.app.searchBy', 'points', 'name or device');
         
         if ($scope.autoInit) {
             if (!$scope.pointXid && !$scope.pointId) {
                 Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
-                    $scope.ngModel = item[0];
-                    $scope.selectedItem = item[0];
+                    $scope.setPoint(item[0]);
                 });
             }
 
             $scope.$watch('pointXid', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                // console.log(oldValue, newValue);
-
-                Point.rql({query: 'xid='+newValue}).$promise.then(function(item) {
-                    $scope.ngModel = item[0];
-                    $scope.selectedItem = item[0];
+                if (!newValue) return;
+                
+                Point.get({xid: newValue}).$promise.then(function(item) {
+                    $scope.setPoint(item);
                 });
             });
 
             $scope.$watch('pointId', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                // console.log(oldValue, newValue);
-
-                Point.rql({query: 'id='+newValue}).$promise.then(function(item) {
-                    $scope.ngModel = item[0];
-                    $scope.selectedItem = item[0];
+                // jshint eqnull:true
+                if (newValue == null) return;
+                
+                Point.getById({id: newValue}).$promise.then(function(item) {
+                    $scope.setPoint(item);
                 });
             });
         }
-
-        $scope.storeItem = function(selectedItem) {
-            var oldXid = $scope.ngModel && $scope.ngModel.xid;
-            var newXid = selectedItem && selectedItem.xid;
-            $scope.ngModel = selectedItem;
-
-            if ($scope.ngChange && newXid != oldXid) {
-                $timeout(function() {
-                    $scope.ngChange();
-                }, 0);
+        
+        ngModelCtrl.$render = function() {
+            $scope.selectedItem = this.$viewValue;
+        };
+        
+        $scope.setPoint = function(point) {
+            if (point) {
+                this.selectedItem = point;
             }
+            ngModelCtrl.$setViewValue(this.selectedItem);
         };
 
         $scope.querySearch = function(inputText) {

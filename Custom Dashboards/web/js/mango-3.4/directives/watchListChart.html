@@ -56,7 +56,7 @@ ma-watch-list-chart md-input-container, watch-list-chart md-checkbox {
     <md-tab label="Chart">
         <ma-point-values points="points" values="chartValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupIntervalNumber}} {{rollupIntervalPeriod}}" rendered="true">
         </ma-point-values>
-        <div style="height: {{chartHeight}};" ng-if="points.length">
+        <div ng-style="{height: chartHeight}" ng-if="points.length">
             <ma-serial-chart default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" legend="true" 
             balloon="true" export="export ? true : false" graph-options="chartConfig.graphOptions" 
             options="{valueAxes:[{axisColor:chartConfig.axisColors.leftAxisColor, color:chartConfig.axisColors.leftAxisColor, stackType: chartConfig.stackType.left}, 

@@ -13,7 +13,7 @@
 				</div>
 			</md-toolbar>
 			<md-card-content layout="column" layout-align="space-between" flex>
-				<ma-filtering-point-list ng-model="myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}" point-id="{{$ctrl.pointId}}"></ma-filtering-point-list>
+				<ma-filtering-point-list ng-model="selectedPoint" ng-change="myPoint = selectedPoint || myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}" point-id="$ctrl.pointId"></ma-filtering-point-list>
 				
 				<div layout="row" layout-wrap class="point-details">
 					<div ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" flex="100" layout>
@@ -24,7 +24,7 @@
                       point="myPoint" on-value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value>
                     <label flex="35">XID:</label> <div flex="65" ng-bind="myPoint.xid"></div>
 					<label flex="35">{{'dashboards.v3.app.time' | tr}}:</label> <div class="point-time" flex="65" ng-bind="$ctrl.pointTime"></div>
-					<label flex="35">{{'dashboards.v3.app.path' | tr}}:</label>  <div flex="65"><span ng-repeat="folder in $ctrl.path">{{folder}} <span ng-if="!$last"> &gt; </span></span></div>
+					<label flex="35">{{'dashboards.v3.app.path' | tr}}:</label>  <div flex="65"><span ng-repeat="folder in $ctrl.path track by $index">{{folder}} <span ng-if="!$last"> &gt; </span></span></div>
 					<label flex="35">{{'dashboards.v3.app.dataSource' | tr}}:</label> <div flex="65" ng-bind="myPoint.dataSourceName"></div>
 					<div flex="65">
 						<!-- <ma-point-hierarchy></ma-point-hierarchy> -->

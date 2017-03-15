@@ -22,6 +22,8 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
     };
     
     $ctrl.pointValueChanged = function pointValueChanged(point) {
+        if (!point) return;
+        
         // manually add and remove classes rather than using ng-class as point values can
         // change rapidly and result in huge slow downs / heaps of digest loops
 
@@ -73,7 +75,6 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
     });
     
     $ctrl.$onInit = function() {
-        
         if ($stateParams.pointXid) {
             // console.log($stateParams.pointXid);
             $ctrl.pointXid = $stateParams.pointXid;

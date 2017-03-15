@@ -40,17 +40,17 @@ define(['require'], function(require) {
             restrict: 'E',
             templateUrl: require.toUrl('./watchListChart.html'),
             scope: {
-                addChecked: '=',
-                chartConfig: '=',
-                editMode: '=',
-                statsTab: '=',
-                'export': '=',
-                to: '=',
-                from: '=',
-                rollupType: '=',
-                rollupIntervalNumber: '=',
-                rollupIntervalPeriod: '=',
-                chartHeight: '@'
+                addChecked: '<?',
+                chartConfig: '<?',
+                editMode: '<?',
+                statsTab: '<?',
+                'export': '<?',
+                to: '<?',
+                from: '<?',
+                rollupType: '<?',
+                rollupIntervalNumber: '<?',
+                rollupIntervalPeriod: '<?',
+                chartHeight: '@?'
             },
             designerInfo: {
                 translation: 'dashboards.v3.components.watchListChart',
