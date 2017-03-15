@@ -100,7 +100,7 @@ function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
         };
 
         $scope.querySearch = function(inputText) {
-            var rqlQuery, queryString;
+            var rqlQuery, queryString = '';
             
             if (inputText) {
                 rqlQuery = new query.Query();
@@ -115,7 +115,7 @@ function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
                 if (rqlQuery) {
                     queryString = rqlQuery.toString();
                 }
-                queryString =+ attrs.query;
+                queryString = queryString + attrs.query;
             } else {
                 var q = new query.Query();
                 if (rqlQuery)
