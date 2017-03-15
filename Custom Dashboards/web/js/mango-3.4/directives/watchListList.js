@@ -40,10 +40,10 @@ function watchListList($injector) {
             'ngModelCtrl': 'ngModel'
         },
         controller: ['$scope', 'WatchList', '$stateParams', '$state', 'localStorageService', 'WatchListEventManager',
-                     watchListListController]
+                     WatchListListController]
     };
     
-    function watchListListController($scope, WatchList, $stateParams, $state, localStorageService, WatchListEventManager) {
+    function WatchListListController($scope, WatchList, $stateParams, $state, localStorageService, WatchListEventManager) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
@@ -78,14 +78,16 @@ function watchListList($injector) {
         };
         
         this.doQuery = function() {
-            return this.queryPromise = WatchList.objQuery({
+            this.queryPromise = WatchList.objQuery({
                 query: this.query,
                 start: this.start,
                 limit: this.limit,
                 sort: this.sort || DEFAULT_SORT
             }).$promise.then(function(items) {
-                return this.items = items;
+                return (this.items = items);
             }.bind(this));
+            
+            return this.queryPromise;
         };
         
         this.setViewValue = function(item) {
@@ -137,6 +139,7 @@ function watchListList($injector) {
             
             var watchListXid = item ? item.xid : null;
             
+            // jshint eqnull:true
             if (watchListXid != null) {
                 localStorageService.set('watchListPage', {
                     watchListXid: watchListXid

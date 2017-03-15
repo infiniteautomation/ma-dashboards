@@ -38,12 +38,13 @@ define(['require'], function(require) {
     function watchListChart($mdMedia, $timeout, mdAdminSettings) {
         return {
             restrict: 'E',
+            templateUrl: require.toUrl('./watchListChart.html'),
             scope: {
                 addChecked: '=',
                 chartConfig: '=',
                 editMode: '=',
                 statsTab: '=',
-                export: '=',
+                'export': '=',
                 to: '=',
                 from: '=',
                 rollupType: '=',
@@ -51,9 +52,16 @@ define(['require'], function(require) {
                 rollupIntervalPeriod: '=',
                 chartHeight: '@'
             },
-            templateUrl: require.toUrl('./watchListChart.html'),
+            designerInfo: {
+                translation: 'dashboards.v3.components.watchListChart',
+                icon: 'show_chart',
+                category: 'pointValuesAndCharts',
+                size: {
+                    width: '400px',
+                    height: '200px'
+                }
+            },
             link: function link(scope, element, attrs) {
-
                 var defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
                 var defaultChartConfig = {
                     graphOptions: [],
@@ -103,7 +111,11 @@ define(['require'], function(require) {
                         if (newValue === undefined || newValue === oldValue) return;
                         // console.log('chartType Updated:', newValue, scope.chartConfig.selectedAxis);
                         
-                        scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === scope.chartConfig.selectedAxis}).forEach(function(obj) {obj.type = newValue});
+                        scope.chartConfig.graphOptions.filter(function(obj) {
+                            return obj.valueAxis === scope.chartConfig.selectedAxis;
+                        }).forEach(function(obj) {
+                            obj.type = newValue;
+                        });
 
                         // console.log(scope.chartConfig);
                     });
@@ -116,7 +128,9 @@ define(['require'], function(require) {
                         scope.chartConfig.stackType.selected = scope.chartConfig.stackType ? scope.chartConfig.stackType[newValue] : 'none';
 
                         // Set chartType control to that matching axis selected
-                        var selectedAxisGraphOption = scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === newValue})[0];
+                        var selectedAxisGraphOption = scope.chartConfig.graphOptions.filter(function(obj) {
+                            return obj.valueAxis === newValue;
+                        })[0];
                         scope.chartConfig.chartType = selectedAxisGraphOption ? selectedAxisGraphOption.type : 'smoothedLine';
 
                         // console.log(scope.chartConfig);
@@ -141,7 +155,9 @@ define(['require'], function(require) {
                     }
                     
                     // Only add graph option if it isn't already in the chartConfig, compare to last item of newValues
-                    var xidExists = scope.chartConfig.graphOptions.some(function(obj){return obj.xid === newValues[newValues.length-1].xid});
+                    var xidExists = scope.chartConfig.graphOptions.some(function(obj) {
+                        return obj.xid === newValues[newValues.length-1].xid;
+                    });
 
                     // Check if adding or removing before updating graphOptions array
                     if ( (oldValues === undefined && newValues.length >= 0 && !xidExists && scope.editMode) || (oldValues !== undefined && newValues.length > oldValues.length && !xidExists  && scope.editMode) ) {
@@ -162,9 +178,13 @@ define(['require'], function(require) {
                         // console.log('Adding', newValues[newValues.length-1].xid);
                     }
                     else if (oldValues !== undefined && newValues.length < oldValues.length && scope.editMode) {
-                        var arrayDiff = oldValues.filter(function(x) { return newValues.indexOf(x) < 0 });
+                        var arrayDiff = oldValues.filter(function(x) {
+                            return newValues.indexOf(x) < 0;
+                        });
                         var removedXid = arrayDiff[0].xid;
-                        var removedIndex = oldValues.map(function(x) {return x.xid; }).indexOf(removedXid);
+                        var removedIndex = oldValues.map(function(x) {
+                            return x.xid;
+                        }).indexOf(removedXid);
                         
                         scope.chartConfig.graphOptions.splice(removedIndex, 1);
                         // console.log('Removed', removedXid, 'at index', removedIndex);
@@ -174,7 +194,7 @@ define(['require'], function(require) {
 
             } // End Link
         }; // End return
-    }; // End DDO
+    } // End DDO
 
     return watchListChart;
 
