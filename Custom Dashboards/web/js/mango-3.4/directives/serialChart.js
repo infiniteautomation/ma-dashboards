@@ -394,7 +394,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             if ($scope.annotateMode) {
                 annotateOptions = {
                     labelText: '[[' + graph.xid + 'AnnotationText]]',
-                    labelRotation: 0,
+                    labelRotation: 20,
                     labelPosition: 'left',
                     labelOffset: 5,
                     labelColorField: graph.xid + 'AnnotationTextColor',

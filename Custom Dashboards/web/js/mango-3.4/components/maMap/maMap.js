@@ -63,7 +63,7 @@ define(['angular', 'require'], function(angular, require) {
         }
 
         $ctrl.goToRoute = function(e, state, params) {
-            console.log('goToRoute called', e, state, params);
+            // console.log('goToRoute called', e, state, params);
             $state.go(state);
         }
 
