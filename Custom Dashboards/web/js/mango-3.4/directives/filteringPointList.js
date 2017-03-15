@@ -33,7 +33,10 @@ function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
         designerInfo: {
             translation: 'dashboards.v3.components.filteringPointList',
             icon: 'filter_list',
-            category: 'dropDowns'
+            category: 'dropDowns',
+            attributes: {
+                query: {}
+            }
         },
         scope: {
             ngModel: '=',
@@ -44,7 +47,8 @@ function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
             pointId: '@',
             label: '@',
             listText: '&?',
-            displayText: '&?'
+            displayText: '&?',
+            clientSideFilter: '<?'
         },
         templateUrl: require.toUrl('./filteringPointList.html'),
         link: filteringPointListPostLink
@@ -124,7 +128,13 @@ function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
             
             return Point.rql({
                 rqlQuery: queryString
-            }).$promise.then(null, function() {
+            }).$promise.then(function(result) {
+                if ($scope.clientSideFilter) {
+                    return $filter('filter')(result, $scope.clientSideFilter);
+                } else {
+                    return result;
+                }
+            }, function() {
                 return [];
             });
         };
