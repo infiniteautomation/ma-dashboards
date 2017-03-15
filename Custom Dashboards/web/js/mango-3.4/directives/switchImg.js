@@ -61,6 +61,7 @@ function switchImg() {
             pointXid: '@?',
             srcMap: '<?',
             defaultSrc: '@?',
+            toggleOnClick: '<?',
             value: '<?'
         },
         designerInfo: {
@@ -70,6 +71,7 @@ function switchImg() {
             attributes: {
                 point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
                 pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                toggleOnClick: {options: ['true', 'false']},
                 srcTrue: {type: 'string', optional: true},
                 srcFalse: {type: 'string', optional: true}
             }
@@ -94,12 +96,28 @@ SwitchImgController.prototype.$onChanges = function(changes) {
     if (changes.srcMap && !changes.srcMap.isFirstChange() || changes.defaultSrc && !changes.defaultSrc.isFirstChange()) {
         this.updateImage();
     }
+    
+    if (changes.toggleOnClick) {
+        if (this.toggleOnClick) {
+            this.$element.on('click.maIndicator', this.clickHandler.bind(this));
+            this.$element.attr('role', 'button');
+        } else {
+            this.$element.off('click.maIndicator');
+            this.$element.removeAttr('role');
+        }
+    }
 };
 
 SwitchImgController.prototype.valueChangeHandler = function() {
     PointValueController.prototype.valueChangeHandler.apply(this, arguments);
     
     this.updateImage();
+
+    if (this.point && !this.point.pointLocator.settable) {
+        this.$element.attr('disabled', 'disabled');
+    } else {
+        this.$element.removeAttr('disabled');
+    }
 };
 
 SwitchImgController.prototype.updateImage = function() {
@@ -121,6 +139,12 @@ SwitchImgController.prototype.updateImage = function() {
     }
     if (!this.src) {
         this.src = this.defaultSrc || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+    }
+};
+
+SwitchImgController.prototype.clickHandler = function() {
+    if (this.point && !this.$element.attr('disabled')) {
+        this.point.toggleValue();
     }
 };
 

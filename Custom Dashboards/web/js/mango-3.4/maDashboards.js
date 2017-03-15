@@ -63,6 +63,7 @@ define(['./maServices',
         './directives/validationMessages',
         './directives/scaleTo',
         './directives/change',
+        './directives/switch',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -94,7 +95,7 @@ define(['./maServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
-        dropzone, barDisplay, indicator, validationMessages, scaleTo, change,
+        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
         maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
@@ -169,6 +170,7 @@ maDashboards.directive('maIndicator', indicator);
 maDashboards.directive('maValidationMessages', validationMessages);
 maDashboards.directive('maScaleTo', scaleTo);
 maDashboards.directive('maChange', change);
+maDashboards.directive('maSwitch', switchDirective);
 maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);

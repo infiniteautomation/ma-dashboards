@@ -29,6 +29,10 @@ img.point-disabled {
 	color: #aaa;
 }
 
+ma-switch .disabled-text {
+  display: none;
+}
+
 /*
  *	Horizontal and vertical bar displays
  */
@@ -484,4 +488,11 @@ ma-config-import .ma-import-dropzone {
 .ma-config-import-messages {
   margin-top: 8px;
   overflow-y: scroll;
+}
+
+/* clickable elements */
+
+[ng-click]:not([disabled]),
+[role=button]:not([disabled]) {
+  cursor: pointer;
 }

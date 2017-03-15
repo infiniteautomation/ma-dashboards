@@ -14,6 +14,7 @@ function indicator() {
         bindToController: {
             point: '<?',
             pointXid: '@?',
+            toggleOnClick: '<?',
             value: '<?'
         },
         designerInfo: {
@@ -23,10 +24,14 @@ function indicator() {
             attributes: {
                 point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
                 pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                toggleOnClick: {options: ['true', 'false']},
                 colorTrue: {
                     type: 'color'
                 },
                 colorFalse: {
+                    type: 'color'
+                },
+                defaultColor: {
                     type: 'color'
                 }
             },
@@ -49,18 +54,53 @@ function IndicatorController() {
 IndicatorController.prototype = Object.create(PointValueController.prototype);
 IndicatorController.prototype.constructor = IndicatorController;
 
+IndicatorController.prototype.$onChanges = function(changes) {
+    PointValueController.prototype.$onChanges.apply(this, arguments);
+    
+    if (changes.toggleOnClick) {
+        if (this.toggleOnClick) {
+            this.$element.on('click.maIndicator', this.clickHandler.bind(this));
+            this.$element.attr('role', 'button');
+        } else {
+            this.$element.off('click.maIndicator');
+            this.$element.removeAttr('role');
+        }
+    }
+};
+
 IndicatorController.prototype.valueChangeHandler = function() {
     PointValueController.prototype.valueChangeHandler.apply(this, arguments);
 
     var value = this.getValue();
-    var color = '';
+    var color;
 
     // jshint eqnull:true
     if (value != null) {
         var attrName = this.Util.camelCase('color-' + value);
         color = this.$attrs[attrName];
+        
+        if (!color && this.point) {
+            var renderer = this.point.valueRenderer(value);
+            color = renderer.colour || renderer.color;
+        }
+        
+        if (!color) {
+            color = this.$attrs.defaultColor;
+        }
     }
-    this.$element.css('background-color', color);
+    this.$element.css('background-color', color || '');
+    
+    if (this.point && !this.point.pointLocator.settable) {
+        this.$element.attr('disabled', 'disabled');
+    } else {
+        this.$element.removeAttr('disabled');
+    }
+};
+
+IndicatorController.prototype.clickHandler = function() {
+    if (this.point && !this.$element.attr('disabled')) {
+        this.point.toggleValue();
+    }
 };
 
 return indicator;
