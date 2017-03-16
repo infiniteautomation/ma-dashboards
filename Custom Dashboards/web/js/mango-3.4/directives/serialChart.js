@@ -76,7 +76,8 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         annotateMode: '<?',
         lineThickness: '@',
         onChartInit: '&?',
-        graphItemClicked: '&?'
+        graphItemClicked: '&?',
+        trendLines: '<?'
 	};
 
 	for (var j = 1; j <= MAX_SERIES; j++) {
@@ -164,6 +165,10 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 oneBalloonOnly: true,
                 graphBulletSize: 2
             };
+        }
+
+        if ($scope.trendLines) {
+            options.trendLines = $scope.trendLines;
         }
 
         var valueArray = !!attrs.values;
@@ -394,16 +399,16 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             if ($scope.annotateMode) {
                 annotateOptions = {
                     labelText: '[[' + graph.xid + 'AnnotationText]]',
-                    labelRotation: 20,
-                    labelPosition: 'left',
-                    labelOffset: 5,
+                    labelRotation: 45,
+                    labelPosition: 'top',
+                    labelOffset: 20,
                     labelColorField: graph.xid + 'AnnotationTextColor',
                     bulletSize: 0,
                     bulletSizeField: graph.xid + 'AnnotationBulletSize',
                     bulletHitAreaSize: 15,
                     bulletAlpha: 1,
                     bulletBorderColor: 'black',
-                    bulletBorderAlpha: 0.5,
+                    bulletBorderAlpha: 0.2,
                     bulletBorderThickness: 1,
                     bullet: 'diamond',
                     // bulletColor: '[[' + graph.xid + 'AnnotationBulletColor]]',
