@@ -513,20 +513,20 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 
             // has obvious space or full stop thousands separator and a comma as radix point
             // i.e. converts 1 234 567,89 to 1234567.89
-            if (matches = /\b(\d{1,3}(?:[\. ]\d{3})+),(\d+)/.exec(strValue)) {
+            if ((matches = /\b(\d{1,3}(?:[\. ]\d{3})+),(\d+)/.exec(strValue))) {
                 return matches[1].replace(/[\. ]/g, '') + '.' + matches[2];
             }
             
             // convert groups of digits with 2 or more full stop thousands separators
             // i.e. converts 1.234.567 to 1234567
-            if (matches = /\b\d{1,3}(?:\.\d{3}){2,}(?!\d)/.exec(strValue)) {
+            if ((matches = /\b\d{1,3}(?:\.\d{3}){2,}(?!\d)/.exec(strValue))) {
                 return matches[0].replace(/\./g, '');
             }
 
             // remove any other commas, spaces and single quotes (can be thousands separators)
             strValue = strValue.replace(/[, ']/g, '');
             
-            if (matches = /[-+\.\d]+/.exec(strValue)) {
+            if ((matches = /[-+\.\d]+/.exec(strValue))) {
                 return matches[0];
             }
 
@@ -588,7 +588,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
             }
         }
     };
-
+    
     return new Util();
 }
 

@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-
  /**
   * @ngdoc directive
   * @name maDashboards.maWatchListSelect
@@ -25,111 +24,8 @@
   *
   */
 
-
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', './WatchListSelectController'], function(angular, require, WatchListSelectController) {
 'use strict';
-
-var UPDATE_TYPES = ['update'];
-
-WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'WatchList', '$state', 'Point', 'WatchListEventManager'];
-function WatchListSelectController($scope, $element, $attrs, WatchList, $state, Point, WatchListEventManager) {
-
-    this.disableGetPoints = !$attrs.points;
-
-    this.$onInit = function() {
-        if (!this.watchListXid && !this.watchList && $state.params.watchListXid) {
-            this.watchListXid = $state.params.watchListXid;
-            this.setWatchListFromXid();
-        }
-
-        this.showSelect = !this.noSelect;
-        if (this.showSelect) {
-            this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
-                this.watchLists = watchLists;
-                if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length && !this.watchListXid && !this.watchList) {
-                    this.setWatchList(watchLists[0]);
-                }
-                return watchLists;
-            }.bind(this));
-        }
-        
-        if (this.onInit) {
-            this.onInit({$ctrl: this});
-        }
-    };
-
-    this.$onChanges = function(changes) {
-        if (changes.watchListXid) {
-            if (this.watchListXid) {
-                this.setWatchListFromXid();
-            } else {
-                this.setWatchList(null);
-            }
-        }
-        if (changes.watchList) {
-            this.setWatchList(this.watchList);
-        }
-        if (changes.parameters && this.watchList) {
-            this.getPoints();
-        }
-    };
-    
-    this.setWatchListFromXid = function() {
-        WatchList.get({xid: this.watchListXid}).$promise.then(function(watchList) {
-            this.setWatchList(watchList);
-        }.bind(this));
-    };
-    
-    this.onSelectChange = function() {
-        this.setWatchList(this.watchList);
-        if (this.onChange) {
-            this.onChange({$watchList: this.watchList});
-        }
-    };
-    
-    this.onOpen = function() {
-        return this.queryPromise;
-    };
-    
-    var unsubscribe;
-    this.setWatchList = function(watchList) {
-        if (unsubscribe) {
-            unsubscribe();
-            unsubscribe = null;
-        }
-        
-        this.watchList = watchList;
-        
-        if (!watchList) {
-            this.points = [];
-            return;
-        }
-        
-        $state.params.watchListXid = watchList.xid;
-        $state.go('.', $state.params, {location: 'replace', notify: false});
-
-        unsubscribe = WatchListEventManager.smartSubscribe($scope, this.watchList.xid, UPDATE_TYPES, this.updateHandler);
-        this.getPoints();
-    };
-    
-    this.updateHandler = function updateHandler(event, update) {
-        if (update.action === 'update') {
-            this.watchList = angular.merge(new WatchList(), update.object);
-            this.getPoints();
-        }
-    }.bind(this);
-    
-    this.getPoints = function() {
-        if (this.disableGetPoints) return;
-
-        this.watchList.$getPoints(this.parameters).then(function(watchList) {
-            this.points = watchList.points;
-            if (this.onPointsChange) {
-                this.onPointsChange({$point: this.points});
-            }
-        }.bind(this));
-    };
-}
 
 watchListSelectFactory.$inject = ['$injector'];
 function watchListSelectFactory($injector) {
@@ -141,24 +37,42 @@ function watchListSelectFactory($injector) {
             }
             return require.toUrl('./watchListSelect.html');
         },
+        scope: {},
+        controller: WatchListSelectDirectiveController,
         controllerAs: '$ctrl',
-        bindToController: true,
-        scope: {
-            points: '=?',
-            watchList: '=?',
-            watchListXid: '@',
-            noSelect: '=?',
-            selectFirst: '=?',
-            disabled: '=?',
+        bindToController: {
+            watchListXid: '@?',
+            selectFirst: '<?',
+            query: '<?',
+            start: '<?',
+            limit: '<?',
+            sort: '<?',
             parameters: '<?',
-            onInit: '&?',
-            onChange: '&?',
             onPointsChange: '&?',
-            disableGetPointValue: '<?'
+            
+            ngDisabled: '<?'
         },
-        controller: WatchListSelectController
+        require: {
+            ngModelCtrl: 'ngModel'
+        }
     };
 }
+
+WatchListSelectDirectiveController.$inject = WatchListSelectController.$inject;
+function WatchListSelectDirectiveController() {
+    WatchListSelectController.apply(this, arguments);
+}
+
+WatchListSelectDirectiveController.prototype = Object.create(WatchListSelectController.prototype);
+WatchListSelectDirectiveController.prototype.constructor = WatchListSelectDirectiveController;
+
+WatchListSelectDirectiveController.prototype.selectChangeHandler = function() {
+    this.setViewValue(this.watchList);
+};
+
+WatchListSelectDirectiveController.prototype.onOpen = function() {
+    return this.queryPromise;
+};
 
 return watchListSelectFactory;
 

@@ -4,12 +4,12 @@
     <em ma-tr="dashboards.v3.app.newWatchList"></em>
     <button ng-click="$ctrl.newButtonClicked({'$event': $event})" ma-tr="dashboards.v3.app.new"></button>
   </li>
-  <li ng-repeat="item in $ctrl.items track by item.xid"
-      ng-class="{'ma-list-selected': $ctrl.selected.xid === item.xid}"
+  <li ng-repeat="item in $ctrl.watchLists track by item.xid"
+      ng-class="{'ma-list-selected': $ctrl.watchList.xid === item.xid}"
       ng-click="$ctrl.setViewValue(item)">
     <strong ng-bind="item.name"></strong>
     <em ng-bind="item.username"></em>
-    <button ng-click="$ctrl.editButtonClicked({'$event': $event, 'watchList': item})" ma-tr="common.edit"
+    <button ng-click="$ctrl.editButtonClicked({'$event': $event, '$watchList': item})" ma-tr="common.edit"
         ng-if="$ctrl.showEditButtons && ($ctrl.user.hasPermission(item.editPermission) || $ctrl.user.username === item.username)"></button>
   </li>
 </ul>
