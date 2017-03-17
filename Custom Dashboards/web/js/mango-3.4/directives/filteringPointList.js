@@ -62,24 +62,24 @@ function filteringPointList(Point, $filter, $injector, Translate, $timeout) {
                     $scope.setPoint(item[0]);
                 });
             }
-
-            $scope.$watch('pointXid', function(newValue, oldValue) {
-                if (!newValue) return;
-                
-                Point.get({xid: newValue}).$promise.then(function(item) {
-                    $scope.setPoint(item);
-                });
-            });
-
-            $scope.$watch('pointId', function(newValue, oldValue) {
-                // jshint eqnull:true
-                if (newValue == null) return;
-                
-                Point.getById({id: newValue}).$promise.then(function(item) {
-                    $scope.setPoint(item);
-                });
-            });
         }
+        
+        $scope.$watch('pointXid', function(newValue, oldValue) {
+            if (!newValue) return;
+            
+            Point.get({xid: newValue}).$promise.then(function(item) {
+                $scope.setPoint(item);
+            });
+        });
+
+        $scope.$watch('pointId', function(newValue, oldValue) {
+            // jshint eqnull:true
+            if (newValue == null) return;
+            
+            Point.getById({id: newValue}).$promise.then(function(item) {
+                $scope.setPoint(item);
+            });
+        });
         
         ngModelCtrl.$render = function() {
             $scope.selectedItem = this.$viewValue;
