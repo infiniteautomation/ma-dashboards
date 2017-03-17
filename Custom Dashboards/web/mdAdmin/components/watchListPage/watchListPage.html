@@ -24,20 +24,20 @@
             </md-button>
         </div>
 
-        <ma-watch-list-list ng-if="$ctrl.listType === 'watchLists'" flex layout="column" class="ma-scroll-parent" show-new-button="!$ctrl.filter"
+        <ma-watch-list-list ng-show="$ctrl.listType === 'watchLists'" flex layout="column" class="ma-scroll-parent" show-new-button="!$ctrl.filter"
             ng-model="$ctrl.selectWatchList" watch-list-xid="{{$ctrl.watchListXid}}" ng-change="$ctrl.watchListChanged()" query="$ctrl.watchListQuery" select-first="$ctrl.selectFirstWatchList"
             user="$ctrl.settings.user" new-button-clicked="$ctrl.editWatchList()" edit-button-clicked="$ctrl.editWatchList($watchList)">>
         </ma-watch-list-list>
 
-        <ma-device-name-scroll-list ng-if="$ctrl.listType === 'deviceNames'" flex layout="column" class="ma-scroll-parent" contains="$ctrl.filter"
+        <ma-device-name-scroll-list ng-show="$ctrl.listType === 'deviceNames'" flex layout="column" class="ma-scroll-parent" contains="$ctrl.filter"
             ng-model="$ctrl.deviceName" ng-change="$ctrl.deviceNameChanged()" select-first="false">
         </ma-device-name-scroll-list>
 
-        <ma-data-source-scroll-list ng-if="$ctrl.listType === 'dataSources'" flex layout="column" class="ma-scroll-parent" query="$ctrl.dataSourceQuery"
+        <ma-data-source-scroll-list ng-show="$ctrl.listType === 'dataSources'" flex layout="column" class="ma-scroll-parent" query="$ctrl.dataSourceQuery"
             ng-model="$ctrl.dataSource" select-xid="{{$ctrl.dataSourceXid}}" ng-change="$ctrl.dataSourceChanged()" select-first="false">
         </ma-data-source-scroll-list>
 
-        <div ng-if="$ctrl.listType === 'hierarchy'" flex layout="column" class="ma-scroll-parent">
+        <div ng-show="$ctrl.listType === 'hierarchy'" flex layout="column" class="ma-scroll-parent">
             <ma-point-hierarchy-browser expanded="1" select-subfolders="true" select-one-folder="true" class="md-padding ma-scroll-child"
                 ng-model="$ctrl.hierarchyFolders" ng-change="$ctrl.hierarchyChanged()">
             </ma-point-hierarchy-browser>

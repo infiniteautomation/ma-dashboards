@@ -39,7 +39,7 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
         }
     };
 
-    this.selectFirstWatchList = false;
+    this.selectFirstWatchList = $mdMedia('gt-md');
     this.$mdMedia = $mdMedia;
     this.numberOfRows = $mdMedia('gt-sm') ? 200 : 25;
     
@@ -69,9 +69,6 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
                 this.hierarchyChanged();
             }.bind(this));
         } else {
-            if ($mdMedia('gt-md')) {
-                this.selectFirstWatchList = true;
-            }
             this.listType = 'watchLists';
         }
     };
@@ -93,11 +90,27 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
         $state.go('.', $state.params, {location: 'replace', notify: false});
     };
 
+    this.clear = function clear(type) {
+        // clear checked points from table/chart
+        this.selected = [];
+        
+        this.watchList = null;
+
+        // clear selections
+        if (type !== 'watchList')
+            this.selectWatchList = null;
+        if (type !== 'dataSource')
+            this.dataSource = null;
+        if (type !== 'deviceName')
+            this.deviceName = null;
+        if (type !== 'hierarchy')
+            this.hierarchyFolders = [];
+    };
+
     this.watchListChanged = function watchListChanged() {
         var watchListXid = null;
 
-        // clear checked points from table/chart
-        this.selected = [];
+        this.clear('watchList');
         
         this.watchList = this.selectWatchList;
         if (this.watchList) {
@@ -117,11 +130,6 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
             this.updateWatchListParameters();
         }
 
-        // clear other selections
-        this.dataSource = null;
-        this.deviceName = null;
-        this.hierarchyFolders = [];
-        
         this.updateState({
             watchListXid: watchListXid
         });
@@ -137,8 +145,7 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
     this.dataSourceChanged = function dataSourceChanged() {
         var dataSourceXid = null;
 
-        // clear checked points from table/chart
-        this.selected = [];
+        this.clear('dataSource');
         
         if (this.dataSource) {
             dataSourceXid = this.dataSource.xid;
@@ -157,23 +164,15 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.query = dsQuery.toString();
             watchList.$getPoints();
             this.watchList = watchList;
-        } else {
-            this.watchList = null;
         }
 
-        // clear other selections
-        this.selectWatchList = null;
-        this.deviceName = null;
-        this.hierarchyFolders = [];
-        
         this.updateState({
             dataSourceXid: dataSourceXid
         });
     };
     
     this.deviceNameChanged = function deviceNameChanged() {
-        // clear checked points from table/chart
-        this.selected = [];
+        this.clear('deviceName');
         
         if (this.deviceName) {
             var dnQuery = new query.Query()
@@ -190,14 +189,7 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.query = dnQuery.toString();
             watchList.$getPoints();
             this.watchList = watchList;
-        } else {
-            this.watchList = null;
         }
-        
-        // clear other selections
-        this.selectWatchList = null;
-        this.dataSource = null;
-        this.hierarchyFolders = [];
 
         this.updateState({
             deviceName: this.deviceName
@@ -207,9 +199,8 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
     this.hierarchyChanged = function hierarchyChanged() {
         var hierarchyFolderId = null;
         
-        // clear checked points from table/chart
-        this.selected = [];
-        
+        this.clear('hierarchy');
+
         if (this.hierarchyFolders && this.hierarchyFolders.length) {
             hierarchyFolderId = this.hierarchyFolders[0].id;
             
@@ -221,32 +212,13 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.$getPoints();
             this.watchList = watchList;
             this.chartConfig = defaultChartConfig;
-        } else {
-            this.watchList = null;
         }
 
-        // clear other selections
-        this.selectWatchList = null;
-        this.dataSource = null;
-        this.deviceName = null;
-        
         this.updateState({
             hierarchyFolderId: hierarchyFolderId
         });
     };
-    
-    this.clear = function clear() {
-        this.watchList = null;
 
-        // clear selections
-        this.selectWatchList = null;
-        this.dataSource = null;
-        this.deviceName = null;
-        this.hierarchyFolders = [];
-        
-        this.updateState({});
-    };
-    
     this.editWatchList = function editWatchList(watchList) {
         $state.go('dashboard.settings.watchListBuilder', {watchListXid: watchList ? watchList.xid : null});
     };
