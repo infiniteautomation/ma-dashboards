@@ -96,9 +96,11 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                             // console.log('Success', data);
                             
                             if (data.id) {
-                                $scope.events.find(function(item) {
-                                    return item.id === data.id;
-                                }).acknowledged = true;
+                                $scope.events.some(function(item) {
+                                    if (item.id === data.id) {
+                                        return (item.acknowledged = true);
+                                    }
+                                });
                             }
                         },
                         function (data) {

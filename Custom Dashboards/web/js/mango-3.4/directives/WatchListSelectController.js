@@ -31,7 +31,7 @@ WatchListListController.prototype.$onInit = function() {
 };
 
 WatchListListController.prototype.$onChanges = function(changes) {
-    if (changes.watchListXid) {
+    if (changes.watchListXid && (changes.watchListXid.currentValue || !changes.watchListXid.isFirstChange())) {
         this.setWatchListByXid(this.watchListXid);
     }
 
@@ -46,12 +46,12 @@ WatchListListController.prototype.$onChanges = function(changes) {
 };
 
 WatchListListController.prototype.setViewValue = function(item) {
-    this.render(item);
     this.ngModelCtrl.$setViewValue(item);
+    this.render();
 };
 
-WatchListListController.prototype.render = function(item) {
-    this.watchList = item;
+WatchListListController.prototype.render = function() {
+    this.watchList = this.ngModelCtrl.$viewValue;
     this.doGetPoints(this.parameters);
 };
 

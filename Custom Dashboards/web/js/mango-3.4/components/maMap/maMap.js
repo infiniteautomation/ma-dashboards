@@ -43,6 +43,11 @@ define(['angular', 'require'], function(angular, require) {
   
     maMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'MD_ADMIN_SETTINGS', '$state'];
     function maMapController($scope, $mdMedia, NgMap, MD_ADMIN_SETTINGS, $state) {
+        var $state;
+        if ($injector.has('$state')) {
+            $state = $injector.get('$state');
+        }
+        
         var $ctrl = this;
         $ctrl.render = false;
         $ctrl.apiKeySet = false;
@@ -64,7 +69,9 @@ define(['angular', 'require'], function(angular, require) {
 
         $ctrl.goToRoute = function(e, state, params) {
             // console.log('goToRoute called', e, state, params);
-            $state.go(state);
+            if ($state) {
+                $state.go(state);
+            }
         }
 
         $ctrl.toggleInfoWindow = function(e, windowId, markerId) {

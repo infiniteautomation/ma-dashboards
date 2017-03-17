@@ -35,30 +35,15 @@ function deviceNameScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['DeviceName', '$state', '$stateParams', '$timeout', 'localStorageService', deviceNameScrollListController]
+        controller: ['DeviceName', '$timeout', DeviceNameScrollListController]
     };
     
-    function deviceNameScrollListController(DeviceName, $state, $stateParams, $timeout, localStorageService) {
+    function DeviceNameScrollListController(DeviceName, $timeout) {
         this.$onInit = function() {
-            this.ngModelCtrl.$render = this.render;
-            
-            var localStorageDeviceName = localStorageService.get('watchListPage') ? localStorageService.get('watchListPage').deviceName : null;
-            var deviceName = $stateParams.deviceName || localStorageDeviceName;
-            
-            if (!($stateParams.watchListXid || $stateParams.dataSourceXid | $stateParams.hierarchyFolderId)) {
-                if (deviceName) {
-                    $timeout(function() {
-                        this.setViewValue(deviceName);
-                    }.bind(this), 0);
-                }
-            }
-            
+            this.ngModelCtrl.$render = this.render.bind(this);
+
             this.doQuery().then(function(items) {
-                if (deviceName) {
-                    if (items.indexOf(deviceName) < 0) {
-                        this.setViewValue(null);
-                    }
-                } else if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && items.length) {
+                if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && items.length) {
                     this.setViewValue(items[0]);
                 }
             }.bind(this));
@@ -85,7 +70,7 @@ function deviceNameScrollList($injector) {
                 query = DeviceName.query({contains: this.contains});
             }
             
-            return this.queryPromise = query.$promise.then(function(items) {
+            this.queryPromise = query.$promise.then(function(items) {
                 items = items.sort();
                 if (this.sort && this.sort.indexOf('-') === 0) {
                     items.reverse();
@@ -95,34 +80,19 @@ function deviceNameScrollList($injector) {
                     var end = this.limit ? start + this.limit : items.length - start + 1;
                     items = items.slice(start, end);
                 }
-                return this.items = items;
+                return (this.items = items);
             }.bind(this));
+            
+            return this.queryPromise;
         };
         
         this.setViewValue = function(item) {
-            this.render(item);
             this.ngModelCtrl.$setViewValue(item);
+            this.render();
         };
         
-        this.render = function(item) {
-            this.selected = item;
-            this.setStateParam(item);
-            this.setLocalStorageParam(item);
-        }.bind(this);
-        
-        this.setStateParam = function(item) {
-            $stateParams.deviceName = item;
-            $state.go('.', $stateParams, {location: 'replace', notify: false});
-        };
-        
-        this.setLocalStorageParam = function(item) {
-            var deviceName = item;
-            
-            if (deviceName != null) {
-                localStorageService.set('watchListPage', {
-                    deviceName: deviceName
-                });
-            }
+        this.render = function() {
+            this.selected = this.ngModelCtrl.$viewValue;
         };
     }
 }

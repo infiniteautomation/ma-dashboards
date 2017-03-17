@@ -33,29 +33,21 @@ function dataSourceScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['DataSource', '$state', '$stateParams', 'localStorageService', dataSourceScrollListController]
+        controller: ['DataSource', DataSourceScrollListController]
     };
     
-    function dataSourceScrollListController(DataSource, $state, $stateParams, localStorageService) {
+    function DataSourceScrollListController(DataSource) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
-            
-            
-            
-            var localStorageDataSourceXid = localStorageService.get('watchListPage') ? localStorageService.get('watchListPage').dataSourceXid : null;
-            var xid = $stateParams.dataSourceXid || localStorageDataSourceXid || this.selectXid;
-            
-            if (!($stateParams.watchListXid || $stateParams.deviceName | $stateParams.hierarchyFolderId)) {
-                if (xid) {
-                    this.fetchingInitial = true;
-                    DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
-                        this.fetchingInitial = false;
-                        this.setViewValue(item);
-                    }.bind(this));
-                }
+
+            var xid = this.selectXid;
+            if (xid) {
+                this.fetchingInitial = true;
+                DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
+                    this.fetchingInitial = false;
+                    this.setViewValue(item);
+                }.bind(this));
             }
-            
-            
             
             this.doQuery().then(function(items) {
                 this.items = items;
@@ -75,44 +67,26 @@ function dataSourceScrollList($injector) {
         };
         
         this.doQuery = function() {
-            return this.queryPromise = DataSource.objQuery({
+            this.queryPromise = DataSource.objQuery({
                 query: this.query,
                 start: this.start,
                 limit: this.limit,
                 sort: this.sort || DEFAULT_SORT
             }).$promise.then(function(items) {
-                return this.items = items;
+                return (this.items = items);
             }.bind(this));
+            
+            return this.queryPromise;
         };
         
         this.setViewValue = function(item) {
-            this.render(item);
             this.ngModelCtrl.$setViewValue(item);
+            this.render();
         };
         
-        this.render = function(item) {
-            this.selected = item;
-            this.setStateParam(item);
-            this.setLocalStorageParam(item);
+        this.render = function() {
+            this.selected = this.ngModelCtrl.$viewValue;
         }.bind(this);
-        
-        this.setStateParam = function(item) {
-            if (this.fetchingInitial) return;
-            $stateParams.dataSourceXid = item ? item.xid : null;
-            $state.go('.', $stateParams, {location: 'replace', notify: false});
-        };
-        
-        this.setLocalStorageParam = function(item) {
-            if (this.fetchingInitial) return;
-            
-            var dataSourceXid = item ? item.xid : null;
-            
-            if (dataSourceXid != null) {
-                localStorageService.set('watchListPage', {
-                    dataSourceXid: dataSourceXid
-                });
-            }
-        };
     }
 }
 

@@ -6,8 +6,8 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog'];
-function watchListPageController($mdMedia, WatchList, Translate, $stateParams, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog) {
+watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog'];
+function watchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog) {
     this.baseUrl = require.toUrl('.');
     this.watchList = null;
     this.selectWatchList = null;
@@ -40,40 +40,68 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     };
 
     this.selectFirstWatchList = false;
-    this.localStorage = localStorageService.get('watchListPage');
-    
-    if ( $stateParams.watchListXid || (this.localStorage && this.localStorage.watchListXid) ) {
-        this.listType = 'watchLists';
-    } else if ( $stateParams.dataSourceXid || (this.localStorage && this.localStorage.dataSourceXid) ) {
-        this.listType = 'dataSources';
-    } else if ( $stateParams.deviceName || (this.localStorage && this.localStorage.deviceName) ) {
-        this.listType = 'deviceNames';
-    } else if ( $stateParams.hierarchyFolderId || (this.localStorage && this.localStorage.hierarchyFolderId) ) {
-        this.listType = 'hierarchy';
-        var hierarchyFolderId = $stateParams.hierarchyFolderId || this.localStorage.hierarchyFolderId;
-        
-        PointHierarchy.get({id: hierarchyFolderId, points: false}).$promise.then(function(folder) {
-            var folders = [];
-            PointHierarchy.walkHierarchy(folder, function(folder, parent, index) {
-                folders.push(folder);
-            });
-            this.hierarchyFolders = folders;
-            this.hierarchyChanged();
-        }.bind(this));
-    } else {
-        if ($mdMedia('gt-md')) {
-            this.selectFirstWatchList = true;
-        }
-        this.listType = 'watchLists';
-    }
-    
     this.$mdMedia = $mdMedia;
     this.numberOfRows = $mdMedia('gt-sm') ? 200 : 25;
+    
+    this.$onInit = function() {
+        var localStorage = localStorageService.get('watchListPage') || {};
+        
+        if ($state.params.watchListXid || localStorage.watchListXid) {
+            this.watchListXid = $state.params.watchListXid || localStorage.watchListXid;
+            this.listType = 'watchLists';
+        } else if ($state.params.dataSourceXid || localStorage.dataSourceXid) {
+            this.dataSourceXid = $state.params.dataSourceXid || localStorage.dataSourceXid;
+            this.listType = 'dataSources';
+        } else if ($state.params.deviceName || localStorage.deviceName) {
+            this.deviceName = $state.params.deviceName || localStorage.deviceName;
+            this.listType = 'deviceNames';
+            this.deviceNameChanged();
+        } else if ($state.params.hierarchyFolderId || localStorage.hierarchyFolderId) {
+            this.listType = 'hierarchy';
+            var hierarchyFolderId = $state.params.hierarchyFolderId || localStorage.hierarchyFolderId;
+            
+            PointHierarchy.get({id: hierarchyFolderId, points: false}).$promise.then(function(folder) {
+                var folders = [];
+                PointHierarchy.walkHierarchy(folder, function(folder, parent, index) {
+                    folders.push(folder);
+                });
+                this.hierarchyFolders = folders;
+                this.hierarchyChanged();
+            }.bind(this));
+        } else {
+            if ($mdMedia('gt-md')) {
+                this.selectFirstWatchList = true;
+            }
+            this.listType = 'watchLists';
+        }
+    };
+
+    this.updateState = function(state) {
+        var localStorageParams = {};
+        
+        ['watchListXid', 'dataSourceXid', 'deviceName', 'hierarchyFolderId'].forEach(function(key) {
+            var value = state[key];
+            if (value) {
+                localStorageParams[key] = value; 
+                $state.params[key] = value; 
+            } else {
+                $state.params[key] = null;
+            }
+        });
+
+        localStorageService.set('watchListPage', localStorageParams);
+        $state.go('.', $state.params, {location: 'replace', notify: false});
+    };
 
     this.watchListChanged = function watchListChanged() {
+        var watchListXid = null;
+
+        // clear checked points from table/chart
+        this.selected = [];
+        
         this.watchList = this.selectWatchList;
         if (this.watchList) {
-            this.selected = [];
+            watchListXid = this.watchList.xid;
 
             // clear checked points from table/chart or Load from watchList
             if (this.watchList.data && this.watchList.data.selectedPoints.length > 0) {
@@ -85,21 +113,18 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
             if (this.watchList.data && this.watchList.data.paramValues) {
                 this.watchListParams = this.watchList.data.paramValues;
             }
-            
+
             this.updateWatchListParameters();
         }
-            
-        
+
         // clear other selections
         this.dataSource = null;
         this.deviceName = null;
         this.hierarchyFolders = [];
         
-        // clear hierarchy state
-        $stateParams.hierarchyFolderId = null;
-        $state.go('.', $stateParams, {location: 'replace', notify: false});
-        
-        
+        this.updateState({
+            watchListXid: watchListXid
+        });
     };
     
     this.updateWatchListParameters = function updateWatchListParameters(parameters) {
@@ -110,7 +135,14 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     };
     
     this.dataSourceChanged = function dataSourceChanged() {
+        var dataSourceXid = null;
+
+        // clear checked points from table/chart
+        this.selected = [];
+        
         if (this.dataSource) {
+            dataSourceXid = this.dataSource.xid;
+            
             var dsQuery = new query.Query()
                 .eq('dataSourceXid', this.dataSource.xid)
                 .sort('name')
@@ -134,15 +166,15 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         this.deviceName = null;
         this.hierarchyFolders = [];
         
-        // clear hierarchy state
-        $stateParams.hierarchyFolderId = null;
-        $state.go('.', $stateParams, {location: 'replace', notify: false});
-        
-        // clear checked points from table/chart
-        this.selected = [];
+        this.updateState({
+            dataSourceXid: dataSourceXid
+        });
     };
     
     this.deviceNameChanged = function deviceNameChanged() {
+        // clear checked points from table/chart
+        this.selected = [];
+        
         if (this.deviceName) {
             var dnQuery = new query.Query()
                 .eq('deviceName', this.deviceName)
@@ -166,17 +198,21 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         this.selectWatchList = null;
         this.dataSource = null;
         this.hierarchyFolders = [];
-        
-        // clear hierarchy state
-        $stateParams.hierarchyFolderId = null;
-        $state.go('.', $stateParams, {location: 'replace', notify: false});
-        
-        // clear checked points from table/chart
-        this.selected = [];
+
+        this.updateState({
+            deviceName: this.deviceName
+        });
     };
     
     this.hierarchyChanged = function hierarchyChanged() {
+        var hierarchyFolderId = null;
+        
+        // clear checked points from table/chart
+        this.selected = [];
+        
         if (this.hierarchyFolders && this.hierarchyFolders.length) {
+            hierarchyFolderId = this.hierarchyFolders[0].id;
+            
             var watchList = new WatchList();
             watchList.isNew = true;
             watchList.type = 'hierarchy';
@@ -184,30 +220,19 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
             watchList.hierarchyFolders = this.hierarchyFolders;
             watchList.$getPoints();
             this.watchList = watchList;
-            $stateParams.hierarchyFolderId = this.hierarchyFolders[0].id;
-
             this.chartConfig = defaultChartConfig;
-            
-            
-            if (this.hierarchyFolders[0].id != null) {
-                localStorageService.set('watchListPage', {
-                    hierarchyFolderId: this.hierarchyFolders[0].id
-                });
-            }
         } else {
             this.watchList = null;
-            $stateParams.hierarchyFolderId = null;
         }
-        
-        $state.go('.', $stateParams, {location: 'replace', notify: false});
 
         // clear other selections
         this.selectWatchList = null;
         this.dataSource = null;
         this.deviceName = null;
         
-        // clear checked points from table/chart
-        this.selected = [];
+        this.updateState({
+            hierarchyFolderId: hierarchyFolderId
+        });
     };
     
     this.clear = function clear() {
@@ -219,9 +244,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         this.deviceName = null;
         this.hierarchyFolders = [];
         
-        // clear hierarchy state
-        $stateParams.hierarchyFolderId = null;
-        $state.go('.', $stateParams, {location: 'replace', notify: false});
+        this.updateState({});
     };
     
     this.editWatchList = function editWatchList(watchList) {
