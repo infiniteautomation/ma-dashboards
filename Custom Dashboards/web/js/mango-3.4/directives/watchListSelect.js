@@ -66,10 +66,6 @@ function WatchListSelectDirectiveController() {
 WatchListSelectDirectiveController.prototype = Object.create(WatchListSelectController.prototype);
 WatchListSelectDirectiveController.prototype.constructor = WatchListSelectDirectiveController;
 
-WatchListSelectDirectiveController.prototype.selectChangeHandler = function() {
-    this.setViewValue(this.watchList);
-};
-
 WatchListSelectDirectiveController.prototype.onOpen = function() {
     return this.queryPromise;
 };

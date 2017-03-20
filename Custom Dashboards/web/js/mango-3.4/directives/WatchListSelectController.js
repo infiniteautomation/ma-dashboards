@@ -9,8 +9,8 @@ define(['angular', 'require'], function(angular, require) {
 var DEFAULT_SORT = ['name'];
 var UPDATE_TYPES = ['add', 'update', 'delete'];
 
-WatchListListController.$inject = ['$scope', '$element', '$attrs', 'WatchList', 'WatchListEventManager'];
-function WatchListListController($scope, $element, $attrs, WatchList, WatchListEventManager) {
+WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'WatchList', 'WatchListEventManager'];
+function WatchListSelectController($scope, $element, $attrs, WatchList, WatchListEventManager) {
     this.$scope = $scope;
     this.$element = $element;
     this.$attrs = $attrs;
@@ -18,7 +18,7 @@ function WatchListListController($scope, $element, $attrs, WatchList, WatchListE
     this.WatchListEventManager = WatchListEventManager;
 }
 
-WatchListListController.prototype.$onInit = function() {
+WatchListSelectController.prototype.$onInit = function() {
     this.ngModelCtrl.$render = this.render.bind(this);
 
     this.doQuery().then(function(items) {
@@ -26,11 +26,11 @@ WatchListListController.prototype.$onInit = function() {
             this.setViewValue(items[0]);
         }
         
-        this.WatchListEventManager.smartSubscribe(this.$scope, null, UPDATE_TYPES, this.updateHandler.bind(this));
+        this.subscribe();
     }.bind(this));
 };
 
-WatchListListController.prototype.$onChanges = function(changes) {
+WatchListSelectController.prototype.$onChanges = function(changes) {
     if (changes.watchListXid && (changes.watchListXid.currentValue || !changes.watchListXid.isFirstChange())) {
         this.setWatchListByXid(this.watchListXid);
     }
@@ -45,28 +45,35 @@ WatchListListController.prototype.$onChanges = function(changes) {
     }
 };
 
-WatchListListController.prototype.setViewValue = function(item) {
+WatchListSelectController.prototype.setViewValue = function(item) {
     this.ngModelCtrl.$setViewValue(item);
     this.render();
 };
 
-WatchListListController.prototype.render = function() {
+WatchListSelectController.prototype.render = function() {
     this.watchList = this.ngModelCtrl.$viewValue;
     this.doGetPoints(this.parameters);
 };
 
-WatchListListController.prototype.setWatchListByXid = function(xid) {
+WatchListSelectController.prototype.subscribe = function() {
+    this.WatchListEventManager.smartSubscribe(this.$scope, null, UPDATE_TYPES, this.updateHandler.bind(this));
+};
+
+WatchListSelectController.prototype.setWatchListByXid = function(xid) {
     if (xid) {
-        this.watchListPromise = this.WatchList.get({xid: xid}).$promise;
-        this.watchListPromise.then(null, angular.noop).then(function(item) {
+        var getPromise = this.WatchList.get({xid: xid}).$promise;
+        this.watchListPromise = getPromise.then(null, angular.noop).then(function(item) {
+            this.watchListPromise = null;
             this.setViewValue(item || null);
+            return this.watchList;
         }.bind(this));
     } else {
+        this.watchListPromise = null;
         this.setViewValue(null);
     }
 };
 
-WatchListListController.prototype.doQuery = function() {
+WatchListSelectController.prototype.doQuery = function() {
     this.queryPromise = this.WatchList.objQuery({
         query: this.query,
         start: this.start,
@@ -79,7 +86,7 @@ WatchListListController.prototype.doQuery = function() {
     return this.queryPromise;
 };
 
-WatchListListController.prototype.doGetPoints = function(parameters) {
+WatchListSelectController.prototype.doGetPoints = function(parameters) {
     if (!this.onPointsChange) return;
     
     if (!this.watchList) {
@@ -95,7 +102,7 @@ WatchListListController.prototype.doGetPoints = function(parameters) {
     }
 };
 
-WatchListListController.prototype.updateHandler = function updateHandler(event, update) {
+WatchListSelectController.prototype.updateHandler = function updateHandler(event, update) {
     var item;
     if (update.object) {
         item = angular.merge(new WatchList(), update.object);
@@ -122,6 +129,6 @@ WatchListListController.prototype.updateHandler = function updateHandler(event, 
     }
 };
 
-return WatchListListController;
+return WatchListSelectController;
 
 }); // define

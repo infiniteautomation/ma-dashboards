@@ -15,11 +15,6 @@ function watchListGetFactory() {
         controllerAs: '$ctrl',
         bindToController: {
             watchListXid: '@?',
-            selectFirst: '<?',
-            query: '<?',
-            start: '<?',
-            limit: '<?',
-            sort: '<?',
             parameters: '<?',
             onPointsChange: '&?'
         },
@@ -36,6 +31,33 @@ function WatchListGetController() {
 
 WatchListGetController.prototype = Object.create(WatchListSelectController.prototype);
 WatchListGetController.prototype.constructor = WatchListGetController;
+
+WatchListGetController.prototype.$onInit = function() {
+    this.ngModelCtrl.$render = this.render.bind(this);
+};
+
+WatchListGetController.prototype.render = function() {
+    WatchListSelectController.prototype.render.apply(this, arguments);
+    
+    if (this.unsubscribe) {
+        this.unsubscribe();
+        this.unsubscribe = null;
+    }
+    
+    this.subscribe();
+};
+
+WatchListGetController.prototype.subscribe = function() {
+    if (this.watchList) {
+        this.unsubscribe = this.WatchListEventManager.smartSubscribe(this.$scope, this.watchList.xid, 'update', this.updateHandler.bind(this));
+    }
+};
+
+WatchListGetController.prototype.updateHandler = function updateHandler(event, update) {
+    if (update.action === 'update' && update.object && this.watchList && update.object.xid === this.watchList.xid) {
+        this.setViewValue(angular.merge(new WatchList(), update.object));
+    }
+};
 
 return watchListGetFactory;
 

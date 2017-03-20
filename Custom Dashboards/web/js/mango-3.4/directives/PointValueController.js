@@ -37,6 +37,7 @@ PointValueController.prototype.setPoint = function(point) {
     
     if (this.unsubscribe) {
         this.unsubscribe();
+        this.unsubscribe = null;
     }
     
     this.valueChangeHandler(true);
