@@ -10,8 +10,12 @@
 
 <md-radio-group ng-if="$ctrl.displayType === 'radio'" ng-model="$ctrl.inputValue" ng-model-options="{getterSetter: true}"
     ng-disabled="!$ctrl.point.pointLocator.settable">
-  <md-radio-button ng-value="true" ng-if="!$ctrl.trueText"><span ma-tr="common.true"></span></md-radio-button>
-  <md-radio-button ng-value="true" ng-if="$ctrl.trueText"><span ng-bind="$ctrl.trueText" ng-style="$ctrl.trueStyle"></span></md-radio-button>
-  <md-radio-button ng-value="false" ng-if="!$ctrl.falseText"><span ma-tr="common.false"></span></md-radio-button>
-  <md-radio-button ng-value="false" ng-if="$ctrl.falseText"><span ng-bind="$ctrl.falseText" ng-style="$ctrl.falseStyle"></span></md-radio-button>
+  <md-radio-button ng-value="true">
+    <span ng-if="$ctrl.trueText" ng-bind="$ctrl.trueText"></span>
+    <span ng-if="!$ctrl.trueText" ma-tr="common.true"></span>
+  </md-radio-button>
+  <md-radio-button ng-value="false">
+    <span ng-if="$ctrl.falseText" ng-bind="$ctrl.falseText"></span>
+    <span ng-if="!$ctrl.falseText" ma-tr="common.false"></span>
+  </md-radio-button>
 </md-radio-group>
