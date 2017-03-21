@@ -139,7 +139,13 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
         if (parameters) {
             this.watchListParams = parameters;
         }
-        this.watchList.$getPoints(this.watchListParams);
+        this.getPoints();
+    };
+    
+    this.getPoints = function getPoints() {
+        this.pointsPromise = this.watchList.getPoints(this.watchListParams).then(null, angular.noop).then(function(points) {
+            this.points = points || [];
+        }.bind(this));
     };
     
     this.dataSourceChanged = function dataSourceChanged() {
@@ -162,8 +168,8 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.type = 'query';
             watchList.name = Translate.trSync('dashboards.v3.app.dataSourceX', [this.dataSource.name]);
             watchList.query = dsQuery.toString();
-            watchList.$getPoints();
             this.watchList = watchList;
+            this.getPoints();
         }
 
         this.updateState({
@@ -187,8 +193,8 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.type = 'query';
             watchList.name = Translate.trSync('dashboards.v3.app.deviceNameX', [this.deviceName]);
             watchList.query = dnQuery.toString();
-            watchList.$getPoints();
             this.watchList = watchList;
+            this.getPoints();
         }
 
         this.updateState({
@@ -209,8 +215,8 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.type = 'hierarchy';
             watchList.name = Translate.trSync('dashboards.v3.app.hierarchyFolderX', [this.hierarchyFolders[0].name]);
             watchList.hierarchyFolders = this.hierarchyFolders;
-            watchList.$getPoints();
             this.watchList = watchList;
+            this.getPoints();
             this.chartConfig = defaultChartConfig;
         }
 
@@ -255,7 +261,7 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
                 this.mdAdminSettings = mdAdminSettings;
                 
                 this.downloadData = function downloadData(downloadType, all) {
-                    var points = all ? this.watchList.points : this.selected;
+                    var points = all ? this.points : this.selected;
                     var xids = points.map(function(pt) {
                         return pt.xid;
                     });
@@ -304,7 +310,8 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
             locals: {
                 watchList: this.watchList,
                 selected: this.selected,
-                downloadStatus: this.downloadStatus
+                downloadStatus: this.downloadStatus,
+                points: this.points
             }
         });
     };

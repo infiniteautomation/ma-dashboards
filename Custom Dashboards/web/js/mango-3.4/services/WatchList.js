@@ -37,41 +37,23 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
     });
     
     WatchList.objQuery = Util.objQuery;
-    
-    WatchList.prototype.setPoints = function(points) {
-        for (var i = 0; i < points.length; i++) {
-            var pt = points[i];
-            if (!(pt instanceof Point)) {
-                points[i] = angular.merge(new Point(), pt);
-            }
-        }
-        this.points = points;
-    };
 
-    WatchList.prototype.$getPoints = function(params) {
-        if (!this.points) {
-            this.points = [];
-        }
-        
+    WatchList.prototype.getPoints = function(params) {
         if (this.type === 'static') {
-            this.pointsPromise = $http({
+            return $http({
                 method: 'GET',
                 url: '/rest/v1/watch-lists/' + encodeURIComponent(this.xid) +'/data-points',
                 withCredentials: true,
                 cache: false,
                 transformResponse: Util.transformArrayResponse
             }).then(function(response) {
-                if (response.status < 400) {
-                    this.setPoints(response.data);
-                }
-                return this;
-            }.bind(this));
+                return transformToPointObjects(response.data);
+            });
         } else if (this.type === 'query') {
             var ptQuery = this.interpolateQuery(params);
-            this.pointsPromise = Point.query({rqlQuery: ptQuery}).$promise.then(function(items) {
-                this.setPoints(items);
-                return this;
-            }.bind(this));
+            return Point.query({rqlQuery: ptQuery}).$promise.then(function(points) {
+                return transformToPointObjects(points);
+            });
         } else if (this.type === 'hierarchy') {
             var folderIds = this.folderIds;
             
@@ -83,19 +65,25 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
             }
             
             if (!folderIds || !folderIds.length) {
-                this.setPoints([]);
-                return $q.when(this);
+                return $q.when([]);
             }
             
-            this.pointsPromise = PointHierarchy.getPointsForFolderIds(folderIds).then(function(points) {
-                this.setPoints(points);
-                return this;
-            }.bind(this));
+            return PointHierarchy.getPointsForFolderIds(folderIds).then(function(points) {
+                return transformToPointObjects(points);
+            });
         } else {
-            this.pointsPromise = $q.reject('unknown watchlist type');
+            return $q.reject('unknown watchlist type');
         }
         
-        return this.pointsPromise;
+        function transformToPointObjects(points) {
+            for (var i = 0; i < points.length; i++) {
+                var pt = points[i];
+                if (!(pt instanceof Point)) {
+                    points[i] = angular.merge(new Point(), pt);
+                }
+            }
+            return points;
+        }
     };
     
     WatchList.prototype.interpolateQuery = function interpolateQuery(params) {

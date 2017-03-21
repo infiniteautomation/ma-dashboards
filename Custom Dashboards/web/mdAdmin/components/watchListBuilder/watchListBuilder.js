@@ -276,9 +276,9 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         if (watchlist.type === 'static') {
             $ctrl.clearSearch();
             if (!watchlist.isNew) {
-                watchlist.$getPoints().then(renderStatic);
+                watchlist.getPoints().then(renderStatic);
             } else {
-                renderStatic();
+                renderStatic([]);
             }
         } else if (watchlist.type === 'query') {
             $ctrl.parseQuery();
@@ -297,7 +297,9 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
             }
         }
         
-        function renderStatic() {
+        function renderStatic(points) {
+            $ctrl.watchlist.points = points;
+            
             $ctrl.tableSelection = $ctrl.watchlist.points.slice();
             $ctrl.rerenderTable();
             $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
