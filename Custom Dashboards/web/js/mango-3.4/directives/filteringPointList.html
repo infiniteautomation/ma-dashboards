@@ -1,23 +1,23 @@
 <md-autocomplete
-  md-selected-item-change="setPoint()"
-  md-selected-item="selectedItem"
-  md-search-text="searchText"
-  md-items="item in querySearch(searchText)"
-  md-item-text="displayText({$point: item})"
+  md-selected-item-change="$ctrl.setViewValue()"
+  md-selected-item="$ctrl.selectedItem"
+  md-search-text="$ctrl.searchText"
+  md-items="item in $ctrl.querySearch($ctrl.searchText)"
+  md-item-text="$ctrl.displayText({$point: item})"
   md-no-cache="true"
   md-min-length="0"
-  md-floating-label="{{label}}"
+  md-floating-label="{{$ctrl.label}}"
   md-delay="500"
   md-select-on-focus="true"
   md-escape-options="none"
   md-clear-button="true">
 
     <md-item-template>
-      <span md-highlight-text="searchText" md-highlight-flags="gi">{{listText({$point: item})}}</span>
+      <span md-highlight-text="$ctrl.searchText" md-highlight-flags="gi">{{$ctrl.listText({$point: item})}}</span>
     </md-item-template>
 
     <md-not-found>
-      <span ma-tr="dashboards.v3.app.noPointsFound" ma-tr-args="[searchText]"></span>
+      <span ma-tr="dashboards.v3.app.noPointsFound" ma-tr-args="[$ctrl.searchText]"></span>
     </md-not-found>
 
 </md-autocomplete>
