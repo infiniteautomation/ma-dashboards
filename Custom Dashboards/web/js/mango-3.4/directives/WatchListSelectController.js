@@ -22,7 +22,7 @@ WatchListSelectController.prototype.$onInit = function() {
     this.ngModelCtrl.$render = this.render.bind(this);
 
     this.doQuery().then(function(items) {
-        if (!this.watchListPromise && this.selectFirst && items.length) {
+        if (!this.watchList && this.selectFirst && items.length) {
             this.setViewValue(items[0]);
         }
         
@@ -48,11 +48,11 @@ WatchListSelectController.prototype.$onChanges = function(changes) {
 WatchListSelectController.prototype.setViewValue = function(item) {
     this.ngModelCtrl.$setViewValue(item);
     this.render();
+    this.doGetPoints(this.parameters);
 };
 
 WatchListSelectController.prototype.render = function() {
     this.watchList = this.ngModelCtrl.$viewValue;
-    this.doGetPoints(this.parameters);
 };
 
 WatchListSelectController.prototype.subscribe = function() {
@@ -61,14 +61,15 @@ WatchListSelectController.prototype.subscribe = function() {
 
 WatchListSelectController.prototype.setWatchListByXid = function(xid) {
     if (xid) {
-        var getPromise = this.WatchList.get({xid: xid}).$promise;
-        this.watchListPromise = getPromise.then(null, angular.noop).then(function(item) {
-            this.watchListPromise = null;
+        this.WatchList.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
+            if (item) {
+                // we want to output watchlists without a points property and supply these points as a separate callback
+                // via onPointsChange() after calling doGetPoints()
+                delete item.points;
+            }
             this.setViewValue(item || null);
-            return this.watchList;
         }.bind(this));
     } else {
-        this.watchListPromise = null;
         this.setViewValue(null);
     }
 };
@@ -93,9 +94,7 @@ WatchListSelectController.prototype.doGetPoints = function(parameters) {
         this.points = null;
         this.onPointsChange({$points: this.points});
     } else {
-        this.watchList.$getPoints(parameters).then(function(watchList) {
-            return watchList.points;
-        }, angular.noop).then(function(points) {
+        this.watchList.getPoints(parameters).then(null, angular.noop).then(function(points) {
             this.points = points || null;
             this.onPointsChange({$points: this.points});
         }.bind(this));
