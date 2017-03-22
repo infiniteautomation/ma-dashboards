@@ -39,7 +39,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr ng-repeat="point in $ctrl.points | orderBy: myOrder | limitTo: $ctrl.numberOfRows: (myPage - 1) * $ctrl.numberOfRows" md-select="point" md-row md-select-id="xid" watch-list-table-row>
+            <tr ng-repeat="point in $ctrl.points | orderBy: myOrder | limitTo: $ctrl.numberOfRows: (myPage - 1) * $ctrl.numberOfRows" md-select="point" md-row md-select-id="xid" ma-watch-list-table-row>
             </tr>
         </tbody>
     </table>

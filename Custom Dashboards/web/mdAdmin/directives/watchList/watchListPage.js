@@ -6,8 +6,21 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog'];
-function watchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog) {
+function watchListPageDirective() {
+    return {
+        restrict: 'E',
+        templateUrl: require.toUrl('./watchListPage.html'),
+        scope: {},
+        controller: WatchListPageController,
+        controllerAs: '$ctrl',
+        bindToController: {
+            watchList: '<?'
+        }
+    };
+};
+
+WatchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog'];
+function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog) {
     this.baseUrl = require.toUrl('.');
     this.watchList = null;
     this.selectWatchList = null;
@@ -317,12 +330,6 @@ function watchListPageController($mdMedia, WatchList, Translate, localStorageSer
     };
 }
 
-return {
-    controller: watchListPageController,
-    templateUrl: require.toUrl('./watchListPage.html'),
-    bindings: {
-        watchList: '<?'
-    }
-};
+return watchListPageDirective;
 
 }); // define

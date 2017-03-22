@@ -246,14 +246,14 @@ mdAdminApp.constant('MENU_ITEMS', [
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                return rQ(['./components/watchListPage/watchListPage',
+                return rQ(['./directives/watchList/watchListPage',
                             './directives/watchList/watchListTableRow'], 
-                function (WatchlistPage, watchListTableRow) {
+                function (watchListPage, watchListTableRow) {
                     angular.module('watchListPage', [])
-                        .component('maWatchListPage', WatchlistPage)
-                        .directive('watchListTableRow', watchListTableRow);
+                        .directive('maWatchListPage', watchListPage)
+                        .directive('maWatchListTableRow', watchListTableRow);
                     $ocLazyLoad.inject('watchListPage');
-                    cssInjector.injectLink(require.toUrl('./components/watchListPage/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
+                    cssInjector.injectLink(require.toUrl('./directives/watchList/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });
             }]
         }
