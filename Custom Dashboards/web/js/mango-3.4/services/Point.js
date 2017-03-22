@@ -255,9 +255,12 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     	options = options || {};
     	
     	var dataType = this.pointLocator.dataType;
+    	var unitConversion = false;
+    	
     	if (!value.value) {
     		if (dataType === 'NUMERIC') {
     			value = Number(value);
+    			unitConversion = true;
     		} else if (dataType === 'MULTISTATE') {
     			if (/^\d+$/.test(value)) {
     				value = parseInt(value, 10);
@@ -270,7 +273,7 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     		};
     	}
 
-    	var url = '/rest/v1/point-values/' + encodeURIComponent(this.xid);
+    	var url = '/rest/v1/point-values/' + encodeURIComponent(this.xid) + '?unitConversion=' + !!unitConversion;
     	return $http.put(url, value, {
     		params: {
     			'unitConversion': options.converted

@@ -99,7 +99,18 @@ function getPointValue(pointEventManager, Point, Util) {
             });
 
             $scope.$watchCollection('points', function(newPoints, oldPoints) {
-            	var changedPoints = Util.arrayDiff(newPoints, oldPoints);
+                var changedPoints;
+                
+                // check initialization scenario
+                if (newPoints === oldPoints) {
+                    changedPoints = {
+                        added: newPoints,
+                        removed: []
+                    };
+                } else {
+                    changedPoints = Util.arrayDiff(newPoints, oldPoints);
+                }
+
             	var i;
 
             	for (i = 0; i < changedPoints.removed.length; i++) {

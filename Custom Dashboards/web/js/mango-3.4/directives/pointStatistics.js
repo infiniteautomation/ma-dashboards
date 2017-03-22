@@ -97,8 +97,17 @@ function pointValues(Point, Util, $q, statistics) {
                     to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to
             	};
             }, function(newValue, oldValue) {
-            	var changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
-            	var i;
+                var changedXids, i;
+                
+                // check initialization scenario
+                if (newValue === oldValue) {
+                    changedXids = {
+                        added: newValue.xids,
+                        removed: []
+                    };
+                } else {
+                    changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
+                }
 
             	for (i = 0; i < changedXids.removed.length; i++) {
             		var removedXid = changedXids.removed[i];

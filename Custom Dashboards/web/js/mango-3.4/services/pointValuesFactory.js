@@ -226,6 +226,8 @@ function pointValuesFactory($http, $q, Util) {
         
         if (options.rendered) {
             params.push('useRendered=true');
+        } else if (options.converted) {
+            params.push('unitConversion=true');
         }
         
         return params;

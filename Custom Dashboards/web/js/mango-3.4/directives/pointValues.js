@@ -73,20 +73,21 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             }
         },
         scope: {
-            point: '=?',
-            points: '=?',
+            point: '<?',
+            points: '<?',
             pointXid: '@',
             values: '=?',
-            from: '=?',
-            to: '=?',
-            latest: '=?',
-            realtime: '=?',
+            from: '<?',
+            to: '<?',
+            latest: '<?',
+            realtime: '<?',
             rollup: '@',
             rollupInterval: '@',
-            rendered: '=?',
+            rendered: '<?',
+            converted: '<?',
             dateFormat: '@',
-            timeout: '=?',
-            autoRollupInterval: '=?',
+            timeout: '<?',
+            autoRollupInterval: '<?',
             timezone: '@'
         },
         link: function ($scope, $element, attrs) {
@@ -129,11 +130,21 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             		rollup: $scope.rollup,
             		rollupInterval: $scope.rollupInterval,
             		rendered: $scope.rendered,
+                    converted: $scope.converted,
                     autoRollupInterval: $scope.autoRollupInterval
             	};
             }, function(newValue, oldValue) {
-            	var changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
-            	var i;
+            	var changedXids, i;
+            	
+            	// check initialization scenario
+            	if (newValue === oldValue) {
+            	    changedXids = {
+        	            added: newValue.xids,
+        	            removed: []
+            	    };
+            	} else {
+                    changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
+            	}
 
             	for (i = 0; i < changedXids.removed.length; i++) {
             		var removedXid = changedXids.removed[i];
@@ -188,15 +199,13 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             		if (!points[i] || !points[i].xid) continue;
             		var queryPromise;
             		if (!points[i].pointLocator) {
-            		    queryPromise = Point.get({xid: points[i].xid}).$promise.then(function (point) {
-                            return doQuery(point);
-                        });
+            		    queryPromise = Point.get({xid: points[i].xid}).$promise.then(doQuery);
             		} else {
             		    queryPromise = doQuery(points[i]);
             		}
                     promises.push(queryPromise);
             	}
-
+            	
             	pendingRequest = $q.all(promises).then(function(results) {
                 	if (!results.length) return;
                 	
@@ -315,17 +324,32 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             }
 
             function websocketHandler(event, payload) {
-                var xid = payload.xid;
-
-                $scope.$apply(function() {
-                	if (!payload.value) return;
-
+                $scope.$applyAsync(function() {
+                    if (!payload.value) return;
+                    
+                    var xid = payload.xid;
+                    var point;
+                    if (singlePoint) {
+                        if (!$scope.point || $scope.point.xid !== xid) return;
+                        point = $scope.point;
+                    } else {
+                        if (!$scope.points) return;
+                        $scope.points.some(function(pt) {
+                            if (pt.xid === xid) {
+                                point = pt;
+                                return true;
+                            }
+                        });
+                        if (!point) return;
+                    }
+                    
+                	// jshint eqnull:true
                 	var value;
-                	if ($scope.point.pointLocator.dataType === 'IMAGE') {
+                	if (point.pointLocator.dataType === 'IMAGE') {
                 	    value = payload.value.value;
                 	} else if ($scope.rendered) {
                     	value = payload.renderedValue;
-                    } else if (payload.convertedValue !== null && payload.convertedValue !== undefined) {
+                    } else if ($scope.converted && payload.convertedValue != null) {
                     	value = payload.convertedValue;
                     } else {
                     	value = payload.value.value;
@@ -347,16 +371,19 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     	if ($scope.latest) {
                         	limitValues(values[xid]);
                         }
-                    	// TODO limit combined values, just run combineValues() again?
                     	if (!singlePoint) {
-                    		var last = $scope.values.length && $scope.values[$scope.values.length - 1];
-                    		if (last && last.time === item.timestamp) {
-                    			last['value_' + xid] = item.value;
-                    		} else {
-                    			var newVal = {time: item.timestamp};
-                    			newVal['value_' + xid] = item.value;
-                    			$scope.values.push(newVal);
-                    		}
+                    	    if ($scope.latest) {
+                                combineValues();
+                    	    } else {
+                        		var last = $scope.values.slice(-1)[0];
+                        		if (last && last.time === item.timestamp) {
+                        			last['value_' + xid] = item.value;
+                        		} else {
+                        			var newVal = {time: item.timestamp};
+                        			newVal['value_' + xid] = item.value;
+                        			$scope.values.push(newVal);
+                        		}
+                    	    }
                     	}
                     }
                 });
@@ -378,6 +405,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         to: $scope.to,
                         rollup: $scope.rollup,
                         rendered: $scope.rendered,
+                        converted: $scope.converted,
                         rollupInterval: $scope.actualRollupInterval,
                         timeout: $scope.timeout,
                         timezone: $scope.timezone
