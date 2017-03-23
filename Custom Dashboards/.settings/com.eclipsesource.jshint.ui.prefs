@@ -1,4 +1,4 @@
 eclipse.preferences.version=1
 excluded=web/js/jsdoc//*
-included=web/js//*.js\:web/js/mdAdmin//*.js
+included=web/js//*.js\:web/mdAdmin//*.js
 projectSpecificOptions=true
