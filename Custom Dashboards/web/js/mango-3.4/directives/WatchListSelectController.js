@@ -104,7 +104,7 @@ WatchListSelectController.prototype.doGetPoints = function(parameters) {
 WatchListSelectController.prototype.updateHandler = function updateHandler(event, update) {
     var item;
     if (update.object) {
-        item = angular.merge(new WatchList(), update.object);
+        item = angular.merge(new this.WatchList(), update.object);
     }
     
     if (update.action === 'add') {

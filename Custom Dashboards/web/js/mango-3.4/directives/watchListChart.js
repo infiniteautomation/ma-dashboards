@@ -32,170 +32,108 @@
   */
 
 define(['require'], function(require) {
-    'use strict';
+'use strict';
 
-    watchListChart.$inject = ['$mdMedia', '$timeout','mdAdminSettings'];
-    function watchListChart($mdMedia, $timeout, mdAdminSettings) {
-        return {
-            restrict: 'E',
-            templateUrl: require.toUrl('./watchListChart.html'),
-            scope: {
-                addChecked: '<?',
-                chartConfig: '<?',
-                editMode: '<?',
-                statsTab: '<?',
-                'export': '<?',
-                to: '<?',
-                from: '<?',
-                rollupType: '<?',
-                rollupIntervalNumber: '<?',
-                rollupIntervalPeriod: '<?',
-                chartHeight: '@?'
-            },
-            designerInfo: {
-                translation: 'dashboards.v3.components.watchListChart',
-                icon: 'show_chart',
-                category: 'pointValuesAndCharts',
-                size: {
-                    width: '400px',
-                    height: '200px'
-                }
-            },
-            link: function link(scope, element, attrs) {
-                var defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
-                var defaultChartConfig = {
-                    graphOptions: [],
-                    selectedAxis: 'left',
-                    selectedColor: '#C2185B',
-                    assignColors: false,
-                    chartType: 'smoothedLine',
-                    stackType: {
-                        selected: 'none',
-                        left: 'none',
-                        right: 'none',
-                        'left-2': 'none',
-                        'right-2': 'none'
-                    },
-                    axisColors: { 
-                        left2AxisColor: defaultAxisColor,
-                        leftAxisColor: defaultAxisColor,
-                        right2AxisColor: defaultAxisColor,
-                        rightAxisColor: defaultAxisColor
-                    }
-                };
-                
-                scope.parseInt = parseInt; // Make parseInt available to scope
-                scope.parseFloat = parseFloat; // Make parseFloat available to scope
-                scope.stats = []; // Set up array for storing stats for stats tab
-                scope.points = []; // Set up array for storing charted points
-                scope.$mdMedia = $mdMedia; // Make $mdMedia service available to scope
-                
-                scope.clearChart = function() {
-                    scope.points=[]; 
-                    scope.stats=[]; 
-                    scope.addChecked=[]; 
-                    scope.chartConfig = defaultChartConfig;
-                };
+watchListChart.$inject = [];
+function watchListChart() {
+    return {
+        restrict: 'E',
+        templateUrl: require.toUrl('./watchListChart.html'),
+        scope: {},
+        controller: WatchListChartController,
+        controllerAs: '$ctrl',
+        bindToController: {
+            watchList: '<',
+            //parameters: '<?',
+            points: '<',
+            'export': '<?',
+            legend: '<?',
+            balloon: '<?',
+            from: '<?',
+            to: '<?',
+            rollupType: '<?',
+            rollupIntervals: '<?',
+            rollupIntervalPeriod: '<?',
+            onValuesUpdated: '&?'
+        },
+        designerInfo: {
+            translation: 'dashboards.v3.components.watchListChart',
+            icon: 'show_chart',
+            category: 'pointValuesAndCharts',
+            size: {
+                width: '400px',
+                height: '200px'
+            }
+        }
+    };
+}
 
-                if (scope.editMode) {
-                    scope.$watch('chartConfig.stackType.selected', function(newValue, oldValue) {
-                        if (newValue === undefined || newValue === oldValue) return;
-                        // console.log('stackType Updated:', newValue, scope.chartConfig.selectedAxis);
-                        
-                        scope.chartConfig.stackType[scope.chartConfig.selectedAxis] = newValue;
+WatchListChartController.$inject = ['mdAdminSettings'];
+function WatchListChartController(mdAdminSettings) {
+    this.chartOptions = {};
 
-                        // console.log(scope.chartConfig);
-                    });
+    this.defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
+}
 
-                    scope.$watch('chartConfig.chartType', function(newValue, oldValue) {
-                        if (newValue === undefined || newValue === oldValue) return;
-                        // console.log('chartType Updated:', newValue, scope.chartConfig.selectedAxis);
-                        
-                        scope.chartConfig.graphOptions.filter(function(obj) {
-                            return obj.valueAxis === scope.chartConfig.selectedAxis;
-                        }).forEach(function(obj) {
-                            obj.type = newValue;
-                        });
+WatchListChartController.prototype.$onInit = function() {
+    //if (this['export'] === undefined) this['export'] = true;
+    if (this.legend === undefined) this.legend = true;
+    if (this.balloon === undefined) this.balloon = true;
+};
 
-                        // console.log(scope.chartConfig);
-                    });
+WatchListChartController.prototype.$onChanges = function(changes) {
+    if (changes.watchList || changes.points) {
+        this.filterPoints();
+        this.buildOptions();
+    }
+//    if (changes.parameters && this.watchList) {
+//        this.watchList.getPoints(this.parameters).then(function(points) {
+//            this.points = points;
+//        }.bind(this));
+//    }
+};
 
-                    scope.$watch('chartConfig.selectedAxis', function(newValue, oldValue) {
-                        if (newValue === undefined || newValue === oldValue) return;
-                        // console.log('selectedAxis Updated:', newValue);
-                        
-                        // Set stackType control to that matching axis selected
-                        scope.chartConfig.stackType.selected = scope.chartConfig.stackType ? scope.chartConfig.stackType[newValue] : 'none';
+WatchListChartController.prototype.filterPoints = function() {
+    var watchList = this.watchList || {data:{}};
+    var allPoints = this.points || [];
+    var chartConfig = watchList.data.chartConfig || {};
+    var selectedPoints = chartConfig.selectedPoints || {};
+    var graphOptions = this.graphOptions = [];
+    
+    this.chartedPoints = allPoints.filter(function(point) {
+        var pointOptions = selectedPoints[point.name];
+        if (pointOptions) {
+            graphOptions.push(pointOptions);
+            return true;
+        }
+    });
+};
 
-                        // Set chartType control to that matching axis selected
-                        var selectedAxisGraphOption = scope.chartConfig.graphOptions.filter(function(obj) {
-                            return obj.valueAxis === newValue;
-                        })[0];
-                        scope.chartConfig.chartType = selectedAxisGraphOption ? selectedAxisGraphOption.type : 'smoothedLine';
+WatchListChartController.prototype.buildOptions = function() {
+    this.chartOptions = {};
+    if (!this.watchList) {
+        return;
+    }
+    var defaultColor = this.defaultAxisColor;
+    var chartConfig = this.watchList.data.chartConfig || {};
+    var valueAxes = chartConfig.valueAxes || {};
+    
+    this.chartOptions.valueAxes = [];
+    ['left', 'right', 'left-2', 'right-2'].forEach(function(axisName) {
+        var axis = valueAxes[axisName] || {};
+        this.chartOptions.valueAxes.push({
+            axisColor: axis.color || defaultColor,
+            color: axis.color || defaultColor,
+            stackType: axis.stackType || 'none'
+        });
+    }.bind(this));
+};
 
-                        // console.log(scope.chartConfig);
-                    });
-                }
-                
-                
+WatchListChartController.prototype.valuesUpdatedHandler = function(values) {
+    if (this.onValuesUpdated)
+        this.onValuesUpdated({$values: values});
+};
 
-                scope.$watchCollection('addChecked', function(newValues, oldValues) {
-                    if (newValues === undefined || (oldValues === undefined && newValues.length === 0) || !scope.chartConfig) return;
-                    // console.log('addChecked Watcher:', newValues, oldValues);
-                    
-                    // Clear Stats before new ones are generated
-                    scope.stats = [];
-                    
-                    // assign the chart's points equal to the checked from table
-                    scope.points = newValues;
-
-                    // If cleared clear chartConfig.graphOptions
-                    if (newValues.length === 0) {
-                        scope.chartConfig.graphOptions = [];
-                    }
-                    
-                    // Only add graph option if it isn't already in the chartConfig, compare to last item of newValues
-                    var xidExists = scope.chartConfig.graphOptions.some(function(obj) {
-                        return obj.xid === newValues[newValues.length-1].xid;
-                    });
-
-                    // Check if adding or removing before updating graphOptions array
-                    if ( (oldValues === undefined && newValues.length >= 0 && !xidExists && scope.editMode) || (oldValues !== undefined && newValues.length > oldValues.length && !xidExists  && scope.editMode) ) {
-
-                        // Set graphOption with current selcted Axis and newest added xid
-                        var graphOption = {valueAxis: scope.chartConfig.selectedAxis, xid: newValues[newValues.length-1].xid};
-                        
-                        // Set type to selected chartType
-                        graphOption.type = scope.chartConfig.chartType;
-
-                        // If assignColors checkbox is turned on use next line color option
-                        if (scope.chartConfig.assignColors) {
-                            graphOption.lineColor = scope.chartConfig.selectedColor;
-                        }
-                        
-                        // push it to the chartConfig.graphOptions array
-                        scope.chartConfig.graphOptions.push(graphOption);
-                        // console.log('Adding', newValues[newValues.length-1].xid);
-                    }
-                    else if (oldValues !== undefined && newValues.length < oldValues.length && scope.editMode) {
-                        var arrayDiff = oldValues.filter(function(x) {
-                            return newValues.indexOf(x) < 0;
-                        });
-                        var removedXid = arrayDiff[0].xid;
-                        var removedIndex = oldValues.map(function(x) {
-                            return x.xid;
-                        }).indexOf(removedXid);
-                        
-                        scope.chartConfig.graphOptions.splice(removedIndex, 1);
-                        // console.log('Removed', removedXid, 'at index', removedIndex);
-                    }
-                    // console.log('Graph Options', scope.chartConfig.graphOptions);
-                });
-
-            } // End Link
-        }; // End return
-    } // End DDO
-
-    return watchListChart;
+return watchListChart;
 
 }); // define

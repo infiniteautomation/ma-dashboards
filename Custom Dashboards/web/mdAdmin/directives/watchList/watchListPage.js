@@ -17,10 +17,10 @@ function watchListPageDirective() {
             watchList: '<?'
         }
     };
-};
+}
 
-WatchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog'];
-function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog) {
+WatchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog', 'statistics', '$scope'];
+function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog, statistics, $scope) {
     this.baseUrl = require.toUrl('.');
     this.watchList = null;
     this.selectWatchList = null;
@@ -30,11 +30,15 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     this.settings = mdAdminSettings;
     this.dateBar = DateBar;
 
+    this.selected = [];
+    this.selectedStats = [];
+    
     var defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
     var defaultChartConfig = {
         graphOptions: [],
         selectedAxis: 'left',
         selectedColor: '#C2185B',
+        selectedStackType: 'none',
         assignColors: false,
         chartType: 'smoothedLine',
         stackType: {
@@ -50,12 +54,18 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             right2AxisColor: defaultAxisColor,
             rightAxisColor: defaultAxisColor
         }
-    };
+    };    
+    var NO_STATS = '\u2014';
 
     this.selectFirstWatchList = $mdMedia('gt-md');
     this.$mdMedia = $mdMedia;
     this.numberOfRows = $mdMedia('gt-sm') ? 200 : 25;
-    
+    this.downloadStatus = {};
+    this.chartOptions = {
+        selectedAxis: 'left',
+        axes: {}
+    };
+
     this.$onInit = function() {
         var localStorage = localStorageService.get('watchListPage') || {};
         
@@ -84,6 +94,14 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         } else {
             this.listType = 'watchLists';
         }
+        
+        $scope.$watch(function() {
+            return {
+                //points: this.selected && this.selected.map(function(pt) { return pt.xid }),
+                from: this.dateBar.from.valueOf(),
+                to: this.dateBar.to.valueOf()
+            };
+        }.bind(this), this.updateStats.bind(this), true);
     };
 
     this.updateState = function(state) {
@@ -104,11 +122,11 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     };
 
     this.clear = function clear(type) {
-        // clear checked points from table/chart
-        this.selected = [];
-        
         this.watchList = null;
 
+        // clear checked points from table/chart
+        this.clearSelected();
+        
         // clear selections
         if (type !== 'watchList')
             this.selectWatchList = null;
@@ -118,6 +136,20 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             this.deviceName = null;
         if (type !== 'hierarchy')
             this.hierarchyFolders = [];
+    };
+    
+    this.clearSelected = function () {
+        this.selected = [];
+        this.selectedStats = [];
+        this.chartConfig = {};
+        if (this.watchList && this.watchList.data) {
+            this.watchList.data.chartConfig = this.chartConfig;
+        }
+    };
+    
+    this.rebuildChart = function() {
+        // causes the chart to update
+        this.watchList = angular.extend(new WatchList(), this.watchList);
     };
 
     this.watchListChanged = function watchListChanged() {
@@ -129,38 +161,43 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         if (this.watchList) {
             watchListXid = this.watchList.xid;
 
-            // clear checked points from table/chart or Load from watchList
-            if (this.watchList.data && this.watchList.data.selectedPoints.length > 0) {
-                this.selected = this.watchList.data.selectedPoints;
+            if (!this.watchList.data) {
+                this.watchList.data = {};
             }
-			
-            this.chartConfig = this.watchList.data ? this.watchList.data.chartConfig : defaultChartConfig;
-            
-            if (this.watchList.data && this.watchList.data.paramValues) {
+            if (!this.watchList.data.chartConfig) {
+                this.watchList.data.chartConfig = {};
+            }
+            if (this.watchList.data.paramValues) {
                 this.watchListParams = this.watchList.data.paramValues;
             }
+            
+            this.chartConfig = this.watchList.data.chartConfig;
 
-            this.updateWatchListParameters();
+            this.getPoints();
         }
 
         this.updateState({
             watchListXid: watchListXid
         });
     };
-    
-    this.updateWatchListParameters = function updateWatchListParameters(parameters) {
+
+    this.getPoints = function getPoints(parameters) {
         if (parameters) {
             this.watchListParams = parameters;
         }
-        this.getPoints();
-    };
-    
-    this.getPoints = function getPoints() {
         this.pointsPromise = this.watchList.getPoints(this.watchListParams).then(null, angular.noop).then(function(points) {
             this.points = points || [];
+            
+            if (this.watchList.data && this.watchList.data.chartConfig && this.watchList.data.chartConfig.selectedPoints) {
+                var selectedPoints = this.watchList.data.chartConfig.selectedPoints;
+                this.selected = this.points.filter(function(point) {
+                    return selectedPoints[point.name];
+                });
+                this.updateStats();
+            }
         }.bind(this));
     };
-    
+
     this.dataSourceChanged = function dataSourceChanged() {
         var dataSourceXid = null;
 
@@ -174,14 +211,16 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                 .sort('name')
                 .limit(200);
 
-            this.chartConfig = defaultChartConfig;
-
             var watchList = new WatchList();
             watchList.isNew = true;
             watchList.type = 'query';
             watchList.name = Translate.trSync('dashboards.v3.app.dataSourceX', [this.dataSource.name]);
             watchList.query = dsQuery.toString();
+            watchList.data = {
+                chartConfig: {}
+            };
             this.watchList = watchList;
+            this.chartConfig = this.watchList.data.chartConfig;
             this.getPoints();
         }
 
@@ -199,14 +238,16 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                 .sort('name')
                 .limit(200);
 
-            this.chartConfig = defaultChartConfig;
-            
             var watchList = new WatchList();
             watchList.isNew = true;
             watchList.type = 'query';
             watchList.name = Translate.trSync('dashboards.v3.app.deviceNameX', [this.deviceName]);
             watchList.query = dnQuery.toString();
+            watchList.data = {
+                chartConfig: {}
+            };
             this.watchList = watchList;
+            this.chartConfig = this.watchList.data.chartConfig;
             this.getPoints();
         }
 
@@ -228,9 +269,12 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.type = 'hierarchy';
             watchList.name = Translate.trSync('dashboards.v3.app.hierarchyFolderX', [this.hierarchyFolders[0].name]);
             watchList.hierarchyFolders = this.hierarchyFolders;
+            watchList.data = {
+                chartConfig: {}
+            };
             this.watchList = watchList;
+            this.chartConfig = this.watchList.data.chartConfig;
             this.getPoints();
-            this.chartConfig = defaultChartConfig;
         }
 
         this.updateState({
@@ -252,21 +296,83 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     };
     
     this.saveSettings = function saveSettings() {
-        this.watchList.data = {};
-        this.watchList.data.selectedPoints = this.selected;
-        this.watchList.data.chartConfig = this.chartConfig;
         this.watchList.data.paramValues = this.watchListParams;
         
         if (this.watchList.isNew) {
             $state.go('dashboard.settings.watchListBuilder', {watchList: this.watchList});
-        }
-        else {
+        } else {
+            // TODO shouldn't need to do this
+            if (!this.watchList.points) {
+                this.watchList.points = [];
+            }
             this.watchList.$update();
         }
     };
     
-    this.downloadStatus = {};
-    
+    this.selectedPointsChanged = function() {
+        var oldSelectedPoints = this.chartConfig.selectedPoints || {};
+        var newSelectedPoints = this.chartConfig.selectedPoints = {};
+        
+        var newPointChartOptions = {};
+        if (this.chartOptions.configPoint) {
+            if (this.chartOptions.pointColor)
+                newPointChartOptions.lineColor = this.chartOptions.pointColor;
+            if (this.chartOptions.pointChartType)
+                newPointChartOptions.type = this.chartOptions.pointChartType;
+            if (this.chartOptions.pointAxis)
+                newPointChartOptions.valueAxis = this.chartOptions.pointAxis;
+        }
+        
+        this.selected.forEach(function(point) {
+            newSelectedPoints[point.name] = oldSelectedPoints[point.name] || newPointChartOptions;
+        });
+        
+        this.rebuildChart();
+        this.updateStats();
+    }.bind(this);
+
+    this.updateStats = function() {
+        var selectedStats = this.selectedStats = [];
+        
+        if (!this.selected) {
+            return;
+        }
+        
+        var points = this.selected;
+        var from = this.dateBar.from;
+        var to = this.dateBar.to;
+        
+        points.forEach(function(point) {
+            var ptStats = {
+                name: point.name,
+                device: point.deviceName,
+                xid: point.xid
+            };
+            selectedStats.push(ptStats);
+            
+            statistics.getStatisticsForXid(point.xid, {
+                from: from,
+                to: to,
+                rendered: true
+            }).then(function(stats) {
+                ptStats.average = stats.average ? stats.average.value : NO_STATS;
+                ptStats.minimum = stats.minimum ? stats.minimum.value : NO_STATS;
+                ptStats.maximum = stats.maximum ? stats.maximum.value : NO_STATS;
+                ptStats.sum = stats.sum ? stats.sum.value : NO_STATS;
+                ptStats.first = stats.first ? stats.first.value : NO_STATS;
+                ptStats.last = stats.last ? stats.last.value : NO_STATS;
+                ptStats.count = stats.count;
+                
+                ptStats.averageValue = parseFloat(stats.average && stats.average.value);
+                ptStats.minimumValue = parseFloat(stats.minimum && stats.minimum.value);
+                ptStats.maximumValue = parseFloat(stats.maximum && stats.maximum.value);
+                ptStats.sumValue = parseFloat(stats.sum && stats.sum.value);
+                ptStats.firstValue = parseFloat(stats.first && stats.first.value);
+                ptStats.lastValue = parseFloat(stats.last && stats.last.value);
+            });
+        });
+    };
+
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
             controller: ['DateBar', 'pointValues', 'mdAdminSettings', 'Util', function(DateBar, pointValues, mdAdminSettings, Util) {

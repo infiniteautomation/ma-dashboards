@@ -55,7 +55,7 @@ WatchListGetController.prototype.subscribe = function() {
 
 WatchListGetController.prototype.updateHandler = function updateHandler(event, update) {
     if (update.action === 'update' && update.object && this.watchList && update.object.xid === this.watchList.xid) {
-        this.setViewValue(angular.merge(new WatchList(), update.object));
+        this.setViewValue(angular.merge(new this.WatchList(), update.object));
     }
 };
 

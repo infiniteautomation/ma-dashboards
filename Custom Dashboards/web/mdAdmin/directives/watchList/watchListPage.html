@@ -25,7 +25,8 @@
         </div>
 
         <ma-watch-list-list ng-show="$ctrl.listType === 'watchLists'" flex layout="column" class="ma-scroll-parent" show-new-button="!$ctrl.filter"
-            ng-model="$ctrl.selectWatchList" watch-list-xid="{{$ctrl.watchListXid}}" ng-change="$ctrl.watchListChanged()" query="$ctrl.watchListQuery" select-first="$ctrl.selectFirstWatchList"
+            ng-model="$ctrl.selectWatchList" watch-list-xid="{{$ctrl.watchListXid}}" ng-change="$ctrl.watchListChanged()"
+            query="$ctrl.watchListQuery" select-first="$ctrl.selectFirstWatchList"
             user="$ctrl.settings.user" new-button-clicked="$ctrl.editWatchList()" edit-button-clicked="$ctrl.editWatchList($watchList)">>
         </ma-watch-list-list>
 
@@ -47,11 +48,7 @@
     <div flex layout="column" class="watchlist-main" ng-show="$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
         <md-card class="watchlist-table" ng-include="$ctrl.baseUrl + '/watchListTable.html'">
         </md-card>
-        <md-card class="watchlist-chart" ng-show="$ctrl.selected.length > 0">
-            <ma-watch-list-chart edit-mode="true" stats-tab="true" export="true" add-checked="$ctrl.selected" chart-config="$ctrl.chartConfig" to="$ctrl.dateBar.to"
-                from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals"
-                rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="400px">
-            </ma-watch-list-chart>
+        <md-card class="watchlist-chart" ng-show="$ctrl.selected.length" ng-include="$ctrl.baseUrl + '/watchListChartAndStats.html'">
         </md-card>
     </div>
 </div>

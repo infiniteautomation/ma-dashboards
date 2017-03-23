@@ -1,0 +1,128 @@
+<md-toolbar class="md-whiteframe-1dp md-hue-3">
+    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+        <h2 flex>
+            <span><span ma-tr="dashboards.v3.app.chart"></span> &amp; <span ma-tr="dashboards.v3.app.compare"></span></span>
+        </h2>
+        <md-button class="md-raised" ng-click="$ctrl.clearSelected()" ma-tr="dashboards.v3.app.clear"></md-button>
+    </div>
+</md-toolbar>
+
+<md-tabs md-dynamic-height md-swipe-content md-selected="currentTab">
+  <md-tab>
+    <md-tab-label><span ma-tr="dashboards.v3.app.chart"></span></md-tab-label>
+    <md-tab-body>
+      <ma-watch-list-chart watch-list="$ctrl.watchList" points="$ctrl.points" export="true" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to"
+          rollup-type="$ctrl.dateBar.rollupType" rollup-intervals="$ctrl.dateBar.rollupIntervals"
+          rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod">
+      </ma-watch-list-chart>
+      
+      <div class="md-padding">
+        <div layout layout-align="start center" class="watch-list-configure-chart">
+            <md-checkbox ng-model="$ctrl.chartOptions.configPoint"><span ma-tr="dashboards.v3.app.configureNextPoint"></span></md-checkbox>
+            
+            <div ng-if="$ctrl.chartOptions.configPoint" class="md-color-picker-preview md-color-picker-checkered-bg" ng-click="$ctrl.showColorPicker($event)" role="button" tabindex="-1">
+              <div class="md-color-picker-result" ng-style="{'background-color': $ctrl.chartOptions.pointColor}"></div>
+            </div>
+            
+            <md-input-container ng-if="$ctrl.chartOptions.configPoint">
+            	<label ma-tr="dashboards.v3.app.lineColor"></label>
+                <input ng-model="$ctrl.chartOptions.pointColor" ng-model-options="{debounce: 1000}">
+            </md-input-container>
+            
+            <md-input-container ng-if="$ctrl.chartOptions.configPoint">
+                <label ma-tr="dashboards.v3.app.chartType"></label>
+                <md-select ng-model="$ctrl.chartOptions.pointChartType">
+                    <md-option value=""><em ma-tr="dashboards.v3.app.clear"></em></md-option>
+                    <md-option value="smoothedLine" ma-tr="dashboards.v3.app.smooth"></md-option>
+                    <md-option value="line" ma-tr="dashboards.v3.app.line"></md-option>
+                    <md-option value="step" ma-tr="dashboards.v3.app.step"></md-option>
+                    <md-option value="column" ma-tr="dashboards.v3.app.bar"></md-option>
+                    <!-- <md-option value="stacked" ma-tr="dashboards.v3.app.stacked"></md-option>
+                    <md-option value="area" ma-tr="dashboards.v3.app.area"></md-option> -->
+                </md-select>
+            </md-input-container>
+
+            <md-input-container ng-if="$ctrl.chartOptions.configPoint">
+                <label ma-tr="dashboards.v3.app.pointAxis"></label>
+                <md-select ng-model="$ctrl.chartOptions.pointAxis">
+                    <md-option value=""><em ma-tr="dashboards.v3.app.clear"></em></md-option>
+                    <md-option value="left" ma-tr="dashboards.v3.app.left"></md-option>
+                    <md-option value="right" ma-tr="dashboards.v3.app.right"></md-option>
+                    <md-option value="left-2" ma-tr="dashboards.v3.app.farLeft"></md-option>
+                    <md-option value="right-2" ma-tr="dashboards.v3.app.farRight"></md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        
+        <div layout layout-align="start center" class="watch-list-configure-chart">
+            <md-checkbox ng-model="$ctrl.chartOptions.configAxes"><span ma-tr="dashboards.v3.app.configureAxes"></span></md-checkbox>
+
+            <md-input-container ng-if="$ctrl.chartOptions.configAxes">
+                <label ma-tr="dashboards.v3.app.selectedAxis"></label>
+                <md-select ng-model="$ctrl.chartOptions.selectedAxis">
+                    <md-option value="left" ma-tr="dashboards.v3.app.left"></md-option>
+                    <md-option value="right" ma-tr="dashboards.v3.app.right"></md-option>
+                    <md-option value="left-2" ma-tr="dashboards.v3.app.farLeft"></md-option>
+                    <md-option value="right-2" ma-tr="dashboards.v3.app.farRight"></md-option>
+                </md-select>
+            </md-input-container>
+            
+            <div ng-if="$ctrl.chartOptions.configAxes" class="md-color-picker-preview md-color-picker-checkered-bg" ng-click="$ctrl.showColorPicker($event)" role="button" tabindex="-1">
+              <div class="md-color-picker-result" ng-style="{'background-color': $ctrl.chartConfig.valueAxes[$ctrl.chartOptions.selectedAxis].color}"></div>
+            </div>
+            
+            <md-input-container ng-if="$ctrl.chartOptions.configAxes">
+                <label>Axis color</label>
+                <input ng-model="$ctrl.chartConfig.valueAxes[$ctrl.chartOptions.selectedAxis].color" ng-model-options="{debounce: 1000}" ng-change="$ctrl.rebuildChart()">
+            </md-input-container>
+            
+            <md-input-container ng-if="$ctrl.chartOptions.configAxes">
+                <label ma-tr="dashboards.v3.app.stackType"></label>
+                <md-select ng-model="$ctrl.chartConfig.valueAxes[$ctrl.chartOptions.selectedAxis].stackType" ng-change="$ctrl.rebuildChart()">
+                    <md-option value=""><em ma-tr="dashboards.v3.app.clear"></em></md-option>
+                    <md-option value="none" ma-tr="dashboards.v3.app.none"></md-option>
+                    <md-option value="regular" ma-tr="dashboards.v3.app.stacked"></md-option>
+                    <md-option value="100%">100% <span ma-tr="dashboards.v3.app.stacked"></span></md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+      </div>
+    </md-tab-body>
+  </md-tab>
+  
+  <md-tab>
+    <md-tab-label><span ma-tr="dashboards.v3.app.stats"></span></md-tab-label>
+    <md-tab-body>
+      <md-table-container class="md-padding">
+        <table md-table ng-class="{'desktop': $mdMedia('gt-sm')}">
+            <thead md-head md-order="tableOrder">
+                <tr>
+                    <th md-column md-order-by="device" ma-tr="dashboards.v3.app.device"></th>
+                    <th md-column md-order-by="name" ma-tr="dashboards.v3.app.name"></th>
+                    <th md-column md-numeric md-order-by="averageValue" ma-tr="dashboards.v3.app.avg"></th>
+                    <th md-column md-numeric md-order-by="maximumValue" ma-tr="dashboards.v3.app.max"></th>
+                    <th md-column md-numeric md-order-by="minimumValue" ma-tr="dashboards.v3.app.min"></th>
+                    <th md-column md-numeric md-order-by="sumValue" ma-tr="dashboards.v3.app.sum"></th>
+                    <th md-column md-numeric md-order-by="firstValue" ma-tr="dashboards.v3.app.first"></th>
+                    <th md-column md-numeric md-order-by="lastValue" ma-tr="dashboards.v3.app.last"></th>
+                    <th md-column md-numeric md-order-by="count" ma-tr="dashboards.v3.app.count"></th>
+                </tr>
+            </thead>
+            <tbody md-body ng-init="tableOrder='device'">
+                <tr md-row ng-repeat="point in $ctrl.selectedStats | orderBy: tableOrder track by point.xid">
+                    <td md-cell ng-bind="point.device"></td>
+                    <td md-cell ng-bind="point.name"></td>
+                    <td md-cell ng-bind="point.average"></td>
+                    <td md-cell ng-bind="point.maximum"></td>
+                    <td md-cell ng-bind="point.minimum"></td>
+                    <td md-cell ng-bind="point.sum"></td>
+                    <td md-cell ng-bind="point.first"></td>
+                    <td md-cell ng-bind="point.last"></td>
+                    <td md-cell ng-bind="point.count"></td>
+                </tr>
+            </tbody>
+        </table>
+      </md-table-container>
+    </md-tab-body>
+  </md-tab>
+</md-tabs>
