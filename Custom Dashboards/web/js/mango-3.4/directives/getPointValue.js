@@ -50,7 +50,7 @@ function getPointValue(pointEventManager, Point, Util) {
             }
         },
         scope: {
-            point: '<?',
+            point: '=?',
             pointXid: '@?',
             points: '<?',
             onValueUpdated: '&?'
@@ -104,7 +104,7 @@ function getPointValue(pointEventManager, Point, Util) {
                 // check initialization scenario
                 if (newPoints === oldPoints) {
                     changedPoints = {
-                        added: newPoints,
+                        added: newPoints || [],
                         removed: []
                     };
                 } else {

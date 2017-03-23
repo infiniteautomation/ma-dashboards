@@ -49,7 +49,8 @@ function statisticsFactory($http, $q, Util) {
                 timeout: cancelOrTimeout,
                 headers: {
                     'Accept': 'application/json'
-                }
+                },
+                cache: true
             }).then(function(response) {
                 if (!response || !response.data) {
                     throw new Error('Incorrect response from REST end point ' + url);

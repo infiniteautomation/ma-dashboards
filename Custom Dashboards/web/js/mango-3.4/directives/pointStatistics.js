@@ -102,7 +102,7 @@ function pointValues(Point, Util, $q, statistics) {
                 // check initialization scenario
                 if (newValue === oldValue) {
                     changedXids = {
-                        added: newValue.xids,
+                        added: newValue.xids || [],
                         removed: []
                     };
                 } else {

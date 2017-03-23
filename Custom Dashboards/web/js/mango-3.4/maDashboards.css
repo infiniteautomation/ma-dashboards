@@ -386,7 +386,9 @@ ma-user-select, ma-system-setting-editor {
 ma-gauge-chart,
 ma-tank-level,
 ma-indicator,
-ma-switch-img {
+ma-switch-img,
+ma-serial-chart,
+ma-watch-list-chart {
   display: block;
 }
 
@@ -405,6 +407,10 @@ ma-point-values,
 ma-point-statistics,
 ma-watch-list-get {
   display: none;
+}
+
+ma-watch-list-chart .amchart {
+  height: 100%;
 }
 
 /* SVG and animations */

@@ -88,7 +88,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             dateFormat: '@',
             timeout: '<?',
             autoRollupInterval: '<?',
-            timezone: '@'
+            timezone: '@',
+            onValuesUpdated: '&?'
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
@@ -139,7 +140,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             	// check initialization scenario
             	if (newValue === oldValue) {
             	    changedXids = {
-        	            added: newValue.xids,
+        	            added: newValue.xids || [],
         	            removed: []
             	    };
             	} else {
@@ -282,6 +283,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 });
 
                 $scope.values = output;
+                if ($scope.onValuesUpdated)
+                    $scope.onValuesUpdated({$values: $scope.values});
             }
 
             function combineInto(output, newValues, valueField) {
@@ -383,6 +386,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         			newVal['value_' + xid] = item.value;
                         			$scope.values.push(newVal);
                         		}
+                                if ($scope.onValuesUpdated)
+                                    $scope.onValuesUpdated({$values: $scope.values});
                     	    }
                     	}
                     }
