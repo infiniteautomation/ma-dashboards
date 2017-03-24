@@ -48,6 +48,9 @@ WatchListSelectController.prototype.$onChanges = function(changes) {
 WatchListSelectController.prototype.setViewValue = function(item) {
     this.ngModelCtrl.$setViewValue(item);
     this.render();
+    if (item.data && item.data.paramValues) {
+        this.parameters = item.data.paramValues;
+    }
     this.doGetPoints(this.parameters);
 };
 
