@@ -395,7 +395,6 @@ ma-watch-list-chart {
 ma-gauge-chart .amchart,
 ma-tank-level .amchart {
   height: 100%;
-  width: 100%;
 }
 
 ma-tank-level .amcharts-graph-tank-remainder .amcharts-graph-column-bottom {
@@ -409,7 +408,7 @@ ma-watch-list-get {
   display: none;
 }
 
-ma-watch-list-chart .amchart {
+ma-watch-list-chart ma-serial-chart {
   height: 100%;
 }
 
