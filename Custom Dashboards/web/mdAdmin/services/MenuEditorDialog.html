@@ -46,7 +46,7 @@
             </div>
         </md-input-container>
         <md-input-container class="has-hints" flex>
-            <label ma-tr="dashboards.v3.app.stateUrl"></label>
+            <label ma-tr="dashboards.v3.app.urlPath"></label>
             <input name="url" pattern="^\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
                 ng-model="editCtrl.item.url" ng-disabled="editCtrl.item.builtIn">
             <div class="hint" ng-hide="menuItemEditForm.url.$invalid && (menuItemEditForm.url.$touched || menuItemEditForm.$submitted)" ma-tr="dashboards.v3.app.stateUrlHint"></div>

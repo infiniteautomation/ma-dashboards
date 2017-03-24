@@ -146,14 +146,13 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/pageEditor/pageEditor',
                            './directives/liveEditor/liveEditor',
                            './directives/liveEditor/dualPaneEditor',
-                           './directives/iframeView/iframeView',
                            './directives/stateParams/stateParams',
                            './components/autoLoginSettings/autoLoginSettings',
                            './components/activeEventIcons/activeEventIcons',
                            './components/dateBar/dateBar',
                            './components/footer/footer'
                 ], function(Menu, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
-                        menuEditor, pageEditor, liveEditor, dualPaneEditor, iframeView, stateParams, autoLoginSettings, activeEventIcons, dateBar, footer) {
+                        menuEditor, pageEditor, liveEditor, dualPaneEditor, stateParams, autoLoginSettings, activeEventIcons, dateBar, footer) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('MenuEditor', MenuEditor)
@@ -162,7 +161,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                         .directive('pageEditor', pageEditor)
                         .directive('liveEditor', liveEditor)
                         .directive('dualPaneEditor', dualPaneEditor)
-                        .directive('iframeView', iframeView)
                         .directive('stateParams', stateParams)
                         .component('jsonStoreMenu', jsonStoreMenu)
                         .component('dashboardMenu', dashboardMenu)
@@ -305,20 +303,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 });
             }]
         }
-    },
-    {
-        url: '/reports',
-        name: 'dashboard.reports',
-        template: '<iframe-view src="/reports.shtm"></iframe-view>',
-        menuTr: 'header.reports',
-        menuIcon: 'book'
-    },
-    {
-        url: '/excel-reports',
-        name: 'dashboard.excelReports',
-        template: '<iframe-view src="/excel-reports.shtm"></iframe-view>',
-        menuTr: 'header.excelreports',
-        menuIcon: 'grid_on'
     },
     {
         name: 'dashboard.help',
@@ -531,18 +515,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 }
             },
             {
-                url: '/data-sources/{pointId}?dataSourceId',
-                name: 'dashboard.settings.dataSources',
-                template: '<iframe-view ng-if="pointId || !dataSourceId" src="{{ \'/data_point_edit.shtm\' + pointId}}"></iframe-view><iframe-view ng-if="dataSourceId" src="{{ \'/data_source_edit.shtm\' + dataSourceId}}"></iframe-view>',
-                menuTr: 'header.dataSources',
-                menuIcon: 'device_hub',
-                permission: 'superadmin',
-                controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
-                    $scope.pointId = $stateParams.pointId ? '?dpid='+$stateParams.pointId : '';
-                    $scope.dataSourceId = $stateParams.dataSourceId ? '?dsid='+$stateParams.dataSourceId : '';
-                }]
-            },
-            {
                 name: 'dashboard.settings.importExport',
                 url: '/import-export',
                 template: '<import-export-page><import-export-page>',
@@ -581,70 +553,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                         });
                     }]
                 }
-            },
-            {
-                url: '/no-sql',
-                name: 'dashboard.settings.noSql',
-                template: '<iframe-view src="/mango_no_sql.shtm"></iframe-view>',
-                menuTr: 'mangoNoSql.header.icontext',
-                menuIcon: 'not_interested',
-                permission: 'superadmin'
-            },
-            {
-                url: '/internal-metrics',
-                name: 'dashboard.settings.internalMetrics',
-                template: '<iframe-view src="/internal/status.shtm"></iframe-view>',
-                menuTr: 'dox.internalMetrics',
-                menuIcon: 'memory',
-                permission: 'superadmin'
-            },
-            {
-                url: '/mailing-lists',
-                name: 'dashboard.settings.mailingLists',
-                template: '<iframe-view src="/mailing_lists.shtm"></iframe-view>',
-                menuTr: 'header.mailingLists',
-                menuIcon: 'email',
-                permission: 'superadmin'
-            },
-            {
-                url: '/publishers',
-                name: 'dashboard.settings.publishers',
-                template: '<iframe-view src="/publishers.shtm"></iframe-view>',
-                menuTr: 'header.publishers',
-                menuIcon: 'publish',
-                permission: 'superadmin'
-            },
-            {
-                url: '/event-handlers',
-                name: 'dashboard.settings.eventHandlers',
-                template: '<iframe-view src="/event_handlers.shtm"></iframe-view>',
-                menuTr: 'header.eventHandlers',
-                menuIcon: 'change_history',
-                permission: 'superadmin'
-            },
-            {
-                url: '/point-hierarchy',
-                name: 'dashboard.settings.pointHierarchy',
-                template: '<iframe-view src="/point_hierarchy.shtm"></iframe-view>',
-                menuTr: 'header.pointHierarchy',
-                menuIcon: 'folder',
-                permission: 'superadmin'
-            },
-            {
-                url: '/logging-console',
-                name: 'dashboard.settings.loggingConsole',
-                template: '<iframe-view src="/logging_console.shtm"></iframe-view>',
-                menuTr: 'logging.header.icontext',
-                menuIcon: 'find_in_page',
-                permission: 'superadmin'
-            },
-            {
-                url: '/scheduled-events',
-                name: 'dashboard.settings.scheduledEvents',
-                template: '<iframe-view src="/scheduled_events.shtm"></iframe-view>',
-                menuTr: 'header.scheduledEvents',
-                menuIcon: 'alarm',
-                permission: 'superadmin'
             }
         ]
     },
@@ -653,6 +561,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/examples',
         menuTr: 'dashboards.v3.dox.examples',
         menuIcon: 'info',
+        menuHidden: true,
         submenu: true,
         weight: 2001,
         children: [
@@ -1183,6 +1092,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         url: '/docs',
         menuText: 'API Docs',
         menuIcon: 'book',
+        menuHidden: true,
         submenu: true,
         weight: 2002,
         children: [],
