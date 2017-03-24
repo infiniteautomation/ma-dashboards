@@ -247,13 +247,15 @@ mdAdminApp.constant('MENU_ITEMS', [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./directives/watchList/watchListPage',
-                            './directives/watchList/watchListTableRow'], 
+                            './directives/watchList/watchListTableRow',
+                            'md-color-picker/mdColorPicker'], 
                 function (watchListPage, watchListTableRow) {
-                    angular.module('watchListPage', [])
+                    angular.module('watchListPage', ['mdColorPicker'])
                         .directive('maWatchListPage', watchListPage)
                         .directive('maWatchListTableRow', watchListTableRow);
                     $ocLazyLoad.inject('watchListPage');
                     cssInjector.injectLink(require.toUrl('./directives/watchList/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
+                    cssInjector.injectLink(require.toUrl('md-color-picker/mdColorPicker.css'), 'mdColorPicker');
                 });
             }]
         }

@@ -19,8 +19,11 @@ function watchListPageDirective() {
     };
 }
 
-WatchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog', 'statistics', '$scope'];
-function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog, statistics, $scope) {
+WatchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy',
+    'mdAdminSettings', 'DateBar', '$mdDialog', 'statistics', '$scope', '$mdColorPicker'];
+function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy,
+        mdAdminSettings, DateBar, $mdDialog, statistics, $scope, $mdColorPicker) {
+    
     this.baseUrl = require.toUrl('.');
     this.watchList = null;
     this.selectWatchList = null;
@@ -371,6 +374,33 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                 ptStats.lastValue = parseFloat(stats.last && stats.last.value);
             });
         });
+    };
+
+    this.showColorPicker = function($event, object, propertyName, rebuild) {
+        if (!object) return;
+
+        $mdColorPicker.show({
+            value: object[propertyName] || '#fff',
+            defaultValue: '',
+            random: false,
+            clickOutsideToClose: true,
+            hasBackdrop: true,
+            skipHide: false,
+            preserveScope: false,
+            mdColorAlphaChannel: true,
+            mdColorSpectrum: true,
+            mdColorSliders: false,
+            mdColorGenericPalette: true,
+            mdColorMaterialPalette: false,
+            mdColorHistory: false,
+            mdColorDefaultTab: 0,
+            $event: $event
+        }).then(function(color) {
+            object[propertyName] = color;
+            if (rebuild) {
+                this.rebuildChart();
+            }
+        }.bind(this));
     };
 
     this.showDownloadDialog = function showDownloadDialog($event) {

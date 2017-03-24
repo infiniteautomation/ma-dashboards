@@ -20,7 +20,8 @@
         <div layout layout-align="start center" class="watch-list-configure-chart">
             <md-checkbox ng-model="$ctrl.chartOptions.configPoint"><span ma-tr="dashboards.v3.app.configureNextPoint"></span></md-checkbox>
             
-            <div ng-if="$ctrl.chartOptions.configPoint" class="md-color-picker-preview md-color-picker-checkered-bg" ng-click="$ctrl.showColorPicker($event)" role="button" tabindex="-1">
+            <div ng-if="$ctrl.chartOptions.configPoint" class="md-color-picker-preview md-color-picker-checkered-bg"
+                ng-click="$ctrl.showColorPicker($event, $ctrl.chartOptions, 'pointColor')" role="button" tabindex="-1">
               <div class="md-color-picker-result" ng-style="{'background-color': $ctrl.chartOptions.pointColor}"></div>
             </div>
             
@@ -67,7 +68,8 @@
                 </md-select>
             </md-input-container>
             
-            <div ng-if="$ctrl.chartOptions.configAxes" class="md-color-picker-preview md-color-picker-checkered-bg" ng-click="$ctrl.showColorPicker($event)" role="button" tabindex="-1">
+            <div ng-if="$ctrl.chartOptions.configAxes" class="md-color-picker-preview md-color-picker-checkered-bg"
+                ng-click="$ctrl.showColorPicker($event, $ctrl.chartConfig.valueAxes[$ctrl.chartOptions.selectedAxis], 'color', true)" role="button" tabindex="-1">
               <div class="md-color-picker-result" ng-style="{'background-color': $ctrl.chartConfig.valueAxes[$ctrl.chartOptions.selectedAxis].color}"></div>
             </div>
             
