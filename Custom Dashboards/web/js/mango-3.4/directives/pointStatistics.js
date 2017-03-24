@@ -54,7 +54,11 @@ function pointValues(Point, Util, $q, statistics) {
         designerInfo: {
             translation: 'dashboards.v3.components.pointStatistics',
             icon: 'format_list_numbered',
-            category: 'statistics'
+            category: 'statistics',
+            attributes: {
+                from: {defaultValue: 'dateBar.from'},
+                to: {defaultValue: 'dateBar.to'}
+            }
         },
         scope: {
             point: '=?',

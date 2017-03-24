@@ -69,7 +69,11 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             icon: 'list',
             category: 'pointValuesAndCharts',
             attributes: {
-                rollup: {options: ['NONE', 'AVERAGE', 'DELTA', 'MINIMUM', 'MAXIMUM', 'ACCUMULATOR', 'SUM', 'FIRST', 'LAST', 'COUNT', 'INTEGRAL']}
+                from: {defaultValue: 'dateBar.from'},
+                to: {defaultValue: 'dateBar.to'},
+                rollup: {defaultValue: '{{dateBar.rollupType}}', options: ['NONE', 'AVERAGE', 'DELTA', 'MINIMUM', 'MAXIMUM', 'ACCUMULATOR', 'SUM', 'FIRST', 'LAST', 'COUNT', 'INTEGRAL']},
+                rollupInterval: {defaultValue: '{{dateBar.rollupIntervals + \' \' + dateBar.rollupIntervalPeriod}}'},
+                points: {defaultValue: 'designer.points'}
             }
         },
         scope: {

@@ -59,10 +59,19 @@ function watchListChart() {
         designerInfo: {
             translation: 'dashboards.v3.components.watchListChart',
             icon: 'show_chart',
-            category: 'pointValuesAndCharts',
+            category: 'watchLists',
             size: {
                 width: '400px',
                 height: '200px'
+            },
+            attributes: {
+                watchList: {defaultValue: 'designer.watchList'},
+                points: {defaultValue: 'designer.points'},
+                from: {defaultValue: 'dateBar.from'},
+                to: {defaultValue: 'dateBar.to'},
+                rollupType: {defaultValue: 'dateBar.rollupType'},
+                rollupIntervals: {defaultValue: 'dateBar.rollupIntervals'},
+                rollupIntervalPeriod: {defaultValue: 'dateBar.rollupIntervalPeriod'},
             }
         }
     };

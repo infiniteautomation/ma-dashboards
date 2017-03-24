@@ -6,6 +6,28 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
+var watchListParameters = {
+    controller: WatchListParametersController,
+    templateUrl: require.toUrl('./watchListParameters.html'),
+    bindings: {
+        watchList: '<',
+        parametersChanged: '&',
+        parameters: '<?'
+    },
+    designerInfo: {
+        translation: 'dashboards.v3.components.watchListParameters',
+        icon: 'settings',
+        category: 'watchLists',
+        size: {
+            width: '100%'
+        },
+        attributes: {
+            watchList: {defaultValue: 'designer.watchList'},
+            parametersChanged: {defaultValue: 'designer.parameters = $parameters'}
+        }
+    }
+};
+
 WatchListParametersController.$inject = ['$parse', '$interpolate', 'Util'];
 function WatchListParametersController($parse, $interpolate, Util) {
     
@@ -51,14 +73,6 @@ function WatchListParametersController($parse, $interpolate, Util) {
     };
 }
 
-return {
-    controller: WatchListParametersController,
-    templateUrl: require.toUrl('./watchListParameters.html'),
-    bindings: {
-        watchList: '<',
-        parametersChanged: '&',
-        parameters: '<'
-    }
-};
+return watchListParameters;
 
 }); // define

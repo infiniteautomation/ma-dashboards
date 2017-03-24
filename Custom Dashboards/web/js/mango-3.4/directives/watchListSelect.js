@@ -54,6 +54,15 @@ function watchListSelectFactory($injector) {
         },
         require: {
             ngModelCtrl: 'ngModel'
+        },
+        designerInfo: {
+            translation: 'dashboards.v3.components.watchListList',
+            icon: 'arrow_drop_down',
+            category: 'watchLists',
+            attributes: {
+                ngModel: {defaultValue: 'designer.watchList', type: 'bidirectional', optional: false},
+                parameters: {defaultValue: 'designer.parameters'}
+            }
         }
     };
 }
