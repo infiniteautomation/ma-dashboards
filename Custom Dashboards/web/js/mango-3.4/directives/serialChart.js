@@ -125,6 +125,8 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
     };
     
     function postLink($scope, $element, attrs) {
+        $element.addClass('amchart');
+        
         var options = defaultOptions();
 
         if ($scope.timeFormat) {
