@@ -41,8 +41,8 @@ define(['angular', 'require'], function(angular, require) {
   *
   */
   
-    maMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'MD_ADMIN_SETTINGS', '$state'];
-    function maMapController($scope, $mdMedia, NgMap, MD_ADMIN_SETTINGS, $state) {
+    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'MD_ADMIN_SETTINGS', '$injector'];
+    function MaMapController($scope, $mdMedia, NgMap, MD_ADMIN_SETTINGS, $injector) {
         var $state;
         if ($injector.has('$state')) {
             $state = $injector.get('$state');
@@ -65,14 +65,14 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.setOutputData = function(e, data) {
             $ctrl.outputData = data;
             // console.log('setData called', e, data);
-        }
+        };
 
         $ctrl.goToRoute = function(e, state, params) {
             // console.log('goToRoute called', e, state, params);
             if ($state) {
                 $state.go(state);
             }
-        }
+        };
 
         $ctrl.toggleInfoWindow = function(e, windowId, markerId) {
             // console.log('toggle called',e, windowId, markerId);
@@ -130,7 +130,7 @@ define(['angular', 'require'], function(angular, require) {
             outputData: '=',
             mapId: '@'
         },
-        controller: maMapController,
+        controller: MaMapController,
         templateUrl: require.toUrl('./maMap.html'),
         transclude: true
     };

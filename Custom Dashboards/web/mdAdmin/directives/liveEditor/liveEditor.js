@@ -49,7 +49,7 @@ LiveEditorController.prototype.$onInit = function() {
         onLoad: this.aceLoaded.bind(this),
         onChange: this.aceChanged.bind(this)
     };
-}
+};
 
 LiveEditorController.prototype.$onChanges = function(changes) {
     if (changes.src) {
@@ -85,7 +85,7 @@ LiveEditorController.prototype.setEditorText = function(text) {
     } else {
         this.initialText = text;
     }
-}
+};
 
 LiveEditorController.prototype.loadFromSrc = function loadFromSrc() {
     if (!this.src) return;
@@ -101,7 +101,7 @@ LiveEditorController.prototype.setTheme = function setTheme() {
     if (this.editor && this.theme) {
         this.editor.setTheme('ace/theme/' + this.theme);
     }
-}
+};
 
 LiveEditor.$inject = [];
 function LiveEditor() {
@@ -126,7 +126,7 @@ function LiveEditor() {
         },
         controller: LiveEditorController
     };
-};
+}
 
 return LiveEditor;
 

@@ -105,7 +105,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                     };
                     $scope.parentChanged = function() {
                         if ($scope.menuItemEditForm.stateName.$pristine && this.item.isNew && this.item.parent) {
-                            this.item.name = this.item.parent.name + '.'
+                            this.item.name = this.item.parent.name + '.';
                         }
                         this.checkParentState();
                     }.bind(this);
@@ -115,7 +115,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                             $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', true);
                         else
                             $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', this.item.name.indexOf(this.item.parent.name) === 0);
-                    }
+                    };
                 }]
             }).then(function() {
                 var newParent = item.parent;
@@ -124,7 +124,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 delete item.isNew;
                 
                 if (item.showOnMenu) {
-                    delete item.menuHidden
+                    delete item.menuHidden;
                 } else {
                     item.menuHidden = true;
                 }
@@ -133,14 +133,14 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 switch(item.dateBarOptions) {
                 case 'date': {
                     if (!item.params) item.params = {};
-                    item.params.dateBar = {}
+                    item.params.dateBar = {};
                     break;
                 }
                 case 'dateAndRollup': {
                     if (!item.params) item.params = {};
                     item.params.dateBar = {
                         rollupControls: true
-                    }
+                    };
                     break;
                 }
                 default:
@@ -213,7 +213,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
     }
 
     return new MenuEditor();
-};
+}
 
 MenuEditorFactory.$inject = ['Menu', '$mdDialog', 'Translate', 'Page', 'mangoState', '$q'];
 return MenuEditorFactory;

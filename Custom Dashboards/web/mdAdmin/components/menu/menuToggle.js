@@ -6,8 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-menuToggleController.$inject = ['$state', '$timeout', '$element', '$scope', 'Translate'];
-function menuToggleController($state, $timeout, $element, $scope, Translate) {
+MenuToggleController.$inject = ['$state', '$timeout', '$element', '$scope', 'Translate'];
+function MenuToggleController($state, $timeout, $element, $scope, Translate) {
 
     this.$onInit = function() {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
@@ -115,7 +115,7 @@ function menuToggleController($state, $timeout, $element, $scope, Translate) {
             position: 'absolute',
             transition: 'none !important'
         });
-        if (this.wasHidden = this.$ul.hasClass('ng-hide'))
+        if ((this.wasHidden = this.$ul.hasClass('ng-hide')))
             this.$ul.removeClass('ng-hide');
     };
     
@@ -144,10 +144,10 @@ function menuToggleController($state, $timeout, $element, $scope, Translate) {
             height: (this.height + this.addedHeight) + 'px'
         });
     };
-};
+}
 
 return {
-    controller: menuToggleController,
+    controller: MenuToggleController,
     require: {
         menu: '^^dashboardMenu',
         parentToggle: '?^^menuToggle'

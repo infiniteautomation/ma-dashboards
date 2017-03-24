@@ -21,7 +21,7 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             
             function scrollToTopOfMdContent() {
                 var elem = $element[0];
-                while (elem = elem.parentElement) {
+                while ((elem = elem.parentElement)) {
                     if (elem.tagName === 'MD-CONTENT') {
                         elem.scrollTop = 0;
                         break;
@@ -119,7 +119,7 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                     mdAdminSettings.defaultUrl = store.jsonData.defaultUrl;
                     resetToRoot();
                 });
-            }
+            };
         }
     };
 };

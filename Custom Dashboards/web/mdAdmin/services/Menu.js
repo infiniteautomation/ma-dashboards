@@ -60,7 +60,7 @@ function MenuFactory(MENU_ITEMS, mdAdminSettings, JsonStore, CUSTOM_USER_MENU_XI
             result = this.eachMenuItem(menuItem.children, menuItem, fn);
             if (result) return result;
         }
-    }
+    };
 
     return new Menu();
 }

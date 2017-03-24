@@ -40,10 +40,10 @@ function loginFactory($state, User, $rootScope, $window) {
                         $scope.errors.otherError = error.statusText || 'Connection refused';
                     }
                 });
-            }
+            };
         }
     };
-};
+}
 
 return loginFactory;
 

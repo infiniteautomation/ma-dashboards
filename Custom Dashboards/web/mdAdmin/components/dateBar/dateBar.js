@@ -6,8 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-dateBarController.$inject = ['$mdMedia', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', 'mdAdminSettings'];
-function dateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar, mdAdminSettings) {
+DateBarController.$inject = ['$mdMedia', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', 'mdAdminSettings'];
+function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar, mdAdminSettings) {
     this.params = DateBar;
     this.stateParams = $stateParams;
     this.rollupTypes = MA_ROLLUP_TYPES;
@@ -52,7 +52,7 @@ function dateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
 
 return {
     templateUrl: require.toUrl('./dateBar.html'),
-    controller: dateBarController,
+    controller: DateBarController,
     bindings: {
         onRefresh: '&'
     }

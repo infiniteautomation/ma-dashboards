@@ -6,8 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-menuLinkController.$inject = ['$state', 'Translate'];
-function menuLinkController($state, Translate) {
+MenuLinkController.$inject = ['$state', 'Translate'];
+function MenuLinkController($state, Translate) {
     this.$onInit = function() {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
         this.classes = [];
@@ -37,10 +37,10 @@ function menuLinkController($state, Translate) {
             $state.go(this.item.name);
         }
     };
-};
+}
 
 return {
-    controller: menuLinkController,
+    controller: MenuLinkController,
     templateUrl: require.toUrl('./menuLink.html'),
     bindings: {
         item: '<menuItem'

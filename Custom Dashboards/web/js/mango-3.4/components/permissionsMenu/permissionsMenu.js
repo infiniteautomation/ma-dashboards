@@ -32,9 +32,11 @@ PermissionsMenuController.prototype.$onInit = function() {
 
 // ng-model value changed outside of this directive
 PermissionsMenuController.prototype.render = function render() {
+    var permission;
+    
     // remove all permissions not retrieved from REST
     for (var i = 0; i < this.permissions.length;) {
-        var permission = this.permissions[i];
+        permission = this.permissions[i];
         if (!permission.fromRest) {
             this.permissions.splice(i, 1);
             delete this.permissionsByName[permission.name];
@@ -53,7 +55,7 @@ PermissionsMenuController.prototype.render = function render() {
             if (this.permissionsByName[permName]) {
                 this.permissionsByName[permName].value = true;
             } else {
-                var permission = {name: permName, value: true, fromRest: false};
+                permission = {name: permName, value: true, fromRest: false};
                 this.permissions.push(permission);
                 this.permissionsByName[permName] = permission;
             }
@@ -61,7 +63,7 @@ PermissionsMenuController.prototype.render = function render() {
     }
 };
 
-PermissionsMenuController.prototype.checkboxChanged = function checkboxChanged(permission) {
+PermissionsMenuController.prototype.checkboxChanged = function checkboxChanged() {
     var permissionNames = [];
     for (var i = 0; i < this.permissions.length; i++) {
         var permission = this.permissions[i];

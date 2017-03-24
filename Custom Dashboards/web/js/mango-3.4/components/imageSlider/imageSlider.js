@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-imageSliderController.$inject = ['$interval'];
-function imageSliderController($interval) {
+ImageSliderController.$inject = ['$interval'];
+function ImageSliderController($interval) {
     this.imageIndex = 0;
     
     $interval(function() {
@@ -36,7 +36,7 @@ return {
     bindings: {
         pointValues: '<'
     },
-    controller: imageSliderController,
+    controller: ImageSliderController,
     templateUrl: require.toUrl('./imageSlider.html')
 };
 

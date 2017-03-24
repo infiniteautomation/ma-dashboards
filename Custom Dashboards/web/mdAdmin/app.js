@@ -67,7 +67,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 }
                 if (!menuItem.templateUrl && !menuItem.template && !menuItem.views) {
                     menuItem.template = '<div ui-view></div>';
-                    menuItem['abstract'] = true;
+                    menuItem.abstract = true;
                 }
                 if (!menuItem.name) {
                     menuItem.name = menuItem.state;
@@ -117,7 +117,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 $stateProvider.state(name, state);
             },
             addStates: this.addStates
-        }
+        };
     }.bind(this)];
 }]);
 
@@ -125,7 +125,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard',
         templateUrl: 'views/dashboard/main.html',
-        abstract: true,
+        'abstract': true,
         menuHidden: true,
         resolve: {
             auth: ['Translate', 'User', function(Translate, User) {
@@ -1059,6 +1059,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider,
         errorInterceptorProvider, cfpLoadingBarProvider, SystemSettingsProvider) {
 
+    // will need initially when we use AngularJS 1.6.x
+    //$compileProvider.preAssignBindingsEnabled(true);
     $compileProvider.debugInfoEnabled(false);
     $mdAriaProvider.disableWarnings();
     
@@ -1087,8 +1089,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     };
 
     if (MD_ADMIN_SETTINGS.palettes) {
-        for (var name in MD_ADMIN_SETTINGS.palettes) {
-            $mdThemingProvider.definePalette(name, angular.copy(MD_ADMIN_SETTINGS.palettes[name]));
+        for (var paletteName in MD_ADMIN_SETTINGS.palettes) {
+            $mdThemingProvider.definePalette(paletteName, angular.copy(MD_ADMIN_SETTINGS.palettes[paletteName]));
         }
     }
 
@@ -1119,12 +1121,12 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     // need to store a reference to the theming provider in order to generate themes at runtime
     MD_ADMIN_SETTINGS.themingProvider = $mdThemingProvider;
 
-    var theme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDark';
-    $mdThemingProvider.setDefaultTheme(theme);
+    var defaultTheme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDark';
+    $mdThemingProvider.setDefaultTheme(defaultTheme);
     $mdThemingProvider.alwaysWatchTheme(true);
     $mdThemingProvider.generateThemesOnDemand(true);
     $mdThemingProvider.enableBrowserColor({
-        theme: theme
+        theme: defaultTheme
     });
 
     $httpProvider.interceptors.push('errorInterceptor');
@@ -1140,7 +1142,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
 
     $ocLazyLoadProvider.config({
         debug: false,
-        events: true,
+        events: true
     });
 
     //$stateProvider.reloadOnSearch = false;
@@ -1200,7 +1202,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     var moduleItem = {};
 
     // Loop through and create array of children based on moduleName
-    var modules = DOCS_PAGES.map(function(page) {return page.moduleName})
+    var modules = DOCS_PAGES.map(function(page) {return page.moduleName;})
     .filter(function(item, index, array) {
         return index == array.indexOf(item);
     });
@@ -1210,9 +1212,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
 
         var menuText = item;
-        if (item==='maDashboards') { menuText = 'Components' }
-        else if (item==='maFilters') { menuText = 'Filters' }
-        else if (item==='maServices') { menuText = 'Services' }
+        if (item==='maDashboards') { menuText = 'Components'; }
+        else if (item==='maFilters') { menuText = 'Filters'; }
+        else if (item==='maServices') { menuText = 'Services'; }
 
         var menuItem = {
             name: 'dashboard.docs.' + item,
@@ -1228,7 +1230,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
 
     // Create 3rd level directives/services/filters docs pages
     // First remove module items
-    var components = DOCS_PAGES.map(function(page) {return page.id})
+    var components = DOCS_PAGES.map(function(page) {return page.id;})
     .filter(function(item, index, array) {
         return item.indexOf('.') !== -1;
     });
@@ -1237,9 +1239,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     components.forEach(function(item, index, array) {
         var splitAtDot = item.split('.');
         var dashCaseUrl = splitAtDot[1].replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
-		if(dashCaseUrl.charAt(0) === '-') { dashCaseUrl = dashCaseUrl.slice(1)}
+		if(dashCaseUrl.charAt(0) === '-') { dashCaseUrl = dashCaseUrl.slice(1);}
         var menuText = splitAtDot[1];
-        if (splitAtDot[0] === 'maDashboards') { menuText = dashCaseUrl}
+        if (splitAtDot[0] === 'maDashboards') { menuText = dashCaseUrl;}
         var menuItem = {
             name: 'dashboard.docs.' + item,
             templateUrl: require.toUrl('./views/docs/' + item + '.html'),
@@ -1329,7 +1331,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
             } else if (state.menuText) {
                 crumbs.unshift({stateName: state.name, text: state.menuText});
             }
-        } while (state = state.parent);
+        } while ((state = state.parent));
         $rootScope.crumbs = crumbs;
         
         $rootScope.setTitleText();
@@ -1447,8 +1449,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
             break;
         case 'STARTING_UP':
             User.current = null;
-            if (current.status === previous.status && current.info.startupProgress === previous.info.startupProgress
-                    && current.info.startupState === previous.info.startupState) {
+            if (current.status === previous.status && current.info.startupProgress === previous.info.startupProgress &&
+                    current.info.startupState === previous.info.startupState) {
                 return;
             }
             message = Translate.trSync('login.dashboards.v3.app.startingUp', [current.info.startupProgress, current.info.startupState]);
@@ -1525,7 +1527,7 @@ var userAndUserSettingsPromise = User.getCurrent().$promise.then(null, function(
     return {
         user: data && data[0],
         userMenuStore: data && data[1]
-    }
+    };
 });
 
 var dashboardSettingsPromise = $http({

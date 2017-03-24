@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-eventsPageController.$inject = ['$scope', '$mdMedia', '$stateParams', '$state', 'localStorageService', 'DateBar', 'mdAdminSettings'];
-function eventsPageController($scope, $mdMedia, $stateParams, $state, localStorageService, DateBar, mdAdminSettings) {
+EventsPageController.$inject = ['$scope', '$mdMedia', '$stateParams', '$state', 'localStorageService', 'DateBar', 'mdAdminSettings'];
+function EventsPageController($scope, $mdMedia, $stateParams, $state, localStorageService, DateBar, mdAdminSettings) {
     
     var $ctrl = this;
     $ctrl.$mdMedia = $mdMedia;
@@ -124,14 +124,10 @@ function eventsPageController($scope, $mdMedia, $stateParams, $state, localStora
         });
         
     };
-    
-    
-    
-    
-};
+}
 
 return {
-    controller: eventsPageController,
+    controller: EventsPageController,
     templateUrl: require.toUrl('./eventsPage.html')
 };
 

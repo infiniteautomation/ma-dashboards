@@ -6,9 +6,9 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListBuilderController.$inject = ['Point', '$mdMedia', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings',
+WatchListBuilderController.$inject = ['Point', '$mdMedia', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings',
     '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope', '$mdToast', 'User'];
-function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Util, mdAdminSettings,
+function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Util, mdAdminSettings,
         $stateParams, $state, $mdDialog, Translate, $timeout, $scope, $mdToast, User) {
     var $ctrl = this;
     $ctrl.baseUrl = require.toUrl('.');
@@ -146,7 +146,7 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
                 $ctrl.selectedWatchlist = wl;
                 $ctrl.watchlistSelected();
                 
-                var found = false
+                var found = false;
                 for (var i = 0; i < $ctrl.watchlists.length; i++) {
                     if ($ctrl.watchlists[i].xid === wl.xid) {
                         $ctrl.watchlists.splice(i, 1, wl);
@@ -446,7 +446,7 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         var order = $ctrl.staticTableQuery.order;
         if (order) {
             var desc = false;
-            if (desc = order.indexOf('-') === 0 || order.indexOf('+') === 0) {
+            if ((desc = order.indexOf('-') === 0 || order.indexOf('+') === 0)) {
                 order = order.substring(1);
             }
             $ctrl.watchlist.points.sort(function(a, b) {
@@ -457,7 +457,7 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         }
         
         var limit = $ctrl.staticTableQuery.limit;
-        var start = $ctrl.staticTableQuery.start = ($ctrl.staticTableQuery.page - 1) * $ctrl.staticTableQuery.limit
+        var start = $ctrl.staticTableQuery.start = ($ctrl.staticTableQuery.page - 1) * $ctrl.staticTableQuery.limit;
         $ctrl.pointsInView = $ctrl.watchlist.points.slice(start, start + limit);
     };
     
@@ -488,10 +488,10 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         $ctrl.rerenderTable();
         $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
     };
-};
+}
 
 return {
-    controller: watchListBuilderController,
+    controller: WatchListBuilderController,
     templateUrl: require.toUrl('./watchListBuilder.html')
 };
 

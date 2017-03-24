@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-pointHierarchyBrowserController.$inject = ['PointHierarchy'];
-function pointHierarchyBrowserController(PointHierarchy) {
+PointHierarchyBrowserController.$inject = ['PointHierarchy'];
+function PointHierarchyBrowserController(PointHierarchy) {
     this.$onInit = function() {
         this.ngModelCtrl.$render = this.render;
     };
@@ -92,7 +92,7 @@ function pointHierarchyBrowserController(PointHierarchy) {
 }
 
 return {
-    controller: pointHierarchyBrowserController,
+    controller: PointHierarchyBrowserController,
     templateUrl: require.toUrl('./pointHierarchyBrowser.html'),
     require: {
         'ngModelCtrl': 'ngModel'

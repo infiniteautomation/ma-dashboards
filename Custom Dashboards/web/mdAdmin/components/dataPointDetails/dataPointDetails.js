@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'mdAdminSettings', 'PointHierarchy', 'DateBar'];
-function dataPointDetailsController($scope, $stateParams, $state, localStorageService, mdAdminSettings, PointHierarchy, DateBar) {
+DataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'mdAdminSettings', 'PointHierarchy', 'DateBar'];
+function DataPointDetailsController($scope, $stateParams, $state, localStorageService, mdAdminSettings, PointHierarchy, DateBar) {
     
     var $ctrl = this;
     $ctrl.dateBar = DateBar;
@@ -34,7 +34,7 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
         pointTimeCell.addClass('flash-on-change');
         if (point.value !== lastValue) {
             pointValueCell.addClass('flash-on-change');
-        };
+        }
         lastValue = point.value;
         
         if (timeoutID) {
@@ -93,10 +93,10 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
             
         }
     };
-};
+}
 
 return {
-    controller: dataPointDetailsController,
+    controller: DataPointDetailsController,
     templateUrl: require.toUrl('./dataPointDetails.html')
 };
 

@@ -47,7 +47,7 @@ return function pageView() {
             nonEditMode: '='
         },
         templateUrl: require.toUrl('./pageView.html')
-    }
-}
+    };
+};
 
 }); // define

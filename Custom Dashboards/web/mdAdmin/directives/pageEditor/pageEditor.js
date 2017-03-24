@@ -32,7 +32,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                 this.menuItemParent = null;
                 setPageXidStateParam(null);
                 return pageSummary;
-            }
+            };
             
             function setPages(store) {
                 pageSummaryStore = store;

@@ -26,12 +26,12 @@ function filteringPointHierarchySelect($injector) {
             uniqueNames: '<?',
             labelText: '<'
         },
-        controller: pointHierarchyController
+        controller: PointHierarchyController
     };
 }
 
-pointHierarchyController.$inject = ['$attrs', 'PointHierarchy', '$timeout'];
-function pointHierarchyController($attrs, PointHierarchy, $timeout) {
+PointHierarchyController.$inject = ['$attrs', 'PointHierarchy', '$timeout'];
+function PointHierarchyController($attrs, PointHierarchy, $timeout) {
     this.displayProp = this.replaceName ? 'replacedName' : 'name';
     
     this.onChange = function() {
@@ -40,6 +40,7 @@ function pointHierarchyController($attrs, PointHierarchy, $timeout) {
     
     this.queryFolders = function queryFolders() {
         var subfoldersOnly = angular.isUndefined($attrs.subfoldersOnly) ? true : !!this.subfoldersOnly;
+        // jshint eqnull:true
         var subfolders = angular.isUndefined($attrs.subfolders) ? this.maxDepth == null || this.maxDepth > 0 : !!this.subfolders;
         var getPoints = angular.isUndefined($attrs.points) ? true : !!this.points;
         
@@ -62,6 +63,7 @@ function pointHierarchyController($attrs, PointHierarchy, $timeout) {
         
         return hierarchy.$promise.then(function(folder) {
             PointHierarchy.walkHierarchy(folder, function(subFolder, parent, index, depth) {
+                // jshint eqnull:true
                 if ((subfoldersOnly && subFolder === folder) || (this.maxDepth != null && depth > this.maxDepth)) return;
                 if (matcher) {
                     subFolder.matches = matcher.exec(subFolder.name);

@@ -64,7 +64,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             		return $q.when(item);
             	}).then(function(item) {
             	    $scope.itemLoaded({'$item': item});
-            		return $scope.item = item;
+            		return ($scope.item = item);
             	});
 
                 jsonStoreEventManager.subscribe(newXid, SUBSCRIPTION_TYPES, websocketHandler);

@@ -65,7 +65,7 @@ function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSett
             pointTimeCell.addClass(FLASH_CLASS);
             if (point.value !== lastValue) {
                 pointValueCell.addClass(FLASH_CLASS);
-            };
+            }
             lastValue = point.value;
             
             if (timeoutID) {

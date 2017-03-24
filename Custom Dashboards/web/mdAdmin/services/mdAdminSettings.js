@@ -67,7 +67,7 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
                         delete this.theming.THEMES[prevThemeName];
                         angular.element('head > style[nonce="' + prevThemeName + '"]').remove();
                     }
-                    dynamicThemeName = 'dynamicTheme' + ++themeId;
+                    dynamicThemeName = 'dynamicTheme' + (++themeId);
                     
                     var dynamicTheme = this.themeFromSettings(dynamicThemeName, themeSettings);
                     this.theming.THEMES[dynamicThemeName] = dynamicTheme;

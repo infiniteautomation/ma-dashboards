@@ -9,8 +9,8 @@ define(['angular', 'require'], function(angular, require) {
 var hues = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
 var namedHues = ['default', 'hue-1', 'hue-2', 'hue-3'];
 
-colorPreviewController.$inject = ['$mdColors'];
-function colorPreviewController($mdColors) {
+ColorPreviewController.$inject = ['$mdColors'];
+function ColorPreviewController($mdColors) {
     this.theme = '';
     
     this.$onChanges = function(changes) {
@@ -56,7 +56,7 @@ return {
         palette: '@',
         allHues: '<'
     },
-    controller: colorPreviewController,
+    controller: ColorPreviewController,
     templateUrl: require.toUrl('./colorPreview.html')
 };
 
