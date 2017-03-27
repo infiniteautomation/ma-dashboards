@@ -27,7 +27,7 @@ function eventsEventManager(EventManager) {
     });
     
     // var message = {"eventTypes":["ACKNOWLEDGED","RAISED","RETURN_TO_NORMAL","DEACTIVATED"], "levels":["LIFE_SAFETY","CRITICAL","URGENT","INFORMATION","NONE"]};
-    var message = {"eventTypes":["RAISED", "ACKNOWLEDGED"], "levels":["LIFE_SAFETY","CRITICAL","URGENT","INFORMATION","NONE"]};
+    var message = {"eventTypes":["RAISED", "ACKNOWLEDGED"], "levels":["LIFE_SAFETY","CRITICAL","URGENT","WARNING","IMPORTANT","INFORMATION","NONE"]};
     
     eventsEventManager.eventHandlers = [];
     

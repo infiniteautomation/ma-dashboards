@@ -15,6 +15,24 @@
             </md-button>
         </md-menu-item>
         
+        <md-menu-item ng-if="$ctrl.events.IMPORTANT.unsilencedCount">
+			<md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'IMPORTANT'})">
+				<div layout="row" flex layout-align="start center" layout-fill>
+					<i class="fa fa-flag fa-lg alarm-flag IMPORTANT" style="padding-right:10px"></i>
+					<p flex> {{$ctrl.events.IMPORTANT.unsilencedCount}} Important Events</p>
+				</div>
+			</md-button>
+		</md-menu-item>
+		
+		<md-menu-item ng-if="$ctrl.events.WARNING.unsilencedCount">
+			<md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'WARNING'})">
+				<div layout="row" flex layout-align="start center" layout-fill>
+					<i class="fa fa-flag fa-lg alarm-flag WARNING" style="padding-right:10px"></i>
+					<p flex> {{$ctrl.events.WARNING.unsilencedCount}} Warning Events</p>
+				</div>
+			</md-button>
+		</md-menu-item>
+        
         <md-menu-item ng-if="$ctrl.events.URGENT.unsilencedCount">
             <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'URGENT'})">
                 <div layout="row" flex layout-align="start center" layout-fill>

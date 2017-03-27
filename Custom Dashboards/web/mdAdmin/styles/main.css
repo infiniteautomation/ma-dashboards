@@ -769,6 +769,12 @@ md-input-container .hint.ng-hide {
 .alarm-flag.INFORMATION {
     color: #00BCD4;
 }
+.alarm-flag.IMPORTANT {
+    color: #2C919E;
+}
+.alarm-flag.WARNING {
+    color: #4CA631;
+}
 .alarm-flag.URGENT {
     color: #FDD835;
 }

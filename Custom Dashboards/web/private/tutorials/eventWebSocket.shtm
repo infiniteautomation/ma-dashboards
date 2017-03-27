@@ -35,7 +35,7 @@
                  
                  socket = MangoAPI.defaultApi.registerForAlarmEvents(
                         ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED'],
-                        ['DO_NOT_LOG', 'NONE', 'INFORMATION', 'URGENT', 'CRITICAL', 'LIFE_SAFETY', 'DO_NOT_LOG'],
+                        ['DO_NOT_LOG', 'NONE', 'INFORMATION', 'IMPORTANT', 'WARNING', 'URGENT', 'CRITICAL', 'LIFE_SAFETY', 'DO_NOT_LOG'],
                         function(message){ //On Message Received Method
 
                         	if(message.status == 'OK'){
