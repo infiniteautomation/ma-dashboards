@@ -319,10 +319,25 @@ maDashboards.run([
     'MA_DATE_RANGE_PRESETS',
     'MA_DEFAULT_TIMEZONE',
     'MA_DEFAULT_LOCALE',
+    'User',
 function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
-        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
+        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE, User) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
+    
+    User.loginInterceptors.push(function(data) {
+        mangoWatchdog.setStatus({
+            status: 'LOGGED_IN',
+            user: data.resource
+        });
+    });
+    
+    User.logoutInterceptors.push(function(data) {
+        mangoWatchdog.setStatus({
+            status: 'API_UP',
+            wasLogout: true
+        });
+    });
 
 	if (maDashboardsInsertCss) {
 	    cssInjector.injectLink(require.toUrl('./maDashboards.css'));

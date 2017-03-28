@@ -159,14 +159,14 @@ function UserProvider() {
     function getUser() {
         return cachedUser;
     }
-    
+
     this.$get = UserFactory;
     
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', 'mangoWatchdog', '$q'];
-    function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdog, $q) {
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q'];
+    function UserFactory($resource, $cacheFactory, localStorageService, $q) {
         var User = $resource('/rest/v1/users/:username', {
                 username: '@username'
             }, {
@@ -255,16 +255,23 @@ function UserProvider() {
             get: getUser,
             set: setUser
         });
+        
+        User.loginInterceptors = [];
+        User.logoutInterceptors = [];
 
         function loginInterceptor(data) {
+            User.loginInterceptors.forEach(function(interceptor) {
+                interceptor(data);
+            });
             User.current = data.resource;
-            mangoWatchdog.setStatus('LOGGED_IN');
             return data.resource;
         }
         
         function logoutInterceptor(data) {
+            User.logoutInterceptors.forEach(function(interceptor) {
+                interceptor(data);
+            });
             User.current = null;
-            mangoWatchdog.setStatus('API_UP');
             return data.resource;
         }
 

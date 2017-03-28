@@ -1354,11 +1354,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
 
         switch(current.status) {
         case 'API_DOWN':
-            User.current = null;
             message = Translate.trSync('login.dashboards.v3.app.apiDown');
             break;
         case 'STARTING_UP':
-            User.current = null;
             if (current.status === previous.status && current.info.startupProgress === previous.info.startupProgress &&
                     current.info.startupState === previous.info.startupState) {
                 return;
@@ -1366,18 +1364,16 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
             message = Translate.trSync('login.dashboards.v3.app.startingUp', [current.info.startupProgress, current.info.startupState]);
             break;
         case 'API_ERROR':
-            User.current = null;
             message = Translate.trSync('login.dashboards.v3.app.returningErrors');
             break;
         case 'API_UP':
-            User.current = null;
             if (previous.status && previous.status !== 'LOGGED_IN') {
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
                 hideDelay = 5000;
             }
 
             // do automatic re-login if we are not on the login page
-            if (!$state.includes('login')) {
+            if (!$state.includes('login') && !current.wasLogout) {
                 User.autoLogin().then(null, function() {
                     // redirect to the login page if auto-login fails
                     $state.loginRedirectUrl = '/dashboards' + $location.url();
@@ -1391,11 +1387,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
             if (previous.status && previous.status !== 'API_UP') {
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
                 hideDelay = 5000;
-            }
-            if (!User.current) {
-                // user logged in elsewhere (another window/tab), fetch the current user from the REST API
-                // so it is cached inside User
-                User.getCurrent();
             }
             break;
         }
