@@ -23,7 +23,7 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
  * @param {string=} point-id Filter on the Id property of a point, use with `"single-point=true"`.
  * @param {boolean=} single-point Set to `"true"` and use with point-id attribute to return events related to just a single Data Point.
  * @param {number=} event-id Filter on a specific Event Id, should return a single event.
- * @param {string=} alarm-level Filter on Alarm Level. Possible values are: `"'NONE'"`, `"'INFORMATION'"`, `"'URGENT'"`, `"'CRITICAL'"`, `"'LIFE_SAFETY'"` or `"'*'"` for any.
+ * @param {string=} alarm-level Filter on Alarm Level. Possible values are: `"'NONE'"`, `"'INFORMATION'"`, `"'IMPORTANT'"`, `"'WARNING'"`, `"'URGENT'"`, `"'CRITICAL'"`, `"'LIFE_SAFETY'"` or `"'*'"` for any.
  * @param {string=} event-type Filter on Event Type. Possible values are: `"'DATA_POINT'"`, `"'DATA_SOURCE'"`, `"'SYSTEM'"` or `"'*'"` for any.
  * @param {string=} acknowledged Filter on whether the event has been acknowledged. Possible values are: `"'true'"`, `"'false'"` or `"'*'"` for either.
  * @param {string=} active-status Filter on Active Status. Possible values are: `"'active'"`, `"'noRtn'"`, `"'normal'"` or `"'*'"` for any.
