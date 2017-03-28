@@ -13,7 +13,7 @@
       </div>
       <div layout>
         <md-menu flex md-offset="0 48">
-          <div layout="row" layout-align="start center" ng-click="$mdOpenMenu($event)">
+          <div layout="row" layout-align="start center" ng-click="$mdMenu.open($event)">
             <div flex layout="column">
               <span><span ng-bind="User.current.username"></span> <em ng-if="User.current.name" ng-bind="'(' + User.current.name + ')'"></em></span>
               <span class="email" ng-bind="User.current.email"></span>
