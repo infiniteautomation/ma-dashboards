@@ -135,10 +135,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 if ($scope.acknowledged === 'false' || $scope.acknowledged === '*' || $scope.acknowledged === undefined) {
                     Events.rql({query: $scope.RQL.RQLforAcknowldege+'&limit(0)'}, null).$promise.then(
                         function (data) {
-                            if (data.$total) {
-                                // console.log($scope.RQL.RQLforAcknowldege+'&limit(0)', data.$total);
-                                $scope.totalUnAcknowledged = data.$total;
-                            }
+                            // console.log($scope.RQL.RQLforAcknowldege+'&limit(0)', data.$total);
+                            $scope.totalUnAcknowledged = data.$total;
                         },
                         function (data) {
                             console.log('Error', data);
