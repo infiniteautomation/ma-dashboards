@@ -54,6 +54,11 @@ function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSett
         
         var oneDayMs = moment.duration(1, 'day').asMilliseconds();
         scope.pointValueChanged = function pointValueChanged(point) {
+            if (!point || !point.enabled) {
+                pointTimeCell.text('');
+                return;
+            }
+
             // manually add and remove classes rather than using ng-class as point values can
             // change rapidly and result in huge slow downs / heaps of digest loops
             
