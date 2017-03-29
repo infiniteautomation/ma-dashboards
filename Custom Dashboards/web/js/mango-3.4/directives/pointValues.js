@@ -255,7 +255,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
 
             if (singlePoint) {
                 var pointPromise;
-                $scope.$watch('pointXid', function(newXid) {
+                $scope.$watch('pointXid', function(newXid, oldXid) {
+                    if (newXid === oldXid && newXid === undefined) return;
+                    
                     delete $scope.point;
                     if (pointPromise) {
                         pointPromise.reject();
@@ -271,6 +273,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 });
 
                 $scope.$watch('point.xid', function(newValue, oldValue) {
+                    if (newValue === oldValue && newValue === undefined) return;
+                    
                     if (newValue) {
                         $scope.points = [$scope.point];
                     } else {
@@ -439,7 +443,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         to: $scope.to,
                         rollup: $scope.rollup,
                         rendered: $scope.rendered,
-                        converted: $scope.converted,
+                        converted: dataType === 'NUMERIC' && $scope.converted,
                         rollupInterval: $scope.actualRollupInterval,
                         timeout: $scope.timeout,
                         timezone: $scope.timezone
