@@ -87,6 +87,9 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
     };
     
     $ctrl.typeChanged = function typeChanged() {
+        $ctrl.tableSearch = '';
+        $ctrl.tableQuery.rql = new query.Query();
+        
         if ($ctrl.watchlist.type === 'query') {
             if (!$ctrl.watchlist.query)
                 $ctrl.watchlist.query = defaultQuery;
