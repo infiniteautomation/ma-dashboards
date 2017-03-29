@@ -60,7 +60,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     };    
     var NO_STATS = '\u2014';
 
-    this.selectFirstWatchList = $mdMedia('gt-md');
+    this.selectFirstWatchList = false;
     this.$mdMedia = $mdMedia;
     this.numberOfRows = $mdMedia('gt-sm') ? 200 : 25;
     this.downloadStatus = {};
@@ -71,20 +71,21 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
     this.$onInit = function() {
         var localStorage = localStorageService.get('watchListPage') || {};
+        var params = $state.params;
         
-        if ($state.params.watchListXid || localStorage.watchListXid) {
-            this.watchListXid = $state.params.watchListXid || localStorage.watchListXid;
+        if (params.watchListXid || !(params.dataSourceXid || params.deviceName || params.hierarchyFolderId) && localStorage.watchListXid) {
+            this.watchListXid = params.watchListXid || localStorage.watchListXid;
             this.listType = 'watchLists';
-        } else if ($state.params.dataSourceXid || localStorage.dataSourceXid) {
-            this.dataSourceXid = $state.params.dataSourceXid || localStorage.dataSourceXid;
+        } else if (params.dataSourceXid || !(params.deviceName || params.hierarchyFolderId) && localStorage.dataSourceXid) {
+            this.dataSourceXid = params.dataSourceXid || localStorage.dataSourceXid;
             this.listType = 'dataSources';
-        } else if ($state.params.deviceName || localStorage.deviceName) {
-            this.deviceName = $state.params.deviceName || localStorage.deviceName;
+        } else if (params.deviceName || !params.hierarchyFolderId && localStorage.deviceName) {
+            this.deviceName = params.deviceName || localStorage.deviceName;
             this.listType = 'deviceNames';
             this.deviceNameChanged();
-        } else if ($state.params.hierarchyFolderId || localStorage.hierarchyFolderId) {
+        } else if (params.hierarchyFolderId || localStorage.hierarchyFolderId) {
             this.listType = 'hierarchy';
-            var hierarchyFolderId = $state.params.hierarchyFolderId || localStorage.hierarchyFolderId;
+            var hierarchyFolderId = params.hierarchyFolderId || localStorage.hierarchyFolderId;
             
             PointHierarchy.get({id: hierarchyFolderId, points: false}).$promise.then(function(folder) {
                 var folders = [];
@@ -96,6 +97,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             }.bind(this));
         } else {
             this.listType = 'watchLists';
+            this.selectFirstWatchList = $mdMedia('gt-md');
         }
         
         $scope.$watch(function() {
@@ -304,10 +306,6 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         if (this.watchList.isNew) {
             $state.go('dashboard.settings.watchListBuilder', {watchList: this.watchList});
         } else {
-            // TODO shouldn't need to do this
-            if (!this.watchList.points) {
-                this.watchList.points = [];
-            }
             this.watchList.$update();
         }
     };
