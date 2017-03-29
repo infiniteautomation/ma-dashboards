@@ -187,7 +187,11 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                         mangoState.addStates([item]);
                     return menuStore.$save().then(function(store) {
                         var result = findMenuItem(store.jsonData.menuItems, 'id', item.id);
-                        return result || {store: store};
+                        if (result) {
+                            result.store = store;
+                            return result;
+                        }
+                        return {store: store};
                     });
                 } else return {
                     item: item,
