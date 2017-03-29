@@ -22,7 +22,10 @@ function DataPointDetailsController($scope, $stateParams, $state, localStorageSe
     };
     
     $ctrl.pointValueChanged = function pointValueChanged(point) {
-        if (!point) return;
+        // remove old points time
+        delete $ctrl.pointTime;
+
+        if (!point || !point.enabled) return;
         
         // manually add and remove classes rather than using ng-class as point values can
         // change rapidly and result in huge slow downs / heaps of digest loops
@@ -50,7 +53,7 @@ function DataPointDetailsController($scope, $stateParams, $state, localStorageSe
     
     $scope.$watch('myPoint.xid', function(newValue, oldValue) {
         if (newValue === undefined || newValue === oldValue) return;
-        // console.log('New point selected:', newValue);
+
         $state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
         
         localStorageService.set('lastDataPointDetailsItem', {
