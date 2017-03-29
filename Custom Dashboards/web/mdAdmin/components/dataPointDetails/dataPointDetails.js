@@ -6,21 +6,18 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-DataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'mdAdminSettings', 'PointHierarchy', 'DateBar'];
-function DataPointDetailsController($scope, $stateParams, $state, localStorageService, mdAdminSettings, PointHierarchy, DateBar) {
+DataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'mdAdminSettings', 'PointHierarchy', 'DateBar', 'User'];
+function DataPointDetailsController($scope, $stateParams, $state, localStorageService, mdAdminSettings, PointHierarchy, DateBar, User) {
     
     var $ctrl = this;
     $ctrl.dateBar = DateBar;
     $ctrl.mdAdminSettings = mdAdminSettings;
+    $ctrl.User = User;
     var pointValueCell = angular.element('div.point-details').find('.point-value');
     var pointTimeCell = angular.element('div.point-details').find('.point-time');
     var timeoutID;
     var lastValue;
-    
-    $ctrl.openEditPage = function(state, param) {
-        $state.go(state, { pointId: param });
-    };
-    
+
     $ctrl.pointValueChanged = function pointValueChanged(point) {
         // remove old points time
         delete $ctrl.pointTime;

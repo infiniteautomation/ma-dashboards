@@ -36,7 +36,8 @@
 				</div>
 				<div layout="row">
 					<ma-set-point-value ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" point="myPoint" flex="95"></ma-set-point-value>
-					<md-button class="md-accent md-raised" ng-click="$ctrl.openEditPage('dashboard.settings.dataSources', myPoint.id)">{{'dashboards.v3.app.edit' | tr}}</md-button>
+					<md-button class="md-accent md-raised" ng-show="$ctrl.User.current.hasPermission('superadmin')"
+                        ng-href="/data_point_edit.shtm?dpid={{myPoint.id}}" target="_blank""><md-icon>open_in_new</md-icon> <span ma-tr="dashboards.v3.app.edit"></span></md-button>
 				</div>
 			</md-card-content>
 		</md-card>
