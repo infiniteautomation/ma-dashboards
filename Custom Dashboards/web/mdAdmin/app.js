@@ -190,6 +190,20 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.app.unauthorized'
     },
     {
+        name: 'dashboard.error',
+        url: '/error',
+        templateUrl: 'views/dashboard/error.html',
+        menuHidden: true,
+        menuTr: 'dashboards.v3.app.error'
+    },
+    {
+        name: 'dashboard.serverError',
+        url: '/server-error',
+        templateUrl: 'views/dashboard/serverError.html',
+        menuHidden: true,
+        menuTr: 'dashboards.v3.app.serverError'
+    },
+    {
         name: 'login',
         url: '/login',
         templateUrl: 'views/login.html',
@@ -1214,6 +1228,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
             $rootScope.noApi = true;
         } else {
             console.log(error);
+            $state.go('dashboard.error');
         }
     });
 
