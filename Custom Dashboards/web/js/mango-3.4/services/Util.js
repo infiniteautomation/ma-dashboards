@@ -534,6 +534,37 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
         }
     };
     
+    Util.prototype.pointValueToString = function pointValueToString(pointValue, point) {
+        if (point && typeof point.valueRenderer === 'function') {
+            var rendered = point.valueRenderer(pointValue);
+            if (rendered && rendered.text && typeof rendered.text === 'string') {
+                return rendered.text;
+            }
+        }
+        
+        if (typeof pointValue === 'number') {
+            // convert to 3 fixed decimal places
+            var numberString = pointValue.toFixed(3);
+            
+            // dont display trailing zeros
+            if (numberString.substr(-4) === '.000') {
+                return numberString.slice(0, -4);
+            } else if (numberString.substr(-2) === '00') {
+                return numberString.slice(0, -2);
+            } else if (numberString.substr(-1) === '0') {
+                return numberString.slice(0, -1);
+            } else {
+                return numberString;
+            }
+        }
+        
+        if (typeof pointValue === 'boolean') {
+            return pointValue ? '1' : '0';
+        }
+        
+        return '' + pointValue;
+    };
+    
     Util.prototype.throwHttpError = function throwHttpError(error) {
         if (error instanceof Error) return $q.reject(error);
         if (error.status < 0)

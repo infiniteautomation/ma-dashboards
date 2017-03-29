@@ -167,6 +167,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 		for (var j = 0; j < $scope.values.length; j++) {
                 			var item = $scope.values[j];
                 			delete item['value_' + removedXid];
+                            delete item['value_' + removedXid + '_rendered'];
                 			// if this was the last value for this timestamp remove
                 			// the item from the combined values
                 			if (Util.numKeys(item, 'value') === 0) {
@@ -213,9 +214,10 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             	
             	pendingRequest = $q.all(promises).then(function(results) {
                 	if (!results.length) return;
-                	
+
             		for (var i = 0; i < results.length; i++) {
-            			var pointXid = points[i].xid;
+            		    var point = points[i];
+            			var pointXid = point.xid;
             			var pointValues = results[i];
 
             			pointValues.concat(tempValues[pointXid]);
@@ -223,6 +225,16 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
 
                         if ($scope.latest) {
                         	limitValues(pointValues);
+                        }
+                        
+                        if (!$scope.rendered) {
+                            for (var j = 0; j < pointValues.length; j++) {
+                                var valueObject = pointValues[j];
+                                var value = valueObject.value;
+                                if (typeof value !== 'string') {
+                                    valueObject.rendered = Util.pointValueToString(value, point);
+                                }
+                            }
                         }
 
                         values[pointXid] = pointValues;
@@ -269,7 +281,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
 
             function combineValues() {
             	var combined = {};
-
+            	
             	for (var xid in values) {
             		var seriesValues = values[xid];
             		combineInto(combined, seriesValues, 'value_' + xid);
@@ -303,6 +315,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     }
 
                     output[timestamp][valueField] = value.value;
+                    if (value.rendered) {
+                        output[timestamp][valueField + '_rendered'] = value.rendered;
+                    }
                 }
             }
 
@@ -361,14 +376,18 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     } else {
                     	value = payload.value.value;
                     }
+                	
+                	var rendered;
+                	if (typeof value !== 'string') {
+                        rendered = Util.pointValueToString(value, point);
+                	}
 
                     var item = {
                         value : value,
+                        rendered: rendered,
                         timestamp : payload.value.timestamp,
                         annotation : payload.value.annotation
                     };
-
-                    var destArray = singlePoint ? $scope.values : values[xid];
 
                     if (pendingRequest) {
                     	if (!tempValues[xid]) tempValues[xid] = [];
@@ -385,9 +404,15 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         		var last = $scope.values.slice(-1)[0];
                         		if (last && last.time === item.timestamp) {
                         			last['value_' + xid] = item.value;
+                        			if (item.rendered) {
+                                        last['value_' + xid + '_rendered'] = item.rendered;
+                        			}
                         		} else {
                         			var newVal = {time: item.timestamp};
                         			newVal['value_' + xid] = item.value;
+                                    if (item.rendered) {
+                                        newVal['value_' + xid + '_rendered'] = item.rendered;
+                                    }
                         			$scope.values.push(newVal);
                         		}
                                 if ($scope.onValuesUpdated)

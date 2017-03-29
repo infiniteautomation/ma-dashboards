@@ -1,8 +1,12 @@
 <div layout="column" ng-init="page={}" class="data-point-details-page">
 	<div flex layout="column" layout-gt-sm="row">
-		<ma-point-values point="myPoint" values="myPointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" rendered="true" rollup="{{$ctrl.dateBar.rollupType}}"
+		<ma-point-values point="myPoint" values="renderedPointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" rendered="true" rollup="{{$ctrl.dateBar.rollupType}}"
 	      rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="$ctrl.dateBar.autoRollup">
 	    </ma-point-values>
+        
+        <ma-point-values point="myPoint" values="pointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" converted="true" rollup="{{$ctrl.dateBar.rollupType}}"
+          rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="$ctrl.dateBar.autoRollup">
+        </ma-point-values>
 
 		<md-card flex class="dpd-small-card">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
@@ -59,7 +63,7 @@
 						</tr>
 					</thead>
 					<tbody md-body ng-if="!$ctrl.realtimeMode">
-						<tr md-row ng-repeat="value in myPointValues | orderBy: myOrder">
+						<tr md-row ng-repeat="value in renderedPointValues | orderBy: myOrder">
 							<td md-cell ng-bind="$ctrl.mdAdminSettings.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
 							<td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
 	                        <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
@@ -111,7 +115,7 @@
 				</md-select>
 			</div>
 		</md-toolbar>
-		<ma-serial-chart style="width: 100%" series-1-values="myPointValues" series-1-point="myPoint" legend="true" balloon="true" export="true" default-type="{{chartType}}">
+		<ma-serial-chart style="width: 100%" series-1-values="pointValues" series-1-point="myPoint" legend="true" balloon="true" export="true" default-type="{{chartType}}">
 		</ma-serial-chart>
 	</md-card>
 
@@ -123,7 +127,7 @@
           </h2>
         </div>
       </md-toolbar>
-      <ma-image-slider point-values="myPointValues"></ma-image-slider>
+      <ma-image-slider point-values="renderedPointValues"></ma-image-slider>
     </md-card>
 
 	<md-card flex>

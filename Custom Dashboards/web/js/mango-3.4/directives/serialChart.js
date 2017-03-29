@@ -140,13 +140,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         if ($scope.legend) {
             options.legend = {
                 valueWidth: 100,
-                valueFunction: function(dataItem, valueString) {
-                    if (dataItem.dataContext) {
-                        var graph = dataItem.graph;
-                        return (dataItem.dataContext[graph.valueField + '_rendered'] || (dataItem.dataContext[graph.valueField] ? dataItem.dataContext[graph.valueField].toString() : '') );
-                    }
-                    return '';
-                }
+                valueFunction: dataItemToText
             };
         }
         
@@ -344,12 +338,10 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 type: 'smoothedLine',
                 valueAxis: 'left',
                 balloonFunction: function(dataItem, graph) {
-                    var valueForBalloon = (dataItem.dataContext[graph.valueField + '_rendered'] || (dataItem.dataContext[graph.valueField] ? dataItem.dataContext[graph.valueField].toString() : ''));
-
+                    var valueForBalloon = dataItemToText(dataItem);
                     if ($scope.annotateMode) {
                         return dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] ? dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] + ' - ' + valueForBalloon : valueForBalloon;
-                    }
-                    else {
+                    } else {
                         return valueForBalloon;
                     }
                 }
@@ -463,7 +455,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             });
         }
 
-        function combine(output, newValues, valueField) {
+        function combine(output, newValues, valueField, point) {
             if (!newValues) return;
 
             for (var i = 0; i < newValues.length; i++) {
@@ -485,6 +477,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     output[timestamp][valueField + '_rendered'] = value.value;
                 } else {
                     output[timestamp][valueField] = value.value;
+                    output[timestamp][valueField + '_rendered'] = Util.pointValueToString(value.value, point);
                 }
             }
         }
@@ -498,7 +491,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         		var point = getPointForGraph(i);
         		var valueField = 'value_' + (point ? point.xid : i);
         		
-        		combine(values, seriesValues, valueField);
+        		combine(values, seriesValues, valueField, point);
         	}
 
             // normalize sparse array or object into dense array
@@ -524,6 +517,15 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         		if (a[i] !== undefined) return false;
         	}
         	return true;
+        }
+        
+        function dataItemToText(dataItem) {
+            if (dataItem.dataContext) {
+                var graph = dataItem.graph;
+                var rendered = dataItem.dataContext[graph.valueField + '_rendered'];
+                return rendered || Util.pointValueToString(dataItem.dataContext[graph.valueField]);
+            }
+            return '';
         }
     }
 
