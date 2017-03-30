@@ -86,7 +86,7 @@
               </md-button>
             </div>
             
-            <md-button class="md-icon-button" ng-if="stateParams.helpPage" ui-sref="{{stateParams.helpPage}}">
+            <md-button class="md-icon-button" ng-if="stateParams.helpPage" ng-click="goToState($event, stateParams.helpPage)" ng-href="{{$state.href(stateParams.helpPage)}}">
                 <md-icon>help</md-icon>
                 <md-tooltip md-autohide><span ma-tr="dashboards.v3.app.viewHelpPage"></span></md-tooltip>
             </md-button>

@@ -1218,6 +1218,14 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     $rootScope.Math = Math;
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
+    
+    $rootScope.goToState = function($event, stateName, stateParams) {
+        // ignore if it was a middle click, i.e. new tab
+        if ($event.which !== 2) {
+            $event.preventDefault();
+            $state.go(stateName, stateParams);
+        }
+    };
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         event.preventDefault();
