@@ -21,7 +21,7 @@ function UserEditorController(User, $http, $mdDialog, Translate, $mdToast) {
 }
 
 UserEditorController.prototype.$onChanges = function(changes) {
-    if (changes.originalUser) {
+    if (changes.originalUser && this.originalUser) {
         this.user = angular.copy(this.originalUser);
         this.prepareUser(this.user);
         this.resetForm();

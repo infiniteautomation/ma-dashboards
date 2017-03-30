@@ -6,20 +6,19 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UsersPageController.$inject = ['$stateParams', 'User', '$state'];
-function UsersPageController($stateParams, User, $state) {
-    this.$stateParams = $stateParams;
+UsersPageController.$inject = ['User', '$state'];
+function UsersPageController(User, $state) {
     this.User = User;
     this.$state = $state;
 }
 
 UsersPageController.prototype.$onInit = function() {
-    if (this.$stateParams.username) {
-        this.user = this.User.get({username: this.$stateParams.username});
-        this.user.$promise.then(function(user) {
+    if (this.$state.params.username) {
+        this.User.get({username: this.$state.params.username}).$promise.then(function(user) {
             // causes a stack overflow when we try and deep merge this object later
             delete user.$promise;
-        }, function() {
+            this.user = user;
+        }.bind(this), function() {
             this.user = this.User.current;
             this.updateUrl();
         }.bind(this));
@@ -30,8 +29,8 @@ UsersPageController.prototype.$onInit = function() {
 };
 
 UsersPageController.prototype.updateUrl = function() {
-    this.$stateParams.username = this.user && this.user.username || null;
-    this.$state.go('.', this.$stateParams, {location: 'replace', notify: false});
+    this.$state.params.username = this.user && this.user.username || null;
+    this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
 };
 
 UsersPageController.prototype.userDeleted = function(user) {
