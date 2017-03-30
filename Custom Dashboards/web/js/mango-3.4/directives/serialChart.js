@@ -317,7 +317,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
 
         function setupGraph(graphNum, point) {
             var graph;
-
+            
             // first arg can be the graph itself
             if (typeof graphNum === 'object') {
                 graph = graphNum;
@@ -354,15 +354,12 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	        xid: point.xid,
         	        valueField: 'value_' + point.xid,
         	        title: point.deviceName + ' - ' + point.name,
-        	        type: point.plotType && point.plotType.toLowerCase(),
         	        lineColor: point.chartColour
             	};
         	    
-        	    // change mango plotType to amCharts graphType
-                // step and line are equivalent
-                if (pointDefaults.type === 'spline') {
-                    pointDefaults.type = 'smoothedLine';
-                }
+        	    if (typeof point.amChartsGraphType === 'function') {
+        	        pointDefaults.type = point.amChartsGraphType();
+        	    }
         	}
             
 

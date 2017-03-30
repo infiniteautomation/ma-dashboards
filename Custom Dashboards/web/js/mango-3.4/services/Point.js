@@ -379,6 +379,16 @@ function PointFactory($resource, $http, $timeout, Util, User) {
         }
     };
 
+    Point.prototype.amChartsGraphType = function() {
+        var type = this.plotType.toLowerCase();
+        // change mango plotType to amCharts graphType
+        // step and line are equivalent
+        if (type === 'spline') {
+            return 'smoothedLine';
+        }
+        return type;
+    };
+    
     return Point;
 }
 

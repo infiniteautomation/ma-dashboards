@@ -6,21 +6,22 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-DataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'mdAdminSettings', 'PointHierarchy', 'DateBar', 'User'];
-function DataPointDetailsController($scope, $stateParams, $state, localStorageService, mdAdminSettings, PointHierarchy, DateBar, User) {
-    
-    var $ctrl = this;
-    $ctrl.dateBar = DateBar;
-    $ctrl.mdAdminSettings = mdAdminSettings;
-    $ctrl.User = User;
-    var pointValueCell = angular.element('div.point-details').find('.point-value');
-    var pointTimeCell = angular.element('div.point-details').find('.point-time');
+DataPointDetailsController.$inject = ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'mdAdminSettings', 'PointHierarchy', 'DateBar', 'User'];
+function DataPointDetailsController($scope, $element, $stateParams, $state, localStorageService, mdAdminSettings, PointHierarchy, DateBar, User) {
+
+    this.dateBar = DateBar;
+    this.mdAdminSettings = mdAdminSettings;
+    this.User = User;
+    var pointValueCell = $element.find('.point-details .point-value');
+    var pointTimeCell = $element.find('.point-details .point-time');
     var timeoutID;
     var lastValue;
+    
+    this.chartType = 'smoothedLine';
 
-    $ctrl.pointValueChanged = function pointValueChanged(point) {
+    this.pointValueChanged = function pointValueChanged(point) {
         // remove old points time
-        delete $ctrl.pointTime;
+        delete this.pointTime;
 
         if (!point || !point.enabled) return;
         
@@ -29,7 +30,7 @@ function DataPointDetailsController($scope, $stateParams, $state, localStorageSe
 
         var now = (new Date()).valueOf();
         var format = now - point.time > 86400 ? 'shortDateTimeSeconds' : 'timeSeconds';
-        $ctrl.pointTime = mdAdminSettings.formatDate(point.time, format);
+        this.pointTime = mdAdminSettings.formatDate(point.time, format);
 
         pointTimeCell.addClass('flash-on-change');
         if (point.value !== lastValue) {
@@ -48,49 +49,44 @@ function DataPointDetailsController($scope, $stateParams, $state, localStorageSe
         }, 400);
     };
     
-    $scope.$watch('myPoint.xid', function(newValue, oldValue) {
-        if (newValue === undefined || newValue === oldValue) return;
+    this.pointChanged = function(point) {
+        if (!point) return;
+        
+        $scope.myPoint = point;
+        var xid = point.xid;
 
-        $state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
+        $state.go('.', {pointXid: xid}, {location: 'replace', notify: false});
         
         localStorageService.set('lastDataPointDetailsItem', {
-            xid: newValue
+            xid: xid
         });
         
-        PointHierarchy.pathByXid({xid: newValue}).$promise.then(function (data) {
-            // console.log(data);
-            $ctrl.path = data;
-        },
-        function(data) {
-            console.log('PointHierarchy.pathByXid Error', data);
+        PointHierarchy.pathByXid({xid: xid}).$promise.then(function(response) {
+            this.path = response;
+        }.bind(this), function(response) {
+            console.log('PointHierarchy.pathByXid Error', response);
         });
         
         var pointType = $scope.myPoint.pointLocator.dataType;
-        if (pointType==='BINARY' || pointType==='MULTISTATE' || pointType==='ALPHANUMERIC' || pointType==='IMAGE') {
-            $ctrl.dateBar.rollupTypesFilter = {nonNumeric: true};
-        }
-        else {
-            $ctrl.dateBar.rollupTypesFilter = {};
-        }
-    });
-    
-    $ctrl.$onInit = function() {
+        this.dateBar.rollupTypesFilter = pointType === 'NUMERIC' ? {} : { nonNumeric: true };
+
+        this.chartType = $scope.myPoint.amChartsGraphType();
+    };
+
+    this.$onInit = function() {
         if ($stateParams.pointXid) {
             // console.log($stateParams.pointXid);
-            $ctrl.pointXid = $stateParams.pointXid;
-        }
-        else if ($stateParams.pointId) {
+            this.pointXid = $stateParams.pointXid;
+        } else if ($stateParams.pointId) {
             // console.log(($stateParams.pointId));
-            $ctrl.pointId = $stateParams.pointId;
-        }
-        else {
+            this.pointId = $stateParams.pointId;
+        } else {
             // Attempt load pointXid from local storage
             var storedPoint = localStorageService.get('lastDataPointDetailsItem');
             if (storedPoint) {
-                $ctrl.pointXid = storedPoint.xid;
+                this.pointXid = storedPoint.xid;
                 //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
             }
-            
         }
     };
 }
