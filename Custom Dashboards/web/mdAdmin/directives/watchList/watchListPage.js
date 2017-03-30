@@ -373,6 +373,16 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             });
         });
     };
+    
+    this.chooseAxisColor = function($event, axisName) {
+        if (!this.chartConfig.valueAxes) {
+            this.chartConfig.valueAxes = {};
+        }
+        if (!this.chartConfig.valueAxes[axisName]) {
+            this.chartConfig.valueAxes[axisName] = {};
+        }
+        this.showColorPicker($event, this.chartConfig.valueAxes[axisName], 'color', true);
+    };
 
     this.showColorPicker = function($event, object, propertyName, rebuild) {
         if (!object) return;

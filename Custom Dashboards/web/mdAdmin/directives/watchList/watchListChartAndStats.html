@@ -69,12 +69,12 @@
             </md-input-container>
             
             <div ng-if="$ctrl.chartOptions.configAxes" class="md-color-picker-preview md-color-picker-checkered-bg"
-                ng-click="$ctrl.showColorPicker($event, $ctrl.chartConfig.valueAxes[$ctrl.chartOptions.selectedAxis], 'color', true)" role="button" tabindex="-1">
+                ng-click="$ctrl.chooseAxisColor($event, $ctrl.chartOptions.selectedAxis)" role="button" tabindex="-1">
               <div class="md-color-picker-result" ng-style="{'background-color': $ctrl.chartConfig.valueAxes[$ctrl.chartOptions.selectedAxis].color}"></div>
             </div>
             
             <md-input-container ng-if="$ctrl.chartOptions.configAxes">
-                <label>Axis color</label>
+                <label ma-tr="dashboards.v3.app.axisColor"></label>
                 <input ng-model="$ctrl.chartConfig.valueAxes[$ctrl.chartOptions.selectedAxis].color" ng-model-options="{debounce: 1000}" ng-change="$ctrl.rebuildChart()">
             </md-input-container>
             
