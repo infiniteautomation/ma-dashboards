@@ -45,12 +45,14 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
           <md-input-container flex="30" style="margin-left:15px">
             <label ma-tr="dashboards.v3.app.rollupType"></label>
             <md-select name="rollupType" ng-model="$ctrl.params.rollupType">
-              <md-option ng-repeat="t in $ctrl.rollupTypes | filter:$ctrl.params.rollupTypesFilter track by t.type" ng-value="t.type" ng-bind="t.label"></md-option>
+              <md-option ng-repeat="t in $ctrl.rollupTypes | filter:$ctrl.params.rollupTypesFilter track by t.type" ng-value="t.type">
+                <span ng-if="::t.type !== 'POINT_DEFAULT'" ma-tr="{{::t.translation}}"></span>
+                <em ng-if="::t.type === 'POINT_DEFAULT'" ma-tr="{{::t.translation}}"></em>
+              </md-option>
             </md-select>
           </md-input-container>
         </div>
       </div>
-      
 
       <div layout flex-xs="100" flex-sm="35" flex-md="35" flex-lg="25" flex-gt-lg="15" layout-align="start start" layout-align-gt-sm="end start" layout-wrap flex-order="-5" flex-order-gt-xs="5">
         <div flex layout layout-align="start center" layout-wrap>

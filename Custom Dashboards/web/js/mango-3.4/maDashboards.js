@@ -190,12 +190,6 @@ maDashboards.component('maConfigImport', configImport);
 maDashboards.component('maConfigImportDialog', configImportDialog);
 maDashboards.component('maMap', maMap);
 maDashboards.filter('tr', trFilter);
-maDashboards.filter('noNaN', function () {
-                                return function (input, suffix) {
-                                      if (isNaN(input)) { return '...'; }
-                                      else { return input.toFixed(1) + suffix; }
-                                };
-                          });
 maDashboards.animation('.ma-slide-up', slideUp);
 
 maDashboards.constant('maDashboardsInsertCss', true);
@@ -227,17 +221,18 @@ maDashboards.constant('MA_DATE_RANGE_PRESETS', [
 ]);
 
 maDashboards.constant('MA_ROLLUP_TYPES', [
- {type: 'NONE', nonNumeric: true, label: 'None'},
- {type: 'AVERAGE', nonNumeric: false, label: 'Average'},
- {type: 'DELTA', nonNumeric: false, label: 'Delta'},
- {type: 'MINIMUM', nonNumeric: false, label: 'Minimum'},
- {type: 'MAXIMUM', nonNumeric: false, label: 'Maximum'},
- {type: 'ACCUMULATOR', nonNumeric: false, label: 'Accumulator'},
- {type: 'SUM', nonNumeric: false, label: 'Sum'},
- {type: 'FIRST', nonNumeric: true, label: 'First'},
- {type: 'LAST', nonNumeric: true, label: 'Last'},
- {type: 'COUNT', nonNumeric: true, label: 'Count'},
- {type: 'INTEGRAL', nonNumeric: false, label: 'Integral'}
+ {type: 'POINT_DEFAULT', nonNumeric: true, label: 'Point default', translation: 'common.rollup.pointDefault'},
+ {type: 'NONE', nonNumeric: true, label: 'None', translation: 'common.rollup.none'},
+ {type: 'AVERAGE', nonNumeric: false, label: 'Average', translation: 'common.rollup.average'},
+ {type: 'DELTA', nonNumeric: false, label: 'Delta', translation: 'common.rollup.delta'},
+ {type: 'MINIMUM', nonNumeric: false, label: 'Minimum', translation: 'common.rollup.minimum'},
+ {type: 'MAXIMUM', nonNumeric: false, label: 'Maximum', translation: 'common.rollup.maximum'},
+ {type: 'ACCUMULATOR', nonNumeric: false, label: 'Accumulator', translation: 'common.rollup.accumulator'},
+ {type: 'SUM', nonNumeric: false, label: 'Sum', translation: 'common.rollup.sum'},
+ {type: 'FIRST', nonNumeric: true, label: 'First', translation: 'common.rollup.first'},
+ {type: 'LAST', nonNumeric: true, label: 'Last', translation: 'common.rollup.last'},
+ {type: 'COUNT', nonNumeric: true, label: 'Count', translation: 'common.rollup.count'},
+ {type: 'INTEGRAL', nonNumeric: false, label: 'Integral', translation: 'common.rollup.integral'}
  //{name: 'FFT', nonNumeric: false}
 ]);
 

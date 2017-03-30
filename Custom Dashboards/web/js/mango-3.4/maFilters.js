@@ -147,6 +147,13 @@ maFilters.filter('maFilter', ['Util', '$filter', function(Util, $filter) {
     return Util.memoize($filter('filter'));
 }]);
 
+maFilters.filter('noNaN', function () {
+    return function (input, suffix) {
+          if (isNaN(input)) { return '\u2014'; }
+          else { return input.toFixed(1) + suffix; }
+    };
+});
+
 return maFilters;
 
 }); // require

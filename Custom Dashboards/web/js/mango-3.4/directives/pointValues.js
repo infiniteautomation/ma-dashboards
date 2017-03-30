@@ -27,7 +27,8 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
  * @param {boolean=} realtime Used with the `latest` attribute, if set to `true` the latest `X` number of values will update as new values are pushed to a data point.
  * @param {string=} rollup The statistical operation to apply to the values over the given `rollup-interval`. This will effect the outputted `values`. Rollup possibilities are:
 <ul>
-    <li>NONE (Default)</li>
+    <li>POINT_DEFAULT</li>
+    <li>NONE</li>
     <li>AVERAGE</li>
     <li>DELTA</li>
     <li>MINIMUM</li>
@@ -448,6 +449,10 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         timeout: $scope.timeout,
                         timezone: $scope.timezone
                     };
+                    
+                    if (options.rollup === 'POINT_DEFAULT') {
+                        options.rollup = point.rollup;
+                    }
                     
                     return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
                         if (dataType === 'IMAGE') {

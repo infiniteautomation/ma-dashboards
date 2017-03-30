@@ -6,13 +6,13 @@
 define(['angular'], function(angular) {
 'use strict';
 
-DateBarFactory.$inject = ['localStorageService'];
-function DateBarFactory(localStorageService) {
+DateBarFactory.$inject = ['localStorageService', 'MA_ROLLUP_TYPES', '$filter'];
+function DateBarFactory(localStorageService, MA_ROLLUP_TYPES, $filter) {
     var LOCAL_STORAGE_KEY = 'dateBarSettings';
     
     var defaults = {
         preset: 'LAST_1_DAYS',
-        rollupType: 'AVERAGE',
+        rollupType: 'POINT_DEFAULT',
         rollupIntervals: 10,
         rollupIntervalPeriod: 'MINUTES',
         autoRollup: true,
@@ -23,7 +23,7 @@ function DateBarFactory(localStorageService) {
         rollupTypesFilter: {},
         rollupTypesFilterLast: {}
     };
-    
+
     function DateBar() {
         this.cache = {};
         this.load();
@@ -75,19 +75,16 @@ function DateBarFactory(localStorageService) {
             this.save();
         },
         set rollupTypesFilter(value) {
-            
-            // Track last known rollupTypesFilter and update rollupTypesFilter if it changes
-            if (!angular.equals(value, this.data.rollupTypesFilterLast)) {
-                if (value.nonNumeric) {
-                    this.data.rollupType = 'NONE';
-                }
-                else {
-                    this.data.rollupType = 'AVERAGE';
-                }
-            }
-            
             this.data.rollupTypesFilter = value;
-            this.data.rollupTypesFilterLast = value;
+
+            var currentRollupOk = $filter('filter')(MA_ROLLUP_TYPES, value).some(function(rollupType) {
+                return rollupType.type === this.data.rollupType;
+            }.bind(this));
+            
+            if (!currentRollupOk) {
+                this.data.rollupType = 'POINT_DEFAULT';
+            }
+
             this.save();
         },
         set from(value) {
