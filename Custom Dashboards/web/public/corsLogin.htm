@@ -16,16 +16,30 @@
                
         <script type="text/javascript">
         
-        var mangoRemoteHost = 'http://10.0.1.201:8080';
+        var mangoRemoteHost = 'http://localhost:8080';
         var socket;
-        var xsrfHeader = null;
+        //var xsrfHeader = null;
         require(['jquery', 'mango/api', 'mango/autologin', 'domReady!'],
                 function($, MangoAPI, autologin) {
+        	
+        	//TODO Make GET Request to Remote Mango to obtain CSRF Cookie
+        	$.ajax({
+        		url: mangoRemoteHost + "/login.htm",
+        		xhrFields: {
+      				withCredentials: true
+   				}
+        	}).done(function(response){
+        		console.log(reposnse);
+        		//Initial request is complete
+        	});
         	
         	//TODO work out useAuthentication and XDomain 
         	$.ajaxSetup({
         	    beforeSend: function(xhr, settings) {
         	        if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE' || settings.type == 'GET' || settings.type == 'OPTIONS') {
+        	        	var xsrfHeader = getCookie('XSRF-TOKEN');//TODO Read cookie browser api call
+        	        	
+        	        	
         	        	if(xsrfHeader != null) //Will be null on login request
 							xhr.setRequestHeader("X-XSRF-TOKEN", xsrfHeader);
         	        }
@@ -38,15 +52,27 @@
         	$('#loginButton').click(function(){
         		var username = $('#username').val();
                 var password = $('#password').val();
-                
-                mangoApi.login(username, password, false)
-                .done(function(user, status, jqXhr) {
-            		console.log('logged in as: ' + user.username);
+                var body = {
+    				'username': username,
+    				'password': password
+    			};
+                $.ajax({
+				    	type: "POST",
+        				url : mangoRemoteHost + "/rest/v1/login/",
+        				contentType: "application/json",
+        				headers: {Accept: "application/json"},
+        				data: JSON.stringify(body),
+						xhrFields: {
+      						withCredentials: true
+   						}	
+                }).done(function(user){
+                	console.log('logged in as: ' + user.username);
             		//Show the Point Value Div
             		$('#main').show();
-            	}).fail(function(e){
-            		$('#loginError').text('Failed to login: ' + e.mangoMessage);
-            	});
+                }).fail(function(e){
+            		$('#loginError').text('Failed to login: ' + e.statusText);
+            	});                
+                
         	});
         	
         	$('#username').focus();
@@ -117,6 +143,28 @@
   	              $("#errors").text(msg);
   	          });
         	})
+        	
+        	/**
+			 * @function getCookie 
+			 *
+			 * @param {string} name - Name of Cookie to retrieve
+			 * @returns {string} - Value of Cookie
+			 */
+			function getCookie(name) {
+			    var cookieValue = null;
+			    if (document.cookie && document.cookie !== '') {
+			        var cookies = document.cookie.split(';');
+			        for (var i = 0; i < cookies.length; i++) {
+			            var cookie = jQuery.trim(cookies[i]);
+			            // Does this cookie string begin with the name we want?
+			            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+			                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+			                break;
+			            }
+			        }
+			    }
+			    return cookieValue;
+			}
         	
         });
 

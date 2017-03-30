@@ -73,7 +73,7 @@ function MangoAPI(options){
 MangoAPI.prototype.baseUrl = null;
 
 /**
- * Login via GET
+ * Login via POST
  * 
  * @param {string} username
  * @param {string} password
@@ -85,12 +85,18 @@ MangoAPI.prototype.login = function(username, password, logout) {
         logout = true;
     logout = logout ? true : false; // coerce to actual boolean
     
+    var body = {
+    		'username': username,
+    		'password': password
+    };
+    
+    var csrfToken = getCookie('XSRF-TOKEN');
     return this.ajax({
-        url : "/rest/v1/login/" + encodeURIComponent(username),
-        headers: {
-            password: password,
-            logout: logout
-        }
+    	type: "POST",
+        url : "/rest/v1/login/",
+        contentType: "application/json",
+        headers: {'X-XSRF-TOKEN': csrfToken},
+        data: JSON.stringify(body)
     });
 };
         
