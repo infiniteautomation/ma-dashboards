@@ -361,7 +361,6 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	        pointDefaults.type = point.amChartsGraphType();
         	    }
         	}
-            
 
             var defaultAttributes = {
                 type: $scope.defaultType,
@@ -406,9 +405,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             }
 
             var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions, annotateOptions);
-            
-            
-            
+
             if (opts.balloonText)
                 delete opts.balloonFunction;
             if (angular.isUndefined(opts.fillAlphas)) {
@@ -424,6 +421,15 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             }
             if (angular.isUndefined(opts.lineThickness)) {
                 opts.lineThickness = opts.type === 'column' ? 1.0 : 2.0;
+            }
+            if (opts.type === 'column' && angular.isUndefined(opts.fixedColumnWidth)) {
+//                try {
+//                    opts.fixedColumnWidth = graph.width / graph.ownColumns.length / 2 * 0.8;
+//                    debugger;
+//                } catch (e) {
+//                    opts.fixedColumnWidth = 5;
+//                }
+                opts.fixedColumnWidth = 10;
             }
             $.extend(true, graph, opts);
         }
@@ -468,13 +474,13 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 if (!output[timestamp]) {
                     output[timestamp] = {timestamp: timestamp};
                 }
-
+                
                 if (typeof value.value === 'string') {
                     output[timestamp][valueField] = Util.parseInternationalFloat(value.value);
                     output[timestamp][valueField + '_rendered'] = value.value;
                 } else {
                     output[timestamp][valueField] = value.value;
-                    output[timestamp][valueField + '_rendered'] = Util.pointValueToString(value.value, point);
+                    output[timestamp][valueField + '_rendered'] = value.rendered || Util.pointValueToString(value.value, point);
                 }
             }
         }
@@ -519,10 +525,27 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         function dataItemToText(dataItem) {
             if (dataItem.dataContext) {
                 var graph = dataItem.graph;
-                var rendered = dataItem.dataContext[graph.valueField + '_rendered'];
-                return rendered || Util.pointValueToString(dataItem.dataContext[graph.valueField]);
+
+                var value = extractField(dataItem.dataContext, graph.valueField);
+                if (value) return value;
+                
+//                for (var i = dataItem.index - 1; i >= 0; i--) {
+//                    value = extractField(chart.dataProvider[i], graph.valueField);
+//                    if (value) return value;
+//                }
             }
             return '';
+        }
+        
+        function extractField(data, fieldName) {
+            var rendered = data[fieldName + '_rendered'];
+            if (rendered) return rendered;
+            
+            var value = data[fieldName];
+            // jshint eqnull:true
+            if (value != null) {
+                return Util.pointValueToString(value);
+            }
         }
     }
 
@@ -533,6 +556,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             addClassNames: true,
             dataProvider: [],
             synchronizeGrid: true,
+//            columnSpacing: 0,
             valueAxes: [{
                 id: "left",
                 position: "left",
@@ -555,9 +579,10 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             categoryAxis: {
                 parseDates: true,
                 minPeriod: 'fff',
-                equalSpacing: true,
+                equalSpacing: false,
                 axisThickness: 0,
-                dateFormats: MA_AMCHARTS_DATE_FORMATS.categoryAxis
+                dateFormats: MA_AMCHARTS_DATE_FORMATS.categoryAxis,
+                firstDayOfWeek: moment.localeData(moment.locale()).firstDayOfWeek()
             },
             chartCursor: {
                 categoryBalloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon
