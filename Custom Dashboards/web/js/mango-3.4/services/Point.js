@@ -383,10 +383,11 @@ function PointFactory($resource, $http, $timeout, Util, User) {
         var type = this.plotType.toLowerCase();
         // change mango plotType to amCharts graphType
         // step and line are equivalent
-        if (type === 'spline') {
-            return 'smoothedLine';
+        switch(type) {
+        case 'spline': return 'smoothedLine';
+        case 'bar': return 'column';
+        default: return type;
         }
-        return type;
     };
     
     return Point;
