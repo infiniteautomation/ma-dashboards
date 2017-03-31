@@ -135,6 +135,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                 return Translate.loadNamespaces(['dashboards', 'common']);
             }],
             loginTranslations: loadLoginTranslations,
+            errorTemplate: ['$templateRequest', function($templateRequest) {
+                // preloads the error page so if the server goes down we can still display the page
+                return $templateRequest('views/dashboard/error.html');
+            }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/Menu',
                            './services/MenuEditor',
@@ -1236,7 +1240,11 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
             $rootScope.noApi = true;
         } else {
             console.log(error);
-            $state.go('dashboard.error');
+            if (toState.name !== 'dashboard.error') {
+                $state.go('dashboard.error');
+            } else {
+                // should we call alert() or something?
+            }
         }
     });
 
