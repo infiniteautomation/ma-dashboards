@@ -28,8 +28,7 @@ function watchListListFactory($injector) {
             sort: '<?',
             parameters: '<?',
             onPointsChange: '&?',
-            
-            user: '<?',
+
             showNewButton: '<?',
             showEditButtons: '<?',
             newButtonClicked: '&',
@@ -41,9 +40,10 @@ function watchListListFactory($injector) {
     };
 }
 
-WatchListListController.$inject = WatchListSelectController.$inject;
-function WatchListListController() {
+WatchListListController.$inject = WatchListSelectController.$inject.concat('User');
+function WatchListListController(User) {
     WatchListSelectController.apply(this, arguments);
+    this.User = User;
 }
 
 WatchListListController.prototype = Object.create(WatchListSelectController.prototype);

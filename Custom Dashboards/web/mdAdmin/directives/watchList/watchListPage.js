@@ -20,9 +20,9 @@ function watchListPageDirective() {
 }
 
 WatchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy',
-    'mdAdminSettings', 'DateBar', '$mdDialog', 'statistics', '$scope', '$mdColorPicker'];
+    'DateBar', '$mdDialog', 'statistics', '$scope', '$mdColorPicker'];
 function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy,
-        mdAdminSettings, DateBar, $mdDialog, statistics, $scope, $mdColorPicker) {
+        DateBar, $mdDialog, statistics, $scope, $mdColorPicker) {
     
     this.baseUrl = require.toUrl('.');
     this.watchList = null;
@@ -30,34 +30,11 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     this.dataSource = null;
     this.deviceName = null;
     this.hierarchyFolders = [];
-    this.settings = mdAdminSettings;
     this.dateBar = DateBar;
 
     this.selected = [];
     this.selectedStats = [];
-    
-    var defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
-    var defaultChartConfig = {
-        graphOptions: [],
-        selectedAxis: 'left',
-        selectedColor: '#C2185B',
-        selectedStackType: 'none',
-        assignColors: false,
-        chartType: 'smoothedLine',
-        stackType: {
-            selected: 'none',
-            left: 'none',
-            right: 'none',
-            'left-2': 'none',
-            'right-2': 'none'
-        },
-        axisColors: { 
-            left2AxisColor: defaultAxisColor,
-            leftAxisColor: defaultAxisColor,
-            right2AxisColor: defaultAxisColor,
-            rightAxisColor: defaultAxisColor
-        }
-    };    
+
     var NO_STATS = '\u2014';
 
     this.selectFirstWatchList = false;
