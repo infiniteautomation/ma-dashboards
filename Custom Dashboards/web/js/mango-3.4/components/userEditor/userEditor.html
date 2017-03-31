@@ -82,15 +82,16 @@
     <md-input-container flex="100" flex-gt-md="50">
       <md-icon>info</md-icon>
       <label ma-tr="users.permissions"></label>
-      <input name="permissions" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-validation-messages="$ctrl.validationMessages">
+      <input name="permissions" ng-disabled="!$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-validation-messages="$ctrl.validationMessages">
       <div ng-show="$ctrl.showMessages('permissions')">
         <div ng-messages="$ctrl.userForm.permissions.$error">
           <div ng-message="pattern" ma-tr="dashboards.v3.app.invalidPermissions"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
         </div>
       </div>
-      <ma-permissions-menu ng-model="$ctrl.user.permissions"></ma-permissions-menu>
+      <ma-permissions-menu ng-if="$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions"></ma-permissions-menu>
     </md-input-container>
+    
     <md-input-container flex="100" flex-gt-md="50">
       <md-icon>alarm</md-icon>
       <label ma-tr="users.receiveAlarmEmails"></label>
