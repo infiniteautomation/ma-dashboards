@@ -107,6 +107,7 @@ maServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', f
         .setNotify(false, false);
     
     $httpProvider.defaults.paramSerializer = 'rqlParamSerializer';
+    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
     $provide.decorator('$q', qDecorator);
 }]);
