@@ -1042,3 +1042,12 @@ ma-point-hierarchy-folder .point-hierarchy-item {
     font-size: 18px;
     text-align: right;
 }
+
+/* md color picker */
+md-dialog .md-color-picker-container {
+  background-color: inherit;
+}
+
+md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-colors .md-tab.md-active {
+  background-color: inherit;
+}
