@@ -184,11 +184,32 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 $scope.graphItemClicked({$chart: chart, $event: event});
             });
         }
+        
+        chart.addListener('drawn', function(event) {
+            // jshint eqnull:true
+            if (options.equalSpacing) return;
+            
+            var columnGraphs = event.chart.graphs.filter(function(graph) {
+                return graph.type === 'column' && graph.ownColumns;
+            });
+
+            var redrawNeeded = false;
+            columnGraphs.forEach(function(graph) {
+                var newWidth = Math.floor(graph.width / graph.ownColumns.length * 0.8);
+                if (newWidth !== graph.fixedColumnWidth) {
+                    graph.fixedColumnWidth = newWidth;
+                    redrawNeeded = true;
+                }
+            });
+            
+            if (redrawNeeded)
+                chart.validateNow(false, true);
+        });
 
         $scope.$watch('options', function(newValue, oldValue) {
-        	if (newValue === undefined) return;
+            if (!newValue) return;
+            
         	$.extend(true, chart, newValue);
-        	chart.validateNow();
             checkForAxisColors();
             watchPointsAndGraphs($scope.graphOptions);
         }, true);
@@ -238,12 +259,16 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             }
         }
 
-        function watchValues(newValues) {
+        function watchValues(newValues, oldValues) {
+            if (newValues === oldValues && newValues === undefined) return;
+            
             chart.dataProvider = newValues;
             chart.validateData();
         }
 
-        function watchPointsAndGraphs(newValues) {
+        function watchPointsAndGraphs(newValues, oldValues) {
+            if (newValues === oldValues && newValues === undefined) return;
+            
             if (!$scope.points && !$scope.graphOptions) {
                 chart.graphs = [];
             }
@@ -266,7 +291,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	}
 
         	sortGraphs();
-            chart.validateData();
+        	chart.validateNow();
         }
 
         function findGraph(propName, prop, removeGraph) {
@@ -292,7 +317,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	}
 
         	sortGraphs();
-        	chart.validateData();
+        	chart.validateNow();
         }
 
         function valuesChanged(graphNum, newValues, oldValues) {
@@ -337,6 +362,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 title: 'Series ' + graphNum,
                 type: 'smoothedLine',
                 valueAxis: 'left',
+                clustered: false,
                 balloonFunction: function(dataItem, graph) {
                     var valueForBalloon = dataItemToText(dataItem);
                     if ($scope.annotateMode) {
@@ -422,15 +448,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             if (angular.isUndefined(opts.lineThickness)) {
                 opts.lineThickness = opts.type === 'column' ? 1.0 : 2.0;
             }
-            if (opts.type === 'column' && angular.isUndefined(opts.fixedColumnWidth)) {
-//                try {
-//                    opts.fixedColumnWidth = graph.width / graph.ownColumns.length / 2 * 0.8;
-//                    debugger;
-//                } catch (e) {
-//                    opts.fixedColumnWidth = 5;
-//                }
-                opts.fixedColumnWidth = 10;
-            }
+
             $.extend(true, graph, opts);
         }
         
@@ -554,9 +572,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             type: "serial",
             theme: "light",
             addClassNames: true,
-            dataProvider: [],
             synchronizeGrid: true,
-//            columnSpacing: 0,
             valueAxes: [{
                 id: "left",
                 position: "left",
