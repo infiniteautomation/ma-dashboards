@@ -3,7 +3,7 @@
  * @author Will Geller
  */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
+define(['angular', 'require', 'rql/query', 'tinycolor'], function(angular, require, query, tinycolor) {
 'use strict';
 
 function watchListPageDirective() {
@@ -386,9 +386,9 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
     this.showColorPicker = function($event, object, propertyName, rebuild) {
         if (!object) return;
-
+        
         $mdColorPicker.show({
-            value: object[propertyName] || '#fff',
+            value: object[propertyName] || tinycolor.random().toHexString(),
             defaultValue: '',
             random: false,
             clickOutsideToClose: true,
