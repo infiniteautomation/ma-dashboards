@@ -169,7 +169,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
 
         $.extend(true, options, $scope.options);
 
-        var chart = AmCharts.makeChart($element[0], options);
+        var chart = AmCharts.makeChart($element[0], angular.copy(options));
         
         if ($scope.onChartInit) {
             $scope.onChartInit({$chart: chart});
@@ -186,9 +186,6 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         }
         
         chart.addListener('drawn', function(event) {
-            // jshint eqnull:true
-            if (options.equalSpacing) return;
-            
             var columnGraphs = event.chart.graphs.filter(function(graph) {
                 return graph.type === 'column' && graph.ownColumns;
             });
@@ -196,12 +193,16 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             var redrawNeeded = false;
             columnGraphs.forEach(function(graph) {
                 var newWidth = Math.floor(graph.width / graph.ownColumns.length * 0.8);
+                if (chart.categoryAxis.equalSpacing) {
+                    newWidth = undefined;
+                }
+                
                 if (newWidth !== graph.fixedColumnWidth) {
                     graph.fixedColumnWidth = newWidth;
                     redrawNeeded = true;
                 }
             });
-            
+
             if (redrawNeeded)
                 chart.validateNow(false, true);
         });
@@ -263,7 +264,24 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             if (newValues === oldValues && newValues === undefined) return;
             
             chart.dataProvider = newValues;
+            checkEqualSpacing();
             chart.validateData();
+        }
+        
+        function checkEqualSpacing() {
+            if (options.categoryAxis.equalSpacing) return;
+
+            if (chart.dataProvider) {
+                chart.categoryAxis.equalSpacing = !chart.dataProvider.map(function(dataItem, index, array) {
+                    if (index === 0) return null;
+                    return dataItem.timestamp - array[index - 1].timestamp;
+                }).some(function(diff, index, array) {
+                    if (index <= 1) return;
+                    return diff !== array[index - 1];
+                });
+            } else {
+                chart.categoryAxis.equalSpacing = true;
+            }
         }
 
         function watchPointsAndGraphs(newValues, oldValues) {
@@ -530,6 +548,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             }
 
             chart.dataProvider = output;
+            checkEqualSpacing();
             chart.validateData();
         }
 
