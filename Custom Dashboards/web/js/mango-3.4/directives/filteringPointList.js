@@ -115,6 +115,8 @@ FilteringPointListController.prototype.setViewValue = function(point) {
 FilteringPointListController.prototype.querySearch = function(inputText) {
     var rqlQuery, queryString = '';
     
+    this.highlight = '';
+    
     if (inputText) {
         var nameLike, deviceNameLike;
         var queryJoin = 'or';
@@ -124,16 +126,25 @@ FilteringPointListController.prototype.querySearch = function(inputText) {
             deviceNameLike = split[0].trim();
             nameLike = split[1].trim();
             queryJoin = 'and';
+            this.highlight = nameLike;
         } else {
             nameLike = deviceNameLike = inputText;
+            this.highlight = inputText;
         }
-        
-        rqlQuery = new query.Query();
+
         var nameQuery = new query.Query({name: 'like', args: ['name', '*' + nameLike + '*']});
         var deviceNameQuery = new query.Query({name: 'like', args: ['deviceName', '*' + deviceNameLike + '*']});
-        rqlQuery.push(nameQuery);
-        rqlQuery.push(deviceNameQuery);
-        rqlQuery.name = queryJoin;
+        
+        if (!nameLike) {
+            rqlQuery = deviceNameQuery;
+        } else if (!deviceNameLike) {
+            rqlQuery = nameQuery;
+        } else {
+            rqlQuery = new query.Query();
+            rqlQuery.push(nameQuery);
+            rqlQuery.push(deviceNameQuery);
+            rqlQuery.name = queryJoin;
+        }
     }
 
     if (this.query) {
