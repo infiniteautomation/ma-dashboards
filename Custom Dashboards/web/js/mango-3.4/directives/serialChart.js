@@ -309,7 +309,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	}
 
         	sortGraphs();
-        	chart.validateNow();
+        	chart.validateNow(true);
         }
 
         function findGraph(propName, prop, removeGraph) {
@@ -335,7 +335,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	}
 
         	sortGraphs();
-        	chart.validateNow();
+        	chart.validateNow(true);
         }
 
         function valuesChanged(graphNum, newValues, oldValues) {
