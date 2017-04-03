@@ -28,7 +28,7 @@
 
 <md-table-container ng-class="{'lg-screen': $ctrl.$mdMedia('gt-lg')}" ng-init="myPage=1; myOrder=''">
     <table md-table md-row-select multiple ng-model="$ctrl.selected"
-            md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}">
+            md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}" class="watch-list-table">
         <thead md-head md-order="myOrder">
             <tr md-row>
                 <th md-column ma-tr="dashboards.v3.app.tools"></th>

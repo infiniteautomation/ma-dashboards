@@ -380,6 +380,8 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     };
 
     Point.prototype.amChartsGraphType = function() {
+        if (!this.plotType) return null;
+        
         var type = this.plotType.toLowerCase();
         // change mango plotType to amCharts graphType
         // step and line are equivalent

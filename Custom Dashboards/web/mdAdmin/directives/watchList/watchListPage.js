@@ -45,6 +45,12 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         selectedAxis: 'left',
         axes: {}
     };
+    this.axisOptions = [
+        {name: 'left', translation: 'dashboards.v3.app.left'},
+        {name: 'right', translation: 'dashboards.v3.app.right'},
+        {name: 'left-2', translation: 'dashboards.v3.app.farLeft'},
+        {name: 'right-2', translation: 'dashboards.v3.app.farRight'}
+    ];
 
     this.$onInit = function() {
         var localStorage = localStorageService.get('watchListPage') || {};
@@ -292,7 +298,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         var newSelectedPoints = this.chartConfig.selectedPoints = {};
         
         var newPointChartOptions = {};
-        if (this.chartOptions.configPoint) {
+        if (this.chartOptions.configNextPoint) {
             if (this.chartOptions.pointColor)
                 newPointChartOptions.lineColor = this.chartOptions.pointColor;
             if (this.chartOptions.pointChartType)

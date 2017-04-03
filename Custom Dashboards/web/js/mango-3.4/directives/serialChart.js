@@ -450,17 +450,22 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
 
             var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions, annotateOptions);
 
+            var graphAxis;
+            chart.valueAxes.some(function(axis) {
+                if (axis.id === opts.valueAxis) {
+                    graphAxis = axis;
+                    return true;
+                }
+            });
+            
             if (opts.balloonText)
                 delete opts.balloonFunction;
             if (angular.isUndefined(opts.fillAlphas)) {
-                opts.fillAlphas = opts.type === 'column' ? 0.7 : 0;
-
-                var isStacked = options.valueAxes.some(function(obj) {
-                    return obj.id === opts.valueAxis && obj.stackType !== 'none';
-                });
-
-                if (isStacked) {
+                var isStacked = graphAxis && graphAxis.stackType && graphAxis.stackType !== 'none';
+                if (isStacked || opts.type === 'column') {
                     opts.fillAlphas = 0.7;
+                } else {
+                    opts.fillAlphas = 0;
                 }
             }
             if (angular.isUndefined(opts.lineThickness)) {

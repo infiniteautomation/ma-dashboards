@@ -19,9 +19,6 @@
 .watchlist-main th.md-checkbox-column > md-checkbox {
     display: none;
 }
-.watchlist-main table.md-table tbody.md-body>tr.md-row, .watchlist-main table.md-table tfoot.md-foot>tr.md-row {
-    height: 30px;
-}
 .watchlist-main table.md-table:not(.desktop) td.md-cell, .watchlist-main table.md-table:not(.desktop) th.md-column {
     padding: 0 4px 0 4px !important;
 }
@@ -187,10 +184,6 @@ ma-watch-list-page ma-watch-list-parameters md-input-container {
 
 ma-watch-list-page .md-table-pagination > * {
   height: 32px;
-}
-
-ma-watch-list-page .watch-list-configure-chart md-checkbox {
-  margin: 0 20px 0 0;
 }
 
 ma-watch-list-page .md-color-picker-preview {
