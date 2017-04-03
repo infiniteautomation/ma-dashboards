@@ -161,10 +161,6 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             };
         }
 
-        if ($scope.trendLines) {
-            options.trendLines = $scope.trendLines;
-        }
-
         var valueArray = !!attrs.values;
 
         $.extend(true, options, $scope.options);
@@ -205,6 +201,11 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
 
             if (redrawNeeded)
                 chart.validateNow(false, true);
+        });
+        
+        $scope.$watch('trendLines', function(newValue, oldValue) {
+            if (newValue === oldValue && newValue === undefined) return;
+            $scope.options.trendLines = newValue;
         });
 
         $scope.$watch('options', function(newValue, oldValue) {
