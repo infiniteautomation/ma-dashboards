@@ -3,15 +3,15 @@
   <div ng-repeat="param in $ctrl.watchlist.params" layout="column" class="watchlist-parameter-row" >
     <div layout="row" layout-align="start center" class="watchlist-parameter-main">
       <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.watchlist.params.splice($index, 1)"><md-icon>clear</md-icon></md-button>
-      <md-input-container flex="33">
+      <md-input-container flex>
         <label ma-tr="dashboards.v3.app.label"></label>
         <input ng-model="param.label" required md-no-asterisk>
       </md-input-container>
-      <md-input-container flex="33">
+      <md-input-container flex>
         <label ma-tr="dashboards.v3.app.parameterName"></label>
         <input ng-model="param.name" required md-no-asterisk>
       </md-input-container>
-      <md-input-container flex="33">
+      <md-input-container flex>
         <label ma-tr="dashboards.v3.app.parameterType"></label>
         <md-select ng-model="param.type" required md-no-asterisk>
           <md-option ng-value="'input'" ma-tr="dashboards.v3.app.input"></md-option>
