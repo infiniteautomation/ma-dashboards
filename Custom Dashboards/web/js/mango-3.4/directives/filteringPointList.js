@@ -116,12 +116,24 @@ FilteringPointListController.prototype.querySearch = function(inputText) {
     var rqlQuery, queryString = '';
     
     if (inputText) {
+        var nameLike, deviceNameLike;
+        var queryJoin = 'or';
+        
+        var split = inputText.split('\u2014');
+        if (split.length === 2) {
+            deviceNameLike = split[0].trim();
+            nameLike = split[1].trim();
+            queryJoin = 'and';
+        } else {
+            nameLike = deviceNameLike = inputText;
+        }
+        
         rqlQuery = new query.Query();
-        var nameLike = new query.Query({name: 'like', args: ['name', '*' + inputText + '*']});
-        var deviceName = new query.Query({name: 'like', args: ['deviceName', '*' + inputText + '*']});
-        rqlQuery.push(nameLike);
-        rqlQuery.push(deviceName);
-        rqlQuery.name = 'or';
+        var nameQuery = new query.Query({name: 'like', args: ['name', '*' + nameLike + '*']});
+        var deviceNameQuery = new query.Query({name: 'like', args: ['deviceName', '*' + deviceNameLike + '*']});
+        rqlQuery.push(nameQuery);
+        rqlQuery.push(deviceNameQuery);
+        rqlQuery.name = queryJoin;
     }
 
     if (this.query) {
