@@ -114,7 +114,41 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         }.bind(this));
         return parsed.toString();
     };
+    
+    WatchList.prototype.sanitizeParamValues = function() {
+        if (this.data && this.data.paramValues) {
+            for (var paramName in this.data.paramValues) {
+                var paramValue = this.data.paramValues[paramName];
+                // jshint eqnull:true
+                if (typeof paramValue === 'object' && (paramValue.id != null || paramValue.xid)) {
+                    this.data.paramValues[paramName] = {
+                        id: paramValue.id,
+                        xid: paramValue.xid,
+                        name: paramValue.name
+                    };
+                }
+            }
+        }
+    };
+    
+    var saveMethod = WatchList.prototype.$save;
+    WatchList.prototype.$save = function() {
+        this.sanitizeParamValues();
+        return saveMethod.apply(this, arguments);
+    };
 
+    var updateMethod = WatchList.prototype.$update;
+    WatchList.prototype.$update = function() {
+        this.sanitizeParamValues();
+        return updateMethod.apply(this, arguments);
+    };
+    
+    var updateWithRenameMethod = WatchList.prototype.$updateWithRename;
+    WatchList.prototype.$updateWithRename = function() {
+        this.sanitizeParamValues();
+        return updateWithRenameMethod.apply(this, arguments);
+    };
+    
     return WatchList;
 }
 

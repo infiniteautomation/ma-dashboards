@@ -1,8 +1,20 @@
 <div class="md-padding watchlist-parameters" layout="column" ng-model="$ctrl.watchlist.params" ui-sortable="{handle: '.watchlist-parameter-main > .move-handle'}">
+  <md-card md-colors="::{background: 'background-700'}" ng-if="$ctrl.watchlist.params.length">
+    <md-card-title>
+        <md-card-title-text>
+            <em ma-tr="dashboards.v3.app.previewWatchListParameters"></em>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <ma-watch-list-parameters watch-list="$ctrl.watchlist" layout layout-align="start center" layout-wrap></ma-watch-list-parameters>
+    </md-card-content>
+  </md-card>
+  
   <p ng-if="!$ctrl.watchlist.params.length" ma-tr="dashboards.v3.app.noParameters"></p>
+  
   <div ng-repeat="param in $ctrl.watchlist.params" layout="column" class="watchlist-parameter-row" >
     <div layout="row" layout-align="start center" class="watchlist-parameter-main">
-      <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.watchlist.params.splice($index, 1)"><md-icon>clear</md-icon></md-button>
+      <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.watchlist.params.splice($index, 1); $ctrl.watchlist.data.paramValues[param.name] = undefined"><md-icon>clear</md-icon></md-button>
       <md-input-container flex>
         <label ma-tr="dashboards.v3.app.label"></label>
         <input ng-model="param.label" required md-no-asterisk>
@@ -140,7 +152,10 @@
       </div>
     </div>
   </div>
+  
   <div layout="row" layout-align="start center">
     <md-button class="md-raised" ma-tr="dashboards.v3.app.addParameter" ng-click="$ctrl.addParam()"></md-button>
   </div>
+  
+  <pre ng-bind="$ctrl.watchlist.data | json"></pre>
 </div>

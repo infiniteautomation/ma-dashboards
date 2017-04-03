@@ -91,6 +91,9 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         $ctrl.tableQuery.rql = new query.Query();
         
         if ($ctrl.watchlist.type === 'query') {
+            if (!$ctrl.watchlist.data) $ctrl.watchlist.data = {};
+            if (!$ctrl.watchlist.data.paramValues) $ctrl.watchlist.data.paramValues = {};
+            
             if (!$ctrl.watchlist.query)
                 $ctrl.watchlist.query = defaultQuery;
             if (!$ctrl.watchlist.params) {
@@ -284,6 +287,9 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
                 renderStatic([]);
             }
         } else if (watchlist.type === 'query') {
+            if (!watchlist.data) watchlist.data = {};
+            if (!watchlist.data.paramValues) watchlist.data.paramValues = {};
+            
             $ctrl.parseQuery();
             $ctrl.doPointQuery();
         } else if (watchlist.type === 'hierarchy') {
