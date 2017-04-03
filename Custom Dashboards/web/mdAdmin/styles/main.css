@@ -247,6 +247,13 @@ md-sidenav.site-sidenav.md-closed {
   visibility: hidden;
 }
 
+/* Override visibility of main container that is getting cut off when printing with sideNav open */
+@media print {
+    div.main-application > div {
+        overflow: visible !important;
+    }
+}
+
 /***************
  * TYPE DEFAULTS
  ***************/
