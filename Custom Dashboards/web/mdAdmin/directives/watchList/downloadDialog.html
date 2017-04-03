@@ -18,6 +18,15 @@
       <md-radio-button ng-value="true"><span ma-tr="dashboards.v3.app.downloadDataForAllPoints"></span></md-radio-button>
     </md-radio-group>
     
+    <md-input-container>
+        <label ma-tr="dashboards.v3.app.rollupType"></label>
+        <md-select name="rollupType" ng-model="$ctrl.rollupType">
+          <md-option ng-repeat="t in $ctrl.rollupTypes track by t.type" ng-value="t.type" ng-if="::t.type !== 'POINT_DEFAULT'">
+            <span ma-tr="{{::t.translation}}"></span>
+          </md-option>
+        </md-select>
+    </md-input-container>
+    
     <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
       <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.csv"></span>
     </md-button>

@@ -396,9 +396,11 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
-            controller: ['DateBar', 'pointValues', 'mdAdminSettings', 'Util', function(DateBar, pointValues, mdAdminSettings, Util) {
+            controller: ['DateBar', 'pointValues', 'mdAdminSettings', 'Util', 'MA_ROLLUP_TYPES', function(DateBar, pointValues, mdAdminSettings, Util, MA_ROLLUP_TYPES) {
                 this.dateBar = DateBar;
                 this.mdAdminSettings = mdAdminSettings;
+                this.rollupTypes = MA_ROLLUP_TYPES;
+                this.rollupType = 'NONE';
                 
                 this.downloadData = function downloadData(downloadType, all) {
                     var points = all ? this.points : this.selected;
@@ -419,7 +421,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                         responseType: 'blob',
                         from: DateBar.from,
                         to: DateBar.to,
-                        rollup: DateBar.rollupType,
+                        rollup: this.rollupType,
                         rollupInterval: DateBar.rollupIntervals,
                         rollupIntervalType: DateBar.rollupIntervalPeriod
                     }).then(function(response) {
