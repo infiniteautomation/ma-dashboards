@@ -203,7 +203,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 chart.validateNow(false, true);
         });
         
-        $scope.$watch('trendLines', function(newValue, oldValue) {
+        $scope.$watchCollection('trendLines', function(newValue, oldValue) {
             if (newValue === oldValue && newValue === undefined) return;
             $scope.options.trendLines = newValue;
         });
