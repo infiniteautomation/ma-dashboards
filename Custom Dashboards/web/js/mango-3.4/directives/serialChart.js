@@ -51,8 +51,8 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 </ma-serial-chart>`
  *
  */
-serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util'];
-function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util) {
+serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util', 'mangoDateFormats'];
+function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -634,7 +634,9 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             categoryField: "timestamp",
             'export': {
                 enabled: false,
-                libs: {autoLoad: false}
+                libs: {autoLoad: false},
+                dateFormat: mangoDateFormats.iso,
+                fileName: 'mangoChart'
             }
         };
     }

@@ -97,7 +97,8 @@ maServices.constant('mangoDateFormats', {
     timeSeconds: 'LTS',
     monthDay: 'MMM D',
     month: 'MMM',
-    year: 'YYYY'
+    year: 'YYYY',
+    iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 });
 
 maServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', function(localStorageServiceProvider, $httpProvider, $provide) {
