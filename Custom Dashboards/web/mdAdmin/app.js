@@ -1210,8 +1210,9 @@ mdAdminApp.run([
     '$stateParams',
     'DateBar',
     '$document',
+    '$mdDialog',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
-        $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar, $document) {
+        $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar, $document, $mdDialog) {
 
     mdAdminSettings.generateTheme();
     $rootScope.stateParams = $stateParams;
@@ -1406,6 +1407,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
             // do automatic re-login if we are not on the login page
             if (!$state.includes('login') && !current.wasLogout) {
                 User.autoLogin().then(null, function() {
+                    // close dialogs
+                    $mdDialog.cancel();
+                    
                     // redirect to the login page if auto-login fails
                     $state.loginRedirectUrl = '/dashboards' + $location.url();
                     $state.go('login');
