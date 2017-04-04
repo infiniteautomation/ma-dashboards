@@ -3,9 +3,9 @@
 
     <p>
         The <a ui-sref="dashboard.settings.watchListBuilder">Watch List Builder</a> page is used to create groups of 
-		<code>Data Points</code> to display on the <a ui-sref="dashboard.help.watchList">Watch List</a> page.
-        A <code>Watch List</code> at its most basic can be a group of <code>Data Points</code> you arbitrarily choose from your system.
-        A more complex <code>Query</code> based <code>Watch List</code> can include <code>Parameters</code> and <code>RQL</code> logic allowing you to create dynamic
+		Data Points to display on the <a ui-sref="dashboard.help.watchList">Watch List</a> page.
+        A <code>Watch List</code> at its most basic can be a group of Data Points you arbitrarily choose from your system.
+        A more complex <code>Point query</code> based <code>Watch List</code> can include <code>Parameters</code> and <code>RQL</code> queries, which allows you to create
         <code>Watch Lists</code> that respond to system structure and user interaction with <code>Parameter</code> values.
     </p>
     
@@ -13,22 +13,23 @@
     
     <p>
         When you first create a <code>Watch List</code> you will need to set a <code>Name</code> before saving. An <code>Export ID (XID)</code>
-        for that <code>Watch List</code> will automatically be assigned if you don't set one. <code>Read Permission</code> will automatically be set to
-        <code>user</code> and <code>Edit Permission</code> will be set to <code>edit-watchlists.</code>
+        for that <code>Watch List</code> will automatically be assigned if you don't set one. <code>Read permission</code> will automatically be set to
+        <code>user</code> and <code>Edit permission</code> will be set to <code>edit-watchlists</code>.
     </p>
     
     <p>
-        The dropdown to the left in the <code>Header</code> at the top of the <code>Watch List Builder</code> 
+        The dropdown, to the left in the header at the top of the <code>Watch List Builder</code>, 
         allows you to pick a <code>Watch List</code> to edit.
         To create a new <code>Watch List</code> click the <code>New</code> button. The <code>Delete</code> button will
         remove a <code>Watch List</code> from the system after confirming. At any point a <code>Watch List</code> can be
-        saved with the <code>Save</code> button and viewed on the <code>Watch List Page</code> with the <code>View</code> button.
+        saved with the <code>Save</code> button and viewed on the <a ui-sref="dashboard.watchList">Watch List</a> page 
+        with the <code>View</code> button.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-Header.png" alt="Help-ScreenShots-WatchListBuilder-Header"/>
     
     <p>
-        The three type of <code>Watch Lists</code> currently supported are <code>Static, Point Query,</code> and <code>Point Hierarchy.</code> 
+        The three type of <code>Watch Lists</code> currently supported are <code>Static</code>, <code>Point query</code>, and <code>Point hierarchy</code>. 
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-RadioButtons.png" alt="Help-ScreenShots-WatchListBuilder-RadioButtons"/>
@@ -39,25 +40,24 @@
     <h2>Static Watch Lists</h2>
     
     <p>
-        <code>Static Watch Lists</code> allow you to manually select from any of the <code>Data Points</code> in the system.
-        The table on the <code>Select From Table Tab</code> allows you to filter by searching. Multiple <code>Data Points</code>
-        can be selected by clicking the top <code>Checkbox</code> and all rows currently viewed will be added to the <code>Watch List.</code>
+        Watch Lists of type <code>Static</code> allow you to manually select from any of the Data Points in the system.
+        The table on the <code>Select From Table</code> tab allows you to filter by searching. Multiple data points
+        can be selected and the top checkbox will select / deselect all rows currently viewed. Checked rows will be added to the <code>Watch List</code>
         You can view more rows at a time and tab between pages using the controls below the table.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-SelectFromTable.png" alt="Help-ScreenShots-WatchListBuilder-SelectFromTable"/>
     
     <p>
-        Any <code>Checked Data Points</code> will show up on the <code>Selected Points Tab.</code>
-        From this tab you can remove any <code>Data Points</code> from a list by selecting the <code>Check Box</code> for each and then click the <code>Remove Selected</code>
+        Any checked Data Points will show up on the <code>Selected Points</code> tab.
+        From this tab you can remove any Data Points from a list by selecting the checkbox for each and then click the <code>Remove Selected</code>
         button. 
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-ReorderRemove.png" alt="Help-ScreenShots-WatchListBuilder-ReorderRemove"/>
     
-    <p>    
-    You can also reorder how points will display on a <code>Watch List</code> by <code>Dragging and Dropping</code> the 
-        <code>3 Dashes</code> icon up and down.
+    <p>
+    You can also reorder how points will display on a Watch List by dragging and dropping the 3 Dashes icon up and down.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-ReorderIcon.png" alt="Help-ScreenShots-EditMenu-ReorderIcon"/>
@@ -67,16 +67,15 @@
     <h2>Point Hierarchy Watch Lists</h2>
     
     <p>
-        The <code>Point Hierarchy</code> type of <code>Watch List</code> allow you to pick points from a hierarchical folder like structure regardless of their <code>Data Source</code> or <code>Device Name.</code>
-        The <a ui-sref="dashboard.settings.pointHierarchy">Point Hierarchy</a> page is used to define a meaningful hierarchy.
+        The <code>Point hierarchy</code> type of <code>Watch List</code> allow you to pick points from a hierarchical folder structure regardless of their data source or device name.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-Tabs-Hierarchy.png" alt="Help-ScreenShots-WatchListBuilder-Tabs-Hierarchy"/>
     
     <p>
-        The <code>Point Hierarchy</code> set up for your system will display under the <code>Select Folders Tab.</code>
-        Clicking the <code>Checkbox</code> next to a folder name will include any <code>Data Points</code>
-        contained by those folders in your <code>Watch List.</code>
+        The <code>Point hierarchy</code> set in your system will display under the <code>Select Folders</code> tab.
+        Clicking the checkbox next to a folder name will include any Data Points
+        contained by those folders in your Watch List.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-Hierarchy-SelectFolders.png" alt="Help-ScreenShots-WatchListBuilder-Hierarchy-SelectFolders"/>
@@ -86,74 +85,75 @@
     <h2>Point Query Watch Lists</h2>
     
     <p>
-        A <code>Query</code> based <code>Watch List</code> can include <code>Parameters</code> and <code>RQL</code> logic allowing you to create dynamic
-        <code>Watch Lists</code> that will give a different set of <code>Data Points</code> depending on the state of your system
-        and can be updated from the <a ui-sref="dashboard.help.watchList">Watch List Page</a> view by changing <code>Parameter Values.</code>
+        A <code>Point query</code> based Watch List can include <code>Parameters</code> and <code>RQL</code> logic allowing you to create dynamic
+        Watch Lists that will give a different set of data points depending on the state of your system
+        and can be updated from the <a ui-sref="dashboard.help.watchList">Watch List page</a> view by changing <code>Parameter</code> values.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-Tabs-Query.png" alt="Help-ScreenShots-WatchListBuilder-Tabs-Query"/>
     
     <p>
-        The <code>Parameters Tab</code> is where you will add <code>Parameters</code> used to build a <code>Dynamic Query.</code>
-        Click the <code>Add a Parameter</code> button to add your first <code>Parameter.</code>
+        The <code>Parameters</code> tab is where you will add <code>Parameters</code> to build a dynamic query.
+        Click the <code>Add a Parameter</code> button to add your first <code>Parameter</code>.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-PointQuery-AddParam.png" alt="Help-ScreenShots-WatchListBuilder-PointQuery-AddParam"/>
     
     <p>
-        Each <code>Parameter</code> will have a <code>Label, Parameter Name,</code> and <code>Parameter Type.</code>
-        The <code>Label</code> will be used with the <code>Parameter Input</code> on the <code>Watchlist Page.</code>
-        The <code>Parameter Name</code> is a variable to be plugged into the <code>Query Tab's RQL.</code>
-        The <code>Parameter Type</code> is the type of input to use. Options are: <code>Text Input, Select, 
-        Number, Number Range, Date, Device Name, Data Source, & Point Hierarchy.</code>
+        Each <code>Parameter</code> will have a <code>Label</codE>, <code>Parameter name</code>, and <code>Parameter type</code>.
+        The <code>Label</code> will be used with the parameter's input element on the Watch List's page.
+        The <code>Parameter name</code> is a variable to be plugged into the RQL on the query tab.
+        The <code>Parameter type</code> is the type of input to use.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-PointQuery-WithParams.png" alt="Help-ScreenShots-WatchListBuilder-PointQuery-WithParams"/>
     
     <p>
-        Different <code>Parameter Types</code> will have different options which you can set by clicking the <code>Gear Icon.</code>
-        For example the <code>Name Contains</code> option for the <code>Device Name Parameter</code> here is limited to only those
-        Device Names containing the text <code>'Sample'.</code>    
+        Different <code>Parameter types</code> will have different options which you can set by clicking the gear icon on the right side of the parameter's row.
+        For example the <code>Name contains</code> option for the <code>Device name</code> type parameter could limit the dropdown to only device names contianing
+        the specified string. Such as the string 'Sample':
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-PointQuery-DeviceNameOptions.png" alt="Help-ScreenShots-WatchListBuilder-PointQuery-DeviceNameOptions"/>
     
     <p>
-        In this example we have a second <code>Parameter</code> with <code>Parameter Type</code> of <code>Select.</code>
-        Under a <code>Select Parameter</code> configuration you can set the different <code>Options</code> the user will pick from.
-        You can also check the <code>Select Multiple</code> box to make the <code>Select Paramter</code> a <code>Multi-Select Dropdown</code> that returns an array.
+        In this example we have a second <code>Parameter</code> with <code>Parameter type</code> of <code>Select</code>.
+        Opening the configuration with the gear icon, you can set the different <code>Options</code> the user will pick from.
+        You can also check the <code>Select multiple</code> box to make the dropdown select element a Multi-Select Dropdown that returns an array.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-PointQuery-TypeSelectOptions.png" alt="Help-ScreenShots-WatchListBuilder-PointQuery-TypeSelectOptions"/>
     
     <p>
-        The <code>Query Tab</code> is where you <code>Build</code> the <code>RQL</code> and plug in the <code>Paramter Variables.</code>
+        The <code>Query</code> tab is where you construct the <code>RQL</code> and plug in the <code>Parameter</code> names.
         Click the <code>Add Expression</code> button to add a new expression to the query. <code>RQL</code> will automatically be 
-        generated and usually you don't need to write <code>RQL</code> yourself. Each <code>Expression</code> will need to have a
-        <code>Property</code> to query on, the <code>Comparision Operator</code> to use, and the <code>Value</code> the <code>Property</code>
-        should be compared to. The <code>Value</code> can be a static value, or using <code>Angular's Double Curly Brace Interpolation</code> you 
-        can plug in your <code>Paramter Variables.</code> In this example the <code>Query</code> is on <code>Device Names</code> equal to our 
-        <code>Device Name Parameter</code> and <code>Data Point Names</code> containing our <code>Type Parameter.</code>
+        generated and usually you don't need to write <code>RQL</code> yourself. Each expression will need to have a
+        <code>Property</code> to query on, a comparison <code>Operation</code> to use, and the <code>Value</code> to
+        should be compare to. The <code>Value</code> can be a static value, or using Angular's double curly brace interpolation you 
+        can plug in your parameter <code>Name</code>. In this example the <code>Query</code> is on device names equal to our 
+        <code>Device name</code> parameter and data point names containing our <code>Type</code> parameter.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-PointQuery-QueryTab.png" alt="Help-ScreenShots-WatchListBuilder-PointQuery-QueryTab"/>
     
     <p>
-        Lastly, you can set <code>Sorting</code> and <code>Limit</code> properties for the <code>Watch List</code>
-        that will change how many <code>Data Points</code> are returned by the <code>Query</code> and what <code>Order</code> they are returned in.
+        Lastly, you can set up to three <code>Sort</code> and one <code>Limit</code> properties for the <code>RQL</code>
+        that will change how many Data Points are returned by the query, what <code>Start</code> index for those points is,
+        and what order they are returned in. If a query matched 20 data points, but had a <code>Limit</code> of 10 and a <code>Start</code>
+        of 10, then the second ten data points, points 11-20, would be returned.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-PointQuery-QueryTab-Sort.png" alt="Help-ScreenShots-WatchListBuilder-PointQuery-QueryTab-Sort"/>
     
     <p>
-        The end result is a <code>Dynamic Watch List</code> that allows users to view groups of <code>Data Points</code> with <code>Device Names</code> and <code>Point Name</code> queries
-        that update on the fly as the user changes the <code>Parameter Values</code> on the <code>Watchist Page View.</code>
+        The end result is a dynamic Watch List that allows users to view groups of Data Points with device names and point name queries
+        that update as the user changes the <code>Parameter</code> values while viewing the Watch List.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-PointQuery-ParamInputs.png" alt="Help-ScreenShots-WatchListBuilder-PointQuery-ParamInputs"/>
     
     <p>
-        <code>Point Query Watch Lists</code> enable system admins to set up powerful <code>Dynamic Watch Lists</code> that can be used to compare data in a comprehendable and logical manner &mdash; no 
-        matter how many <code>Data Points</code> exist. It can be quite useful for a small system with <code>10-100 Data Points</code> and even more so with systems with <code>100,000+ Data Points.</code>    
+        Point query Watch Lists enable system administrators to set up powerful dynamic Watch Lists that can be used to compare data in a comprehensible and logical manner &mdash; no 
+        matter how many Data Points exist in their system.    
     </p>
 </div>

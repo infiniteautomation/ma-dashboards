@@ -2,41 +2,41 @@
     <h1 ma-tr="dashboards.v3.dox.dataPointDetails"></h1>
 
     <p>
-        The <a ui-sref="dashboard.dataPointDetails">Data Point Details</a> page allows you drill down into the life a single <code>Data Point.</code> 
-        A <code>Data Point</code> can be selected using the <code>Point Selector</code> in the upper left pane. 
-        You can filter the dropdown list by typing either the <code>Data Point Name</code> or <code>Device Name</code> (caps sensitive). 
-        The results will update as you type. The <code>Live Value, XID, Timestamp of Last Update, 
-        Point Hierarchy Folder Path and Data Source</code> of the currently selected point will be displayed in this pane. 
-        You can also manually set a point’s value or link to the data point edit page using the <code>EDIT</code> button.
+        The <a ui-sref="dashboard.dataPointDetails">Data Point Details</a> page allows you to thoroughly examine a single <code>Data Point.</code> 
+        A <code>Data Point</code> can be selected using the filtering input in the upper left pane. 
+        You can filter the list and get a dropdown by typing either the point's <code>Name</code> or <code>Device Name</code> (case sensitive). 
+        The results will update as you type. The <code>Path</code> is the location of the point in the <code>Point Hierarchy</code>.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DPD-PointOverview.png" alt="Help-ScreenShots-DPD-PointOverview"/>
 
     <p>
-        The <code>Point Value History</code> pane will show you the point’s values either in <code>Realtime 
-        Mode</code> or over the <code>Selected Time Range</code> in the <code>Header Bar.</code> By default <code>Realtime Mode</code>
-        is enabled which will show the last 100 values logged to a data point’s history.
+        The <code>Point Value History</code> pane will show you the point’s values either in <code>Realtime</code> 
+        mode or over the selected time range in the Header Bar. By default <code>Realtime</code> Mode
+        is enabled which will show the last 100 value updates to a data point. This is recorded in the browser without
+        expanding the cache. So, if a point had a <code>Default cache size</code> of 100 this table would open filled,
+        but if the point has a small cache the table of updates will grow as the page is open.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DPD-ValueHistory.png" alt="Help-ScreenShots-DPD-ValueHistory"/>
 
     <p>
-        If you turn this mode off by clicking the <code>Realtime Toggle Button</code> you will see the point 
-        values using the time range from the header and <code>Rollup Settings</code> from the <a ui-sref="dashboard.help.dateBar">Date Bar</a>.
+        If you turn this mode off by clicking the <code>Realtime</code> toggle button you will see the point 
+        values using the time range from the header and <code>Rollup</code> settings from the <a ui-sref="dashboard.help.dateBar">Date Bar</a>.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DPD-ValueHistoryRolledUp.png" alt="Help-ScreenShots-DPD-ValueHistoryRolledUp"/>
 
     <p>
-        The <code>Point Statistics</code> pane will show you statistics over the <code>Selected Time Range.</code> 
-        It will show different statistics depending on the type of data point selected.
+        The <code>Point Statistics</code> pane will show you statistics over the selected time range.
+        It will show different statistics depending on the data type of the point selected.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DPD-Stats.png" alt="Help-ScreenShots-DPD-Stats"/>
 
     <p>
-        The <code>Point Comments</code> pane will show any <code>User Notes</code> specific to the selected data point. 
-        Click the <code>Add Button</code> to enter a new note for the data point and it will be shown on the table.
+        The <code>Point Comments</code> pane will show any user notes specific to the selected data point. 
+        Click the <code>ADD</code> button to enter a new note for the data point and it will be shown on the table.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DPD-Notes.png" alt="Help-ScreenShots-DPD-Notes"/>
@@ -44,10 +44,10 @@
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DPD-AddNote.png" alt="Help-ScreenShots-DPD-AddNote"/>
     <p>
         The <code>Chart</code> will show a visualization of the data points values over the selected 
-        time range. The <code>Rollup Settings</code> from the <code>Date Bar</code> will be used to average the data 
-        if necessary. You can choose between different <code>Chart Types</code> and line smoothing 
+        time range. The <code>Rollup</code> settings from the <a ui-sref="dashboard.help.dateBar">Date Bar</a> will be used to average the data 
+        if necessary. You can choose between different chart types and line smoothing 
         options using the drop down selector in the upper right corner. Additionally, 
-        you can export an image or data file by clicking the <code>Download Icon</code> hovering 
+        you can export an image or data file by clicking the download icon hovering 
         over the upper right corner of the chart.
     </p>
 

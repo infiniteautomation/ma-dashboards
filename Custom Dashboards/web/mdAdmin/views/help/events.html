@@ -3,15 +3,15 @@
 
     <p>
         The <a ui-sref="dashboard.events">Events Page</a> allows you to view a table of all <code>Events</code> (also known as <code>Alarms</code>) 
-        that are stored in the system. You can sort the table by clicking a <code>Column Header.</code> The <code>Up/Down Arrow</code> next to the header will show which column
-        the table is sorting by and whether it is sorting by <code>Ascending</code> or <code>Descending.</code>
+        that are stored in the system. You can sort the table by clicking a column header. The arrow next to a header will show which column
+        the table is sorting by and whether it is ascending or descending.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-EventsTable.png" alt="Help-ScreenShots-Events-EventsTable"/>
 
     <p>
-        You can filter the table by <code>Event Type, Alarm Level, 
-        Active Status,</code> and whether or not the event has been <code>Acknowledged.</code>
+        You can filter the table by Event Type, Alarm Level, 
+        Active Status, and whether or not the event has been Acknowledged.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-EventTypeButtons.png" alt="Help-ScreenShots-Events-EventTypeButtons"/>
@@ -19,64 +19,63 @@
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-FilterDropdowns.png" alt="Help-ScreenShots-Events-FilterDropdowns"/>
 
     <p>
-        The <code>Message Column</code> will show the message associated with the event. If the message is too long to fit on one line it will be
-        concatenated and shown with an elipsis. You can click the concatenated message to have it expand to show the entire message. 
+        The <code>Message</code> column will show the message associated with the event. If the message is too long to fit on one line it will be
+        concatenated and shown with an elipsis. You can click the concatenated message to have it expand to show the entire message. You can also add
+        additional comments to an event's message by clicking on the alarm level flag icon, <i class="fa fa-flag alarm-flag fa-lg NONE"/>, at the far left of the row.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-MessageColumn.png" alt="Help-ScreenShots-Events-MessageColumn"/>
 
     <p>
-        The <code>Status Column</code> represents the current status of the alarm. 
-        The filter options are: <code>All, Active, Returned To Normal</code> and <code>No RTN</code> (Will never Return to Normal). 
-        Note that when an alarm returns to normal the time at which it happened will be shown.
+        The <code>Status</code> column represents the current status of the alarm. You can filter on status using the <code>Active Status</code> dropdown at the top of the table. 
+        The filter options are: <code>All</code>, <code>Active</code>, <code>Returned To Normal</code> and <code>No Return</code> (meaning event doesn't "Return to Normal"). 
+        Note that when an alarm returns to normal the time at which it happened will be shown in the <code>Status</code> column.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-StatusColumn.png" alt="Help-ScreenShots-Events-StatusColumn"/>
 
     <p>
-        The <code>Duration Column</code> represents the total time between the alarm start and when it <code>Returned To Normal.</code>
+        The <code>Duration</code> column represents the total time between the alarm start and when it <code>Returned To Normal</code>.
         If the alarm is still active this time represents the alarm start until now.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-DurationColumn.png" alt="Help-ScreenShots-Events-DurationColumn"/>
 
     <p>
-        The <code>Acknowledged Column</code> represents if an alarm has been acknowledged or not. An empty <code>Green Circle Icon</code> will
-        display for <code>Un-Acknowledged Events</code> and it will be filled in with a <code>Green Checked Icon</code> if the alarm is acknowledged.
-        You can <code>Acknowledge a Single Event</code> by clicking the empty <code>Green Circle Icon</code> and it will fill in with the checkmark after it becomes acknowleged.
+        The <code>Acknowledge</code> column represents if an alarm has been acknowledged or not. An empty green circle icon, <i class="fa fa-circle-o fa-lg acknowledged-checkbox"/>, will
+        display for unacknowledged events and it will be filled in with a green checked icon, <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox"/>, if the alarm is acknowledged.
+        You can acknowledge a single event by clicking the empty green circle icon and it will show the checkmark after it becomes acknowleged.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-AcknowledgeGreenCircle.png" alt="Help-ScreenShots-Events-AcknowledgeGreenCircle"/>
 
     <p>
-        You can <code>Acknowledge All Events</code> that 
-        match the <code>Filter Results</code> by clicking the <code>Acknowledge # Events Button.</code>
-        After acknowledging all events that match the query the filter will switch to <code>Acknowledged.</code>
+        You can acknowledge all events that 
+        match the current filter by clicking the <code>Acknowledge # Events</code> button.
+        After acknowledging all events that match the query the filter will switch to <code>Acknowledged</code>.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-AcknowledgeAllButton.png" alt="Help-ScreenShots-Events-AcknowledgeAllButton"/>
 
     <p>
-        If you have any <code>Unacknowledged Events</code> in your system they will display in the 
-        <code>Header Bar</code> under the <code>Alarm Icon.</code> 
+        If you have any unacknowledged events in your system they will display in the 
+        Header Bar under the <code>Alarm Icon</code>: 
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-AlarmIcon.png" alt="Help-ScreenShots-Events-AlarmIcon"/>
 
     <p>
-        You can see the <code>Total Count</code> of <code>Unacknowledged Events</code> 
-        as well as the breakdown by <code>Alarm Level</code> by clicking the <code>Alarm Icon</code> to <code>Expand the Menu.</code> Clicking any of these menu 
-        items will open the <a ui-sref="dashboard.events">Events Page</a> with the filters automatically set to the chosen <code>Alarm Level.</code>
+        You can see the total count of unacknowledged events 
+        as well as the breakdown by <code>Alarm Level</code> by clicking the <code>Alarm Icon</code> to expand the menu. Clicking any of these menu 
+        items will open the <a ui-sref="dashboard.events">Events Page</a> with the filters automatically set to the chosen <code>Alarm Level</code>.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-AlarmIconMenu.png" alt="Help-ScreenShots-Events-AlarmIconMenu"/>
 
     <p>
-        <strong>*Note:</strong> If you don’t see all the events in the <code>Events Table</code> after clicking one of these menu items you 
-        might have the <code>Date Filter</code> option turned on. If the <code>Date Filter</code> 
-        option is switched on the <code>Events Table</code> will be filtered by the <code>Selected Time 
-        Range</code> in the <code>Header Bar.</code> If an event is older than the <code>Selected 
-        Time Range</code> it won’t show up on the <code>Events Table.</code> By default this option will be turned off.
+        <strong>*Note:</strong> If you don’t see all the events in the table after clicking one of these menu items 
+        the <code>Date filter</code> toggle switch may be enabled, and if so an event older than the selected 
+        time range it won’t show up in the <code>Events Table</code>. By default this option will be turned off.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-DateFilter.png" alt="Help-ScreenShots-Events-DateFilter"/>

@@ -2,33 +2,32 @@
 	<h1 ma-tr="dashboards.v3.dox.menuEditor"></h1>
 
 	<p>
-		The <code>Sidebar Menu</code> you see on the left is completely customizable from the <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page (found under 
-		<code>Settings > Edit Menu</code>).
-		You can <code>Hide/Show</code> menu items, <code>Edit</code> menu item <code>Labels</code> and <code>Icons,</code> <code>Reorder</code> menu items, create <code>New</code> menu 
-		items and <code>Delete</code> custom menu items. 
+		The Sidebar Menu you see on the left is completely customizable from the <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page (found under 
+		<code>Administration > Edit Menu</code>).
+		You can hide or show menu items, edit menu item labels and icons, reorder menu items, create new menu 
+		items and delete custom menu items. 
 	
 	<br><br>
 	
 	<h2>The Edit Menu Page</h2>
 	
 	<p>
-		The <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page is where you will edit pre-existing menu items.
-		After modifying the <code>Menu Structure</code> you need to hit the <code>Save</code> button.
+		The <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page is where you will edit existing menu items.
+		After modifying the menu structure you need to hit the <code>Save</code> button.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-Controls.png" alt="Help-ScreenShots-EditMenu-Controls"/>
 	
 	<p>	
 		The <code>Undo Changes</code>
-		button will reset the <code>Menu Structure</code> to its last saved state. The <code>Reset Default Items</code> button will
-		reset any modifications you have made to default menu items but preserve <code>User Created (Custom)</code> menu items.
-		The <code>Delete Custom Menu</code> button will reset both default
-		and custom menu items to the inital structure.
+		button will reset the menu structure to its last saved state. The <code>Reset Default Items</code> button will
+		reset any modifications you have made to default menu items but preserve user created menu items.
+		The <code>Delete Custom Menu</code> button will reset both default and custom menu items to the initial structure.
  	</p>
 	
 	<p>
 		The table below the buttons will initially show you the <code>Root</code> (top-level) menu items.
-		Each row is a seperate <code>Menu Item</code> or <code>Parent Folder.</code>
+		Each row is a seperate <code>Menu Item</code> or parent folder for other menu items.
 		The order they are in is the order they will be shown on the menu.
 	</p>
 	
@@ -59,37 +58,37 @@
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-ReorderIcon.png" alt="Help-ScreenShots-EditMenu-ReorderIcon"/>
 	
 	<p>
-		The <code>Down-Right Arrow</code> icon will <code>Expand</code> a <code>Parent Folder</code> menu item.
+		The <code>Down-Right Arrow</code> icon will <code>Expand</code> a parent folder menu item.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-ExpandIcon.png" alt="Help-ScreenShots-EditMenu-ExpandIcon"/>
 	
 	<p>
-		If you <code>Expand</code> a <code>Parent Folder</code> menu item the table will update to show the menu items under that parent item.
+		If you <code>Expand</code> a parent folder menu item the table will update to show the menu items under that parent item.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-TableHelp.png" alt="Help-ScreenShots-EditMenu-TableHelp"/>
 	
 	<p>
-		The <code>Menu Path</code> will update to show you which folder you are looking at. You can click a parent item name in the
-		<code>Menu Path</code> (such as <code>Root</code>) to jump back up to the higher level view.
+		The <code>Menu path</code> will update to show you which folder you are looking at. You can click a parent item name in the
+		<code>Menu path</code> (such as <code>Root</code>) to jump back up to the higher level view.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-BreadCrumbs.png" alt="Help-ScreenShots-EditMenu-BreadCrumbs"/>
 	
 	<p>
 		At any point you can click the <code>Plus FAB Icon</code> which is hovering over the bottom right of the table. This will open the 
-		<code>New Menu Item Dialog</code> to create a menu item under the currently open <code>Parent Folder.</code>
+		<code>Create menu item</code> dialog to create a menu item under the currently open parent folder.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-AddFab.png" alt="Help-ScreenShots-EditMenu-AddFab"/>
 	
 	<br><br>
 	
-	<h2>The New/Edit Menu Item Dialog</h2>
+	<h2>The Create/Edit Menu Item Dialog</h2>
 	
 	<p>
-		The <code>New/Edit Menu Item Dialog</code> will popup if you click the <code>Add New Menu Item</code> FAB button on the <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page
+		The <code>Create/Edit menu item</code> dialog will open if you click the add new menu item FAB button on the <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page
 		or the <code>Add/Edit Menu Item</code> button on the <a ui-sref="dashboard.help.customPages">Page Editor</a>.
 	</p>
 	
@@ -98,43 +97,43 @@
 	<br><br>
 	
 	<p>
-		From this dialog you can set the menu item's properties. At the top you can choose a <code>Parent Item</code> to nest your menu item under. Alternatively you can choose
-		to hide the item from the menu by clicking the <code>Show Menu Item</code> toggle.
+		From this dialog you can set the menu item's properties. At the top you can choose a parent item to nest your menu item under. Alternatively you can choose
+		to hide the item from the menu by clicking the show menu item toggle on the left of the row.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-ParentItem-Toggle.png" alt="Help-ScreenShots-EditMenu-ParentItem-Toggle"/>
 	
 	<p>
-		The <code>State Name</code> is the unique ID for the menu item. If you are using a parent item it should contain the parent menu item's state name. All state names should 
-		start with <code>dashboard.</code> as this is the state name of the root (top level). The <code>State URL</code> is what will display in the browser's address bar and will be 
-		used in the <code>URL</code> to directly link to the page. It will be prefixed with the parent states URL.
+		The <code>State name</code> is the unique ID for the menu item. If you are using a parent item it should begin with the parent menu item's state name. All state names should 
+		start with <code>dashboard.</code> as this is the state name of the root (top level). The <code>URL path</code> is what will display in the browser's address bar and will be 
+		used in the <code>URL</code> to directly link to the page. It will be prefixed with the parent states' URL.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-State-Url.png" alt="Help-ScreenShots-EditMenu-State-Url"/>
 	
 	<p>
 		The radio buttons allow you to choose whether or not make the <a ui-sref="dashboard.help.dateBar">Date Bar</a> visible on the page. Also, you can choose whether or not to have rollup
-		controls display on the <code>Date Bar.</code>
+		controls display on the Date Bar.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-DateBarOn.png" alt="Help-ScreenShots-EditMenu-DateBarOn"/>
 	
 	<p>
-		The <code>Choose a Custom Page</code> dropdown will list all the <code>User Created</code> custom pages that are saved in the system. You can choose one to link to or disable this functionality
+		The <code>Choose a Custom Page</code> dropdown will list all the user created custom pages that are saved in the system. You can choose one to link to or disable this functionality
 		if the menu item should function just as a folder.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-ChoosePage.png" alt="Help-ScreenShots-EditMenu-ChoosePage"/>
 	
 	<p>
-		The <code>Menu Text</code> input defines the label that will display with the Menu Item and also in the <code>Header Bar.</code> If you are using custom translations you can enter
-		the translation key defined in <code>i18n.properties.</code> You can overide the <code>Menu Text</code> on default pages here as well.
+		The <code>Menu text</code> input defines the label that will display with the Menu Item and also in the Header Bar. If you are using custom translations you can enter
+		the translation key defined in <code>i18n.properties</code>. You can override the <code>Menu text</code> on default pages here as well.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-Label.png" alt="Help-ScreenShots-EditMenu-Label"/>
 	
 	<p>
-		The <code>Icon</code> to display to the left of the <code>Menu Text</code> can be set here using a <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> 
+		The <code>Menu icon name</code> to display to the left of the <code>Menu text</code> can be set here using a <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> 
 		or <a href="https://design.google.com/icons/" target="_blank">Material Icon</a> name. You will see a preview of the icon on the left.
 	</p>
 	
@@ -146,7 +145,7 @@
 
 	<p>
 		Users with the <strong>edit-menus</strong> permission can edit any of the menu items or structure. 
-		When editing the menu items you can set a permission under the <code>Permission Required</code> input of the <code>Edit Menu Dialog.</code>
+		When editing the menu items you can set a permission under the <code>Permission Required</code> input of the <code>Edit menu</code> dialog.
 		If the user does not have this permission the menu item will not be shown.
 	</p>
 </div>

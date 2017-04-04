@@ -3,48 +3,50 @@
 
     <p>
         The <a ui-sref="dashboard.settings.dashboardSettings">Dashboard Settings</a> page can be used to change the 
-        <code>Theme Colors</code> of the dashboard, swap out the <code>Logo</code> with your own, and set the <code>Code Coloring.</code>
+        <code>Theme hues</code> (colors) of the dashboard, load a different <code>Logo</code>, and set the <code>Code coloring</code>:
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DashboardSettings.png" alt="Help-ScreenShots-DashboardSettings"/>
     
     <p>
-        If you would like to use your own logo you should put it in the
-		image folder in your overrides. Create a new folder at
-		<code>${MA_HOME}/overrides/web/modules/dashboards/web/images</code> if you haven't already and place 
+        If you would like to use your own logo, you should put it inside
+		your Mango/overrides so that it persists through module updates. For instance, create
+		<code>Mango/overrides/web/modules/dashboards/web/images</code> if you haven't already and place 
 		your logo image in there. You can then reference the logo using
 		<code>/modules/dashboards/web/images/myLogo.png</code>
     </p>
     
     <p>
-        If you choose the <code>User Theme</code> option you can choose from the 
+        If you choose the <code>userTheme</code> option in the <code>Choose theme</code> select, you can choose from the 
         <a href="https://material.google.com/style/color.html#" target="_blank">20 Material Design Color Palettes</a> 
-        to use with the <code>Mango UI.</code>
+        to use within the Mango UI.
     </p>
     <p>
-        Per <code>Material Design Spec.</code> you should choose one <code>Color Palette</code> for each of the <code>Three Color Intentions</code> plus one for the <code>Background.</code>
+        Per the <a href="https://material.io/guidelines/style/color.html#color-color-schemes">Material Design specification</a>, you should choose one color palette for each of the three color intentions plus one for the background palette.
     </p>
     
     <ul>
-        <li><strong>Primary Palette</strong> - Used to represent primary interface elements.</li>
-        <li><strong>Accent Palette</strong> - Used to represent secondary interface elements.</li>
-        <li><strong>Warning Palette</strong> - Used to represent interface elements that the user should be careful of.</li>
+        <li><strong>Primary palette</strong> - Used to represent primary interface elements.</li>
+        <li><strong>Accent palette</strong> - Used to represent secondary interface elements.</li>
+        <li><strong>Warning palette</strong> - Used to represent interface elements that the user should be careful of.</li>
     </ul>
     
     <p>
-        The <code>Mango UI</code> will automatically update it's interface elements to use the <code>Color Palettes</code> across the UI.
+        The Mango UI will automatically update it's interface elements to use the color palettes, so remember to save
+        before navigating the page or it will change back! Advanced users can look into Mango/web/modules/dashboards/web/mdAdmin/dashboardSettings.json
+        if they wish to take color customization to the next level.
     </p>
     
     <p> 
-        You can turn on <code>Dark Mode</code> on any theme by checking the <code>Dark Theme</code> option.
+        You can turn on <code>Dark theme</code> on any theme by checking the <code>Dark theme</code> option.
         A dark version of the background palette will be used and white text will display on top for maximum contrast.
     </p>
     
     <p> 
-        Additionally you can set the <code>Code Coloring Theme</code> to be used across the dashboard. 
+        Additionally you can set the <code>Code coloring</code> theme to be used across the dashboard. 
         Choose a theme from the dropdown and you will see a live preview of the code coloring below.
-        Once saved, the <code>Code Coloring Theme</code>  will be used in the <code>Page Editor, Play Area, Demos,</code>
-        and <code>API Docs.</code>
+        Once saved, the <code>Code coloring</code>  will be used in <code>Edit pages</code>, <code>Play area</code>, <code>Examples</code>,
+        and <code>API Docs</code>.
     </p>
 
 </div>

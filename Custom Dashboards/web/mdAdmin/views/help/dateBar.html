@@ -2,78 +2,74 @@
     <h1 ma-tr="dashboards.v3.dox.dateBar"></h1>
 
     <p>
-        The <code>Date Bar</code> is used to manually overide the <code>Selected Time Range</code> in the <code>Header Bar.</code>
-        Currently the <code>Date Bar</code> is used by the <code>Watch List, Data Point Details,</code> and <code>Events Page</code>
-        (any page where date settings apply). 
-        To the right of the <code>Time Range Selector</code> in the <code>Header Bar</code> is a <code>Calendar Icon.</code> 
+        The <strong>Date Bar</strong> is used to manually overide the selected time range in the <strong>Header Bar</strong>.
+        Currently the Date Bar is used by the <code>Watch List</code>, <code>Data Point Details</code>, and <code>Events Page</code>
+        (all pages in /dashboards/ where date settings apply). 
+        To the right of the time period selector in the Header Bar is a Calendar Icon: 
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-HeaderTimeRange.png" alt="Help-ScreenShots-HeaderTimeRange"/>
     
     <p>
-        Clicking this icon will <code>Expand/Hide</code> the <code>Date Bar.</code>
+        Clicking this icon will expand or hide the Date Bar.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-Expanded.png" alt="Help-ScreenShots-DateBar-Expanded"/>
     
     <p>
-        The <code>Date Bar</code> can be used to set a specific <code>To-From Date/Time Range.</code>
+        The Date Bar can be used to set a specific range of dates and times.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-Dates.png" alt="Help-ScreenShots-DateBar-Dates"/>
     
     <p>
-        Clicking any of these four inputs will allow you to select a <code>Date</code> from a <code>Calendar Popup</code>
+        Clicking any of the date inputs will allow you to select from a Calendar popup:
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-Calendar.png" alt="Help-ScreenShots-DateBar-Calendar"/>
     
     <p>
-        or <code>Time</code> from a <code>Clock Popup.</code> 
+       Clicking on the time inputs will allow you to select from a Clock popup: 
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-Clock.png" alt="Help-ScreenShots-DateBar-Clock"/>
     
     <p>
-        <code>Rollups</code> are used to make sure a reasonable amount of data is displayed on charts and 
+        Rollups are used to make sure a reasonable amount of data is displayed on charts and 
         point value history tables. <code>Rollup</code> settings will be 
-        shown in the <code>Date Bar</code> if they can be used by the current page.
-        Rollup settings will not show on the <code>Events Page</code> as they do not apply to that page.
+        shown in the Date Bar if they can be used by the current page.
+        For instance, rollup settings will not show on the <a ui-sref="dashboard.events">Events Page</a> as they do not apply to that page.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-RollupControls.png" alt="Help-ScreenShots-DateBar-RollupControls"/>
     
     <p>
-        By default <code>Auto Rollup</code> settings will be used but if you 
-        turn off <code>Auto Rollup</code> you can manually specify a rollup interval. Changing <code>Rollup Type</code> 
-        allows you to view <code>Rollup Types</code> other than <code>Average,</code> such as <code>Delta, Max</code> and <code>Min.</code>
-        If you have a <code>Non-Numeric Data Point</code> selected on the <code>Data Point Details Page</code> the 
-        <code>Rollup Type</code> will automatically be set to <code>None</code> and only certain <code>Rollup Types</code> will be available.
+        By default <code>Auto rollup</code> settings will be used but if you 
+        turn off <code>Auto rollup</code> you can manually specify a rollup interval. Changing <code>Rollup type</code> 
+        allows you to view rollups other than <code>Average</code>, such as <code>Delta</code>, <code>Maximum</code> and <code>Minimum</code>.
+        If you have a data point selected on the <code>Data Point Details</code> page which is not Numeric, the 
+        <code>Rollup type</code> will automatically be set to <code>None</code> and only certain types will be available.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-RollupsFiltered.png" alt="Help-ScreenShots-DateBar-RollupsFiltered"/>
 
     <p>
-        If you don’t manually specify <code>To/From Times</code> 
-        (you are using one of the <code>Selected Time Range</code> presets from the <code>Header Bar</code>) 
-        you will see the <code>Update Options.</code> 
+        If you don’t manually specify a date range, then you are using one of the preset ranges in the Header Bar (such as "Last 5 minutes") 
+        you will see the update interval options.
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-UpdateControls.png" alt="Help-ScreenShots-DateBar-UpdateControls"/>
     
     <p>
-        When <code>Auto Update</code> is turned on the time range will refresh on the given <code>Update Interval</code> 
-        and re-query for <code>Point Values</code> to use in the <code>Charts and Point Value History Tables.</code> 
-        If you don’t have <code>Auto Update</code> selected you can click the <code>Reload Icon</code> on the far right 
-        of the <code>Date Bar</code> to <code>Manually Update</code> the time range up to <code>Now.</code>
+        When <code>Auto update</code> is checked, the time range will refresh on the given <code>Update interval</code> 
+        and re-query values to use in the charts and history tables. 
+        Whether <code>Auto update</code> is selected or not, you can click the reload icon on the far right 
+        of the <code>Date bar</code> to cause a refresh of the time range selected and load the latest data:
     </p>
     
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-RefreshIcon.png" alt="Help-ScreenShots-DateBar-RefreshIcon"/>
 
     <p>
-        The <a ui-sref="dashboard.help.events">Events Page</a> has the option to disable date filtering. The <code>Date Filter</code> checbox can be used to enable or disable filtering of the <code>Events Table</code> by 
-        the <code>Selected Time Range</code> in the <code>Header Bar.</code>
+        The <a ui-sref="dashboard.help.events">Events Page help</a> describes the option to disable date filtering on the events page.
     </p>
-    
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-DateBar-EventsDateFilter.png" alt="Help-ScreenShots-DateBar-EventsDateFilter"/>
 </div>
