@@ -13,14 +13,14 @@ define([
     './services/mdAdminSettings',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
-    'amcharts/amcharts',
+    './components/googleAnalytics/googleAnalytics',
     'moment-timezone',
     'angular-ui-router',
     'angular-ui-sortable',
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, mdAdminSettings, pageView, livePreview, AmCharts, moment) {
+], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, mdAdminSettings, pageView, livePreview, googleAnalytics, moment) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
@@ -47,6 +47,7 @@ mdAdminApp.factory('Page', Page)
     .factory('mdAdminSettings', mdAdminSettings)
     .directive('pageView', pageView)
     .directive('livePreview', livePreview)
+    .component('maGoogleAnalytics', googleAnalytics)
     .constant('require', require)
     .constant('CUSTOM_USER_MENU_XID', 'custom-user-menu')
     .constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages')
