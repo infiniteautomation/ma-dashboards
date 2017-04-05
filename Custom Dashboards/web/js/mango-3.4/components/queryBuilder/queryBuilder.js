@@ -54,7 +54,12 @@ var queryBuilder = function queryBuilder(cssInjector) {
         sort.push({desc: false});
         this.sort = sort;
         this.limit = limit;
-        this.rootQueryNode = node;
+
+        if (node.args.length === 1 && node.args[0] instanceof query.Query && node.args[0].name === 'or') {
+            this.rootQueryNode = node.args[0];
+        } else {
+            this.rootQueryNode = node;
+        }
     }.bind(this);
     
     this.updateModel = function() {
@@ -118,7 +123,7 @@ return {
     },
     bindings: {
         properties: '<',
-        hideSortLimit: '<'
+        hideSortLimit: '<?'
     }
 };
 
