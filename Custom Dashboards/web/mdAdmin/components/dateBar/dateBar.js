@@ -16,14 +16,18 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
     this.mdAdminSettings = mdAdminSettings;
 
     this.$onInit = function() {
+        this.calcAutoRollup();
+        this.updateIntervalFromRollupInterval();
         this.calcUpdateIntervalString();
+        this.prevSettings = angular.copy(this.params.data);
     };
     
     this.$doCheck = function() {
-        if (this.params.from !== this.prevFrom || this.params.to !== this.prevTo) {
-            this.prevFrom = this.params.from;
-            this.prevTo = this.params.to;
+        if (!angular.equals(this.params.data, this.prevSettings)) {
+            this.prevSettings = angular.copy(this.params);
             this.calcAutoRollup();
+            this.updateIntervalFromRollupInterval();
+            this.calcUpdateIntervalString();
         }
     };
     
@@ -31,6 +35,8 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
         var intervalControlsPristine = !this.form ||
             ((!this.form.updateIntervals || this.form.updateIntervals.$pristine) &&
                 (!this.form.updateIntervalPeriod || this.form.updateIntervalPeriod.$pristine));
+        
+        // only change updateInterval if user hasn't manually set it 
         if (intervalControlsPristine) {
             this.params.updateIntervals = this.params.rollupIntervals;
             this.params.updateIntervalPeriod = this.params.rollupIntervalPeriod;

@@ -20,8 +20,7 @@ function DateBarFactory(localStorageService, MA_ROLLUP_TYPES, $filter) {
         updateIntervalPeriod: 'MINUTES',
         autoUpdate: true,
         expanded: false,
-        rollupTypesFilter: {},
-        rollupTypesFilterLast: {}
+        rollupTypesFilter: {}
     };
 
     function DateBar() {

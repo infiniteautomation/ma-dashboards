@@ -9,17 +9,15 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
           <md-input-container  flex="40">
             <label ma-tr="dashboards.v3.app.updateIntervals"></label>
             <input name="updateIntervals" ng-model="$ctrl.params.updateIntervals" type="number" min="1" step="1"
-                ng-disabled="!$ctrl.params.autoUpdate" ng-change="$ctrl.calcUpdateIntervalString()">
+                ng-disabled="!$ctrl.params.autoUpdate">
           </md-input-container>
           <md-input-container flex="40">
             <label ma-tr="dashboards.v3.app.updateUnit"></label>
-            <md-select name="updateIntervalPeriod" ng-model="$ctrl.params.updateIntervalPeriod"
-                ng-disabled="!$ctrl.params.autoUpdate" ng-change="$ctrl.calcUpdateIntervalString()">
+            <md-select name="updateIntervalPeriod" ng-model="$ctrl.params.updateIntervalPeriod" ng-disabled="!$ctrl.params.autoUpdate">
               <md-option ng-repeat="t in $ctrl.timePeriodTypes track by t.type" ng-value="t.type" ng-bind="t.label"></md-option>
             </md-select>
           </md-input-container>
-          <md-checkbox name="autoUpdate" flex="20" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.autoUpdate"
-              ng-change="$ctrl.calcUpdateIntervalString()">
+          <md-checkbox name="autoUpdate" flex="20" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.autoUpdate">
             <span ma-tr="dashboards.v3.app.autoUpdate"></span>
           </md-checkbox>
         </div>
@@ -28,18 +26,17 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
           <md-input-container flex="40">
             <label ma-tr="dashboards.v3.app.rollupIntervals"></label>
             <input name="rollupIntervals" ng-model="$ctrl.params.rollupIntervals" type="number" min="1" step="1"
-                ng-disabled="$ctrl.params.rollupType === 'NONE' || $ctrl.params.autoRollup" ng-change="$ctrl.updateIntervalFromRollupInterval()">
+                ng-disabled="$ctrl.params.rollupType === 'NONE' || $ctrl.params.autoRollup">
           </md-input-container>
           <md-input-container flex="40">
             <label ma-tr="dashboards.v3.app.rollupUnit"></label>
             <md-select name="rollupIntervalPeriod" ng-model="$ctrl.params.rollupIntervalPeriod"
-                ng-disabled="$ctrl.params.rollupType=='NONE' || $ctrl.params.autoRollup"
-                ng-change="$ctrl.updateIntervalFromRollupInterval()">
+                ng-disabled="$ctrl.params.rollupType=='NONE' || $ctrl.params.autoRollup">
               <md-option ng-repeat="t in $ctrl.timePeriodTypes track by t.type" ng-value="t.type" ng-bind="t.label"></md-option>
             </md-select>
           </md-input-container>
           <md-checkbox name="autoRollup" flex="20" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.autoRollup"
-              ng-disabled="$ctrl.params.rollupType === 'NONE'" ng-change="$ctrl.calcAutoRollup()">
+              ng-disabled="$ctrl.params.rollupType === 'NONE'">
             <span ma-tr="dashboards.v3.app.autoRollup"></span>
           </md-checkbox>
           <md-input-container flex="30" style="margin-left:15px">
