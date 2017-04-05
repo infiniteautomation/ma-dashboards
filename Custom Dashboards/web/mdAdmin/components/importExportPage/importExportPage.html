@@ -6,9 +6,9 @@
 </div>
 
 <md-button class="md-raised" ng-click="$ctrl.clear()"><md-icon>clear</md-icon> <span ma-tr="dashboards.v3.app.clear"></span></md-button>
-<md-button class="md-raised" ng-click="$ctrl.copyToClipboard()" ng-disabled="true"><md-icon>content_copy</md-icon> <span ma-tr="dashboards.v3.app.copyToClipboard"></span></md-button>
+<!-- <md-button class="md-raised" ng-click="$ctrl.copyToClipboard()" ng-disabled="true"><md-icon>content_copy</md-icon> <span ma-tr="dashboards.v3.app.copyToClipboard"></span></md-button> -->
 
-<md-checkbox ng-model="$ctrl.usePlainEditor">Use plain text area?</md-checkbox>
+<md-checkbox ng-model="$ctrl.usePlainEditor"><span ma-tr="dashboards.v3.app.usePlainTextArea"></span></md-checkbox>
 
 <div layout>
   <textarea flex ng-if="$ctrl.usePlainEditor" style="height: 600px;" ng-model="$ctrl.jsonString" ng-change="$ctrl.editorChanged()" class="ma-code-font"></textarea>
