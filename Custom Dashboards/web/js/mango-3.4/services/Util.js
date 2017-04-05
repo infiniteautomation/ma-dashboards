@@ -236,7 +236,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
      * Parses an array response from a Mango endpoint which contains a total
      * and assigns it as the property $total on the array
      */
-    Util.prototype.transformArrayResponse = function transformArrayResponse(data, fn, code) {
+    Util.prototype.transformArrayResponse = function transformArrayResponse(data, headers, code) {
         try {
             if (!data) return data;
             var parsed = angular.fromJson(data);

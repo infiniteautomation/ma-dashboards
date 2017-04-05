@@ -43,6 +43,7 @@ public class DashboardsSystemSettingsDefinition extends SystemSettingsDefinition
 		defaults.put(DashboardsCommon.DASHBOARDS_ICON_DESTINATION, DashboardsCommon.DEFAULT_DASHBOARDS_ICON_DESTINATION);
 		defaults.put(DashboardsCommon.DASHBOARDS_ICON_LOCATION, DashboardsCommon.DEFAULT_DASHBOARDS_ICON_LOCATION);
 		defaults.put(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_LOGGED_IN_PAGE);
+        defaults.put(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE_PRE_HOME, DashboardsCommon.DEFAULT_DASHBOARDS_LOGGED_IN_PAGE_PRE_HOME);
 		defaults.put(DashboardsCommon.DASHBOARDS_LOGIN_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_LOGIN_PAGE);
 		defaults.put(DashboardsCommon.DASHBOARDS_PRIVATE_FILES_LOCATION, DashboardsCommon.DEFAULT_DASHBOARDS_PRIVATE_FILES_LOCATION);
 		defaults.put(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX, DashboardsCommon.DEFAULT_DASHBOARDS_PRIVATE_URL_PREFIX);

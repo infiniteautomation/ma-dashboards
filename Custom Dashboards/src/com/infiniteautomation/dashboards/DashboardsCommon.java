@@ -22,6 +22,7 @@ public class DashboardsCommon{
 	public static final String DASHBOARDS_FIRST_USER_LOGIN_PAGE = "dashboards.login.userFirstLogin.page";
 	public static final String DASHBOARDS_FIRST_LOGIN_PAGE = "dashboards.login.firstLogin.page";
 	public static final String DASHBOARDS_LOGGED_IN_PAGE = "dashboards.login.loggedIn.page";
+    public static final String DASHBOARDS_LOGGED_IN_PAGE_PRE_HOME = "dashboards.login.loggedInPreHome.page";
 	public static final String DASHBOARDS_UNAUTHORIZED_PAGE = "dashboards.unauthorized.page";
 	public static final String DASHBOARDS_NOT_FOUND_PAGE = "dashboards.notFound.page";
 	public static final String DASHBOARDS_ERROR_PAGE = "dashboards.error.page";
@@ -36,6 +37,7 @@ public class DashboardsCommon{
     public static final String DEFAULT_DASHBOARDS_FIRST_USER_LOGIN_PAGE = "/dashboards/help/getting-started";
     public static final String DEFAULT_DASHBOARDS_FIRST_LOGIN_PAGE = "/dashboards/help/getting-started";
     public static final String DEFAULT_DASHBOARDS_LOGGED_IN_PAGE = "/dashboards/home";
+    public static final String DEFAULT_DASHBOARDS_LOGGED_IN_PAGE_PRE_HOME = "";
     public static final String DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE = "/dashboards/unauthorized";
 	public static final String DEFAULT_DASHBOARDS_NOT_FOUND_PAGE = "/dashboards/not-found";
 	public static final String DEFAULT_DASHBOARDS_ERROR_PAGE = "/dashboards/server-error";

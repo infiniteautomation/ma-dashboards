@@ -24,10 +24,16 @@ function loginFactory($state, User, $rootScope, $window) {
                     username: $scope.username,
                     password: $scope.password
                 });
-                user.$promise.then(function() {
+                user.$promise.then(function(user) {
                     var redirectUrl = '/dashboards/';
                     if ($state.loginRedirectUrl) {
                         redirectUrl = $state.loginRedirectUrl;
+                    } else if (user.mangoDefaultUri) {
+                        redirectUrl = user.mangoDefaultUri;
+                    } else if (user.homeUrl) {
+                        // user.mangoDefaultUri should be user.homeUrl if it is set
+                        // just in case mangoDefaultUri is empty
+                        redirectUrl = user.homeUrl;
                     }
                     $window.location = redirectUrl;
                 }, function(error) {

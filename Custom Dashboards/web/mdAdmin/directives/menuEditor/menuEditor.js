@@ -116,7 +116,6 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                 $scope.storeObject.$save().then(function(store) {
                     mangoState.addStates(store.jsonData.menuItems);
                     mdAdminSettings.customMenuItems = store.jsonData.menuItems;
-                    mdAdminSettings.defaultUrl = store.jsonData.defaultUrl;
                     resetToRoot();
                 });
             };

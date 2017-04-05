@@ -45,7 +45,6 @@ function MenuFactory(MENU_ITEMS, mdAdminSettings, JsonStore, CUSTOM_USER_MENU_XI
             menuItem.builtIn = true;
         });
         storeObject.jsonData.menuItems = menuItems;
-        storeObject.jsonData.defaultUrl = '/home';
         
         return storeObject;
     };

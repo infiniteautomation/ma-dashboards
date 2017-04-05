@@ -80,7 +80,7 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getLoggedInPageUriPreHome(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_LOGGED_IN_PAGE);
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE_PRE_HOME, DashboardsCommon.DEFAULT_DASHBOARDS_LOGGED_IN_PAGE_PRE_HOME);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;

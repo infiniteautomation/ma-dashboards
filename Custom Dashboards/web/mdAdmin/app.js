@@ -1092,12 +1092,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         }
         
         if (path === '/dashboards/') {
-            var homeUrl = user.homeUrl;
+            var homeUrl = user.mangoDefaultUri || user.homeUrl;
             if (homeUrl && homeUrl.indexOf('/dashboards') === 0) {
                 return homeUrl.substring(11); // strip dashboards from start of url
-            }
-            if (mdAdminSettings.defaultUrl) {
-                return mdAdminSettings.defaultUrl;
             }
             return '/home';
         }
@@ -1517,7 +1514,6 @@ $q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSet
     }
     if (userMenuStore) {
         MD_ADMIN_SETTINGS.customMenuItems = userMenuStore.jsonData.menuItems;
-        MD_ADMIN_SETTINGS.defaultUrl = userMenuStore.jsonData.defaultUrl;
     }
 
     var angularJsModuleNames = ['mdAdminApp'];

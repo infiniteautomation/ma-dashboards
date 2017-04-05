@@ -165,19 +165,17 @@ function UserProvider() {
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q'];
-    function UserFactory($resource, $cacheFactory, localStorageService, $q) {
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'Util'];
+    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util) {
         var User = $resource('/rest/v1/users/:username', {
                 username: '@username'
             }, {
             query: {
                 method: 'GET',
                 isArray: true,
-                transformResponse: function(data, fn, code) {
-                    if (code < 300) {
-                        return angular.fromJson(data).items;
-                    }
-                    return [];
+                transformResponse: Util.transformArrayResponse,
+                interceptor: {
+                    response: Util.arrayResponseInterceptor
                 },
                 withCredentials: true,
                 cache: true
@@ -186,11 +184,9 @@ function UserProvider() {
                 url: '/rest/v1/users?:query',
                 method: 'GET',
                 isArray: true,
-                transformResponse: function(data, fn, code) {
-                    if (code < 300) {
-                        return angular.fromJson(data).items;
-                    }
-                    return [];
+                transformResponse: Util.transformArrayResponse,
+                interceptor: {
+                    response: Util.arrayResponseInterceptor
                 },
                 withCredentials: true,
                 cache: true
@@ -260,6 +256,7 @@ function UserProvider() {
         User.logoutInterceptors = [];
 
         function loginInterceptor(data) {
+            data.resource.mangoDefaultUri = data.headers('X-Mango-Default-URI');
             User.loginInterceptors.forEach(function(interceptor) {
                 interceptor(data);
             });
