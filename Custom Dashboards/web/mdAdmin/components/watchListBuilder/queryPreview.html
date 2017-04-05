@@ -1,13 +1,15 @@
-<md-card md-colors="::{background: 'background-700'}" ng-if="$ctrl.watchlist.params.length">
-    <md-card-title>
-        <md-card-title-text>
-            <em ma-tr="dashboards.v3.app.chooseWatchListParameters"></em>
-        </md-card-title-text>
-    </md-card-title>
-    <md-card-content>
-        <ma-watch-list-parameters watch-list="$ctrl.watchlist" parameters-changed="$ctrl.queryChanged()" layout layout-align="start center" layout-wrap></ma-watch-list-parameters>
-    </md-card-content>
-</md-card>
+<div class="md-padding">
+    <md-card md-colors="::{background: 'background-700'}" ng-if="$ctrl.watchlist.params.length">
+        <md-card-title>
+            <md-card-title-text>
+                <em ma-tr="dashboards.v3.app.chooseWatchListParameters"></em>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <ma-watch-list-parameters watch-list="$ctrl.watchlist" parameters-changed="$ctrl.queryChanged()" layout layout-align="start center" layout-wrap></ma-watch-list-parameters>
+        </md-card-content>
+    </md-card>
+</div>
 
 <div class="watchlist-query-preview">
   <md-table-container>
