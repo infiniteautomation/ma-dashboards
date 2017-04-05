@@ -1,9 +1,9 @@
 <md-card class="watch-list-steps">
-  <form name="watchListForm" novalidate ng-submit="$ctrl.save()">
+  <form name="$ctrl.watchListForm" novalidate ng-submit="$ctrl.save()">
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
       <md-input-container flex flex-gt-md="25">
-        <md-select ng-model="$ctrl.selectedWatchlist" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.watchlistSelected(11)">
+        <md-select ng-model="$ctrl.selectedWatchlist" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.watchlistSelected()">
           <md-option ng-value="undefined"><i ma-tr="dashboards.v3.app.unsavedWatchlist"></i></md-option>
           <md-option ng-value="watchlist" ng-repeat="watchlist in $ctrl.watchlists track by watchlist.xid" ng-bind="watchlist.name"></md-option>
         </md-select>
@@ -37,8 +37,8 @@
           <div ng-include="$ctrl.baseUrl + '/query.html'"></div>
         </md-tab-body>
       </md-tab>
-      <md-tab id="watchlist-query-preview" ng-if="$ctrl.watchlist.type === 'query' && !$ctrl.watchlist.params.length">
-        <md-tab-label><span ma-tr="dashboards.v3.app.queryPreview"></span>&nbsp;<span>({{$ctrl.total}})</span></md-tab-label>
+      <md-tab id="watchlist-query-preview" ng-if="$ctrl.watchlist.type === 'query'">
+        <md-tab-label><span ma-tr="dashboards.v3.app.queryPreview"></span>&nbsp;<span>(<span ng-bind="$ctrl.queryPreviewTable.total"></span>)</span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/queryPreview.html'"></div>
         </md-tab-body>
@@ -62,7 +62,7 @@
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-selected-points" ng-if="$ctrl.watchlist.type === 'static'">
-        <md-tab-label><span ma-tr="dashboards.v3.app.selectedPoints"></span>&nbsp;({{$ctrl.watchlist.points.length}})</md-tab-label>
+        <md-tab-label><span ma-tr="dashboards.v3.app.selectedPoints"></span>&nbsp;(<span ng-bind="$ctrl.watchlist.points.length"></span>)</md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/selectedPoints.html'"></div>
         </md-tab-body>
@@ -76,3 +76,4 @@
   </md-card-actions>
   </form>
 </md-card>
+<pre ng-bind="$ctrl.tableSelection"></pre>

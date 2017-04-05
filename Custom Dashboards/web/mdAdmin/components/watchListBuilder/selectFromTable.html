@@ -9,7 +9,7 @@
   </div>
 
   <md-table-container>
-    <table md-table md-row-select="$ctrl.watchlist.type === 'static'" multiple ng-model="$ctrl.tableSelection" md-progress="$ctrl.queryPromise">
+    <table md-table md-row-select="true" multiple ng-model="$ctrl.tableSelection" md-progress="$ctrl.queryPromise">
       <thead md-head md-order="$ctrl.tableQuery.order" md-on-reorder="$ctrl.onPaginateOrSort">
         <tr md-row>
             <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
@@ -19,7 +19,7 @@
           </tr>
       </thead>
       <tbody md-body>
-        <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.allPoints track by point.xid" md-on-select="$ctrl.tableSelectionChanged" md-on-deselect="$ctrl.tableSelectionChanged">
+        <tr md-row md-select="point" md-select-id="xid" md-auto-select ng-repeat="point in $ctrl.allPoints" md-on-select="$ctrl.tableSelectionChanged" md-on-deselect="$ctrl.tableSelectionChanged">
             <td md-cell ng-bind="point.dataSourceName"></td>
             <td md-cell ng-bind="point.deviceName"></td>
             <td md-cell ng-bind="point.name"></td>

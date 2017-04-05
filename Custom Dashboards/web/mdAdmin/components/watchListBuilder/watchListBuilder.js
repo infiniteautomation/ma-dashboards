@@ -6,10 +6,10 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-WatchListBuilderController.$inject = ['Point', '$mdMedia', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings',
-    '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope', '$mdToast', 'User'];
-function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Util, mdAdminSettings,
-        $stateParams, $state, $mdDialog, Translate, $timeout, $scope, $mdToast, User) {
+WatchListBuilderController.$inject = ['Point', '$mdMedia', 'WatchList',
+    '$state', '$mdDialog', 'Translate', '$timeout', '$mdToast', 'User', '$q'];
+function WatchListBuilderController(Point, $mdMedia, WatchList,
+        $state, $mdDialog, Translate, $timeout, $mdToast, User, $q) {
     var $ctrl = this;
     $ctrl.baseUrl = require.toUrl('.');
     
@@ -22,12 +22,16 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
     $ctrl.staticSelected = [];
     $ctrl.allPoints = [];
     $ctrl.tableQuery = {
-        limit: 10,
+        limit: 20,
         page: 1,
         order: 'deviceName'
     };
     $ctrl.staticTableQuery = {
-        limit: 10,
+        limit: 20,
+        page: 1
+    };
+    $ctrl.queryPreviewTable = {
+        limit: 20,
         page: 1
     };
     $ctrl.selectedTab = 0;
@@ -87,24 +91,7 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
     };
     
     $ctrl.typeChanged = function typeChanged() {
-        $ctrl.tableSearch = '';
-        $ctrl.tableQuery.rql = new query.Query();
-        
-        if ($ctrl.watchlist.type === 'query') {
-            if (!$ctrl.watchlist.data) $ctrl.watchlist.data = {};
-            if (!$ctrl.watchlist.data.paramValues) $ctrl.watchlist.data.paramValues = {};
-            
-            if (!$ctrl.watchlist.query)
-                $ctrl.watchlist.query = defaultQuery;
-            if (!$ctrl.watchlist.params) {
-                $ctrl.watchlist.params = [];
-            }
-            $ctrl.parseQuery();
-            $ctrl.doPointQuery();
-        } else if ($ctrl.watchlist.type === 'hierarchy') {
-            if (!$ctrl.watchlist.folderIds)
-                $ctrl.watchlist.folderIds = [];
-        }
+        $ctrl.editWatchlist($ctrl.watchlist);
     };
 
     $ctrl.nextStep = function() {
@@ -133,21 +120,29 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
     };
     
     $ctrl.isError = function isError(name) {
-        if (!$scope.watchListForm || !$scope.watchListForm[name]) return false;
-        return $scope.watchListForm[name].$invalid && ($scope.watchListForm.$submitted || $scope.watchListForm[name].$touched);
+        if (!$ctrl.watchListForm || !$ctrl.watchListForm[name]) return false;
+        return $ctrl.watchListForm[name].$invalid && ($ctrl.watchListForm.$submitted || $ctrl.watchListForm[name].$touched);
     };
     
     $ctrl.resetForm = function resetForm() {
-        if ($scope.watchListForm) {
-            $scope.watchListForm.$setUntouched();
-            $scope.watchListForm.$setPristine();
-            $scope.watchListForm.$submitted = false;
+        if ($ctrl.watchListForm) {
+            $ctrl.watchListForm.$setUntouched();
+            $ctrl.watchListForm.$setPristine();
+            $ctrl.watchListForm.$submitted = false;
         }
     };
     
     $ctrl.save = function save() {
         var saveMethod = $ctrl.watchlist.isNew ? '$save' : '$updateWithRename';
-        if ($scope.watchListForm.$valid) {
+
+        // reset all server error messages to allow saving
+        angular.forEach($ctrl.watchListForm, function(item, key) {
+            if (key.indexOf('$') !== 0) {
+                item.$setValidity('server-error', true);
+            }
+        });
+        
+        if ($ctrl.watchListForm.$valid) {
             $ctrl.watchlist[saveMethod]().then(function(wl) {
                 $ctrl.selectedWatchlist = wl;
                 $ctrl.watchlistSelected();
@@ -174,22 +169,34 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
     
                 $ctrl.resetForm();
             }, function(response) {
+                var errorMsg = response.status === 422 ? Translate.trSync('dashboards.v3.app.validationError') : response.statusText;
+
                 // error saving
                 var toast = $mdToast.simple()
-                    .textContent(Translate.trSync('dashboards.v3.app.errorSavingWatchlist', response.statusText))
+                    .textContent(Translate.trSync('dashboards.v3.app.errorSavingWatchlist', errorMsg))
                     .action(Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .highlightClass('md-warn')
                     .position('bottom center')
                     .hideDelay(5000);
                 $mdToast.show(toast);
-                console.log(response);
+
+                $ctrl.selectedTab = 0;
+                if (response.data && response.data.validationMessages) {
+                    response.data.validationMessages.forEach(function(info) {
+                        if ($ctrl.watchListForm[info.property]) {
+                            $ctrl.watchListForm[info.property].$setValidity('server-error', false);
+                            $ctrl.watchListForm[info.property].serverErrorMessage = info.message;
+                        }
+                    });
+                }
             });
+        } else {
+            $ctrl.selectedTab = 0;
         }
     };
     
     $ctrl.deleteWatchlist = function deleteWatchlist(event) {
-        
         var confirm = $mdDialog.confirm()
             .title(Translate.trSync('dashboards.v3.app.areYouSure'))
             .textContent(Translate.trSync('dashboards.v3.app.confirmDeleteWatchlist'))
@@ -213,13 +220,12 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
     
     $ctrl.$onInit = function() {
         $ctrl.refreshWatchlists();
-        if ($stateParams.watchListXid) {
-            $ctrl.getWatchlist($stateParams.watchListXid);
-        } else if ($stateParams.watchList) {
+        if ($state.params.watchListXid) {
+            $ctrl.getWatchlist($state.params.watchListXid);
+        } else if ($state.params.watchList) {
+            // Whole watchlist object sent from watchlist page (save button)
             $ctrl.selectedWatchlist = null;
-            var watchlist = $stateParams.watchList;
-            if (!watchlist.xid)
-                watchlist.xid = Util.uuid();
+            var watchlist = $state.params.watchList;
             watchlist.username = User.current.username;
             watchlist.readPermission = 'user';
             watchlist.editPermission = User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
@@ -250,8 +256,12 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
             for (var i = 0; i < watchlists.length; i++) {
                 var wl = watchlists[i];
                 if (wl.username === user.username || user.hasPermission(wl.editPermission)) {
-                    wl.points = [];
-                    filtered.push(wl);
+                    if ($ctrl.selectedWatchlist && $ctrl.selectedWatchlist.xid === wl.xid) {
+                        filtered.push($ctrl.selectedWatchlist);
+                    } else {
+                        wl.points = [];
+                        filtered.push(wl);
+                    }
                 }
             }
             $ctrl.watchlists = filtered;
@@ -279,63 +289,61 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         $ctrl.queryPromise = null;
         $ctrl.folders = [];
         
+        $ctrl.clearSearch(false);
+        
         if (watchlist.type === 'static') {
-            $ctrl.clearSearch();
-            if (!watchlist.isNew) {
-                watchlist.getPoints().then(renderStatic);
+            var pointsPromise;
+            if (watchlist.isNew) {
+                watchlist.points = [];
+                pointsPromise = $q.when(watchlist.points);
             } else {
-                renderStatic([]);
+                pointsPromise = watchlist.getPoints();
             }
+            $ctrl.watchlistPointsPromise = pointsPromise.then(function() {
+                $ctrl.resetSort();
+                $ctrl.sortAndLimit();
+            });
+            $ctrl.doPointQuery();
         } else if (watchlist.type === 'query') {
             if (!watchlist.data) watchlist.data = {};
             if (!watchlist.data.paramValues) watchlist.data.paramValues = {};
-            
-            $ctrl.parseQuery();
-            $ctrl.doPointQuery();
+            if (!watchlist.query) {
+                watchlist.query = 'sort(deviceName,name)&limit(200)';
+            }
+            $ctrl.queryChanged();
         } else if (watchlist.type === 'hierarchy') {
+            // if a user is browsing a hierarchy folder on the watch list page
+            // the watchlist will have a hierarchyFolders property, set the folderIds property from this
             if (watchlist.hierarchyFolders) {
                 $ctrl.folders = watchlist.hierarchyFolders;
-                $ctrl.foldersChanged(); // updates the watchlist query string
+                $ctrl.updateWatchListFolderIds();
             } else {
-                var folders = [];
-                for (var i = 0; i < watchlist.folderIds.length; i++) {
-                    var folderId = parseInt(watchlist.folderIds[i], 10);
-                    folders.push({id: folderId});
-                }
-                $ctrl.folders = folders;
+                if (!watchlist.folderIds)
+                    watchlist.folderIds =[];
+                
+                $ctrl.folders = watchlist.folderIds.map(function(folderId) {
+                    return {id: folderId};
+                });
             }
         }
         
-        function renderStatic(points) {
-            $ctrl.watchlist.points = points;
-            
-            $ctrl.tableSelection = $ctrl.watchlist.points.slice();
-            $ctrl.rerenderTable();
-            $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
-            $ctrl.resetSort();
-            $ctrl.sortAndLimit();
-        }
+        
     };
     
     $ctrl.onPaginateOrSort = function onPaginateOrSort() {
         $ctrl.doPointQuery(true);
     };
 
-    $ctrl.doPointQuery = function doPointQuery(isPaginateOrSort, ignoreIfPending) {
-        // the query preview tab is hidden if there are parameters, dont do query
-        if ($ctrl.watchlist.params && $ctrl.watchlist.params.length) return;
-        
-        if ($ctrl.queryPromise && $ctrl.queryPromise.$$state.status === 0) {
-            if (ignoreIfPending) {
-                return;
-            }
+    $ctrl.doPointQuery = function doPointQuery(isPaginateOrSort) {
+        if ($ctrl.queryPromise && typeof $ctrl.queryPromise.cancel === 'function') {
+            $ctrl.queryPromise.cancel();
         }
         
         if (!isPaginateOrSort) {
             $ctrl.total = defaultTotal;
             $ctrl.allPoints = [];
         }
-        
+
         var queryObj = new query.Query(angular.copy($ctrl.tableQuery.rql));
         if (queryObj.name !== 'and') {
             if (!queryObj.args.length) {
@@ -347,44 +355,23 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         queryObj = queryObj.sort($ctrl.tableQuery.order);
         queryObj = queryObj.limit($ctrl.tableQuery.limit, ($ctrl.tableQuery.page - 1) * $ctrl.tableQuery.limit);
         
-        $ctrl.queryPromise = Point.query({rqlQuery: queryObj.toString()})
-        .$promise.then(function(allPoints) {
+        var pointQuery = Point.query({rqlQuery: queryObj.toString()});
+        pointQuery.$promise.setCancel(pointQuery.$cancelRequest);
+        $ctrl.queryPromise = pointQuery.$promise.then(function(allPoints) {
             $ctrl.total = allPoints.$total;
             $ctrl.allPoints = allPoints;
-        }, function() {
+        }, function(response) {
             $ctrl.allPoints = [];
+        }).then(function() {
+            // wait for the watchlist to have points
+            return $ctrl.watchlistPointsPromise;
+        }).then(function() {
+            $ctrl.updateSelections(true, true);
         });
+        
+        return $ctrl.queryPromise;
     };
 
-    /**
-     * set the points to an empty array and then to the actual points so that each row is destroyed and re-created
-     * this ensures that checkboxes are preserved for selected points
-     */
-    $ctrl.rerenderTable = function rerenderTable() {
-        if ($ctrl.queryPromise && $ctrl.queryPromise.$$state.status === 0) {
-            return;
-        }
-        var stored = $ctrl.allPoints;
-        $ctrl.allPoints = [];
-        $timeout(function() {
-            $ctrl.allPoints = stored;
-        }, 0);
-    };
-
-    $ctrl.parseQuery = function parseQuery() {
-        var queryObj = new query.Query($ctrl.watchlist.query);
-        if (queryObj.cache && queryObj.cache.sort && queryObj.cache.sort.length) {
-            $ctrl.tableQuery.order = queryObj.cache.sort[0];
-        }
-        for (var i = 0; i < queryObj.args.length; i++) {
-            var arg = queryObj.args[i];
-            if (arg.name === 'limit' || arg.name === 'sort') {
-                queryObj.args.splice(i--, 1);
-            }
-        }
-        $ctrl.tableQuery.rql = queryObj;
-    };
-    
     $ctrl.doSearch = function doSearch() {
         var props = ['name', 'deviceName', 'dataSourceName', 'xid'];
         var args = [];
@@ -395,56 +382,59 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         $ctrl.doPointQuery();
     };
     
-    $ctrl.clearSearch = function clearSearch() {
+    $ctrl.clearSearch = function clearSearch(doQuery) {
         $ctrl.tableSearch = '';
         $ctrl.tableQuery.rql = new query.Query();
-        $ctrl.doPointQuery();
+        // jshint eqnull:true
+        if (doQuery || doQuery == null)
+            $ctrl.doPointQuery();
     };
     
     $ctrl.queryChanged = function queryChanged() {
-        $ctrl.parseQuery();
-        if (!$ctrl.watchlist.params.length)
-            $ctrl.doPointQuery();
+        $ctrl.queryPreviewPoints = [];
+        $ctrl.queryPreviewTable.total = defaultTotal;
+        if ($ctrl.queryPreviewPromise && typeof $ctrl.queryPreviewPromise.cancel === 'function') {
+            $ctrl.queryPreviewPromise.cancel();
+        }
+        $ctrl.queryPreviewPromise = $ctrl.watchlist.getPoints().then(function(watchlistPoints) {
+            $ctrl.queryPreviewPoints = watchlistPoints;
+            $ctrl.queryPreviewTable.total = watchlistPoints.length;
+        }, function() {
+            $ctrl.queryPreviewTable.total = 0;
+        });
     };
 
     $ctrl.tableSelectionChanged = function() {
-        // do a slice to shallow copy array so ngModel update is triggered in hierarchy view
         $ctrl.watchlist.points = $ctrl.tableSelection.slice();
-        $ctrl.hierarchySelection = $ctrl.tableSelection.slice();
+        $ctrl.updateSelections(false, true);
         $ctrl.resetSort();
         $ctrl.sortAndLimit();
     };
 
     $ctrl.hierarchySelectionChanged = function() {
-        var pointXidsToGet = [];
-        for (var i = 0; i < $ctrl.hierarchySelection.length; i++) {
-            pointXidsToGet.push($ctrl.hierarchySelection[i].xid);
-        }
+        var pointXidsToGet = $ctrl.hierarchySelection.map(function(item) {
+            return item.xid;
+        });
         if (pointXidsToGet.length) {
             // fetch full points
             var ptQuery = new query.Query({name: 'in', args: ['xid'].concat(pointXidsToGet)});
             Point.query({rqlQuery: ptQuery.toString()}).$promise.then(updateSelection);
         } else {
-            updateSelection();
+            updateSelection([]);
         }
         
         function updateSelection(points) {
-            if (points)
-                $ctrl.hierarchySelection = points;
-            $ctrl.watchlist.points = $ctrl.hierarchySelection.slice();
-            $ctrl.tableSelection = $ctrl.hierarchySelection.slice();
-            $ctrl.rerenderTable();
+            $ctrl.watchlist.points = points.slice();
+            $ctrl.updateSelections(true, false);
             $ctrl.resetSort();
             $ctrl.sortAndLimit();
         }
     };
-    
-    $ctrl.foldersChanged = function foldersChanged() {
-        var folderIds = [];
-        for (var i = 0; i < $ctrl.folders.length; i++) {
-            folderIds.push($ctrl.folders[i].id);
-        }
-        $ctrl.watchlist.folderIds = folderIds;
+
+    $ctrl.updateWatchListFolderIds = function updateWatchListFolderIds() {
+        $ctrl.watchlist.folderIds = $ctrl.folders.map(function(folder) {
+            return folder.id;
+        });
     };
     
     $ctrl.resetSort = function() {
@@ -491,11 +481,28 @@ function WatchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
             }
         }
         $ctrl.staticSelected = [];
+        $ctrl.updateSelections(true, true);
         $ctrl.sortAndLimit();
-        // do a slice to shallow copy array so ngModel update is triggered in hierarchy view
-        $ctrl.tableSelection = $ctrl.watchlist.points.slice();
-        $ctrl.rerenderTable();
-        $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
+    };
+    
+    $ctrl.updateSelections = function(updateTable, updateHierarchy) {
+        if (updateTable) {
+            $ctrl.tableSelection = $ctrl.watchlist.points.slice();
+            
+            var pointMap = {};
+            $ctrl.tableSelection.forEach(function(point) {
+                pointMap[point.xid] = point;
+            });
+            
+            // replace the point in all points with the exact one from the table selection so the table is updated
+            // correctly
+            $ctrl.allPoints = $ctrl.allPoints.map(function(point, i) {
+                return pointMap[point.xid] || point;
+            });
+        }
+        if (updateHierarchy) {
+            $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
+        }
     };
 }
 

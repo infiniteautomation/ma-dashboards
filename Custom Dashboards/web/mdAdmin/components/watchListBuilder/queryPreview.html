@@ -1,7 +1,18 @@
+<md-card md-colors="::{background: 'background-700'}" ng-if="$ctrl.watchlist.params.length">
+    <md-card-title>
+        <md-card-title-text>
+            <em ma-tr="dashboards.v3.app.chooseWatchListParameters"></em>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <ma-watch-list-parameters watch-list="$ctrl.watchlist" parameters-changed="$ctrl.queryChanged()" layout layout-align="start center" layout-wrap></ma-watch-list-parameters>
+    </md-card-content>
+</md-card>
+
 <div class="watchlist-query-preview">
   <md-table-container>
-    <table md-table md-progress="$ctrl.queryPromise">
-      <thead md-head md-order="$ctrl.tableQuery.order" md-on-reorder="$ctrl.onPaginateOrSort">
+    <table md-table md-progress="$ctrl.queryPreviewPromise">
+      <thead md-head md-order="$ctrl.queryPreviewTable.order">
         <tr md-row>
             <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
             <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
@@ -10,7 +21,7 @@
           </tr>
       </thead>
       <tbody md-body>
-        <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.allPoints track by point.xid">
+        <tr md-row ng-repeat="point in $ctrl.queryPreviewPoints | orderBy:$ctrl.queryPreviewTable.order | limitTo:$ctrl.queryPreviewTable.limit:($ctrl.queryPreviewTable.page-1)*$ctrl.queryPreviewTable.limit track by point.xid">
             <td md-cell ng-bind="point.dataSourceName"></td>
             <td md-cell ng-bind="point.deviceName"></td>
             <td md-cell ng-bind="point.name"></td>
@@ -19,5 +30,5 @@
       </tbody>
     </table>
   </md-table-container>
-  <md-table-pagination md-limit="$ctrl.tableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.tableQuery.page" md-total="{{$ctrl.total}}" md-page-select md-on-paginate="$ctrl.onPaginateOrSort"></md-table-pagination>
+  <md-table-pagination md-limit="$ctrl.queryPreviewTable.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.queryPreviewTable.page" md-total="{{$ctrl.queryPreviewTable.total}}" md-page-select></md-table-pagination>
 </div>

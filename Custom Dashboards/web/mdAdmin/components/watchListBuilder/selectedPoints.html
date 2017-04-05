@@ -11,7 +11,7 @@
           </tr>
       </thead>
       <tbody md-body ng-model="$ctrl.pointsInView" ui-sortable="{update: $ctrl.dragAndDrop, handle: '> td > .move-handle'}">
-        <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.pointsInView track by point.xid">
+        <tr md-row md-select="point" md-select-id="xid" md-auto-select ng-repeat="point in $ctrl.pointsInView track by point.xid">
             <td md-cell ng-bind="point.dataSourceName"></td>
             <td md-cell ng-bind="point.deviceName"></td>
             <td md-cell ng-bind="point.name"></td>

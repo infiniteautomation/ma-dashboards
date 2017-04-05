@@ -5,7 +5,7 @@
       <input ng-model="$ctrl.watchlist.query" ng-model-options="{debounce: 1000}" ng-change="$ctrl.queryChanged()" bracket-escape>
     </md-input-container>
   </div>
-  <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-model-options="{allowInvalid: true}"
-      ng-change="$ctrl.queryChanged()" hide-sort-limit="$ctrl.watchlist.type !== 'query'">
+  <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-model-options="{allowInvalid: true, debounce: 1000}"
+      ng-change="$ctrl.queryChanged()">
   </ma-query-builder>
 </div>

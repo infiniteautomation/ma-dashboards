@@ -39,6 +39,9 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
     WatchList.objQuery = Util.objQuery;
 
     WatchList.prototype.getPoints = function(params) {
+        if (!params && this.data && this.data.paramValues) {
+            params = this.data.paramValues;
+        }
         if (this.type === 'static') {
             return $http({
                 method: 'GET',
@@ -52,17 +55,20 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
             }.bind(this));
         } else if (this.type === 'query') {
             var ptQuery = this.interpolateQuery(params);
-            return Point.query({rqlQuery: ptQuery}).$promise.then(function(points) {
-                return transformToPointObjects(points);
+            var resource = Point.query({rqlQuery: ptQuery});
+            resource.$promise.setCancel(resource.$cancelRequest);
+            return resource.$promise.then(function(points) {
+                var result = transformToPointObjects(points);
+                result.$rqlQuery = ptQuery;
+                return result;
             });
         } else if (this.type === 'hierarchy') {
             var folderIds = this.folderIds;
             
             if (this.hierarchyFolders) {
-                folderIds = [];
-                for (var i = 0; i < this.hierarchyFolders.length; i++) {
-                    folderIds.push(this.hierarchyFolders[i].id);
-                }
+                folderIds = this.hierarchyFolders.map(function(folder) {
+                    return folder.id;
+                });
             }
             
             if (!folderIds || !folderIds.length) {

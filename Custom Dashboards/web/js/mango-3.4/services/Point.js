@@ -204,9 +204,6 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     var Point = $resource('/rest/v1/data-points/:xid', {
     		xid: '@xid'
     	}, {
-        get: {
-            cancellable: true
-        },
         query: {
             method: 'GET',
             isArray: true,
@@ -242,6 +239,8 @@ function PointFactory($resource, $http, $timeout, Util, User) {
         update: {
             method: 'PUT'
         }
+    }, {
+        cancellable: true
     });
 
     Point.objQuery = Util.objQuery;
