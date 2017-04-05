@@ -177,7 +177,7 @@
       <md-button class="md-raised" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.userForm.email.$invalid">
         <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
       </md-button>
-      <md-button class="md-raised" ng-if="!$ctrl.user.isNew && $ctrl.User.current.username !== $ctrl.originalUser.username" ng-click="$ctrl.switchUser($event)">
+      <md-button class="md-raised" ng-if="!$ctrl.user.isNew && $ctrl.User.current.id !== $ctrl.originalUser.id && $ctrl.User.current.admin" ng-click="$ctrl.switchUser($event)">
         <md-icon>swap_horiz</md-icon> <span ma-tr="users.su"></span>
       </md-button>
     </div>

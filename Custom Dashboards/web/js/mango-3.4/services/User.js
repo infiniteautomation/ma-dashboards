@@ -122,7 +122,7 @@ User.logout();
 * @name User#login
 *
 * @description
-* Attempts to login in the user by using `GET` method at `/rest/v1/login/:username`
+* Attempts to login in the user by using `GET` method at `/rest/v2/login/:username`
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -133,7 +133,7 @@ User.logout();
 * @name User#logout
 *
 * @description
-* Logout the current user by using `GET` method at `/rest/v1/login/:username`
+* Logout the current user by using `GET` method at `/rest/v2/login/:username`
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -209,7 +209,7 @@ function UserProvider() {
                 }
             },
             login: {
-                url: '/rest/v1/login',
+                url: '/rest/v2/login',
                 method: 'POST',
                 isArray: false,
                 withCredentials: true,
@@ -219,8 +219,18 @@ function UserProvider() {
                 }
             },
             switchUser: {
-                url: '/rest/v1/login/su/:username',
-                method: 'GET',
+                url: '/rest/v2/login/su',
+                method: 'POST',
+                isArray: false,
+                withCredentials: true,
+                cache: false,
+                interceptor: {
+                    response: loginInterceptor
+                }
+            },
+            exitSwitchUser: {
+                url: '/rest/v2/login/exit-su',
+                method: 'POST',
                 isArray: false,
                 withCredentials: true,
                 cache: false,
@@ -229,7 +239,7 @@ function UserProvider() {
                 }
             },
             logout: {
-                url: '/rest/v1/logout',
+                url: '/rest/v2/logout',
                 method: 'POST',
                 isArray: false,
                 withCredentials: true,
