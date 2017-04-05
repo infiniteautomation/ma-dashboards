@@ -16,6 +16,7 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
     this.mdAdminSettings = mdAdminSettings;
 
     this.$onInit = function() {
+        this.calcUpdateIntervalString();
     };
     
     this.$doCheck = function() {
