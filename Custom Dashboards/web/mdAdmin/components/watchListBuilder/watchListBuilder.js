@@ -35,6 +35,7 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         page: 1
     };
     $ctrl.selectedTab = 0;
+    $ctrl.tableUpdateCount = 0;
 
     $ctrl.queryProperties = [
         {
@@ -357,15 +358,14 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         
         var pointQuery = Point.query({rqlQuery: queryObj.toString()});
         pointQuery.$promise.setCancel(pointQuery.$cancelRequest);
-        $ctrl.queryPromise = pointQuery.$promise.then(function(allPoints) {
-            $ctrl.total = allPoints.$total;
-            $ctrl.allPoints = allPoints;
-        }, function(response) {
-            $ctrl.allPoints = [];
-        }).then(function() {
-            // wait for the watchlist to have points
-            return $ctrl.watchlistPointsPromise;
-        }).then(function() {
+        $ctrl.queryPromise = pointQuery.$promise.then(null, function(response) {
+            return [];
+        });
+        
+        $q.all([$ctrl.queryPromise, $ctrl.watchlistPointsPromise]).then(function(results) {
+            $ctrl.allPoints = results[0];
+            $ctrl.total = $ctrl.allPoints.$total || $ctrl.allPoints.length;
+            
             $ctrl.updateSelections(true, true);
         });
         
@@ -487,13 +487,20 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
     
     $ctrl.updateSelections = function(updateTable, updateHierarchy) {
         if (updateTable) {
-            $ctrl.tableSelection = $ctrl.watchlist.points.slice();
+            // ensures that rows are re-rendered every time we update the table selections
+            $ctrl.tableUpdateCount++;
+            
+            // updates the table selection with a shallow copy of the watch list points
+            // so that md-data-table's $watchcollection detects a change for each point
+            $ctrl.tableSelection = $ctrl.watchlist.points.map(function(point) {
+                return angular.extend(Object.create(Point.prototype), point);
+            });
             
             var pointMap = {};
             $ctrl.tableSelection.forEach(function(point) {
                 pointMap[point.xid] = point;
             });
-            
+
             // replace the point in all points with the exact one from the table selection so the table is updated
             // correctly
             $ctrl.allPoints = $ctrl.allPoints.map(function(point, i) {
@@ -503,6 +510,12 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         if (updateHierarchy) {
             $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
         }
+    };
+
+    // track points in table by their xid and an incrementing count
+    // ensures that rows are re-rendered every time we update the table selections
+    $ctrl.pointTrack = function(point) {
+        return '' + $ctrl.tableUpdateCount + '_' + point.xid;
     };
 }
 
