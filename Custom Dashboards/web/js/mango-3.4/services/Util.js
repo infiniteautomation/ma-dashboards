@@ -472,7 +472,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
                 var val = options.query[key] || '';
                 var comparison = '=';
                 var autoLike = false;
-                if (val.indexOf('=') < 0 && !exact) {
+                if (typeof val === 'string' && val.indexOf('=') < 0 && !exact) {
                     comparison += 'like=*';
                     autoLike = true;
                 }
