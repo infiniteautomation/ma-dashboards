@@ -58,8 +58,13 @@ describe('Point values service', function() {
         return pointValues.getPointValuesForXid('voltage', {latest: 10}).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 10);
-            angular.forEach(pointValues, function(pointValue) {
+            var prevTs;
+            pointValues.forEach(function(pointValue) {
                 checkNumericPointValue(pointValue);
+                if (prevTs) {
+                    assert.isAbove(pointValue.timestamp, prevTs, 'timestamps are not in ascending order');
+                }
+                prevTs = pointValue.timestamp;
             });
         }, Util.throwHttpError);
     }));
@@ -73,8 +78,13 @@ describe('Point values service', function() {
                 var pointValues = pointValuesByXid[xid];
                 assert.isArray(pointValues);
                 assert.equal(pointValues.length, 10);
-                angular.forEach(pointValues, function(pointValue) {
+                var prevTs;
+                pointValues.forEach(function(pointValue) {
                     checkNumericPointValue(pointValue);
+                    if (prevTs) {
+                        assert.isAbove(pointValue.timestamp, prevTs, 'timestamps are not in ascending order');
+                    }
+                    prevTs = pointValue.timestamp;
                 });
             }
         }, Util.throwHttpError);
@@ -85,8 +95,13 @@ describe('Point values service', function() {
         return pointValues.getPointValuesForXidsCombined(xids, {latest: 10}).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 10);
-            angular.forEach(pointValues, function(pointValue) {
+            var prevTs;
+            pointValues.forEach(function(pointValue) {
                 assert.isNumber(pointValue.timestamp);
+                if (prevTs) {
+                    assert.isAbove(pointValue.timestamp, prevTs, 'timestamps are not in ascending order');
+                }
+                prevTs = pointValue.timestamp;
                 angular.forEach(xids, function(xid) {
                     assert.isNumber(pointValue[xid]);
                 });
@@ -103,7 +118,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert(pointValues.length >= 59 && pointValues.length <= 60, 'should return 59-60 point values'); // 5 second polling rate
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkNumericPointValue(pointValue);
             });
         }, Util.throwHttpError);
@@ -123,7 +138,7 @@ describe('Point values service', function() {
                 var pointValues = pointValuesByXid[xid];
                 assert.isArray(pointValues);
                 assert(pointValues.length >= 59 && pointValues.length <= 60, 'should return 59-60 point values'); // 5 second polling rate
-                angular.forEach(pointValues, function(pointValue) {
+                pointValues.forEach(function(pointValue) {
                     checkNumericPointValue(pointValue);
                 });
             }
@@ -140,7 +155,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert(pointValues.length >= 59 && pointValues.length <= 60, 'should return 59-60 point values'); // 5 second polling rate
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 assert.isNumber(pointValue.timestamp);
                 angular.forEach(xids, function(xid) {
                     assert.isNumber(pointValue[xid]);
@@ -161,7 +176,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 6);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkNumericPointValue(pointValue);
                 assert.equal(pointValue.timestamp % 60000, 0);
             });
@@ -185,7 +200,7 @@ describe('Point values service', function() {
                 var pointValues = pointValuesByXid[xid];
                 assert.isArray(pointValues);
                 assert.equal(pointValues.length, 6);
-                angular.forEach(pointValues, function(pointValue) {
+                pointValues.forEach(function(pointValue) {
                     checkNumericPointValue(pointValue);
                     assert.equal(pointValue.timestamp % 60000, 0);
                 });
@@ -206,7 +221,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 6);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 assert.isNumber(pointValue.timestamp);
                 assert.equal(pointValue.timestamp % 60000, 0);
                 angular.forEach(xids, function(xid) {
@@ -229,7 +244,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 5);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkNumericPointValue(pointValue);
                 assert.equal(pointValue.timestamp % 60000, 0);
             });
@@ -253,7 +268,7 @@ describe('Point values service', function() {
                 var pointValues = pointValuesByXid[xid];
                 assert.isArray(pointValues);
                 assert.equal(pointValues.length, 5);
-                angular.forEach(pointValues, function(pointValue) {
+                pointValues.forEach(function(pointValue) {
                     checkNumericPointValue(pointValue);
                     assert.equal(pointValue.timestamp % 60000, 0);
                 });
@@ -274,7 +289,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 5);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 assert.isNumber(pointValue.timestamp);
                 assert.equal(pointValue.timestamp % 60000, 0);
                 angular.forEach(xids, function(xid) {
@@ -295,7 +310,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 24);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkNumericPointValue(pointValue);
                 var valueTime = moment(pointValue.timestamp);
                 assert.equal(valueTime.minutes(), 0);
@@ -321,7 +336,7 @@ describe('Point values service', function() {
                 var pointValues = pointValuesByXid[xid];
                 assert.isArray(pointValues);
                 assert.equal(pointValues.length, 24);
-                angular.forEach(pointValues, function(pointValue) {
+                pointValues.forEach(function(pointValue) {
                     checkNumericPointValue(pointValue);
                     var valueTime = moment(pointValue.timestamp);
                     assert.equal(valueTime.minutes(), 0);
@@ -344,7 +359,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 24);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 assert.isNumber(pointValue.timestamp);
                 var valueTime = moment(pointValue.timestamp);
                 assert.equal(valueTime.minutes(), 0);
@@ -366,7 +381,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert(pointValues.length >= 11 && pointValues.length <= 12, 'should return 11 or 12 values');
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkNumericPointValue(pointValue);
             });
         }, Util.throwHttpError);
@@ -381,7 +396,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert(pointValues.length >= 11 && pointValues.length <= 12, 'should return 11 or 12 values');
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkBooleanPointValue(pointValue);
             });
         }, Util.throwHttpError);
@@ -398,7 +413,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.isAbove(pointValues.length, 0);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkStringPointValue(pointValue);
             });
         }, Util.throwHttpError);
@@ -415,7 +430,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.isAbove(pointValues.length, 0);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkStringPointValue(pointValue);
             });
         }, Util.throwHttpError);
@@ -432,7 +447,7 @@ describe('Point values service', function() {
         }).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.isAbove(pointValues.length, 0);
-            angular.forEach(pointValues, function(pointValue) {
+            pointValues.forEach(function(pointValue) {
                 checkStringPointValue(pointValue);
             });
         }, Util.throwHttpError);
