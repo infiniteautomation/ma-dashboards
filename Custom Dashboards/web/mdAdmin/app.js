@@ -13,14 +13,13 @@ define([
     './services/mdAdminSettings',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
-    './components/googleAnalytics/googleAnalytics',
     'moment-timezone',
     'angular-ui-router',
     'angular-ui-sortable',
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, mdAdminSettings, pageView, livePreview, googleAnalytics, moment) {
+], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, mdAdminSettings, pageView, livePreview, moment) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
@@ -47,7 +46,6 @@ mdAdminApp.factory('Page', Page)
     .factory('mdAdminSettings', mdAdminSettings)
     .directive('pageView', pageView)
     .directive('livePreview', livePreview)
-    .component('maGoogleAnalytics', googleAnalytics)
     .constant('require', require)
     .constant('CUSTOM_USER_MENU_XID', 'custom-user-menu')
     .constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages')
@@ -991,7 +989,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     //$compileProvider.preAssignBindingsEnabled(true);
     $compileProvider.debugInfoEnabled(false);
     $mdAriaProvider.disableWarnings();
-    
+
     errorInterceptorProvider.ignore = function(rejection) {
         var ignoreUrls = ['/rest/v1/json-data/custom-user-menu',
                           '/rest/v1/json-data/custom-user-pages',
@@ -1209,8 +1207,15 @@ mdAdminApp.run([
     'DateBar',
     '$document',
     '$mdDialog',
+    'GoogleAnalytics',
+    'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
-        $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar, $document, $mdDialog) {
+        $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar, $document, $mdDialog,
+        GoogleAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
+
+    if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
+        GoogleAnalytics.enable(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
+    }
 
     mdAdminSettings.generateTheme();
     $rootScope.stateParams = $stateParams;
@@ -1516,15 +1521,15 @@ $q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSet
     if (userMenuStore) {
         MD_ADMIN_SETTINGS.customMenuItems = userMenuStore.jsonData.menuItems;
     }
+    
+    mdAdminApp.constant('MD_ADMIN_SETTINGS', MD_ADMIN_SETTINGS);
+    mdAdminApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MD_ADMIN_SETTINGS.googleAnalyticsPropertyId);
 
-    var angularJsModuleNames = ['mdAdminApp'];
     for (var i = 0; i < angularModules.length; i++) {
         var angularModule = angularModules[i];
         angularJsModuleNames.push(angularModule.name);
     }
     
-    mdAdminApp.constant('MD_ADMIN_SETTINGS', MD_ADMIN_SETTINGS);
-
     angular.module('mdAdminBootstrap', angularJsModuleNames).config(['UserProvider', function(UserProvider) {
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);

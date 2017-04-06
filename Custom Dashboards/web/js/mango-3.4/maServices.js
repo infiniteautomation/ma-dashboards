@@ -32,13 +32,15 @@ define(['./services/Point',
         './services/Permissions',
         './services/SystemSettings',
         './services/ImportExport',
+        './services/GoogleAnalytics',
         'angular',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
-        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider, ImportExportFactory, angular) {
+        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider,
+        ImportExportFactory, GoogleAnalyticsFactory, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -80,6 +82,9 @@ maServices.factory('Modules', ModulesFactory);
 maServices.factory('Permissions', PermissionsFactory);
 maServices.provider('SystemSettings', SystemSettingsProvider);
 maServices.factory('ImportExport', ImportExportFactory);
+maServices.factory('GoogleAnalytics', GoogleAnalyticsFactory);
+
+maServices.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', '');
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);

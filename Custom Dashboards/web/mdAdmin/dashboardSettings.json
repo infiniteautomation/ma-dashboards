@@ -3,6 +3,7 @@
   "defaultTheme": "mangoDark",
   "codeTheme": "monokai",
   "googleMapsApiKey": "",
+  "googleAnalyticsPropertyId": "",
   "palettes": {
     "mango-orange": {
       "50": "#ffffff",
