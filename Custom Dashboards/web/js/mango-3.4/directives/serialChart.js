@@ -157,7 +157,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         if ($scope.annotateMode) {
             options.chartCursor = {
                 oneBalloonOnly: true,
-                graphBulletSize: 3
+                graphBulletSize: 2
             };
         }
 
@@ -433,18 +433,14 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 annotateOptions = {
                     labelText: '[[' + graph.xid + 'AnnotationText]]',
                     labelRotation: 0,
-                    labelPosition: 'top',
-                    labelOffset: -25,
+                    labelPosition: 'right',
+                    labelOffset: 5,
                     labelColorField: graph.xid + 'AnnotationTextColor',
                     bulletSize: 0,
                     bulletSizeField: graph.xid + 'AnnotationBulletSize',
                     bulletHitAreaSize: 10,
-                    bulletAlpha: 1,
-                    bulletBorderColor: 'black',
-                    bulletBorderAlpha: 0.2,
-                    bulletBorderThickness: 1,
+                    bulletAlpha: .7,
                     bullet: 'diamond',
-                    // bulletColor: '[[' + graph.xid + 'AnnotationBulletColor]]',
                     bulletField: graph.xid + 'AnnotationBullet'
                 };
             }
