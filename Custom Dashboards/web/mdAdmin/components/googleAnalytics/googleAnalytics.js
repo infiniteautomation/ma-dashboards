@@ -16,31 +16,36 @@ var googleAnalytics = {
 GoogleAnalyticsController.$inject = ['$rootScope', '$window', '$state'];
 function GoogleAnalyticsController($rootScope, $window, $state) {
     this.$rootScope = $rootScope;
-    this.$window = $window;
     this.$state = $state;
-    
-    $window.ga=$window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-    require(['https://www.google-analytics.com/analytics.js']);
+
+    require(['https://www.google-analytics.com/analytics.js'], function() {
+        this.ga = $window.ga;
+        if (this.propertyId) {
+            this.ga('create', this.propertyId, 'auto');
+            this.setPage();
+        }
+    }.bind(this));
 }
 
 GoogleAnalyticsController.prototype.$onChanges = function(changes) {
-    if (changes.propertyId && this.propertyId) {
-        this.$window.ga('create', this.propertyId, 'auto');
-        if (this.currentPage) {
-            this.$window.ga('set', 'page', this.currentPage);
-            this.$window.ga('send', 'pageview');
-        }
+    if (changes.propertyId && this.propertyId && this.ga) {
+        this.ga('create', this.propertyId, 'auto');
+        this.setPage();
     }
 };
 
 GoogleAnalyticsController.prototype.$onInit = function() {
     this.$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         this.currentPage = this.$state.href(toState.name, toParams);
-        if (this.propertyId) {
-            this.$window.ga('set', 'page', this.currentPage);
-            this.$window.ga('send', 'pageview');
-        }
+        this.setPage();
     }.bind(this));
+};
+
+GoogleAnalyticsController.prototype.setPage = function() {
+    if (this.ga && this.propertyId && this.currentPage) {
+        this.ga('set', 'page', this.currentPage);
+        this.ga('send', 'pageview');
+    }
 };
 
 return googleAnalytics;
