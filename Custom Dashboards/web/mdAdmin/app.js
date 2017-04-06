@@ -1525,6 +1525,7 @@ $q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSet
     mdAdminApp.constant('MD_ADMIN_SETTINGS', MD_ADMIN_SETTINGS);
     mdAdminApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MD_ADMIN_SETTINGS.googleAnalyticsPropertyId);
 
+    var angularJsModuleNames = ['mdAdminApp'];
     for (var i = 0; i < angularModules.length; i++) {
         var angularModule = angularModules[i];
         angularJsModuleNames.push(angularModule.name);
