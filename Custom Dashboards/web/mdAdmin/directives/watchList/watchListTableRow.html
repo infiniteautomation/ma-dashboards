@@ -8,9 +8,11 @@
 <td md-cell ng-bind="point.deviceName"></td>
 <td md-cell ng-bind="point.name"></td>
 <td md-cell class="point-value">
-  <ma-point-value point="point" on-value-updated="pointValueChanged(point)"></ma-point-value>
+  <ma-point-value point="point" flash-on-change="true"></ma-point-value>
 </td>
-<td md-cell class="point-time"></td>
+<td md-cell class="point-time">
+    <ma-point-value point="point" flash-on-change="true" display-type="dateTime" same-day-date-time-format="timeSeconds"></ma-point-value>
+</td>
 <td md-cell>
   <md-icon ng-click="openPage('dashboard.dataPointDetails', point.xid)" md-colors="{'color': 'accent-hue-1'}">timeline<md-tooltip md-delay="250" md-direction="left" md-autohide><span ma-tr="dashboards.v3.app.dpd"></span></md-tooltip></md-icon>
 </td>

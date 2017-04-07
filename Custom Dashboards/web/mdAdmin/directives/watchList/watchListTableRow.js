@@ -45,44 +45,6 @@ function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSett
                     //$scope.status = 'You cancelled the dialog.';
                 });
         };
-        
-        var pointValueCell = element.find('.point-value');
-        var pointTimeCell = element.find('.point-time');
-        
-        var timeoutID;
-        var lastValue;
-        
-        var oneDayMs = moment.duration(1, 'day').asMilliseconds();
-        scope.pointValueChanged = function pointValueChanged(point) {
-            if (!point || !point.enabled) {
-                pointTimeCell.text('');
-                return;
-            }
-
-            // manually add and remove classes rather than using ng-class as point values can
-            // change rapidly and result in huge slow downs / heaps of digest loops
-            
-            var now = (new Date()).valueOf();
-            
-            var format = (now - point.time) >= oneDayMs ? 'shortDateTimeSeconds' : 'timeSeconds';
-            pointTimeCell.text(mdAdminSettings.formatDate(point.time, format));
-
-            pointTimeCell.addClass(FLASH_CLASS);
-            if (point.value !== lastValue) {
-                pointValueCell.addClass(FLASH_CLASS);
-            }
-            lastValue = point.value;
-            
-            if (timeoutID) {
-                clearTimeout(timeoutID);
-                timeoutID = null;
-            }
-
-            timeoutID = setTimeout(function() {
-                pointValueCell.removeClass(FLASH_CLASS);
-                pointTimeCell.removeClass(FLASH_CLASS);
-            }, 400);
-        };
 
         scope.showStats = function(ev) {
             $mdDialog.show({
