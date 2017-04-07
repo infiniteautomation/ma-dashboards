@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'angular'], function(require, angular) {
 'use strict';
 
 DateBarController.$inject = ['$mdMedia', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', 'mdAdminSettings'];
@@ -24,7 +24,7 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
     
     this.$doCheck = function() {
         if (!angular.equals(this.params.data, this.prevSettings)) {
-            this.prevSettings = angular.copy(this.params);
+            this.prevSettings = angular.copy(this.params.data);
             this.calcAutoRollup();
             this.updateIntervalFromRollupInterval();
             this.calcUpdateIntervalString();
