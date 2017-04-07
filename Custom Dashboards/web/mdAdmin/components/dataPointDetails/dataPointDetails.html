@@ -23,12 +23,15 @@
 				<div layout="row" layout-wrap class="point-details">
 					<div ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" flex="100" layout>
                       <label flex="35"><span ma-tr="dashboards.v3.app.value"></span>:</label>
-                      <div class="point-value" flex="65"><ma-point-value point="myPoint" on-value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value></div>
+                      <div class="point-value" flex="65">
+                        <ma-point-value point="myPoint" flash-on-change="true"></ma-point-value>
+                      </div>
                     </div>
-					<ma-point-value ng-if="myPoint.pointLocator.dataType === 'IMAGE'" flex="100"
-                      point="myPoint" on-value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value>
+					<ma-point-value ng-if="myPoint.pointLocator.dataType === 'IMAGE'" flex="100" point="myPoint"></ma-point-value>
+					<label flex="35"><span ma-tr="dashboards.v3.app.time"></span>:</label> 
+                        <ma-point-value flex="65" display-type="dateTime" flash-on-change="true" same-day-date-time-format="timeSeconds" point="myPoint">
+                        </ma-point-value>
                     <label flex="35"><span ma-tr="dashboards.v3.app.xid"></span>:</label> <div flex="65" ng-bind="myPoint.xid"></div>
-					<label flex="35"><span ma-tr="dashboards.v3.app.time"></span>:</label> <div class="point-time" flex="65" ng-bind="$ctrl.pointTime"></div>
 					<label flex="35"><span ma-tr="dashboards.v3.app.path"></span>:</label>  <div flex="65"><span ng-repeat="folder in $ctrl.path track by $index"><span ng-bind="folder"></span> <span ng-if="!$last"> &gt; </span></span></div>
 					<label flex="35"><span ma-tr="dashboards.v3.app.dataSource"></span>:</label> <div flex="65" ng-bind="myPoint.dataSourceName"></div>
 					<div flex="65">
@@ -57,7 +60,7 @@
 				</div>
 			</md-toolbar>
 			<md-table-container ng-init="myOrder='-timestamp'">
-				<table md-table>
+				<table md-table class="ma-point-values-table">
 					<thead md-head md-order="myOrder">
 						<tr md-row>
 							<th md-column md-order-by="timestamp" ma-tr="dashboards.v3.app.time"></th>
@@ -73,7 +76,7 @@
 					</tbody>
 					<tbody md-body ng-if="$ctrl.realtimeMode">
 						<ma-point-values point="myPoint" values="realtimePointValues" realtime="true" rendered="true" latest="100"></ma-point-values>
-						<tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder track by value.timestamp">
+						<tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder track by value.timestamp" ng-class="{'ma-point-value-cached': value.cached}">
 							<td md-cell ng-bind="$ctrl.mdAdminSettings.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
 							<td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell><span ng-bind="value.value"></span> <strong ng-if="value.annotation"><em>(<span ng-bind="value.annotation"></span>)</em></strong></td>
 	                        <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>

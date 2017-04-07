@@ -6,49 +6,14 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-DataPointDetailsController.$inject = ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'mdAdminSettings', 'PointHierarchy', 'DateBar', 'User'];
-function DataPointDetailsController($scope, $element, $stateParams, $state, localStorageService, mdAdminSettings, PointHierarchy, DateBar, User) {
+DataPointDetailsController.$inject = ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'PointHierarchy', 'DateBar', 'User'];
+function DataPointDetailsController($scope, $element, $stateParams, $state, localStorageService, PointHierarchy, DateBar, User) {
 
     this.dateBar = DateBar;
-    this.mdAdminSettings = mdAdminSettings;
     this.User = User;
-    var pointValueCell = $element.find('.point-details .point-value');
-    var pointTimeCell = $element.find('.point-details .point-time');
-    var timeoutID;
-    var lastValue;
     
     this.chartType = 'smoothedLine';
 
-    this.pointValueChanged = function pointValueChanged(point) {
-        // remove old points time
-        delete this.pointTime;
-
-        if (!point || !point.enabled) return;
-        
-        // manually add and remove classes rather than using ng-class as point values can
-        // change rapidly and result in huge slow downs / heaps of digest loops
-
-        var now = (new Date()).valueOf();
-        var format = now - point.time > 86400 ? 'shortDateTimeSeconds' : 'timeSeconds';
-        this.pointTime = mdAdminSettings.formatDate(point.time, format);
-
-        pointTimeCell.addClass('flash-on-change');
-        if (point.value !== lastValue) {
-            pointValueCell.addClass('flash-on-change');
-        }
-        lastValue = point.value;
-        
-        if (timeoutID) {
-            clearTimeout(timeoutID);
-            timeoutID = null;
-        }
-
-        timeoutID = setTimeout(function() {
-            pointValueCell.removeClass('flash-on-change');
-            pointTimeCell.removeClass('flash-on-change');
-        }, 400);
-    };
-    
     this.pointChanged = function(point) {
         if (!point) return;
         

@@ -57,6 +57,11 @@ md-input-container:not(.md-input-invalid).md-input-focused md-icon.md-warn {
   color: {{getThemeColor('warn')}};
 }
 
+ma-point-value[display-type=dateTime].ma-flash-on-change.ma-point-value-time-changed,
+ma-point-value.ma-flash-on-change.ma-point-value-changed {
+    color: {{getThemeColor('accent')}}
+}
+
 /* AmCharts */
 
 .amcharts-gauge-arrow, .amcharts-gauge-arrow-nail {
