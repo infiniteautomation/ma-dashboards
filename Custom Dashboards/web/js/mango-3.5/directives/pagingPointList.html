@@ -1,0 +1,38 @@
+<div layout="column">
+
+  <md-autocomplete
+    md-selected-item-change="changed()"
+    md-selected-item="ngModel"
+    md-search-text="searchText"
+    md-items="item in querySearch(searchText)"
+    md-item-text="pointLabel(item)"
+    md-no-cache="true"
+    md-min-length="0"
+    md-floating-label="{{'dashboards.v3.app.searchBy' | tr:'points':'name or device'}}"
+    md-delay="1000"
+    md-autoselect="true"
+    md-match-case-insensitive="true">
+      <md-item-template>
+        <span md-highlight-text="searchText" md-highlight-flags="ig">{{pointLabel(item)}}</span>
+      </md-item-template>
+      <md-not-found>
+        <span ma-tr="dashboards.v3.app.noPointsFound" ma-tr-args="[searchText]"></span>
+      </md-not-found>
+  </md-autocomplete>
+  
+
+  <md-input-container class="md-block">
+    <label ma-tr="dashboards.v3.app.searchBy" ma-tr-args="['points', 'name or device']"></label>
+    <input ng-model="searchText" ng-model-options="{debounce:1000}" type="text">
+    <md-icon ng-click="openDropdown()">arrow_drop_down</md-icon>
+  </md-input-container>
+  <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+  
+  <md-virtual-repeat-container id="vertical-container">
+    <div md-virtual-repeat="item in dynamicItems" md-on-demand class="repeated-item" flex>
+      <span ng-show="item" ng-click="ngModel = item">{{item.deviceName}} - {{item.name}}</span>
+      <span ng-hide="item">&hellip;</span>
+    </div>
+  </md-virtual-repeat-container>
+
+</div>

@@ -1,3 +1,25 @@
+*Version 3.5.0*
+* Release date 2017-04-07
+* Core 3.0.x compatible
+* Should be functionally identical to dashboards v3.3.1
+* Use new REST login/logout endpoints
+* Update watchdog code for new REST responses
+
+*Version 3.4.0*
+* Release date 2016-08-23
+* Internal build only!
+* Add IFRAME views for various legacy Mango pages
+* Add watchlist view
+* Add powerful watchlist builder with query  and dynamic parameter support
+* Add events services, table page and icons to the header bar
+* Add dateBar for setting date range and rollups across pages
+* Add the new data point details page
+* Add user Notes service and table
+* Update amCharts to 3.20.13
+* Update angular material to 1.1.1
+* Add dashboard settings page where user can set theme colors and set logo.
+* Add help pages for the new pages
+
 *Version 3.3.1*
 * Built against latest 2.8.6 core to fix JSP bug
 

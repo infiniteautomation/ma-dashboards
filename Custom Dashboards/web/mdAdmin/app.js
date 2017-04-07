@@ -5,8 +5,8 @@
 
 define([
     'angular',
-    'mango-3.3/maMaterialDashboards',
-    'mango-3.3/maAppComponents',
+    'mango-3.5/maMaterialDashboards',
+    'mango-3.5/maAppComponents',
     'require',
     './services/Page',
     './directives/pageView/pageView',

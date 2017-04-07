@@ -6,7 +6,7 @@
 define([
     'angular',
     './directives/login/login', // load directives from the directives folder
-    'mango-3.3/maMaterialDashboards', // load mango-3.3 angular modules
+    'mango-3.5/maMaterialDashboards', // load mango-3.5 angular modules
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
 ], function(angular, login) {

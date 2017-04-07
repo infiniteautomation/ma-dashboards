@@ -5,7 +5,7 @@
 
 define([
     'angular',
-    'mango-3.3/maMaterialDashboards'
+    'mango-3.5/maMaterialDashboards'
 ], function(angular, maMaterialDashboards) {
 'use strict';
 
