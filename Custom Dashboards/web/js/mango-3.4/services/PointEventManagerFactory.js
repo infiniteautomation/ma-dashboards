@@ -22,7 +22,8 @@ define([], function() {
 */
 function PointEventManagerFactory(EventManager) {
     return new EventManager({
-    	url: '/rest/v1/websocket/point-value'
+    	url: '/rest/v1/websocket/point-value',
+    	replayLastPayload: true
     });
 }
 

@@ -212,6 +212,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
 	        var xidSubscriptions = this.subscriptionsByXid[xid];
 	        if (xidSubscriptions) {
+	            xidSubscriptions.lastPayload = payload;
 	            $(xidSubscriptions.eventEmitter).trigger(eventType, payload);
 	        }
 	        $(this).trigger(eventType, payload);
@@ -227,6 +228,10 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	    }
 
 	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
+	    
+	    if (this.replayLastPayload && xidSubscriptions.lastPayload && typeof eventHandler === 'function') {
+	        eventHandler(null, xidSubscriptions.lastPayload);
+	    }
 
 	    for (var i = 0; i < eventTypes.length; i++) {
 	    	var eventType = eventTypes[i];
@@ -325,7 +330,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
 	    var eventTypes = [];
 	    for (var key in subscriptions) {
-	        if (key === 'eventEmitter')
+	        if (key === 'eventEmitter' || key === 'lastPayload')
 	            continue;
 
 	        if (subscriptions[key] === 0) {
