@@ -43,6 +43,8 @@ Time: <ma-point-value point="myPoint1" display-type="dateTime" date-time-format=
  *
  */
 function pointValue() {
+    var dateOptions = ['dateTime', 'shortDateTime', 'dateTimeSeconds', 'shortDateTimeSeconds', 'date', 'shortDate', 'time', 'timeSeconds', 'monthDay', 'month', 'year', 'iso'];
+    
     return {
         restrict: 'E',
         templateUrl: require.toUrl('./pointValue.html'),
@@ -54,7 +56,10 @@ function pointValue() {
             pointXid: '@?',
             displayType: '@?',
             dateTimeFormat: '@?',
+            sameDayDateTimeFormat: '@?',
             timezone: '@?',
+            flashOnChange: '<?',
+            changeDuration: '<?',
             onValueUpdated: '&?'
         },
         designerInfo: {
@@ -64,7 +69,10 @@ function pointValue() {
             attributes: {
                 point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
                 pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
-                displayType: {options: ['rendered', 'raw', 'converted', 'image', 'dateTime']}
+                displayType: {options: ['rendered', 'raw', 'converted', 'image', 'dateTime']},
+                dateTimeFormat: {options: dateOptions},
+                sameDayDateTimeFormat: {options: dateOptions},
+                flashOnChange: {type: 'boolean'}
             }
         }
     };
@@ -99,13 +107,12 @@ PointValueDirectiveController.prototype.valueChangeHandler = function() {
 
 PointValueDirectiveController.prototype.updateText = function() {
     delete this.valueStyle.color;
-    if (!this.point) {
+    // jshint eqnull:true
+    if (!this.point || this.point.time == null) {
         this.displayValue = '';
         return;
     }
     
-    var dateTimeFormat = this.dateTimeFormat || this.mangoDateFormats.dateTimeSeconds;
-
     var valueRenderer = this.point.valueRenderer(this.point.value);
     var color = valueRenderer ? valueRenderer.color : null;
     
@@ -124,11 +131,14 @@ PointValueDirectiveController.prototype.updateText = function() {
         this.valueStyle.color = color;
         break;
     case 'dateTime':
-        if (this.timezone) {
-            this.displayValue = moment.tz(this.point.time, this.timezone).format(dateTimeFormat);
-        } else {
-            this.displayValue = moment(this.point.time).format(dateTimeFormat);
+        var dateTimeFormat = this.mangoDateFormats.shortDateTimeSeconds;
+        if (this.sameDayDateTimeFormat && (Date.now() - this.point.time < 86400)) {
+            dateTimeFormat = this.mangoDateFormats[this.sameDayDateTimeFormat] || this.sameDayDateTimeFormat;
+        } else if (this.dateTimeFormat) {
+            dateTimeFormat = this.mangoDateFormats[this.dateTimeFormat] || this.dateTimeFormat;
         }
+        var m = this.timezone ? moment.tz(this.point.time, this.timezone) : moment(this.point.time);
+        this.displayValue = m.format(dateTimeFormat);
         break;
     default:
         this.displayValue = this.point.value;

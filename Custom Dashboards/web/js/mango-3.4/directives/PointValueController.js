@@ -16,6 +16,10 @@ function PointValueController($scope, $element, $attrs, pointEventManager, Point
     this.pointEventManager = pointEventManager;
     this.Point = Point;
     
+    // jshint eqnull:true
+    if (this.changeDuration == null)
+        this.changeDuration = 400;
+    
     $element.addClass('live-value');
 }
 
@@ -28,6 +32,13 @@ PointValueController.prototype.$onChanges = function(changes) {
     }
     if (changes.pointXid && !(!changes.pointXid.currentValue && changes.pointXid.isFirstChange())) {
         this.getPointByXid();
+    }
+    if (changes.flashOnChange) {
+        if (this.flashOnChange) {
+            this.$element.addClass('ma-flash-on-change');
+        } else {
+            this.$element.removeClass('ma-flash-on-change');
+        }
     }
 };
 
@@ -88,11 +99,41 @@ PointValueController.prototype.websocketHandler = function(event, payload) {
     this.valueChangeHandler();
 };
 
-PointValueController.prototype.valueChangeHandler = function() {
+PointValueController.prototype.valueChangeHandler = function(isPointChange) {
     if (!this.point || this.point.enabled) {
         this.$element.removeClass('point-disabled');
     } else {
         this.$element.addClass('point-disabled');
+    }
+
+    var $element = this.$element;
+    
+    // manually add and remove classes rather than using ng-class as point values can
+    // change rapidly and result in huge slow downs / heaps of digest loops
+    if (!isPointChange) {
+        // jshint eqnull:true
+        var valueChanged = this.previousPointValue != null && this.point.value !== this.previousPointValue;
+        this.previousPointValue = this.point.value;
+        
+        $element.addClass('ma-point-value-time-changed');
+        if (valueChanged) {
+            $element.addClass('ma-point-value-changed');
+        }
+        
+        if (this.timeoutID) {
+            clearTimeout(this.timeoutID);
+        }
+
+        this.timeoutID = setTimeout(function() {
+            $element.removeClass('ma-point-value-time-changed');
+            $element.removeClass('ma-point-value-changed');
+        }, this.changeDuration);
+    } else {
+        clearTimeout(this.timeoutID);
+        delete this.timeoutID;
+        delete this.previousPointValue;
+        $element.removeClass('ma-point-value-time-changed');
+        $element.removeClass('ma-point-value-changed');
     }
     
     if (this.onValueUpdated) {

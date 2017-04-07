@@ -439,7 +439,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     bulletSize: 0,
                     bulletSizeField: graph.xid + 'AnnotationBulletSize',
                     bulletHitAreaSize: 10,
-                    bulletAlpha: .7,
+                    bulletAlpha: 0.7,
                     bullet: 'diamond',
                     bulletField: graph.xid + 'AnnotationBullet'
                 };

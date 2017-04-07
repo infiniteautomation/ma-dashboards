@@ -412,6 +412,15 @@ ma-watch-list-chart ma-serial-chart {
   height: 100%;
 }
 
+ma-point-value.ma-flash-on-change {
+    transition: color 0.2s;
+}
+
+ma-point-value[display-type=dateTime].ma-flash-on-change.ma-point-value-time-changed,
+ma-point-value.ma-flash-on-change.ma-point-value-changed {
+    color: rgb(255,133,0);
+}
+
 /* SVG and animations */
 
 [ng-include] > svg {
