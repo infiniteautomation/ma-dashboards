@@ -35,14 +35,7 @@ requirejs.config({
     baseUrl: mangoUrl + requirejs.toUrl(''),
     paths : {
         'modules': '/modules',
-        'dashboards' : module,
-        // The mango-3.0 folder contains the actual 3.0 code, however when 3.1 was released the updated
-        // directives and services were placed in the 3.0 folder.
-        // Keep the mango-3.0 folder pointing at mango-3.1 to ensure people upgrading from 3.1 are not affected
-        'mango-3.0' : module + '/js/mango-3.1',
-        'mango-3.1' : module + '/js/mango-3.1',
-        'mango-3.2' : module + '/js/mango-3.2',
-        'mango-3.3' : module + '/js/mango-3.3',
+        'ui' : module,
         'mango-3.4' : module + '/js/mango-3.4',
         'mdAdmin' : module + '/mdAdmin',
         'angular' : vendor + '/angular/angular',
