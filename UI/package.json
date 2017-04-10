@@ -1,7 +1,7 @@
 {
-  "name": "mango_dashboards",
-  "version": "3.5.0",
-  "description": "Mango Custom Dashboards",
+  "name": "mango_automation_ui",
+  "version": "3.0.0",
+  "description": "Mango UI",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {

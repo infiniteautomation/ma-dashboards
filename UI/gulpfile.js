@@ -48,7 +48,7 @@ gulp.task('build-ngdocs', [], function() {
     console.log('Compiling Docs');
 
     var options = {
-        title: "Custom Dashboard 3.x Documentation",
+        title: "Mango UI 3.x Documentation",
         startPage: "/",
         html5Mode: false,
         loadDefaults: {
@@ -83,7 +83,7 @@ gulp.task('watchDocs', function() {
 gulp.task('watch-web', function() {
     return gulp.src('web/**')
         .pipe(watch('web/**', {ignoreInitial: false, verbose: true}))
-        .pipe(gulp.dest(MA_HOME + '/web/modules/dashboards/web'));
+        .pipe(gulp.dest(MA_HOME + '/web/modules/ui/web'));
 });
 
 gulp.task('build-amcharts', function() {

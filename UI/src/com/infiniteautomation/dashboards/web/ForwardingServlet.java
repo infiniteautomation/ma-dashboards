@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 Infinite Automation Software. All rights reserved.
+ * Copyright (C) 2017 Infinite Automation Software. All rights reserved.
  */
 package com.infiniteautomation.dashboards.web;
 
@@ -14,7 +14,6 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 
 /**
  * @author Jared Wiltshire
- *
  */
 public class ForwardingServlet extends DefaultServlet {
     private static final long serialVersionUID = -8475157239062257417L;

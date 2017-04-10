@@ -1,5 +1,5 @@
 {
-  "name": "dashboards",
+  "name": "mango_automation_ui",
   "dependencies": {
     "angular": "~1.5.11",
     "angular-resource": "~1.5.11",

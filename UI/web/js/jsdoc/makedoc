@@ -1,1 +1,0 @@
-./jsdoc -t templates/mango --readme ../../private/tutorials/readme --tutorials ../../private/tutorials -d ../../private/api-docs ../mango-2.0/*.js

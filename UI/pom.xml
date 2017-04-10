@@ -5,9 +5,9 @@
       <groupId>com.infiniteautomation.mango</groupId>
       <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>dashboards</artifactId>
-    <name>dashboards</name>
-    <version>3.5.0-SNAPSHOT</version>
+    <artifactId>ui</artifactId>
+    <name>UI</name>
+    <version>3.0.0-SNAPSHOT</version>
     <build>
     <plugins>
         <plugin>
@@ -18,10 +18,6 @@
             <artifactId>maven-war-plugin</artifactId>
         </plugin>
         <plugin>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-jspc-maven-plugin</artifactId>
-        </plugin>
-        <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
         </plugin>
         <plugin>
@@ -29,5 +25,5 @@
         </plugin>
     </plugins>
 </build>
-    <description>Provides an AngularJS dashboards interface, including the ability to create custom pages</description>
+    <description>Provides an AngularJS user interface, including the ability to create custom pages</description>
 </project>
