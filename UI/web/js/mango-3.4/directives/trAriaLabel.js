@@ -12,7 +12,7 @@ define(['jquery', 'angular'], function($, angular) {
  * @description
  * `<button ma-tr-aria-label="dashboards.v3.dox.input"></button>`
  * - Sets the aria-label attribute for an element to the translation set for the current language
- * - Translations are written in `web/modules/dashboards/classes/i18n.properties` file
+ * - Translations are written in `web/modules/ui/classes/i18n.properties` file
  *
  * @usage
  * <button ma-tr-aria-label="dashboards.v3.dox.input"></button>

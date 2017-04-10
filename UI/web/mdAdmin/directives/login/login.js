@@ -25,7 +25,7 @@ function loginFactory($state, User, $rootScope, $window) {
                     password: $scope.password
                 });
                 user.$promise.then(function(user) {
-                    var redirectUrl = '/dashboards/';
+                    var redirectUrl = '/ui/';
                     if ($state.loginRedirectUrl) {
                         redirectUrl = $state.loginRedirectUrl;
                     } else if (user.mangoDefaultUri) {

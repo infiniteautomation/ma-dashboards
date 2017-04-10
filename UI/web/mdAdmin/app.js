@@ -1080,7 +1080,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var $state = $injector.get('$state');
         var user = User.current;
         
-        var path = '/dashboards/';
+        var path = '/ui/';
         if ($location.path()) {
             path += $location.path().substring(1);
         }
@@ -1090,9 +1090,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
             return '/login';
         }
         
-        if (path === '/dashboards/') {
+        if (path === '/ui/') {
             var homeUrl = user.mangoDefaultUri || user.homeUrl;
-            if (homeUrl && homeUrl.indexOf('/dashboards') === 0) {
+            if (homeUrl && homeUrl.indexOf('/ui') === 0) {
                 return homeUrl.substring(11); // strip dashboards from start of url
             }
             return '/home';
@@ -1414,7 +1414,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
                     $mdDialog.cancel();
                     
                     // redirect to the login page if auto-login fails
-                    $state.loginRedirectUrl = '/dashboards' + $location.url();
+                    $state.loginRedirectUrl = '/ui' + $location.url();
                     $state.go('login');
                     //window.location = $state.href('login');
                 });

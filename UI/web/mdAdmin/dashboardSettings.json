@@ -1,5 +1,5 @@
 {
-  "logoSrc": "/modules/dashboards/web/img/logo.svg",
+  "logoSrc": "/modules/ui/web/img/logo.svg",
   "defaultTheme": "mangoDark",
   "codeTheme": "monokai",
   "googleMapsApiKey": "",

@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2017 Infinite Automation Software. All rights reserved.
  */
-package com.infiniteautomation.dashboards.web;
+package com.infiniteautomation.ui.web;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,8 +24,8 @@ public class ForwardingServlet extends DefaultServlet {
     private final boolean notFoundInSubdir;
     
     /**
-     * @param forwardFrom Path which is being forwarded from, starts with a slash, no slash on end, e.g. /dashboards
-     * @param forwardTo Path which is being forwarded to, starts with a slash, no slash on end, e.g. /modules/dashboards/web
+     * @param forwardFrom Path which is being forwarded from, starts with a slash, no slash on end, e.g. /ui
+     * @param forwardTo Path which is being forwarded to, starts with a slash, no slash on end, e.g. /modules/ui/web
      * @param notFoundPath If the path we are forwarding to is not found, forward to the forwardTo path with this as a suffix, e.g. /index.html
      * @param notFoundInSubdir If the path we are forwarding to is not found and the request path is for a subdirectory, forward to the subdirectory
      * followed by the notFoundPath

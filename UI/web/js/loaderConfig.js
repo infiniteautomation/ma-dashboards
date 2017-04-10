@@ -25,7 +25,7 @@ if (!module) {
         }
     }
     
-    module = mangoUrl + '/modules/dashboards/web';
+    module = mangoUrl + '/modules/ui/web';
 }
 
 var vendor = module + '/vendor';

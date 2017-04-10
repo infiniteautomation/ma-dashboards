@@ -8,11 +8,11 @@ Pages in the web/public folder must be postfixed with .htm
 
 Any private page can be accessed via:
 
-yourMangoHost:yourMangoPort/dashboards/<your dashboard name>.shtm
+yourMangoHost:yourMangoPort/ui/<your dashboard name>.shtm
 
 Examples:
-localhost:8080/dashboards/defaultDashbaord.shtm
-localhost:8080/dashboards/helloWorld.shtm
+localhost:8080/ui/defaultDashbaord.shtm
+localhost:8080/ui/helloWorld.shtm
 
 Public pages can be accessed via:
 

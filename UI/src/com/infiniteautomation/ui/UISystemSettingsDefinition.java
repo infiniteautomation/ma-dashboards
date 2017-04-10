@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2017 Infinite Automation Software. All rights reserved.
  */
-package com.infiniteautomation.dashboards;
+package com.infiniteautomation.ui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class UISystemSettingsDefinition extends SystemSettingsDefinition {
 	 */
 	@Override
 	public String getSectionJspPath() {
-		return "web/settings.jsp";
+		return null;
 	}
 
 	/* (non-Javadoc)

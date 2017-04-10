@@ -9,7 +9,7 @@
         <!-- Page Style -->
         <style></style>
         <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        <link href="/modules/ui/web/private/css/dashboard.css" rel="stylesheet">
         <link href="/resources/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
         <link href="/resources/select2/css/select2.min.css" rel="stylesheet">
         

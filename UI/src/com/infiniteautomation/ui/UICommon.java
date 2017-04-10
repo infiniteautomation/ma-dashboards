@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2017 Infinite Automation Software. All rights reserved.
  */
-package com.infiniteautomation.dashboards;
+package com.infiniteautomation.ui;
 
 /**
  * @author Jared Wiltshire

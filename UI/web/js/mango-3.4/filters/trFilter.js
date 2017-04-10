@@ -12,7 +12,7 @@ define([], function() {
  * @description
  * Outputs the translation text for the set language.
  * - Inputs the translation key as a string
- * - Translations are written in `web/modules/dashboards/classes/i18n.properties` file
+ * - Translations are written in `web/modules/ui/classes/i18n.properties` file
  * - Example:
  *      - <code ng-non-bindable>{{'common.value' | tr}}</code>
  *
