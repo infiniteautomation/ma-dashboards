@@ -38,7 +38,7 @@
                                     <ma-statistics-table statistics="statsTab.statsObj"></ma-statistics-table>
                               </md-content>
                         </md-tab>
-                        <md-tab label="{{'dashboards.v3.app.chart' | tr}}">
+                        <md-tab label="{{'dashboards.v3.app.latestValueChart' | tr}}">
                               <md-content class="md-padding">
                                     <ma-point-values point="myPoint" values="realtimePointValues" realtime="$ctrl.realtimeMode" use-cache="$ctrl.showCachedData"
                                         converted="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
@@ -47,7 +47,7 @@
                                     </ma-serial-chart>
                               </md-content>
                         </md-tab>
-                        <md-tab label="{{'dashboards.v3.app.values' | tr}}">
+                        <md-tab label="{{'dashboards.v3.app.latestValueTable' | tr}}">
                               <md-content class="md-padding" ng-init="tableTab = {}">
                                     <ma-point-values point="myPoint" values="tableTab.renderedRealtimePointValues" realtime="$ctrl.realtimeMode" use-cache="$ctrl.showCachedData"
                                         rendered="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
