@@ -14,6 +14,10 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     this.mdAdminSettings = mdAdminSettings;
     
     this.chartType = 'smoothedLine';
+    this.showTableOptions = false;
+    this.numValues = 100;
+    this.realtimeMode = true;
+    this.showCachedData = true;
 
     this.pointChanged = function(point) {
         if (!point) return;

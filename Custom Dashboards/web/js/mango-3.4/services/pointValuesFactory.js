@@ -230,6 +230,11 @@ function pointValuesFactory($http, $q, Util) {
             params.push('unitConversion=true');
         }
         
+        // jshint eqnull:true
+        if (options.useCache != null) {
+            params.push('useCache=' + !!options.useCache);
+        }
+        
         return params;
     }
 

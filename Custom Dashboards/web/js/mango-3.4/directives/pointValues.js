@@ -86,6 +86,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             to: '<?',
             latest: '<?',
             realtime: '<?',
+            useCache: '<?',
             rollup: '@',
             rollupInterval: '@',
             rendered: '<?',
@@ -96,6 +97,18 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             timezone: '@',
             onValuesUpdated: '&?'
         },
+        bindToController: {
+            refresh: '<?'
+        },
+        controller: ['$scope', function($scope) {
+            $scope.refreshCount = 0;
+            
+            this.$onChanges = function(changes) {
+                if (changes.refresh) {
+                    $scope.refreshCount++;
+                }
+            };
+        }],
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
             var values = {};
@@ -133,6 +146,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             		from: moment.isMoment($scope.from) ? $scope.from.valueOf() : $scope.from,
             		to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to,
             		latest: $scope.latest,
+                    useCache: $scope.useCache,
+                    refreshCount: $scope.refreshCount,
+                    realtime: $scope.realtime,
             		rollup: $scope.rollup,
             		rollupInterval: $scope.rollupInterval,
             		rendered: $scope.rendered,
@@ -439,6 +455,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     var dataType = point.pointLocator.dataType;
                     var options = {
                         latest: $scope.latest,
+                        useCache: $scope.useCache,
                         dateFormat: $scope.dateFormat,
                         from: $scope.from,
                         to: $scope.to,

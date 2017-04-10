@@ -68,3 +68,9 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
     fill: {{getThemeColor('accent')}};
     stroke: {{getThemeColor('accent')}};
 }
+
+/* Data point details */
+
+.data-point-details-page table.ma-point-values-table .ma-point-values-non-realtime tr.ma-point-value-cached {
+  color: {{getThemeColor('warn')}}
+}

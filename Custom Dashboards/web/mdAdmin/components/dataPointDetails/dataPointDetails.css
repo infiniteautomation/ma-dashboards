@@ -3,6 +3,10 @@
     max-height: 305px;
 }
 
+.data-point-details-page md-card.dpd-small-card > div {
+  overflow-y: auto;
+}
+
 .data-point-details-page .amchart {
     height: 420px;
     max-height: 420px;
@@ -17,4 +21,17 @@
     font-weight: bold;
     text-align: right;
     padding-right: 20px;
+}
+
+.data-point-details-page .dpd-small-card md-toolbar,
+.data-point-details-page .dpd-small-card md-toolbar .md-toolbar-tools {
+  font-size: inherit;
+}
+
+.data-point-details-page .dpd-num-values input {
+  width: 55px;
+}
+
+.data-point-details-page .dpd-table-refresh {
+  margin: 0;
 }
