@@ -403,8 +403,6 @@ code:not(.highlight) {
 
 /* Element styles */
 
-
-
 .move-handle {
   cursor: move;
   margin: 8px;
@@ -490,6 +488,11 @@ live-editor [ui-ace] {
 .dashboard-menu .md-button.menu-link.menu-active .menu-text,
 .dashboard-menu .md-button.menu-link.menu-active .menu-icon {
 	color: rgba(255,255,255,0.87);
+}
+
+md-card md-toolbar .md-toolbar-tools h2 span {
+    line-height: 18px;
+	font-size: 16px;
 }
 
 md-card md-toolbar, md-card md-toolbar .md-toolbar-tools {

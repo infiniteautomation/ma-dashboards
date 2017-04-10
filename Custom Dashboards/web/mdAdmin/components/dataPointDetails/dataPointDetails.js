@@ -18,7 +18,26 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     this.numValues = 100;
     this.realtimeMode = true;
     this.showCachedData = true;
-
+    
+    this.$onInit = function() {
+        if ($stateParams.pointXid) {
+            // console.log($stateParams.pointXid);
+            this.pointXid = $stateParams.pointXid;
+        } else if ($stateParams.pointId) {
+            // console.log(($stateParams.pointId));
+            this.pointId = $stateParams.pointId;
+        } else {
+            // Attempt load pointXid from local storage
+            var storedPoint = localStorageService.get('lastDataPointDetailsItem');
+            if (storedPoint) {
+                this.pointXid = storedPoint.xid;
+                //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
+            }
+        }
+        
+        this.retrievePreferences();
+    };
+    
     this.pointChanged = function(point) {
         if (!point) return;
         
@@ -43,21 +62,19 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
         this.chartType = $scope.myPoint.amChartsGraphType();
     };
 
-    this.$onInit = function() {
-        if ($stateParams.pointXid) {
-            // console.log($stateParams.pointXid);
-            this.pointXid = $stateParams.pointXid;
-        } else if ($stateParams.pointId) {
-            // console.log(($stateParams.pointId));
-            this.pointId = $stateParams.pointId;
-        } else {
-            // Attempt load pointXid from local storage
-            var storedPoint = localStorageService.get('lastDataPointDetailsItem');
-            if (storedPoint) {
-                this.pointXid = storedPoint.xid;
-                //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
-            }
-        }
+    this.updatePreferences = function() {
+        var preferences = localStorageService.get('uiPreferences');
+        preferences.numberOfPointValues = this.numValues;
+        preferences.realtimeMode = this.realtimeMode;
+        preferences.showCachedData = this.showCachedData;
+        localStorageService.set('uiPreferences', preferences);
+    };
+    
+    this.retrievePreferences = function() {
+        var preferences = localStorageService.get('uiPreferences');
+        this.numValues = preferences.numberOfPointValues;
+        this.realtimeMode = preferences.realtimeMode;
+        this.showCachedData = preferences.showCachedData;
     };
 }
 
