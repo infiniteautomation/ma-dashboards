@@ -81,28 +81,27 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
     
     MangoWatchdog.prototype.doPing = function() {
         $http({
-            method: 'OPTIONS',
+            method: 'GET',
             url: '/rest/v1/users/current',
             timeout: this.interval / 2
         }).then(function(response) {
+            return {state: LOGGED_IN};
+        }, function(response) {
             var startupState = response.headers('Mango-Startup-State');
             var startupProgress = response.headers('Mango-Startup-Progress');
-            
-            if (!startupState && !startupProgress) {
-                return {state: LOGGED_IN};
-            }
-            return {
-                state: STARTING_UP,
-                info: {
-                    startupState: startupState,
-                    startupProgress: startupProgress
-                }
-            };
-        }, function(response) {
+
             if (response.status < 0) {
                 return {state: API_DOWN};
-            } else if (response.status === 403) {
+            } else if (response.status === 401) {
                 return {state: API_UP};
+            } else if (response.status === 503 && startupState) {
+                return {
+                    state: STARTING_UP,
+                    info: {
+                        startupState: startupState,
+                        startupProgress: startupProgress
+                    }
+                };
             } else {
                 return {state: API_ERROR, info:{responseStatus: response.status}};
             }
