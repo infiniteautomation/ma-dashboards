@@ -17,7 +17,7 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     this.showTableOptions = false;
     this.numValues = 100;
     this.realtimeMode = true;
-    this.showCachedData = true;
+    this.showCachedData = false;
     
     this.$onInit = function() {
         if ($stateParams.pointXid) {
