@@ -109,10 +109,16 @@ MochaUtils.prototype.cleanupInjector = function cleanupInjector(injector) {
 
 MochaUtils.prototype.login = function login(injector) {
     if (!this.user) {
-        return this.injector.get('User').login({
-            username: this.config.username,
-            password: this.config.password
-        }).$promise.then(function(user) {
+        var User = this.injector.get('User');
+        var username = this.config.username;
+        var password = this.config.password;
+        
+        return User.getCurrent().$promise.then(null, function() {
+            return User.login({
+                username: username,
+                password: password
+            }).$promise;
+        }).then(function(user) {
             this.user = user;
         }.bind(this), function(error) {
             if (error.status < 0)

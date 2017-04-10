@@ -631,8 +631,7 @@ describe('Point service', function() {
         }, function(error) {
             assert.equal(error.status, 500);
             assert.isObject(error.data);
-            assert.equal(error.data.message, 'No column found for: xyz');
-            assert.isString(error.data.stackTrace);
+            assert.equal(error.data.localizedMessage, 'com.serotonin.ShouldNeverHappenException: No column found for: xyz');
         });
     }));
     
@@ -643,8 +642,7 @@ describe('Point service', function() {
         }, function(error) {
             assert.equal(error.status, 500);
             assert.isObject(error.data);
-            assert.equal(error.data.message, 'No column found for: xyz');
-            assert.isString(error.data.stackTrace);
+            assert.equal(error.data.localizedMessage, 'com.serotonin.ShouldNeverHappenException: No column found for: xyz');
         });
     }));
 
