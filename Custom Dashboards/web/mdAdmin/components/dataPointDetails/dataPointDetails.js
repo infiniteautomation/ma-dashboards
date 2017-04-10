@@ -14,10 +14,6 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     this.mdAdminSettings = mdAdminSettings;
     
     this.chartType = 'smoothedLine';
-    this.showTableOptions = false;
-    this.numValues = 100;
-    this.realtimeMode = true;
-    this.showCachedData = false;
     
     this.$onInit = function() {
         if ($stateParams.pointXid) {
@@ -71,7 +67,12 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     };
     
     this.retrievePreferences = function() {
-        var preferences = localStorageService.get('uiPreferences');
+        var defaults = {
+            numValues: 100,
+            realtimeMode: true,
+            showCachedData: false
+        };
+        var preferences = angular.merge(defaults, localStorageService.get('uiPreferences'));
         this.numValues = preferences.numberOfPointValues;
         this.realtimeMode = preferences.realtimeMode;
         this.showCachedData = preferences.showCachedData;

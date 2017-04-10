@@ -8,8 +8,8 @@ define(['require', 'moment-timezone', 'angular'], function(require, moment, angu
 
 var FLASH_CLASS = 'flash-on-change';
 
-watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'mdAdminSettings', '$state', 'DateBar'];
-function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSettings, $state, DateBar) {
+watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'mdAdminSettings', '$state', 'DateBar', 'localStorageService'];
+function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSettings, $state, DateBar, localStorageService) {
     return {
         templateUrl: require.toUrl('./watchListTableRow.html'),
         link: watchListTableRowLink
@@ -51,6 +51,28 @@ function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSett
                 controller: function() {
                     this.dateBar = DateBar;
                     this.mdAdminSettings = mdAdminSettings;
+
+                    this.retrievePreferences = function() {
+                        var defaults = {
+                            numValues: 100,
+                            realtimeMode: true,
+                            showCachedData: false
+                        };
+                        var preferences = angular.merge(defaults, localStorageService.get('uiPreferences'));
+                        this.numValues = preferences.numberOfPointValues;
+                        this.realtimeMode = preferences.realtimeMode;
+                        this.showCachedData = preferences.showCachedData;
+                    };
+                    
+                    this.updatePreferences = function() {
+                        var preferences = localStorageService.get('uiPreferences');
+                        preferences.numberOfPointValues = this.numValues;
+                        preferences.realtimeMode = this.realtimeMode;
+                        preferences.showCachedData = this.showCachedData;
+                        localStorageService.set('uiPreferences', preferences);
+                    };
+
+                    this.retrievePreferences();
                     
                     this.parent = scope;
                     this.timeRange = moment.duration(moment(this.dateBar.to).diff(moment(this.dateBar.from))).humanize();
@@ -63,7 +85,7 @@ function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSett
                 targetEvent: ev,
                 fullscreen: true,
                 clickOutsideToClose: true,
-                controllerAs: 'ctrl'
+                controllerAs: '$ctrl'
             })
             .then(function(answer) {
                 //$scope.status = 'You said the information was "' + answer + '".';

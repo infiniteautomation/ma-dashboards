@@ -71,6 +71,6 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
 
 /* Data point details */
 
-.data-point-details-page table.ma-point-values-table .ma-point-values-non-realtime tr.ma-point-value-cached {
+table.ma-point-values-table .ma-point-values-non-realtime tr.ma-point-value-cached {
   color: {{getThemeColor('warn')}}
 }

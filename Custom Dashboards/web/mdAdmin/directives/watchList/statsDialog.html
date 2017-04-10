@@ -1,66 +1,69 @@
-<ma-get-point-value point-xid="{{ctrl.parent.point.xid}}" point="myPoint"></ma-get-point-value>
-<md-dialog aria-label="{{myPoint.name}} Statistics" class="stats-dialog" ng-class="{'mobile': ctrl.parent.$mdMedia('xs')}">
+<ma-get-point-value point-xid="{{$ctrl.parent.point.xid}}" point="myPoint"></ma-get-point-value>
+<md-dialog aria-label="{{myPoint.name}} Statistics" class="watch-list-stats-dialog" ng-class="{'mobile': $ctrl.parent.$mdMedia('xs')}">
       <form>
-            <md-toolbar>
+            <md-toolbar class="small-toolbar-font">
                   <div class="md-toolbar-tools">
-                        <h2>{{myPoint.deviceName}} - {{myPoint.name}}'s {{ 'dashboards.v3.app.history' | tr }} 
-                              <span ma-tr="dashboards.v3.app.overTimeRange" ma-tr-args="[ctrl.timeRange]"></span>
-                        </h2>
+                        <h2>{{ 'dashboards.v3.app.history' | tr }}: {{myPoint.deviceName}} &mdash; {{myPoint.name}}</h2>
+                        <md-button ng-show="!$ctrl.realtimeMode" class="md-icon-button" ng-click="$ctrl.refreshTable = {}"><md-icon>refresh</md-icon></md-button>
                         <span flex></span>
-                        <h2 style="padding-right: 5px;">
-                              <span>{{'dashboards.v3.app.realtime' | tr}}: </span>
-                        </h2>
-                        <md-switch ng-model="ctrl.realtimeMode" aria-label="Realtime Mode" ng-init="ctrl.realtimeMode = true"></md-switch>
-                        <md-button class="md-icon-button" ng-click="ctrl.cancel()">
+                        <md-checkbox ng-model="$ctrl.showTableOptions">
+                            <span ma-tr="dashboards.v3.app.configure"></span>
+                        </md-checkbox>
+                        <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
                               <md-icon>close</md-icon>
                         </md-button>
                   </div>
             </md-toolbar>
+            
+            <md-toolbar class="small-toolbar md-padding md-hue-2" ng-show="$ctrl.showTableOptions" layout layout-wrap layout-align="space-between center">
+                <span>
+                    <md-input-container md-no-float>
+                        <input id="number-of-values" ng-model="$ctrl.numValues" type="number" ng-change="$ctrl.updatePreferences()">
+                    </md-input-container>
+                    <label ma-tr="dashboards.v3.app.numberOfValues" for="number-of-values"></label>
+                </span>
+                <md-switch ng-model="$ctrl.realtimeMode" ng-change="$ctrl.showCachedData = $ctrl.realtimeMode ? false : $ctrl.showCachedData; $ctrl.updatePreferences()">
+                    <span ma-tr="dashboards.v3.app.realtime"></span>
+                </md-switch>
+                <md-switch ng-disabled="$ctrl.realtimeMode" ng-model="$ctrl.showCachedData" ng-change="$ctrl.updatePreferences()">
+                    <span ma-tr="pointDetails.useCache"></span>
+                </md-switch>
+            </md-toolbar>
+
             <md-dialog-content>
                   <md-tabs md-dynamic-height md-border-bottom md-no-pagination md-stretch-tabs="always">
                         <md-tab label="{{'dashboards.v3.app.stats' | tr}}">
                               <md-content class="md-padding" ng-init="statsTab = {}">
-                                    <ma-point-statistics point="myPoint" from="ctrl.dateBar.from" to="ctrl.dateBar.to" statistics="statsTab.statsObj"></ma-point-statistics>
+                                    <ma-point-statistics point="myPoint" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" statistics="statsTab.statsObj"></ma-point-statistics>
                                     <ma-statistics-table statistics="statsTab.statsObj"></ma-statistics-table>
                               </md-content>
                         </md-tab>
                         <md-tab label="{{'dashboards.v3.app.chart' | tr}}">
-                              <md-content class="md-padding" ng-if="!ctrl.realtimeMode">
-                                    <ma-point-values point="myPoint" values="pointValues" from="ctrl.dateBar.from" to="ctrl.dateBar.to" rollup="{{ctrl.dateBar.rollupType}}" rollup-interval="{{ctrl.dateBar.rollupIntervals}} {{ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="ctrl.dateBar.autoRollup" converted="true">
+                              <md-content class="md-padding">
+                                    <ma-point-values point="myPoint" values="realtimePointValues" realtime="$ctrl.realtimeMode" use-cache="$ctrl.showCachedData"
+                                        converted="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
                                     </ma-point-values>
-                                    <ma-serial-chart style="height: 450px; width: 100%" series-1-values="pointValues" series-1-point="myPoint" stack-type="none" legend="false" export="true" balloon="true">
-                                    </ma-serial-chart>
-                              </md-content>
-                              <md-content class="md-padding" ng-if="ctrl.realtimeMode">
-                                    <ma-point-values point="myPoint" values="realtimePointValues" realtime="true" converted="true" latest="100"></ma-point-values>
                                     <ma-serial-chart style="height: 450px; width: 100%" series-1-values="realtimePointValues" series-1-point="myPoint" stack-type="none" legend="false" export="true" balloon="true">
                                     </ma-serial-chart>
                               </md-content>
                         </md-tab>
                         <md-tab label="{{'dashboards.v3.app.values' | tr}}">
                               <md-content class="md-padding" ng-init="tableTab = {}">
-                                    <ma-point-values ng-if="!ctrl.realtimeMode" point="myPoint" values="tableTab.renderedPointValues" from="ctrl.dateBar.from" to="ctrl.dateBar.to" rollup="{{ctrl.dateBar.rollupType}}" rollup-interval="{{ctrl.dateBar.rollupIntervals}} {{ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="ctrl.dateBar.autoRollup" rendered="true">
+                                    <ma-point-values point="myPoint" values="tableTab.renderedRealtimePointValues" realtime="$ctrl.realtimeMode" use-cache="$ctrl.showCachedData"
+                                        rendered="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
                                     </ma-point-values>
-                                    <ma-point-values ng-if="ctrl.realtimeMode" point="myPoint" values="tableTab.renderedRealtimePointValues" realtime="true" rendered="true" latest="100"></ma-point-values>
 
                                     <md-table-container ng-init="myOrder='-timestamp'">
-                                          <table md-table>
+                                          <table md-table class="ma-point-values-table">
                                                 <thead md-head md-order="myOrder">
                                                       <tr md-row>
                                                             <th md-column md-order-by="timestamp" ma-tr="dashboards.v3.app.time"></th>
                                                             <th md-column md-order-by="value" ma-tr="dashboards.v3.app.pointValue"></th>
                                                       </tr>
                                                 </thead>
-                                                <tbody md-body ng-if="!ctrl.realtimeMode">
-                                                      <tr md-row ng-repeat="value in tableTab.renderedPointValues | orderBy: myOrder">
-                                                            <td md-cell ng-bind="ctrl.mdAdminSettings.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
-                                                            <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
-                                                            <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
-                                                      </tr>
-                                                </tbody>
-                                                <tbody md-body ng-if="ctrl.realtimeMode">
-                                                      <tr md-row ng-repeat="value in tableTab.renderedRealtimePointValues | orderBy: myOrder">
-                                                            <td md-cell ng-bind="ctrl.mdAdminSettings.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
+                                                <tbody md-body ng-class="{'ma-point-values-non-realtime': !$ctrl.realtimeMode}">
+                                                      <tr md-row ng-repeat="value in tableTab.renderedRealtimePointValues | orderBy: myOrder" ng-class="{'ma-point-value-cached': value.cached}">
+                                                            <td md-cell ng-bind="$ctrl.mdAdminSettings.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
                                                             <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
                                                 <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
                                                       </tr>

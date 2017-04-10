@@ -36,17 +36,6 @@ body {
   margin-bottom: 10px;
 }
 
-md-card .md-toolbar-tools div:not(.desktop) > .md-button {
-    height: 25px;
-	min-height: 25px;
-	max-height: 25px;
-    line-height: 25px;
-	font-size: 10px;
-    min-width: 30px;
-	padding: 0 5px;
-    margin: 6px 4px;
-}
-
 /* Dashboard pages */
 
 .dashboard-main-view {
@@ -490,15 +479,32 @@ live-editor [ui-ace] {
 	color: rgba(255,255,255,0.87);
 }
 
-md-card md-toolbar .md-toolbar-tools h2 span {
-    line-height: 18px;
-	font-size: 16px;
+/* md-toolbar inside of md-card */
+
+md-card md-toolbar,
+md-card md-toolbar .md-toolbar-tools,
+md-toolbar.small-toolbar,
+md-toolbar.small-toolbar .md-toolbar-tools {
+  font-size: inherit;
+  height: 42px;
+  min-height: 42px;
+  max-height: 42px;
 }
 
-md-card md-toolbar, md-card md-toolbar .md-toolbar-tools {
-    height: 42px;
-	min-height: 42px;
-	max-height: 42px;
+md-toolbar.small-toolbar-font,
+md-toolbar.small-toolbar-font .md-toolbar-tools {
+  font-size: inherit;
+}
+
+md-card .md-toolbar-tools div:not(.desktop) > .md-button {
+    height: 25px;
+	min-height: 25px;
+	max-height: 25px;
+    line-height: 25px;
+	font-size: 10px;
+    min-width: 30px;
+	padding: 0 5px;
+    margin: 6px 4px;
 }
 
 md-card md-toolbar .md-toolbar-tools .md-button:not(.md-icon-button) {

@@ -51,33 +51,37 @@ ma-watch-list-page ma-watch-list-parameters.md-padding {
 
 /* Stats Dialog */
 
-.stats-dialog {
+.watch-list-stats-dialog {
     width: 700px;
 }
-.stats-dialog .md-toolbar-tools h2 {
+.watch-list-stats-dialog .md-toolbar-tools h2 {
     line-height: 20px;
     font-size: 16px;
     text-align: center;
 }
 
-.stats-dialog .md-toolbar-tools h2 span.nowrap {
+.watch-list-stats-dialog .md-toolbar-tools h2 span.nowrap {
     white-space: nowrap;
 }
-.stats-dialog.mobile table.md-table td.md-cell, table.md-table th.md-column {
+.watch-list-stats-dialog.mobile table.md-table td.md-cell, table.md-table th.md-column {
     font-size: 1.4rem;
 }
-.stats-dialog table.md-table thead.md-head>tr.md-row {
+.watch-list-stats-dialog table.md-table thead.md-head>tr.md-row {
     height: 0px;
 }
 
+.watch-list-stats-dialog input#number-of-values {
+  width: 55px;
+}
+
 /* Pagination mobile fixes*/
-.watchlist-main .md-table-pagination, .stats-dialog .md-table-pagination {
+.watchlist-main .md-table-pagination, .watch-list-stats-dialog .md-table-pagination {
     padding: 0 10px 0 0;
 }
-.watchlist-main .md-table-pagination md-select, .stats-dialog .md-table-pagination md-select {
+.watchlist-main .md-table-pagination md-select, .watch-list-stats-dialog .md-table-pagination md-select {
     min-width: 40px;
 }
-.watchlist-main .md-table-pagination>.buttons>.label+.md-button.md-icon-button, .stats-dialog .md-table-pagination>.buttons>.label+.md-button.md-icon-button {
+.watchlist-main .md-table-pagination>.buttons>.label+.md-button.md-icon-button, .watch-list-stats-dialog .md-table-pagination>.buttons>.label+.md-button.md-icon-button {
     margin-left: 10px;
 }
 
