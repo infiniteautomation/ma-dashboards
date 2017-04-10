@@ -35,7 +35,7 @@ function clock() {
         restrict: 'E',
         replace: true,
         designerInfo: {
-            translation: 'dashboards.v3.components.clock',
+            translation: 'ui.components.clock',
             icon: 'access_time',
             category: 'timeAndDate'
         },

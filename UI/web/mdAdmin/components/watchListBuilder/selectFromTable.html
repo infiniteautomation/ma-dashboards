@@ -1,7 +1,7 @@
 <div class="watchlist-select-table">
   <div class="md-padding" layout="row" layout-align="start end">
     <md-input-container flex>
-      <label ma-tr="dashboards.v3.app.search"></label>
+      <label ma-tr="ui.app.search"></label>
       <md-icon>search</md-icon>
       <input ng-model="$ctrl.tableSearch" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doSearch()">
     </md-input-container>
@@ -12,7 +12,7 @@
     <table md-table md-row-select="true" multiple ng-model="$ctrl.tableSelection" md-progress="$ctrl.queryPromise">
       <thead md-head md-order="$ctrl.tableQuery.order" md-on-reorder="$ctrl.onPaginateOrSort">
         <tr md-row>
-            <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
+            <th md-column md-order-by="dataSourceName" ma-tr="ui.app.dataSource"></th>
             <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
             <th md-column md-order-by="name" ma-tr="common.pointName"></th>
             <th md-column md-order-by="xid" ma-tr="common.xid"></th>

@@ -1,7 +1,7 @@
 <md-dialog flex="100" flex-gt-sm="50" flex-gt-md="40" flex-gt-lg="30" class="download-point-values-dialog">
   <md-toolbar>
     <div class="md-toolbar-tools">
-      <h2 ma-tr="dashboards.v3.app.downloadPointValues"></h2>
+      <h2 ma-tr="ui.app.downloadPointValues"></h2>
       <span flex></span>
       <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
         <md-icon>close</md-icon>
@@ -11,15 +11,15 @@
   <md-dialog-content layout="column" class="md-padding">
     <div layout><strong flex="30" ma-tr="common.dateRangeFrom"></strong><span flex ng-bind="$ctrl.mdAdminSettings.formatDate($ctrl.dateBar.from)"></span></div>
     <div layout><strong flex="30" ma-tr="common.dateRangeTo"></strong><span flex ng-bind="$ctrl.mdAdminSettings.formatDate($ctrl.dateBar.to)"></span></div>
-    <div layout><strong flex="30" ma-tr="dashboards.v3.app.duration"></strong><span flex ng-bind="$ctrl.dateBar.to.valueOf() - $ctrl.dateBar.from.valueOf() | duration:'humanize'"></span></div>
+    <div layout><strong flex="30" ma-tr="ui.app.duration"></strong><span flex ng-bind="$ctrl.dateBar.to.valueOf() - $ctrl.dateBar.from.valueOf() | duration:'humanize'"></span></div>
 
     <md-radio-group ng-model="allPoints" ng-init="allPoints = false">
-      <md-radio-button ng-value="false"><span ma-tr="dashboards.v3.app.downloadDataForCheckedPoints"></span></md-radio-button>
-      <md-radio-button ng-value="true"><span ma-tr="dashboards.v3.app.downloadDataForAllPoints"></span></md-radio-button>
+      <md-radio-button ng-value="false"><span ma-tr="ui.app.downloadDataForCheckedPoints"></span></md-radio-button>
+      <md-radio-button ng-value="true"><span ma-tr="ui.app.downloadDataForAllPoints"></span></md-radio-button>
     </md-radio-group>
     
     <md-input-container>
-        <label ma-tr="dashboards.v3.app.rollupType"></label>
+        <label ma-tr="ui.app.rollupType"></label>
         <md-select name="rollupType" ng-model="$ctrl.rollupType">
           <md-option ng-repeat="t in $ctrl.rollupTypes track by t.type" ng-value="t.type" ng-if="::t.type !== 'POINT_DEFAULT'">
             <span ma-tr="{{::t.translation}}"></span>
@@ -28,16 +28,16 @@
     </md-input-container>
     
     <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
-      <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.csv"></span>
+      <md-icon>file_download</md-icon> <span ma-tr="ui.app.csv"></span>
     </md-button>
     <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV_COMBINED', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
-      <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.csvCombined"></span>
+      <md-icon>file_download</md-icon> <span ma-tr="ui.app.csvCombined"></span>
     </md-button>
       <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
-    <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.json"></span>
+    <md-icon>file_download</md-icon> <span ma-tr="ui.app.json"></span>
     </md-button>
     <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON_COMBINED', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
-      <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.jsonCombined"></span>
+      <md-icon>file_download</md-icon> <span ma-tr="ui.app.jsonCombined"></span>
     </md-button>
     
     <div ng-if="$ctrl.downloadStatus.downloading" layout="column">
@@ -47,6 +47,6 @@
       </md-button>
     </div>
     
-    <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="dashboards.v3.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
+    <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="ui.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
   </md-dialog-content>
 </md-dialog>

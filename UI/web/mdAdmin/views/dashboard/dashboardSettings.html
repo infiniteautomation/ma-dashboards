@@ -1,18 +1,18 @@
-<h1 ma-tr="dashboards.v3.app.dashboardSettings"></h1>
+<h1 ma-tr="ui.app.dashboardSettings"></h1>
 
 <div layout layout-align="start center" layout-wrap>
     <md-input-container flex="100" flex-gt-md="25">
-        <label ma-tr="dashboards.v3.app.chooseTheme"></label>
+        <label ma-tr="ui.app.chooseTheme"></label>
         <md-select ng-model="mdAdminSettings.defaultTheme" ng-change="mdAdminSettings.generateTheme()">
             <md-option ng-repeat="(name,theme) in mdAdminSettings.theming.THEMES" ng-if="name.indexOf('dynamicTheme') !== 0" ng-value="name" ng-bind="name"></md-option>
         </md-select>
     </md-input-container>
     <md-input-container flex="100" flex-gt-md="25" >
-        <label ma-tr="dashboards.v3.app.logoSource"></label>
+        <label ma-tr="ui.app.logoSource"></label>
         <input ng-model="mdAdminSettings.logoSrc" ma-empty-input ng-model-options="{debounce: 500}">
     </md-input-container>
 	<md-input-container flex="100" flex-gt-md="25" >
-        <label ma-tr="dashboards.v3.app.codeColoring"></label>
+        <label ma-tr="ui.app.codeColoring"></label>
         <md-select ng-model="mdAdminSettings.codeTheme">
             <md-option value="ambiance">Ambiance</md-option>
             <md-option value="chaos">Chaos</md-option>
@@ -51,22 +51,22 @@
         </md-select>
     </md-input-container>
     <md-input-container flex="100" flex-gt-md="25" >
-        <label ma-tr="dashboards.v3.app.mapsApiKey"></label>
+        <label ma-tr="ui.app.mapsApiKey"></label>
         <input ng-model="mdAdminSettings.googleMapsApiKey" ma-empty-input>
     </md-input-container>
     <md-input-container flex="100" flex-gt-md="25" >
-        <label ma-tr="dashboards.v3.app.googleAnalyticsPropertyId"></label>
+        <label ma-tr="ui.app.googleAnalyticsPropertyId"></label>
         <input ng-model="mdAdminSettings.googleAnalyticsPropertyId" ma-empty-input>
     </md-input-container>
 </div>
 
 <div layout layout-align="start end" layout-wrap>
   <md-button flex="nogrow" class="md-raised md-primary" ng-click="mdAdminSettings.save()"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-  <md-button flex="nogrow" class="md-raised" ng-click="mdAdminSettings.reset(); mdAdminSettings.generateTheme()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.revert"></span></md-button>
+  <md-button flex="nogrow" class="md-raised" ng-click="mdAdminSettings.reset(); mdAdminSettings.generateTheme()"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
 
   <md-checkbox flex ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].dark"
       ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
-    <span ma-tr="dashboards.v3.app.darkTheme"></span>
+    <span ma-tr="ui.app.darkTheme"></span>
   </md-checkbox>
 
 
@@ -75,47 +75,47 @@
 &lt;ma-calc input=&quot;points | filter:{name:&lsquo;Real Power &lsquo; + phase + &lsquo; (kW)&lsquo;} | first&quot; output=&quot;power&quot;&gt;&lt;/ma-calc&gt;'" theme="{{mdAdminSettings.codeTheme}}"></live-editor>
 </div>
 
-<h2 ma-tr="dashboards.v3.app.themeHues" layout layout-align="center start"></h2>
+<h2 ma-tr="ui.app.themeHues" layout layout-align="center start"></h2>
 <div layout layout-wrap>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-        <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.primaryPalette"></h3>
+        <h3 layout="column" layout-align="start center" ma-tr="ui.app.primaryPalette"></h3>
         <md-input-container >
             <md-select ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].primaryPalette"
                 ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
-              <md-option ng-value="undefined"><em ma-tr="dashboards.v3.app.notSet"></em></md-option>
+              <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
               <md-option ng-repeat="(name,palette) in mdAdminSettings.theming.PALETTES" ng-value="name" ng-bind="name"></md-option>
             </md-select>
         </md-input-container>
         <ma-color-preview theme="{{mdAdminSettings.defaultTheme}}" palette="primary"></ma-color-preview>
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-        <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.accentPalette"></h3>
+        <h3 layout="column" layout-align="start center" ma-tr="ui.app.accentPalette"></h3>
         <md-input-container >
             <md-select ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].accentPalette"
                 ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
-              <md-option ng-value="undefined"><em ma-tr="dashboards.v3.app.notSet"></em></md-option>
+              <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
               <md-option ng-repeat="(name,palette) in mdAdminSettings.theming.PALETTES" ng-value="name" ng-bind="name"></md-option>
             </md-select>
         </md-input-container>
         <ma-color-preview theme="{{mdAdminSettings.defaultTheme}}" palette="accent"></ma-color-preview>
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-        <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.warnPalette"></h3>
+        <h3 layout="column" layout-align="start center" ma-tr="ui.app.warnPalette"></h3>
         <md-input-container >
             <md-select ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].warnPalette"
                 ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
-              <md-option ng-value="undefined"><em ma-tr="dashboards.v3.app.notSet"></em></md-option>
+              <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
               <md-option ng-repeat="(name,palette) in mdAdminSettings.theming.PALETTES" ng-value="name" ng-bind="name"></md-option>
             </md-select>
         </md-input-container>
         <ma-color-preview theme="{{mdAdminSettings.defaultTheme}}" palette="warn"></ma-color-preview>
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-        <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.backgroundPalette"></h3>
+        <h3 layout="column" layout-align="start center" ma-tr="ui.app.backgroundPalette"></h3>
         <md-input-container >
             <md-select ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].backgroundPalette"
                 ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
-              <md-option ng-value="undefined"><em ma-tr="dashboards.v3.app.notSet"></em></md-option>
+              <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
               <md-option ng-repeat="(name,palette) in mdAdminSettings.theming.PALETTES" ng-value="name" ng-bind="name"></md-option>
             </md-select>
         </md-input-container>
@@ -123,22 +123,22 @@
     </div>
 </div>
 
-<h2 ma-tr="dashboards.v3.app.allHues" layout layout-align="center start"></h2>
+<h2 ma-tr="ui.app.allHues" layout layout-align="center start"></h2>
 <div layout layout-wrap>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-        <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.primaryPalette"></h3>
+        <h3 layout="column" layout-align="start center" ma-tr="ui.app.primaryPalette"></h3>
         <ma-color-preview theme="{{mdAdminSettings.defaultTheme}}" palette="primary" all-hues="true"></ma-color-preview>
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-        <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.accentPalette"></h3>
+        <h3 layout="column" layout-align="start center" ma-tr="ui.app.accentPalette"></h3>
         <ma-color-preview theme="{{mdAdminSettings.defaultTheme}}" palette="accent" all-hues="true"></ma-color-preview>
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-        <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.warnPalette"></h3>
+        <h3 layout="column" layout-align="start center" ma-tr="ui.app.warnPalette"></h3>
         <ma-color-preview theme="{{mdAdminSettings.defaultTheme}}" palette="warn" all-hues="true"></ma-color-preview>
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-        <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.backgroundPalette"></h3>
+        <h3 layout="column" layout-align="start center" ma-tr="ui.app.backgroundPalette"></h3>
         <ma-color-preview theme="{{mdAdminSettings.defaultTheme}}" palette="background" all-hues="true"></ma-color-preview>
     </div>
 </div>

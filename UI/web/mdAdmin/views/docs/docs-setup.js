@@ -324,7 +324,7 @@ NG_DOCS={
       "shortName": "maDashboards.maTr",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;span ma-tr=&quot;dashboards.v3.dox.input&quot;&gt;&lt;/span&gt;",
+      "shortDescription": "&lt;span ma-tr=&quot;ui.dox.input&quot;&gt;&lt;/span&gt;",
       "keywords": "api current dashboards directive dox element file input language ma-tr madashboards matr properties set sets text translation translations v3 web written"
     },
     {
@@ -333,7 +333,7 @@ NG_DOCS={
       "shortName": "maDashboards.maTrAriaLabelAriaLabel",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;button ma-tr-aria-label=&quot;dashboards.v3.dox.input&quot;&gt;&lt;/button&gt;",
+      "shortDescription": "&lt;button ma-tr-aria-label=&quot;ui.dox.input&quot;&gt;&lt;/button&gt;",
       "keywords": "api aria-label attribute current dashboards directive dox element file input language ma-tr-aria-label madashboards matrarialabelarialabel properties set sets translation translations v3 web written"
     },
     {

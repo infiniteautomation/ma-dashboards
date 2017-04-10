@@ -28,7 +28,7 @@ function statisticsTable($injector, mangoDateFormats) {
     return {
         restrict: 'E',
         designerInfo: {
-            translation: 'dashboards.v3.components.statisticsTable',
+            translation: 'ui.components.statisticsTable',
             icon: 'grid_on',
             category: 'statistics'
         },

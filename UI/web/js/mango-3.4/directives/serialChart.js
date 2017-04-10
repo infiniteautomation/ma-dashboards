@@ -94,7 +94,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
     return {
         restrict: 'E',
         designerInfo: {
-            translation: 'dashboards.v3.components.serialChart',
+            translation: 'ui.components.serialChart',
             icon: 'show_chart',
             category: 'pointValuesAndCharts',
             attributes: {

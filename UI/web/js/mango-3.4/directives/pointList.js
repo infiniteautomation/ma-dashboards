@@ -34,7 +34,7 @@ function pointList(Point, $injector) {
         restrict: 'E',
         require: 'ngModel',
         designerInfo: {
-            translation: 'dashboards.v3.components.pointList',
+            translation: 'ui.components.pointList',
             icon: 'view_list',
             category: 'dropDowns'
         },

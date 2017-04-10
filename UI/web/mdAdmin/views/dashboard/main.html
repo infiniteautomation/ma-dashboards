@@ -4,7 +4,7 @@
     <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header md-whiteframe-glow-z1">
       <ma-now update-interval="1 MINUTES" output="currentTime"></ma-now>
       <div flex layout="row">
-        <img ng-src="{{mdAdminSettings.logoSrc}}" ma-tr="header.dashboards.v3.dox.heading">
+        <img ng-src="{{mdAdminSettings.logoSrc}}" ma-tr="header.ui.app.heading">
         <div flex layout="column" layout-align="start end" class="dashboard-user-datetime">
           <span ng-bind="currentTime.format('LT')" class="dashboard-user-time"></span>
           <span ng-bind="currentTime.format('ddd ll')" class="dashboard-user-date"></span>
@@ -23,15 +23,15 @@
           
           <md-menu-content width="4" class="user-menu">
             <md-menu-item>
-              <md-button aria-label="{{'dashboards.v3.app.userProfile'|tr}}" ui-sref="dashboard.settings.users({username: User.current.username})">
+              <md-button aria-label="{{'ui.app.userProfile'|tr}}" ui-sref="dashboard.settings.users({username: User.current.username})">
                 <md-icon md-menu-align-target>person</md-icon>
-                <span ma-tr="dashboards.v3.app.userProfile"></span>
+                <span ma-tr="ui.app.userProfile"></span>
               </md-button>
             </md-menu-item>
             <md-menu-item>
-              <md-button aria-label="{{'dashboards.v3.app.legacyUi'|tr}}" href="/data_point_details.shtm" target="_blank">
+              <md-button aria-label="{{'ui.app.legacyUi'|tr}}" href="/data_point_details.shtm" target="_blank">
                 <md-icon md-menu-align-target>open_in_new</md-icon>
-                <span ma-tr="dashboards.v3.app.legacyUi"></span>
+                <span ma-tr="ui.app.legacyUi"></span>
               </md-button>
             </md-menu-item>
             <md-menu-item>
@@ -79,16 +79,16 @@
                   refresh="dateBar.refresh" on-change="dateBar.preset = preset"></ma-date-range-picker>
               </md-input-container>
               <md-button class="md-icon-button md-hue-2" ng-click="dateBar.expanded = !dateBar.expanded"
-                aria-label="{{'dashboards.v3.app.moreDateSettings' | tr}}"
+                aria-label="{{'ui.app.moreDateSettings' | tr}}"
                 ng-class="{'md-accent': dateBar.expanded}">
                   <md-icon>date_range</md-icon>
-                  <md-tooltip md-autohide><span ma-tr="dashboards.v3.app.expandDateBar"></span></md-tooltip>
+                  <md-tooltip md-autohide><span ma-tr="ui.app.expandDateBar"></span></md-tooltip>
               </md-button>
             </div>
             
             <md-button class="md-icon-button" ng-if="stateParams.helpPage" ng-click="goToState($event, stateParams.helpPage)" ng-href="{{$state.href(stateParams.helpPage)}}">
                 <md-icon>help</md-icon>
-                <md-tooltip md-autohide><span ma-tr="dashboards.v3.app.viewHelpPage"></span></md-tooltip>
+                <md-tooltip md-autohide><span ma-tr="ui.app.viewHelpPage"></span></md-tooltip>
             </md-button>
           </div>
         </div>

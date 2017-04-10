@@ -4,13 +4,13 @@
     <div class="md-toolbar-tools">
       <md-input-container flex flex-gt-md="25">
         <md-select ng-model="$ctrl.selectedWatchlist" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.watchlistSelected()">
-          <md-option ng-value="undefined"><i ma-tr="dashboards.v3.app.unsavedWatchlist"></i></md-option>
+          <md-option ng-value="undefined"><i ma-tr="ui.app.unsavedWatchlist"></i></md-option>
           <md-option ng-value="watchlist" ng-repeat="watchlist in $ctrl.watchlists track by watchlist.xid" ng-bind="watchlist.name"></md-option>
         </md-select>
       </md-input-container>
       <div flex></div>
       <div ng-class="{'desktop': $ctrl.$mdMedia('gt-xs')}" layout>
-        <md-button class="md-raised" ng-click="$ctrl.newWatchlist()"><md-icon>add</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.new"></span></md-button>
+        <md-button class="md-raised" ng-click="$ctrl.newWatchlist()"><md-icon>add</md-icon>&nbsp;<span ma-tr="ui.app.new"></span></md-button>
         <md-button class="md-warn md-raised" ng-click="$ctrl.deleteWatchlist($event)" ng-disabled="$ctrl.watchlist.isNew"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
         <md-button class="md-primary md-raised" type="submit"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
         <md-button class="md-raised" ui-sref="dashboard.watchList({watchListXid: $ctrl.watchlist.xid})" ng-disabled="$ctrl.watchlist.isNew"><md-icon>visibility</md-icon>&nbsp;<span ma-tr="common.view"></span></md-button>
@@ -20,49 +20,49 @@
   <md-card-content class="no-padding">
     <md-tabs md-dynamic-height md-border-bottom md-selected="$ctrl.selectedTab">
       <md-tab id="watchlist-settings">
-        <md-tab-label><span ma-tr="dashboards.v3.app.watchListSettings"></span></md-tab-label>
+        <md-tab-label><span ma-tr="ui.app.watchListSettings"></span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/settings.html'"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-parameters" ng-if="$ctrl.watchlist.type === 'query'">
-        <md-tab-label><span ma-tr="dashboards.v3.app.parameters"></span></md-tab-label>
+        <md-tab-label><span ma-tr="ui.app.parameters"></span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/parameters.html'"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-query" ng-if="$ctrl.watchlist.type === 'query'">
-        <md-tab-label><span ma-tr="dashboards.v3.app.query"></span></md-tab-label>
+        <md-tab-label><span ma-tr="ui.app.query"></span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/query.html'"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-query-preview" ng-if="$ctrl.watchlist.type === 'query'">
-        <md-tab-label><span ma-tr="dashboards.v3.app.queryPreview"></span>&nbsp;<span>(<span ng-bind="$ctrl.queryPreviewTable.total"></span>)</span></md-tab-label>
+        <md-tab-label><span ma-tr="ui.app.queryPreview"></span>&nbsp;<span>(<span ng-bind="$ctrl.queryPreviewTable.total"></span>)</span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/queryPreview.html'"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-hierarchy" ng-if="$ctrl.watchlist.type === 'hierarchy'">
-        <md-tab-label><span ma-tr="dashboards.v3.app.selectFolders"></span></md-tab-label>
+        <md-tab-label><span ma-tr="ui.app.selectFolders"></span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/pointHierarchy.html'"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-select-table" ng-if="$ctrl.watchlist.type === 'static'">
-        <md-tab-label><span ma-tr="dashboards.v3.app.selectFromTable"></span></md-tab-label>
+        <md-tab-label><span ma-tr="ui.app.selectFromTable"></span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/selectFromTable.html'"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-select-hierarchy" ng-if="$ctrl.watchlist.type === 'static'">
-        <md-tab-label><span ma-tr="dashboards.v3.app.selectFromHierarchy"></span></md-tab-label>
+        <md-tab-label><span ma-tr="ui.app.selectFromHierarchy"></span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/selectFromHierarchy.html'"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-selected-points" ng-if="$ctrl.watchlist.type === 'static'">
-        <md-tab-label><span ma-tr="dashboards.v3.app.selectedPoints"></span>&nbsp;(<span ng-bind="$ctrl.watchlist.points.length"></span>)</md-tab-label>
+        <md-tab-label><span ma-tr="ui.app.selectedPoints"></span>&nbsp;(<span ng-bind="$ctrl.watchlist.points.length"></span>)</md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl + '/selectedPoints.html'"></div>
         </md-tab-body>
@@ -70,8 +70,8 @@
     </md-tabs>
   </md-card-content>
   <md-card-actions layout="row" layout-align="end center">
-    <md-button class="md-primary md-raised" ng-click="$ctrl.prevStep()" ng-hide="$ctrl.selectedTab === 0"><md-icon>arrow_back</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.prevStep"></span></md-button>
-    <md-button class="md-primary md-raised" ng-click="$ctrl.nextStep()" ng-hide="$ctrl.isLastStep()"><md-icon>arrow_forward</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.nextStep"></span></md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.prevStep()" ng-hide="$ctrl.selectedTab === 0"><md-icon>arrow_back</md-icon>&nbsp;<span ma-tr="ui.app.prevStep"></span></md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.nextStep()" ng-hide="$ctrl.isLastStep()"><md-icon>arrow_forward</md-icon>&nbsp;<span ma-tr="ui.app.nextStep"></span></md-button>
     <md-button class="md-primary md-raised" ng-click="$ctrl.save()" ng-show="$ctrl.isLastStep()"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
   </md-card-actions>
   </form>

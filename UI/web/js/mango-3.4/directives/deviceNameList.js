@@ -39,7 +39,7 @@ function deviceNameList(DeviceName, $injector) {
         restrict: 'E',
         require: 'ngModel',
         designerInfo: {
-            translation: 'dashboards.v3.components.deviceNameList',
+            translation: 'ui.components.deviceNameList',
             icon: 'view_list',
             category: 'dropDowns'
         },

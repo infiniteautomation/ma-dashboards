@@ -1,4 +1,4 @@
-<h1 ma-tr="dashboards.v3.dox.playArea"></h1>
+<h1 ma-tr="ui.dox.playArea"></h1>
 
 <p>You can use this area as a play area. Changes will be persisted after you press <strong>Save</strong>.
 <br><a ui-sref="dashboard.examples.playAreaBig">Play Area View Only</a>
@@ -17,16 +17,16 @@
     </md-button>
     <md-button ng-click="stateParams.markup = ''; playArea.$get()">
         <md-icon>undo</md-icon>
-        <span ma-tr="dashboards.v3.app.revert"></span>
+        <span ma-tr="ui.app.revert"></span>
      </md-button>
      <div flex></div>
 
-     <md-switch ng-model="showEditor" ng-init="showEditor = true" ma-tr-aria-label="dashboards.v3.app.editor" ng-change="showPreview = showEditor ? showPreview : true"><span ma-tr="dashboards.v3.app.editor"></span></md-switch>
-     <md-switch ng-model="showPreview" ng-init="showPreview = true" ma-tr-aria-label="dashboards.v3.app.preview" ng-change="showEditor = showPreview ? showEditor : true"><span ma-tr="dashboards.v3.app.preview"></span></md-switch>
+     <md-switch ng-model="showEditor" ng-init="showEditor = true" ma-tr-aria-label="ui.app.editor" ng-change="showPreview = showEditor ? showPreview : true"><span ma-tr="ui.app.editor"></span></md-switch>
+     <md-switch ng-model="showPreview" ng-init="showPreview = true" ma-tr-aria-label="ui.app.preview" ng-change="showEditor = showPreview ? showEditor : true"><span ma-tr="ui.app.preview"></span></md-switch>
 </div>
 
 <ul>
-  <li><a ui-sref="dashboard.settings.editPages({markup: paVal.text})" ma-tr="dashboards.v3.app.copyToNewPage"></a></li>
+  <li><a ui-sref="dashboard.settings.editPages({markup: paVal.text})" ma-tr="ui.app.copyToNewPage"></a></li>
 </ul>
 
 <div layout="column" layout-gt-md="row">
@@ -34,7 +34,7 @@
         <md-card flex layout="column">
             <md-card-title flex="nogrow">
               <md-card-title-text>
-                <span class="md-headline" ma-tr="dashboards.v3.dox.markup"></span>
+                <span class="md-headline" ma-tr="ui.dox.markup"></span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content flex layout="column">
@@ -46,7 +46,7 @@
         <md-card>
             <md-card-title>
               <md-card-title-text>
-                <span class="md-headline" ma-tr="dashboards.v3.dox.result"></span>
+                <span class="md-headline" ma-tr="ui.dox.result"></span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content>

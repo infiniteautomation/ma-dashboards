@@ -1,6 +1,6 @@
 <form name="$ctrl.userForm" novalidate ng-submit="$ctrl.save($event)">
   <div layout layout-align="start start" layout-wrap>
-    <p flex="100" md-colors="{color: 'warn'}" ng-if="$ctrl.user.oldHashAlgorithm" ma-tr="dashboards.v3.app.insecureHash"></p>
+    <p flex="100" md-colors="{color: 'warn'}" ng-if="$ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></p>
 
     <md-input-container flex="100" flex-gt-md="50">
       <md-icon>label</md-icon>
@@ -8,8 +8,8 @@
       <input name="username" ng-model="$ctrl.user.username" required maxlength="40" ma-validation-messages="$ctrl.validationMessages">
       <div ng-show="$ctrl.showMessages('username')">
         <div ng-messages="$ctrl.userForm.username.$error">
-          <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
-          <div ng-message="maxlength" ma-tr="dashboards.v3.app.maxLength" ma-tr-args="[40, $ctrl.userForm.username.$viewValue.length]"></div>
+          <div ng-message="required" ma-tr="ui.app.required"></div>
+          <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.username.$viewValue.length]"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.username.validationMessage"></div>
         </div>
       </div>
@@ -20,8 +20,8 @@
       <input name="name" ng-model="$ctrl.user.name" required maxlength="255" ma-validation-messages="$ctrl.validationMessages">
       <div ng-show="$ctrl.showMessages('name')">
         <div ng-messages="$ctrl.userForm.name.$error">
-          <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
-          <div ng-message="maxlength" ma-tr="dashboards.v3.app.maxLength" ma-tr-args="[255, $ctrl.userForm.name.$viewValue.length]"></div>
+          <div ng-message="required" ma-tr="ui.app.required"></div>
+          <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.name.$viewValue.length]"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.name.validationMessage"></div>
         </div>
       </div>
@@ -32,9 +32,9 @@
       <input type="email" name="email" ng-model="$ctrl.user.email" required maxlength="255" ma-validation-messages="$ctrl.validationMessages">
       <div ng-show="$ctrl.showMessages('email')">
         <div ng-messages="$ctrl.userForm.email.$error">
-          <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
-          <div ng-message="email" ma-tr="dashboards.v3.app.invalidEmail"></div>
-          <div ng-message="maxlength" ma-tr="dashboards.v3.app.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
+          <div ng-message="required" ma-tr="ui.app.required"></div>
+          <div ng-message="email" ma-tr="ui.app.invalidEmail"></div>
+          <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.email.validationMessage"></div>
         </div>
       </div>
@@ -45,8 +45,8 @@
       <input type="tel" name="phone" ng-model="$ctrl.user.phone" pattern="^(?:\+?[0-9]{1,3}[ -]?)?(?:\([0-9 ]+\)[ -]?)?[0-9]+(?:[ -][0-9]+)*$" maxlength="40" ma-validation-messages="$ctrl.validationMessages">
       <div ng-show="$ctrl.showMessages('phone')">
         <div ng-messages="$ctrl.userForm.phone.$error">
-          <div ng-message="pattern" ma-tr="dashboards.v3.app.invalidPhone"></div>
-          <div ng-message="maxlength" ma-tr="dashboards.v3.app.maxLength" ma-tr-args="[40, $ctrl.userForm.phone.$viewValue.length]"></div>
+          <div ng-message="pattern" ma-tr="ui.app.invalidPhone"></div>
+          <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.phone.$viewValue.length]"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.phone.validationMessage"></div>
         </div>
       </div>
@@ -59,8 +59,8 @@
         <input type="password" name="password" ng-model="$ctrl.user.password" minlength="8" ng-required="$ctrl.user.isNew" ma-validation-messages="$ctrl.validationMessages">
         <div ng-show="$ctrl.showMessages('password')">
           <div ng-messages="$ctrl.userForm.password.$error">
-            <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
-            <div ng-message="minlength" ma-tr="dashboards.v3.app.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="minlength" ma-tr="ui.app.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.userForm.password.validationMessage"></div>
           </div>
         </div>
@@ -71,8 +71,8 @@
         <input type="password" name="confirmPassword" ng-model="$ctrl.user.confirmPassword" ng-pattern="$ctrl.regExpEscape($ctrl.user.password)" ng-required="!!$ctrl.user.password">
         <div ng-show="$ctrl.showMessages('confirmPassword')">
           <div ng-messages="$ctrl.userForm.confirmPassword.$error">
-            <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
-            <div ng-message="pattern" ma-tr="dashboards.v3.app.passwordsDoNotMatch"></div>
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="pattern" ma-tr="ui.app.passwordsDoNotMatch"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.userForm.username.validationMessage"></div>
           </div>
         </div>
@@ -85,7 +85,7 @@
       <input name="permissions" ng-disabled="!$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-validation-messages="$ctrl.validationMessages">
       <div ng-show="$ctrl.showMessages('permissions')">
         <div ng-messages="$ctrl.userForm.permissions.$error">
-          <div ng-message="pattern" ma-tr="dashboards.v3.app.invalidPermissions"></div>
+          <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
         </div>
       </div>
@@ -108,7 +108,7 @@
       </md-select>
       <div ng-show="$ctrl.showMessages('receiveAlarmEmails')">
         <div ng-messages="$ctrl.userForm.receiveAlarmEmails.$error">
-          <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+          <div ng-message="required" ma-tr="ui.app.required"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.receiveAlarmEmails.validationMessage"></div>
         </div>
       </div>
@@ -119,7 +119,7 @@
       <input name="homeUrl" ng-model="$ctrl.user.homeUrl" pattern="^\/(?!\/).*" ma-validation-messages="$ctrl.validationMessages">
       <div ng-show="$ctrl.showMessages('homeUrl')">
         <div ng-messages="$ctrl.userForm.homeUrl.$error">
-          <div ng-message="pattern" ma-tr="dashboards.v3.app.mustBeAbsolutePath"></div>
+          <div ng-message="pattern" ma-tr="ui.app.mustBeAbsolutePath"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.homeUrl.validationMessage"></div>
         </div>
       </div>
@@ -146,7 +146,7 @@
       </md-select>
       <div ng-show="$ctrl.showMessages('timezone')">
         <div ng-messages="$ctrl.userForm.timezone.$error">
-          <div ng-message="pattern" ma-tr="dashboards.v3.app.invalidTimezone"></div>
+          <div ng-message="pattern" ma-tr="ui.app.invalidTimezone"></div>
           <div ng-message="validationMessage" ng-bind="$ctrl.userForm.timezone.validationMessage"></div>
         </div>
       </div>
@@ -169,7 +169,7 @@
         <md-icon>save</md-icon> <span ma-tr="common.save"></span>
       </md-button>
       <md-button class="md-raised md-accent" ng-click="$ctrl.revert($event)">
-        <md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.revert"></span>
+        <md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span>
       </md-button>
       <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew || $ctrl.User.current.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">
         <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>

@@ -22,12 +22,12 @@ function barDisplay() {
             value: '<?'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.barDisplay',
+            translation: 'ui.components.barDisplay',
             icon: 'trending_flat',
             category: 'pointValue',
             attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
                 direction: {
                     options: ['left-to-right', 'bottom-to-top', 'right-to-left', 'top-to-bottom']
                 }

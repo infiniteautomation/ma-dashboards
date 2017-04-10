@@ -46,10 +46,10 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         axes: {}
     };
     this.axisOptions = [
-        {name: 'left', translation: 'dashboards.v3.app.left'},
-        {name: 'right', translation: 'dashboards.v3.app.right'},
-        {name: 'left-2', translation: 'dashboards.v3.app.farLeft'},
-        {name: 'right-2', translation: 'dashboards.v3.app.farRight'}
+        {name: 'left', translation: 'ui.app.left'},
+        {name: 'right', translation: 'ui.app.right'},
+        {name: 'left-2', translation: 'ui.app.farLeft'},
+        {name: 'right-2', translation: 'ui.app.farRight'}
     ];
 
     this.$onInit = function() {
@@ -202,7 +202,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             var watchList = new WatchList();
             watchList.isNew = true;
             watchList.type = 'query';
-            watchList.name = Translate.trSync('dashboards.v3.app.dataSourceX', [this.dataSource.name]);
+            watchList.name = Translate.trSync('ui.app.dataSourceX', [this.dataSource.name]);
             watchList.query = dsQuery.toString();
             watchList.data = {
                 chartConfig: {}
@@ -229,7 +229,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             var watchList = new WatchList();
             watchList.isNew = true;
             watchList.type = 'query';
-            watchList.name = Translate.trSync('dashboards.v3.app.deviceNameX', [this.deviceName]);
+            watchList.name = Translate.trSync('ui.app.deviceNameX', [this.deviceName]);
             watchList.query = dnQuery.toString();
             watchList.data = {
                 chartConfig: {}
@@ -255,7 +255,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             var watchList = new WatchList();
             watchList.isNew = true;
             watchList.type = 'hierarchy';
-            watchList.name = Translate.trSync('dashboards.v3.app.hierarchyFolderX', [this.hierarchyFolders[0].name]);
+            watchList.name = Translate.trSync('ui.app.hierarchyFolderX', [this.hierarchyFolders[0].name]);
             watchList.hierarchyFolders = this.hierarchyFolders;
             watchList.data = {
                 chartConfig: {}
@@ -428,7 +428,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);
                     }.bind(this), function(response) {
-                        this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ? Translate.trSync('dashboards.v3.app.cancelledOrNoResponse') : response.toString());
+                        this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ? Translate.trSync('ui.app.cancelledOrNoResponse') : response.toString());
                         this.downloadStatus.downloading = false;
                         console.log(response);
                     }.bind(this));

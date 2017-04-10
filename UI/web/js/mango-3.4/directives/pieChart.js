@@ -35,7 +35,7 @@ function pieChart($http) {
         restrict: 'E',
         replace: true,
         designerInfo: {
-            translation: 'dashboards.v3.components.pieChart',
+            translation: 'ui.components.pieChart',
             icon: 'pie_chart',
             category: 'pointValuesAndCharts'
         },

@@ -63,12 +63,12 @@ function pointValue() {
             onValueUpdated: '&?'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.pointValue',
+            translation: 'ui.components.pointValue',
             icon: 'label',
             category: 'pointValue',
             attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
                 displayType: {options: ['rendered', 'raw', 'converted', 'image', 'dateTime']},
                 dateTimeFormat: {options: dateOptions},
                 sameDayDateTimeFormat: {options: dateOptions},

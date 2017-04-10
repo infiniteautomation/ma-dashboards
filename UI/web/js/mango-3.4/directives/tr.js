@@ -10,12 +10,12 @@ define(['jquery', 'angular'], function($, angular) {
  * @name maDashboards.maTr
  * @restrict A
  * @description
- * `<span ma-tr="dashboards.v3.dox.input"></span>`
+ * `<span ma-tr="ui.dox.input"></span>`
  * - Sets the text within an element to the translation set for the current language
  * - Translations are written in `web/modules/ui/classes/i18n.properties` file
  *
  * @usage
- * <span ma-tr="dashboards.v3.dox.input"></span>
+ * <span ma-tr="ui.dox.input"></span>
  */
 function maTr(Translate) {
     return {

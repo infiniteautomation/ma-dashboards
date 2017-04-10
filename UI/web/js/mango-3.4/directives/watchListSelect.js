@@ -56,7 +56,7 @@ function watchListSelectFactory($injector) {
             ngModelCtrl: 'ngModel'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.watchListList',
+            translation: 'ui.components.watchListList',
             icon: 'arrow_drop_down',
             category: 'watchLists',
             attributes: {

@@ -48,7 +48,7 @@ function filteringPointList() {
             ngModelCtrl: 'ngModel'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.filteringPointList',
+            translation: 'ui.components.filteringPointList',
             icon: 'filter_list',
             category: 'dropDowns'
         }
@@ -76,7 +76,7 @@ FilteringPointListController.prototype.$onInit = function() {
     this.ngModelCtrl.$render = this.render.bind(this);
     
     if (!this.label)
-        this.label = this.Translate.trSync('dashboards.v3.app.searchBy', 'points', 'name or device');
+        this.label = this.Translate.trSync('ui.app.searchBy', 'points', 'name or device');
     
     if (this.autoInit) {
         if (!this.pointXid && !(this.pointId || this.pointId === 0)) {

@@ -124,9 +124,9 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             
             $scope.confirmDeletePage = function confirmDeletePage() {
                 var confirm = $mdDialog.confirm()
-                    .title(Translate.trSync('dashboards.v3.app.areYouSure'))
-                    .textContent(Translate.trSync('dashboards.v3.app.confirmDeletePage'))
-                    .ariaLabel(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .title(Translate.trSync('ui.app.areYouSure'))
+                    .textContent(Translate.trSync('ui.app.confirmDeletePage'))
+                    .ariaLabel(Translate.trSync('ui.app.areYouSure'))
                     .targetEvent(event)
                     .ok(Translate.trSync('common.ok'))
                     .cancel(Translate.trSync('common.cancel'));

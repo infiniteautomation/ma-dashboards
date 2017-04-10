@@ -97,7 +97,7 @@ function gaugeChart() {
           value: '<?'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.gaugeChart',
+            translation: 'ui.components.gaugeChart',
             icon: 'donut_large',
             category: 'pointValue',
             size: {
@@ -105,8 +105,8 @@ function gaugeChart() {
                 height: '200px'
             },
             attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
                 band1Color: {type: 'color'},
                 band2Color: {type: 'color'},
                 band3Color: {type: 'color'}

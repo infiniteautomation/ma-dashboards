@@ -161,7 +161,7 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
                 }
                 
                 var toast = $mdToast.simple()
-                    .textContent(Translate.trSync('dashboards.v3.app.watchListSaved'))
+                    .textContent(Translate.trSync('ui.app.watchListSaved'))
                     .action(Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .position('bottom center')
@@ -170,11 +170,11 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
     
                 $ctrl.resetForm();
             }, function(response) {
-                var errorMsg = response.status === 422 ? Translate.trSync('dashboards.v3.app.validationError') : response.statusText;
+                var errorMsg = response.status === 422 ? Translate.trSync('ui.app.validationError') : response.statusText;
 
                 // error saving
                 var toast = $mdToast.simple()
-                    .textContent(Translate.trSync('dashboards.v3.app.errorSavingWatchlist', errorMsg))
+                    .textContent(Translate.trSync('ui.app.errorSavingWatchlist', errorMsg))
                     .action(Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .highlightClass('md-warn')
@@ -199,9 +199,9 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
     
     $ctrl.deleteWatchlist = function deleteWatchlist(event) {
         var confirm = $mdDialog.confirm()
-            .title(Translate.trSync('dashboards.v3.app.areYouSure'))
-            .textContent(Translate.trSync('dashboards.v3.app.confirmDeleteWatchlist'))
-            .ariaLabel(Translate.trSync('dashboards.v3.app.areYouSure'))
+            .title(Translate.trSync('ui.app.areYouSure'))
+            .textContent(Translate.trSync('ui.app.confirmDeleteWatchlist'))
+            .ariaLabel(Translate.trSync('ui.app.areYouSure'))
             .targetEvent(event)
             .ok(Translate.trSync('common.ok'))
             .cancel(Translate.trSync('common.cancel'));

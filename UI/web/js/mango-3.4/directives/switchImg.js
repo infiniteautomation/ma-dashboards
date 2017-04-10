@@ -65,12 +65,12 @@ function switchImg() {
             value: '<?'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.switchImg',
+            translation: 'ui.components.switchImg',
             icon: 'image',
             category: 'pointValue',
             attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'},
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
                 toggleOnClick: {options: ['true', 'false']},
                 srcTrue: {type: 'string', optional: true},
                 srcFalse: {type: 'string', optional: true}

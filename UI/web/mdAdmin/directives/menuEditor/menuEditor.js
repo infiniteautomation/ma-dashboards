@@ -62,9 +62,9 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             
             $scope.deleteCustomMenu = function deleteCustomMenu(event) {
                 var confirm = $mdDialog.confirm()
-                    .title(Translate.trSync('dashboards.v3.app.areYouSure'))
-                    .textContent(Translate.trSync('dashboards.v3.app.confirmRestoreDefaultMenu'))
-                    .ariaLabel(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .title(Translate.trSync('ui.app.areYouSure'))
+                    .textContent(Translate.trSync('ui.app.confirmRestoreDefaultMenu'))
+                    .ariaLabel(Translate.trSync('ui.app.areYouSure'))
                     .targetEvent(event)
                     .ok(Translate.trSync('common.ok'))
                     .cancel(Translate.trSync('common.cancel'));
@@ -79,9 +79,9 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             
             $scope.resetDefaultItems = function resetDefaultItems(event) {
                 var confirm = $mdDialog.confirm()
-                    .title(Translate.trSync('dashboards.v3.app.areYouSure'))
-                    .textContent(Translate.trSync('dashboards.v3.app.confirmResetDefaultItems'))
-                    .ariaLabel(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .title(Translate.trSync('ui.app.areYouSure'))
+                    .textContent(Translate.trSync('ui.app.confirmResetDefaultItems'))
+                    .ariaLabel(Translate.trSync('ui.app.areYouSure'))
                     .targetEvent(event)
                     .ok(Translate.trSync('common.ok'))
                     .cancel(Translate.trSync('common.cancel'));

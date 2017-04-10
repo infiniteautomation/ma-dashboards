@@ -55,7 +55,7 @@ UserEditorController.prototype.save = function() {
             }
             
             var toast = this.$mdToast.simple()
-                .textContent(this.Translate.trSync('dashboards.v3.components.userSaved', user.username))
+                .textContent(this.Translate.trSync('ui.components.userSaved', user.username))
                 .action(this.Translate.trSync('common.ok'))
                 .highlightAction(true)
                 .position('bottom center')
@@ -69,7 +69,7 @@ UserEditorController.prototype.save = function() {
             this.validationMessages = response.data.validationMessages;
             
             var toast = this.$mdToast.simple()
-                .textContent(this.Translate.trSync('dashboards.v3.components.errorSavingUser', this.user.username))
+                .textContent(this.Translate.trSync('ui.components.errorSavingUser', this.user.username))
                 .action(this.Translate.trSync('common.ok'))
                 .highlightAction(true)
                 .highlightClass('md-warn')
@@ -90,9 +90,9 @@ UserEditorController.prototype.remove = function(event) {
     var $ctrl = this;
     
     var confirm = this.$mdDialog.confirm()
-        .title(this.Translate.trSync('dashboards.v3.app.areYouSure'))
-        .textContent(this.Translate.trSync('dashboards.v3.components.confirmDeleteUser'))
-        .ariaLabel(this.Translate.trSync('dashboards.v3.app.areYouSure'))
+        .title(this.Translate.trSync('ui.app.areYouSure'))
+        .textContent(this.Translate.trSync('ui.components.confirmDeleteUser'))
+        .ariaLabel(this.Translate.trSync('ui.app.areYouSure'))
         .targetEvent(event)
         .ok(this.Translate.trSync('common.ok'))
         .cancel(this.Translate.trSync('common.cancel'));
@@ -106,7 +106,7 @@ UserEditorController.prototype.remove = function(event) {
             $ctrl.onDelete({$user: user});
             
             var toast = $ctrl.$mdToast.simple()
-                .textContent($ctrl.Translate.trSync('dashboards.v3.components.userDeleted', username))
+                .textContent($ctrl.Translate.trSync('ui.components.userDeleted', username))
                 .action($ctrl.Translate.trSync('common.ok'))
                 .highlightAction(true)
                 .position('bottom center')
@@ -114,7 +114,7 @@ UserEditorController.prototype.remove = function(event) {
             $ctrl.$mdToast.show(toast);
         }, function(response) {
             var toast = $ctrl.$mdToast.simple()
-                .textContent($ctrl.Translate.trSync('dashboards.v3.components.errorDeletingUser', username))
+                .textContent($ctrl.Translate.trSync('ui.components.errorDeletingUser', username))
                 .action($ctrl.Translate.trSync('common.ok'))
                 .highlightAction(true)
                 .highlightClass('md-warn')
@@ -152,7 +152,7 @@ UserEditorController.prototype.sendTestEmail = function() {
         $ctrl.$mdToast.show(toast);
     }, function(response) {
         var toast = $ctrl.$mdToast.simple()
-            .textContent($ctrl.Translate.trSync('dashboards.v3.components.errorSendingEmail', emailAddress))
+            .textContent($ctrl.Translate.trSync('ui.components.errorSendingEmail', emailAddress))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
             .highlightClass('md-warn')
@@ -168,7 +168,7 @@ UserEditorController.prototype.switchUser = function(event) {
     
     this.User.switchUser({username: username}).$promise.then(function(response) {
         var toast = $ctrl.$mdToast.simple()
-            .textContent($ctrl.Translate.trSync('dashboards.v3.components.switchedUser', username))
+            .textContent($ctrl.Translate.trSync('ui.components.switchedUser', username))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
             .position('bottom center')
@@ -176,7 +176,7 @@ UserEditorController.prototype.switchUser = function(event) {
         $ctrl.$mdToast.show(toast);
     }, function(response) {
         var toast = $ctrl.$mdToast.simple()
-            .textContent($ctrl.Translate.trSync('dashboards.v3.components.errorSwitchingUser', username))
+            .textContent($ctrl.Translate.trSync('ui.components.errorSwitchingUser', username))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
             .highlightClass('md-warn')

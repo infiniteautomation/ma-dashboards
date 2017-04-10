@@ -2,16 +2,16 @@
 
 <div layout="row" class="page-editor-inputs">
   <md-input-container flex>
-      <label ma-tr="dashboards.v3.app.choosePageToEdit"></label>
+      <label ma-tr="ui.app.choosePageToEdit"></label>
       <md-select ng-model="selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="loadPage()">
         <md-option ng-repeat="page in pageSummaries track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
       </md-select>
   </md-input-container>
   <md-input-container flex>
-      <label ma-tr="dashboards.v3.app.pageName"></label>
+      <label ma-tr="ui.app.pageName"></label>
       <input name="pageName" required ng-model="selectedPage.name">
       <div ng-messages="pageEditForm.pageName.$error">
-        <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+        <div ng-message="required" ma-tr="ui.app.required"></div>
       </div>
   </md-input-container>
   <!-- 
@@ -19,17 +19,17 @@
       <label ma-tr="common.xid"></label>
       <input name="xid" required ng-model="selectedPage.xid" disabled>
       <div ng-messages="pageEditForm.xid.$error">
-        <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+        <div ng-message="required" ma-tr="ui.app.required"></div>
       </div>
   </md-input-container> -->
   
   <md-input-container flex>
-      <label ma-tr="dashboards.v3.app.readPermission"></label>
+      <label ma-tr="ui.app.readPermission"></label>
       <input name="readPermission" ng-model="selectedPage.readPermission">
   </md-input-container>
   
   <md-input-container flex>
-      <label ma-tr="dashboards.v3.app.editPermission"></label>
+      <label ma-tr="ui.app.editPermission"></label>
       <input name="editPermission" ng-model="selectedPage.editPermission">
   </md-input-container>
 </div>
@@ -41,7 +41,7 @@
     </md-button>
     <md-button ng-click="loadPage()" ng-disabled="selectedPage.isNew" class="md-raised md-warn">
         <md-icon>undo</md-icon>
-        <span ma-tr="dashboards.v3.app.revert"></span>
+        <span ma-tr="ui.app.revert"></span>
     </md-button>
     <md-button class="md-raised md-warn md-hue-2" ng-click="confirmDeletePage($event)" ng-disabled="selectedPage.isNew">
       <md-icon>delete</md-icon>
@@ -50,20 +50,20 @@
     <md-button ng-click="editMenuItem($event)" class="md-raised md-accent"
       ng-disabled="selectedPage.isNew || !User.current.hasPermission('edit-menus')">
       <md-icon>edit</md-icon>
-      <span ma-tr="dashboards.v3.app.addEditMenuItem"></span>
+      <span ma-tr="ui.app.addEditMenuItem"></span>
     </md-button>
     <md-button ng-href="{{viewPageLink}}" target="_blank" class="md-raised md-primary md-hue-2" ng-disabled="selectedPage.isNew">
       <md-icon>remove_red_eye</md-icon>
-      <span ma-tr="dashboards.v3.app.viewPage"></span>
+      <span ma-tr="ui.app.viewPage"></span>
     </md-button>
     <md-button class="md-raised md-primary md-hue-3" ng-click="createNewPage()">
       <md-icon>add</md-icon>
-      <span ma-tr="dashboards.v3.app.newPage"></span>
+      <span ma-tr="ui.app.newPage"></span>
     </md-button>
     <div flex></div>
 
-    <md-switch ng-model="showEditor" ma-tr-aria-label="dashboards.v3.app.editor" ng-change="showPreview = showEditor ? showPreview : true"><span ma-tr="dashboards.v3.app.editor"></span></md-switch>
-    <md-switch ng-model="showPreview" ma-tr-aria-label="dashboards.v3.app.preview" ng-change="showEditor = showPreview ? showEditor : true"><span ma-tr="dashboards.v3.app.preview"></span></md-switch>
+    <md-switch ng-model="showEditor" ma-tr-aria-label="ui.app.editor" ng-change="showPreview = showEditor ? showPreview : true"><span ma-tr="ui.app.editor"></span></md-switch>
+    <md-switch ng-model="showPreview" ma-tr-aria-label="ui.app.preview" ng-change="showEditor = showPreview ? showEditor : true"><span ma-tr="ui.app.preview"></span></md-switch>
 </div>
 
 <div layout="column" layout-gt-md="row">
@@ -71,7 +71,7 @@
         <md-card flex layout="column">
             <md-card-title flex="nogrow">
               <md-card-title-text>
-                <span class="md-headline" ma-tr="dashboards.v3.app.editor"></span>
+                <span class="md-headline" ma-tr="ui.app.editor"></span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content flex layout="column">
@@ -83,7 +83,7 @@
         <md-card>
             <md-card-title>
               <md-card-title-text>
-                <span class="md-headline" ma-tr="dashboards.v3.app.preview"></span>
+                <span class="md-headline" ma-tr="ui.app.preview"></span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content>

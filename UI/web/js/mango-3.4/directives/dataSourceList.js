@@ -38,7 +38,7 @@ function dataSourceList(DataSource, $injector) {
         restrict: 'E',
         require: 'ngModel',
         designerInfo: {
-            translation: 'dashboards.v3.components.dataSourceList',
+            translation: 'ui.components.dataSourceList',
             icon: 'view_list',
             category: 'dropDowns'
         },
@@ -54,7 +54,7 @@ function dataSourceList(DataSource, $injector) {
         template: function(element, attrs) {
           if ($injector.has('$mdUtil')) {
               return '<md-select md-on-open="onOpen()">' +
-              '<md-option ng-if="showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="dashboards.v3.app.clear"></em></md-option>' +
+              '<md-option ng-if="showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>' +
               '<md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.xid">' +
               '<span ng-bind="dataSourceLabel(dataSource)"></span>' +
               '</md-option></md-select>';

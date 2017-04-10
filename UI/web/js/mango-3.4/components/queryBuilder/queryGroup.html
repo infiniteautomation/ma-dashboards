@@ -15,8 +15,8 @@
       <ma-query-group flex node="arg" properties="$ctrl.properties" depth="$ctrl.depth + 1" ng-if="arg.name === 'and' || arg.name === 'or'" on-delete="$ctrl.deleteChild($index, node)"></ma-query-group>
     </div>
     <div layout="row" class="query-group-add-buttons">
-      <md-button ng-click="$ctrl.addPredicate($event)"><span ma-tr="dashboards.v3.app.addExpression"></span></md-button>
-      <md-button ng-click="$ctrl.addGroup($event)"><span ma-tr="dashboards.v3.app.addGroup"></span></md-button>
+      <md-button ng-click="$ctrl.addPredicate($event)"><span ma-tr="ui.app.addExpression"></span></md-button>
+      <md-button ng-click="$ctrl.addGroup($event)"><span ma-tr="ui.app.addGroup"></span></md-button>
     </div>
   </md-card-content>
 </md-card>

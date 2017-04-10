@@ -19,12 +19,12 @@ function switchDirective() {
             displayType: '@?'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.switch',
+            translation: 'ui.components.switch',
             icon: 'check_circle',
             category: 'pointValue',
             attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint', pointType: 'BINARY'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid', pointType: 'BINARY'},
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint', pointType: 'BINARY'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid', pointType: 'BINARY'},
                 displayType: {options: ['switch', 'checkbox', 'radio']}
             }
         }

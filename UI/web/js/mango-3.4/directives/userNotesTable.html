@@ -2,10 +2,10 @@
       <md-toolbar class="md-whiteframe-1dp md-hue-3">
             <div class="md-toolbar-tools">
                   <h2 flex>
-                  <span ma-tr="dashboards.v3.app.userComments"></span>
+                  <span ma-tr="ui.app.userComments"></span>
             </h2>
                   <md-button ng-hide="disabled" class="md-accent md-raised" aria-label="New Note" ng-click="addNote($event, commentType, referenceId, updateWithNewNote)">
-                        {{'dashboards.v3.app.add' | tr}}
+                        {{'ui.app.add' | tr}}
                   </md-button>
             </div>
       </md-toolbar>
@@ -13,14 +13,14 @@
             <table md-table>
                   <thead md-head md-order="myOrder">
                         <tr md-row>
-                              <th md-column md-order-by="timestamp" ma-tr="dashboards.v3.app.time"></th>
-                              <th md-column md-order-by="comment" ma-tr="dashboards.v3.app.note"></th>
-                              <th md-column md-order-by="username" ma-tr="dashboards.v3.app.user"></th>
+                              <th md-column md-order-by="timestamp" ma-tr="ui.app.time"></th>
+                              <th md-column md-order-by="comment" ma-tr="ui.app.note"></th>
+                              <th md-column md-order-by="username" ma-tr="ui.app.user"></th>
                         </tr>
                   </thead>
                   <tbody md-body ng-hide="userNotes.length > 0">
                         <tr md-row>
-                            <td md-cell colspan="3" style="height:60px; font-weight: bold;" ma-tr="dashboards.v3.app.noCommentsFound"></td>
+                            <td md-cell colspan="3" style="height:60px; font-weight: bold;" ma-tr="ui.app.noCommentsFound"></td>
                         </tr>
                    </tbody>
                   <tbody md-body ng-show="userNotes.length > 0 && !disabled">

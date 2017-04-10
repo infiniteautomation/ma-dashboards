@@ -66,7 +66,7 @@ pointValues.$inject = ['$http', 'pointEventManager', 'Point', '$q', 'mangoTimeou
 function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, pointValues) {
     return {
         designerInfo: {
-            translation: 'dashboards.v3.components.pointValues',
+            translation: 'ui.components.pointValues',
             icon: 'list',
             category: 'pointValuesAndCharts',
             attributes: {

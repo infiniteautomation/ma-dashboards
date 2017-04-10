@@ -1,4 +1,4 @@
 <md-select md-on-open="$ctrl.onOpen()">
-  <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="dashboards.v3.app.clear"></em></md-option>
+  <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
   <md-option ng-value="folder" ng-repeat="folder in $ctrl.folderList track by folder.id"><span ng-bind="folder[$ctrl.displayProp]"></span></md-option>
 </md-select>

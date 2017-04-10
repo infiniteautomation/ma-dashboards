@@ -10,12 +10,12 @@ define(['jquery', 'angular'], function($, angular) {
  * @name maDashboards.maTrAriaLabelAriaLabel
  * @restrict A
  * @description
- * `<button ma-tr-aria-label="dashboards.v3.dox.input"></button>`
+ * `<button ma-tr-aria-label="ui.dox.input"></button>`
  * - Sets the aria-label attribute for an element to the translation set for the current language
  * - Translations are written in `web/modules/ui/classes/i18n.properties` file
  *
  * @usage
- * <button ma-tr-aria-label="dashboards.v3.dox.input"></button>
+ * <button ma-tr-aria-label="ui.dox.input"></button>
  */
 function maTrAriaLabel(Translate) {
     return {

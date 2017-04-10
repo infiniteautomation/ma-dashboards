@@ -52,7 +52,7 @@ function pointValues(Point, Util, $q, statistics) {
     return {
         restrict: 'E',
         designerInfo: {
-            translation: 'dashboards.v3.components.pointStatistics',
+            translation: 'ui.components.pointStatistics',
             icon: 'format_list_numbered',
             category: 'statistics',
             attributes: {

@@ -15,7 +15,7 @@ var watchListParameters = {
         parameters: '<?'
     },
     designerInfo: {
-        translation: 'dashboards.v3.components.watchListParameters',
+        translation: 'ui.components.watchListParameters',
         icon: 'settings',
         category: 'watchLists',
         size: {

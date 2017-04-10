@@ -31,7 +31,7 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
     return {
         restrict: 'E',
         designerInfo: {
-            translation: 'dashboards.v3.components.datePicker',
+            translation: 'ui.components.datePicker',
             icon: 'access_time',
             category: 'timeAndDate',
             attributes: {

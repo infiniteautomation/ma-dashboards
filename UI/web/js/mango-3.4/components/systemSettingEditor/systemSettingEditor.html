@@ -7,6 +7,6 @@
   </md-select>
   <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" ng-class="{'md-warn': $ctrl.error}">{{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}</md-icon>
   <div ng-messages="$ctrl.messages" md-auto-hide="false">
-    <div ng-message="errorSaving" ma-tr="dashboards.v3.app.errorSavingSetting"></div>
+    <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting"></div>
   </div>
 </md-input-container>

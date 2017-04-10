@@ -57,7 +57,7 @@ function watchListChart() {
             onValuesUpdated: '&?'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.watchListChart',
+            translation: 'ui.components.watchListChart',
             icon: 'show_chart',
             category: 'watchLists',
             size: {

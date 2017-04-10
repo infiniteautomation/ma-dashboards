@@ -4,15 +4,15 @@
 
 <div class="menu-editor-buttons">
   <md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu($event)"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-  <md-button class="md-raised" ng-click="undo()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.undoChanges"></span></md-button>
-  <md-button class="md-raised md-warn" ng-click="resetDefaultItems($event)"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.resetDefaultMenuItems"></span></md-button>
-  <md-button class="md-raised md-warn" ng-click="deleteCustomMenu($event)"><md-icon>delete</md-icon> <span ma-tr="dashboards.v3.app.deleteCustomMenu"></span></md-button>
+  <md-button class="md-raised" ng-click="undo()"><md-icon>undo</md-icon> <span ma-tr="ui.app.undoChanges"></span></md-button>
+  <md-button class="md-raised md-warn" ng-click="resetDefaultItems($event)"><md-icon>undo</md-icon> <span ma-tr="ui.app.resetDefaultMenuItems"></span></md-button>
+  <md-button class="md-raised md-warn" ng-click="deleteCustomMenu($event)"><md-icon>delete</md-icon> <span ma-tr="ui.app.deleteCustomMenu"></span></md-button>
 </div>
 
 <md-card class="menu-editor-container">
   <md-toolbar class="md-whiteframe-z2 menu-editor-path md-hue-3">
     <div class="md-toolbar-tools">
-      <strong ma-tr="dashboards.v3.app.menuPath"></strong><strong>:&nbsp;</strong>
+      <strong ma-tr="ui.app.menuPath"></strong><strong>:&nbsp;</strong>
       <span ng-repeat="pathItem in path track by $index">
         <span ma-tr="{{pathItem.menuTr}}" ng-click="goToIndex($event, $index)">{{pathItem.menuText}}</span>
         <md-icon ng-if="!$last">chevron_right</md-icon>
@@ -26,9 +26,9 @@
           <tr>
               <th md-column></th>
               <th md-column ng-if="$mdMedia('gt-sm')"></th>
-              <th md-column ng-if="$mdMedia('gt-xs')" ma-tr="dashboards.v3.app.menuText"></th>
-              <th md-column ma-tr="dashboards.v3.app.stateName"></th>
-              <th md-column ng-if="$mdMedia('gt-md')" ma-tr="dashboards.v3.app.urlPath"></th>
+              <th md-column ng-if="$mdMedia('gt-xs')" ma-tr="ui.app.menuText"></th>
+              <th md-column ma-tr="ui.app.stateName"></th>
+              <th md-column ng-if="$mdMedia('gt-md')" ma-tr="ui.app.urlPath"></th>
               <th md-column flex></th>
             </tr>
         </thead>
@@ -40,7 +40,7 @@
               </md-button>
             </td>
             <td ng-if="$mdMedia('gt-sm')">
-              <md-switch ng-model="menuItem.menuHidden" ng-true-value="" ng-false-value="true" aria-label="{{'dashboards.v3.app.showMenuItem'|tr}}"></md-switch>
+              <md-switch ng-model="menuItem.menuHidden" ng-true-value="" ng-false-value="true" aria-label="{{'ui.app.showMenuItem'|tr}}"></md-switch>
             </td>
             <td ng-if="$mdMedia('gt-xs') && menuItem.menuText" ng-bind="menuItem.menuText"></td>
             <td ng-if="$mdMedia('gt-xs') && !menuItem.menuText" ma-tr="{{menuItem.menuTr}}"></td>

@@ -41,12 +41,12 @@ define([], function() {
 function getPointValue(pointEventManager, Point, Util) {
     return {
         designerInfo: {
-            translation: 'dashboards.v3.components.getPointValue',
+            translation: 'ui.components.getPointValue',
             icon: 'label_outline',
             category: 'pointValue',
             attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'}
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'}
             }
         },
         scope: {

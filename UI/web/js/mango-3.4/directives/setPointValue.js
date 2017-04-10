@@ -47,12 +47,12 @@ function setPointValue($injector) {
             setOnChange: '<?'
         },
         designerInfo: {
-            translation: 'dashboards.v3.components.setPointValue',
+            translation: 'ui.components.setPointValue',
             icon: 'touch_app',
             category: 'pointValue',
             attributes: {
-                point: {nameTr: 'dashboards.v3.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'dashboards.v3.components.dataPointXid', type: 'datapoint-xid'}
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'}
             }
         }
     };

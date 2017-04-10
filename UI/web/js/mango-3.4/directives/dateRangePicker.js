@@ -73,7 +73,7 @@ function dateRangePicker($injector) {
         controllerAs: '$ctrl',
         bindToController: true,
         designerInfo: {
-            translation: 'dashboards.v3.components.dateRangePicker',
+            translation: 'ui.components.dateRangePicker',
             icon: 'date_range',
             category: 'timeAndDate',
             attributes: {
@@ -95,7 +95,7 @@ function dateRangePicker($injector) {
         },
         template: function(element, attrs) {
             if ($injector.has('$mdUtil')) {
-                return '<md-select ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)" ma-tr="dashboards.v3.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">' +
+                return '<md-select ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)" ma-tr="ui.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">' +
                 '<md-option ng-value="p.type" ng-repeat="p in $ctrl.presets track by p.type">{{p.label}}</md-option>' +
                 '</md-select>';
             }
