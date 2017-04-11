@@ -1,0 +1,22 @@
+<h1 ma-tr="dashboards.v3.dox.createDashboard"></h1>
+
+<p>If you do not want to create pages within this app you can create your own copy of a  dashboard.
+To create your own dashboard, copy one of the <a ui-sref="dashboard.examples.templates.angularMaterial">templates</a>
+into a new folder in <code>${MA_HOME}/overrides/web/modules/dashboards/web</code> and rename the HTML file to <code>index.html</code>.</p>
+
+<p>There is also a complete <em>Material Design</em> <a ui-sref="dashboard.examples.templates.adminTemplate">admin template</a>
+similar to these documentation pages, with a menu and toolbar which you can customize.</p>
+
+<p>Once you have created a folder in overrides, your dashboard will be accessible at
+<a href="/user-dashboards/YOUR-FOLDER-NAME" target="_blank">/user-dashboards/YOUR-FOLDER-NAME</a>.
+
+<p>
+	You will then need to update the loader script at the bottom of the index.html file.
+	Replace <code>require(['dashboards/adminTemplate/app']);</code> with <code>require(['dashboards/YOUR-FOLDER-NAME/app']);</code>.
+</p>
+
+You can change the Custom Dashboards link on the Mango menu bar to point to your new dashboard in the
+<a href="/system_settings.shtm" target="_blank">System settings</a>.</p>
+
+<p>Once you have a working template you can starting <a ui-sref="dashboard.examples.playArea">playing around</a> with the live
+examples and copy and paste them into your template HTML file.</p>

@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "gulp": "*",
+    "gulp-load-plugins": "*",
+    "gulp-filter": "*",
+    "main-bower-files": "*",
+    "gulp-uglify": "*",
+    "gulp-clean": "*",
+    "path-exists": "*",
+    "gulp-rename": "*"
+  },
+  "devDependencies": {
+    "gulp-ignore": "^2.0.1",
+    "gulp-ngdocs": "^0.2.13"
+  }
+}

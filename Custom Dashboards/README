@@ -1,0 +1,23 @@
+There is currently no help for this module as it is in development.
+
+To create a dashboard file simply create an HTML file and place it into the web/pages or web/public folder.  
+
+Pages in the web/pages folder must be postfixed with .shtm (secure html).
+
+Pages in the web/public folder must be postfixed with .htm
+
+Any private page can be accessed via:
+
+yourMangoHost:yourMangoPort/dashboards/<your dashboard name>.shtm
+
+Examples:
+localhost:8080/dashboards/defaultDashbaord.shtm
+localhost:8080/dashboards/helloWorld.shtm
+
+Public pages can be accessed via:
+
+http://localhost:8080/public-dashboards/<your dashboard name>.htm
+
+Link to any of the Mango Javascript API files via:
+
+/mango-javascript/{version, currently v1}/{filename.js}

@@ -1,0 +1,7 @@
+<md-button class="md-icon-button edit-page-button"
+  ng-if="page && user.hasPermission(page.editPermission)"
+  ui-sref="dashboard.settings.editPages({pageXid: page.xid})"
+  ma-tr="dashboards.v3.app.editPage">
+  <md-icon>edit</md-icon>
+</md-button>
+<div live-preview="markup"></div>

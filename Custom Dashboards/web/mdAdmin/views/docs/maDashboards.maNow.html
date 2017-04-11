@@ -1,0 +1,31 @@
+<h1><code ng:non-bindable="">maNow</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-manow-page"><p><code>&lt;ma-now update-interval=&quot;1 SECONDS&quot; output=&quot;time&quot;&gt;&lt;/ma-now&gt;</code></p>
+<ul>
+<li>This directive will output the current browser time as a timestamp.</li>
+<li><a ui-sref="dashboard.examples.basics.clocksAndTimezones">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-now update-interval="1 SECONDS" output="time"&gt;&lt;/ma-now&gt;
+&lt;ma-clock style="width: 100%; height: 200px;" time="time1" text="Browser timezone"&gt;
+&lt;/ma-clock&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>output</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-manow-page"><p>Variable to hold the outputted timestamp.</p>
+</div></td></tr><tr><td>update-interval</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="madashboards-manow-page"><p>The timestamp will update on this given interval.
+Format the interval duration as a string starting with a number followed by one of these units:</p>
+<ul>
+   <li>years</li>
+   <li>months</li>
+   <li>weeks</li>
+   <li>days</li>
+   <li>hours</li>
+   <li>minutes</li>
+   <li>seconds</li>
+   <li>milliseconds</li>
+</ul>
+</div></td></tr></tbody></table></div>
+</div>

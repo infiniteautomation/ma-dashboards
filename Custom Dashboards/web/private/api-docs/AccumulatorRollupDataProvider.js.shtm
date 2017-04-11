@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mango Api: Source: AccumulatorRollupDataProvider.js</title>
+    <link rel="icon" href="/images/favicon.ico">
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: AccumulatorRollupDataProvider.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Data Provider for RealTime Updates Via Web Sockets
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @author Jared Wiltshire
+ * @module {AccumulatorRollupDataProvider} mango/AccumulatorRollupDataProvider
+ * @augments PointValueDataProvider
+ */
+define(['jquery', './DataProvider', './PointValueDataProvider', 'moment-timezone'],
+        function($, DataProvider, PointValueDataProvider, moment) {
+"use strict";
+
+/**
+ * Constructor
+ * @constructs AccumulatorRollupDataProvider
+ * @param {!number|string} id - Data Provider ID
+ * @param {Object} options - Options for provider
+ * @augments PointValueDataProvider
+ */
+function AccumulatorRollupDataProvider() {
+    PointValueDataProvider.apply(this, arguments);
+}
+
+AccumulatorRollupDataProvider.prototype = Object.create(PointValueDataProvider.prototype);
+
+/**
+ * Type of Data Provider
+ * @type {string}
+ * @default 'AccumulatorRollupDataProvider'
+ * @const
+ */
+AccumulatorRollupDataProvider.prototype.type = 'AccumulatorRollupDataProvider';
+
+/**
+ * Needs to load Values?
+ * @param {Object} changedOptions
+ */
+AccumulatorRollupDataProvider.prototype.needsToLoad = function(changedOptions) {
+    if (changedOptions.from || changedOptions.to ||
+            changedOptions.timePeriodType || changedOptions.timePeriods)
+        return true;
+    return false;
+};
+
+/**
+ * Method that is called before publishing the data to the Displays
+ * it is here that we can modify the data
+ * @param {Array|Object} pointValues - Value(s) to manipulate
+ * @param {DataPoint} dataPoint - Data Point of corresponding data
+ */
+AccumulatorRollupDataProvider.prototype.manipulateData = function(pointValues, dataPoint) {
+    var newData = [];
+    if (pointValues.length === 0)
+        return newData;
+    
+    var previous = pointValues[0];
+    
+    //Subtract previous value from current.
+    for (var i = 1; i &lt; pointValues.length; i++) {
+        var current = pointValues[i];
+        var entry = {
+                value: current.value - previous.value,
+                timestamp: current.timestamp
+        };
+        newData.push(entry);
+        
+        //Move along
+        previous = current;
+    }
+    
+    return newData;
+};
+
+/**
+ * Load Point
+ * @todo Document better
+ * @param {DataPoint} point - Point To load
+ * @param {Object} options - options for load
+ */
+AccumulatorRollupDataProvider.prototype.loadPoint = function(point, options) {
+    // clone so we can change rollup without affecting options elsewhere
+    options = $.extend({}, options);
+    // always use accumulator rollup
+    options.rollup = 'ACCUMULATOR';
+    
+    var modifiedFrom = moment(options.fromMoment);
+    // need to get 1 extra time period so we have accumulator previous value
+    switch(options.timePeriodType) {
+    case "MINUTES":
+        modifiedFrom.subtract(1, 'minutes');
+        break;
+    case "HOURS":
+        modifiedFrom.subtract(1, 'hours');
+        break;
+    case "DAYS":
+        modifiedFrom.subtract(1, 'days');
+        break;
+    case "MONTHS":
+        modifiedFrom.subtract(1, 'months');
+        break;
+    }
+    options.from = modifiedFrom.toDate();
+    
+    return PointValueDataProvider.prototype.loadPoint.call(this, point, options);
+};
+
+DataProvider.registerProvider(AccumulatorRollupDataProvider);
+return AccumulatorRollupDataProvider;
+
+}); // close define</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.shtm">Home</a></h2><h3>Modules</h3><ul><li><a href="module-mango_AccumulatorDataProvider.shtm">mango/AccumulatorDataProvider</a></li><li><a href="module-mango_AccumulatorRollupDataProvider.shtm">mango/AccumulatorRollupDataProvider</a></li><li><a href="module-mango_api.shtm">mango/api</a></li><li><a href="module-mango_autologin.shtm">mango/autologin</a></li><li><a href="module-mango_BarChart.shtm">mango/BarChart</a></li><li><a href="module-mango_BaseDisplay.shtm">mango/BaseDisplay</a></li><li><a href="module-mango_CssDisplay.shtm">mango/CssDisplay</a></li><li><a href="module-mango_DataProvider.shtm">mango/DataProvider</a></li><li><a href="module-mango_exportConfig.shtm">mango/exportConfig</a></li><li><a href="module-mango_GaugeChart.shtm">mango/GaugeChart</a></li><li><a href="module-mango_GridDisplay.shtm">mango/GridDisplay</a></li><li><a href="module-mango_HistoricalDataProvider.shtm">mango/HistoricalDataProvider</a></li><li><a href="module-mango_HTMLDisplay.shtm">mango/HTMLDisplay</a></li><li><a href="module-mango_ListDisplay.shtm">mango/ListDisplay</a></li><li><a href="module-mango_PieChart.shtm">mango/PieChart</a></li><li><a href="module-mango_PointValueDataProvider.shtm">mango/PointValueDataProvider</a></li><li><a href="module-mango_PointValueQueryInput.shtm">mango/PointValueQueryInput</a></li><li><a href="module-mango_ProviderOptionsManager.shtm">mango/ProviderOptionsManager</a></li><li><a href="module-mango_RealtimeDataProvider.shtm">mango/RealtimeDataProvider</a></li><li><a href="module-mango_SerialChart.shtm">mango/SerialChart</a></li><li><a href="module-mango_statisticsBarChart.shtm">mango/statisticsBarChart</a></li><li><a href="module-mango_StatisticsDataProvider.shtm">mango/StatisticsDataProvider</a></li><li><a href="module-mango_StatisticsTableDisplay.shtm">mango/StatisticsTableDisplay</a></li><li><a href="module-mango_TextDisplay.shtm">mango/TextDisplay</a></li><li><a href="module-mango_TimePresetPicker.shtm">mango/TimePresetPicker</a></li><li><a href="module-mango_User.shtm">mango/User</a></li></ul><h3>Classes</h3><ul><li><a href="AccumulatorDataProvider.shtm">AccumulatorDataProvider</a></li><li><a href="AccumulatorRollupDataProvider.shtm">AccumulatorRollupDataProvider</a></li><li><a href="BarChart.shtm">BarChart</a></li><li><a href="BaseDisplay.shtm">BaseDisplay</a></li><li><a href="CssDisplay.shtm">CssDisplay</a></li><li><a href="DataProvider.shtm">DataProvider</a></li><li><a href="GaugeChart.shtm">GaugeChart</a></li><li><a href="GridDisplay.shtm">GridDisplay</a></li><li><a href="HistoricalDataProvider.shtm">HistoricalDataProvider</a></li><li><a href="HTMLDisplay.shtm">HTMLDisplay</a></li><li><a href="ListDisplay.shtm">ListDisplay</a></li><li><a href="MangoAPI.shtm">MangoAPI</a></li><li><a href="PieChart.shtm">PieChart</a></li><li><a href="PointValueDataProvider.shtm">PointValueDataProvider</a></li><li><a href="ProviderOptionsManager.shtm">ProviderOptionsManager</a></li><li><a href="RealtimeDataProvider.shtm">RealtimeDataProvider</a></li><li><a href="SerialChart.shtm">SerialChart</a></li><li><a href="StatisticsDataProvider.shtm">StatisticsDataProvider</a></li><li><a href="StatisticsTableDisplay.shtm">StatisticsTableDisplay</a></li><li><a href="TextDisplay.shtm">TextDisplay</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-allDataPointsChart.shtm">Charting Multiple Data Points</a></li><li><a href="tutorial-currentValue.shtm">Current Value</a></li><li><a href="tutorial-dataPointBarChart.shtm">Data Point Bar Chart</a></li><li><a href="tutorial-dataPointChart.shtm">Data Point Charting</a></li><li><a href="tutorial-dataPointQuery.shtm">Query Data Points</a></li><li><a href="tutorial-dataPointsPieChart.shtm">Data Points Pie Chart</a></li><li><a href="tutorial-events.shtm">Events Query</a></li><li><a href="tutorial-eventWebSocket.shtm">Live Events</a></li><li><a href="tutorial-gridDisplay_.shtm">Grid Display</a></li><li><a href="tutorial-listDisplay_.shtm">List Display</a></li><li><a href="tutorial-pointValueGauge.shtm">Gauge Chart</a></li><li><a href="tutorial-pointValuesWebSocket.shtm">Efficient Realtime Data</a></li><li><a href="tutorial-pointValueWebSocket.shtm">Live Data</a></li><li><a href="tutorial-realtimeTable.shtm">Realtime Table Display</a></li><li><a href="tutorial-setPointValue.shtm">Setting a Value</a></li><li><a href="tutorial-statisticsTableDisplay_.shtm">Statistics Table Display</a></li><li><a href="tutorial-textDisplay_.shtm">Text Display</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+     <a href="http://infiniteautomation.com" target="ia">&copy; Infinite Automation Systems, Inc.</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

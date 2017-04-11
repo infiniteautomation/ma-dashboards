@@ -1,0 +1,44 @@
+<h1 ma-tr="dashboards.v3.dox.getStatistics"></h1>
+<p>The <code>&lt;ma-point-statistics&gt;</code> directive provides access to historical stats over a time range on a data point.</p>
+<p>
+    The object returned by the <code>statistics</code> attribute contains <code>first, last, minimum, maximum, average, integral, sum, &amp; count</code>
+    properties. Each of these will have a <code>value</code> and a <code>timestamp</code>
+</p>
+<p>
+    If you are interested only in the change in a value between two times you can add the optional <code>first-last="true"</code> attribute to only
+    return the first and last values, then simply calculate the difference with <code ng-non-bindable>{{ statsObj.last.value - statsObj.first.value }}</code>
+</p>
+<p>
+See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maPointStatistics"><code>&lt;ma-point-statistics&gt;</code></a>.
+</p>
+<dual-pane-editor>
+
+<div layout="row">
+    <md-input-container flex>
+        <label>Choose a point</label>
+        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
+    </md-input-container>
+</div>
+
+<div layout="row" layout-xs="column" class="no-errors-spacer">
+    <md-input-container flex>
+       <label>Date preset</label>
+       <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker>
+    </md-input-container>
+    <md-input-container flex>
+       <label>From date</label>
+       <ma-date-picker ng-model="from"></ma-date-picker>
+    </md-input-container>
+    <md-input-container flex>
+        <label>To date</label>
+        <ma-date-picker ng-model="to"></ma-date-picker>
+    </md-input-container>
+</div>
+
+<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+
+<div>The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | moment:'format':'lll' }}<br>
+     The max value for the period is {{ statsObj.maximum.value }}
+</div>
+
+</dual-pane-editor>

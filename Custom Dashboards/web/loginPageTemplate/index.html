@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Single Page App with Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <base href="/user-dashboards/loginPageTemplate/">
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="../img/icon192.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="../img/icon128.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="../img/icon128.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="../img/icon128.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="stylesheet" href="/resources/angular-csp.css"></link>
+    <link rel="stylesheet" href="../vendor/angular-material/angular-material.css">
+    <link rel="stylesheet" href="../vendor/angular-loading-bar/loading-bar.css">
+    <link rel="stylesheet" href="../vendor/material-design-icons/iconfont/material-icons.css">
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../vendor/mdPickers/mdPickers.css">
+    <link rel="stylesheet" href="../vendor/angular-material-data-table/md-data-table.css">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body layout="column">
+	<div ng-if="appLoading" class="app-loading">
+		<i class="fa fa-cog fa-spin"></i>
+	</div>
+
+    <div ui-view ng-cloak layout="column" flex></div>
+
+    <script src="/resources/require.js"></script>
+    <script src="/resources/loaderConfig.js"></script>
+    <script src="../js/loaderConfig.js"></script>
+    <!-- Rename loginPageTemplate to the name of the folder you create in overrides -->
+    <script>require(['dashboards/loginPageTemplate/app']);</script>
+</body>
+</html>

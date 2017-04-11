@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Add the Mango Favicon -->
+    <link rel="icon" href="/images/favicon.ico">
+    
+	<!-- Page Style -->
+    <style type="text/css">
+    </style>
+	
+	
+	<title>Set Point Value</title>
+    
+    <!-- JQuery -->
+    <script type="text/javascript" src="/resources/jquery/jquery-1.11.2.js"></script>    	
+
+    <link href="/resources/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+ 
+    <script type="text/javascript" src="/resources/jquery-ui/jquery.datetimepicker.js"></script>
+    <!-- Charting Library -->
+    <script type="text/javascript" src="/resources/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="/resources/amcharts/serial.js"></script>
+    <script type="text/javascript" src="/resources/amcharts/gauge.js"></script>
+
+    <!-- Mango Rest API Helper -->
+    <script type="text/javascript" src="/mango-javascript/mango/v1/mangoApi.js"></script>         
+        
+    <!-- Mango Templating API -->
+    <!-- Display Widgets -->
+    <script type="text/javascript" src="/mango-javascript/mango/v1/serialChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/barChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/statisticsBarChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/pieChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/statistics.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/gaugeChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/simpleDisplay.js"></script>
+    
+    
+    <!-- Data Providers -->
+    <script type="text/javascript" src="/resources/extend.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/pointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/realtimePointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/historicalPointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/statisticsDataProvider.js"></script>
+    <!-- Input Widgets -->
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dateTimePicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/rollupPicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/timePeriodTypePicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/input.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/select.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/listView.js"></script>
+    <!-- Templater Core -->
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dataDisplayManager.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dataPointMatcher.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dataPointGroup.js"></script>  
+    <script type="text/javascript" src="/mango-javascript/mango/v1/pointHierarchyGrouper.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dashboardTemplater.js"></script>
+
+   <script type="text/javascript">
+   
+   //Define Global Variables
+   var templater;
+   
+   $( document ).ready(function(){
+       
+       //Setup Display Configurations
+       var displayConfigurations = new Array();
+       
+       //For this example we will use a SimpleDisplay to show the current value
+       var simpleDisplay = new SimpleDisplayConfiguration([1], 
+               {
+                  onClear: function(){
+                      //Do anything required to clear our display
+                      $('#currentValue').empty();
+                      $('#currentTime').empty();
+                      $('#currentXid').empty();
+                  },
+                  onLoad: function(pointValues, dataPoint){
+                	  if(dataPoint != null){
+                		  $('#currentXid').text(dataPoint.xid);
+                	  }
+                      if(pointValues.length > 0){
+                          $('#currentValue').text(pointValues[0].value.toFixed(2));
+                          $('#currentTime').text(new Date(pointValues[0].timestamp));
+                      }
+                  }
+               }); //Just assign data provider ids
+       displayConfigurations.push(simpleDisplay);
+               
+               
+       //Create Data Providers
+       var dataProviders = new Array();
+       var customDataProvider = new HistoricalPointValueDataProvider(1);
+       dataProviders.push(customDataProvider);
+       
+       //Setup Point Configurations
+       var pointConfigurations = new Array();
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}]))
+       
+
+       //Setup Groups
+       var group = new DataPointGroupConfiguration({
+           groupBy: 'Folder',
+           labelAttribute: 'name',
+           matchConfigurations: [{
+               matchAttribute: 'path',
+               regex: /Target Folder/
+           }]
+           });
+       
+       var groupConfigurations = new Array();
+       groupConfigurations.push(group);
+       
+       //Create a custom group list view
+       var groupListView = new ListViewConfiguration('groupsList', {}, {styleClass: "ui-btn"});
+       
+       //Setup Templater to grab past 1 sample 
+       var templaterConfig = {
+               debug: true,
+               type: 'PointHierarchy',
+               displayConfigurations: displayConfigurations,
+               pointConfigurations: pointConfigurations,
+               groupConfigurations: groupConfigurations,
+               dataProviders: dataProviders,
+               groupSelectConfiguration: groupListView,
+               historicalSamples: 1, 
+       };
+       
+       
+       
+       templater = new DashboardTemplater(templaterConfig);
+       
+       //Define the Input For the Current Value
+       var newValueInput = new InputConfiguration('pointValue', {}, {onChange: pointValueChanged, defaultValue: 1})
+       newValueInput.create(); //Be sure to create it
+       
+       
+            
+   });// End When page Ready
+   
+   function pointValueChanged(value){
+       //Create PointValueTimeModel
+       var pvt = mangoRest.pointValues.createNew(); //Create a new point value time model
+       pvt.value = new Number(value); 
+       pvt.timestamp = new Date().getTime();
+       pvt.dataType = 'NUMERIC';
+       var options = 
+       {
+          refresh: true, //Refresh the data provider's linked Displays with the new data
+          value: pvt    
+       };
+       templater.put([1], options); //Signal to the data provider to set a value
+   }
+   </script>
+
+
+
+
+
+</head>
+<body>
+    <h2>This example is deprecated because it uses the legacy Javascript API.  For more up-to-date examples see the tutorial's folder.</h2>
+
+    <div id="errors"></div> <!-- The templater defaults to using a div with id errors if it exists -->
+    <ul id="groupsList"></ul>
+    <p>Setting a point value is done via the put method of the templater.  The templater accepts the ID(s) of the 
+        data providers to put the value to and the PointValueTimeModel object that contains the value to put. This
+        example will put the value to the data point and then display the Current Value (without having to make another XHR request)
+        Click the Target Folder to start.  To change the value input the number you want to set and press enter.
+    </p>
+    <div>
+        <label for="pointValue">Set Value</label>
+        <input id="pointValue" type="number"></input>
+    </div>
+    <hr></hr>
+    <div>
+        <div>Point XID:</div>
+        <div id="currentXid"></div>
+    </div>
+    <div>
+        <div>Current Value:</div>
+        <div id="currentValue"></div>
+    </div>
+    <div>
+        <div>Current Timestamp:</div>
+        <div id="currentTime"></div>
+    </div>    
+</body>
+</html>
+

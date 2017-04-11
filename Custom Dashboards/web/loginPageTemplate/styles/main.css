@@ -1,0 +1,31 @@
+html {
+  font-size: 62.5%;
+  line-height: 1.4;
+}
+
+body {
+  font-size: 1.6rem;
+  background-color: #eee;
+}
+
+/* Login page and page template */
+
+#loading-bar-spinner {
+	left: 50% !important;
+	transform: translate(-50%, 0);
+}
+
+.app-loading {
+	text-align: center;
+	width: 100%;
+	margin-top: 50px;
+}
+
+.app-loading i {
+	font-size: 48px;
+}
+
+.login-logo {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}

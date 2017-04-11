@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mango Api: Source: GridDisplay.js</title>
+    <link rel="icon" href="/images/favicon.ico">
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: GridDisplay.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Grid Display using DStore
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @author Jared Wiltshire
+ * @module {GridDisplay} mango/GridDisplay
+ * @see GridDisplay
+ * @augments BaseDisplay
+ */
+define(['jquery', 'dojo/_base/declare', 'dstore/Memory', 'dstore/Trackable', 'dgrid/OnDemandGrid', './BaseDisplay'],
+function($, declare, Memory, Trackable, OnDemandGrid, BaseDisplay) {
+
+/**
+ * @constructs GridDisplay
+ * @param {Object} options - options for grid
+ * @augments BaseDisplay
+ * @tutorial pointValuesWebSocket
+ */	
+function GridDisplay(options){
+	BaseDisplay.apply(this, arguments);
+    // stores data which arrives while loading
+    this.cache = [];
+    this.maximumItems = null;
+    $.extend(this, options);
+    
+    //only create a store if it was not provided
+	if(this.store === null){
+	    this.store = new declare([Memory, Trackable])({
+	        data: [],
+	        idProperty: 'timestamp'
+	    });
+    }
+    this.gridOptions = {
+        collection: this.store
+    };
+    
+    $.extend(this.gridOptions, options.gridOptions);
+    delete options.gridOptions;
+    
+    this.loadingMessage = this.gridOptions.loadingMessage;
+    this.noDataMessage = this.gridOptions.noDataMessage;
+    
+    
+}
+
+GridDisplay.prototype = Object.create(BaseDisplay.prototype);
+
+/**
+ * Type of Display
+ * @type {string}
+ * @default 'GridDisplay'
+ * @const
+ */
+GridDisplay.prototype.type = 'GridDisplay';
+
+/**
+ * OnDemandGrid created by createDisplay
+ * @type {OnDemandGrid}
+ * @default null
+ */
+GridDisplay.prototype.grid = null;
+
+/**
+ * Data Cache
+ * @type {Array}
+ * @default []
+ */
+GridDisplay.prototype.cache = null;
+
+/**
+ * Maximum Items to display
+ * @type {?number}
+ * @default null
+ */
+GridDisplay.prototype.maximumItems = null;
+
+/**
+ * Data Store
+ * @type {TrackableMemoryStore}
+ */
+GridDisplay.prototype.store = null;
+
+/**
+ * Options for Grid
+ * @type {Object}
+ * @default null
+ */
+GridDisplay.prototype.gridOptions = null;
+
+/**
+ * Message displayed while loading data
+ * @type {string}
+ * @default gridOptions.loadingMessage
+ */
+GridDisplay.prototype.loadingMessage = null;
+/**
+ * Message displayed when no data is available
+ * @type {string}
+ * @default gridOptions.noDataMessage
+ */
+GridDisplay.prototype.noDataMessage = null;
+
+
+/**
+ * Create the Display
+ * @override
+ */
+GridDisplay.prototype.createDisplay = function() {
+    this.grid = new OnDemandGrid(this.gridOptions, this.selection.attr('id'));
+    return this;
+};
+
+/**
+ * Data Provider listener to clear data
+ */
+GridDisplay.prototype.onClear = function() {
+    this.cache = [];
+    this.grid.noDataMessage = this.noDataMessage;
+    this.store.setData([]);
+    this.grid.refresh();
+};
+
+/**
+ * Data Provider Listener
+ * On Data Provider load we add new data
+ */
+GridDisplay.prototype.onLoad = function(data, dataPoint) {
+    if ($.isArray(data)) {
+        this.removeLoading();
+        this.store.setData(this.cache.concat(data));
+        this.cache = [];
+        this.trimItems();
+        this.grid.refresh();
+    }
+    else {
+        if (this.isLoading) {
+            this.cache.push(data);
+        }
+        else {
+            this.store.put(data);
+            this.trimItems();
+        }
+    }
+};
+
+/**
+ * Trim the size of the Grid if necessary
+ */
+GridDisplay.prototype.trimItems = function() {
+    if (!this.maximumItems) return;
+    
+    var sortedStore = this.store.sort(this.store.idProperty);
+    
+    while (this.store.data.length > this.maximumItems) {
+        var lowestIdItem = sortedStore.fetchRangeSync({start: 0, end: 1})[0];
+        this.store.removeSync(lowestIdItem[this.store.idProperty]);
+    }
+};
+
+/**
+ * Display Loading message
+ * Set state to loading
+ * Refresh Grid
+ */
+GridDisplay.prototype.loading = function() {
+    this.isLoading = true;
+    this.grid.noDataMessage = this.loadingMessage;
+    this.grid.refresh();
+};
+
+/**
+ * Remove Loading Message
+ */
+GridDisplay.prototype.removeLoading = function() {
+    this.isLoading = false;
+    this.grid.noDataMessage = this.noDataMessage;
+    // refresh is called straight after by onLoad()
+};
+
+return GridDisplay;
+
+}); // define
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.shtm">Home</a></h2><h3>Modules</h3><ul><li><a href="module-mango_AccumulatorDataProvider.shtm">mango/AccumulatorDataProvider</a></li><li><a href="module-mango_AccumulatorRollupDataProvider.shtm">mango/AccumulatorRollupDataProvider</a></li><li><a href="module-mango_api.shtm">mango/api</a></li><li><a href="module-mango_autologin.shtm">mango/autologin</a></li><li><a href="module-mango_BarChart.shtm">mango/BarChart</a></li><li><a href="module-mango_BaseDisplay.shtm">mango/BaseDisplay</a></li><li><a href="module-mango_CssDisplay.shtm">mango/CssDisplay</a></li><li><a href="module-mango_DataProvider.shtm">mango/DataProvider</a></li><li><a href="module-mango_exportConfig.shtm">mango/exportConfig</a></li><li><a href="module-mango_GaugeChart.shtm">mango/GaugeChart</a></li><li><a href="module-mango_GridDisplay.shtm">mango/GridDisplay</a></li><li><a href="module-mango_HistoricalDataProvider.shtm">mango/HistoricalDataProvider</a></li><li><a href="module-mango_HTMLDisplay.shtm">mango/HTMLDisplay</a></li><li><a href="module-mango_ListDisplay.shtm">mango/ListDisplay</a></li><li><a href="module-mango_PieChart.shtm">mango/PieChart</a></li><li><a href="module-mango_PointValueDataProvider.shtm">mango/PointValueDataProvider</a></li><li><a href="module-mango_PointValueQueryInput.shtm">mango/PointValueQueryInput</a></li><li><a href="module-mango_ProviderOptionsManager.shtm">mango/ProviderOptionsManager</a></li><li><a href="module-mango_RealtimeDataProvider.shtm">mango/RealtimeDataProvider</a></li><li><a href="module-mango_SerialChart.shtm">mango/SerialChart</a></li><li><a href="module-mango_statisticsBarChart.shtm">mango/statisticsBarChart</a></li><li><a href="module-mango_StatisticsDataProvider.shtm">mango/StatisticsDataProvider</a></li><li><a href="module-mango_StatisticsTableDisplay.shtm">mango/StatisticsTableDisplay</a></li><li><a href="module-mango_TextDisplay.shtm">mango/TextDisplay</a></li><li><a href="module-mango_TimePresetPicker.shtm">mango/TimePresetPicker</a></li><li><a href="module-mango_User.shtm">mango/User</a></li></ul><h3>Classes</h3><ul><li><a href="AccumulatorDataProvider.shtm">AccumulatorDataProvider</a></li><li><a href="AccumulatorRollupDataProvider.shtm">AccumulatorRollupDataProvider</a></li><li><a href="BarChart.shtm">BarChart</a></li><li><a href="BaseDisplay.shtm">BaseDisplay</a></li><li><a href="CssDisplay.shtm">CssDisplay</a></li><li><a href="DataProvider.shtm">DataProvider</a></li><li><a href="GaugeChart.shtm">GaugeChart</a></li><li><a href="GridDisplay.shtm">GridDisplay</a></li><li><a href="HistoricalDataProvider.shtm">HistoricalDataProvider</a></li><li><a href="HTMLDisplay.shtm">HTMLDisplay</a></li><li><a href="ListDisplay.shtm">ListDisplay</a></li><li><a href="MangoAPI.shtm">MangoAPI</a></li><li><a href="PieChart.shtm">PieChart</a></li><li><a href="PointValueDataProvider.shtm">PointValueDataProvider</a></li><li><a href="ProviderOptionsManager.shtm">ProviderOptionsManager</a></li><li><a href="RealtimeDataProvider.shtm">RealtimeDataProvider</a></li><li><a href="SerialChart.shtm">SerialChart</a></li><li><a href="StatisticsDataProvider.shtm">StatisticsDataProvider</a></li><li><a href="StatisticsTableDisplay.shtm">StatisticsTableDisplay</a></li><li><a href="TextDisplay.shtm">TextDisplay</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-allDataPointsChart.shtm">Charting Multiple Data Points</a></li><li><a href="tutorial-currentValue.shtm">Current Value</a></li><li><a href="tutorial-dataPointBarChart.shtm">Data Point Bar Chart</a></li><li><a href="tutorial-dataPointChart.shtm">Data Point Charting</a></li><li><a href="tutorial-dataPointQuery.shtm">Query Data Points</a></li><li><a href="tutorial-dataPointsPieChart.shtm">Data Points Pie Chart</a></li><li><a href="tutorial-events.shtm">Events Query</a></li><li><a href="tutorial-eventWebSocket.shtm">Live Events</a></li><li><a href="tutorial-gridDisplay_.shtm">Grid Display</a></li><li><a href="tutorial-listDisplay_.shtm">List Display</a></li><li><a href="tutorial-pointValueGauge.shtm">Gauge Chart</a></li><li><a href="tutorial-pointValuesWebSocket.shtm">Efficient Realtime Data</a></li><li><a href="tutorial-pointValueWebSocket.shtm">Live Data</a></li><li><a href="tutorial-realtimeTable.shtm">Realtime Table Display</a></li><li><a href="tutorial-setPointValue.shtm">Setting a Value</a></li><li><a href="tutorial-statisticsTableDisplay_.shtm">Statistics Table Display</a></li><li><a href="tutorial-textDisplay_.shtm">Text Display</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+     <a href="http://infiniteautomation.com" target="ia">&copy; Infinite Automation Systems, Inc.</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

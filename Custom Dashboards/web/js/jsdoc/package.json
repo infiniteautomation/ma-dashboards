@@ -1,0 +1,60 @@
+{
+  "name": "jsdoc",
+  "version": "3.4.0-dev",
+  "revision": "1424228843897",
+  "description": "An API documentation generator for JavaScript.",
+  "keywords": [
+    "documentation",
+    "javascript"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsdoc3/jsdoc"
+  },
+  "dependencies": {
+    "async": "~0.9.0",
+    "bluebird": "~2.9.14",
+    "catharsis": "~0.8.6",
+    "escape-string-regexp": "~1.0.2",
+    "espree": "~1.12.3",
+    "js2xmlparser": "~0.1.7",
+    "marked": "~0.3.2",
+    "requizzle": "~0.2.0",
+    "strip-json-comments": "~1.0.2",
+    "taffydb": "https://github.com/hegemonic/taffydb/tarball/7d100bcee0e997ee4977e273cdce60bd8933050e",
+    "underscore": "~1.7.0",
+    "wrench": "~1.5.8"
+  },
+  "devDependencies": {
+    "eslint": "~0.13.0",
+    "gulp": "~3.8.5",
+    "gulp-eslint": "~0.2.0",
+    "gulp-json-editor": "~2.0.2",
+    "istanbul": "~0.2.16",
+    "tv4": "https://github.com/hegemonic/tv4/tarball/own-properties"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "scripts": {
+    "test": "gulp lint; gulp test"
+  },
+  "bin": {
+    "jsdoc": "./jsdoc.js"
+  },
+  "bugs": "https://github.com/jsdoc3/jsdoc/issues",
+  "author": {
+    "name": "Michael Mathews",
+    "email": "micmath@gmail.com"
+  },
+  "contributors": [
+    {
+      "url": "https://github.com/jsdoc3/jsdoc/graphs/contributors"
+    }
+  ],
+  "maintainers": {
+    "name": "Jeff Williams",
+    "email": "jeffrey.l.williams@gmail.com"
+  }
+}

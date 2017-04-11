@@ -1,0 +1,32 @@
+<h1 ma-tr="dashboards.v3.dox.pieChart"></h1>
+<p>Simple pie chart example, for showing a pie chart of states and runtimes please see
+<a ui-sref="dashboard.examples.statistics.statePieChart" target="_blank">the example under Statistics</a>.</p>
+
+
+<p>
+See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maPieChart"><code>&lt;ma-pie-chart&gt;</code></a>.
+</p>
+
+<dual-pane-editor>
+
+<h3>Add a value</h3>
+<div layout="row" ng-init="values=[]">
+    <md-input-container flex="30" ng-init="item.value=10">
+        <label>Value</label>
+        <input ng-model="item.value" type="number" min="0">
+    </md-input-container>
+    <md-input-container flex="30" ng-init="item.text='Item 1'">
+        <label>Text</label>
+        <input ng-model="item.text">
+    </md-input-container>
+    <md-input-container flex="30" ng-init="item.color='#ff0000'">
+        <label>Color</label>
+        <input ng-model="item.color" type="color">
+    </md-input-container>
+    <md-button type="submit" ng-click="values.push(item); item={}" class="md-raised md-accent" flex="10">Add</md-button>
+</div>
+
+<h3>Chart</h3>
+<ma-pie-chart style="height: 300px; width: 600px" values="values" options="{depth3D:15,angle:30}"></ma-pie-chart>
+
+</dual-pane-editor>

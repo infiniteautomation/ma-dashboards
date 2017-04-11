@@ -1,0 +1,25 @@
+<md-table-container>
+<table md-table class="starts-and-runtimes">
+	<thead md-head>
+		<tr md-row>
+			<th md-column ma-tr="common.value"></th>
+			<th md-column ma-tr="common.stats.starts"></th>
+			<th md-column ma-tr="common.stats.runtime"></th>
+			<th md-column ma-tr="common.stats.proportion"></th>
+		</tr>
+	</thead>
+	<tbody md-body ng-if="startsAndRuntimes.length">
+		<tr md-row ng-repeat="state in startsAndRuntimes">
+			<td md-cell ng-style="{color:state.renderedColor}">{{ state.renderedValue || state.value }}</td>
+			<td md-cell ng-bind="state.starts"></td>
+			<td md-cell>{{ state.runtime | duration:'humanize'}}</td>
+			<td md-cell>{{ state.proportion * 100 | number:2 }}%</td>
+		</tr>
+	</tbody>
+	<tbody md-body ng-if="!startsAndRuntimes.length">
+		<tr md-row>
+			<td md-cell colspan="4" ma-tr="common.stats.noDataForPeriod"></td>
+		</tr>
+	</tbody>
+</table>
+</md-table-container>

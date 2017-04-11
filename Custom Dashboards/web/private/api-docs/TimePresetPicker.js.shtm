@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mango Api: Source: TimePresetPicker.js</title>
+    <link rel="icon" href="/images/favicon.ico">
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: TimePresetPicker.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Inputs for To/From Dates and various Preset intervals
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @author Jared Wiltshire
+ * @module {TimePresetPicker} mango/TimePresetPicker
+ * @see TimePresetPicker
+ * @tutorial dataPointChart
+ */
+define(['jquery', 'moment-timezone', 'dstore/legacy/DstoreAdapter',
+        'dstore/Memory', 'jquery-ui/jquery.datetimepicker'], 
+		function($, moment, DstoreAdapter, Memory) {
+
+/*
+ * The time period options and values are taken from the Java class
+ * com.serotonin.m2m2.TimePeriodDescriptor. Ensure that they match. 
+ */
+
+/**
+ * @constructs TimePresetPicker
+ * @param {Object} options - options for picker
+ */
+TimePresetPicker = function(options) {
+    this.presetPickerChanged = this.presetPickerChanged.bind(this);
+    this.fromToPickerChanged = this.fromToPickerChanged.bind(this);
+    
+    $.extend(this, options);
+    
+    this.setPresetPicker(this.presetPicker);
+    this.setFromPicker(this.fromPicker);
+    this.setToPicker(this.toPicker);
+    
+    this.setDefaultPreset(false);
+};
+
+/**
+ * Preset Date Range Picker
+ * @type {?Object}
+ * @default null
+ */
+TimePresetPicker.prototype.presetPicker = null;
+/**
+ * @type {?Object}
+ * @default null
+ */
+TimePresetPicker.prototype.fromPicker = null;
+/**
+ * @type {?Object}
+ * @default null
+ */
+TimePresetPicker.prototype.toPicker = null;
+/**
+ * Current preset
+ * @type {string}
+ * @default null
+ */
+TimePresetPicker.prototype.preset = null;
+/**
+ * Current from date
+ * @type {date}
+ * @default null
+ */
+TimePresetPicker.prototype.from = null;
+/**
+ * Current to date
+ * @type {date}
+ * @default null
+ */
+TimePresetPicker.prototype.to = null;
+/**
+ * Format
+ * @type {string}
+ */
+TimePresetPicker.prototype.format = 'lll';
+/**
+ * Time Format
+ * @type {string}
+ */
+TimePresetPicker.prototype.formatTime = 'LT';
+/**
+ * Date Format
+ * @type {string}
+ */
+TimePresetPicker.prototype.formatDate = 'l';
+/**
+ * Default Period
+ * @type {string}
+ */
+TimePresetPicker.prototype.defaultPeriod = 'PREVIOUS_DAY';
+
+/**
+ * Set Preset picker
+ * @param {Object} picker
+ */
+TimePresetPicker.prototype.setPresetPicker = function(picker) {
+    if (!picker) return;
+    
+    picker.on('change', this.presetPickerChanged);
+    this.presetPicker = picker;
+    TimePresetPicker.populatePresetPicker(this.presetPicker);
+};
+
+/**
+ * Helper to Set to/from picker
+ * @param {Object} picker
+ * @param {string} pickerName
+ */
+TimePresetPicker.prototype.setToFromPicker = function(pickerName, picker) {
+    if (!picker) return;
+    
+    picker.datetimepicker({
+        format: this.format,
+        formatTime: this.formatTime,
+        formatDate: this.formatDate
+    });
+    picker.on('change', this.fromToPickerChanged);
+    this[pickerName + 'Picker'] = picker;
+};
+
+/**
+ * Set from picker
+ * @param {Object} picker
+ */
+TimePresetPicker.prototype.setFromPicker = function(picker) {
+    this.setToFromPicker('from', picker);
+};
+
+/**
+ * Set to picker
+ * @param {Object} picker
+ */
+TimePresetPicker.prototype.setToPicker = function(picker) {
+    this.setToFromPicker('to', picker);
+};
+
+/**
+ * Get from date
+ * @returns {date}
+ */
+TimePresetPicker.prototype.fromDate = function() {
+    return this.from.toDate();
+};
+
+/**
+ * Get to date
+ * @returns {date}
+ */
+TimePresetPicker.prototype.toDate = function() {
+    return this.to.toDate();
+};
+
+/**
+ * Get current preset
+ * @return {string}
+ */
+TimePresetPicker.prototype.currentPreset = function() {
+    return this.preset;
+};
+
+/**
+ * Hourly difference in dates
+ * @returns {boolean}
+ */
+TimePresetPicker.prototype.hours = function() {
+    return this.to.diff(this.from, 'hours', true);
+};
+
+/**
+ * From/To Picker has changed
+ */
+TimePresetPicker.prototype.fromToPickerChanged = function(event) {
+    var zone = moment.defaultZone &amp;&amp; moment.defaultZone.name;
+    var from = zone ? moment.tz(this.getInputValue('from'), this.format, zone) :
+        moment(this.getInputValue('from'), this.format);
+    var to = zone ? moment.tz(this.getInputValue('to'), this.format, zone) :
+        moment(this.getInputValue('to'), this.format);
+    
+    if (from.isValid())
+        this.from = from;
+    if (to.isValid())
+        this.to = to;
+    
+    this.setPreset('FIXED_TO_FIXED');
+};
+
+/**
+ * Preset Picker Changed
+ * @param event
+ */
+TimePresetPicker.prototype.presetPickerChanged = function(event) {
+    var preset = this.getInputValue('preset');
+    this.setPreset(preset);
+};
+
+/**
+ * Set the default preset
+ * @param {boolean} triggerRefresh
+ */
+TimePresetPicker.prototype.setDefaultPreset = function(triggerRefresh) {
+    if (typeof triggerRefresh === 'undefined')
+        triggerRefresh = true;
+    this.setPreset(this.defaultPeriod, triggerRefresh);
+};
+
+/**
+ * Set preset value
+ * @param {string} preset
+ * @param {boolean} triggerRefresh 
+ */
+TimePresetPicker.prototype.setPreset = function(preset, triggerRefresh) {
+    if (typeof triggerRefresh === 'undefined')
+        triggerRefresh = true;
+    
+    this.preset = preset;
+    this.setInputValue('preset', preset);
+    
+    var period = TimePresetPicker.calculatePeriod(preset);
+    if (period.from) {
+        this.from = period.from;
+        this.setInputValue('from', period.from.format(this.format));
+    }
+    if (period.to) {
+        this.to = period.to;
+        this.setInputValue('to', period.to.format(this.format));
+    }
+    
+    $(this).trigger("change", {
+    	preset: this.preset,
+    	from: this.from,
+    	to: this.to,
+    	triggerRefresh: triggerRefresh
+	});
+};
+
+TimePresetPicker.prototype.getInputValue = function(pickerName) {
+    var picker = this[pickerName + 'Picker'];
+    if (!picker)
+        return undefined;
+    
+    if (picker instanceof $) {
+        // jquery
+        return picker.val();
+    } else if (typeof picker.get == 'function') {
+        // dojo
+        return picker.get('value');
+    }
+    
+    return null;
+};
+
+TimePresetPicker.prototype.setInputValue = function(pickerName, value) {
+    var picker = this[pickerName + 'Picker'];
+    if (!picker)
+        return;
+    
+    if (picker instanceof $) {
+        // jquery
+        picker.val(value).trigger('change.select2');
+    } else if (typeof picker.set == 'function') {
+        // dojo
+        picker.set('value', value, false);
+    }
+};
+
+/**
+ * Presets for Custom Time Periods
+ * @type {Object} 
+ */
+TimePresetPicker.presetValues = [
+    {
+    	id: "PREVIOUS_1_HR",
+    	value: 10,
+    	name: "Previous hr"
+    },
+    {
+    	id: "PREVIOUS_6_HRS",
+    	value: 15,
+    	name: "Previous 6 hrs"
+    },
+    {
+    	id: "PREVIOUS_12_HRS",
+    	value: 20,
+    	name: "Previous 12 hrs"
+    },
+    {
+        id: "PREVIOUS_DAY",
+        value: 25,
+        name: "Previous day"
+    },
+    {
+        id: "PREVIOUS_WEEK",
+        value: 30,
+        name: "Previous week"
+    },
+    {
+        id: "PREVIOUS_4WEEKS",
+        value: 35,
+        name: "Previous 4 weeks"
+    },
+    {
+        id: "PREVIOUS_MONTH",
+        value: 40,
+        name: "Previous month"
+    },
+    {
+        id: "PREVIOUS_YEAR",
+        value: 45,
+        name: "Previous year"
+    },
+    {
+        id: "YESTERDAY",
+        value: 50,
+        name: "Yesterday"
+    },
+    {
+        id: "LAST_WEEK",
+        value: 55,
+        name: "Last week"
+    },
+    {
+        id: "LAST_MONTH",
+        value: 60,
+        name: "Last month"
+    },
+    {
+        id: "LAST_YEAR",
+        value: 65,
+        name: "Last year"
+    },
+    {
+        id: "DAY_TO_DATE",
+        value: 70,
+        name: "Day to date"
+    },
+    {
+        id: "WEEK_TO_DATE",
+        value: 75,
+        name: "Week to date"
+    },
+    {
+        id: "MONTH_TO_DATE",
+        value: 80,
+        name: "Month to date"
+    },
+    {
+        id: "YEAR_TO_DATE",
+        value: 85,
+        name: "Year to date"
+    },
+    {
+        id: "FIXED_TO_FIXED",
+        value: 90,
+        name: "Custom time period"
+    },
+    {
+        id: "FIXED_TO_NOW",
+        value: 95,
+        name: "Custom time up to now"
+    },
+    {
+        id: "INCEPTION_TO_FIXED",
+        value: 100,
+        name: "First value up to custom time"
+    },
+    {
+        id: "INCEPTION_TO_NOW",
+        value: 105,
+        name: "First value up to now"
+    }
+];
+
+TimePresetPicker.populatePresetPicker = function(picker) {
+    if (!picker) return;
+    var values = TimePresetPicker.presetValues.slice();
+    
+    if (picker instanceof $) {
+        // jquery
+        if (picker.children().length) return;
+        
+        for (var i = 0; i &lt; values.length; i++) {
+            var option = $('&lt;option>');
+            option.attr('value', values[i].id);
+            option.text(values[i].name);
+            picker.append(option);
+        }
+    } else if (picker.store &amp;&amp; picker.store.data &amp;&amp; !picker.store.data.length) {
+        // dojo
+        picker.set('store', new DstoreAdapter(new Memory({data: values}))); 
+    }
+};
+
+/**
+ * @param {string} preset - Preset to use for calculation
+ */
+TimePresetPicker.calculatePeriod = function(preset) {
+    var to = moment();
+    var from = moment(to);
+    
+    switch(preset) {
+    case "PREVIOUS_1_HR":
+    	from.subtract(1, 'hours');
+    	break;
+    case "PREVIOUS_6_HRS":
+    	from.subtract(6, 'hours');
+    	break;
+    case "PREVIOUS_12_HRS":
+    	from.subtract(12, 'hours');
+    	break;
+    case "PREVIOUS_DAY":
+        from.subtract(1, 'days');
+        break;
+    case "PREVIOUS_WEEK":
+        from.subtract(1, 'weeks');
+        break;
+    case "PREVIOUS_4WEEKS":
+        from.subtract(4, 'weeks');
+        break;
+    case "PREVIOUS_MONTH":
+        from.subtract(1, 'months');
+        break;
+    case "PREVIOUS_YEAR":
+        from.subtract(1, 'years');
+        break;
+    case "YESTERDAY":
+        to.hours(0).minutes(0).seconds(0).milliseconds(0);
+        from = moment(to).subtract(1, 'days');
+        break;
+    case "LAST_WEEK":
+        to.weekday(0).hours(0).minutes(0).seconds(0).milliseconds(0);
+        from = moment(to).subtract(1, 'weeks');
+        break;
+    case "LAST_MONTH":
+        to.date(1).hours(0).minutes(0).seconds(0).milliseconds(0);
+        from = moment(to).subtract(1, 'months');
+        break;
+    case "LAST_YEAR":
+        to.dayOfYear(1).hours(0).minutes(0).seconds(0).milliseconds(0);
+        from = moment(to).subtract(1, 'years');
+        break;
+    case "DAY_TO_DATE":
+        from.hours(0).minutes(0).seconds(0).milliseconds(0);
+        break;
+    case "WEEK_TO_DATE":
+        from.weekday(0).hours(0).minutes(0).seconds(0).milliseconds(0);
+        break;
+    case "MONTH_TO_DATE":
+        from.date(1).hours(0).minutes(0).seconds(0).milliseconds(0);
+        break;
+    case "YEAR_TO_DATE":
+        from.dayOfYear(1).hours(0).minutes(0).seconds(0).milliseconds(0);
+        break;
+    case "FIXED_TO_FIXED":
+        from = null;
+        to = null;
+        break;
+    case "FIXED_TO_NOW":
+        from = null;
+        break;
+    case "INCEPTION_TO_FIXED":
+        from = moment(0);
+        to = null;
+        break;
+    case "INCEPTION_TO_NOW":
+        from = moment(0);
+        break;
+    default:
+        from = null;
+        to = null;
+        break;
+    }
+    
+    return {from: from, to: to};
+};
+
+return TimePresetPicker;
+
+}); // define
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.shtm">Home</a></h2><h3>Modules</h3><ul><li><a href="module-mango_AccumulatorDataProvider.shtm">mango/AccumulatorDataProvider</a></li><li><a href="module-mango_AccumulatorRollupDataProvider.shtm">mango/AccumulatorRollupDataProvider</a></li><li><a href="module-mango_api.shtm">mango/api</a></li><li><a href="module-mango_autologin.shtm">mango/autologin</a></li><li><a href="module-mango_BarChart.shtm">mango/BarChart</a></li><li><a href="module-mango_BaseDisplay.shtm">mango/BaseDisplay</a></li><li><a href="module-mango_CssDisplay.shtm">mango/CssDisplay</a></li><li><a href="module-mango_DataProvider.shtm">mango/DataProvider</a></li><li><a href="module-mango_exportConfig.shtm">mango/exportConfig</a></li><li><a href="module-mango_GaugeChart.shtm">mango/GaugeChart</a></li><li><a href="module-mango_GridDisplay.shtm">mango/GridDisplay</a></li><li><a href="module-mango_HistoricalDataProvider.shtm">mango/HistoricalDataProvider</a></li><li><a href="module-mango_HTMLDisplay.shtm">mango/HTMLDisplay</a></li><li><a href="module-mango_ListDisplay.shtm">mango/ListDisplay</a></li><li><a href="module-mango_PieChart.shtm">mango/PieChart</a></li><li><a href="module-mango_PointValueDataProvider.shtm">mango/PointValueDataProvider</a></li><li><a href="module-mango_PointValueQueryInput.shtm">mango/PointValueQueryInput</a></li><li><a href="module-mango_ProviderOptionsManager.shtm">mango/ProviderOptionsManager</a></li><li><a href="module-mango_RealtimeDataProvider.shtm">mango/RealtimeDataProvider</a></li><li><a href="module-mango_SerialChart.shtm">mango/SerialChart</a></li><li><a href="module-mango_statisticsBarChart.shtm">mango/statisticsBarChart</a></li><li><a href="module-mango_StatisticsDataProvider.shtm">mango/StatisticsDataProvider</a></li><li><a href="module-mango_StatisticsTableDisplay.shtm">mango/StatisticsTableDisplay</a></li><li><a href="module-mango_TextDisplay.shtm">mango/TextDisplay</a></li><li><a href="module-mango_TimePresetPicker.shtm">mango/TimePresetPicker</a></li><li><a href="module-mango_User.shtm">mango/User</a></li></ul><h3>Classes</h3><ul><li><a href="AccumulatorDataProvider.shtm">AccumulatorDataProvider</a></li><li><a href="AccumulatorRollupDataProvider.shtm">AccumulatorRollupDataProvider</a></li><li><a href="BarChart.shtm">BarChart</a></li><li><a href="BaseDisplay.shtm">BaseDisplay</a></li><li><a href="CssDisplay.shtm">CssDisplay</a></li><li><a href="DataProvider.shtm">DataProvider</a></li><li><a href="GaugeChart.shtm">GaugeChart</a></li><li><a href="GridDisplay.shtm">GridDisplay</a></li><li><a href="HistoricalDataProvider.shtm">HistoricalDataProvider</a></li><li><a href="HTMLDisplay.shtm">HTMLDisplay</a></li><li><a href="ListDisplay.shtm">ListDisplay</a></li><li><a href="MangoAPI.shtm">MangoAPI</a></li><li><a href="PieChart.shtm">PieChart</a></li><li><a href="PointValueDataProvider.shtm">PointValueDataProvider</a></li><li><a href="ProviderOptionsManager.shtm">ProviderOptionsManager</a></li><li><a href="RealtimeDataProvider.shtm">RealtimeDataProvider</a></li><li><a href="SerialChart.shtm">SerialChart</a></li><li><a href="StatisticsDataProvider.shtm">StatisticsDataProvider</a></li><li><a href="StatisticsTableDisplay.shtm">StatisticsTableDisplay</a></li><li><a href="TextDisplay.shtm">TextDisplay</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-allDataPointsChart.shtm">Charting Multiple Data Points</a></li><li><a href="tutorial-currentValue.shtm">Current Value</a></li><li><a href="tutorial-dataPointBarChart.shtm">Data Point Bar Chart</a></li><li><a href="tutorial-dataPointChart.shtm">Data Point Charting</a></li><li><a href="tutorial-dataPointQuery.shtm">Query Data Points</a></li><li><a href="tutorial-dataPointsPieChart.shtm">Data Points Pie Chart</a></li><li><a href="tutorial-events.shtm">Events Query</a></li><li><a href="tutorial-eventWebSocket.shtm">Live Events</a></li><li><a href="tutorial-gridDisplay_.shtm">Grid Display</a></li><li><a href="tutorial-listDisplay_.shtm">List Display</a></li><li><a href="tutorial-pointValueGauge.shtm">Gauge Chart</a></li><li><a href="tutorial-pointValuesWebSocket.shtm">Efficient Realtime Data</a></li><li><a href="tutorial-pointValueWebSocket.shtm">Live Data</a></li><li><a href="tutorial-realtimeTable.shtm">Realtime Table Display</a></li><li><a href="tutorial-setPointValue.shtm">Setting a Value</a></li><li><a href="tutorial-statisticsTableDisplay_.shtm">Statistics Table Display</a></li><li><a href="tutorial-textDisplay_.shtm">Text Display</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+     <a href="http://infiniteautomation.com" target="ia">&copy; Infinite Automation Systems, Inc.</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<div class="input-group">
+	<input ng-if="point.pointLocator.dataType === 'NUMERIC'" type="number" step="any"
+		ng-model="input.value" class="form-control"
+		ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable"
+		ma-enter="point.setValue(input.value)">
+	<input ng-if="point.pointLocator.dataType === 'ALPHANUMERIC'" type="text"
+		ng-model="input.value" class="form-control"
+		ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable"
+		ma-enter="point.setValue(input.value)">
+	<select ng-if="point.pointLocator.dataType === 'BINARY' || point.pointLocator.dataType === 'MULTISTATE'"
+		ng-options="option.id as option.label for option in options"
+		ng-model="input.value" class="form-control"
+		ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable">
+	</select>
+	<span class="input-group-btn">
+      <button ng-disabled="!point.pointLocator.settable || result.pending" ng-click="result=point.setValueResult(input.value)" ma-tr="common.set"
+      	class="btn btn-default" ng-class="{'set-pending': result.pending, 'set-success': result.success, 'set-error': result.error}"></button>
+    </span>
+</div>

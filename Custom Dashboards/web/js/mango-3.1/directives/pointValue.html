@@ -1,0 +1,5 @@
+<span class="point-value">
+	<ma-get-point-value point="point" point-xid="{{pointXid}}"></ma-get-point-value>
+	<span ng-style="valueStyle" ng-class="classes" class="value">{{displayValue}}</span>
+	<span ng-if="point && !point.enabled" class="disabled-text" ma-tr="common.disabled"></span>
+</span>

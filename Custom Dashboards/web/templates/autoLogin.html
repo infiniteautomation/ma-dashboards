@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- You need to include ma-app here so ma-username and ma-password are picked up -->
+<html lang="en" ma-app ma-username="user" ma-password="password">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Angular Material Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="/resources/angular-csp.css"></link>
+    <link rel="stylesheet" href="../vendor/angular-material/angular-material.css">
+    <link rel="stylesheet" href="../vendor/material-design-icons/iconfont/material-icons.css">
+    <link rel="stylesheet" href="../vendor/mdPickers/mdPickers.css">
+</head>
+
+<body layout="column">
+    <div ng-if="appLoading">
+        <span>App is loading..</span>
+    </div>
+
+    <div ng-cloak layout="column" flex>
+        <!-- Your content here -->
+    </div>
+
+    <script src="/resources/require.js"></script>
+    <script src="/resources/loaderConfig.js"></script>
+    <script src="../js/loaderConfig.js"></script>
+	<script>require(['mango-3.5/bootstrap']);</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{
+	 "allDataPointsChart" : {
+	 	 "title": "Charting Multiple Data Points"
+	 },
+     "currentValue": {
+         "title": "Current Value"
+     },
+     "dataPointBarChart": {
+         "title": "Data Point Bar Chart"
+     },
+     "dataPointChart": {
+         "title": "Data Point Charting"
+     },
+     "dataPointQuery": {
+         "title": "Query Data Points"
+     },
+     "dataPointsPieChart": {
+         "title": "Data Points Pie Chart"
+     },
+     "events": {
+         "title": "Events Query"
+     },
+     "eventWebSocket": {
+         "title": "Live Events"
+     },
+     "gridDisplay": {
+         "title": "Grid Display"
+     },
+     "listDisplay": {
+         "title": "List Display"
+     },
+     "pointValueGauge": {
+         "title": "Gauge Chart"
+     },
+     "pointValueWebSocket": {
+         "title": "Live Data"
+     },
+     "pointValuesWebSocket": {
+         "title": "Efficient Realtime Data"
+     },     
+     "statisticsTableDisplay": {
+         "title": "Statistics Table Display"
+     },
+     "realtimeTable": {
+         "title": "Realtime Table Display"
+     },
+     "textDisplay": {
+         "title": "Text Display"
+     },
+     "setPointValue": {
+         "title": "Setting a Value"
+     }
+     
+ }

@@ -1,0 +1,91 @@
+<h1>Adaptive Layouts</h1>
+
+<p>
+    We have added several example layouts that demonstrate the power of Angular Material's
+    <a href="https://material.angularjs.org/latest/layout/introduction" target="_blank">Adaptive Layout</a> API.
+    With no need for complex CSS media queries, and using just simple HTML properties, you can create advanced flexbox layouts. 
+    You can use these as starting points for a creating an adaptive layout within your pages.
+</p>
+
+<p>
+    Click <code>New Page From Layout</code> to create a new page using the layout shown. You can then add mango components to pull in and display data.
+</p>
+
+
+<div flex layout="row" layout-align="space-between" layout-fill layout-wrap ng-init="baseURL='/modules/dashboards/web/templates/adaptiveLayouts/';">
+    
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/threeCardA.png" alt="Three Card A Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'threeCardA.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/threeCardB.png" alt="Three Card B Layout">
+        <md-card-actions layout="row" layout-align="end center">
+           <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'threeCardB.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fourCardC.png" alt="Four Card C Layout">
+        <md-card-actions layout="row" layout-align="end center">
+           <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fourCardC.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fourCardA.png" alt="Four Card A Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fourCardA.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fourCardB.png" alt="Four Card B Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fourCardB.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/nineCard.png" alt="Nine Card Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'nineSquare.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fourSquare.png" alt="Four Square Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fourSquare.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fourTop.png" alt="Four Top Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fourTop.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fiveCardA.png" alt="Five Card A Layout">
+        <md-card-actions layout="row" layout-align="end center">
+         <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fiveCardA.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fiveCardB.png" alt="Five Card B Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fiveCardB.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fiveCardC.png" alt="Five Card C Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fiveCardC.html'})" class="md-button">New Page From Layout</a>
+    </md-card>
+    <md-card flex="30" flex-xs="100">
+        <img ng-src="/modules/dashboards/web/templates/adaptiveLayouts/thumbnails/fiveCardD.png" alt="Five Card D Layout">
+        <md-card-actions layout="row" layout-align="end center">
+          <a ui-sref="dashboard.settings.editPages({templateUrl: baseURL+'fiveCardD.html'})" class="md-button">New Page From Layout</a>
+        </md-card-actions>
+    </md-card>
+</div>

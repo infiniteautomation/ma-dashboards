@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Events Websocket Example</title>
+        <!-- Add the Mango Favicon -->
+        <link rel="icon" href="/images/favicon.ico">
+        
+        
+        <!-- Page Style -->
+        <style></style>
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+        <script type="text/javascript" src="/resources/main.js"></script>
+        
+        <script type="text/javascript">
+
+        //Web Socket for comms
+        var socket = null;
+		
+        require(['jquery', 'mango/api'],
+          function($, MangoAPI) {
+            
+            /**
+             * Register with the given XID for ALL Events
+             */
+             $('#registerButton').on('click', function(){
+            	 if(socket != null)
+            		 return;
+                 $('#status').html(''); //Clear out status
+                 $('#events').html(''); //Clear out events
+                 
+                 socket = MangoAPI.defaultApi.registerForAlarmEvents(
+                        ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED'],
+                        ['DO_NOT_LOG', 'NONE', 'INFORMATION', 'URGENT', 'CRITICAL', 'LIFE_SAFETY', 'DO_NOT_LOG'],
+                        function(message){ //On Message Received Method
+
+                        	if(message.status == 'OK'){
+                            	var eventRow = [];
+                            	eventRow.push(message.payload.event.id);
+                            	eventRow.push(new Date(message.payload.event.activeTimestamp));
+                            	eventRow.push(message.payload.event.alarmLevel);
+                            	eventRow.push(message.payload.event.message);
+                            	eventRow.push(message.payload.event.status);
+                            	eventRow.push(message.payload.event.acknowledged);
+                            	eventRow.push(message.payload.type);
+                            	
+                            	//Append the Event 
+                            	$('#events').append(createRow(eventRow));
+                           }else{
+                               	var statusRow = [];
+                            	statusRow.push(message.status);
+                            	statusRow.push(new Date());
+                            	//Append a status row
+                            	$('#status').append(createRow(statusRow));
+                           }
+                        },function(error){ //On Error Method
+                        	var statusRow = [];
+                        	statusRow.push(error);
+                        	statusRow.push(new Date());
+                        	//Append a status row
+                        	$('#status').append(createRow(statusRow));
+                        },function(){ //On Open Method
+                        	var statusRow = [];
+                        	statusRow.push('Connected');
+                        	statusRow.push(new Date());
+                        	//Append a status row
+                        	$('#status').append(createRow(statusRow));
+                        },function(){ //On Close Method
+                        	var statusRow = [];
+                        	statusRow.push('Closed');
+                        	statusRow.push(new Date());
+                        	//Append a status row
+                        	$('#status').append(createRow(statusRow));
+                       });
+            });
+            
+            /**
+             * Un-register for all events
+             */
+             $('#unRegisterButton').on('click', function(){
+            	 if(socket == null)
+            		 return;
+              	MangoAPI.defaultApi.modifyRegisteredAlarmEvents(socket, [], []);
+              	var statusRow = [];
+              	statusRow.push('Closed');
+              	statusRow.push(new Date());
+              	//Append a status row
+              	$('#status').append(createRow(statusRow));
+                socket = null;
+            });
+            
+            function createRow(columns){
+            	var tr = $('<tr>');
+            	for(var i=0; i<columns.length; i++){
+            		 var td = $('<td>');
+         			  td.text(columns[i]);
+         			  tr.append(td);
+            	}
+            	return tr;
+            }
+            
+        });
+        </script>
+    </head>
+	<body>
+      <div id="main">
+        <h1>Live Events</h1>
+        <div class="row">
+          <div class="col-md-12">
+            <button id="registerButton" class="btn btn-default">Register</button>
+            <button id="unRegisterButton" class="btn btn-default">Un-Register</button>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table">
+              <tr><th>Status</th><th>Time</th></tr>
+              <tbody id="status"></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Active Time</th>
+                <th>Level</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Acknowledged</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody id="events">
+            </tbody>
+          </table>
+          </div>
+        </div>
+        
+       </div>
+    </body>
+</html>

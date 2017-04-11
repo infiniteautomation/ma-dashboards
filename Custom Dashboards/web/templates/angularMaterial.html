@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Angular Material Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="/resources/angular-csp.css"></link>
+    <link rel="stylesheet" href="../vendor/angular-material/angular-material.css">
+    <link rel="stylesheet" href="../vendor/material-design-icons/iconfont/material-icons.css">
+    <link rel="stylesheet" href="../vendor/mdPickers/mdPickers.css">
+</head>
+
+<body layout="column">
+    <div ng-if="appLoading">
+        <span>App is loading..</span>
+    </div>
+
+    <div ng-cloak layout="column" flex>
+        <!-- Your content here -->
+        
+        <h1>Demo Angular Material</h1>
+        
+        <div layout="row">
+            <md-card flex="50">
+                <md-card-title>
+                    <md-card-title-text>
+                        Your card 1
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content layout="column">
+                    Card content
+                </md-card-content>
+            </md-card>
+            
+            <md-card flex="50">
+                <md-card-title>
+                    <md-card-title-text>
+                        Your card 2
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content layout="column">
+                    Card content
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+
+    <script src="/resources/require.js"></script>
+    <script src="/resources/loaderConfig.js"></script>
+    <script src="../js/loaderConfig.js"></script>
+	<script>require(['mango-3.5/bootstrap']);</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<h1><code ng:non-bindable="">cssInjector</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maServices</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="maservices-cssinjector-page"><p>Provides a service for injecting CSS into the head of the document.
+The CSS will only be injected if the directive using this service is used on a page.</p>
+<h3 id="usage" id="description_usage">Usage</h3>
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
+ // inserts a style tag to style &lt;a&gt; tags with accent color
+ if ($MD_THEME_CSS) {
+    var acc = $mdColors.getThemeColor('accent-500-1.0');
+    var accT = $mdColors.getThemeColor('accent-500-0.2');
+    var accD = $mdColors.getThemeColor('accent-700-1.0');
+    var styleContent =
+        'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
+        'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
+
+    cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
+}
+
+// inserts a link tag to an external css file after the md-data-table css link
+cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles',
+'link[href="/modules/dashboards/web/vendor/angular-material-data-table/md-data-table.css"]');
+</pre>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_injectlink">injectLink(href, trackingName, afterSelector)</h3>
+<div class="injectlink"><div class="cssinjector-injectlink-page"><p>A method that injects a link to an external CSS file from a link into the document head.</p>
+</div><h5 id="methods_injectlink_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>href</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="cssinjector-injectlink-page"><p>File path of the external CSS document.</p>
+</div></td></tr><tr><td>trackingName</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="cssinjector-injectlink-page"><p>Identifier used to determine if this particular CSS injection has already been done, as to not duplicate the CSS.
+For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place once.</p>
+</div></td></tr><tr><td>afterSelector <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="cssinjector-injectlink-page"><p>If provided the CSS will be injected within the head, after the the given CSS link.
+Pass a string of the attribute selector ie. <code>&#39;link[href=&quot;/modules/dashboards/web/vendor/angular-material-data-table/md-data-table.css&quot;]&#39;</code>
+to insert new CSS link after the specified CSS link. The CSS definitions that come after take precedence.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_injectstyle">injectStyle(content, trackingName, afterSelectorIf)</h3>
+<div class="injectstyle"><div class="cssinjector-injectstyle-page"><p>A method that injects a <code>&lt;style&gt;</code> element with CSS into the document head.</p>
+</div><h5 id="methods_injectstyle_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>content</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="cssinjector-injectstyle-page"><p>String of CSS that will be injected.</p>
+</div></td></tr><tr><td>trackingName</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="cssinjector-injectstyle-page"><p>Identifier used to determine if this particular CSS injection has already been done, as to not duplicate the CSS.
+For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place once.</p>
+</div></td></tr><tr><td>afterSelectorIf <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="cssinjector-injectstyle-page"><p>provided the CSS will be injected within the head, after the the given CSS style.
+Pass a string of the attribute selector ie. <code>&#39;link[href=&quot;/modules/dashboards/web/vendor/angular-material-data-table/md-data-table.css&quot;]&#39;</code>
+to insert new CSS <style> element after the specified CSS link. The CSS definitions that come after take precedence.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_isinjected">isInjected(trackingName, set)</h3>
+<div class="isinjected"><div class="cssinjector-isinjected-page"><p>A method that returns <code>true</code> or <code>false</code> based on whether CSS has been injected</p>
+</div><h5 id="methods_isinjected_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>trackingName</td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="cssinjector-isinjected-page"><p>Identifier used to determine if CSS has already been injected by another directive.</p>
+</div></td></tr><tr><td>set</td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="cssinjector-isinjected-page"><p>Boolean value of <code>true</code> should be used to state a CSS injection with the given tracking name has taken place.</p>
+</div></td></tr></tbody></table><h5 id="methods_isinjected_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="cssinjector-isinjected-page"><p>Returns true or false.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

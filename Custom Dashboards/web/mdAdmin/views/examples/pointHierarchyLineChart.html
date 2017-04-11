@@ -1,0 +1,65 @@
+<h1 ma-tr="dashboards.v3.dox.pointHierarchyLineChart"></h1>
+
+<p>
+<code>&lt;ma-point-hierarchy&gt;</code> accepts an array of strings into its <code>path</code> attribute. You can pass
+plain strings into this array or, use <code>*</code> as a wildcard for all subfolders, or separate multiple folders by
+a <code>|</code> character.
+</p>
+<p>
+  See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maPointHierarchy"><code>&lt;ma-point-hierarchy&gt;</code></a>, 
+  <a ui-sref="dashboard.docs.maDashboards.maPointValues"><code>&lt;ma-point-values&gt;</code></a> 
+  and <a ui-sref="dashboard.docs.maDashboards.maSerialChart"><code>&lt;ma-serial-chart&gt;</code></a>.
+</p>
+
+<dual-pane-editor>
+
+<div layout="row">
+    <md-input-container flex="">
+        <label>Time period</label>
+        <ma-date-range-picker from="from" to="to" preset="LAST_5_MINUTES" update-interval="15 minutes"></ma-date-range-picker>
+    </md-input-container>
+</div>
+
+<h3>Build path</h3>
+<div layout="row" ng-init="segments=['Demo', '*', 'Meter 1|Meter 2']">
+    <md-input-container flex>
+        <label>Choose subfolder</label>
+        <md-select ng-model="segment">
+            <md-option ng-value="f.name" ng-repeat="f in hierarchy.subfolders">{{f.name}}</md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container flex>
+        <label>Enter manually</label>
+        <input type="text" ng-model="segment">
+    </md-input-container>
+    <md-button ng-click="segments.push(segment); segment=''">Add</md-button>
+</div>
+
+<h3>Your path</h3>
+<div>
+    <span ng-repeat="segment in segments track by $index" ng-click="segments.splice($index, 1)"><strong>{{segment}}</strong><span ng-if="!$last"> &gt; </span></span>
+    <em ng-if="!segments.length" md-colors="{color:'warn'}">Path is empty, add a segment above.</em>
+</div>
+<div ng-if="segments.length">
+    <em>Click segment to remove.</em>
+</div>
+<div>
+    <strong ng-if="!hierarchy" md-colors="{color:'warn'}">Folder not found.</strong>
+    <span ng-if="hierarchy">There are {{points.length}} points under your selected path.</span>
+</div>
+<ma-point-hierarchy path="segments" hierarchy="hierarchy" points="points"></ma-point-hierarchy>
+
+<h3>Chart</h3>
+<div ng-if="hierarchy">
+    <em ng-if="points.length > 20" md-colors="{color:'warn'}">Chart will only show for 20 points or less.</em>
+    
+    <div ng-if="points.length <= 20">
+        <ma-point-values points="points" values="combined" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
+        </ma-point-values>
+        
+        <ma-serial-chart style="height: 500px; width: 100%" values="combined" points="points" legend="true">
+        </ma-serial-chart>
+    </div>
+</div>
+
+</dual-pane-editor>

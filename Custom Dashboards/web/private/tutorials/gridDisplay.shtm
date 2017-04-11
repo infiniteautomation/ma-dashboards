@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Grid Display</title>
+        <!-- Add the Mango Favicon -->
+        <link rel="icon" href="/images/favicon.ico">
+        
+        <!-- Page Style -->
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+
+        
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+        <script type="text/javascript" src="/resources/main.js"></script>
+               
+        <script type="text/javascript">
+
+        require(['jquery', 'mango/api', 'mango/GridDisplay'],
+        function($, MangoAPI, GridDisplay) {
+            
+            var display = new GridDisplay({
+                selection: $('#grid'),
+                gridOptions: {
+                    columns: {
+                        timestamp: {
+                            label: 'Time',
+                            formatter: renderTime
+                        },
+                        value: {
+                        	label: 'Value',
+                        	renderCell: function(object, value, node, options) {
+                        	      node.innerHTML = value;
+                        	}
+                        },
+                        annotation: 'Annotation'
+                    },
+                    sort: [{property: 'timestamp', descending: true}],
+                    loadingMessage: 'Loading',
+                    noDataMessage: 'No Data Found'
+                },
+            });
+            display.createDisplay();
+            
+            /**
+             * Get the latest 200 values and use the rendered representation, convert the units if possible
+             * and bring along any cached data too
+             */
+        	MangoAPI.defaultApi.getLatestValues('voltage', 200, {rendered: true, converted: true, useCache: true}).then(function(values){
+            	display.onLoad(values);
+        }).fail(MangoAPI.logError);
+        
+        /**
+         * Use moment.js to format the time
+         */
+      	function renderTime(value) {
+      	    var m = moment(value);
+      	    var format = moment().diff(m, 'days', true) >= 1 ? 'LLLS' : 'LTS';
+      	    return m.format(format);
+      	}
+
+        }); //End Require
+        </script>
+        
+    </head>
+<body>
+    <div id="main">
+        <h1>Grid Display Usage</h1>
+        <p>Displaying a sortable table of the Voltage point's last 200 values.</p>
+        
+        <div class="row">
+          <div class="col-md-12">
+            <div id="grid"></div>
+          </div>
+        </div>
+    </div>
+</body>
+</html>

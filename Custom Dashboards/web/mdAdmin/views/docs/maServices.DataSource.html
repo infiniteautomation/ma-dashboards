@@ -1,0 +1,89 @@
+<h1><code ng:non-bindable="">DataSource</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maServices</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="maservices-datasource-page"><p>Provides a service for getting list of data sources from the Mango system.</p>
+<ul>
+<li>Used by <a ui-sref="dashboard.docs.maDashboards.maDataSourceList"><code>&lt;ma-data-source-list&gt;</code></a> and <a ui-sref="dashboard.docs.maDashboards.maDataSourceQuery"><code>&lt;ma-data-source-query&gt;</code></a> directives.</li>
+<li>All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource">$resource</a> objects that can call the following methods availble to those objects:<ul>
+<li><code>$save</code></li>
+<li><code>$remove</code></li>
+<li><code>$delete</code></li>
+<li><code>$get</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="usage" id="description_usage">Usage</h3>
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
+ var DS = DataSource.getById(xid)
+ DS.name = 'New Name';
+ DS.$save();
+</pre>
+<p>You can also access the raw <code>$http</code> promise via the <code>$promise</code> property on the object returned:
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
+promise = DataSource.objQuery(value).$promise;
+promise.then(function(dataSources) {
+   $scope.dataSources = dataSources;
+
+   console.log('Data Sources retunrned from server:', dataSources);
+}
+</pre>
+<p>Or just assign the return value from a DataSource method to a scope variable:
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
+$scope.dataSources = DataSource.objQuery(value);
+</pre>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete(query)</h3>
+<div class="delete"><div class="datasource-delete-page"><p>A default action provided by $resource. Makes a http DELETE call to the rest endpoint <code>/rest/v1/data-sources/:xid</code></p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-delete-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-delete-page"><p>Returns a data source object. Objects will be of the resource class and have resource actions availble to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_get">get(query)</h3>
+<div class="get"><div class="datasource-get-page"><p>A default action provided by $resource. Makes a http GET call to the rest endpoint <code>/rest/v1/data-sources/:xid</code></p>
+</div><h5 id="methods_get_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-get-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-get-page"><p>Returns a data source object. Objects will be of the resource class and have resource actions availble to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getbyid">getById(query)</h3>
+<div class="getbyid"><div class="datasource-getbyid-page"><p>Query the REST endpoint <code>/rest/v1/data-sources/by-id/:id</code> with the <code>GET</code> method.</p>
+</div><h5 id="methods_getbyid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-getbyid-page"><p>Object containing a <code>id</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_getbyid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-getbyid-page"><p>Returns a data source object. Objects will be of the resource class and have resource actions availble to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_objquery">objQuery(query)</h3>
+<div class="objquery"><div class="datasource-objquery-page"><p>Passed an object in the format <code>{query: &#39;query&#39;, start: 0, limit: 50, sort: [&#39;-xid&#39;]}</code> and returns an Array of datasource objects matching the query.</p>
+</div><h5 id="methods_objquery_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-objquery-page"><p>Format: <code>{query: &#39;query&#39;, start: 0, limit: 50, sort: [&#39;-xid&#39;]}</code></p>
+</div></td></tr></tbody></table><h5 id="methods_objquery_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="datasource-objquery-page"><p>Returns an Array of datasource objects matching the query. Objects will be of the resource class and have resource actions availble to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_query">query(query)</h3>
+<div class="query"><div class="datasource-query-page"><p>Passed an object in the format <code>{query: &#39;query&#39;, start: 0, limit: 50, sort: [&#39;-xid&#39;]}</code> and returns an Array of datasource objects matching the query.</p>
+</div><h5 id="methods_query_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-query-page"><p>xid name for the query. Format: <code>{query: &#39;query&#39;, start: 0, limit: 50, sort: [&#39;-xid&#39;]}</code></p>
+</div></td></tr></tbody></table><h5 id="methods_query_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="datasource-query-page"><p>Returns an Array of datasource objects matching the query. Objects will be of the resource class and have resource actions availble to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_remove">remove(query)</h3>
+<div class="remove"><div class="datasource-remove-page"><p>A default action provided by $resource. Makes a http DELETE call to the rest endpoint <code>/rest/v1/data-sources/:xid</code></p>
+</div><h5 id="methods_remove_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-remove-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_remove_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-remove-page"><p>Returns a data source object. Objects will be of the resource class and have resource actions availble to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_rql">rql(RQL)</h3>
+<div class="rql"><div class="datasource-rql-page"><p>Passed a string containing RQL for the query and returns an array of data source objects.</p>
+</div><h5 id="methods_rql_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>RQL</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="datasource-rql-page"><p>RQL string for the query</p>
+</div></td></tr></tbody></table><h5 id="methods_rql_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="datasource-rql-page"><p>An array of data source objects. Objects will be of the resource class and have resource actions availble to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(query)</h3>
+<div class="save"><div class="datasource-save-page"><p>A default action provided by $resource. Makes a http POST call to the rest endpoint <code>/rest/v1/data-sources/:xid</code></p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-save-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="datasource-save-page"><p>Returns a data source object. Objects will be of the resource class and have resource actions availble to them.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

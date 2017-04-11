@@ -1,0 +1,142 @@
+*Version 3.5.0*
+* Release date 2017-04-07
+* Core 3.0.x compatible
+* Should be functionally identical to dashboards v3.3.1
+* Use new REST login/logout endpoints
+* Update watchdog code for new REST responses
+
+*Version 3.4.0*
+* Release date 2016-08-23
+* Internal build only!
+* Add IFRAME views for various legacy Mango pages
+* Add watchlist view
+* Add powerful watchlist builder with query  and dynamic parameter support
+* Add events services, table page and icons to the header bar
+* Add dateBar for setting date range and rollups across pages
+* Add the new data point details page
+* Add user Notes service and table
+* Update amCharts to 3.20.13
+* Update angular material to 1.1.1
+* Add dashboard settings page where user can set theme colors and set logo.
+* Add help pages for the new pages
+
+*Version 3.3.1*
+* Built against latest 2.8.6 core to fix JSP bug
+
+*Version 3.3.0*
+* Upgraded to work with core version 2.8.x
+* Add events service and events table
+* Improve localization
+
+*Version 3.2.4*
+* Fix connectivity tracking / auto-reconnect on standalone dashboards
+
+*Version 3.2.3*
+* Fix bug where states that are not descendants of dashboard would not load
+
+*Version 3.2.2*
+* Fix login bug where user was not redirected to /dashboards/home
+
+*Version 3.2.1*
+* Fix for amcharts export option loading JavaScript files incorrectly
+
+*Version 3.2.0*
+* Set a point limit for ma-point-list in examples
+* Add auto-init option to ma-filtering-point-list
+* Add daily comparison chart example
+* Add data source list and device name list directives
+* Ability to create and save your own pages
+* User customizable menus in mdAdmin, menus can be deeper than 2 levels now 
+* URLs no longer contain /dashboard and enabled HTML5 mode for cleaner URLs
+* New url for mdAdmin dashboard at /dashboards
+* New url for users own dashboards at /user-dashboards
+* Watchdog timer now periodically checks an API endpoint itself and checks if a user is logged in
+* Auto-login functionality, credentials are stored in local storage
+* mdAdmin interface notifies user about connectivity to Mango API via watchdog functionality
+* Documentation of Mango Dashboards AngularJS directives, services and filters
+* Live value displays have a red cross hatch applied when the API goes down
+* Added option on ma-point-values for auto rollup intervals
+* Added export, legend, and balloon attributes to am-serial-chart
+
+*Version 3.1.1*
+* Fix admin template menu in Firefox
+
+*Version 3.1.0*
+* Point lists and point queries are queried using an object now, you can still pass a string by enclosing in single quotes
+* Add a separate sort, start and limit attributes to point lists and point queries
+* Add a CSS injection service and improve CSS injection from app and directives
+* Return total, start, limit, page and pages as properties of point arrays to enable pagination
+* Add material design data point table example
+* Convert statistics tables directives to use material design tables
+* Load translations up-front in mdAdmin so they can be used by translation filter
+* Disable angular debug info in mdAdmin app and add option to bootstrap
+* Update documentation and add more comments to example code
+* Add single page app template with login page
+* Add some layout examples
+
+*Version 3.0.1*
+* Update demo virtual data sources JSON file
+* Slight tweak of color scheme
+* Updates to examples
+* Add JavaScript Math library to root scope of maDashboards app
+* Add timeout attribute to ma-point-values and ma-point-statistics directives
+* Improve boostrap.js to allow more configuration for bootstrapping app
+* Add a templates section to the menu and add more template examples
+* Add page explaining how to create a dashboard in overrides
+* Add a bare bones angular material admin template
+* Add ma-point-hierarchy directive and examples
+* Include md-data-table in maMaterialDashboards
+
+*Version 3.0.0*
+* Complete rebuild of the module to use AngularJS and Material Design Template
+* Moved from JavaScript v2 Library to Mango 3.0 Angular library
+* Added Material Design Template with many example pages
+* Added live code editing windows for live experimenting and testing
+* Changed default URL of the modules icon to point to the new Material Design template and example pages
+* Note: The module still supports Boostraps for now.  Changes to existing custom dashboards using JavaScript v2 library may need changes to continue to function.
+* See additional documentation and links within the modules pages.
+* Added Last-Modified header to /mango-javascript/ mapped resources
+
+*Version 1.1.3*
+* Adding Angular API
+* Adding Angular icon and page for evaluating new directives
+
+*Version 1.1.2*
+* Improving permissions utils for javascript User class
+* Adding CORS login test/example page
+* Adding api.js method to contact data source to force refresh a data point 
+
+*Version 1.1.1*
+* Adding additional examples
+* Added ability to remove Data Point From data provider
+* Added ability to de-register points for RealtimeDataProvider
+* Added ability to override data store in GridDisplay
+* Updated Documentation
+* Now passing point xid is onOpen method for MangoAPI.registerForPointEvents
+* Changing SerialChart to use dataPoint.chartColor for line color on graph
+* Upgraded to work with core version 2.7.x
+
+*Version 1.1.0*
+* Added Javascript API version 2.0
+* Added documentation for API
+* New examples for API version 2.0
+* Upgraded to work with core version 2.6.x
+* Modified RealTimeModel to use 'timestamp' instead of 'time' for its timestamp
+
+*Version 1.0.4*
+* Bugfixes
+* Add RealtimeDataProvider and PointEventManager
+
+*Version 1.0.3*
+* CAUTION: Removed persist path to allow full upgrade of module's web folder. Ensure any custom work is moved to the overrides folder in the core.
+* To add new files to this module place them in the core/overrides/web/modules/dashboards/web/ folder with an identical structure
+* Added ability to override files using the mango-javascript URL mapping prefix
+
+*Version 1.0.2
+* Various bugfixes and enhancements
+
+*Version 1.0.1*
+* Fixed bug in mangoApi Javascript Date formatter for Timezones that are +GMT 
+
+*Version 1.0.0*
+* Initial Release

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Point Bar Chart</title>
+        <!-- Add the Mango Favicon -->
+        <link rel="icon" href="/images/favicon.ico">
+        
+        
+        <!-- Page Style -->
+        <style></style>
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+        <script type="text/javascript" src="/resources/main.js"></script>
+        
+        
+        <script type="text/javascript">
+    
+        require(['jquery', 'mango/api', 'mango/BarChart', 'mango/RealtimeDataProvider'],
+        function($, MangoAPI, BarChart, RealtimeDataProvider) {
+            
+            // setup a new bar chart
+            var chart = new BarChart({
+                divId: 'chart',
+                uniqueAxes: true,
+                amChart: {
+                	rotate: true,
+                }
+            });
+
+            //Setup a listener to populate the table with messages from the data provider
+            var messageListener = {
+            		onClear: function(){
+            			$('#status').html('');
+            		},
+            		onLoad: function(data, dataPoint){
+            			var statusRow = [];
+            			statusRow.push(dataPoint.xid);
+            			statusRow.push(data.value);
+            			statusRow.push(new Date(data.timestamp));
+            			$('#status').append(createRow(statusRow));
+            		},
+            		
+            		
+            };
+            
+            var dataProvider = new RealtimeDataProvider(null,{
+            		// convert point values to their specified unit
+                    apiOptions: { converted: true }
+            	}
+           	);
+            
+            // actually create the display on the page
+        	chart.createDisplay().then(function(){
+                dataProvider.addListener(chart);
+                dataProvider.addListener(messageListener);
+                dataProvider.enable();   
+                dataProvider.addDataPoint({xid: 'voltage', name: 'Voltage'});
+                dataProvider.addDataPoint({xid: 'temperature', name: 'Temperature'});
+     		
+        	});
+
+            /**
+             * Helper function to create rows in the status table
+             */
+            function createRow(columns){
+             	var tr = $('<tr>');
+             	for(var i=0; i<columns.length; i++){
+             		 var td = $('<td>');
+          			  td.text(columns[i]);
+          			  tr.append(td);
+             	}
+             	return tr;
+             }
+            
+        });
+        </script>
+    </head>
+  <body>
+      <div id="main">
+        <h1>Data Point Bar Chart</h1>
+        <p>The voltage and temperature points are shown with thier current values in the Bar Chart.  They are updated via a web socket that also populates the table below.</p>
+        <div class="row">
+          <div class="col-md-12">
+            <div id="chart" style="height: 400px"></div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table">
+              <tr><th>XID</th><th>Value</th><th>Time</th></tr>
+              <tbody id="status"></tbody>
+            </table>
+          </div>
+        </div>
+       </div>  
+    </body>
+</html>

@@ -1,0 +1,45 @@
+<h1 ma-tr="dashboards.v3.dox.barChart"></h1>
+<p>
+    The bar chart is the exact same code as the line chart but you set <code>default-type</code> property or a <code>series-x-type</code> property if you have multiple
+    points being graphed.
+</p>
+<p>The possible values for chart type are <code>'line', 'smoothedLine', 'column', or 'step'</code>. Try updating <code>default-type</code> below to <code>"step"</code>.</p>
+
+<p>
+See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maSerialChart"><code>&lt;ma-serial-chart&gt;</code></a> and <a ui-sref="dashboard.docs.maDashboards.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
+</p>
+
+<dual-pane-editor>
+
+<div layout="row">
+    <md-input-container flex>
+        <label>Choose a point</label>
+        <ma-point-list limit="200" ng-model="point1"></ma-point-list>
+    </md-input-container>
+</div>
+
+<div layout="row" layout-xs="column" class="no-errors-spacer">
+    <md-input-container flex>
+       <label>Date preset</label>
+       <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker>
+    </md-input-container>
+    <md-input-container flex>
+       <label>From date</label>
+       <ma-date-picker ng-model="from"></ma-date-picker>
+    </md-input-container>
+    <md-input-container flex>
+        <label>To date</label>
+        <ma-date-picker ng-model="to"></ma-date-picker>
+    </md-input-container>
+</div>
+
+<ma-point-values point="point1" values="point1Values"
+	from="from" to="to"
+	rollup="AVERAGE" rollup-interval="1 hours">
+</ma-point-values>
+
+<ma-serial-chart style="height: 300px; width: 100%"
+	series-1-values="point1Values" series-1-point="point1" default-type="column">
+</ma-serial-chart>
+
+</dual-pane-editor>

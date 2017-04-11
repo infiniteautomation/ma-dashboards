@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+         <!-- Add the Mango Favicon -->
+        <link rel="icon" href="/images/favicon.ico">
+        
+        <!-- Page Style -->
+        <style></style>
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+               
+        <script type="text/javascript">
+        require(['jquery', 'mango/api', 'mango/autologin', 'domReady!'],
+                function($, MangoAPI, autologin) {
+        	
+        	$('#loginButton').click(function(){
+        		var username = $('#username').val();
+                var password = $('#password').val();
+                
+            	autologin({username: username, password: password}).then(function(user){
+            		console.log('logged in as admin');
+            		window.location = user.homeUrl;
+            	}).fail(function(e){
+            		$('#loginError').text('Failed to login: ' + e.mangoMessage);
+            	});
+        	});
+        	
+        	$('#username').focus();
+        	
+        });
+
+        </script>
+    </head>
+<body>
+    <div style="padding: 20px">
+    <img class="logoImg" src="/images/logo.png"></img>
+    <div id="loginForm">
+        <div id="loginError" style="color: red"></div>
+            <table >
+                <tr>
+                <td>
+                    <label class="textLabel1" for="username">Username</label>
+                </td>
+                </tr>
+                <tr>
+                <td>    
+                   <input class="textInput" type="text" id="username" tabindex="1"/>
+                </td>
+                </tr>
+                <tr height=22px >
+                <td>
+                    <label class="textLabel2" for="password">Password</label>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                    <input class="textInput" type="password" id="password" tabindex="2"/>
+                </td>
+                </tr>
+                <tr style="height: 10px"></tr>
+                <tr>
+                <td>
+                    <button id="loginButton" type="button" tabindex="3">Login</button>
+                </td>
+                </tr>
+                <tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

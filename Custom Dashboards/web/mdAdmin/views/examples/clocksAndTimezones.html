@@ -1,0 +1,33 @@
+<h1 ma-tr="dashboards.v3.dox.clocksAndTimezones"></h1>
+
+<p>This example demonstrates using the <code>&lt;ma-clock&gt;</code> directive to display an analog style clock. The <code>timezone</code> attribute
+can be set to somewhere besides the broswer timezone.</p>
+
+<p>
+See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maClock"><code>&lt;ma-clock&gt;</code></a>.
+</p>
+
+<dual-pane-editor>
+
+<ma-now update-interval="1 SECONDS" output="time"></ma-now>
+
+<div layout="row" layout-wrap>
+    <div flex="50" layout="column" layout-align="center center">
+        <span>{{time|moment:'format':'ll LTS Z'}}</span>
+        <ma-clock style="width: 100%; height: 200px;" time="time" text="Browser timezone"></ma-clock>
+    </div>
+    <div flex="50" layout="column" layout-align="center center">
+        <span>{{time|moment:'tz':user.getTimezone()|moment:'format':'ll LTS Z z'}}</span>
+        <ma-clock style="width: 100%; height: 200px;" time="time" timezone="{{user.getTimezone()}}" text="User timezone"></ma-clock>
+    </div>
+    <div flex="50" layout="column" layout-align="center center">
+        <span>{{time|moment:'tz':'Australia/Sydney'|moment:'format':'ll LTS Z z'}}</span>
+        <ma-clock style="width: 100%; height: 200px;" time="time" timezone="Australia/Sydney" text="Sydney"></ma-clock>
+    </div>
+    <div flex="50" layout="column" layout-align="center center">
+        <span>{{time|moment:'tz':'America/Denver'|moment:'format':'ll LTS Z z'}}</span>
+        <ma-clock style="width: 100%; height: 200px;" time="time" timezone="America/Denver" text="Denver"></ma-clock>
+    </div>
+</div>
+
+</dual-pane-editor>

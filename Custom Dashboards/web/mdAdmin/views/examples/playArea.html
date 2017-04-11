@@ -1,0 +1,55 @@
+<h1 ma-tr="dashboards.v3.dox.playArea"></h1>
+
+<p>You can use this area as a play area. Changes will be persisted after you press <strong>Save</strong>.
+<br><a ui-sref="dashboard.examples.playAreaBig">Play Area View Only</a>
+</p>
+
+<state-params state-params="stateParams"></state-params>
+
+<ma-json-store xid="play-area-{{user.username}}" item="playArea" value="paVal"
+  ng-init="playArea={readPermission: 'user', editPermission: 'user'}" item-loaded="$item.jsonData.text=stateParams.markup||$item.jsonData.text">
+</ma-json-store>
+
+<div layout="row" style="margin-bottom:10px;">
+    <md-button class="md-raised md-primary md-hue-3" ng-click="playArea.$save()">
+        <md-icon>save</md-icon>
+        <span ma-tr="common.save"></span>
+    </md-button>
+    <md-button ng-click="stateParams.markup = ''; playArea.$get()">
+        <md-icon>undo</md-icon>
+        <span ma-tr="dashboards.v3.dox.revert"></span>
+     </md-button>
+</div>
+
+<ul>
+  <li><a ui-sref="dashboard.settings.editPages({markup: paVal.text})" ma-tr="dashboards.v3.app.copyToNewPage"></a></li>
+</ul>
+
+<div layout="row" layout-wrap>
+    <div flex="100" flex-gt-md="50">
+        <md-card>
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline" ma-tr="dashboards.v3.dox.markup"></span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <div flex>
+                    <div style="height:400px" live-editor="paVal.text"></div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div flex="100" flex-gt-md="50">
+        <md-card>
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline" ma-tr="dashboards.v3.dox.result"></span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div live-preview="paVal.text"></div>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

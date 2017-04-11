@@ -1,0 +1,26 @@
+<h1><code ng:non-bindable="">maPointQuery</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-mapointquery-page"><p><code>&lt;ma-point-query query=&quot;{$and: true, deviceName:dvName, name:ptName}&quot; limit=&quot;5&quot; points=&quot;points&quot;&gt;&lt;/ma-point-query&gt;</code></p>
+<ul>
+<li>Outputs an array of  data points in your Mango system.</li>
+<li>The <code>query</code> attribute filters the array of points using an object where the keys are
+the property names to filter on, or supply a RQL query string inside single quotes.</li>
+<li>All data points added to your Mango system will display by default, unless you set the <code>limit</code> property.</li>
+<li><a ui-sref="dashboard.examples.pointArrays.dataPointTable">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-point-query query="{name:query.filter, deviceName:query.filter}" limit="query.limit"
+start="(query.page-1)*query.limit" sort="query.order" points="points" promise="promise"&gt;&lt;/ma-point-query&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>points</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="madashboards-mapointquery-page"><p>Variable to hold the array of point objects returned by the query.</p>
+</div></td></tr><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-mapointquery-page"><p>Filters the results by a property of the data points (eg: <code>{name: &#39;meta&#39;}</code> returns data points containing the string <code>&#39;meta&#39;</code> in the <code>name</code> property)</p>
+</div></td></tr><tr><td>sort <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="madashboards-mapointquery-page"><p>Sorts the resulting list by a properties of the data points. Passed as array of strings. (eg: <code>[&#39;-xid&#39;]</code> sorts descending by xid of the data points. Defaults to <code>[&#39;name&#39;]</code>)</p>
+</div></td></tr><tr><td>start <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-mapointquery-page"><p>Sets the starting index for the resulting list. Must be used in conjunction with a <code>limit</code> value. (Defaults to <code>0</code>)</p>
+</div></td></tr><tr><td>limit <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-mapointquery-page"><p>Limits the results in the list to a specified number of data points. Limit takes place after query and sorting (no limit by defualt)</p>
+</div></td></tr><tr><td>promise <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-mapointquery-page"><p>Promise oibject used to tell if query data is being fetched.</p>
+</div></td></tr></tbody></table></div>
+</div>

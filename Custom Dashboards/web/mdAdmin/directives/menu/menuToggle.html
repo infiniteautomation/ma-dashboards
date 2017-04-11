@@ -1,0 +1,28 @@
+<div ui-sref-active="menu-active" ng-class="{'menu-open': $ctrl.isOpen, 'menu-submenu': $ctrl.item.submenu}" class="menu-toggle">
+    <a ui-sref="{{$ctrl.item.name}}" style="display:none"></a>
+    <md-button class="menu-toggle-button menu-indent" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | tr)}}">
+      <div flex layout="row">
+        <span>
+            <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') === 0" class="menu-icon fa fa-fw {{$ctrl.item.menuIcon}}"></md-icon>
+            <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') !== 0" class="menu-icon">{{$ctrl.item.menuIcon}}</md-icon>
+            <span ng-if="$ctrl.item.menuText" class="menu-text">{{$ctrl.item.menuText}}</span>
+            <span ng-if="!$ctrl.item.menuText" class="menu-text" ma-tr="{{$ctrl.item.menuTr}}"></span>
+        </span>
+        <span flex></span>
+        <span class="menu-toggle-icon" ng-if="!$ctrl.item.submenu">
+          <md-icon>keyboard_arrow_up</md-icon>
+        </span>
+        <span class="menu-subdir-icon" ng-if="$ctrl.item.submenu">
+          <md-icon ng-if="!$ctrl.isOpen">subdirectory_arrow_right</md-icon>
+          <md-icon ng-if="$ctrl.isOpen">subdirectory_arrow_left</md-icon>
+        </span>
+      </div>
+    </md-button>
+    
+    <ul class="menu-toggle-list ng-hide" ng-show="$ctrl.isOpen" ng-class="'menu-level-' + ($ctrl.menuLevel + 1)">
+      <li ng-repeat="child in $ctrl.item.children track by child.id" ng-if="child.visible">
+        <menu-link menu-item="child" ng-if="!child.children"></menu-link>
+        <menu-toggle menu-item="child" open-menu="$ctrl.openMenu" ng-if="child.children"></menu-toggle>
+      </li>
+    </ul>
+</div>

@@ -1,0 +1,24 @@
+<h1 ma-tr="dashboards.v3.dox.getPointByXid"></h1>
+
+<p>You can use this syntax for <code>&lt;ma-point-value&gt;</code>, <code>&lt;ma-get-point-value&gt;</code> &amp;
+<code>&lt;ma-point-values&gt;</code>.</p>
+
+<p>The XID of the data point you want to display is manually passed as a string to the <code>point-xid</code> attribute.</p>
+
+<p>Note, this example uses point XIDs from the example virtual data sources, you can import <a href="/modules/dashboards/web/private/demoMangoConfig.json" target="_blank">this JSON file</a> or enter your own XIDs.</p>
+
+<p>
+See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maPointValue"><code>&lt;ma-point-value&gt;</code></a> and <a ui-sref="dashboard.docs.maDashboards.maGetPointValue"><code>&lt;ma-get-point-value&gt;</code></a>.
+</p>
+
+<dual-pane-editor>
+
+<!-- Display a point value using only its XID -->
+<p>The point value is <ma-point-value point-xid="DP_355369"></ma-point-value>.</p>
+
+<!-- Get a point (and value) using its XID and assign it to an output variable "myPoint" -->
+<ma-get-point-value point-xid="DP_698831" point="myPoint"></ma-get-point-value>
+
+<p>The point name is "{{myPoint.name}}" and its value is {{myPoint.renderedValue}}.</p>
+
+</dual-pane-editor>

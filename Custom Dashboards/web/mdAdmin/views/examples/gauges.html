@@ -1,0 +1,36 @@
+<h1 ma-tr="dashboards.v3.dox.gauges"></h1>
+<p>Note you must give the gauge a width and height, and you must use <code>&lt;ma-get-point-value&gt;</code> to provide a point value to
+<code>&lt;ma-gauge-chart&gt;</code>. Properties have been exposed via attributes on the element, allowing you to set colors and ranges of multiple bands</p>
+
+<p>
+See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maGaugeChart"><code>&lt;ma-gauge-chart&gt;</code></a>.
+</p>
+
+<dual-pane-editor>
+
+<div layout="row">
+    <md-input-container flex>
+        <label>Choose a point</label>
+        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
+    </md-input-container>
+</div>
+
+<ma-get-point-value point="myPoint"></ma-get-point-value>
+
+<div layout="row" layout-wrap>
+	<div flex="50">
+		<p>Basic (defaults to 0-100)</p>
+		<ma-gauge-chart point="myPoint" style="width:100%; height:200px"></ma-gauge-chart>
+	</div>
+	<div flex="50">
+		<p>Set axis interval and start and end value</p>
+		<ma-gauge-chart point="myPoint" interval="10" start="-20" end="120" style="width:100%; height:200px"></ma-gauge-chart>
+	</div>
+	<div flex="50">
+		<p>Set color bands</p>
+		<ma-gauge-chart point="myPoint" start="-20" band-1-end="20" band-2-end="80" band-2-color="yellow" band-3-end="100"
+			style="width:100%; height:200px"></ma-gauge-chart>
+	</div>
+</div>
+
+</dual-pane-editor>

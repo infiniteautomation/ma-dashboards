@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (C) 2015 Infinite Automation Systems Inc. All rights reserved.
+    @author Terry Packer
+-->
+
+<doxManifest>
+  <item id="dashboardsSettings" key="dox.dashboards.settings" filename="dashboardsSettings.htm"/>
+</doxManifest>

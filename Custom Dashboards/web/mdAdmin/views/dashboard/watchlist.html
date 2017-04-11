@@ -1,0 +1,78 @@
+<div layout="column">
+    <md-card flex id="table">
+        <watch-list-table data="dummy" to="to" from="from" selected="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-table>
+    </md-card>
+    
+    <md-card flex id="controls">
+        <md-card-content layout="row" layout-align="space-around center" layout-wrap>
+                  <md-input-container class="date-picker">
+                        <label>Date Range</label>
+                        <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="10 seconds" aria-label="Date Preset">
+                        </ma-date-range-picker>
+                  </md-input-container>
+                    <md-input-container class="date-picker-to-from">
+                          <label>From Date</label>
+                          <ma-date-picker ng-model="from" format="MMM Do, h:mma"></ma-date-picker>
+                    </md-input-container>
+                    <md-input-container class="date-picker-to-from">
+                          <label>To Date</label>
+                          <ma-date-picker ng-model="to" format="MMM Do, h:mma"></ma-date-picker>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Rollup Type</label>
+                        <md-select ng-model="rollupType" ng-init="rollupType='AVERAGE'">
+                            <md-option value="MINIMUM">
+                                Minimum
+                            </md-option>
+                            <md-option value="MAXIMUM">
+                                Maximum
+                            </md-option>
+                            <md-option value="AVERAGE">
+                                Average
+                            </md-option>
+                            <md-option value="DELTA">
+                                Delta
+                            </md-option>
+                            <md-option value="NONE">
+                                None
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Rollup Interval</label>
+                        <input ng-model="rollupIntervalNumber" type="number" step="1" ng-init="rollupIntervalNumber=5" ng-disabled="rollupType=='NONE' || autoRollup">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Rollup Interval</label>
+                        <md-select ng-model="rollupIntervalPeriod" ng-init="rollupIntervalPeriod='MINUTES'" ng-disabled="rollupType=='NONE' || autoRollup">
+                            <md-option value="SECONDS">
+                                Seconds
+                            </md-option>
+                            <md-option value="MINUTES">
+                                Minutes
+                            </md-option>
+                            <md-option value="HOURS">
+                                Hours
+                            </md-option>
+                            <md-option value="DAYS">
+                                Days
+                            </md-option>
+                            <md-option value="WEEKS">
+                                Weeks
+                            </md-option>
+                            <md-option value="MONTHS">
+                                Months
+                            </md-option>
+                            <md-option value="YEARS">
+                                Years
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-checkbox ng-model="autoRollup" ng-init="autoRollup = true">Auto-Interval</md-checkbox>
+        </md-card-content>
+    </md-card>
+
+    <md-card flex id="chart">
+        <watch-list-chart to="to" from="from" add-checked="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-chart>
+    </md-card>
+</div>

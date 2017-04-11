@@ -1,0 +1,27 @@
+<h1><code ng:non-bindable="">maPointHierarchy</code>
+<div><span class="hint">service in module <code ng:non-bindable="">maDashboards</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="madashboards-mapointhierarchy-page"><p><code>&lt;ma-point-hierarchy path=&quot;[]&quot; hierarchy=&quot;folder&quot;&gt;&lt;/ma-point-hierarchy&gt;</code></p>
+<ul>
+<li>Use <code>&lt;ma-point-hierarchy&gt;</code> to query the point hierarchy.</li>
+<li><code>&lt;ma-point-hierarchy&gt;</code> accepts an array of strings into its <code>path</code> attribute.</li>
+<li>You can pass plain strings into this array or, use * as a wildcard for all subfolders,
+or separate multiple folders by a | character.</li>
+<li><a ui-sref="dashboard.examples.pointHierarchy.displayTree">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-point-hierarchy path="['Top Level Folder','Subfolder 1 | Subfolder 2']" hierarchy="hierarchy" points="points"&gt;
+&lt;/ma-point-hierarchy&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>path</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="madashboards-mapointhierarchy-page"><p>Inputs an array targeting the folder(s) in the point hierarchy to access.</p>
+</div></td></tr><tr><td>hierarchy</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-mapointhierarchy-page"><p>Outputs a nested object outlining the portion of the point hierarchy
+specified by the path.</p>
+</div></td></tr><tr><td>points <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="madashboards-mapointhierarchy-page"><p>Outputs an array of point objects specified under the given path.
+This point array can be used with a chart (<a href="/modules/dashboards/web/mdAdmin/#/dashboard/examples/point-hierarchy/line-chart">View Demo</a>)</p>
+</div></td></tr><tr><td>subfolders <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="madashboards-mapointhierarchy-page"><p>If set to <code>false</code>, <code>points</code> will only return points that are contained directly as children in the target folders.
+By default this is set to <code>true</code> and all descendant points are given, even those within subfolders. </p>
+</div></td></tr></tbody></table></div>
+</div>

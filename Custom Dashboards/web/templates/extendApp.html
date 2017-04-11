@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>My Custom App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="/resources/angular-csp.css"></link>
+    <link rel="stylesheet" href="../vendor/angular-material/angular-material.css">
+    <link rel="stylesheet" href="../vendor/material-design-icons/iconfont/material-icons.css">
+    <link rel="stylesheet" href="../vendor/mdPickers/mdPickers.css">
+</head>
+
+<body layout="column">
+    <div ng-if="appLoading">
+        <span>App is loading..</span>
+    </div>
+
+    <div ng-cloak layout="column" flex>
+        <!-- Your content here -->
+        <span>Pi is {{pi() | number:5}}.</span>
+        <my-custom-component name="John Smith"><my-custom-component>
+    </div>
+
+    <script src="/resources/require.js"></script>
+    <script src="/resources/loaderConfig.js"></script>
+    <script src="../js/loaderConfig.js"></script>
+    <!-- Rename templates to the name of the folder you create in overrides, you may also want to rename extendApp.js -->
+	<script>require(['dashboards/templates/extendApp']);</script>
+</body>
+</html>
