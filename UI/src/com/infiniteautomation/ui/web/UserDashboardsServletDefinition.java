@@ -13,7 +13,7 @@ import com.serotonin.m2m2.module.ServletDefinition;
  */
 public class UserDashboardsServletDefinition extends ServletDefinition {
 
-    private static final String FORWARD_FROM_PATH = "/user-dashboards";
+    private static final String FORWARD_FROM_PATH = "/user-ui";
     private static final String FORDWARD_TO_PATH = "/modules/mangoUI/web";
 
     /* (non-Javadoc)
