@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.module.DefaultPagesDefinition;
@@ -109,7 +110,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 		
 		if(!StringUtils.isEmpty(page)){
 			String requested = request.getRequestURI();
-			return page + "?path=" + requested;
+			return UriComponentsBuilder.fromPath(page).queryParam("path", requested).toUriString();
 		}else{
 			return null;
 		}
