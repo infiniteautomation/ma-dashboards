@@ -1,5 +1,5 @@
 {
-  "logoSrc": "/modules/ui/web/img/logo.svg",
+  "logoSrc": "/modules/mangoUI/web/img/logo.svg",
   "defaultTheme": "mangoDark",
   "codeTheme": "monokai",
   "googleMapsApiKey": "",

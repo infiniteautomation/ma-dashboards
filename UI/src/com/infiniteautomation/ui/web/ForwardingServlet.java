@@ -25,7 +25,7 @@ public class ForwardingServlet extends DefaultServlet {
     
     /**
      * @param forwardFrom Path which is being forwarded from, starts with a slash, no slash on end, e.g. /ui
-     * @param forwardTo Path which is being forwarded to, starts with a slash, no slash on end, e.g. /modules/ui/web
+     * @param forwardTo Path which is being forwarded to, starts with a slash, no slash on end, e.g. /modules/mangoUI/web
      * @param notFoundPath If the path we are forwarding to is not found, forward to the forwardTo path with this as a suffix, e.g. /index.html
      * @param notFoundInSubdir If the path we are forwarding to is not found and the request path is for a subdirectory, forward to the subdirectory
      * followed by the notFoundPath

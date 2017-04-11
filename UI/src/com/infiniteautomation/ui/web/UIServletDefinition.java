@@ -14,7 +14,7 @@ import com.serotonin.m2m2.module.ServletDefinition;
 public class UIServletDefinition extends ServletDefinition {
     
     private static final String FORWARD_FROM_PATH = "/ui";
-    private static final String FORDWARD_TO_PATH = "/modules/ui/web/mdAdmin";
+    private static final String FORDWARD_TO_PATH = "/modules/mangoUI/web/mdAdmin";
 
     /* (non-Javadoc)
      * @see com.serotonin.m2m2.module.ServletDefinition#getServlet()

@@ -83,7 +83,7 @@ gulp.task('watchDocs', function() {
 gulp.task('watch-web', function() {
     return gulp.src('web/**')
         .pipe(watch('web/**', {ignoreInitial: false, verbose: true}))
-        .pipe(gulp.dest(MA_HOME + '/web/modules/ui/web'));
+        .pipe(gulp.dest(MA_HOME + '/web/modules/mangoUI/web'));
 });
 
 gulp.task('build-amcharts', function() {

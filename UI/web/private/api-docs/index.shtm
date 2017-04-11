@@ -57,14 +57,14 @@ XIDs from your instance into the page.</p></p>
        <li>Ensure all points have data and are regularly being updated</li>
        <li>Create a folder named 'Target Folder' at the root of the point hierarchy that contains these points</li> 
    </ul></p>
-<p><p> <a href="/modules/ui/web/private/demoMangoConfig.json" target="download">Here</a> is a link to a JSON Configuration to import to get going. </p></p>
+<p><p> <a href="/modules/mangoUI/web/private/demoMangoConfig.json" target="download">Here</a> is a link to a JSON Configuration to import to get going. </p></p>
 <p><p> <a href="/swagger/index.html">Here</a> is a link to the REST api documentation that will be available if you have enabled swagger.</p></p>
 <p><p> For all tutorials and examples review the shtm and htm files at these locations:</p></p>
 <ul>
-<li>[MA_HOME]/web/modules/ui/web/private/tutorials/</li>
-<li>[MA_HOME]/web/modules/ui/web/private/pointHierarchyExamples/</li>
-<li>[MA_HOME]/web/modules/ui/web/private/powerMeterExamples/</li>
-<li>[MA_HOME]/web/modules/ui/web/public/</li>
+<li>[MA_HOME]/web/modules/mangoUI/web/private/tutorials/</li>
+<li>[MA_HOME]/web/modules/mangoUI/web/private/pointHierarchyExamples/</li>
+<li>[MA_HOME]/web/modules/mangoUI/web/private/powerMeterExamples/</li>
+<li>[MA_HOME]/web/modules/mangoUI/web/public/</li>
 </ul></article>
     </section>
 

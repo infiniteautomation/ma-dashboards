@@ -121,7 +121,7 @@ StatisticsBarChartConfiguration.prototype = {
             return  {                    
             type: "serial",
             //Note the path to images
-            pathToImages: "/modules/ui/web/js/amcharts/images/",
+            pathToImages: "/modules/mangoUI/web/js/amcharts/images/",
             //Set to date field in result data
             categoryField: "xid",
             rotate: true,

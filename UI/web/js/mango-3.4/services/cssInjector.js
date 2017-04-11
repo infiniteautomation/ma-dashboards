@@ -29,8 +29,8 @@ The CSS will only be injected if the directive using this service is used on a p
 }
 
 // inserts a link tag to an external css file after the md-data-table css link
-cssInjector.injectLink('/modules/ui/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles',
-'link[href="/modules/ui/web/vendor/angular-material-data-table/md-data-table.css"]');
+cssInjector.injectLink('/modules/mangoUI/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles',
+'link[href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css"]');
 * </pre>
 */
 
@@ -60,7 +60,7 @@ cssInjector.injectLink('/modules/ui/web/mdAdmin/directives/watchList/style.css',
 * For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place once.
 * @param {string=} selector If provided the CSS will be injected within the head, after the the given CSS link.
 * @param {boolean} insertBefore CSS is injected before the selector instead of after
-* Pass a string of the attribute selector ie. `'link[href="/modules/ui/web/vendor/angular-material-data-table/md-data-table.css"]'`
+* Pass a string of the attribute selector ie. `'link[href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css"]'`
 * to insert new CSS link after the specified CSS link. The CSS definitions that come after take precedence.
 *
 */
@@ -76,7 +76,7 @@ cssInjector.injectLink('/modules/ui/web/mdAdmin/directives/watchList/style.css',
 * @param {string} trackingName Identifier used to determine if this particular CSS injection has already been done, as to not duplicate the CSS.
 * For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place once.
 * @param {string=} afterSelectorIf provided the CSS will be injected within the head, after the the given CSS style.
-* Pass a string of the attribute selector ie. `'link[href="/modules/ui/web/vendor/angular-material-data-table/md-data-table.css"]'`
+* Pass a string of the attribute selector ie. `'link[href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css"]'`
 * to insert new CSS <style> element after the specified CSS link. The CSS definitions that come after take precedence.
 *
 */
