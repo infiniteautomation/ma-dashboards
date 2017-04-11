@@ -7,7 +7,6 @@
     "angular-sanitize": "~1.5.11",
     "angular-animate": "~1.5.11",
     "angular-touch": "~1.5.11",
-    "angular-route": "~1.5.11",
     "angular-aria": "~1.5.11",
     "angular-messages": "~1.5.11",
     "angular-material": "1.1.3",
@@ -30,7 +29,8 @@
     "md-color-picker": "~0.2.6",
     "ngmap": "~1.17.7",
     "js-sha512": "~0.3.0",
-    "papaparse": "~4.1.4"
+    "papaparse": "~4.1.4",
+    "globalize": "~1.2.3"
   },
   "overrides": {
     "ace-builds": {
@@ -61,6 +61,12 @@
     },
     "js-sha512": {
       "main": "build/sha512.min.js"
+    },
+    "globalize": {
+      "main": ["dist/globalize.js", "dist/globalize/*.js"]
+    },
+    "cldrjs": {
+      "main": ["dist/cldr.js", "dist/cldr/*.js"]
     }
   },
   "resolutions": {

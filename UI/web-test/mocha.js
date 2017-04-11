@@ -34,10 +34,10 @@ requirejs.config({
         nodeShim: true
     }
 });
-// the loaderConfig will use this as the dashboards path
-requirejs.dashboardModulePath = __dirname + '/../web';
+// the loaderConfig will use this as the ui module path
+requirejs.uiModulePath = __dirname + '/../web';
 
-// load the dashboards loaderConfig.js so we can locate AMD modules
+// load the UI loaderConfig.js so we can locate AMD modules
 require('../web/js/loaderConfig.js');
 // remove angular from paths so requirejs falls back to node require('angular')
 requirejs.config({

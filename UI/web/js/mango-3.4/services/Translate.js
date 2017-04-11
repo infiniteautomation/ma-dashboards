@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'globalize', 'globalize/message', 'cldr/unresolved'], function(angular, Globalize) {
+define(['require', 'angular', 'globalize', 'globalize/message', 'cldr/unresolved'], function(require, angular, Globalize) {
 'use strict';
 /**
 * @ngdoc service
@@ -56,7 +56,7 @@ define(['angular', 'globalize', 'globalize/message', 'cldr/unresolved'], functio
 function translateFactory($http, $q) {
 	var Translate = function() {};
 
-	var likelySubtagsUrl = '/resources/cldr-data/supplemental/likelySubtags.json';
+	var likelySubtagsUrl = require.toUrl('cldr-data/supplemental/likelySubtags.json');
 	Translate.likelySubtags = $http.get(likelySubtagsUrl).then(function(likelySubtags) {
 		Globalize.load(likelySubtags.data);
 	});

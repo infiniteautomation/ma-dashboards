@@ -8,6 +8,7 @@
     "angular": "^1.5.8",
     "angular-mocks": "^1.5.8",
     "chai": "^3.5.0",
+    "cldr-data": "^31.0.2",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.0",
