@@ -1041,9 +1041,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
             }
         }
     }
-    
-    MD_ADMIN_SETTINGS.UI_PREFERENCES_KEY = 'uiPreferences';
-    
+
     // need to store a reference to the theming provider in order to generate themes at runtime
     MD_ADMIN_SETTINGS.themingProvider = $mdThemingProvider;
 
@@ -1191,8 +1189,6 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     });
 }]);
 
-uiApp.constant('MA_UI_PREFS_KEY', 'uiPreferences');
-
 uiApp.run([
     'MENU_ITEMS',
     '$rootScope',
@@ -1320,7 +1316,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     $rootScope.$on('$viewContentLoaded', function(event, view) {
         if (view === '@dashboard') {
             if ($mdMedia('gt-sm')) {
-                var uiPrefs = localStorageService.get(uiSettings.UI_PREFERENCES_KEY);
+                var uiPrefs = localStorageService.get('uiPreferences');
                 if (!uiPrefs || !uiPrefs.menuClosed) {
                     $rootScope.openMenu();
                 }
@@ -1358,9 +1354,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     };
 
     $rootScope.closeMenu = function() {
-        var uiPrefs = localStorageService.get(uiSettings.UI_PREFERENCES_KEY) || {};
+        var uiPrefs = localStorageService.get('uiPreferences') || {};
         uiPrefs.menuClosed = true;
-        localStorageService.set(uiSettings.UI_PREFERENCES_KEY, uiPrefs);
+        localStorageService.set('uiPreferences', uiPrefs);
         
         angular.element('#menu-button').blur();
         $rootScope.navLockedOpen = false;
@@ -1368,9 +1364,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     };
 
     $rootScope.openMenu = function() {
-        var uiPrefs = localStorageService.get(uiSettings.UI_PREFERENCES_KEY) || {};
+        var uiPrefs = localStorageService.get('uiPreferences') || {};
         uiPrefs.menuClosed = false;
-        localStorageService.set(uiSettings.UI_PREFERENCES_KEY, uiPrefs);
+        localStorageService.set('uiPreferences', uiPrefs);
         
         angular.element('#menu-button').blur();
         if ($mdMedia('gt-sm')) {
