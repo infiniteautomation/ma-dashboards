@@ -1,0 +1,113 @@
+<h1><code ng:non-bindable="">Point</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ngMangoServices</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmangoservices-point-page"><p>Provides service for getting and and updating a list of points.</p>
+<ul>
+<li>Used by <a ui-sref="dashboard.docs.ngMango.maPointList"><code>&lt;ma-point-list&gt;</code></a> and <a ui-sref="dashboard.docs.ngMango.maFilteringPointList"><code>&lt;ma-filtering-point-list&gt;</code></a> directives.</li>
+<li>All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource">$resource</a> objects that can call the following methods available to those objects:<ul>
+<li><code>$save</code></li>
+<li><code>$remove</code></li>
+<li><code>$delete</code></li>
+<li><code>$get</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="usage" id="description_usage">Usage</h3>
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
+ Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
+    $scope.ngModel = item[0];
+});
+</pre>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete(query)</h3>
+<div class="delete"><div class="point-delete-page"><p>A default action provided by $resource. Makes a http DELETE call to the rest endpoint <code>/rest/v1/data-points/:xid</code></p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-delete-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-delete-page"><p>Returns a data point object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_get">get(query)</h3>
+<div class="get"><div class="point-get-page"><p>A default action provided by $resource. Makes a http GET call to the rest endpoint <code>/rest/v1/data-points/:xid</code></p>
+</div><h5 id="methods_get_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-get-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-get-page"><p>Returns a data point object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getbyid">getById(query)</h3>
+<div class="getbyid"><div class="point-getbyid-page"><p>Query the REST endpoint <code>/rest/v1/data-points/by-id/:id</code> with the <code>GET</code> method.</p>
+</div><h5 id="methods_getbyid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-getbyid-page"><p>Object containing a <code>id</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_getbyid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-getbyid-page"><p>Returns a data point object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_objquery">objQuery(query)</h3>
+<div class="objquery"><div class="point-objquery-page"><p>Passed an object in the format <code>{query: &#39;query&#39;, start: 0, limit: 50, sort: [&#39;-xid&#39;]}</code> and returns an Array of point objects matching the query.</p>
+</div><h5 id="methods_objquery_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-objquery-page"><p>Format: <code>{query: &#39;query&#39;, start: 0, limit: 50, sort: [&#39;-xid&#39;]}</code></p>
+</div></td></tr></tbody></table><h5 id="methods_objquery_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="point-objquery-page"><p>Returns an Array of point objects matching the query. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_query">query(query)</h3>
+<div class="query"><div class="point-query-page"><p>Passed an object in the format <code>{query: &#39;query&#39;, start: 0, limit: 50, sort: [&#39;-xid&#39;]}</code> and returns an Array of point objects matching the query.</p>
+</div><h5 id="methods_query_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-query-page"><p>xid name for the query. Format: <code>{query: &#39;query&#39;, start: 0, limit: 50, sort: [&#39;-xid&#39;]}</code></p>
+</div></td></tr></tbody></table><h5 id="methods_query_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="point-query-page"><p>Returns an Array of point objects matching the query. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_remove">remove(query)</h3>
+<div class="remove"><div class="point-remove-page"><p>A default action provided by $resource. Makes a http DELETE call to the rest endpoint <code>/rest/v1/data-points/:xid</code></p>
+</div><h5 id="methods_remove_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-remove-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_remove_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-remove-page"><p>Returns a data point object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_renderermap">rendererMap()</h3>
+<div class="renderermap"><h5 id="methods_renderermap_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-renderermap-page"><p>Returns an object mapping textRenderer values for binary or multistate points. Returns null if the point does not have a textRenderer.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_rql">rql(RQL)</h3>
+<div class="rql"><div class="point-rql-page"><p>Passed a string containing RQL for the query and returns an array of data point objects. Queries the endpoint <code>/rest/v1/data-points?:query</code></p>
+</div><h5 id="methods_rql_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>RQL</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="point-rql-page"><p>RQL string for the query</p>
+</div></td></tr></tbody></table><h5 id="methods_rql_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="point-rql-page"><p>An array of data point objects. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(query)</h3>
+<div class="save"><div class="point-save-page"><p>A default action provided by $resource. Makes a http POST call to the rest endpoint <code>/rest/v1/data-points/:xid</code></p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-save-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-save-page"><p>Returns a data point object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setvalue">setValue(value, options)</h3>
+<div class="setvalue"><div class="point-setvalue-page"><p>Method for setting the value of a settable data point.</p>
+</div><h5 id="methods_setvalue_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="point-setvalue-page"><p>New value to set on the data point.</p>
+</div></td></tr><tr><td>options <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-setvalue-page"><p>Optional object for setting converted property.</p>
+</div></td></tr></tbody></table><h5 id="methods_setvalue_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-setvalue-page"><p>Returns promise object from $http.put at <code>/rest/v1/point-values/</code></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setvalueresult">setValueResult(value, holdTimeout)</h3>
+<div class="setvalueresult"><div class="point-setvalueresult-page"><p>Method calls setValue but provides handling of the promise and returns a result object.
+Used by <code>&lt;set-point-value&gt;</code> directive.</p>
+</div><h5 id="methods_setvalueresult_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="point-setvalueresult-page"><p>New value to set on the data point.</p>
+</div></td></tr><tr><td>holdTimeout <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="point-setvalueresult-page"><p>Optional timeout value, defaults to 3000.</p>
+</div></td></tr></tbody></table><h5 id="methods_setvalueresult_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-setvalueresult-page"><p>Returns <code>result</code> object with <code>pending</code>, <code>success</code>, and error <code>properties</code></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_togglevalue">toggleValue()</h3>
+<div class="togglevalue"><div class="point-togglevalue-page"><p>When called this method will flip the value of a binary data point.
+See <a ui-sref="dashboard.examples.settingPointValues.toggle">Toggle Binary</a> example.</p>
+</div></div>
+</li>
+<li><h3 id="methods_valuefn">valueFn(setValue)</h3>
+<div class="valuefn"><div class="point-valuefn-page"><p>This method will either call setValue internally or return the points value object.
+See how it is used with <code>&lt;md-checkbox&gt;</code> and <code>&lt;md-switch&gt;</code> in the <a ui-sref="dashboard.examples.settingPointValues.toggle">Toggle Binary</a> example.</p>
+</div><h5 id="methods_valuefn_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>setValue <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="point-valuefn-page"><p>If provided setValue method will be called with this value.</p>
+</div></td></tr></tbody></table><h5 id="methods_valuefn_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-valuefn-page"><p>Returns a points value object if no parameter is provided when the method is called.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_valuerenderer">valueRenderer(value)</h3>
+<div class="valuerenderer"><div class="point-valuerenderer-page"><p>This method internally will call this.rendererMap(). It is passed a value and it returns the textRendered object stored at that value&#39;s key in the map.</p>
+</div><h5 id="methods_valuerenderer_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="point-valuerenderer-page"><p>Value used as the key in the rendererMap</p>
+</div></td></tr></tbody></table><h5 id="methods_valuerenderer_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-valuerenderer-page"><p>Returns textRendered object for the value from the rendererMap. If no rendererMap is found object returned is <code>{text: value}</code></p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

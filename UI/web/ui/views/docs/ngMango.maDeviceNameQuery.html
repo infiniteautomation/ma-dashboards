@@ -1,0 +1,23 @@
+<h1><code ng:non-bindable="">maDeviceNameQuery</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ngMango</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmango-madevicenamequery-page"><p><code>&lt;ma-device-name-query device-names=&quot;deviceNames&quot; contains=&quot;&#39;meter&#39;&quot;&gt;&lt;/ma-device-name-query&gt;</code></p>
+<ul>
+<li>Outputs an array of Mango device names.</li>
+<li>In the example below the list is filtered to those containing a specified string and the resulting array is printed to the screen.</li>
+<li><a ui-sref="dashboard.examples.basics.dataSourceAndDeviceList">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;h2&gt;Device names containing 'meter'&lt;/h2&gt;
+&lt;ma-device-name-query device-names="deviceNames" contains="'meter'"&gt;&lt;/ma-device-name-query&gt;
+&lt;pre ng-bind="deviceNames | json"&gt;&lt;/pre&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>device-names</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="ngmango-madevicenamequery-page"><p>Array Variable to hold the array of outputted device names.</p>
+</div></td></tr><tr><td>data-source-xid <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-madevicenamequery-page"><p>If provided will filter device names to a specific data source by xid.</p>
+</div></td></tr><tr><td>data-source-id <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-madevicenamequery-page"><p>If provided will filter device names to a specific data source by id.</p>
+</div></td></tr><tr><td>contains <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-madevicenamequery-page"><p>If provided will filter device names to those containing the specified string. Capitalization sensitive. (eg: <code>&#39;Meta&#39;</code>)</p>
+</div></td></tr></tbody></table></div>
+</div>

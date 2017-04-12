@@ -1,0 +1,40 @@
+<h1><code ng:non-bindable="">maIntervalTypePicker</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ngMango</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmango-maintervaltypepicker-page"><p><code>&lt;ma-interval-type-picker ng-model=&quot;updateIntervalType&quot; ng-init=&quot;updateIntervalType=&#39;MINUTES&#39;&quot;&gt;&lt;/ma-interval-type-picker&gt;</code></p>
+<ul>
+<li>This directive generates a dropdown selector for choosing the various interval types to be used with <code>&lt;ma-date-range-picker&gt;</code> <code>update-interval</code> property.</li>
+<li>Also used with <code>&lt;ma-point-values&gt;</code> <code>rollup-interval</code> property.</li>
+<li>Note that in the example below we are also setting the interval duration using a numeric input</li>
+<li><a ui-sref="dashboard.examples.charts.advancedChart">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;md-input-container&gt;
+   &lt;label&gt;Update interval&lt;/label&gt;
+   &lt;input type="number" step="1" min="1" ng-model="updateInterval" ng-init="updateInterval=1"&gt;
+&lt;/md-input-container&gt;
+&lt;md-input-container&gt;
+ 	&lt;label&gt;Interval type&lt;/label&gt;
+	&lt;ma-interval-type-picker ng-model="updateIntervalType" ng-init="updateIntervalType='MINUTES'"&gt;&lt;/ma-interval-type-picker&gt;
+&lt;/md-input-container&gt;
+&lt;md-input-container&gt;
+	&lt;label&gt;Date range preset&lt;/label&gt;
+	&lt;ma-date-range-picker from="from" to="to" preset="LAST_30_MINUTES" update-interval="<span>{{</span>updateInterval<span>}}</span> <span>{{</span>updateIntervalType<span>}}</span>"&gt;&lt;/ma-date-range-picker&gt;
+&lt;/md-input-container&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ng-model</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-maintervaltypepicker-page"><p>The variable to hold the selected interval type</p>
+</div></td></tr><tr><td>ng-init <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="ngmango-maintervaltypepicker-page"><p>If provided you can set the <code>ng-model</code> variable to one of these strings to set the default selected value (See usage example):</p>
+<p><ul>
+    <li>SECONDS</li>
+    <li>MINUTES</li>
+    <li>HOURS</li>
+    <li>DAYS</li>
+    <li>WEEKS</li>
+    <li>MONTHS</li>
+    <li>YEARS</li></p>
+<ul>
+</div></td></tr></tbody></table></div>
+</div>

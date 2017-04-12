@@ -1,0 +1,77 @@
+<h1><code ng:non-bindable="">JsonStore</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ngMangoServices</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmangoservices-jsonstore-page"><p>Provides a service for reading and writing to the JsonStore within the Mango Database.</p>
+<ul>
+<li>Used by <a ui-sref="dashboard.docs.ngMango.maJsonStore"><code>&lt;ma-json-store&gt;</code></a> directive.</li>
+<li>All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource">$resource</a> objects that can call the following methods available to those objects:<ul>
+<li><code>$save</code></li>
+<li><code>$remove</code></li>
+<li><code>$delete</code></li>
+<li><code>$get</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="usage" id="description_usage">Usage</h3>
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
+ JsonStore.get({xid: newXid}).$promise.then(function(item) {
+	return item;
+ }, function() {
+	var item = new JsonStore();
+	item.xid = newXid;
+	item.name = newXid;
+	item.jsonData = $scope.value || {};
+	angular.extend(item, $scope.item);
+	return $q.when(item);
+ }).then(function(item) {
+	$scope.item = item;
+ });
+</pre>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete(xid, dataPath, name, readPermission, editPermission)</h3>
+<div class="delete"><div class="jsonstore-delete-page"><p>A default action provided by $resource. Makes a http DELETE call to the rest endpoint <code>/rest/v1/json-data/:xid/:dataPath</code></p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>xid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-delete-page"><p>Used to set the id of the node in the json store.</p>
+</div></td></tr><tr><td>dataPath</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-delete-page"><p>dataPath of the object in the json store.</p>
+</div></td></tr><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-delete-page"><p>name of the object in the json store.</p>
+</div></td></tr><tr><td>readPermission</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-delete-page"><p>readPermission of the object in the json store.</p>
+</div></td></tr><tr><td>editPermission</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-delete-page"><p>editPermission of the object in the json store.</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="jsonstore-delete-page"><p>Returns a json store object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_get">get(xid, dataPath, name, readPermission, editPermission)</h3>
+<div class="get"><div class="jsonstore-get-page"><p>A default action provided by $resource. Makes a http GET call to the rest endpoint <code>/rest/v1/json-data/:xid/:dataPath</code></p>
+</div><h5 id="methods_get_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>xid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-get-page"><p>Used to set the id of the node in the json store.</p>
+</div></td></tr><tr><td>dataPath</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-get-page"><p>dataPath of the object in the json store.</p>
+</div></td></tr><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-get-page"><p>name of the object in the json store.</p>
+</div></td></tr><tr><td>readPermission</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-get-page"><p>readPermission of the object in the json store.</p>
+</div></td></tr><tr><td>editPermission</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-get-page"><p>editPermission of the object in the json store.</p>
+</div></td></tr></tbody></table><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="jsonstore-get-page"><p>Returns a json store object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_remove">remove(xid, dataPath, name, readPermission, editPermission)</h3>
+<div class="remove"><div class="jsonstore-remove-page"><p>A default action provided by $resource. Makes a http DELETE call to the rest endpoint <code>/rest/v1/json-data/:xid/:dataPath</code></p>
+</div><h5 id="methods_remove_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>xid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-remove-page"><p>Used to set the id of the node in the json store.</p>
+</div></td></tr><tr><td>dataPath</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-remove-page"><p>dataPath of the object in the json store.</p>
+</div></td></tr><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-remove-page"><p>name of the object in the json store.</p>
+</div></td></tr><tr><td>readPermission</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-remove-page"><p>readPermission of the object in the json store.</p>
+</div></td></tr><tr><td>editPermission</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-remove-page"><p>editPermission of the object in the json store.</p>
+</div></td></tr></tbody></table><h5 id="methods_remove_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="jsonstore-remove-page"><p>Returns a json store object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(xid, dataPath, name, readPermission, editPermission)</h3>
+<div class="save"><div class="jsonstore-save-page"><p>A default action provided by $resource. Makes a http POST call to the rest endpoint <code>/rest/v1/json-data/:xid/:dataPath</code></p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>xid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-save-page"><p>Used to set the id of the node in the json store.</p>
+</div></td></tr><tr><td>dataPath</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-save-page"><p>dataPath of the object in the json store.</p>
+</div></td></tr><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-save-page"><p>name of the object in the json store.</p>
+</div></td></tr><tr><td>readPermission</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-save-page"><p>readPermission of the object in the json store.</p>
+</div></td></tr><tr><td>editPermission</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="jsonstore-save-page"><p>editPermission of the object in the json store.</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="jsonstore-save-page"><p>Returns a json store object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

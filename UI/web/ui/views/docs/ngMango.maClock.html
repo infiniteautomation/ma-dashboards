@@ -1,0 +1,27 @@
+<h1><code ng:non-bindable="">maClock</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ngMango</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmango-maclock-page"><p><code>&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt;&lt;/ma-clock&gt;</code></p>
+<ul>
+<li>This directive will display an analog style clock.</li>
+<li>Note, you will need to set a width and height on the element.</li>
+<li><a ui-sref="dashboard.examples.basics.clocksAndTimezones">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-now update-interval="1 SECONDS" output="time"&gt;&lt;/ma-now&gt;
+&lt;ma-clock style="width: 100%; height: 200px;" time="time" text="Browser timezone"&gt;&lt;/ma-clock&gt;
+&lt;ma-clock style="width: 100%; height: 200px;" time="time" timezone="<span>{{</span>user.getTimezone()<span>}}</span>" text="User timezone"&gt;&lt;/ma-clock&gt;
+&lt;ma-clock style="width: 100%; height: 200px;" time="time" timezone="Australia/Sydney" text="Sydney"&gt;&lt;/ma-clock&gt;
+&lt;span&gt;<span>{{</span>time|moment:'format':'ll LTS Z'<span>}}</span>&lt;/span&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>time</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-maclock-page"><p>Takes in a timestamp. The current live time can be provided by the <code>&lt;ma-now&gt;</code> directive. The timestamp can be later be filtered with <a href="http://momentjs.com/">momentJs</a> to display as a formatted date/time on the page.</p>
+</div></td></tr><tr><td>timezone <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-maclock-page"><p>If provided, will switch which timezone used for displaying the current time. Can be set as a <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">TZ string</a> or you can use the timezone of the user
+currently logged into Mango (by evaluating the expression <code>{{user.getTimezone()}}</code> to return a string).</p>
+</div></td></tr><tr><td>text <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-maclock-page"><p>Sets the label text</p>
+</div></td></tr><tr><td>options <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-maclock-page"><p>extend AmCharts configuration object for customizing design of the clock (see <a href="https://www.amcharts.com/demos/clock/">amCharts</a>)</p>
+</div></td></tr><tr><td>show-seconds <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-maclock-page"><p>Turns seconds hand on off. (Defaults to <code>true</code>)</p>
+</div></td></tr></tbody></table></div>
+</div>
