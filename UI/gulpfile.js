@@ -74,7 +74,7 @@ gulp.task('copy-docs', ['build-ngdocs'], function() {
     console.log('Copying Doc Partials');
     
     return gulp.src(['docs/mango-3.4/partials/api/*.html','docs/mango-3.4/js/docs-setup.js'])
-        .pipe(gulp.dest('web/mdAdmin/views/docs'));
+        .pipe(gulp.dest('web/ui/views/docs'));
 });
 
 gulp.task('watchDocs', function() {

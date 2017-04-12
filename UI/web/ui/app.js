@@ -10,7 +10,7 @@ define([
     'require',
     './services/Page',
     './services/DateBar',
-    './services/mdAdminSettings',
+    './services/uiSettings',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
     'moment-timezone',
@@ -19,10 +19,10 @@ define([
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, mdAdminSettings, pageView, livePreview, moment) {
+], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, uiSettings, pageView, livePreview, moment) {
 'use strict';
 
-var mdAdminApp = angular.module('mdAdminApp', [
+var uiApp = angular.module('uiApp', [
     'oc.lazyLoad',
     'ui.router',
     'ui.sortable',
@@ -32,8 +32,8 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'ngMessages'
 ]);
 
-loadLoginTranslations.$inject = ['Translate', 'mdAdminSettings', 'User', '$window'];
-function loadLoginTranslations(Translate, mdAdminSettings, User, $window) {
+loadLoginTranslations.$inject = ['Translate', 'uiSettings', 'User', '$window'];
+function loadLoginTranslations(Translate, uiSettings, User, $window) {
     return Translate.loadNamespaces('login').then(function(data) {
         var user = User.current;
         moment.locale((user && user.locale) || data.locale || $window.navigator.languages || $window.navigator.language);
@@ -41,9 +41,9 @@ function loadLoginTranslations(Translate, mdAdminSettings, User, $window) {
     });
 }
 
-mdAdminApp.factory('Page', Page)
+uiApp.factory('Page', Page)
     .factory('DateBar', DateBar)
-    .factory('mdAdminSettings', mdAdminSettings)
+    .factory('uiSettings', uiSettings)
     .directive('pageView', pageView)
     .directive('livePreview', livePreview)
     .constant('require', require)
@@ -51,7 +51,7 @@ mdAdminApp.factory('Page', Page)
     .constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages')
     .constant('DASHBOARDS_NG_DOCS', NG_DOCS);
 
-mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
+uiApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
     var resolveObjects = {};
     
     this.addStates = function(menuItems, parent, fromJsonStore) {
@@ -120,7 +120,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
     }.bind(this)];
 }]);
 
-mdAdminApp.constant('MENU_ITEMS', [
+uiApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard',
         templateUrl: 'views/dashboard/main.html',
@@ -964,7 +964,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     }
 ]);
 
-mdAdminApp.config([
+uiApp.config([
     'MENU_ITEMS',
     'MD_ADMIN_SETTINGS',
     'DASHBOARDS_NG_DOCS',
@@ -1076,7 +1076,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
 
     $urlRouterProvider.otherwise(function($injector, $location) {
         var basePath = '/ui/';
-        var mdAdminSettings = $injector.get('mdAdminSettings');
+        var uiSettings = $injector.get('uiSettings');
         var User = $injector.get('User');
         var $state = $injector.get('$state');
         var user = User.current;
@@ -1191,9 +1191,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     });
 }]);
 
-mdAdminApp.constant('MA_UI_PREFS_KEY', 'uiPreferences');
+uiApp.constant('MA_UI_PREFS_KEY', 'uiPreferences');
 
-mdAdminApp.run([
+uiApp.run([
     'MENU_ITEMS',
     '$rootScope',
     '$state',
@@ -1203,7 +1203,7 @@ mdAdminApp.run([
     'localStorageService',
     '$mdToast',
     'User',
-    'mdAdminSettings',
+    'uiSettings',
     'Translate',
     '$location',
     '$stateParams',
@@ -1213,17 +1213,17 @@ mdAdminApp.run([
     'GoogleAnalytics',
     'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
-        $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar, $document, $mdDialog,
+        $mdToast, User, uiSettings, Translate, $location, $stateParams, DateBar, $document, $mdDialog,
         GoogleAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
 
     if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
         GoogleAnalytics.enable(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
     }
 
-    mdAdminSettings.generateTheme();
+    uiSettings.generateTheme();
     $rootScope.stateParams = $stateParams;
     $rootScope.dateBar = DateBar;
-    $rootScope.mdAdminSettings = mdAdminSettings;
+    $rootScope.uiSettings = uiSettings;
     $rootScope.User = User;
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
@@ -1297,8 +1297,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
         if ($state.includes('dashboard.settings.dashboardSettings')) {
             // resets themes to the last saved state when leaving the settings page
-            mdAdminSettings.reset();
-            mdAdminSettings.generateTheme();
+            uiSettings.reset();
+            uiSettings.generateTheme();
         }
         
         if ($state.includes('dashboard') && !$rootScope.navLockedOpen) {
@@ -1320,7 +1320,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     $rootScope.$on('$viewContentLoaded', function(event, view) {
         if (view === '@dashboard') {
             if ($mdMedia('gt-sm')) {
-                var uiPrefs = localStorageService.get(mdAdminSettings.UI_PREFERENCES_KEY);
+                var uiPrefs = localStorageService.get(uiSettings.UI_PREFERENCES_KEY);
                 if (!uiPrefs || !uiPrefs.menuClosed) {
                     $rootScope.openMenu();
                 }
@@ -1358,9 +1358,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     };
 
     $rootScope.closeMenu = function() {
-        var uiPrefs = localStorageService.get(mdAdminSettings.UI_PREFERENCES_KEY) || {};
+        var uiPrefs = localStorageService.get(uiSettings.UI_PREFERENCES_KEY) || {};
         uiPrefs.menuClosed = true;
-        localStorageService.set(mdAdminSettings.UI_PREFERENCES_KEY, uiPrefs);
+        localStorageService.set(uiSettings.UI_PREFERENCES_KEY, uiPrefs);
         
         angular.element('#menu-button').blur();
         $rootScope.navLockedOpen = false;
@@ -1368,9 +1368,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     };
 
     $rootScope.openMenu = function() {
-        var uiPrefs = localStorageService.get(mdAdminSettings.UI_PREFERENCES_KEY) || {};
+        var uiPrefs = localStorageService.get(uiSettings.UI_PREFERENCES_KEY) || {};
         uiPrefs.menuClosed = false;
-        localStorageService.set(mdAdminSettings.UI_PREFERENCES_KEY, uiPrefs);
+        localStorageService.set(uiSettings.UI_PREFERENCES_KEY, uiPrefs);
         
         angular.element('#menu-button').blur();
         if ($mdMedia('gt-sm')) {
@@ -1525,22 +1525,22 @@ $q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSet
         MD_ADMIN_SETTINGS.customMenuItems = userMenuStore.jsonData.menuItems;
     }
     
-    mdAdminApp.constant('MD_ADMIN_SETTINGS', MD_ADMIN_SETTINGS);
-    mdAdminApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MD_ADMIN_SETTINGS.googleAnalyticsPropertyId);
+    uiApp.constant('MD_ADMIN_SETTINGS', MD_ADMIN_SETTINGS);
+    uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MD_ADMIN_SETTINGS.googleAnalyticsPropertyId);
 
-    var angularJsModuleNames = ['mdAdminApp'];
+    var angularJsModuleNames = ['uiApp'];
     for (var i = 0; i < angularModules.length; i++) {
         var angularModule = angularModules[i];
         angularJsModuleNames.push(angularModule.name);
     }
     
-    angular.module('mdAdminBootstrap', angularJsModuleNames).config(['UserProvider', function(UserProvider) {
+    angular.module('uiBootstrap', angularJsModuleNames).config(['UserProvider', function(UserProvider) {
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
     }]);
 
     angular.element(document).ready(function() {
-        angular.bootstrap(document.documentElement, ['mdAdminBootstrap'], {strictDi: true});
+        angular.bootstrap(document.documentElement, ['uiBootstrap'], {strictDi: true});
     });
 });
 

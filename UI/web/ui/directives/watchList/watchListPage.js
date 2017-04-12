@@ -396,9 +396,9 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
-            controller: ['DateBar', 'pointValues', 'mdAdminSettings', 'Util', 'MA_ROLLUP_TYPES', function(DateBar, pointValues, mdAdminSettings, Util, MA_ROLLUP_TYPES) {
+            controller: ['DateBar', 'pointValues', 'uiSettings', 'Util', 'MA_ROLLUP_TYPES', function(DateBar, pointValues, uiSettings, Util, MA_ROLLUP_TYPES) {
                 this.dateBar = DateBar;
-                this.mdAdminSettings = mdAdminSettings;
+                this.uiSettings = uiSettings;
                 this.rollupTypes = MA_ROLLUP_TYPES;
                 this.rollupType = 'NONE';
                 

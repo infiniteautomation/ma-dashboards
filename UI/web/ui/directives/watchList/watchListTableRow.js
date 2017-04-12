@@ -8,8 +8,8 @@ define(['require', 'moment-timezone', 'angular'], function(require, moment, angu
 
 var FLASH_CLASS = 'flash-on-change';
 
-watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'mdAdminSettings', '$state', 'DateBar', 'localStorageService'];
-function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSettings, $state, DateBar, localStorageService) {
+watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'uiSettings', '$state', 'DateBar', 'localStorageService'];
+function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, uiSettings, $state, DateBar, localStorageService) {
     return {
         templateUrl: require.toUrl('./watchListTableRow.html'),
         link: watchListTableRowLink
@@ -50,7 +50,7 @@ function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSett
             $mdDialog.show({
                 controller: function() {
                     this.dateBar = DateBar;
-                    this.mdAdminSettings = mdAdminSettings;
+                    this.uiSettings = uiSettings;
 
                     this.retrievePreferences = function() {
                         var defaults = {

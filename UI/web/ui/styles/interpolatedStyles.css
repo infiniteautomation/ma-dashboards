@@ -30,19 +30,19 @@ mdp-calendar .md-button.md-raised:not(.md-accent) {
 }
 
 button, html, input, select, textarea, .ma-default-font {
-  font-family: {{mdAdminSettings.fonts.default}}, sans-serif;
+  font-family: {{uiSettings.fonts.default}}, sans-serif;
 }
 
 p, .ma-paragraph-font {
-  font-family: {{mdAdminSettings.fonts.paragraph}}, sans-serif;
+  font-family: {{uiSettings.fonts.paragraph}}, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6, .ma-heading-font {
-  font-family: {{mdAdminSettings.fonts.heading}}, sans-serif;
+  font-family: {{uiSettings.fonts.heading}}, sans-serif;
 }
 
 pre, code, div.ace_editor, .ma-code-font {
-  font-family: {{mdAdminSettings.fonts.code}}, monospace;
+  font-family: {{uiSettings.fonts.code}}, monospace;
 }
 
 code {

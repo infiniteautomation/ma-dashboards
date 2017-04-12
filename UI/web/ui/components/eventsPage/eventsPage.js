@@ -6,13 +6,13 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-EventsPageController.$inject = ['$scope', '$mdMedia', '$stateParams', '$state', 'localStorageService', 'DateBar', 'mdAdminSettings'];
-function EventsPageController($scope, $mdMedia, $stateParams, $state, localStorageService, DateBar, mdAdminSettings) {
+EventsPageController.$inject = ['$scope', '$mdMedia', '$stateParams', '$state', 'localStorageService', 'DateBar', 'uiSettings'];
+function EventsPageController($scope, $mdMedia, $stateParams, $state, localStorageService, DateBar, uiSettings) {
     
     var $ctrl = this;
     $ctrl.$mdMedia = $mdMedia;
     $ctrl.dateBar = DateBar;
-    $ctrl.mdAdminSettings = mdAdminSettings;
+    $ctrl.uiSettings = uiSettings;
     
     $ctrl.$onInit = function() {
         

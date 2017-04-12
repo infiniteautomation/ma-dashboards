@@ -43,7 +43,7 @@ requirejs.config({
         'modules': '/modules',
         'mangoUIModule' : module,
         'mango-3.4' : module + '/js/mango-3.4',
-        'mdAdmin' : module + '/mdAdmin',
+        'ui' : module + '/ui',
         'angular' : vendor + '/angular/angular',
         'angular-ui-router' : vendor + '/angular-ui-router/angular-ui-router',
         'angular-ui-sortable' : vendor + '/angular-ui-sortable/sortable',

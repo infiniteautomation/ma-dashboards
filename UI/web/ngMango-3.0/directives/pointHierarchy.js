@@ -21,7 +21,7 @@ define([], function() {
  * @param {object} hierarchy Outputs a nested object outlining the portion of the point hierarchy
  specified by the path.
  * @param {array=} points Outputs an array of point objects specified under the given path.
- This point array can be used with a chart ([View Demo](/modules/mangoUI/web/mdAdmin/#/dashboard/examples/point-hierarchy/line-chart))
+ This point array can be used with a chart ([View Demo](/modules/mangoUI/web/ui/#/dashboard/examples/point-hierarchy/line-chart))
 * @param {boolean=} subfolders If set to `false`, `points` will only return points that are contained directly as children in the target folders.
 By default this is set to `true` and all descendant points are given, even those within subfolders. 
  *

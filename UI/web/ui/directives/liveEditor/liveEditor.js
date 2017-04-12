@@ -6,8 +6,8 @@
 define(['require', 'angular-ui-ace'], function(require) {
 'use strict';
 
-LiveEditorController.$inject = ['$element', 'mdAdminSettings', '$templateRequest', '$sce', '$scope', '$timeout'];
-function LiveEditorController($element, mdAdminSettings, $templateRequest, $sce, $scope, $timeout) {
+LiveEditorController.$inject = ['$element', 'uiSettings', '$templateRequest', '$sce', '$scope', '$timeout'];
+function LiveEditorController($element, uiSettings, $templateRequest, $sce, $scope, $timeout) {
     this.initialText = $element.data('htmlContent');
     $element.removeData('htmlContent');
     
@@ -27,7 +27,7 @@ function LiveEditorController($element, mdAdminSettings, $templateRequest, $sce,
         });
     }
     
-    this.mdAdminSettings = mdAdminSettings;
+    this.uiSettings = uiSettings;
     this.$templateRequest = $templateRequest;
     this.$sce = $sce;
     this.$timeout = $timeout;
@@ -44,7 +44,7 @@ LiveEditorController.prototype.$onInit = function() {
         useWrapMode : true,
         showGutter: false,
         showPrintMargin: false,
-        theme: this.theme || this.mdAdminSettings.codeTheme,
+        theme: this.theme || this.uiSettings.codeTheme,
         mode: this.mode || 'html',
         onLoad: this.aceLoaded.bind(this),
         onChange: this.aceChanged.bind(this)

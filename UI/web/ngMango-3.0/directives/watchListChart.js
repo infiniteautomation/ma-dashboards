@@ -77,11 +77,11 @@ function watchListChart() {
     };
 }
 
-WatchListChartController.$inject = ['mdAdminSettings'];
-function WatchListChartController(mdAdminSettings) {
+WatchListChartController.$inject = ['uiSettings'];
+function WatchListChartController(uiSettings) {
     this.chartOptions = {};
 
-    this.defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
+    this.defaultAxisColor = uiSettings.theming.THEMES[uiSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
 }
 
 WatchListChartController.prototype.$onInit = function() {

@@ -29,7 +29,7 @@ The CSS will only be injected if the directive using this service is used on a p
 }
 
 // inserts a link tag to an external css file after the md-data-table css link
-cssInjector.injectLink('/modules/mangoUI/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles',
+cssInjector.injectLink('/modules/mangoUI/web/ui/directives/watchList/style.css','watchlistPageStyles',
 'link[href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css"]');
 * </pre>
 */

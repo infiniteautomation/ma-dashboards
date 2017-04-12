@@ -6,14 +6,14 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-DateBarController.$inject = ['$mdMedia', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', 'mdAdminSettings'];
-function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar, mdAdminSettings) {
+DateBarController.$inject = ['$mdMedia', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', 'uiSettings'];
+function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar, uiSettings) {
     this.params = DateBar;
     this.stateParams = $stateParams;
     this.rollupTypes = MA_ROLLUP_TYPES;
     this.timePeriodTypes = MA_TIME_PERIOD_TYPES;
     this.mdMedia = $mdMedia;
-    this.mdAdminSettings = mdAdminSettings;
+    this.uiSettings = uiSettings;
 
     this.$onInit = function() {
         this.calcAutoRollup();

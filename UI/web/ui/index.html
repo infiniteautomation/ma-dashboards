@@ -28,7 +28,7 @@
 </head>
 
 <body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn}"
-      md-theme="{{mdAdminSettings.activeTheme}}" md-colors="{background: 'background'}">
+      md-theme="{{uiSettings.activeTheme}}" md-colors="{background: 'background'}">
     <div id="loading-bar-container" md-colors="{color: 'accent-hue-2'}"></div>
     
 	<div ng-if="appLoading" class="app-loading">
@@ -39,6 +39,6 @@
 
     <script src="/modules/mangoUI/web/vendor/requirejs/require.js"></script>
     <script src="/modules/mangoUI/web/js/loaderConfig.js"></script>
-    <script>require(['mdAdmin/app']);</script>
+    <script>require(['ui/app']);</script>
 </body>
 </html>

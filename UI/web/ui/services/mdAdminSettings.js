@@ -6,14 +6,14 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', 'mangoDateFormats'];
-function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, mangoDateFormats) {
+uiSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', 'mangoDateFormats'];
+function uiSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, mangoDateFormats) {
     var DASHBOARD_SETTINGS_XID = 'dashboard-settings';
     var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'customMenuItems'];
     var themeId = 0;
     var userThemeGenerated = false;
     
-    function MdAdminSettings() {
+    function UiSettings() {
         angular.extend(this, MD_ADMIN_SETTINGS);
         this.theming = $mdTheming;
         
@@ -28,7 +28,7 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
         delete this.initialSettings;
     }
 
-    MdAdminSettings.prototype = {
+    UiSettings.prototype = {
         save: function save() {
             var differences = deepDiff(this, this.defaultSettings, NOT_SETTINGS_PROPERTIES);
             this.userSettingsStore.jsonData = differences;
@@ -117,7 +117,7 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
                         getThemeColor: function(colorString) {
                             return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
                         }.bind(this),
-                        mdAdminSettings: this
+                        uiSettings: this
                     });
                     cssInjector.injectStyle(result, 'interpolatedStyles', '[href="styles/main.css"]', false, true);
                 }.bind(this));
@@ -148,8 +148,8 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
         return differences;
     }
     
-    return new MdAdminSettings();
+    return new UiSettings();
 }
-return mdAdminSettingsFactory;
+return uiSettingsFactory;
 
 }); // define

@@ -6,7 +6,7 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function MenuFactory(MENU_ITEMS, mdAdminSettings, JsonStore, CUSTOM_USER_MENU_XID, $q) {
+function MenuFactory(MENU_ITEMS, uiSettings, JsonStore, CUSTOM_USER_MENU_XID, $q) {
 
     var firstRun = true;
     
@@ -19,8 +19,8 @@ function MenuFactory(MENU_ITEMS, mdAdminSettings, JsonStore, CUSTOM_USER_MENU_XI
         if (firstRun) {
             firstRun = false;
             var menuStore = this.getDefaultMenu();
-            if (mdAdminSettings.customMenuItems) {
-                menuStore.jsonData.menuItems = mdAdminSettings.customMenuItems;
+            if (uiSettings.customMenuItems) {
+                menuStore.jsonData.menuItems = uiSettings.customMenuItems;
             }
             return $q.when(menuStore);
         }
@@ -64,7 +64,7 @@ function MenuFactory(MENU_ITEMS, mdAdminSettings, JsonStore, CUSTOM_USER_MENU_XI
     return new Menu();
 }
 
-MenuFactory.$inject = ['MENU_ITEMS', 'mdAdminSettings', 'JsonStore', 'CUSTOM_USER_MENU_XID', '$q'];
+MenuFactory.$inject = ['MENU_ITEMS', 'uiSettings', 'JsonStore', 'CUSTOM_USER_MENU_XID', '$q'];
 return MenuFactory;
 
 }); // define

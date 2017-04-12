@@ -23,7 +23,7 @@ define(['amcharts/pie', 'angular'], function(AmCharts, angular) {
     <li>`color` - Color of the pie piece</li>
 </ul>
  * @param {object=} options extend AmCharts configuration object for customizing design of the chart (see [amCharts](https://www.amcharts.com/demos/simple-pie-chart/))
- * @param {object=} value-labels For use with the multi state data point render map. (see [multi-state pie chart demo](/modules/mangoUI/web/mdAdmin/#/dashboard/examples/statistics/state-pie-chart))
+ * @param {object=} value-labels For use with the multi state data point render map. (see [multi-state pie chart demo](/modules/mangoUI/web/ui/#/dashboard/examples/statistics/state-pie-chart))
  *
  * @usage
  * <ma-pie-chart style="height: 300px; width: 600px" values="[ { value: 30, text: 'hot', color: '#ff9300' }, { value: 70, text: 'cold', color: '#942192' } ]"

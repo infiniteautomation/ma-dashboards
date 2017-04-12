@@ -6,7 +6,7 @@
 define(['require', 'ace'], function(require) {
 'use strict';
 
-var prettyprint = function(mdAdminSettings) {
+var prettyprint = function(uiSettings) {
     return {
         restrict: 'C',
         scope: {
@@ -14,7 +14,7 @@ var prettyprint = function(mdAdminSettings) {
         },
         link: function($scope, $element) {
             $scope.editor = ace.edit($element[0]);
-            $scope.editor.setTheme("ace/theme/"+ mdAdminSettings.codeTheme);
+            $scope.editor.setTheme("ace/theme/"+ uiSettings.codeTheme);
             $scope.editor.getSession().setMode("ace/mode/" + ($scope.prettyprintMode || 'html'));
             $scope.editor.setShowPrintMargin(false);
             $scope.editor.setReadOnly(true);
@@ -30,7 +30,7 @@ var prettyprint = function(mdAdminSettings) {
     };
 };
 
-prettyprint.$inject = ['mdAdminSettings'];
+prettyprint.$inject = ['uiSettings'];
 
 return prettyprint;
 
