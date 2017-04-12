@@ -88,6 +88,12 @@ gulp.task('watch-web', function() {
         .pipe(gulp.dest(MA_HOME + '/web/modules/mangoUI/web'));
 });
 
+gulp.task('watch-properties', function() {
+    return gulp.src('classes/**')
+        .pipe(watch('classes/**', {ignoreInitial: false, verbose: true}))
+        .pipe(gulp.dest(MA_HOME + '/web/modules/mangoUI/classes'));
+});
+
 gulp.task('build-amcharts', function() {
     var amchart = gulp.src([
         'utils/Class.js',
