@@ -14,7 +14,7 @@ define(['angular', './PointValueController'], function(angular, PointValueContro
  * `<ma-switch-img></ma-switch-img>`
  * - `<ma-switch-img>` displays an image who's image source will be switched based on a point's value.
  * - Use default-src to set the default image that will display if no match is found or the point is disabled.
- * - <a ui-sref="dashboard.examples.singleValueDisplays.switchImage">View Demo</a> 
+ * - <a ui-sref="ui.examples.singleValueDisplays.switchImage">View Demo</a> 
  *
  * @param {object} point Input the point object whos value will be used in
  determining the image displayed. (using `<ma-get-point-value point="myPoint"></ma-point-value>`)

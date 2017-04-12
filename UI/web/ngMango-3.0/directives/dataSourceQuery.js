@@ -12,7 +12,7 @@ define([], function() {
  * @description
  * `<ma-data-source-query data-sources="dataSourcesArray" query="{name: 'meter'}" limit="100"></ma-data-source-query>`
  * - Outputs an array of Mango data sources.
- * - <a ui-sref="dashboard.examples.basics.dataSourceAndDeviceList">View Demo</a>
+ * - <a ui-sref="ui.examples.basics.dataSourceAndDeviceList">View Demo</a>
  *
  * @param {array} data-sources Variable to hold the array of outputted data source objects.
  * @param {object=} query Filters the results by a property of the data source object (eg: `{name: 'meta'}` returns data sources containing the string `'meta'` in the `name` property)

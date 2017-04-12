@@ -13,7 +13,7 @@ define(['amcharts/gantt', 'angular', 'moment'], function(AmCharts, angular, mome
  * `<ma-state-chart>
  </ma-state-chart>`
  * - This directive will display a chart showing the proportion of time over a time range a multi-state data point has been in a particular state.
- * - <a ui-sref="dashboard.examples.charts.stateChart">View Demo</a>
+ * - <a ui-sref="ui.examples.charts.stateChart">View Demo</a>
 
  * @param {object=} options extend AmCharts configuration object for customizing design of the chart (see [amCharts](https://www.amcharts.com/demos/simple-pie-chart/))
  * @param {string=} end-date Sets the end date for the chart.

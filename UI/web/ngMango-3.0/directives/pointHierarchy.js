@@ -15,7 +15,7 @@ define([], function() {
  * - `<ma-point-hierarchy>` accepts an array of strings into its `path` attribute.
  * - You can pass plain strings into this array or, use * as a wildcard for all subfolders,
  or separate multiple folders by a | character.
- * - <a ui-sref="dashboard.examples.pointHierarchy.displayTree">View Demo</a>
+ * - <a ui-sref="ui.examples.pointHierarchy.displayTree">View Demo</a>
  *
  * @param {array} path Inputs an array targeting the folder(s) in the point hierarchy to access.
  * @param {object} hierarchy Outputs a nested object outlining the portion of the point hierarchy

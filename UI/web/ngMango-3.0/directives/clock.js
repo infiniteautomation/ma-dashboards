@@ -13,7 +13,7 @@ define(['amcharts/gauge', 'jquery', 'moment-timezone'], function(AmCharts, $, mo
   * `<ma-clock time="" timezone="" text=""></ma-clock>`
   * - This directive will display an analog style clock.
   * - Note, you will need to set a width and height on the element.
-  * - <a ui-sref="dashboard.examples.basics.clocksAndTimezones">View Demo</a>
+  * - <a ui-sref="ui.examples.basics.clocksAndTimezones">View Demo</a>
   *
   * @param {string} time Takes in a timestamp. The current live time can be provided by the `<ma-now>` directive. The timestamp can be later be filtered with [momentJs](http://momentjs.com/) to display as a formatted date/time on the page.
   * @param {string=} timezone If provided, will switch which timezone used for displaying the current time. Can be set as a [TZ string](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) or you can use the timezone of the user

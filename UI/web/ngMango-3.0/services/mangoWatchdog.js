@@ -19,7 +19,7 @@ define(['angular'], function(angular) {
 * The watchdog service check interval is set by defining the 'mangoWatchdogTimeout' constant and when Mango is down
 * the service will try and reconnect every 'mangoReconnectDelay' milliseconds.
 * 
-* - <a ui-sref="dashboard.examples.utilities.watchdog">View Demo</a>
+* - <a ui-sref="ui.examples.utilities.watchdog">View Demo</a>
 */
 
 /**

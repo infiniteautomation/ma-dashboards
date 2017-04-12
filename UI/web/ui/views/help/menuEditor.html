@@ -2,7 +2,7 @@
 	<h1 ma-tr="ui.dox.menuEditor"></h1>
 
 	<p>
-		The Sidebar Menu you see on the left is completely customizable from the <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page (found under 
+		The Sidebar Menu you see on the left is completely customizable from the <a ui-sref="ui.settings.editMenu">Edit Menu</a> page (found under 
 		<code>Administration > Edit Menu</code>).
 		You can hide or show menu items, edit menu item labels and icons, reorder menu items, create new menu 
 		items and delete custom menu items. 
@@ -12,7 +12,7 @@
 	<h2>The Edit Menu Page</h2>
 	
 	<p>
-		The <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page is where you will edit existing menu items.
+		The <a ui-sref="ui.settings.editMenu">Edit Menu</a> page is where you will edit existing menu items.
 		After modifying the menu structure you need to hit the <code>Save</code> button.
 	</p>
 	
@@ -88,8 +88,8 @@
 	<h2>The Create/Edit Menu Item Dialog</h2>
 	
 	<p>
-		The <code>Create/Edit menu item</code> dialog will open if you click the add new menu item FAB button on the <a ui-sref="dashboard.settings.editMenu">Edit Menu</a> page
-		or the <code>Add/Edit Menu Item</code> button on the <a ui-sref="dashboard.help.customPages">Page Editor</a>.
+		The <code>Create/Edit menu item</code> dialog will open if you click the add new menu item FAB button on the <a ui-sref="ui.settings.editMenu">Edit Menu</a> page
+		or the <code>Add/Edit Menu Item</code> button on the <a ui-sref="ui.help.customPages">Page Editor</a>.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditMenu-Dialog.png" alt="Help-ScreenShots-EditMenu-Dialog"/>
@@ -105,14 +105,14 @@
 	
 	<p>
 		The <code>State name</code> is the unique ID for the menu item. If you are using a parent item it should begin with the parent menu item's state name. All state names should 
-		start with <code>dashboard.</code> as this is the state name of the root (top level). The <code>URL path</code> is what will display in the browser's address bar and will be 
+		start with <code>ui.</code> as this is the state name of the root (top level). The <code>URL path</code> is what will display in the browser's address bar and will be 
 		used in the <code>URL</code> to directly link to the page. It will be prefixed with the parent states' URL.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditMenu-State-Url.png" alt="Help-ScreenShots-EditMenu-State-Url"/>
 	
 	<p>
-		The radio buttons allow you to choose whether or not make the <a ui-sref="dashboard.help.dateBar">Date Bar</a> visible on the page. Also, you can choose whether or not to have rollup
+		The radio buttons allow you to choose whether or not make the <a ui-sref="ui.help.dateBar">Date Bar</a> visible on the page. Also, you can choose whether or not to have rollup
 		controls display on the Date Bar.
 	</p>
 	

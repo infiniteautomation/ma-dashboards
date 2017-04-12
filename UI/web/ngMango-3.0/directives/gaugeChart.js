@@ -16,7 +16,7 @@ define(['amcharts/gauge', 'require', 'angular', './PointValueController'], funct
  * - You must use `<ma-get-point-value>` to provide a point value to `<ma-gauge-chart>`
  * - Note, you will need to set a width and height on the element.
  * - Options have been exposed via attributes, allowing you to set colors and ranges of multiple bands.
- * - <a ui-sref="dashboard.examples.singleValueDisplays.gauges">View Demo</a>
+ * - <a ui-sref="ui.examples.singleValueDisplays.gauges">View Demo</a>
  *
 
  * @param {object} point The point object with the live value provided by `<ma-get-point-value>`.

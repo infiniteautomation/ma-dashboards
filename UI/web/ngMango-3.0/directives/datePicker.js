@@ -13,7 +13,7 @@ define(['angular', 'moment'], function(angular, moment) {
  * `<ma-date-picker ng-model="time"></ma-date-picker>`
  * - Use the `<ma-date-picker>` directive to display a date/time picker, note that you can also add it as an attribute to an existing `<input>` tag.
  * - Often used in conjunction with `<ma-date-range-picker>`
- * - <a ui-sref="dashboard.examples.basics.datePresets">View Demo</a>
+ * - <a ui-sref="ui.examples.basics.datePresets">View Demo</a>
  * @param {object} ng-model The variable to hold the resulting timestamp
  * @param {string=} format Specifies the formatting of the date/time within the input (using [momentJs](http://momentjs.com/) formatting)
  *

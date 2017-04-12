@@ -16,7 +16,7 @@ define(['require', 'angular', './PointValueController'], function(require, angul
  * - It can handle `numeric`, `alphanumeric`, `binary`, and `multistate` point types and will display an appropriate interface element for each.
  * - Alternatively, you can set the value of a point by calling the `setValue` method on a point object.
  This function can be called from within an `ng-click` expression for example. (using this method does not require `<ma-set-point-value>`)
- * - <a ui-sref="dashboard.examples.settingPointValues.setPoint">View Demo</a> 
+ * - <a ui-sref="ui.examples.settingPointValues.setPoint">View Demo</a> 
  *
  * @param {object} point Input the point object of a settable data point.
  * @param {boolean} [show-button=true] Specifies if the button is shown.

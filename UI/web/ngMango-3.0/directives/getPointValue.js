@@ -15,7 +15,7 @@ define([], function() {
  * - You can use the `point-xid` property or pass in a point from `<ma-point-list>`.
  * - Live values can be displayed as text within your HTML by using <code ng-non-bindable="">{{myPoint.value}}</code> or <code ng-non-bindable="">{{myPoint.renderedValue}}</code> expressions.
  * - Additionally, you can use the outputted value to make custom meters. [View Example](/modules/mangoUI/web/ui/#/dashboard/examples/single-value-displays/bars).
- * - <a ui-sref="dashboard.examples.basics.liveValues">View Demo</a> / <a ui-sref="dashboard.examples.basics.getPointByXid">View point-xid Demo</a>
+ * - <a ui-sref="ui.examples.basics.liveValues">View Demo</a> / <a ui-sref="ui.examples.basics.getPointByXid">View point-xid Demo</a>
  *
  * @param {object} point The point object that the live value will be outputted to.
  If `point-xid` is used this will be a new variable for the point object.

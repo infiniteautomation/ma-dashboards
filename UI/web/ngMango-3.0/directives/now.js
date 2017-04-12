@@ -12,7 +12,7 @@ define(['moment-timezone'], function(moment) {
  * @description
  * `<ma-now update-interval="1 SECONDS" output="time"></ma-now>`
  * - This directive will output the current browser time as a Moment.js date object.
- * - <a ui-sref="dashboard.examples.basics.clocksAndTimezones">View Demo</a>
+ * - <a ui-sref="ui.examples.basics.clocksAndTimezones">View Demo</a>
  *
  * @param {object} output Variable to hold the output date.
  * @param {object} browserTimezone set to the browsers timezone (guessed)

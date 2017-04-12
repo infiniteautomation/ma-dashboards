@@ -44,7 +44,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 // editing a new item
                 item = {
                     isNew: true,
-                    name: parent ? parent.name + '.' : 'dashboard.',
+                    name: parent ? parent.name + '.' : 'ui.',
                     url: '/',
                     pageXid: null,
                     linkToPage: true,

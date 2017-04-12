@@ -11,7 +11,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 *
 * @description
 * Provides service for getting point hierarchy
-* - Used by <a ui-sref="dashboard.docs.ngMango.maPointHierarchy">`<ma-point-hierarchy>`</a> directive.
+* - Used by <a ui-sref="ui.docs.ngMango.maPointHierarchy">`<ma-point-hierarchy>`</a> directive.
 * - All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a> objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`

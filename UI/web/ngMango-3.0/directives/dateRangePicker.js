@@ -15,7 +15,7 @@ define(['moment-timezone'], function(moment) {
  This enables you to choose from a list of commonly used date ranges, such as "Today so far" or "Previous week".
  * - Set the update-interval attribute to have it update automatically.
  * - You can tie the `<ma-date-range-picker>` and `<ma-date-picker>` together using the `from` and `to` attributes on the preset picker, and `ng-model` on the date pickers.
- * - <a ui-sref="dashboard.examples.basics.datePresets">View Demo</a>
+ * - <a ui-sref="ui.examples.basics.datePresets">View Demo</a>
  * @param {string=} preset If provided the specified preset will be pre-selected in the dropdown.
  Possible options are:
 <ul>

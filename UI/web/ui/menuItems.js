@@ -8,7 +8,7 @@ define(['require', 'angular', './util/loadLoginTranslations'], function(require,
 
 return [
     {
-        name: 'dashboard',
+        name: 'ui',
         templateUrl: 'views/dashboard/main.html',
         'abstract': true,
         menuHidden: true,
@@ -17,7 +17,7 @@ return [
                 if (!User.current) {
                     throw 'No user';
                 }
-                return Translate.loadNamespaces(['dashboards', 'common']);
+                return Translate.loadNamespaces(['ui', 'common']);
             }],
             loginTranslations: loadLoginTranslations,
             errorTemplate: ['$templateRequest', function($templateRequest) {
@@ -42,7 +42,7 @@ return [
                            './components/footer/footer'
                 ], function(Menu, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
                         menuEditor, pageEditor, liveEditor, dualPaneEditor, stateParams, autoLoginSettings, activeEventIcons, dateBar, footer) {
-                    angular.module('dashboard', ['ui.ace'])
+                    angular.module('uiRootState', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('MenuEditor', MenuEditor)
                         .directive('menuEditor', menuEditor)
@@ -58,34 +58,34 @@ return [
                         .component('maActiveEventIcons', activeEventIcons)
                         .component('dateBar', dateBar)
                         .component('maFooter', footer);
-                    $ocLazyLoad.inject('dashboard');
+                    $ocLazyLoad.inject('uiRootState');
                 });
             }]
         }
     },
     {
-        name: 'dashboard.notFound',
+        name: 'ui.notFound',
         url: '/not-found?path',
         templateUrl: 'views/dashboard/notFound.html',
         menuHidden: true,
         menuTr: 'ui.app.pageNotFound'
     },
     {
-        name: 'dashboard.unauthorized',
+        name: 'ui.unauthorized',
         url: '/unauthorized?path',
         templateUrl: 'views/dashboard/unauthorized.html',
         menuHidden: true,
         menuTr: 'ui.app.unauthorized'
     },
     {
-        name: 'dashboard.error',
+        name: 'ui.error',
         url: '/error',
         templateUrl: 'views/dashboard/error.html',
         menuHidden: true,
         menuTr: 'ui.app.error'
     },
     {
-        name: 'dashboard.serverError',
+        name: 'ui.serverError',
         url: '/server-error',
         templateUrl: 'views/dashboard/serverError.html',
         menuHidden: true,
@@ -118,13 +118,13 @@ return [
         template: '<div></div>'
     },
     {
-        name: 'dashboard.home',
+        name: 'ui.home',
         url: '/home',
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'ui.dox.home',
         menuIcon: 'home',
         params: {
-            helpPage: 'dashboard.help.gettingStarted'
+            helpPage: 'ui.help.gettingStarted'
         },
         controller: ['$scope', 'Page', function ($scope, Page) {
             Page.getPages().then(function(store) {
@@ -133,7 +133,7 @@ return [
         }]
     },
     {
-        name: 'dashboard.watchList',
+        name: 'ui.watchList',
         url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId',
         template: '<ma-watch-list-page flex="noshrink" layout="column"></ma-watch-list-page>',
         menuTr: 'ui.app.watchList',
@@ -142,7 +142,7 @@ return [
             dateBar: {
                 rollupControls: true
             },
-            helpPage: 'dashboard.help.watchList'
+            helpPage: 'ui.help.watchList'
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -161,7 +161,7 @@ return [
         }
     },
     {
-        name: 'dashboard.dataPointDetails',
+        name: 'ui.dataPointDetails',
         url: '/data-point-details/{pointXid}?pointId',
         template: '<ma-data-point-details></ma-data-point-details>',
         menuTr: 'ui.app.dataPointDetails',
@@ -170,7 +170,7 @@ return [
             dateBar: {
                 rollupControls: true
             },
-            helpPage: 'dashboard.help.dataPointDetails'
+            helpPage: 'ui.help.dataPointDetails'
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -184,7 +184,7 @@ return [
         }
     },
     {
-        name: 'dashboard.events',
+        name: 'ui.events',
         url: '/events?eventType&alarmLevel&sortOrder&acknowledged',
         template: '<ma-events-page></ma-events-page>',
         menuTr: 'ui.app.events',
@@ -193,7 +193,7 @@ return [
             dateBar: {
                 rollupControls: false
             },
-            helpPage: 'dashboard.help.events'
+            helpPage: 'ui.help.events'
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -207,7 +207,7 @@ return [
         }
     },
     {
-        name: 'dashboard.help',
+        name: 'ui.help',
         url: '/help',
         menuTr: 'header.help',
         menuIcon: 'help',
@@ -216,12 +216,12 @@ return [
         children: [
             {
                 url: '/getting-started',
-                name: 'dashboard.help.gettingStarted',
+                name: 'ui.help.gettingStarted',
                 templateUrl: 'views/help/gettingStarted.html',
                 menuTr: 'ui.dox.gettingStarted'
             },
             {
-                name: 'dashboard.help.legacy',
+                name: 'ui.help.legacy',
                 url: '/legacy',
                 templateUrl: 'views/help/legacy.html',
                 menuHidden: true,
@@ -229,62 +229,62 @@ return [
             },
             {
                 url: '/watch-list',
-                name: 'dashboard.help.watchList',
+                name: 'ui.help.watchList',
                 templateUrl: 'views/help/watchList.html',
                 menuTr: 'ui.dox.watchList'
             },
             {
                 url: '/data-point-details',
-                name: 'dashboard.help.dataPointDetails',
+                name: 'ui.help.dataPointDetails',
                 templateUrl: 'views/help/dataPointDetails.html',
                 menuTr: 'ui.dox.dataPointDetails'
             },
             {
                 url: '/events',
-                name: 'dashboard.help.events',
+                name: 'ui.help.events',
                 templateUrl: 'views/help/events.html',
                 menuTr: 'ui.dox.events'
             },
             {
                 url: '/date-bar',
-                name: 'dashboard.help.dateBar',
+                name: 'ui.help.dateBar',
                 templateUrl: 'views/help/dateBar.html',
                 menuTr: 'ui.dox.dateBar'
             },
             {
                 url: '/ui-settings',
-                name: 'dashboard.help.dashboardSettings',
-                templateUrl: 'views/help/dashboardSettings.html',
-                menuTr: 'ui.app.dashboardSettings'
+                name: 'ui.help.uiSettings',
+                templateUrl: 'views/help/uiSettings.html',
+                menuTr: 'ui.app.uiSettings'
             },
             {
                 url: '/watch-list-builder',
-                name: 'dashboard.help.watchListBuilder',
+                name: 'ui.help.watchListBuilder',
                 templateUrl: 'views/help/watchListBuilder.html',
                 menuTr: 'ui.app.watchListBuilder'
             },
             {
                 url: '/custom-pages',
-                name: 'dashboard.help.customPages',
+                name: 'ui.help.customPages',
                 templateUrl: 'views/help/customPages.html',
                 menuTr: 'ui.dox.customPages'
             },
             {
                 url: '/menu-editor',
-                name: 'dashboard.help.menuEditor',
+                name: 'ui.help.menuEditor',
                 templateUrl: 'views/help/menuEditor.html',
                 menuTr: 'ui.dox.menuEditor'
             },
             {
                 url: '/custom-dashboards',
-                name: 'dashboard.help.customDashboards',
+                name: 'ui.help.customDashboards',
                 templateUrl: 'views/help/customDashboards.html',
                 menuTr: 'ui.dox.customDashboards'
             }
         ]
     },
     {
-        name: 'dashboard.apiErrors',
+        name: 'ui.apiErrors',
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',
         menuTr: 'ui.dox.apiErrors',
@@ -293,7 +293,7 @@ return [
     },
     {
         url: '/view-page/{pageXid}',
-        name: 'dashboard.viewPage',
+        name: 'ui.viewPage',
         template: '<page-view xid="{{pageXid}}" flex layout="column"></page-view>',
         menuTr: 'ui.app.viewPage',
         menuHidden: true,
@@ -303,14 +303,14 @@ return [
     },
     {
         url: '/administration',
-        name: 'dashboard.settings',
+        name: 'ui.settings',
         menuIcon: 'build',
         menuTr: 'ui.app.adminTools',
         weight: 1999,
         children: [
             {
                 url: '/edit-pages/{pageXid}',
-                name: 'dashboard.settings.editPages',
+                name: 'ui.settings.editPages',
                 templateUrl: 'views/dashboard/editPages.html',
                 menuTr: 'ui.app.editPages',
                 menuIcon: 'dashboard',
@@ -321,23 +321,23 @@ return [
                     },
                     markup: null,
                     templateUrl: null,
-                    helpPage: 'dashboard.help.customPages'
+                    helpPage: 'ui.help.customPages'
                 }
             },
             {
                 url: '/edit-menu',
-                name: 'dashboard.settings.editMenu',
+                name: 'ui.settings.editMenu',
                 templateUrl: 'views/dashboard/editMenu.html',
                 menuTr: 'ui.app.editMenu',
                 menuIcon: 'toc',
                 permission: 'edit-menus',
                 params: {
-                    helpPage: 'dashboard.help.menuEditor'
+                    helpPage: 'ui.help.menuEditor'
                 }
             },
             {
                 url: '/auto-login-settings',
-                name: 'dashboard.settings.autoLoginSettings',
+                name: 'ui.settings.autoLoginSettings',
                 templateUrl: 'views/dashboard/autoLoginSettings.html',
                 menuTr: 'ui.app.autoLoginSettings',
                 menuIcon: 'face',
@@ -345,24 +345,24 @@ return [
             },
             {
                 url: '/ui-settings',
-                name: 'dashboard.settings.dashboardSettings',
-                templateUrl: 'views/dashboard/dashboardSettings.html',
-                menuTr: 'ui.app.dashboardSettings',
+                name: 'ui.settings.uiSettings',
+                templateUrl: 'views/dashboard/uiSettings.html',
+                menuTr: 'ui.app.uiSettings',
                 menuIcon: 'color_lens',
                 permission: 'superadmin',
                 params: {
-                    helpPage: 'dashboard.help.dashboardSettings'
+                    helpPage: 'ui.help.uiSettings'
                 }
             },
             {
-                name: 'dashboard.settings.users',
+                name: 'ui.settings.users',
                 url: '/users/{username}',
                 template: '<users-page><users-page>',
                 menuTr: 'header.users',
                 menuIcon: 'people',
                 permission: 'superadmin',
                 params: {
-                    helpPage: 'dashboard.help.users'
+                    helpPage: 'ui.help.users'
                 },
                 resolve: {
                     loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
@@ -375,14 +375,14 @@ return [
                 }
             },
             {
-                name: 'dashboard.settings.system',
+                name: 'ui.settings.system',
                 url: '/system',
                 template: '<system-settings-page><system-settings-page>',
                 menuTr: 'header.systemSettings',
                 menuIcon: 'settings',
                 permission: 'superadmin',
                 params: {
-                    helpPage: 'dashboard.help.systemSettings'
+                    helpPage: 'ui.help.systemSettings'
                 },
                 resolve: {
                     loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
@@ -395,14 +395,14 @@ return [
                 }
             },
             {
-                name: 'dashboard.settings.watchListBuilder',
+                name: 'ui.settings.watchListBuilder',
                 url: '/watch-list-builder/{watchListXid}',
                 template: '<h1 ma-tr="ui.app.watchListBuilder"></h1>\n<watch-list-builder></watch-list-builder>',
                 menuTr: 'ui.app.watchListBuilder',
                 menuIcon: 'playlist_add_check',
                 params: {
                     watchList: null,
-                    helpPage: 'dashboard.help.watchListBuilder'
+                    helpPage: 'ui.help.watchListBuilder'
                 },
                 resolve: {
                     loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -417,14 +417,14 @@ return [
                 }
             },
             {
-                name: 'dashboard.settings.importExport',
+                name: 'ui.settings.importExport',
                 url: '/import-export',
                 template: '<import-export-page><import-export-page>',
                 menuTr: 'header.emport',
                 menuIcon: 'import_export',
                 permission: 'superadmin',
                 params: {
-                    helpPage: 'dashboard.help.importExport'
+                    helpPage: 'ui.help.importExport'
                 },
                 resolve: {
                     loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
@@ -437,14 +437,14 @@ return [
                 }
             },
             {
-                name: 'dashboard.settings.modules',
+                name: 'ui.settings.modules',
                 url: '/modules',
                 template: '<modules-page><modules-page>',
                 menuTr: 'header.modules',
                 menuIcon: 'extension',
                 permission: 'superadmin',
                 params: {
-                    helpPage: 'dashboard.help.modules'
+                    helpPage: 'ui.help.modules'
                 },
                 resolve: {
                     loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
@@ -459,7 +459,7 @@ return [
         ]
     },
     {
-        name: 'dashboard.examples',
+        name: 'ui.examples',
         url: '/examples',
         menuTr: 'ui.dox.examples',
         menuIcon: 'info',
@@ -469,7 +469,7 @@ return [
         children: [
             {
                 url: '/play-area',
-                name: 'dashboard.examples.playArea',
+                name: 'ui.examples.playArea',
                 templateUrl: 'views/examples/playArea.html',
                 menuTr: 'ui.dox.playArea',
                 menuIcon: 'fa-magic',
@@ -478,7 +478,7 @@ return [
                 }
             },
             {
-                name: 'dashboard.examples.playAreaBig',
+                name: 'ui.examples.playAreaBig',
                 templateUrl: 'views/examples/playAreaBig.html',
                 url: '/play-area-big',
                 menuTr: 'ui.dox.playAreaBig',
@@ -486,73 +486,73 @@ return [
                 menuIcon: 'fa-magic'
             },
             {
-                name: 'dashboard.examples.basics',
+                name: 'ui.examples.basics',
                 url: '/basics',
                 menuTr: 'ui.dox.basics',
                 menuIcon: 'fa-info-circle',
                 children: [
                     {
-                        name: 'dashboard.examples.basics.angular',
+                        name: 'ui.examples.basics.angular',
                         templateUrl: 'views/examples/angular.html',
                         url: '/angular',
                         menuTr: 'ui.dox.angular'
                     },
                     {
-                        name: 'dashboard.examples.basics.pointList',
+                        name: 'ui.examples.basics.pointList',
                         templateUrl: 'views/examples/pointList.html',
                         url: '/point-list',
                         menuTr: 'ui.dox.pointList'
                     },
                     {
-                        name: 'dashboard.examples.basics.getPointByXid',
+                        name: 'ui.examples.basics.getPointByXid',
                         templateUrl: 'views/examples/getPointByXid.html',
                         url: '/get-point-by-xid',
                         menuTr: 'ui.dox.getPointByXid'
                     },
                     {
-                        name: 'dashboard.examples.basics.dataSourceAndDeviceList',
+                        name: 'ui.examples.basics.dataSourceAndDeviceList',
                         templateUrl: 'views/examples/dataSourceAndDeviceList.html',
                         url: '/data-source-and-device-list',
                         menuTr: 'ui.dox.dataSourceAndDeviceList'
                     },
                     {
-                        name: 'dashboard.examples.basics.liveValues',
+                        name: 'ui.examples.basics.liveValues',
                         templateUrl: 'views/examples/liveValues.html',
                         url: '/live-values',
                         menuTr: 'ui.dox.liveValues'
                     },
                     {
-                        name: 'dashboard.examples.basics.filters',
+                        name: 'ui.examples.basics.filters',
                         templateUrl: 'views/examples/filters.html',
                         url: '/filters',
                         menuTr: 'ui.dox.filters'
                     },
                     {
-                        name: 'dashboard.examples.basics.datePresets',
+                        name: 'ui.examples.basics.datePresets',
                         templateUrl: 'views/examples/datePresets.html',
                         url: '/date-presets',
                         menuTr: 'ui.dox.datePresets'
                     },
                     {
-                        name: 'dashboard.examples.basics.styleViaValue',
+                        name: 'ui.examples.basics.styleViaValue',
                         templateUrl: 'views/examples/styleViaValue.html',
                         url: '/style-via-value',
                         menuTr: 'ui.dox.styleViaValue'
                     },
                     {
-                        name: 'dashboard.examples.basics.pointValues',
+                        name: 'ui.examples.basics.pointValues',
                         templateUrl: 'views/examples/pointValues.html',
                         url: '/point-values',
                         menuTr: 'ui.dox.pointValues'
                     },
                     {
-                        name: 'dashboard.examples.basics.latestPointValues',
+                        name: 'ui.examples.basics.latestPointValues',
                         templateUrl: 'views/examples/latestPointValues.html',
                         url: '/latest-point-values',
                         menuTr: 'ui.dox.latestPointValues'
                     },
                     {
-                        name: 'dashboard.examples.basics.clocksAndTimezones',
+                        name: 'ui.examples.basics.clocksAndTimezones',
                         templateUrl: 'views/examples/clocksAndTimezones.html',
                         url: '/clocks-and-timezones',
                         menuTr: 'ui.dox.clocksAndTimezones'
@@ -560,31 +560,31 @@ return [
                 ]
             },
             {
-                name: 'dashboard.examples.singleValueDisplays',
+                name: 'ui.examples.singleValueDisplays',
                 url: '/single-value-displays',
                 menuTr: 'ui.dox.singleValueDisplays',
                 menuIcon: 'fa-tachometer',
                 children: [
                     {
-                        name: 'dashboard.examples.singleValueDisplays.gauges',
+                        name: 'ui.examples.singleValueDisplays.gauges',
                         templateUrl: 'views/examples/gauges.html',
                         url: '/gauges',
                         menuTr: 'ui.dox.gauges'
                     },
                     {
-                        name: 'dashboard.examples.singleValueDisplays.switchImage',
+                        name: 'ui.examples.singleValueDisplays.switchImage',
                         templateUrl: 'views/examples/switchImage.html',
                         url: '/switch-image',
                         menuTr: 'ui.dox.switchImage'
                     },
                     {
-                        name: 'dashboard.examples.singleValueDisplays.bars',
+                        name: 'ui.examples.singleValueDisplays.bars',
                         templateUrl: 'views/examples/bars.html',
                         url: '/bars',
                         menuTr: 'ui.dox.bars'
                     },
                     {
-                        name: 'dashboard.examples.singleValueDisplays.tanks',
+                        name: 'ui.examples.singleValueDisplays.tanks',
                         templateUrl: 'views/examples/tanks.html',
                         url: '/tanks',
                         menuTr: 'ui.dox.tanks'
@@ -592,49 +592,49 @@ return [
                 ]
             },
             {
-                name: 'dashboard.examples.charts',
+                name: 'ui.examples.charts',
                 url: '/charts',
                 menuTr: 'ui.dox.charts',
                 menuIcon: 'fa-area-chart',
                 children: [
                     {
-                        name: 'dashboard.examples.charts.lineChart',
+                        name: 'ui.examples.charts.lineChart',
                         templateUrl: 'views/examples/lineChart.html',
                         url: '/line-chart',
                         menuTr: 'ui.dox.lineChart'
                     },
                     {
-                        name: 'dashboard.examples.charts.barChart',
+                        name: 'ui.examples.charts.barChart',
                         templateUrl: 'views/examples/barChart.html',
                         url: '/bar-chart',
                         menuTr: 'ui.dox.barChart'
                     },
                     {
-                        name: 'dashboard.examples.charts.advancedChart',
+                        name: 'ui.examples.charts.advancedChart',
                         templateUrl: 'views/examples/advancedChart.html',
                         url: '/advanced-chart',
                         menuTr: 'ui.dox.advancedChart'
                     },
                     {
-                        name: 'dashboard.examples.charts.stateChart',
+                        name: 'ui.examples.charts.stateChart',
                         templateUrl: 'views/examples/stateChart.html',
                         url: '/state-chart',
                         menuTr: 'ui.dox.stateChart'
                     },
                     {
-                        name: 'dashboard.examples.charts.liveUpdatingChart',
+                        name: 'ui.examples.charts.liveUpdatingChart',
                         templateUrl: 'views/examples/liveUpdatingChart.html',
                         url: '/live-updating-chart',
                         menuTr: 'ui.dox.liveUpdatingChart'
                     },
                     {
-                        name: 'dashboard.examples.charts.pieChart',
+                        name: 'ui.examples.charts.pieChart',
                         templateUrl: 'views/examples/pieChart.html',
                         url: '/pie-chart',
                         menuTr: 'ui.dox.pieChart'
                     },
                     {
-                        name: 'dashboard.examples.charts.dailyComparison',
+                        name: 'ui.examples.charts.dailyComparison',
                         templateUrl: 'views/examples/dailyComparisonChart.html',
                         url: '/daily-comparison',
                         menuTr: 'ui.dox.dailyComparisonChart'
@@ -642,31 +642,31 @@ return [
                 ]
             },
             {
-                name: 'dashboard.examples.settingPointValues',
+                name: 'ui.examples.settingPointValues',
                 url: '/setting-point-values',
                 menuTr: 'ui.dox.settingPoint',
                 menuIcon: 'fa-pencil-square-o',
                 children: [
                     {
-                        name: 'dashboard.examples.settingPointValues.setPoint',
+                        name: 'ui.examples.settingPointValues.setPoint',
                         templateUrl: 'views/examples/setPoint.html',
                         url: '/set-point',
                         menuTr: 'ui.dox.settingPoint'
                     },
                     {
-                        name: 'dashboard.examples.settingPointValues.toggle',
+                        name: 'ui.examples.settingPointValues.toggle',
                         templateUrl: 'views/examples/toggle.html',
                         url: '/toggle',
                         menuTr: 'ui.dox.toggle'
                     },
                     {
-                        name: 'dashboard.examples.settingPointValues.sliders',
+                        name: 'ui.examples.settingPointValues.sliders',
                         templateUrl: 'views/examples/sliders.html',
                         url: '/sliders',
                         menuTr: 'ui.dox.sliders'
                     },
                     {
-                        name: 'dashboard.examples.settingPointValues.multistateRadio',
+                        name: 'ui.examples.settingPointValues.multistateRadio',
                         templateUrl: 'views/examples/multistateRadio.html',
                         url: '/multistate-radio-buttons',
                         menuTr: 'ui.dox.multistateRadio'
@@ -674,25 +674,25 @@ return [
                 ]
             },
             {
-                name: 'dashboard.examples.statistics',
+                name: 'ui.examples.statistics',
                 url: '/statistics',
                 menuTr: 'ui.dox.statistics',
                 menuIcon: 'fa-table',
                 children: [
                     {
-                        name: 'dashboard.examples.statistics.getStatistics',
+                        name: 'ui.examples.statistics.getStatistics',
                         templateUrl: 'views/examples/getStatistics.html',
                         url: '/get-statistics',
                         menuTr: 'ui.dox.getStatistics'
                     },
                     {
-                        name: 'dashboard.examples.statistics.statisticsTable',
+                        name: 'ui.examples.statistics.statisticsTable',
                         templateUrl: 'views/examples/statisticsTable.html',
                         url: '/statistics-table',
                         menuTr: 'ui.dox.statisticsTable'
                     },
                     {
-                        name: 'dashboard.examples.statistics.statePieChart',
+                        name: 'ui.examples.statistics.statePieChart',
                         templateUrl: 'views/examples/statePieChart.html',
                         url: '/state-pie-chart',
                         menuTr: 'ui.dox.statePieChart'
@@ -700,37 +700,37 @@ return [
                 ]
             },
             {
-                name: 'dashboard.examples.pointArrays',
+                name: 'ui.examples.pointArrays',
                 url: '/point-arrays',
                 menuTr: 'ui.dox.pointArrayTemplating',
                 menuIcon: 'fa-list',
                 children: [
                     {
-                        name: 'dashboard.examples.pointArrays.buildPointArray',
+                        name: 'ui.examples.pointArrays.buildPointArray',
                         templateUrl: 'views/examples/buildPointArray.html',
                         url: '/build-point-array',
                         menuTr: 'ui.dox.buildPointArray'
                     },
                     {
-                        name: 'dashboard.examples.pointArrays.pointArrayTable',
+                        name: 'ui.examples.pointArrays.pointArrayTable',
                         templateUrl: 'views/examples/pointArrayTable.html',
                         url: '/point-array-table',
                         menuTr: 'ui.dox.pointArrayTable'
                     },
                     {
-                        name: 'dashboard.examples.pointArrays.pointArrayLineChart',
+                        name: 'ui.examples.pointArrays.pointArrayLineChart',
                         templateUrl: 'views/examples/pointArrayLineChart.html',
                         url: '/point-array-line-chart',
                         menuTr: 'ui.dox.pointArrayLineChart'
                     },
                     {
-                        name: 'dashboard.examples.pointArrays.templating',
+                        name: 'ui.examples.pointArrays.templating',
                         templateUrl: 'views/examples/templating.html',
                         url: '/templating',
                         menuTr: 'ui.dox.templating'
                     },
                     {
-                        name: 'dashboard.examples.pointArrays.dataPointTable',
+                        name: 'ui.examples.pointArrays.dataPointTable',
                         templateUrl: 'views/examples/dataPointTable.html',
                         url: '/data-point-table',
                         menuTr: 'ui.dox.dataPointTable'
@@ -738,19 +738,19 @@ return [
                 ]
             },
             {
-                name: 'dashboard.examples.pointHierarchy',
+                name: 'ui.examples.pointHierarchy',
                 url: '/point-hierarchy',
                 menuTr: 'ui.dox.pointHierarchy',
                 menuIcon: 'fa-sitemap',
                 children: [
                     {
-                        name: 'dashboard.examples.pointHierarchy.displayTree',
+                        name: 'ui.examples.pointHierarchy.displayTree',
                         templateUrl: 'views/examples/displayTree.html',
                         url: '/display-tree',
                         menuTr: 'ui.dox.displayTree'
                     },
                     {
-                        name: 'dashboard.examples.pointHierarchy.pointHierarchyLineChart',
+                        name: 'ui.examples.pointHierarchy.pointHierarchyLineChart',
                         templateUrl: 'views/examples/pointHierarchyLineChart.html',
                         url: '/line-chart',
                         menuTr: 'ui.dox.pointHierarchyLineChart'
@@ -758,49 +758,49 @@ return [
                 ]
             },
             {
-                name: 'dashboard.examples.templates',
+                name: 'ui.examples.templates',
                 url: '/templates',
                 menuTr: 'ui.dox.templates',
                 menuIcon: 'fa-file-o',
                 children: [
                     {
-                        name: 'dashboard.examples.templates.angularMaterial',
+                        name: 'ui.examples.templates.angularMaterial',
                         templateUrl: 'views/examples/angularMaterial.html',
                         url: '/angular-material',
                         menuText: 'Angular Material'
                     },
                     {
-                        name: 'dashboard.examples.templates.bootstrap',
+                        name: 'ui.examples.templates.bootstrap',
                         templateUrl: 'views/examples/bootstrap.html',
                         url: '/bootstrap',
                         menuText: 'Bootstrap 3'
                     },
                     {
-                        name: 'dashboard.examples.templates.autoLogin',
+                        name: 'ui.examples.templates.autoLogin',
                         templateUrl: 'views/examples/autoLogin.html',
                         url: '/auto-login',
                         menuTr: 'ui.dox.autoLogin'
                     },
                     {
-                        name: 'dashboard.examples.templates.extendApp',
+                        name: 'ui.examples.templates.extendApp',
                         templateUrl: 'views/examples/extendApp.html',
                         url: '/extend-app',
                         menuTr: 'ui.dox.extendApp'
                     },
                     {
-                        name: 'dashboard.examples.templates.loginPage',
+                        name: 'ui.examples.templates.loginPage',
                         templateUrl: 'views/examples/loginPageTemplate.html',
                         url: '/login-page',
                         menuTr: 'ui.dox.loginPageTemplate'
                     },
                     {
-                        name: 'dashboard.examples.templates.adminTemplate',
+                        name: 'ui.examples.templates.adminTemplate',
                         templateUrl: 'views/examples/adminTemplate.html',
                         url: '/admin-template',
                         menuTr: 'ui.dox.adminTemplate'
                     },
                     {
-                        name: 'dashboard.examples.templates.adaptiveLayouts',
+                        name: 'ui.examples.templates.adaptiveLayouts',
                         templateUrl: 'views/examples/adaptiveLayouts.html',
                         url: '/adaptive-layouts',
                         menuText: 'Adaptive Layouts'
@@ -808,37 +808,37 @@ return [
                 ]
             },
             {
-                name: 'dashboard.examples.utilities',
+                name: 'ui.examples.utilities',
                 url: '/utilities',
                 menuTr: 'ui.dox.utilities',
                 menuIcon: 'fa-wrench',
                 children: [
                     {
-                        name: 'dashboard.examples.utilities.translation',
+                        name: 'ui.examples.utilities.translation',
                         templateUrl: 'views/examples/translation.html',
                         url: '/translation',
                         menuTr: 'ui.dox.translation'
                     },
                     {
-                        name: 'dashboard.examples.utilities.jsonStore',
+                        name: 'ui.examples.utilities.jsonStore',
                         templateUrl: 'views/examples/jsonStore.html',
                         url: '/json-store',
                         menuTr: 'ui.dox.jsonStore'
                     },
                     {
-                        name: 'dashboard.examples.utilities.watchdog',
+                        name: 'ui.examples.utilities.watchdog',
                         templateUrl: 'views/examples/watchdog.html',
                         url: '/watchdog',
                         menuTr: 'ui.dox.watchdog'
                     },
                     {
-                        name: 'dashboard.examples.utilities.eventsTable',
+                        name: 'ui.examples.utilities.eventsTable',
                         templateUrl: 'views/examples/eventsTable.html',
                         url: '/events-table',
                         menuTr: 'ui.app.eventsTable'
                     },
                     {
-                        name: 'dashboard.examples.utilities.googleMaps',
+                        name: 'ui.examples.utilities.googleMaps',
                         templateUrl: 'views/examples/googleMaps.html',
                         url: '/google-maps',
                         menuText: 'Google Maps'

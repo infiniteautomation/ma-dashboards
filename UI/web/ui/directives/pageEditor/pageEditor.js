@@ -87,7 +87,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                 if ($scope.menuItem) {
                     $scope.viewPageLink = $state.href($scope.menuItem.name);
                 } else {
-                    $scope.viewPageLink = $scope.selectedPage ? $state.href('dashboard.viewPage', {pageXid: $scope.selectedPage.xid}) : '';
+                    $scope.viewPageLink = $scope.selectedPage ? $state.href('ui.viewPage', {pageXid: $scope.selectedPage.xid}) : '';
                 }
             });
             
@@ -95,7 +95,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                 if (this.menuItem) {
                     $state.go(this.menuItem.name);
                 } else {
-                    $state.go('dashboard.viewPage', {pageXid: $scope.selectedPage.xid});
+                    $state.go('ui.viewPage', {pageXid: $scope.selectedPage.xid});
                 }
             };
             

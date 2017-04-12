@@ -7,7 +7,7 @@
     <md-menu-content width="3">
         
         <md-menu-item ng-if="$ctrl.events.INFORMATION.unsilencedCount">
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'INFORMATION'})">
+            <md-button ui-sref="ui.events({acknowledged: 'false', eventType: '*', alarmLevel: 'INFORMATION'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag INFORMATION" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.INFORMATION.unsilencedCount}} Information Events</p>
@@ -16,7 +16,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.IMPORTANT.unsilencedCount">
-			<md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'IMPORTANT'})">
+			<md-button ui-sref="ui.events({acknowledged: 'false', eventType: '*', alarmLevel: 'IMPORTANT'})">
 				<div layout="row" flex layout-align="start center" layout-fill>
 					<i class="fa fa-flag fa-lg alarm-flag IMPORTANT" style="padding-right:10px"></i>
 					<p flex> {{$ctrl.events.IMPORTANT.unsilencedCount}} Important Events</p>
@@ -25,7 +25,7 @@
 		</md-menu-item>
 		
 		<md-menu-item ng-if="$ctrl.events.WARNING.unsilencedCount">
-			<md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'WARNING'})">
+			<md-button ui-sref="ui.events({acknowledged: 'false', eventType: '*', alarmLevel: 'WARNING'})">
 				<div layout="row" flex layout-align="start center" layout-fill>
 					<i class="fa fa-flag fa-lg alarm-flag WARNING" style="padding-right:10px"></i>
 					<p flex> {{$ctrl.events.WARNING.unsilencedCount}} Warning Events</p>
@@ -34,7 +34,7 @@
 		</md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.URGENT.unsilencedCount">
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'URGENT'})">
+            <md-button ui-sref="ui.events({acknowledged: 'false', eventType: '*', alarmLevel: 'URGENT'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag URGENT" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.URGENT.unsilencedCount}} Urgent Events</p>
@@ -43,7 +43,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.CRITICAL.unsilencedCount">
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'CRITICAL'})">
+            <md-button ui-sref="ui.events({acknowledged: 'false', eventType: '*', alarmLevel: 'CRITICAL'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag CRITICAL" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.CRITICAL.unsilencedCount}} Critical Events</p>
@@ -52,7 +52,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.LIFE_SAFETY.unsilencedCount">
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'LIFE_SAFETY'})">
+            <md-button ui-sref="ui.events({acknowledged: 'false', eventType: '*', alarmLevel: 'LIFE_SAFETY'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.LIFE_SAFETY.unsilencedCount}} Safety Events</p>
@@ -61,7 +61,7 @@
         </md-menu-item>
         
         <md-menu-item>
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: '*'})">
+            <md-button ui-sref="ui.events({acknowledged: 'false', eventType: '*', alarmLevel: '*'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag ALL" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.totalCount}} Total Events</p>

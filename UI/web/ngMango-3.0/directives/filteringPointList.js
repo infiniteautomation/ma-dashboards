@@ -13,7 +13,7 @@ define(['require', 'rql/query'], function(require, query) {
  * `<ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>`
  * - Creates a self-filtering point list that allows you to select a data point by filtering on device names or point names that contain the text.
      Search results will update as you type.
- * - <a ui-sref="dashboard.examples.basics.pointList">View Demo</a>
+ * - <a ui-sref="ui.examples.basics.pointList">View Demo</a>
  *
  * @param {object} ng-model Variable to hold the selected data point.
  * @param {number=} limit Limits the results in the list to a specified number of data points (200 defualt)

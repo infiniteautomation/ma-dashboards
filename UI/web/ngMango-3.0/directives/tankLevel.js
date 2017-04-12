@@ -14,7 +14,7 @@ define(['amcharts/serial', 'require', 'angular', './PointValueController'], func
  * - This directive will display a custom data visualization which represents a tank.
  * - The volume of 'liquid' within the tank increases in height with increases in point value.
  * - Note: you must set a width and height on the element.
- * - <a ui-sref="dashboard.examples.singleValueDisplays.tanks">View Demo</a>
+ * - <a ui-sref="ui.examples.singleValueDisplays.tanks">View Demo</a>
 
  * @param {object} point The point object with the live value provided by `<ma-get-point-value>`.
  * @param {number=} max Sets the max value for a 100% filled tank.

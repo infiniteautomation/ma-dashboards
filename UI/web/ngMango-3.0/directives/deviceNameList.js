@@ -13,7 +13,7 @@ define(['angular', 'require'], function(angular, require) {
  * `<ma-device-name-list ng-model="myDeviceName" data-source-xid="myDataSource.xid"></ma-device-name-list>`
  * - Displays a list of Mango device names in a drop down selector. The selected device name will be outputed to the variable specified by the `ng-model` attribute.
  * - In the example below a list a points is generated that have the specified device name.
- * - <a ui-sref="dashboard.examples.basics.dataSourceAndDeviceList">View Demo</a>
+ * - <a ui-sref="ui.examples.basics.dataSourceAndDeviceList">View Demo</a>
  *
  * @param {object} ng-model Variable to hold the selected device name.
  * @param {boolean=} auto-init Enables auto selecting of the first device name in the list. (Defaults to `true`)

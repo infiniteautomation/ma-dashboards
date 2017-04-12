@@ -13,7 +13,7 @@ define([], function() {
  * `<ma-device-name-query device-names="deviceNames" contains="'meter'"></ma-device-name-query>`
  * - Outputs an array of Mango device names.
  * - In the example below the list is filtered to those containing a specified string and the resulting array is printed to the screen.
- * - <a ui-sref="dashboard.examples.basics.dataSourceAndDeviceList">View Demo</a>
+ * - <a ui-sref="ui.examples.basics.dataSourceAndDeviceList">View Demo</a>
  *
  * @param {array} device-names Array Variable to hold the array of outputted device names.
  * @param {string=} data-source-xid If provided will filter device names to a specific data source by xid.

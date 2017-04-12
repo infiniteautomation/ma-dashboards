@@ -4,7 +4,7 @@
       <h2><span ng-bind="$ctrl.watchList.name"></span></h2>
       <div flex></div>
 
-      <md-button class="md-primary md-raised" ui-sref="dashboard.settings.watchListBuilder({watchListXid: $ctrl.watchList.xid})" ng-if="!$ctrl.watchList.isNew">
+      <md-button class="md-primary md-raised" ui-sref="ui.settings.watchListBuilder({watchListXid: $ctrl.watchList.xid})" ng-if="!$ctrl.watchList.isNew">
         <md-icon>edit</md-icon>
         <span ma-tr="common.edit"></span>
       </md-button>

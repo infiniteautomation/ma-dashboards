@@ -42,7 +42,7 @@ uiApp.factory('Page', Page)
     .constant('require', require)
     .constant('CUSTOM_USER_MENU_XID', 'mangoUI-menu')
     .constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages')
-    .constant('DASHBOARDS_NG_DOCS', NG_DOCS);
+    .constant('MANGO_UI_NG_DOCS', NG_DOCS);
 
 uiApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
     var resolveObjects = {};
@@ -71,13 +71,13 @@ uiApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($sta
                 if (!menuItem.resolve) {
                     menuItem.resolve = {};
                 }
-                if (menuItem.name.indexOf('dashboard.') !== 0) {
+                if (menuItem.name.indexOf('ui.') !== 0) {
                     if (!menuItem.resolve.loginTranslations) {
                         menuItem.resolve.loginTranslations = loadLoginTranslations;
                     }
                 }
                 
-                if (menuItem.name.indexOf('dashboard.examples.') === 0) {
+                if (menuItem.name.indexOf('ui.examples.') === 0) {
                     if (!menuItem.params) menuItem.params = {};
                     menuItem.params.dateBar = {
                         rollupControls: true
@@ -118,7 +118,7 @@ uiApp.constant('MENU_ITEMS', menuItems);
 uiApp.config([
     'MENU_ITEMS',
     'MD_ADMIN_SETTINGS',
-    'DASHBOARDS_NG_DOCS',
+    'MANGO_UI_NG_DOCS',
     '$stateProvider',
     '$urlRouterProvider',
     '$ocLazyLoadProvider',
@@ -132,7 +132,7 @@ uiApp.config([
     'errorInterceptorProvider',
     'cfpLoadingBarProvider',
     'SystemSettingsProvider',
-function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
+function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider,
         errorInterceptorProvider, cfpLoadingBarProvider, SystemSettingsProvider) {
 
@@ -254,7 +254,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     });
 
     var docsParent = {
-        name: 'dashboard.docs',
+        name: 'ui.docs',
         url: '/docs',
         menuText: 'API Docs',
         menuIcon: 'book',
@@ -274,7 +274,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     };
     MENU_ITEMS.push(docsParent);
 
-    var DOCS_PAGES = DASHBOARDS_NG_DOCS.pages;
+    var DOCS_PAGES = MANGO_UI_NG_DOCS.pages;
     var moduleItem = {};
 
     // Loop through and create array of children based on moduleName
@@ -293,7 +293,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         else if (item==='ngMangoServices') { menuText = 'Services'; }
 
         var menuItem = {
-            name: 'dashboard.docs.' + item,
+            name: 'ui.docs.' + item,
             url: '/' + dashCaseUrl,
             menuText: menuText,
             children: []
@@ -319,7 +319,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var menuText = splitAtDot[1];
         if (splitAtDot[0] === 'ngMango') { menuText = dashCaseUrl;}
         var menuItem = {
-            name: 'dashboard.docs.' + item,
+            name: 'ui.docs.' + item,
             templateUrl: require.toUrl('./views/docs/' + item + '.html'),
             url: '/' + dashCaseUrl,
             menuText: menuText
@@ -394,8 +394,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
             $rootScope.noApi = true;
         } else {
             console.log(error);
-            if (toState.name !== 'dashboard.error') {
-                $state.go('dashboard.error');
+            if (toState.name !== 'ui.error') {
+                $state.go('ui.error');
             } else {
                 // should we call alert() or something?
             }
@@ -442,13 +442,13 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-        if ($state.includes('dashboard.settings.dashboardSettings')) {
+        if ($state.includes('ui.settings.uiSettings')) {
             // resets themes to the last saved state when leaving the settings page
             uiSettings.reset();
             uiSettings.generateTheme();
         }
         
-        if ($state.includes('dashboard') && !$rootScope.navLockedOpen) {
+        if ($state.includes('ui') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }
         if (toState.name === 'logout') {
@@ -623,9 +623,9 @@ var userAndUserSettingsPromise = User.getCurrent().$promise.then(null, function(
     };
 });
 
-var dashboardSettingsPromise = $http({
+var uiSettingsPromise = $http({
     method: 'GET',
-    url: require.toUrl('./dashboardSettings.json')
+    url: require.toUrl('./uiSettings.json')
 }).then(function(data) {
     return data.data;
 }, angular.noop);
@@ -653,7 +653,7 @@ var angularModulesPromise = $http({
     console.log('Error loading AngularJS modules from Mango modules');
 });
 
-$q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSettingsPromise, angularModulesPromise]).then(function(data) {
+$q.all([userAndUserSettingsPromise, uiSettingsPromise, customDashboardSettingsPromise, angularModulesPromise]).then(function(data) {
     // destroy the services injector
     servicesInjector.get('$rootScope').$destroy();
     

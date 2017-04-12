@@ -15,7 +15,7 @@ define(['moment-timezone'], function(moment) {
  * - Moment methods can be called using the filter syntax to call functions: 
  *      - <code ng-non-bindable>Three days from now is {{'now' | moment:'add':3:'days' | moment:'format':'LLL'}}</code>
  *      - <code ng-non-bindable>{{myPoint.time | moment:'format':'ll LTS'}}</code>
- * - <a ui-sref="dashboard.examples.basics.filters">View Filters Demo</a>
+ * - <a ui-sref="ui.examples.basics.filters">View Filters Demo</a>
  */
 function momentFilter(Util) {
     return Util.memoize(function(input, fnName) {

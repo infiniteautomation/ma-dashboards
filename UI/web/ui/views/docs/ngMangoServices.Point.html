@@ -6,7 +6,7 @@
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="ngmangoservices-point-page"><p>Provides service for getting and and updating a list of points.</p>
 <ul>
-<li>Used by <a ui-sref="dashboard.docs.ngMango.maPointList"><code>&lt;ma-point-list&gt;</code></a> and <a ui-sref="dashboard.docs.ngMango.maFilteringPointList"><code>&lt;ma-filtering-point-list&gt;</code></a> directives.</li>
+<li>Used by <a ui-sref="ui.docs.ngMango.maPointList"><code>&lt;ma-point-list&gt;</code></a> and <a ui-sref="ui.docs.ngMango.maFilteringPointList"><code>&lt;ma-filtering-point-list&gt;</code></a> directives.</li>
 <li>All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource">$resource</a> objects that can call the following methods available to those objects:<ul>
 <li><code>$save</code></li>
 <li><code>$remove</code></li>
@@ -92,12 +92,12 @@ Used by <code>&lt;set-point-value&gt;</code> directive.</p>
 </li>
 <li><h3 id="methods_togglevalue">toggleValue()</h3>
 <div class="togglevalue"><div class="point-togglevalue-page"><p>When called this method will flip the value of a binary data point.
-See <a ui-sref="dashboard.examples.settingPointValues.toggle">Toggle Binary</a> example.</p>
+See <a ui-sref="ui.examples.settingPointValues.toggle">Toggle Binary</a> example.</p>
 </div></div>
 </li>
 <li><h3 id="methods_valuefn">valueFn(setValue)</h3>
 <div class="valuefn"><div class="point-valuefn-page"><p>This method will either call setValue internally or return the points value object.
-See how it is used with <code>&lt;md-checkbox&gt;</code> and <code>&lt;md-switch&gt;</code> in the <a ui-sref="dashboard.examples.settingPointValues.toggle">Toggle Binary</a> example.</p>
+See how it is used with <code>&lt;md-checkbox&gt;</code> and <code>&lt;md-switch&gt;</code> in the <a ui-sref="ui.examples.settingPointValues.toggle">Toggle Binary</a> example.</p>
 </div><h5 id="methods_valuefn_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>setValue <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="point-valuefn-page"><p>If provided setValue method will be called with this value.</p>
 </div></td></tr></tbody></table><h5 id="methods_valuefn_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="point-valuefn-page"><p>Returns a points value object if no parameter is provided when the method is called.</p>
 </div></td></tr></table></div>

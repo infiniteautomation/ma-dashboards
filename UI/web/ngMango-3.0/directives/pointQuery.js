@@ -15,7 +15,7 @@ define([], function() {
  * - The `query` attribute filters the array of points using an object where the keys are
  the property names to filter on, or supply a RQL query string inside single quotes.
  * - All data points added to your Mango system will display by default, unless you set the `limit` property.
- * - <a ui-sref="dashboard.examples.pointArrays.dataPointTable">View Demo</a>
+ * - <a ui-sref="ui.examples.pointArrays.dataPointTable">View Demo</a>
  *
  * @param {array} points Variable to hold the array of point objects returned by the query.
  * @param {object} query Filters the results by a property of the data points (eg: `{name: 'meta'}` returns data points containing the string `'meta'` in the `name` property)

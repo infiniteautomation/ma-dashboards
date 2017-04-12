@@ -14,7 +14,7 @@ define(['require', 'moment-timezone', './PointValueController'], function(requir
  * - The `<ma-point-value>` directive will render the live value or update time from a point onto the page.
  * - You can supply the `display-type` attribute to get the unit converted value or data/time of the update.
  * - You can use the `point-xid` property or pass in a point from `<ma-point-list>`.
- * - <a ui-sref="dashboard.examples.basics.liveValues">View Demo</a> / <a ui-sref="dashboard.examples.basics.getPointByXid">View point-xid Demo</a>
+ * - <a ui-sref="ui.examples.basics.liveValues">View Demo</a> / <a ui-sref="ui.examples.basics.getPointByXid">View point-xid Demo</a>
  *
  * @param {object} point The point object that the live value will be outputted to.
  If `point-xid` is used this will be a new variable for the point object.

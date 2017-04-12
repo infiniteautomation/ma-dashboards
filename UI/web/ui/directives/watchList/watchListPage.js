@@ -271,7 +271,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     };
 
     this.editWatchList = function editWatchList(watchList) {
-        $state.go('dashboard.settings.watchListBuilder', {watchListXid: watchList ? watchList.xid : null});
+        $state.go('ui.settings.watchListBuilder', {watchListXid: watchList ? watchList.xid : null});
     };
     
     this.updateQuery = function updateQuery() {
@@ -287,7 +287,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         this.watchList.data.paramValues = this.watchListParams;
         
         if (this.watchList.isNew) {
-            $state.go('dashboard.settings.watchListBuilder', {watchList: this.watchList});
+            $state.go('ui.settings.watchListBuilder', {watchList: this.watchList});
         } else {
             this.watchList.$update();
         }

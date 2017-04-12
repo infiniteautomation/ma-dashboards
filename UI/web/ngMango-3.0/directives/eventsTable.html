@@ -35,19 +35,19 @@
                 </td>
                 <td md-cell class="medium-column" ng-bind="formatDate(event.activeTimestamp)"></td>
                 <td md-cell class="msg-column" ng-class="{'truncated' : !toggle}"><span  ng-click="toggle = !toggle" ng-bind-html="parseHTML(event.message)"></span>
-                    <a ui-sref="dashboard.dataPointDetails({pointId: event.eventType.dataPointId})" ng-if="event.eventType.eventType==='DATA_POINT'">
+                    <a ui-sref="ui.dataPointDetails({pointId: event.eventType.dataPointId})" ng-if="event.eventType.eventType==='DATA_POINT'">
                         <md-icon md-colors="{'color': 'accent-hue-2'}">
                             timeline
                             <md-tooltip md-delay="250" md-direction="right" md-autohide><span ma-tr="ui.app.dpd"></span></md-tooltip>
                         </md-icon>
                     </a>
-                    <a ui-sref="dashboard.settings.dataSources({dataSourceId: event.eventType.dataSourceId})" ng-if="event.eventType.eventType==='DATA_SOURCE'">
+                    <a ui-sref="ui.settings.dataSources({dataSourceId: event.eventType.dataSourceId})" ng-if="event.eventType.eventType==='DATA_SOURCE'">
                         <md-icon md-colors="{'color': 'accent-hue-2'}" style="font-size: 18px;">
                             device_hub
                             <md-tooltip md-delay="250" md-direction="right" md-autohide><span ma-tr="header.dataSources"></span></md-tooltip>
                         </md-icon>
                     </a>
-                    <a ui-sref="dashboard.settings.modules" ng-if="event.eventType.systemEventType==='LICENSE_CHECK'">
+                    <a ui-sref="ui.settings.modules" ng-if="event.eventType.systemEventType==='LICENSE_CHECK'">
                         <md-icon md-colors="{'color': 'accent-hue-2'}" style="font-size: 18px;">
                             extension
                             <md-tooltip md-delay="250" md-direction="right" md-autohide><span ma-tr="header.modules"></span></md-tooltip>

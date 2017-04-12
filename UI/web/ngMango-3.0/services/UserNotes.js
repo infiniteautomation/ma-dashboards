@@ -11,7 +11,7 @@ define(['angular'], function(angular) {
 *
 * @description
 * Provides a service for retrieving and adding user notes
-* - Used by <a ui-sref="dashboard.docs.ngMango.maUserNotesTable">`<ma-user-notes-table>`</a> 
+* - Used by <a ui-sref="ui.docs.ngMango.maUserNotesTable">`<ma-user-notes-table>`</a> 
 *
 *
 *
