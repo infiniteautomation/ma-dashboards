@@ -1075,12 +1075,13 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     $locationProvider.html5Mode(true);
 
     $urlRouterProvider.otherwise(function($injector, $location) {
+        var basePath = '/ui/';
         var mdAdminSettings = $injector.get('mdAdminSettings');
         var User = $injector.get('User');
         var $state = $injector.get('$state');
         var user = User.current;
         
-        var path = '/ui/';
+        var path = basePath;
         if ($location.path()) {
             path += $location.path().substring(1);
         }
@@ -1090,10 +1091,12 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
             return '/login';
         }
         
-        if (path === '/ui/') {
+        if (path === basePath) {
+            // mango default URI will contain the homeUrl if it exists, or the mango start page if it doesn't
+            // so prefer using it if it exists (only exists when doing login)
             var homeUrl = user.mangoDefaultUri || user.homeUrl;
-            if (homeUrl && homeUrl.indexOf('/ui') === 0) {
-                return homeUrl.substring(11); // strip dashboards from start of url
+            if (homeUrl && homeUrl.indexOf(basePath) === 0) {
+                return '/' + homeUrl.substring(basePath.length); // strip basePath from start of URL
             }
             return '/home';
         }
