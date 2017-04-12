@@ -9,8 +9,8 @@ define([
     './directives/menu/menuLink',
     './directives/menu/menuToggle',
     './directives/login/login',
-    'mango-3.4/maMaterialDashboards', // load mango-3.4 angular modules
-    'mango-3.4/maAppComponents',
+    'ngMango-3.0/maMaterialDashboards', // load ngMango-3.0 angular modules
+    'ngMango-3.0/maAppComponents',
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
 ], function(angular, dashboardMenu, menuLink, menuToggle, login, maMaterialDashboards, maAppComponents) {

@@ -17,7 +17,7 @@ describe('Point values service', function() {
     this.timeout(10000);
 
     before('Load maServices module', function(done) {
-        requirejs(['mango-3.4/maServices', 'moment-timezone'], function(maServices, _moment) {
+        requirejs(['ngMango-3.0/maServices', 'moment-timezone'], function(maServices, _moment) {
             moment = _moment;
             angular.module('mochaTestModule', ['maServices', 'ngMockE2E'])
                 .constant('mangoBaseUrl', mochaUtils.config.url)

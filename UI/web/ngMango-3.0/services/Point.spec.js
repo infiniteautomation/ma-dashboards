@@ -20,7 +20,7 @@ describe('Point service', function() {
     before('Load maServices module', function(done) {
         this.timeout(5000);
         
-        requirejs(['mango-3.4/maServices', 'rql/query'], function(maServices, _query) {
+        requirejs(['ngMango-3.0/maServices', 'rql/query'], function(maServices, _query) {
             query = _query;
             
             angular.module('PointMockModule', ['maServices', 'ngMockE2E'])
