@@ -1186,8 +1186,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
     
     SystemSettingsProvider.addSection({
-        titleTr: 'dashboards.settings',
-        template: require.toUrl('dashboards/settings.html')
+        titleTr: 'ui.settings',
+        template: require.toUrl('ui/settings.html')
     });
 }]);
 
