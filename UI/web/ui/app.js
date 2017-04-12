@@ -47,7 +47,7 @@ uiApp.factory('Page', Page)
     .directive('pageView', pageView)
     .directive('livePreview', livePreview)
     .constant('require', require)
-    .constant('CUSTOM_USER_MENU_XID', 'custom-user-menu')
+    .constant('CUSTOM_USER_MENU_XID', 'mangoUI-menu')
     .constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages')
     .constant('DASHBOARDS_NG_DOCS', NG_DOCS);
 
@@ -367,7 +367,7 @@ uiApp.constant('MENU_ITEMS', [
                 menuTr: 'ui.dox.dateBar'
             },
             {
-                url: '/dashboard-settings',
+                url: '/ui-settings',
                 name: 'dashboard.help.dashboardSettings',
                 templateUrl: 'views/help/dashboardSettings.html',
                 menuTr: 'ui.app.dashboardSettings'
@@ -459,7 +459,7 @@ uiApp.constant('MENU_ITEMS', [
                 permission: 'superadmin'
             },
             {
-                url: '/dashboard-settings',
+                url: '/ui-settings',
                 name: 'dashboard.settings.dashboardSettings',
                 templateUrl: 'views/dashboard/dashboardSettings.html',
                 menuTr: 'ui.app.dashboardSettings',
@@ -991,7 +991,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     $mdAriaProvider.disableWarnings();
 
     errorInterceptorProvider.ignore = function(rejection) {
-        var ignoreUrls = ['/rest/v1/json-data/custom-user-menu',
+        var ignoreUrls = ['/rest/v1/json-data/mangoUI-menu',
                           '/rest/v1/json-data/custom-user-pages',
                           '/rest/v1/json-data/play-area-'];
 
@@ -1463,7 +1463,7 @@ var $http = servicesInjector.get('$http');
 var userAndUserSettingsPromise = User.getCurrent().$promise.then(null, function() {
     return User.autoLogin();
 }).then(function(user) {
-    var userMenuPromise = JsonStore.get({xid: 'custom-user-menu'}).$promise.then(null, angular.noop);
+    var userMenuPromise = JsonStore.get({xid: 'mangoUI-menu'}).$promise.then(null, angular.noop);
     return $q.all([user, userMenuPromise]);
 }, angular.noop).then(function(data) {
     return {
@@ -1479,7 +1479,7 @@ var dashboardSettingsPromise = $http({
     return data.data;
 }, angular.noop);
 
-var customDashboardSettingsPromise = JsonStore.getPublic({xid: 'dashboard-settings'}).$promise.then(null, angular.noop);
+var customDashboardSettingsPromise = JsonStore.getPublic({xid: 'mangoUI-settings'}).$promise.then(null, angular.noop);
 
 var angularModulesPromise = $http({
     method: 'GET',

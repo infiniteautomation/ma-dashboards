@@ -8,7 +8,7 @@ define(['angular', 'require'], function(angular, require) {
 
 uiSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', 'mangoDateFormats'];
 function uiSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, mangoDateFormats) {
-    var DASHBOARD_SETTINGS_XID = 'dashboard-settings';
+    var DASHBOARD_SETTINGS_XID = 'mangoUI-settings';
     var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'customMenuItems'];
     var themeId = 0;
     var userThemeGenerated = false;
