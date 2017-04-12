@@ -465,7 +465,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     // screen is a large one. By default the internal state of the sidenav thinks
     // it is closed even if it is locked open
     $rootScope.$on('$viewContentLoaded', function(event, view) {
-        if (view === '@dashboard') {
+        if (view === '@ui') {
             if ($mdMedia('gt-sm')) {
                 var uiPrefs = localStorageService.get('uiPreferences');
                 if (!uiPrefs || !uiPrefs.menuClosed) {
@@ -486,39 +486,41 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
         if (gtSm === prev) return; // ignore first "change"
         
         var sideNav = $mdSidenav('left');
-        if (gtSm && !sideNav.isOpen()) {
-            sideNav.open();
+        var uiPrefs = localStorageService.get('uiPreferences') || {};
+        
+        if (gtSm && !uiPrefs.menuClosed && !sideNav.isOpen()) {
+            $rootScope.openMenu();
         }
         if (!gtSm && sideNav.isOpen()) {
-            sideNav.close();
+            $rootScope.closeMenu();
         }
-        $rootScope.navLockedOpen = gtSm;
     });
     
     $rootScope.toggleMenu = function() {
         var sideNav = $mdSidenav('left');
+        var uiPrefs = localStorageService.get('uiPreferences') || {};
+        
         if (sideNav.isOpen()) {
+            uiPrefs.menuClosed = true;
             this.closeMenu();
         } else {
+            uiPrefs.menuClosed = false;
             this.openMenu();
+        }
+        
+        // we only update the prefs if we are on a page where we can actually open and close the menu
+        if ($mdMedia('gt-sm')) {
+            localStorageService.set('uiPreferences', uiPrefs);
         }
     };
 
     $rootScope.closeMenu = function() {
-        var uiPrefs = localStorageService.get('uiPreferences') || {};
-        uiPrefs.menuClosed = true;
-        localStorageService.set('uiPreferences', uiPrefs);
-        
         angular.element('#menu-button').blur();
         $rootScope.navLockedOpen = false;
         $mdSidenav('left').close();
     };
 
     $rootScope.openMenu = function() {
-        var uiPrefs = localStorageService.get('uiPreferences') || {};
-        uiPrefs.menuClosed = false;
-        localStorageService.set('uiPreferences', uiPrefs);
-        
         angular.element('#menu-button').blur();
         if ($mdMedia('gt-sm')) {
             $rootScope.navLockedOpen = true;
