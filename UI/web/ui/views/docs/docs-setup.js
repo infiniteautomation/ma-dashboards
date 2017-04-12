@@ -606,8 +606,8 @@ NG_DOCS={
     "startPage": "/",
     "scripts": [
       "js/marked.js",
-      "../../vendor/angular/angular.js",
-      "../../vendor/angular-animate/angular-animate.js"
+      "..//modules/mangoUI/web/vendor/angular/angular.js",
+      "..//modules/mangoUI/web/vendor/angular-animate/angular-animate.js"
     ],
     "styles": [],
     "title": "Custom Dashboard 3.x Documentation",
@@ -627,7 +627,7 @@ NG_DOCS={
   "startPage": "/",
   "scripts": [
     "js/marked.js",
-    "../../vendor/angular/angular.js",
-    "../../vendor/angular-animate/angular-animate.js"
+    "..//modules/mangoUI/web/vendor/angular/angular.js",
+    "..//modules/mangoUI/web/vendor/angular-animate/angular-animate.js"
   ]
 };

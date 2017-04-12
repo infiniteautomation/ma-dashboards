@@ -58,8 +58,8 @@ gulp.task('build-ngdocs', [], function() {
             angularAnimate: false
         },
         scripts: [
-            '../../../vendor/angular/angular.js',
-            '../../../vendor/angular-animate/angular-animate.js'
+            '../..//modules/mangoUI/web/vendor/angular/angular.js',
+            '../..//modules/mangoUI/web/vendor/angular-animate/angular-animate.js'
         ]
     }
 
