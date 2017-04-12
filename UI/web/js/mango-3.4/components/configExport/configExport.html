@@ -8,7 +8,7 @@
     <p ma-tr="emport.select"></p>
     <md-checkbox ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()" md-indeterminate="$ctrl.selectAllIndeterminate"><span ma-tr="emport.selectAll"></span></md-checkbox>
     <div layout layout-wrap class="md-padding">
-      <md-checkbox class="ma-export-section" flex="100" flex-gt-sm="50" flex-gt-md="33" flex-gt-lg="25" ng-repeat="section in $ctrl.sectionList" ng-model="$ctrl.sectionsForExport[section.value]" ng-change="$ctrl.checkIndeterminate()"><span ma-tr="{{section.key}}"></span></md-checkbox>
+      <md-checkbox class="ma-export-section" layout layout-align="start center" flex="100" flex-gt-sm="50" flex-gt-md="33" flex-gt-lg="25" ng-repeat="section in $ctrl.sectionList" ng-model="$ctrl.sectionsForExport[section.value]" ng-change="$ctrl.checkIndeterminate()"><span ma-tr="{{section.key}}"></span></md-checkbox>
     </div>
     <md-input-container>
       <label ma-tr="emport.indent"></label>

@@ -501,7 +501,7 @@ ma-config-import .ma-import-dropzone {
 }
 
 .ma-config-import-messages {
-  margin-top: 8px;
+  margin-top: 16px;
   overflow-y: scroll;
 }
 

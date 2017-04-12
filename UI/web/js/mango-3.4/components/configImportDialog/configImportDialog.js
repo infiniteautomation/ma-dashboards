@@ -6,11 +6,12 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ConfigImportDialogController.$inject = ['$mdDialog', 'ImportExport', '$timeout'];
-function ConfigImportDialogController($mdDialog, ImportExport, $timeout) {
+ConfigImportDialogController.$inject = ['$mdDialog', 'ImportExport', '$timeout', '$element'];
+function ConfigImportDialogController($mdDialog, ImportExport, $timeout, $element) {
     this.$mdDialog = $mdDialog;
     this.ImportExport = ImportExport;
     this.$timeout = $timeout;
+    this.$element = $element;
 }
 
 ConfigImportDialogController.prototype.$onInit = function() {
@@ -21,25 +22,50 @@ ConfigImportDialogController.prototype.close = function() {
     this.$mdDialog.hide();
 };
 
+ConfigImportDialogController.prototype.getMessagesDiv = function() {
+    if (this.messagesDiv) return this.messagesDiv;
+    var $messagesDiv = this.$element.find('.ma-config-import-messages');
+    if ($messagesDiv.length) {
+        return (this.messagesDiv = $messagesDiv[0]);
+    }
+};
+
+ConfigImportDialogController.prototype.updateScrollPosition = function() {
+    var messagesDiv = this.getMessagesDiv();
+    if (messagesDiv) {
+        this.$timeout(function() {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+    }
+};
+
 ConfigImportDialogController.prototype.doImport = function() {
+    delete this.error;
+    
     this.ImportExport.importData(this.importData).then(function(importStatus) {
         this.importStatus = importStatus;
+        this.updateScrollPosition();
+        
+        // start polling
         this.getImportStatus();
     }.bind(this), function(response) {
-        console.log('error importing file');
+        this.error = 'HTTP ' + response.status + ': ';
+        if (response.data && response.data.message) {
+            this.error += response.data.message;
+        }
     }.bind(this));
 };
 
 ConfigImportDialogController.prototype.getImportStatus = function() {
-    var $ctrl = this;
     if (this.importStatus) {
         this.importStatus.getStatus().then(function(status) {
+            this.updateScrollPosition();
             if ((status.state !== 'COMPLETED' || status.state !== 'CANCELLED') && status.progress !== 100) {
-                $ctrl.$timeout(function() {
-                    $ctrl.getImportStatus();
-                }, 1000);
+                this.$timeout(function() {
+                    this.getImportStatus();
+                }.bind(this), 1000);
             }
-        });
+        }.bind(this));
     }
 };
 

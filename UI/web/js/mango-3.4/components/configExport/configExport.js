@@ -15,7 +15,7 @@ function ConfigExportController(ImportExport, Util, Translate) {
     this.downloadStatus = {};
     this.sectionsForExport = {};
     this.selectAllIndeterminate = false;
-    this.indent = 3;
+    this.indent = 2;
 }
 
 ConfigExportController.prototype.$onInit = function() {
