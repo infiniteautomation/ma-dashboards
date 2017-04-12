@@ -41,7 +41,7 @@ requirejs.config({
     baseUrl: mangoUrl + requirejs.toUrl(''),
     paths : {
         'modules': '/modules',
-        'ui' : module,
+        'mangoUIModule' : module,
         'mango-3.4' : module + '/js/mango-3.4',
         'mdAdmin' : module + '/mdAdmin',
         'angular' : vendor + '/angular/angular',

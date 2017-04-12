@@ -1187,7 +1187,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     
     SystemSettingsProvider.addSection({
         titleTr: 'ui.settings',
-        template: require.toUrl('ui/settings.html')
+        template: require.toUrl('mangoUIModule/settings.html')
     });
 }]);
 

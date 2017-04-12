@@ -14,7 +14,7 @@ function UserEditorController(User, $http, $mdDialog, Translate, $mdToast) {
     this.$mdDialog = $mdDialog;
     this.Translate = Translate;
     this.$mdToast = $mdToast;
-    $http.get(require.toUrl('ui/vendor/localeList.json')).then(function(response) {
+    $http.get(require.toUrl('mangoUIModule/vendor/localeList.json')).then(function(response) {
         this.locales = response.data;
     }.bind(this));
 }
