@@ -7,11 +7,11 @@ define(['angular', 'rql/query'], function(angular, query) {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.PointHierarchy
+* @name ngMangoServices.PointHierarchy
 *
 * @description
 * Provides service for getting point hierarchy
-* - Used by <a ui-sref="dashboard.docs.maDashboards.maPointHierarchy">`<ma-point-hierarchy>`</a> directive.
+* - Used by <a ui-sref="dashboard.docs.ngMango.maPointHierarchy">`<ma-point-hierarchy>`</a> directive.
 * - All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a> objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
@@ -28,7 +28,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.PointHierarchy
+* @methodOf ngMangoServices.PointHierarchy
 * @name PointHierarchy#get
 *
 * @description
@@ -40,7 +40,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.PointHierarchy
+* @methodOf ngMangoServices.PointHierarchy
 * @name PointHierarchy#save
 *
 * @description
@@ -52,7 +52,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.PointHierarchy
+* @methodOf ngMangoServices.PointHierarchy
 * @name PointHierarchy#remove
 *
 * @description
@@ -64,7 +64,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.PointHierarchy
+* @methodOf ngMangoServices.PointHierarchy
 * @name PointHierarchy#delete
 *
 * @description
@@ -76,7 +76,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.PointHierarchy
+* @methodOf ngMangoServices.PointHierarchy
 * @name getRoot
 *
 * @description
@@ -87,7 +87,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.PointHierarchy
+* @methodOf ngMangoServices.PointHierarchy
 * @name byPath
 *
 * @description
@@ -103,7 +103,7 @@ By default this is set to `true` and all descendant points are given, even those
 
 /**
 * @ngdoc method
-* @methodOf maServices.PointHierarchy
+* @methodOf ngMangoServices.PointHierarchy
 * @name byName
 *
 * @description

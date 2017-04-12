@@ -7,7 +7,7 @@ define(['moment-timezone'], function(moment) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maDateRangePicker
+ * @name ngMango.maDateRangePicker
  *
  * @description
  * `<ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="5 seconds"></ma-date-range-picker>`

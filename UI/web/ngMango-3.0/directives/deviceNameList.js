@@ -7,7 +7,7 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maDeviceNameList
+ * @name ngMango.maDeviceNameList
  * @restrict E
  * @description
  * `<ma-device-name-list ng-model="myDeviceName" data-source-xid="myDataSource.xid"></ma-device-name-list>`

@@ -8,7 +8,7 @@ define(['amcharts/gauge', 'require', 'angular', './PointValueController'], funct
 
 /**
  * @ngdoc directive
- * @name maDashboards.maGaugeChart
+ * @name ngMango.maGaugeChart
  * @restrict E
  * @description
  * `<ma-gauge-chart point="myPoint" style="width:100%; height:200px"></ma-gauge-chart>`

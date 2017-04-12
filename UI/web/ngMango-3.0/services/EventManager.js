@@ -13,7 +13,7 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.EventManager
+* @name ngMangoServices.EventManager
 *
 * @description
 * REPLACE
@@ -27,7 +27,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.EventManager
+* @methodOf ngMangoServices.EventManager
 * @name openSocket
 *
 * @description
@@ -37,7 +37,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.EventManager
+* @methodOf ngMangoServices.EventManager
 * @name closeSocket
 *
 * @description
@@ -47,7 +47,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.EventManager
+* @methodOf ngMangoServices.EventManager
 * @name messageReceived
 *
 * @description
@@ -57,7 +57,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.EventManager
+* @methodOf ngMangoServices.EventManager
 * @name subscribe
 *
 * @description
@@ -67,7 +67,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.EventManager
+* @methodOf ngMangoServices.EventManager
 * @name unsubscribe
 *
 * @description
@@ -77,7 +77,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.EventManager
+* @methodOf ngMangoServices.EventManager
 * @name smartSubscribe
 *
 * @description
@@ -87,7 +87,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.EventManager
+* @methodOf ngMangoServices.EventManager
 * @name updateSubscriptions
 *
 * @description

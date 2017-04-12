@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive 
- * @name maDashboards.maPointList
+ * @name ngMango.maPointList
  * @restrict E
  * @description
  * `<ma-point-list limit="200" ng-model="myPoint"></ma-point-list>`

@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maCopyBlurred
+ * @name ngMango.maCopyBlurred
  * @restrict A
  * @description
  * `<input type="text" ng-model="input.value" ma-copy-blurred="point.value">`

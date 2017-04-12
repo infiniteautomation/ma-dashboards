@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.cssInjector
+* @name ngMangoServices.cssInjector
 *
 * @description
 * Provides a service for injecting CSS into the head of the document.
@@ -37,7 +37,7 @@ cssInjector.injectLink('/modules/mangoUI/web/ui/directives/watchList/style.css',
 
 /**
 * @ngdoc method
-* @methodOf maServices.cssInjector
+* @methodOf ngMangoServices.cssInjector
 * @name cssInjector#isInjected
 *
 * @description
@@ -50,7 +50,7 @@ cssInjector.injectLink('/modules/mangoUI/web/ui/directives/watchList/style.css',
 
 /**
 * @ngdoc method
-* @methodOf maServices.cssInjector
+* @methodOf ngMangoServices.cssInjector
 * @name cssInjector#injectLink
 *
 * @description
@@ -67,7 +67,7 @@ cssInjector.injectLink('/modules/mangoUI/web/ui/directives/watchList/style.css',
 
 /**
 * @ngdoc method
-* @methodOf maServices.cssInjector
+* @methodOf ngMangoServices.cssInjector
 * @name cssInjector#injectStyle
 *
 * @description

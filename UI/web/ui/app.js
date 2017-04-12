@@ -5,8 +5,8 @@
 
 define([
     'angular',
-    'ngMango-3.0/maMaterialDashboards',
-    'ngMango-3.0/maAppComponents',
+    'ngMango-3.0/ngMangoMaterial',
+    'ngMango-3.0/ngMangoComponents',
     'require',
     './services/Page',
     './services/DateBar',
@@ -19,7 +19,7 @@ define([
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, uiSettings, pageView, livePreview, moment) {
+], function(angular, ngMangoMaterial, ngMangoComponents, require, Page, DateBar, uiSettings, pageView, livePreview, moment) {
 'use strict';
 
 var uiApp = angular.module('uiApp', [
@@ -27,8 +27,8 @@ var uiApp = angular.module('uiApp', [
     'ui.router',
     'ui.sortable',
     'angular-loading-bar',
-    'maMaterialDashboards',
-    'maAppComponents',
+    'ngMangoMaterial',
+    'ngMangoComponents',
     'ngMessages'
 ]);
 
@@ -1139,9 +1139,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
 
         var menuText = item;
-        if (item==='maDashboards') { menuText = 'Components'; }
-        else if (item==='maFilters') { menuText = 'Filters'; }
-        else if (item==='maServices') { menuText = 'Services'; }
+        if (item==='ngMango') { menuText = 'Components'; }
+        else if (item==='ngMangoFilters') { menuText = 'Filters'; }
+        else if (item==='ngMangoServices') { menuText = 'Services'; }
 
         var menuItem = {
             name: 'dashboard.docs.' + item,
@@ -1168,7 +1168,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var dashCaseUrl = splitAtDot[1].replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
 		if(dashCaseUrl.charAt(0) === '-') { dashCaseUrl = dashCaseUrl.slice(1);}
         var menuText = splitAtDot[1];
-        if (splitAtDot[0] === 'maDashboards') { menuText = dashCaseUrl;}
+        if (splitAtDot[0] === 'ngMango') { menuText = dashCaseUrl;}
         var menuItem = {
             name: 'dashboard.docs.' + item,
             templateUrl: require.toUrl('./views/docs/' + item + '.html'),
@@ -1449,12 +1449,12 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     });
 }]);
 
-// Get an injector for the maServices app and use the JsonStore service to retrieve the
+// Get an injector for the ngMangoServices app and use the JsonStore service to retrieve the
 // custom user menu items from the REST api prior to bootstrapping the main application.
 // This is so the states can be added to the stateProvider in the config block for the
 // main application. If the states are added after the main app runs then the user may
 // not navigate directly to one of their custom states on startup
-var servicesInjector = angular.injector(['maServices'], true);
+var servicesInjector = angular.injector(['ngMangoServices'], true);
 var User = servicesInjector.get('User');
 var JsonStore = servicesInjector.get('JsonStore');
 var $q = servicesInjector.get('$q');

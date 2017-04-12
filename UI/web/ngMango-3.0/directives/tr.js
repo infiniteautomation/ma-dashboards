@@ -7,7 +7,7 @@ define(['jquery', 'angular'], function($, angular) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maTr
+ * @name ngMango.maTr
  * @restrict A
  * @description
  * `<span ma-tr="ui.dox.input"></span>`

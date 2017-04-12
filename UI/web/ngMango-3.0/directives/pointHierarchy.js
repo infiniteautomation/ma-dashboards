@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maPointHierarchy
+ * @name ngMango.maPointHierarchy
  * @restrict E
  * @description
  * `<ma-point-hierarchy path="[]" hierarchy="folder"></ma-point-hierarchy>`

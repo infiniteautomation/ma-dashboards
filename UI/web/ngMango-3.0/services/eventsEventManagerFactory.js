@@ -7,11 +7,11 @@ define([], function() {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.eventsEventManager
+* @name ngMangoServices.eventsEventManager
 *
 * @description
-* Provides an <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> factory pointing to the events websocket at `'/rest/v1/websocket/events'`
-* - All methods available to <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> are available.
+* Provides an <a ui-sref="dashboard.docs.ngMangoServices.EventManager">EventManager</a> factory pointing to the events websocket at `'/rest/v1/websocket/events'`
+* - All methods available to <a ui-sref="dashboard.docs.ngMangoServices.EventManager">EventManager</a> are available.
 *
 */
 

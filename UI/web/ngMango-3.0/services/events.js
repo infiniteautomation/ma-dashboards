@@ -7,11 +7,11 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.Events
+* @name ngMangoServices.Events
 *
 * @description
 * Provides a service for retrieving, adding, and acknowledging events/alarms
-* - Used by <a ui-sref="dashboard.docs.maDashboards.maEventsTable">`<ma-events-table>`</a> 
+* - Used by <a ui-sref="dashboard.docs.ngMango.maEventsTable">`<ma-events-table>`</a> 
 *
 *
 *
@@ -19,7 +19,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#get
 *
 * @description
@@ -30,7 +30,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#save
 *
 * @description
@@ -41,7 +41,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#remove
 *
 * @description
@@ -52,7 +52,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#delete
 *
 * @description
@@ -64,7 +64,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#query
 *
 * @description
@@ -77,7 +77,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#objQuery
 *
 * @description
@@ -89,7 +89,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#getActiveSummary
 *
 * @description
@@ -101,7 +101,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#acknowledge
 *
 * @description
@@ -113,7 +113,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Events
+* @methodOf ngMangoServices.Events
 * @name Events#acknowledgeViaRql
 *
 * @description

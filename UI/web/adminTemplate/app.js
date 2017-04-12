@@ -9,19 +9,19 @@ define([
     './directives/menu/menuLink',
     './directives/menu/menuToggle',
     './directives/login/login',
-    'ngMango-3.0/maMaterialDashboards', // load ngMango-3.0 angular modules
-    'ngMango-3.0/maAppComponents',
+    'ngMango-3.0/ngMangoMaterial', // load ngMango-3.0 angular modules
+    'ngMango-3.0/ngMangoComponents',
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
-], function(angular, dashboardMenu, menuLink, menuToggle, login, maMaterialDashboards, maAppComponents) {
+], function(angular, dashboardMenu, menuLink, menuToggle, login, ngMangoMaterial, ngMangoComponents) {
 'use strict';
 
 // create an angular app with our desired dependencies
 var myAdminApp = angular.module('myAdminApp', [
     'ui.router',
     'angular-loading-bar',
-    'maMaterialDashboards',
-    'maAppComponents',
+    'ngMangoMaterial',
+    'ngMangoComponents',
     'ngMessages'
 ]);
 
@@ -400,7 +400,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
 }]);
 
 // get an injector to retrieve the User service
-var servicesInjector = angular.injector(['maServices'], true);
+var servicesInjector = angular.injector(['ngMangoServices'], true);
 var User = servicesInjector.get('User');
 
 var adminSettings = {};

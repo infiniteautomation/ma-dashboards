@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-define(['./maServices',
-        './maFilters',
+define(['./ngMangoServices',
+        './ngMangoFilters',
         './directives/pointList',
         './directives/filteringPointList',
         './directives/pointValue',
@@ -87,7 +87,7 @@ define(['./maServices',
         'angular',
         'require',
         'moment-timezone'
-], function(maServices, maFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
+], function(ngMangoServices, ngMangoFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, trAriaLabel,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
@@ -102,98 +102,98 @@ define(['./maServices',
 'use strict';
 /**
  * @ngdoc overview
- * @name maDashboards
+ * @name ngMango
  *
  *
  * @description
- * The maDashboards module handles loading of the custom directives used for creating a Mango 3.0 dashboard.
+ * The ngMango module handles loading of the custom directives used for creating a Mango 3.0 dashboard.
  *
  *
 **/
-var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters', 'ngMap']);
+var ngMango = angular.module('ngMango', ['ngMangoServices', 'ngMangoFilters', 'ngMap']);
 
-maDashboards.directive('maFilteringPointList', filteringPointList);
-maDashboards.directive('maPointList', pointList);
-maDashboards.directive('maPointValue', pointValue);
-maDashboards.directive('maPointValues', pointValues);
-maDashboards.directive('maPointStatistics', pointStatistics);
-maDashboards.directive('maTankLevel', tankLevel);
-maDashboards.directive('maGaugeChart', gaugeChart);
-maDashboards.directive('maSerialChart', serialChart);
-maDashboards.directive('maPieChart', pieChart);
-maDashboards.directive('maClock', clock);
-maDashboards.directive('maStateChart', stateChart);
-maDashboards.directive('maCopyBlurred', copyBlurred);
-maDashboards.directive('maTr', tr);
-maDashboards.directive('maTrAriaLabel', trAriaLabel);
-maDashboards.directive('maDatePicker', datePicker);
-maDashboards.directive('maDateRangePicker', dateRangePicker);
-maDashboards.directive('maStatisticsTable', statisticsTable);
-maDashboards.directive('maStartsAndRuntimesTable', startsAndRuntimesTable);
-maDashboards.directive('maSetPointValue', setPointValue);
-maDashboards.directive('maSwitchImg', switchImg);
-maDashboards.directive('maCalc', calc);
-maDashboards.directive('maIntervalPicker', intervalPicker);
-maDashboards.directive('maIntervalTypePicker', intervalTypePicker);
-maDashboards.directive('maPointQuery', pointQuery);
-maDashboards.directive('maGetPointValue', getPointValue);
-maDashboards.directive('maJsonStore', jsonStore);
-maDashboards.directive('maFocusOn', focusOn);
-maDashboards.directive('maEnter', enter);
-maDashboards.directive('maNow', now);
-maDashboards.directive('maFn', fn);
-maDashboards.directive('maPointHierarchy', pointHierarchy);
-maDashboards.directive('maPagingPointList', pagingPointList);
-maDashboards.directive('maDataSourceList', dataSourceList);
-maDashboards.directive('maDataSourceScrollList', dataSourceScrollList);
-maDashboards.directive('maDeviceNameList', deviceNameList);
-maDashboards.directive('maDeviceNameScrollList', deviceNameScrollList);
-maDashboards.directive('maDataSourceQuery', dataSourceQuery);
-maDashboards.directive('maDeviceNameQuery', deviceNameQuery);
-maDashboards.directive('maUserNotesTable', userNotesTable);
-maDashboards.directive('maEventsTable', eventsTable);
-maDashboards.directive('maArrayInput', arrayInput);
-maDashboards.directive('maEmptyInput', emptyInput);
-maDashboards.directive('maWatchListGet', watchListGet);
-maDashboards.directive('maWatchListSelect', watchListSelect);
-maDashboards.directive('maWatchListList', watchListList);
-maDashboards.directive('maWatchListChart', watchListChart);
-maDashboards.directive('maPointHierarchySelect', pointHierarchySelect);
-maDashboards.directive('maFilteringDeviceNameList', filteringDeviceNameList);
-maDashboards.directive('maFilteringDataSourceList', filteringDataSourceList);
-maDashboards.directive('maFilteringPointHierarchySelect', filteringPointHierarchySelect);
-maDashboards.directive('maAccordion', accordion);
-maDashboards.directive('maAccordionSection', accordionSection);
-maDashboards.directive('maDraggable', draggable);
-maDashboards.directive('maDropzone', dropzone);
-maDashboards.directive('maBarDisplay', barDisplay);
-maDashboards.directive('maIndicator', indicator);
-maDashboards.directive('maValidationMessages', validationMessages);
-maDashboards.directive('maScaleTo', scaleTo);
-maDashboards.directive('maChange', change);
-maDashboards.directive('maSwitch', switchDirective);
-maDashboards.component('maQueryBuilder', queryBuilder);
-maDashboards.component('maQueryGroup', queryGroup);
-maDashboards.component('maQueryPredicate', queryPredicate);
-maDashboards.component('maPointHierarchyBrowser', pointHierarchyBrowser);
-maDashboards.component('maPointHierarchyPointSelector', pointHierarchyPointSelector);
-maDashboards.component('maPointHierarchyFolder', pointHierarchyFolder);
-maDashboards.component('maWatchListParameters', watchListParameters);
-maDashboards.component('maImageSlider', imageSlider);
-maDashboards.component('maUserEditor', userEditor);
-maDashboards.component('maUserSelect', userSelect);
-maDashboards.component('maSystemSettingEditor', systemSettingEditor);
-maDashboards.component('maPermissionsMenu', permissionsMenu);
-maDashboards.component('maConfigExport', configExport);
-maDashboards.component('maConfigImport', configImport);
-maDashboards.component('maConfigImportDialog', configImportDialog);
-maDashboards.component('maMap', maMap);
-maDashboards.filter('tr', trFilter);
-maDashboards.animation('.ma-slide-up', slideUp);
+ngMango.directive('maFilteringPointList', filteringPointList);
+ngMango.directive('maPointList', pointList);
+ngMango.directive('maPointValue', pointValue);
+ngMango.directive('maPointValues', pointValues);
+ngMango.directive('maPointStatistics', pointStatistics);
+ngMango.directive('maTankLevel', tankLevel);
+ngMango.directive('maGaugeChart', gaugeChart);
+ngMango.directive('maSerialChart', serialChart);
+ngMango.directive('maPieChart', pieChart);
+ngMango.directive('maClock', clock);
+ngMango.directive('maStateChart', stateChart);
+ngMango.directive('maCopyBlurred', copyBlurred);
+ngMango.directive('maTr', tr);
+ngMango.directive('maTrAriaLabel', trAriaLabel);
+ngMango.directive('maDatePicker', datePicker);
+ngMango.directive('maDateRangePicker', dateRangePicker);
+ngMango.directive('maStatisticsTable', statisticsTable);
+ngMango.directive('maStartsAndRuntimesTable', startsAndRuntimesTable);
+ngMango.directive('maSetPointValue', setPointValue);
+ngMango.directive('maSwitchImg', switchImg);
+ngMango.directive('maCalc', calc);
+ngMango.directive('maIntervalPicker', intervalPicker);
+ngMango.directive('maIntervalTypePicker', intervalTypePicker);
+ngMango.directive('maPointQuery', pointQuery);
+ngMango.directive('maGetPointValue', getPointValue);
+ngMango.directive('maJsonStore', jsonStore);
+ngMango.directive('maFocusOn', focusOn);
+ngMango.directive('maEnter', enter);
+ngMango.directive('maNow', now);
+ngMango.directive('maFn', fn);
+ngMango.directive('maPointHierarchy', pointHierarchy);
+ngMango.directive('maPagingPointList', pagingPointList);
+ngMango.directive('maDataSourceList', dataSourceList);
+ngMango.directive('maDataSourceScrollList', dataSourceScrollList);
+ngMango.directive('maDeviceNameList', deviceNameList);
+ngMango.directive('maDeviceNameScrollList', deviceNameScrollList);
+ngMango.directive('maDataSourceQuery', dataSourceQuery);
+ngMango.directive('maDeviceNameQuery', deviceNameQuery);
+ngMango.directive('maUserNotesTable', userNotesTable);
+ngMango.directive('maEventsTable', eventsTable);
+ngMango.directive('maArrayInput', arrayInput);
+ngMango.directive('maEmptyInput', emptyInput);
+ngMango.directive('maWatchListGet', watchListGet);
+ngMango.directive('maWatchListSelect', watchListSelect);
+ngMango.directive('maWatchListList', watchListList);
+ngMango.directive('maWatchListChart', watchListChart);
+ngMango.directive('maPointHierarchySelect', pointHierarchySelect);
+ngMango.directive('maFilteringDeviceNameList', filteringDeviceNameList);
+ngMango.directive('maFilteringDataSourceList', filteringDataSourceList);
+ngMango.directive('maFilteringPointHierarchySelect', filteringPointHierarchySelect);
+ngMango.directive('maAccordion', accordion);
+ngMango.directive('maAccordionSection', accordionSection);
+ngMango.directive('maDraggable', draggable);
+ngMango.directive('maDropzone', dropzone);
+ngMango.directive('maBarDisplay', barDisplay);
+ngMango.directive('maIndicator', indicator);
+ngMango.directive('maValidationMessages', validationMessages);
+ngMango.directive('maScaleTo', scaleTo);
+ngMango.directive('maChange', change);
+ngMango.directive('maSwitch', switchDirective);
+ngMango.component('maQueryBuilder', queryBuilder);
+ngMango.component('maQueryGroup', queryGroup);
+ngMango.component('maQueryPredicate', queryPredicate);
+ngMango.component('maPointHierarchyBrowser', pointHierarchyBrowser);
+ngMango.component('maPointHierarchyPointSelector', pointHierarchyPointSelector);
+ngMango.component('maPointHierarchyFolder', pointHierarchyFolder);
+ngMango.component('maWatchListParameters', watchListParameters);
+ngMango.component('maImageSlider', imageSlider);
+ngMango.component('maUserEditor', userEditor);
+ngMango.component('maUserSelect', userSelect);
+ngMango.component('maSystemSettingEditor', systemSettingEditor);
+ngMango.component('maPermissionsMenu', permissionsMenu);
+ngMango.component('maConfigExport', configExport);
+ngMango.component('maConfigImport', configImport);
+ngMango.component('maConfigImportDialog', configImportDialog);
+ngMango.component('maMap', maMap);
+ngMango.filter('tr', trFilter);
+ngMango.animation('.ma-slide-up', slideUp);
 
-maDashboards.constant('maDashboardsInsertCss', true);
+ngMango.constant('ngMangoInsertCss', true);
 
-maDashboards.constant('MA_DATE_RANGE_PRESETS', [
+ngMango.constant('MA_DATE_RANGE_PRESETS', [
    {type: "LAST_5_MINUTES", label: 'Last 5 minutes'},
    {type: "LAST_15_MINUTES", label: 'Last 15 minutes'},
    {type: "LAST_30_MINUTES", label: 'Last 30 minutes'},
@@ -219,7 +219,7 @@ maDashboards.constant('MA_DATE_RANGE_PRESETS', [
    {type: "PREVIOUS_YEAR", label: 'Previous year'}
 ]);
 
-maDashboards.constant('MA_ROLLUP_TYPES', [
+ngMango.constant('MA_ROLLUP_TYPES', [
  {type: 'POINT_DEFAULT', nonNumeric: true, label: 'Point default', translation: 'common.rollup.pointDefault'},
  {type: 'NONE', nonNumeric: true, label: 'None', translation: 'common.rollup.none'},
  {type: 'AVERAGE', nonNumeric: false, label: 'Average', translation: 'common.rollup.average'},
@@ -235,7 +235,7 @@ maDashboards.constant('MA_ROLLUP_TYPES', [
  //{name: 'FFT', nonNumeric: false}
 ]);
 
-maDashboards.constant('MA_TIME_PERIOD_TYPES', [
+ngMango.constant('MA_TIME_PERIOD_TYPES', [
  {type: 'SECONDS', label: 'Seconds'},
  {type: 'MINUTES', label: 'Minutes'},
  {type: 'HOURS', label: 'Hours'},
@@ -245,14 +245,14 @@ maDashboards.constant('MA_TIME_PERIOD_TYPES', [
  {type: 'YEARS', label: 'Years'}
 ]);
 
-maDashboards.constant('MA_CHART_TYPES', [
+ngMango.constant('MA_CHART_TYPES', [
  {type: 'line', label: 'Line'},
  {type: 'smoothedLine', label: 'Smoothed'},
  {type: 'step', label: 'Step'},
  {type: 'column', label: 'Bar'}
 ]);
 
-maDashboards.constant('MA_RELATIVE_DATE_TYPES', [
+ngMango.constant('MA_RELATIVE_DATE_TYPES', [
  {type: "", label: 'Now'},
  {type: "moment:'subtract':5:'minutes'", label: '5 minutes ago'},
  {type: "moment:'subtract':15:'minutes'", label: '15 minutes ago'},
@@ -278,7 +278,7 @@ maDashboards.constant('MA_RELATIVE_DATE_TYPES', [
  {type: "moment:'subtract':1:'years'", label: '1 year ago'}
 ]);
 
-maDashboards.factory('MA_AMCHARTS_DATE_FORMATS', ['mangoDateFormats', function(mangoDateFormats) {
+ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['mangoDateFormats', function(mangoDateFormats) {
     return {
         categoryAxis: [
             {period: 'fff', format: mangoDateFormats.timeSeconds},
@@ -294,17 +294,17 @@ maDashboards.factory('MA_AMCHARTS_DATE_FORMATS', ['mangoDateFormats', function(m
     };
 }]);
 
-maDashboards.constant('MA_DEFAULT_TIMEZONE', '');
-maDashboards.constant('MA_DEFAULT_LOCALE', '');
+ngMango.constant('MA_DEFAULT_TIMEZONE', '');
+ngMango.constant('MA_DEFAULT_LOCALE', '');
 
-maDashboards.config(['$httpProvider', function($httpProvider) {
+ngMango.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');
 }]);
 
-maDashboards.run([
+ngMango.run([
     '$rootScope',
     'mangoWatchdog',
-    'maDashboardsInsertCss',
+    'ngMangoInsertCss',
     'cssInjector',
     'MA_ROLLUP_TYPES',
     'MA_TIME_PERIOD_TYPES',
@@ -314,7 +314,7 @@ maDashboards.run([
     'MA_DEFAULT_TIMEZONE',
     'MA_DEFAULT_LOCALE',
     'User',
-function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
+function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
         MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE, User) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
@@ -333,8 +333,8 @@ function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLU
         });
     });
 
-	if (maDashboardsInsertCss) {
-	    cssInjector.injectLink(require.toUrl('./maDashboards.css'));
+	if (ngMangoInsertCss) {
+	    cssInjector.injectLink(require.toUrl('./ngMango.css'));
 	}
 
 	$rootScope.range = function(start, end) {
@@ -404,6 +404,6 @@ function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLU
     });
 }]);
 
-return maDashboards;
+return ngMango;
 
 }); // require

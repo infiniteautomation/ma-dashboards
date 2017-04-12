@@ -16,10 +16,10 @@ describe('Point values service', function() {
 
     this.timeout(10000);
 
-    before('Load maServices module', function(done) {
-        requirejs(['ngMango-3.0/maServices', 'moment-timezone'], function(maServices, _moment) {
+    before('Load ngMangoServices module', function(done) {
+        requirejs(['ngMango-3.0/ngMangoServices', 'moment-timezone'], function(ngMangoServices, _moment) {
             moment = _moment;
-            angular.module('mochaTestModule', ['maServices', 'ngMockE2E'])
+            angular.module('mochaTestModule', ['ngMangoServices', 'ngMockE2E'])
                 .constant('mangoBaseUrl', mochaUtils.config.url)
                 .constant('mangoTimeout', 0)
                 .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {

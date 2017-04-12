@@ -7,7 +7,7 @@ define(['moment-timezone'], function(moment) {
 'use strict';
 /**
  * @ngdoc filter
- * @name maFilters.duration
+ * @name ngMangoFilters.duration
  *
  * @description
  * Converts an input in milliseconds to a momentJS <a href="http://momentjs.com/docs/#/durations/" target="_blank">duration</a> object that defines a length of time.

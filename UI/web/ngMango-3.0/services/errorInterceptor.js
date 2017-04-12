@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.errorInterceptor
+* @name ngMangoServices.errorInterceptor
 *
 * @description
 * Provides the error interceptor to show REST errors on the error page.
@@ -24,7 +24,7 @@ define([], function() {
 
 /**
 * @ngdoc method
-* @methodOf maServices.errorInterceptor
+* @methodOf ngMangoServices.errorInterceptor
 * @name clearErrors
 *
 * @description
@@ -34,7 +34,7 @@ define([], function() {
 
 /**
 * @ngdoc object
-* @propertyOf maServices.errorInterceptor
+* @propertyOf ngMangoServices.errorInterceptor
 * @name $rootScope.errors
 *
 * @description

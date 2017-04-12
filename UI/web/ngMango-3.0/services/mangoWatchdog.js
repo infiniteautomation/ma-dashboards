@@ -7,7 +7,7 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.mangoWatchdog
+* @name ngMangoServices.mangoWatchdog
 *
 * @description
 * The mangoWatchdog service checks for connectivity to the Mango API and checks if a user is logged in. It does this by
@@ -26,7 +26,7 @@ define(['angular'], function(angular) {
 * @ngdoc event
 * @name mangoWatchdog#mangoWatchdog
 * @eventType broadcast on root scope
-* @eventOf maServices.mangoWatchdog
+* @eventOf ngMangoServices.mangoWatchdog
 *
 * @description
 * Broadcast periodically, indicates the current status of Mango.
@@ -38,7 +38,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.mangoWatchdog
+* @methodOf ngMangoServices.mangoWatchdog
 * @name enable
 *
 * @description
@@ -48,7 +48,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.mangoWatchdog
+* @methodOf ngMangoServices.mangoWatchdog
 * @name disable
 *
 * @description

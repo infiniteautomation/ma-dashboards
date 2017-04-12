@@ -13,10 +13,10 @@ describe('Util service', function() {
     var mochaUtils = new MochaUtils();
     var Util;
     
-    before('Load maServices module', function(done) {
+    before('Load ngMangoServices module', function(done) {
         this.timeout(5000);
         
-        requirejs(['ngMango-3.0/maServices'], function(maServices) {
+        requirejs(['ngMango-3.0/ngMangoServices'], function(ngMangoServices) {
             done();
         });
         
@@ -28,7 +28,7 @@ describe('Util service', function() {
     });
 
     beforeEach(function() {
-        var injector = angular.injector(['ng', 'ngMock', 'maServices'], true);
+        var injector = angular.injector(['ng', 'ngMock', 'ngMangoServices'], true);
         mochaUtils.setInjector(injector);
         Util = injector.get('Util');
     });

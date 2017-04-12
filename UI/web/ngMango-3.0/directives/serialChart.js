@@ -7,7 +7,7 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maSerialChart
+ * @name ngMango.maSerialChart
  * @restrict E
  * @description
  * `<ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" default-type="column">
@@ -51,8 +51,8 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 </ma-serial-chart>`
  *
  */
-serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util', 'mangoDateFormats'];
-function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats) {
+serialChart.$inject = ['ngMangoInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util', 'mangoDateFormats'];
+function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -117,7 +117,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         },
         scope: scope,
         compile: function() {
-            if (maDashboardsInsertCss) {
+            if (ngMangoInsertCss) {
                 cssInjector.injectLink(require.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
             }
             return postLink;

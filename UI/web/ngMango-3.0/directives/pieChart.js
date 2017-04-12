@@ -7,7 +7,7 @@ define(['amcharts/pie', 'angular'], function(AmCharts, angular) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maPieChart
+ * @name ngMango.maPieChart
  * @restrict E
  * @description
  * `<ma-pie-chart style="height: 300px; width: 600px" values="values"></ma-pie-chart>`

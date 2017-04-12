@@ -9,7 +9,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maCalc
+ * @name ngMango.maCalc
  *
  * @description
  * `<ma-calc input="" output=""></ma-calc>`

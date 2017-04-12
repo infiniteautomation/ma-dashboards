@@ -7,11 +7,11 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.UserNotes
+* @name ngMangoServices.UserNotes
 *
 * @description
 * Provides a service for retrieving and adding user notes
-* - Used by <a ui-sref="dashboard.docs.maDashboards.maUserNotesTable">`<ma-user-notes-table>`</a> 
+* - Used by <a ui-sref="dashboard.docs.ngMango.maUserNotesTable">`<ma-user-notes-table>`</a> 
 *
 *
 *
@@ -20,7 +20,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.UserNotes
+* @methodOf ngMangoServices.UserNotes
 * @name UserNotes#get
 *
 * @description
@@ -31,7 +31,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.UserNotes
+* @methodOf ngMangoServices.UserNotes
 * @name UserNotes#save
 *
 * @description
@@ -42,7 +42,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.UserNotes
+* @methodOf ngMangoServices.UserNotes
 * @name UserNotes#remove
 *
 * @description
@@ -53,7 +53,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.UserNotes
+* @methodOf ngMangoServices.UserNotes
 * @name UserNotes#delete
 *
 * @description
@@ -66,7 +66,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.UserNotes
+* @methodOf ngMangoServices.UserNotes
 * @name UserNotes#query
 *
 * @description

@@ -5,11 +5,11 @@
 
 define([
     'angular',
-    'ngMango-3.0/maMaterialDashboards'
-], function(angular, maMaterialDashboards) {
+    'ngMango-3.0/ngMangoMaterial'
+], function(angular, ngMangoMaterial) {
 'use strict';
 
-var myApp = angular.module('myApp', ['maMaterialDashboards']);
+var myApp = angular.module('myApp', ['ngMangoMaterial']);
 
 myApp.run(['$rootScope', function($rootScope) {
     $rootScope.pi = function() {

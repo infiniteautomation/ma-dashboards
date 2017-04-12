@@ -8,11 +8,11 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc service
-* @name maServices.JsonStore
+* @name ngMangoServices.JsonStore
 *
 * @description
 * Provides a service for reading and writing to the JsonStore within the Mango Database.
-* - Used by <a ui-sref="dashboard.docs.maDashboards.maJsonStore">`<ma-json-store>`</a> directive.
+* - Used by <a ui-sref="dashboard.docs.ngMango.maJsonStore">`<ma-json-store>`</a> directive.
 * - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
@@ -41,7 +41,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.JsonStore
+* @methodOf ngMangoServices.JsonStore
 * @name JsonStore#get
 *
 * @description
@@ -57,7 +57,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.JsonStore
+* @methodOf ngMangoServices.JsonStore
 * @name JsonStore#save
 *
 * @description
@@ -73,7 +73,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.JsonStore
+* @methodOf ngMangoServices.JsonStore
 * @name JsonStore#remove
 *
 * @description
@@ -89,7 +89,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.JsonStore
+* @methodOf ngMangoServices.JsonStore
 * @name JsonStore#delete
 *
 * @description

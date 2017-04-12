@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maDeviceNameQuery
+ * @name ngMango.maDeviceNameQuery
  * @restrict E
  * @description
  * `<ma-device-name-query device-names="deviceNames" contains="'meter'"></ma-device-name-query>`

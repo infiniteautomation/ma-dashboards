@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.rQ
+* @name ngMangoServices.rQ
 *
 * @description
 * The `rQ` service provides asynchronous loading of components via requireJS.

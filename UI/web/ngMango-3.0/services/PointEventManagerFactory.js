@@ -7,12 +7,12 @@ define([], function() {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.PointEventManager
+* @name ngMangoServices.PointEventManager
 *
 * @description
-* Provides an <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> factory pointing to the point-value websocket endpoint at `'/rest/v1/websocket/point-value'`
-* - All methods available to <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> are available.
-* - Used by <a ui-sref="dashboard.docs.maDashboards.maGetPointValue">`<ma-get-point-value>`</a> directive.
+* Provides an <a ui-sref="dashboard.docs.ngMangoServices.EventManager">EventManager</a> factory pointing to the point-value websocket endpoint at `'/rest/v1/websocket/point-value'`
+* - All methods available to <a ui-sref="dashboard.docs.ngMangoServices.EventManager">EventManager</a> are available.
+* - Used by <a ui-sref="dashboard.docs.ngMango.maGetPointValue">`<ma-get-point-value>`</a> directive.
 *
 * # Usage
 *

@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc filter
- * @name maFilters.tr
+ * @name ngMangoFilters.tr
  *
  * @description
  * Outputs the translation text for the set language.

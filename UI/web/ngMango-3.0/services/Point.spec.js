@@ -17,13 +17,13 @@ describe('Point service', function() {
     
     var Point, $q, query, PointHierarchy;
 
-    before('Load maServices module', function(done) {
+    before('Load ngMangoServices module', function(done) {
         this.timeout(5000);
         
-        requirejs(['ngMango-3.0/maServices', 'rql/query'], function(maServices, _query) {
+        requirejs(['ngMango-3.0/ngMangoServices', 'rql/query'], function(ngMangoServices, _query) {
             query = _query;
             
-            angular.module('PointMockModule', ['maServices', 'ngMockE2E'])
+            angular.module('PointMockModule', ['ngMangoServices', 'ngMockE2E'])
                 .constant('mangoBaseUrl', mochaUtils.config.url)
                 .constant('mangoTimeout', 0)
                 .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {

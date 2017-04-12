@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maDataSourceList
+ * @name ngMango.maDataSourceList
  * @restrict E
  * @description
  * `<ma-data-source-list ng-model="myDataSource"></ma-data-source-list>`

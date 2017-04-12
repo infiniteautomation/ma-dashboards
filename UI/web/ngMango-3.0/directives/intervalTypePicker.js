@@ -7,7 +7,7 @@ define(['require'], function(require) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maIntervalTypePicker
+ * @name ngMango.maIntervalTypePicker
  *
  * @description
  * `<ma-interval-type-picker ng-model="updateIntervalType" ng-init="updateIntervalType='MINUTES'"></ma-interval-type-picker>`

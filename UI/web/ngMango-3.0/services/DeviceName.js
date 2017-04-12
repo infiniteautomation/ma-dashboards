@@ -7,11 +7,11 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.DeviceName
+* @name ngMangoServices.DeviceName
 *
 * @description
 * Provides a service for getting list of device names from the Mango system.
-* - Used by <a ui-sref="dashboard.docs.maDashboards.maDeviceNameList">`<ma-device-name-list>`</a> and <a ui-sref="dashboard.docs.maDashboards.maDeviceNameQuery">`<ma-device-name-query>`</a> directives.
+* - Used by <a ui-sref="dashboard.docs.ngMango.maDeviceNameList">`<ma-device-name-list>`</a> and <a ui-sref="dashboard.docs.ngMango.maDeviceNameQuery">`<ma-device-name-query>`</a> directives.
 * - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
@@ -40,7 +40,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.DeviceName
+* @methodOf ngMangoServices.DeviceName
 * @name DeviceName#get
 *
 * @description
@@ -52,7 +52,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.DeviceName
+* @methodOf ngMangoServices.DeviceName
 * @name DeviceName#save
 *
 * @description
@@ -64,7 +64,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.DeviceName
+* @methodOf ngMangoServices.DeviceName
 * @name DeviceName#remove
 *
 * @description
@@ -76,7 +76,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.DeviceName
+* @methodOf ngMangoServices.DeviceName
 * @name DeviceName#delete
 *
 * @description
@@ -89,7 +89,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.DeviceName
+* @methodOf ngMangoServices.DeviceName
 * @name DeviceName#query
 *
 * @description
@@ -102,7 +102,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.DeviceName
+* @methodOf ngMangoServices.DeviceName
 * @name DeviceName#byDataSourceId
 *
 * @description
@@ -116,7 +116,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.DeviceName
+* @methodOf ngMangoServices.DeviceName
 * @name DeviceName#byDataSourceXid
 *
 * @description

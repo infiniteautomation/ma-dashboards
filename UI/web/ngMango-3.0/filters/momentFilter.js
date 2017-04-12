@@ -7,7 +7,7 @@ define(['moment-timezone'], function(moment) {
 'use strict';
 /**
  * @ngdoc filter
- * @name maFilters.moment
+ * @name ngMangoFilters.moment
  *
  * @description
  * Converts a timetamp to a <a href="http://momentjs.com/" target="_blank">momentJS</a> object that can be

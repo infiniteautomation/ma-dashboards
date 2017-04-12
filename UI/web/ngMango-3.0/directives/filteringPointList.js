@@ -7,7 +7,7 @@ define(['require', 'rql/query'], function(require, query) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maFilteringPointList
+ * @name ngMango.maFilteringPointList
  * @restrict E
  * @description
  * `<ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>`

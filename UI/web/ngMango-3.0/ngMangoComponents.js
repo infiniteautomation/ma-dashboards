@@ -9,12 +9,12 @@ define(['./services/errorInterceptor',
 ], function(errorInterceptor, rQ, angular) {
 'use strict';
 
-var maAppComponents = angular.module('maAppComponents', []);
+var ngMangoComponents = angular.module('ngMangoComponents', []);
 
-maAppComponents.provider('errorInterceptor', errorInterceptor);
-maAppComponents.factory('rQ', rQ);
-maAppComponents.constant('require', require);
+ngMangoComponents.provider('errorInterceptor', errorInterceptor);
+ngMangoComponents.factory('rQ', rQ);
+ngMangoComponents.constant('require', require);
 
-return maAppComponents;
+return ngMangoComponents;
 
 }); // require

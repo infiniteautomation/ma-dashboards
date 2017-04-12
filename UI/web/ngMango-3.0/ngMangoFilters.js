@@ -10,21 +10,21 @@ define(['./filters/momentFilter',
 'use strict';
 /**
  * @ngdoc overview
- * @name maFilters
+ * @name ngMangoFilters
  *
  *
  * @description
- * The maFilters module handles loading of the custom filters used for formatting and manipulating data in
+ * The ngMangoFilters module handles loading of the custom filters used for formatting and manipulating data in
    a Mango 3.0 dashboard.
  *
  *
  **/
-var maFilters = angular.module('maFilters', []);
+var ngMangoFilters = angular.module('ngMangoFilters', []);
 
-maFilters.filter('moment', momentFilter);
-maFilters.filter('duration', durationFilter);
+ngMangoFilters.filter('moment', momentFilter);
+ngMangoFilters.filter('duration', durationFilter);
 
-maFilters.filter('sum', function() {
+ngMangoFilters.filter('sum', function() {
 	return function(arrayData, propName) {
 		var sum = 0;
 		var val;
@@ -56,7 +56,7 @@ maFilters.filter('sum', function() {
 	};
 });
 
-maFilters.filter('sumColumn', function() {
+ngMangoFilters.filter('sumColumn', function() {
 	return function(tableData, colNum) {
 		var sum = 0;
 		if (!tableData) {
@@ -77,14 +77,14 @@ maFilters.filter('sumColumn', function() {
 	};
 });
 
-maFilters.filter('pad', function() {
+ngMangoFilters.filter('pad', function() {
 	  var zeros = '0000000000';
 	  return function(a, b) {
 		  return (zeros + a).slice(-b);
 	  };
 });
 
-maFilters.filter('first', function() {
+ngMangoFilters.filter('first', function() {
 	  return function(a) {
 		  if (a && typeof a.length === 'number')
 			  return a[0];
@@ -92,7 +92,7 @@ maFilters.filter('first', function() {
 	  };
 });
 
-maFilters.filter('unique', ['Util', function(Util) {
+ngMangoFilters.filter('unique', ['Util', function(Util) {
 	var uniqueFilter = Util.memoize(function uniqueFilter(collection, propName) {
 	    
 	    var result = [];
@@ -120,7 +120,7 @@ maFilters.filter('unique', ['Util', function(Util) {
 	};
 }]);
 
-maFilters.filter('range', function() {
+ngMangoFilters.filter('range', function() {
     return function(input, start, end, step) {
         input.splice(0, input.length);
         for (var i = start || 0; i <= (end || 100); i = i + (step || 1))
@@ -129,7 +129,7 @@ maFilters.filter('range', function() {
     };
 });
 
-maFilters.filter('property', ['Util', function(Util) {
+ngMangoFilters.filter('property', ['Util', function(Util) {
     var propertyFilter = Util.memoize(function propertyFilter(input, propertyName) {
         var result = [];
         for (var i = 0; i < input.length; i++)
@@ -143,17 +143,17 @@ maFilters.filter('property', ['Util', function(Util) {
     };
 }]);
 
-maFilters.filter('maFilter', ['Util', '$filter', function(Util, $filter) {
+ngMangoFilters.filter('maFilter', ['Util', '$filter', function(Util, $filter) {
     return Util.memoize($filter('filter'));
 }]);
 
-maFilters.filter('noNaN', function () {
+ngMangoFilters.filter('noNaN', function () {
     return function (input, suffix) {
           if (isNaN(input)) { return '\u2014'; }
           else { return input.toFixed(1) + suffix; }
     };
 });
 
-return maFilters;
+return ngMangoFilters;
 
 }); // require

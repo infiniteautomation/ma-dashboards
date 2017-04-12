@@ -7,7 +7,7 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maEventsTable
+ * @name ngMango.maEventsTable
  * @restrict E
  * @description
  * `<ma-events-table></ma-events-table>`

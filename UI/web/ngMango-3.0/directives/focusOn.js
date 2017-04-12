@@ -4,7 +4,7 @@
  */
  /**
   * @ngdoc directive
-  * @name maDashboards.maFocusOn
+  * @name ngMango.maFocusOn
   * @restrict A
   * @description
   * `<input ma-focus-on="whenThisIsTrue">`

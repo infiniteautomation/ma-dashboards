@@ -5,7 +5,7 @@
 
  /**
   * @ngdoc directive
-  * @name maDashboards.maWatchListSelect
+  * @name ngMango.maWatchListSelect
   * @restrict E
   * @description
   * `<ma-watch-list-select watch-list="myWatchlist"></ma-watch-list-select>`

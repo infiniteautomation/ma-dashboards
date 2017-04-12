@@ -4,17 +4,17 @@
  */
 
 define(['angular',
-        './maDashboards',
+        './ngMango',
         './components/colorPreview/colorPreview',
         './services/dialogHelper',
         'angular-material',
         'mdPickers',
-        'angular-material-data-table'], function(angular, maDashboards, colorPreview, dialogHelperFactory) {
+        'angular-material-data-table'], function(angular, ngMango, colorPreview, dialogHelperFactory) {
 'use strict';
 
-var maMaterialDashboards = angular.module('maMaterialDashboards', ['maDashboards', 'ngMaterial', 'mdPickers', 'md.data.table']);
-maMaterialDashboards.component('maColorPreview', colorPreview);
-maMaterialDashboards.factory('maDialogHelper', dialogHelperFactory);
-return maMaterialDashboards;
+var ngMangoMaterial = angular.module('ngMangoMaterial', ['ngMango', 'ngMaterial', 'mdPickers', 'md.data.table']);
+ngMangoMaterial.component('maColorPreview', colorPreview);
+ngMangoMaterial.factory('maDialogHelper', dialogHelperFactory);
+return ngMangoMaterial;
 
 }); // define

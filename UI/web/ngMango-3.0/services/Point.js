@@ -7,11 +7,11 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name maServices.Point
+* @name ngMangoServices.Point
 *
 * @description
 * Provides service for getting and and updating a list of points.
-* - Used by <a ui-sref="dashboard.docs.maDashboards.maPointList">`<ma-point-list>`</a> and <a ui-sref="dashboard.docs.maDashboards.maFilteringPointList">`<ma-filtering-point-list>`</a> directives.
+* - Used by <a ui-sref="dashboard.docs.ngMango.maPointList">`<ma-point-list>`</a> and <a ui-sref="dashboard.docs.ngMango.maFilteringPointList">`<ma-filtering-point-list>`</a> directives.
 * - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
@@ -30,7 +30,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#get
 *
 * @description
@@ -42,7 +42,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#save
 *
 * @description
@@ -54,7 +54,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#remove
 *
 * @description
@@ -66,7 +66,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#delete
 *
 * @description
@@ -79,7 +79,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#query
 *
 * @description
@@ -92,7 +92,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#rql
 *
 * @description
@@ -105,7 +105,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#getById
 *
 * @description
@@ -118,7 +118,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#objQuery
 *
 * @description
@@ -131,7 +131,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#setValue
 *
 * @description
@@ -144,7 +144,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#setValueResult
 *
 * @description
@@ -157,7 +157,7 @@ Used by `<set-point-value>` directive.
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#toggleValue
 *
 * @description
@@ -167,7 +167,7 @@ See <a ui-sref="dashboard.examples.settingPointValues.toggle">Toggle Binary</a> 
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#valueFn
 *
 * @description
@@ -179,14 +179,14 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="das
 
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#rendererMap
 *
 * @returns {object} Returns an object mapping textRenderer values for binary or multistate points. Returns null if the point does not have a textRenderer.
 */
 /**
 * @ngdoc method
-* @methodOf maServices.Point
+* @methodOf ngMangoServices.Point
 * @name Point#valueRenderer
 *
 * @description

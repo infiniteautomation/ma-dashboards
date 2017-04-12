@@ -7,7 +7,7 @@ define(['amcharts/serial', 'require', 'angular', './PointValueController'], func
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maTankLevel
+ * @name ngMango.maTankLevel
  * @restrict E
  * @description
  * `<ma-tank-level point="myPoint" color="" max="" style="width:300px; height:200px;"></ma-tank-level>`

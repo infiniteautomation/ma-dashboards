@@ -11,8 +11,8 @@ contentLoaded(window, findMangoConnections);
 function findMangoConnections() {
 
 	var i, connectionElement, mangoConnection;
-	var defaultModule = 'maDashboards';
-	var dependencies = ['angular', './maDashboards'];
+	var defaultModule = 'ngMango';
+	var dependencies = ['angular', './ngMango'];
 
 	var connectionElements = document.querySelectorAll("[ma-app], ma-app");
 	for (i = 0; i < connectionElements.length; i++) {
@@ -38,26 +38,26 @@ function findMangoConnections() {
 		var debug = connectionElement.getAttribute('ma-debug');
 		mangoConnection.debug = !debug || debug === 'true';
 		
-        var module = mangoConnection.module = connectionElement.getAttribute('ma-app') || 'maMaterialDashboards';
+        var module = mangoConnection.module = connectionElement.getAttribute('ma-app') || 'ngMangoMaterial';
         dependencies.push('./' + module);
 		
 		connectionElement.mangoConnection = mangoConnection;
 	}
 	
 	if (!connectionElements.length) {
-	    // no ma-app config, load maMaterialDashboards by default
-	    defaultModule = 'maMaterialDashboards';
-	    dependencies[1] = './maMaterialDashboards';
+	    // no ma-app config, load ngMangoMaterial by default
+	    defaultModule = 'ngMangoMaterial';
+	    dependencies[1] = './ngMangoMaterial';
 	}
 	
 	var scriptSourceServer;
-	var match = /^(http|https):\/\/.*?(?=\/)/.exec(require.toUrl('./maDashboards'));
+	var match = /^(http|https):\/\/.*?(?=\/)/.exec(require.toUrl('./ngMango'));
     if (match) scriptSourceServer = match[0];
 
-	require(dependencies, function(angular, maDashboards) {
+	require(dependencies, function(angular, ngMango) {
 	    // white-list remote host so angular can fetch templates from it
 	    if (scriptSourceServer) {
-	        maDashboards.config(['$sceDelegateProvider', function($sceDelegateProvider) {
+	        ngMango.config(['$sceDelegateProvider', function($sceDelegateProvider) {
 	            $sceDelegateProvider.resourceUrlWhitelist([
 	                'self',
 	                scriptSourceServer + '/**'
@@ -75,7 +75,7 @@ function findMangoConnections() {
 			mangoConnection = connectionElement.mangoConnection;
 			delete connectionElement.mangoConnection;
 			
-			var appName = 'maDashboardsSubModule' + i;
+			var appName = 'ngMangoSubModule' + i;
 			var app = angular.module(appName, [mangoConnection.module]);
 			
 			if (mangoConnection.baseUrl)

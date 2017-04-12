@@ -7,7 +7,7 @@ define(['require'], function(require) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maStartsAndRuntimesTable
+ * @name ngMango.maStartsAndRuntimesTable
  * @restrict E
  * @description
  * `<ma-set-point-value point="myPoint"></ma-set-point-value>`

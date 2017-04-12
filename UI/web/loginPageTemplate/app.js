@@ -6,7 +6,7 @@
 define([
     'angular',
     './directives/login/login', // load directives from the directives folder
-    'ngMango-3.0/maMaterialDashboards', // load ngMango-3.0 angular modules
+    'ngMango-3.0/ngMangoMaterial', // load ngMango-3.0 angular modules
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
 ], function(angular, login) {
@@ -16,7 +16,7 @@ define([
 var mySinglePageApp = angular.module('mySinglePageApp', [
     'ui.router',
     'angular-loading-bar',
-    'maMaterialDashboards',
+    'ngMangoMaterial',
     'ngMessages'
 ]);
 

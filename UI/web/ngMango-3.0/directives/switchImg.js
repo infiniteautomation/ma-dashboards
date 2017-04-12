@@ -8,7 +8,7 @@ define(['angular', './PointValueController'], function(angular, PointValueContro
 
 /**
  * @ngdoc directive
- * @name maDashboards.maSwitchImg
+ * @name ngMango.maSwitchImg
  * @restrict E
  * @description
  * `<ma-switch-img></ma-switch-img>`

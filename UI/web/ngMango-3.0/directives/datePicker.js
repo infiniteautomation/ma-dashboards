@@ -7,7 +7,7 @@ define(['angular', 'moment'], function(angular, moment) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maDatePicker
+ * @name ngMango.maDatePicker
  *
  * @description
  * `<ma-date-picker ng-model="time"></ma-date-picker>`
@@ -27,7 +27,7 @@ define(['angular', 'moment'], function(angular, moment) {
        <ma-date-picker ng-model="to" format="MMM-Do-YY @ ha"></ma-date-picker>
   </md-input-container>
  */
-function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjector, $q) {
+function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, $q) {
     return {
         restrict: 'E',
         designerInfo: {
@@ -54,7 +54,7 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
         },
         compile: function($element, attributes) {
             if (!$injector.has('$mdpDatePicker')) {
-                if (maDashboardsInsertCss) {
+                if (ngMangoInsertCss) {
                     cssInjector.injectLink(require.toUrl('jquery-ui/jquery.datetimepicker.css'), this.name);
                 }
                 require(['jquery', 'jquery-ui/jquery.datetimepicker'], function($) {
@@ -161,7 +161,7 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
     }
 }
 
-datePicker.$inject = ['$injector', 'mangoDateFormats', 'maDashboardsInsertCss', 'cssInjector', '$q'];
+datePicker.$inject = ['$injector', 'mangoDateFormats', 'ngMangoInsertCss', 'cssInjector', '$q'];
 
 return datePicker;
 
