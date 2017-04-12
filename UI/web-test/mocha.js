@@ -38,7 +38,7 @@ requirejs.config({
 requirejs.uiModulePath = __dirname + '/../web';
 
 // load the UI loaderConfig.js so we can locate AMD modules
-require('../web/js/loaderConfig.js');
+require('../web/loaderConfig.js');
 // remove angular from paths so requirejs falls back to node require('angular')
 requirejs.config({
     paths: {

@@ -29,7 +29,7 @@
     "sinon": "^1.17.6"
   },
   "scripts": {
-    "test": "mocha web/js/**/*.spec.js"
+    "test": "mocha web/ngMango-3.0/**/*.spec.js"
   },
   "author": "Jared Wiltshire <jared@infiniteautomation.com>",
   "license": "UNLICENSED",
