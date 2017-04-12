@@ -596,6 +596,10 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     });
 }]);
 
+/**
+ * From here down is the bootstrap code, all actual angular app code is above
+ */
+
 // Get an injector for the ngMangoServices app and use the JsonStore service to retrieve the
 // custom user menu items from the REST api prior to bootstrapping the main application.
 // This is so the states can be added to the stateProvider in the config block for the
