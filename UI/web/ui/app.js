@@ -41,7 +41,7 @@ uiApp.factory('Page', Page)
     .directive('livePreview', livePreview)
     .constant('require', require)
     .constant('CUSTOM_USER_MENU_XID', 'mangoUI-menu')
-    .constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages')
+    .constant('CUSTOM_USER_PAGES_XID', 'mangoUI-pages')
     .constant('MANGO_UI_NG_DOCS', NG_DOCS);
 
 uiApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
@@ -132,9 +132,11 @@ uiApp.config([
     'errorInterceptorProvider',
     'cfpLoadingBarProvider',
     'SystemSettingsProvider',
+    'CUSTOM_USER_MENU_XID',
+    'CUSTOM_USER_PAGES_XID',
 function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider,
-        errorInterceptorProvider, cfpLoadingBarProvider, SystemSettingsProvider) {
+        errorInterceptorProvider, cfpLoadingBarProvider, SystemSettingsProvider, CUSTOM_USER_MENU_XID, CUSTOM_USER_PAGES_XID) {
 
     // will need initially when we use AngularJS 1.6.x
     //$compileProvider.preAssignBindingsEnabled(true);
@@ -142,8 +144,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
     $mdAriaProvider.disableWarnings();
 
     errorInterceptorProvider.ignore = function(rejection) {
-        var ignoreUrls = ['/rest/v1/json-data/mangoUI-menu',
-                          '/rest/v1/json-data/custom-user-pages',
+        var ignoreUrls = ['/rest/v1/json-data/' + CUSTOM_USER_PAGES_XID,
+                          '/rest/v1/json-data/' + CUSTOM_USER_MENU_XID,
                           '/rest/v1/json-data/play-area-'];
 
         if (!rejection.config)
@@ -152,7 +154,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
         var url = rejection.config.url;
         
         if (url.indexOf('/rest/v1/users/current') >= 0) {
-            if (rejection.config.method === 'OPTIONS')
+            if (rejection.config.method === 'GET' && (rejection.status === -1 || rejection.status === 401 || rejection.status === 503))
                 return true;
         }
         
