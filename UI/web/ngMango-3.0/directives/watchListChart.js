@@ -77,11 +77,9 @@ function watchListChart() {
     };
 }
 
-WatchListChartController.$inject = ['uiSettings'];
-function WatchListChartController(uiSettings) {
+WatchListChartController.$inject = [];
+function WatchListChartController() {
     this.chartOptions = {};
-
-    this.defaultAxisColor = uiSettings.theming.THEMES[uiSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
 }
 
 WatchListChartController.prototype.$onInit = function() {
@@ -123,7 +121,7 @@ WatchListChartController.prototype.buildOptions = function() {
     if (!this.watchList) {
         return;
     }
-    var defaultColor = this.defaultAxisColor;
+
     var chartConfig = this.watchList.data.chartConfig || {};
     var valueAxes = chartConfig.valueAxes || {};
     
@@ -131,8 +129,8 @@ WatchListChartController.prototype.buildOptions = function() {
     ['left', 'right', 'left-2', 'right-2'].forEach(function(axisName) {
         var axis = valueAxes[axisName] || {};
         this.chartOptions.valueAxes.push({
-            axisColor: axis.color || defaultColor,
-            color: axis.color || defaultColor,
+            axisColor: axis.color || '',
+            color: axis.color || '',
             stackType: axis.stackType || 'none'
         });
     }.bind(this));
