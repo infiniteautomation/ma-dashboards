@@ -113,7 +113,7 @@ SwitchImgController.prototype.valueChangeHandler = function() {
     
     this.updateImage();
 
-    if (this.point && !this.point.pointLocator.settable) {
+    if (this.point && this.point.pointLocator && !this.point.pointLocator.settable) {
         this.$element.attr('disabled', 'disabled');
     } else {
         this.$element.removeAttr('disabled');

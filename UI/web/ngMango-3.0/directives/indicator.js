@@ -89,8 +89,8 @@ IndicatorController.prototype.valueChangeHandler = function() {
         }
     }
     this.$element.css('background-color', color || '');
-    
-    if (this.point && !this.point.pointLocator.settable) {
+
+    if (this.point && this.point.pointLocator && !this.point.pointLocator.settable) {
         this.$element.attr('disabled', 'disabled');
     } else {
         this.$element.removeAttr('disabled');

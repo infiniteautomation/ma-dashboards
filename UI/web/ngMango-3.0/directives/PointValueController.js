@@ -53,7 +53,7 @@ PointValueController.prototype.setPoint = function(point) {
     
     this.valueChangeHandler(true);
     
-    if (this.point) {
+    if (this.point && this.point.xid) {
         this.unsubscribe = this.pointEventManager.smartSubscribe(this.$scope, this.point.xid, SUBSCRIPTION_TYPES, this.websocketHandler.bind(this));
     }
 };
@@ -110,7 +110,7 @@ PointValueController.prototype.valueChangeHandler = function(isPointChange) {
     
     // manually add and remove classes rather than using ng-class as point values can
     // change rapidly and result in huge slow downs / heaps of digest loops
-    if (!isPointChange) {
+    if (!isPointChange && this.point) {
         // jshint eqnull:true
         var valueChanged = this.previousPointValue != null && this.point.value !== this.previousPointValue;
         this.previousPointValue = this.point.value;
@@ -128,8 +128,12 @@ PointValueController.prototype.valueChangeHandler = function(isPointChange) {
             $element.removeClass('ma-point-value-time-changed');
             $element.removeClass('ma-point-value-changed');
         }, this.changeDuration);
-    } else {
-        clearTimeout(this.timeoutID);
+    }
+    if (isPointChange) {
+        if (this.timeoutID) {
+            clearTimeout(this.timeoutID);
+            delete this.timeoutID;
+        }
         delete this.timeoutID;
         delete this.previousPointValue;
         $element.removeClass('ma-point-value-time-changed');

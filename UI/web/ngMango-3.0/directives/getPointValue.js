@@ -79,14 +79,18 @@ function getPointValue(pointEventManager, Point, Util) {
                 if (newXid === undefined && newXid === oldXid) return;
                 if ($scope.point && $scope.point.xid === newXid) return;
                 
-                if ($scope.point && $scope.point.$cancelRequest) {
-                    $scope.point.$cancelRequest();
+                if ($scope.pointResource && $scope.pointResource.$cancelRequest) {
+                    $scope.pointResource.$cancelRequest();
                 }
                 if (!newXid) {
                     $scope.point = null;
                     return;
                 }
-                $scope.point = Point.get({xid: newXid});
+                
+                $scope.pointResource = Point.get({xid: newXid});
+                $scope.pointResource.$promise.then(function(point) {
+                    $scope.point = point;
+                });
             });
 
             $scope.$watch('point.xid', function(newXid, oldXid) {

@@ -228,8 +228,8 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	    }
 
 	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
-	    
-	    if (this.replayLastPayload && xidSubscriptions.lastPayload && typeof eventHandler === 'function') {
+
+	    if (this.replayLastPayload && xidSubscriptions && xidSubscriptions.lastPayload && typeof eventHandler === 'function') {
 	        eventHandler(null, xidSubscriptions.lastPayload);
 	    }
 
