@@ -14,7 +14,7 @@ var myApp = angular.module('myApp', ['ngMangoMaterial']);
 myApp.run(['$rootScope', function($rootScope) {
     $rootScope.pi = function() {
         return Math.PI;
-    }
+    };
 }]);
 
 myApp.directive('myCustomComponent', function() {
