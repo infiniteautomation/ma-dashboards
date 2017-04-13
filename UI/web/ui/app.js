@@ -129,43 +129,18 @@ uiApp.config([
     'mangoStateProvider',
     '$locationProvider',
     '$mdAriaProvider',
-    'errorInterceptorProvider',
     'cfpLoadingBarProvider',
     'SystemSettingsProvider',
     'CUSTOM_USER_MENU_XID',
     'CUSTOM_USER_PAGES_XID',
 function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider,
-        errorInterceptorProvider, cfpLoadingBarProvider, SystemSettingsProvider, CUSTOM_USER_MENU_XID, CUSTOM_USER_PAGES_XID) {
+        cfpLoadingBarProvider, SystemSettingsProvider, CUSTOM_USER_MENU_XID, CUSTOM_USER_PAGES_XID) {
 
     // will need initially when we use AngularJS 1.6.x
     //$compileProvider.preAssignBindingsEnabled(true);
     $compileProvider.debugInfoEnabled(false);
     $mdAriaProvider.disableWarnings();
-
-    errorInterceptorProvider.ignore = function(rejection) {
-        var ignoreUrls = ['/rest/v1/json-data/' + CUSTOM_USER_PAGES_XID,
-                          '/rest/v1/json-data/' + CUSTOM_USER_MENU_XID,
-                          '/rest/v1/json-data/play-area-'];
-
-        if (!rejection.config)
-            return false;
-        
-        var url = rejection.config.url;
-        
-        if (url.indexOf('/rest/v1/users/current') >= 0) {
-            if (rejection.config.method === 'GET' && (rejection.status === -1 || rejection.status === 401 || rejection.status === 503))
-                return true;
-        }
-        
-        if (rejection.status === 404 && rejection.config.method === 'GET') {
-            for (var i = 0; i < ignoreUrls.length; i++) {
-                if (url.indexOf(ignoreUrls[i]) >= 0)
-                    return true;
-            }
-        }
-        return false;
-    };
 
     if (MD_ADMIN_SETTINGS.palettes) {
         for (var paletteName in MD_ADMIN_SETTINGS.palettes) {
@@ -206,7 +181,6 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
         theme: defaultTheme
     });
 
-    $httpProvider.interceptors.push('errorInterceptor');
     $httpProvider.useApplyAsync(true);
 
     if ($injector.has('$mdpTimePickerProvider')) {

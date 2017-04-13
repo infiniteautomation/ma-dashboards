@@ -284,14 +284,6 @@ return [
         ]
     },
     {
-        name: 'ui.apiErrors',
-        url: '/api-errors',
-        templateUrl: 'views/dashboard/errors.html',
-        menuTr: 'ui.dox.apiErrors',
-        menuIcon: 'warning',
-        menuHidden: true
-    },
-    {
         url: '/view-page/{pageXid}',
         name: 'ui.viewPage',
         template: '<page-view xid="{{pageXid}}" flex layout="column"></page-view>',
