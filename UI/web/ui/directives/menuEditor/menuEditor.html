@@ -11,9 +11,9 @@
 
 <md-card class="menu-editor-container">
   <md-toolbar class="md-whiteframe-z2 menu-editor-path md-hue-3">
-    <div class="md-toolbar-tools">
+    <div class="md-toolbar-tools" layout layout-align="start center">
       <strong ma-tr="ui.app.menuPath"></strong><strong>:&nbsp;</strong>
-      <span ng-repeat="pathItem in path track by $index">
+      <span ng-repeat="pathItem in path track by $index" layout layout-align="start center">
         <span ma-tr="{{pathItem.menuTr}}" ng-click="goToIndex($event, $index)">{{pathItem.menuText}}</span>
         <md-icon ng-if="!$last">chevron_right</md-icon>
       </span>

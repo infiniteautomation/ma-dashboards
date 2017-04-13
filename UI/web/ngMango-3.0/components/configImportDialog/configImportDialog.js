@@ -33,9 +33,13 @@ ConfigImportDialogController.prototype.getMessagesDiv = function() {
 ConfigImportDialogController.prototype.updateScrollPosition = function() {
     var messagesDiv = this.getMessagesDiv();
     if (messagesDiv) {
-        this.$timeout(function() {
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        });
+        if (messagesDiv !== document.activeElement) {
+            this.$timeout(function() {
+                if (messagesDiv !== document.activeElement) {
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }
+            });
+        }
     }
 };
 

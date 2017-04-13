@@ -10,7 +10,7 @@
 
 <md-dialog-content layout="column" class="md-padding" flex>
   <md-progress-linear md-mode="determinate" value="{{$ctrl.importStatus.progress}}"></md-progress-linear>
-  <div flex class="ma-config-import-messages">
+  <div flex class="ma-config-import-messages" tabindex="1">
     <div ng-repeat="msg in $ctrl.importStatus.genericMessages track by $index" ng-bind="msg"></div>
     <div ng-if="$ctrl.error" ng-bind="$ctrl.error" md-colors="{color: 'warn'}"></div>
   </div>

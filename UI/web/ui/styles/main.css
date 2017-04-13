@@ -603,6 +603,8 @@ menu-editor td .md-button.md-icon-button {
 
 .menu-editor-path .md-toolbar-tools {
   height: 48px;
+  min-height: 48px;
+  max-height: 48px;
 }
 
 .menu-editor-dialog .md-dialog-content md-radio-button {
