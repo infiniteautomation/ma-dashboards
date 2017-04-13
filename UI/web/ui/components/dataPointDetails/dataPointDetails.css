@@ -30,3 +30,7 @@
 .data-point-details-page .dpd-table-refresh {
   margin: 0;
 }
+
+.data-point-details-page .md-button.force-read {
+  margin-bottom: -18px;
+}

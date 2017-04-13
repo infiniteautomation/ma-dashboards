@@ -72,7 +72,8 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
         </div>
         
         <md-button flex="nogrow" class="md-icon-button" ng-click="$ctrl.onRefresh({'$event': $event})" aria-label="{{'common.refresh' | tr}}" ng-disabled="!$ctrl.params.preset">
-          <md-icon>refresh</md-icon>
+          <md-tooltip><span ma-tr="ui.app.updateDateRange"></span></md-tooltip>
+          <md-icon>update</md-icon>
         </md-button>
       </div>
       

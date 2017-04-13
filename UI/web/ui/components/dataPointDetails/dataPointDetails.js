@@ -68,7 +68,7 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     
     this.retrievePreferences = function() {
         var defaults = {
-            numValues: 100,
+            numberOfPointValues: 100,
             realtimeMode: true,
             showCachedData: false
         };

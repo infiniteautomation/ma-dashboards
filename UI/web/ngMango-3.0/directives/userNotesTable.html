@@ -4,8 +4,9 @@
                   <h2 flex>
                   <span ma-tr="ui.app.userComments"></span>
             </h2>
-                  <md-button ng-hide="disabled" class="md-accent md-raised" aria-label="New Note" ng-click="addNote($event, commentType, referenceId, updateWithNewNote)">
-                        {{'ui.app.add' | tr}}
+                  <md-button ng-hide="disabled" class="md-icon-button" ng-click="addNote($event, commentType, referenceId, updateWithNewNote)">
+                    <md-tooltip><span ma-tr="notes.addNote"></span></md-tooltip>
+                    <md-icon>add</md-icon>
                   </md-button>
             </div>
       </md-toolbar>
