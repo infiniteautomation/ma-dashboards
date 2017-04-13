@@ -26,7 +26,7 @@ jsonStoreMenuController.$inject = ['$scope', 'Menu', 'jsonStoreEventManager', 'C
 
 return {
     controller: jsonStoreMenuController,
-    template: '<dashboard-menu menu-items="$ctrl.menuItems" user="$ctrl.user"></dashboard-menu>',
+    template: '<ma-ui-menu menu-items="$ctrl.menuItems" user="$ctrl.user"></ma-ui-menu>',
     bindings: {
         user: '<user'
     }

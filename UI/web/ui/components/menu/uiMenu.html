@@ -1,4 +1,4 @@
-<ul class="dashboard-menu menu-level-1">
+<ul class="ma-ui-menu menu-level-1">
   <li ng-repeat="item in $ctrl.menuItems | orderBy:'weight' track by item.id" ng-if="item.visible"
       ng-hide="$ctrl.openSubmenu && $ctrl.openSubmenu.name !== item.name">
     <menu-link menu-item="item" ng-if="!item.children"></menu-link>

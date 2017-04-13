@@ -28,7 +28,7 @@ return [
                 return rQ(['./services/Menu',
                            './services/MenuEditor',
                            './components/menu/jsonStoreMenu',
-                           './components/menu/dashboardMenu',
+                           './components/menu/uiMenu',
                            './components/menu/menuLink',
                            './components/menu/menuToggle',
                            './directives/menuEditor/menuEditor',
@@ -40,7 +40,7 @@ return [
                            './components/activeEventIcons/activeEventIcons',
                            './components/dateBar/dateBar',
                            './components/footer/footer'
-                ], function(Menu, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
+                ], function(Menu, MenuEditor, jsonStoreMenu, uiMenu, menuLink, menuToggle,
                         menuEditor, pageEditor, liveEditor, dualPaneEditor, stateParams, autoLoginSettings, activeEventIcons, dateBar, footer) {
                     angular.module('uiRootState', ['ui.ace'])
                         .factory('Menu', Menu)
@@ -51,7 +51,7 @@ return [
                         .directive('dualPaneEditor', dualPaneEditor)
                         .directive('stateParams', stateParams)
                         .component('jsonStoreMenu', jsonStoreMenu)
-                        .component('dashboardMenu', dashboardMenu)
+                        .component('maUiMenu', uiMenu)
                         .component('menuLink', menuLink)
                         .component('menuToggle', menuToggle)
                         .component('autoLoginSettings', autoLoginSettings)

@@ -126,20 +126,20 @@ md-menu-content.right-icons md-icon {
   height: auto;
 }
 
-.dashboard-menu li {
+.ma-ui-menu li {
 	margin: 0;
 }
 
-.dashboard-menu > li,
+.ma-ui-menu > li,
 .menu-toggle.menu-submenu > ul > li {
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
-.dashboard-menu > li:last-child {
+.ma-ui-menu > li:last-child {
 	border-bottom: none
 }
 
-.dashboard-menu .md-button {
+.ma-ui-menu .md-button {
   border-radius: 0;
   display: block;
   align-items: inherit;
@@ -157,11 +157,11 @@ md-menu-content.right-icons md-icon {
   font-weight: normal;
 }
 
-.dashboard-menu .menu-link {
+.ma-ui-menu .menu-link {
 	padding: 0;
 }
 
-.dashboard-menu .menu-link a {
+.ma-ui-menu .menu-link a {
   padding: 0px 16px;
   display: block;
   text-decoration: none;
@@ -181,27 +181,27 @@ md-menu-content.right-icons md-icon {
   -webkit-transform: rotate(0deg);
 }
 
-.dashboard-menu ul.menu-level-2 .menu-indent {
+.ma-ui-menu ul.menu-level-2 .menu-indent {
   padding-left: 32px;
 }
 
-.dashboard-menu .menu-submenu ul.menu-level-2 .menu-indent {
+.ma-ui-menu .menu-submenu ul.menu-level-2 .menu-indent {
   padding-left: 16px;
 }
 
-.dashboard-menu ul.menu-level-3 .menu-indent {
+.ma-ui-menu ul.menu-level-3 .menu-indent {
   padding-left: 48px;
 }
 
-.dashboard-menu .menu-submenu ul.menu-level-3 .menu-indent {
+.ma-ui-menu .menu-submenu ul.menu-level-3 .menu-indent {
   padding-left: 32px;
 }
 
-.dashboard-menu .menu-icon {
+.ma-ui-menu .menu-icon {
 	margin-right: 8px;
 }
 
-.dashboard-menu .menu-toggle-list {
+.ma-ui-menu .menu-toggle-list {
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -213,11 +213,11 @@ md-menu-content.right-icons md-icon {
   transition-property: height;
 }
 
-.dashboard-menu .menu-toggle-list.ng-hide {
+.ma-ui-menu .menu-toggle-list.ng-hide {
 	height: 0px !important;
 }
 
-.dashboard-menu .menu-submenu.menu-open > .md-button {
+.ma-ui-menu .menu-submenu.menu-open > .md-button {
     border-bottom: 1px solid rgba(0,0,0,0.2);
     font-weight: bold;
 }
@@ -461,21 +461,21 @@ live-editor [ui-ace] {
   margin-right: 2.4rem;
 }
 
-.dashboard-menu .md-button.menu-link a {
+.ma-ui-menu .md-button.menu-link a {
 	color: currentColor;
 	font-weight: inherit;
 }
 
-.dashboard-menu .md-button.menu-link.menu-active {
+.ma-ui-menu .md-button.menu-link.menu-active {
 	background-color: currentColor;
 }
 
-.dashboard-menu .md-button.menu-link.menu-active:hover {
+.ma-ui-menu .md-button.menu-link.menu-active:hover {
 	cursor: initial;
 }
 
-.dashboard-menu .md-button.menu-link.menu-active .menu-text,
-.dashboard-menu .md-button.menu-link.menu-active .menu-icon {
+.ma-ui-menu .md-button.menu-link.menu-active .menu-text,
+.ma-ui-menu .md-button.menu-link.menu-active .menu-icon {
 	color: rgba(255,255,255,0.87);
 }
 

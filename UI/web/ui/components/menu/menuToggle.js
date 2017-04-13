@@ -149,7 +149,7 @@ function MenuToggleController($state, $timeout, $element, $scope, Translate) {
 return {
     controller: MenuToggleController,
     require: {
-        menu: '^^dashboardMenu',
+        menu: '^^maUiMenu',
         parentToggle: '?^^menuToggle'
     },
     templateUrl: require.toUrl('./menuToggle.html'),
