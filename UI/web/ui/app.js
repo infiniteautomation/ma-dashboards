@@ -5,8 +5,8 @@
 
 define([
     'angular',
-    'ngMango-3.0/ngMangoMaterial',
-    'ngMango-3.0/ngMangoComponents',
+    'ngMango/ngMangoMaterial',
+    'ngMango/ngMangoComponents',
     'require',
     './services/Page',
     './services/DateBar',

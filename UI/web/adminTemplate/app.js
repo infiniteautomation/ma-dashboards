@@ -9,8 +9,8 @@ define([
     './directives/menu/menuLink',
     './directives/menu/menuToggle',
     './directives/login/login',
-    'ngMango-3.0/ngMangoMaterial', // load ngMango-3.0 angular modules
-    'ngMango-3.0/ngMangoComponents',
+    'ngMango/ngMangoMaterial', // load ngMango angular modules
+    'ngMango/ngMangoComponents',
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
 ], function(angular, dashboardMenu, menuLink, menuToggle, login, ngMangoMaterial, ngMangoComponents) {

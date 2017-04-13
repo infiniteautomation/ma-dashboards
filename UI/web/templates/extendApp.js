@@ -5,7 +5,7 @@
 
 define([
     'angular',
-    'ngMango-3.0/ngMangoMaterial'
+    'ngMango/ngMangoMaterial'
 ], function(angular, ngMangoMaterial) {
 'use strict';
 

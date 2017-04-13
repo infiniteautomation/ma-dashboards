@@ -39,6 +39,11 @@ var vendor = module + '/vendor';
 requirejs.config({
     // set the base url to the old base prefixed by the mango server base url
     baseUrl: mangoUrl + requirejs.toUrl(''),
+    map: {
+        '*': {
+            ngMango: 'ngMango-3.0'
+        }
+    },
     paths : {
         'modules': '/modules',
         'mangoUIModule' : module,
