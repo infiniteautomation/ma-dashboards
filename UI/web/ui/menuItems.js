@@ -8,6 +8,40 @@ define(['require', 'angular', './util/loadLoginTranslations'], function(require,
 
 return [
     {
+        name: 'login',
+        url: '/login',
+        templateUrl: 'views/login.html',
+        menuHidden: true,
+        menuIcon: 'exit_to_app',
+        menuTr: 'header.login',
+        resolve: {
+            deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                return rQ(['./directives/login/login'], function(login) {
+                    angular.module('login', [])
+                        .directive('login', login);
+                    $ocLazyLoad.inject('login');
+                });
+            }],
+            loginTranslations: loadLoginTranslations
+        }
+    },
+    {
+        name: 'logout',
+        url: '/logout',
+        menuHidden: true,
+        menuIcon: 'power_settings_new',
+        menuTr: 'header.logout',
+        template: '<div></div>'
+    },
+    {
+        name: 'agreeToLicense',
+        url: '/agree-to-license',
+        templateUrl: 'views/agreeToLicense.html',
+        menuTr: 'ui.app.agreeToLicense',
+        menuIcon: 'done',
+        menuHidden: true
+    },
+    {
         name: 'ui',
         templateUrl: 'views/dashboard/main.html',
         'abstract': true,
@@ -90,32 +124,6 @@ return [
         templateUrl: 'views/dashboard/serverError.html',
         menuHidden: true,
         menuTr: 'ui.app.serverError'
-    },
-    {
-        name: 'login',
-        url: '/login',
-        templateUrl: 'views/login.html',
-        menuHidden: true,
-        menuIcon: 'exit_to_app',
-        menuTr: 'header.login',
-        resolve: {
-            deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/login/login'], function(login) {
-                    angular.module('login', [])
-                        .directive('login', login);
-                    $ocLazyLoad.inject('login');
-                });
-            }],
-            loginTranslations: loadLoginTranslations
-        }
-    },
-    {
-        name: 'logout',
-        url: '/logout',
-        menuHidden: true,
-        menuIcon: 'power_settings_new',
-        menuTr: 'header.logout',
-        template: '<div></div>'
     },
     {
         name: 'ui.home',

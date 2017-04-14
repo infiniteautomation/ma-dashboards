@@ -36,13 +36,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getFirstLoginPageUri(HttpServletRequest request, HttpServletResponse response) {
-		String page = SystemSettingsDao.getValue(UICommon.UI_FIRST_LOGIN_PAGE, UICommon.DEFAULT_UI_FIRST_LOGIN_PAGE);
-		
-		if(!StringUtils.isEmpty(page)){
-			return page;
-		}else{
-			return null;
-		}
+	    return "/ui/agree-to-license";
 	}
 	
 	/* (non-Javadoc)

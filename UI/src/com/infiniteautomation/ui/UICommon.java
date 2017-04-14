@@ -9,7 +9,6 @@ package com.infiniteautomation.ui;
 public class UICommon {
 	public static final String UI_LOGIN_PAGE = "ui.login.page";
 	public static final String UI_FIRST_USER_LOGIN_PAGE = "ui.login.userFirstLogin.page";
-	public static final String UI_FIRST_LOGIN_PAGE = "ui.login.firstLogin.page";
 	public static final String UI_LOGGED_IN_PAGE = "ui.login.loggedIn.page";
     public static final String UI_LOGGED_IN_PAGE_PRE_HOME = "ui.login.loggedInPreHome.page";
 	public static final String UI_UNAUTHORIZED_PAGE = "ui.unauthorized.page";
@@ -18,7 +17,6 @@ public class UICommon {
 
 	public static final String DEFAULT_UI_LOGIN_PAGE = "/ui/login";
     public static final String DEFAULT_UI_FIRST_USER_LOGIN_PAGE = "/ui/help/getting-started";
-    public static final String DEFAULT_UI_FIRST_LOGIN_PAGE = "/ui/help/getting-started";
     public static final String DEFAULT_UI_LOGGED_IN_PAGE = "/ui/home";
     public static final String DEFAULT_UI_LOGGED_IN_PAGE_PRE_HOME = "";
     public static final String DEFAULT_UI_UNAUTHORIZED_PAGE = "/ui/unauthorized";

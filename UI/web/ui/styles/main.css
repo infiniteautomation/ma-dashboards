@@ -1068,3 +1068,10 @@ md-dialog .md-color-picker-container {
 md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-colors .md-tab.md-active {
   background-color: inherit;
 }
+
+/* license page */
+.ma-license {
+  overflow-y: scroll;
+  width: 100%;
+  max-width: 1024px;
+}

@@ -36,7 +36,6 @@ public class UISystemSettingsDefinition extends SystemSettingsDefinition {
 	@Override
 	public Map<String, Object> getDefaultValues() {
 		Map<String, Object> defaults = new HashMap<String, Object>();
-		defaults.put(UICommon.UI_FIRST_LOGIN_PAGE, UICommon.DEFAULT_UI_FIRST_LOGIN_PAGE);
 		defaults.put(UICommon.UI_FIRST_USER_LOGIN_PAGE, UICommon.DEFAULT_UI_FIRST_USER_LOGIN_PAGE);
 		defaults.put(UICommon.UI_LOGGED_IN_PAGE, UICommon.DEFAULT_UI_LOGGED_IN_PAGE);
         defaults.put(UICommon.UI_LOGGED_IN_PAGE_PRE_HOME, UICommon.DEFAULT_UI_LOGGED_IN_PAGE_PRE_HOME);
