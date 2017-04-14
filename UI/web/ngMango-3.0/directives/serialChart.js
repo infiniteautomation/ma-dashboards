@@ -157,7 +157,8 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         if ($scope.annotateMode) {
             options.chartCursor = {
                 oneBalloonOnly: true,
-                graphBulletSize: 2
+                graphBulletSize: 2,
+                zoomable: false
             };
         }
 
