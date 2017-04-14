@@ -95,7 +95,7 @@ define(['angular', 'require'], function(angular, require) {
 
                 google.maps.event.addListener($ctrl.map, "idle", function() {
                     google.maps.event.trigger($ctrl.map, 'resize');
-                    $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long));
+                    // $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long)); 
                 });
             });
         };
