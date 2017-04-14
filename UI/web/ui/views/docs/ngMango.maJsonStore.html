@@ -22,15 +22,14 @@ The &#39;user&#39; permissions group is added to created Mango users by default.
 &lt;md-button class="md-raised md-primary md-hue-3" ng-click="myItem.$save()"&gt;
     &lt;md-icon&gt;save&lt;/md-icon&gt; Save
 &lt;/md-button&gt;
-&lt;p&gt;Phone # from JSON store: <span>{{</span>myItem.jsonData.phone<span>}}</span>&lt;/p&gt;</pre>
+&lt;p&gt;Phone # from JSON store: <span>{{</span>myItem.jsonData.phone<span>}}</span>&lt;/p&gt;</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>xid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-majsonstore-page"><p>Sets the <code>xid</code> used for each unique object in the JSON store.</p>
 </div></td></tr><tr><td>item</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-majsonstore-page"><p>Object used when accessing the stored data. You can also call the following methods:</p>
 <ul>
     <li><code>myItem.$save()</code> - Saves the data from myItem in the model to the JSON store.</li>
     <li><code>myItem.$delete()</code> - Deletes the jsonData stored at the given <code>xid</code></li>
     <li><code>myItem.$get()</code> - Reverts the data from myItem that has been modified in the local model to the the values from the JSON store.</li>
-</ul>
-</div></td></tr><tr><td>value</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-majsonstore-page"><p>Name of the object used in the model to hold the data to be stored.</p>
+</ul></div></td></tr><tr><td>value</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-majsonstore-page"><p>Name of the object used in the model to hold the data to be stored.</p>
 </div></td></tr><tr><td>item-loaded</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="ngmango-majsonstore-page"><p>Expression called when item is loaded, $item variable is available for use inside the expression</p>
 </div></td></tr></tbody></table></div>
 </div>

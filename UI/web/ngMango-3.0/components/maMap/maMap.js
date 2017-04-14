@@ -12,7 +12,7 @@ define(['angular', 'require'], function(angular, require) {
   * @description
   * `<ma-map zoom="10" map-type="roadmap" center="-12.95, -38.45" desktop-height="950px" mobile-height="450px"></ma-map>`
   * - This component will display a Google Map that can be used within your custom dashboard pages.
-  * - Note, you will need to set your Google Map Api Key on the <a ui-sref="ui.settings.dashboardSettings">Dashboard Settings</a> page.
+  * - Note, you will need to set your Google Map Api Key on the <a ui-sref="ui.settings.uiSettings">Dashboard Settings</a> page.
   * - A Google Map Api Key can be aquired <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">here</a>.
   * - `<ma-map>` utilizes the <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library and therefore can use nested `<marker>` and `<info window>` components.
   * - <a ui-sref="ui.examples.utilities.googleMaps">View Demo</a>
