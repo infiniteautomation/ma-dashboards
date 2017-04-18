@@ -27,11 +27,15 @@ define([], function() {
 function calc() {
     return {
         scope: {
-            output: '='
+            output: '=?',
+            onChange: '&?'
         },
         link: function($scope, $element, attr) {
         	var deregister = $scope.$parent.$watch(attr.input, function(newValue) {
             	$scope.output = newValue;
+            	if ($scope.onChange) {
+            	    $scope.onChange({$value: newValue});
+            	}
     		});
         	$scope.$on('$destroy', deregister);
         }

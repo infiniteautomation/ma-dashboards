@@ -43,7 +43,7 @@ function now() {
             browserTimezone: '=?',
             updateInterval: '@',
             timeZone: '@',
-            onUpdate: '&'
+            onChange: '&?'
         },
         restrict: 'E',
         controllerAs: '$ctrl',
@@ -86,7 +86,9 @@ function now() {
                     m.tz(this.timeZone);
                 }
                 this.output = m;
-                this.onUpdate({now: m});
+                if (this.onChange) {
+                    this.onChange({$value: m});
+                }
             }.bind(this);
 
             function parseUpdateInterval(updateInterval) {

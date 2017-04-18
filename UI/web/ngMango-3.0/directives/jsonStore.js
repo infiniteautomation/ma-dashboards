@@ -55,13 +55,15 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
                 // console.log(newXid);
             	JsonStore.get({xid: newXid}).$promise.then(function(item) {
             		return item;
-            	}, function() {
-            		var item = new JsonStore();
-            		item.xid = newXid;
-            		item.name = newXid;
-            		item.jsonData = $scope.value || {};
-            		angular.extend(item, $scope.item);
-            		return $q.when(item);
+            	}, function(response) {
+            	    if (response.status === 404) {
+                		var item = new JsonStore();
+                		item.xid = newXid;
+                		item.name = newXid;
+                		item.jsonData = $scope.value || {};
+                		return angular.extend(item, $scope.item);
+            	    }
+            		return $q.reject();
             	}).then(function(item) {
             	    $scope.itemLoaded({'$item': item});
             		return ($scope.item = item);
