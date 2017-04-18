@@ -227,31 +227,33 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
         };
 
         Menu.prototype.saveMenuItem = function saveMenuItem(menuItem, originalName) {
-            // removes the original item, takes care of renaming
-            if (originalName) {
-                this.storeObject.jsonData.menuItems.some(function(item, i, array) {
-                    if (item.name === originalName) {
-                        array.splice(i, 1);
-                        return true;
-                    }
-                });
-            }
-
-            menuItem = cleanMenuItemForSave(menuItem);
-            
-            var originalItem = this.defaultMenuItemsByName[menuItem.name];
-            if (!originalItem) {
-                this.storeObject.jsonData.menuItems.push(menuItem);
-            } else if (!angular.equals(menuItem, originalItem)) {
-                var difference = calculateDifference(menuItem, originalItem);
-                this.storeObject.jsonData.menuItems.push(difference);
-            }
-
-            return this.storeObject.$save().then(function() {
-                registerStates([menuItem]);
-                this.combineMenuItems();
-                $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
-                return this.menuItems;
+            return this.refresh().then(function() {
+                // removes the original item, takes care of renaming
+                if (originalName) {
+                    this.storeObject.jsonData.menuItems.some(function(item, i, array) {
+                        if (item.name === originalName) {
+                            array.splice(i, 1);
+                            return true;
+                        }
+                    });
+                }
+    
+                menuItem = cleanMenuItemForSave(menuItem);
+                
+                var originalItem = this.defaultMenuItemsByName[menuItem.name];
+                if (!originalItem) {
+                    this.storeObject.jsonData.menuItems.push(menuItem);
+                } else if (!angular.equals(menuItem, originalItem)) {
+                    var difference = calculateDifference(menuItem, originalItem);
+                    this.storeObject.jsonData.menuItems.push(difference);
+                }
+    
+                return this.storeObject.$save().then(function() {
+                    registerStates([menuItem]);
+                    this.combineMenuItems();
+                    $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
+                    return this.menuItems;
+                }.bind(this));
             }.bind(this));
         };
         
