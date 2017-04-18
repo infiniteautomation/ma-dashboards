@@ -319,6 +319,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         var crumbs = [];
         var state = $state.$current;
         do {
+            if (state.name === 'ui') continue;
+            
             if (state.menuTr) {
                 crumbs.unshift({stateName: state.name, maTr: state.menuTr});
             } else if (state.menuText) {
