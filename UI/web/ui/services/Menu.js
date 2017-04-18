@@ -6,20 +6,17 @@
 define(['angular', '../util/loadLoginTranslations'], function(angular, loadLoginTranslations) {
 'use strict';
 
-MenuProvider.$inject = ['$stateProvider', 'MENU_ITEMS', 'MD_ADMIN_SETTINGS'];
-function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
-    // register the built in MENU_ITEMS
-    registerStates(MENU_ITEMS);
+MenuProvider.$inject = ['$stateProvider', 'MA_UI_MENU_ITEMS', 'MA_UI_CUSTOM_MENU_ITEMS'];
+function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS) {
+    // register the built in MA_UI_MENU_ITEMS
+    registerStates(MA_UI_MENU_ITEMS);
 
     // register the custom menu items retrieved at bootstrap
-    if (MD_ADMIN_SETTINGS.customMenuItems)
-        // TODO check this isn't going to interfere with initial menu refresh, eg. missing template url
-        // might have to copy first
-        registerStates(MD_ADMIN_SETTINGS.customMenuItems);
+    registerStates(MA_UI_CUSTOM_MENU_ITEMS);
     
     // Used by AngularJS modules to register a menu item
     this.registerMenuItems = function registerMenuItems(menuItems) {
-        Array.prototype.push.apply(MENU_ITEMS, menuItems);
+        Array.prototype.push.apply(MA_UI_MENU_ITEMS, menuItems);
         registerStates(menuItems);
     };
 
@@ -85,7 +82,7 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
                 menuItems: []
             };
     
-            this.defaultMenuItems = MENU_ITEMS;
+            this.defaultMenuItems = MA_UI_MENU_ITEMS;
             this.defaultMenuItemsByName = {};
     
             this.defaultMenuItems.forEach(function(item) {

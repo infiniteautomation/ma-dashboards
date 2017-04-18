@@ -6,15 +6,15 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-uiSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', 'mangoDateFormats'];
-function uiSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, mangoDateFormats) {
+uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', 'mangoDateFormats'];
+function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, mangoDateFormats) {
     var DASHBOARD_SETTINGS_XID = 'mangoUI-settings';
-    var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'customMenuItems'];
+    var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme'];
     var themeId = 0;
     var userThemeGenerated = false;
     
     function UiSettings() {
-        angular.extend(this, MD_ADMIN_SETTINGS);
+        angular.extend(this, MA_UI_SETTINGS);
         this.theming = $mdTheming;
         
         this.userSettingsStore = new JsonStore();

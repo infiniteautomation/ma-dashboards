@@ -44,10 +44,10 @@ uiApp.provider('Menu', MenuProvider)
     .constant('CUSTOM_USER_MENU_XID', 'mangoUI-menu')
     .constant('CUSTOM_USER_PAGES_XID', 'mangoUI-pages')
     .constant('MANGO_UI_NG_DOCS', NG_DOCS)
-    .constant('MENU_ITEMS', menuItems);
+    .constant('MA_UI_MENU_ITEMS', menuItems);
 
 uiApp.config([
-    'MD_ADMIN_SETTINGS',
+    'MA_UI_SETTINGS',
     'MANGO_UI_NG_DOCS',
     '$stateProvider',
     '$urlRouterProvider',
@@ -63,7 +63,7 @@ uiApp.config([
     'SystemSettingsProvider',
     'CUSTOM_USER_MENU_XID',
     'CUSTOM_USER_PAGES_XID',
-function(MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
+function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
         cfpLoadingBarProvider, SystemSettingsProvider, CUSTOM_USER_MENU_XID, CUSTOM_USER_PAGES_XID) {
 
@@ -72,15 +72,15 @@ function(MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider
     $compileProvider.debugInfoEnabled(false);
     $mdAriaProvider.disableWarnings();
 
-    if (MD_ADMIN_SETTINGS.palettes) {
-        for (var paletteName in MD_ADMIN_SETTINGS.palettes) {
-            $mdThemingProvider.definePalette(paletteName, angular.copy(MD_ADMIN_SETTINGS.palettes[paletteName]));
+    if (MA_UI_SETTINGS.palettes) {
+        for (var paletteName in MA_UI_SETTINGS.palettes) {
+            $mdThemingProvider.definePalette(paletteName, angular.copy(MA_UI_SETTINGS.palettes[paletteName]));
         }
     }
 
-    if (MD_ADMIN_SETTINGS.themes) {
-        for (var name in MD_ADMIN_SETTINGS.themes) {
-            var themeSettings = MD_ADMIN_SETTINGS.themes[name];
+    if (MA_UI_SETTINGS.themes) {
+        for (var name in MA_UI_SETTINGS.themes) {
+            var themeSettings = MA_UI_SETTINGS.themes[name];
             var theme = $mdThemingProvider.theme(name);
             if (themeSettings.primaryPalette) {
                 theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
@@ -101,9 +101,9 @@ function(MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider
     }
 
     // need to store a reference to the theming provider in order to generate themes at runtime
-    MD_ADMIN_SETTINGS.themingProvider = $mdThemingProvider;
+    MA_UI_SETTINGS.themingProvider = $mdThemingProvider;
 
-    var defaultTheme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDark';
+    var defaultTheme = MA_UI_SETTINGS.defaultTheme || 'mangoDark';
     $mdThemingProvider.setDefaultTheme(defaultTheme);
     $mdThemingProvider.alwaysWatchTheme(true);
     $mdThemingProvider.generateThemesOnDemand(true);
@@ -557,27 +557,29 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, customDashboardSettingsPr
     // destroy the services injector
     servicesInjector.get('$rootScope').$destroy();
     
-    var MD_ADMIN_SETTINGS = {};
+    var MA_UI_SETTINGS = {};
     var user = data[0].user;
     var userMenuStore = data[0].userMenuStore;
     var defaultSettings = data[1];
     var customSettingsStore = data[2];
     var angularModules = data[3] || [];
+    var customMenuItems = [];
     
     if (defaultSettings) {
-        MD_ADMIN_SETTINGS.defaultSettings = defaultSettings;
-        angular.merge(MD_ADMIN_SETTINGS, defaultSettings);
+        MA_UI_SETTINGS.defaultSettings = defaultSettings;
+        angular.merge(MA_UI_SETTINGS, defaultSettings);
     }
     if (customSettingsStore) {
-        MD_ADMIN_SETTINGS.initialSettings = customSettingsStore.jsonData;
-        angular.merge(MD_ADMIN_SETTINGS, customSettingsStore.jsonData);
+        MA_UI_SETTINGS.initialSettings = customSettingsStore.jsonData;
+        angular.merge(MA_UI_SETTINGS, customSettingsStore.jsonData);
     }
     if (userMenuStore) {
-        MD_ADMIN_SETTINGS.customMenuItems = userMenuStore.jsonData.menuItems;
+        customMenuItems = userMenuStore.jsonData.menuItems;
     }
     
-    uiApp.constant('MD_ADMIN_SETTINGS', MD_ADMIN_SETTINGS);
-    uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MD_ADMIN_SETTINGS.googleAnalyticsPropertyId);
+    uiApp.constant('MA_UI_SETTINGS', MA_UI_SETTINGS);
+    uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', customMenuItems);
+    uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
 
     var angularJsModuleNames = ['uiApp'];
     for (var i = 0; i < angularModules.length; i++) {
