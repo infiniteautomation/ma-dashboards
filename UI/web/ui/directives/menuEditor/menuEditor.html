@@ -1,11 +1,10 @@
-<md-button class="md-fab md-fab-bottom-right" style="position:fixed !important;" ng-click="editItem($event, null, path.length > 1 ? path[path.length-1] : null, storeObject)">
+<md-button class="md-fab md-fab-bottom-right" style="position:fixed !important;" ng-click="editItem($event)">
   <md-icon>add</md-icon>
 </md-button>
 
 <div class="menu-editor-buttons">
   <md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu($event)"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
   <md-button class="md-raised" ng-click="undo()"><md-icon>undo</md-icon> <span ma-tr="ui.app.undoChanges"></span></md-button>
-  <md-button class="md-raised md-warn" ng-click="resetDefaultItems($event)"><md-icon>undo</md-icon> <span ma-tr="ui.app.resetDefaultMenuItems"></span></md-button>
   <md-button class="md-raised md-warn" ng-click="deleteCustomMenu($event)"><md-icon>delete</md-icon> <span ma-tr="ui.app.deleteCustomMenu"></span></md-button>
 </div>
 
@@ -33,7 +32,7 @@
             </tr>
         </thead>
         <tbody md-body ng-model="editItems" ui-sortable="{handle: '> td > .move-handle'}">
-          <tr ng-repeat="menuItem in editItems track by menuItem.id">
+          <tr ng-repeat="menuItem in editItems track by menuItem.name | orderBy:['weight','name']">
             <td>
               <md-button class="md-icon-button" ng-if="menuItem.children && menuItem.children.length" ng-click="enterSubmenu($event, menuItem)">
                 <md-icon>subdirectory_arrow_right</md-icon>
@@ -47,7 +46,7 @@
             <td ng-bind="menuItem.name"></td>
             <td ng-bind="menuItem.url" ng-if="$mdMedia('gt-md')"></td>
             <td>
-              <md-button class="md-icon-button" ng-click="editItem($event, menuItem, path.length > 1 ? path[path.length-1] : null, storeObject)">
+              <md-button class="md-icon-button" ng-click="editItem($event, menuItem)">
                 <md-icon>edit</md-icon>
               </md-button>
               <md-button class="md-icon-button" ng-click="editItems.splice($index,1)" ng-disabled="menuItem.builtIn">

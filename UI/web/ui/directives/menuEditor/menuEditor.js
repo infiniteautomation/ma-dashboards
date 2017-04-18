@@ -6,7 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState, MenuEditor, uiSettings) {
+menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'MenuEditor', 'uiSettings'];
+function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSettings) {
     return {
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),
@@ -14,8 +15,8 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             $scope.menuEditor = {};
             $scope.$mdMedia = $mdMedia;
             
-            Menu.getMenu().then(function(storeObject) {
-                $scope.storeObject = storeObject;
+            Menu.getMenuHierarchy().then(function(menuItems) {
+                $scope.menuItems = menuItems;
                 resetToRoot();
             });
             
@@ -30,13 +31,14 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             }
             
             $scope.undo = function undo() {
-                this.storeObject.$get().then(function() {
+                Menu.getMenuHierarchy().then(function(menuItems) {
+                    $scope.menuItems = menuItems;
                     resetToRoot();
                 });
             };
             
             function resetToRoot() {
-                $scope.editItems = $scope.storeObject.jsonData.menuItems;
+                $scope.editItems = $scope.menuItems;
                 $scope.path = [{menuText: 'Root'}];
             }
             
@@ -49,14 +51,14 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             $scope.goUp = function goUp(event) {
                 $scope.path.pop();
                 var currentItem = $scope.path[$scope.path.length-1];
-                $scope.editItems = currentItem.children || $scope.storeObject.jsonData.menuItems;
+                $scope.editItems = currentItem.children || $scope.menuItems;
                 scrollToTopOfMdContent();
             };
             
             $scope.goToIndex = function goUp(event, index) {
                 $scope.path.splice(index+1, $scope.path.length - 1 - index);
                 var currentItem = $scope.path[$scope.path.length-1];
-                $scope.editItems = currentItem.children || $scope.storeObject.jsonData.menuItems;
+                $scope.editItems = currentItem.children || $scope.menuItems;
                 scrollToTopOfMdContent();
             };
             
@@ -70,60 +72,75 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                     .cancel(Translate.trSync('common.cancel'));
                 
                 $mdDialog.show(confirm).then(function() {
-                    $scope.storeObject.$delete().then(function() {
-                        $scope.storeObject = Menu.getDefaultMenu();
+                    Menu.deleteMenu().then(function(menuItems) {
+                        $scope.menuItems = menuItems;
                         resetToRoot();
                     });
                 });
             };
-            
-            $scope.resetDefaultItems = function resetDefaultItems(event) {
-                var confirm = $mdDialog.confirm()
-                    .title(Translate.trSync('ui.app.areYouSure'))
-                    .textContent(Translate.trSync('ui.app.confirmResetDefaultItems'))
-                    .ariaLabel(Translate.trSync('ui.app.areYouSure'))
-                    .targetEvent(event)
-                    .ok(Translate.trSync('common.ok'))
-                    .cancel(Translate.trSync('common.cancel'));
+
+            $scope.editItem = function($event, origItem) {
+                var menuItems = $scope.menuItems;
+                if (!origItem) {
+                    debugger;
+                    // TODO get name and parent from path
+                    origItem = {
+                        isNew: true,
+                        name: 'ui.',
+                        url: '/',
+                        parent: null
+                    };
+                }
+                var parent = origItem.parent;
+                var isNew = origItem.isNew;
                 
-                $mdDialog.show(confirm).then(function() {
-                    $scope.storeObject.$get().then(function(storeObject) {
-                        $scope.storeObject = Menu.getDefaultMenu();
-                        var menuItems = $scope.storeObject.jsonData.menuItems;
-                        
-                        // create a flat map of all default menu items
-                        var allMenuItemsMap = {};
-                        Menu.eachMenuItem(menuItems, null, function(menuItem) {
-                            allMenuItemsMap[menuItem.name] = menuItem;
-                        });
-                        
-                        // loop over users custom menu items and re-add custom items to the menuItems array
-                        Menu.eachMenuItem(storeObject.jsonData.menuItems, null, function(menuItem) {
-                            if (!allMenuItemsMap[menuItem.name]) {
-                                menuItems.push(menuItem);
-                                return 'continue';
+                MenuEditor.editMenuItem($event, origItem, menuItems).then(function(item) {
+                    var newParent = item.parent;
+                    
+                    if (!isNew && (item.deleted || parent !== newParent)) {
+                        var array = parent ? parent.children : menuItems;
+                        for (var i = 0; i < array.length; i++) {
+                            if (array[i].name === origItem.name) {
+                                array.splice(i, 1);
+                                break;
                             }
-                        });
-                        
-                        return $scope.storeObject.$save().then(resetToRoot);
-                    });
+                        }
+                        if (parent && !parent.children.length) {
+                            delete parent.children;
+                        }
+                        if (item.deleted) {
+                            return;
+                        }
+                    }
+
+                    // copy item properties back onto original item
+                    if (!isNew) {
+                        angular.merge(origItem, item);
+                        item = origItem;
+                    }
+
+                    // add item back into parents children or into the menuItems array
+                    if (isNew || parent !== newParent) {
+                        if (newParent) {
+                            if (!newParent.children)
+                                newParent.children = [];
+                            newParent.children.push(item);
+                        } else {
+                            menuItems.push(item);
+                        }
+                    }
                 });
             };
             
-            $scope.editItem = MenuEditor.editMenuItem;
-            
             $scope.saveMenu = function saveMenu() {
-                $scope.storeObject.$save().then(function(store) {
-                    mangoState.addStates(store.jsonData.menuItems);
-                    uiSettings.customMenuItems = store.jsonData.menuItems;
+                Menu.saveMenu($scope.menuItems).then(function(menuItems) {
+                    $scope.menuItems = menuItems;
                     resetToRoot();
                 });
             };
         }
     };
-};
-
-menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'mangoState', 'MenuEditor', 'uiSettings'];
+}
 
 return menuEditor;
 

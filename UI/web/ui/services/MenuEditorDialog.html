@@ -17,12 +17,12 @@
       <div layout="row">
         <md-input-container flex>
             <label ma-tr="ui.app.parentItem"></label>
-            <md-select name="parent" ng-model="editCtrl.item.parent" ng-disabled="editCtrl.item.builtIn" ng-change="parentChanged()" ng-model-options="{trackBy: '$value.id'}">
+            <md-select name="parent" ng-model="editCtrl.item.parent" ng-disabled="editCtrl.item.builtIn" ng-change="parentChanged()" ng-model-options="{trackBy: '$value.name'}">
               <md-option ng-value="null" ma-tr="ui.app.noneTopLevel"></md-option>
-              <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems track by menuItem.id" ng-if="menuItem.name !== editCtrl.item.name && (menuItem.abstract || !(menuItem.template || menuItem.templateUrl))">
+              <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems track by menuItem.name">
                 <span ng-if="menuItem.menuText" ng-bind="menuItem.menuText"></span>
                 <span ng-if="!menuItem.menuText && menuItem.menuTr" ma-tr="{{menuItem.menuTr}}"></span>
-                ({{menuItem.name}})
+                (<span ng-bind="menuItem.name"></span>)
               </md-option>
             </md-select>
         </md-input-container>

@@ -485,7 +485,7 @@ md-card md-toolbar,
 md-card md-toolbar .md-toolbar-tools,
 md-toolbar.small-toolbar,
 md-toolbar.small-toolbar .md-toolbar-tools {
-  font-size: inherit;
+  font-size: 1.7rem;
   height: 42px;
   min-height: 42px;
   max-height: 42px;
@@ -493,7 +493,7 @@ md-toolbar.small-toolbar .md-toolbar-tools {
 
 md-toolbar.small-toolbar-font,
 md-toolbar.small-toolbar-font .md-toolbar-tools {
-  font-size: inherit;
+  font-size: 1.7rem;
 }
 
 md-card .md-toolbar-tools div:not(.desktop) > .md-button {

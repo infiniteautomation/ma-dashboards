@@ -3,29 +3,41 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'angular'], function(require, angular) {
 'use strict';
 
 var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
 
-var jsonStoreMenuController = function jsonStoreMenuController($scope, Menu, jsonStoreEventManager, CUSTOM_USER_MENU_XID) {
+JsonStoreMenuController.$inject = ['$scope', 'Menu', 'jsonStoreEventManager', 'CUSTOM_USER_MENU_XID', 'JsonStore'];
+function JsonStoreMenuController($scope, Menu, jsonStoreEventManager, CUSTOM_USER_MENU_XID, JsonStore) {
+
     this.$onInit = function() {
-        Menu.getMenu().then(function(storeObject) {
-            this.menuItems = storeObject.jsonData.menuItems;
-        }.bind(this));
-        
+        this.retrieveMenu();
         jsonStoreEventManager.smartSubscribe($scope, CUSTOM_USER_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler);
     };
 
     this.updateHandler = function updateHandler(event, payload) {
-        this.menuItems = payload.action === 'delete' ? Menu.getDefaultMenu().jsonData.menuItems : payload.object.jsonData.menuItems;
+        if (payload.action === 'delete') {
+            this.retrieveMenu();
+        } else {
+            Menu.storeObject.jsonData = payload.object.jsonData;
+            Menu.storeObject.readPermission = payload.object.readPermission;
+            Menu.storeObject.editPermission = payload.object.editPermission;
+            Menu.storeObject.name = payload.object.name;
+            Menu.combineMenuItems();
+            this.menuItems = Menu.menuHierarchy;
+        }
     }.bind(this);
-};
-
-jsonStoreMenuController.$inject = ['$scope', 'Menu', 'jsonStoreEventManager', 'CUSTOM_USER_MENU_XID'];
+    
+    this.retrieveMenu = function() {
+        Menu.getMenuHierarchy().then(function(menuItems) {
+            this.menuItems = menuItems;
+        }.bind(this));
+    };
+}
 
 return {
-    controller: jsonStoreMenuController,
+    controller: JsonStoreMenuController,
     template: '<ma-ui-menu menu-items="$ctrl.menuItems" user="$ctrl.user"></ma-ui-menu>',
     bindings: {
         user: '<user'
