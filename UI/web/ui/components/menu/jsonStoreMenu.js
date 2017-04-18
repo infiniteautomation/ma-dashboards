@@ -20,19 +20,33 @@ function JsonStoreMenuController($scope, Menu, jsonStoreEventManager, CUSTOM_USE
         if (payload.action === 'delete') {
             this.retrieveMenu();
         } else {
-            Menu.storeObject.jsonData = payload.object.jsonData;
-            Menu.storeObject.readPermission = payload.object.readPermission;
-            Menu.storeObject.editPermission = payload.object.editPermission;
-            Menu.storeObject.name = payload.object.name;
-            Menu.combineMenuItems();
-            this.menuItems = Menu.menuHierarchy;
+            // TODO move this to the Menu service
+//            Menu.storeObject.jsonData = payload.object.jsonData;
+//            Menu.storeObject.readPermission = payload.object.readPermission;
+//            Menu.storeObject.editPermission = payload.object.editPermission;
+//            Menu.storeObject.name = payload.object.name;
+//            Menu.combineMenuItems();
+            this.createMenuItemArray(Menu.menuHierarchy);
         }
     }.bind(this);
     
     this.retrieveMenu = function() {
-        Menu.getMenuHierarchy().then(function(menuItems) {
-            this.menuItems = menuItems;
+        Menu.getMenuHierarchy().then(function(menuHierarchy) {
+            this.createMenuItemArray(menuHierarchy);
         }.bind(this));
+    };
+    
+    this.createMenuItemArray = function(menuHierarchy) {
+        // combine root menu items and items under ui into a top level menu array
+        var menuItems = [];
+        menuHierarchy.children.forEach(function(item) {
+            if (item.name === 'ui') {
+                Array.prototype.push.apply(menuItems, item.children);
+            } else {
+                menuItems.push(item);
+            }
+        });
+        this.menuItems = menuItems;
     };
 }
 

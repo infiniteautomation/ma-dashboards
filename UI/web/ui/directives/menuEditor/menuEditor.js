@@ -14,12 +14,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
         link: function($scope, $element) {
             $scope.menuEditor = {};
             $scope.$mdMedia = $mdMedia;
-            
-            Menu.getMenuHierarchy().then(function(menuItems) {
-                $scope.menuItems = menuItems;
-                resetToRoot();
-            });
-            
+
             function scrollToTopOfMdContent() {
                 var elem = $element[0];
                 while ((elem = elem.parentElement)) {
@@ -29,36 +24,38 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                     }
                 }
             }
-            
-            $scope.undo = function undo() {
-                Menu.getMenuHierarchy().then(function(menuItems) {
-                    $scope.menuItems = menuItems;
-                    resetToRoot();
-                });
+
+            $scope.getHierarchy = function getHierarchy() {
+                Menu.getMenuHierarchy().then(setHierarchy);
             };
+            $scope.getHierarchy();
             
-            function resetToRoot() {
-                $scope.editItems = $scope.menuItems;
-                $scope.path = [{menuText: 'Root'}];
+            function setHierarchy(menuHierarchy) {
+                $scope.menuHierarchy = menuHierarchy;
+                $scope.path = [];
+                $scope.enterSubmenu(null, $scope.menuHierarchy);
+                
+                var uiItem;
+                $scope.menuHierarchy.children.some(function(item) {
+                    return (uiItem = item.name === 'ui' && item);
+                });
+                
+                if (uiItem) {
+                    $scope.enterSubmenu(null, uiItem);
+                }
             }
-            
+
             $scope.enterSubmenu = function enterSubmenu(event, menuItem) {
+                $scope.currentItem = menuItem;
                 $scope.editItems = menuItem.children;
                 $scope.path.push(menuItem);
                 scrollToTopOfMdContent();
             };
             
-            $scope.goUp = function goUp(event) {
-                $scope.path.pop();
-                var currentItem = $scope.path[$scope.path.length-1];
-                $scope.editItems = currentItem.children || $scope.menuItems;
-                scrollToTopOfMdContent();
-            };
-            
             $scope.goToIndex = function goUp(event, index) {
                 $scope.path.splice(index+1, $scope.path.length - 1 - index);
-                var currentItem = $scope.path[$scope.path.length-1];
-                $scope.editItems = currentItem.children || $scope.menuItems;
+                $scope.currentItem = $scope.path[$scope.path.length-1];
+                $scope.editItems = $scope.currentItem.children;
                 scrollToTopOfMdContent();
             };
             
@@ -72,33 +69,37 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                     .cancel(Translate.trSync('common.cancel'));
                 
                 $mdDialog.show(confirm).then(function() {
-                    Menu.deleteMenu().then(function(menuItems) {
-                        $scope.menuItems = menuItems;
-                        resetToRoot();
-                    });
+                    Menu.deleteMenu().then(setHierarchy);
+                });
+            };
+
+            $scope.removeItem = function(toBeRemoved) {
+                this.editItems.some(function(item, index, array) {
+                    if (toBeRemoved.name === item.name) {
+                        array.splice(index, 1);
+                        return true;
+                    }
                 });
             };
 
             $scope.editItem = function($event, origItem) {
-                var menuItems = $scope.menuItems;
                 if (!origItem) {
-                    debugger;
-                    // TODO get name and parent from path
                     origItem = {
                         isNew: true,
-                        name: 'ui.',
+                        name: $scope.currentItem.name ? $scope.currentItem.name + '.' : '',
                         url: '/',
-                        parent: null
+                        parent: $scope.currentItem
                     };
                 }
-                var parent = origItem.parent;
+
+                var parent = origItem.parent || null;
                 var isNew = origItem.isNew;
                 
-                MenuEditor.editMenuItem($event, origItem, menuItems).then(function(item) {
+                MenuEditor.editMenuItem($event, $scope.menuHierarchy, origItem).then(function(item) {
                     var newParent = item.parent;
                     
                     if (!isNew && (item.deleted || parent !== newParent)) {
-                        var array = parent ? parent.children : menuItems;
+                        var array = parent.children;
                         for (var i = 0; i < array.length; i++) {
                             if (array[i].name === origItem.name) {
                                 array.splice(i, 1);
@@ -115,6 +116,8 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
 
                     // copy item properties back onto original item
                     if (!isNew) {
+                        // prevent stack overflow from cyclic copy of parent
+                        delete item.parent;
                         angular.merge(origItem, item);
                         item = origItem;
                     }
@@ -133,10 +136,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
             };
             
             $scope.saveMenu = function saveMenu() {
-                Menu.saveMenu($scope.menuItems).then(function(menuItems) {
-                    $scope.menuItems = menuItems;
-                    resetToRoot();
-                });
+                Menu.saveMenu($scope.menuHierarchy).then(setHierarchy);
             };
         }
     };

@@ -4,7 +4,7 @@
 
 <div class="menu-editor-buttons">
   <md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu($event)"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-  <md-button class="md-raised" ng-click="undo()"><md-icon>undo</md-icon> <span ma-tr="ui.app.undoChanges"></span></md-button>
+  <md-button class="md-raised" ng-click="getHierarchy()"><md-icon>undo</md-icon> <span ma-tr="ui.app.undoChanges"></span></md-button>
   <md-button class="md-raised md-warn" ng-click="deleteCustomMenu($event)"><md-icon>delete</md-icon> <span ma-tr="ui.app.deleteCustomMenu"></span></md-button>
 </div>
 
@@ -32,14 +32,14 @@
             </tr>
         </thead>
         <tbody md-body ng-model="editItems" ui-sortable="{handle: '> td > .move-handle'}">
-          <tr ng-repeat="menuItem in editItems track by menuItem.name | orderBy:['weight','name']">
+          <tr ng-repeat="menuItem in editItems | orderBy:['weight', 'name'] track by menuItem.name">
             <td>
               <md-button class="md-icon-button" ng-if="menuItem.children && menuItem.children.length" ng-click="enterSubmenu($event, menuItem)">
                 <md-icon>subdirectory_arrow_right</md-icon>
               </md-button>
             </td>
             <td ng-if="$mdMedia('gt-sm')">
-              <md-switch ng-model="menuItem.menuHidden" ng-true-value="" ng-false-value="true" aria-label="{{'ui.app.showMenuItem'|tr}}"></md-switch>
+              <md-switch ng-model="menuItem.menuHidden" ng-true-value="false" ng-false-value="true" aria-label="{{'ui.app.showMenuItem'|tr}}"></md-switch>
             </td>
             <td ng-if="$mdMedia('gt-xs') && menuItem.menuText" ng-bind="menuItem.menuText"></td>
             <td ng-if="$mdMedia('gt-xs') && !menuItem.menuText" ma-tr="{{menuItem.menuTr}}"></td>
@@ -49,7 +49,7 @@
               <md-button class="md-icon-button" ng-click="editItem($event, menuItem)">
                 <md-icon>edit</md-icon>
               </md-button>
-              <md-button class="md-icon-button" ng-click="editItems.splice($index,1)" ng-disabled="menuItem.builtIn">
+              <md-button class="md-icon-button" ng-click="removeItem(menuItem)" ng-disabled="menuItem.builtIn">
                 <md-icon>delete</md-icon>
               </md-button>
               <md-icon class="move-handle">reorder</md-icon>

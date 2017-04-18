@@ -46,6 +46,7 @@ return [
         templateUrl: 'views/dashboard/main.html',
         'abstract': true,
         menuHidden: true,
+        menuTr: 'ui.app.ui',
         resolve: {
             auth: ['Translate', 'User', function(Translate, User) {
                 if (!User.current) {

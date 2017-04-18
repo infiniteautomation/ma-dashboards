@@ -34,7 +34,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                     url: '/',
                     pageXid: pageXid,
                     linkToPage: true,
-                    parent: null
+                    parent: Menu.menuHierarchy
                 };
                 if (defaults) {
                     angular.merge(menuItem, defaults);
@@ -55,13 +55,14 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
         }.bind(this));
     };
     
-    MenuEditor.prototype.editMenuItem = function editMenuItem(event, menuItems, origItem) {
+    MenuEditor.prototype.editMenuItem = function editMenuItem(event, menuHierarchy, origItem) {
             // build flat menu item array so we can choose any item in dropdown
-            var flatMenuItems = [];
-            var flatMenuMap = [];
-            Menu.eachMenuItem(menuItems, null, function(menuItem) {
-                flatMenuItems.push(menuItem);
-                flatMenuMap[menuItem.name] = true;
+            var menuItems = [];
+            var menuItemMap = {};
+            
+            Menu.forEach(menuHierarchy.children, function(menuItem) {
+                menuItems.push(menuItem);
+                menuItemMap[menuItem.name] = true;
             });
 
             // copy the item so we can discard changes
@@ -90,21 +91,20 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                 controllerAs: 'editCtrl',
                 locals: {
                     item: item,
-                    menuItems: flatMenuItems
+                    allMenuItems: menuItems,
+                    root: menuHierarchy
                 },
                 controller: ['$scope', '$mdDialog', function editItemController($scope, $mdDialog) {
-//                    this.menuItems = this.flatMenuItems.filter(function(item) {
-//                        return item.abstract
-//                    });
-//                    this.flatMenuItems;
-//                    ng-if="menuItem.name !== editCtrl.item.name && (menuItem.abstract || !(menuItem.template || menuItem.templateUrl))"
-                    
+                    this.menuItems = this.allMenuItems.filter(function(item) {
+                        return item.abstract && item.name !== this.item.name;
+                    }.bind(this));
+
                     Page.getPages().then(function(store) {
                         $scope.pages = store.jsonData.pages;
                     });
                     
                     $scope.stateNameChanged = function() {
-                        $scope.menuItemEditForm.stateName.$setValidity('stateExists', !flatMenuMap[this.item.name]);
+                        $scope.menuItemEditForm.stateName.$setValidity('stateExists', !menuItemMap[this.item.name]);
                         this.checkParentState();
                     }.bind(this);
                     
@@ -121,28 +121,34 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                         $mdDialog.hide();
                     };
                     $scope.parentChanged = function() {
-                        if ($scope.menuItemEditForm.stateName.$pristine && this.item.isNew && this.item.parent) {
+                        if ($scope.menuItemEditForm.stateName.$pristine && this.item.isNew && this.item.parent.name) {
                             this.item.name = this.item.parent.name + '.';
                         }
                         this.checkParentState();
                     }.bind(this);
                     
                     this.checkParentState = function checkParent() {
-                        if (!this.item.parent || angular.isUndefined(this.item.name))
+                        if (!this.item.parent.name || angular.isUndefined(this.item.name)) {
                             $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', true);
-                        else
-                            $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', this.item.name.indexOf(this.item.parent.name) === 0);
+                        } else {
+                            var startsWith = this.item.parent.name + '.';
+                            var valid = this.item.name.indexOf(startsWith) === 0 && this.item.name.length > startsWith.length;
+                            $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', valid);
+                        }
                     };
                 }]
             }).then(function() {
                 delete item.isNew;
-                
-                if (item.showOnMenu) {
-                    delete item.menuHidden;
-                } else {
-                    item.menuHidden = true;
-                }
+
+                item.menuHidden = !item.showOnMenu;
                 delete item.showOnMenu;
+                
+                if (item.templateUrl || item.template || item.linkToPage) {
+                    delete item.abstract;
+                    delete item.children;
+                } else {
+                    item.abstract = true;
+                }
 
                 switch(item.dateBarOptions) {
                 case 'date': {
@@ -163,6 +169,11 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                     }
                 }
                 delete item.dateBarOptions;
+                
+                // jshint eqnull:true
+                if (item.weight == null) {
+                    item.weight = 1000;
+                }
 
                 return item;
             });

@@ -87,6 +87,7 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
             this.defaultMenuItemsByName = {};
     
             this.defaultMenuItems.forEach(function(item) {
+                item.menuHidden = !!item.menuHidden;
                 item.builtIn = true;
                 // jshint eqnull:true
                 if (item.weight == null) {
@@ -155,12 +156,13 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
         Menu.prototype.deleteMenu = function deleteMenu() {
             this.storeObject.jsonData.menuItems = [];
             return this.storeObject.$save().then(function() {
-                return this.combineMenuItems();
+                this.combineMenuItems();
+                return this.menuHierarchy;
             }.bind(this));
         };
         
         Menu.prototype.saveMenu = function saveMenu(menuHierarchy) {
-            var newMenuItems = flattenMenu(menuHierarchy);
+            var newMenuItems = flattenMenu(menuHierarchy.children);
             
             var different = [];
             newMenuItems.forEach(function(item, index, array) {
@@ -173,17 +175,14 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
                 } else if (!angular.equals(item, originalItem)) {
                     var difference = calculateDifference(item, originalItem);
                     different.push(difference);
-                    
-                    if (Object.keys(difference).length === 1) {
-                        debugger;
-                    }
                 }
             }.bind(this));
     
             this.storeObject.jsonData.menuItems = different;
             return this.storeObject.$save().then(function() {
                 registerStates(newMenuItems);
-                return this.combineMenuItems();
+                this.combineMenuItems();
+                return this.menuHierarchy;
             }.bind(this));
         };
 
@@ -231,14 +230,13 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
             }
         };
         
-        Menu.prototype.eachMenuItem = function eachMenuItem(menuItems, parent, fn) {
+        Menu.prototype.forEach = function forEach(menuItems, fn) {
             if (!menuItems) return;
             for (var i = 0; i < menuItems.length; i++) {
                 var menuItem = menuItems[i];
-                var result = fn(menuItem, parent, menuItems, i);
-                if (result === 'continue') continue;
-                else if (result) return result;
-                result = this.eachMenuItem(menuItem.children, menuItem, fn);
+                var result = fn(menuItem, i, menuItems);
+                if (result) return result;
+                result = this.forEach(menuItem.children, fn);
                 if (result) return result;
             }
         };
@@ -259,7 +257,9 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
         function unflattenMenu(flatMenuItems) {
             var hierarchyRoot = {
                 children: {},
-                item: {}
+                item: {
+                    menuTr: 'ui.app.root'
+                }
             };
             
             // turns the flat menu item array into a hierarchical structure
@@ -271,21 +271,21 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
             });
     
             // turns the hierarchical structure into actual menu items
-            var rootMenuItem = createMenuItem(hierarchyRoot, true);
+            var rootMenuItem = createMenuItem(hierarchyRoot);
             var menuItems = rootMenuItem.children;
             
             // gets the main ui state, removes it and adds its children instead
-            var uiItem;
-            menuItems.some(function(item, i, array) {
-                if (item.name === 'ui') {
-                    uiItem = item;
-                    array.splice(i, 1);
-                    return true;
-                }
-            });
-            Array.prototype.push.apply(menuItems, uiItem.children);
+//            var uiItem;
+//            menuItems.some(function(item, i, array) {
+//                if (item.name === 'ui') {
+//                    uiItem = item;
+//                    array.splice(i, 1);
+//                    return true;
+//                }
+//            });
+//            Array.prototype.push.apply(menuItems, uiItem.children);
             
-            return menuItems;
+            return rootMenuItem;
         }
     
         function buildMenuHierarchy(item, toAdd, path) {
@@ -303,13 +303,11 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
             }
         }
         
-        function createMenuItem(item, isRoot) {
+        function createMenuItem(item) {
             var childArray = [];
             for (var key in item.children) {
                 var transformedChild = createMenuItem(item.children[key]);
-                if (!isRoot) {
-                    transformedChild.parent = item.item;
-                }
+                transformedChild.parent = item.item;
                 childArray.push(transformedChild);
             }
             if (childArray.length) {
@@ -336,9 +334,6 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
             function propertyDiff(property, newItem, originalItem, difference) {
                 if (newItem[property] !== originalItem[property]) {
                     difference[property] = newItem[property];
-                    if (difference[property] === undefined) {
-                        difference[property] = null;
-                    }
                 }
             }
         }

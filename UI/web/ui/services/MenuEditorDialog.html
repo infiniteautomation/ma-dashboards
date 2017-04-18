@@ -18,8 +18,8 @@
         <md-input-container flex>
             <label ma-tr="ui.app.parentItem"></label>
             <md-select name="parent" ng-model="editCtrl.item.parent" ng-disabled="editCtrl.item.builtIn" ng-change="parentChanged()" ng-model-options="{trackBy: '$value.name'}">
-              <md-option ng-value="null" ma-tr="ui.app.noneTopLevel"></md-option>
-              <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems track by menuItem.name">
+              <md-option ng-value="editCtrl.root" ma-tr="ui.app.root"></md-option>
+              <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems | orderBy:'-builtIn' track by menuItem.name">
                 <span ng-if="menuItem.menuText" ng-bind="menuItem.menuText"></span>
                 <span ng-if="!menuItem.menuText && menuItem.menuTr" ma-tr="{{menuItem.menuTr}}"></span>
                 (<span ng-bind="menuItem.name"></span>)
@@ -37,7 +37,7 @@
             <label ma-tr="ui.app.stateName"></label>
             <input name="stateName" required pattern="^(\w+\.)*\w+$"
                 ng-model="editCtrl.item.name" ng-disabled="editCtrl.item.builtIn" ng-change="stateNameChanged()">
-            <div class="hint" ng-hide="menuItemEditForm.stateName.$invalid && (menuItemEditForm.stateName.$touched || menuItemEditForm.$submitted)" ma-tr="ui.app.showMenuItem">Unique state name for this menu item, should start with the parent menu item's state name.</div>
+            <div class="hint" ng-hide="menuItemEditForm.stateName.$invalid && (menuItemEditForm.stateName.$touched || menuItemEditForm.$submitted)" ma-tr="ui.app.stateNameHint"></div>
             <div ng-messages="menuItemEditForm.stateName.$error">
               <div ng-message="required" ma-tr="ui.app.required"></div>
               <div ng-message="pattern" ma-tr="ui.app.statePattern"></div>
