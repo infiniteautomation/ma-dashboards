@@ -210,7 +210,12 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                     different.push(item);
                 } else if (!angular.equals(item, originalItem)) {
                     var difference = calculateDifference(item, originalItem);
-                    different.push(difference);
+                    if (Object.keys(difference).length === 1) {
+                        // only has the name property
+                        console.warn('cant detect difference', item, originalItem);
+                    } else {
+                        different.push(difference);
+                    }
                 }
             }.bind(this));
     
