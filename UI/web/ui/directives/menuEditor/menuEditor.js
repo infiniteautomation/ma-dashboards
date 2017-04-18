@@ -92,7 +92,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                     };
                 }
 
-                var parent = origItem.parent || null;
+                var parent = origItem.parent;
                 var isNew = origItem.isNew;
                 
                 MenuEditor.editMenuItem($event, $scope.menuHierarchy, origItem).then(function(item) {

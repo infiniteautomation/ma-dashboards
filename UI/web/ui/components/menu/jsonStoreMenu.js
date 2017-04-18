@@ -25,21 +25,17 @@ function JsonStoreMenuController($scope, Menu, $rootScope) {
     };
     
     this.createMenuItemArray = function(menuHierarchy) {
-        var rootArray = menuHierarchy.children.slice();
-        
-        Menu.forEach(rootArray, function(item, index, array) {
-            var copy = angular.extend({}, item);
-            delete copy.parent;
-            array.splice(index, 1, copy);
-        });
+        var rootArray = angular.copy(menuHierarchy.children);
         
         // combine root menu items and items under ui into a top level menu array
-        rootArray.forEach(function(item, index, array) {
+        rootArray.some(function(item, index, array) {
             if (item.name === 'ui') {
                 array.splice(index, 1);
                 Array.prototype.push.apply(array, item.children);
+                return true;
             }
         });
+        
         this.menuItems = rootArray;
     };
 }
