@@ -131,9 +131,7 @@ function pageEditor(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, Me
                 var menuItemDeletedPromise = $q.when();
                 if ($scope.menuItem) {
                     var menuItemName = $scope.menuItem.name;
-                    menuItemDeletedPromise = Menu.refresh().then(function() {
-                        return Menu.removeMenuItem(menuItemName).then(null, angular.noop);
-                    }, angular.noop);
+                    menuItemDeletedPromise = Menu.removeMenuItem(menuItemName).then(null, angular.noop);
                 }
                 
                 $q.all([pageDeletedPromise, menuItemDeletedPromise]).then(function() {

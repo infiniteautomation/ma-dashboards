@@ -10,7 +10,7 @@ MenuProvider.$inject = ['$stateProvider', 'MENU_ITEMS', 'MD_ADMIN_SETTINGS'];
 function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
     // register the built in MENU_ITEMS
     registerStates(MENU_ITEMS);
-    
+
     // register the custom menu items retrieved at bootstrap
     if (MD_ADMIN_SETTINGS.customMenuItems)
         // TODO check this isn't going to interfere with initial menu refresh, eg. missing template url
@@ -70,9 +70,11 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
 
     this.$get = MenuFactory;
 
-    MenuFactory.$inject = ['uiSettings', 'JsonStore', 'CUSTOM_USER_MENU_XID', '$q'];
-    function MenuFactory(uiSettings, JsonStore, CUSTOM_USER_MENU_XID, $q) {
-    
+    MenuFactory.$inject = ['uiSettings', 'JsonStore', 'CUSTOM_USER_MENU_XID', '$q', '$rootScope', 'jsonStoreEventManager'];
+    function MenuFactory(uiSettings, JsonStore, CUSTOM_USER_MENU_XID, $q, $rootScope, jsonStoreEventManager) {
+
+        var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
+
         function Menu() {
             this.storeObject = new JsonStore();
             this.storeObject.xid = CUSTOM_USER_MENU_XID;
@@ -95,30 +97,66 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
                 }
                 this.defaultMenuItemsByName[item.name] = item;
             }.bind(this));
+            
+            jsonStoreEventManager.subscribe(CUSTOM_USER_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler.bind(this));
         }
+        
+        Menu.prototype.updateHandler = function updateHandler(event, payload) {
+            var changed = false;
+            if (payload.action === 'delete') {
+                this.storeObject.jsonData = {
+                    menuItems: []
+                };
+                changed = true;
+            } else {
+                if (!angular.equals(this.storeObject.jsonData, payload.object.jsonData)) {
+                    this.storeObject.jsonData = payload.object.jsonData;
+                    changed = true;
+                }
+                this.storeObject.readPermission = payload.object.readPermission;
+                this.storeObject.editPermission = payload.object.editPermission;
+                this.storeObject.name = payload.object.name;
+            }
+            
+            if (changed) {
+                this.combineMenuItems();
+                // register the custom menu items which may have been added
+                registerStates(this.customMenuItems);
+                $rootScope.$apply($rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy));
+            }
+        };
 
-        Menu.prototype.refresh = function refresh() {
+        Menu.prototype.refresh = function refresh(forceRefresh) {
+            if (!forceRefresh && this.jsonStorePromise) {
+                return this.jsonStorePromise;
+            }
+            
             // custom menu items are retrieved on bootstrap, don't get them twice on app startup
             // after first run use the standard JsonStore http request
             if (uiSettings.customMenuItems) {
                 this.storeObject.jsonData.menuItems = uiSettings.customMenuItems;
                 delete uiSettings.customMenuItems;
                 
-                return $q.when(this.storeObject);
+                this.jsonStorePromise = $q.when(this.storeObject);
+            } else {
+                this.jsonStorePromise = JsonStore.get({xid: CUSTOM_USER_MENU_XID}).$promise.then(function(store) {
+                    return (this.storeObject = store);
+                }.bind(this), function() {
+                    // CUSTOM_USER_MENU_XID doesn't exist, or error
+                    return this.storeObject;
+                }.bind(this));
             }
-            
-            return JsonStore.get({xid: CUSTOM_USER_MENU_XID}).$promise.then(function(store) {
-                return (this.storeObject = store);
-            }.bind(this), function() {
-                // CUSTOM_USER_MENU_XID doesn't exist, or error
-                return this.storeObject;
-            }.bind(this));
+
+            return this.jsonStorePromise;
         };
 
         Menu.prototype.combineMenuItems = function combineMenuItems() {
             var customMenuItems = this.storeObject.jsonData.menuItems;
             this.menuItems = angular.copy(this.defaultMenuItems);
             this.menuItemsByName = {};
+            
+            // contains only menu items that arent built in
+            this.customMenuItems = [];
     
             this.menuItems.forEach(function(item) {
                 this.menuItemsByName[item.name] = item;
@@ -133,11 +171,11 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
                     if (item.weight == null) {
                         item.weight = 1000;
                     }
+                    this.customMenuItems.push(cleanMenuItemForSave(item));
                 }
             }.bind(this));
             
             this.menuHierarchy = unflattenMenu(this.menuItems);
-            
             return this.menuItems;
         };
 
@@ -157,6 +195,7 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
             this.storeObject.jsonData.menuItems = [];
             return this.storeObject.$save().then(function() {
                 this.combineMenuItems();
+                $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
                 return this.menuHierarchy;
             }.bind(this));
         };
@@ -182,6 +221,7 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
             return this.storeObject.$save().then(function() {
                 registerStates(newMenuItems);
                 this.combineMenuItems();
+                $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
                 return this.menuHierarchy;
             }.bind(this));
         };
@@ -209,25 +249,31 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
 
             return this.storeObject.$save().then(function() {
                 registerStates([menuItem]);
-                return this.combineMenuItems();
+                this.combineMenuItems();
+                $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
+                return this.menuItems;
             }.bind(this));
         };
         
         Menu.prototype.removeMenuItem = function removeMenuItem(stateName) {
-            var found = this.storeObject.jsonData.menuItems.some(function(item, i, array) {
-                if (item.name === stateName) {
-                    array.splice(i, 1);
-                    return true;
+            return this.refresh().then(function() {
+                var found = this.storeObject.jsonData.menuItems.some(function(item, i, array) {
+                    if (item.name === stateName) {
+                        array.splice(i, 1);
+                        return true;
+                    }
+                });
+                
+                if (found) {
+                    return this.storeObject.$save().then(function() {
+                        this.combineMenuItems();
+                        $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
+                        return this.menuItems;
+                    }.bind(this));
+                } else {
+                    return $q.reject('doesnt exist');
                 }
-            });
-            
-            if (found) {
-                return this.storeObject.$save().then(function() {
-                    return this.combineMenuItems();
-                }.bind(this));
-            } else {
-                return $q.reject('doesnt exist');
-            }
+            }.bind(this));
         };
         
         Menu.prototype.forEach = function forEach(menuItems, fn) {
@@ -271,21 +317,7 @@ function MenuProvider($stateProvider, MENU_ITEMS, MD_ADMIN_SETTINGS) {
             });
     
             // turns the hierarchical structure into actual menu items
-            var rootMenuItem = createMenuItem(hierarchyRoot);
-            var menuItems = rootMenuItem.children;
-            
-            // gets the main ui state, removes it and adds its children instead
-//            var uiItem;
-//            menuItems.some(function(item, i, array) {
-//                if (item.name === 'ui') {
-//                    uiItem = item;
-//                    array.splice(i, 1);
-//                    return true;
-//                }
-//            });
-//            Array.prototype.push.apply(menuItems, uiItem.children);
-            
-            return rootMenuItem;
+            return createMenuItem(hierarchyRoot);
         }
     
         function buildMenuHierarchy(item, toAdd, path) {

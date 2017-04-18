@@ -6,30 +6,18 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
-
-JsonStoreMenuController.$inject = ['$scope', 'Menu', 'jsonStoreEventManager', 'CUSTOM_USER_MENU_XID', 'JsonStore'];
-function JsonStoreMenuController($scope, Menu, jsonStoreEventManager, CUSTOM_USER_MENU_XID, JsonStore) {
+JsonStoreMenuController.$inject = ['$scope', 'Menu', '$rootScope'];
+function JsonStoreMenuController($scope, Menu, $rootScope) {
 
     this.$onInit = function() {
         this.retrieveMenu();
-        jsonStoreEventManager.smartSubscribe($scope, CUSTOM_USER_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler);
+        
+        this.deregister = $rootScope.$on('maUIMenuChanged', function(event, menuHierarchy) {
+            this.createMenuItemArray(menuHierarchy);
+        }.bind(this));
+        $scope.$on('$destroy', this.deregister);
     };
 
-    this.updateHandler = function updateHandler(event, payload) {
-        if (payload.action === 'delete') {
-            this.retrieveMenu();
-        } else {
-            // TODO move this to the Menu service
-//            Menu.storeObject.jsonData = payload.object.jsonData;
-//            Menu.storeObject.readPermission = payload.object.readPermission;
-//            Menu.storeObject.editPermission = payload.object.editPermission;
-//            Menu.storeObject.name = payload.object.name;
-//            Menu.combineMenuItems();
-            this.createMenuItemArray(Menu.menuHierarchy);
-        }
-    }.bind(this);
-    
     this.retrieveMenu = function() {
         Menu.getMenuHierarchy().then(function(menuHierarchy) {
             this.createMenuItemArray(menuHierarchy);
