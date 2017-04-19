@@ -58,11 +58,11 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
     MenuEditor.prototype.editMenuItem = function editMenuItem(event, menuHierarchy, origItem) {
             // build flat menu item array so we can choose any item in dropdown
             var menuItems = [];
-            var menuItemMap = {};
+            var menuItemNameMap = {};
             
             Menu.forEach(menuHierarchy.children, function(menuItem) {
                 menuItems.push(menuItem);
-                menuItemMap[menuItem.name] = true;
+                menuItemNameMap[menuItem.name] = true;
             });
 
             // copy the item so we can discard changes
@@ -95,6 +95,11 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                     root: menuHierarchy
                 },
                 controller: ['$scope', '$mdDialog', function editItemController($scope, $mdDialog) {
+                    var urlPathMap = {};
+                    item.parent.children.forEach(function(item) {
+                        urlPathMap[item.url] = true;
+                    });
+
                     this.menuItems = this.allMenuItems.filter(function(item) {
                         return item.abstract && item.name !== this.item.name;
                     }.bind(this));
@@ -104,8 +109,12 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                     });
                     
                     $scope.stateNameChanged = function() {
-                        $scope.menuItemEditForm.stateName.$setValidity('stateExists', !menuItemMap[this.item.name]);
+                        $scope.menuItemEditForm.stateName.$setValidity('stateExists', this.item.name === origItem.name || !menuItemNameMap[this.item.name]);
                         this.checkParentState();
+                    }.bind(this);
+
+                    $scope.urlChanged = function() {
+                        $scope.menuItemEditForm.url.$setValidity('urlExists', this.item.url === origItem.url || !urlPathMap[this.item.url]);
                     }.bind(this);
                     
                     $scope.cancel = function cancel() {
