@@ -148,8 +148,21 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
 
                     // copy item properties back onto original item
                     if (!isNew) {
-                        // prevent stack overflow from cyclic copy of parent
+                        // update child state names
+                        if (item.name !== origItem.name) {
+                            Menu.forEach(origItem.children, function(child) {
+                                var search = origItem.name + '.';
+                                if (child.name.indexOf(search) === 0) {
+                                    child.name = item.name + '.' + child.name.substring(search.length);
+                                } else {
+                                    console.warn('child has invalid name', child);
+                                }
+                            });
+                        }
+                        
+                        // prevent stack overflow from cyclic copy of parent/children
                         delete item.parent;
+                        delete item.children;
                         angular.merge(origItem, item);
                         item = origItem;
                     }

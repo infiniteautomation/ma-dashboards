@@ -69,6 +69,13 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
             var item = angular.copy(origItem);
             item.parent = origItem.parent;
             
+            if (!item.name) {
+                item.shortStateName = '';
+            } else {
+                var splitName = item.name.trim().split('.');
+                item.shortStateName = splitName[splitName.length-1];
+            }
+            
             if (!item.menuHidden) {
                 item.showOnMenu = true;
             }
@@ -88,15 +95,15 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                 clickOutsideToClose: true,
                 fullscreen: true,
                 bindToController: true,
-                controllerAs: 'editCtrl',
+                controllerAs: '$ctrl',
                 locals: {
                     item: item,
                     allMenuItems: menuItems,
                     root: menuHierarchy
                 },
-                controller: ['$scope', '$mdDialog', function editItemController($scope, $mdDialog) {
+                controller: ['$mdDialog', function editItemController($mdDialog) {
                     var urlPathMap = {};
-                    item.parent.children.forEach(function(item) {
+                    this.item.parent.children.forEach(function(item) {
                         urlPathMap[item.url] = true;
                     });
 
@@ -105,49 +112,48 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                     }.bind(this));
 
                     Page.getPages().then(function(store) {
-                        $scope.pages = store.jsonData.pages;
-                    });
+                        this.pages = store.jsonData.pages;
+                    }.bind(this));
                     
-                    $scope.stateNameChanged = function() {
-                        $scope.menuItemEditForm.stateName.$setValidity('stateExists', this.item.name === origItem.name || !menuItemNameMap[this.item.name]);
-                        this.checkParentState();
-                    }.bind(this);
+                    this.stateNameChanged = function() {
+                        this.calculateStateName();
+                        this.menuItemEditForm.stateName.$setValidity('stateExists', this.item.name === origItem.name || !menuItemNameMap[this.item.name]);
+                    };
 
-                    $scope.urlChanged = function() {
-                        $scope.menuItemEditForm.url.$setValidity('urlExists', this.item.url === origItem.url || !urlPathMap[this.item.url]);
-                    }.bind(this);
+                    this.urlChanged = function() {
+                        this.menuItemEditForm.url.$setValidity('urlExists', this.item.url === origItem.url || !urlPathMap[this.item.url]);
+                    };
                     
-                    $scope.cancel = function cancel() {
+                    this.cancel = function cancel() {
                         $mdDialog.cancel();
                     };
-                    $scope.save = function save() {
-                        if ($scope.menuItemEditForm.$valid) {
+                    
+                    this.save = function save() {
+                        if (this.menuItemEditForm.$valid) {
                             $mdDialog.hide();
                         }
                     };
-                    $scope['delete'] = function() {
-                        item.deleted = true;
+                    
+                    this.deleteItem = function() {
+                        this.item.deleted = true;
                         $mdDialog.hide();
                     };
-                    $scope.parentChanged = function() {
-                        if ($scope.menuItemEditForm.stateName.$pristine && this.item.isNew && this.item.parent.name) {
-                            this.item.name = this.item.parent.name + '.';
-                        }
-                        this.checkParentState();
-                    }.bind(this);
                     
-                    this.checkParentState = function checkParent() {
-                        if (!this.item.parent.name || angular.isUndefined(this.item.name)) {
-                            $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', true);
+                    this.parentChanged = function() {
+                        this.calculateStateName();
+                    };
+                    
+                    this.calculateStateName = function() {
+                        if (this.item.parent.name) {
+                            this.item.name = this.item.parent.name + '.' + this.item.shortStateName;
                         } else {
-                            var startsWith = this.item.parent.name + '.';
-                            var valid = this.item.name.indexOf(startsWith) === 0 && this.item.name.length > startsWith.length;
-                            $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', valid);
+                            this.item.name = this.item.shortStateName;
                         }
                     };
                 }]
             }).then(function() {
                 delete item.isNew;
+                delete item.shortStateName;
 
                 item.menuHidden = !item.showOnMenu;
                 delete item.showOnMenu;
