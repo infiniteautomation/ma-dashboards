@@ -49,12 +49,14 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                 $scope.path.push(menuItem);
                 $scope.currentItem = menuItem;
                 $scope.getChildren();
+                scrollToTopOfMdContent();
             };
             
             $scope.goToIndex = function goUp(event, index) {
                 $scope.path.splice(index+1, $scope.path.length - 1 - index);
                 $scope.currentItem = $scope.path[$scope.path.length-1];
                 $scope.getChildren();
+                scrollToTopOfMdContent();
             };
             
             $scope.getChildren = function getChildren() {
@@ -66,11 +68,10 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                     if (a.name > b.name) return 1;
                     return 0;
                 });
-                scrollToTopOfMdContent();
             };
 
             // updates the weights, attempting to keep them as close as possible to the original array
-            $scope.updateWeight = function(event, ui) {
+            $scope.updateWeights = function(event, ui) {
                 var weight = -Infinity;
                 $scope.currentItem.children.forEach(function(item, index, array) {
                     if (item.weight > weight) {
@@ -88,7 +89,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
             // weight property
             $scope.uiSortableOptions = {
                 handle: '> td > .move-handle',
-                stop: $scope.updateWeight
+                stop: $scope.updateWeights
             };
             
             $scope.deleteCustomMenu = function deleteCustomMenu(event) {
@@ -130,15 +131,14 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                 MenuEditor.editMenuItem($event, $scope.menuHierarchy, origItem).then(function(item) {
                     var newParent = item.parent;
                     
+                    // remove item from the original parent's children if it was deleted or moved
                     if (!isNew && (item.deleted || parent !== newParent)) {
-                        var array = parent.children;
-                        for (var i = 0; i < array.length; i++) {
-                            if (array[i].name === origItem.name) {
-                                array.splice(i, 1);
-                                break;
+                        parent.children.some(function(item, i, array) {
+                            if (item.name === origItem.name) {
+                                return array.splice(i, 1);
                             }
-                        }
-                        if (parent && !parent.children.length) {
+                        });
+                        if (!parent.children.length) {
                             delete parent.children;
                         }
                         if (item.deleted) {
@@ -154,16 +154,15 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                         item = origItem;
                     }
 
-                    // add item back into parents children or into the menuItems array
+                    // add item back into new parent's children
                     if (isNew || parent !== newParent) {
-                        if (newParent) {
-                            if (!newParent.children)
-                                newParent.children = [];
-                            newParent.children.push(item);
-                        } else {
-                            menuItems.push(item);
-                        }
+                        if (!newParent.children)
+                            newParent.children = [];
+                        newParent.children.push(item);
                     }
+                    
+                    // sorts array in case of new item added
+                    $scope.getChildren();
                 });
             };
             
