@@ -67,6 +67,7 @@ return [
                            './components/menu/menuToggle',
                            './directives/menuEditor/menuEditor',
                            './directives/pageEditor/pageEditor',
+                           './directives/pageEditor/pageEditorControls',
                            './directives/liveEditor/liveEditor',
                            './directives/liveEditor/dualPaneEditor',
                            './directives/stateParams/stateParams',
@@ -75,11 +76,12 @@ return [
                            './components/dateBar/dateBar',
                            './components/footer/footer'
                 ], function(MenuEditor, jsonStoreMenu, uiMenu, menuLink, menuToggle,
-                        menuEditor, pageEditor, liveEditor, dualPaneEditor, stateParams, autoLoginSettings, activeEventIcons, dateBar, footer) {
+                        menuEditor, pageEditor, pageEditorControls, liveEditor, dualPaneEditor, stateParams, autoLoginSettings, activeEventIcons, dateBar, footer) {
                     angular.module('uiRootState', ['ui.ace'])
                         .factory('MenuEditor', MenuEditor)
                         .directive('menuEditor', menuEditor)
                         .directive('pageEditor', pageEditor)
+                        .directive('maUiPageEditorControls', pageEditorControls)
                         .directive('liveEditor', liveEditor)
                         .directive('dualPaneEditor', dualPaneEditor)
                         .directive('stateParams', stateParams)

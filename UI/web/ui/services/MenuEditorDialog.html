@@ -5,7 +5,7 @@
       <h2 ng-if="!$ctrl.item.isNew" ma-tr="ui.app.editMenuItem"></h2>
       <h2 ng-if="$ctrl.item.isNew" ma-tr="ui.app.createMenuItem"></h2>
       <span flex></span>
-      <md-button class="md-icon-button" ng-click="cancel()">
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
         <md-icon>close</md-icon>
       </md-button>
     </div>

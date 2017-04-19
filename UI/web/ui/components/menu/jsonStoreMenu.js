@@ -6,16 +6,15 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-JsonStoreMenuController.$inject = ['$scope', 'Menu', '$rootScope'];
-function JsonStoreMenuController($scope, Menu, $rootScope) {
+JsonStoreMenuController.$inject = ['$scope', 'Menu'];
+function JsonStoreMenuController($scope, Menu) {
 
     this.$onInit = function() {
         this.retrieveMenu();
         
-        this.deregister = $rootScope.$on('maUIMenuChanged', function(event, menuHierarchy) {
+        $scope.$on('maUIMenuChanged', function(event, menuHierarchy) {
             this.createMenuItemArray(menuHierarchy);
         }.bind(this));
-        $scope.$on('$destroy', this.deregister);
     };
 
     this.retrieveMenu = function() {

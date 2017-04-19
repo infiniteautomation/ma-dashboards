@@ -1,0 +1,67 @@
+<div layout="row" layout-wrap class="page-editor-inputs">
+  <md-input-container flex="100" flex-gt-md="25">
+      <label ma-tr="ui.app.choosePageToEdit"></label>
+      <md-select ng-model="$ctrl.selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.loadPage($ctrl.selectedPageSummary.xid)">
+        <md-option ng-repeat="page in $ctrl.pageSummaryStore.jsonData.pages track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
+      </md-select>
+  </md-input-container>
+  
+  <form name="$ctrl.pageEditorForm" novalidate ng-submit="$ctrl.savePage()" flex="100" flex-gt-md="75" layout>
+    <md-input-container flex>
+        <label ma-tr="ui.app.pageName"></label>
+        <input name="pageName" required ng-model="$ctrl.selectedPage.name">
+        <div ng-show="$ctrl.pageEditorForm.pageName.$invalid && ($ctrl.pageEditorForm.pageName.$touched || $ctrl.pageEditorForm.$submitted)">
+          <div ng-messages="$ctrl.pageEditorForm.pageName.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+          </div>
+        </div>
+    </md-input-container>
+    <!-- 
+    <md-input-container flex>
+        <label ma-tr="common.xid"></label>
+        <input name="xid" required ng-model="$ctrl.selectedPage.xid" disabled>
+        <div ng-messages="$ctrl.pageEditorForm.xid.$error">
+          <div ng-message="required" ma-tr="ui.app.required"></div>
+        </div>
+    </md-input-container> -->
+    <md-input-container flex>
+        <label ma-tr="ui.app.readPermission"></label>
+        <input name="readPermission" ng-model="$ctrl.selectedPage.readPermission">
+    </md-input-container>
+    
+    <md-input-container flex>
+        <label ma-tr="ui.app.editPermission"></label>
+        <input name="editPermission" ng-model="$ctrl.selectedPage.editPermission">
+    </md-input-container>
+  </form>
+</div>
+
+<div layout="row" layout-align="start center" layout-wrap>
+    <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.savePage()" ng-disabled="!($ctrl.pageEditorForm.$dirty || $ctrl.selectedPage.$dirty)">
+        <md-icon>save</md-icon>
+        <span ma-tr="common.save"></span>
+    </md-button>
+    <md-button ng-click="$ctrl.loadPage($ctrl.selectedPageSummary.xid)" ng-disabled="$ctrl.selectedPage.isNew || !($ctrl.pageEditorForm.$dirty || $ctrl.selectedPage.$dirty)" class="md-raised md-warn">
+        <md-icon>undo</md-icon>
+        <span ma-tr="ui.app.revert"></span>
+    </md-button>
+    <md-button class="md-raised md-warn md-hue-2" ng-click="$ctrl.confirmDeletePage($event)" ng-disabled="$ctrl.selectedPage.isNew">
+      <md-icon>delete</md-icon>
+      <span ma-tr="common.delete"></span>
+    </md-button>
+    <md-button ng-click="$ctrl.editMenuItem($event)" class="md-raised md-accent"
+      ng-disabled="$ctrl.selectedPage.isNew || !$ctrl.User.current.hasPermission('edit-menus')">
+      <md-icon>edit</md-icon>
+      <span ma-tr="ui.app.addEditMenuItem"></span>
+    </md-button>
+    <md-button ng-href="{{$ctrl.viewPageLink}}" target="_blank" class="md-raised md-primary md-hue-2" ng-disabled="$ctrl.selectedPage.isNew">
+      <md-icon>remove_red_eye</md-icon>
+      <span ma-tr="ui.app.viewPage"></span>
+    </md-button>
+    <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.createNewPage()">
+      <md-icon>add</md-icon>
+      <span ma-tr="ui.app.newPage"></span>
+    </md-button>
+    <div flex></div>
+    <div ng-transclude="extraControls"></div>
+</div>
