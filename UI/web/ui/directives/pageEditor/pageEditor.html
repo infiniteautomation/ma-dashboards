@@ -3,7 +3,7 @@
 <div layout="row" class="page-editor-inputs">
   <md-input-container flex>
       <label ma-tr="ui.app.choosePageToEdit"></label>
-      <md-select ng-model="selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="loadPage()">
+      <md-select ng-model="selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="loadPage(selectedPageSummary.xid)">
         <md-option ng-repeat="page in pageSummaries track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
       </md-select>
   </md-input-container>

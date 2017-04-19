@@ -3,29 +3,45 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
+JsonStoreMenuController.$inject = ['$scope', 'Menu', '$rootScope'];
+function JsonStoreMenuController($scope, Menu, $rootScope) {
 
-var jsonStoreMenuController = function jsonStoreMenuController($scope, Menu, jsonStoreEventManager, CUSTOM_USER_MENU_XID) {
     this.$onInit = function() {
-        Menu.getMenu().then(function(storeObject) {
-            this.menuItems = storeObject.jsonData.menuItems;
-        }.bind(this));
+        this.retrieveMenu();
         
-        jsonStoreEventManager.smartSubscribe($scope, CUSTOM_USER_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler);
+        this.deregister = $rootScope.$on('maUIMenuChanged', function(event, menuHierarchy) {
+            this.createMenuItemArray(menuHierarchy);
+        }.bind(this));
+        $scope.$on('$destroy', this.deregister);
     };
 
-    this.updateHandler = function updateHandler(event, payload) {
-        this.menuItems = payload.action === 'delete' ? Menu.getDefaultMenu().jsonData.menuItems : payload.object.jsonData.menuItems;
-    }.bind(this);
-};
-
-jsonStoreMenuController.$inject = ['$scope', 'Menu', 'jsonStoreEventManager', 'CUSTOM_USER_MENU_XID'];
+    this.retrieveMenu = function() {
+        Menu.getMenuHierarchy().then(function(menuHierarchy) {
+            this.createMenuItemArray(menuHierarchy);
+        }.bind(this));
+    };
+    
+    this.createMenuItemArray = function(menuHierarchy) {
+        var rootArray = angular.copy(menuHierarchy.children);
+        
+        // combine root menu items and items under ui into a top level menu array
+        rootArray.some(function(item, index, array) {
+            if (item.name === 'ui') {
+                array.splice(index, 1);
+                Array.prototype.push.apply(array, item.children);
+                return true;
+            }
+        });
+        
+        this.menuItems = rootArray;
+    };
+}
 
 return {
-    controller: jsonStoreMenuController,
+    controller: JsonStoreMenuController,
     template: '<ma-ui-menu menu-items="$ctrl.menuItems" user="$ctrl.user"></ma-ui-menu>',
     bindings: {
         user: '<user'

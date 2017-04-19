@@ -6,19 +6,15 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState, MenuEditor, uiSettings) {
+menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'MenuEditor', 'uiSettings'];
+function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSettings) {
     return {
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),
         link: function($scope, $element) {
             $scope.menuEditor = {};
             $scope.$mdMedia = $mdMedia;
-            
-            Menu.getMenu().then(function(storeObject) {
-                $scope.storeObject = storeObject;
-                resetToRoot();
-            });
-            
+
             function scrollToTopOfMdContent() {
                 var elem = $element[0];
                 while ((elem = elem.parentElement)) {
@@ -28,36 +24,72 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                     }
                 }
             }
+
+            $scope.getHierarchy = function getHierarchy() {
+                Menu.getMenuHierarchy().then(setHierarchy);
+            };
+            $scope.getHierarchy();
             
-            $scope.undo = function undo() {
-                this.storeObject.$get().then(function() {
-                    resetToRoot();
+            function setHierarchy(menuHierarchy) {
+                $scope.menuHierarchy = menuHierarchy;
+                $scope.path = [];
+                $scope.enterSubmenu(null, $scope.menuHierarchy);
+                
+                var uiItem;
+                $scope.menuHierarchy.children.some(function(item) {
+                    return (uiItem = item.name === 'ui' && item);
                 });
-            };
-            
-            function resetToRoot() {
-                $scope.editItems = $scope.storeObject.jsonData.menuItems;
-                $scope.path = [{menuText: 'Root'}];
+                
+                if (uiItem) {
+                    $scope.enterSubmenu(null, uiItem);
+                }
             }
-            
+
             $scope.enterSubmenu = function enterSubmenu(event, menuItem) {
-                $scope.editItems = menuItem.children;
                 $scope.path.push(menuItem);
-                scrollToTopOfMdContent();
-            };
-            
-            $scope.goUp = function goUp(event) {
-                $scope.path.pop();
-                var currentItem = $scope.path[$scope.path.length-1];
-                $scope.editItems = currentItem.children || $scope.storeObject.jsonData.menuItems;
+                $scope.currentItem = menuItem;
+                $scope.getChildren();
                 scrollToTopOfMdContent();
             };
             
             $scope.goToIndex = function goUp(event, index) {
                 $scope.path.splice(index+1, $scope.path.length - 1 - index);
-                var currentItem = $scope.path[$scope.path.length-1];
-                $scope.editItems = currentItem.children || $scope.storeObject.jsonData.menuItems;
+                $scope.currentItem = $scope.path[$scope.path.length-1];
+                $scope.getChildren();
                 scrollToTopOfMdContent();
+            };
+            
+            $scope.getChildren = function getChildren() {
+                // sort items by weight then name
+                $scope.editItems = $scope.currentItem.children.sort(function(a, b) {
+                    if (a.weight < b.weight) return -1;
+                    if (a.weight > b.weight) return 1;
+                    if (a.name < b.name) return -1;
+                    if (a.name > b.name) return 1;
+                    return 0;
+                });
+            };
+
+            // updates the weights, attempting to keep them as close as possible to the original array
+            $scope.updateWeights = function(event, ui) {
+                var weight = -Infinity;
+                $scope.currentItem.children.forEach(function(item, index, array) {
+                    if (item.weight > weight) {
+                        weight = item.weight;
+                    } else {
+                        if (index !== 0 && array[index - 1].name > item.name) {
+                            weight++;
+                        }
+                        item.weight = weight;
+                    }
+                });
+            };
+            
+            // ui sortable moves the items within the array, need to specify a call back that updates the
+            // weight property
+            $scope.uiSortableOptions = {
+                handle: '> td > .move-handle',
+                stop: $scope.updateWeights
             };
             
             $scope.deleteCustomMenu = function deleteCustomMenu(event) {
@@ -70,60 +102,89 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                     .cancel(Translate.trSync('common.cancel'));
                 
                 $mdDialog.show(confirm).then(function() {
-                    $scope.storeObject.$delete().then(function() {
-                        $scope.storeObject = Menu.getDefaultMenu();
-                        resetToRoot();
-                    });
+                    Menu.deleteMenu().then(setHierarchy);
                 });
             };
-            
-            $scope.resetDefaultItems = function resetDefaultItems(event) {
-                var confirm = $mdDialog.confirm()
-                    .title(Translate.trSync('ui.app.areYouSure'))
-                    .textContent(Translate.trSync('ui.app.confirmResetDefaultItems'))
-                    .ariaLabel(Translate.trSync('ui.app.areYouSure'))
-                    .targetEvent(event)
-                    .ok(Translate.trSync('common.ok'))
-                    .cancel(Translate.trSync('common.cancel'));
+
+            $scope.removeItem = function(toBeRemoved) {
+                $scope.editItems.some(function(item, index, array) {
+                    if (toBeRemoved.name === item.name) {
+                        array.splice(index, 1);
+                        return true;
+                    }
+                });
+            };
+
+            $scope.editItem = function($event, origItem) {
+                if (!origItem) {
+                    origItem = {
+                        isNew: true,
+                        name: $scope.currentItem.name ? $scope.currentItem.name + '.' : '',
+                        url: '/',
+                        parent: $scope.currentItem
+                    };
+                }
+
+                var parent = origItem.parent;
+                var isNew = origItem.isNew;
                 
-                $mdDialog.show(confirm).then(function() {
-                    $scope.storeObject.$get().then(function(storeObject) {
-                        $scope.storeObject = Menu.getDefaultMenu();
-                        var menuItems = $scope.storeObject.jsonData.menuItems;
-                        
-                        // create a flat map of all default menu items
-                        var allMenuItemsMap = {};
-                        Menu.eachMenuItem(menuItems, null, function(menuItem) {
-                            allMenuItemsMap[menuItem.name] = menuItem;
-                        });
-                        
-                        // loop over users custom menu items and re-add custom items to the menuItems array
-                        Menu.eachMenuItem(storeObject.jsonData.menuItems, null, function(menuItem) {
-                            if (!allMenuItemsMap[menuItem.name]) {
-                                menuItems.push(menuItem);
-                                return 'continue';
+                MenuEditor.editMenuItem($event, $scope.menuHierarchy, origItem).then(function(item) {
+                    var newParent = item.parent;
+                    
+                    // remove item from the original parent's children if it was deleted or moved
+                    if (!isNew && (item.deleted || parent !== newParent)) {
+                        parent.children.some(function(item, i, array) {
+                            if (item.name === origItem.name) {
+                                return array.splice(i, 1);
                             }
                         });
+                        if (!parent.children.length) {
+                            delete parent.children;
+                        }
+                        if (item.deleted) {
+                            return;
+                        }
+                    }
+
+                    // copy item properties back onto original item
+                    if (!isNew) {
+                        // update child state names
+                        if (item.name !== origItem.name) {
+                            Menu.forEach(origItem.children, function(child) {
+                                var search = origItem.name + '.';
+                                if (child.name.indexOf(search) === 0) {
+                                    child.name = item.name + '.' + child.name.substring(search.length);
+                                } else {
+                                    console.warn('child has invalid name', child);
+                                }
+                            });
+                        }
                         
-                        return $scope.storeObject.$save().then(resetToRoot);
-                    });
+                        // prevent stack overflow from cyclic copy of parent/children
+                        delete item.parent;
+                        delete item.children;
+                        angular.merge(origItem, item);
+                        item = origItem;
+                    }
+
+                    // add item back into new parent's children
+                    if (isNew || parent !== newParent) {
+                        if (!newParent.children)
+                            newParent.children = [];
+                        newParent.children.push(item);
+                    }
+                    
+                    // sorts array in case of new item added
+                    $scope.getChildren();
                 });
             };
             
-            $scope.editItem = MenuEditor.editMenuItem;
-            
             $scope.saveMenu = function saveMenu() {
-                $scope.storeObject.$save().then(function(store) {
-                    mangoState.addStates(store.jsonData.menuItems);
-                    uiSettings.customMenuItems = store.jsonData.menuItems;
-                    resetToRoot();
-                });
+                Menu.saveMenu($scope.menuHierarchy).then(setHierarchy);
             };
         }
     };
-};
-
-menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'mangoState', 'MenuEditor', 'uiSettings'];
+}
 
 return menuEditor;
 

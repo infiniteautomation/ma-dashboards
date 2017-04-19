@@ -25,16 +25,13 @@ function UiMenuController() {
         }
         return visibleCount;
     };
-    
-    this.copyMenu = function() {
-        if (!this.user || !this.origMenuItems) return;
-        var items = angular.copy(this.origMenuItems);
-        this.childVisible(items);
-        this.menuItems = items;
-    };
-    
+
     this.$onChanges = function(changes) {
-        this.copyMenu();
+        if (this.user && this.menuItems) {
+            this.childVisible(this.menuItems);
+        } else {
+            this.menuItems = [];
+        }
     };
     
     this.menuOpened = function menuOpened(toggleCtrl) {
@@ -62,13 +59,13 @@ function UiMenuController() {
             this.openMenuLevel = toggleCtrl.menuLevel;
         }
     };
-};
+}
 
 return {
     controller: UiMenuController,
     templateUrl: require.toUrl('./uiMenu.html'),
     bindings: {
-        origMenuItems: '<menuItems',
+        menuItems: '<',
         user: '<user'
     }
 };

@@ -8,12 +8,12 @@ define([
     'ngMango/ngMangoMaterial',
     'ngMango/ngMangoComponents',
     'require',
+    './services/Menu',
     './services/Page',
     './services/DateBar',
     './services/uiSettings',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
-    './util/loadLoginTranslations',
     './menuItems',
     'moment-timezone',
     'angular-ui-router',
@@ -21,7 +21,7 @@ define([
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, ngMangoMaterial, ngMangoComponents, require, Page, DateBar, uiSettings, pageView, livePreview, loadLoginTranslations, menuItems, moment) {
+], function(angular, ngMangoMaterial, ngMangoComponents, require, MenuProvider, Page, DateBar, uiSettings, pageView, livePreview, menuItems, moment) {
 'use strict';
 
 var uiApp = angular.module('uiApp', [
@@ -34,7 +34,8 @@ var uiApp = angular.module('uiApp', [
     'ngMessages'
 ]);
 
-uiApp.factory('Page', Page)
+uiApp.provider('Menu', MenuProvider)
+    .factory('Page', Page)
     .factory('DateBar', DateBar)
     .factory('uiSettings', uiSettings)
     .directive('pageView', pageView)
@@ -42,82 +43,11 @@ uiApp.factory('Page', Page)
     .constant('require', require)
     .constant('CUSTOM_USER_MENU_XID', 'mangoUI-menu')
     .constant('CUSTOM_USER_PAGES_XID', 'mangoUI-pages')
-    .constant('MANGO_UI_NG_DOCS', NG_DOCS);
-
-uiApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
-    var resolveObjects = {};
-    
-    this.addStates = function(menuItems, parent, fromJsonStore) {
-        angular.forEach(menuItems, function(menuItem, index) {
-            if (menuItem.name || menuItem.state) {
-                if (menuItem.linkToPage) {
-                    delete menuItem.templateUrl;
-                    menuItem.template = '<page-view xid="' + menuItem.pageXid + '" flex layout="column"></page-view>';
-                }
-                if (menuItem.templateUrl) {
-                    delete menuItem.template;
-                }
-                if (!menuItem.templateUrl && !menuItem.template && !menuItem.views) {
-                    menuItem.template = '<div ui-view></div>';
-                    menuItem.abstract = true;
-                }
-                if (!menuItem.name) {
-                    menuItem.name = menuItem.state;
-                }
-                if (!menuItem.weight) {
-                    menuItem.weight = 1000;
-                }
-                
-                if (!menuItem.resolve) {
-                    menuItem.resolve = {};
-                }
-                if (menuItem.name.indexOf('ui.') !== 0) {
-                    if (!menuItem.resolve.loginTranslations) {
-                        menuItem.resolve.loginTranslations = loadLoginTranslations;
-                    }
-                }
-                
-                if (menuItem.name.indexOf('ui.examples.') === 0) {
-                    if (!menuItem.params) menuItem.params = {};
-                    menuItem.params.dateBar = {
-                        rollupControls: true
-                    };
-                }
-
-                try {
-                    $stateProvider.state(menuItem);
-                    resolveObjects[menuItem.name] = menuItem.resolve;
-                } catch (error) {
-                    // state already exists
-                    if (!fromJsonStore) {
-                        var existingResolve = resolveObjects[menuItem.name];
-                        if (existingResolve) {
-                            angular.extend(existingResolve, menuItem.resolve);
-                        }
-                    }
-                }
-            }
-
-            this.addStates(menuItem.children, menuItem, fromJsonStore);
-        }.bind(this));
-    };
-
-    // runtime dependencies for the service can be injected here, at the provider.$get() function.
-    this.$get = [function() {
-        return {
-            addState: function(name, state) {
-                $stateProvider.state(name, state);
-            },
-            addStates: this.addStates
-        };
-    }.bind(this)];
-}]);
-
-uiApp.constant('MENU_ITEMS', menuItems);
+    .constant('MANGO_UI_NG_DOCS', NG_DOCS)
+    .constant('MA_UI_MENU_ITEMS', menuItems);
 
 uiApp.config([
-    'MENU_ITEMS',
-    'MD_ADMIN_SETTINGS',
+    'MA_UI_SETTINGS',
     'MANGO_UI_NG_DOCS',
     '$stateProvider',
     '$urlRouterProvider',
@@ -126,15 +56,15 @@ uiApp.config([
     '$mdThemingProvider',
     '$injector',
     '$compileProvider',
-    'mangoStateProvider',
+    'MenuProvider',
     '$locationProvider',
     '$mdAriaProvider',
     'cfpLoadingBarProvider',
     'SystemSettingsProvider',
     'CUSTOM_USER_MENU_XID',
     'CUSTOM_USER_PAGES_XID',
-function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
-        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider,
+function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
+        $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
         cfpLoadingBarProvider, SystemSettingsProvider, CUSTOM_USER_MENU_XID, CUSTOM_USER_PAGES_XID) {
 
     // will need initially when we use AngularJS 1.6.x
@@ -142,15 +72,15 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
     $compileProvider.debugInfoEnabled(false);
     $mdAriaProvider.disableWarnings();
 
-    if (MD_ADMIN_SETTINGS.palettes) {
-        for (var paletteName in MD_ADMIN_SETTINGS.palettes) {
-            $mdThemingProvider.definePalette(paletteName, angular.copy(MD_ADMIN_SETTINGS.palettes[paletteName]));
+    if (MA_UI_SETTINGS.palettes) {
+        for (var paletteName in MA_UI_SETTINGS.palettes) {
+            $mdThemingProvider.definePalette(paletteName, angular.copy(MA_UI_SETTINGS.palettes[paletteName]));
         }
     }
 
-    if (MD_ADMIN_SETTINGS.themes) {
-        for (var name in MD_ADMIN_SETTINGS.themes) {
-            var themeSettings = MD_ADMIN_SETTINGS.themes[name];
+    if (MA_UI_SETTINGS.themes) {
+        for (var name in MA_UI_SETTINGS.themes) {
+            var themeSettings = MA_UI_SETTINGS.themes[name];
             var theme = $mdThemingProvider.theme(name);
             if (themeSettings.primaryPalette) {
                 theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
@@ -171,9 +101,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
     }
 
     // need to store a reference to the theming provider in order to generate themes at runtime
-    MD_ADMIN_SETTINGS.themingProvider = $mdThemingProvider;
+    MA_UI_SETTINGS.themingProvider = $mdThemingProvider;
 
-    var defaultTheme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDark';
+    var defaultTheme = MA_UI_SETTINGS.defaultTheme || 'mangoDark';
     $mdThemingProvider.setDefaultTheme(defaultTheme);
     $mdThemingProvider.alwaysWatchTheme(true);
     $mdThemingProvider.generateThemesOnDemand(true);
@@ -229,6 +159,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
         return '/not-found?path=' + encodeURIComponent(path);
     });
 
+    var apiDocsMenuItems = [];
     var docsParent = {
         name: 'ui.docs',
         url: '/docs',
@@ -237,7 +168,6 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
         menuHidden: true,
         submenu: true,
         weight: 2002,
-        children: [],
         resolve: {
             prettyprint: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/prettyprint/prettyprint'], function(prettyprint) {
@@ -248,10 +178,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
             }]
         }
     };
-    MENU_ITEMS.push(docsParent);
+    apiDocsMenuItems.push(docsParent);
 
     var DOCS_PAGES = MANGO_UI_NG_DOCS.pages;
-    var moduleItem = {};
 
     // Loop through and create array of children based on moduleName
     var modules = DOCS_PAGES.map(function(page) {return page.moduleName;})
@@ -271,13 +200,10 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
         var menuItem = {
             name: 'ui.docs.' + item,
             url: '/' + dashCaseUrl,
-            menuText: menuText,
-            children: []
+            menuText: menuText
         };
 
-        moduleItem[item] = menuItem;
-
-        docsParent.children.push(menuItem);
+        apiDocsMenuItems.push(menuItem);
     });
 
     // Create 3rd level directives/services/filters docs pages
@@ -300,13 +226,11 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
             url: '/' + dashCaseUrl,
             menuText: menuText
         };
-        moduleItem[splitAtDot[0]].children.push(menuItem);
+        apiDocsMenuItems.push(menuItem);
     });
-
-    mangoStateProvider.addStates(MENU_ITEMS);
-    if (MD_ADMIN_SETTINGS.customMenuItems)
-        mangoStateProvider.addStates(MD_ADMIN_SETTINGS.customMenuItems, null, true);
     
+    MenuProvider.registerMenuItems(apiDocsMenuItems);
+
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
     
@@ -317,7 +241,6 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRo
 }]);
 
 uiApp.run([
-    'MENU_ITEMS',
     '$rootScope',
     '$state',
     '$timeout',
@@ -335,7 +258,7 @@ uiApp.run([
     '$mdDialog',
     'GoogleAnalytics',
     'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
-function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
+function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, DateBar, $document, $mdDialog,
         GoogleAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
 
@@ -348,7 +271,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
     $rootScope.dateBar = DateBar;
     $rootScope.uiSettings = uiSettings;
     $rootScope.User = User;
-    $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
@@ -397,6 +319,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, localSt
         var crumbs = [];
         var state = $state.$current;
         do {
+            if (state.name === 'ui') continue;
+            
             if (state.menuTr) {
                 crumbs.unshift({stateName: state.name, maTr: state.menuTr});
             } else if (state.menuText) {
@@ -635,27 +559,29 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, customDashboardSettingsPr
     // destroy the services injector
     servicesInjector.get('$rootScope').$destroy();
     
-    var MD_ADMIN_SETTINGS = {};
+    var MA_UI_SETTINGS = {};
     var user = data[0].user;
     var userMenuStore = data[0].userMenuStore;
     var defaultSettings = data[1];
     var customSettingsStore = data[2];
     var angularModules = data[3] || [];
+    var customMenuItems = [];
     
     if (defaultSettings) {
-        MD_ADMIN_SETTINGS.defaultSettings = defaultSettings;
-        angular.merge(MD_ADMIN_SETTINGS, defaultSettings);
+        MA_UI_SETTINGS.defaultSettings = defaultSettings;
+        angular.merge(MA_UI_SETTINGS, defaultSettings);
     }
     if (customSettingsStore) {
-        MD_ADMIN_SETTINGS.initialSettings = customSettingsStore.jsonData;
-        angular.merge(MD_ADMIN_SETTINGS, customSettingsStore.jsonData);
+        MA_UI_SETTINGS.initialSettings = customSettingsStore.jsonData;
+        angular.merge(MA_UI_SETTINGS, customSettingsStore.jsonData);
     }
     if (userMenuStore) {
-        MD_ADMIN_SETTINGS.customMenuItems = userMenuStore.jsonData.menuItems;
+        customMenuItems = userMenuStore.jsonData.menuItems;
     }
     
-    uiApp.constant('MD_ADMIN_SETTINGS', MD_ADMIN_SETTINGS);
-    uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MD_ADMIN_SETTINGS.googleAnalyticsPropertyId);
+    uiApp.constant('MA_UI_SETTINGS', MA_UI_SETTINGS);
+    uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', customMenuItems);
+    uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
 
     var angularJsModuleNames = ['uiApp'];
     for (var i = 0; i < angularModules.length; i++) {
