@@ -46,20 +46,20 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
             }
 
             $scope.enterSubmenu = function enterSubmenu(event, menuItem) {
-                this.path.push(menuItem);
-                this.currentItem = menuItem;
-                this.getChildren();
+                $scope.path.push(menuItem);
+                $scope.currentItem = menuItem;
+                $scope.getChildren();
             };
             
             $scope.goToIndex = function goUp(event, index) {
-                this.path.splice(index+1, this.path.length - 1 - index);
-                this.currentItem = this.path[this.path.length-1];
-                this.getChildren();
+                $scope.path.splice(index+1, $scope.path.length - 1 - index);
+                $scope.currentItem = $scope.path[$scope.path.length-1];
+                $scope.getChildren();
             };
             
             $scope.getChildren = function getChildren() {
                 // sort items by weight then name
-                this.editItems = this.currentItem.children.sort(function(a, b) {
+                $scope.editItems = $scope.currentItem.children.sort(function(a, b) {
                     if (a.weight < b.weight) return -1;
                     if (a.weight > b.weight) return 1;
                     if (a.name < b.name) return -1;
@@ -106,7 +106,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
             };
 
             $scope.removeItem = function(toBeRemoved) {
-                this.editItems.some(function(item, index, array) {
+                $scope.editItems.some(function(item, index, array) {
                     if (toBeRemoved.name === item.name) {
                         array.splice(index, 1);
                         return true;
