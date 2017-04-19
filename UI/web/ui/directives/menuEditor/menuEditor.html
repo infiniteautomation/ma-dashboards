@@ -31,8 +31,8 @@
               <th md-column flex></th>
             </tr>
         </thead>
-        <tbody md-body ng-model="editItems" ui-sortable="{handle: '> td > .move-handle'}">
-          <tr ng-repeat="menuItem in editItems | orderBy:['weight', 'name'] track by menuItem.name">
+        <tbody md-body ng-model="editItems" ui-sortable="uiSortableOptions">
+          <tr ng-repeat="menuItem in editItems track by menuItem.name">
             <td>
               <md-button class="md-icon-button" ng-if="menuItem.children && menuItem.children.length" ng-click="enterSubmenu($event, menuItem)">
                 <md-icon>subdirectory_arrow_right</md-icon>

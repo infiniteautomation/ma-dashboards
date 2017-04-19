@@ -46,17 +46,49 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
             }
 
             $scope.enterSubmenu = function enterSubmenu(event, menuItem) {
-                $scope.currentItem = menuItem;
-                $scope.editItems = menuItem.children;
-                $scope.path.push(menuItem);
-                scrollToTopOfMdContent();
+                this.path.push(menuItem);
+                this.currentItem = menuItem;
+                this.getChildren();
             };
             
             $scope.goToIndex = function goUp(event, index) {
-                $scope.path.splice(index+1, $scope.path.length - 1 - index);
-                $scope.currentItem = $scope.path[$scope.path.length-1];
-                $scope.editItems = $scope.currentItem.children;
+                this.path.splice(index+1, this.path.length - 1 - index);
+                this.currentItem = this.path[this.path.length-1];
+                this.getChildren();
+            };
+            
+            $scope.getChildren = function getChildren() {
+                // sort items by weight then name
+                this.editItems = this.currentItem.children.sort(function(a, b) {
+                    if (a.weight < b.weight) return -1;
+                    if (a.weight > b.weight) return 1;
+                    if (a.name < b.name) return -1;
+                    if (a.name > b.name) return 1;
+                    return 0;
+                });
                 scrollToTopOfMdContent();
+            };
+
+            // updates the weights, attempting to keep them as close as possible to the original array
+            $scope.updateWeight = function(event, ui) {
+                var weight = -Infinity;
+                $scope.currentItem.children.forEach(function(item, index, array) {
+                    if (item.weight > weight) {
+                        weight = item.weight;
+                    } else {
+                        if (index !== 0 && array[index - 1].name > item.name) {
+                            weight++;
+                        }
+                        item.weight = weight;
+                    }
+                });
+            };
+            
+            // ui sortable moves the items within the array, need to specify a call back that updates the
+            // weight property
+            $scope.uiSortableOptions = {
+                handle: '> td > .move-handle',
+                stop: $scope.updateWeight
             };
             
             $scope.deleteCustomMenu = function deleteCustomMenu(event) {
