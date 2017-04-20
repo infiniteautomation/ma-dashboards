@@ -50,6 +50,15 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                     rollupControls: true
                 };
             }
+            
+            // jshint eqnull:true
+            if (menuItem.weight == null) {
+                menuItem.weight = 1000;
+            }
+            
+            if (menuItem.permission == null) {
+                menuItem.permission = 'user';
+            }
 
             try {
                 $stateProvider.state(menuItem);
