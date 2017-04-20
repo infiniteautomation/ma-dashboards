@@ -154,7 +154,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         };
 
         Menu.prototype.combineMenuItems = function combineMenuItems() {
-            var customMenuItems = this.storeObject.jsonData.menuItems;
+            var jsonMenuItems = angular.copy(this.storeObject.jsonData.menuItems);
             this.menuItems = angular.copy(this.defaultMenuItems);
             this.menuItemsByName = {};
             
@@ -165,12 +165,13 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                 this.menuItemsByName[item.name] = item;
             }.bind(this));
             
-            customMenuItems.forEach(function(item) {
+            jsonMenuItems.forEach(function(item) {
                 if (this.menuItemsByName[item.name]) {
                     angular.merge(this.menuItemsByName[item.name], item);
                 } else {
                     this.menuItems.push(item);
-                    this.customMenuItems.push(cleanMenuItemForSave(item));
+                    // need to copy it as unflattenMenu() will add a parent/children to it below
+                    this.customMenuItems.push(angular.copy(item));
                 }
             }.bind(this));
             
@@ -204,8 +205,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             
             var different = [];
             newMenuItems.forEach(function(item, index, array) {
-                item = cleanMenuItemForSave(item);
-                array.splice(index, 1, item);
+                // all states are cleaned (remove parents and children, non-circular structure) so that
+                // a) If they are pushed to the different[] array and saved into menuItems they can be JSON serialized
+                // a) registerStates() works, $stateProvider.state(menuItem) fails if item has parent property set
+                cleanMenuItemForSave(item);
                 
                 var originalItem = this.defaultMenuItemsByName[item.name];
                 if (!originalItem) {
@@ -242,7 +245,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                     });
                 }
     
-                menuItem = cleanMenuItemForSave(menuItem);
+                cleanMenuItemForSave(menuItem);
                 
                 var originalItem = this.defaultMenuItemsByName[menuItem.name];
                 if (!originalItem) {
@@ -377,7 +380,6 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         }
         
         function cleanMenuItemForSave(item) {
-            item = angular.copy(item);
             delete item.parent;
             delete item.children;
             return item;

@@ -107,7 +107,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
             } else if (item.templateUrl) {
                 item.templateType = 'templateUrl';
             } else if (item.abstract) {
-                item.templateType = 'abstract';
+                item.templateType = 'folder';
             }
 
             return $mdDialog.show({
