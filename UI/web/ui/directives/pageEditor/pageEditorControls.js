@@ -24,14 +24,14 @@ function pageEditorControls() {
     };
 }
 
-PageEditorControlsController.$inject = ['$scope', 'Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'MenuEditor', '$state',
-    'localStorageService', '$mdDialog', 'Translate', 'Menu', '$window', 'User', '$q'];
-function PageEditorControlsController($scope, Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, MenuEditor, $state,
-        localStorageService, $mdDialog, Translate, Menu, $window, User, $q) {
+PageEditorControlsController.$inject = ['$scope', 'Page', 'jsonStoreEventManager', 'MA_UI_PAGES_XID', 'MenuEditor', '$state',
+    'localStorageService', '$mdDialog', 'Translate', 'Menu', '$window', 'User', '$q', 'MA_UI_EDIT_MENUS_PERMISSION'];
+function PageEditorControlsController($scope, Page, jsonStoreEventManager, MA_UI_PAGES_XID, MenuEditor, $state,
+        localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION) {
     this.$scope = $scope;
     this.Page = Page;
     this.jsonStoreEventManager = jsonStoreEventManager;
-    this.CUSTOM_USER_PAGES_XID = CUSTOM_USER_PAGES_XID;
+    this.MA_UI_PAGES_XID = MA_UI_PAGES_XID;
     this.MenuEditor = MenuEditor;
     this.$state = $state;
     this.localStorageService = localStorageService;
@@ -41,13 +41,14 @@ function PageEditorControlsController($scope, Page, jsonStoreEventManager, CUSTO
     this.$window = $window;
     this.User = User; // used in template
     this.$q = $q;
+    this.MA_UI_EDIT_MENUS_PERMISSION = MA_UI_EDIT_MENUS_PERMISSION; // used in template
 }
 
 PageEditorControlsController.prototype.$onInit = function() {
     var Translate = this.Translate;
     var $window = this.$window;
     
-    this.jsonStoreEventManager.smartSubscribe(this.$scope, this.CUSTOM_USER_PAGES_XID, ['add', 'update'], function updateHandler(event, payload) {
+    this.jsonStoreEventManager.smartSubscribe(this.$scope, this.MA_UI_PAGES_XID, ['add', 'update'], function updateHandler(event, payload) {
         this.pageSummaryStore.jsonData = payload.object.jsonData;
     }.bind(this));
     

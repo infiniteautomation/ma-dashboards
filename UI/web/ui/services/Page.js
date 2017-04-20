@@ -6,14 +6,15 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, $q) {
+PageFactory.$inject = ['JsonStore', 'MA_UI_PAGES_XID', 'Util', '$q', 'MA_UI_EDIT_PAGES_PERMISSION'];
+function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERMISSION) {
 
     function Page() {
     }
     
     Page.prototype.getPages = function getPages() {
         return JsonStore.get({
-            xid: CUSTOM_USER_PAGES_XID
+            xid: MA_UI_PAGES_XID
         }).$promise.then(null, function() {
             return this.getDefaultPages();
         }.bind(this));
@@ -21,13 +22,14 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, $q) {
     
     Page.prototype.getDefaultPages = function getDefaultPages() {
         var storeObject = new JsonStore();
-        storeObject.xid = CUSTOM_USER_PAGES_XID;
-        storeObject.name = CUSTOM_USER_PAGES_XID;
+        storeObject.xid = MA_UI_PAGES_XID;
+        storeObject.name = MA_UI_PAGES_XID;
         storeObject.jsonData = {
             pages: []
         };
-        storeObject.editPermission = 'edit-pages';
+        storeObject.editPermission = MA_UI_EDIT_PAGES_PERMISSION;
         storeObject.readPermission = 'user';
+        storeObject.publicData = false;
         
         return storeObject;
     };
@@ -57,8 +59,9 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, $q) {
         storeObject.jsonData = {
             markup: ''
         };
-        storeObject.editPermission = 'edit-pages';
+        storeObject.editPermission = MA_UI_EDIT_PAGES_PERMISSION;
         storeObject.readPermission = 'user';
+        storeObject.publicData = false;
         storeObject.isNew = true;
         return storeObject;
     };
@@ -66,7 +69,6 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, $q) {
     return new Page();
 }
 
-PageFactory.$inject = ['JsonStore', 'CUSTOM_USER_PAGES_XID', 'Util', '$q'];
 return PageFactory;
 
 }); // define

@@ -313,7 +313,7 @@ return [
         templateUrl: 'views/dashboard/editPages.html',
         menuTr: 'ui.app.editPages',
         menuIcon: 'dashboard',
-        permission: 'edit-pages',
+        permission: 'edit-ui-pages',
         params: {
             dateBar: {
                 rollupControls: true
@@ -329,7 +329,7 @@ return [
         templateUrl: 'views/dashboard/editMenu.html',
         menuTr: 'ui.app.editMenu',
         menuIcon: 'toc',
-        permission: 'edit-menus',
+        permission: 'edit-ui-menus',
         params: {
             helpPage: 'ui.help.menuEditor'
         }
@@ -348,7 +348,7 @@ return [
         templateUrl: 'views/dashboard/uiSettings.html',
         menuTr: 'ui.app.uiSettings',
         menuIcon: 'color_lens',
-        permission: 'superadmin',
+        permission: 'edit-ui-settings',
         params: {
             helpPage: 'ui.help.uiSettings'
         }

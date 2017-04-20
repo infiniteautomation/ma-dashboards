@@ -24,6 +24,14 @@ define([
 ], function(angular, ngMangoMaterial, ngMangoComponents, require, MenuProvider, Page, DateBar, uiSettings, pageView, livePreview, menuItems, moment) {
 'use strict';
 
+// must match variables defined in UIInstallUpgrade.java
+var MA_UI_MENU_XID = 'mangoUI-menu';
+var MA_UI_PAGES_XID = 'mangoUI-pages';
+var MA_UI_SETTINGS_XID = 'mangoUI-settings';
+var MA_UI_EDIT_MENUS_PERMISSION = "edit-ui-menus";
+var MA_UI_EDIT_PAGES_PERMISSION = "edit-ui-pages";
+var MA_UI_EDIT_SETTINGS_PERMISSION = "edit-ui-settings";
+
 var uiApp = angular.module('uiApp', [
     'oc.lazyLoad',
     'ui.router',
@@ -41,8 +49,12 @@ uiApp.provider('Menu', MenuProvider)
     .directive('pageView', pageView)
     .directive('livePreview', livePreview)
     .constant('require', require)
-    .constant('CUSTOM_USER_MENU_XID', 'mangoUI-menu')
-    .constant('CUSTOM_USER_PAGES_XID', 'mangoUI-pages')
+    .constant('MA_UI_MENU_XID', MA_UI_MENU_XID)
+    .constant('MA_UI_PAGES_XID', MA_UI_PAGES_XID)
+    .constant('MA_UI_SETTINGS_XID', MA_UI_SETTINGS_XID)
+    .constant('MA_UI_EDIT_MENUS_PERMISSION', MA_UI_EDIT_MENUS_PERMISSION)
+    .constant('MA_UI_EDIT_PAGES_PERMISSION', MA_UI_EDIT_PAGES_PERMISSION)
+    .constant('MA_UI_EDIT_SETTINGS_PERMISSION', MA_UI_EDIT_SETTINGS_PERMISSION)
     .constant('MANGO_UI_NG_DOCS', NG_DOCS)
     .constant('MA_UI_MENU_ITEMS', menuItems);
 
@@ -61,11 +73,11 @@ uiApp.config([
     '$mdAriaProvider',
     'cfpLoadingBarProvider',
     'SystemSettingsProvider',
-    'CUSTOM_USER_MENU_XID',
-    'CUSTOM_USER_PAGES_XID',
+    'MA_UI_MENU_XID',
+    'MA_UI_PAGES_XID',
 function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
-        cfpLoadingBarProvider, SystemSettingsProvider, CUSTOM_USER_MENU_XID, CUSTOM_USER_PAGES_XID) {
+        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID) {
 
     // will need initially when we use AngularJS 1.6.x
     //$compileProvider.preAssignBindingsEnabled(true);
@@ -516,7 +528,7 @@ var $http = servicesInjector.get('$http');
 var userAndUserSettingsPromise = User.getCurrent().$promise.then(null, function() {
     return User.autoLogin();
 }).then(function(user) {
-    var userMenuPromise = JsonStore.get({xid: 'mangoUI-menu'}).$promise.then(null, angular.noop);
+    var userMenuPromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(null, angular.noop);
     return $q.all([user, userMenuPromise]);
 }, angular.noop).then(function(data) {
     return {
@@ -532,7 +544,7 @@ var uiSettingsPromise = $http({
     return data.data;
 }, angular.noop);
 
-var customDashboardSettingsPromise = JsonStore.getPublic({xid: 'mangoUI-settings'}).$promise.then(null, angular.noop);
+var customDashboardSettingsPromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
 
 var angularModulesPromise = $http({
     method: 'GET',

@@ -6,9 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', 'mangoDateFormats'];
-function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, mangoDateFormats) {
-    var DASHBOARD_SETTINGS_XID = 'mangoUI-settings';
+uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate',
+    'mangoDateFormats', 'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION'];
+function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
+        mangoDateFormats, MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION) {
+    
     var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme'];
     var themeId = 0;
     var userThemeGenerated = false;
@@ -18,12 +20,12 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS,
         this.theming = $mdTheming;
         
         this.userSettingsStore = new JsonStore();
-        this.userSettingsStore.name = DASHBOARD_SETTINGS_XID;
-        this.userSettingsStore.xid = DASHBOARD_SETTINGS_XID;
+        this.userSettingsStore.name = 'UI Settings';
+        this.userSettingsStore.xid = MA_UI_SETTINGS_XID;
         this.userSettingsStore.jsonData = this.initialSettings || {};
         this.userSettingsStore.publicData = true;
-        this.userSettingsStore.readPermission = 'user';
-        this.userSettingsStore.editPermission = 'superadmin';
+        this.userSettingsStore.readPermission = '';
+        this.userSettingsStore.editPermission = MA_UI_EDIT_SETTINGS_PERMISSION;
 
         delete this.initialSettings;
     }

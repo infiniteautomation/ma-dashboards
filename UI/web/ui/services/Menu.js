@@ -67,17 +67,18 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
 
     this.$get = MenuFactory;
 
-    MenuFactory.$inject = ['uiSettings', 'JsonStore', 'CUSTOM_USER_MENU_XID', '$q', '$rootScope', 'jsonStoreEventManager'];
-    function MenuFactory(uiSettings, JsonStore, CUSTOM_USER_MENU_XID, $q, $rootScope, jsonStoreEventManager) {
+    MenuFactory.$inject = ['uiSettings', 'JsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'jsonStoreEventManager', 'MA_UI_EDIT_MENUS_PERMISSION'];
+    function MenuFactory(uiSettings, JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION) {
 
         var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
 
         function Menu() {
             this.storeObject = new JsonStore();
-            this.storeObject.xid = CUSTOM_USER_MENU_XID;
-            this.storeObject.name = CUSTOM_USER_MENU_XID;
-            this.storeObject.editPermission = 'edit-menus';
-            this.storeObject.readPermission = 'user';
+            this.storeObject.xid = MA_UI_MENU_XID;
+            this.storeObject.name = 'UI Menu';
+            this.storeObject.editPermission = MA_UI_EDIT_MENUS_PERMISSION;
+            this.storeObject.readPermission = '';
+            this.storeObject.publicData = false;
             this.storeObject.jsonData = {
                 menuItems: []
             };
@@ -95,7 +96,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                 this.defaultMenuItemsByName[item.name] = item;
             }.bind(this));
             
-            jsonStoreEventManager.subscribe(CUSTOM_USER_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler.bind(this));
+            jsonStoreEventManager.subscribe(MA_UI_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler.bind(this));
         }
         
         Menu.prototype.updateHandler = function updateHandler(event, payload) {
@@ -136,10 +137,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                 
                 this.jsonStorePromise = $q.when(this.storeObject);
             } else {
-                this.jsonStorePromise = JsonStore.get({xid: CUSTOM_USER_MENU_XID}).$promise.then(function(store) {
+                this.jsonStorePromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(function(store) {
                     return (this.storeObject = store);
                 }.bind(this), function() {
-                    // CUSTOM_USER_MENU_XID doesn't exist, or error
+                    // MA_UI_MENU_XID doesn't exist, or error
                     return this.storeObject;
                 }.bind(this));
             }

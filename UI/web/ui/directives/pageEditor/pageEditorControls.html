@@ -50,7 +50,7 @@
       <span ma-tr="common.delete"></span>
     </md-button>
     <md-button ng-click="$ctrl.editMenuItem($event)" class="md-raised md-accent"
-      ng-disabled="$ctrl.selectedPage.isNew || !$ctrl.User.current.hasPermission('edit-menus')">
+      ng-disabled="$ctrl.selectedPage.isNew || !$ctrl.User.current.hasPermission($ctrl.MA_UI_EDIT_MENUS_PERMISSION)">
       <md-icon>edit</md-icon>
       <span ma-tr="ui.app.addEditMenuItem"></span>
     </md-button>

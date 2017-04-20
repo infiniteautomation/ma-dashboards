@@ -10,21 +10,21 @@
     <name>mangoUI</name>
     <version>3.0.1-SNAPSHOT</version>
     <build>
-    <plugins>
-        <plugin>
-            <groupId>org.codehaus.gmavenplus</groupId>
-            <artifactId>gmavenplus-plugin</artifactId>
-        </plugin>
-        <plugin>
-            <artifactId>maven-war-plugin</artifactId>
-        </plugin>
-        <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-        </plugin>
-        <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-        </plugin>
-    </plugins>
-</build>
+      <plugins>
+          <plugin>
+              <groupId>org.codehaus.gmavenplus</groupId>
+              <artifactId>gmavenplus-plugin</artifactId>
+          </plugin>
+          <plugin>
+              <artifactId>maven-war-plugin</artifactId>
+          </plugin>
+          <plugin>
+              <artifactId>maven-assembly-plugin</artifactId>
+          </plugin>
+          <plugin>
+              <artifactId>maven-antrun-plugin</artifactId>
+          </plugin>
+      </plugins>
+    </build>
     <description>Provides an AngularJS user interface, including the ability to create custom pages</description>
 </project>
