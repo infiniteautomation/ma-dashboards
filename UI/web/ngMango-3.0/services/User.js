@@ -304,32 +304,22 @@ function UserProvider() {
             localStorageService.remove('storedCredentials');
         };
 
+        // returns true if user has any of the desired permissions (can be an array or comma separated string)
         User.prototype.hasPermission = function(desiredPerms) {
-            if (this.admin) return true;
-            if (!this.permissions || !desiredPerms) return false;
+            if (this.admin || !desiredPerms) return true;
+            if (!this.permissions) return false;
 
             if (typeof desiredPerms === 'string') {
-                desiredPerms = desiredPerms.split(',');
+                desiredPerms = desiredPerms.split(/\s*\,\s*/);
             }
 
-            var userPerms = this.permissions.split(',');
-            for (var i = userPerms.length - 1; i >= 0; i--) {
-                var userPerm = userPerms[i].trim();
-                if (userPerm) {
-                    userPerms[i] = userPerm;
-                } else {
-                    userPerms.splice(i, 1);
-                }
-            }
-
-            for (i = 0; i < desiredPerms.length; i++) {
-                var desiredPerm = desiredPerms[i].trim();
-                if (!desiredPerm) continue;
-                if (userPerms.indexOf(desiredPerm) >= 0)
-                    return true;
-            }
-
-            return false;
+            var userPerms = this.permissions.split(/\s*\,\s*/).filter(function(userPerm) {
+                return !!userPerm;
+            });
+            
+            return desiredPerms.some(function(desiredPerm) {
+                return userPerms.indexOf(desiredPerm) >= 0;
+            });
         };
 
         User.prototype.getTimezone = function() {

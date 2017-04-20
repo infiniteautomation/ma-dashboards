@@ -86,10 +86,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             this.storeObject.xid = MA_UI_MENU_XID;
             this.storeObject.name = 'UI Menu';
             this.storeObject.editPermission = MA_UI_EDIT_MENUS_PERMISSION;
-            this.storeObject.readPermission = '';
+            this.storeObject.readPermission = 'user';
             this.storeObject.publicData = false;
             this.storeObject.jsonData = {
-                menuItems: []
+                menuItems: MA_UI_CUSTOM_MENU_ITEMS
             };
     
             this.defaultMenuItems = MA_UI_MENU_ITEMS;
@@ -136,10 +136,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             
             // custom menu items are retrieved on bootstrap, don't get them twice on app startup
             // after first run use the standard JsonStore http request
-            if (uiSettings.customMenuItems) {
-                this.storeObject.jsonData.menuItems = uiSettings.customMenuItems;
-                delete uiSettings.customMenuItems;
-                
+            if (!this.firstRefresh) {
+                this.firstRefresh = true;
                 this.jsonStorePromise = $q.when(this.storeObject);
             } else {
                 this.jsonStorePromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(function(store) {

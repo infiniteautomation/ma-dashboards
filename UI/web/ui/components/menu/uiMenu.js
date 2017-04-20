@@ -15,9 +15,9 @@ function UiMenuController() {
             
             if (menuItem.children) {
                 menuItem.visibleChildren = this.childVisible(menuItem.children);
-                menuItem.visible = !menuItem.menuHidden && !!menuItem.visibleChildren && (!menuItem.permission || this.user.hasPermission(menuItem.permission));
+                menuItem.visible = !menuItem.menuHidden && !!menuItem.visibleChildren && this.user.hasPermission(menuItem.permission);
             } else {
-                menuItem.visible = !menuItem.menuHidden && (!menuItem.permission || this.user.hasPermission(menuItem.permission));
+                menuItem.visible = !menuItem.menuHidden && this.user.hasPermission(menuItem.permission);
             }
             if (menuItem.visible) {
                 visibleCount++;

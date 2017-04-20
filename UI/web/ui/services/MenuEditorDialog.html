@@ -45,10 +45,14 @@
         
         <md-input-container class="has-hints" flex>
             <label ma-tr="ui.app.permissionRequired"></label>
-            <input name="permission" ng-model="$ctrl.item.permission">
-            <div class="hint" ma-tr="ui.app.permissionRequiredHint"></div>
+            <input name="permission" ng-model="$ctrl.item.permission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+            <div class="hint" ng-hide="$ctrl.menuItemEditForm.permission.$invalid && ($ctrl.menuItemEditForm.permission.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.permissionRequiredHint"></div>
+            <div ng-messages="$ctrl.menuItemEditForm.permission.$error">
+              <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+            </div>
+            <ma-permissions-menu ng-model="$ctrl.item.permission"></ma-permissions-menu>
         </md-input-container>
-        
+
         <md-switch ng-model="$ctrl.item.showOnMenu" aria-label="{{'ui.app.showMenuItem'|tr}}">
           <span ma-tr="ui.app.showMenuItem"></span>
         </md-switch>

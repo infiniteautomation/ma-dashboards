@@ -21,6 +21,7 @@ public class UILifecycle extends ModuleElementDefinition {
     private static final String MA_UI_EDIT_MENUS_PERMISSION = "edit-ui-menus";
     private static final String MA_UI_EDIT_PAGES_PERMISSION = "edit-ui-pages";
     private static final String MA_UI_EDIT_SETTINGS_PERMISSION = "edit-ui-settings";
+    private static final String MA_UI_DEFAULT_READ_PERMISSION = "user";
     
     private JsonNodeFactory nodeFactory;
 
@@ -42,7 +43,7 @@ public class UILifecycle extends ModuleElementDefinition {
             menu.setXid(MA_UI_MENU_XID);
             menu.setName("UI Menu");
             menu.setPublicData(false);
-            menu.setReadPermission("");
+            menu.setReadPermission(MA_UI_DEFAULT_READ_PERMISSION);
             menu.setEditPermission(MA_UI_EDIT_MENUS_PERMISSION);
         }
         
@@ -62,7 +63,7 @@ public class UILifecycle extends ModuleElementDefinition {
             menu.setXid(MA_UI_PAGES_XID);
             menu.setName("UI Pages");
             menu.setPublicData(false);
-            menu.setReadPermission("");
+            menu.setReadPermission(MA_UI_DEFAULT_READ_PERMISSION);
             menu.setEditPermission(MA_UI_EDIT_PAGES_PERMISSION);
         }
         
@@ -82,7 +83,7 @@ public class UILifecycle extends ModuleElementDefinition {
             menu.setXid(MA_UI_SETTINGS_XID);
             menu.setName("UI Settings");
             menu.setPublicData(true);
-            menu.setReadPermission("");
+            menu.setReadPermission(MA_UI_DEFAULT_READ_PERMISSION);
             menu.setEditPermission(MA_UI_EDIT_SETTINGS_PERMISSION);
         }
         
