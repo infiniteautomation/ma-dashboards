@@ -1,5 +1,4 @@
-<md-dialog class="menu-editor-dialog">
-  <form name="$ctrl.menuItemEditForm" novalidate ng-submit="$ctrl.save()">
+<md-dialog flex="100" flex-gt-sm="80" flex-gt-md="60" flex-gt-lg="50" class="menu-editor-dialog" ng-form="$ctrl.menuItemEditForm">
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h2 ng-if="!$ctrl.item.isNew" ma-tr="ui.app.editMenuItem"></h2>
@@ -10,11 +9,54 @@
       </md-button>
     </div>
   </md-toolbar>
-  <md-dialog-content>
-    <div class="md-dialog-content" layout="column">
-      <p style="margin-top:0"><small ma-tr="ui.app.editMenuNote"></small></p>
+  <md-dialog-content flex>
+    <div class="md-padding" layout="column">
+      <div layout>
+        <md-input-container class="has-hints" flex>
+            <label ma-tr="ui.app.menuText"></label>
+            <input name="menuText" ng-model="$ctrl.item.menuText" ng-change="$ctrl.menuTextChanged()" ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuTr">
+            <div class="hint" ng-hide="$ctrl.menuItemEditForm.menuText.$invalid && ($ctrl.menuItemEditForm.menuText.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.menuTextHint"></div>
+            <div ng-messages="$ctrl.menuItemEditForm.menuText.$error">
+              <div ng-message="required" ma-tr="ui.app.required"></div>
+            </div>
+        </md-input-container>
+        
+        <md-input-container class="has-hints" flex>
+          <label ma-tr="ui.app.menuTextTranslationKey"></label>
+          <input name="menuTr" ng-model="$ctrl.item.menuTr" ng-change="translation = ($ctrl.item.menuTr | tr)"  ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuText">
+          <div class="hint" ng-hide="!$ctrl.item.menuTr || $ctrl.menuItemEditForm.menuTr.$invalid && ($ctrl.menuItemEditForm.menuTr.$touched || $ctrl.menuItemEditForm.$submitted)"
+                ma-tr="ui.app.previewX" ma-tr-args="[($ctrl.item.menuTr | tr)]">
+          </div>
+          <div ng-messages="$ctrl.menuItemEditForm.menuTr.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+          </div>
+        </md-input-container>
+      </div>
       
-      <div layout="row">
+      <div layout>
+        <md-input-container class="has-hints" flex>
+            <label ma-tr="ui.app.menuIconName"></label>
+            <md-icon ng-class="$ctrl.item.menuIcon.indexOf('fa-') === 0 ? 'fa fa-fw ' + $ctrl.item.menuIcon : ''" class="menu-icon"
+                style="pointer-events: none">{{$ctrl.item.menuIcon.indexOf('fa-') !== 0 ? $ctrl.item.menuIcon : ''}}</md-icon>
+            <input name="menuIcon" ng-model="$ctrl.item.menuIcon">
+            <div class="hint"><span ma-tr="ui.app.menuIconNameHint1"></span> <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> <span ma-tr="ui.app.menuIconNameHint2"></span>
+              <a href="https://design.google.com/icons/" target="_blank">Material Icon</a> <span ma-tr="ui.app.menuIconNameHint3"></span></div>
+        </md-input-container>
+        
+        <md-input-container class="has-hints" flex>
+            <label ma-tr="ui.app.permissionRequired"></label>
+            <input name="permission" ng-model="$ctrl.item.permission">
+            <div class="hint" ma-tr="ui.app.permissionRequiredHint"></div>
+        </md-input-container>
+        
+        <md-switch ng-model="$ctrl.item.showOnMenu" aria-label="{{'ui.app.showMenuItem'|tr}}">
+          <span ma-tr="ui.app.showMenuItem"></span>
+        </md-switch>
+      </div>
+
+      <div layout="column" ng-show="!$ctrl.item.builtIn">
+        <p layout layout-align="center" md-colors="{color: 'warn'}"><small ma-tr="ui.app.editMenuNote"></small></p>
+        
         <md-input-container flex>
             <label ma-tr="ui.app.parentItem"></label>
             <md-select name="parent" ng-model="$ctrl.item.parent" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.parentChanged()" ng-model-options="{trackBy: '$value.name'}">
@@ -27,115 +69,77 @@
             </md-select>
         </md-input-container>
         
-        <md-switch ng-model="$ctrl.item.showOnMenu" aria-label="{{'ui.app.showMenuItem'|tr}}" flex="nogrow">
-          <span ma-tr="ui.app.showMenuItem"></span>
-        </md-switch>
-      </div>
-      
-      <div layout="row">
-        <md-input-container class="has-hints" flex>
-            <label ma-tr="ui.app.stateName"></label>
-            <input name="stateName" required pattern="^(\w+\.)*\w+$"
-                ng-model="$ctrl.item.shortStateName" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.stateNameChanged()">
-            <div class="hint" ng-hide="$ctrl.menuItemEditForm.stateName.$invalid && ($ctrl.menuItemEditForm.stateName.$touched || $ctrl.menuItemEditForm.$submitted)"
-                ma-tr="ui.app.stateNameHint" ma-tr-args="[$ctrl.item.name]"></div>
-            <div ng-messages="$ctrl.menuItemEditForm.stateName.$error">
-              <div ng-message="required" ma-tr="ui.app.required"></div>
-              <div ng-message="pattern" ma-tr="ui.app.statePattern"></div>
-              <div ng-message="stateExists" ma-tr="ui.app.stateExists"></div>
-              <div ng-message="stateNameMustBeginWithParent" ma-tr="ui.app.stateNameMustBeginWithParent"></div>
-            </div>
-        </md-input-container>
-        <md-input-container class="has-hints" flex>
-            <label ma-tr="ui.app.urlPath"></label>
-            <input name="url" pattern="^\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
-                ng-model="$ctrl.item.url" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.urlChanged()">
-            <div class="hint" ng-hide="$ctrl.menuItemEditForm.url.$invalid && ($ctrl.menuItemEditForm.url.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.stateUrlHint"></div>
-            <div ng-messages="$ctrl.menuItemEditForm.url.$error">
-              <div ng-message="required" ma-tr="ui.app.required"></div>
-              <div ng-message="pattern" ma-tr="ui.app.invalidUrl"></div>
-              <div ng-message="urlExists" ma-tr="ui.app.urlPathExists"></div>
-            </div>
-        </md-input-container>
-      </div>
-
-      <md-radio-group ng-model="$ctrl.item.dateBarOptions">
         <div layout="row">
-          <md-radio-button value="none" ng-disabled="$ctrl.item.builtIn"><span ma-tr="ui.app.dateBarDisabled"></span></md-radio-button>
-          <md-radio-button value="date" ng-disabled="$ctrl.item.builtIn"><span ma-tr="ui.app.dateBarEnabled"></span></md-radio-button>
-          <md-radio-button value="dateAndRollup" ng-disabled="$ctrl.item.builtIn"><span ma-tr="ui.app.dateBarAndRollup"></span></md-radio-button>
-        </div>
-      </md-radio-group>
-      
-      <div layout layout-align="end end">
-        <md-input-container ng-if="$ctrl.item.linkToPage" flex>
+            <md-input-container class="has-hints" flex>
+                <label ma-tr="ui.app.stateName"></label>
+                <input name="stateName" required pattern="^(\w+\.)*\w+$"
+                    ng-model="$ctrl.item.shortStateName" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.stateNameChanged()">
+                <div class="hint" ng-hide="$ctrl.menuItemEditForm.stateName.$invalid && ($ctrl.menuItemEditForm.stateName.$touched || $ctrl.menuItemEditForm.$submitted)"
+                    ma-tr="ui.app.stateNameHint" ma-tr-args="[$ctrl.item.name]"></div>
+                <div ng-messages="$ctrl.menuItemEditForm.stateName.$error">
+                  <div ng-message="required" ma-tr="ui.app.required"></div>
+                  <div ng-message="pattern" ma-tr="ui.app.statePattern"></div>
+                  <div ng-message="stateExists" ma-tr="ui.app.stateExists"></div>
+                  <div ng-message="stateNameMustBeginWithParent" ma-tr="ui.app.stateNameMustBeginWithParent"></div>
+                </div>
+            </md-input-container>
+            <md-input-container class="has-hints" flex>
+                <label ma-tr="ui.app.urlPath"></label>
+                <input name="url" pattern="^\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
+                    ng-model="$ctrl.item.url" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.urlChanged()">
+                <div class="hint" ng-hide="$ctrl.menuItemEditForm.url.$invalid && ($ctrl.menuItemEditForm.url.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.stateUrlHint"></div>
+                <div ng-messages="$ctrl.menuItemEditForm.url.$error">
+                  <div ng-message="required" ma-tr="ui.app.required"></div>
+                  <div ng-message="pattern" ma-tr="ui.app.invalidUrl"></div>
+                  <div ng-message="urlExists" ma-tr="ui.app.urlPathExists"></div>
+                </div>
+            </md-input-container>
+          </div>
+          
+          <md-radio-group ng-model="$ctrl.item.templateType" ng-change="$ctrl.templateTypeChanged()" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
+            <div layout="row">
+              <md-radio-button value="folder"><span ma-tr="ui.app.folder"></span></md-radio-button>
+              <md-radio-button value="linkToPage"><span ma-tr="ui.app.linkCustomPage"></span></md-radio-button>
+              <md-radio-button value="templateUrl"><span ma-tr="ui.app.templateUrl"></span></md-radio-button>
+            </div>
+          </md-radio-group>
+          
+          <md-input-container ng-if="$ctrl.item.templateType === 'linkToPage'" flex>
             <label ma-tr="ui.app.chooseCustomPage"></label>
-            <md-select name="pageXid" required ng-model="$ctrl.item.pageXid">
+            <md-select name="pageXid" required ng-model="$ctrl.item.pageXid" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
               <md-option></md-option>
               <md-option ng-repeat="page in $ctrl.pages" ng-value="page.xid" ng-bind="page.name"></md-option>
             </md-select>
             <div ng-messages="$ctrl.menuItemEditForm.pageXid.$error">
               <div ng-message="required" ma-tr="ui.app.required"></div>
             </div>
-        </md-input-container>
-        
-        <md-switch ng-model="$ctrl.item.linkToPage" ng-disabled="$ctrl.item.builtIn" flex="nogrow" ma-tr="ui.app.linkCustomPage"></md-switch>        
-      </div>
-      
-      <md-input-container ng-if="!$ctrl.item.linkToPage">
-          <label ma-tr="ui.app.templateUrl"></label>
-          <input name="templateUrl" ng-model="$ctrl.item.templateUrl" ng-disabled="$ctrl.item.builtIn">
-          <div class="hint" ma-tr="ui.app.templateUrlHint"></div>
-      </md-input-container>
-      
-      <div layout>
-        <md-input-container class="has-hints" flex>
-            <label ma-tr="ui.app.menuText"></label>
-            <input name="menuText" ng-model="$ctrl.item.menuText" ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuTr">
-            <div class="hint" ng-hide="$ctrl.menuItemEditForm.menuText.$invalid && ($ctrl.menuItemEditForm.menuText.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.menuTextHint"></div>
-            <div ng-messages="$ctrl.menuItemEditForm.menuText.$error">
-              <div ng-message="required" ma-tr="ui.app.required"></div>
-            </div>
-        </md-input-container>
-        
-        <div layout="row" ng-hide="$ctrl.item.menuText" flex>
-          <md-input-container flex="70">
-              <label ma-tr="ui.app.menuTextTranslationKey"></label>
-              <input name="menuTr" ng-model="$ctrl.item.menuTr" ng-change="translation = ($ctrl.item.menuTr | tr)"  ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuText">
-              <div ng-messages="$ctrl.menuItemEditForm.menuTr.$error">
+          </md-input-container>
+
+          <md-input-container ng-if="$ctrl.item.templateType === 'templateUrl'" flex>
+              <label ma-tr="ui.app.templateUrl"></label>
+              <input name="templateUrl" required ng-model="$ctrl.item.templateUrl" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
+              <div class="hint" ma-tr="ui.app.templateUrlHint" ng-hide="$ctrl.menuItemEditForm.templateUrl.$invalid && ($ctrl.menuItemEditForm.templateUrl.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
+              <div ng-messages="$ctrl.menuItemEditForm.templateUrl.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
               </div>
           </md-input-container>
-          <md-input-container flex="30" ng-init="translation = ($ctrl.item.menuTr | tr)">
-              <label ma-tr="ui.app.preview"></label>
-              <input ng-model="translation" ng-disabled="true">
-          </md-input-container>
-        </div>  
+
+          <md-radio-group ng-model="$ctrl.item.dateBarOptions" ng-show="$ctrl.item.templateType !== 'folder'" ng-disabled="$ctrl.item.builtIn">
+            <div layout="row">
+              <md-radio-button value="none"><span ma-tr="ui.app.dateBarDisabled"></span></md-radio-button>
+              <md-radio-button value="date"><span ma-tr="ui.app.dateBarEnabled"></span></md-radio-button>
+              <md-radio-button value="dateAndRollup"><span ma-tr="ui.app.dateBarAndRollup"></span></md-radio-button>
+            </div>
+          </md-radio-group>
       </div>
       
-      <div layout>
-        <md-input-container class="has-hints" flex>
-            <label ma-tr="ui.app.menuIconName"></label>
-            <md-icon ng-class="$ctrl.item.menuIcon.indexOf('fa-') === 0 ? 'fa fa-fw ' + $ctrl.item.menuIcon : ''" class="menu-icon"
-                style="pointer-events: none">{{$ctrl.item.menuIcon.indexOf('fa-') !== 0 ? $ctrl.item.menuIcon : ''}}</md-icon>
-            <input name="menuIcon" ng-model="$ctrl.item.menuIcon">
-            <div class="hint">{{'ui.app.menuIconNameHint1' | tr}} <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> {{'ui.app.menuIconNameHint2' | tr}} 
-              <a href="https://design.google.com/icons/" target="_blank">Material Icon</a> {{'ui.app.menuIconNameHint3' | tr}}</div>
-        </md-input-container>
-        
-        <md-input-container class="has-hints" flex>
-            <label ma-tr="ui.app.permissionRequired"></label>
-            <input name="permission" ng-model="$ctrl.item.permission">
-            <div class="hint" ma-tr="ui.app.permissionRequiredHint"></div>
-        </md-input-container>
-      </div>
     </div>
   </md-dialog-content>
+  
   <md-dialog-actions layout="row">
     <span flex></span>
     <md-button class="md-warn" ng-click="$ctrl.deleteItem()" ng-if="!$ctrl.item.isNew" ng-disabled="$ctrl.item.builtIn" ma-tr="common.delete"></md-button>
     <md-button ng-click="$ctrl.cancel()" ma-tr="common.cancel"></md-button>
-    <md-button type="submit" class="md-primary" ma-tr="common.save"></md-button>
+    <md-button ng-click="$ctrl.save()" class="md-primary" ma-tr="common.save"></md-button>
   </md-dialog-actions>
-  </form>
 </md-dialog>

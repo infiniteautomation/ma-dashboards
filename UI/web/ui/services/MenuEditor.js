@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-MenuEditorFactory.$inject = ['Menu', '$mdDialog', 'Translate', 'Page', '$q'];
-function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
+MenuEditorFactory.$inject = ['Menu', '$mdDialog', 'Translate', 'Page', '$q', 'Util'];
+function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
 
     function MenuEditor() {
     }
@@ -30,16 +30,30 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
             if (!menuItem) {
                 menuItem = {
                     isNew: true,
-                    name: 'ui.',
-                    url: '/',
                     pageXid: pageXid,
                     linkToPage: true,
-                    parent: Menu.menuHierarchy
+                    permission: 'user',
+                    name: '',
+                    url: ''
                 };
                 if (defaults) {
                     angular.merge(menuItem, defaults);
                 }
             }
+            
+            if (!menuItem.parent) {
+                Menu.menuHierarchy.children.some(function(item) {
+                    if (item.name === 'ui') {
+                        return (menuItem.parent = item);
+                    }
+                });
+                // just in case
+                if (!menuItem.parent) {
+                    menuItem.parent = Menu.menuHierarchy;
+                }
+            }
+
+            menuItem.disableTemplateControls = true;
             
             return this.editMenuItem(event, Menu.menuHierarchy, menuItem).then(function(newItem) {
                 if (newItem.deleted) {
@@ -88,6 +102,14 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                 }
             }
             
+            if (item.linkToPage) {
+                item.templateType = 'linkToPage';
+            } else if (item.templateUrl) {
+                item.templateType = 'templateUrl';
+            } else if (item.abstract) {
+                item.templateType = 'abstract';
+            }
+
             return $mdDialog.show({
                 templateUrl: require.toUrl('./MenuEditorDialog.html'),
                 parent: angular.element(document.body),
@@ -129,6 +151,11 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                     };
                     
                     this.save = function save() {
+                        this.calculateStateName();
+                        this.menuItemEditForm.stateName.$setValidity('stateExists', this.item.name === origItem.name || !menuItemNameMap[this.item.name]);
+                        this.menuItemEditForm.url.$setValidity('urlExists', this.item.url === origItem.url || !urlPathMap[this.item.url]);
+                        
+                        this.menuItemEditForm.$setSubmitted();
                         if (this.menuItemEditForm.$valid) {
                             $mdDialog.hide();
                         }
@@ -150,20 +177,32 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                             this.item.name = this.item.shortStateName;
                         }
                     };
+                    this.calculateStateName();
+                    
+                    this.menuTextChanged = function() {
+                        if (this.item.menuText && this.item.isNew) {
+                            if (!this.menuItemEditForm || !this.menuItemEditForm.url || this.menuItemEditForm.url.$pristine) {
+                                this.item.url = '/' + Util.snakeCase(Util.titleCase(this.item.menuText).replace(/\s/g, ''));
+                            }
+                            if (!this.menuItemEditForm || !this.menuItemEditForm.stateName || this.menuItemEditForm.stateName.$pristine) {
+                                var titleCase = Util.titleCase(this.item.menuText).replace(/\s/g, '');
+                                if (titleCase) {
+                                    titleCase = titleCase.charAt(0).toLowerCase() + titleCase.substr(1);
+                                    this.item.shortStateName = Util.camelCase(titleCase);
+                                    this.calculateStateName();
+                                }
+                            }
+                        }
+                    };
+                    this.menuTextChanged();
                 }]
             }).then(function() {
                 delete item.isNew;
                 delete item.shortStateName;
+                delete item.disableTemplateControls;
 
                 item.menuHidden = !item.showOnMenu;
                 delete item.showOnMenu;
-                
-                if (item.templateUrl || item.template || item.linkToPage) {
-                    delete item.abstract;
-                    delete item.children;
-                } else {
-                    item.abstract = true;
-                }
 
                 switch(item.dateBarOptions) {
                 case 'date': {
@@ -184,10 +223,36 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q) {
                     }
                 }
                 delete item.dateBarOptions;
+
+                switch (item.templateType) {
+                case 'folder':
+                    delete item.templateUrl;
+                    delete item.template;
+                    delete item.linkToPage;
+                    delete item.pageXid;
+                    item.abstract = true;
+                    break;
+                case 'linkToPage':
+                    delete item.templateUrl;
+                    delete item.template;
+                    delete item.abstract;
+                    break;
+                case 'templateUrl':
+                    delete item.template;
+                    delete item.linkToPage;
+                    delete item.pageXid;
+                    delete item.abstract;
+                    break;
+                }
+                delete item.templateType;
                 
                 // jshint eqnull:true
                 if (item.weight == null) {
                     item.weight = 1000;
+                }
+                
+                if (item.permission == null) {
+                    item.permission = '';
                 }
 
                 return item;

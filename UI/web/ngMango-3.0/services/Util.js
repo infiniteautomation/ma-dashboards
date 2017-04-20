@@ -601,6 +601,12 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
         }
     };
     
+    Util.prototype.titleCase = function(input) {
+        return input.replace(/\w\S*/g, function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    };
+    
     Util.prototype.downloadBlob = function(blob, filename) {
         if (typeof window.navigator.msSaveBlob === 'function') {
             window.navigator.msSaveBlob(blob, filename);

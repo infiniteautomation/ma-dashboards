@@ -121,7 +121,9 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                         isNew: true,
                         name: $scope.currentItem.name ? $scope.currentItem.name + '.' : '',
                         url: '/',
-                        parent: $scope.currentItem
+                        parent: $scope.currentItem,
+                        linkToPage: true,
+                        permission: 'user'
                     };
                 }
 

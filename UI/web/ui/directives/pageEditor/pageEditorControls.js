@@ -203,8 +203,6 @@ PageEditorControlsController.prototype.deletePage = function deletePage() {
 PageEditorControlsController.prototype.savePage = function savePage() {
     this.pageEditorForm.$setSubmitted();
     if (this.pageEditorForm.$valid) {
-        var newPage = this.selectedPage.isNew;
-        
         return this.selectedPage.$save().then(function(page) {
             this.localStorageService.set('lastSelectedPage', {
                 pageXid: page.xid
@@ -216,16 +214,18 @@ PageEditorControlsController.prototype.savePage = function savePage() {
             this.pageEditorForm.$setUntouched();
 
             var pageSummaries = this.pageSummaryStore.jsonData.pages;
+            var found = false;
             
-            if (newPage) {
-                pageSummaries.push(this.selectedPageSummary);
-            } else {
-                for (var i = 0; i < pageSummaries.length; i++) {
-                    if (pageSummaries[i].xid === page.xid) {
-                        angular.merge(pageSummaries[i], this.selectedPageSummary);
-                        break;
-                    }
+            for (var i = 0; i < pageSummaries.length; i++) {
+                if (pageSummaries[i].xid === page.xid) {
+                    angular.merge(pageSummaries[i], this.selectedPageSummary);
+                    found = true;
+                    break;
                 }
+            }
+            
+            if (!found) {
+                pageSummaries.push(this.selectedPageSummary);
             }
 
             return this.pageSummaryStore.$save();
