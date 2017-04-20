@@ -98,10 +98,6 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             this.defaultMenuItems.forEach(function(item) {
                 item.menuHidden = !!item.menuHidden;
                 item.builtIn = true;
-                // jshint eqnull:true
-                if (item.weight == null) {
-                    item.weight = 1000;
-                }
                 this.defaultMenuItemsByName[item.name] = item;
             }.bind(this));
             
@@ -174,10 +170,6 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                     angular.merge(this.menuItemsByName[item.name], item);
                 } else {
                     this.menuItems.push(item);
-                    // jshint eqnull:true
-                    if (item.weight == null) {
-                        item.weight = 1000;
-                    }
                     this.customMenuItems.push(cleanMenuItemForSave(item));
                 }
             }.bind(this));
@@ -388,12 +380,6 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             item = angular.copy(item);
             delete item.parent;
             delete item.children;
-            if (item.linkToPage && item.pageXid) {
-                delete item.template;
-            } else {
-                delete item.linkToPage;
-                delete item.pageXid;
-            }
             return item;
         }
     
