@@ -308,7 +308,6 @@ return [
         weight: 1999
     },
     {
-        url: '/data-sources',
         name: 'ui.settings.dataSources',
         menuIcon: 'device_hub',
         menuTr: 'header.dataSources',

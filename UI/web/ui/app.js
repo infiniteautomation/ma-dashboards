@@ -403,13 +403,16 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     // automatically open or close the menu when the screen size is changed
     $rootScope.$watch($mdMedia.bind($mdMedia, 'gt-sm'), function(gtSm, prev) {
         if (gtSm === prev) return; // ignore first "change"
+        if (!$state.includes('ui')) return; // nothing to do if menu not visible
         
         var sideNav = $mdSidenav('left');
         var uiPrefs = localStorageService.get('uiPreferences') || {};
         
+        // window expanded
         if (gtSm && !uiPrefs.menuClosed && !sideNav.isOpen()) {
             $rootScope.openMenu();
         }
+        // window made smaller
         if (!gtSm && sideNav.isOpen()) {
             $rootScope.closeMenu();
         }
@@ -427,24 +430,27 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             this.openMenu();
         }
         
-        // we only update the prefs if we are on a page where we can actually open and close the menu
+        // we dont update the preferences when on a small screen as the nav is never locked open or closed
         if ($mdMedia('gt-sm')) {
             localStorageService.set('uiPreferences', uiPrefs);
         }
+        angular.element('#menu-button').blur();
     };
 
     $rootScope.closeMenu = function() {
-        angular.element('#menu-button').blur();
         $rootScope.navLockedOpen = false;
-        $mdSidenav('left').close();
+        if ($state.includes('ui')) {
+            $mdSidenav('left').close();
+        }
     };
 
     $rootScope.openMenu = function() {
-        angular.element('#menu-button').blur();
         if ($mdMedia('gt-sm')) {
             $rootScope.navLockedOpen = true;
         }
-        $mdSidenav('left').open();
+        if ($state.includes('ui')) {
+            $mdSidenav('left').open();
+        }
     };
 
     /**
