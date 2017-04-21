@@ -19,7 +19,7 @@
     </md-button>
     
     <ul class="menu-toggle-list ng-hide" ng-show="$ctrl.isOpen" ng-class="'menu-level-' + ($ctrl.menuLevel + 1)">
-      <li ng-repeat="child in $ctrl.item.children | orderBy:['weight', 'name'] track by child.name" ng-if="child.visible">
+      <li ng-repeat="child in $ctrl.item.children | orderBy:['weight', 'name'] track by child.name" ng-if="$ctrl.isVisible(child)">
         <menu-link menu-item="child" ng-if="!child.children"></menu-link>
         <menu-toggle menu-item="child" open-menu="$ctrl.openMenu" ng-if="child.children"></menu-toggle>
       </li>

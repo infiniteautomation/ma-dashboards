@@ -13,13 +13,15 @@ function UiMenuController() {
         for (var i = 0; i < menuItems.length; i++) {
             var menuItem = menuItems[i];
             
+            var info = this.visibleMap[menuItem.name] = {};
+            
             if (menuItem.children) {
-                menuItem.visibleChildren = this.childVisible(menuItem.children);
-                menuItem.visible = !menuItem.menuHidden && !!menuItem.visibleChildren && this.user.hasPermission(menuItem.permission);
+                info.visibleChildren = this.childVisible(menuItem.children);
+                info.visible = !menuItem.menuHidden && !!info.visibleChildren && this.user.hasPermission(menuItem.permission);
             } else {
-                menuItem.visible = !menuItem.menuHidden && this.user.hasPermission(menuItem.permission);
+                info.visible = !menuItem.menuHidden && this.user.hasPermission(menuItem.permission);
             }
-            if (menuItem.visible) {
+            if (info.visible) {
                 visibleCount++;
             }
         }
@@ -27,11 +29,20 @@ function UiMenuController() {
     };
 
     this.$onChanges = function(changes) {
-        if (this.user && this.menuItems) {
-            this.childVisible(this.menuItems);
-        } else {
-            this.menuItems = [];
+        if (this.user && this.origMenuItems) {
+            this.copyMenu();
         }
+    };
+    
+    this.copyMenu = function() {
+        var items = this.origMenuItems;
+        this.visibleMap = {};
+        this.childVisible(items);
+        this.menuItems = items;
+    };
+    
+    this.isVisible = function(item) {
+        return this.visibleMap[item.name].visible;
     };
     
     this.menuOpened = function menuOpened(toggleCtrl) {
@@ -65,7 +76,7 @@ return {
     controller: UiMenuController,
     templateUrl: require.toUrl('./uiMenu.html'),
     bindings: {
-        menuItems: '<',
+        origMenuItems: '<menuItems',
         user: '<user'
     }
 };

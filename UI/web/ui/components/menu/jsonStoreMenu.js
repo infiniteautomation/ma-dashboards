@@ -24,7 +24,7 @@ function JsonStoreMenuController($scope, Menu) {
     };
     
     this.createMenuItemArray = function(menuHierarchy) {
-        var rootArray = angular.copy(menuHierarchy.children);
+        var rootArray = menuHierarchy.children.slice();
         
         // combine root menu items and items under ui into a top level menu array
         rootArray.some(function(item, index, array) {

@@ -31,11 +31,15 @@ function MenuToggleController($state, $timeout, $element, $scope, Translate) {
             }
         }
         if (changes.item) {
-            if (!changes.item.isFirstChange() && changes.item.currentValue.visibleChildren !== changes.item.previousValue.visibleChildren) {
-                // do on next cycle as elements have not been added/removed yet
-                $timeout(function() {
-                    this.calcHeight();
-                }.bind(this), 0);
+            if (!changes.item.isFirstChange()) {
+                var info = this.menu.visibleMap[changes.item.currentValue.name];
+                if (info.visibleChildren !== this.prevVisibleChildren) {
+                    this.prevVisibleChildren = info.visibleChildren;
+                    // do on next cycle as elements have not been added/removed yet
+                    $timeout(function() {
+                        this.calcHeight();
+                    }.bind(this), 0);
+                }
             }
 
             this.menuText = this.item.menuText;
@@ -45,6 +49,11 @@ function MenuToggleController($state, $timeout, $element, $scope, Translate) {
                 }.bind(this));
             }
         }
+    };
+    
+    this.isVisible = function(item) {
+        if (!this.menu) return false;
+        return this.menu.visibleMap[item.name].visible;
     };
 
     this.$postLink = function() {
