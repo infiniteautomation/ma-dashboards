@@ -143,7 +143,8 @@ return [
             Page.getPages().then(function(store) {
                 $scope.pageCount = store.jsonData.pages.length;
             });
-        }]
+        }],
+        weight: 990
     },
     {
         name: 'ui.watchList',
