@@ -26,12 +26,20 @@
     </md-input-container> -->
     <md-input-container flex>
         <label ma-tr="ui.app.readPermission"></label>
-        <input name="readPermission" ng-model="$ctrl.selectedPage.readPermission">
+        <input name="readPermission" ng-model="$ctrl.selectedPage.readPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+        <div ng-messages="$ctrl.pageEditorForm.readPermission.$error">
+          <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+        </div>
+        <ma-permissions-menu ng-model="$ctrl.selectedPage.readPermission"></ma-permissions-menu>
     </md-input-container>
     
     <md-input-container flex>
         <label ma-tr="ui.app.editPermission"></label>
-        <input name="editPermission" ng-model="$ctrl.selectedPage.editPermission">
+        <input name="editPermission" ng-model="$ctrl.selectedPage.editPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+        <div ng-messages="$ctrl.pageEditorForm.editPermission.$error">
+          <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+        </div>
+        <ma-permissions-menu ng-model="$ctrl.selectedPage.editPermission"></ma-permissions-menu>
     </md-input-container>
   </form>
 </div>
