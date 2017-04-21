@@ -24,11 +24,19 @@ ScaleToController.$inject = ['$scope', '$element', '$window', '$timeout'];
 function ScaleToController($scope, $element, $window, $timeout) {
     this.$scope = $scope;
     this.$element = $element;
-    this.$window = angular.element($window);
+    this.$window = $window;
     this.$timeout = $timeout;
 
     this.handlerAttached = false;
     this.resizeHandler = this.scaleElement.bind(this);
+
+    $element.data('maScaleToOriginalCss', {
+        position: $element.css('position'),
+        left: $element.css('left'),
+        top: $element.css('top'),
+        transform: $element.css('transform'),
+        'transform-origin': $element.css('transform-origin')
+    });
 }
 
 ScaleToController.prototype.$onInit = function() {
@@ -39,8 +47,8 @@ ScaleToController.prototype.$onInit = function() {
         this.maintainRatio = 'letterbox';
     if (this.center == null)
         this.center = false;
-    
-    this.$scaleToElement = this.scaleTo === 'window' ? this.$window : angular.element(this.scaleTo);
+
+    this.$scaleToElement = angular.element(this.scaleTo === 'window' ? this.$window.document.body : this.scaleTo);
     
     if (this.scaleTo) {
         this.bindHandler();
@@ -55,7 +63,7 @@ ScaleToController.prototype.$onInit = function() {
 ScaleToController.prototype.$onChanges = function(changes) {
     if (changes.scaleTo) {
         if (this.scaleTo) {
-            this.$scaleToElement = this.scaleTo === 'window' ? this.$window : angular.element(this.scaleTo);
+            this.$scaleToElement = angular.element(this.scaleTo === 'window' ? this.$window.document.body : this.scaleTo);
             this.bindHandler();
             this.scaleElement();
         } else {
@@ -72,48 +80,47 @@ ScaleToController.prototype.$onChanges = function(changes) {
 
 ScaleToController.prototype.bindHandler = function bindHandler() {
     if (!this.handlerAttached) {
-        this.$window.on('resize', this.resizeHandler);
+        angular.element(this.$window).on('resize', this.resizeHandler);
         this.handlerAttached = true;
     }
 };
 
 ScaleToController.prototype.unbindHandler = function unbindHandler() {
     if (this.handlerAttached) {
-        this.$window.off('resize', this.resizeHandler);
+        angular.element(this.$window).off('resize', this.resizeHandler);
         this.handlerAttached = false;
     }
 };
 
 ScaleToController.prototype.removeScaling = function removeScaling() {
-    this.$element.css('transform', '');
-    this.$element.css('transform-origin', '');
-    this.$element.css('position', '');
-    if (this.center) {
-        //this.$element.css('position', '');
-        this.$element.css('left', '');
-        this.$element.css('top', '');
-    }
+    var originalCss = this.$element.data('maScaleToOriginalCss');
+    this.$element.css('transform', originalCss.transform);
+    this.$element.css('transform-origin', originalCss['transform-origin']);
+    this.$element.css('position', originalCss.position);
+    this.$element.css('left', originalCss.left);
+    this.$element.css('top', originalCss.top);
 };
 
 ScaleToController.prototype.scaleElement = function scaleElement($event) {
     if (this.$element.hasClass('ma-designer-element')) return;
-
+    
     var elementWidth = parseInt(this.$element[0].style.width, 10);
     var elementHeight = parseInt(this.$element[0].style.height, 10);
-    var windowWidth = this.$scaleToElement.width();
-    var windowHeight = this.$scaleToElement.height();
+    var scaleToBoundingClientRect = this.$scaleToElement[0].getBoundingClientRect();
+    var windowWidth = scaleToBoundingClientRect.width;
+    var windowHeight = scaleToBoundingClientRect.height;
 
     var widthRatio = windowWidth / elementWidth;
     var heightRatio = windowHeight / elementHeight;
-    
+
     //console.log('element('+elementWidth+','+elementHeight+') window('+windowWidth+','+windowHeight+')');
     //console.log('heightRatio:' + heightRatio + ' widthRatio:'+widthRatio);
 
     if (this.maintainRatio === 'clip') {
-        if (heightRatio < widthRatio) {
-            heightRatio = widthRatio;
-        } else {
+        if (heightRatio > widthRatio) {
             widthRatio = heightRatio;
+        } else {
+            heightRatio = widthRatio;
         }
     } else if (this.maintainRatio === 'letterbox') {
         if (heightRatio < widthRatio) {
@@ -132,14 +139,13 @@ ScaleToController.prototype.scaleElement = function scaleElement($event) {
     
     this.$element.css('transform', 'scale(' + widthRatio + ',' + heightRatio + ')');
     this.$element.css('transform-origin', '0 0');
+    this.$element.css('position', 'absolute');
     if (this.center) {
-        this.$element.css('position', 'absolute');
         this.$element.css('left', widthRemainder/2 + 'px');
         this.$element.css('top', heightRemainder/2 + 'px');
     } else {
-        //this.$element.css('position', '');
-        this.$element.css('left', '');
-        this.$element.css('top', '');
+        this.$element.css('left', '0');
+        this.$element.css('top', '0');
     }
     
     // run again on next digest if scaleElement was triggered by a resize event
