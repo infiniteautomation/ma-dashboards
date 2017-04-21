@@ -182,6 +182,13 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'home'
     },
     {
+        name: 'dashboard.pageMigration',
+        url: '/page-migration',
+        templateUrl: 'views/dashboard/pageMigration.html',
+        menuText: 'Page migration',
+        menuIcon: 'arrow_forward'
+    },
+    {
         name: 'dashboard.demoPage1',
         url: '/demo-page-1',
         linkToPage: true,

@@ -7,7 +7,9 @@
     "gulp-uglify": "*",
     "gulp-clean": "*",
     "path-exists": "*",
-    "gulp-rename": "*"
+    "gulp-rename": "*",
+    "gulp-concat": "*",
+    "gulp-watch": "*"
   },
   "devDependencies": {
     "gulp-ignore": "^2.0.1",

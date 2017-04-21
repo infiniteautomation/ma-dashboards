@@ -1,0 +1,30 @@
+<ma-json-store xid="custom-user-pages" item="oldItem" value="oldData"></ma-json-store>
+<ma-json-store xid="mangoUI-pages" item="newItem" value="newData"></ma-json-store>
+
+
+<div layout layout-align="center">
+    <md-button class="md-raised" ng-click="newData.pages = oldData.pages"><md-icon>arrow_forward</md-icon> Copy</md-button>
+    <md-button class="md-raised md-primary" ng-click="newItem.$save()"><md-icon>save</md-icon> Save</md-button>
+</div>
+
+<div layout>
+    <md-list flex="45">
+        <md-subheader class="md-no-sticky">Old dashboard pages</md-subheader>
+        <md-list-item class="md-2-line" ng-repeat="page in oldData.pages">
+          <div class="md-list-item-text" layout="column">
+            <h3 ng-bind="page.name"></h3>
+            <p ng-bind="page.xid"></p>
+          </div>
+        </md-list-item>
+    </md-list>
+    <div flex="10"></div>
+    <md-list flex="45">
+        <md-subheader class="md-no-sticky">New UI pages</md-subheader>
+        <md-list-item class="md-2-line" ng-repeat="page in newData.pages">
+          <div class="md-list-item-text" layout="column">
+            <h3 ng-bind="page.name"></h3>
+            <p ng-bind="page.xid"></p>
+          </div>
+        </md-list-item>
+    </md-list>
+</div>
