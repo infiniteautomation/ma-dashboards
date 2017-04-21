@@ -270,9 +270,10 @@ uiApp.run([
     '$mdDialog',
     'GoogleAnalytics',
     'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
+    '$window',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, DateBar, $document, $mdDialog,
-        GoogleAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
+        GoogleAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window) {
 
     if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
         GoogleAnalytics.enable(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
@@ -354,6 +355,12 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+        if (toState.href) {
+            event.preventDefault();
+            $window.open(toState.href, toState.target || '_self');
+            return;
+        }
+        
         if ($state.includes('ui.settings.uiSettings')) {
             // resets themes to the last saved state when leaving the settings page
             uiSettings.reset();

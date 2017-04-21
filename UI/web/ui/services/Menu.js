@@ -32,7 +32,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             if (menuItem.templateUrl) {
                 delete menuItem.template;
             }
-            if (!menuItem.templateUrl && !menuItem.template && !menuItem.views) {
+            if (!menuItem.templateUrl && !menuItem.template && !menuItem.views && !menuItem.href) {
                 menuItem.template = '<div ui-view></div>';
                 menuItem.abstract = true;
             }

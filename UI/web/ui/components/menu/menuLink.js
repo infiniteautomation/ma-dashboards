@@ -15,7 +15,13 @@ function MenuLinkController($state, Translate) {
     
     this.$onChanges = function(changes) {
         if (changes.item) {
-            this.href = $state.href(this.item.name);
+            if (this.item.href) {
+                this.href = this.item.href;
+                this.target = this.item.target || '_self';
+            } else {
+                this.href = $state.href(this.item.name);
+                this.target = '_self';
+            }
             
             this.menuText = this.item.menuText;
             if (!this.menuText) {

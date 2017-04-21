@@ -308,6 +308,15 @@ return [
         weight: 1999
     },
     {
+        url: '/data-sources',
+        name: 'ui.settings.dataSources',
+        menuIcon: 'device_hub',
+        menuTr: 'header.dataSources',
+        href: '/data_sources.shtm',
+        target: 'mango-legacy',
+        permission: 'superadmin'
+    },
+    {
         url: '/edit-pages/{pageXid}',
         name: 'ui.settings.editPages',
         templateUrl: 'views/dashboard/editPages.html',

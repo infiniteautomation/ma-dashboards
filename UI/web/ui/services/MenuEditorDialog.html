@@ -89,7 +89,7 @@
             </md-input-container>
             <md-input-container class="has-hints" flex>
                 <label ma-tr="ui.app.urlPath"></label>
-                <input name="url" pattern="^\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
+                <input name="url" pattern="^\^?\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
                     ng-model="$ctrl.item.url" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.urlChanged()">
                 <div class="hint" ng-hide="$ctrl.menuItemEditForm.url.$invalid && ($ctrl.menuItemEditForm.url.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.stateUrlHint"></div>
                 <div ng-messages="$ctrl.menuItemEditForm.url.$error">
