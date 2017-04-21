@@ -41,8 +41,8 @@ define(['angular', 'require'], function(angular, require) {
   *
   */
   
-    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'MD_ADMIN_SETTINGS', '$injector'];
-    function MaMapController($scope, $mdMedia, NgMap, MD_ADMIN_SETTINGS, $injector) {
+    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'uiSettings', '$injector'];
+    function MaMapController($scope, $mdMedia, NgMap, uiSettings, $injector) {
         var $state;
         if ($injector.has('$state')) {
             $state = $injector.get('$state');
@@ -53,9 +53,9 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.apiKeySet = false;
         $ctrl.infoWindowCache = {};
 
-        if (MD_ADMIN_SETTINGS.googleMapsApiKey) {
+        if (uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
-            require(['https://maps.google.com/maps/api/js?key=' + MD_ADMIN_SETTINGS.googleMapsApiKey], function() {
+            require(['https://maps.google.com/maps/api/js?key=' + uiSettings.googleMapsApiKey], function() {
                 $scope.$applyAsync(function() {
                     $ctrl.render = true;
                 });
