@@ -182,7 +182,7 @@ PageEditorControlsController.prototype.deletePage = function deletePage() {
     var pageDeletedPromise = this.selectedPage.$delete().then(null, angular.noop);
     var menuItemDeletedPromise;
     if (this.menuItem) {
-        menuItemDeletedPromise = Menu.removeMenuItem(this.menuItem.name).then(null, angular.noop);
+        menuItemDeletedPromise = this.Menu.removeMenuItem(this.menuItem.name).then(null, angular.noop);
     } else {
         menuItemDeletedPromise = this.$q.when();
     }
