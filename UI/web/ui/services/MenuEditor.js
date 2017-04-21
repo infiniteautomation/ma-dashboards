@@ -230,8 +230,6 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
 
                 switch (item.templateType) {
                 case 'folder':
-                    delete item.templateUrl;
-                    delete item.template;
                     delete item.linkToPage;
                     delete item.pageXid;
                     delete item.href;
@@ -273,8 +271,6 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
                     item.permission = '';
                 }
 
-                console.log('item saved', item);
-                
                 return item;
             });
     };

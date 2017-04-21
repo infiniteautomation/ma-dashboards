@@ -11,11 +11,6 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
     // register the built in MA_UI_MENU_ITEMS
     registerStates(MA_UI_MENU_ITEMS);
 
-    var menuItemsByName = {};
-    MA_UI_MENU_ITEMS.forEach(function(item) {
-        menuItemsByName[item.name] = item;
-    }.bind(this));
-
     // Used by AngularJS modules to register a menu item
     this.registerMenuItems = function registerMenuItems(menuItems) {
         Array.prototype.push.apply(MA_UI_MENU_ITEMS, menuItems);
@@ -23,6 +18,11 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
     };
     
     this.registerCustomMenuItems = function registerCustomMenuItems() {
+        var menuItemsByName = {};
+        MA_UI_MENU_ITEMS.forEach(function(item) {
+            menuItemsByName[item.name] = item;
+        }.bind(this));
+
         var onlyCustomMenuItems = MA_UI_CUSTOM_MENU_ITEMS.filter(function(item, index, array) {
             if (!menuItemsByName[item.name]) {
                 return item;
@@ -63,20 +63,9 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                     rollupControls: true
                 };
             }
-            
-            // jshint eqnull:true
-            if (menuItem.weight == null) {
-                menuItem.weight = 1000;
-            }
-            
-            if (menuItem.permission == null) {
-                menuItem.permission = 'user';
-            }
 
             try {
                 $stateProvider.state(menuItem);
-                if (menuItem.name === 'ui.docs')
-                console.log('state added', menuItem, new Error());
             } catch (error) {
                 var endsWith = 'is already defined';
                 if (error.message && error.message.substr(-endsWith.length) === endsWith) {
@@ -187,6 +176,17 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                     this.customMenuItems.push(angular.copy(item));
                 }
             }.bind(this));
+            
+            // set defaults
+            this.menuItems.forEach(function(menuItem) {
+                // jshint eqnull:true
+                if (menuItem.weight == null) {
+                    menuItem.weight = 1000;
+                }
+                if (menuItem.permission == null) {
+                    menuItem.permission = 'user';
+                }
+            });
             
             this.menuHierarchy = unflattenMenu(this.menuItems);
             return this.menuItems;
