@@ -76,7 +76,7 @@
         <div layout="row">
             <md-input-container class="has-hints" flex>
                 <label ma-tr="ui.app.stateName"></label>
-                <input name="stateName" required pattern="^(\w+\.)*\w+$"
+                <input name="stateName" required pattern="^\w+$"
                     ng-model="$ctrl.item.shortStateName" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.stateNameChanged()">
                 <div class="hint" ng-hide="$ctrl.menuItemEditForm.stateName.$invalid && ($ctrl.menuItemEditForm.stateName.$touched || $ctrl.menuItemEditForm.$submitted)"
                     ma-tr="ui.app.stateNameHint" ma-tr-args="[$ctrl.item.name]"></div>
@@ -90,7 +90,7 @@
             
             <md-input-container class="has-hints" flex ng-if="$ctrl.item.templateType !== 'href'">
                 <label ma-tr="ui.app.urlPath"></label>
-                <input name="url" pattern="^\^?\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
+                <input name="url" pattern="^\^?\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$" required
                     ng-model="$ctrl.item.url" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.urlChanged()">
                 <div class="hint" ng-hide="$ctrl.menuItemEditForm.url.$invalid && ($ctrl.menuItemEditForm.url.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.stateUrlHint"></div>
                 <div ng-messages="$ctrl.menuItemEditForm.url.$error">

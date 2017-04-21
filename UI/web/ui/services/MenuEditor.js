@@ -111,6 +111,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
             } else if (item.abstract) {
                 item.templateType = 'folder';
             }
+            if (!item.target) item.target = '_blank';
 
             return $mdDialog.show({
                 templateUrl: require.toUrl('./MenuEditorDialog.html'),
@@ -242,6 +243,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
                     delete item.abstract;
                     delete item.href;
                     delete item.target;
+                    item.linkToPage = true;
                     break;
                 case 'templateUrl':
                     delete item.template;

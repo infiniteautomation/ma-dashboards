@@ -100,7 +100,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             this.defaultMenuItemsByName = {};
     
             this.defaultMenuItems.forEach(function(item) {
-                item.menuHidden = !!item.menuHidden;
+                setDefaults(item);
                 item.builtIn = true;
                 this.defaultMenuItemsByName[item.name] = item;
             }.bind(this));
@@ -171,6 +171,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                 if (this.menuItemsByName[item.name]) {
                     angular.merge(this.menuItemsByName[item.name], item);
                 } else {
+                    setDefaults(item);
                     this.menuItems.push(item);
                     // need to copy it as unflattenMenu() will add a parent/children to it below
                     this.customMenuItems.push(angular.copy(item));
@@ -389,6 +390,18 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                 if (newItem[property] !== originalItem[property]) {
                     difference[property] = newItem[property];
                 }
+            }
+        }
+        
+        function setDefaults(item) {
+            item.menuHidden = !!item.menuHidden;
+            
+            // jshint eqnull:true
+            if (item.weight == null) {
+                item.weight = 1000;
+            }
+            if (item.permission == null) {
+                item.permission = 'user';
             }
         }
         

@@ -103,28 +103,32 @@ return [
         url: '/not-found?path',
         templateUrl: 'views/dashboard/notFound.html',
         menuHidden: true,
-        menuTr: 'ui.app.pageNotFound'
+        menuTr: 'ui.app.pageNotFound',
+        weight: 3000
     },
     {
         name: 'ui.unauthorized',
         url: '/unauthorized?path',
         templateUrl: 'views/dashboard/unauthorized.html',
         menuHidden: true,
-        menuTr: 'ui.app.unauthorized'
+        menuTr: 'ui.app.unauthorized',
+        weight: 3000
     },
     {
         name: 'ui.error',
         url: '/error',
         templateUrl: 'views/dashboard/error.html',
         menuHidden: true,
-        menuTr: 'ui.app.error'
+        menuTr: 'ui.app.error',
+        weight: 3000
     },
     {
         name: 'ui.serverError',
         url: '/server-error',
         templateUrl: 'views/dashboard/serverError.html',
         menuHidden: true,
-        menuTr: 'ui.app.serverError'
+        menuTr: 'ui.app.serverError',
+        weight: 3000
     },
     {
         name: 'ui.home',
@@ -298,7 +302,8 @@ return [
         menuHidden: true,
         controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
             $scope.pageXid = $stateParams.pageXid;
-        }]
+        }],
+        weight: 3000
     },
     {
         url: '/administration',
