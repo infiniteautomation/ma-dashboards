@@ -195,8 +195,9 @@ function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $
     var DOCS_PAGES = MANGO_UI_NG_DOCS.pages;
 
     // Loop through and create array of children based on moduleName
-    var modules = DOCS_PAGES.map(function(page) {return page.moduleName;})
-    .filter(function(item, index, array) {
+    var modules = DOCS_PAGES.map(function(page) {
+        return page.moduleName;
+    }).filter(function(item, index, array) {
         return index == array.indexOf(item);
     });
 
@@ -220,8 +221,9 @@ function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $
 
     // Create 3rd level directives/services/filters docs pages
     // First remove module items
-    var components = DOCS_PAGES.map(function(page) {return page.id;})
-    .filter(function(item, index, array) {
+    var components = DOCS_PAGES.map(function(page) {
+        return page.id;
+    }).filter(function(item, index, array) {
         return item.indexOf('.') !== -1;
     });
 
@@ -614,9 +616,10 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, customDashboardSettingsPr
         angularJsModuleNames.push(angularModule.name);
     }
     
-    angular.module('uiBootstrap', angularJsModuleNames).config(['UserProvider', function(UserProvider) {
+    angular.module('uiBootstrap', angularJsModuleNames).config(['UserProvider', 'MenuProvider', function(UserProvider, MenuProvider) {
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
+        MenuProvider.registerCustomMenuItems();
     }]);
 
     angular.element(document).ready(function() {

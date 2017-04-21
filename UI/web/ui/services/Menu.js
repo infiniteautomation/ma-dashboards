@@ -11,13 +11,26 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
     // register the built in MA_UI_MENU_ITEMS
     registerStates(MA_UI_MENU_ITEMS);
 
-    // register the custom menu items retrieved at bootstrap
-    registerStates(MA_UI_CUSTOM_MENU_ITEMS);
-    
+    var menuItemsByName = {};
+    MA_UI_MENU_ITEMS.forEach(function(item) {
+        menuItemsByName[item.name] = item;
+    }.bind(this));
+
     // Used by AngularJS modules to register a menu item
     this.registerMenuItems = function registerMenuItems(menuItems) {
         Array.prototype.push.apply(MA_UI_MENU_ITEMS, menuItems);
         registerStates(menuItems);
+    };
+    
+    this.registerCustomMenuItems = function registerCustomMenuItems() {
+        var onlyCustomMenuItems = MA_UI_CUSTOM_MENU_ITEMS.filter(function(item, index, array) {
+            if (!menuItemsByName[item.name]) {
+                return item;
+            }
+        });
+
+        // register the custom menu items retrieved at bootstrap
+        registerStates(onlyCustomMenuItems);
     };
 
     function registerStates(menuItems) {
@@ -62,6 +75,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
 
             try {
                 $stateProvider.state(menuItem);
+                if (menuItem.name === 'ui.docs')
+                console.log('state added', menuItem, new Error());
             } catch (error) {
                 var endsWith = 'is already defined';
                 if (error.message && error.message.substr(-endsWith.length) === endsWith) {

@@ -273,6 +273,8 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
                     item.permission = '';
                 }
 
+                console.log('item saved', item);
+                
                 return item;
             });
     };
