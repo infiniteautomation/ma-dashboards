@@ -87,7 +87,8 @@
                   <div ng-message="stateNameMustBeginWithParent" ma-tr="ui.app.stateNameMustBeginWithParent"></div>
                 </div>
             </md-input-container>
-            <md-input-container class="has-hints" flex>
+            
+            <md-input-container class="has-hints" flex ng-if="$ctrl.item.templateType !== 'href'">
                 <label ma-tr="ui.app.urlPath"></label>
                 <input name="url" pattern="^\^?\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
                     ng-model="$ctrl.item.url" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.urlChanged()">
@@ -101,9 +102,10 @@
           </div>
           
           <md-radio-group ng-model="$ctrl.item.templateType" ng-change="$ctrl.templateTypeChanged()" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
-            <div layout="row">
+            <div layout="row" layout-wrap>
               <md-radio-button value="folder"><span ma-tr="ui.app.folder"></span></md-radio-button>
               <md-radio-button value="linkToPage"><span ma-tr="ui.app.linkCustomPage"></span></md-radio-button>
+              <md-radio-button value="href"><span ma-tr="ui.app.externalLink"></span></md-radio-button>
               <md-radio-button value="templateUrl"><span ma-tr="ui.app.templateUrl"></span></md-radio-button>
             </div>
           </md-radio-group>
@@ -127,6 +129,29 @@
                 <div ng-message="required" ma-tr="ui.app.required"></div>
               </div>
           </md-input-container>
+          
+          <div ng-if="$ctrl.item.templateType === 'href'" flex layout>
+            <md-input-container flex="50">
+              <label ma-tr="ui.app.externalLink"></label>
+              <input name="href" required ng-model="$ctrl.item.href" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
+              <div class="hint" ng-hide="$ctrl.menuItemEditForm.href.$invalid && ($ctrl.menuItemEditForm.href.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
+              <div ng-messages="$ctrl.menuItemEditForm.href.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+              </div>
+            </md-input-container>
+            <md-input-container flex="50">
+              <label ma-tr="ui.app.targetWindow"></label>
+              <md-select name="target" required ng-model="$ctrl.item.target" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
+                <md-option value="_self"><span ma-tr="ui.app.selfWindow"></span></md-option>
+                <md-option value="_blank"><span ma-tr="ui.app.blankWindow"></span></md-option>
+                <md-option value="mango-legacy"><span ma-tr="ui.app.mangoLegacyWindow"></span></md-option>
+              </md-select>
+              <div class="hint" ng-hide="$ctrl.menuItemEditForm.target.$invalid && ($ctrl.menuItemEditForm.target.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
+              <div ng-messages="$ctrl.menuItemEditForm.target.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+              </div>
+            </md-input-container>
+          </div>
 
           <md-radio-group ng-model="$ctrl.item.dateBarOptions" ng-show="$ctrl.item.templateType !== 'folder'" ng-disabled="$ctrl.item.builtIn">
             <div layout="row">

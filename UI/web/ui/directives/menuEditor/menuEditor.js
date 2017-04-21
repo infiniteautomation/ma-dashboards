@@ -165,7 +165,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                         // prevent stack overflow from cyclic copy of parent/children
                         delete item.parent;
                         delete item.children;
-                        angular.merge(origItem, item);
+                        angular.copy(item, origItem);
                         item = origItem;
                     }
 

@@ -106,6 +106,8 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
                 item.templateType = 'linkToPage';
             } else if (item.templateUrl) {
                 item.templateType = 'templateUrl';
+            } else if (item.href) {
+                item.templateType = 'href';
             } else if (item.abstract) {
                 item.templateType = 'folder';
             }
@@ -153,7 +155,9 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
                     this.save = function save() {
                         this.calculateStateName();
                         this.menuItemEditForm.stateName.$setValidity('stateExists', this.item.name === origItem.name || !menuItemNameMap[this.item.name]);
-                        this.menuItemEditForm.url.$setValidity('urlExists', this.item.url === origItem.url || !urlPathMap[this.item.url]);
+                        if (this.menuItemEditForm.url) {
+                            this.menuItemEditForm.url.$setValidity('urlExists', this.item.url === origItem.url || !urlPathMap[this.item.url]);
+                        }
                         
                         this.menuItemEditForm.$setSubmitted();
                         if (this.menuItemEditForm.$valid) {
@@ -230,18 +234,32 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
                     delete item.template;
                     delete item.linkToPage;
                     delete item.pageXid;
+                    delete item.href;
+                    delete item.target;
                     item.abstract = true;
                     break;
                 case 'linkToPage':
                     delete item.templateUrl;
                     delete item.template;
                     delete item.abstract;
+                    delete item.href;
+                    delete item.target;
                     break;
                 case 'templateUrl':
                     delete item.template;
                     delete item.linkToPage;
                     delete item.pageXid;
                     delete item.abstract;
+                    delete item.href;
+                    delete item.target;
+                    break;
+                case 'href':
+                    delete item.templateUrl;
+                    delete item.template;
+                    delete item.linkToPage;
+                    delete item.pageXid;
+                    delete item.abstract;
+                    delete item.url;
                     break;
                 }
                 delete item.templateType;

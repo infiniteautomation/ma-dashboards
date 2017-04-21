@@ -44,7 +44,7 @@
             <td ng-if="$mdMedia('gt-xs') && menuItem.menuText" ng-bind="menuItem.menuText"></td>
             <td ng-if="$mdMedia('gt-xs') && !menuItem.menuText" ma-tr="{{menuItem.menuTr}}"></td>
             <td ng-bind="menuItem.name"></td>
-            <td ng-bind="menuItem.url" ng-if="$mdMedia('gt-md')"></td>
+            <td ng-bind="menuItem.url || menuItem.href" ng-if="$mdMedia('gt-md')"></td>
             <td>
               <md-button class="md-icon-button" ng-click="editItem($event, menuItem)">
                 <md-icon>edit</md-icon>

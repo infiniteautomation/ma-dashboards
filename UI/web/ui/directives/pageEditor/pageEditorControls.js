@@ -218,7 +218,7 @@ PageEditorControlsController.prototype.savePage = function savePage() {
             
             for (var i = 0; i < pageSummaries.length; i++) {
                 if (pageSummaries[i].xid === page.xid) {
-                    angular.merge(pageSummaries[i], this.selectedPageSummary);
+                    angular.copy(this.selectedPageSummary, pageSummaries[i]);
                     found = true;
                     break;
                 }
