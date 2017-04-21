@@ -182,6 +182,12 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'home'
     },
     {
+        name: 'dashboard.mango3',
+        menuTr: 'ui.menuItemText',
+        menuIcon: 'insert_emoticon',
+        template: '<div></div>'
+    },
+    {
         name: 'dashboard.pageMigration',
         url: '/page-migration',
         templateUrl: 'views/dashboard/pageMigration.html',
@@ -931,8 +937,9 @@ mdAdminApp.run([
     'User',
     'MD_ADMIN_SETTINGS',
     'Translate',
+    '$window',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, User, MD_ADMIN_SETTINGS, Translate) {
+        $mdToast, User, MD_ADMIN_SETTINGS, Translate, $window) {
 
     $rootScope.mdAdmin = MD_ADMIN_SETTINGS;
     $rootScope.user = MD_ADMIN_SETTINGS.user;
@@ -982,6 +989,10 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+        if (toState.name === 'dashboard.mango3') {
+            $window.open('/ui/', '_self');
+            return;
+        }
         if ($state.includes('dashboard') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }
