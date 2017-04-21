@@ -103,6 +103,21 @@ PageEditorControlsController.prototype.createNewPage = function createNewPage(ma
     return this.setSelectedPage(page);
 };
 
+PageEditorControlsController.prototype.confirmLoadPage = function confirmLoadPage(xid) {
+    if (this.pageEditorForm.$dirty || this.selectedPage.$dirty) {
+        if (!confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'))) {
+            return;
+        }
+    }
+    
+    if (xid) {
+        this.loadPage(xid);
+    } else {
+        this.createNewPage();
+    }
+    
+};
+
 PageEditorControlsController.prototype.loadPage = function loadPage(xid) {
     var menuItemPromise = this.MenuEditor.getMenuItemForPageXid(xid).then(function(menuItem) {
         this.menuItem = menuItem;

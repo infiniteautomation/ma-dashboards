@@ -1,7 +1,7 @@
 <div layout="row" layout-wrap class="page-editor-inputs">
   <md-input-container flex="100" flex-gt-md="25">
       <label ma-tr="ui.app.choosePageToEdit"></label>
-      <md-select ng-model="$ctrl.selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.loadPage($ctrl.selectedPageSummary.xid)">
+      <md-select ng-model="$ctrl.selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.confirmLoadPage($ctrl.selectedPageSummary.xid)">
         <md-option ng-repeat="page in $ctrl.pageSummaryStore.jsonData.pages track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
       </md-select>
   </md-input-container>
@@ -49,7 +49,7 @@
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
     </md-button>
-    <md-button ng-click="$ctrl.loadPage($ctrl.selectedPageSummary.xid)" ng-disabled="$ctrl.selectedPage.isNew || !($ctrl.pageEditorForm.$dirty || $ctrl.selectedPage.$dirty)" class="md-raised md-warn">
+    <md-button ng-click="$ctrl.confirmLoadPage($ctrl.selectedPageSummary.xid)" ng-disabled="$ctrl.selectedPage.isNew || !($ctrl.pageEditorForm.$dirty || $ctrl.selectedPage.$dirty)" class="md-raised md-warn">
         <md-icon>undo</md-icon>
         <span ma-tr="ui.app.revert"></span>
     </md-button>
@@ -66,7 +66,7 @@
       <md-icon>remove_red_eye</md-icon>
       <span ma-tr="ui.app.viewPage"></span>
     </md-button>
-    <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.createNewPage()">
+    <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.confirmLoadPage()">
       <md-icon>add</md-icon>
       <span ma-tr="ui.app.newPage"></span>
     </md-button>
