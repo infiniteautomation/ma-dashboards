@@ -1,239 +1,213 @@
-<div class="home-page">
-    <div flex layout="row" layout-xs="column" layout-align="start center">
-        <div layout layout-fill>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.dataSources" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_data_sources" point="internal_mango_num_data_sources"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_data_sources.value}}</strong>
-                        <md-icon>device_hub</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.dataSources"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.dataPointDetails" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_data_points" point="internal_mango_num_data_points"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_data_points.value}}</strong>
-                        <md-icon>timeline</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.dataPoints"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.dataSources" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">&nbsp;</strong>
-                        <md-icon>graphic_eq</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.metaDataPoints"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-        </div>
-
-        <div layout layout-fill>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.dataSources" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_point_links" point="internal_mango_num_point_links"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_point_links.value}}</strong>
-                        <md-icon>share</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.pointLinks"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.dataSources" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">&nbsp;</strong>
-                        <md-icon>swap_calls</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.scripts"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.watchList" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_watchlists" point="internal_mango_num_watchlists"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_watchlists.value}}</strong>
-                        <md-icon>remove_red_eye</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.watchLists"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-        </div>
+<div class="home-page" flex layout="row" layout-align="start start" layout-wrap>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.settings.dataSources" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_data_sources" class="home-page-count"></ma-point-value>
+                    <md-icon>device_hub</md-icon>
+                    <h3 ma-tr="ui.app.dataSources"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
     </div>
-
-    <div flex layout="row" layout-xs="column" layout-align="start center">
-        <div layout layout-fill>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.users" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_users" point="internal_mango_num_users"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_users.value}}</strong>
-                        <md-icon>people</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.users"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.users" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_active_user_sessions" point="internal_mango_num_active_user_sessions"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_active_user_sessions.value}}</strong>
-                        <md-icon>face</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.activeSessions"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.reports" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_reports" point="internal_mango_num_reports"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_reports.value}}</strong>
-                        <md-icon>book</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.reports"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-        </div>
-
-        <div layout layout-fill>
-            <md-card flex layout="column">
-                <a ui-sref="ui.excelReports" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_excel_reports" point="internal_mango_num_excel_reports"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_excel_reports.value}}</strong>
-                        <md-icon>grid_on</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.excelReports"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.publishers" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_publishers" point="internal_mango_num_publishers"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_publishers.value}}</strong>
-                        <md-icon>publish</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.publishers"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.importExport" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">&nbsp;</strong>
-                        <md-icon>import_export</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.utilities"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-        </div>
+    <div flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.dataPointDetails" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_data_points" class="home-page-count"></ma-point-value>
+                    <md-icon>timeline</md-icon>
+                    <h3 ma-tr="ui.app.dataPoints"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
     </div>
-
-    <div flex layout="row" layout-xs="column" layout-align="start center">
-        <div layout layout-fill>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.scheduledEvents" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_event_detectors" point="internal_mango_num_event_detectors"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_event_detectors.value}}</strong>
-                        <md-icon>find_in_page</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.eventDetectors"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.eventHandlers" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_event_handlers" point="internal_mango_num_event_handlers"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_event_handlers.value}}</strong>
-                        <md-icon>change_history</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.eventHandlers"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.events({eventType: 'DATA_POINT'})" flex layout="column">
-                    <md-card-content flex layout="row" layout-align="center" layout-wrap>
-                        <strong flex="100">&nbsp;</strong>
-                        <div layout>
-                            <md-icon>timeline</md-icon>
-                            <md-icon class="badge">alarm</md-icon>
-                        </div>
-                        <h3 flex="100" ma-tr="ui.app.dataPointEvents"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-        </div>
-
-        <div layout layout-fill>
-            <md-card flex layout="column">
-                <a ui-sref="ui.events({eventType: 'SYSTEM'})" flex layout="column">
-                    <md-card-content flex layout="row" layout-align="center" layout-wrap>
-                        <strong flex="100">&nbsp;</strong>
-                        <div layout>
-                            <md-icon class="badged">computer</md-icon>
-                            <md-icon class="badge">alarm</md-icon>
-                        </div>
-                        <h3 flex="100" ma-tr="ui.app.systemEvents"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.scheduledEvents" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_scheduled_events" point="internal_mango_num_scheduled_events"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_scheduled_events.value}}</strong>
-                        <md-icon>alarm</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.scheduledEvents"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.mailingLists" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_mailing_lists" point="internal_mango_num_mailing_lists"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_mailing_lists.value}}</strong>
-                        <md-icon>email</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.mailingLists"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-        </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.settings.dataSources" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_point_links" class="home-page-count"></ma-point-value>
+                    <md-icon>share</md-icon>
+                    <h3 ma-tr="ui.app.pointLinks"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
     </div>
-
-    <div flex layout="row" layout-xs="column" layout-align="start center">
-        <div layout layout-fill>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.editPages" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">{{pageCount}}</strong>
-                        <md-icon>dashboard</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.customPages"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.modules" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <ma-get-point-value point-xid="internal_mango_num_updates_available" point="internal_mango_num_updates_available"></ma-get-point-value>
-                        <strong flex="100">{{internal_mango_num_updates_available.value}} <span ma-tr="ui.app.updates"></span></strong>
-                        <md-icon>extension</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.modules"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="ui.settings.system" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">&nbsp;</strong>
-                        <md-icon>settings</md-icon>
-                        <h3 flex="100" ma-tr="ui.app.systemSettings"></h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-        </div>
+    <div flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.watchList" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_watchlists" class="home-page-count"></ma-point-value>
+                    <md-icon>remove_red_eye</md-icon>
+                    <h3 ma-tr="ui.app.watchLists"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.settings.users" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_users" class="home-page-count"></ma-point-value>
+                    <md-icon>people</md-icon>
+                    <h3 ma-tr="ui.app.users"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <md-card-content flex layout="column" layout-align="center stretch">
+                <ma-point-value point-xid="internal_mango_num_active_user_sessions" class="home-page-count"></ma-point-value>
+                <md-icon>face</md-icon>
+                <h3 ma-tr="ui.app.activeSessions"></h3>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a href="/reports.shtm" target="mango-legacy" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_reports" class="home-page-count"></ma-point-value>
+                    <md-icon>book</md-icon>
+                    <h3 ma-tr="ui.app.reports"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a href="/excel-reports.shtm" target="mango-legacy" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_excel_reports" class="home-page-count"></ma-point-value>
+                    <md-icon>grid_on</md-icon>
+                    <h3 ma-tr="ui.app.excelReports"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a href="/publishers.shtm" target="mango-legacy" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_publishers" class="home-page-count"></ma-point-value>
+                    <md-icon>publish</md-icon>
+                    <h3 ma-tr="ui.app.publishers"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.settings.importExport" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <div class="home-page-count"></div>
+                    <md-icon>import_export</md-icon>
+                    <h3 ma-tr="header.emport"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <md-card-content flex layout="column" layout-align="center stretch">
+                <ma-point-value point-xid="internal_mango_num_event_detectors" class="home-page-count"></ma-point-value>
+                <md-icon>find_in_page</md-icon>
+                <h3 ma-tr="ui.app.eventDetectors"></h3>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a href="/event_handlers.shtm" target="mango-legacy" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_event_handlers" class="home-page-count"></ma-point-value>
+                    <md-icon>change_history</md-icon>
+                    <h3 ma-tr="ui.app.eventHandlers"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.events({eventType: 'DATA_POINT'})" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <div class="home-page-count"></div>
+                    <div layout layout-align="center center">
+                        <md-icon class="badged">timeline</md-icon>
+                        <md-icon class="badge">alarm</md-icon>
+                    </div>
+                    <h3 ma-tr="ui.app.dataPointEvents"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.events({eventType: 'SYSTEM'})" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <div class="home-page-count"></div>
+                    <div layout layout-align="center center">
+                        <md-icon class="badged">computer</md-icon>
+                        <md-icon class="badge">alarm</md-icon>
+                    </div>
+                    <h3 ma-tr="ui.app.systemEvents"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a href="/scheduled_events.shtm" target="mango-legacy" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_scheduled_events" class="home-page-count"></ma-point-value>
+                    <md-icon>alarm</md-icon>
+                    <h3 ma-tr="ui.app.scheduledEvents"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.settings.mailingLists" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_mailing_lists" class="home-page-count"></ma-point-value>
+                    <md-icon>email</md-icon>
+                    <h3 ma-tr="ui.app.mailingLists"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.settings.editPages" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <div class="home-page-count"></div>
+                    <md-icon>dashboard</md-icon>
+                    <h3 ma-tr="ui.app.customPages"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.settings.modules" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <ma-point-value point-xid="internal_mango_num_updates_available" class="home-page-count"></ma-point-value>
+                    <md-icon>extension</md-icon>
+                    <h3 ma-tr="ui.app.modules"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="ui.settings.system" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <div class="home-page-count"></div>
+                    <md-icon>settings</md-icon>
+                    <h3 ma-tr="ui.app.systemSettings"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
     </div>
 </div>

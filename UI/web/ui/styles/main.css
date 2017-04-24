@@ -53,8 +53,8 @@ body {
 }
 
 .dashboard-main-view.phone md-card {
-	margin-right: 0px;
-	margin-left: 0px;
+	margin-right: 8px;
+	margin-left: 8px;
 }
 
 ma-footer {
@@ -1032,6 +1032,9 @@ ma-point-hierarchy-folder .point-hierarchy-item {
 }
 
 /* Home page */
+.home-page > div {
+  height: 160px;
+}
 .home-page md-card md-card-content {
     padding: 8px;
 }
@@ -1040,23 +1043,24 @@ ma-point-hierarchy-folder .point-hierarchy-item {
     color: currentColor;
 }
 .home-page md-icon.badge {
-    font-size: 23px;
-    padding: 0 0 40px 0;
-    margin-left: -5px;
+  font-size: 25px;
+  margin: 0 0 40px 0;
 }
 .home-page md-icon.badged {
-    padding-left: 23px;
+  margin: 0 0 0 25px;
 }
 .home-page a:not(.md-button) {
     color: inherit;
 }
 .home-page h3 {
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
 }
-.home-page strong {
-    font-size: 18px;
-    text-align: right;
+.home-page .home-page-count {
+  font-weight: bold;
+  font-size: 18px;
+  text-align: right;
+  height: 25px;
 }
 
 /* md color picker */
