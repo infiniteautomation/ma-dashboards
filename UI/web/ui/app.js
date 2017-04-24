@@ -165,7 +165,7 @@ function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $
             if (homeUrl && homeUrl.indexOf(basePath) === 0) {
                 return '/' + homeUrl.substring(basePath.length); // strip basePath from start of URL
             }
-            return '/home';
+            return user.admin ? '/home' : '/data-point-details/';
         }
 
         return '/not-found?path=' + encodeURIComponent(path);

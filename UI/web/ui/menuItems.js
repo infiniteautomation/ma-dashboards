@@ -144,7 +144,8 @@ return [
                 $scope.pageCount = store.jsonData.pages.length;
             });
         }],
-        weight: 990
+        weight: 990,
+        permission: 'superadmin'
     },
     {
         name: 'ui.watchList',

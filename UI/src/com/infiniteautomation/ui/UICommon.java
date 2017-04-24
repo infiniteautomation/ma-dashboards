@@ -17,7 +17,7 @@ public class UICommon {
 
 	public static final String DEFAULT_UI_LOGIN_PAGE = "/ui/login";
     public static final String DEFAULT_UI_FIRST_USER_LOGIN_PAGE = "/ui/help/getting-started";
-    public static final String DEFAULT_UI_LOGGED_IN_PAGE = "/ui/home";
+    public static final String DEFAULT_UI_LOGGED_IN_PAGE = "/ui/data-point-details/";
     public static final String DEFAULT_UI_LOGGED_IN_PAGE_PRE_HOME = "";
     public static final String DEFAULT_UI_UNAUTHORIZED_PAGE = "/ui/unauthorized";
 	public static final String DEFAULT_UI_NOT_FOUND_PAGE = "/ui/not-found";
