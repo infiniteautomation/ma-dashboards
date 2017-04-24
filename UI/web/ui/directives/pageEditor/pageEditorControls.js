@@ -144,8 +144,11 @@ PageEditorControlsController.prototype.setSelectedPage = function setSelectedPag
     this.selectedPage = page;
     this.selectedPageSummary = pageToSummary(page);
     this.updateViewLink();
-    this.pageEditorForm.$setPristine();
-    this.pageEditorForm.$setUntouched();
+    // form might not have initialized
+    if (this.pageEditorForm) {
+        this.pageEditorForm.$setPristine();
+        this.pageEditorForm.$setUntouched();
+    }
     if (triggerChange && this.onPageChanged) {
         this.onPageChanged({$page: page});
     }
