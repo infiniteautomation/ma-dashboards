@@ -2,12 +2,12 @@
 	<parent>
 		<artifactId>modules-parent</artifactId>
 		<groupId>com.infiniteautomation.mango</groupId>
-		<version>3.0.1</version>
+		<version>3.0.2-SNAPSHOT</version>
         <relativePath>../ma-core-public/Modules/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ma-dashboards-parent</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Mango UI Modules</name>
 	<issueManagement>
@@ -18,7 +18,7 @@
 		<connection>scm:git:https://github.com/infiniteautomation/ma-dashboards.git</connection>
 		<developerConnection>scm:git:https://github.com/infiniteautomation/ma-dashboards.git</developerConnection>
 		<url>https://github.com/infiniteautomation/ma-dashboards</url>
-	  <tag>m2m2-core-3.0.1</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<modules>
 		<module>Custom Dashboards</module>
