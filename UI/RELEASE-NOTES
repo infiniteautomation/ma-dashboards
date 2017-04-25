@@ -1,2 +1,8 @@
+*Version 3.0.2*
+* Fix bootstrapping ngMango via bootstrap.js
+
+*Version 3.0.1*
+* Initial public release
+
 *Version 3.0.0*
 * Initial release of UI module for Mango 3.0.x

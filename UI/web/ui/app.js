@@ -626,7 +626,7 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, customDashboardSettingsPr
         MenuProvider.registerCustomMenuItems();
     }]);
 
-    angular.element(document).ready(function() {
+    angular.element(function() {
         angular.bootstrap(document.documentElement, ['uiBootstrap'], {strictDi: true});
     });
 });

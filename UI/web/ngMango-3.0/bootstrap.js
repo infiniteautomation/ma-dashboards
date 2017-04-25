@@ -6,10 +6,13 @@
 define(['require'], function(require) {
 'use strict';
 
-contentLoaded(window, findMangoConnections);
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    findMangoConnections();
+} else {
+    document.addEventListener('DOMContentLoaded', findMangoConnections);
+}
 
 function findMangoConnections() {
-
 	var i, connectionElement, mangoConnection;
 	var defaultModule = 'ngMango';
 	var dependencies = ['angular', './ngMango'];
@@ -32,8 +35,6 @@ function findMangoConnections() {
 		if (watchdogTimeout) {
 			mangoConnection.watchdogTimeout = parseInt(watchdogTimeout, 10);
 		}
-		var logout = connectionElement.getAttribute('ma-logout');
-		mangoConnection.logout = logout === null ? false : true;
 		
 		var debug = connectionElement.getAttribute('ma-debug');
 		mangoConnection.debug = !debug || debug === 'true';
@@ -49,24 +50,32 @@ function findMangoConnections() {
 	    defaultModule = 'ngMangoMaterial';
 	    dependencies[1] = './ngMangoMaterial';
 	}
-	
-	var scriptSourceServer;
+
+    // creates config function to white-list remote host so angular can fetch templates from it
+    var scriptSourceServer;
 	var match = /^(http|https):\/\/.*?(?=\/)/.exec(require.toUrl('./ngMango'));
     if (match) scriptSourceServer = match[0];
 
+    resourceWhitelistConfig.$inject = ['$sceDelegateProvider'];
+    function resourceWhitelistConfig($sceDelegateProvider) {
+        $sceDelegateProvider.resourceUrlWhitelist([
+            'self',
+            scriptSourceServer + '/**'
+        ]);
+    }
+    
+    disableDebugConfig.$inject = ['$compileProvider'];
+    function disableDebugConfig($compileProvider) {
+        $compileProvider.debugInfoEnabled(false);
+    }
+
 	require(dependencies, function(angular, ngMango) {
-	    // white-list remote host so angular can fetch templates from it
-	    if (scriptSourceServer) {
-	        ngMango.config(['$sceDelegateProvider', function($sceDelegateProvider) {
-	            $sceDelegateProvider.resourceUrlWhitelist([
-	                'self',
-	                scriptSourceServer + '/**'
-	            ]);
-	        }]);
-	    }
-	    
 		if (!connectionElements.length) {
-			doBootstrap(document.documentElement, defaultModule);
+            var defaultApp = angular.module('ngMangoBootstrapApp', [defaultModule]);
+            if (scriptSourceServer) {
+                defaultApp.config(resourceWhitelistConfig);
+            }
+			doBootstrap(document.documentElement, 'ngMangoBootstrapApp');
 			return;
 		}
 		
@@ -75,79 +84,42 @@ function findMangoConnections() {
 			mangoConnection = connectionElement.mangoConnection;
 			delete connectionElement.mangoConnection;
 			
-			var appName = 'ngMangoSubModule' + i;
-			var app = angular.module(appName, [mangoConnection.module]);
+			var servicesAppName = 'ngMangoBootstrapServices' + i;
+            var servicesApp = angular.module(servicesAppName, ['ngMangoServices']);
 			
 			if (mangoConnection.baseUrl)
-				app.constant('mangoBaseUrl', mangoConnection.baseUrl);
+			    servicesApp.constant('mangoBaseUrl', mangoConnection.baseUrl);
 			if (mangoConnection.timeout)
-				app.constant('mangoTimeout', mangoConnection.timeout);
+			    servicesApp.constant('mangoTimeout', mangoConnection.timeout);
 			if (mangoConnection.watchdogTimeout)
-				app.constant('mangoWatchdogTimeout', mangoConnection.watchdogTimeout);
-			
-			if (!mangoConnection.debug) {
-			    app.config(['$compileProvider', disableDebug]);
-			}
+			    servicesApp.constant('mangoWatchdogTimeout', mangoConnection.watchdogTimeout);
+
+            var appName = 'ngMangoBootstrapApp' + i;
+            var app = angular.module(appName, [servicesAppName, mangoConnection.module]);
+            
+            if (!mangoConnection.debug) {
+                app.config(disableDebugConfig);
+            }
+            if (scriptSourceServer) {
+                app.config(resourceWhitelistConfig);
+            }
 			
 			if (mangoConnection.username) {
-				var injector = angular.injector([appName], true);
+				var injector = angular.injector([servicesAppName], true);
 				var User = injector.get('User');
 				User.login({
 					username: mangoConnection.username,
-					password: mangoConnection.password,
-					logout: mangoConnection.logout
+					password: mangoConnection.password
 				}).$promise.then(doBootstrap.bind(null, connectionElement, appName));
 			} else {
 				doBootstrap(connectionElement, appName);
 			}
 		}
-		
-		function disableDebug($compileProvider) {
-		    $compileProvider.debugInfoEnabled(false);
-		}
-		
+
 		function doBootstrap(element, appName) {
 			angular.bootstrap(element, [appName], {strictDi: true});
 		}
 	}); // define
-}
-
-/**
- * DOMContentLoaded shim for old browsers
- * https://github.com/dperini/ContentLoaded/blob/master/src/contentloaded.js
- */
-function contentLoaded(win, fn) {
-	var done = false, top = true,
-
-	doc = win.document,
-	root = doc.documentElement,
-	modern = doc.addEventListener,
-
-	add = modern ? 'addEventListener' : 'attachEvent',
-	rem = modern ? 'removeEventListener' : 'detachEvent',
-	pre = modern ? '' : 'on',
-
-	init = function(e) {
-		if (e.type == 'readystatechange' && doc.readyState != 'complete') return;
-		(e.type == 'load' ? win : doc)[rem](pre + e.type, init, false);
-		if (!done && (done = true)) fn.call(win, e.type || e);
-	},
-
-	poll = function() {
-		try { root.doScroll('left'); } catch(e) { setTimeout(poll, 50); return; }
-		init('poll');
-	};
-
-	if (doc.readyState == 'complete') fn.call(win, 'lazy');
-	else {
-		if (!modern && root.doScroll) {
-			try { top = !win.frameElement; } catch(e) { }
-			if (top) poll();
-		}
-		doc[add](pre + 'DOMContentLoaded', init, false);
-		doc[add](pre + 'readystatechange', init, false);
-		win[add](pre + 'load', init, false);
-	}
 }
 
 }); // define

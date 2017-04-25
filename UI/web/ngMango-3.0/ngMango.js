@@ -297,10 +297,6 @@ ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['mangoDateFormats', function(mangoD
 ngMango.constant('MA_DEFAULT_TIMEZONE', '');
 ngMango.constant('MA_DEFAULT_LOCALE', '');
 
-ngMango.config(['$httpProvider', function($httpProvider) {
-	$httpProvider.interceptors.push('mangoHttpInterceptor');
-}]);
-
 ngMango.run([
     '$rootScope',
     'mangoWatchdog',
