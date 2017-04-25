@@ -315,7 +315,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
 
-    $rootScope.titleSuffix = 'Mango Dashboards v3';
+    $rootScope.titleSuffix = 'Mango v3';
     $rootScope.setTitleText = function setTitleText() {
         if ($state.$current.menuText) {
             this.titleText = $state.$current.menuText + ' - ' + this.titleSuffix;
