@@ -622,7 +622,7 @@ page-view {
   top: 0;
 }
 
-iframe-view iframe {
+ma-ui-iframe-view iframe {
   width: 100%;
   min-height: 500px;
   border: 0;

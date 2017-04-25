@@ -14,6 +14,8 @@ define([
     './services/uiSettings',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
+    './directives/stateParams/stateParams',
+    './directives/iframeView/iframeView',
     './menuItems',
     'moment-timezone',
     'angular-ui-router',
@@ -21,7 +23,7 @@ define([
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, ngMangoMaterial, ngMangoComponents, require, MenuProvider, Page, DateBar, uiSettings, pageView, livePreview, menuItems, moment) {
+], function(angular, ngMangoMaterial, ngMangoComponents, require, MenuProvider, Page, DateBar, uiSettings, pageView, livePreview, stateParams, iframeView, menuItems, moment) {
 'use strict';
 
 // must match variables defined in UIInstallUpgrade.java
@@ -48,6 +50,8 @@ uiApp.provider('Menu', MenuProvider)
     .factory('uiSettings', uiSettings)
     .directive('pageView', pageView)
     .directive('livePreview', livePreview)
+    .directive('stateParams', stateParams)
+    .directive('maUiIframeView', iframeView)
     .constant('require', require)
     .constant('MA_UI_MENU_XID', MA_UI_MENU_XID)
     .constant('MA_UI_PAGES_XID', MA_UI_PAGES_XID)
