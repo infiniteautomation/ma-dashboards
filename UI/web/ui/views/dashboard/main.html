@@ -93,7 +93,7 @@
     <date-bar on-refresh="dateBar.refresh = $event" ng-if="stateParams.dateBar" ng-show="dateBar.expanded"></date-bar>
 
     <md-content md-scroll-y layout="column" flex class="main-content">
-      <div ui-view flex="noshrink" layout="column" class="dashboard-main-view" ng-class="{'mobile': !$mdMedia('gt-sm'), 'phone': $mdMedia('xs')}" role="main"></div>
+      <div ui-view flex="noshrink" layout="column" class="dashboard-main-view" ng-class="{'mobile': !$mdMedia('gt-sm'), 'phone': $mdMedia('xs'), 'ma-no-padding': $state.params.noPadding}" role="main"></div>
       <ma-footer aria-role="contentinfo" layout></ma-footer>
     </md-content>
   </div>

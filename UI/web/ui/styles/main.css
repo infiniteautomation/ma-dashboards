@@ -42,6 +42,10 @@ body {
 	padding: 16px;
 }
 
+.dashboard-main-view.ma-no-padding {
+	padding: 0;
+}
+
 .dashboard-main-view.mobile {
 	padding-left: 8px;
 	padding-right: 8px;
