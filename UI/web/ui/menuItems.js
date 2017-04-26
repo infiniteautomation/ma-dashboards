@@ -231,7 +231,8 @@ return [
         url: '/getting-started',
         name: 'ui.help.gettingStarted',
         templateUrl: 'views/help/gettingStarted.html',
-        menuTr: 'ui.dox.gettingStarted'
+        menuTr: 'ui.dox.gettingStarted',
+        weight: 900
     },
     {
         name: 'ui.help.legacy',
