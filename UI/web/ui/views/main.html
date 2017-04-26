@@ -1,14 +1,14 @@
 <div layout="row" flex>
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-print
         md-is-locked-open="navLockedOpen" md-swipe-left="closeMenu()" class="navigation-menu">
-    <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header md-whiteframe-glow-z1">
+    <md-toolbar class="md-tall md-primary md-hue-1 ma-ui-sidebar-header md-whiteframe-glow-z1">
       <ma-now update-interval="1 MINUTES" output="currentTime"></ma-now>
       <div flex layout="row">
         <img ng-src="{{uiSettings.logoSrc}}" ma-tr="header.ui.app.heading">
-        <div flex layout="column" layout-align="start end" class="dashboard-user-datetime">
-          <span ng-bind="currentTime.format('LT')" class="dashboard-user-time"></span>
-          <span ng-bind="currentTime.format('ddd ll')" class="dashboard-user-date"></span>
-          <span ng-bind="currentTime.format('z')" class="dashboard-user-date"></span>
+        <div flex layout="column" layout-align="start end" class="ma-ui-user-datetime">
+          <span ng-bind="currentTime.format('LT')" class="ma-ui-user-time"></span>
+          <span ng-bind="currentTime.format('ddd ll')" class="ma-ui-user-date"></span>
+          <span ng-bind="currentTime.format('z')" class="ma-ui-user-date"></span>
         </div>
       </div>
       <div layout>
@@ -45,13 +45,13 @@
   </md-sidenav>
 
   <div layout="column" tabIndex="-1" flex class="main-page-area">
-    <md-toolbar class="dashboard-main-toolbar" ng-class="{'md-whiteframe-glow-z1': !(stateParams.dateBar && dateBar.expanded)}" role="toolbar">
+    <md-toolbar class="ma-ui-main-toolbar" ng-class="{'md-whiteframe-glow-z1': !(stateParams.dateBar && dateBar.expanded)}" role="toolbar">
 
-      <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
+      <div class="md-toolbar-tools ma-ui-toolbar-tools" tabIndex="-1">
         <md-button id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
         </md-button>
         <div layout="row" flex class="fill-height">
-          <h2 class="md-toolbar-item dashboard-breadcrumb hide-xs">
+          <h2 class="md-toolbar-item ma-ui-breadcrumb hide-xs">
             <span ng-repeat="crumb in crumbs track by $index" ng-class="{'hide-sm': !$last}">
                 <span ma-tr="{{crumb.maTr}}" ng-bind="crumb.text"></span>
                 <span ng-if="!$last">
@@ -63,7 +63,7 @@
           <span flex></span>
           <!-- use up the empty space -->
 
-          <div class="md-toolbar-item dashboard-tools" layout="row" layout-align="start center">
+          <div class="md-toolbar-item ma-ui-tools" layout="row" layout-align="start center">
             <ma-active-event-icons style="padding-right: 8px;"></ma-active-event-icons>
 
             <div ng-if="stateParams.dateBar">
@@ -93,7 +93,7 @@
     <date-bar on-refresh="dateBar.refresh = $event" ng-if="stateParams.dateBar" ng-show="dateBar.expanded"></date-bar>
 
     <md-content md-scroll-y layout="column" flex class="main-content">
-      <div ui-view flex="noshrink" layout="column" class="dashboard-main-view" ng-class="{'mobile': !$mdMedia('gt-sm'), 'phone': $mdMedia('xs'), 'ma-no-padding': $state.params.noPadding}" role="main"></div>
+      <div ui-view flex="noshrink" layout="column" class="ma-ui-main-view" ng-class="{'mobile': !$mdMedia('gt-sm'), 'phone': $mdMedia('xs'), 'ma-no-padding': $state.params.noPadding}" role="main"></div>
       <ma-footer aria-role="contentinfo" layout></ma-footer>
     </md-content>
   </div>
