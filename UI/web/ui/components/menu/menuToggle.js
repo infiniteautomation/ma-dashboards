@@ -159,7 +159,7 @@ return {
     controller: MenuToggleController,
     require: {
         menu: '^^maUiMenu',
-        parentToggle: '?^^menuToggle'
+        parentToggle: '?^^maUiMenuToggle'
     },
     templateUrl: require.toUrl('./menuToggle.html'),
     bindings: {

@@ -52,7 +52,7 @@ return {
         item: '<menuItem'
     },
     require: {
-        parentToggle: '?^^menuToggle'
+        parentToggle: '?^^maMenuToggle'
     }
 };
 
