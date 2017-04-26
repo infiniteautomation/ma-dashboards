@@ -43,7 +43,7 @@ return [
     },
     {
         name: 'ui',
-        templateUrl: 'views/dashboard/main.html',
+        templateUrl: 'views/main.html',
         'abstract': true,
         menuHidden: true,
         menuTr: 'ui.app.ui',
@@ -57,7 +57,7 @@ return [
             loginTranslations: loadLoginTranslations,
             errorTemplate: ['$templateRequest', function($templateRequest) {
                 // preloads the error page so if the server goes down we can still display the page
-                return $templateRequest('views/dashboard/error.html');
+                return $templateRequest('views/error.html');
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/MenuEditor',
@@ -99,7 +99,7 @@ return [
     {
         name: 'ui.notFound',
         url: '/not-found?path',
-        templateUrl: 'views/dashboard/notFound.html',
+        templateUrl: 'views/notFound.html',
         menuHidden: true,
         menuTr: 'ui.app.pageNotFound',
         weight: 3000
@@ -107,7 +107,7 @@ return [
     {
         name: 'ui.unauthorized',
         url: '/unauthorized?path',
-        templateUrl: 'views/dashboard/unauthorized.html',
+        templateUrl: 'views/unauthorized.html',
         menuHidden: true,
         menuTr: 'ui.app.unauthorized',
         weight: 3000
@@ -115,7 +115,7 @@ return [
     {
         name: 'ui.error',
         url: '/error',
-        templateUrl: 'views/dashboard/error.html',
+        templateUrl: 'views/error.html',
         menuHidden: true,
         menuTr: 'ui.app.error',
         weight: 3000
@@ -123,7 +123,7 @@ return [
     {
         name: 'ui.serverError',
         url: '/server-error',
-        templateUrl: 'views/dashboard/serverError.html',
+        templateUrl: 'views/serverError.html',
         menuHidden: true,
         menuTr: 'ui.app.serverError',
         weight: 3000
@@ -131,7 +131,7 @@ return [
     {
         name: 'ui.home',
         url: '/home',
-        templateUrl: 'views/dashboard/home.html',
+        templateUrl: 'views/home.html',
         menuTr: 'ui.dox.home',
         menuIcon: 'home',
         params: {
@@ -323,7 +323,7 @@ return [
     {
         url: '/edit-pages/{pageXid}',
         name: 'ui.settings.editPages',
-        templateUrl: 'views/dashboard/editPages.html',
+        templateUrl: 'views/editPages.html',
         menuTr: 'ui.app.editPages',
         menuIcon: 'dashboard',
         permission: 'edit-ui-pages',
@@ -339,7 +339,7 @@ return [
     {
         url: '/edit-menu',
         name: 'ui.settings.editMenu',
-        templateUrl: 'views/dashboard/editMenu.html',
+        templateUrl: 'views/editMenu.html',
         menuTr: 'ui.app.editMenu',
         menuIcon: 'toc',
         permission: 'edit-ui-menus',
@@ -350,7 +350,7 @@ return [
     {
         url: '/auto-login-settings',
         name: 'ui.settings.autoLoginSettings',
-        templateUrl: 'views/dashboard/autoLoginSettings.html',
+        templateUrl: 'views/autoLoginSettings.html',
         menuTr: 'ui.app.autoLoginSettings',
         menuIcon: 'face',
         permission: 'superadmin'
@@ -358,7 +358,7 @@ return [
     {
         url: '/ui-settings',
         name: 'ui.settings.uiSettings',
-        templateUrl: 'views/dashboard/uiSettings.html',
+        templateUrl: 'views/uiSettings.html',
         menuTr: 'ui.app.uiSettings',
         menuIcon: 'color_lens',
         permission: 'edit-ui-settings',
