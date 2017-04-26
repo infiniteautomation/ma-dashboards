@@ -190,9 +190,9 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
         resolve: {
             prettyprint: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/prettyprint/prettyprint'], function(prettyprint) {
-                    angular.module('prettyprint', [])
+                    angular.module('maUiDocsState', [])
                         .directive('prettyprint', prettyprint); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
-                    $ocLazyLoad.inject('prettyprint');
+                    $ocLazyLoad.inject('maUiDocsState');
                 });
             }]
         }
@@ -623,14 +623,14 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, customUiSettingsPromise, 
         angularJsModuleNames.push(angularModule.name);
     }
     
-    angular.module('uiBootstrap', angularJsModuleNames).config(['UserProvider', 'maUiMenuProvider', function(UserProvider, maUiMenuProvider) {
+    angular.module('maUiBootstrap', angularJsModuleNames).config(['UserProvider', 'maUiMenuProvider', function(UserProvider, maUiMenuProvider) {
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
         maUiMenuProvider.registerCustomMenuItems();
     }]);
 
     angular.element(function() {
-        angular.bootstrap(document.documentElement, ['uiBootstrap'], {strictDi: true});
+        angular.bootstrap(document.documentElement, ['maUiBootstrap'], {strictDi: true});
     });
 });
 

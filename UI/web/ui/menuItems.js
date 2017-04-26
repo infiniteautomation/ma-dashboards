@@ -17,9 +17,9 @@ return [
         resolve: {
             deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/login/login'], function(login) {
-                    angular.module('login', [])
+                    angular.module('maUiLoginState', [])
                         .directive('maUiLogin', login);
-                    $ocLazyLoad.inject('login');
+                    $ocLazyLoad.inject('maUiLoginState');
                 });
             }],
             loginTranslations: loadLoginTranslations
@@ -163,10 +163,10 @@ return [
                             './directives/watchList/watchListTableRow',
                             'md-color-picker/mdColorPicker'], 
                 function (watchListPage, watchListTableRow) {
-                    angular.module('watchListPage', ['mdColorPicker'])
+                    angular.module('maUiWatchListState', ['mdColorPicker'])
                         .directive('maUiWatchListPage', watchListPage)
                         .directive('maUiWatchListTableRow', watchListTableRow);
-                    $ocLazyLoad.inject('watchListPage');
+                    $ocLazyLoad.inject('maUiWatchListState');
                     cssInjector.injectLink(require.toUrl('./directives/watchList/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                     cssInjector.injectLink(require.toUrl('md-color-picker/mdColorPicker.css'), 'mdColorPicker');
                 });
@@ -188,9 +188,9 @@ return [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
-                    angular.module('dataPointDetailsPage', [])
+                    angular.module('maUiDataPointDetailsState', [])
                         .component('maUiDataPointDetails', dataPointDetails);
-                    $ocLazyLoad.inject('dataPointDetailsPage');
+                    $ocLazyLoad.inject('maUiDataPointDetailsState');
                     cssInjector.injectLink(require.toUrl('./components/dataPointDetails/dataPointDetails.css'), 'dataPointDetails' ,'link[href="styles/main.css"]');
                 });
             }]
@@ -211,9 +211,9 @@ return [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
-                    angular.module('eventsPage', [])
+                    angular.module('maUiEventsState', [])
                         .component('maUiEventsPage', eventsPage);
-                    $ocLazyLoad.inject('eventsPage');
+                    $ocLazyLoad.inject('maUiEventsState');
                     cssInjector.injectLink(require.toUrl('./components/eventsPage/eventsPage.css'), 'eventsPage' ,'link[href="styles/main.css"]');
                 });
             }]
@@ -379,9 +379,9 @@ return [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./components/usersPage/usersPage'], function (usersPage) {
-                    angular.module('usersPage', [])
+                    angular.module('maUiUsersState', [])
                         .component('maUiUsersPage', usersPage);
-                    $ocLazyLoad.inject('usersPage');
+                    $ocLazyLoad.inject('maUiUsersState');
                 });
             }]
         }
@@ -399,9 +399,9 @@ return [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./components/systemSettingsPage/systemSettingsPage'], function (systemSettingsPage) {
-                    angular.module('systemSettingsPage', [])
+                    angular.module('maUiSystemSettingsState', [])
                         .component('maUiSystemSettingsPage', systemSettingsPage);
-                    $ocLazyLoad.inject('systemSettingsPage');
+                    $ocLazyLoad.inject('maUiSystemSettingsState');
                 });
             }]
         }
@@ -419,10 +419,10 @@ return [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'], function (watchListBuilder, bracketEscape) {
-                    angular.module('watchListBuilder', [])
+                    angular.module('maUiWatchListBuilderState', [])
                         .directive('maUiBracketEscape', bracketEscape)
                         .component('maUiWatchListBuilder', watchListBuilder);
-                    $ocLazyLoad.inject('watchListBuilder');
+                    $ocLazyLoad.inject('maUiWatchListBuilderState');
                     cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'), 'watchListBuilder' ,'link[href="styles/main.css"]');
                 });
             }]
@@ -441,9 +441,9 @@ return [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./components/importExportPage/importExportPage'], function (importExportPage) {
-                    angular.module('importExportPage', [])
+                    angular.module('maUiImportExportState', [])
                         .component('maUiImportExportPage', importExportPage);
-                    $ocLazyLoad.inject('importExportPage');
+                    $ocLazyLoad.inject('maUiImportExportState');
                 });
             }]
         }
@@ -461,9 +461,9 @@ return [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./components/modulesPage/modulesPage'], function (modulesPage) {
-                    angular.module('modulesPage', [])
+                    angular.module('maUiModulesState', [])
                         .component('maUiModulesPage', modulesPage);
-                    $ocLazyLoad.inject('modulesPage');
+                    $ocLazyLoad.inject('maUiModulesState');
                 });
             }]
         }
