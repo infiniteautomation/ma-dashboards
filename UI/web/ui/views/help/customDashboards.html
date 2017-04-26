@@ -17,15 +17,12 @@
 	similar to this web app, with a menu which you can customize using JavaScript.</p>
 
 	<p>Once you have created a folder in overrides, your dashboard will be accessible at
-	<a href="/user-dashboards/YOUR-FOLDER-NAME" target="_blank">/user-dashboards/YOUR-FOLDER-NAME</a>.
+	<a href="/user-ui/YOUR-FOLDER-NAME" target="_blank">/user-ui/YOUR-FOLDER-NAME</a>.
 
 	<p>
 		You will then need to update the loader script at the bottom of the index.html file.
 		Replace <code>require(['mangoUIModule/adminTemplate/app']);</code> with <code>require(['mangoUIModule/YOUR-FOLDER-NAME/app']);.</code>
 	</p>
-
-	You can change the Custom Dashboards link on the Mango menu bar to point to your new dashboard in the
-	<a ui-sref="ui.settings.system">System settings</a>.</p>
 
 	<p>Once you have a working template you can start <a ui-sref="ui.examples.playArea">playing around</a> with the live
 	examples and copy and paste them into your template HTML file.</p>

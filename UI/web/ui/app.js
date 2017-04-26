@@ -563,7 +563,7 @@ var uiSettingsPromise = $http({
     return data.data;
 }, angular.noop);
 
-var customDashboardSettingsPromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
+var customUiSettingsPromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
 
 var angularModulesPromise = $http({
     method: 'GET',
@@ -586,7 +586,7 @@ var angularModulesPromise = $http({
     console.log('Error loading AngularJS modules from Mango modules');
 });
 
-$q.all([userAndUserSettingsPromise, uiSettingsPromise, customDashboardSettingsPromise, angularModulesPromise]).then(function(data) {
+$q.all([userAndUserSettingsPromise, uiSettingsPromise, customUiSettingsPromise, angularModulesPromise]).then(function(data) {
     // destroy the services injector
     servicesInjector.get('$rootScope').$destroy();
     
