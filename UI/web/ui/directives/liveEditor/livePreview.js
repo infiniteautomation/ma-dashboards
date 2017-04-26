@@ -41,7 +41,7 @@ function LivePreview() {
     return {
         scope: false,
         bindToController: {
-            livePreview: '<'
+            livePreview: '<maUiLivePreview'
         },
         controller: LivePreviewController
     };
