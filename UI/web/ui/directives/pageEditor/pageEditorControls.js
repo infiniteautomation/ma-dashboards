@@ -24,12 +24,12 @@ function pageEditorControls() {
     };
 }
 
-PageEditorControlsController.$inject = ['$scope', 'Page', 'jsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
+PageEditorControlsController.$inject = ['$scope', 'maUiPages', 'jsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
     'localStorageService', '$mdDialog', 'Translate', 'maUiMenu', '$window', 'User', '$q', 'MA_UI_EDIT_MENUS_PERMISSION'];
-function PageEditorControlsController($scope, Page, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
+function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
         localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION) {
     this.$scope = $scope;
-    this.Page = Page;
+    this.maUiPages = maUiPages;
     this.jsonStoreEventManager = jsonStoreEventManager;
     this.MA_UI_PAGES_XID = MA_UI_PAGES_XID;
     this.MenuEditor = maUiMenuEditor;
@@ -73,7 +73,7 @@ PageEditorControlsController.prototype.$onInit = function() {
         $window.onbeforeunload = oldUnload;
     });
 
-    this.Page.getPages().then(function(pageSummaryStore) {
+    this.maUiPages.getPages().then(function(pageSummaryStore) {
         this.pageSummaryStore = pageSummaryStore;
     }.bind(this));
 
@@ -94,7 +94,7 @@ PageEditorControlsController.prototype.$onInit = function() {
 };
 
 PageEditorControlsController.prototype.createNewPage = function createNewPage(markup) {
-    var page = this.Page.newPageContent();
+    var page = this.maUiPages.newPageContent();
     if (!markup && this.newPageContents) {
         markup = this.newPageContents();
     }
@@ -123,7 +123,7 @@ PageEditorControlsController.prototype.loadPage = function loadPage(xid) {
         this.menuItem = menuItem;
     }.bind(this), angular.noop);
     
-    var pagePromise = this.Page.loadPage(xid).then(function(page) {
+    var pagePromise = this.maUiPages.loadPage(xid).then(function(page) {
         this.localStorageService.set('lastSelectedPage', {
             pageXid: page.xid
         });

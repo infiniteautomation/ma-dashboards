@@ -137,8 +137,8 @@ return [
         params: {
             helpPage: 'ui.help.gettingStarted'
         },
-        controller: ['$scope', 'Page', function ($scope, Page) {
-            Page.getPages().then(function(store) {
+        controller: ['$scope', 'maUiPages', function ($scope, maUiPages) {
+            maUiPages.getPages().then(function(store) {
                 $scope.pageCount = store.jsonData.pages.length;
             });
         }],

@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'Translate', 'Page', '$q', 'Util'];
-function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
+MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'Translate', 'maUiPages', '$q', 'Util'];
+function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
 
     function MenuEditor() {
     }
@@ -136,7 +136,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
                         return item.abstract && item.name !== this.item.name;
                     }.bind(this));
 
-                    Page.getPages().then(function(store) {
+                    maUiPages.getPages().then(function(store) {
                         this.pages = store.jsonData.pages;
                     }.bind(this));
                     

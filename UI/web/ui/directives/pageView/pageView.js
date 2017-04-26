@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-PageViewController.$inject = ['$scope', 'Page', 'User', 'jsonStoreEventManager'];
-function PageViewController($scope, Page, User, jsonStoreEventManager) {
+PageViewController.$inject = ['$scope', 'maUiPages', 'User', 'jsonStoreEventManager'];
+function PageViewController($scope, maUiPages, User, jsonStoreEventManager) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
     
     var $ctrl = this;
@@ -23,7 +23,7 @@ function PageViewController($scope, Page, User, jsonStoreEventManager) {
             delete $ctrl.page;
             delete $ctrl.markup;
             
-            Page.loadPage($ctrl.xid).then(function(page) {
+            maUiPages.loadPage($ctrl.xid).then(function(page) {
                 $ctrl.page = page;
                 $ctrl.markup = page.jsonData.markup;
             });
