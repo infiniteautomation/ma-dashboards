@@ -33,6 +33,8 @@ define(['./services/Point',
         './services/SystemSettings',
         './services/ImportExport',
         './services/GoogleAnalytics',
+        './filters/dateFilter',
+        './filters/trFilter',
         'angular',
         'angular-resource',
         'angular-local-storage'
@@ -40,7 +42,7 @@ define(['./services/Point',
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider,
-        ImportExportFactory, GoogleAnalyticsFactory, angular) {
+        ImportExportFactory, GoogleAnalyticsFactory, dateFilterFactory, trFilterFactory, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -83,6 +85,8 @@ ngMangoServices.factory('Permissions', PermissionsFactory);
 ngMangoServices.provider('SystemSettings', SystemSettingsProvider);
 ngMangoServices.factory('ImportExport', ImportExportFactory);
 ngMangoServices.factory('GoogleAnalytics', GoogleAnalyticsFactory);
+ngMangoServices.filter('maDate', dateFilterFactory);
+ngMangoServices.filter('tr', trFilterFactory);
 
 ngMangoServices.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', '');
 

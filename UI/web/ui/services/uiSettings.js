@@ -7,9 +7,9 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate',
-    'mangoDateFormats', 'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION'];
+    'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION'];
 function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
-        mangoDateFormats, MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION) {
+        MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION) {
     
     var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme'];
     var themeId = 0;
@@ -124,10 +124,6 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS,
                     cssInjector.injectStyle(result, 'interpolatedStyles', '[href="styles/main.css"]', false, true);
                 }.bind(this));
             }
-        },
-        formatDate: function formatDate(date, format) {
-            var momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
-            return moment(date).format(momentFormat);
         }
     };
     

@@ -9,8 +9,8 @@
     </div>
   </md-toolbar>
   <md-dialog-content layout="column" class="md-padding">
-    <div layout><strong flex="30" ma-tr="common.dateRangeFrom"></strong><span flex ng-bind="$ctrl.uiSettings.formatDate($ctrl.dateBar.from)"></span></div>
-    <div layout><strong flex="30" ma-tr="common.dateRangeTo"></strong><span flex ng-bind="$ctrl.uiSettings.formatDate($ctrl.dateBar.to)"></span></div>
+    <div layout><strong flex="30" ma-tr="common.dateRangeFrom"></strong><span flex ng-bind="$ctrl.dateBar.from | maDate"></span></div>
+    <div layout><strong flex="30" ma-tr="common.dateRangeTo"></strong><span flex ng-bind="$ctrl.dateBar.to | maDate"></span></div>
     <div layout><strong flex="30" ma-tr="ui.app.duration"></strong><span flex ng-bind="$ctrl.dateBar.to.valueOf() - $ctrl.dateBar.from.valueOf() | duration:'humanize'"></span></div>
 
     <md-radio-group ng-model="allPoints" ng-init="allPoints = false">

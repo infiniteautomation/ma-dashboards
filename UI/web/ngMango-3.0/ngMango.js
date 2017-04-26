@@ -82,7 +82,6 @@ define(['./ngMangoServices',
         './components/configImportDialog/configImportDialog',
         './components/maMap/maMap',
         'ng-map',
-        './filters/trFilter',
         './animations/slideUp',
         'angular',
         'require',
@@ -98,7 +97,7 @@ define(['./ngMangoServices',
         dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, ngMap, trFilter, slideUp, angular, require, moment) {
+        maMap, ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -188,7 +187,6 @@ ngMango.component('maConfigExport', configExport);
 ngMango.component('maConfigImport', configImport);
 ngMango.component('maConfigImportDialog', configImportDialog);
 ngMango.component('maMap', maMap);
-ngMango.filter('tr', trFilter);
 ngMango.animation('.ma-slide-up', slideUp);
 
 ngMango.constant('ngMangoInsertCss', true);
