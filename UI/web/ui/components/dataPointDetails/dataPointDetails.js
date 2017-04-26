@@ -6,10 +6,10 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-DataPointDetailsController.$inject = ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'PointHierarchy', 'DateBar', 'User', 'uiSettings'];
-function DataPointDetailsController($scope, $element, $stateParams, $state, localStorageService, PointHierarchy, DateBar, User, uiSettings) {
+DataPointDetailsController.$inject = ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'PointHierarchy', 'maUiDateBar', 'User', 'maUiSettings'];
+function DataPointDetailsController($scope, $element, $stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, uiSettings) {
 
-    this.dateBar = DateBar;
+    this.dateBar = maUiDateBar;
     this.User = User;
     this.uiSettings = uiSettings;
     

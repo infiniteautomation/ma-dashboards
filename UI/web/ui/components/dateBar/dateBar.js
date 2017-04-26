@@ -6,9 +6,9 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-DateBarController.$inject = ['$mdMedia', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', 'uiSettings'];
-function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar, uiSettings) {
-    this.params = DateBar;
+DateBarController.$inject = ['$mdMedia', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'maUiDateBar', 'maUiSettings'];
+function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, maUiDateBar, uiSettings) {
+    this.params = maUiDateBar;
     this.stateParams = $stateParams;
     this.rollupTypes = MA_ROLLUP_TYPES;
     this.timePeriodTypes = MA_TIME_PERIOD_TYPES;

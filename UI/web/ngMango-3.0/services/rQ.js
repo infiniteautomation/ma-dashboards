@@ -38,6 +38,7 @@ define([], function() {
 * </pre>
 */
 
+rqFactory.$inject = ['$q', 'require'];
 function rqFactory($q, require) {
     function rQ(deps, success, fail, fail2) {
         var localRequire = require;
@@ -61,8 +62,6 @@ function rqFactory($q, require) {
 
 	return rQ;
 }
-
-rqFactory.$inject = ['$q', 'require'];
 
 return rqFactory;
 

@@ -6,8 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'MenuEditor', 'uiSettings'];
-function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSettings) {
+menuEditor.$inject = ['maUiMenu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'maUiMenuEditor', 'maUiSettings'];
+function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, maUiMenuEditor, uiSettings) {
     return {
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),
@@ -130,7 +130,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, Page, MenuEditor, uiSe
                 var parent = origItem.parent;
                 var isNew = origItem.isNew;
                 
-                MenuEditor.editMenuItem($event, $scope.menuHierarchy, origItem).then(function(item) {
+                maUiMenuEditor.editMenuItem($event, $scope.menuHierarchy, origItem).then(function(item) {
                     var newParent = item.parent;
                     
                     // remove item from the original parent's children if it was deleted or moved

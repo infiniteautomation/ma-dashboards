@@ -24,15 +24,15 @@ function pageEditorControls() {
     };
 }
 
-PageEditorControlsController.$inject = ['$scope', 'Page', 'jsonStoreEventManager', 'MA_UI_PAGES_XID', 'MenuEditor', '$state',
-    'localStorageService', '$mdDialog', 'Translate', 'Menu', '$window', 'User', '$q', 'MA_UI_EDIT_MENUS_PERMISSION'];
-function PageEditorControlsController($scope, Page, jsonStoreEventManager, MA_UI_PAGES_XID, MenuEditor, $state,
+PageEditorControlsController.$inject = ['$scope', 'Page', 'jsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
+    'localStorageService', '$mdDialog', 'Translate', 'maUiMenu', '$window', 'User', '$q', 'MA_UI_EDIT_MENUS_PERMISSION'];
+function PageEditorControlsController($scope, Page, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
         localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION) {
     this.$scope = $scope;
     this.Page = Page;
     this.jsonStoreEventManager = jsonStoreEventManager;
     this.MA_UI_PAGES_XID = MA_UI_PAGES_XID;
-    this.MenuEditor = MenuEditor;
+    this.MenuEditor = maUiMenuEditor;
     this.$state = $state;
     this.localStorageService = localStorageService;
     this.$mdDialog = $mdDialog;

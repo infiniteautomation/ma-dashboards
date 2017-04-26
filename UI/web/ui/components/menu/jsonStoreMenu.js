@@ -6,7 +6,7 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-JsonStoreMenuController.$inject = ['$scope', 'Menu'];
+JsonStoreMenuController.$inject = ['$scope', 'maUiMenu'];
 function JsonStoreMenuController($scope, Menu) {
 
     this.$onInit = function() {

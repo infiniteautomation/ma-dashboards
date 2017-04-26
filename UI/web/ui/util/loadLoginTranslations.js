@@ -6,8 +6,8 @@
 define([], function() {
 'use strict';
 
-loadLoginTranslations.$inject = ['Translate', 'uiSettings', 'User', '$window'];
-function loadLoginTranslations(Translate, uiSettings, User, $window) {
+loadLoginTranslations.$inject = ['Translate', 'User', '$window'];
+function loadLoginTranslations(Translate, User, $window) {
     return Translate.loadNamespaces('login').then(function(data) {
         var user = User.current;
         moment.locale((user && user.locale) || data.locale || $window.navigator.languages || $window.navigator.language);

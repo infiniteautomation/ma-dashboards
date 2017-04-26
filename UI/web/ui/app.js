@@ -8,9 +8,9 @@ define([
     'ngMango/ngMangoMaterial',
     'ngMango/ngMangoComponents',
     'require',
-    './services/Menu',
-    './services/Page',
-    './services/DateBar',
+    './services/menu',
+    './services/pages',
+    './services/dateBar',
     './services/uiSettings',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
@@ -23,7 +23,7 @@ define([
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, ngMangoMaterial, ngMangoComponents, require, MenuProvider, Page, DateBar, uiSettings, pageView, livePreview, stateParams, iframeView, menuItems, moment) {
+], function(angular, ngMangoMaterial, ngMangoComponents, require, menuProvider, pagesFactory, dateBarFactory, uiSettingsFactory, pageView, livePreview, stateParams, iframeView, menuItems, moment) {
 'use strict';
 
 // must match variables defined in UIInstallUpgrade.java
@@ -34,7 +34,7 @@ var MA_UI_EDIT_MENUS_PERMISSION = "edit-ui-menus";
 var MA_UI_EDIT_PAGES_PERMISSION = "edit-ui-pages";
 var MA_UI_EDIT_SETTINGS_PERMISSION = "edit-ui-settings";
 
-var uiApp = angular.module('uiApp', [
+var uiApp = angular.module('maUiApp', [
     'oc.lazyLoad',
     'ui.router',
     'ui.sortable',
@@ -44,10 +44,10 @@ var uiApp = angular.module('uiApp', [
     'ngMessages'
 ]);
 
-uiApp.provider('Menu', MenuProvider)
-    .factory('Page', Page)
-    .factory('DateBar', DateBar)
-    .factory('uiSettings', uiSettings)
+uiApp.provider('maUiMenu', menuProvider)
+    .factory('maUiPages', pagesFactory)
+    .factory('maUiDateBar', dateBarFactory)
+    .factory('maUiSettings', uiSettingsFactory)
     .directive('maUiPageView', pageView)
     .directive('maUiLivePreview', livePreview)
     .directive('maUiStateParams', stateParams)
@@ -59,12 +59,12 @@ uiApp.provider('Menu', MenuProvider)
     .constant('MA_UI_EDIT_MENUS_PERMISSION', MA_UI_EDIT_MENUS_PERMISSION)
     .constant('MA_UI_EDIT_PAGES_PERMISSION', MA_UI_EDIT_PAGES_PERMISSION)
     .constant('MA_UI_EDIT_SETTINGS_PERMISSION', MA_UI_EDIT_SETTINGS_PERMISSION)
-    .constant('MANGO_UI_NG_DOCS', NG_DOCS)
+    .constant('MA_UI_NG_DOCS', NG_DOCS)
     .constant('MA_UI_MENU_ITEMS', menuItems);
 
 uiApp.config([
     'MA_UI_SETTINGS',
-    'MANGO_UI_NG_DOCS',
+    'MA_UI_NG_DOCS',
     '$stateProvider',
     '$urlRouterProvider',
     '$ocLazyLoadProvider',
@@ -72,14 +72,14 @@ uiApp.config([
     '$mdThemingProvider',
     '$injector',
     '$compileProvider',
-    'MenuProvider',
+    'maUiMenuProvider',
     '$locationProvider',
     '$mdAriaProvider',
     'cfpLoadingBarProvider',
     'SystemSettingsProvider',
     'MA_UI_MENU_XID',
     'MA_UI_PAGES_XID',
-function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
+function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
         cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID) {
 
@@ -150,7 +150,7 @@ function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $
 
     $urlRouterProvider.otherwise(function($injector, $location) {
         var basePath = '/ui/';
-        var uiSettings = $injector.get('uiSettings');
+        var uiSettings = $injector.get('maUiSettings');
         var User = $injector.get('User');
         var $state = $injector.get('$state');
         var user = User.current;
@@ -199,7 +199,7 @@ function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $
     };
     apiDocsMenuItems.push(docsParent);
 
-    var DOCS_PAGES = MANGO_UI_NG_DOCS.pages;
+    var DOCS_PAGES = MA_UI_NG_DOCS.pages;
 
     // Loop through and create array of children based on moduleName
     var modules = DOCS_PAGES.map(function(page) {
@@ -270,18 +270,18 @@ uiApp.run([
     'localStorageService',
     '$mdToast',
     'User',
-    'uiSettings',
+    'maUiSettings',
     'Translate',
     '$location',
     '$stateParams',
-    'DateBar',
+    'maUiDateBar',
     '$document',
     '$mdDialog',
     'GoogleAnalytics',
     'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
     '$window',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
-        $mdToast, User, uiSettings, Translate, $location, $stateParams, DateBar, $document, $mdDialog,
+        $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         GoogleAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window) {
 
     if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
@@ -290,7 +290,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 
     uiSettings.generateTheme();
     $rootScope.stateParams = $stateParams;
-    $rootScope.dateBar = DateBar;
+    $rootScope.dateBar = maUiDateBar;
     $rootScope.uiSettings = uiSettings;
     $rootScope.User = User;
     $rootScope.Math = Math;
@@ -360,7 +360,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             }
         }
         
-        DateBar.rollupTypesFilter = {};
+        maUiDateBar.rollupTypesFilter = {};
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
@@ -617,16 +617,16 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, customUiSettingsPromise, 
     uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', customMenuItems);
     uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
 
-    var angularJsModuleNames = ['uiApp'];
+    var angularJsModuleNames = ['maUiApp'];
     for (var i = 0; i < angularModules.length; i++) {
         var angularModule = angularModules[i];
         angularJsModuleNames.push(angularModule.name);
     }
     
-    angular.module('uiBootstrap', angularJsModuleNames).config(['UserProvider', 'MenuProvider', function(UserProvider, MenuProvider) {
+    angular.module('uiBootstrap', angularJsModuleNames).config(['UserProvider', 'maUiMenuProvider', function(UserProvider, maUiMenuProvider) {
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
-        MenuProvider.registerCustomMenuItems();
+        maUiMenuProvider.registerCustomMenuItems();
     }]);
 
     angular.element(function() {

@@ -30,7 +30,7 @@ var prettyprint = function(uiSettings) {
     };
 };
 
-prettyprint.$inject = ['uiSettings'];
+prettyprint.$inject = ['maUiSettings'];
 
 return prettyprint;
 

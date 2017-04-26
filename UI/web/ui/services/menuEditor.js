@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-MenuEditorFactory.$inject = ['Menu', '$mdDialog', 'Translate', 'Page', '$q', 'Util'];
+MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'Translate', 'Page', '$q', 'Util'];
 function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
 
     function MenuEditor() {
@@ -114,7 +114,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
             if (!item.target) item.target = '_blank';
 
             return $mdDialog.show({
-                templateUrl: require.toUrl('./MenuEditorDialog.html'),
+                templateUrl: require.toUrl('./menuEditorDialog.html'),
                 parent: angular.element(document.body),
                 targetEvent: event,
                 clickOutsideToClose: true,

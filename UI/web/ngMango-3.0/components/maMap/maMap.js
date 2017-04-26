@@ -41,7 +41,7 @@ define(['angular', 'require'], function(angular, require) {
   *
   */
   
-    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'uiSettings', '$injector'];
+    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'maUiSettings', '$injector'];
     function MaMapController($scope, $mdMedia, NgMap, uiSettings, $injector) {
         var $state;
         if ($injector.has('$state')) {

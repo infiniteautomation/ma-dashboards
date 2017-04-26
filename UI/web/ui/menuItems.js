@@ -60,7 +60,7 @@ return [
                 return $templateRequest('views/error.html');
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./services/MenuEditor',
+                return rQ(['./services/menuEditor',
                            './components/menu/jsonStoreMenu',
                            './components/menu/menu',
                            './components/menu/menuLink',
@@ -74,10 +74,10 @@ return [
                            './components/activeEventIcons/activeEventIcons',
                            './components/dateBar/dateBar',
                            './components/footer/footer'
-                ], function(MenuEditor, jsonStoreMenu, menu, menuLink, menuToggle,
+                ], function(menuEditorFactory, jsonStoreMenu, menu, menuLink, menuToggle,
                         menuEditor, pageEditor, pageEditorControls, liveEditor, dualPaneEditor, autoLoginSettings, activeEventIcons, dateBar, footer) {
-                    angular.module('uiRootState', ['ui.ace'])
-                        .factory('MenuEditor', MenuEditor)
+                    angular.module('maUiRootState', ['ui.ace'])
+                        .factory('maUiMenuEditor', menuEditorFactory)
                         .directive('maUiMenuEditor', menuEditor)
                         .directive('maUiPageEditor', pageEditor)
                         .directive('maUiPageEditorControls', pageEditorControls)
@@ -91,7 +91,7 @@ return [
                         .component('maUiActiveEventIcons', activeEventIcons)
                         .component('maUiDateBar', dateBar)
                         .component('maUiFooter', footer);
-                    $ocLazyLoad.inject('uiRootState');
+                    $ocLazyLoad.inject('maUiRootState');
                 });
             }]
         }

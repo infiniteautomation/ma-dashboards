@@ -6,7 +6,7 @@
 define(['require', 'angular-ui-ace'], function(require) {
 'use strict';
 
-LiveEditorController.$inject = ['$element', 'uiSettings', '$templateRequest', '$sce', '$scope', '$timeout'];
+LiveEditorController.$inject = ['$element', 'maUiSettings', '$templateRequest', '$sce', '$scope', '$timeout'];
 function LiveEditorController($element, uiSettings, $templateRequest, $sce, $scope, $timeout) {
     this.initialText = $element.data('htmlContent');
     $element.removeData('htmlContent');

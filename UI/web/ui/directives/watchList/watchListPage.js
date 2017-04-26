@@ -20,9 +20,9 @@ function watchListPageDirective() {
 }
 
 WatchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy',
-    'DateBar', '$mdDialog', 'statistics', '$scope', '$mdColorPicker'];
+    'maUiDateBar', '$mdDialog', 'statistics', '$scope', '$mdColorPicker'];
 function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy,
-        DateBar, $mdDialog, statistics, $scope, $mdColorPicker) {
+        maUiDateBar, $mdDialog, statistics, $scope, $mdColorPicker) {
     
     this.baseUrl = require.toUrl('.');
     this.watchList = null;
@@ -30,7 +30,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     this.dataSource = null;
     this.deviceName = null;
     this.hierarchyFolders = [];
-    this.dateBar = DateBar;
+    this.dateBar = maUiDateBar;
 
     this.selected = [];
     this.selectedStats = [];
@@ -396,8 +396,8 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
-            controller: ['DateBar', 'pointValues', 'uiSettings', 'Util', 'MA_ROLLUP_TYPES', function(DateBar, pointValues, uiSettings, Util, MA_ROLLUP_TYPES) {
-                this.dateBar = DateBar;
+            controller: ['maUiDateBar', 'pointValues', 'maUiSettings', 'Util', 'MA_ROLLUP_TYPES', function(maUiDateBar, pointValues, uiSettings, Util, MA_ROLLUP_TYPES) {
+                this.dateBar = maUiDateBar;
                 this.uiSettings = uiSettings;
                 this.rollupTypes = MA_ROLLUP_TYPES;
                 this.rollupType = 'NONE';
@@ -411,7 +411,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                     var functionName = downloadType.indexOf('COMBINED') > 0 ? 'getPointValuesForXidsCombined' : 'getPointValuesForXids';
                     var mimeType = downloadType.indexOf('CSV') === 0 ? 'text/csv' : 'application/json';
                     var extension = downloadType.indexOf('CSV') === 0 ? 'csv' : 'json';
-                    var fileName = this.watchList.name + '_' + DateBar.from.toISOString() + '_' + DateBar.to.toISOString() + '.' + extension;
+                    var fileName = this.watchList.name + '_' + maUiDateBar.from.toISOString() + '_' + maUiDateBar.to.toISOString() + '.' + extension;
 
                     this.downloadStatus.error = null;
                     this.downloadStatus.downloading = true;
@@ -419,11 +419,11 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                     this.downloadStatus.queryPromise = pointValues[functionName](xids, {
                         mimeType: mimeType,
                         responseType: 'blob',
-                        from: DateBar.from,
-                        to: DateBar.to,
+                        from: maUiDateBar.from,
+                        to: maUiDateBar.to,
                         rollup: this.rollupType,
-                        rollupInterval: DateBar.rollupIntervals,
-                        rollupIntervalType: DateBar.rollupIntervalPeriod
+                        rollupInterval: maUiDateBar.rollupIntervals,
+                        rollupIntervalType: maUiDateBar.rollupIntervalPeriod
                     }).then(function(response) {
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);
