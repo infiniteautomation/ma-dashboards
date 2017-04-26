@@ -40,7 +40,6 @@ function ScaleToController($scope, $element, $window, $timeout) {
 }
 
 ScaleToController.prototype.$onInit = function() {
-    // jshint eqnull:true
     var $ctrl = this;
     
     if (this.maintainRatio == null || this.maintainRatio === '')

@@ -180,7 +180,6 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             
             // set defaults
             this.menuItems.forEach(function(menuItem) {
-                // jshint eqnull:true
                 if (menuItem.weight == null) {
                     menuItem.weight = 1000;
                 }
@@ -395,8 +394,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         
         function setDefaults(item) {
             item.menuHidden = !!item.menuHidden;
-            
-            // jshint eqnull:true
+
             if (item.weight == null) {
                 item.weight = 1000;
             }

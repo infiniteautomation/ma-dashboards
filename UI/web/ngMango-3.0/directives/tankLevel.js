@@ -96,8 +96,7 @@ TankLevelController.prototype.updateChartValue = function() {
     
     var value = this.getValue() || 0;
     var textValue = this.getTextValue();
-    
-    // jshint eqnull:true
+
     var max = this.max != null ? this.max : 100;
     var min = this.min != null ? this.min : 0;
     var range = max - min;

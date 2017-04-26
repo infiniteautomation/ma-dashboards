@@ -74,7 +74,6 @@ IndicatorController.prototype.valueChangeHandler = function() {
     var value = this.getValue();
     var color;
 
-    // jshint eqnull:true
     if (value != null) {
         var attrName = this.Util.camelCase('color-' + value);
         color = this.$attrs[attrName];

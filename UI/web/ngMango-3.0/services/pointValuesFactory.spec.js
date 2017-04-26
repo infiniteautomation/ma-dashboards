@@ -501,7 +501,6 @@ describe('Point values service', function() {
         assert.isNumber(pointValue.value);
         assert.isNumber(pointValue.timestamp);
         assert.property(pointValue, 'annotation');
-        // jshint eqnull:true
         if (pointValue.annotation != null) {
             assert.isString(pointValue.annotation);
         }
@@ -511,7 +510,6 @@ describe('Point values service', function() {
         assert.isString(pointValue.value);
         assert.isNumber(pointValue.timestamp);
         assert.property(pointValue, 'annotation');
-        // jshint eqnull:true
         if (pointValue.annotation != null) {
             assert.isString(pointValue.annotation);
         }
@@ -521,7 +519,6 @@ describe('Point values service', function() {
         assert.isBoolean(pointValue.value);
         assert.isNumber(pointValue.timestamp);
         assert.property(pointValue, 'annotation');
-        // jshint eqnull:true
         if (pointValue.annotation != null) {
             assert.isString(pointValue.annotation);
         }

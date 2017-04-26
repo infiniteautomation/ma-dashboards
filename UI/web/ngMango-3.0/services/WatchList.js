@@ -125,7 +125,6 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         if (this.data && this.data.paramValues) {
             for (var paramName in this.data.paramValues) {
                 var paramValue = this.data.paramValues[paramName];
-                // jshint eqnull:true
                 if (typeof paramValue === 'object' && (paramValue.id != null || paramValue.xid)) {
                     this.data.paramValues[paramName] = {
                         id: paramValue.id,

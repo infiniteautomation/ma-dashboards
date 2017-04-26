@@ -385,8 +385,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         });
                         if (!point) return;
                     }
-                    
-                	// jshint eqnull:true
+
                 	var value;
                 	if (point.pointLocator.dataType === 'IMAGE') {
                 	    value = payload.value.value;

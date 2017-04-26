@@ -27,7 +27,6 @@ function DraggableController($scope, $element) {
 }
 
 DraggableController.prototype.$onInit = function() {
-    // jshint eqnull:true
     var $ctrl = this;
     var $element = this.$element;
 
@@ -54,7 +53,6 @@ DraggableController.prototype.$onChanges = function(changes) {
 };
 
 DraggableController.prototype.setDraggableAttr = function() {
-    // jshint eqnull:true
     this.$element.attr('draggable', this.draggable == null || this.draggable);
 };
 

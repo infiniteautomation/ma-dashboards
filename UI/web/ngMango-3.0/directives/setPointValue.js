@@ -120,7 +120,6 @@ SetPointValueController.prototype.convertRendered = function() {
     if (!this.point) return;
     
     var result;
-    // jshint eqnull:true
     if (this.point.renderedValue != null) {
         result = parseFloat(this.point.renderedValue.trim());
         if (isFinite(result))

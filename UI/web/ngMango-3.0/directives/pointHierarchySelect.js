@@ -41,7 +41,6 @@ function PointHierarchyController($attrs, PointHierarchy) {
     };
     
     this.doQuery = function doQuery() {
-        // jshint eqnull:true
         var subfoldersOnly = angular.isUndefined($attrs.subfoldersOnly) ? true : !!this.subfoldersOnly;
         var subfolders = angular.isUndefined($attrs.subfolders) ? this.maxDepth == null || this.maxDepth > 0 : !!this.subfolders;
         var getPoints = angular.isUndefined($attrs.points) ? true : !!this.points;
@@ -64,7 +63,6 @@ function PointHierarchyController($attrs, PointHierarchy) {
         
         this.queryPromise = hierarchy.$promise.then(function(folder) {
             PointHierarchy.walkHierarchy(folder, function(subFolder, parent, index, depth) {
-                // jshint eqnull:true
                 if ((subfoldersOnly && subFolder === folder) || (this.maxDepth != null && depth > this.maxDepth)) return;
                 if (matcher) {
                     subFolder.matches = matcher.exec(subFolder.name);

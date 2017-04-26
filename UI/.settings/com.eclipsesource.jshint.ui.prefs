@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
 excluded=//*.min.js\://*.spec.js\:web/vendor//*
 included=web//*.js
+projectSpecificOptions=true

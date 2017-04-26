@@ -582,7 +582,6 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
             if (rendered) return rendered;
             
             var value = data[fieldName];
-            // jshint eqnull:true
             if (value != null) {
                 return Util.pointValueToString(value);
             }

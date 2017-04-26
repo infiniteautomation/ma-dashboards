@@ -170,8 +170,7 @@ GaugeChartController.prototype.updateChart = function() {
     axis.bands = [];
     axis.startValue = asNumber(this.start);
     axis.endValue = asNumber(this.end, 100);
-    
-    // jshint eqnull:true
+
     if (this.band1End != null) {
         var stop1 = asNumber(this.band1End);
         axis.bands.push({

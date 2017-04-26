@@ -263,8 +263,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, $q, Util) {
                     break;
                 }
                 delete item.templateType;
-                
-                // jshint eqnull:true
+
                 if (item.weight == null) {
                     item.weight = 1000;
                 }

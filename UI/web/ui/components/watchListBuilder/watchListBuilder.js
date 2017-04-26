@@ -385,7 +385,6 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
     $ctrl.clearSearch = function clearSearch(doQuery) {
         $ctrl.tableSearch = '';
         $ctrl.tableQuery.rql = new query.Query();
-        // jshint eqnull:true
         if (doQuery || doQuery == null)
             $ctrl.doPointQuery();
     };

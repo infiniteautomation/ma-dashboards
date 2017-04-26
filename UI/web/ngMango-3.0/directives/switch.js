@@ -74,7 +74,6 @@ SwitchController.prototype.valueChangeHandler = function() {
 };
 
 SwitchController.prototype.inputValue = function(setValue) {
-    // jshint eqnull:true
     if (setValue != null) {
         if (this.point) {
             this.point.setValue(setValue);

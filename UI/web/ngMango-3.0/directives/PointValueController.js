@@ -15,8 +15,7 @@ function PointValueController($scope, $element, $attrs, pointEventManager, Point
     this.$attrs = $attrs;
     this.pointEventManager = pointEventManager;
     this.Point = Point;
-    
-    // jshint eqnull:true
+
     if (this.changeDuration == null)
         this.changeDuration = 400;
     
@@ -59,7 +58,6 @@ PointValueController.prototype.setPoint = function(point) {
 };
 
 PointValueController.prototype.getValue = function() {
-    // jshint eqnull:true
     if (this.value != null) {
         return this.value;
     } else if (this.point && this.point.convertedValue != null) {
@@ -71,7 +69,6 @@ PointValueController.prototype.getValue = function() {
 };
 
 PointValueController.prototype.getTextValue = function() {
-    // jshint eqnull:true
     if (this.value != null) {
         return this.value.toFixed(2);
     } else if (this.point && this.point.renderedValue != null) {
@@ -111,7 +108,6 @@ PointValueController.prototype.valueChangeHandler = function(isPointChange) {
     // manually add and remove classes rather than using ng-class as point values can
     // change rapidly and result in huge slow downs / heaps of digest loops
     if (!isPointChange && this.point) {
-        // jshint eqnull:true
         var valueChanged = this.previousPointValue != null && this.point.value !== this.previousPointValue;
         this.previousPointValue = this.point.value;
         

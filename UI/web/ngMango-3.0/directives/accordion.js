@@ -12,7 +12,6 @@ function accordion() {
         restrict: 'A',
         scope: false,
         link: function($scope, $element, attrs, controller) {
-            // jshint eqnull:true
             $scope[attrs.maAccordion] = controller;
             if (attrs.maAccordionSingle != null) {
                 controller.single = true;

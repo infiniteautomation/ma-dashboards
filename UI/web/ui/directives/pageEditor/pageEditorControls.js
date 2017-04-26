@@ -138,7 +138,6 @@ PageEditorControlsController.prototype.loadPage = function loadPage(xid) {
 };
 
 PageEditorControlsController.prototype.setSelectedPage = function setSelectedPage(page, triggerChange) {
-    // jshint eqnull:true
     if (triggerChange == null) triggerChange = true;
     
     this.selectedPage = page;

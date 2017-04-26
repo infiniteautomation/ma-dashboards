@@ -107,7 +107,6 @@ PointValueDirectiveController.prototype.valueChangeHandler = function() {
 
 PointValueDirectiveController.prototype.updateText = function() {
     delete this.valueStyle.color;
-    // jshint eqnull:true
     if (!this.point || this.point.time == null) {
         this.displayValue = '';
         return;

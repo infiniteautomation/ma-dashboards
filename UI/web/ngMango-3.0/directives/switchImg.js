@@ -122,8 +122,7 @@ SwitchImgController.prototype.valueChangeHandler = function() {
 
 SwitchImgController.prototype.updateImage = function() {
     var value = this.getValue();
-    
-    // jshint eqnull:true
+
     if (value == null) {
         delete this.src;
     } else {
