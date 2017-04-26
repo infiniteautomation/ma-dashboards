@@ -48,9 +48,9 @@ uiApp.provider('Menu', MenuProvider)
     .factory('Page', Page)
     .factory('DateBar', DateBar)
     .factory('uiSettings', uiSettings)
-    .directive('pageView', pageView)
-    .directive('livePreview', livePreview)
-    .directive('stateParams', stateParams)
+    .directive('maUiPageView', pageView)
+    .directive('maUiLivePreview', livePreview)
+    .directive('maUiStateParams', stateParams)
     .directive('maUiIframeView', iframeView)
     .constant('require', require)
     .constant('MA_UI_MENU_XID', MA_UI_MENU_XID)
@@ -188,7 +188,7 @@ function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $
             prettyprint: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/prettyprint/prettyprint'], function(prettyprint) {
                     angular.module('prettyprint', [])
-                        .directive('prettyprint', prettyprint);
+                        .directive('prettyprint', prettyprint); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
                     $ocLazyLoad.inject('prettyprint');
                 });
             }]

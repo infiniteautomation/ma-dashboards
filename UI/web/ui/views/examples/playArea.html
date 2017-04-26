@@ -4,7 +4,7 @@
 <br><a ui-sref="ui.examples.playAreaBig">Play Area View Only</a>
 </p>
 
-<state-params state-params="stateParams"></state-params>
+<ma-ui-state-params state-params="stateParams"></ma-uistate-params>
 
 <ma-json-store xid="play-area-{{User.current.username}}" item="playArea" value="paVal"
   ng-init="playArea={readPermission: 'user', editPermission: 'user'}" item-loaded="$item.jsonData.text=stateParams.markup||$item.jsonData.text">
@@ -38,7 +38,7 @@
               </md-card-title-text>
             </md-card-title>
             <md-card-content flex layout="column">
-                <live-editor flex style="height:500px" ng-model="paVal.text" ng-model-options="{debounce: 1000}"></live-editor>
+                <ma-ui-live-editor flex style="height:500px" ng-model="paVal.text" ng-model-options="{debounce: 1000}"></ma-ui-live-editor>
             </md-card-content>
         </md-card>
     </div>
@@ -50,7 +50,7 @@
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                <div live-preview="paVal.text"></div>
+                <div ma-ui-live-preview="paVal.text"></div>
             </md-card-content>
         </md-card>
     </div>

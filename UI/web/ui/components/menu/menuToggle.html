@@ -1,6 +1,6 @@
-<div ui-sref-active="menu-active" ng-class="{'menu-open': $ctrl.isOpen, 'menu-submenu': $ctrl.item.submenu}" class="menu-toggle">
+<div ui-sref-active="menu-active" ng-class="{'menu-open': $ctrl.isOpen, 'menu-submenu': $ctrl.item.submenu}" class="ma-ui-menu-toggle">
     <a ui-sref="{{$ctrl.item.name}}" style="display:none"></a>
-    <md-button class="menu-toggle-button menu-indent" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.menuText}}">
+    <md-button class="ma-ui-menu-toggle-button menu-indent" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.menuText}}">
       <div flex layout="row">
         <span>
             <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') === 0" class="menu-icon fa fa-fw {{$ctrl.item.menuIcon}}"></md-icon>
@@ -8,7 +8,7 @@
             <span class="menu-text">{{$ctrl.menuText}}</span>
         </span>
         <span flex></span>
-        <span class="menu-toggle-icon" ng-if="!$ctrl.item.submenu">
+        <span class="ma-ui-menu-toggle-icon" ng-if="!$ctrl.item.submenu">
           <md-icon>keyboard_arrow_up</md-icon>
         </span>
         <span class="menu-subdir-icon" ng-if="$ctrl.item.submenu">
@@ -18,10 +18,10 @@
       </div>
     </md-button>
     
-    <ul class="menu-toggle-list ng-hide" ng-show="$ctrl.isOpen" ng-class="'menu-level-' + ($ctrl.menuLevel + 1)">
+    <ul class="ma-ui-menu-toggle-list ng-hide" ng-show="$ctrl.isOpen" ng-class="'menu-level-' + ($ctrl.menuLevel + 1)">
       <li ng-repeat="child in $ctrl.item.children | orderBy:['weight', 'name'] track by child.name" ng-if="$ctrl.isVisible(child)">
-        <menu-link menu-item="child" ng-if="!child.children"></menu-link>
-        <menu-toggle menu-item="child" open-menu="$ctrl.openMenu" ng-if="child.children"></menu-toggle>
+        <ma-ui-menu-link menu-item="child" ng-if="!child.children"></ma-ui-menu-link>
+        <ma-ui-menu-toggle menu-item="child" open-menu="$ctrl.openMenu" ng-if="child.children"></ma-ui-menu-toggle>
       </li>
     </ul>
 </div>

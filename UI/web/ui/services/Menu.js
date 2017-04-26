@@ -39,7 +39,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
 
             if (menuItem.linkToPage) {
                 delete menuItem.templateUrl;
-                menuItem.template = '<page-view xid="' + menuItem.pageXid + '" flex layout="column"></page-view>';
+                menuItem.template = '<ma-ui-page-view xid="' + menuItem.pageXid + '" flex layout="column"></ma-ui-page-view>';
             }
 
             if (menuItem.templateUrl) {

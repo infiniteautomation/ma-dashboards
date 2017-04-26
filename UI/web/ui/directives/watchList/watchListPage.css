@@ -45,7 +45,7 @@
   border: 0;
 }
 
-ma-watch-list-page ma-watch-list-parameters.md-padding {
+ma-ui-watch-list-page ma-watch-list-parameters.md-padding {
   padding-bottom: 0;
 }
 
@@ -98,24 +98,24 @@ ma-watch-list-page ma-watch-list-parameters.md-padding {
   margin-bottom: 0;
 }
 
-ma-watch-list-page md-card.select-watch-list {
+ma-ui-watch-list-page md-card.select-watch-list {
   margin: 0;
 }
 
-ma-watch-list-page md-card.select-watch-list md-select {
+ma-ui-watch-list-page md-card.select-watch-list md-select {
   margin: 0;
 }
 
-ma-watch-list-page .watchlist-2-pane md-card.select-watch-list {
+ma-ui-watch-list-page .watchlist-2-pane md-card.select-watch-list {
   margin: 0 16px 0 0;
 }
 
-ma-watch-list-page .watchlist-2-pane .ma-scroll-parent {
+ma-ui-watch-list-page .watchlist-2-pane .ma-scroll-parent {
   position: relative;
 }
 
-ma-watch-list-page .watchlist-2-pane .ma-scroll-parent md-list,
-ma-watch-list-page .watchlist-2-pane .ma-scroll-parent .ma-scroll-child {
+ma-ui-watch-list-page .watchlist-2-pane .ma-scroll-parent md-list,
+ma-ui-watch-list-page .watchlist-2-pane .ma-scroll-parent .ma-scroll-child {
   overflow-y: auto;
   display: block;
   position: absolute;
@@ -125,72 +125,72 @@ ma-watch-list-page .watchlist-2-pane .ma-scroll-parent .ma-scroll-child {
   right: 0;
 }
 
-ma-watch-list-page md-card.select-watch-list md-list {
+ma-ui-watch-list-page md-card.select-watch-list md-list {
   padding: 0;
   overflow-x: hidden;
 }
 
-ma-watch-list-page .watch-list-back.md-button {
+ma-ui-watch-list-page .watch-list-back.md-button {
   margin-left: 0;
   margin-right: 0;
 }
 
-ma-watch-list-page .watch-list-filter md-input-container {
+ma-ui-watch-list-page .watch-list-filter md-input-container {
   margin: 8px;
 }
 
-ma-watch-list-page .watch-list-filter .md-button {
+ma-ui-watch-list-page .watch-list-filter .md-button {
   margin: 0 0 0 -40px;
 }
 
-ma-watch-list-page md-list-item.md-2-line,
-ma-watch-list-page md-list-item.md-2-line > .md-no-style,
-ma-watch-list-page md-list-item.md-2-line:before,
-ma-watch-list-page md-list-item.md-2-line > .md-no-style:before {
+ma-ui-watch-list-page md-list-item.md-2-line,
+ma-ui-watch-list-page md-list-item.md-2-line > .md-no-style,
+ma-ui-watch-list-page md-list-item.md-2-line:before,
+ma-ui-watch-list-page md-list-item.md-2-line > .md-no-style:before {
   height: 64px;
   min-height: 64px;
 }
 
-ma-watch-list-page md-list-item,
-ma-watch-list-page md-list-item > .md-no-style,
-ma-watch-list-page md-list-item:before,
-ma-watch-list-page md-list-item > .md-no-style:before {
+ma-ui-watch-list-page md-list-item,
+ma-ui-watch-list-page md-list-item > .md-no-style,
+ma-ui-watch-list-page md-list-item:before,
+ma-ui-watch-list-page md-list-item > .md-no-style:before {
   height: 40px;
   min-height: 40px;
 }
 
-ma-watch-list-page md-card md-toolbar.watchlist-picker {
+ma-ui-watch-list-page md-card md-toolbar.watchlist-picker {
   max-height: 84px;
   height: 84px;
 }
 
-ma-watch-list-page md-card md-toolbar.watchlist-picker md-radio-button {
+ma-ui-watch-list-page md-card md-toolbar.watchlist-picker md-radio-button {
   margin: 0px;
   font-size: 18px;
   padding: 3px;
 }
 
-ma-watch-list-page ma-watch-list-chart {
+ma-ui-watch-list-page ma-watch-list-chart {
   height: 400px;
   width: 100%;
 }
-ma-watch-list-page ma-watch-list-chart path.amcharts-graph-stroke {
+ma-ui-watch-list-page ma-watch-list-chart path.amcharts-graph-stroke {
     stroke-width: 2.5px;
     stroke-opacity: .7;
 }
-ma-watch-list-page ma-watch-list-chart path.amcharts-graph-fill {
+ma-ui-watch-list-page ma-watch-list-chart path.amcharts-graph-fill {
     fill-opacity: 0.5;
 }
 
-ma-watch-list-page ma-watch-list-parameters md-input-container {
+ma-ui-watch-list-page ma-watch-list-parameters md-input-container {
   margin-bottom: 0;
 }
 
-ma-watch-list-page .md-table-pagination > * {
+ma-ui-watch-list-page .md-table-pagination > * {
   height: 32px;
 }
 
-ma-watch-list-page .md-color-picker-preview {
+ma-ui-watch-list-page .md-color-picker-preview {
   margin-right: 8px;
   width: 24px;
   height: 24px;
@@ -203,7 +203,7 @@ ma-watch-list-page .md-color-picker-preview {
   background-position: 0 0, 4px 4px;
 }
 
-ma-watch-list-page .md-color-picker-preview .md-color-picker-result {
+ma-ui-watch-list-page .md-color-picker-preview .md-color-picker-result {
   width: 100%;
   height: 100%;
 }

@@ -9,7 +9,7 @@ options. The second example shows how to use fixed values of 1-5.</p>
   See API Documentation for the <a ui-sref="ui.docs.ngMangoServices.Point({ '#': 'methods_valuefn' })"><code>valueFn</code></a> and 
   <a ui-sref="ui.docs.ngMangoServices.Point({ '#': 'methods_renderermap' })"><code>rendererMap</code></a> methods on the <a ui-sref="ui.docs.ngMangoServices.Point"><code>Point</code></a> object.
 </p>
-<dual-pane-editor>
+<ma-ui-dual-pane-editor>
 
 <md-input-container class="md-block">
     <label>Choose a point</label>
@@ -28,4 +28,4 @@ options. The second example shows how to use fixed values of 1-5.</p>
     <md-radio-button ng-repeat="i in range(1,5)" value="{{i}}" ng-style="myPoint.valueRenderer(i)">{{myPoint.valueRenderer(i).text}}</md-radio-button>
 </md-radio-group>
 
-</dual-pane-editor>
+</ma-ui-dual-pane-editor>

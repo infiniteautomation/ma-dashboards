@@ -61,7 +61,7 @@ body {
 	margin-left: 8px;
 }
 
-ma-footer {
+ma-ui-footer {
   padding: 16px 32px;
   font-size: small;
   border-top: 1px solid #ddd;
@@ -124,8 +124,8 @@ md-menu-content.right-icons md-icon {
 
 /* Dashboard menu */
 
-.menu-link md-icon,
-.menu-toggle md-icon {
+.ma-ui-menu-link md-icon,
+.ma-ui-menu-toggle md-icon {
   min-height: 0;
   height: auto;
 }
@@ -135,7 +135,7 @@ md-menu-content.right-icons md-icon {
 }
 
 .ma-ui-menu > li,
-.menu-toggle.menu-submenu > ul > li {
+.ma-ui-menu-toggle.menu-submenu > ul > li {
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
@@ -161,17 +161,17 @@ md-menu-content.right-icons md-icon {
   font-weight: normal;
 }
 
-.ma-ui-menu .menu-link {
+.ma-ui-menu .ma-ui-menu-link {
 	padding: 0;
 }
 
-.ma-ui-menu .menu-link a {
+.ma-ui-menu .ma-ui-menu-link a {
   padding: 0px 16px;
   display: block;
   text-decoration: none;
 }
 
-.menu-toggle-icon {
+.ma-ui-menu-toggle-icon {
   display: block;
   margin-left: auto;
   transform: rotate(180deg);
@@ -180,7 +180,7 @@ md-menu-content.right-icons md-icon {
   -webkit-transition: -webkit-transform 0.3s ease-in-out;
 }
 
-.menu-open > .menu-toggle-button .menu-toggle-icon {
+.menu-open > .ma-ui-menu-toggle-button .ma-ui-menu-toggle-icon {
   transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
 }
@@ -205,7 +205,7 @@ md-menu-content.right-icons md-icon {
 	margin-right: 8px;
 }
 
-.ma-ui-menu .menu-toggle-list {
+.ma-ui-menu .ma-ui-menu-toggle-list {
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -217,7 +217,7 @@ md-menu-content.right-icons md-icon {
   transition-property: height;
 }
 
-.ma-ui-menu .menu-toggle-list.ng-hide {
+.ma-ui-menu .ma-ui-menu-toggle-list.ng-hide {
 	height: 0px !important;
 }
 
@@ -411,7 +411,7 @@ div.ace_editor {
   font-size: 14px;
 }
 
-live-editor {
+ma-ui-live-editor {
 	resize: vertical;
 	overflow-y: auto;
 	padding-bottom: 10px;
@@ -419,7 +419,7 @@ live-editor {
 	display: block;
 }
 
-live-editor [ui-ace] {  
+ma-ui-live-editor [ui-ace] {  
 	height: 100%;
 }
 
@@ -465,21 +465,21 @@ live-editor [ui-ace] {
   margin-right: 2.4rem;
 }
 
-.ma-ui-menu .md-button.menu-link a {
+.ma-ui-menu .md-button.ma-ui-menu-link a {
 	color: currentColor;
 	font-weight: inherit;
 }
 
-.ma-ui-menu .md-button.menu-link.menu-active {
+.ma-ui-menu .md-button.ma-ui-menu-link.menu-active {
 	background-color: currentColor;
 }
 
-.ma-ui-menu .md-button.menu-link.menu-active:hover {
+.ma-ui-menu .md-button.ma-ui-menu-link.menu-active:hover {
 	cursor: initial;
 }
 
-.ma-ui-menu .md-button.menu-link.menu-active .menu-text,
-.ma-ui-menu .md-button.menu-link.menu-active .menu-icon {
+.ma-ui-menu .md-button.ma-ui-menu-link.menu-active .menu-text,
+.ma-ui-menu .md-button.ma-ui-menu-link.menu-active .menu-icon {
 	color: rgba(255,255,255,0.87);
 }
 
@@ -595,27 +595,27 @@ table.md-table th.md-column.md-active:hover md-icon.md-sort-icon {
 
 /* Menu editor */
 
-menu-editor td .md-button.md-icon-button {
+ma-ui-menu-editor td .md-button.md-icon-button {
   padding: 0;
   margin: 0;
 }
 
-.menu-editor-path {
+.ma-ui-menu-editor-path {
   min-height: 48px;
   margin-bottom: 10px;
 }
 
-.menu-editor-path .md-toolbar-tools {
+.ma-ui-menu-editor-path .md-toolbar-tools {
   height: 48px;
   min-height: 48px;
   max-height: 48px;
 }
 
-.menu-editor-dialog md-radio-button {
+.ma-ui-menu-editor-dialog md-radio-button {
   margin-right: 20px;
 }
 
-page-view {
+ma-ui-page-view {
   position: relative;
   display: block;
 }
@@ -774,7 +774,7 @@ md-input-container .hint.ng-hide {
 }
 
 /* Page editor */
-.page-editor-inputs md-input-container {
+.ma-ui-page-editor-inputs md-input-container {
   margin-bottom: 5px;
 }
 
@@ -838,46 +838,46 @@ li.md-nav-item:first-of-type {
   margin: 0;
 }
 
-date-bar md-input-container .md-input:not([disabled]), date-bar md-input-container:not(.md-input-invalid).md-input-has-value label {
+ma-ui-date-bar md-input-container .md-input:not([disabled]), ma-ui-date-bar md-input-container:not(.md-input-invalid).md-input-has-value label {
     color: inherit !important;
 }
 
-date-bar md-checkbox:not(.md-checked) .md-icon, date-bar md-checkbox .md-ink-ripple {
+ma-ui-date-bar md-checkbox:not(.md-checked) .md-icon, ma-ui-date-bar md-checkbox .md-ink-ripple {
 	border-color: inherit !important;
 	color: inherit !important;
 }
 
-md-toolbar.date-bar, md-toolbar.date-bar .md-toolbar-tools {
+md-toolbar.ma-ui-date-bar, md-toolbar.ma-ui-date-bar .md-toolbar-tools {
   font-size: inherit;
   height: 128px;
   max-height: 128px;
 }
 
-md-toolbar.date-bar.three-rows, md-toolbar.date-bar.three-rows .md-toolbar-tools {
+md-toolbar.ma-ui-date-bar.three-rows, md-toolbar.ma-ui-date-bar.three-rows .md-toolbar-tools {
   height: 192px;
   max-height: 192px;
 }
 
-md-toolbar.date-bar.four-rows, md-toolbar.date-bar.four-rows .md-toolbar-tools {
+md-toolbar.ma-ui-date-bar.four-rows, md-toolbar.ma-ui-date-bar.four-rows .md-toolbar-tools {
   height: 256px;
   max-height: 256px;
 }
 
-md-toolbar.date-bar md-checkbox {
+md-toolbar.ma-ui-date-bar md-checkbox {
   margin-bottom: 0;
 }
 
-md-toolbar.date-bar md-input-container {
+md-toolbar.ma-ui-date-bar md-input-container {
   margin-bottom: 0;
 }
 
-md-toolbar.date-bar {
+md-toolbar.ma-ui-date-bar {
   transition: max-height 0.3s linear;
   overflow: hidden;
   min-height: 0;
 }
 
-date-bar.ng-hide md-toolbar.date-bar {
+ma-ui-date-bar.ng-hide md-toolbar.ma-ui-date-bar {
   max-height: 0;
 }
 

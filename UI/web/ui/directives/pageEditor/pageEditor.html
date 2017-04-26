@@ -14,10 +14,10 @@
               </md-card-title-text>
             </md-card-title>
             <md-card-content flex layout="column">
-              <live-editor flex style="height: 500px"
+              <ma-ui-live-editor flex style="height: 500px"
                     ng-model="$ctrl.page.jsonData.markup" ng-model-options="{debounce: 1000}"
                     ng-change="$ctrl.markupChanged()">
-              </live-editor>
+              </ma-ui-live-editor>
             </md-card-content>
         </md-card>
     </div>
@@ -29,7 +29,7 @@
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                <div live-preview="$ctrl.page.jsonData.markup"></div>
+                <div ma-ui-live-preview="$ctrl.page.jsonData.markup"></div>
             </md-card-content>
         </md-card>
     </div>

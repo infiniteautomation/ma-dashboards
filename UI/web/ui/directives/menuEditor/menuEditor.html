@@ -2,14 +2,14 @@
   <md-icon>add</md-icon>
 </md-button>
 
-<div class="menu-editor-buttons">
+<div class="ma-ui-menu-editor-buttons">
   <md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu($event)"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
   <md-button class="md-raised" ng-click="getHierarchy()"><md-icon>undo</md-icon> <span ma-tr="ui.app.undoChanges"></span></md-button>
   <md-button class="md-raised md-warn" ng-click="deleteCustomMenu($event)"><md-icon>delete</md-icon> <span ma-tr="ui.app.deleteCustomMenu"></span></md-button>
 </div>
 
-<md-card class="menu-editor-container">
-  <md-toolbar class="md-whiteframe-z2 menu-editor-path md-hue-3">
+<md-card class="ma-ui-menu-editor-container">
+  <md-toolbar class="md-whiteframe-z2 ma-ui-menu-editor-path md-hue-3">
     <div class="md-toolbar-tools" layout layout-align="start center">
       <strong ma-tr="ui.app.menuPath"></strong><strong>:&nbsp;</strong>
       <span ng-repeat="pathItem in path track by $index" layout layout-align="start center">

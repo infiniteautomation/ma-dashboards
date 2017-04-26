@@ -18,7 +18,7 @@ return [
             deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/login/login'], function(login) {
                     angular.module('login', [])
-                        .directive('login', login);
+                        .directive('maUiLogin', login);
                     $ocLazyLoad.inject('login');
                 });
             }],
@@ -78,19 +78,19 @@ return [
                         menuEditor, pageEditor, pageEditorControls, liveEditor, dualPaneEditor, autoLoginSettings, activeEventIcons, dateBar, footer) {
                     angular.module('uiRootState', ['ui.ace'])
                         .factory('MenuEditor', MenuEditor)
-                        .directive('menuEditor', menuEditor)
-                        .directive('pageEditor', pageEditor)
+                        .directive('maUiMenuEditor', menuEditor)
+                        .directive('maUiPageEditor', pageEditor)
                         .directive('maUiPageEditorControls', pageEditorControls)
-                        .directive('liveEditor', liveEditor)
-                        .directive('dualPaneEditor', dualPaneEditor)
-                        .component('jsonStoreMenu', jsonStoreMenu)
+                        .directive('maUiLiveEditor', liveEditor)
+                        .directive('maUiDualPaneEditor', dualPaneEditor)
+                        .component('maUiJsonStoreMenu', jsonStoreMenu)
                         .component('maUiMenu', uiMenu)
-                        .component('menuLink', menuLink)
-                        .component('menuToggle', menuToggle)
-                        .component('autoLoginSettings', autoLoginSettings)
-                        .component('maActiveEventIcons', activeEventIcons)
-                        .component('dateBar', dateBar)
-                        .component('maFooter', footer);
+                        .component('maUiMenuLink', menuLink)
+                        .component('maUiMenuToggle', menuToggle)
+                        .component('maUiAutoLoginSettings', autoLoginSettings)
+                        .component('maUiActiveEventIcons', activeEventIcons)
+                        .component('maUiDateBar', dateBar)
+                        .component('maUiFooter', footer);
                     $ocLazyLoad.inject('uiRootState');
                 });
             }]
@@ -148,7 +148,7 @@ return [
     {
         name: 'ui.watchList',
         url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId',
-        template: '<ma-watch-list-page flex="noshrink" layout="column"></ma-watch-list-page>',
+        template: '<ma-ui-watch-list-page flex="noshrink" layout="column"></ma-ui-watch-list-page>',
         menuTr: 'ui.app.watchList',
         menuIcon: 'remove_red_eye',
         params: {
@@ -164,8 +164,8 @@ return [
                             'md-color-picker/mdColorPicker'], 
                 function (watchListPage, watchListTableRow) {
                     angular.module('watchListPage', ['mdColorPicker'])
-                        .directive('maWatchListPage', watchListPage)
-                        .directive('maWatchListTableRow', watchListTableRow);
+                        .directive('maUiWatchListPage', watchListPage)
+                        .directive('maUiWatchListTableRow', watchListTableRow);
                     $ocLazyLoad.inject('watchListPage');
                     cssInjector.injectLink(require.toUrl('./directives/watchList/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                     cssInjector.injectLink(require.toUrl('md-color-picker/mdColorPicker.css'), 'mdColorPicker');
@@ -176,7 +176,7 @@ return [
     {
         name: 'ui.dataPointDetails',
         url: '/data-point-details/{pointXid}?pointId',
-        template: '<ma-data-point-details></ma-data-point-details>',
+        template: '<ma-ui-data-point-details></ma-ui-data-point-details>',
         menuTr: 'ui.app.dataPointDetails',
         menuIcon: 'timeline',
         params: {
@@ -189,7 +189,7 @@ return [
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
                     angular.module('dataPointDetailsPage', [])
-                        .component('maDataPointDetails', dataPointDetails);
+                        .component('maUiDataPointDetails', dataPointDetails);
                     $ocLazyLoad.inject('dataPointDetailsPage');
                     cssInjector.injectLink(require.toUrl('./components/dataPointDetails/dataPointDetails.css'), 'dataPointDetails' ,'link[href="styles/main.css"]');
                 });
@@ -199,7 +199,7 @@ return [
     {
         name: 'ui.events',
         url: '/events?eventType&alarmLevel&sortOrder&acknowledged',
-        template: '<ma-events-page></ma-events-page>',
+        template: '<ma-ui-events-page></ma-ui-events-page>',
         menuTr: 'ui.app.events',
         menuIcon: 'alarm',
         params: {
@@ -212,7 +212,7 @@ return [
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
                     angular.module('eventsPage', [])
-                        .component('maEventsPage', eventsPage);
+                        .component('maUiEventsPage', eventsPage);
                     $ocLazyLoad.inject('eventsPage');
                     cssInjector.injectLink(require.toUrl('./components/eventsPage/eventsPage.css'), 'eventsPage' ,'link[href="styles/main.css"]');
                 });
@@ -297,7 +297,7 @@ return [
     {
         url: '/view-page/{pageXid}',
         name: 'ui.viewPage',
-        template: '<page-view xid="{{pageXid}}" flex layout="column"></page-view>',
+        template: '<ma-ui-page-view xid="{{pageXid}}" flex layout="column"></ma-ui-page-view>',
         menuTr: 'ui.app.viewPage',
         menuHidden: true,
         controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
@@ -369,7 +369,7 @@ return [
     {
         name: 'ui.settings.users',
         url: '/users/{username}',
-        template: '<users-page><users-page>',
+        template: '<ma-ui-users-page><ma-ui-users-page>',
         menuTr: 'header.users',
         menuIcon: 'people',
         permission: 'superadmin',
@@ -380,7 +380,7 @@ return [
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./components/usersPage/usersPage'], function (usersPage) {
                     angular.module('usersPage', [])
-                        .component('usersPage', usersPage);
+                        .component('maUiUsersPage', usersPage);
                     $ocLazyLoad.inject('usersPage');
                 });
             }]
@@ -389,7 +389,7 @@ return [
     {
         name: 'ui.settings.system',
         url: '/system',
-        template: '<system-settings-page><system-settings-page>',
+        template: '<ma-ui-system-settings-page><ma-ui-system-settings-page>',
         menuTr: 'header.systemSettings',
         menuIcon: 'settings',
         permission: 'superadmin',
@@ -400,7 +400,7 @@ return [
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./components/systemSettingsPage/systemSettingsPage'], function (systemSettingsPage) {
                     angular.module('systemSettingsPage', [])
-                        .component('systemSettingsPage', systemSettingsPage);
+                        .component('maUiSystemSettingsPage', systemSettingsPage);
                     $ocLazyLoad.inject('systemSettingsPage');
                 });
             }]
@@ -409,7 +409,7 @@ return [
     {
         name: 'ui.settings.watchListBuilder',
         url: '/watch-list-builder/{watchListXid}',
-        template: '<h1 ma-tr="ui.app.watchListBuilder"></h1>\n<watch-list-builder></watch-list-builder>',
+        template: '<h1 ma-tr="ui.app.watchListBuilder"></h1>\n<ma-ui-watch-list-builder></ma-ui-watch-list-builder>',
         menuTr: 'ui.app.watchListBuilder',
         menuIcon: 'playlist_add_check',
         params: {
@@ -420,8 +420,8 @@ return [
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'], function (watchListBuilder, bracketEscape) {
                     angular.module('watchListBuilder', [])
-                        .directive('bracketEscape', bracketEscape)
-                        .component('watchListBuilder', watchListBuilder);
+                        .directive('maUiBracketEscape', bracketEscape)
+                        .component('maUiWatchListBuilder', watchListBuilder);
                     $ocLazyLoad.inject('watchListBuilder');
                     cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'), 'watchListBuilder' ,'link[href="styles/main.css"]');
                 });
@@ -431,7 +431,7 @@ return [
     {
         name: 'ui.settings.importExport',
         url: '/import-export',
-        template: '<import-export-page><import-export-page>',
+        template: '<ma-ui-import-export-page><ma-ui-import-export-page>',
         menuTr: 'header.emport',
         menuIcon: 'import_export',
         permission: 'superadmin',
@@ -442,7 +442,7 @@ return [
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./components/importExportPage/importExportPage'], function (importExportPage) {
                     angular.module('importExportPage', [])
-                        .component('importExportPage', importExportPage);
+                        .component('maUiImportExportPage', importExportPage);
                     $ocLazyLoad.inject('importExportPage');
                 });
             }]
@@ -451,7 +451,7 @@ return [
     {
         name: 'ui.settings.modules',
         url: '/modules',
-        template: '<modules-page><modules-page>',
+        template: '<ma-ui-modules-page><ma-ui-modules-page>',
         menuTr: 'header.modules',
         menuIcon: 'extension',
         permission: 'superadmin',
@@ -462,7 +462,7 @@ return [
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./components/modulesPage/modulesPage'], function (modulesPage) {
                     angular.module('modulesPage', [])
-                        .component('modulesPage', modulesPage);
+                        .component('maUiModulesPage', modulesPage);
                     $ocLazyLoad.inject('modulesPage');
                 });
             }]
