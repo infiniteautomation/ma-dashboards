@@ -133,21 +133,18 @@ function DeviceNameFactory($resource) {
         query: {
             method: 'GET',
             isArray: true,
-            withCredentials: true,
             cache: true
         },
         byDataSourceId: {
         	url: '/rest/v1/device-names/by-data-source-id/:id',
             method: 'GET',
             isArray: true,
-            withCredentials: true,
             cache: true
         },
         byDataSourceXid: {
             url: '/rest/v1/device-names/by-data-source-xid/:xid',
             method: 'GET',
             isArray: true,
-            withCredentials: true,
             cache: true
         }
     });

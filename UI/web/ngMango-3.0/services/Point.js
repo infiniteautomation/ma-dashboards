@@ -211,7 +211,6 @@ function PointFactory($resource, $http, $timeout, Util, User) {
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
-            withCredentials: true,
             cache: true
         },
         rql: {
@@ -222,14 +221,12 @@ function PointFactory($resource, $http, $timeout, Util, User) {
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
-            withCredentials: true,
             cache: true
         },
         getById: {
             url: '/rest/v1/data-points/by-id/:id',
             method: 'GET',
             isArray: false,
-            withCredentials: true,
             cache: true
         },
         save: {

@@ -177,7 +177,6 @@ function UserProvider() {
                 interceptor: {
                     response: Util.arrayResponseInterceptor
                 },
-                withCredentials: true,
                 cache: true
             },
             rql: {
@@ -188,21 +187,18 @@ function UserProvider() {
                 interceptor: {
                     response: Util.arrayResponseInterceptor
                 },
-                withCredentials: true,
                 cache: true
             },
             getById: {
                 url: '/rest/v1/users/by-id/:id',
                 method: 'GET',
                 isArray: false,
-                withCredentials: true,
                 cache: true
             },
             getCurrent: {
                 url: '/rest/v1/users/current',
                 method: 'GET',
                 isArray: false,
-                withCredentials: true,
                 cache: false,
                 interceptor: {
                     response: loginInterceptor
@@ -212,7 +208,6 @@ function UserProvider() {
                 url: '/rest/v2/login',
                 method: 'POST',
                 isArray: false,
-                withCredentials: true,
                 cache: false,
                 interceptor: {
                     response: loginInterceptor
@@ -222,7 +217,6 @@ function UserProvider() {
                 url: '/rest/v2/login/su',
                 method: 'POST',
                 isArray: false,
-                withCredentials: true,
                 cache: false,
                 interceptor: {
                     response: loginInterceptor
@@ -232,7 +226,6 @@ function UserProvider() {
                 url: '/rest/v2/login/exit-su',
                 method: 'POST',
                 isArray: false,
-                withCredentials: true,
                 cache: false,
                 interceptor: {
                     response: loginInterceptor
@@ -242,7 +235,6 @@ function UserProvider() {
                 url: '/rest/v2/logout',
                 method: 'POST',
                 isArray: false,
-                withCredentials: true,
                 cache: false,
                 interceptor: {
                     response: logoutInterceptor

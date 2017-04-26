@@ -133,8 +133,7 @@ function eventsFactory($resource, Util) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            },
-            withCredentials: true
+            }
         },
         rql: {
         	url: '/rest/v1/events?:query',
@@ -143,25 +142,21 @@ function eventsFactory($resource, Util) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            },
-            withCredentials: true
+            }
         },
         acknowledge: {
             method: 'PUT',
             url: '/rest/v1/events/acknowledge/:id',
-            withCredentials: true,
             cache: true
         },
         acknowledgeViaRql: {
             method: 'POST',
-            url: '/rest/v1/events/acknowledge/?:rql',
-            withCredentials: true
+            url: '/rest/v1/events/acknowledge/?:rql'
         },
         getActiveSummary: {
         	url: '/rest/v1/events/active-summary',
             method: 'GET',
             isArray: true,
-            withCredentials: true,
             cache: true
         }
     });

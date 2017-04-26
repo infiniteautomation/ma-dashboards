@@ -20,7 +20,6 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
-            withCredentials: true,
             cache: false
         },
         save: {
@@ -46,7 +45,6 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
             return $http({
                 method: 'GET',
                 url: '/rest/v1/watch-lists/' + encodeURIComponent(this.xid) +'/data-points',
-                withCredentials: true,
                 cache: false,
                 transformResponse: Util.transformArrayResponse
             }).then(function(response) {

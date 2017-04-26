@@ -158,7 +158,6 @@ function DataSourceFactory($resource, Util) {
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
-            withCredentials: true,
             cache: true
         },
         rql: {
@@ -169,14 +168,12 @@ function DataSourceFactory($resource, Util) {
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
-            withCredentials: true,
             cache: true
         },
         getById: {
             url: '/rest/v1/data-sources/by-id/:id',
             method: 'GET',
             isArray: false,
-            withCredentials: true,
             cache: true
         }
     });
