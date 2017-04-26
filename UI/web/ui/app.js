@@ -86,6 +86,9 @@ function(MA_UI_SETTINGS, MANGO_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $
     // will need initially when we use AngularJS 1.6.x
     //$compileProvider.preAssignBindingsEnabled(true);
     $compileProvider.debugInfoEnabled(false);
+    $compileProvider.commentDirectivesEnabled(false);
+    // we use the a class directive to transform ngDoc divs with class="prettyprint"
+    //$compileProvider.cssClassDirectivesEnabled(false);
     $mdAriaProvider.disableWarnings();
 
     if (MA_UI_SETTINGS.palettes) {
