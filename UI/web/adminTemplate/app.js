@@ -374,7 +374,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
                 message = Translate.trSync('login.ui.app.connectivityRestored');
             if (!ADMIN_SETTINGS.user) {
                 // user logged in elsewhere
-                User.current().$promise.then(function(user) {
+                User.getCurrent().$promise.then(function(user) {
                     ADMIN_SETTINGS.user = user;
                     $rootScope.user = user;
                 });
@@ -404,7 +404,7 @@ var User = servicesInjector.get('User');
 var adminSettings = {};
 
 // get the current user or do auto login
-User.current().$promise.then(null, function() {
+User.getCurrent().$promise.then(null, function() {
     return User.autoLogin();
 }).then(function(user) {
     adminSettings.user = user;
