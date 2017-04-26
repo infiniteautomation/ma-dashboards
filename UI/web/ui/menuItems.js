@@ -485,7 +485,8 @@ return [
         menuIcon: 'fa-magic',
         params: {
             markup: null
-        }
+        },
+        weight: 990
     },
     {
         name: 'ui.examples.playAreaBig',
@@ -493,13 +494,15 @@ return [
         url: '/play-area-big',
         menuTr: 'ui.dox.playAreaBig',
         menuHidden: true,
-        menuIcon: 'fa-magic'
+        menuIcon: 'fa-magic',
+        weight: 990
     },
     {
         name: 'ui.examples.basics',
         url: '/basics',
         menuTr: 'ui.dox.basics',
-        menuIcon: 'fa-info-circle'
+        menuIcon: 'fa-info-circle',
+        weight: 995
     },
     {
         name: 'ui.examples.basics.angular',
@@ -571,7 +574,8 @@ return [
         name: 'ui.examples.singleValueDisplays',
         url: '/single-value-displays',
         menuTr: 'ui.dox.singleValueDisplays',
-        menuIcon: 'fa-tachometer'
+        menuIcon: 'fa-tachometer',
+        weight: 996
     },
     {
         name: 'ui.examples.singleValueDisplays.gauges',
@@ -601,7 +605,8 @@ return [
         name: 'ui.examples.charts',
         url: '/charts',
         menuTr: 'ui.dox.charts',
-        menuIcon: 'fa-area-chart'
+        menuIcon: 'fa-area-chart',
+        weight: 997
     },
     {
         name: 'ui.examples.charts.lineChart',
@@ -649,7 +654,8 @@ return [
         name: 'ui.examples.settingPointValues',
         url: '/setting-point-values',
         menuTr: 'ui.dox.settingPoint',
-        menuIcon: 'fa-pencil-square-o'
+        menuIcon: 'fa-pencil-square-o',
+        weight: 998
     },
     {
         name: 'ui.examples.settingPointValues.setPoint',
