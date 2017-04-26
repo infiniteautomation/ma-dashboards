@@ -150,7 +150,6 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
 
     $urlRouterProvider.otherwise(function($injector, $location) {
         var basePath = '/ui/';
-        var uiSettings = $injector.get('maUiSettings');
         var User = $injector.get('User');
         var $state = $injector.get('$state');
         var user = User.current;

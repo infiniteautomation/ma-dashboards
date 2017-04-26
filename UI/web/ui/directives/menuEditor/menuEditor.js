@@ -6,8 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-menuEditor.$inject = ['maUiMenu', '$mdDialog', 'Translate', '$mdMedia', 'maUiMenuEditor', 'maUiSettings'];
-function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor, uiSettings) {
+menuEditor.$inject = ['maUiMenu', '$mdDialog', 'Translate', '$mdMedia', 'maUiMenuEditor'];
+function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
     return {
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),

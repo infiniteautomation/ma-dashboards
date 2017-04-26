@@ -80,8 +80,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
 
     this.$get = MenuFactory;
 
-    MenuFactory.$inject = ['maUiSettings', 'JsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'jsonStoreEventManager', 'MA_UI_EDIT_MENUS_PERMISSION'];
-    function MenuFactory(uiSettings, JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION) {
+    MenuFactory.$inject = ['JsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'jsonStoreEventManager', 'MA_UI_EDIT_MENUS_PERMISSION'];
+    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION) {
 
         var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
 
