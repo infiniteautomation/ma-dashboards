@@ -6,8 +6,8 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-UiMenuController.$inject = [];
-function UiMenuController() {
+MenuController.$inject = [];
+function MenuController() {
     this.childVisible = function childVisible(menuItems) {
         var visibleCount = 0;
         for (var i = 0; i < menuItems.length; i++) {
@@ -73,8 +73,8 @@ function UiMenuController() {
 }
 
 return {
-    controller: UiMenuController,
-    templateUrl: require.toUrl('./uiMenu.html'),
+    controller: MenuController,
+    templateUrl: require.toUrl('./menu.html'),
     bindings: {
         origMenuItems: '<menuItems',
         user: '<user'

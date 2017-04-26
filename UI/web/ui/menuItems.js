@@ -62,7 +62,7 @@ return [
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/MenuEditor',
                            './components/menu/jsonStoreMenu',
-                           './components/menu/uiMenu',
+                           './components/menu/menu',
                            './components/menu/menuLink',
                            './components/menu/menuToggle',
                            './directives/menuEditor/menuEditor',
@@ -74,7 +74,7 @@ return [
                            './components/activeEventIcons/activeEventIcons',
                            './components/dateBar/dateBar',
                            './components/footer/footer'
-                ], function(MenuEditor, jsonStoreMenu, uiMenu, menuLink, menuToggle,
+                ], function(MenuEditor, jsonStoreMenu, menu, menuLink, menuToggle,
                         menuEditor, pageEditor, pageEditorControls, liveEditor, dualPaneEditor, autoLoginSettings, activeEventIcons, dateBar, footer) {
                     angular.module('uiRootState', ['ui.ace'])
                         .factory('MenuEditor', MenuEditor)
@@ -84,7 +84,7 @@ return [
                         .directive('maUiLiveEditor', liveEditor)
                         .directive('maUiDualPaneEditor', dualPaneEditor)
                         .component('maUiJsonStoreMenu', jsonStoreMenu)
-                        .component('maUiMenu', uiMenu)
+                        .component('maUiMenu', menu)
                         .component('maUiMenuLink', menuLink)
                         .component('maUiMenuToggle', menuToggle)
                         .component('maUiAutoLoginSettings', autoLoginSettings)

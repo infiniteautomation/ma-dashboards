@@ -135,7 +135,7 @@ md-menu-content.right-icons md-icon {
 }
 
 .ma-ui-menu > li,
-.ma-ui-menu-toggle.menu-submenu > ul > li {
+.ma-ui-menu-toggle.ma-ui-menu-submenu > ul > li {
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
@@ -180,24 +180,24 @@ md-menu-content.right-icons md-icon {
   -webkit-transition: -webkit-transform 0.3s ease-in-out;
 }
 
-.menu-open > .ma-ui-menu-toggle-button .ma-ui-menu-toggle-icon {
+.ma-ui-menu-open > .ma-ui-menu-toggle-button .ma-ui-menu-toggle-icon {
   transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
 }
 
-.ma-ui-menu ul.menu-level-2 .menu-indent {
+.ma-ui-menu ul.ma-ui-menu-level-2 .ma-ui-menu-indent {
   padding-left: 32px;
 }
 
-.ma-ui-menu .menu-submenu ul.menu-level-2 .menu-indent {
+.ma-ui-menu .ma-ui-menu-submenu ul.ma-ui-menu-level-2 .ma-ui-menu-indent {
   padding-left: 16px;
 }
 
-.ma-ui-menu ul.menu-level-3 .menu-indent {
+.ma-ui-menu ul.ma-ui-menu-level-3 .ma-ui-menu-indent {
   padding-left: 48px;
 }
 
-.ma-ui-menu .menu-submenu ul.menu-level-3 .menu-indent {
+.ma-ui-menu .ma-ui-menu-submenu ul.ma-ui-menu-level-3 .ma-ui-menu-indent {
   padding-left: 32px;
 }
 
@@ -221,7 +221,7 @@ md-menu-content.right-icons md-icon {
 	height: 0px !important;
 }
 
-.ma-ui-menu .menu-submenu.menu-open > .md-button {
+.ma-ui-menu .ma-ui-menu-submenu.ma-ui-menu-open > .md-button {
     border-bottom: 1px solid rgba(0,0,0,0.2);
     font-weight: bold;
 }
