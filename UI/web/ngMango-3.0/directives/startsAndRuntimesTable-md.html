@@ -12,7 +12,7 @@
 		<tr md-row ng-repeat="state in startsAndRuntimes">
 			<td md-cell ng-style="{color:state.renderedColor}">{{ state.renderedValue || state.value }}</td>
 			<td md-cell ng-bind="state.starts"></td>
-			<td md-cell>{{ state.runtime | duration:'humanize'}}</td>
+			<td md-cell>{{ state.runtime | maDuration:'humanize'}}</td>
 			<td md-cell>{{ state.proportion * 100 | number:2 }}%</td>
 		</tr>
 	</tbody>

@@ -41,7 +41,7 @@ define([], function() {
 * An array of error objects intercepted by this service.
 * Each error object will have the following properties:
 <pre>
-<span flex="15">{{error.time | moment:'format':'lll'}}</span>
+<span flex="15">{{error.time | maMoment:'format':'lll'}}</span>
 <span flex="15">{{error.status}} {{error.msg}}</span>
 <span flex="45">{{error.config.method}} {{error.config.url}}</span>
 <span flex="25">{{error.data.message}}</span>

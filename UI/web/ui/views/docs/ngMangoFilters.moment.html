@@ -8,8 +8,8 @@
 formatted and manipulated.</p>
 <ul>
 <li>Moment methods can be called using the filter syntax to call functions: <ul>
-<li><code ng-non-bindable>Three days from now is {{&#39;now&#39; | moment:&#39;add&#39;:3:&#39;days&#39; | moment:&#39;format&#39;:&#39;LLL&#39;}}</code></li>
-<li><code ng-non-bindable>{{myPoint.time | moment:&#39;format&#39;:&#39;ll LTS&#39;}}</code></li>
+<li><code ng-non-bindable>Three days from now is {{&#39;now&#39; | maMoment:&#39;add&#39;:3:&#39;days&#39; | maMoment:&#39;format&#39;:&#39;LLL&#39;}}</code></li>
+<li><code ng-non-bindable>{{myPoint.time | maMoment:&#39;format&#39;:&#39;ll LTS&#39;}}</code></li>
 </ul>
 </li>
 <li><a ui-sref="ui.examples.basics.filters">View Filters Demo</a></li>
@@ -17,7 +17,7 @@ formatted and manipulated.</p>
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><h3 id="usage_in-html-template-binding">In HTML Template Binding</h3>
-<div class="in-html-template-binding"><code ng:non-bindable=""><span>{{</span> moment_expression | moment <span>}}</span></code>
+<div class="in-html-template-binding"><code ng:non-bindable=""><span>{{</span> moment_expression | maMoment <span>}}</span></code>
 </div>
 <h3 id="usage_in-javascript">In JavaScript</h3>
 <div class="in-javascript"><code ng:non-bindable="">$filter('moment')()</code>

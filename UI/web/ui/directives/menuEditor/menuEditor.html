@@ -39,7 +39,7 @@
               </md-button>
             </td>
             <td ng-if="$mdMedia('gt-sm')">
-              <md-switch ng-model="menuItem.menuHidden" ng-true-value="false" ng-false-value="true" aria-label="{{'ui.app.showMenuItem'|tr}}"></md-switch>
+              <md-switch ng-model="menuItem.menuHidden" ng-true-value="false" ng-false-value="true" aria-label="{{'ui.app.showMenuItem'|maTr}}"></md-switch>
             </td>
             <td ng-if="$mdMedia('gt-xs') && menuItem.menuText" ng-bind="menuItem.menuText"></td>
             <td ng-if="$mdMedia('gt-xs') && !menuItem.menuText" ma-tr="{{menuItem.menuTr}}"></td>

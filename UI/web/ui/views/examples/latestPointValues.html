@@ -40,7 +40,7 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;m
           </thead>
           <tbody md-body="">
                 <tr ng-repeat="value in point1Values | orderBy:'-timestamp'">
-                      <td md-cell="">{{value.timestamp | moment:'format':'ll LTS'}}</td>
+                      <td md-cell="">{{value.timestamp | maMoment:'format':'ll LTS'}}</td>
                       <td md-cell="">{{value.value}}</td>
                 </tr>
           </tbody>

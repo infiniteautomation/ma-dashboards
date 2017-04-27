@@ -17,9 +17,9 @@
 
         <div layout="row" layout-align="center center" ng-show="$ctrl.listType !== 'hierarchy'" class="watch-list-filter">
             <md-input-container flex md-no-float>
-                <input ng-model="$ctrl.filter" ng-model-options="{debounce: 1000}" placeholder="{{'ui.app.filter' | tr}}" ng-change="$ctrl.updateQuery()">
+                <input ng-model="$ctrl.filter" ng-model-options="{debounce: 1000}" placeholder="{{'ui.app.filter' | maTr}}" ng-change="$ctrl.updateQuery()">
             </md-input-container>
-            <md-button class="md-icon-button" ng-click="$ctrl.filter = ''; $ctrl.updateQuery()" aria-label="{{'ui.app.clear' | tr}}">
+            <md-button class="md-icon-button" ng-click="$ctrl.filter = ''; $ctrl.updateQuery()" aria-label="{{'ui.app.clear' | maTr}}">
                 <md-icon>clear</md-icon>
             </md-button>
         </div>

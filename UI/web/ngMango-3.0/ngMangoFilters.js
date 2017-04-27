@@ -21,8 +21,8 @@ define(['./filters/momentFilter',
  **/
 var ngMangoFilters = angular.module('ngMangoFilters', []);
 
-ngMangoFilters.filter('moment', momentFilter);
-ngMangoFilters.filter('duration', durationFilter);
+ngMangoFilters.filter('maMoment', momentFilter);
+ngMangoFilters.filter('maDuration', durationFilter);
 
 ngMangoFilters.filter('sum', function() {
 	return function(arrayData, propName) {

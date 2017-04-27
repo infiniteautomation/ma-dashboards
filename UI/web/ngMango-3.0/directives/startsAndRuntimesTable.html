@@ -11,7 +11,7 @@
 		<tr ng-repeat="state in startsAndRuntimes">
 			<td ng-style="{color:state.renderedColor}">{{ state.renderedValue || state.value }}</td>
 			<td ng-bind="state.starts"></td>
-			<td>{{ state.runtime | duration:'humanize'}}</td>
+			<td>{{ state.runtime | maDuration:'humanize'}}</td>
 			<td>{{ state.proportion * 100 | number:2 }}%</td>
 		</tr>
 	</tbody>

@@ -14,7 +14,7 @@ define([], function() {
  * - Inputs the translation key as a string
  * - Translations are written in `web/modules/mangoUI/classes/i18n.properties` file
  * - Example:
- *      - <code ng-non-bindable>{{'common.value' | tr}}</code>
+ *      - <code ng-non-bindable>{{'common.value' | maTr}}</code>
  *
  */
 /*

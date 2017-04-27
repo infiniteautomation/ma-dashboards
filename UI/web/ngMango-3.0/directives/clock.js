@@ -27,7 +27,7 @@ define(['amcharts/gauge', 'jquery', 'moment-timezone'], function(AmCharts, $, mo
   * <ma-clock style="width: 100%; height: 200px;" time="time" text="Browser timezone"></ma-clock>
   * <ma-clock style="width: 100%; height: 200px;" time="time" timezone="{{user.getTimezone()}}" text="User timezone"></ma-clock>
   * <ma-clock style="width: 100%; height: 200px;" time="time" timezone="Australia/Sydney" text="Sydney"></ma-clock>
-  * <span>{{time|moment:'format':'ll LTS Z'}}</span>
+  * <span>{{time|maMoment:'format':'ll LTS Z'}}</span>
   *
   */
 function clock() {

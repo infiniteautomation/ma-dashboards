@@ -44,7 +44,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * @usage
  * <ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj">
  </ma-point-statistics>
- The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | moment:'format':'lll' }}
+ The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | maMoment:'format':'lll' }}
  *
  */
 pointValues.$inject = ['Point', 'Util', '$q', 'statistics'];

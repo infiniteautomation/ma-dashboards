@@ -22,7 +22,7 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maPointStatistics"><code>&
 
 <ma-point-statistics point="myPoint" from="dateBar.from" to="dateBar.to" statistics="statsObj"></ma-point-statistics>
 
-<div>The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | moment:'format':'lll' }}<br>
+<div>The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | maMoment:'format':'lll' }}<br>
      The max value for the period is {{ statsObj.maximum.value }}
 </div>
 

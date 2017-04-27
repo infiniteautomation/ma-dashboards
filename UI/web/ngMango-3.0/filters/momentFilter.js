@@ -13,8 +13,8 @@ define(['moment-timezone'], function(moment) {
  * Converts a timetamp to a <a href="http://momentjs.com/" target="_blank">momentJS</a> object that can be
  formatted and manipulated.
  * - Moment methods can be called using the filter syntax to call functions: 
- *      - <code ng-non-bindable>Three days from now is {{'now' | moment:'add':3:'days' | moment:'format':'LLL'}}</code>
- *      - <code ng-non-bindable>{{myPoint.time | moment:'format':'ll LTS'}}</code>
+ *      - <code ng-non-bindable>Three days from now is {{'now' | maMoment:'add':3:'days' | maMoment:'format':'LLL'}}</code>
+ *      - <code ng-non-bindable>{{myPoint.time | maMoment:'format':'ll LTS'}}</code>
  * - <a ui-sref="ui.examples.basics.filters">View Filters Demo</a>
  */
 function momentFilter(Util) {

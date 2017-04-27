@@ -23,9 +23,9 @@
         
         <md-input-container class="has-hints" flex>
           <label ma-tr="ui.app.menuTextTranslationKey"></label>
-          <input name="menuTr" ng-model="$ctrl.item.menuTr" ng-change="translation = ($ctrl.item.menuTr | tr)"  ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuText">
+          <input name="menuTr" ng-model="$ctrl.item.menuTr" ng-change="translation = ($ctrl.item.menuTr | maTr)"  ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuText">
           <div class="hint" ng-hide="!$ctrl.item.menuTr || $ctrl.menuItemEditForm.menuTr.$invalid && ($ctrl.menuItemEditForm.menuTr.$touched || $ctrl.menuItemEditForm.$submitted)"
-                ma-tr="ui.app.previewX" ma-tr-args="[($ctrl.item.menuTr | tr)]">
+                ma-tr="ui.app.previewX" ma-tr-args="[($ctrl.item.menuTr | maTr)]">
           </div>
           <div ng-messages="$ctrl.menuItemEditForm.menuTr.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
@@ -53,7 +53,7 @@
             <ma-permissions-menu ng-model="$ctrl.item.permission"></ma-permissions-menu>
         </md-input-container>
 
-        <md-switch ng-model="$ctrl.item.showOnMenu" aria-label="{{'ui.app.showMenuItem'|tr}}">
+        <md-switch ng-model="$ctrl.item.showOnMenu" aria-label="{{'ui.app.showMenuItem'|maTr}}">
           <span ma-tr="ui.app.showMenuItem"></span>
         </md-switch>
       </div>

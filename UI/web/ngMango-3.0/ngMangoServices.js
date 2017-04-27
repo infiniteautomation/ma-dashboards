@@ -86,7 +86,7 @@ ngMangoServices.provider('SystemSettings', SystemSettingsProvider);
 ngMangoServices.factory('ImportExport', ImportExportFactory);
 ngMangoServices.factory('GoogleAnalytics', GoogleAnalyticsFactory);
 ngMangoServices.filter('maDate', dateFilterFactory);
-ngMangoServices.filter('tr', trFilterFactory);
+ngMangoServices.filter('maTr', trFilterFactory);
 
 ngMangoServices.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', '');
 

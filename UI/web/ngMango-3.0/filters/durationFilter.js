@@ -12,7 +12,7 @@ define(['moment-timezone'], function(moment) {
  * @description
  * Converts an input in milliseconds to a momentJS <a href="http://momentjs.com/docs/#/durations/" target="_blank">duration</a> object that defines a length of time.
  * - MomentJS duration methods can be called using the filter syntax to call functions: 
- *      - <code ng-non-bindable>67223455ms is {{67223455|duration:'humanize'}}</code>
+ *      - <code ng-non-bindable>67223455ms is {{67223455|maDuration:'humanize'}}</code>
  * - <a ui-sref="ui.examples.basics.filters">View Filters Demo</a>
  */
 function durationFilter(Util) {

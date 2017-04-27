@@ -1,6 +1,6 @@
 <div ui-sref-active="menu-active" ng-class="{'menu-open': $ctrl.isOpen, 'menu-submenu': $ctrl.item.submenu}" class="menu-toggle">
     <a ui-sref="{{$ctrl.item.name}}" style="display:none"></a>
-    <md-button class="menu-toggle-button menu-indent" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | tr)}}">
+    <md-button class="menu-toggle-button menu-indent" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | maTr)}}">
       <div flex layout="row">
         <span>
             <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') === 0" class="menu-icon fa fa-fw {{$ctrl.item.menuIcon}}"></md-icon>

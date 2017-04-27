@@ -59,10 +59,10 @@
                     <span ng-if="!event.active">N/A</span>
                     <span ng-if="event.active">
                         <ma-now update-interval="1 minutes" output="time"></ma-now>
-                        {{time - event.activeTimestamp | duration: 'humanize'}}
+                        {{time - event.activeTimestamp | maDuration: 'humanize'}}
                     </span>
                 </td>
-                <td md-cell ng-if="event.returnToNormalTimestamp != 0" class="medium-column">{{event.returnToNormalTimestamp - event.activeTimestamp | duration: 'humanize'}}</td>
+                <td md-cell ng-if="event.returnToNormalTimestamp != 0" class="medium-column">{{event.returnToNormalTimestamp - event.activeTimestamp | maDuration: 'humanize'}}</td>
                 <td md-cell class="narrow-column">
                     <i class="fa fa-circle-o fa-lg acknowledged-checkbox" ng-click="acknowledgeEvents([event]);" ng-if="!event.acknowledged"></i>
                     <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>

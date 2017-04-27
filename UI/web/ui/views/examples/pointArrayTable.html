@@ -46,7 +46,7 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maPointQuery"><code>&lt;ma
     </thead>
     <tbody md-body>
       <tr ng-repeat="value in combined | orderBy: tableOrder">
-          <td>{{value.timestamp | moment:'format':'ll LTS'}}</td>
+          <td>{{value.timestamp | maMoment:'format':'ll LTS'}}</td>
           <td ng-repeat="point in points">{{value['value_' + point.xid]}}</td>
       </tr>
     </tbody>

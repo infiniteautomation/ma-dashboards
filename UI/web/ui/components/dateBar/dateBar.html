@@ -71,7 +71,7 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
           </md-input-container>
         </div>
         
-        <md-button flex="nogrow" class="md-icon-button" ng-click="$ctrl.onRefresh({'$event': $event})" aria-label="{{'common.refresh' | tr}}" ng-disabled="!$ctrl.params.preset">
+        <md-button flex="nogrow" class="md-icon-button" ng-click="$ctrl.onRefresh({'$event': $event})" aria-label="{{'common.refresh' | maTr}}" ng-disabled="!$ctrl.params.preset">
           <md-tooltip><span ma-tr="ui.app.updateDateRange"></span></md-tooltip>
           <md-icon>update</md-icon>
         </md-button>

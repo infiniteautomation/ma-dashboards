@@ -13,19 +13,19 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maClock"><code>&lt;ma-cloc
 
 <div layout="row" layout-wrap>
     <div flex="50" layout="column" layout-align="center center">
-        <span>{{time|moment:'tz':browserTz|moment:'format':'ll LTS Z'}}</span>
+        <span>{{time|maMoment:'tz':browserTz|maMoment:'format':'ll LTS Z'}}</span>
         <ma-clock style="width: 100%; height: 200px;" time="time" timezone="{{browserTz}}" text="Browser timezone"></ma-clock>
     </div>
     <div flex="50" layout="column" layout-align="center center">
-        <span>{{time|moment:'format':'ll LTS Z z'}}</span>
+        <span>{{time|maMoment:'format':'ll LTS Z z'}}</span>
         <ma-clock style="width: 100%; height: 200px;" time="time" text="User/server timezone"></ma-clock>
     </div>
     <div flex="50" layout="column" layout-align="center center">
-        <span>{{time|moment:'tz':'Australia/Sydney'|moment:'format':'ll LTS Z z'}}</span>
+        <span>{{time|maMoment:'tz':'Australia/Sydney'|maMoment:'format':'ll LTS Z z'}}</span>
         <ma-clock style="width: 100%; height: 200px;" time="time" timezone="Australia/Sydney" text="Sydney"></ma-clock>
     </div>
     <div flex="50" layout="column" layout-align="center center">
-        <span>{{time|moment:'tz':'America/Denver'|moment:'format':'ll LTS Z z'}}</span>
+        <span>{{time|maMoment:'tz':'America/Denver'|maMoment:'format':'ll LTS Z z'}}</span>
         <ma-clock style="width: 100%; height: 200px;" time="time" timezone="America/Denver" text="Denver"></ma-clock>
     </div>
 </div>

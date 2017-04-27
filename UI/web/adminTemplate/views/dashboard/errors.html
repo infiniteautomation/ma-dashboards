@@ -23,7 +23,7 @@
             </thead>
             <tbody md-body>
                 <tr md-row ng-repeat="error in errors">
-                    <td md-cell>{{error.time | moment:'format':'lll'}}</td>
+                    <td md-cell>{{error.time | maMoment:'format':'lll'}}</td>
                     <td md-cell>{{error.status}}</td>
                     <td md-cell>{{error.msg}}</td>
                     <td md-cell>{{error.config.method}}</td>

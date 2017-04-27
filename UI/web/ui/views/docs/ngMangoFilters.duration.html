@@ -7,7 +7,7 @@
 <div class="description"><div class="ngmangofilters-duration-page"><p>Converts an input in milliseconds to a momentJS <a href="http://momentjs.com/docs/#/durations/" target="_blank">duration</a> object that defines a length of time.</p>
 <ul>
 <li>MomentJS duration methods can be called using the filter syntax to call functions: <ul>
-<li><code ng-non-bindable>67223455ms is {{67223455|duration:&#39;humanize&#39;}}</code></li>
+<li><code ng-non-bindable>67223455ms is {{67223455|maDuration:&#39;humanize&#39;}}</code></li>
 </ul>
 </li>
 <li><a ui-sref="ui.examples.basics.filters">View Filters Demo</a></li>
@@ -15,7 +15,7 @@
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><h3 id="usage_in-html-template-binding">In HTML Template Binding</h3>
-<div class="in-html-template-binding"><code ng:non-bindable=""><span>{{</span> duration_expression | duration <span>}}</span></code>
+<div class="in-html-template-binding"><code ng:non-bindable=""><span>{{</span> duration_expression | maDuration <span>}}</span></code>
 </div>
 <h3 id="usage_in-javascript">In JavaScript</h3>
 <div class="in-javascript"><code ng:non-bindable="">$filter('duration')()</code>

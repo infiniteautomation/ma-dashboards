@@ -20,11 +20,11 @@ See API Documentation for <a ui-sref="ui.docs.ngMangoFilters.moment"><code>momen
 <ma-get-point-value point="myPoint"></ma-get-point-value>
 
 <p>The raw point value is {{myPoint.value}} at epoch timestamp {{myPoint.time}}.</p>
-<p>The formatted point value is {{myPoint.value | number:2}} at time {{myPoint.time | moment:'format':'ll LTS'}}.</p>
+<p>The formatted point value is {{myPoint.value | number:2}} at time {{myPoint.time | maMoment:'format':'ll LTS'}}.</p>
 <p ng-init="price=1234.565">The price is {{price | currency}}.</p>
-<p>The time now as an ISO formatted string is {{'now' | moment:'toISOString'}}.</p>
-<p ng-init="timeTaken=67223455">{{timeTaken}}ms is {{timeTaken|duration:'humanize'}}</p>
-<p>The first day of the month was a {{'now' | moment:'startOf':'month' | moment:'format':'dddd'}}.</p>
-<p>Three days from now is {{'now' | moment:'add':3:'days' | moment:'format':'LLL'}}.</p>
+<p>The time now as an ISO formatted string is {{'now' | maMoment:'toISOString'}}.</p>
+<p ng-init="timeTaken=67223455">{{timeTaken}}ms is {{timeTaken|maDuration:'humanize'}}</p>
+<p>The first day of the month was a {{'now' | maMoment:'startOf':'month' | maMoment:'format':'dddd'}}.</p>
+<p>Three days from now is {{'now' | maMoment:'add':3:'days' | maMoment:'format':'LLL'}}.</p>
 
 </ma-ui-dual-pane-editor>

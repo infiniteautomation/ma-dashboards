@@ -3,7 +3,7 @@
       <form>
             <md-toolbar class="small-toolbar-font">
                   <div class="md-toolbar-tools">
-                        <h2>{{ 'ui.app.history' | tr }}: {{myPoint.deviceName}} &mdash; {{myPoint.name}}</h2>
+                        <h2>{{ 'ui.app.history' | maTr }}: {{myPoint.deviceName}} &mdash; {{myPoint.name}}</h2>
                         <md-button ng-show="!$ctrl.realtimeMode" class="md-icon-button" ng-click="$ctrl.refreshTable = {}"><md-icon>refresh</md-icon></md-button>
                         <span flex></span>
                         <md-checkbox ng-model="$ctrl.showTableOptions">
@@ -32,13 +32,13 @@
 
             <md-dialog-content>
                   <md-tabs md-dynamic-height md-border-bottom md-no-pagination md-stretch-tabs="always">
-                        <md-tab label="{{'ui.app.stats' | tr}}">
+                        <md-tab label="{{'ui.app.stats' | maTr}}">
                               <md-content class="md-padding" ng-init="statsTab = {}">
                                     <ma-point-statistics point="myPoint" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" statistics="statsTab.statsObj"></ma-point-statistics>
                                     <ma-statistics-table statistics="statsTab.statsObj"></ma-statistics-table>
                               </md-content>
                         </md-tab>
-                        <md-tab label="{{'ui.app.latestValueChart' | tr}}">
+                        <md-tab label="{{'ui.app.latestValueChart' | maTr}}">
                               <md-content class="md-padding">
                                     <ma-point-values point="myPoint" values="realtimePointValues" realtime="$ctrl.realtimeMode" use-cache="$ctrl.showCachedData"
                                         converted="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
@@ -47,7 +47,7 @@
                                     </ma-serial-chart>
                               </md-content>
                         </md-tab>
-                        <md-tab label="{{'ui.app.latestValueTable' | tr}}">
+                        <md-tab label="{{'ui.app.latestValueTable' | maTr}}">
                               <md-content class="md-padding" ng-init="tableTab = {}">
                                     <ma-point-values point="myPoint" values="tableTab.renderedRealtimePointValues" realtime="$ctrl.realtimeMode" use-cache="$ctrl.showCachedData"
                                         rendered="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">

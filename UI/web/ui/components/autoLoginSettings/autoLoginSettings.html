@@ -23,8 +23,8 @@
     </md-input-container>
     
     <div>
-      <md-button type="submit" ng-click="$ctrl.saveCredentials()" ma-tr="common.save" class="md-primary md-raised" aria-label="{{'common.save'|tr}}"></md-button>
-      <md-button ng-disabled="!$ctrl.storedUsername" ng-click="$ctrl.deleteCredentials()" ma-tr="common.delete" class="md-warn md-raised" aria-label="{{'common.delete'|tr}}"></md-button>
+      <md-button type="submit" ng-click="$ctrl.saveCredentials()" ma-tr="common.save" class="md-primary md-raised" aria-label="{{'common.save'|maTr}}"></md-button>
+      <md-button ng-disabled="!$ctrl.storedUsername" ng-click="$ctrl.deleteCredentials()" ma-tr="common.delete" class="md-warn md-raised" aria-label="{{'common.delete'|maTr}}"></md-button>
       
       <span ng-if="$ctrl.storedUsername" ma-tr="ui.app.savedAutoLoginUser" ma-tr-args="[$ctrl.storedUsername]"></span>
       <span ng-if="!$ctrl.storedUsername" ma-tr="ui.app.noSavedAutoLoginUser"></span>

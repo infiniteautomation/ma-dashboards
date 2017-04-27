@@ -17,7 +17,7 @@ then simply calculate the difference with <code>{{ statsObj.last.value - statsOb
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">&lt;ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"&gt;
 &lt;/ma-point-statistics&gt;
-The average for the period is <span>{{</span> statsObj.average.value <span>}}</span> at <span>{{</span> statsObj.average.timestamp | moment:'format':'lll' <span>}}</span></pre>
+The average for the period is <span>{{</span> statsObj.average.value <span>}}</span> at <span>{{</span> statsObj.average.timestamp | maMoment:'format':'lll' <span>}}</span></pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-mapointstatistics-page"><p>Inputs a <code>point</code> object from <code>&lt;ma-point-list&gt;</code>.</p>
 </div></td></tr><tr><td>from</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-mapointstatistics-page"><p>Sets the starting time for the time range which is used in the statistical query.</p>
 </div></td></tr><tr><td>to</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-mapointstatistics-page"><p>Sets the ending time for the time range which is used in the statistical query.</p>
