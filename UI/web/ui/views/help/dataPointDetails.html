@@ -2,30 +2,30 @@
     <h1 ma-tr="ui.dox.dataPointDetails"></h1>
 
     <p>
-        The <a ui-sref="ui.dataPointDetails">Data Point Details</a> page allows you to thoroughly examine a single <code>Data Point.</code> 
+        The <a ui-sref="ui.dataPointDetails">Data Point Details</a> page allows you to thoroughly examine a single Data Point.
         A <code>Data Point</code> can be selected using the filtering input in the upper left pane. 
         You can filter the list and get a dropdown by typing either the point's <code>Name</code> or <code>Device Name</code> (case sensitive). 
-        The results will update as you type. The <code>Path</code> is the location of the point in the <code>Point Hierarchy</code>.
+        The results will update as you type. The <code>Path</code> is the location of the point in the <code>Point Hierarchy.</code>
+        You can <code>Set</code> a point's value, force a read using the <code>Refresh</code> icon or jump to the data point <code>Edit</code> page
+        from this pane.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-PointOverview.png" alt="Help-ScreenShots-DPD-PointOverview"/>
+    <img md-whiteframe="5" style="max-width: 400px;" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-PointOverview.png"
+         alt="Help-ScreenShots-DPD-PointOverview"/>
 
     <p>
-        The <code>Point Value History</code> pane will show you the point’s values either in <code>Realtime</code> 
-        mode or over the selected time range in the Header Bar. By default <code>Realtime</code> Mode
-        is enabled which will show the last 100 value updates to a data point. This is recorded in the browser without
-        expanding the cache. So, if a point had a <code>Default cache size</code> of 100 this table would open filled,
-        but if the point has a small cache the table of updates will grow as the page is open.
+        The <code>Point Value History</code> table will show you the point’s values either in <code>Realtime</code>
+        mode or over the selected time range and rollup settings from
+        the <a ui-sref="ui.help.dateBar">Date Bar</a>.
+        To change these settings check the <code>Configure</code> option and turn on/off the <code>Realtime</code> toggle.
+        You can set the <code>Number of values</code> to display as well as whether to <code>Show cached data.</code>
+        Values are recorded in the browser without expanding the cache. So, if a point had a <code>Default cache size</code>
+        equal to the <code>Number of values</code> to display this table would open filled,
+        but if the point has a small cache the <code>Point Value History</code> table will grow as new values come in.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-ValueHistory.png" alt="Help-ScreenShots-DPD-ValueHistory"/>
-
-    <p>
-        If you turn this mode off by clicking the <code>Realtime</code> toggle button you will see the point 
-        values using the time range from the header and <code>Rollup</code> settings from the <a ui-sref="ui.help.dateBar">Date Bar</a>.
-    </p>
-
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-ValueHistoryRolledUp.png" alt="Help-ScreenShots-DPD-ValueHistoryRolledUp"/>
+    <img md-whiteframe="5" style="max-width: 400px" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-ValueHistory.png"
+         alt="Help-ScreenShots-DPD-ValueHistory"/>
 
     <p>
         The <code>Point Statistics</code> pane will show you statistics over the selected time range.
@@ -35,11 +35,12 @@
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-Stats.png" alt="Help-ScreenShots-DPD-Stats"/>
 
     <p>
-        The <code>Point Comments</code> pane will show any user notes specific to the selected data point. 
-        Click the <code>ADD</code> button to enter a new note for the data point and it will be shown on the table.
+        The <code>User comments</code> pane will show any user notes specific to the selected data point.
+        Click the <code>+</code> button to enter a new note for the data point and it will be shown on the table.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-Notes.png" alt="Help-ScreenShots-DPD-Notes"/>
+    <img md-whiteframe="5" style="max-width: 400px" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-Notes.png"
+         alt="Help-ScreenShots-DPD-Notes"/>
     <br><br>
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DPD-AddNote.png" alt="Help-ScreenShots-DPD-AddNote"/>
     <p>
