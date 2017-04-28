@@ -13,7 +13,7 @@
 
 		<md-card flex class="dpd-small-card">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+				<div class="md-toolbar-tools">
 					<h2 flex>
 		              <span><span ma-tr="ui.app.dataPoint"></span>: <span ng-bind="myPoint.deviceName"></span> &mdash; <span ng-bind="myPoint.name"></span></span>
 			        </h2>
@@ -57,7 +57,7 @@
 		
 		<md-card flex class="dpd-small-card">
             <md-toolbar class="md-whiteframe-1dp md-hue-3">
-                <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+                <div class="md-toolbar-tools">
                     <h2 ma-tr="ui.app.pointValueHistory"></h2>
                     <md-button ng-show="!$ctrl.realtimeMode" class="md-icon-button dpd-table-refresh" ng-click="$ctrl.refreshTable = {}">
                         <md-tooltip><span ma-tr="ui.app.refreshTable"></span></md-tooltip>
@@ -108,7 +108,7 @@
 	<div flex layout="column" layout-gt-sm="row">
 		<md-card flex class="dpd-small-card">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+				<div class="md-toolbar-tools">
 					<h2 flex>
 			              <span ma-tr="ui.app.pointStatistics"></span>
 			        </h2>
@@ -124,7 +124,7 @@
 
 	<md-card flex ng-if="myPoint.pointLocator.dataType !== 'ALPHANUMERIC' && myPoint.pointLocator.dataType !== 'IMAGE'">
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+			<div class="md-toolbar-tools">
 				<h2 flex>
 					  <span ma-tr="ui.app.chart"></span>
 				</h2>
@@ -142,7 +142,7 @@
 
     <md-card flex ng-if="myPoint.pointLocator.dataType == 'IMAGE'">
       <md-toolbar class="md-whiteframe-1dp md-hue-3">
-        <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+        <div class="md-toolbar-tools">
           <h2 flex>
               <span ma-tr="ui.app.images"></span>
           </h2>
@@ -153,7 +153,7 @@
 
 	<md-card flex>
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+			<div class="md-toolbar-tools">
 				<h2 flex>
 					  <span ma-tr="ui.app.pointEvents"></span>
 				</h2>
