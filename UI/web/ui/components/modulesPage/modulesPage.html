@@ -1,7 +1,7 @@
 <h1 ma-tr="header.modules"></h1>
 
 <div layout="row" layout-wrap layout-align="start stretch">
-  <div flex="100" flex-gt-md="50" flex-gt-lg="25" layout="column" ng-repeat="module in $ctrl.modules | orderBy:['-unloaded', 'name'] track by module.name" >
+  <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="25" layout="column" ng-repeat="module in $ctrl.modules | orderBy:['-unloaded', 'name'] track by module.name" >
       <md-card flex md-colors="{background: module.unloaded ? 'warn-hue-3' : 'background-hue-1'}" class="ma-module-info">
         <md-card-title flex="none">
           <md-card-title-text>
