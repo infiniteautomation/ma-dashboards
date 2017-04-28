@@ -1,23 +1,30 @@
 <h1 ma-tr="header.users"></h1>
+<div style="max-width: 900px">
+  <md-card>
+    <md-toolbar class="md-hue-3" md-whiteframe="1">
+      <div class="md-toolbar-tools">
+        <ma-user-select ng-if="$ctrl.User.current.admin" ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()">
+          <ma-label ma-tr="users.selectUserToEdit"></ma-label>
+        </ma-user-select>
 
-<ma-user-select ng-if="$ctrl.User.current.admin" ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()">
-  <ma-label ma-tr="users.selectUserToEdit"></ma-label>
-</ma-user-select>
+        <span flex></span>
 
-<md-button ng-if="$ctrl.User.current.admin" class="md-raised md-primary" ng-click="$ctrl.addUser($event)">
-  <md-icon>person_add</md-icon> <span ma-tr="users.add"></span>
-</md-button>
-
-<md-card>
-  <md-card-title>
-    <md-card-title-text>
+        <md-button ng-if="$ctrl.User.current.admin" class="md-raised md-accent" ng-click="$ctrl.addUser($event)">
+          <md-icon>person_add</md-icon> <span ma-tr="users.add"></span>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-card-title>
+      <md-card-title-text>
       <span class="md-headline">
         <span ng-if="!$ctrl.user.isNew" ma-tr="users.editUser"></span>
         <span ng-if="$ctrl.user.isNew" ma-tr="users.add"></span>
       </span>
-    </md-card-title-text>
-  </md-card-title>
-  <md-card-content>
-    <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
-  </md-card-content>
-</md-card>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
+    </md-card-content>
+  </md-card>
+</div>
+

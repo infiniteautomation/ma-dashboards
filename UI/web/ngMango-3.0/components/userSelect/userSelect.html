@@ -1,8 +1,11 @@
-<md-input-container>
+<div layout layout-align="start center">
   <label ng-transclude="label">
     <span ma-tr="users.title"></span>
   </label>
-  <md-select ng-model="$ctrl.selectedUser" ng-change="$ctrl.selectUser($ctrl.selectedUser, $event)" ng-model-options="{trackBy: '$value.username'}">
-    <md-option ng-repeat="user in $ctrl.users track by user.username" ng-value="user"><span ng-bind="user.username"></span> <em ng-bind="'(' + user.name + ')'"></em></md-option>
-  </md-select>
-</md-input-container>
+  <span style="width: 15px"></span>
+  <md-input-container>
+    <md-select ng-model="$ctrl.selectedUser" ng-change="$ctrl.selectUser($ctrl.selectedUser, $event)" ng-model-options="{trackBy: '$value.username'}">
+      <md-option ng-repeat="user in $ctrl.users track by user.username" ng-value="user"><span ng-bind="user.username"></span> <em ng-bind="'(' + user.name + ')'"></em></md-option>
+    </md-select>
+  </md-input-container>
+</div>
