@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemSettingsPageController.$inject = ['SystemSettings'];
+SystemSettingsPageController.$inject = ['maSystemSettings'];
 function SystemSettingsPageController(SystemSettings) {
     this.SystemSettings = SystemSettings;
 }

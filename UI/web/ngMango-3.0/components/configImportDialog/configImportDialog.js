@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ConfigImportDialogController.$inject = ['$mdDialog', 'ImportExport', '$timeout', '$element'];
+ConfigImportDialogController.$inject = ['$mdDialog', 'maImportExport', '$timeout', '$element'];
 function ConfigImportDialogController($mdDialog, ImportExport, $timeout, $element) {
     this.$mdDialog = $mdDialog;
     this.ImportExport = ImportExport;

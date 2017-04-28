@@ -83,7 +83,7 @@ function pointHierarchy(PointHierarchy) {
     }
 }
 
-pointHierarchy.$inject = ['PointHierarchy'];
+pointHierarchy.$inject = ['maPointHierarchy'];
 return pointHierarchy;
 
 }); // define

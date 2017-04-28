@@ -27,7 +27,7 @@ function PointEventManagerFactory(EventManager) {
     });
 }
 
-PointEventManagerFactory.$inject = ['EventManager'];
+PointEventManagerFactory.$inject = ['maEventManager'];
 return PointEventManagerFactory;
 
 }); // define

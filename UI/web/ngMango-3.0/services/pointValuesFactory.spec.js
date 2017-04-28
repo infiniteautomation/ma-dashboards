@@ -20,10 +20,10 @@ describe('Point values service', function() {
         requirejs(['ngMango-3.0/ngMangoServices', 'moment-timezone'], function(ngMangoServices, _moment) {
             moment = _moment;
             angular.module('mochaTestModule', ['ngMangoServices', 'ngMockE2E'])
-                .constant('mangoBaseUrl', mochaUtils.config.url)
-                .constant('mangoTimeout', 0)
+                .constant('MA_BASE_URL', mochaUtils.config.url)
+                .constant('MA_TIMEOUT', 0)
                 .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {
-                    $httpProvider.interceptors.push('mangoHttpInterceptor');
+                    $httpProvider.interceptors.push('maHttpInterceptor');
                     $exceptionHandlerProvider.mode('log');
                 }])
                 .run(['$httpBackend', function($httpBackend) {
@@ -45,8 +45,8 @@ describe('Point values service', function() {
     beforeEach('Get injector and dependencies', runDigestAfter(function() {
         var injector = angular.injector(['ng', 'ngMock', 'mochaTestModule'], true);
         mochaUtils.setInjector(injector);
-        pointValues = injector.get('pointValues');
-        Util = injector.get('Util');
+        pointValues = injector.get('maPointValues');
+        Util = injector.get('maUtil');
         return mochaUtils.login();
     }));
     

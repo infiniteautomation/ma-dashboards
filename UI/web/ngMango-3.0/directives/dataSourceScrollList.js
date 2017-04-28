@@ -33,7 +33,7 @@ function dataSourceScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['DataSource', DataSourceScrollListController]
+        controller: ['maDataSource', DataSourceScrollListController]
     };
     
     function DataSourceScrollListController(DataSource) {

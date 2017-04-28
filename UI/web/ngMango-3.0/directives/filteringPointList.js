@@ -55,7 +55,7 @@ function filteringPointList() {
     };
 }
 
-FilteringPointListController.$inject = ['Point', '$filter', 'Translate'];
+FilteringPointListController.$inject = ['maPoint', '$filter', 'maTranslate'];
 function FilteringPointListController(Point, $filter, Translate) {
     this.Point = Point;
     this.$filter = $filter;

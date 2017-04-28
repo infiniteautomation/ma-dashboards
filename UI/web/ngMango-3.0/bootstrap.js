@@ -88,11 +88,11 @@ function findMangoConnections() {
             var servicesApp = angular.module(servicesAppName, ['ngMangoServices']);
 			
 			if (mangoConnection.baseUrl)
-			    servicesApp.constant('mangoBaseUrl', mangoConnection.baseUrl);
+			    servicesApp.constant('MA_BASE_URL', mangoConnection.baseUrl);
 			if (mangoConnection.timeout)
-			    servicesApp.constant('mangoTimeout', mangoConnection.timeout);
+			    servicesApp.constant('MA_TIMEOUT', mangoConnection.timeout);
 			if (mangoConnection.watchdogTimeout)
-			    servicesApp.constant('mangoWatchdogTimeout', mangoConnection.watchdogTimeout);
+			    servicesApp.constant('MA_WATCHDOG_TIMEOUT', mangoConnection.watchdogTimeout);
 
             var appName = 'ngMangoBootstrapApp' + i;
             var app = angular.module(appName, [servicesAppName, mangoConnection.module]);
@@ -106,7 +106,7 @@ function findMangoConnections() {
 			
 			if (mangoConnection.username) {
 				var injector = angular.injector([servicesAppName], true);
-				var User = injector.get('User');
+				var User = injector.get('maUser');
 				User.login({
 					username: mangoConnection.username,
 					password: mangoConnection.password

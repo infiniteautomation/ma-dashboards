@@ -101,7 +101,7 @@ function pointList(Point, $injector) {
     };
 }
 
-pointList.$inject = ['Point', '$injector'];
+pointList.$inject = ['maPoint', '$injector'];
 return pointList;
 
 }); // define

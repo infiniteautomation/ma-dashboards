@@ -79,7 +79,7 @@ function switchImg() {
     };
 }
 
-SwitchImgController.$inject = PointValueController.$inject.concat('Util');
+SwitchImgController.$inject = PointValueController.$inject.concat('maUtil');
 function SwitchImgController() {
     PointValueController.apply(this, arguments);
     var firstArg = PointValueController.$inject.length;

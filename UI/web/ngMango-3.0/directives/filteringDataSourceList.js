@@ -6,7 +6,7 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-filteringDataSourceList.$inject = ['$injector', '$timeout', 'DataSource'];
+filteringDataSourceList.$inject = ['$injector', '$timeout', 'maDataSource'];
 function filteringDataSourceList($injector, $timeout, DataSource) {
     var DEFAULT_SORT = ['name'];
     

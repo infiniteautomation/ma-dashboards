@@ -6,7 +6,7 @@
 define(['require', 'angular', 'moment-timezone'], function(require, angular, moment) {
 'use strict';
 
-pointValuesFactory.$inject = ['$http', '$q', 'Util'];
+pointValuesFactory.$inject = ['$http', '$q', 'maUtil'];
 function pointValuesFactory($http, $q, Util) {
     var pointValuesUrl = '/rest/v1/point-values/';
 

@@ -35,7 +35,7 @@ angular.element(document).ready(function() {
  * Replace the block above with the following if you want to auto-login a user
  * 
 var injector = angular.injector(['myApp']);
-var User = injector.get('User');
+var User = injector.get('maUser');
 User.login({
     username: 'username',
     password: 'password',

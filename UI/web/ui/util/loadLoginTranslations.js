@@ -6,7 +6,7 @@
 define([], function() {
 'use strict';
 
-loadLoginTranslations.$inject = ['Translate', 'User', '$window'];
+loadLoginTranslations.$inject = ['maTranslate', 'maUser', '$window'];
 function loadLoginTranslations(Translate, User, $window) {
     return Translate.loadNamespaces('login').then(function(data) {
         var user = User.current;

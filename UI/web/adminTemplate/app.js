@@ -38,7 +38,7 @@ myAdminApp.constant('MENU_ITEMS', [
         abstract: true,
         menuHidden: true,
         resolve: {
-            auth: ['Translate', 'ADMIN_SETTINGS', function(Translate, ADMIN_SETTINGS) {
+            auth: ['maTranslate', 'ADMIN_SETTINGS', function(Translate, ADMIN_SETTINGS) {
                 // thow an error if no user so the $stateChangeError listener redirects to the login page
                 if (!ADMIN_SETTINGS.user) {
                     throw 'No user';
@@ -57,7 +57,7 @@ myAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'exit_to_app',
         menuTr: 'header.login',
         resolve: {
-            loginTranslations: ['Translate', function(Translate) {
+            loginTranslations: ['maTranslate', function(Translate) {
                 return Translate.loadNamespaces('login');
             }]
         }
@@ -179,7 +179,7 @@ function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemi
                 
                 if (!menuItem.resolve && menuItem.name.indexOf('.') < 0) {
                     menuItem.resolve = {
-                        loginTranslations: ['Translate', function(Translate) {
+                        loginTranslations: ['maTranslate', function(Translate) {
                             return Translate.loadNamespaces('login');
                         }]
                     };
@@ -202,11 +202,11 @@ myAdminApp.run([
     '$mdMedia',
     '$mdColors',
     '$MD_THEME_CSS',
-    'cssInjector',
+    'maCssInjector',
     '$mdToast',
-    'User',
+    'maUser',
     'ADMIN_SETTINGS',
-    'Translate',
+    'maTranslate',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
         $mdToast, User, ADMIN_SETTINGS, Translate) {
 
@@ -329,7 +329,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
      * Watchdog timer alert and re-connect/re-login code
      */
 
-    $rootScope.$on('mangoWatchdog', function(event, current, previous) {
+    $rootScope.$on('maWatchdog', function(event, current, previous) {
         var message;
         var hideDelay = 0; // dont auto hide message
 
@@ -397,7 +397,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
 
 // get an injector to retrieve the User service
 var servicesInjector = angular.injector(['ngMangoServices'], true);
-var User = servicesInjector.get('User');
+var User = servicesInjector.get('maUser');
 
 var adminSettings = {};
 

@@ -6,7 +6,7 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-statisticsFactory.$inject = ['$http', '$q', 'Util'];
+statisticsFactory.$inject = ['$http', '$q', 'maUtil'];
 function statisticsFactory($http, $q, Util) {
     var pointValuesUrl = '/rest/v1/point-values/';
 

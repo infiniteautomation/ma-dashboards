@@ -121,7 +121,7 @@ function UserNotesFactory($resource, Util, $mdDialog) {
     return UserNotes;
 }
 
-UserNotesFactory.$inject = ['$resource', 'Util', '$mdDialog'];
+UserNotesFactory.$inject = ['$resource', 'maUtil', '$mdDialog'];
 return UserNotesFactory;
 
 }); // define

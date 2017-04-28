@@ -30,7 +30,7 @@ describe('Util service', function() {
     beforeEach(function() {
         var injector = angular.injector(['ng', 'ngMock', 'ngMangoServices'], true);
         mochaUtils.setInjector(injector);
-        Util = injector.get('Util');
+        Util = injector.get('maUtil');
     });
 
     afterEach(function() {

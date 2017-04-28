@@ -46,7 +46,7 @@
   <md-input-container ng-if="param.type === 'numberRange'" flex>
     <label ng-bind="param.label"></label>
     <md-select ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()">
-      <md-option ng-repeat="val in [] | range:param.options.start:param.options.end:param.options.step" ng-value="val" ng-bind="val"></md-option>
+      <md-option ng-repeat="val in [] | maRange:param.options.start:param.options.end:param.options.step" ng-value="val" ng-bind="val"></md-option>
     </md-select>
   </md-input-container>
   <md-input-container ng-if="param.type === 'date'" flex>

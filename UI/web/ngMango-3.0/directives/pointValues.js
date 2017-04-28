@@ -62,7 +62,7 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
 </ma-point-values>
  *
  */
-pointValues.$inject = ['$http', 'pointEventManager', 'Point', '$q', 'mangoTimeout', 'Util', 'pointValues'];
+pointValues.$inject = ['$http', 'maPointEventManager', 'maPoint', '$q', 'MA_TIMEOUT', 'maUtil', 'maPointValues'];
 function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, pointValues) {
     return {
         designerInfo: {

@@ -25,7 +25,7 @@ function durationFilter(Util) {
     });
 }
 
-durationFilter.$inject = ['Util'];
+durationFilter.$inject = ['maUtil'];
 return durationFilter;
 
 }); // define

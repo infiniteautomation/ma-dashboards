@@ -6,7 +6,7 @@
 define(['angular', 'rql/query'], function(angular, query) {
 'use strict';
 
-WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point', 'PointHierarchy', '$q', '$interpolate', '$sce', '$parse'];
+WatchListFactory.$inject = ['$resource', 'maUtil', '$http', 'maPoint', 'maPointHierarchy', '$q', '$interpolate', '$sce', '$parse'];
 function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $interpolate, $sce, $parse) {
 
     var WatchList = $resource('/rest/v1/watch-lists/:xid', {

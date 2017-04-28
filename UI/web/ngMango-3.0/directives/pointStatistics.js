@@ -47,7 +47,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | maMoment:'format':'lll' }}
  *
  */
-pointValues.$inject = ['Point', 'Util', '$q', 'statistics'];
+pointValues.$inject = ['maPoint', 'maUtil', '$q', 'maStatistics'];
 function pointValues(Point, Util, $q, statistics) {
     return {
         restrict: 'E',

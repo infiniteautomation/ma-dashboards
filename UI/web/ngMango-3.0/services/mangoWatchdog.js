@@ -13,11 +13,11 @@ define(['angular'], function(angular) {
 * The mangoWatchdog service checks for connectivity to the Mango API and checks if a user is logged in. It does this by
 * periodically pinging an API endpoint.
 * 
-* The watchdog service broadcasts an event named 'mangoWatchdog' on the root scope which provides information about
+* The watchdog service broadcasts an event named 'maWatchdog' on the root scope which provides information about
 * the current status of Mango.
 * 
-* The watchdog service check interval is set by defining the 'mangoWatchdogTimeout' constant and when Mango is down
-* the service will try and reconnect every 'mangoReconnectDelay' milliseconds.
+* The watchdog service check interval is set by defining the 'MA_WATCHDOG_TIMEOUT' constant and when Mango is down
+* the service will try and reconnect every 'MA_RECONNECT_DELAY' milliseconds.
 * 
 * - <a ui-sref="ui.examples.utilities.watchdog">View Demo</a>
 */
@@ -56,7 +56,7 @@ define(['angular'], function(angular) {
 *
 */
 
-mangoWatchdog.$inject = ['mangoWatchdogTimeout', 'mangoReconnectDelay', '$rootScope', '$http', '$interval', 'User'];
+mangoWatchdog.$inject = ['MA_WATCHDOG_TIMEOUT', 'MA_RECONNECT_DELAY', '$rootScope', '$http', '$interval', 'maUser'];
 function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $http, $interval, User) {
 
     var API_DOWN = 'API_DOWN';
@@ -174,7 +174,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             wasLogout: pingResult.wasLogout
         };
         
-        $rootScope.$broadcast('mangoWatchdog', current, previous);
+        $rootScope.$broadcast('maWatchdog', current, previous);
     };
     
     MangoWatchdog.prototype.setInterval = function(interval) {

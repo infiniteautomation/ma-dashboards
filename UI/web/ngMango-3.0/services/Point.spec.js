@@ -24,10 +24,10 @@ describe('Point service', function() {
             query = _query;
             
             angular.module('PointMockModule', ['ngMangoServices', 'ngMockE2E'])
-                .constant('mangoBaseUrl', mochaUtils.config.url)
-                .constant('mangoTimeout', 0)
+                .constant('MA_BASE_URL', mochaUtils.config.url)
+                .constant('MA_TIMEOUT', 0)
                 .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {
-                    $httpProvider.interceptors.push('mangoHttpInterceptor');
+                    $httpProvider.interceptors.push('maHttpInterceptor');
                     $exceptionHandlerProvider.mode('log');
                 }])
                 .run(['$httpBackend', function($httpBackend) {
@@ -49,9 +49,9 @@ describe('Point service', function() {
     beforeEach('Get injector and dependencies', runDigestAfter(function() {
         var injector = angular.injector(['ng', 'ngMock', 'PointMockModule'], true);
         mochaUtils.setInjector(injector);
-        Point = injector.get('Point');
+        Point = injector.get('maPoint');
         $q = injector.get('$q');
-        PointHierarchy = injector.get('PointHierarchy');
+        PointHierarchy = injector.get('maPointHierarchy');
         return mochaUtils.login();
     }));
     

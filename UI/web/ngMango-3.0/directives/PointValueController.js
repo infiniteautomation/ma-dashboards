@@ -8,7 +8,7 @@ define(['angular'], function(angular) {
 
 var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
 
-PointValueController.$inject = ['$scope', '$element', '$attrs', 'pointEventManager', 'Point'];
+PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint'];
 function PointValueController($scope, $element, $attrs, pointEventManager, Point) {
     this.$scope = $scope;
     this.$element = $element;

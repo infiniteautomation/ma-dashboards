@@ -54,7 +54,7 @@ function deviceNameQuery(DeviceName) {
     };
 }
 
-deviceNameQuery.$inject = ['DeviceName'];
+deviceNameQuery.$inject = ['maDeviceName'];
 return deviceNameQuery;
 
 }); // define

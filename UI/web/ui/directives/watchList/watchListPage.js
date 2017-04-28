@@ -19,8 +19,8 @@ function watchListPageDirective() {
     };
 }
 
-WatchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', 'localStorageService', '$state', 'PointHierarchy',
-    'maUiDateBar', '$mdDialog', 'statistics', '$scope', '$mdColorPicker'];
+WatchListPageController.$inject = ['$mdMedia', 'maWatchList', 'maTranslate', 'localStorageService', '$state', 'maPointHierarchy',
+    'maUiDateBar', '$mdDialog', 'maStatistics', '$scope', '$mdColorPicker'];
 function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy,
         maUiDateBar, $mdDialog, statistics, $scope, $mdColorPicker) {
     
@@ -396,7 +396,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
-            controller: ['maUiDateBar', 'pointValues', 'Util', 'MA_ROLLUP_TYPES', function(maUiDateBar, pointValues, Util, MA_ROLLUP_TYPES) {
+            controller: ['maUiDateBar', 'maPointValues', 'maUtil', 'MA_ROLLUP_TYPES', function(maUiDateBar, pointValues, Util, MA_ROLLUP_TYPES) {
                 this.dateBar = maUiDateBar;
                 this.rollupTypes = MA_ROLLUP_TYPES;
                 this.rollupType = 'NONE';

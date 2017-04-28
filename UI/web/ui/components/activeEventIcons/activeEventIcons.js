@@ -60,7 +60,7 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
     );
 };
 
-activeEventIconsController.$inject = ['Events', 'eventsEventManager'];
+activeEventIconsController.$inject = ['maEvents', 'maEventsEventManager'];
 
 return {
     controller: activeEventIconsController,

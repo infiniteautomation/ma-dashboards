@@ -33,7 +33,7 @@ define(['angular', 'require'], function(angular, require) {
     </md-input-container>
  *
  */
-deviceNameList.$inject = ['DeviceName', '$injector'];
+deviceNameList.$inject = ['maDeviceName', '$injector'];
 function deviceNameList(DeviceName, $injector) {
     return {
         restrict: 'E',

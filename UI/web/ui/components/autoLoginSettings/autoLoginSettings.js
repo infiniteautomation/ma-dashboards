@@ -35,7 +35,7 @@ var autoLoginSettings = function autoLoginSettings(User, $scope) {
     };
 };
 
-autoLoginSettings.$inject = ['User', '$scope'];
+autoLoginSettings.$inject = ['maUser', '$scope'];
 
 return {
     controller: autoLoginSettings,

@@ -102,7 +102,7 @@ function dateRangePicker($injector) {
 
             return '<select ng-options="p.type as p.label for p in $ctrl.presets" ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)"></select>';
         },
-        controller: ['$attrs', '$parse', '$scope', '$interval', 'Util', 'MA_DATE_RANGE_PRESETS', 'mangoDateFormats',
+        controller: ['$attrs', '$parse', '$scope', '$interval', 'maUtil', 'MA_DATE_RANGE_PRESETS', 'MA_DATE_FORMATS',
                      function($attrs, $parse, $scope, $interval, Util, MA_DATE_RANGE_PRESETS, mangoDateFormats) {
             
             var fromAssign = $parse($attrs.from).assign.bind(null, $scope.$parent);

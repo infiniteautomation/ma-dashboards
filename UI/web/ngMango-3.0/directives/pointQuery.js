@@ -68,7 +68,7 @@ function pointQuery(Point) {
     };
 }
 
-pointQuery.$inject = ['Point'];
+pointQuery.$inject = ['maPoint'];
 return pointQuery;
 
 }); // define

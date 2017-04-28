@@ -48,7 +48,7 @@ function now() {
         restrict: 'E',
         controllerAs: '$ctrl',
         bindToController: true,
-        controller: ['Util', '$interval', function nowController(Util, $interval) {
+        controller: ['maUtil', '$interval', function nowController(Util, $interval) {
             this.browserTimezone = moment.tz.guess();
             
             this.$onChanges = function(changes) {

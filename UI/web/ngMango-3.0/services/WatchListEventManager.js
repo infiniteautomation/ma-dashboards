@@ -25,7 +25,7 @@ function WatchListEventManagerFactory(EventManager) {
     });
 }
 
-WatchListEventManagerFactory.$inject = ['EventManager'];
+WatchListEventManagerFactory.$inject = ['maEventManager'];
 return WatchListEventManagerFactory;
 
 }); // define

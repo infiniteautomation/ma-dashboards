@@ -51,7 +51,7 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 </ma-serial-chart>`
  *
  */
-serialChart.$inject = ['ngMangoInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util', 'mangoDateFormats'];
+serialChart.$inject = ['MA_INSERT_CSS', 'maCssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'maUtil', 'MA_DATE_FORMATS'];
 function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats) {
 	var MAX_SERIES = 10;
 

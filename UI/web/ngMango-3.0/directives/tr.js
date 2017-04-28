@@ -87,7 +87,7 @@ function maTr(Translate) {
     };
 }
 
-maTr.$inject = ['Translate'];
+maTr.$inject = ['maTranslate'];
 return maTr;
 
 }); // define

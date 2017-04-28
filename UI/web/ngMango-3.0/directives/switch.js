@@ -31,7 +31,7 @@ function switchDirective() {
     };
 }
 
-SwitchController.$inject = PointValueController.$inject.concat('Util');
+SwitchController.$inject = PointValueController.$inject.concat('maUtil');
 function SwitchController() {
     PointValueController.apply(this, arguments);
     var firstArg = PointValueController.$inject.length;

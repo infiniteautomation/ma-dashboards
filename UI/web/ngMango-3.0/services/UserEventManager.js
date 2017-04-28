@@ -19,7 +19,7 @@ define([], function() {
     userEventManager.subscribe(xid, SUBSCRIPTION_TYPES, websocketHandler);
 * </pre>
 */
-UserEventManagerFactory.$inject = ['EventManager'];
+UserEventManagerFactory.$inject = ['maEventManager'];
 function UserEventManagerFactory(EventManager) {
     return new EventManager({
     	url: '/rest/v1/websocket/users'

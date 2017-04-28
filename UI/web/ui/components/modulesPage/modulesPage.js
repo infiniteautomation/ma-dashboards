@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ModulesPageController.$inject = ['Modules'];
+ModulesPageController.$inject = ['maModules'];
 function ModulesPageController(Modules) {
     this.Modules = Modules;
 }

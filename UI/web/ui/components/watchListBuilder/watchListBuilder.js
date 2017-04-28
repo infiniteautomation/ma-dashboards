@@ -6,8 +6,8 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-WatchListBuilderController.$inject = ['Point', '$mdMedia', 'WatchList',
-    '$state', '$mdDialog', 'Translate', '$timeout', '$mdToast', 'User', '$q'];
+WatchListBuilderController.$inject = ['maPoint', '$mdMedia', 'maWatchList',
+    '$state', '$mdDialog', 'maTranslate', '$timeout', '$mdToast', 'maUser', '$q'];
 function WatchListBuilderController(Point, $mdMedia, WatchList,
         $state, $mdDialog, Translate, $timeout, $mdToast, User, $q) {
     var $ctrl = this;

@@ -52,7 +52,7 @@ function dataSourceQuery(DataSource) {
     };
 }
 
-dataSourceQuery.$inject = ['DataSource'];
+dataSourceQuery.$inject = ['maDataSource'];
 return dataSourceQuery;
 
 }); // define

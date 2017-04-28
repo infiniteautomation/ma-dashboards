@@ -27,7 +27,7 @@ function JsonStoreEventManagerFactory(EventManager) {
     });
 }
 
-JsonStoreEventManagerFactory.$inject = ['EventManager'];
+JsonStoreEventManagerFactory.$inject = ['maEventManager'];
 return JsonStoreEventManagerFactory;
 
 }); // define

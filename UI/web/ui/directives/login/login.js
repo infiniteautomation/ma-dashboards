@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-loginFactory.$inject = ['$state', 'User', '$rootScope', '$window'];
+loginFactory.$inject = ['$state', 'maUser', '$rootScope', '$window'];
 function loginFactory($state, User, $rootScope, $window) {
     return {
         templateUrl: require.toUrl('./login.html'),

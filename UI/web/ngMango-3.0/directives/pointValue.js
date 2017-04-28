@@ -78,7 +78,7 @@ function pointValue() {
     };
 }
 
-PointValueDirectiveController.$inject = PointValueController.$inject.concat('mangoDateFormats');
+PointValueDirectiveController.$inject = PointValueController.$inject.concat('MA_DATE_FORMATS');
 function PointValueDirectiveController() {
     PointValueController.apply(this, arguments);
     var firstArg = PointValueController.$inject.length;

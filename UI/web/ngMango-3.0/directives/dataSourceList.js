@@ -99,7 +99,7 @@ function dataSourceList(DataSource, $injector) {
     };
 }
 
-dataSourceList.$inject = ['DataSource', '$injector'];
+dataSourceList.$inject = ['maDataSource', '$injector'];
 return dataSourceList;
 
 }); // define

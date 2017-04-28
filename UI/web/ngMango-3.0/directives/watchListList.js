@@ -40,7 +40,7 @@ function watchListListFactory($injector) {
     };
 }
 
-WatchListListController.$inject = WatchListSelectController.$inject.concat('User');
+WatchListListController.$inject = WatchListSelectController.$inject.concat('maUser');
 function WatchListListController(User) {
     WatchListSelectController.apply(this, arguments);
     this.User = User;

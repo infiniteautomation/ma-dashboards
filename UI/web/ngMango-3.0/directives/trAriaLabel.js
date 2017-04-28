@@ -58,7 +58,7 @@ function maTrAriaLabel(Translate) {
     };
 }
 
-maTrAriaLabel.$inject = ['Translate'];
+maTrAriaLabel.$inject = ['maTranslate'];
 return maTrAriaLabel;
 
 }); // define

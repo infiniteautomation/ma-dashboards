@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ImportExportPageController.$inject = ['ImportExport', '$timeout', 'Util', 'Translate', '$mdColors'];
+ImportExportPageController.$inject = ['maImportExport', '$timeout', 'maUtil', 'maTranslate', '$mdColors'];
 function ImportExportPageController(ImportExport, $timeout, Util, Translate, $mdColors) {
     this.ImportExport = ImportExport;
     this.$timeout = $timeout;

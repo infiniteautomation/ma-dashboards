@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-filteringDeviceNameList.$inject = ['$injector', '$timeout', 'DeviceName'];
+filteringDeviceNameList.$inject = ['$injector', '$timeout', 'maDeviceName'];
 function filteringDeviceNameList($injector, $timeout, DeviceName) {
     return {
         restrict: 'E',

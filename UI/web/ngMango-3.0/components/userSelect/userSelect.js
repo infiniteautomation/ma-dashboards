@@ -8,7 +8,7 @@ define(['angular', 'require'], function(angular, require) {
 
 var UPDATE_TYPES = ['add', 'update', 'delete'];
 
-UserSelectController.$inject = ['User', 'UserEventManager', '$scope'];
+UserSelectController.$inject = ['maUser', 'maUserEventManager', '$scope'];
 function UserSelectController(User, UserEventManager, $scope) {
     this.User = User;
     this.UserEventManager = UserEventManager;

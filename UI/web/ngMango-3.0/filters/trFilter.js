@@ -40,7 +40,7 @@ function trFilterFactory(Translate) {
     };
 }
 
-trFilterFactory.$inject = ['Translate'];
+trFilterFactory.$inject = ['maTranslate'];
 return trFilterFactory;
 
 }); // define

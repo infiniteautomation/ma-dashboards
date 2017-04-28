@@ -43,7 +43,7 @@ function indicator() {
     };
 }
 
-IndicatorController.$inject = PointValueController.$inject.concat('Util');
+IndicatorController.$inject = PointValueController.$inject.concat('maUtil');
 function IndicatorController() {
     PointValueController.apply(this, arguments);
     var firstArg = PointValueController.$inject.length;

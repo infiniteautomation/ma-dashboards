@@ -27,11 +27,11 @@ and <a ui-sref="ui.docs.ngMango.maCalc"><code>&lt;ma-calc&gt;</code></a>.
 <ma-get-point-value points="points"></ma-get-point-value>
 
 <!-- Client side filter by name -->
-<ma-calc input="points | filter:{name:'Energy Accumulator (kWh)'} | first" output="energy"></ma-calc>
-<ma-calc input="points | filter:{name:'Current Phase ' + phase + ' (A)'} | first" output="current"></ma-calc>
-<ma-calc input="points | filter:{name:'Voltage ' + phase + '-N (V)'} | first" output="voltage"></ma-calc>
-<ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | first" output="power"></ma-calc>
-<ma-calc input="points | filter:{name:'Power Factor ' + phase + ''} | first" output="powerFactor"></ma-calc>
+<ma-calc input="points | filter:{name:'Energy Accumulator (kWh)'} | maFirst" output="energy"></ma-calc>
+<ma-calc input="points | filter:{name:'Current Phase ' + phase + ' (A)'} | maFirst" output="current"></ma-calc>
+<ma-calc input="points | filter:{name:'Voltage ' + phase + '-N (V)'} | maFirst" output="voltage"></ma-calc>
+<ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | maFirst" output="power"></ma-calc>
+<ma-calc input="points | filter:{name:'Power Factor ' + phase + ''} | maFirst" output="powerFactor"></ma-calc>
 
 <h1>Details for {{deviceName}}</h1>
 <p>There are {{points.length}} points for {{deviceName}}.</p>

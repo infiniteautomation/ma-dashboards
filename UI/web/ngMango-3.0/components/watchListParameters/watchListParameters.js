@@ -28,7 +28,7 @@ var watchListParameters = {
     }
 };
 
-WatchListParametersController.$inject = ['$parse', '$interpolate', 'Util'];
+WatchListParametersController.$inject = ['$parse', '$interpolate', 'maUtil'];
 function WatchListParametersController($parse, $interpolate, Util) {
     this.$parse = $parse;
     this.$interpolate = $interpolate;

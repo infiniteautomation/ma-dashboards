@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemSettingEditorController.$inject = ['SystemSettings', '$timeout', '$q'];
+SystemSettingEditorController.$inject = ['maSystemSettings', '$timeout', '$q'];
 function SystemSettingEditorController(SystemSettings, $timeout, $q) {
     this.SystemSettings = SystemSettings;
     this.$timeout = $timeout;

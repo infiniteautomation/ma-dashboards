@@ -73,7 +73,7 @@ uiApp.config([
     '$locationProvider',
     '$mdAriaProvider',
     'cfpLoadingBarProvider',
-    'SystemSettingsProvider',
+    'maSystemSettingsProvider',
     'MA_UI_MENU_XID',
     'MA_UI_PAGES_XID',
     'maRequireQProvider',
@@ -150,7 +150,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
 
     $urlRouterProvider.otherwise(function($injector, $location) {
         var basePath = '/ui/';
-        var User = $injector.get('User');
+        var User = $injector.get('maUser');
         var $state = $injector.get('$state');
         var user = User.current;
         
@@ -268,15 +268,15 @@ uiApp.run([
     '$mdMedia',
     'localStorageService',
     '$mdToast',
-    'User',
+    'maUser',
     'maUiSettings',
-    'Translate',
+    'maTranslate',
     '$location',
     '$stateParams',
     'maUiDateBar',
     '$document',
     '$mdDialog',
-    'GoogleAnalytics',
+    'maGoogleAnalytics',
     'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
     '$window',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
@@ -465,7 +465,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
      * Watchdog timer alert and re-connect/re-login code
      */
 
-    $rootScope.$on('mangoWatchdog', function(event, current, previous) {
+    $rootScope.$on('maWatchdog', function(event, current, previous) {
         var message;
         var hideDelay = 0; // dont auto hide message
 
@@ -541,8 +541,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 // main application. If the states are added after the main app runs then the user may
 // not navigate directly to one of their custom states on startup
 var servicesInjector = angular.injector(['ngMangoServices'], true);
-var User = servicesInjector.get('User');
-var JsonStore = servicesInjector.get('JsonStore');
+var User = servicesInjector.get('maUser');
+var JsonStore = servicesInjector.get('maJsonStore');
 var $q = servicesInjector.get('$q');
 var $http = servicesInjector.get('$http');
 
@@ -622,7 +622,7 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, customUiSettingsPromise, 
         angularJsModuleNames.push(angularModule.name);
     }
     
-    angular.module('maUiBootstrap', angularJsModuleNames).config(['UserProvider', 'maUiMenuProvider', function(UserProvider, maUiMenuProvider) {
+    angular.module('maUiBootstrap', angularJsModuleNames).config(['maUserProvider', 'maUiMenuProvider', function(UserProvider, maUiMenuProvider) {
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
         maUiMenuProvider.registerCustomMenuItems();

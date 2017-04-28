@@ -45,7 +45,7 @@ var login = function($state, User, $rootScope, $window, ADMIN_SETTINGS) {
     };
 };
 
-login.$inject = ['$state', 'User', '$rootScope', '$window', 'ADMIN_SETTINGS'];
+login.$inject = ['$state', 'maUser', '$rootScope', '$window', 'ADMIN_SETTINGS'];
 
 return login;
 

@@ -189,7 +189,7 @@ ngMango.component('maConfigImportDialog', configImportDialog);
 ngMango.component('maMap', maMap);
 ngMango.animation('.ma-slide-up', slideUp);
 
-ngMango.constant('ngMangoInsertCss', true);
+ngMango.constant('MA_INSERT_CSS', true);
 
 ngMango.constant('MA_DATE_RANGE_PRESETS', [
    {type: "LAST_5_MINUTES", label: 'Last 5 minutes'},
@@ -276,7 +276,7 @@ ngMango.constant('MA_RELATIVE_DATE_TYPES', [
  {type: "moment:'subtract':1:'years'", label: '1 year ago'}
 ]);
 
-ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['mangoDateFormats', function(mangoDateFormats) {
+ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDateFormats) {
     return {
         categoryAxis: [
             {period: 'fff', format: mangoDateFormats.timeSeconds},
@@ -297,9 +297,9 @@ ngMango.constant('MA_DEFAULT_LOCALE', '');
 
 ngMango.run([
     '$rootScope',
-    'mangoWatchdog',
-    'ngMangoInsertCss',
-    'cssInjector',
+    'maWatchdog',
+    'MA_INSERT_CSS',
+    'maCssInjector',
     'MA_ROLLUP_TYPES',
     'MA_TIME_PERIOD_TYPES',
     'MA_CHART_TYPES',
@@ -307,7 +307,7 @@ ngMango.run([
     'MA_DATE_RANGE_PRESETS',
     'MA_DEFAULT_TIMEZONE',
     'MA_DEFAULT_LOCALE',
-    'User',
+    'maUser',
 function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
         MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE, User) {
 	$rootScope.Math = Math;

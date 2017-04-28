@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-PermissionsMenuController.$inject = ['Permissions'];
+PermissionsMenuController.$inject = ['maPermissions'];
 function PermissionsMenuController(Permissions) {
     this.Permissions = Permissions;
     this.permissions = [];

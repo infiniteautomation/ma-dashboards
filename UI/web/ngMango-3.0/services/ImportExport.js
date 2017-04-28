@@ -6,7 +6,7 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-ImportExportFactory.$inject = ['$http', '$q', '$timeout', 'Util'];
+ImportExportFactory.$inject = ['$http', '$q', '$timeout', 'maUtil'];
 function ImportExportFactory($http, $q, $timeout, Util) {
     var importExportUrl = '/rest/v1/json-emport';
     

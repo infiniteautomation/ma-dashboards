@@ -34,7 +34,7 @@ function pointHierarchySelect($injector) {
     };
 }
 
-PointHierarchyController.$inject = ['$attrs', 'PointHierarchy'];
+PointHierarchyController.$inject = ['$attrs', 'maPointHierarchy'];
 function PointHierarchyController($attrs, PointHierarchy) {
     this.$onChanges = function(changes) {
         this.doQuery();

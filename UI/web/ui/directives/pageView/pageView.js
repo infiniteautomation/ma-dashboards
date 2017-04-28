@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-PageViewController.$inject = ['$scope', 'maUiPages', 'User', 'jsonStoreEventManager'];
+PageViewController.$inject = ['$scope', 'maUiPages', 'maUser', 'maJsonStoreEventManager'];
 function PageViewController($scope, maUiPages, User, jsonStoreEventManager) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
     

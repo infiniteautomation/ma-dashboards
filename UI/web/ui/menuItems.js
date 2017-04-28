@@ -48,7 +48,7 @@ return [
         menuHidden: true,
         menuTr: 'ui.app.ui',
         resolve: {
-            auth: ['Translate', 'User', function(Translate, User) {
+            auth: ['maTranslate', 'maUser', function(Translate, User) {
                 if (!User.current) {
                     throw 'No user';
                 }
@@ -158,7 +158,7 @@ return [
             helpPage: 'ui.help.watchList'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'cssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
                 return maRequireQ(['./directives/watchList/watchListPage',
                             './directives/watchList/watchListTableRow',
                             'md-color-picker/mdColorPicker'], 
@@ -186,7 +186,7 @@ return [
             helpPage: 'ui.help.dataPointDetails'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'cssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
                 return maRequireQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
                     angular.module('maUiDataPointDetailsState', [])
                         .component('maUiDataPointDetails', dataPointDetails);
@@ -209,7 +209,7 @@ return [
             helpPage: 'ui.help.events'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'cssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
                 return maRequireQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
                     angular.module('maUiEventsState', [])
                         .component('maUiEventsPage', eventsPage);
@@ -418,7 +418,7 @@ return [
             helpPage: 'ui.help.watchListBuilder'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'cssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
                 return maRequireQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'], function (watchListBuilder, bracketEscape) {
                     angular.module('maUiWatchListBuilderState', [])
                         .directive('maUiBracketEscape', bracketEscape)

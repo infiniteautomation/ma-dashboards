@@ -33,7 +33,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q) {
     };
 }
 
-mangoHttpInterceptorFactory.$inject = ['mangoBaseUrl', 'mangoTimeout', '$q'];
+mangoHttpInterceptorFactory.$inject = ['MA_BASE_URL', 'MA_TIMEOUT', '$q'];
 
 return mangoHttpInterceptorFactory;
 

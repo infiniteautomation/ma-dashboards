@@ -113,7 +113,7 @@ var queryBuilder = function queryBuilder(cssInjector) {
     };
 };
 
-queryBuilder.$inject = ['cssInjector'];
+queryBuilder.$inject = ['maCssInjector'];
 
 return {
     controller: queryBuilder,

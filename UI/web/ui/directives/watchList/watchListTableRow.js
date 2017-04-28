@@ -8,7 +8,7 @@ define(['require', 'moment-timezone', 'angular'], function(require, moment, angu
 
 var FLASH_CLASS = 'flash-on-change';
 
-watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', '$state', 'maUiDateBar', 'localStorageService'];
+watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'maUserNotes', '$state', 'maUiDateBar', 'localStorageService'];
 function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, $state, maUiDateBar, localStorageService) {
     return {
         templateUrl: require.toUrl('./watchListTableRow.html'),

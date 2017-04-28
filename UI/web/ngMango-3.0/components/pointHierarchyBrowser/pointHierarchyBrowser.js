@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-PointHierarchyBrowserController.$inject = ['PointHierarchy'];
+PointHierarchyBrowserController.$inject = ['maPointHierarchy'];
 function PointHierarchyBrowserController(PointHierarchy) {
     this.$onInit = function() {
         this.ngModelCtrl.$render = this.render;

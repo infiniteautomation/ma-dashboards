@@ -43,7 +43,7 @@ function($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider
     $stateProvider.state('dashboard', {
         templateUrl: 'views/dashboard/main.html',
         resolve: {
-            auth: ['$rootScope', 'User', function($rootScope, User) {
+            auth: ['$rootScope', 'maUser', function($rootScope, User) {
                 // retrieves the current user when we navigate to a dashboard page
                 // if an error occurs the $stateChangeError listener redirects to the login page
                 $rootScope.user = User.getCurrent();
@@ -60,7 +60,7 @@ function($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider
         url: '/login',
         templateUrl: 'views/login.html',
         resolve: {
-            loginTranslations: ['Translate', function(Translate) {
+            loginTranslations: ['maTranslate', function(Translate) {
                 return Translate.loadNamespaces(['login']);
             }]
         }

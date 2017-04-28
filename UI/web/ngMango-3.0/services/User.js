@@ -165,7 +165,7 @@ function UserProvider() {
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'Util'];
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil'];
     function UserFactory($resource, $cacheFactory, localStorageService, $q, Util) {
         var User = $resource('/rest/v1/users/:username', {
                 username: '@username'

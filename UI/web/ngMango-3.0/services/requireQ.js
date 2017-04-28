@@ -31,7 +31,7 @@ define([], function() {
                 $ocLazyLoad.inject('login');
             });
         }],
-        loginTranslations: ['Translate', function(Translate) {
+        loginTranslations: ['maTranslate', function(Translate) {
             return Translate.loadNamespaces('login');
         }]
     }

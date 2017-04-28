@@ -30,7 +30,7 @@ function filteringPointHierarchySelect($injector) {
     };
 }
 
-PointHierarchyController.$inject = ['$attrs', 'PointHierarchy', '$timeout'];
+PointHierarchyController.$inject = ['$attrs', 'maPointHierarchy', '$timeout'];
 function PointHierarchyController($attrs, PointHierarchy, $timeout) {
     this.displayProp = this.replaceName ? 'replacedName' : 'name';
     

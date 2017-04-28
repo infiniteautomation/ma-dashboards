@@ -23,7 +23,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
  * <ma-user-notes-table></ma-user-notes-table>
  *
  */
-userNotesTable.$inject = ['UserNotes', '$injector', 'mangoDateFormats'];
+userNotesTable.$inject = ['maUserNotes', '$injector', 'MA_DATE_FORMATS'];
 function userNotesTable(UserNotes, $injector, mangoDateFormats) {
     return {
         restrict: 'E',

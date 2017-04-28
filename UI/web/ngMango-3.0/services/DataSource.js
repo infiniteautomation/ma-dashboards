@@ -183,7 +183,7 @@ function DataSourceFactory($resource, Util) {
     return DataSource;
 }
 
-DataSourceFactory.$inject = ['$resource', 'Util'];
+DataSourceFactory.$inject = ['$resource', 'maUtil'];
 return DataSourceFactory;
 
 }); // define

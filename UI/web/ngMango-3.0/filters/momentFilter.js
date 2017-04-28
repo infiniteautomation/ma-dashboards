@@ -35,7 +35,7 @@ function momentFilter(Util) {
     });
 }
 
-momentFilter.$inject = ['Util'];
+momentFilter.$inject = ['maUtil'];
 return momentFilter;
 
 }); // define

@@ -21,7 +21,7 @@ define([], function() {
  * @param {object} output Declare a variable to hold the result of the evaluated expression.
  *
  * @usage
- * <ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | first" output="power">
+ * <ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | maFirst" output="power">
  * </ma-calc>
  */
 function calc() {

@@ -159,7 +159,7 @@ function JsonStoreFactory($resource, Util) {
     return JsonStore;
 }
 
-JsonStoreFactory.$inject = ['$resource', 'Util'];
+JsonStoreFactory.$inject = ['$resource', 'maUtil'];
 return JsonStoreFactory;
 
 }); // define

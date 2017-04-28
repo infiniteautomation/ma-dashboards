@@ -23,7 +23,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
 <ma-statistics-table statistics="statsObj"></ma-statistics-table>
  *
  */
-statisticsTable.$inject = ['$injector', 'mangoDateFormats'];
+statisticsTable.$inject = ['$injector', 'MA_DATE_FORMATS'];
 function statisticsTable($injector, mangoDateFormats) {
     return {
         restrict: 'E',

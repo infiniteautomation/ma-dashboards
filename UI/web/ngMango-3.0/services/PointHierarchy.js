@@ -117,7 +117,7 @@ By default this is set to `true` and all descendant points are given, even those
 /*
  * Provides service for getting point hierarchy
  */
-PointHierarchyFactory.$inject = ['$resource', 'Point'];
+PointHierarchyFactory.$inject = ['$resource', 'maPoint'];
 function PointHierarchyFactory($resource, Point) {
     var PointHierarchy = $resource('/rest/v1/hierarchy/by-id/:id', {
     		id: '@id'

@@ -35,7 +35,7 @@ function deviceNameScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['DeviceName', '$timeout', DeviceNameScrollListController]
+        controller: ['maDeviceName', '$timeout', DeviceNameScrollListController]
     };
     
     function DeviceNameScrollListController(DeviceName, $timeout) {

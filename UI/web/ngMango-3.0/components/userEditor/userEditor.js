@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UserEditorController.$inject = ['User', '$http', '$mdDialog', 'Translate', '$mdToast'];
+UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast'];
 function UserEditorController(User, $http, $mdDialog, Translate, $mdToast) {
     this.User = User;
     this.$http = $http;

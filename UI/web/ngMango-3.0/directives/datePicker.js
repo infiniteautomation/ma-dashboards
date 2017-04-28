@@ -161,7 +161,7 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
     }
 }
 
-datePicker.$inject = ['$injector', 'mangoDateFormats', 'ngMangoInsertCss', 'cssInjector', '$q'];
+datePicker.$inject = ['$injector', 'MA_DATE_FORMATS', 'MA_INSERT_CSS', 'maCssInjector', '$q'];
 
 return datePicker;
 

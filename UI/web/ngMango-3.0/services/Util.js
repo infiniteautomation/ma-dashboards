@@ -629,7 +629,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     return new Util();
 }
 
-UtilFactory.$inject = ['mangoBaseUrl', 'mangoDateFormats', '$q'];
+UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q'];
 return UtilFactory;
 
 }); // define

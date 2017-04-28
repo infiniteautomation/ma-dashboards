@@ -24,7 +24,7 @@ var ngMangoFilters = angular.module('ngMangoFilters', []);
 ngMangoFilters.filter('maMoment', momentFilter);
 ngMangoFilters.filter('maDuration', durationFilter);
 
-ngMangoFilters.filter('sum', function() {
+ngMangoFilters.filter('maSum', function() {
 	return function(arrayData, propName) {
 		var sum = 0;
 		var val;
@@ -56,7 +56,7 @@ ngMangoFilters.filter('sum', function() {
 	};
 });
 
-ngMangoFilters.filter('sumColumn', function() {
+ngMangoFilters.filter('maSumColumn', function() {
 	return function(tableData, colNum) {
 		var sum = 0;
 		if (!tableData) {
@@ -77,14 +77,14 @@ ngMangoFilters.filter('sumColumn', function() {
 	};
 });
 
-ngMangoFilters.filter('pad', function() {
+ngMangoFilters.filter('maPad', function() {
 	  var zeros = '0000000000';
 	  return function(a, b) {
 		  return (zeros + a).slice(-b);
 	  };
 });
 
-ngMangoFilters.filter('first', function() {
+ngMangoFilters.filter('maFirst', function() {
 	  return function(a) {
 		  if (a && typeof a.length === 'number')
 			  return a[0];
@@ -92,7 +92,7 @@ ngMangoFilters.filter('first', function() {
 	  };
 });
 
-ngMangoFilters.filter('unique', ['Util', function(Util) {
+ngMangoFilters.filter('maUnique', ['maUtil', function(Util) {
 	var uniqueFilter = Util.memoize(function uniqueFilter(collection, propName) {
 	    
 	    var result = [];
@@ -120,7 +120,7 @@ ngMangoFilters.filter('unique', ['Util', function(Util) {
 	};
 }]);
 
-ngMangoFilters.filter('range', function() {
+ngMangoFilters.filter('maRange', function() {
     return function(input, start, end, step) {
         input.splice(0, input.length);
         for (var i = start || 0; i <= (end || 100); i = i + (step || 1))
@@ -129,7 +129,7 @@ ngMangoFilters.filter('range', function() {
     };
 });
 
-ngMangoFilters.filter('property', ['Util', function(Util) {
+ngMangoFilters.filter('maProperty', ['maUtil', function(Util) {
     var propertyFilter = Util.memoize(function propertyFilter(input, propertyName) {
         var result = [];
         for (var i = 0; i < input.length; i++)
@@ -143,11 +143,11 @@ ngMangoFilters.filter('property', ['Util', function(Util) {
     };
 }]);
 
-ngMangoFilters.filter('maFilter', ['Util', '$filter', function(Util, $filter) {
+ngMangoFilters.filter('maFilter', ['maUtil', '$filter', function(Util, $filter) {
     return Util.memoize($filter('filter'));
 }]);
 
-ngMangoFilters.filter('noNaN', function () {
+ngMangoFilters.filter('maNoNaN', function () {
     return function (input, suffix) {
           if (isNaN(input)) { return '\u2014'; }
           else { return input.toFixed(1) + suffix; }

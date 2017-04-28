@@ -24,8 +24,8 @@ function pageEditorControls() {
     };
 }
 
-PageEditorControlsController.$inject = ['$scope', 'maUiPages', 'jsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
-    'localStorageService', '$mdDialog', 'Translate', 'maUiMenu', '$window', 'User', '$q', 'MA_UI_EDIT_MENUS_PERMISSION'];
+PageEditorControlsController.$inject = ['$scope', 'maUiPages', 'maJsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
+    'localStorageService', '$mdDialog', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION'];
 function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
         localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION) {
     this.$scope = $scope;

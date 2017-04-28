@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-menuEditor.$inject = ['maUiMenu', '$mdDialog', 'Translate', '$mdMedia', 'maUiMenuEditor'];
+menuEditor.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', '$mdMedia', 'maUiMenuEditor'];
 function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
     return {
         scope: {},

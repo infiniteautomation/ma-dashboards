@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ConfigExportController.$inject = ['ImportExport', 'Util', 'Translate'];
+ConfigExportController.$inject = ['maImportExport', 'maUtil', 'maTranslate'];
 function ConfigExportController(ImportExport, Util, Translate) {
     this.ImportExport = ImportExport;
     this.Util = Util;

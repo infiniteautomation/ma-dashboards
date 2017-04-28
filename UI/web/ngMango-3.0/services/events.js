@@ -201,7 +201,7 @@ function eventsFactory($resource, Util) {
     return events;
 }
 
-eventsFactory.$inject = ['$resource', 'Util'];
+eventsFactory.$inject = ['$resource', 'maUtil'];
 return eventsFactory;
 
 }); // define

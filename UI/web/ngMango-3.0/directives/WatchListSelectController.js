@@ -9,7 +9,7 @@ define(['angular', 'require'], function(angular, require) {
 var DEFAULT_SORT = ['name'];
 var UPDATE_TYPES = ['add', 'update', 'delete'];
 
-WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'WatchList', 'WatchListEventManager'];
+WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'maWatchList', 'maWatchListEventManager'];
 function WatchListSelectController($scope, $element, $attrs, WatchList, WatchListEventManager) {
     this.$scope = $scope;
     this.$element = $element;

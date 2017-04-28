@@ -219,7 +219,7 @@ function defaultOptions() {
     };
 }
 
-stateChart.$inject = ['mangoDateFormats'];
+stateChart.$inject = ['MA_DATE_FORMATS'];
 
 return stateChart;
 

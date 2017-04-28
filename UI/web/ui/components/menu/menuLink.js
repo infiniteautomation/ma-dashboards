@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-MenuLinkController.$inject = ['$state', 'Translate'];
+MenuLinkController.$inject = ['$state', 'maTranslate'];
 function MenuLinkController($state, Translate) {
     this.$onInit = function() {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;

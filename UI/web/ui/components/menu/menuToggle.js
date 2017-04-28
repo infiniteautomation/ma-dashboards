@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-MenuToggleController.$inject = ['$state', '$timeout', '$element', '$scope', 'Translate'];
+MenuToggleController.$inject = ['$state', '$timeout', '$element', '$scope', 'maTranslate'];
 function MenuToggleController($state, $timeout, $element, $scope, Translate) {
 
     this.$onInit = function() {

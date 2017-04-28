@@ -54,7 +54,7 @@ function eventsEventManager(EventManager) {
     
 }
 
-eventsEventManager.$inject = ['EventManager'];
+eventsEventManager.$inject = ['maEventManager'];
 return eventsEventManager;
 
 }); // define

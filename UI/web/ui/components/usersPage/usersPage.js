@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UsersPageController.$inject = ['User', '$state'];
+UsersPageController.$inject = ['maUser', '$state'];
 function UsersPageController(User, $state) {
     this.User = User;
     this.$state = $state;

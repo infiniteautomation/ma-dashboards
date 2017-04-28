@@ -114,7 +114,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
 	    angular.extend(this, options);
 
-	    $rootScope.$on('mangoWatchdog', function(event, current, previous) {
+	    $rootScope.$on('maWatchdog', function(event, current, previous) {
 	        if (current.loggedIn) {
                 this.openSocket();
 	        } else {
@@ -378,7 +378,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	return EventManager;
 }
 
-EventManagerFactory.$inject = ['mangoBaseUrl', '$rootScope', 'mangoTimeout'];
+EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT'];
 return EventManagerFactory;
 
 }); // define

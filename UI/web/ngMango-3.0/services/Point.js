@@ -199,7 +199,7 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="ui.
 /*
  * Provides service for getting list of points and create, update, delete
  */
-PointFactory.$inject = ['$resource', '$http', '$timeout', 'Util', 'User'];
+PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser'];
 function PointFactory($resource, $http, $timeout, Util, User) {
     var Point = $resource('/rest/v1/data-points/:xid', {
     		xid: '@xid'

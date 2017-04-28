@@ -6,7 +6,7 @@
 define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
 'use strict';
 
-FooterController.$inject = ['Modules'];
+FooterController.$inject = ['maModules'];
 function FooterController(Modules) {
     this.Modules = Modules;
     this.year = moment().year();

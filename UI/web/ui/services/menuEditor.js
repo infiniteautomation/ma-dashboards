@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'Translate', 'maUiPages', '$q', 'Util'];
+MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', 'maUiPages', '$q', 'maUtil'];
 function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
 
     function MenuEditor() {

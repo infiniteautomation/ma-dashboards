@@ -56,7 +56,7 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
     };
 }
 
-pagingPointList.$inject = ['Point', '$filter', '$injector', '$parse', '$timeout', 'DynamicItems'];
+pagingPointList.$inject = ['maPoint', '$filter', '$injector', '$parse', '$timeout', 'maDynamicItems'];
 return pagingPointList;
 
 }); // define

@@ -6,7 +6,7 @@
 define(['moment-timezone'], function(moment) {
 'use strict';
 
-dateFilterFactory.$inject = ['mangoDateFormats'];
+dateFilterFactory.$inject = ['MA_DATE_FORMATS'];
 function dateFilterFactory(mangoDateFormats) {
     return function formatDate(date, format) {
         var momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;

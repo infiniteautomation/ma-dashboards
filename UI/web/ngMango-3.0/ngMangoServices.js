@@ -58,47 +58,47 @@ define(['./services/Point',
 **/
 var ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'LocalStorageModule']);
 
-ngMangoServices.factory('Point', Point);
-ngMangoServices.factory('PointHierarchy', PointHierarchy);
-ngMangoServices.provider('User', UserProvider);
-ngMangoServices.factory('pointEventManager', PointEventManagerFactory);
-ngMangoServices.factory('Translate', Translate);
-ngMangoServices.factory('mangoHttpInterceptor', mangoHttpInterceptor);
-ngMangoServices.factory('JsonStore', JsonStore);
-ngMangoServices.factory('jsonStoreEventManager', JsonStoreEventManagerFactory);
-ngMangoServices.factory('Util', Util);
-ngMangoServices.factory('mangoWatchdog', mangoWatchdog);
-ngMangoServices.factory('EventManager', EventManager);
-ngMangoServices.factory('cssInjector', cssInjector);
-ngMangoServices.factory('DataSource', DataSourceFactory);
-ngMangoServices.factory('DeviceName', DeviceNameFactory);
-ngMangoServices.factory('WatchList', WatchListFactory);
-ngMangoServices.factory('WatchListEventManager', WatchListEventManagerFactory);
-ngMangoServices.factory('rqlParamSerializer', rqlParamSerializer);
-ngMangoServices.factory('UserNotes', UserNotes);
-ngMangoServices.factory('eventsEventManager', eventsEventManagerFactory);
-ngMangoServices.factory('Events', events);
-ngMangoServices.factory('DynamicItems', DynamicItems);
-ngMangoServices.factory('pointValues', pointValuesFactory);
-ngMangoServices.factory('statistics', statisticsFactory);
-ngMangoServices.factory('UserEventManager', UserEventManager);
-ngMangoServices.factory('Modules', ModulesFactory);
-ngMangoServices.factory('Permissions', PermissionsFactory);
-ngMangoServices.provider('SystemSettings', SystemSettingsProvider);
-ngMangoServices.factory('ImportExport', ImportExportFactory);
-ngMangoServices.factory('GoogleAnalytics', GoogleAnalyticsFactory);
+ngMangoServices.factory('maPoint', Point);
+ngMangoServices.factory('maPointHierarchy', PointHierarchy);
+ngMangoServices.provider('maUser', UserProvider);
+ngMangoServices.factory('maPointEventManager', PointEventManagerFactory);
+ngMangoServices.factory('maTranslate', Translate);
+ngMangoServices.factory('maHttpInterceptor', mangoHttpInterceptor);
+ngMangoServices.factory('maJsonStore', JsonStore);
+ngMangoServices.factory('maJsonStoreEventManager', JsonStoreEventManagerFactory);
+ngMangoServices.factory('maUtil', Util);
+ngMangoServices.factory('maWatchdog', mangoWatchdog);
+ngMangoServices.factory('maEventManager', EventManager);
+ngMangoServices.factory('maCssInjector', cssInjector);
+ngMangoServices.factory('maDataSource', DataSourceFactory);
+ngMangoServices.factory('maDeviceName', DeviceNameFactory);
+ngMangoServices.factory('maWatchList', WatchListFactory);
+ngMangoServices.factory('maWatchListEventManager', WatchListEventManagerFactory);
+ngMangoServices.factory('maRqlParamSerializer', rqlParamSerializer);
+ngMangoServices.factory('maUserNotes', UserNotes);
+ngMangoServices.factory('maEventsEventManager', eventsEventManagerFactory);
+ngMangoServices.factory('maEvents', events);
+ngMangoServices.factory('maDynamicItems', DynamicItems);
+ngMangoServices.factory('maPointValues', pointValuesFactory);
+ngMangoServices.factory('maStatistics', statisticsFactory);
+ngMangoServices.factory('maUserEventManager', UserEventManager);
+ngMangoServices.factory('maModules', ModulesFactory);
+ngMangoServices.factory('maPermissions', PermissionsFactory);
+ngMangoServices.provider('maSystemSettings', SystemSettingsProvider);
+ngMangoServices.factory('maImportExport', ImportExportFactory);
+ngMangoServices.factory('maGoogleAnalytics', GoogleAnalyticsFactory);
 ngMangoServices.provider('maRequireQ', requireQProvider);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 
 ngMangoServices.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', '');
 
-ngMangoServices.constant('mangoBaseUrl', '');
-ngMangoServices.constant('mangoTimeout', 30000);
-ngMangoServices.constant('mangoWatchdogTimeout', 10000);
-ngMangoServices.constant('mangoReconnectDelay', 5000);
+ngMangoServices.constant('MA_BASE_URL', '');
+ngMangoServices.constant('MA_TIMEOUT', 30000);
+ngMangoServices.constant('MA_WATCHDOG_TIMEOUT', 10000);
+ngMangoServices.constant('MA_RECONNECT_DELAY', 5000);
 
-ngMangoServices.constant('mangoDateFormats', {
+ngMangoServices.constant('MA_DATE_FORMATS', {
     dateTime: 'lll',
     shortDateTime: 'l LT',
     dateTimeSeconds: 'll LTS',
@@ -120,9 +120,9 @@ ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provid
         .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
         .setNotify(false, false);
     
-    $httpProvider.defaults.paramSerializer = 'rqlParamSerializer';
+    $httpProvider.defaults.paramSerializer = 'maRqlParamSerializer';
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    $httpProvider.interceptors.push('mangoHttpInterceptor');
+    $httpProvider.interceptors.push('maHttpInterceptor');
 
     $provide.decorator('$q', qDecorator);
 }]);

@@ -58,7 +58,7 @@ function setPointValue($injector) {
     };
 }
 
-SetPointValueController.$inject = PointValueController.$inject.concat('Translate', '$q');
+SetPointValueController.$inject = PointValueController.$inject.concat('maTranslate', '$q');
 function SetPointValueController() {
     PointValueController.apply(this, arguments);
     var firstArg = PointValueController.$inject.length;

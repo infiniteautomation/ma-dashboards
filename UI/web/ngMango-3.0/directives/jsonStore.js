@@ -98,7 +98,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
     };
 }
 
-jsonStore.$inject = ['JsonStore', 'jsonStoreEventManager', '$q'];
+jsonStore.$inject = ['maJsonStore', 'maJsonStoreEventManager', '$q'];
 return jsonStore;
 
 }); // define
