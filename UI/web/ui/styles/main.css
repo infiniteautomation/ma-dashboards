@@ -1082,3 +1082,8 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
   width: 100%;
   max-width: 1024px;
 }
+
+/* module page */
+.ma-module-info .md-subhead {
+  font-style: oblique;
+}
