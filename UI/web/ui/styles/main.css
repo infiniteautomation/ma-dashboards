@@ -42,10 +42,6 @@ body {
 	padding: 16px;
 }
 
-.ma-ui-main-view.ma-no-padding {
-	padding: 0;
-}
-
 .ma-ui-main-view.mobile {
 	padding-left: 8px;
 	padding-right: 8px;
@@ -56,14 +52,18 @@ body {
 	padding-right: 4px;
 }
 
+.ma-ui-main-view.ma-no-padding {
+	padding: 0;
+}
+
 .ma-ui-main-view.phone md-card {
 	margin-right: 8px;
 	margin-left: 8px;
 }
 
 ma-ui-footer {
-  padding: 16px 32px;
-  font-size: small;
+  padding: 8px 32px;
+  font-size: 1.3rem;
   border-top: 1px solid #ddd;
 }
 

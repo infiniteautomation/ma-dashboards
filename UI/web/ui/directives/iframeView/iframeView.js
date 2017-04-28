@@ -14,9 +14,10 @@ var iframeView = function() {
     return {
         scope: {
             src: '@',
-            pollInterval: '=?'
+            pollInterval: '<?',
+            disableResize: '<?'
         },
-        template: '<iframe sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" scrolling="no"></iframe>',
+        template: '<iframe flex sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" scrolling="no"></iframe>',
         link: function($scope, $element) {
             var $iframe = $element.find('iframe');
             $iframe.attr('src', addParams($scope.src));
@@ -29,7 +30,9 @@ var iframeView = function() {
                 var iFrameDocument = this.contentWindow.document;
                 
                 // J.W. no other way of doing this I believe
-                timer = setInterval(setIFrameHeight, $scope.pollInterval || 50);
+                if (!$scope.disableResize) {
+                    timer = setInterval(setIFrameHeight, $scope.pollInterval || 50);
+                }
                 
                 var links = iFrameDocument.querySelectorAll('a');
                 for (var i = 0; i < links.length; i++) {
