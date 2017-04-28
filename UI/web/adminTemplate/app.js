@@ -10,10 +10,9 @@ define([
     './directives/menu/menuToggle',
     './directives/login/login',
     'ngMango/ngMangoMaterial', // load ngMango angular modules
-    'ngMango/ngMangoComponents',
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
-], function(angular, dashboardMenu, menuLink, menuToggle, login, ngMangoMaterial, ngMangoComponents) {
+], function(angular, dashboardMenu, menuLink, menuToggle, login, ngMangoMaterial) {
 'use strict';
 
 // create an angular app with our desired dependencies
@@ -21,7 +20,6 @@ var myAdminApp = angular.module('myAdminApp', [
     'ui.router',
     'angular-loading-bar',
     'ngMangoMaterial',
-    'ngMangoComponents',
     'ngMessages'
 ]);
 
@@ -172,7 +170,7 @@ function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemi
                 }
                 if (!menuItem.templateUrl && !menuItem.template) {
                     menuItem.template = '<div ui-view></div>';
-                    menuItem['abstract'] = true;
+                    menuItem.abstract = true;
                 }
                 
                 if (!menuItem.name) {
@@ -184,7 +182,7 @@ function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemi
                         loginTranslations: ['Translate', function(Translate) {
                             return Translate.loadNamespaces('login');
                         }]
-                    }
+                    };
                 }
                 
                 $stateProvider.state(menuItem);
@@ -252,7 +250,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             } else if (state.menuText) {
                 crumbs.unshift({stateName: state.name, text: state.menuText});
             }
-        } while (state = state.parent);
+        } while ((state = state.parent));
         $rootScope.crumbs = crumbs;
     });
     

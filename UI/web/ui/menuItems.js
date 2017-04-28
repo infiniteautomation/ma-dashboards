@@ -15,8 +15,8 @@ return [
         menuIcon: 'exit_to_app',
         menuTr: 'header.login',
         resolve: {
-            deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/login/login'], function(login) {
+            deps: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./directives/login/login'], function(login) {
                     angular.module('maUiLoginState', [])
                         .directive('maUiLogin', login);
                     $ocLazyLoad.inject('maUiLoginState');
@@ -59,8 +59,8 @@ return [
                 // preloads the error page so if the server goes down we can still display the page
                 return $templateRequest('views/error.html');
             }],
-            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./services/menuEditor',
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./services/menuEditor',
                            './components/menu/jsonStoreMenu',
                            './components/menu/menu',
                            './components/menu/menuLink',
@@ -158,8 +158,8 @@ return [
             helpPage: 'ui.help.watchList'
         },
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                return rQ(['./directives/watchList/watchListPage',
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'cssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+                return maRequireQ(['./directives/watchList/watchListPage',
                             './directives/watchList/watchListTableRow',
                             'md-color-picker/mdColorPicker'], 
                 function (watchListPage, watchListTableRow) {
@@ -186,8 +186,8 @@ return [
             helpPage: 'ui.help.dataPointDetails'
         },
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                return rQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'cssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+                return maRequireQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
                     angular.module('maUiDataPointDetailsState', [])
                         .component('maUiDataPointDetails', dataPointDetails);
                     $ocLazyLoad.inject('maUiDataPointDetailsState');
@@ -209,8 +209,8 @@ return [
             helpPage: 'ui.help.events'
         },
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                return rQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'cssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+                return maRequireQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
                     angular.module('maUiEventsState', [])
                         .component('maUiEventsPage', eventsPage);
                     $ocLazyLoad.inject('maUiEventsState');
@@ -378,8 +378,8 @@ return [
             helpPage: 'ui.help.users'
         },
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./components/usersPage/usersPage'], function (usersPage) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./components/usersPage/usersPage'], function (usersPage) {
                     angular.module('maUiUsersState', [])
                         .component('maUiUsersPage', usersPage);
                     $ocLazyLoad.inject('maUiUsersState');
@@ -398,8 +398,8 @@ return [
             helpPage: 'ui.help.systemSettings'
         },
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./components/systemSettingsPage/systemSettingsPage'], function (systemSettingsPage) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./components/systemSettingsPage/systemSettingsPage'], function (systemSettingsPage) {
                     angular.module('maUiSystemSettingsState', [])
                         .component('maUiSystemSettingsPage', systemSettingsPage);
                     $ocLazyLoad.inject('maUiSystemSettingsState');
@@ -418,8 +418,8 @@ return [
             helpPage: 'ui.help.watchListBuilder'
         },
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                return rQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'], function (watchListBuilder, bracketEscape) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'cssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+                return maRequireQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'], function (watchListBuilder, bracketEscape) {
                     angular.module('maUiWatchListBuilderState', [])
                         .directive('maUiBracketEscape', bracketEscape)
                         .component('maUiWatchListBuilder', watchListBuilder);
@@ -440,8 +440,8 @@ return [
             helpPage: 'ui.help.importExport'
         },
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./components/importExportPage/importExportPage'], function (importExportPage) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./components/importExportPage/importExportPage'], function (importExportPage) {
                     angular.module('maUiImportExportState', [])
                         .component('maUiImportExportPage', importExportPage);
                     $ocLazyLoad.inject('maUiImportExportState');
@@ -460,8 +460,8 @@ return [
             helpPage: 'ui.help.modules'
         },
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./components/modulesPage/modulesPage'], function (modulesPage) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./components/modulesPage/modulesPage'], function (modulesPage) {
                     angular.module('maUiModulesState', [])
                         .component('maUiModulesPage', modulesPage);
                     $ocLazyLoad.inject('maUiModulesState');

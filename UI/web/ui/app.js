@@ -6,7 +6,6 @@
 define([
     'angular',
     'ngMango/ngMangoMaterial',
-    'ngMango/ngMangoComponents',
     'require',
     './services/menu',
     './services/pages',
@@ -23,7 +22,7 @@ define([
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, ngMangoMaterial, ngMangoComponents, require, menuProvider, pagesFactory, dateBarFactory, uiSettingsFactory, pageView, livePreview, stateParams, iframeView, menuItems, moment) {
+], function(angular, ngMangoMaterial, require, menuProvider, pagesFactory, dateBarFactory, uiSettingsFactory, pageView, livePreview, stateParams, iframeView, menuItems, moment) {
 'use strict';
 
 // must match variables defined in UIInstallUpgrade.java
@@ -40,7 +39,6 @@ var uiApp = angular.module('maUiApp', [
     'ui.sortable',
     'angular-loading-bar',
     'ngMangoMaterial',
-    'ngMangoComponents',
     'ngMessages'
 ]);
 
@@ -52,7 +50,6 @@ uiApp.provider('maUiMenu', menuProvider)
     .directive('maUiLivePreview', livePreview)
     .directive('maUiStateParams', stateParams)
     .directive('maUiIframeView', iframeView)
-    .constant('require', require)
     .constant('MA_UI_MENU_XID', MA_UI_MENU_XID)
     .constant('MA_UI_PAGES_XID', MA_UI_PAGES_XID)
     .constant('MA_UI_SETTINGS_XID', MA_UI_SETTINGS_XID)
@@ -79,9 +76,10 @@ uiApp.config([
     'SystemSettingsProvider',
     'MA_UI_MENU_XID',
     'MA_UI_PAGES_XID',
+    'maRequireQProvider',
 function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
-        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID) {
+        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider) {
 
     // will need initially when we use AngularJS 1.6.x
     //$compileProvider.preAssignBindingsEnabled(true);
@@ -89,7 +87,9 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
     $compileProvider.commentDirectivesEnabled(false);
     // we use the a class directive to transform ngDoc divs with class="prettyprint"
     //$compileProvider.cssClassDirectivesEnabled(false);
+    
     $mdAriaProvider.disableWarnings();
+    maRequireQProvider.setRequireJs(require);
 
     if (MA_UI_SETTINGS.palettes) {
         for (var paletteName in MA_UI_SETTINGS.palettes) {
@@ -187,8 +187,8 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
         submenu: true,
         weight: 2002,
         resolve: {
-            prettyprint: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/prettyprint/prettyprint'], function(prettyprint) {
+            prettyprint: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./directives/prettyprint/prettyprint'], function(prettyprint) {
                     angular.module('maUiDocsState', [])
                         .directive('prettyprint', prettyprint); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
                     $ocLazyLoad.inject('maUiDocsState');

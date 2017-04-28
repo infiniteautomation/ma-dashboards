@@ -33,16 +33,18 @@ define(['./services/Point',
         './services/SystemSettings',
         './services/ImportExport',
         './services/GoogleAnalytics',
+        './services/requireQ',
         './filters/dateFilter',
         './filters/trFilter',
         'angular',
+        'require',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider,
-        ImportExportFactory, GoogleAnalyticsFactory, dateFilterFactory, trFilterFactory, angular) {
+        ImportExportFactory, GoogleAnalyticsFactory, requireQProvider, dateFilterFactory, trFilterFactory, angular, require) {
 'use strict';
 /**
  * @ngdoc overview
@@ -85,6 +87,7 @@ ngMangoServices.factory('Permissions', PermissionsFactory);
 ngMangoServices.provider('SystemSettings', SystemSettingsProvider);
 ngMangoServices.factory('ImportExport', ImportExportFactory);
 ngMangoServices.factory('GoogleAnalytics', GoogleAnalyticsFactory);
+ngMangoServices.provider('maRequireQ', requireQProvider);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 
@@ -110,7 +113,8 @@ ngMangoServices.constant('mangoDateFormats', {
     iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 });
 
-ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', function(localStorageServiceProvider, $httpProvider, $provide) {
+ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide',
+        function(localStorageServiceProvider, $httpProvider, $provide, maRequireQProvider) {
     localStorageServiceProvider
         .setPrefix('ngMangoServices')
         .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
