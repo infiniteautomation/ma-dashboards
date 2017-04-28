@@ -32,7 +32,7 @@ define(['./services/Point',
         './services/Permissions',
         './services/SystemSettings',
         './services/ImportExport',
-        './services/GoogleAnalytics',
+        './services/analytics',
         './services/requireQ',
         './filters/dateFilter',
         './filters/trFilter',
@@ -44,7 +44,7 @@ define(['./services/Point',
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider,
-        ImportExportFactory, GoogleAnalyticsFactory, requireQProvider, dateFilterFactory, trFilterFactory, angular, require) {
+        ImportExportFactory, webAnalyticsFactory, requireQProvider, dateFilterFactory, trFilterFactory, angular, require) {
 'use strict';
 /**
  * @ngdoc overview
@@ -86,7 +86,7 @@ ngMangoServices.factory('maModules', ModulesFactory);
 ngMangoServices.factory('maPermissions', PermissionsFactory);
 ngMangoServices.provider('maSystemSettings', SystemSettingsProvider);
 ngMangoServices.factory('maImportExport', ImportExportFactory);
-ngMangoServices.factory('maGoogleAnalytics', GoogleAnalyticsFactory);
+ngMangoServices.factory('maWebAnalytics', webAnalyticsFactory);
 ngMangoServices.provider('maRequireQ', requireQProvider);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);

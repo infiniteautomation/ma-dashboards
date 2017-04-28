@@ -6,12 +6,12 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-GoogleAnalyticsFactory.$inject = ['$rootScope', '$window', '$state'];
-function GoogleAnalyticsFactory($rootScope, $window, $state) {
-    function GoogleAnalytics() {
+WebAnalyticsFactory.$inject = ['$rootScope', '$window', '$state'];
+function WebAnalyticsFactory($rootScope, $window, $state) {
+    function WebAnalytics() {
     }
 
-    GoogleAnalytics.prototype.enable = function(propertyId) {
+    WebAnalytics.prototype.enableGoogleAnalytics = function(propertyId) {
         if (propertyId) this.propertyId = propertyId;
         if (!this.propertyId) throw new Error('No property ID is set');
 
@@ -32,7 +32,7 @@ function GoogleAnalyticsFactory($rootScope, $window, $state) {
         }
     };
     
-    GoogleAnalytics.prototype.disable = function() {
+    WebAnalytics.prototype.disableGoogleAnalytics = function() {
         this.propertyId = null;
         if ($window.ga) {
             $window.ga('create', null, 'auto');
@@ -43,13 +43,13 @@ function GoogleAnalyticsFactory($rootScope, $window, $state) {
         }
     };
     
-    GoogleAnalytics.prototype.get = function() {
+    WebAnalytics.prototype.getGoogleAnalytics = function() {
         return $window.ga;
     };
     
-    return new GoogleAnalytics();
+    return new WebAnalytics();
 }
 
-return GoogleAnalyticsFactory;
+return WebAnalyticsFactory;
 
 });
