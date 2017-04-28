@@ -109,31 +109,10 @@ ImportExportPageController.prototype.importFile = function(file) {
     var $ctrl = this;
 
     delete this.importStatus;
-    
-    /*
-    if (!FileReader) return;
-    var reader = new FileReader();
-    reader.onload = function() {
-        $ctrl.jsonString = this.result;
-        $ctrl.doImport();
-    };
-    reader.readAsText(file);
-    */
-    
+
     this.ImportExport.importData(file).then(function(importStatus) {
         this.importStatus = importStatus;
         this.getImportStatus();
-    }.bind(this));
-};
-
-ImportExportPageController.prototype.doImport = function() {
-    var data = angular.fromJson(this.jsonString);
-    delete this.importStatus;
-    this.ImportExport.importData(data).then(function(importStatus) {
-        this.importStatus = importStatus;
-        this.getImportStatus();
-    }.bind(this), function(response) {
-        console.log('error importing file');
     }.bind(this));
 };
 

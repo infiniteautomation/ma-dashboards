@@ -44,6 +44,10 @@ ConfigImportDialogController.prototype.updateScrollPosition = function() {
 };
 
 ConfigImportDialogController.prototype.doImport = function() {
+    if (this.importData instanceof Error) {
+        this.error = this.importData;
+        return;
+    }
     delete this.error;
     
     this.ImportExport.importData(this.importData).then(function(importStatus) {

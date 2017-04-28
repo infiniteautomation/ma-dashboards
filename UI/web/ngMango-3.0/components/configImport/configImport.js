@@ -38,7 +38,12 @@ ConfigImportController.prototype.fileSelected = function($event) {
 };
 
 ConfigImportController.prototype.doImport = function($event) {
-    var data = angular.fromJson(this.jsonString);
+    var data;
+    try {
+        data = angular.fromJson(this.jsonString);
+    } catch (e) {
+        data = e;
+    }
     this.maDialogHelper.showConfigImportDialog(data, $event);
 };
 
