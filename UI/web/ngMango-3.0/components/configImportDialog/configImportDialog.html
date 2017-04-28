@@ -9,7 +9,7 @@
 </md-toolbar>
 
 <md-dialog-content layout="column" class="md-padding" flex>
-  <div layout layout-align="center center"><span><span ng-bind="$ctrl.importStatus.progress || 0"></span>%<span></div>
+  <div layout layout-align="center center"><span><span ng-bind="($ctrl.importStatus.progress || 0) | number:0"></span>%<span></div>
   <md-progress-linear md-mode="determinate" value="{{$ctrl.importStatus.progress}}"></md-progress-linear>
   <div flex class="ma-config-import-messages" tabindex="1">
     <div ng-repeat="msg in $ctrl.importStatus.genericMessages track by $index" ng-bind="msg"></div>
