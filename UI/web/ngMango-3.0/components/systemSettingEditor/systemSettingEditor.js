@@ -24,11 +24,11 @@ SystemSettingEditorController.prototype.$onInit = function() {
 SystemSettingEditorController.prototype.$onChanges = function(changes) {
     if (changes.key || changes.type) {
         this.systemSetting = new this.SystemSettings(this.key, this.type);
-        this.systemSetting.getValue();
-        
-        if (this.systemSettingChanged) {
-            this.systemSettingChanged({$setting: this.systemSetting});
-        }
+        this.systemSetting.getValue().then(function(value) {
+            if (this.onValueChanged) {
+                this.onValueChanged({$value: value});
+            }
+        }.bind(this));
     }
 };
 
@@ -43,7 +43,10 @@ SystemSettingEditorController.prototype.settingChanged = function settingChanged
         this.saving = true;
     }, 200);
     
-    this.systemSetting.setValue().then(function() {
+    this.systemSetting.setValue().then(function(value) {
+        if ($ctrl.onValueChanged) {
+            $ctrl.onValueChanged({$value: value});
+        }
         $ctrl.$timeout.cancel(delay);
         $ctrl.saving = false;
         $ctrl.done = true;
@@ -71,7 +74,7 @@ return {
         min: '<?',
         max: '<?',
         step: '<?',
-        systemSettingChanged: '&?'
+        onValueChanged: '&?'
     },
     transclude: {
         options: '?mdOption'
