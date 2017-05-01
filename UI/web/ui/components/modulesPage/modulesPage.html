@@ -19,11 +19,11 @@
           <div layout="row" ng-if="module.versionState !== 'PRODUCTION'">
             <span flex="50" ma-tr="modules.versionState"></span>
             <span flex="50" md-colors="{color: 'warn'}" ng-switch="module.versionState">
-                <span ng-switch-when="DEVELOPMENT" ma-tr="modules.development"></span>
-                <span ng-switch-when="ALPHA" ma-tr="modules.alpha"></span>
-                <span ng-switch-when="BETA" ma-tr="modules.beta"></span>
-                <span ng-switch-when="RELEASE_CANDIDATE" ma-tr="modules.releaseCandidate"></span>
-                <span ng-switch-when="PRODUCTION" ma-tr="modules.production"></span>
+                <span ng-switch-when="DEVELOPMENT" ma-tr="systemSettings.upgradeState.development"></span>
+                <span ng-switch-when="ALPHA" ma-tr="systemSettings.upgradeState.alpha"></span>
+                <span ng-switch-when="BETA" ma-tr="systemSettings.upgradeState.beta"></span>
+                <span ng-switch-when="RELEASE_CANDIDATE" ma-tr="systemSettings.upgradeState.releaseCandidate"></span>
+                <span ng-switch-when="PRODUCTION" ma-tr="systemSettings.upgradeState.production"></span>
             </span>
           </div>
           <div layout="row" ng-if="module.buildNumber > 0">
