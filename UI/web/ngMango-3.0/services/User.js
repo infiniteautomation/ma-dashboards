@@ -165,8 +165,8 @@ function UserProvider() {
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil'];
-    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util) {
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http'];
+    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http) {
         var User = $resource('/rest/v1/users/:username', {
                 username: '@username'
             }, {
@@ -332,6 +332,19 @@ function UserProvider() {
                 }
             }
             return this[method].apply(this, args);
+        };
+        
+        User.prototype.sendTestEmail = function(toEmail, usernameInEmail) {
+            return $http({
+                url: '/rest/v1/server/email/test',
+                params: {
+                    username: usernameInEmail || this.username,
+                    email: toEmail || this.email
+                },
+                method: 'PUT',
+                data: null,
+                accept: 'application/json'
+            });
         };
 
         return User;

@@ -1,6 +1,7 @@
 <md-input-container class="ma-icon-inside" ng-if="$ctrl.inputType !== 'checkbox'">
   <label ma-tr="{{$ctrl.labelTr}}"></label>
   <input ng-if="$ctrl.inputType === 'text'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()" ng-model-options="{debounce: {default: 1000, blur: 0}, updateOn : 'default blur'}">
+  <input ng-if="$ctrl.inputType === 'password'" type="password" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()" ng-model-options="{debounce: {default: 1000, blur: 0}, updateOn : 'default blur'}">
   <input ng-if="$ctrl.inputType === 'number'" type="number" min="{{$ctrl.min}}" max="{{$ctrl.max}}" step="{{$ctrl.step}}" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()" ng-model-options="{debounce: {default: 1000, blur: 0}, updateOn : 'default blur'}">
   <md-select ng-if="$ctrl.inputType === 'select'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()">
     <div ng-transclude="options"></div>

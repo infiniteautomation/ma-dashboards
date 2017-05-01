@@ -131,18 +131,7 @@ UserEditorController.prototype.showMessages = function(field) {
 
 UserEditorController.prototype.sendTestEmail = function() {
     var $ctrl = this;
-    var emailAddress = this.user.email;
-    
-    this.$http({
-        url: '/rest/v1/server/email/test',
-        params: {
-            username: this.user.username,
-            email: emailAddress
-        },
-        method: 'PUT',
-        data: null,
-        accept: 'application/json'
-    }).then(function(response) {
+    this.User.current.sendTestEmail().then(function(response) {
         var toast = $ctrl.$mdToast.simple()
             .textContent(response.data)
             .action($ctrl.Translate.trSync('common.ok'))
@@ -165,7 +154,6 @@ UserEditorController.prototype.sendTestEmail = function() {
 UserEditorController.prototype.switchUser = function(event) {
     var $ctrl = this;
     var username = this.user.username;
-    
     this.User.switchUser({username: username}).$promise.then(function(response) {
         var toast = $ctrl.$mdToast.simple()
             .textContent($ctrl.Translate.trSync('ui.components.switchedUser', username))

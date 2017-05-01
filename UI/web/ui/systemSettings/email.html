@@ -20,5 +20,11 @@
 
 <div layout layout-align="start center" ng-show="useAuth">
   <ma-system-setting-editor label-tr="systemSettings.smtpUsername" key="emailSmtpUsername" flex="100" flex-gt-md="50"></ma-system-setting-editor>
-  <ma-system-setting-editor label-tr="systemSettings.smtpPassword" key="emailSmtpPassword" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+  <ma-system-setting-editor label-tr="systemSettings.smtpPassword" key="emailSmtpPassword" input-type="password" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+</div>
+
+<div layout="column" layout-align="start start">
+  <md-button class="md-raised" ng-click="$ctrl.sendTestEmail()">
+    <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
+  </md-button>
 </div>
