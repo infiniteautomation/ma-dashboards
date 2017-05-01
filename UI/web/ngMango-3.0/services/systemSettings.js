@@ -13,6 +13,10 @@ function SystemSettingsProvider() {
     this.addSection = function(section) {
         sections.push(section);
     };
+    
+    this.addSections = function(toAdd) {
+        Array.prototype.push.apply(sections, toAdd);
+    };
 
     this.$get = SystemSettingsFactory.bind(null, sections);
     this.$get.$inject = SystemSettingsFactory.$inject;

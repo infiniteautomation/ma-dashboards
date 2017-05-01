@@ -15,10 +15,20 @@ function SystemSettingEditorController(SystemSettings, $timeout, $q) {
     this.messages = {};
 }
 
+SystemSettingEditorController.prototype.$onInit = function() {
+    if (!this.inputType) {
+        this.inputType = this.type === 'INTEGER' ? 'number' : 'text';
+    }
+};
+
 SystemSettingEditorController.prototype.$onChanges = function(changes) {
     if (changes.key || changes.type) {
         this.systemSetting = new this.SystemSettings(this.key, this.type);
         this.systemSetting.getValue();
+        
+        if (this.systemSettingChanged) {
+            this.systemSettingChanged({$setting: this.systemSetting});
+        }
     }
 };
 
@@ -57,10 +67,11 @@ return {
         key: '@',
         labelTr: '@',
         type: '@?',
-        select: '<?',
+        inputType: '@?',
         min: '<?',
         max: '<?',
         step: '<?',
+        systemSettingChanged: '&?'
     },
     transclude: {
         options: '?mdOption'

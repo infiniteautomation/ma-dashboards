@@ -6,16 +6,17 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast'];
-function UserEditorController(User, $http, $mdDialog, Translate, $mdToast) {
+UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales'];
+function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLocales) {
     this.User = User;
     this.$http = $http;
     this.timezones = moment.tz.names();
     this.$mdDialog = $mdDialog;
     this.Translate = Translate;
     this.$mdToast = $mdToast;
-    $http.get(require.toUrl('mangoUIModule/vendor/localeList.json')).then(function(response) {
-        this.locales = response.data;
+    
+    maLocales.get().then(function(locales) {
+        this.locales = locales;
     }.bind(this));
 }
 

@@ -8,11 +8,11 @@ define(['./services/Point',
         './services/User',
         './services/PointEventManagerFactory',
         './services/Translate',
-        './services/mangoHttpInterceptor',
+        './services/httpInterceptor',
         './services/JsonStore',
         './services/JsonStoreEventManagerFactory',
         './services/Util',
-        './services/mangoWatchdog',
+        './services/watchdog',
         './services/EventManager',
         './services/cssInjector',
         './services/DataSource',
@@ -30,21 +30,22 @@ define(['./services/Point',
         './services/UserEventManager',
         './services/Modules',
         './services/Permissions',
-        './services/SystemSettings',
+        './services/systemSettings',
         './services/ImportExport',
         './services/analytics',
         './services/requireQ',
+        './services/locales',
         './filters/dateFilter',
         './filters/trFilter',
         'angular',
         'require',
         'angular-resource',
         'angular-local-storage'
-], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
-        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
+], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, httpInterceptor, JsonStore,
+        JsonStoreEventManagerFactory, Util, watchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
-        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider,
-        ImportExportFactory, webAnalyticsFactory, requireQProvider, dateFilterFactory, trFilterFactory, angular, require) {
+        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, systemSettingsProvider,
+        ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, dateFilterFactory, trFilterFactory, angular, require) {
 'use strict';
 /**
  * @ngdoc overview
@@ -63,11 +64,11 @@ ngMangoServices.factory('maPointHierarchy', PointHierarchy);
 ngMangoServices.provider('maUser', UserProvider);
 ngMangoServices.factory('maPointEventManager', PointEventManagerFactory);
 ngMangoServices.factory('maTranslate', Translate);
-ngMangoServices.factory('maHttpInterceptor', mangoHttpInterceptor);
+ngMangoServices.factory('maHttpInterceptor', httpInterceptor);
 ngMangoServices.factory('maJsonStore', JsonStore);
 ngMangoServices.factory('maJsonStoreEventManager', JsonStoreEventManagerFactory);
 ngMangoServices.factory('maUtil', Util);
-ngMangoServices.factory('maWatchdog', mangoWatchdog);
+ngMangoServices.factory('maWatchdog', watchdog);
 ngMangoServices.factory('maEventManager', EventManager);
 ngMangoServices.factory('maCssInjector', cssInjector);
 ngMangoServices.factory('maDataSource', DataSourceFactory);
@@ -84,10 +85,11 @@ ngMangoServices.factory('maStatistics', statisticsFactory);
 ngMangoServices.factory('maUserEventManager', UserEventManager);
 ngMangoServices.factory('maModules', ModulesFactory);
 ngMangoServices.factory('maPermissions', PermissionsFactory);
-ngMangoServices.provider('maSystemSettings', SystemSettingsProvider);
+ngMangoServices.provider('maSystemSettings', systemSettingsProvider);
 ngMangoServices.factory('maImportExport', ImportExportFactory);
 ngMangoServices.factory('maWebAnalytics', webAnalyticsFactory);
 ngMangoServices.provider('maRequireQ', requireQProvider);
+ngMangoServices.factory('maLocales', localesFactory);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 

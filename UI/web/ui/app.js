@@ -254,10 +254,24 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
     
-    SystemSettingsProvider.addSection({
-        titleTr: 'ui.settings',
-        template: require.toUrl('mangoUIModule/settings.html')
-    });
+    SystemSettingsProvider.addSections([
+        {
+            titleTr: 'systemSettings.systemInformation',
+            template: require.toUrl('./systemSettings/systemInformation.html')
+        },
+        {
+            titleTr: 'systemSettings.siteAnalytics',
+            template: require.toUrl('./systemSettings/analytics.html')
+        },
+        {
+            titleTr: 'systemSettings.languageSettings',
+            template: require.toUrl('./systemSettings/language.html')
+        },
+        {
+            titleTr: 'ui.settings',
+            template: require.toUrl('./systemSettings/uiModule.html')
+        }
+    ]);
 }]);
 
 uiApp.run([
