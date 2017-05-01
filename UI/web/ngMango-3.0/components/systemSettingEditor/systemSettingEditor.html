@@ -17,6 +17,12 @@
     <md-option ng-value="-2"><md-icon class="fa fa-flag alarm-flag DO_NOT_LOG"></md-icon><span ma-tr="common.alarmLevel.doNotLog"></span></md-option>
     <md-option ng-value="-3"><md-icon class="fa fa-flag alarm-flag IGNORE"></md-icon><span ma-tr="common.alarmLevel.ignore"></span></md-option>
   </md-select>
+  <md-select ng-if="$ctrl.inputType === 'timeperiodtype'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()">
+    <md-option value="DAYS"><span ma-tr="common.tp.days"></span></md-option>
+    <md-option value="WEEKS"><span ma-tr="common.tp.weeks"></span></md-option>
+    <md-option value="MONTHS"><span ma-tr="common.tp.months"></span></md-option>
+    <md-option value="YEARS"><span ma-tr="common.tp.years"></span></md-option>
+  </md-select>
   <textarea ng-if="$ctrl.inputType === 'textarea'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()" ng-model-options="{debounce: {default: 1000, blur: 0}, updateOn : 'default blur'}"></textarea>
   <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" ng-class="{'md-warn': $ctrl.error}">{{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}</md-icon>
   <div ng-messages="$ctrl.messages" md-auto-hide="false">

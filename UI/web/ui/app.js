@@ -284,6 +284,18 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
             template: require.toUrl('./systemSettings/httpSettings.html')
         },
         {
+            titleTr: 'systemSettings.threadPools',
+            template: require.toUrl('./systemSettings/threadPools.html')
+        },
+        {
+            titleTr: 'systemSettings.uiPerformance',
+            template: require.toUrl('./systemSettings/uiPerformance.html')
+        },
+        {
+            titleTr: 'systemSettings.purgeSettings',
+            template: require.toUrl('./systemSettings/purgeSettings.html')
+        },
+        {
             titleTr: 'ui.settings',
             template: require.toUrl('./systemSettings/uiModule.html')
         }

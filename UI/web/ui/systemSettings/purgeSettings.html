@@ -1,0 +1,260 @@
+<div layout="column" layout-align="start start">
+    <ma-system-setting-editor label-tr="systemSettings.enablePurgePointData" key="enablePurgePointValues" type="BOOLEAN" input-type="checkbox"></ma-system-setting-editor>
+</div>
+
+<div layout layout-wrap layout-align="space-between start">
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgePointData" key="pointDataPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="pointDataPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeDataPointEvents" key="dataPointEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="dataPointEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeDataSourceEvents" key="dataSourceEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="dataSourceEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeSystemEvents" key="systemEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="systemEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgePublisherEvents" key="publisherEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="publisherEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeAuditEvents" key="auditEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="auditEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeNoneAlarm" key="noneAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="noneAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeInformationAlarm" key="informationAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="informationAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeImportantAlarm" key="importantAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="importantAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeWarningAlarm" key="warningAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="warningAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeUrgentAlarm" key="urgentAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="urgentAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeCriticalAlarm" key="criticalAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="criticalAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeLifeSafetyAlarm" key="lifeSafetyAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="lifeSafetyAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.purgeEvents" key="eventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="eventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  </div>
+  <div layout flex="100" flex-gt-md="40">
+    <ma-system-setting-editor label-tr="systemSettings.futureDateLimit" key="futureDateLimitPeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
+    <ma-system-setting-editor key="futureDateLimitPeriodType" type="INTEGER" input-type="select" flex="50">
+        <md-option value="2"><span ma-tr="common.tp.minutes"></span></md-option>
+        <md-option value="3"><span ma-tr="common.tp.hours"></span></md-option>
+    </ma-system-setting-editor>
+  </div>
+</div>
+
+<!--
+    public interface TimePeriods {
+        int MILLISECONDS = 8;
+        int SECONDS = 1;
+        int MINUTES = 2;
+        int HOURS = 3;
+        int DAYS = 4;
+        int WEEKS = 5;
+        int MONTHS = 6;
+        int YEARS = 7;
+    }
+
+    // Point data purging
+    public static final String POINT_DATA_PURGE_PERIOD_TYPE = "pointDataPurgePeriodType";
+    public static final String POINT_DATA_PURGE_PERIODS = "pointDataPurgePeriods";
+
+    // Event Type purging
+    public static final String DATA_POINT_EVENT_PURGE_PERIOD_TYPE = "dataPointEventPurgePeriodType";
+    public static final String DATA_POINT_EVENT_PURGE_PERIODS = "dataPointEventPurgePeriods";
+    public static final String DATA_SOURCE_EVENT_PURGE_PERIOD_TYPE = "dataSourceEventPurgePeriodType";
+    public static final String DATA_SOURCE_EVENT_PURGE_PERIODS = "dataSourceEventPurgePeriods";
+    public static final String SYSTEM_EVENT_PURGE_PERIOD_TYPE = "systemEventPurgePeriodType";
+    public static final String SYSTEM_EVENT_PURGE_PERIODS = "systemEventPurgePeriods";
+    public static final String PUBLISHER_EVENT_PURGE_PERIOD_TYPE = "publisherEventPurgePeriodType";
+    public static final String PUBLISHER_EVENT_PURGE_PERIODS = "publisherEventPurgePeriods";
+    public static final String AUDIT_EVENT_PURGE_PERIOD_TYPE = "auditEventPurgePeriodType";
+    public static final String AUDIT_EVENT_PURGE_PERIODS = "auditEventPurgePeriods";
+
+    // Alarm Level Purging
+    public static final String NONE_ALARM_PURGE_PERIOD_TYPE = "noneAlarmPurgePeriodType";
+    public static final String NONE_ALARM_PURGE_PERIODS = "noneAlarmPurgePeriods";
+    public static final String INFORMATION_ALARM_PURGE_PERIOD_TYPE = "informationAlarmPurgePeriodType";
+    public static final String INFORMATION_ALARM_PURGE_PERIODS = "informationAlarmPurgePeriods";
+    public static final String IMPORTANT_ALARM_PURGE_PERIOD_TYPE = "importantAlarmPurgePeriodType";
+    public static final String IMPORTANT_ALARM_PURGE_PERIODS = "importantAlarmPurgePeriods";
+    public static final String WARNING_ALARM_PURGE_PERIOD_TYPE = "warningAlarmPurgePeriodType";
+    public static final String WARNING_ALARM_PURGE_PERIODS = "warningAlarmPurgePeriods";
+    public static final String URGENT_ALARM_PURGE_PERIOD_TYPE = "urgentAlarmPurgePeriodType";
+    public static final String URGENT_ALARM_PURGE_PERIODS = "urgentAlarmPurgePeriods";
+    public static final String CRITICAL_ALARM_PURGE_PERIOD_TYPE = "criticalAlarmPurgePeriodType";
+    public static final String CRITICAL_ALARM_PURGE_PERIODS = "criticalAlarmPurgePeriods";
+    public static final String LIFE_SAFETY_ALARM_PURGE_PERIOD_TYPE = "lifeSafetyAlarmPurgePeriodType";
+    public static final String LIFE_SAFETY_ALARM_PURGE_PERIODS = "lifeSafetyAlarmPurgePeriods";
+
+    // General Purging of Events from Modules that are not defined in the core
+    public static final String EVENT_PURGE_PERIOD_TYPE = "eventPurgePeriodType";
+    public static final String EVENT_PURGE_PERIODS = "eventPurgePeriods";
+
+
+  <tag:labelledSection labelKey="systemSettings.purgeSettings" closed="true">
+    <table>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgePointData"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.POINT_DATA_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.POINT_DATA_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.enablePurgePointData"/></td>
+        <td class="formField"><input id="<c:out value="<%= DataPurge.ENABLE_POINT_DATA_PURGE %>"/>" type="checkbox"/></td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeDataPointEvents"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.DATA_POINT_EVENT_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.DATA_POINT_EVENT_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeDataSourceEvents"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.DATA_SOURCE_EVENT_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.DATA_SOURCE_EVENT_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeSystemEvents"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.SYSTEM_EVENT_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.SYSTEM_EVENT_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgePublisherEvents"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.PUBLISHER_EVENT_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.PUBLISHER_EVENT_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeAuditEvents"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.AUDIT_EVENT_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.AUDIT_EVENT_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeNoneAlarm"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.NONE_ALARM_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.NONE_ALARM_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeInformationAlarm"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.INFORMATION_ALARM_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.INFORMATION_ALARM_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeImportantAlarm"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.IMPORTANT_ALARM_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.IMPORTANT_ALARM_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeWarningAlarm"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.WARNING_ALARM_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.WARNING_ALARM_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeUrgentAlarm"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.URGENT_ALARM_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.URGENT_ALARM_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeCriticalAlarm"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.CRITICAL_ALARM_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.CRITICAL_ALARM_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeLifeSafetyAlarm"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.LIFE_SAFETY_ALARM_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.LIFE_SAFETY_ALARM_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.purgeEvents"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.EVENT_PURGE_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.EVENT_PURGE_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" d="true" w="true" mon="true" y="true"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabelRequired"><fmt:message key="systemSettings.futureDateLimit"/></td>
+        <td class="formField">
+          <input id="<c:out value="<%= SystemSettingsDao.FUTURE_DATE_LIMIT_PERIODS %>"/>" type="text" class="formShort"/>
+          <c:set var="tpid"><c:out value="<%= SystemSettingsDao.FUTURE_DATE_LIMIT_PERIOD_TYPE %>"/></c:set>
+          <tag:timePeriods id="${tpid}" min="true" h="true"/>
+        </td>
+      </tr>
+      
+      <tr>
+        <td colspan="2" align="center">
+          <input id="saveMiscSettingsBtn" type="button" value="<fmt:message key="common.save"/>" onclick="saveMiscSettings()"/>
+          <input type="button" value="<fmt:message key="systemSettings.purgeData"/>" onclick="checkPurgeAllPointValuesNow()"/>
+          <input type="button" value='<fmt:message key="systemSettings.purgeAllEvents"/>' onclick="checkPurgeAllEventsNow();"/>
+          <input type="button" value='<fmt:message key="systemSettings.purgeNow"/>' onclick="checkPurgeNow();"/>
+          <tag:help id="otherSettings"/>
+        </td>
+      </tr>
+      
+      <tr><td colspan="2" id="miscMessage" class="formError"></td></tr>
+    </table>
+  </tag:labelledSection>
+ -->
