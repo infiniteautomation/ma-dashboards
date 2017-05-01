@@ -53,7 +53,7 @@ function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, $state, maU
 
                     this.retrievePreferences = function() {
                         var defaults = {
-                            numValues: 100,
+                            numberOfPointValues: 100,
                             realtimeMode: true,
                             showCachedData: false
                         };
