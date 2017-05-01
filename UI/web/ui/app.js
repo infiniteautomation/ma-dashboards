@@ -280,6 +280,10 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
             template: require.toUrl('./systemSettings/email.html')
         },
         {
+            titleTr: 'systemSettings.httpSettings',
+            template: require.toUrl('./systemSettings/httpSettings.html')
+        },
+        {
             titleTr: 'ui.settings',
             template: require.toUrl('./systemSettings/uiModule.html')
         }
