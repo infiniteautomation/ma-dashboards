@@ -1,0 +1,14 @@
+<div layout layout-wrap>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.dataSource" key="auditEventAlarmLevel.DATA_SOURCE" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.dataPoint" key="auditEventAlarmLevel.DATA_POINT" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.eventHandler" key="auditEventAlarmLevel.EVENT_HANDLER" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.template" key="auditEventAlarmLevel.TEMPLATE" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.userComment" key="auditEventAlarmLevel.USER_COMMENT" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.user" key="auditEventAlarmLevel.USER" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.jsonData" key="auditEventAlarmLevel.JSON_DATA" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.eventDetector" key="auditEventAlarmLevel.EVENT_DETECTOR" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.publisher" key="auditEventAlarmLevel.EVENT_PUBLISHER" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.watchlist" key="auditEventAlarmLevel.WATCH_LIST" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor ng-repeat="auditAlarmLevelSetting in $ctrl.auditAlarmLevelSettings track by auditAlarmLevelSetting.key" flex="100" flex-gt-md="50"
+    label-tr="{{auditAlarmLevelSetting.translation}}" key="{{auditAlarmLevelSetting.key}}" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+</div>

@@ -268,6 +268,14 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
             template: require.toUrl('./systemSettings/language.html')
         },
         {
+            titleTr: 'systemSettings.systemAlarmLevels',
+            template: require.toUrl('./systemSettings/systemAlarmLevels.html')
+        },
+        {
+            titleTr: 'systemSettings.auditAlarmLevels',
+            template: require.toUrl('./systemSettings/auditAlarmLevels.html')
+        },
+        {
             titleTr: 'ui.settings',
             template: require.toUrl('./systemSettings/uiModule.html')
         }

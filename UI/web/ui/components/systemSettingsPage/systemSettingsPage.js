@@ -7,8 +7,8 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales'];
-function SystemSettingsPageController(SystemSettings, maLocales) {
-    this.SystemSettings = SystemSettings;
+function SystemSettingsPageController(systemSettings, maLocales) {
+    this.SystemSettings = systemSettings;
     
     maLocales.get().then(function(locales) {
         locales.forEach(function(locale) {
@@ -16,6 +16,9 @@ function SystemSettingsPageController(SystemSettings, maLocales) {
         });
         this.locales = locales;
     }.bind(this));
+    
+    this.systemAlarmLevelSettings = systemSettings.getSystemAlarmLevelSettings();
+    this.auditAlarmLevelSettings = systemSettings.getAuditAlarmLevelSettings();
 }
 
 SystemSettingsPageController.prototype.$onChanges = function(changes) {

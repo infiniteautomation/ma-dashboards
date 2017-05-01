@@ -1,0 +1,16 @@
+<div layout layout-wrap>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.startup" key="systemEventAlarmLevel.SYSTEM_STARTUP" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.shutdown" key="systemEventAlarmLevel.SYSTEM_SHUTDOWN" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.maxAlarmChanged" key="systemEventAlarmLevel.MAX_ALARM_LEVEL_CHANGED" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.userLogin" key="systemEventAlarmLevel.USER_LOGIN" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.setPoint" key="systemEventAlarmLevel.SET_POINT_HANDLER_FAILURE" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.email" key="systemEventAlarmLevel.EMAIL_SEND_FAILURE" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.process" key="systemEventAlarmLevel.PROCESS_FAILURE" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.licenseCheck" key="systemEventAlarmLevel.LICENSE_CHECK" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.backupFailure" key="systemEventAlarmLevel.BACKUP_FAILURE" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.upgradeCheck" key="systemEventAlarmLevel.UPGRADE_CHECK" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.rejectedWorkItem" key="systemEventAlarmLevel.REJECTED_WORK_ITEM" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.system.missingModuleDepDesc" key="systemEventAlarmLevel.MISSING_MODULE_DEPENDENCY" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor ng-repeat="alarmLevelSetting in $ctrl.systemAlarmLevelSettings track by alarmLevelSetting.key" flex="100" flex-gt-md="50"
+    label-tr="{{alarmLevelSetting.translation}}" key="{{alarmLevelSetting.key}}" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+</div>

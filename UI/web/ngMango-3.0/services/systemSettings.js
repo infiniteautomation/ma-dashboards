@@ -9,6 +9,8 @@ define(['require', 'angular'], function(require, angular) {
 SystemSettingsProvider.$inject = [];
 function SystemSettingsProvider() {
     var sections = [];
+    var systemAlarmLevelSettings = [];
+    var auditAlarmLevelSettings = [];
 
     this.addSection = function(section) {
         sections.push(section);
@@ -17,13 +19,29 @@ function SystemSettingsProvider() {
     this.addSections = function(toAdd) {
         Array.prototype.push.apply(sections, toAdd);
     };
+    
+    this.addSystemAlarmLevelSetting = function(item) {
+        systemAlarmLevelSettings.push(item);
+    };
+    
+    this.addSystemAlarmLevelSettings = function(items) {
+        Array.prototype.push.apply(systemAlarmLevelSettings, items);
+    };
+    
+    this.addAuditAlarmLevelSetting = function(item) {
+        auditAlarmLevelSettings.push(item);
+    };
+    
+    this.addAuditAlarmLevelSettings = function(items) {
+        Array.prototype.push.apply(auditAlarmLevelSettings, items);
+    };
 
-    this.$get = SystemSettingsFactory.bind(null, sections);
+    this.$get = SystemSettingsFactory.bind(null, sections, systemAlarmLevelSettings, auditAlarmLevelSettings);
     this.$get.$inject = SystemSettingsFactory.$inject;
 }
 
 SystemSettingsFactory.$inject = ['$http'];
-function SystemSettingsFactory(sections, $http) {
+function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLevelSettings, $http) {
     var systemSettingsUrl = '/rest/v1/system-settings';
     
     function SystemSettings(key, type) {
@@ -33,6 +51,14 @@ function SystemSettingsFactory(sections, $http) {
     
     SystemSettings.getSections = function() {
         return sections;
+    };
+    
+    SystemSettings.getSystemAlarmLevelSettings = function() {
+        return systemAlarmLevelSettings;
+    };
+    
+    SystemSettings.getAuditAlarmLevelSettings = function() {
+        return auditAlarmLevelSettings;
     };
     
     SystemSettings.getValues = function() {
