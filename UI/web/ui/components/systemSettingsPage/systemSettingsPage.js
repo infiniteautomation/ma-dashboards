@@ -6,12 +6,13 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$mdToast', 'maTranslate'];
-function SystemSettingsPageController(systemSettings, maLocales, User, $mdToast, translate) {
+SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$mdToast', 'maTranslate', '$mdDialog'];
+function SystemSettingsPageController(systemSettings, maLocales, User, $mdToast, maTranslate, $mdDialog) {
     this.SystemSettings = systemSettings;
     this.User = User;
     this.$mdToast = $mdToast;
-    this.translate = translate;
+    this.maTranslate = maTranslate;
+    this.$mdDialog = $mdDialog;
     
     maLocales.get().then(function(locales) {
         locales.forEach(function(locale) {
@@ -35,15 +36,15 @@ SystemSettingsPageController.prototype.sendTestEmail = function() {
     this.User.current.sendTestEmail().then(function(response) {
         var toast = $ctrl.$mdToast.simple()
             .textContent(response.data)
-            .action($ctrl.translate.trSync('common.ok'))
+            .action($ctrl.maTranslate.trSync('common.ok'))
             .highlightAction(true)
             .position('bottom center')
             .hideDelay(10000);
         $ctrl.$mdToast.show(toast);
     }, function(response) {
         var toast = $ctrl.$mdToast.simple()
-            .textContent($ctrl.translate.trSync('ui.components.errorSendingEmail', emailAddress))
-            .action($ctrl.translate.trSync('common.ok'))
+            .textContent($ctrl.maTranslate.trSync('ui.components.errorSendingEmail', emailAddress))
+            .action($ctrl.maTranslate.trSync('common.ok'))
             .highlightAction(true)
             .highlightClass('md-warn')
             .position('bottom center')
@@ -52,6 +53,20 @@ SystemSettingsPageController.prototype.sendTestEmail = function() {
     });
 };
 
+SystemSettingsPageController.prototype.confirm = function(event, onConfirmed, translation) {
+    var areYouSure = this.maTranslate.trSync('ui.app.areYouSure');
+    var textContent = translation ? this.maTranslate.trSync(translation) : areYouSure;
+
+    var confirm = this.$mdDialog.confirm()
+        .title(areYouSure)
+        .ariaLabel(areYouSure)
+        .textContent(textContent)
+        .targetEvent(event)
+        .ok(this.maTranslate.trSync('common.ok'))
+        .cancel(this.maTranslate.trSync('common.cancel'));
+
+    return this.$mdDialog.show(confirm).then(onConfirmed);
+};
 
 return {
     controller: SystemSettingsPageController,
