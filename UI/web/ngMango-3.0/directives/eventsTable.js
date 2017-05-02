@@ -116,9 +116,9 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 Events.acknowledgeViaRql({rql: $scope.RQL.RQLforAcknowldege}, null).$promise.then(
                     function (data) {
                         if (data.count) {
-                            //console.log('Acknowledged ', data.count, ' events with RQL', $scope.RQL.RQLforAcknowldege);
-                            // Filter by acknowledged
-                            $scope.acknowledged = 'true';
+                            // console.log('Acknowledged ', data.count, ' events with RQL', $scope.RQL.RQLforAcknowldege);
+                            // re-query
+                            $scope.events = Events.rql({query: $scope.RQL.RQLforDisplay});
                         }
                     },
                     function (data) {
