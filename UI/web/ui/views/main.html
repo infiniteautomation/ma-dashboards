@@ -48,10 +48,10 @@
     <md-toolbar class="ma-ui-main-toolbar" ng-class="{'md-whiteframe-glow-z1': !(stateParams.dateBar && dateBar.expanded)}" role="toolbar">
 
       <div class="md-toolbar-tools ma-ui-toolbar-tools" tabIndex="-1">
-        <md-button id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
+        <md-button flex="none" id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
         </md-button>
         <div layout="row" flex class="fill-height">
-          <h2 class="md-toolbar-item ma-ui-breadcrumb hide-xs">
+          <h2 flex="initial" class="md-toolbar-item ma-ui-breadcrumb hide-xs">
             <span ng-repeat="crumb in crumbs track by $index" ng-class="{'hide-sm': !$last}">
                 <span ma-tr="{{crumb.maTr}}" ng-bind="crumb.text"></span>
                 <span ng-if="!$last">
@@ -63,7 +63,7 @@
           <span flex></span>
           <!-- use up the empty space -->
 
-          <div class="md-toolbar-item ma-ui-tools" layout="row" layout-align="start center">
+          <div flex="none" class="md-toolbar-item ma-ui-tools" layout="row" layout-align="start center">
             <ma-ui-active-event-icons style="padding-right: 8px;"></ma-ui-active-event-icons>
 
             <div ng-if="stateParams.dateBar">

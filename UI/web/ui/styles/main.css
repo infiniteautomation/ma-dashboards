@@ -112,6 +112,12 @@ md-menu-content.right-icons md-icon {
 	font-size: 1.5em;
 }
 
+.ma-ui-breadcrumb {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+}
+
 .ma-ui-breadcrumb md-icon {
 	margin-top: -2px;
 }
@@ -1127,4 +1133,12 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
   ma-ui-system-settings-page ma-system-setting-editor > md-input-container {
     margin-right: 20px;
   }
+}
+
+.ma-ui-system-settings-dropdown {
+  font-size: 2.0rem;
+}
+
+.ma-ui-system-settings-dropdown md-input-container {
+  margin-bottom: 0;
 }
