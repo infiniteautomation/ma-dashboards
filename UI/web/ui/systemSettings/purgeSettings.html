@@ -3,65 +3,80 @@
 </div>
 
 <div layout layout-wrap layout-align="space-between start">
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgePointData" key="pointDataPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="pointDataPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="pointDataPurgePeriods" ma-tr="systemSettings.purgePointData"></label>
+    <ma-system-setting-editor name="pointDataPurgePeriods" key="pointDataPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="pointDataPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeDataPointEvents" key="dataPointEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="dataPointEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="dataPointEventPurgePeriods" ma-tr="systemSettings.purgeDataPointEvents"></label>
+    <ma-system-setting-editor name="dataPointEventPurgePeriods" key="dataPointEventPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="dataPointEventPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeDataSourceEvents" key="dataSourceEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="dataSourceEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="dataSourceEventPurgePeriods" ma-tr="systemSettings.purgeDataSourceEvents"></label>
+    <ma-system-setting-editor name="dataSourceEventPurgePeriods" key="dataSourceEventPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="dataSourceEventPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeSystemEvents" key="systemEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="systemEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="systemEventPurgePeriods" ma-tr="systemSettings.purgeSystemEvents"></label>
+    <ma-system-setting-editor name="systemEventPurgePeriods" key="systemEventPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="systemEventPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgePublisherEvents" key="publisherEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="publisherEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="publisherEventPurgePeriods" ma-tr="systemSettings.purgePublisherEvents"></label>
+    <ma-system-setting-editor name="publisherEventPurgePeriods" key="publisherEventPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="publisherEventPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeAuditEvents" key="auditEventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="auditEventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="auditEventPurgePeriods" ma-tr="systemSettings.purgeAuditEvents"></label>
+    <ma-system-setting-editor name="auditEventPurgePeriods" key="auditEventPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="auditEventPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeNoneAlarm" key="noneAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="noneAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="noneAlarmPurgePeriods" ma-tr="systemSettings.purgeNoneAlarm"></label>
+    <ma-system-setting-editor name="noneAlarmPurgePeriods" key="noneAlarmPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="noneAlarmPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeInformationAlarm" key="informationAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="informationAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="informationAlarmPurgePeriods" ma-tr="systemSettings.purgeInformationAlarm"></label>
+    <ma-system-setting-editor name="informationAlarmPurgePeriods" key="informationAlarmPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="informationAlarmPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeImportantAlarm" key="importantAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="importantAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="importantAlarmPurgePeriods" ma-tr="systemSettings.purgeImportantAlarm"></label>
+    <ma-system-setting-editor name="importantAlarmPurgePeriods" key="importantAlarmPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="importantAlarmPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeWarningAlarm" key="warningAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="warningAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="warningAlarmPurgePeriods" ma-tr="systemSettings.purgeWarningAlarm"></label>
+    <ma-system-setting-editor name="warningAlarmPurgePeriods" key="warningAlarmPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="warningAlarmPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeUrgentAlarm" key="urgentAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="urgentAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="urgentAlarmPurgePeriods" ma-tr="systemSettings.purgeUrgentAlarm"></label>
+    <ma-system-setting-editor name="urgentAlarmPurgePeriods" key="urgentAlarmPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="urgentAlarmPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeCriticalAlarm" key="criticalAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="criticalAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="criticalAlarmPurgePeriods" ma-tr="systemSettings.purgeCriticalAlarm"></label>
+    <ma-system-setting-editor name="criticalAlarmPurgePeriods" key="criticalAlarmPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="criticalAlarmPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeLifeSafetyAlarm" key="lifeSafetyAlarmPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="lifeSafetyAlarmPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="lifeSafetyAlarmPurgePeriods" ma-tr="systemSettings.purgeLifeSafetyAlarm"></label>
+    <ma-system-setting-editor name="lifeSafetyAlarmPurgePeriods" key="lifeSafetyAlarmPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="lifeSafetyAlarmPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.purgeEvents" key="eventPurgePeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="eventPurgePeriodType" input-type="timeperiodtype" flex="50"></ma-system-setting-editor>
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="eventPurgePeriods" ma-tr="systemSettings.purgeEvents"></label>
+    <ma-system-setting-editor name="eventPurgePeriods" key="eventPurgePeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="eventPurgePeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
-  <div layout flex="100" flex-gt-md="40">
-    <ma-system-setting-editor label-tr="systemSettings.futureDateLimit" key="futureDateLimitPeriods" type="INTEGER" input-type="number" flex="50"></ma-system-setting-editor>
-    <ma-system-setting-editor key="futureDateLimitPeriodType" type="INTEGER" input-type="select" flex="50">
+  <div layout flex="100" flex-gt-md="50" layout-align="start center">
+    <label for="futureDateLimitPeriods" ma-tr="systemSettings.futureDateLimit"></label>
+    <ma-system-setting-editor name="futureDateLimitPeriods" key="futureDateLimitPeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
+    <ma-system-setting-editor key="futureDateLimitPeriodType" type="INTEGER" input-type="select">
         <md-option value="2"><span ma-tr="common.tp.minutes"></span></md-option>
         <md-option value="3"><span ma-tr="common.tp.hours"></span></md-option>
     </ma-system-setting-editor>

@@ -74,7 +74,8 @@ return {
         min: '<?',
         max: '<?',
         step: '<?',
-        onValueChanged: '&?'
+        onValueChanged: '&?',
+        name: '@?'
     },
     transclude: {
         options: '?mdOption'
