@@ -25,9 +25,9 @@ function pageEditorControls() {
 }
 
 PageEditorControlsController.$inject = ['$scope', 'maUiPages', 'maJsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
-    'localStorageService', '$mdDialog', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION'];
+    'localStorageService', '$mdDialog', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateRequest'];
 function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
-        localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION) {
+        localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION, $templateRequest) {
     this.$scope = $scope;
     this.maUiPages = maUiPages;
     this.jsonStoreEventManager = jsonStoreEventManager;
@@ -42,6 +42,7 @@ function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, 
     this.User = User; // used in template
     this.$q = $q;
     this.MA_UI_EDIT_MENUS_PERMISSION = MA_UI_EDIT_MENUS_PERMISSION; // used in template
+    this.$templateRequest = $templateRequest;
 }
 
 PageEditorControlsController.prototype.$onInit = function() {
@@ -83,7 +84,7 @@ PageEditorControlsController.prototype.$onInit = function() {
     if (this.$state.params.pageXid) {
         this.loadPage(this.$state.params.pageXid);
     } else if (this.$state.params.templateUrl) {
-        $templateRequest(this.$state.params.templateUrl).then(this.createNewPage.bind(this));
+        this.$templateRequest(this.$state.params.templateUrl).then(this.createNewPage.bind(this));
     } else if (this.$state.params.markup) {
         this.createNewPage(this.$state.params.markup);
     } else if (lastSelectedPage && lastSelectedPage.pageXid) {
