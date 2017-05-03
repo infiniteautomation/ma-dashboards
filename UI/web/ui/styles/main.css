@@ -1118,6 +1118,12 @@ ma-ui-system-settings-page #purge-settings ma-system-setting-editor[input-type=s
   width: 100px;
 }
 
-ma-ui-system-settings-page #purge-settings ma-system-setting-editor md-input-container {
+ma-ui-system-settings-page #purge-settings ma-system-setting-editor > md-input-container {
   margin: 5px 0;
+}
+
+@media (min-width: 1280px) {
+  ma-ui-system-settings-page ma-system-setting-editor > md-input-container {
+    margin-right: 20px;
+  }
 }

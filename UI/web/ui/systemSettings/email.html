@@ -1,21 +1,23 @@
-<div layout layout-wrap layout-align="start center">
-  <ma-system-setting-editor label-tr="systemSettings.smtpHost" key="emailSmtpHost" flex="100" flex-gt-md="50"></ma-system-setting-editor>
-  <ma-system-setting-editor label-tr="systemSettings.smtpPort" key="emailSmtpPort" flex="100" flex-gt-md="50"></ma-system-setting-editor>
-  <ma-system-setting-editor label-tr="systemSettings.fromAddress" key="emailFromAddress" flex="100" flex-gt-md="50"></ma-system-setting-editor>
-  <ma-system-setting-editor label-tr="systemSettings.fromName" key="emailFromName" flex="100" flex-gt-md="50"></ma-system-setting-editor>
-  
-  <ma-system-setting-editor label-tr="systemSettings.contentType" key="emailContentType" type="INTEGER" input-type="select"
-          flex="100" flex-gt-md="50">
-      <md-option ng-value="0"><span ma-tr="systemSettings.contentType.both"></span></md-option>
-      <md-option ng-value="1"><span ma-tr="systemSettings.contentType.html"></span></md-option>
-      <md-option ng-value="2"><span ma-tr="systemSettings.contentType.text"></span></md-option>
-  </ma-system-setting-editor>
-  <!-- <ma-system-setting-editor label-tr="systemSettings.contentType" key="emailContentType" input-type="select"
-          flex="100" flex-gt-md="50">
-      <md-option value="HTML_AND_TEXT"><span ma-tr="systemSettings.contentType.both"></span></md-option>
-      <md-option value="HTML"><span ma-tr="systemSettings.contentType.html"></span></md-option>
-      <md-option value="TEXT"><span ma-tr="systemSettings.contentType.text"></span></md-option>
-  </ma-system-setting-editor> -->  
+<div layout>
+    <div flex="100" flex-gt-md="50" layout layout-wrap layout-align="start center">
+      <ma-system-setting-editor label-tr="systemSettings.smtpHost" key="emailSmtpHost" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+      <ma-system-setting-editor label-tr="systemSettings.smtpPort" key="emailSmtpPort" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+      <ma-system-setting-editor label-tr="systemSettings.fromAddress" key="emailFromAddress" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+      <ma-system-setting-editor label-tr="systemSettings.fromName" key="emailFromName" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+      
+      <ma-system-setting-editor label-tr="systemSettings.contentType" key="emailContentType" type="INTEGER" input-type="select"
+              flex="100" flex-gt-md="50">
+          <md-option ng-value="0"><span ma-tr="systemSettings.contentType.both"></span></md-option>
+          <md-option ng-value="1"><span ma-tr="systemSettings.contentType.html"></span></md-option>
+          <md-option ng-value="2"><span ma-tr="systemSettings.contentType.text"></span></md-option>
+      </ma-system-setting-editor>
+      <!-- <ma-system-setting-editor label-tr="systemSettings.contentType" key="emailContentType" input-type="select"
+              flex="100" flex-gt-md="50">
+          <md-option value="HTML_AND_TEXT"><span ma-tr="systemSettings.contentType.both"></span></md-option>
+          <md-option value="HTML"><span ma-tr="systemSettings.contentType.html"></span></md-option>
+          <md-option value="TEXT"><span ma-tr="systemSettings.contentType.text"></span></md-option>
+      </ma-system-setting-editor> -->  
+    </div>
 </div>
 
 <div layout="column" layout-align="start start">
@@ -24,9 +26,11 @@
         on-value-changed="useAuth = $value"></ma-system-setting-editor>
 </div>
 
-<div layout layout-align="start center" ng-show="useAuth">
-  <ma-system-setting-editor label-tr="systemSettings.smtpUsername" key="emailSmtpUsername" flex="100" flex-gt-md="50"></ma-system-setting-editor>
-  <ma-system-setting-editor label-tr="systemSettings.smtpPassword" key="emailSmtpPassword" input-type="password" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+<div layout ng-show="useAuth">
+    <div flex="100" flex-gt-md="50" layout layout-wrap layout-align="start center">
+      <ma-system-setting-editor label-tr="systemSettings.smtpUsername" key="emailSmtpUsername" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+      <ma-system-setting-editor label-tr="systemSettings.smtpPassword" key="emailSmtpPassword" input-type="password" flex="100" flex-gt-md="50"></ma-system-setting-editor>
+    </div>
 </div>
 
 <div layout="column" layout-align="start start">
