@@ -66,12 +66,20 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
         link: function ($scope, $element, attrs) {
             
             $scope.$mdMedia = $mdMedia;
-            $scope.addNote = UserNotes.addNote;
             $scope.currentPage = $state.current.name;
-            
             $scope.page = 1;
             $scope.total = 0;
             $scope.totalUnAcknowledged = 0;
+
+            $scope.addNote = UserNotes.addNote;
+
+            $scope.pushNote = function(note, event){
+                console.log(note, event);
+
+                event.hasNotes = true;
+                event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - '
+                    + $scope.formatDate(note.timestamp)+ ')';
+            };
             
             $scope.onPaginate = function(page, limit) {
                 $scope.start = (page - 1) * limit;
@@ -176,7 +184,36 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 
                 $scope.RQL = doQuery(value);
                 //console.log('Querying on:', $scope.RQL.RQLforDisplay);
-                $scope.events = Events.rql({query: $scope.RQL.RQLforDisplay});
+
+                Events.rql({query: $scope.RQL.RQLforDisplay}).$promise.then(
+                    function (data) {
+                        // Set Events For Table
+                        $scope.events = data;
+
+                        // Query for Notes for each
+                        $scope.events.forEach(function(event) {
+
+                            UserNotes.query({
+                                commentType: 'Event',
+                                referenceId: event.id
+                            }).$promise.then(function(notes) {
+                                // console.log(notes);
+                                if (notes.length)
+                                    event.hasNotes = true;
+                                notes.forEach(function(note, index){
+                                    event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - '
+                                        + $scope.formatDate(note.timestamp)+ ')';
+                                });
+                            }, function(error) {
+                                console.log(error);
+                            });
+
+                        });
+                    },
+                    function (error) {
+                        console.log('Error', error);
+                    }
+                );
             }, true);
             
             var doQuery = function(options) {

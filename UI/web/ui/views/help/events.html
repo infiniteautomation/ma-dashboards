@@ -20,11 +20,19 @@
 
     <p>
         The <code>Message</code> column will show the message associated with the event. If the message is too long to fit on one line it will be
-        concatenated and shown with an elipsis. You can click the concatenated message to have it expand to show the entire message. You can also add
-        additional comments to an event's message by clicking on the alarm level flag icon, <i class="fa fa-flag alarm-flag fa-lg NONE"/>, at the far left of the row.
+        concatenated and shown with an ellipsis. You can click the concatenated message to have it expand to show the entire message.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-Events-MessageColumn.png" alt="Help-ScreenShots-Events-MessageColumn"/>
+
+    <p>
+        You can also add notes to an event by clicking on the alarm level flag icon,
+        <i class="fa fa-flag alarm-flag fa-lg INFORMATION"/>, at the far left of the row. If an event has notes added to it a notes icon will be
+        shown to the left of its message. You can click the concatenated message to expand to show notes.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 300px"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-Events-MessageColumnWithNotes.png" alt="Help-ScreenShots-Events-MessageColumn"/>
 
     <p>
         The <code>Status</code> column represents the current status of the alarm. You can filter on status using the <code>Active Status</code> dropdown at the top of the table. 
@@ -52,7 +60,6 @@
     <p>
         You can acknowledge all events that 
         match the current filter by clicking the <code>Acknowledge # Events</code> button.
-        After acknowledging all events that match the query the filter will switch to <code>Acknowledged</code>.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-Events-AcknowledgeAllButton.png" alt="Help-ScreenShots-Events-AcknowledgeAllButton"/>
@@ -75,7 +82,8 @@
     <p>
         <strong>*Note:</strong> If you don’t see all the events in the table after clicking one of these menu items 
         the <code>Date filter</code> toggle switch may be enabled, and if so an event older than the selected 
-        time range it won’t show up in the <code>Events Table</code>. By default this option will be turned off.
+        time range it won’t show up in the <code>Events Table</code>. By default this option will be turned off and events
+        will not be filtered by timestamp.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-Events-DateFilter.png" alt="Help-ScreenShots-Events-DateFilter"/>

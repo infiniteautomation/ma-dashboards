@@ -91,7 +91,7 @@ function UserNotesFactory($resource, Util, $mdDialog) {
         }
     });
     
-    UserNotes.addNote = function(ev, commentType, referenceId, callback) {
+    UserNotes.addNote = function(ev, commentType, referenceId, callback, other) {
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.prompt()
             .title('Add Comment:')
@@ -106,7 +106,7 @@ function UserNotesFactory($resource, Util, $mdDialog) {
                 function (data) {
                     // console.log('Success', data, referenceId);
                     if (callback) {
-                        callback(data);
+                        callback(data, other);
                     }
                 },
                 function (data) {
