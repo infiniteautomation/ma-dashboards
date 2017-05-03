@@ -1,5 +1,35 @@
-<h1 ma-tr="header.systemSettings"></h1>
+<div flex="noshrink" layout>
+    <div layout="column" flex="25">
+        <md-card flex>
+            <md-card-title flex="none">
+              <md-card-title-text>
+                <div class="md-headline" ma-tr="ui.app.chooseASection"></div>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content class="ma-no-padding">
+                <md-list>
+                    <md-list-item ng-repeat="child in $ctrl.menu.menuItemsByName['ui.settings.system'].children | orderBy:['weight', 'name'] track by child.name"
+                            ui-sref="{{child.name}}" md-colors="{'background': $ctrl.$state.current.name === child.name ? 'accent' : 'background-hue-1'}">
+                        <p ma-tr="{{child.menuTr}}"></p>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+    </div>
+    
+    <div layout="column" flex>
+        <md-card>
+            <md-card-title>
+              <md-card-title-text>
+                <div class="md-headline" ma-tr="{{$ctrl.$state.current.menuTr}}"></div>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content class="ma-ui-system-settings-main" ui-view></md-card-content>
+        </md-card>
+    </div>
+</div>
 
+<!-- 
 <div ma-accordion="accordion" ma-accordion-single>
   <md-card class="ma-accordion" ng-repeat="section in $ctrl.SystemSettings.getSections() track by $index">
     <md-card-title ng-click="accordion.toggle(section.id || 'section' + $index)">
@@ -16,3 +46,4 @@
     </md-card-content>
   </md-card>
 </div>
+ -->

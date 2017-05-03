@@ -311,6 +311,8 @@ return [
         name: 'ui.settings',
         menuIcon: 'build',
         menuTr: 'ui.app.adminTools',
+        template: '<div flex="noshrink" layout="column" ui-view></div>',
+        abstract: true,
         weight: 1999
     },
     {
@@ -390,7 +392,7 @@ return [
     {
         name: 'ui.settings.system',
         url: '/system',
-        template: '<ma-ui-system-settings-page><ma-ui-system-settings-page>',
+        template: '<ma-ui-system-settings-page flex="noshrink" layout="column"><ma-ui-system-settings-page>',
         menuTr: 'header.systemSettings',
         menuIcon: 'settings',
         permission: 'superadmin',
@@ -406,6 +408,83 @@ return [
                 });
             }]
         }
+    },
+    {
+        name: 'ui.settings.system.systemInformation',
+        url: '/information',
+        menuTr: 'systemSettings.systemInformation',
+        templateUrl: require.toUrl('./systemSettings/systemInformation.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.siteAnalytics',
+        url: '/site-analytics',
+        menuTr: 'systemSettings.siteAnalytics',
+        templateUrl: require.toUrl('./systemSettings/analytics.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.language',
+        url: '/language',
+        menuTr: 'systemSettings.languageSettings',
+        templateUrl: require.toUrl('./systemSettings/language.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.systemAlarmLevels',
+        url: '/system-alarm-levels',
+        menuTr: 'systemSettings.systemAlarmLevels',
+        templateUrl: require.toUrl('./systemSettings/systemAlarmLevels.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.auditAlarmLevels',
+        url: '/audit-alarm-levels',
+        menuTr: 'systemSettings.auditAlarmLevels',
+        templateUrl: require.toUrl('./systemSettings/auditAlarmLevels.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.email',
+        url: '/email',
+        menuTr: 'systemSettings.emailSettings',
+        templateUrl: require.toUrl('./systemSettings/email.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.http',
+        url: '/http',
+        menuTr: 'systemSettings.httpSettings',
+        templateUrl: require.toUrl('./systemSettings/httpSettings.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.threadPools',
+        url: '/thread-pools',
+        menuTr: 'systemSettings.threadPools',
+        templateUrl: require.toUrl('./systemSettings/threadPools.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.uiPerformance',
+        url: '/ui-performance',
+        menuTr: 'systemSettings.uiPerformance',
+        templateUrl: require.toUrl('./systemSettings/uiPerformance.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.purge',
+        url: '/purge',
+        menuTr: 'systemSettings.purgeSettings',
+        templateUrl: require.toUrl('./systemSettings/purgeSettings.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.ui',
+        url: '/ui',
+        menuTr: 'ui.settings',
+        templateUrl: require.toUrl('./systemSettings/uiModule.html'),
+        menuHidden: true
     },
     {
         name: 'ui.settings.watchListBuilder',

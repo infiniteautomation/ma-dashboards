@@ -15,7 +15,7 @@ function MenuController() {
             
             var info = this.visibleMap[menuItem.name] = {};
             
-            if (menuItem.children) {
+            if (menuItem.children && menuItem.abstract) {
                 info.visibleChildren = this.childVisible(menuItem.children);
                 info.visible = !menuItem.menuHidden && !!info.visibleChildren && this.user.hasPermission(menuItem.permission);
             } else {

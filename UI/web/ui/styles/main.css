@@ -1103,22 +1103,23 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
   font-style: oblique;
 }
 
-ma-ui-system-settings-page #purge-settings label {
+/* System settings page */
+.ui_settings_system_purge .ma-ui-system-settings-main label {
   text-align: right;
   margin-right: 10px;
   width: 300px;
 }
 
-ma-ui-system-settings-page #purge-settings ma-system-setting-editor[input-type=number] {
+.ui_settings_system_purge .ma-ui-system-settings-main ma-system-setting-editor[input-type=number] {
   width: 50px;
 }
 
-ma-ui-system-settings-page #purge-settings ma-system-setting-editor[input-type=timeperiodtype],
-ma-ui-system-settings-page #purge-settings ma-system-setting-editor[input-type=select] {
+.ui_settings_system_purge .ma-ui-system-settings-main ma-system-setting-editor[input-type=timeperiodtype],
+.ui_settings_system_purge .ma-ui-system-settings-main ma-system-setting-editor[input-type=select] {
   width: 100px;
 }
 
-ma-ui-system-settings-page #purge-settings ma-system-setting-editor > md-input-container {
+.ui_settings_system_purge .ma-ui-system-settings-main ma-system-setting-editor > md-input-container {
   margin: 5px 0;
 }
 

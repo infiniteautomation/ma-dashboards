@@ -20,8 +20,8 @@
     
     <ul class="ma-ui-menu-toggle-list ng-hide" ng-show="$ctrl.isOpen" ng-class="'ma-ui-menu-level-' + ($ctrl.menuLevel + 1)">
       <li ng-repeat="child in $ctrl.item.children | orderBy:['weight', 'name'] track by child.name" ng-if="$ctrl.isVisible(child)">
-        <ma-ui-menu-link menu-item="child" ng-if="!child.children"></ma-ui-menu-link>
-        <ma-ui-menu-toggle menu-item="child" open-menu="$ctrl.openMenu" ng-if="child.children"></ma-ui-menu-toggle>
+        <ma-ui-menu-link menu-item="child" ng-if="!(child.children && child.abstract)"></ma-ui-menu-link>
+        <ma-ui-menu-toggle menu-item="child" open-menu="$ctrl.openMenu" ng-if="child.children && child.abstract"></ma-ui-menu-toggle>
       </li>
     </ul>
 </div>

@@ -6,13 +6,15 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$mdToast', 'maTranslate', '$mdDialog'];
-function SystemSettingsPageController(systemSettings, maLocales, User, $mdToast, maTranslate, $mdDialog) {
+SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$mdToast', 'maTranslate', '$mdDialog', '$state', 'maUiMenu'];
+function SystemSettingsPageController(systemSettings, maLocales, User, $mdToast, maTranslate, $mdDialog, $state, maUiMenu) {
     this.SystemSettings = systemSettings;
     this.User = User;
     this.$mdToast = $mdToast;
     this.maTranslate = maTranslate;
     this.$mdDialog = $mdDialog;
+    this.$state = $state;
+    this.menu = maUiMenu;
     
     maLocales.get().then(function(locales) {
         locales.forEach(function(locale) {
