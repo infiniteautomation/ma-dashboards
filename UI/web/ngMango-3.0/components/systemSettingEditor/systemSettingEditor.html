@@ -14,8 +14,8 @@
     <md-option ng-value="4"><md-icon class="fa fa-flag alarm-flag URGENT"></md-icon><span ma-tr="common.alarmLevel.urgent"></span></md-option>
     <md-option ng-value="5"><md-icon class="fa fa-flag alarm-flag CRITICAL"></md-icon><span ma-tr="common.alarmLevel.critical"></span></md-option>
     <md-option ng-value="6"><md-icon class="fa fa-flag alarm-flag LIFE_SAFETY"></md-icon><span ma-tr="common.alarmLevel.lifeSafety"></span></md-option>
-    <md-option ng-value="-2"><md-icon class="fa fa-flag alarm-flag DO_NOT_LOG"></md-icon><span ma-tr="common.alarmLevel.doNotLog"></span></md-option>
-    <md-option ng-value="-3"><md-icon class="fa fa-flag alarm-flag IGNORE"></md-icon><span ma-tr="common.alarmLevel.ignore"></span></md-option>
+    <md-option ng-value="-2"><md-icon class="fa fa-times-circle alarm-flag DO_NOT_LOG"></md-icon><span ma-tr="common.alarmLevel.doNotLog"></span></md-option>
+    <md-option ng-value="-3"><md-icon class="fa fa-times alarm-flag IGNORE"></md-icon><span ma-tr="common.alarmLevel.ignore"></span></md-option>
   </md-select>
   <md-select ng-if="$ctrl.inputType === 'timeperiodtype'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()">
     <md-option value="DAYS"><span ma-tr="common.tp.days"></span></md-option>

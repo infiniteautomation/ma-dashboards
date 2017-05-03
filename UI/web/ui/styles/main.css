@@ -804,6 +804,12 @@ md-input-container .hint.ng-hide {
 .alarm-flag.LIFE_SAFETY {
     color: #F44336;
 }
+.alarm-flag.DO_NOT_LOG {
+    color: #F44336;
+}
+.alarm-flag.IGNORE {
+    color: #F44336;
+}
 .acknowledged-checkbox {
     color: #8BC34A;
 }

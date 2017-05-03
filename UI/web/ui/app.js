@@ -256,46 +256,57 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
     
     SystemSettingsProvider.addSections([
         {
+            id: 'system-information',
             titleTr: 'systemSettings.systemInformation',
             template: require.toUrl('./systemSettings/systemInformation.html')
         },
         {
+            id: 'site-analytics',
             titleTr: 'systemSettings.siteAnalytics',
             template: require.toUrl('./systemSettings/analytics.html')
         },
         {
+            id: 'language-settings',
             titleTr: 'systemSettings.languageSettings',
             template: require.toUrl('./systemSettings/language.html')
         },
         {
+            id: 'system-alarm-levels',
             titleTr: 'systemSettings.systemAlarmLevels',
             template: require.toUrl('./systemSettings/systemAlarmLevels.html')
         },
         {
+            id: 'audit-alarm-levels',
             titleTr: 'systemSettings.auditAlarmLevels',
             template: require.toUrl('./systemSettings/auditAlarmLevels.html')
         },
         {
+            id: 'email-settings',
             titleTr: 'systemSettings.emailSettings',
             template: require.toUrl('./systemSettings/email.html')
         },
         {
+            id: 'http-settings',
             titleTr: 'systemSettings.httpSettings',
             template: require.toUrl('./systemSettings/httpSettings.html')
         },
         {
+            id: 'thread-pools',
             titleTr: 'systemSettings.threadPools',
             template: require.toUrl('./systemSettings/threadPools.html')
         },
         {
+            id: 'ui-performance',
             titleTr: 'systemSettings.uiPerformance',
             template: require.toUrl('./systemSettings/uiPerformance.html')
         },
         {
+            id: 'purge-settings',
             titleTr: 'systemSettings.purgeSettings',
             template: require.toUrl('./systemSettings/purgeSettings.html')
         },
         {
+            id: 'ui-module',
             titleTr: 'ui.settings',
             template: require.toUrl('./systemSettings/uiModule.html')
         }
