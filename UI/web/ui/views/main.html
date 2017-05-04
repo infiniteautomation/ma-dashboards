@@ -64,7 +64,7 @@
           <!-- use up the empty space -->
 
           <div flex="none" class="md-toolbar-item ma-ui-tools" layout="row" layout-align="start center">
-            <ma-ui-active-event-icons style="padding-right: 8px;"></ma-ui-active-event-icons>
+            <ma-ui-active-event-icons style="padding-right: 8px;" ng-if="$mdMedia('gt-xs')"></ma-ui-active-event-icons>
 
             <div ng-if="stateParams.dateBar">
               <md-input-container class="date-preset">
