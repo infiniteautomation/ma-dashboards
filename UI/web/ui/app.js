@@ -290,6 +290,29 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.Math = Math;
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
+    $rootScope.pageOpts = {};
+    
+    $rootScope.helpLinkClicked = function($event) {
+        if ($event.which !== 2) {
+            $event.preventDefault();
+
+            if (this.pageOpts.helpUrl) {
+                this.closeHelp();
+            } else  {
+                this.openHelp();
+            }
+        }
+    };
+    
+    $rootScope.openHelp = function() {
+        if ($state.params.helpPage) {
+            this.pageOpts.helpUrl = $state.get($state.params.helpPage).templateUrl;
+        }
+    };
+    
+    $rootScope.closeHelp = function() {
+        $rootScope.pageOpts.helpUrl = null;
+    };
     
     $rootScope.goToState = function($event, stateName, stateParams) {
         // ignore if it was a middle click, i.e. new tab
@@ -357,6 +380,11 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         maUiDateBar.rollupTypesFilter = {};
         
         $rootScope.stateNameClass = toState.name.replace(/\./g, '_');
+
+        // if help is already open or the helpOpen param is true the new page's help
+        if ($rootScope.pageOpts.helpUrl || toParams.helpOpen) {
+            $rootScope.openHelp();
+        }
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {

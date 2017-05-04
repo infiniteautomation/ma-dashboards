@@ -135,7 +135,8 @@ return [
         menuTr: 'ui.dox.home',
         menuIcon: 'home',
         params: {
-            helpPage: 'ui.help.gettingStarted'
+            helpPage: 'ui.help.gettingStarted',
+            helpOpen: null
         },
         controller: ['$scope', 'maUiPages', function ($scope, maUiPages) {
             maUiPages.getPages().then(function(store) {

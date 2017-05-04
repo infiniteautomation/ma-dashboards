@@ -253,6 +253,15 @@ md-sidenav.site-sidenav.md-closed {
     }
 }
 
+.ma-help-sidebar {
+  width: 500px;
+  max-width: 500px;
+}
+
+.ma-help-sidebar md-content {
+  overflow-x: hidden;
+}
+
 /***************
  * TYPE DEFAULTS
  ***************/
