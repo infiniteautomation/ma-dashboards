@@ -25,9 +25,9 @@ function pageEditorControls() {
 }
 
 PageEditorControlsController.$inject = ['$scope', 'maUiPages', 'maJsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
-    'localStorageService', '$mdDialog', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateRequest'];
+    'localStorageService', '$mdDialog', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateRequest', '$document'];
 function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
-        localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION, $templateRequest) {
+        localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION, $templateRequest, $document) {
     this.$scope = $scope;
     this.maUiPages = maUiPages;
     this.jsonStoreEventManager = jsonStoreEventManager;
@@ -43,11 +43,13 @@ function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, 
     this.$q = $q;
     this.MA_UI_EDIT_MENUS_PERMISSION = MA_UI_EDIT_MENUS_PERMISSION; // used in template
     this.$templateRequest = $templateRequest;
+    this.$document = $document;
 }
 
 PageEditorControlsController.prototype.$onInit = function() {
     var Translate = this.Translate;
     var $window = this.$window;
+    var $document = this.$document;
     
     this.jsonStoreEventManager.smartSubscribe(this.$scope, this.MA_UI_PAGES_XID, ['add', 'update'], function updateHandler(event, payload) {
         this.pageSummaryStore.jsonData = payload.object.jsonData;
@@ -70,8 +72,12 @@ PageEditorControlsController.prototype.$onInit = function() {
         }
     }.bind(this);
 
+    var keyDownHandler = this.keyDownHandler.bind(this);
+    $document.on('keydown', keyDownHandler);
+
     this.$scope.$on('$destroy', function() {
         $window.onbeforeunload = oldUnload;
+        $document.off('keydown', keyDownHandler);
     });
 
     this.maUiPages.getPages().then(function(pageSummaryStore) {
@@ -247,6 +253,16 @@ PageEditorControlsController.prototype.savePage = function savePage() {
             }
 
             return this.pageSummaryStore.$save();
+        }.bind(this));
+    }
+};
+
+PageEditorControlsController.prototype.keyDownHandler = function(event) {
+    // ctrl-s
+    if ((event.ctrlKey || event.metaKey) && event.which === 83) {
+        event.preventDefault();
+        this.$scope.$applyAsync(function() {
+            this.savePage();
         }.bind(this));
     }
 };
