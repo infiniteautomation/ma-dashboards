@@ -308,7 +308,10 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     
     $rootScope.openHelp = function() {
         if ($state.params.helpPage) {
-            this.pageOpts.helpUrl = $state.get($state.params.helpPage).templateUrl;
+            var state = $state.get($state.params.helpPage);
+            if (state && state.templateUrl) {
+                this.pageOpts.helpUrl = state.templateUrl;
+            }
         }
     };
     
