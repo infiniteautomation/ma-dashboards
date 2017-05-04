@@ -21,7 +21,8 @@ define([
     'angular-ui-sortable',
     'oclazyload',
     'angular-loading-bar',
-    './views/docs/docs-setup'
+    './views/docs/docs-setup',
+    'md-color-picker/mdColorPicker'
 ], function(angular, ngMangoMaterial, require, menuProvider, pagesFactory, dateBarFactory, uiSettingsFactory, pageView, livePreview, stateParams, iframeView, menuItems, moment) {
 'use strict';
 
@@ -39,7 +40,8 @@ var uiApp = angular.module('maUiApp', [
     'ui.sortable',
     'angular-loading-bar',
     'ngMangoMaterial',
-    'ngMessages'
+    'ngMessages',
+    'mdColorPicker'
 ]);
 
 uiApp.provider('maUiMenu', menuProvider)

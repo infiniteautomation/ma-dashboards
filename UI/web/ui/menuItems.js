@@ -161,15 +161,13 @@ return [
         resolve: {
             loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
                 return maRequireQ(['./directives/watchList/watchListPage',
-                            './directives/watchList/watchListTableRow',
-                            'md-color-picker/mdColorPicker'], 
+                            './directives/watchList/watchListTableRow'], 
                 function (watchListPage, watchListTableRow) {
-                    angular.module('maUiWatchListState', ['mdColorPicker'])
+                    angular.module('maUiWatchListState', [])
                         .directive('maUiWatchListPage', watchListPage)
                         .directive('maUiWatchListTableRow', watchListTableRow);
                     $ocLazyLoad.inject('maUiWatchListState');
                     cssInjector.injectLink(require.toUrl('./directives/watchList/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
-                    cssInjector.injectLink(require.toUrl('md-color-picker/mdColorPicker.css'), 'mdColorPicker');
                 });
             }]
         }
@@ -485,6 +483,13 @@ return [
         url: '/ui',
         menuTr: 'ui.settings',
         templateUrl: require.toUrl('./systemSettings/uiModule.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.color',
+        url: '/color',
+        menuTr: 'systemSettings.colourSettings',
+        templateUrl: require.toUrl('./systemSettings/color.html'),
         menuHidden: true
     },
     {

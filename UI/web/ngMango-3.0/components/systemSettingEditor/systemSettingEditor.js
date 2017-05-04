@@ -3,15 +3,19 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'tinycolor'], function(angular, require, tinycolor) {
 'use strict';
 
-SystemSettingEditorController.$inject = ['maSystemSettings', '$timeout', '$q'];
-function SystemSettingEditorController(SystemSettings, $timeout, $q) {
+SystemSettingEditorController.$inject = ['maSystemSettings', '$timeout', '$q', '$injector'];
+function SystemSettingEditorController(SystemSettings, $timeout, $q, $injector) {
     this.SystemSettings = SystemSettings;
     this.$timeout = $timeout;
     this.$q = $q;
 
+    if ($injector.has('$mdColorPicker')) {
+        this.$mdColorPicker = $injector.get('$mdColorPicker');
+    }
+    
     this.messages = {};
 }
 
@@ -61,6 +65,31 @@ SystemSettingEditorController.prototype.settingChanged = function settingChanged
     }).then(function() {
         $ctrl.done = false;
     });
+};
+
+SystemSettingEditorController.prototype.chooseColor = function($event) {
+    if (!this.$mdColorPicker) return;
+
+    this.$mdColorPicker.show({
+        value: this.systemSetting.value || tinycolor.random().toHexString(),
+        defaultValue: '',
+        random: false,
+        clickOutsideToClose: true,
+        hasBackdrop: true,
+        skipHide: false,
+        preserveScope: false,
+        mdColorAlphaChannel: true,
+        mdColorSpectrum: true,
+        mdColorSliders: false,
+        mdColorGenericPalette: true,
+        mdColorMaterialPalette: false,
+        mdColorHistory: false,
+        mdColorDefaultTab: 0,
+        $event: $event
+    }).then(function(color) {
+        this.systemSetting.value = color;
+        this.settingChanged();
+    }.bind(this));
 };
 
 return {

@@ -1,4 +1,4 @@
-<md-input-container class="ma-icon-inside" ng-if="$ctrl.inputType !== 'checkbox'">
+<md-input-container class="ma-icon-inside" ng-if="$ctrl.inputType !== 'checkbox' && $ctrl.inputType !== 'color'">
   <label ma-tr="{{$ctrl.labelTr}}"></label>
   <input ng-if="$ctrl.inputType === 'text'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()" ng-model-options="{debounce: {default: 1000, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}">
   <input ng-if="$ctrl.inputType === 'password'" type="password" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()" ng-model-options="{debounce: {default: 1000, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}">
@@ -30,3 +30,17 @@
   </div>
 </md-input-container>
 <md-checkbox ng-if="$ctrl.inputType === 'checkbox'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()"><span ma-tr="{{$ctrl.labelTr}}"></span></md-checkbox>
+
+<div layout layout-align="start center" ng-if="$ctrl.inputType === 'color'">
+    <div class="ma-color-picker-preview" ng-click="$ctrl.chooseColor($event)" role="button" tabindex="-1">
+      <div class="ma-color-picker-result" ng-style="{'background-color': $ctrl.systemSetting.value}"></div>
+    </div>
+    <md-input-container flex class="ma-icon-inside">
+        <label ma-tr="{{$ctrl.labelTr}}"></label>
+        <input ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.settingChanged()" ng-model-options="{debounce: {default: 1000, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}">
+        <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" ng-class="{'md-warn': $ctrl.error}">{{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}</md-icon>
+        <div ng-messages="$ctrl.messages" md-auto-hide="false">
+            <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting"></div>
+        </div>
+    </md-input-container>
+</div>

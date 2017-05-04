@@ -1149,7 +1149,7 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
 }
 
 @media (min-width: 1280px) {
-  ma-ui-system-settings-page ma-system-setting-editor > md-input-container {
+  ma-ui-system-settings-page ma-system-setting-editor md-input-container {
     margin-right: 20px;
   }
 }

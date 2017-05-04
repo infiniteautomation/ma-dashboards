@@ -189,21 +189,3 @@ ma-ui-watch-list-page ma-watch-list-parameters md-input-container {
 ma-ui-watch-list-page .md-table-pagination > * {
   height: 32px;
 }
-
-ma-ui-watch-list-page .md-color-picker-preview {
-  margin-right: 8px;
-  width: 24px;
-  height: 24px;
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
-  overflow: hidden;
-  background-color: #fff;
-  background-image: -webkit-linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%, #ddd), -webkit-linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%, #ddd);
-  background-image: linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%, #ddd), linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%, #ddd);
-  background-size: 8px 8px;
-  background-position: 0 0, 4px 4px;
-}
-
-ma-ui-watch-list-page .md-color-picker-preview .md-color-picker-result {
-  width: 100%;
-  height: 100%;
-}
