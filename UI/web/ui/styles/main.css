@@ -253,9 +253,19 @@ md-sidenav.site-sidenav.md-closed {
     }
 }
 
-.ma-help-sidebar {
-  width: 500px;
-  max-width: 500px;
+@media (max-width: 549px) {
+  .ma-help-sidebar {
+    width: calc(100% - 50px);
+    max-width: calc(100% - 50px);
+    min-width: 0;
+  }
+}
+
+@media (min-width: 550px) {
+  .ma-help-sidebar {
+    width: 500px;
+    max-width: 500px;
+  }
 }
 
 .ma-help-sidebar md-content {
