@@ -507,6 +507,13 @@ return [
         menuHidden: true
     },
     {
+        name: 'ui.settings.system.chart',
+        url: '/chart',
+        menuTr: 'systemSettings.chartSettings',
+        templateUrl: require.toUrl('./systemSettings/chart.html'),
+        menuHidden: true
+    },
+    {
         name: 'ui.settings.watchListBuilder',
         url: '/watch-list-builder/{watchListXid}',
         template: '<h1 ma-tr="ui.app.watchListBuilder"></h1>\n<ma-ui-watch-list-builder></ma-ui-watch-list-builder>',
