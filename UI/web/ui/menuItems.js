@@ -493,6 +493,20 @@ return [
         menuHidden: true
     },
     {
+        name: 'ui.settings.system.configBackup',
+        url: '/config-backup',
+        menuTr: 'systemSettings.backupSettings',
+        templateUrl: require.toUrl('./systemSettings/configBackup.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.sqlBackup',
+        url: '/sql-backup',
+        menuTr: 'systemSettings.H2DatabaseBackupSettings',
+        templateUrl: require.toUrl('./systemSettings/sqlBackup.html'),
+        menuHidden: true
+    },
+    {
         name: 'ui.settings.watchListBuilder',
         url: '/watch-list-builder/{watchListXid}',
         template: '<h1 ma-tr="ui.app.watchListBuilder"></h1>\n<ma-ui-watch-list-builder></ma-ui-watch-list-builder>',

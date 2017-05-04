@@ -1,0 +1,19 @@
+<div layout="column" layout-align="start start">
+    <ma-system-setting-editor label-tr="systemSettings.backupEnable" key="databaseBackupEnabled" type="BOOLEAN" input-type="checkbox" on-value-changed="databaseBackupEnabled = $value"></ma-system-setting-editor>
+</div>
+
+<div layout layout-wrap ng-show="databaseBackupEnabled">
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.backupLastSuccessfulRun" key="databaseBackupLastSuccessfulRun" disabled="true"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.backupLocation" key="databaseBackupFileLocation"></ma-system-setting-editor>
+  <div flex="100" flex-gt-md="50" layout>
+      <ma-system-setting-editor label-tr="systemSettings.backupFrequency" key="databaseBackupPeriods" type="INTEGER"></ma-system-setting-editor>
+      <ma-system-setting-editor key="databaseBackupPeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
+  </div>
+  <div flex="100" flex-gt-md="50" layout>
+      <ma-system-setting-editor label-tr="systemSettings.backupTimeHour" key="databaseBackupHour" type="INTEGER"></ma-system-setting-editor>
+      <ma-system-setting-editor label-tr="systemSettings.backupTimeMinute" key="databaseBackupMinute" type="INTEGER"></ma-system-setting-editor>
+  </div>
+  <div flex="100" flex-gt-md="50" layout>
+      <ma-system-setting-editor label-tr="systemSettings.backupFileCount" key="databaseBackupFileCount" type="INTEGER"></ma-system-setting-editor>
+  </div>
+</div>

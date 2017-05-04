@@ -104,7 +104,8 @@ return {
         max: '<?',
         step: '<?',
         onValueChanged: '&?',
-        name: '@?'
+        name: '@?',
+        disabled: '<?'
     },
     transclude: {
         options: '?mdOption'

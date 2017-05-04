@@ -1,0 +1,19 @@
+<div layout="column" layout-align="start start">
+    <ma-system-setting-editor label-tr="systemSettings.backupEnable" key="backupEnabled" type="BOOLEAN" input-type="checkbox" on-value-changed="backupEnabled = $value"></ma-system-setting-editor>
+</div>
+
+<div layout layout-wrap ng-show="backupEnabled">
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.backupLastSuccessfulRun" key="backupLastSuccessfulRun" disabled="true"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.backupLocation" key="backupFileLocation"></ma-system-setting-editor>
+  <div flex="100" flex-gt-md="50" layout>
+      <ma-system-setting-editor label-tr="systemSettings.backupFrequency" key="backupPeriods" type="INTEGER"></ma-system-setting-editor>
+      <ma-system-setting-editor key="backupPeriodType" input-type="timeperiodtype"></ma-system-setting-editor>
+  </div>
+  <div flex="100" flex-gt-md="50" layout>
+      <ma-system-setting-editor label-tr="systemSettings.backupTimeHour" key="backupHour" type="INTEGER"></ma-system-setting-editor>
+      <ma-system-setting-editor label-tr="systemSettings.backupTimeMinute" key="backupMinute" type="INTEGER"></ma-system-setting-editor>
+  </div>
+  <div flex="100" flex-gt-md="50" layout>
+      <ma-system-setting-editor label-tr="systemSettings.backupFileCount" key="backupFileCount" type="INTEGER"></ma-system-setting-editor>
+  </div>
+</div>
