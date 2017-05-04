@@ -285,6 +285,12 @@ return [
         menuTr: 'ui.dox.customPages'
     },
     {
+        url: '/dashboard-designer',
+        name: 'ui.help.dashboardDesigner',
+        templateUrl: 'views/help/dashboardDesigner.html',
+        menuTr: 'dashboardDesigner.menuText'
+    },
+    {
         url: '/menu-editor',
         name: 'ui.help.menuEditor',
         templateUrl: 'views/help/menuEditor.html',
