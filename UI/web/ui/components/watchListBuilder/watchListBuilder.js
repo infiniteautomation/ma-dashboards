@@ -129,7 +129,6 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         if ($ctrl.watchListForm) {
             $ctrl.watchListForm.$setUntouched();
             $ctrl.watchListForm.$setPristine();
-            $ctrl.watchListForm.$submitted = false;
         }
     };
     

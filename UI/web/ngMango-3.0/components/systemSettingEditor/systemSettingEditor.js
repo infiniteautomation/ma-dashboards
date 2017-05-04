@@ -6,6 +6,32 @@
 define(['angular', 'require', 'tinycolor'], function(angular, require, tinycolor) {
 'use strict';
 
+var systemSettingEditor = {
+    controller: SystemSettingEditorController,
+    templateUrl: require.toUrl('./systemSettingEditor.html'),
+    bindings: {
+        key: '@',
+        labelTr: '@',
+        type: '@?',
+        inputType: '@?',
+        min: '<?',
+        max: '<?',
+        step: '<?',
+        onValueChanged: '&?',
+        onValueSaved: '&?',
+        name: '@?',
+        disabled: '<?',
+        saveOnChange: '<?'
+    },
+    transclude: {
+        options: '?mdOption'
+    },
+    require: {
+        settingsPageController: '^^?maUiSystemSettingsPage',
+        ngFormController: '^^?form'
+    }
+};
+
 SystemSettingEditorController.$inject = ['maSystemSettings', '$timeout', '$q', '$injector'];
 function SystemSettingEditorController(SystemSettings, $timeout, $q, $injector) {
     this.SystemSettings = SystemSettings;
@@ -15,8 +41,9 @@ function SystemSettingEditorController(SystemSettings, $timeout, $q, $injector) 
     if ($injector.has('$mdColorPicker')) {
         this.$mdColorPicker = $injector.get('$mdColorPicker');
     }
-    
+
     this.messages = {};
+    this.debounceTime = 0;
 }
 
 SystemSettingEditorController.prototype.$onInit = function() {
@@ -30,13 +57,32 @@ SystemSettingEditorController.prototype.$onChanges = function(changes) {
         this.systemSetting = new this.SystemSettings(this.key, this.type);
         this.systemSetting.getValue().then(function(value) {
             if (this.onValueChanged) {
-                this.onValueChanged({$value: value});
+                this.onValueChanged({$value: value, $initial: true});
             }
         }.bind(this));
     }
+    if (changes.saveOnChange) {
+        this.debounceTime = this.saveOnChange ? 1000 : 0;
+    }
 };
 
-SystemSettingEditorController.prototype.settingChanged = function settingChanged() {
+SystemSettingEditorController.prototype.valueChanged = function valueChanged() {
+    if (this.onValueChanged) {
+        this.onValueChanged({$value: this.systemSetting.value, $initial: false});
+    }
+    if (this.settingsPageController) {
+        this.settingsPageController.valueChanged(this.systemSetting);
+    }
+    // ensures form is marked dirty if user changes a color using the color picker
+    if (this.ngFormController) {
+        this.ngFormController.$setDirty();
+    }
+    if (this.saveOnChange) {
+        this.saveSetting();
+    }
+};
+
+SystemSettingEditorController.prototype.saveSetting = function saveSetting() {
     var $ctrl = this;
     this.done = false;
     this.error = false;
@@ -48,8 +94,8 @@ SystemSettingEditorController.prototype.settingChanged = function settingChanged
     }, 200);
     
     this.systemSetting.setValue().then(function(value) {
-        if ($ctrl.onValueChanged) {
-            $ctrl.onValueChanged({$value: value});
+        if ($ctrl.onValueSaved) {
+            $ctrl.onValueSaved({$value: value});
         }
         $ctrl.$timeout.cancel(delay);
         $ctrl.saving = false;
@@ -88,28 +134,10 @@ SystemSettingEditorController.prototype.chooseColor = function($event) {
         $event: $event
     }).then(function(color) {
         this.systemSetting.value = color;
-        this.settingChanged();
+        this.valueChanged();
     }.bind(this));
 };
 
-return {
-    controller: SystemSettingEditorController,
-    templateUrl: require.toUrl('./systemSettingEditor.html'),
-    bindings: {
-        key: '@',
-        labelTr: '@',
-        type: '@?',
-        inputType: '@?',
-        min: '<?',
-        max: '<?',
-        step: '<?',
-        onValueChanged: '&?',
-        name: '@?',
-        disabled: '<?'
-    },
-    transclude: {
-        options: '?mdOption'
-    }
-};
+return systemSettingEditor;
 
 }); // define

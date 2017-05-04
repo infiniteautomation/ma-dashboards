@@ -30,32 +30,25 @@
     </div>
     
     <div layout="column" flex>
-        <md-card>
+        <md-card class="ma-ui-system-settings-main">
             <md-card-title ng-if="$ctrl.$mdMedia('gt-md')">
               <md-card-title-text>
                 <div class="md-headline" ma-tr="{{$ctrl.$state.current.menuTr}}"></div>
               </md-card-title-text>
             </md-card-title>
-            <md-card-content class="ma-ui-system-settings-main" ui-view></md-card-content>
+            <md-card-content ng-form="$ctrl.settingForm">
+                <div ui-view></div>
+            </md-card-content>
+            <md-card-actions>
+                <md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveSection()" ng-disabled="$ctrl.settingForm.$pristine || $ctrl.savePromise">
+                    <md-icon ng-hide="$ctrl.savedIcon || $ctrl.errorIcon">save</md-icon>
+                    <md-icon ng-show="$ctrl.savedIcon">check</md-icon>
+                    <md-icon ng-show="$ctrl.errorIcon">error_outline</md-icon>
+                    <span ma-tr="common.save"></span>
+                </md-button>
+                <span ng-if="$ctrl.error" md-colors="{color: 'warn'}" ma-tr="ui.components.errorSavingSettings" ma-tr-args="[$ctrl.error.message]"></span>
+                <span ng-if="$ctrl.savedMessage" md-colors="{color: 'accent'}" ma-tr="ui.app.settingsSaved"></span>
+            </md-card-actions>
         </md-card>
     </div>
 </div>
-
-<!-- 
-<div ma-accordion="accordion" ma-accordion-single>
-  <md-card class="ma-accordion" ng-repeat="section in $ctrl.SystemSettings.getSections() track by $index">
-    <md-card-title ng-click="accordion.toggle(section.id || 'section' + $index)">
-      <md-card-title-text>
-        <div class="md-headline" ng-class="{'ma-accordion-expanded': accordion.section[section.id || 'section' + $index]}" layout layout-align="start center">
-          <span flex ma-tr="{{section.titleTr}}"></span><md-icon>keyboard_arrow_down</md-icon>
-        </div>
-      </md-card-title-text>
-    </md-card-title>
-    <md-card-content>
-      <ma-accordion-section id="{{section.id || 'section' + $index}}" ma-accordion-open="$index === 0">
-        <div layout="column" class="md-padding" ng-include="section.template"></div>
-      </ma-accordion-section>
-    </md-card-content>
-  </md-card>
-</div>
- -->

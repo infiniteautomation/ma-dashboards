@@ -1161,3 +1161,7 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
 .ma-ui-system-settings-dropdown md-input-container {
   margin-bottom: 0;
 }
+
+.ma-ui-system-settings-main md-card-actions > span {
+  margin-left: 10px
+}

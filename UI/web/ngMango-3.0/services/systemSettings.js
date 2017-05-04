@@ -76,12 +76,12 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
     SystemSettings.setValues = function(values) {
         var $this = this;
         return $http({
-            method: 'PUT',
+            method: 'POST',
             url: systemSettingsUrl,
             headers: {
                 'Accept': 'application/json'
             },
-            data: value
+            data: values
         }).then(function(response) {
             return response.data;
         });
