@@ -70,12 +70,13 @@ return [
                            './directives/pageEditor/pageEditorControls',
                            './directives/liveEditor/liveEditor',
                            './directives/liveEditor/dualPaneEditor',
+                           './directives/helpLink/helpLink',
                            './components/autoLoginSettings/autoLoginSettings',
                            './components/activeEventIcons/activeEventIcons',
                            './components/dateBar/dateBar',
                            './components/footer/footer'
                 ], function(menuEditorFactory, jsonStoreMenu, menu, menuLink, menuToggle,
-                        menuEditor, pageEditor, pageEditorControls, liveEditor, dualPaneEditor, autoLoginSettings, activeEventIcons, dateBar, footer) {
+                        menuEditor, pageEditor, pageEditorControls, liveEditor, dualPaneEditor, helpLink, autoLoginSettings, activeEventIcons, dateBar, footer) {
                     angular.module('maUiRootState', ['ui.ace'])
                         .factory('maUiMenuEditor', menuEditorFactory)
                         .directive('maUiMenuEditor', menuEditor)
@@ -83,6 +84,7 @@ return [
                         .directive('maUiPageEditorControls', pageEditorControls)
                         .directive('maUiLiveEditor', liveEditor)
                         .directive('maUiDualPaneEditor', dualPaneEditor)
+                        .directive('maUiHelpLink', helpLink)
                         .component('maUiJsonStoreMenu', jsonStoreMenu)
                         .component('maUiMenu', menu)
                         .component('maUiMenuLink', menuLink)
