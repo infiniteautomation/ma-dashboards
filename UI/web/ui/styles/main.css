@@ -1048,7 +1048,12 @@ md-radio-group md-radio-button {
 }
 
 div.help-doc-container {
-	max-width: 1200px;
+  max-width: 1200px;
+  padding-right: 5px;
+}
+
+div.help-doc-container li {
+  list-style-type: disc;
 }
 
 .missing-module {
