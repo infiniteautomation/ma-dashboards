@@ -80,9 +80,12 @@
               </md-button>
             </div>
             
-            <md-button class="md-icon-button" ng-class="{'md-accent': pageOpts.helpUrl}" ng-if="$state.params.helpPage" ng-click="helpLinkClicked($event)">
+            <md-button class="md-icon-button" ng-class="{'md-accent': pageOpts.helpUrl}" ng-if="pageOpts.helpUrl || $state.params.helpPage" ng-click="helpLinkClicked($event)">
                 <md-icon>help</md-icon>
-                <md-tooltip md-autohide><span ma-tr="ui.app.viewHelpPage"></span></md-tooltip>
+                <md-tooltip md-autohide>
+                    <span ng-if="!pageOpts.helpUrl" ma-tr="ui.app.viewHelpPage"></span>
+                    <span ng-if="pageOpts.helpUrl" ma-tr="ui.app.closeHelpPage"></span>
+                </md-tooltip>
             </md-button>
           </div>
         </div>

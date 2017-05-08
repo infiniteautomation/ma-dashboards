@@ -319,6 +319,21 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.closeHelp = function() {
         $rootScope.pageOpts.helpUrl = null;
     };
+
+    $rootScope.titleSuffix = 'Mango v3';
+    $rootScope.setTitleText = function setTitleText() {
+        if ($state.$current.menuText) {
+            this.titleText = $state.$current.menuText + ' - ' + this.titleSuffix;
+        } else if ($state.$current.menuTr) {
+            Translate.tr($state.$current.menuTr).then(function(text) {
+                this.titleText = text + ' - ' + this.titleSuffix;
+            }.bind(this), function() {
+                this.titleText = this.titleSuffix;
+            }.bind(this));
+        } else {
+            this.titleText = this.titleSuffix;
+        }
+    };
     
     $rootScope.goToState = function($event, stateName, stateParams) {
         // ignore if it was a middle click, i.e. new tab
@@ -345,20 +360,47 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
 
-    $rootScope.titleSuffix = 'Mango v3';
-    $rootScope.setTitleText = function setTitleText() {
-        if ($state.$current.menuText) {
-            this.titleText = $state.$current.menuText + ' - ' + this.titleSuffix;
-        } else if ($state.$current.menuTr) {
-            Translate.tr($state.$current.menuTr).then(function(text) {
-                this.titleText = text + ' - ' + this.titleSuffix;
-            }.bind(this), function() {
-                this.titleText = this.titleSuffix;
-            }.bind(this));
-        } else {
-            this.titleText = this.titleSuffix;
+    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+        if (toState.href) {
+            event.preventDefault();
+            $window.open(toState.href, toState.target || '_self');
+            return;
         }
-    };
+        
+        if ($state.includes('ui.settings.uiSettings')) {
+            // resets themes to the last saved state when leaving the settings page
+            uiSettings.reset();
+            uiSettings.generateTheme();
+        }
+        
+        if ($state.includes('ui') && !$rootScope.navLockedOpen) {
+            $rootScope.closeMenu();
+        }
+        
+        if (toState.name === 'logout') {
+            event.preventDefault();
+            User.logout().$promise.then(null, function() {
+                // consume error
+            }).then(function() {
+                $state.go('login');
+            });
+        }
+        
+        if (toState.name === 'ui.settings.system') {
+            event.preventDefault();
+            $state.go('ui.settings.system.systemInformation', toParams);
+        }
+        
+        // navigating to help link when help is open
+        if (toState.name.indexOf('ui.help.') === 0 && $rootScope.pageOpts.helpUrl) {
+            // stay on current page and load help page into sidebar
+            event.preventDefault();
+
+            if (toState.templateUrl) {
+                $rootScope.pageOpts.helpUrl = toState.templateUrl;
+            }
+        }
+    });
     
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
         var crumbs = [];
@@ -393,38 +435,6 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
 
-    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-        if (toState.href) {
-            event.preventDefault();
-            $window.open(toState.href, toState.target || '_self');
-            return;
-        }
-        
-        if ($state.includes('ui.settings.uiSettings')) {
-            // resets themes to the last saved state when leaving the settings page
-            uiSettings.reset();
-            uiSettings.generateTheme();
-        }
-        
-        if ($state.includes('ui') && !$rootScope.navLockedOpen) {
-            $rootScope.closeMenu();
-        }
-        
-        if (toState.name === 'logout') {
-            event.preventDefault();
-            User.logout().$promise.then(null, function() {
-                // consume error
-            }).then(function() {
-                $state.go('login');
-            });
-        }
-        
-        if (toState.name === 'ui.settings.system') {
-            event.preventDefault();
-            $state.go('ui.settings.system.systemInformation', toParams);
-        }
-    });
-    
     // wait for the dashboard view to be loaded then set it to open if the
     // screen is a large one. By default the internal state of the sidenav thinks
     // it is closed even if it is locked open
