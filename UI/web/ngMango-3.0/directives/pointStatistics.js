@@ -192,7 +192,7 @@ function pointValues(Point, Util, $q, statistics) {
                         return data;
                     });
                 } catch (error) {
-                    return $q.reject(error).setCancel(angular.noop);
+                    return $q.reject(error);
                 }
             }
         }

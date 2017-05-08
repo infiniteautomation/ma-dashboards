@@ -482,7 +482,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         return values;
                     });
                 } catch (error) {
-                    return $q.reject(error).setCancel(angular.noop);
+                    return $q.reject(error);
                 }
             }
         } // End link funciton

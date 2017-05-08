@@ -81,7 +81,7 @@ function ImportExportFactory($http, $q, $timeout, Util) {
                 return response.data;
             }).setCancel(canceler.resolve);
         } catch (error) {
-            return $q.reject(error).setCancel(angular.noop);
+            return $q.reject(error);
         }
     };
 
@@ -106,7 +106,7 @@ function ImportExportFactory($http, $q, $timeout, Util) {
                 return new ImportStatus(response.headers('Location'));
             }).setCancel(canceler.resolve);
         } catch (error) {
-            return $q.reject(error).setCancel(angular.noop);
+            return $q.reject(error);
         }
     };
 

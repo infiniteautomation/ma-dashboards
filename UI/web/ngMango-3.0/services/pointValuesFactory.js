@@ -27,7 +27,7 @@ function pointValuesFactory($http, $q, Util) {
                 reverseData = true;
             } else {
                 if (params.from.valueOf() === params.to.valueOf()) {
-                    return $q.when([]).setCancel(angular.noop);
+                    return $q.when([]);
                 }
             }
 
@@ -56,7 +56,7 @@ function pointValuesFactory($http, $q, Util) {
                 return values;
             }).setCancel(canceler.resolve);
         } catch (error) {
-            return $q.reject(error).setCancel(angular.noop);
+            return $q.reject(error);
         }
     };
 
@@ -81,7 +81,7 @@ function pointValuesFactory($http, $q, Util) {
             } else {
                 url += '/multiple-points-multiple-arrays';
                 if (params.from.valueOf() === params.to.valueOf()) {
-                    return $q.when(emptyResponse).setCancel(angular.noop);
+                    return $q.when(emptyResponse);
                 }
             }
 
@@ -114,7 +114,7 @@ function pointValuesFactory($http, $q, Util) {
                 return dataByXid;
             }).setCancel(canceler.resolve);
         } catch (error) {
-            return $q.reject(error).setCancel(angular.noop);
+            return $q.reject(error);
         }
     };
     
@@ -137,7 +137,7 @@ function pointValuesFactory($http, $q, Util) {
             } else {
                 url += '/multiple-points-single-array';
                 if (params.from.valueOf() === params.to.valueOf()) {
-                    return $q.when([]).setCancel(angular.noop);
+                    return $q.when([]);
                 }
             }
 
@@ -167,7 +167,7 @@ function pointValuesFactory($http, $q, Util) {
                 return values;
             }).setCancel(canceler.resolve);
         } catch (error) {
-            return $q.reject(error).setCancel(angular.noop);
+            return $q.reject(error);
         }
     };
     

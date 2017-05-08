@@ -27,7 +27,7 @@ function statisticsFactory($http, $q, Util) {
                 var to = Util.toMoment(options.to, now, options.dateFormat);
                 
                 if (from.valueOf() === to.valueOf()) {
-                    return $q.when({}).setCancel(angular.noop);
+                    return $q.when({});
                 }
                 
                 params.push('from=' + encodeURIComponent(from.toISOString()));
@@ -58,7 +58,7 @@ function statisticsFactory($http, $q, Util) {
                 return response.data;
             }).setCancel(canceler.resolve);
         } catch (error) {
-            return $q.reject(error).setCancel(angular.noop);
+            return $q.reject(error);
         }
     };
 

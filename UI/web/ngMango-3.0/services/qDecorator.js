@@ -8,63 +8,50 @@ define(['angular'], function(angular) {
 
 qDecorator.$inject = ['$delegate'];
 function qDecorator($delegate) {
-    function decoratePromise(promise) {
-        var then = promise.then;
-        promise.then = function() {
-            var nextPromise = then.apply(this, arguments);
-            if (typeof promise.cancel === 'function') {
-                nextPromise.cancel = promise.cancel;
-            }
-            return decoratePromise(nextPromise);
-        };
-        
-        promise.setCancel = function setCancel(cancel) {
-            if (typeof cancel === 'function') {
-                this.cancel = cancel;
-            }
-            return this;
-        };
-        
-        return promise;
-    }
 
-    var defer = $delegate.defer;
-    var when = $delegate.when;
-    var reject = $delegate.reject;
+    var originalThen = $delegate.prototype.then;
+    $delegate.prototype.then = function() {
+        var newPromise = originalThen.apply(this, arguments);
+        if (typeof this.doCancel === 'function') {
+            newPromise.doCancel = this.doCancel;
+        }
+        return newPromise;
+    };
+    
+    $delegate.prototype.setCancel = function(doCancel) {
+        if (typeof doCancel === 'function') {
+            this.doCancel = doCancel;
+        }
+        return this;
+    };
+    
+    $delegate.prototype.cancel = function() {
+        if (typeof this.doCancel === 'function') {
+            this.doCancel.apply(this, arguments);
+        }
+        return this;
+    };
+
     var all = $delegate.all;
     var race = $delegate.race;
-    
-    $delegate.defer = function() {
-        var deferred = defer.apply(this, arguments);
-        decoratePromise(deferred.promise);
-        return deferred;
-    };
-    $delegate.when = function() {
-        var p = when.apply(this, arguments);
-        return decoratePromise(p);
-    };
-    $delegate.reject = function() {
-        var p = reject.apply(this, arguments);
-        return decoratePromise(p);
-    };
+
     $delegate.all = function(promises) {
         var p = all.apply(this, arguments);
-        p.cancel = getCancelAll(promises);
-        return decoratePromise(p);
+        var doCancel = getCancelAll(promises);
+        return p.setCancel(doCancel);
     };
+    
     $delegate.race = function(promises) {
         var p = race.apply(this, arguments);
-        p.cancel = getCancelAll(promises);
-        return decoratePromise(p);
+        var doCancel = getCancelAll(promises);
+        return p.setCancel(doCancel);
     };
     
     function getCancelAll(promises) {
         return function() {
             var cancelArgs = arguments;
-            angular.forEach(promises, function(promise) {
-                if (typeof promise.cancel === 'function') {
-                    promise.cancel.apply(promise, cancelArgs);
-                }
+            promises.forEach(function(promise) {
+                promise.cancel.apply(promise, cancelArgs);
             });
         };
     }

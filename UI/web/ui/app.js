@@ -83,9 +83,10 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
         cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider) {
 
-    // will need initially when we use AngularJS 1.6.x
-    //$compileProvider.preAssignBindingsEnabled(true);
-    $compileProvider.debugInfoEnabled(false);
+    // Need this for AngularJS 1.6.x, all our directives should be updated so they dont use bindings in the constructor
+    // Most things seem to work but mdPickers do not
+    $compileProvider.preAssignBindingsEnabled(true);
+    $compileProvider.debugInfoEnabled(true);
     $compileProvider.commentDirectivesEnabled(false);
     // we use the a class directive to transform ngDoc divs with class="prettyprint"
     //$compileProvider.cssClassDirectivesEnabled(false);
