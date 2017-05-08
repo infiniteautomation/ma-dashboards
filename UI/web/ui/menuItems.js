@@ -224,7 +224,10 @@ return [
         menuTr: 'header.help',
         menuIcon: 'help',
         submenu: true,
-        weight: 2000
+        weight: 2000,
+        params: {
+            sidebar: null
+        }
     },
     {
         url: '/getting-started',
