@@ -390,14 +390,14 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             event.preventDefault();
             $state.go('ui.settings.system.systemInformation', toParams);
         }
-        
-        // navigating to help link when help is open
-        if (toState.name.indexOf('ui.help.') === 0 && $rootScope.pageOpts.helpUrl) {
-            // stay on current page and load help page into sidebar
-            event.preventDefault();
 
-            if (toState.templateUrl) {
+        if (toState.name.indexOf('ui.help.') === 0) {
+            if (toParams.sidebar) {
+                // stay on current page and load help page into sidebar
+                event.preventDefault();
                 $rootScope.pageOpts.helpUrl = toState.templateUrl;
+            } else {
+                $rootScope.closeHelp();
             }
         }
     });
