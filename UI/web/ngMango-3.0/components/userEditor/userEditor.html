@@ -1,5 +1,5 @@
 <form name="$ctrl.userForm" novalidate ng-submit="$ctrl.save($event)">
-  <div layout layout-align="start start" layout-wrap>
+  <div layout layout-align="space-between start" layout-wrap>
     <p flex="100" md-colors="{color: 'warn'}" ng-if="$ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></p>
 
     <md-input-container flex="100" flex-gt-md="50">
@@ -14,7 +14,7 @@
         </div>
       </div>
     </md-input-container>
-    <md-input-container flex="100" flex-gt-md="50">
+    <md-input-container flex="100" flex-gt-md="45">
       <md-icon>person</md-icon>
       <label ma-tr="users.name"></label>
       <input name="name" ng-model="$ctrl.user.name" required maxlength="255" ma-validation-messages="$ctrl.validationMessages">
@@ -39,7 +39,7 @@
         </div>
       </div>
     </md-input-container>
-    <md-input-container flex="100" flex-gt-md="50">
+    <md-input-container flex="100" flex-gt-md="45">
       <md-icon>phone</md-icon>
       <label ma-tr="users.phone"></label>
       <input type="tel" name="phone" ng-model="$ctrl.user.phone" pattern="^(?:\+?[0-9]{1,3}[ -]?)?(?:\([0-9 ]+\)[ -]?)?[0-9]+(?:[ -][0-9]+)*$" maxlength="40" ma-validation-messages="$ctrl.validationMessages">
@@ -79,7 +79,7 @@
       </md-input-container>
     </div>
 
-    <md-input-container flex="100" flex-gt-md="50">
+    <md-input-container flex="100" flex-gt-md="45">
       <md-icon>info</md-icon>
       <label ma-tr="users.permissions"></label>
       <input name="permissions" ng-disabled="!$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-validation-messages="$ctrl.validationMessages">
@@ -113,7 +113,7 @@
         </div>
       </div>
     </md-input-container>
-    <md-input-container flex="100" flex-gt-md="50">
+    <md-input-container flex="100" flex-gt-md="45">
       <md-icon>home</md-icon>
       <label ma-tr="users.homeURL"></label>
       <input name="homeUrl" ng-model="$ctrl.user.homeUrl" pattern="^\/(?!\/).*" ma-validation-messages="$ctrl.validationMessages">
@@ -137,7 +137,7 @@
         </div>
       </div>
     </md-input-container>
-    <md-input-container flex="100" flex-gt-md="50">
+    <md-input-container flex="100" flex-gt-md="45">
       <md-icon>access_time</md-icon>
       <label ma-tr="users.timezone"></label>
       <md-select name="timezone" ng-model="$ctrl.user.timezone" ma-validation-messages="$ctrl.validationMessages">
@@ -152,7 +152,7 @@
       </div>
     </md-input-container>
 
-    <div layout="column" layout-align="start start" flex="100">
+    <div layout layout-align="start start" flex="100" layout-wrap style="margin: 15px 0;">
       <md-checkbox name="muted" ng-model="$ctrl.user.muted">
         <span ma-tr="users.muted"></span>
       </md-checkbox>
@@ -164,7 +164,7 @@
       </md-checkbox>
     </div>
 
-    <div flex="100" layout="row" layout-align="start center">
+    <div flex="100" layout layout-align="start center" layout-wrap>
       <md-button class="md-raised md-primary" type="submit">
         <md-icon>save</md-icon> <span ma-tr="common.save"></span>
       </md-button>

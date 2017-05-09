@@ -6,10 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UsersPageController.$inject = ['maUser', '$state'];
-function UsersPageController(User, $state) {
+UsersPageController.$inject = ['maUser', '$state', '$mdMedia'];
+function UsersPageController(User, $state, $mdMedia) {
     this.User = User;
     this.$state = $state;
+    this.$mdMedia = $mdMedia;
 }
 
 UsersPageController.prototype.$onInit = function() {

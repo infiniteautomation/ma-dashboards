@@ -75,6 +75,7 @@ define(['./ngMangoServices',
         './components/imageSlider/imageSlider',
         './components/userEditor/userEditor',
         './components/userSelect/userSelect',
+        './components/userList/userList',
         './components/systemSettingEditor/systemSettingEditor',
         './components/permissionsMenu/permissionsMenu',
         './components/configExport/configExport',
@@ -96,7 +97,7 @@ define(['./ngMangoServices',
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
         dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
-        imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
+        imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
         maMap, ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
@@ -181,6 +182,7 @@ ngMango.component('maWatchListParameters', watchListParameters);
 ngMango.component('maImageSlider', imageSlider);
 ngMango.component('maUserEditor', userEditor);
 ngMango.component('maUserSelect', userSelect);
+ngMango.component('maUserList', userList);
 ngMango.component('maSystemSettingEditor', systemSettingEditor);
 ngMango.component('maPermissionsMenu', permissionsMenu);
 ngMango.component('maConfigExport', configExport);

@@ -1,23 +1,46 @@
 <h1 ma-tr="header.users"></h1>
 
-<ma-user-select ng-if="$ctrl.User.current.admin" ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()">
-  <ma-label ma-tr="users.selectUserToEdit"></ma-label>
-</ma-user-select>
+<div layout="column" layout-gt-md="row">
+  <md-card flex flex-gt-md="25" layout="column" ng-if="$ctrl.User.current.admin">
+    <md-card-title flex="nogrow">
+      <md-card-title-text>
+        <span class="md-headline">
+          <span ma-tr="users.selectUserToEdit"></span>
+        </span>
+      </md-card-title-text>
 
-<md-button ng-if="$ctrl.User.current.admin" class="md-raised md-primary" ng-click="$ctrl.addUser($event)">
-  <md-icon>person_add</md-icon> <span ma-tr="users.add"></span>
-</md-button>
+      <md-button class="md-raised md-primary" ng-click="$ctrl.addUser($event)"
+                 ng-hide="$ctrl.$mdMedia('gt-md')">
+        <md-icon>person_add</md-icon> <span ma-tr="users.add"></span>
+      </md-button>
+    </md-card-title>
 
-<md-card>
-  <md-card-title>
-    <md-card-title-text>
+    <md-card-content flex ng-hide="$ctrl.$mdMedia('gt-md')">
+      <ma-user-select ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" flex>
+        <ma-label ma-tr="users.selectUserToEdit"></ma-label>
+      </ma-user-select>
+    </md-card-content>
+
+    <md-card-content flex class="ma-no-padding" ng-if="$ctrl.$mdMedia('gt-md')">
+      <ma-user-list ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" flex
+                    ng-show="$ctrl.$mdMedia('gt-md')" show-new-button="true"
+                    new-button-clicked="$ctrl.addUser($event)">
+        <ma-label ma-tr="users.selectUserToEdit"></ma-label>
+      </ma-user-list>
+    </md-card-content>
+  </md-card>
+
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
       <span class="md-headline">
         <span ng-if="!$ctrl.user.isNew" ma-tr="users.editUser"></span>
         <span ng-if="$ctrl.user.isNew" ma-tr="users.add"></span>
       </span>
-    </md-card-title-text>
-  </md-card-title>
-  <md-card-content>
-    <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
-  </md-card-content>
-</md-card>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
+    </md-card-content>
+  </md-card>
+</div>

@@ -98,7 +98,7 @@ UserEditorController.prototype.remove = function(event) {
         .cancel(this.Translate.trSync('common.cancel'));
 
     this.$mdDialog.show(confirm).then(function() {
-        var username = $ctrl.originalUser;
+        var username = $ctrl.originalUser.username;
         $ctrl.originalUser.$delete().then(function(user) {
             $ctrl.user = null;
             $ctrl.originalUser = null;
