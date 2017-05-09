@@ -79,9 +79,12 @@ uiApp.config([
     'MA_UI_MENU_XID',
     'MA_UI_PAGES_XID',
     'maRequireQProvider',
+    '$uiViewScrollProvider',
 function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
-        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider) {
+        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider, $uiViewScrollProvider) {
+        
+    $uiViewScrollProvider.useAnchorScroll();
 
     // Need this for AngularJS 1.6.x, all our directives should be updated so they dont use bindings in the constructor
     // Most things seem to work but mdPickers do not
@@ -277,9 +280,10 @@ uiApp.run([
     'maWebAnalytics',
     'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
     '$window',
+    '$anchorScroll',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
-        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window) {
+        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, $anchorScroll) {
 
     if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
         webAnalytics.enableGoogleAnalytics(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
@@ -417,14 +421,6 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         $rootScope.crumbs = crumbs;
         
         $rootScope.setTitleText();
-        
-        if (toState !== fromState) {
-            var contentDiv = document.querySelector('.main-content');
-            if (contentDiv) {
-                contentDiv.scrollTop = 0;
-            }
-        }
-        
         maUiDateBar.rollupTypesFilter = {};
         
         $rootScope.stateNameClass = toState.name.replace(/\./g, '_');
@@ -432,6 +428,13 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         // if help is already open or the helpOpen param is true the new page's help
         if ($rootScope.pageOpts.helpUrl || toParams.helpOpen) {
             $rootScope.openHelp();
+        }
+
+        if (toState !== fromState) {
+            var contentDiv = document.querySelector('.main-content');
+            if (contentDiv) {
+                contentDiv.scrollTop = 0;
+            }
         }
     });
 
@@ -452,6 +455,13 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $mdSidenav('left').onClose(function () {
                 $rootScope.navLockedOpen = false;
             });
+
+        }
+
+        if ($location.hash()) {
+            $timeout(function() {
+                $anchorScroll();
+            }, 100);
         }
     });
 
