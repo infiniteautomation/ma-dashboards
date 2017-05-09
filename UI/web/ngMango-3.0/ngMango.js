@@ -65,6 +65,7 @@ define(['./ngMangoServices',
         './directives/scaleTo',
         './directives/change',
         './directives/switch',
+        './directives/svg',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -95,7 +96,7 @@ define(['./ngMangoServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListGet, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
-        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective,
+        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
         maMap, ngMap, slideUp, angular, require, moment) {
@@ -172,6 +173,7 @@ ngMango.directive('maValidationMessages', validationMessages);
 ngMango.directive('maScaleTo', scaleTo);
 ngMango.directive('maChange', change);
 ngMango.directive('maSwitch', switchDirective);
+ngMango.directive('maSvg', svgDirective);
 ngMango.component('maQueryBuilder', queryBuilder);
 ngMango.component('maQueryGroup', queryGroup);
 ngMango.component('maQueryPredicate', queryPredicate);
