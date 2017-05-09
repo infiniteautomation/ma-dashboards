@@ -389,7 +389,8 @@ ma-tank-level,
 ma-indicator,
 ma-switch-img,
 ma-serial-chart,
-ma-watch-list-chart {
+ma-watch-list-chart,
+ma-svg {
   display: block;
 }
 
@@ -425,6 +426,7 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
 /* SVG and animations */
 
 [ng-include] > svg {
+  display: block;
   width: 100%;
   height: 100%;
 }

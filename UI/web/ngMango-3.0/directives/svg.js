@@ -13,30 +13,32 @@ function svg() {
         priority: -401,
         require: 'ngInclude',
         compile: function(tElement, tAtts) {
-            var attributesById = {};
-
-            tElement.children('ma-svg-element[selector]').each(function() {
-                var id = this.getAttribute('selector');
-                if (!id) return;
-                var attributes = attributesById[id] = [];
+            var attributesBySelector = {};
+            
+            tElement[0].querySelectorAll('[ma-selector]').forEach(function(selectorElement) {
+                var selector = selectorElement.getAttribute('ma-selector');
+                if (!selector) return;
+                var attributes = attributesBySelector[selector] = [];
                 
-                Array.prototype.forEach.call(this.attributes, function(attribute) {
-                    attributes.push({
-                        name: attribute.name,
-                        value: attribute.value
-                    });
+                Array.prototype.forEach.call(selectorElement.attributes, function(attribute) {
+                    if (attribute.name !== 'ma-selector') {
+                        attributes.push({
+                            name: attribute.name,
+                            value: attribute.value
+                        });
+                    }
                 });
             });
-            
+
             tElement.empty();
             
             return function ($scope, $element, $attrs, ngIncludeCtrl) {
                 var svgTree = angular.element(ngIncludeCtrl.template);
-                Object.keys(attributesById).forEach(function(id) {
-                    var svgElement = svgTree.find(id);
-                    if (svgElement.length) {
-                        attributesById[id].forEach(function(attr) {
-                            svgElement.attr(attr.name, attr.value);
+                Object.keys(attributesBySelector).forEach(function(selector) {
+                    var matchingElements = angular.element(svgTree[0].querySelectorAll(selector));
+                    if (matchingElements.length) {
+                        attributesBySelector[selector].forEach(function(attr) {
+                            matchingElements.attr(attr.name, attr.value);
                         });
                     }
                 });
