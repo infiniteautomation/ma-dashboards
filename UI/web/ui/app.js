@@ -89,7 +89,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
     // Need this for AngularJS 1.6.x, all our directives should be updated so they dont use bindings in the constructor
     // Most things seem to work but mdPickers do not
     $compileProvider.preAssignBindingsEnabled(true);
-    $compileProvider.debugInfoEnabled(true);
+    $compileProvider.debugInfoEnabled(false);
     $compileProvider.commentDirectivesEnabled(false);
     // we use the a class directive to transform ngDoc divs with class="prettyprint"
     //$compileProvider.cssClassDirectivesEnabled(false);
