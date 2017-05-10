@@ -33,16 +33,26 @@ function svg() {
             tElement.empty();
             
             return function ($scope, $element, $attrs, ngIncludeCtrl) {
-                var svgTree = angular.element(ngIncludeCtrl.template);
-                Object.keys(attributesBySelector).forEach(function(selector) {
-                    var matchingElements = angular.element(svgTree[0].querySelectorAll(selector));
-                    if (matchingElements.length) {
-                        attributesBySelector[selector].forEach(function(attr) {
-                            matchingElements.attr(attr.name, attr.value);
-                        });
+                ngIncludeCtrl.template = angular.element(ngIncludeCtrl.template);
+                
+                var rootElement;
+                Array.prototype.some.call(ngIncludeCtrl.template, function(node) {
+                    if (node instanceof Element) {
+                        rootElement = node;
+                        return true;
                     }
                 });
-                ngIncludeCtrl.template = svgTree;
+                
+                if (rootElement) {
+                    Object.keys(attributesBySelector).forEach(function(selector) {
+                        var matchingElements = angular.element(rootElement.querySelectorAll(selector));
+                        if (matchingElements.length) {
+                            attributesBySelector[selector].forEach(function(attr) {
+                                matchingElements.attr(attr.name, attr.value);
+                            });
+                        }
+                    });
+                }
             };
         }
     };
