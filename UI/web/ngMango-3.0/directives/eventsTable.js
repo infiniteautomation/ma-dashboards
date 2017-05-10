@@ -77,8 +77,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 console.log(note, event);
 
                 event.hasNotes = true;
-                event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - '
-                    + $scope.formatDate(note.timestamp)+ ')';
+                event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - ' +
+                    $scope.formatDate(note.timestamp)+ ')';
             };
             
             $scope.onPaginate = function(page, limit) {
@@ -201,8 +201,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                                 if (notes.length)
                                     event.hasNotes = true;
                                 notes.forEach(function(note, index){
-                                    event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - '
-                                        + $scope.formatDate(note.timestamp)+ ')';
+                                    event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - ' +
+                                        $scope.formatDate(note.timestamp)+ ')';
                                 });
                             }, function(error) {
                                 console.log(error);
