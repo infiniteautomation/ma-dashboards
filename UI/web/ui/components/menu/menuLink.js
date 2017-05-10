@@ -40,7 +40,7 @@ function MenuLinkController($state, Translate) {
         // ignore if it was a middle click, i.e. new tab
         if ($event.which !== 2) {
             $event.preventDefault();
-            $state.go(this.item.name);
+            $state.go(this.item.name, {sidebar: false});
         }
     };
 }

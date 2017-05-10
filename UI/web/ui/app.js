@@ -293,14 +293,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
     $rootScope.pageOpts = {};
-    
-    $rootScope.helpLinkClicked = function($event) {
-        if ($event.which !== 2) {
-            $event.preventDefault();
-            this.openHelp();
-        }
-    };
-    
+
     $rootScope.openHelp = function() {
         if ($state.params.helpPage) {
             var state = $state.get($state.params.helpPage);
@@ -399,7 +392,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
 
         if (toState.name.indexOf('ui.help.') === 0) {
-            if (toParams.sidebar) {
+            var openInSidebar = $state.includes('ui') && (toParams.sidebar != null ? toParams.sidebar : !$state.includes('ui.help'));
+            if (openInSidebar) {
                 // stay on current page and load help page into sidebar
                 event.preventDefault();
                 $rootScope.pageOpts.helpUrl = toState.templateUrl;
@@ -451,16 +445,16 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $mdSidenav('left').onClose(function () {
                 $rootScope.navLockedOpen = false;
             });
+        }
+        
+        var mainContent = document.querySelector('md-content.main-content');
+        if (mainContent) {
+            mainContent.scrollTop = 0;
             
-            var mainContent = document.querySelector('md-content.main-content');
-            if (mainContent) {
-                mainContent.scrollTop = 0;
-                
-                // if main content contains the hash element scroll to it
-                var hash = $location.hash();
-                if (hash && mainContent.querySelector('#' + hash)) {
-                    //$anchorScroll();
-                }
+            // if main content contains the hash element scroll to it
+            var hash = $location.hash();
+            if (hash && mainContent.querySelector('#' + hash)) {
+                //$anchorScroll();
             }
         }
     });

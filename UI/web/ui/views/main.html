@@ -80,7 +80,7 @@
               </md-button>
             </div>
             
-            <md-button class="md-icon-button" ng-if="$state.params.helpPage" ng-click="helpLinkClicked($event)">
+            <md-button class="md-icon-button" ng-if="$state.params.helpPage" ui-state="$state.params.helpPage">
                 <md-icon>help</md-icon>
                 <md-tooltip md-autohide>
                     <span ma-tr="ui.app.viewHelpPage"></span>
