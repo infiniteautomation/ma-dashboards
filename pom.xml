@@ -2,12 +2,12 @@
 	<parent>
 		<artifactId>modules-parent</artifactId>
 		<groupId>com.infiniteautomation.mango</groupId>
-		<version>3.0.3-SNAPSHOT</version>
+		<version>3.1.0-SNAPSHOT</version>
         <relativePath>../ma-core-public/Modules/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ma-dashboards-parent</artifactId>
-  <version>3.0.3-SNAPSHOT</version>
+  <version>3.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Mango UI Modules</name>
 	<issueManagement>
