@@ -4,7 +4,7 @@
     <p>
         The <a ui-sref="ui.watchList">Watch List</a> page allows you to compare many data points at 
         the same time in a table view. Powerful query and parameter based watchlists can be built using the 
-        <a ui-state="'ui.help.watchListBuilder'" ui-state-params="{'sidebar': !$state.includes('ui.help')}">Watch List Builder</a>, and later viewed on the this page.
+        <a ui-sref="ui.help.watchListBuilder">Watch List Builder</a>, and later viewed on the this page.
     </p>
 
     <p>
@@ -37,7 +37,7 @@
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListTable.png" alt="Help-ScreenShots-WatchListTable"/>
 
     <p>
-        If the viewed list is a custom Watch List, you can click the edit button to open the <a ui-state="'ui.help.watchListBuilder'" ui-state-params="{'sidebar': !$state.includes('ui.help')}">Watch List Builder</a> page and edit the points on the selected <code>Watch List.</code>
+        If the viewed list is a custom Watch List, you can click the edit button to open the <a ui-sref="ui.help.watchListBuilder">Watch List Builder</a> page and edit the points on the selected <code>Watch List.</code>
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchListEditButton.png" alt="Help-Screenshots-WatchListEditButton"/>
@@ -82,7 +82,7 @@
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchListWrenchIcon.png" alt="Help-Screenshots-WatchListWrenchIcon"/>
 
     <p>
-        To the far right of the row is an icon to linked to the <a ui-state="'ui.help.dataPointDetails'" ui-state-params="{'sidebar': !$state.includes('ui.help')}">Data Point Details</a> page for that data point.
+        To the far right of the row is an icon to linked to the <a ui-sref="ui.help.dataPointDetails">Data Point Details</a> page for that data point.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListDPD-Icon.png" alt="Help-ScreenShots-WatchListDPD-Icon"/>
