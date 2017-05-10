@@ -6,22 +6,30 @@
 define(['angular'], function(angular) {
 'use strict';
 
-svg.$inject = [];
-function svg() {
+svg.$inject = ['$document'];
+function svg($document) {
+    var SELECTOR_ATTRIBUTE = 'ma-selector';
+    
     return {
         restrict: 'E',
+        // needs to be lower priority than ngIncludeFillContentDirective so our link runs first
         priority: -401,
-        require: 'ngInclude',
+        require: ['maSvg', 'ngInclude'],
+        controller: angular.noop,
+        bindToController: {
+            attributes: '<?'
+        },
         compile: function(tElement, tAtts) {
             var attributesBySelector = {};
-            
-            tElement[0].querySelectorAll('[ma-selector]').forEach(function(selectorElement) {
-                var selector = selectorElement.getAttribute('ma-selector');
+
+            // find all child elements and create a map of selectors to attributes
+            tElement[0].querySelectorAll('[' + SELECTOR_ATTRIBUTE + ']').forEach(function(selectorElement) {
+                var selector = selectorElement.getAttribute(SELECTOR_ATTRIBUTE);
                 if (!selector) return;
                 var attributes = attributesBySelector[selector] = [];
                 
                 Array.prototype.forEach.call(selectorElement.attributes, function(attribute) {
-                    if (attribute.name !== 'ma-selector') {
+                    if (attribute.name !== SELECTOR_ATTRIBUTE) {
                         attributes.push({
                             name: attribute.name,
                             value: attribute.value
@@ -30,29 +38,35 @@ function svg() {
                 });
             });
 
+            // no longer need the contents, empty the element
             tElement.empty();
             
-            return function ($scope, $element, $attrs, ngIncludeCtrl) {
+            return function ($scope, $element, $attrs, controllers) {
+                var maSvgCtrl = controllers[0];
+                var ngIncludeCtrl = controllers[1];
+
+                // merge the attributes from the bindings into our object
+                angular.merge(attributesBySelector, maSvgCtrl.attributes);
+                
+                // parse the markup and create a dom tree
+                // the ngInclude directive will insert this into $element in its link function
                 ngIncludeCtrl.template = angular.element(ngIncludeCtrl.template);
                 
-                var rootElement;
-                Array.prototype.some.call(ngIncludeCtrl.template, function(node) {
-                    if (node instanceof Element) {
-                        rootElement = node;
-                        return true;
+                // create a parent node for querying
+                var rootElement = $document[0].createElement('div');
+                Array.prototype.forEach.call(ngIncludeCtrl.template, function(node) {
+                    rootElement.appendChild(node);
+                });
+
+                // iterate over our selectors, find matching elements in the dom tree and add attribtues to them
+                Object.keys(attributesBySelector).forEach(function(selector) {
+                    var matchingElements = angular.element(rootElement.querySelectorAll(selector));
+                    if (matchingElements.length) {
+                        attributesBySelector[selector].forEach(function(attr) {
+                            matchingElements.attr(attr.name, attr.value);
+                        });
                     }
                 });
-                
-                if (rootElement) {
-                    Object.keys(attributesBySelector).forEach(function(selector) {
-                        var matchingElements = angular.element(rootElement.querySelectorAll(selector));
-                        if (matchingElements.length) {
-                            attributesBySelector[selector].forEach(function(attr) {
-                                matchingElements.attr(attr.name, attr.value);
-                            });
-                        }
-                    });
-                }
             };
         }
     };
