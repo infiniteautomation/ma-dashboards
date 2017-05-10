@@ -26,14 +26,11 @@ function svg($document) {
             tElement[0].querySelectorAll('[' + SELECTOR_ATTRIBUTE + ']').forEach(function(selectorElement) {
                 var selector = selectorElement.getAttribute(SELECTOR_ATTRIBUTE);
                 if (!selector) return;
-                var attributes = attributesBySelector[selector] = [];
+                var attributes = attributesBySelector[selector] = {};
                 
                 Array.prototype.forEach.call(selectorElement.attributes, function(attribute) {
                     if (attribute.name !== SELECTOR_ATTRIBUTE) {
-                        attributes.push({
-                            name: attribute.name,
-                            value: attribute.value
-                        });
+                        attributes[attribute.name] = attribute.value;
                     }
                 });
             });
@@ -62,8 +59,9 @@ function svg($document) {
                 Object.keys(attributesBySelector).forEach(function(selector) {
                     var matchingElements = angular.element(rootElement.querySelectorAll(selector));
                     if (matchingElements.length) {
-                        attributesBySelector[selector].forEach(function(attr) {
-                            matchingElements.attr(attr.name, attr.value);
+                        var attributes = attributesBySelector[selector];
+                        Object.keys(attributes).forEach(function(attrName) {
+                            matchingElements.attr(attrName, attributes[attrName]);
                         });
                     }
                 });
