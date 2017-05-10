@@ -374,7 +374,7 @@ return [
     {
         name: 'ui.settings.users',
         url: '/users/{username}',
-        template: '<ma-ui-users-page><ma-ui-users-page>',
+        template: '<ma-ui-users-page flex="noshrink" layout="column"><ma-ui-users-page>',
         menuTr: 'header.users',
         menuIcon: 'people',
         permission: 'superadmin',

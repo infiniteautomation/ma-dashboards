@@ -1,6 +1,6 @@
 <h1 ma-tr="header.users"></h1>
 
-<div layout="column" layout-gt-md="row" layout-gt-lg="row">
+<div layout="column" layout-gt-md="row" layout-gt-lg="row" flex>
   <md-card flex="100" flex-gt-md="25" flex-gt-lg="20" layout="column" ng-if="$ctrl.User.current.admin">
     <md-card-title flex="nogrow">
       <md-card-title-text>
@@ -30,17 +30,19 @@
     </md-card-content>
   </md-card>
 
-  <md-card flex>
-    <md-card-title>
-      <md-card-title-text>
+  <div>
+    <md-card>
+      <md-card-title>
+        <md-card-title-text>
       <span class="md-headline">
         <span ng-if="!$ctrl.user.isNew" ma-tr="users.editUser"></span>
         <span ng-if="$ctrl.user.isNew" ma-tr="users.add"></span>
       </span>
-      </md-card-title-text>
-    </md-card-title>
-    <md-card-content>
-      <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
-    </md-card-content>
-  </md-card>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
+      </md-card-content>
+    </md-card>
+  </div>
 </div>
