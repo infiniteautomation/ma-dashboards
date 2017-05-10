@@ -56,6 +56,8 @@ PageEditorControlsController.prototype.$onInit = function() {
     }.bind(this));
     
     this.$scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        if (event.defaultPrevented) return;
+        
         if (this.pageEditorForm.$dirty || this.selectedPage.$dirty) {
             if (!confirm(Translate.trSync('ui.app.discardUnsavedChanges'))) {
                 event.preventDefault();
