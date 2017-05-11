@@ -3,19 +3,28 @@
 
     <p>
         The <a ui-sref="ui.settings.uiSettings">UI Settings</a> page can be used to change the
-        <code>Theme hues</code> (colors) of the dashboard, load a different <code>Logo</code>, and set the <code>Code coloring</code>:
+        <code>Theme hues</code> (colors) of the dashboard, load a different <code>Logo</code>, and set the <code>Code coloring.</code>
     </p>
     
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-DashboardSettings.png" alt="Help-ScreenShots-DashboardSettings"/>
-    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-UiSettings.png"
+         alt="Help-ScreenShots-UiSettings"/>
+
+    <br><br><br>
+
+    <h2>Custom Logo</h2>
+
     <p>
         If you would like to use your own logo, you should put it inside
 		your Mango/overrides so that it persists through module updates. For instance, create
-		<code>Mango/overrides/web/modules/mangoUI/web/images</code> if you haven't already and place 
+		<code>${MA_HOME}/overrides/web/modules/mangoUI/web/images</code> if you haven't already and place
 		your logo image in there. You can then reference the logo using
 		<code>/modules/mangoUI/web/images/myLogo.png</code>
     </p>
-    
+
+    <br>
+
+    <h2>Custom UI Theme</h2>
+
     <p>
         If you choose the <code>userTheme</code> option in the <code>Choose theme</code> select, you can choose from the 
         <a href="https://material.io/guidelines/style/color.html#color-color-schemes" target="_blank">20 Material Design Color Palettes</a>
@@ -49,5 +58,17 @@
         Once saved, the <code>Code coloring</code>  will be used in <code>Edit pages</code>, <code>Play area</code>, <code>Examples</code>,
         and <code>API Docs</code>.
     </p>
+
+    <br>
+
+    <h2>Google API Settings</h2>
+
+    <p>
+        In addition you can also set your <code>Google Maps API Key</code> used for working the the <code>&lt;ma-map&gt;</code>
+        component and a <code>Google Analytics Property ID</code> used for tracking visitor activity on your Mango Server.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-UiSettings-GoogleApiKeys.png"
+         alt="Help-ScreenShots-UiSettings-GoogleApiKeys"/>
 
 </div>
