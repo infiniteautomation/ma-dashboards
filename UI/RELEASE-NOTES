@@ -2,6 +2,15 @@
 * Fix bootstrapping ngMango via bootstrap.js
 * Fix bug displaying chart and table on watch list dialog
 * Add more system settings
+* Layout changes to user and system settings pages
+* Add ma-svg directive
+* Update documentation and help pages
+* Help pages open in sidebar
+* Ctrl-S hotkey binding for custom pages
+* Fix loading issue caused by ad-blockers
+* Upgrade AngularJS to 1.6.x
+* Rename AngularJS modules and services
+* Bug fixes
 
 *Version 3.0.1*
 * Initial public release
