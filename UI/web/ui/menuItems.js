@@ -292,6 +292,12 @@ return [
         menuTr: 'ui.dox.menuEditor'
     },
     {
+        url: '/users',
+        name: 'ui.help.users',
+        templateUrl: 'views/help/users.html',
+        menuTr: 'header.users'
+    },
+    {
         url: '/custom-dashboards',
         name: 'ui.help.customDashboards',
         templateUrl: 'views/help/customDashboards.html',
