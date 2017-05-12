@@ -2,88 +2,233 @@
     <h1 ma-tr="ui.dox.watchList"></h1>
 
     <p>
-        The <a ui-sref="ui.watchList">Watch List</a> page allows you to compare many data points at 
-        the same time in a table view. Powerful query and parameter based watchlists can be built using the 
+        The <a ui-sref="ui.watchList">Watch List</a> page allows you to compare many data points at
+        the same time in a table view. Powerful query and parameter based watchlists can be built using the
         <a ui-sref="ui.help.watchListBuilder">Watch List Builder</a>, and later viewed on the this page.
     </p>
 
     <p>
-        On the left side of the <code>Watch List</code> page you can choose between custom <code>Lists</code>, <code>Devices</code>, <code>Sources</code>, or directly 
-        from folders of the <code>Hierarchy</code>. Choosing a new list will clear the chart and load the new points contained within 
+        On the left side of the <code>Watch List</code> page you can choose between custom <code>Lists,</code>
+        <code>Devices,</code> <code>Sources</code> or directly
+        from folders of the <code>Hierarchy</code>. Choosing a new list will clear the chart and load the new points contained
+        within
         that list into the table view. Each type of list is explained below:
     </p>
 
     <ul>
-        <li><strong>Lists</strong> - A custom list of points that can be generated using the <a ui-sref="ui.settings.watchListBuilder">Watch List Builder</a>. Lists can be generated that are dynamic and based on query parameters.</li>
-        <li><strong>Devices</strong> - An arbitrary group assigned to data points often used to refer to a machine name. Every data point has a single arbitrary device name, which can be edited while editing the point.</li>
-        <li><strong>Sources</strong> - A "place" from which data is received. Data points must be created on data sources. Every data point has exactly one data source.</li>
-        <li><strong>Hierarchy</strong> - The point hierarchy can be used to arrange the points in your system in meaningful ways. Data points can be arranged in a hierarchical folder like structure regardless of their data source or device name.</li>
+        <li><strong>Lists</strong> - A custom list of points that can be generated using the <a
+            ui-sref="ui.settings.watchListBuilder">Watch List Builder</a>. Lists can be generated that are dynamic and based on
+            query parameters.
+        </li>
+        <li><strong>Devices</strong> - An arbitrary group assigned to data points often used to refer to a machine name. Every
+            data point has a single arbitrary device name, which can be edited while editing the point.
+        </li>
+        <li><strong>Sources</strong> - A "place" from which data is received. Data points must be created on data sources. Every
+            data point has exactly one data source.
+        </li>
+        <li><strong>Hierarchy</strong> - The point hierarchy can be used to arrange the points in your system in meaningful ways.
+            Data points can be arranged in a hierarchical folder like structure regardless of their data source or device name.
+        </li>
     </ul>
 
-    <br />
-    
+    <br/>
+
     <div layout layout-wrap layout-align="space-between start" layout-margin>
-        <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-Lists.png" alt="Help-ScreenShots-WatchListPicker-Lists"/>
-        <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-Devices.png" alt="Help-ScreenShots-WatchListPicker-Devices"/>
-        <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-Sources.png" alt="Help-ScreenShots-WatchListPicker-Sources"/>
-        <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-Hierarchy.png" alt="Help-ScreenShots-WatchListPicker-Hierarchy"/>
+        <img md-whiteframe="5" style="max-width: 45%"
+             ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-Lists.png"
+             alt="Help-ScreenShots-WatchListPicker-Lists"/>
+        <img md-whiteframe="5" style="max-width: 45%"
+             ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-Devices.png"
+             alt="Help-ScreenShots-WatchListPicker-Devices"/>
+        <img md-whiteframe="5" style="max-width: 45%"
+             ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-Sources.png"
+             alt="Help-ScreenShots-WatchListPicker-Sources"/>
+        <img md-whiteframe="5" style="max-width: 45%"
+             ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-Hierarchy.png"
+             alt="Help-ScreenShots-WatchListPicker-Hierarchy"/>
     </div>
-    
+
     <p>
-        All column names in the Watch List can be clicked to sort ascending or 
-        descending by the selected field. Point values will flash with the live value as they update in realtime.
+        When viewing <code>Lists</code>, the top option will allow you to create a <code>New watch list</code> and you will be
+        linked to the <a ui-sref="ui.settings.watchListBuilder">Watch List Builder</a> page.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListTable.png" alt="Help-ScreenShots-WatchListTable"/>
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-New.png"
+         alt="Help-ScreenShots-WatchListPicker-New"/>
+
+    <br><br><br>
+
+    <h2>Watch List Table</h2>
 
     <p>
-        If the viewed list is a custom Watch List, you can click the edit button to open the <a ui-sref="ui.help.watchListBuilder">Watch List Builder</a> page and edit the points on the selected <code>Watch List.</code>
+        All column names in the <code>Watch List Table</code> can be clicked to sort ascending or
+        descending by the selected field. Point values will flash with the live value as they update in real-time.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchListEditButton.png" alt="Help-Screenshots-WatchListEditButton"/>
-    
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListTable.png"
+         alt="Help-ScreenShots-WatchListTable"/>
+
     <p>
-        When viewing <code>Lists</code>, the top option will allow you to create a <code>New watch list</code> and you will be linked to the <code>Watch List Builder</code> page.
+        If the viewed list is a <code>List Type Watch List,</code> you can click the edit button to open the <a
+        ui-sref="ui.help.watchListBuilder">Watch List Builder</a> page and edit the configuration for the selected Watch
+        List.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListPicker-New.png" alt="Help-ScreenShots-WatchListPicker-New"/>
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchListEditButton.png"
+         alt="Help-Screenshots-WatchListEditButton"/>
 
     <p>
-        You can click the checkbox on the far left of each row in the Watch List to add a data point to the <code>Chart and Compare</code> pane.
-        By default a point will be added to the chart using the the left axis and the line color set in the 
+        You can export data from a Watch List by clicking the <code>Download</code> button.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100px"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchListDownloadButton.png"
+         alt="Help-Screenshots-WatchListDownloadButton"/>
+
+    <p>
+        This will open the <code>Download point values</code> popup which gives you options to <code>Download data for
+        checked points only</code> or <code>Download data for all points on watch list.</code> You can also set
+        <code>Rollup type</code> and choose to use <code>CSV</code> or <code>JSON</code> for the exported format.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchList-DownloadPopUp.png"
+         alt="Help-Screenshots-WatchList-DownloadPopUp"/>
+
+    <p>
+        The chart icon in the row for a point opens a popup to give statistics and latest values for that single data point over
+        the selected date range in the <code>Header Bar.</code>
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListHistoryStatsPopUp-Icon.png"
+         alt="Help-ScreenShots-WatchListHistoryStatsPopUp-Icon"/>
+
+    <p>
+        The <code>Stats</code> shows statistics related to that data point over the time range.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchList-PopUpStats.png"
+         alt="Help-ScreenShots-WatchList-PopUpStats"/>
+
+    <p>
+        The <code>Latest Values Chart</code> tab shows a chart with the point’s values either in <code>Realtime</code>
+        mode or over the selected time range and rollup settings from the <a ui-sref="ui.help.dateBar">Date Bar</a>.
+        To change these settings check the <code>Configure</code> option and turn on/off the <code>Realtime</code> toggle.
+        You can set the <code>Number of values</code> to display as well as whether to <code>Show cached data.</code>
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchList-LatestValuesChart.png"
+         alt="Help-ScreenShots-WatchList-LatestValuesChart"/>
+
+    <p>
+        The <code>Latest Values Table</code> will show the same values shown on the chart but in a table view.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchList-LatestValuesTable.png"
+         alt="Help-ScreenShots-WatchList-LatestValuesTable"/>
+
+    <p>
+        If a data point is <code>Settable</code> a wrench icon will display on the row that will open a popup dialog you can use
+        to manually set a data point’s value.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchListWrenchIcon.png"
+         alt="Help-Screenshots-WatchListWrenchIcon"/>
+    <p>
+        A numeric input will be shown for numeric data points, a drop-down will display for binary and multi-state data points.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 300px"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchList-SetValuePopup.png"
+         alt="Help-ScreenShots-WatchList-SetValuePopup"/>
+
+    <p>
+        To the far right of the row is an icon to linked to the <a ui-sref="ui.help.dataPointDetails">Data Point Details</a> page
+        for that data point.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListDPD-Icon.png"
+         alt="Help-ScreenShots-WatchListDPD-Icon"/>
+
+    <br><br><br>
+
+    <h2>Chart and Compare</h2>
+
+    <p>
+        You can click the checkbox on the far left of each row in the <code>Watch List Table</code> to add a data point to the
+        <code>Chart and Compare</code> pane.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListChart.png"
+         alt="Help-ScreenShots-WatchListChart"/>
+
+    <p>
+        The date range in the <code>Header Bar</code> controls the time period displayed in the <code>Chart and Compare</code>
+        pane.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-HeaderTimeRange.png"
+         alt="Help-ScreenShots-HeaderTimeRange"/>
+
+    <p>
+        By default a point will be added to the chart using the the left axis and the line color set in the
         point’s properties. This can be changed by checking the <code>Configure next point</code> checkbox beneath the chart.
-        This allows you to set the color, chart type, and axis for the next point(s) added to the chart above. This can be useful if you want to 
-        chart a few points on the left axis that share a similar range and other points on the right axis that share a far different range. 
+        This allows you to set the <code>Line color,</code> <code>Chart type,</code> and <code>Point axis</code> for the next
+        point added to the chart.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListChart.png" alt="Help-ScreenShots-WatchListChart"/>
-
-    <p>        
-        Once added to the chart you can also click the <code>Stats</code> tab to view a comparison of 
-        statistics over the selected time range in the Header Bar. The time range in the header bar controls
-        the time period displayed in the chart as well.
-    </p>
-
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-HeaderTimeRange.png" alt="Help-ScreenShots-HeaderTimeRange"/>
-    <br /><br />
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListStatsTab.png" alt="Help-ScreenShots-WatchListStatsTab"/>
-
-	<p>
-		The chart icon in the row for a point opens a dialogue to give statistics, charts and values for that singular point over the time range.
-	</p>
-
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListHistoryStatsPopUp.png" alt="Help-ScreenShots-WatchListHistoryStatsPopUp"/>
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchList-ConfigNextPoint.png"
+         alt="Help-ScreenShots-WatchList-ConfigNextPoint"/>
 
     <p>
-        If a data point is <code>Settable</code> a wrench icon will display on the row that will open a popup dialog you can use to 
-        manually set a data point’s value.
+        Using the <code>Configure all points/series</code> options you can set these same properties for data points that have
+        already been added to the chart.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchListWrenchIcon.png" alt="Help-Screenshots-WatchListWrenchIcon"/>
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchList-ConfigByPoint.png"
+         alt="Help-ScreenShots-WatchList-ConfigByPoint"/>
+
 
     <p>
-        To the far right of the row is an icon to linked to the <a ui-sref="ui.help.dataPointDetails">Data Point Details</a> page for that data point.
+        You can also set <code>Axis Color</code> and <code>Stack type</code> for the four available y-axes that data points can
+        be assigned to. It can be useful to split up data points that will fit into a similar value range on the y-axes of the
+        chart. <code>Stack type</code> can be used to create filled area charts that stack with the combined values of multiple
+        data points, or to a <code>100% Stacked</code> type to show show relative proportions.
     </p>
 
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListDPD-Icon.png" alt="Help-ScreenShots-WatchListDPD-Icon"/>
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchList-ConfigAxes.png"
+         alt="Help-ScreenShots-WatchList-ConfigAxes"/>
+
+
+    <p>
+        Once added to the chart you can also click the <code>Stats</code> tab to view a comparison of
+        statistics over the selected time range in the <code>Header Bar.</code>
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-WatchListStatsTab.png"
+         alt="Help-ScreenShots-WatchListStatsTab"/>
+
+    <p>
+        Note that any modifications to which points are checked to display on the chart, as well as chart config options will
+        need to be saved with the <code>Save</code> button to persist.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 80px"
+         ng-src="/modules/mangoUI/web/ui/views/help/images/Help-Screenshots-WatchListSaveButton.png"
+         alt="Help-Screenshots-WatchListSaveButton"/>
 </div>
