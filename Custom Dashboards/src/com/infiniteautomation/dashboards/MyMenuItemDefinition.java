@@ -78,30 +78,30 @@ public class MyMenuItemDefinition extends MenuItemDefinition{
 
 	@Override
 	public void postDatabase() {
-		SystemSettingsDao systemSettingsDao = new SystemSettingsDao();
+		
 		if ("/mango-api-docs/index.shtm".equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION))) {
-			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION);
+			SystemSettingsDao.instance.removeValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION);
 		}
 		if (DashboardsCommon.DEFAULT_DASHBOARDS_PUBLIC_URL_PREFIX.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX))) {
-			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX);
+			SystemSettingsDao.instance.removeValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX);
 		}
 		if (DashboardsCommon.DEFAULT_DASHBOARDS_PUBLIC_FILES_LOCATION.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_FILES_LOCATION))) {
-			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_PUBLIC_FILES_LOCATION);
+			SystemSettingsDao.instance.removeValue(DashboardsCommon.DASHBOARDS_PUBLIC_FILES_LOCATION);
 		}
 		if (DashboardsCommon.DEFAULT_DASHBOARDS_PRIVATE_URL_PREFIX.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX))) {
-			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX);
+			SystemSettingsDao.instance.removeValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX);
 		}
 		if (DashboardsCommon.DEFAULT_DASHBOARDS_PRIVATE_FILES_LOCATION.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_FILES_LOCATION))) {
-			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_PRIVATE_FILES_LOCATION);
+			SystemSettingsDao.instance.removeValue(DashboardsCommon.DASHBOARDS_PRIVATE_FILES_LOCATION);
 		}
 		if (DashboardsCommon.DEFAULT_DASHBOARDS_ICON_DESTINATION.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION))) {
-			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION);
+			SystemSettingsDao.instance.removeValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION);
 		}
 		if (DashboardsCommon.DEFAULT_DASHBOARDS_ICON_LOCATION.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_LOCATION))) {
-			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_ICON_LOCATION);
+			SystemSettingsDao.instance.removeValue(DashboardsCommon.DASHBOARDS_ICON_LOCATION);
 		}
 		if (DashboardsCommon.DEFAULT_DASHBOARDS_LOGIN_PAGE.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE))) {
-			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE);
+			SystemSettingsDao.instance.removeValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE);
 		}
 	}
 
