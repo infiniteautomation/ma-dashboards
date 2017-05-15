@@ -37,13 +37,14 @@ function loginFactory($state, User, $rootScope, $window) {
                     }
                     $window.location = redirectUrl;
                 }, function(error) {
+                    $scope.errors.invalidLogin = false;
                     if (error.status === 401) {
                         $scope.errors.invalidLogin = true;
                         $scope.errors.otherError = false;
-                    }
-                    else {
-                        $scope.errors.invalidLogin = false;
-                        $scope.errors.otherError = error.statusText || 'Connection refused';
+                    } else if (error.status === -1) {
+                        $scope.errors.otherError = 'Connection refused';
+                    } else {
+                        $scope.errors.otherError = error.statusText || 'HTTP ' + error.status;
                     }
                 });
             };
