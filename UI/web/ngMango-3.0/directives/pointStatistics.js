@@ -40,6 +40,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * @param {string=} date-format If you are passing in `to/from` as strings, then you must specify the moment.js format for parsing the values.
  * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of of the statistical provider.
  If not supplied the Mango system default timeout will be used.
+ * @param {boolean=} rendered (default true) Return the statistics as a rendered value rather than a number
  *
  * @usage
  * <ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj">
@@ -69,8 +70,8 @@ function pointValues(Point, Util, $q, statistics) {
             to: '=?',
             dateFormat: '@',
             firstLast: '@',
-            timeout: '=',
-            rendered: '='
+            timeout: '<?',
+            rendered: '<?'
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
