@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/pie', 'angular'], function(AmCharts, angular) {
+define(['amcharts/pie', 'angular', 'require'], function(AmCharts, angular, require) {
 'use strict';
 /**
  * @ngdoc directive
@@ -30,14 +30,19 @@ define(['amcharts/pie', 'angular'], function(AmCharts, angular) {
  options="{depth3D:15,angle:30}"></ma-pie-chart>
  *
  */
-function pieChart($http) {
+pieChart.$inject = ['$http', 'MA_INSERT_CSS', 'maCssInjector'];
+function pieChart($http, MA_INSERT_CSS, maCssInjector) {
     return {
         restrict: 'E',
         replace: true,
         designerInfo: {
             translation: 'ui.components.pieChart',
             icon: 'pie_chart',
-            category: 'pointValuesAndCharts'
+            category: 'pointValuesAndCharts',
+            size: {
+                width: '200px',
+                height: '200px'
+            }
         },
         scope: {
           values: '=',
@@ -45,44 +50,51 @@ function pieChart($http) {
           options: '=?'
         },
         template: '<div class="amchart"></div>',
-        link: function ($scope, $element, attributes) {
-            var options = angular.extend(defaultOptions(), $scope.options);
-            var chart = AmCharts.makeChart($element[0], options);
-
-            var labelFn = createLabelFn();
-            $scope.$watchCollection('valueLabels', function(value) {
-                labelFn = createLabelFn(value);
-            });
-
-            $scope.$watchCollection('values', function(newValue, oldValue) {
-                var values = $.extend(true, [], newValue);
-
-                for (var i = 0; i < values.length; i++) {
-                    var item = values[i];
-
-                    if (item.runtime) {
-                        item.id = item.value;
-                        item.value = item.runtime / 1000;
-                        delete item.runtime;
-                    }
-
-                    labelFn(item);
-                }
-
-                chart.dataProvider = values;
-                chart.validateData();
-            });
-
-            function createLabelFn(labels) {
-                return function(item) {
-                    var label = labels && labels[item.id] || {};
-
-                    item.text = typeof label === 'string' ? label : label.text || item.text || item.id;
-                    item.color = label.color || label.colour || item.color || item.colour;
-                };
+        compile: function() {
+            if (MA_INSERT_CSS) {
+                maCssInjector.injectLink(require.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
             }
+            return postLink;
         }
     };
+
+    function postLink($scope, $element, attributes) {
+        var options = angular.extend(defaultOptions(), $scope.options);
+        var chart = AmCharts.makeChart($element[0], options);
+
+        var labelFn = createLabelFn();
+        $scope.$watchCollection('valueLabels', function(value) {
+            labelFn = createLabelFn(value);
+        });
+
+        $scope.$watchCollection('values', function(newValue, oldValue) {
+            var values = $.extend(true, [], newValue);
+
+            for (var i = 0; i < values.length; i++) {
+                var item = values[i];
+
+                if (item.runtime) {
+                    item.id = item.value;
+                    item.value = item.runtime / 1000;
+                    delete item.runtime;
+                }
+
+                labelFn(item);
+            }
+
+            chart.dataProvider = values;
+            chart.validateData();
+        });
+
+        function createLabelFn(labels) {
+            return function(item) {
+                var label = labels && labels[item.id] || {};
+
+                item.text = typeof label === 'string' ? label : label.text || item.text || item.id;
+                item.color = label.color || label.colour || item.color || item.colour;
+            };
+        }
+    }
 }
 
 function defaultOptions() {
@@ -102,7 +114,6 @@ function defaultOptions() {
     };
 }
 
-pieChart.$inject = ['$http'];
 return pieChart;
 
 }); // define
