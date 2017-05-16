@@ -6,9 +6,15 @@
 define(['angular'], function(angular) {
 'use strict';
 
-svg.$inject = ['$document'];
-function svg($document) {
+svg.$inject = ['$document', '$templateCache'];
+function svg($document, $templateCache) {
     var SELECTOR_ATTRIBUTE = 'ma-selector';
+    var EMPTY_TEMPLATE_URL = '/ngMango/circle.svg';
+    var EMPTY_TEMPLATE = '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
+        '<circle cx="100" cy="100" r="100"/>' +
+        '</svg>';
+
+    $templateCache.put(EMPTY_TEMPLATE_URL, EMPTY_TEMPLATE);
     
     return {
         restrict: 'E',
@@ -18,6 +24,16 @@ function svg($document) {
         controller: angular.noop,
         bindToController: {
             attributes: '<?'
+        },
+        designerInfo: {
+            attributes: {
+                ngInclude: {defaultValue: '\'' + EMPTY_TEMPLATE_URL + '\''}
+                //attributes: {defaultValue: "{circle: {'ng-style' : '{fill: myColor}'}}"}
+            },
+            size: {
+                width: '50px',
+                height: '50px'
+            }
         },
         compile: function(tElement, tAtts) {
             var attributesBySelector = {};
