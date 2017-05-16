@@ -196,6 +196,9 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
                     $ocLazyLoad.inject('maUiDocsState');
                 });
             }]
+        },
+        params: {
+            sidebar: null
         }
     };
     apiDocsMenuItems.push(docsParent);
@@ -391,8 +394,11 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $state.go('ui.settings.system.systemInformation', toParams);
         }
 
-        if (toState.name.indexOf('ui.help.') === 0) {
-            var openInSidebar = $state.includes('ui') && (toParams.sidebar != null ? toParams.sidebar : !$state.includes('ui.help'));
+        if (toState.name.indexOf('ui.help.') === 0 || toState.name.indexOf('ui.docs.') === 0) {
+            var linkBetweenPages = toState.name.indexOf('ui.help.') === 0 && $state.includes('ui.help') ||
+                toState.name.indexOf('ui.docs.') === 0 && $state.includes('ui.docs');
+
+            var openInSidebar = $state.includes('ui') && (toParams.sidebar != null ? toParams.sidebar : !linkBetweenPages);
             if (openInSidebar) {
                 // stay on current page and load help page into sidebar
                 event.preventDefault();
