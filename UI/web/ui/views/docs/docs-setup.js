@@ -329,12 +329,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "ngMango.directive:maTrAriaLabelAriaLabel",
-      "shortName": "maTrAriaLabelAriaLabel",
+      "id": "ngMango.directive:maTrAriaLabel",
+      "shortName": "maTrAriaLabel",
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;button ma-tr-aria-label=&quot;ui.dox.input&quot;&gt;&lt;/button&gt;",
-      "keywords": "api aria-label attribute current directive dox element file input language ma-tr-aria-label matrarialabelarialabel ngmango properties set sets translation translations ui web written"
+      "keywords": "api aria-label attribute current directive dox element file input language ma-tr-aria-label matrarialabel ngmango properties set sets translation translations ui web written"
     },
     {
       "section": "api",
