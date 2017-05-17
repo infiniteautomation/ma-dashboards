@@ -9,7 +9,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc service
-* @name ngMangoServices.DataSource
+* @name ngMangoServices.maDataSource
 *
 * @description
 * Provides a service for getting list of data sources from the Mango system.
@@ -47,7 +47,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DataSource
+* @methodOf ngMangoServices.maDataSource
 * @name DataSource#get
 *
 * @description
@@ -59,7 +59,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DataSource
+* @methodOf ngMangoServices.maDataSource
 * @name DataSource#save
 *
 * @description
@@ -71,7 +71,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DataSource
+* @methodOf ngMangoServices.maDataSource
 * @name DataSource#remove
 *
 * @description
@@ -83,7 +83,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DataSource
+* @methodOf ngMangoServices.maDataSource
 * @name DataSource#delete
 *
 * @description
@@ -96,7 +96,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DataSource
+* @methodOf ngMangoServices.maDataSource
 * @name DataSource#query
 *
 * @description
@@ -109,7 +109,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DataSource
+* @methodOf ngMangoServices.maDataSource
 * @name DataSource#rql
 *
 * @description
@@ -122,7 +122,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DataSource
+* @methodOf ngMangoServices.maDataSource
 * @name DataSource#getById
 *
 * @description
@@ -135,7 +135,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DataSource
+* @methodOf ngMangoServices.maDataSource
 * @name DataSource#objQuery
 *
 * @description

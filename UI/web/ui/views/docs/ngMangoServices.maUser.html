@@ -1,0 +1,81 @@
+<h1><code ng:non-bindable="">maUser</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ngMangoServices</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmangoservices-mauser-page"><p>Provides a service for getting list of users from the Mango system, as well as logging users in and out.</p>
+<ul>
+<li>All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a> objects that can call the following methods available to those objects:<ul>
+<li><code>$save</code></li>
+<li><code>$remove</code></li>
+<li><code>$delete</code></li>
+<li><code>$get</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="usage" id="description_usage">Usage</h3>
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
+ var user = User.login({
+    username: $scope.username,
+    password: $scope.password
+});
+
+User.logout();
+</pre>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete(query)</h3>
+<div class="delete"><div class="user-delete-page"><p>A default action provided by $resource. Makes a http DELETE call to the rest endpoint <code>/rest/v1/users/:username</code></p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-delete-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-delete-page"><p>Returns a user object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_get">get(query)</h3>
+<div class="get"><div class="user-get-page"><p>A default action provided by $resource. Makes a http GET call to the rest endpoint <code>/rest/v1/users/:username</code></p>
+</div><h5 id="methods_get_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-get-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-get-page"><p>Returns a user object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getbyid">getById(query)</h3>
+<div class="getbyid"><div class="user-getbyid-page"><p>Query the REST endpoint <code>/rest/v1/users/by-id/:id</code> with the <code>GET</code> method.</p>
+</div><h5 id="methods_getbyid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-getbyid-page"><p>Object containing a <code>id</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_getbyid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-getbyid-page"><p>Returns a user object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcurrent">getCurrent()</h3>
+<div class="getcurrent"><div class="user-getcurrent-page"><p>Query the REST endpoint <code>/rest/v1/users/current</code> with the <code>GET</code> method to return the currently logged in user.</p>
+</div><h5 id="methods_getcurrent_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-getcurrent-page"><p>Returns a user object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_login">login()</h3>
+<div class="login"><div class="user-login-page"><p>Attempts to login in the user by using <code>GET</code> method at <code>/rest/v2/login/:username</code></p>
+</div><h5 id="methods_login_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-login-page"><p>Returns a user object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_logout">logout()</h3>
+<div class="logout"><div class="user-logout-page"><p>Logout the current user by using <code>GET</code> method at <code>/rest/v2/login/:username</code></p>
+</div><h5 id="methods_logout_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-logout-page"><p>Returns a user object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_remove">remove(query)</h3>
+<div class="remove"><div class="user-remove-page"><p>A default action provided by $resource. Makes a http DELETE call to the rest endpoint <code>/rest/v1/users/:username</code></p>
+</div><h5 id="methods_remove_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-remove-page"><p>Object containing a <code>xid</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_remove_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-remove-page"><p>Returns a user object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_rql">rql(RQL)</h3>
+<div class="rql"><div class="user-rql-page"><p>Passed a string containing RQL for the query and returns an array of user objects.</p>
+</div><h5 id="methods_rql_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>RQL</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="user-rql-page"><p>RQL string for the query</p>
+</div></td></tr></tbody></table><h5 id="methods_rql_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="user-rql-page"><p>An array of user objects. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(query)</h3>
+<div class="save"><div class="user-save-page"><p>A default action provided by $resource. Makes a http POST call to the rest endpoint <code>/rest/v1/users/:username</code></p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>query</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-save-page"><p>Object containing a <code>username</code> property which will be used in the query.</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="user-save-page"><p>Returns a user object. Objects will be of the resource class and have resource actions available to them.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

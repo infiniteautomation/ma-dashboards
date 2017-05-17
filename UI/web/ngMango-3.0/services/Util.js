@@ -7,7 +7,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.Util
+* @name ngMangoServices.maUtil
 *
 * @description
 * Provides  various utility functions that can be used in other directives and services.
@@ -21,7 +21,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name arrayDiff
 *
 * @description
@@ -37,7 +37,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name toMoment
 *
 * @description
@@ -52,7 +52,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name isEmpty
 *
 * @description
@@ -64,7 +64,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name numKeys
 *
 * @description
@@ -77,7 +77,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name cancelAll
 *
 * @description
@@ -88,7 +88,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name openSocket
 *
 * @description
@@ -100,7 +100,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name transformArrayResponse
 *
 * @description
@@ -115,7 +115,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name arrayResponseInterceptor
 *
 * @description
@@ -126,7 +126,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name memoize
 *
 * @description
@@ -137,7 +137,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name uuid
 *
 * @description
@@ -147,7 +147,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Util
+* @methodOf ngMangoServices.maUtil
 * @name rollupIntervalCalculator
 *
 * @description

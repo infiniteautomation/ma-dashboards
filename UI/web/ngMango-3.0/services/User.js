@@ -7,7 +7,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.User
+* @name ngMangoServices.maUser
 *
 * @description
 * Provides a service for getting list of users from the Mango system, as well as logging users in and out.
@@ -33,7 +33,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#get
 *
 * @description
@@ -45,7 +45,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#save
 *
 * @description
@@ -57,7 +57,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#remove
 *
 * @description
@@ -69,7 +69,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#delete
 *
 * @description
@@ -82,7 +82,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#rql
 *
 * @description
@@ -95,7 +95,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#getById
 *
 * @description
@@ -107,7 +107,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#getCurrent
 *
 * @description
@@ -118,7 +118,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#login
 *
 * @description
@@ -129,7 +129,7 @@ User.logout();
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.User
+* @methodOf ngMangoServices.maUser
 * @name User#logout
 *
 * @description

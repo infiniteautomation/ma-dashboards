@@ -1,0 +1,29 @@
+<h1><code ng:non-bindable="">maDuration</code>
+<div><span class="hint">filter in module <code ng:non-bindable="">ngMangoFilters</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmangofilters-filter-page ngmangofilters-filter-maduration-page"><p>Converts an input in milliseconds to a momentJS <a href="http://momentjs.com/docs/#/durations/" target="_blank">duration</a> object that defines a length of time.</p>
+<ul>
+<li>MomentJS duration methods can be called using the filter syntax to call functions: <ul>
+<li><code ng-non-bindable>67223455ms is {{67223455|maDuration:&#39;humanize&#39;}}</code></li>
+</ul>
+</li>
+<li><a ui-sref="ui.examples.basics.filters">View Filters Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><h3 id="usage_in-html-template-binding">In HTML Template Binding</h3>
+<div class="in-html-template-binding"><code ng:non-bindable=""><span>{{</span> maDuration_expression | maDuration:functionName:arg1:arg2:arg3 <span>}}</span></code>
+</div>
+<h3 id="usage_in-javascript">In JavaScript</h3>
+<div class="in-javascript"><code ng:non-bindable="">$filter('maDuration')(ms, functionName, arg1, arg2, arg3)</code>
+</div>
+<h4 id="usage_in-javascript_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ms</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-maduration-page"><p>Milliseconds of duration to be converted to a moment duration object</p>
+</div></td></tr><tr><td>functionName</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-maduration-page"><p>Function name to be called on the moment duration object</p>
+</div></td></tr><tr><td>arg1</td><td><a href="" class="label type-hint type-hint-any">any</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-maduration-page"><p>Argument 1 for the moment duration object function</p>
+</div></td></tr><tr><td>arg2</td><td><a href="" class="label type-hint type-hint-any">any</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-maduration-page"><p>Argument 2 for the moment duration object function</p>
+</div></td></tr><tr><td>arg3</td><td><a href="" class="label type-hint type-hint-any">any</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-maduration-page"><p>Argument 3 for the moment duration object function</p>
+</div></td></tr></tbody></table></div>
+</div>

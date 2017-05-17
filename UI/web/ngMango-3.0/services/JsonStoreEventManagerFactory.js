@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.JsonStoreEventManager
+* @name ngMangoServices.maJsonStoreEventManager
 *
 * @description
 * Provides an <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> factory pointing to the json-data websocket endpoint at `'/rest/v1/websocket/json-data'`

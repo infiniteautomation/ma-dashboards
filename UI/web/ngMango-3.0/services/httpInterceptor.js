@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.mangoHttpInterceptor
+* @name ngMangoServices.maHttpInterceptor
 *
 * @description
 * Factory provides intercepting of HTTP messages.

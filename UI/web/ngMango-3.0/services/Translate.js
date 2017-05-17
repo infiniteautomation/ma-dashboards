@@ -7,7 +7,7 @@ define(['require', 'angular', 'globalize', 'globalize/message', 'cldr/unresolved
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.Translate
+* @name ngMangoServices.maTranslate
 *
 * @description
 * `Translate` service provides internationalization support.
@@ -21,7 +21,7 @@ define(['require', 'angular', 'globalize', 'globalize/message', 'cldr/unresolved
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Translate
+* @methodOf ngMangoServices.maTranslate
 * @name tr
 *
 * @description
@@ -33,7 +33,7 @@ define(['require', 'angular', 'globalize', 'globalize/message', 'cldr/unresolved
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Translate
+* @methodOf ngMangoServices.maTranslate
 * @name trSync
 *
 * @description
@@ -45,7 +45,7 @@ define(['require', 'angular', 'globalize', 'globalize/message', 'cldr/unresolved
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Translate
+* @methodOf ngMangoServices.maTranslate
 * @name loadNamespaces
 *
 * @description

@@ -7,7 +7,7 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.UserNotes
+* @name ngMangoServices.maUserNotes
 *
 * @description
 * Provides a service for retrieving and adding user notes
@@ -20,7 +20,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.UserNotes
+* @methodOf ngMangoServices.maUserNotes
 * @name UserNotes#get
 *
 * @description
@@ -31,7 +31,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.UserNotes
+* @methodOf ngMangoServices.maUserNotes
 * @name UserNotes#save
 *
 * @description
@@ -42,7 +42,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.UserNotes
+* @methodOf ngMangoServices.maUserNotes
 * @name UserNotes#remove
 *
 * @description
@@ -53,7 +53,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.UserNotes
+* @methodOf ngMangoServices.maUserNotes
 * @name UserNotes#delete
 *
 * @description
@@ -66,7 +66,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.UserNotes
+* @methodOf ngMangoServices.maUserNotes
 * @name UserNotes#query
 *
 * @description

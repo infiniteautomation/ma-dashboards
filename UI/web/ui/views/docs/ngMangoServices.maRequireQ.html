@@ -1,0 +1,32 @@
+<h1><code ng:non-bindable="">maRequireQ</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ngMangoServices</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmangoservices-marequireq-page"><p>The <code>rQ</code> service provides asynchronous loading of components via requireJS.</p>
+<h3 id="example-usage-in-login-state-definition" id="description_example-usage-in-login-state-definition">Example Usage in Login State Definition</h3>
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
+
+    name: 'login',
+    url: '/login',
+    templateUrl: 'views/login.html',
+    menuHidden: true,
+    menuIcon: 'fa-sign-in',
+    menuTr: 'header.login',
+    resolve: {
+        deps: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            return maRequireQ(['./directives/login/login'], function(login) {
+                angular.module('login', [])
+                    .directive('login', login);
+                $ocLazyLoad.inject('login');
+            });
+        }],
+        loginTranslations: ['maTranslate', function(Translate) {
+            return Translate.loadNamespaces('login');
+        }]
+    }
+}
+</pre>
+</div></div>
+</div>

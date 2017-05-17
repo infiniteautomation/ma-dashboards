@@ -7,7 +7,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.PointHierarchy
+* @name ngMangoServices.maPointHierarchy
 *
 * @description
 * Provides service for getting point hierarchy
@@ -28,7 +28,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.PointHierarchy
+* @methodOf ngMangoServices.maPointHierarchy
 * @name PointHierarchy#get
 *
 * @description
@@ -40,7 +40,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.PointHierarchy
+* @methodOf ngMangoServices.maPointHierarchy
 * @name PointHierarchy#save
 *
 * @description
@@ -52,7 +52,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.PointHierarchy
+* @methodOf ngMangoServices.maPointHierarchy
 * @name PointHierarchy#remove
 *
 * @description
@@ -64,7 +64,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.PointHierarchy
+* @methodOf ngMangoServices.maPointHierarchy
 * @name PointHierarchy#delete
 *
 * @description
@@ -76,7 +76,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.PointHierarchy
+* @methodOf ngMangoServices.maPointHierarchy
 * @name getRoot
 *
 * @description
@@ -87,7 +87,7 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.PointHierarchy
+* @methodOf ngMangoServices.maPointHierarchy
 * @name byPath
 *
 * @description
@@ -103,7 +103,7 @@ By default this is set to `true` and all descendant points are given, even those
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.PointHierarchy
+* @methodOf ngMangoServices.maPointHierarchy
 * @name byName
 *
 * @description

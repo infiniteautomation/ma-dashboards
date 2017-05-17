@@ -1,0 +1,31 @@
+<h1><code ng:non-bindable="">maMoment</code>
+<div><span class="hint">filter in module <code ng:non-bindable="">ngMangoFilters</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmangofilters-filter-page ngmangofilters-filter-mamoment-page"><p>Converts a timetamp to a <a href="http://momentjs.com/" target="_blank">momentJS</a> object that can be
+formatted and manipulated.</p>
+<ul>
+<li>Moment methods can be called using the filter syntax to call functions: <ul>
+<li><code ng-non-bindable>Three days from now is {{&#39;now&#39; | maMoment:&#39;add&#39;:3:&#39;days&#39; | maMoment:&#39;format&#39;:&#39;LLL&#39;}}</code></li>
+<li><code ng-non-bindable>{{myPoint.time | maMoment:&#39;format&#39;:&#39;ll LTS&#39;}}</code></li>
+</ul>
+</li>
+<li><a ui-sref="ui.examples.basics.filters">View Filters Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><h3 id="usage_in-html-template-binding">In HTML Template Binding</h3>
+<div class="in-html-template-binding"><code ng:non-bindable=""><span>{{</span> maMoment_expression | maMoment:functionName:arg1:arg2:arg3 <span>}}</span></code>
+</div>
+<h3 id="usage_in-javascript">In JavaScript</h3>
+<div class="in-javascript"><code ng:non-bindable="">$filter('maMoment')(date, functionName, arg1, arg2, arg3)</code>
+</div>
+<h4 id="usage_in-javascript_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>date</td><td><a href="" class="label type-hint type-hint-string">string</a><a href="" class="label type-hint type-hint-date">date</a><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-mamoment-page"><p>to be converted to a moment object</p>
+</div></td></tr><tr><td>functionName</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-mamoment-page"><p>Function name to be called on the moment object</p>
+</div></td></tr><tr><td>arg1</td><td><a href="" class="label type-hint type-hint-any">any</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-mamoment-page"><p>Argument 1 for the moment object function</p>
+</div></td></tr><tr><td>arg2</td><td><a href="" class="label type-hint type-hint-any">any</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-mamoment-page"><p>Argument 2 for the moment object function</p>
+</div></td></tr><tr><td>arg3</td><td><a href="" class="label type-hint type-hint-any">any</a></td><td><div class="ngmangofilters-filter-page ngmangofilters-filter-mamoment-page"><p>Argument 3 for the moment object function</p>
+</div></td></tr></tbody></table></div>
+</div>

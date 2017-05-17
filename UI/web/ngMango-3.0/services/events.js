@@ -7,7 +7,7 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.Events
+* @name ngMangoServices.maEvents
 *
 * @description
 * Provides a service for retrieving, adding, and acknowledging events/alarms
@@ -19,7 +19,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#get
 *
 * @description
@@ -30,7 +30,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#save
 *
 * @description
@@ -41,7 +41,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#remove
 *
 * @description
@@ -52,7 +52,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#delete
 *
 * @description
@@ -64,7 +64,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#query
 *
 * @description
@@ -77,7 +77,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#objQuery
 *
 * @description
@@ -89,7 +89,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#getActiveSummary
 *
 * @description
@@ -101,7 +101,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#acknowledge
 *
 * @description
@@ -113,7 +113,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.Events
+* @methodOf ngMangoServices.maEvents
 * @name Events#acknowledgeViaRql
 *
 * @description

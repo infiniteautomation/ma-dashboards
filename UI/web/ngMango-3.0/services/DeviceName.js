@@ -7,7 +7,7 @@ define(['angular'], function(angular) {
 'use strict';
 /**
 * @ngdoc service
-* @name ngMangoServices.DeviceName
+* @name ngMangoServices.maDeviceName
 *
 * @description
 * Provides a service for getting list of device names from the Mango system.
@@ -40,7 +40,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DeviceName
+* @methodOf ngMangoServices.maDeviceName
 * @name DeviceName#get
 *
 * @description
@@ -52,7 +52,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DeviceName
+* @methodOf ngMangoServices.maDeviceName
 * @name DeviceName#save
 *
 * @description
@@ -64,7 +64,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DeviceName
+* @methodOf ngMangoServices.maDeviceName
 * @name DeviceName#remove
 *
 * @description
@@ -76,7 +76,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DeviceName
+* @methodOf ngMangoServices.maDeviceName
 * @name DeviceName#delete
 *
 * @description
@@ -89,7 +89,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DeviceName
+* @methodOf ngMangoServices.maDeviceName
 * @name DeviceName#query
 *
 * @description
@@ -102,7 +102,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DeviceName
+* @methodOf ngMangoServices.maDeviceName
 * @name DeviceName#byDataSourceId
 *
 * @description
@@ -116,7 +116,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.DeviceName
+* @methodOf ngMangoServices.maDeviceName
 * @name DeviceName#byDataSourceXid
 *
 * @description

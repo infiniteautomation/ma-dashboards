@@ -1,0 +1,60 @@
+<h1><code ng:non-bindable="">maPointValues</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">ngMango</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p><code>&lt;ma-point-values point=&quot;point1&quot; values=&quot;point1Values&quot; from=&quot;from&quot; to=&quot;to&quot; rollup=&quot;AVERAGE&quot; rollup-interval=&quot;1 minutes&quot;&gt;
+&lt;/ma-point-values&gt;</code></p>
+<ul>
+<li>The <code>&lt;ma-point-values&gt;</code> directive returns an array of historical values on a data point to its <code>values</code> attribute.</li>
+<li><code>&lt;ma-point-values&gt;</code> is passed a <code>to</code> &amp; <code>from</code> values from a date picker.</li>
+<li>Additionally, <code>rollup</code> &amp; <code>rollup-interval</code> can be used to average the data</li>
+<li>You can use the <code>point-xid</code> property or pass in a point from <code>&lt;ma-point-list&gt;</code>.</li>
+<li><a ui-sref="ui.examples.basics.pointValues">View <strong>to/from</strong> Demo</a> / <a ui-sref="ui.examples.basics.latestPointValues">View <strong>latest values</strong> Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes"&gt;
+&lt;/ma-point-values&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Inputs a <code>point</code> object from <code>&lt;ma-point-list&gt;</code></p>
+</div></td></tr><tr><td>points <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Alternatively you can input an array of points from <code>&lt;ma-point-query&gt;</code></p>
+</div></td></tr><tr><td>point-xid <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Alternatively you can pass in the <code>xid</code> of a point to use.</p>
+</div></td></tr><tr><td>values</td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Outputs the array of historical point values.</p>
+</div></td></tr><tr><td>from</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>The starting time to query the point values over a time period.</p>
+</div></td></tr><tr><td>to</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>The ending time to query the point values over a time period.</p>
+</div></td></tr><tr><td>latest <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Rather then <code>to/from</code> you can choose to use this property with the latest <code>X</code> number of values.</p>
+</div></td></tr><tr><td>realtime <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Used with the <code>latest</code> attribute, if set to <code>true</code> the latest <code>X</code> number of values will update as new values are pushed to a data point.</p>
+</div></td></tr><tr><td>rollup <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>The statistical operation to apply to the values over the given <code>rollup-interval</code>. This will effect the outputted <code>values</code>. Rollup possibilities are:</p>
+<ul>
+    <li>POINT_DEFAULT</li>
+    <li>NONE</li>
+    <li>AVERAGE</li>
+    <li>DELTA</li>
+    <li>MINIMUM</li>
+    <li>MAXIMUM</li>
+    <li>ACCUMULATOR</li>
+    <li>SUM</li>
+    <li>FIRST</li>
+    <li>LAST</li>
+    <li>COUNT</li>
+    <li>INTEGRAL</li>
+</ul>
+</div></td></tr><tr><td>rollup-interval <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>The interval used with the rollup. Format the interval duration as a string starting with a number followed by one of these units:</p>
+<ul>
+    <li>years</li>
+    <li>months</li>
+    <li>weeks</li>
+    <li>days</li>
+    <li>hours</li>
+    <li>minutes</li>
+    <li>seconds</li>
+    <li>milliseconds</li>
+</ul>
+</div></td></tr><tr><td>rendered <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If set to <code>true</code> the values will be outputted in the points text rendered value format.</p>
+</div></td></tr><tr><td>date-format <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If you are passing in <code>to/from</code> as strings, then you must specify the moment.js format for parsing the values.</p>
+</div></td></tr><tr><td>timeout <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If provided you can set the timeout (in milliseconds) on the querying of point values. If not supplied the Mango system default timeout will be used.</p>
+</div></td></tr><tr><td>auto-rollup-interval <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If set to <code>true</code> the rollup interval will automatically be set based on the to-from duration and rollup type.
+<code>DELTA</code> rollup type will have a more chunked rollup interval. If turned on the manually set <code>rollup-interval</code> value will be ignored (defaults to <code>false</code>).</p>
+</div></td></tr></tbody></table></div>
+</div>

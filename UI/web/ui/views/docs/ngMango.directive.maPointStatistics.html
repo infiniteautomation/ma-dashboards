@@ -1,0 +1,45 @@
+<h1><code ng:non-bindable="">maPointStatistics</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">ngMango</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p><code>&lt;ma-point-statistics point=&quot;myPoint&quot; from=&quot;from&quot; to=&quot;to&quot; statistics=&quot;statsObj&quot;&gt;&lt;/ma-point-statistics&gt;</code></p>
+<ul>
+<li>The <code>&lt;ma-point-statistics&gt;</code> directive provides access to historical stats over a time range on a data point.</li>
+<li>The object returned by the <code>statistics</code> attribute contains <code>first</code>, <code>last</code>, <code>minimum</code>, <code>maximum</code>, <code>average</code>, <code>integral</code>, <code>sum</code>, &amp; <code>count</code> properties.
+Each of these will have a <code>value</code> and a <code>timestamp</code>.</li>
+<li>If you are interested only in the change in a value between two times you can add the optional <code>first-last=&quot;true&quot;</code> attribute to only return the first and last values,
+then simply calculate the difference with <code>{{ statsObj.last.value - statsObj.first.value }}</code>.</li>
+<li><a ui-sref="ui.examples.statistics.getStatistics">View Demo</a></li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"&gt;
+&lt;/ma-point-statistics&gt;
+The average for the period is <span>{{</span> statsObj.average.value <span>}}</span> at <span>{{</span> statsObj.average.timestamp | maMoment:'format':'lll' <span>}}</span></pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Inputs a <code>point</code> object from <code>&lt;ma-point-list&gt;</code>.</p>
+</div></td></tr><tr><td>from</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Sets the starting time for the time range which is used in the statistical query.</p>
+</div></td></tr><tr><td>to</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Sets the ending time for the time range which is used in the statistical query.</p>
+</div></td></tr><tr><td>statistics</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Outputs the object containg the statistcal information. The object will contain the following properties:</p>
+<p><ul>
+   <li><code>first</code></li>
+   <li><code>last</code></li>
+   <li><code>minimum</code></li>
+   <li><code>maximum</code></li>
+   <li><code>average</code></li>
+   <li><code>integral</code></li>
+   <li><code>sum</code></li>
+   <li><code>count</code></li>
+</ul>
+Each of these will have a value and a timestamp.</p>
+</div></td></tr><tr><td>first-last <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>If you are only interested in calculating the delta value, setting this to <code>true</code> will
+run a more efficient query and only return <code>first</code> and <code>last</code> properties on the <code>statistics</code> object.</p>
+</div></td></tr><tr><td>points <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Alternatively you can input an array of points from <code>&lt;ma-point-query&gt;</code>. If used the <code>statistics</code> object will output an array.</p>
+</div></td></tr><tr><td>point-xid <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Alternatively you can pass in the <code>xid</code> of a point to use.</p>
+</div></td></tr><tr><td>date-format <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>If you are passing in <code>to/from</code> as strings, then you must specify the moment.js format for parsing the values.</p>
+</div></td></tr><tr><td>timeout <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>If provided you can set the timeout (in milliseconds) on the querying of of the statistical provider.
+If not supplied the Mango system default timeout will be used.</p>
+</div></td></tr><tr><td>rendered <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>(default true) Return the statistics as a rendered value rather than a number</p>
+</div></td></tr></tbody></table></div>
+</div>

@@ -1,0 +1,42 @@
+<h1><code ng:non-bindable="">maWatchdog</code>
+<div><span class="hint">service in module <code ng:non-bindable="">ngMangoServices</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="ngmangoservices-mawatchdog-page"><p>The mangoWatchdog service checks for connectivity to the Mango API and checks if a user is logged in. It does this by
+periodically pinging an API endpoint.</p>
+<p>The watchdog service broadcasts an event named &#39;maWatchdog&#39; on the root scope which provides information about
+the current status of Mango.</p>
+<p>The watchdog service check interval is set by defining the &#39;MA_WATCHDOG_TIMEOUT&#39; constant and when Mango is down
+the service will try and reconnect every &#39;MA_RECONNECT_DELAY&#39; milliseconds.</p>
+<ul>
+<li><a ui-sref="ui.examples.utilities.watchdog">View Demo</a></li>
+</ul>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_disable">disable()</h3>
+<div class="disable"><div class="disable-page"><p>Disables the watchdog service.</p>
+</div></div>
+</li>
+<li><h3 id="methods_enable">enable()</h3>
+<div class="enable"><div class="enable-page"><p>Enables the watchdog service.</p>
+</div></div>
+</li>
+</ul>
+</div>
+<div class="member event"><h2 id="events">Events</h2>
+<ul class="events"><li><h3 id="events_mangowatchdog">mangoWatchdog</h3>
+<div class="mangowatchdog"><div class="mangowatchdog-mangowatchdog-page"><p>Broadcast periodically, indicates the current status of Mango.</p>
+</div><div class="inline"><h4 id="events_mangowatchdog_type">Type:</h4>
+<div class="type">broadcast</div>
+</div>
+<div class="inline"></div>
+<h5 id="events_mangowatchdog_type_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>angularEvent</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="mangowatchdog-mangowatchdog-page"><p>Synthetic event object</p>
+</div></td></tr><tr><td>current</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="mangowatchdog-mangowatchdog-page"><p>mango status</p>
+</div></td></tr><tr><td>previous</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="mangowatchdog-mangowatchdog-page"><p>mango status</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>

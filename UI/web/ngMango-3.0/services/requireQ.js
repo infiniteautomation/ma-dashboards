@@ -8,7 +8,7 @@ define([], function() {
 
 /**
 * @ngdoc service
-* @name ngMangoServices.rQ
+* @name ngMangoServices.maRequireQ
 *
 * @description
 * The `rQ` service provides asynchronous loading of components via requireJS.

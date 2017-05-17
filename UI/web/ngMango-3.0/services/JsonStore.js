@@ -8,7 +8,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc service
-* @name ngMangoServices.JsonStore
+* @name ngMangoServices.maJsonStore
 *
 * @description
 * Provides a service for reading and writing to the JsonStore within the Mango Database.
@@ -41,7 +41,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.JsonStore
+* @methodOf ngMangoServices.maJsonStore
 * @name JsonStore#get
 *
 * @description
@@ -57,7 +57,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.JsonStore
+* @methodOf ngMangoServices.maJsonStore
 * @name JsonStore#save
 *
 * @description
@@ -73,7 +73,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.JsonStore
+* @methodOf ngMangoServices.maJsonStore
 * @name JsonStore#remove
 *
 * @description
@@ -89,7 +89,7 @@ define(['angular'], function(angular) {
 
 /**
 * @ngdoc method
-* @methodOf ngMangoServices.JsonStore
+* @methodOf ngMangoServices.maJsonStore
 * @name JsonStore#delete
 *
 * @description
