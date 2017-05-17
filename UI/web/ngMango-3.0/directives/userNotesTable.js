@@ -7,7 +7,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maUserNotesTable
+ * @name ngMango.directive:maUserNotesTable
  * @restrict E
  * @description
  * `<ma-user-notes-table></ma-user-notes-table>`

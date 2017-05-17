@@ -7,7 +7,14 @@ define(['moment-timezone'], function(moment) {
 'use strict';
 /**
  * @ngdoc filter
- * @name ngMangoFilters.duration
+ * @name ngMangoFilters.filter:maDuration
+ * @function
+ * @param {number} ms Milliseconds of duration to be converted to a moment duration object
+ * @param {string} functionName Function name to be called on the moment duration object
+ * @param {any} arg1 Argument 1 for the moment duration object function
+ * @param {any} arg2 Argument 2 for the moment duration object function
+ * @param {any} arg3 Argument 3 for the moment duration object function
+ *
  *
  * @description
  * Converts an input in milliseconds to a momentJS <a href="http://momentjs.com/docs/#/durations/" target="_blank">duration</a> object that defines a length of time.

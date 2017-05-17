@@ -7,7 +7,7 @@ define(['amcharts/gantt', 'angular', 'moment'], function(AmCharts, angular, mome
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maStateChart
+ * @name ngMango.directive:maStateChart
  * @restrict E
  * @description
  * `<ma-state-chart>

@@ -673,8 +673,15 @@ ma-ui-iframe-view iframe {
 
 /* API DOCS */
 
-h2#description, span.hint, #usage_parameters, ul.methods h5 {
+h2#description, #usage_parameters, ul.methods h5 {
 	display: none;
+}
+
+h1 > div {
+	display: inline;
+}
+h1 span.hint {
+	font-size: 1.8rem;
 }
 
 ul.methods h5[id*="returns"],

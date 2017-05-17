@@ -7,7 +7,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maPointStatistics
+ * @name ngMango.directive:maPointStatistics
  * @restrict E
  * @description
  * `<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>`

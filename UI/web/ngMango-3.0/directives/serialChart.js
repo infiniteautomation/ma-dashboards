@@ -7,7 +7,7 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maSerialChart
+ * @name ngMango.directive:maSerialChart
  * @restrict E
  * @description
  * `<ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" default-type="column">

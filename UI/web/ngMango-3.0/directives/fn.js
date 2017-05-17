@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maFn
+ * @name ngMango.directive:maFn
  *
  * @description
  * `<ma-fn expression="" fn="myFunction" ready="" arg-names=""></ma-fn>`

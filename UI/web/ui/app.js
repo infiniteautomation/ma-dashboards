@@ -240,18 +240,35 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
 
     // Add each component item
     components.forEach(function(item, index, array) {
-        var splitAtDot = item.split('.');
-        var dashCaseUrl = splitAtDot[1].replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
-		if(dashCaseUrl.charAt(0) === '-') { dashCaseUrl = dashCaseUrl.slice(1);}
-        var menuText = splitAtDot[1];
-        if (splitAtDot[0] === 'ngMango') { menuText = dashCaseUrl;}
-        var menuItem = {
-            name: 'ui.docs.' + item,
-            templateUrl: require.toUrl('./views/docs/' + item + '.html'),
-            url: '/' + dashCaseUrl,
-            menuText: menuText
-        };
-        apiDocsMenuItems.push(menuItem);
+        var matches = /^(.+?)\.(.+?)(?::(.+?))?$/.exec(item);
+        if (matches) {
+            var moduleName = matches[1];
+            var serviceName = matches[2];
+            var directiveName;
+            if (matches.length > 3)
+                directiveName = matches[3];
+            
+            var name = directiveName || serviceName;
+            
+            var dashCaseUrl = name.replace(/[A-Z]/g, function(c) {
+                return '-' + c.toLowerCase();
+            });
+            
+            while (dashCaseUrl.charAt(0) === '-') {
+                dashCaseUrl = dashCaseUrl.slice(1);
+            }
+
+            var templateUrl = moduleName + '.' + serviceName;
+            if (directiveName) templateUrl += '.' + directiveName;
+            
+            var menuItem = {
+                name: 'ui.docs.' + moduleName + '.' + name,
+                templateUrl: require.toUrl('./views/docs/' + templateUrl + '.html'),
+                url: '/' + dashCaseUrl,
+                menuText: name
+            };
+            apiDocsMenuItems.push(menuItem);
+        }
     });
     
     MenuProvider.registerMenuItems(apiDocsMenuItems);

@@ -51,29 +51,19 @@ gulp.task('build-ngdocs', [], function() {
 
     var options = {
         title: "Mango UI 3.x Documentation",
-        startPage: "/",
-        html5Mode: false,
-        loadDefaults: {
-            angular: false,
-            angularAnimate: false
-        },
-        scripts: [
-            '../..//modules/mangoUI/web/vendor/angular/angular.js',
-            '../..//modules/mangoUI/web/vendor/angular-animate/angular-animate.js'
-        ]
-    }
-
+        html5Mode: false
+    };
     
     return gulp.src('web/ngMango-3.0/**/*.js')
         .pipe(gulpDocs.process(options))
-        .pipe(gulp.dest('docs/ngMango-3.0'));
+        .pipe(gulp.dest('web/ngDocs/ngMango-3.0'));
 });
 
 gulp.task('copy-docs', ['build-ngdocs'], function() {
 
     console.log('Copying Doc Partials');
     
-    return gulp.src(['docs/ngMango-3.0/partials/api/*.html','docs/ngMango-3.0/js/docs-setup.js'])
+    return gulp.src(['web/ngDocs/ngMango-3.0/partials/api/*.html','web/ngDocs/ngMango-3.0/js/docs-setup.js'])
         .pipe(gulp.dest('web/ui/views/docs'));
 });
 

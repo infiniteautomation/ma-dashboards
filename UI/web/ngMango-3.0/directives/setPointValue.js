@@ -7,7 +7,7 @@ define(['require', 'angular', './PointValueController'], function(require, angul
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maSetPointValue
+ * @name ngMango.directive:maSetPointValue
  * @restrict E
  * @description
  * `<ma-set-point-value point="myPoint"></ma-set-point-value>`

@@ -7,7 +7,7 @@ define(['moment-timezone'], function(moment) {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maNow
+ * @name ngMango.directive:maNow
  * @restrict E
  * @description
  * `<ma-now update-interval="1 SECONDS" output="time"></ma-now>`

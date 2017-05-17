@@ -7,7 +7,7 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
  /**
   * @ngdoc directive
-  * @name ngMango.maMap
+  * @name ngMango.directive:maMap
   * @restrict E
   * @description
   * `<ma-map zoom="10" map-type="roadmap" center="-12.95, -38.45" desktop-height="950px" mobile-height="450px"></ma-map>`

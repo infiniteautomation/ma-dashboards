@@ -7,7 +7,7 @@ define(['require', 'moment-timezone', './PointValueController'], function(requir
 'use strict';
 /**
  * @ngdoc directive 
- * @name ngMango.maPointValue
+ * @name ngMango.directive:maPointValue
  *
  * @description
  * `<ma-point-value point="myPoint"></ma-point-value>`

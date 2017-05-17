@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maDataSourceQuery
+ * @name ngMango.directive:maDataSourceQuery
  * @restrict E
  * @description
  * `<ma-data-source-query data-sources="dataSourcesArray" query="{name: 'meter'}" limit="100"></ma-data-source-query>`

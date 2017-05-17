@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maGetPointValue
+ * @name ngMango.directive:maGetPointValue
  *
  * @description
  * `<ma-get-point-value point="myPoint"></ma-get-point-value>`

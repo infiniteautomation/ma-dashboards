@@ -7,7 +7,7 @@ define(['amcharts/gauge', 'jquery', 'moment-timezone'], function(AmCharts, $, mo
 'use strict';
  /**
   * @ngdoc directive
-  * @name ngMango.maClock
+  * @name ngMango.directive:maClock
   * @restrict E
   * @description
   * `<ma-clock time="" timezone="" text=""></ma-clock>`

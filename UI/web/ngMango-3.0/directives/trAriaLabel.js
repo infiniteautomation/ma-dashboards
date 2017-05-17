@@ -7,7 +7,7 @@ define(['jquery', 'angular'], function($, angular) {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maTrAriaLabelAriaLabel
+ * @name ngMango.directive:maTrAriaLabelAriaLabel
  * @restrict A
  * @description
  * `<button ma-tr-aria-label="ui.dox.input"></button>`

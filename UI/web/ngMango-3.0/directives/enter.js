@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maEnter
+ * @name ngMango.directive:maEnter
  * @restrict A
  * @description
  * `<input ma-enter="runFunction()">`

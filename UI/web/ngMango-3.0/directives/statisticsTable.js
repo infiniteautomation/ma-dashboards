@@ -7,7 +7,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maStatisticsTable
+ * @name ngMango.directive:maStatisticsTable
  * @restrict E
  * @description
  * `<ma-statistics-table statistics="statsObj"></ma-statistics-table>`

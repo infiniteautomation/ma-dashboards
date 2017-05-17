@@ -7,7 +7,7 @@ define(['angular', 'moment'], function(angular, moment) {
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maDatePicker
+ * @name ngMango.directive:maDatePicker
  *
  * @description
  * `<ma-date-picker ng-model="time"></ma-date-picker>`

@@ -7,7 +7,7 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
 'use strict';
 /**
  * @ngdoc directive
- * @name ngMango.maPointValues
+ * @name ngMango.directive:maPointValues
  *
  * @description
  * `<ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">

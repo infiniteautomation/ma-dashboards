@@ -6,7 +6,7 @@
 
  /**
   * @ngdoc directive
-  * @name ngMango.maWatchListChart
+  * @name ngMango.directive:maWatchListChart
   * @restrict E
   * @description
   * `<ma-watch-list-chart></ma-watch-list-chart>`

@@ -7,7 +7,7 @@ define([], function() {
 'use strict';
 /**
  * @ngdoc directive 
- * @name ngMango.maPointQuery
+ * @name ngMango.directive:maPointQuery
  * @restrict E
  * @description
  * `<ma-point-query query="{$and: true, deviceName:dvName, name:ptName}" limit="5" points="points"></ma-point-query>`
