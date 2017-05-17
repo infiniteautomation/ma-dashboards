@@ -983,6 +983,12 @@ md-radio-group md-radio-button {
   margin-top: 8px;
 }
 
+/* this used to be included in material-icons.css */
+md-icon {
+  width: 1em;
+  height: 1em;
+}
+
 /* AmCharts styles */
 
 .amcharts-gauge-axis, .amcharts-value-axis, .amcharts-category-axis {
