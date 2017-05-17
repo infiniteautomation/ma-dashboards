@@ -56,14 +56,14 @@ gulp.task('build-ngdocs', [], function() {
     
     return gulp.src('web/ngMango-3.0/**/*.js')
         .pipe(gulpDocs.process(options))
-        .pipe(gulp.dest('web/ngDocs/ngMango-3.0'));
+        .pipe(gulp.dest('docs/ngMango-3.0'));
 });
 
 gulp.task('copy-docs', ['build-ngdocs'], function() {
 
     console.log('Copying Doc Partials');
     
-    return gulp.src(['web/ngDocs/ngMango-3.0/partials/api/*.html','web/ngDocs/ngMango-3.0/js/docs-setup.js'])
+    return gulp.src(['docs/ngMango-3.0/partials/api/*.html','docs/ngMango-3.0/js/docs-setup.js'])
         .pipe(gulp.dest('web/ui/views/docs'));
 });
 
