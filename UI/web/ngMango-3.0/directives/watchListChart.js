@@ -131,7 +131,8 @@ WatchListChartController.prototype.buildOptions = function() {
         this.chartOptions.valueAxes.push({
             axisColor: axis.color || '',
             color: axis.color || '',
-            stackType: axis.stackType || 'none'
+            stackType: axis.stackType || 'none',
+            title: axis.title || ''
         });
     }.bind(this));
 };

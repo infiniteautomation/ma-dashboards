@@ -97,6 +97,11 @@
         <div ng-if="$ctrl.chartOptions.configAxes" ng-repeat="axis in $ctrl.axisOptions track by axis.name" layout layout-align="start center" layout-wrap>
             <strong flex="100" flex-gt-xs="30" flex-gt-md="15" ma-tr="{{axis.translation}}"></strong>
             
+            <md-input-container flex>
+                <label ma-tr="ui.app.axisTitle"></label>
+                <input ma-empty-input="undefined" ng-model="$ctrl.chartConfig.valueAxes[axis.name].title" ng-model-options="{debounce: 1000}" ng-change="$ctrl.rebuildChart()">
+            </md-input-container>
+            
             <div class="ma-color-picker-preview"
                 ng-click="$ctrl.chooseAxisColor($event, axis.name)" role="button" tabindex="-1">
               <div class="ma-color-picker-result" ng-style="{'background-color': $ctrl.chartConfig.valueAxes[axis.name].color}"></div>
@@ -106,7 +111,7 @@
                 <label ma-tr="ui.app.axisColor"></label>
                 <input ma-empty-input="undefined" ng-model="$ctrl.chartConfig.valueAxes[axis.name].color" ng-model-options="{debounce: 1000}" ng-change="$ctrl.rebuildChart()">
             </md-input-container>
-            
+
             <md-input-container flex>
                 <label ma-tr="ui.app.stackType"></label>
                 <md-select ma-empty-input="undefined" ng-model="$ctrl.chartConfig.valueAxes[axis.name].stackType" ng-change="$ctrl.rebuildChart()">
