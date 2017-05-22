@@ -389,7 +389,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                 balloonFunction: function(dataItem, graph) {
                     var valueForBalloon = dataItemToText(dataItem);
                     if ($scope.annotateMode) {
-                        return dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] ? dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] + ' - ' + valueForBalloon : valueForBalloon;
+                        return dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] ? dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] : valueForBalloon;
                     } else {
                         return valueForBalloon;
                     }
