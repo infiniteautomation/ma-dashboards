@@ -160,6 +160,9 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                 graphBulletSize: 2,
                 zoomable: false
             };
+            options.balloon = {
+                fillAlpha: 1
+            };
         }
 
         var valueArray = !!attrs.values;
