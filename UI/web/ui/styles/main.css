@@ -1031,6 +1031,10 @@ md-icon {
     stroke: inherit;
 }
 
+.amchart:not(.amcharts-custom-color) .amcharts-graph-label {
+	fill: currentColor;
+}
+
 .amcharts-category-axis .amcharts-axis-tick, .amcharts-category-axis .amcharts-axis-tick-minor, 
 .amcharts-category-axis .amcharts-axis-line, .amcharts-category-axis .amcharts-axis-label, 
 .amcharts-axis-grid,

@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/gantt', 'angular', 'moment'], function(AmCharts, angular, moment) {
+define(['amcharts/gantt', 'angular', 'moment-timezone', 'jquery'], function(AmCharts, angular, moment, $) {
 'use strict';
 /**
  * @ngdoc directive
@@ -28,12 +28,12 @@ define(['amcharts/gantt', 'angular', 'moment'], function(AmCharts, angular, mome
  *
  */
  
-stateChart.$inject = ['MA_DATE_FORMATS', 'MA_INSERT_CSS', 'maCssInjector'];
-function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector) {
+stateChart.$inject = ['MA_DATE_FORMATS', 'MA_INSERT_CSS', 'maCssInjector', 'MA_AMCHARTS_DATE_FORMATS'];
+function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector, MA_AMCHARTS_DATE_FORMATS) {
 	var MAX_SERIES = 10;
 	var scope = {
 		options: '=?',
-		endDate: '@'
+		endDate: '<?'
 	};
 	for (var j = 1; j <= MAX_SERIES; j++) {
 		scope['series' + j + 'Values'] = '=';
@@ -65,7 +65,7 @@ function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector) {
     
     function postLink($scope, $element, attributes) {
         var options = defaultOptions();
-        options = angular.extend(options, $scope.options);
+        options = $.extend(true, options, $scope.options);
         var chart = AmCharts.makeChart($element[0], options);
         
         for (var i = 1; i <= MAX_SERIES; i++) {
@@ -148,9 +148,7 @@ function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector) {
                 
                 if (graph && values) {
                     var provider = [];
-                    
-                    var prevStartOfDay = 0;
-                    
+
                     for (var j = 0; j < values.length; j++) {
                         var val = values[j];
                         var label = labelFn(val.value);
@@ -163,11 +161,7 @@ function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector) {
                         var endTime = (j+1) < values.length ? values[j+1].timestamp : endDate.valueOf();
                         var duration = endTime - val.timestamp;
                         var startMoment = moment(val.timestamp);
-                        var startOfDay = moment(val.timestamp).startOf('day').valueOf();
-                        var startFormatted = startOfDay === prevStartOfDay ?
-                                startMoment.format(mangoDateFormats.timeSeconds) :
-                                startMoment.format(mangoDateFormats.dateTimeSeconds);
-                        prevStartOfDay = startOfDay;
+                        var startFormatted = startMoment.format(MA_AMCHARTS_DATE_FORMATS.categoryBalloon);
                         
                         provider.push({
                             startDate: new Date(val.timestamp),
@@ -196,40 +190,49 @@ function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector) {
             return colour;
         }
     }
-}
 
-function defaultOptions() {
-    return {
-        type: "gantt",
-        theme: "light",
-        columnWidth: 0.7,
-        valueAxis: {
-            type: "date"
-        },
-        graph: {
-            fillAlphas: 1,
-            balloonText: "<b>[[task]]</b>: [[startFormatted]], [[duration]]"
-        },
-        rotate: true,
-        categoryField: "category",
-        segmentsField: "segments",
-        colorField: "colour",
-        startDateField: "startDate",
-        endDateField: "endDate",
-        //durationField: "duration",
-        dataProvider: [],
-        showBalloonAt: "top",
-        chartCursor: {
-            valueBalloonsEnabled: false,
-            cursorAlpha: 0.1,
-            valueLineBalloonEnabled: true,
-            valueLineEnabled: true,
-            fullWidth: true
-        },
-        'export': {
-            enabled: false
-        }
-    };
+    function defaultOptions() {
+        return {
+            type: "gantt",
+            theme: "light",
+            addClassNames: true,
+            columnWidth: 0.8,
+            balloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon,
+            valueAxis: {
+                type: 'date',
+                minPeriod: 'fff',
+                dateFormats: MA_AMCHARTS_DATE_FORMATS.categoryAxis,
+                firstDayOfWeek: moment.localeData(moment.locale()).firstDayOfWeek()
+            },
+            graph: {
+                fillAlphas: 0.85,
+                balloonText: "<b>[[task]]</b>:<br>[[startFormatted]]<br>[[duration]]",
+                labelText: '[[task]]',
+                labelPosition: 'middle',
+                showBalloonAt: 'open'
+            },
+            rotate: true,
+            categoryField: "category",
+            segmentsField: "segments",
+            colorField: "colour",
+            startDateField: "startDate",
+            endDateField: "endDate",
+            //durationField: "duration",
+            dataProvider: [],
+            chartCursor: {
+                valueBalloonsEnabled: false,
+                cursorAlpha: 0.2,
+                valueLineBalloonEnabled: true,
+                valueLineEnabled: true,
+                fullWidth: true,
+                categoryBalloonEnabled: false,
+            },
+            'export': {
+                enabled: false
+            }
+        };
+    }
+
 }
 
 return stateChart;
