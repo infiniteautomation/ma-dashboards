@@ -1,4 +1,4 @@
-*Version 3.0.2*
+*Version 3.1.0*
 * Fix bootstrapping ngMango via bootstrap.js
 * Fix bug displaying chart and table on watch list dialog
 * Add more system settings
