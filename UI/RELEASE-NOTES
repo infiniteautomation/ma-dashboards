@@ -8,6 +8,7 @@
 * Help pages open in sidebar
 * Ctrl-S hotkey binding for custom pages
 * Fix loading issue caused by ad-blockers
+* Improve ma-state-chart directive
 * Upgrade AngularJS to 1.6.x
 * Rename AngularJS modules and services
 * Bug fixes
