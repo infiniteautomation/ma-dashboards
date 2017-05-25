@@ -15,11 +15,11 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.View;
 
+import com.infiniteautomation.mango.rest.v2.exception.ResourceNotFoundException;
 import com.serotonin.ShouldNeverHappenException;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.web.OverridingFileResource;
 import com.serotonin.m2m2.web.mvc.UrlHandler;
-import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
 
 /**
  * @author Terry Packer
