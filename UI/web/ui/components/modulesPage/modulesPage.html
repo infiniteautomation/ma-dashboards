@@ -1,5 +1,9 @@
 <h1 ma-tr="header.modules"></h1>
 
+<p>
+    Note, upgrades must currently still be performed from the <a href="/modules.shtm" target="mango-legacy">legacy modules page</a>.
+</p>
+
 <div layout="row" layout-wrap layout-align="start stretch">
   <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="25" layout="column" ng-repeat="module in $ctrl.modules | orderBy:['-unloaded', 'name'] track by module.name" >
       <md-card flex md-colors="{background: module.unloaded ? 'warn-hue-3' : 'background-hue-1'}" class="ma-module-info">
@@ -15,16 +19,6 @@
           <div layout="row">
             <span flex="50" ma-tr="modules.version"></span>
             <span flex="50" ng-bind="module.version"></span>
-          </div>
-          <div layout="row" ng-if="module.versionState !== 'PRODUCTION'">
-            <span flex="50" ma-tr="modules.versionState"></span>
-            <span flex="50" md-colors="{color: 'warn'}" ng-switch="module.versionState">
-                <span ng-switch-when="DEVELOPMENT" ma-tr="systemSettings.upgradeState.development"></span>
-                <span ng-switch-when="ALPHA" ma-tr="systemSettings.upgradeState.alpha"></span>
-                <span ng-switch-when="BETA" ma-tr="systemSettings.upgradeState.beta"></span>
-                <span ng-switch-when="RELEASE_CANDIDATE" ma-tr="systemSettings.upgradeState.releaseCandidate"></span>
-                <span ng-switch-when="PRODUCTION" ma-tr="systemSettings.upgradeState.production"></span>
-            </span>
           </div>
           <div layout="row" ng-if="module.buildNumber > 0">
             <span flex="50" ma-tr="modules.buildNumber"></span>
