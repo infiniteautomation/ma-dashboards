@@ -1209,3 +1209,16 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
 #pre-bootstrap-error code {
   display: block;
 }
+
+ma-ui-modules-page md-card-content > div {
+  margin-top: 2px;
+}
+
+ma-ui-modules-page md-card-content > div md-icon.material-icons {
+  font-size: 20px;
+}
+
+
+ma-ui-modules-page .green-color {
+  color: green;
+}

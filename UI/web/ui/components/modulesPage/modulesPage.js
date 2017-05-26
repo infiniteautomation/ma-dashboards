@@ -17,6 +17,12 @@ ModulesPageController.prototype.$onInit = function() {
     }.bind(this));
 };
 
+ModulesPageController.prototype.bgColor = function(module) {
+    if (module.unloaded) return 'warn-hue-3';
+//    if (!module.signed) return 'warn-hue-2';
+    return 'background-hue-1';
+};
+
 return {
     controller: ModulesPageController,
     templateUrl: require.toUrl('./modulesPage.html')

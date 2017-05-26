@@ -6,7 +6,7 @@
 
 <div layout="row" layout-wrap layout-align="start stretch">
   <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="25" layout="column" ng-repeat="module in $ctrl.modules | orderBy:['-unloaded', 'name'] track by module.name" >
-      <md-card flex md-colors="{background: module.unloaded ? 'warn-hue-3' : 'background-hue-1'}" class="ma-module-info">
+      <md-card flex md-colors="{background: $ctrl.bgColor(module)}" class="ma-module-info">
         <md-card-title flex="none">
           <md-card-title-text>
             <span class="md-headline" ng-bind="module.name"></span>
@@ -25,9 +25,14 @@
             <span flex="50" ng-bind="module.buildNumber"></span>
           </div>
           <div layout="row">
-            <span flex="50" ma-tr="modules.licenseType"></span>
-            <span ng-if="module.licenseType" flex="50" ng-bind="module.licenseType"></span>
-            <span ng-if="!module.licenseType" flex="50" ma-tr="modules.unlicenced" md-colors="{color: 'warn'}"></span>
+            <span flex="50" ma-tr="ui.app.license"></span>
+            <span ng-if="module.licenseType" flex="50" class="green-color"><md-icon class="green-color">done</md-icon> <span ng-bind="module.licenseType"></span></span>
+            <span ng-if="!module.licenseType" flex="50" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="modules.unlicenced"></span></span>
+          </div>
+          <div layout="row">
+            <span flex="50" ma-tr="ui.app.moduleSignature"></span>
+            <span ng-if="module.signed" flex="50" class="green-color"><md-icon class="green-color">verified_user</md-icon> <span ma-tr="ui.app.moduleSigned"></span></span>
+            <span ng-if="!module.signed" flex="50" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="ui.app.moduleUnsigned"></span></span>
           </div>
           <div layout="row" ng-if="module.vendor">
             <span flex="50" ma-tr="modules.vendor"></span>
