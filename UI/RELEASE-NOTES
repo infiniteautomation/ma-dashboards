@@ -11,6 +11,8 @@
 * Improve ma-state-chart directive
 * Upgrade AngularJS to 1.6.x
 * Rename AngularJS modules and services
+* Better error handling for loading module AngularJS files
+* Ability to set a user AngularJS module from UI settings page
 * Bug fixes
 
 *Version 3.0.1*
