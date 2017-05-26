@@ -27,7 +27,9 @@ function qDecorator($delegate) {
     
     $delegate.prototype.cancel = function() {
         if (typeof this.doCancel === 'function') {
-            this.doCancel.apply(this, arguments);
+            try {
+                this.doCancel.apply(this, arguments);
+            } catch (e) {}
         }
         return this;
     };

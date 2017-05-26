@@ -24,17 +24,16 @@ function maTr(Translate) {
         link: function ($scope, $elem, $attrs) {
             var trKey, trArgs;
 
-            $attrs.$observe('maTr', function(newValue) {
-        	    doTranslate(newValue, trArgs);
-        	});
-            $scope.$watchCollection($attrs.maTrArgs, function(newValue, oldValue) {
-                doTranslate(trKey, newValue);
-            });
+            $scope.$watch(function() {
+                return {
+                    key: $attrs.maTr,
+                    args: $scope.$eval($attrs.maTrArgs)
+                };
+            }, function(newValue) {
+                doTranslate(newValue.key, newValue.args);
+            }, true);
 
             function doTranslate(newKey, newArgs) {
-                if (newKey === trKey && angular.equals(newArgs, trArgs)) {
-                    return;
-                }
                 trKey = newKey;
                 trArgs = newArgs;
                 if (!trKey) return;
