@@ -34,6 +34,11 @@
     
 	<div ng-if="appLoading" class="app-loading">
 		<i class="fa fa-cog fa-spin"></i>
+        <div id="pre-bootstrap-error" style="display:none">
+            <div></div>
+            <a href="#">Show stack trace</a>
+            <pre style="display:none"><code></code></pre>
+        </div>
 	</div>
     <div ng-cloak ng-if="noApi" class="missing-module">mangoApi module is required.</div>
     <div ui-view ng-cloak layout="column" flex class="main-application" ng-class="stateNameClass"></div>

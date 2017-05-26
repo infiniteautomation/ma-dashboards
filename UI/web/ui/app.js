@@ -632,7 +632,7 @@ var userAndUserSettingsPromise = User.getCurrent().$promise.then(null, function(
     };
 });
 
-var uiSettingsPromise = $http({
+var defaultUiSettingsPromise = $http({
     method: 'GET',
     url: require.toUrl('./uiSettings.json')
 }).then(function(data) {
@@ -641,69 +641,107 @@ var uiSettingsPromise = $http({
 
 var customUiSettingsPromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
 
-var angularModulesPromise = $http({
-    method: 'GET',
-    url: '/rest/v1/modules/angularjs-modules/public'
-}).then(function (response) {
-    if (!response.data.urls || !response.data.urls.length) return;
-    var deferred = $q.defer();
-    for (var i = 0; i < response.data.urls.length; i++) {
-        response.data.urls[i] = response.data.urls[i].replace(/^\/modules\/(.*?).js$/, 'modules/$1');
-    }
-    require(response.data.urls, function () {
-        deferred.resolve(Array.prototype.slice.apply(arguments));
-    }, function() {
-        console.log(arguments);
-        deferred.reject();
-    });
-    return deferred.promise;
-}, function() {
-    console.log(arguments);
-    console.log('Error loading AngularJS modules from Mango modules');
-});
-
-$q.all([userAndUserSettingsPromise, uiSettingsPromise, customUiSettingsPromise, angularModulesPromise]).then(function(data) {
-    // destroy the services injector
-    servicesInjector.get('$rootScope').$destroy();
+var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromise]).then(function(results) {
+    var defaultUiSettings = results[0];
+    var customUiSettings = results[1];
     
     var MA_UI_SETTINGS = {};
+    if (defaultUiSettings) {
+        MA_UI_SETTINGS.defaultSettings = defaultUiSettings;
+        angular.merge(MA_UI_SETTINGS, defaultUiSettings);
+    }
+    if (customUiSettings) {
+        MA_UI_SETTINGS.initialSettings = customUiSettings.jsonData;
+        angular.merge(MA_UI_SETTINGS, customUiSettings.jsonData);
+    }
+    
+    return MA_UI_SETTINGS;
+});
+
+var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
+    return $http({
+        method: 'GET',
+        url: '/rest/v1/modules/angularjs-modules/public'
+    }).then(function (response) {
+        if (!response.data.urls || !angular.isArray(response.data.urls)) return;
+
+        var urls = response.data.urls.map(function(url) {
+            return url.replace(/^\/modules\/(.*?).js$/, 'modules/$1');
+        });
+        
+        if (MA_UI_SETTINGS.userModule) {
+            urls.push(MA_UI_SETTINGS.userModule);
+        }
+        
+        var modulePromises = urls.map(function(url) {
+            var deferred = $q.defer();
+            require([url], function(module) {
+                deferred.resolve(module);
+            }, function() {
+                console.log('Failed to load AngularJS module', arguments);
+                deferred.resolve();
+            });
+            return deferred.promise;
+        });
+        
+        return $q.all(modulePromises);
+    }, function() {
+        console.log('Error loading AngularJS modules from Mango modules', arguments);
+    });
+});
+
+$q.all([userAndUserSettingsPromise, uiSettingsPromise, angularModulesPromise]).then(function(data) {
+    // destroy the services injector
+    servicesInjector.get('$rootScope').$destroy();
+
     var user = data[0].user;
     var userMenuStore = data[0].userMenuStore;
-    var defaultSettings = data[1];
-    var customSettingsStore = data[2];
-    var angularModules = data[3] || [];
+    var MA_UI_SETTINGS = data[1];
+    var angularModules = data[2] || [];
     var customMenuItems = [];
-    
-    if (defaultSettings) {
-        MA_UI_SETTINGS.defaultSettings = defaultSettings;
-        angular.merge(MA_UI_SETTINGS, defaultSettings);
-    }
-    if (customSettingsStore) {
-        MA_UI_SETTINGS.initialSettings = customSettingsStore.jsonData;
-        angular.merge(MA_UI_SETTINGS, customSettingsStore.jsonData);
-    }
+
     if (userMenuStore) {
         customMenuItems = userMenuStore.jsonData.menuItems;
     }
-    
+
     uiApp.constant('MA_UI_SETTINGS', MA_UI_SETTINGS);
     uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', customMenuItems);
     uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
 
     var angularJsModuleNames = ['maUiApp'];
-    for (var i = 0; i < angularModules.length; i++) {
-        var angularModule = angularModules[i];
-        angularJsModuleNames.push(angularModule.name);
-    }
+    angularModules.forEach(function(angularModule) {
+        if (angularModule && angularModule.name) {
+            angularJsModuleNames.push(angularModule.name);
+        }
+    });
     
-    angular.module('maUiBootstrap', angularJsModuleNames).config(['maUserProvider', 'maUiMenuProvider', function(UserProvider, maUiMenuProvider) {
+    angular.module('maUiBootstrap', angularJsModuleNames)
+    .config(['maUserProvider', 'maUiMenuProvider', function(UserProvider, maUiMenuProvider) {
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
         maUiMenuProvider.registerCustomMenuItems();
     }]);
 
     angular.element(function() {
-        angular.bootstrap(document.documentElement, ['maUiBootstrap'], {strictDi: true});
+        try {
+            angular.bootstrap(document.documentElement, ['maUiBootstrap'], {strictDi: true});
+        } catch (e) {
+            var errorDiv = document.getElementById('pre-bootstrap-error');
+            var msgDiv = errorDiv.querySelector('div');
+            var pre = errorDiv.querySelector('pre');
+            var code = errorDiv.querySelector('code');
+            var link = errorDiv.querySelector('a');
+
+            msgDiv.textContent = 'Error bootstrapping Mango app: ' + e.message;
+            code.textContent = e.stack;
+            errorDiv.style.display = 'block';
+            
+            link.onclick = function() {
+                pre.style.display = pre.style.display === 'none' ? 'block' : 'none';
+            };
+            
+            throw e;
+        }
     });
 });
 
