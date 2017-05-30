@@ -1,0 +1,59 @@
+<md-table-container>
+<table md-table class="statistics">
+	<thead md-head>
+		<tr md-row>
+			<th md-column md-numeric></th>
+			<th md-column></th>
+		</tr>
+	</thead>
+	<tbody md-body ng-if="!statistics.hasData">
+		<tr md-row>
+			<td md-cell colspan="2" ma-tr="common.stats.noDataForPeriod"></td>
+		</tr>
+	</tbody>
+	<tbody md-body ng-if="statistics.hasData">
+		<tr md-row ng-if="statistics.first" class="statistics-first">
+			<td md-cell ma-tr="common.stats.start"></td>
+			<td md-cell><span ng-bind="statistics.first.value"></span> @ <span ng-bind="formatTimestamp(statistics.first.timestamp)"></span></td>
+		</tr>
+		<tr md-row ng-if="statistics.last" class="statistics-last">
+			<td md-cell ma-tr="common.stats.end"></td>
+            <td md-cell><span ng-bind="statistics.last.value"></span> @ <span ng-bind="formatTimestamp(statistics.last.timestamp)"></span></td>
+		</tr>
+		<tr md-row ng-if="statistics.minimum" class="statistics-minimum">
+			<td md-cell ma-tr="common.stats.min"></td>
+            <td md-cell><span ng-bind="statistics.minimum.value"></span> @ <span ng-bind="formatTimestamp(statistics.minimum.timestamp)"></span></td>
+		</tr>
+		<tr md-row ng-if="statistics.maximum" class="statistics-maximum">
+			<td md-cell ma-tr="common.stats.max"></td>
+            <td md-cell><span ng-bind="statistics.maximum.value"></span> @ <span ng-bind="formatTimestamp(statistics.maximum.timestamp)"></span></td>
+		</tr>
+		<tr md-row ng-if="statistics.average" class="statistics-average">
+			<td md-cell ma-tr="common.stats.avg"></td>
+			<td md-cell>{{statistics.average.value}}</td>
+		</tr>
+		<tr md-row ng-if="statistics.integral" class="statistics-integral">
+			<td md-cell ma-tr="common.stats.integral"></td>
+			<td md-cell>{{statistics.integral.value}}</td>
+		</tr>
+		<tr md-row ng-if="statistics.sum" class="statistics-sum">
+			<td md-cell ma-tr="common.stats.sum"></td>
+			<td md-cell>{{statistics.sum.value}}</td>
+		</tr>
+		<tr md-row ng-if="statistics.count" class="statistics-count">
+			<td md-cell ma-tr="common.stats.count"></td>
+			<td md-cell>{{statistics.count}}</td>
+		</tr>
+		<tr md-row ng-if="statistics.changes" class="statistics-changes">
+			<td md-cell ma-tr="common.stats.changes"></td>
+			<td md-cell>{{statistics.changes}}</td>
+		</tr>
+		<tr md-row ng-if="statistics.startsAndRuntimes && !hideStartsAndRuntimes" class="statistics-summary">
+			<td md-cell ma-tr="ui.app.summary"></td>
+			<td md-cell>
+				<ma-starts-and-runtimes-table starts-and-runtimes="statistics.startsAndRuntimes"></ma-starts-and-runtimes-table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</md-table-container>

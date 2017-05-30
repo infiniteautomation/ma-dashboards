@@ -1,0 +1,7 @@
+<ul>
+  <li ng-repeat="item in $ctrl.items"
+      ng-class="{'ma-list-selected': $ctrl.selected === item}"
+      ng-click="$ctrl.setViewValue(item)">
+    <strong ng-bind="item"></strong>
+  </li>
+</ul>

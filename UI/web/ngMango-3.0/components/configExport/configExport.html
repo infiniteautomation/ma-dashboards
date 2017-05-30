@@ -1,0 +1,38 @@
+<md-card flex>
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline" ma-tr="emport.export"></span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content>
+    <p ma-tr="emport.select"></p>
+    <md-checkbox ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()" md-indeterminate="$ctrl.selectAllIndeterminate"><span ma-tr="emport.selectAll"></span></md-checkbox>
+    <div layout layout-wrap class="md-padding">
+      <md-checkbox class="ma-export-section" layout layout-align="start center" flex="100" flex-gt-sm="50" flex-gt-md="33" flex-gt-lg="25" ng-repeat="section in $ctrl.sectionList" ng-model="$ctrl.sectionsForExport[section.value]" ng-change="$ctrl.checkIndeterminate()"><span ma-tr="{{section.key}}"></span></md-checkbox>
+    </div>
+    <md-input-container>
+      <label ma-tr="emport.indent"></label>
+      <input ng-model="$ctrl.indent" type="number" min="0" max="10">
+    </md-input-container>
+    <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="ui.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="start center">
+    <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport()" ng-disabled="$ctrl.downloadStatus.downloading">
+      <div layout layout-align="start center">
+        <md-icon ng-hide="$ctrl.downloadStatus.downloading === 'export'">file_download</md-icon>
+        <md-progress-circular ng-show="$ctrl.downloadStatus.downloading === 'export'" md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+        <span ma-tr="emport.export"></span>
+      </div>
+    </md-button>
+    <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport(true)" ng-disabled="$ctrl.downloadStatus.downloading">
+      <div layout layout-align="start center">
+        <md-icon ng-hide="$ctrl.downloadStatus.downloading === 'download'">file_download</md-icon>
+        <md-progress-circular ng-show="$ctrl.downloadStatus.downloading === 'download'" md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+        <span ma-tr="ui.app.downloadJsonFile"></span>
+      </div>
+    </md-button>
+    <md-button class="md-raised md-warn" ng-click="$ctrl.cancelExport()" ng-if="$ctrl.downloadStatus.downloading">
+      <md-icon>cancel</md-icon> <span ma-tr="common.cancel"></span>
+    </md-button>
+  </md-card-actions>
+</md-card>
