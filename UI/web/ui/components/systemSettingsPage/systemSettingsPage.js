@@ -108,8 +108,9 @@ SystemSettingsPageController.prototype.saveSection = function() {
         }.bind(this), 5000);
     }.bind(this), function(e) {
         this.error = {response: e};
-        this.error.message = typeof e.data === 'object' && e.data.message;
+        this.error.message = e.data && typeof e.data === 'object' && e.data.message;
         if (!this.error.message && e.statusText) this.error.message = e.statusText;
+        if (!this.error.message) this.error.message = 'Unknown';
     }.bind(this)).then(function() {
         delete this.savePromise;
     }.bind(this));
