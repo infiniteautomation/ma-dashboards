@@ -1,3 +1,6 @@
+*Version 3.1.0*
+* Upgraded to work with core version 3.1.x
+
 *Version 3.6.0*
 * Release date 2017-05-23
 * Core 3.1.x compatible
@@ -50,7 +53,7 @@
 * Add daily comparison chart example
 * Add data source list and device name list directives
 * Ability to create and save your own pages
-* User customizable menus in mdAdmin, menus can be deeper than 2 levels now 
+* User customizable menus in mdAdmin, menus can be deeper than 2 levels now
 * URLs no longer contain /dashboard and enabled HTML5 mode for cleaner URLs
 * New url for mdAdmin dashboard at /dashboards
 * New url for users own dashboards at /user-dashboards
@@ -108,7 +111,7 @@
 *Version 1.1.2*
 * Improving permissions utils for javascript User class
 * Adding CORS login test/example page
-* Adding api.js method to contact data source to force refresh a data point 
+* Adding api.js method to contact data source to force refresh a data point
 
 *Version 1.1.1*
 * Adding additional examples
@@ -140,7 +143,7 @@
 * Various bugfixes and enhancements
 
 *Version 1.0.1*
-* Fixed bug in mangoApi Javascript Date formatter for Timezones that are +GMT 
+* Fixed bug in mangoApi Javascript Date formatter for Timezones that are +GMT
 
 *Version 1.0.0*
 * Initial Release
