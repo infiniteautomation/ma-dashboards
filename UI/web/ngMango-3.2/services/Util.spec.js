@@ -16,7 +16,7 @@ describe('Util service', function() {
     before('Load ngMangoServices module', function(done) {
         this.timeout(5000);
         
-        requirejs(['ngMango-3.1/ngMangoServices'], function(ngMangoServices) {
+        requirejs(['ngMango-3.2/ngMangoServices'], function(ngMangoServices) {
             done();
         });
         
