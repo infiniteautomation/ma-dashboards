@@ -1,0 +1,15 @@
+<ul>
+  <li ng-if="$ctrl.showNewButton" ng-click="$ctrl.newButtonClicked({'$event': $event})">
+    <strong ma-tr="ui.app.new"></strong>
+    <em ma-tr="ui.app.newWatchList"></em>
+    <button ng-click="$ctrl.newButtonClicked({'$event': $event})" ma-tr="ui.app.new"></button>
+  </li>
+  <li ng-repeat="item in $ctrl.watchLists track by item.xid"
+      ng-class="{'ma-list-selected': $ctrl.watchList.xid === item.xid}"
+      ng-click="$ctrl.setViewValue(item)">
+    <strong ng-bind="item.name"></strong>
+    <em ng-bind="item.username"></em>
+    <button ng-click="$ctrl.editButtonClicked({'$event': $event, '$watchList': item})" ma-tr="common.edit"
+        ng-if="$ctrl.showEditButtons && ($ctrl.User.current.hasPermission(item.editPermission) || $ctrl.User.current.username === item.username)"></button>
+  </li>
+</ul>

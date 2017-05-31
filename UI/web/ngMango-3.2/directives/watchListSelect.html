@@ -1,0 +1,1 @@
+<select ng-options="wl.name for wl in $ctrl.watchLists track by wl.xid" ng-model="$ctrl.watchList" ng-change="$ctrl.setViewValue($ctrl.watchList)" ng-disabled="$ctrl.ngDisabled"></select>

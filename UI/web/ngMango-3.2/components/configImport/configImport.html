@@ -1,0 +1,24 @@
+<md-card flex>
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline" ma-tr="emport.import"></span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content layout="column">
+    <p ma-tr="emport.importInstruction"></p>
+    
+    <div class="ma-import-dropzone" ma-dropzone ng-style="{'border-color': dragOver && $ctrl.accentColor}"
+        ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)" layout layout-align="center center">
+      <span ma-tr="ui.app.dropJsonFileHere"></span>
+    </div>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="start center">
+    <md-button class="md-raised md-primary" ng-click="$ctrl.doImport($event)">
+      <md-icon>file_upload</md-icon> <span ma-tr="emport.import"></span>
+    </md-button>
+    <md-button class="md-raised md-primary ma-label-button" layout="column" layout-align="start stretch">
+      <label for="json-file-upload" flex><md-icon>file_upload</md-icon> <span ma-tr="ui.app.uploadJsonFile"></span></label>
+    </md-button>
+    <input id="json-file-upload" type="file" accept=".json,text/*,application/json" ma-change="$ctrl.fileSelected($event)" style="display:none">
+  </md-card-actions>
+</md-card>

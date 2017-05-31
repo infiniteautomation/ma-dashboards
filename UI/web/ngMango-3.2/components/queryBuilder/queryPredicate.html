@@ -1,0 +1,19 @@
+<div layout="row" layout-align="start center" flex>
+  <md-button ng-click="$ctrl.deleteSelf($event)" class="md-icon-button"><md-icon>clear</md-icon></md-button>
+  <md-input-container flex="35" flex-gt-sm="35" flex-gt-md="30" flex-gt-lg="20">
+    <label ma-tr="ui.app.property"></label>
+    <md-select ng-model="$ctrl.node.args[0]" ng-change="$ctrl.builderCtrl.updateModel()" required md-no-asterisk>
+      <md-option ng-repeat="prop in $ctrl.properties track by prop.value" ng-value="prop.value" ng-bind="prop.label"></md-option>
+    </md-select>
+  </md-input-container>
+  <md-input-container flex="25" flex-gt-sm="15" flex-gt-md="10" flex-gt-lg="10">
+    <label ma-tr="ui.app.operation"></label>
+    <md-select ng-model="$ctrl.node.name" ng-change="$ctrl.builderCtrl.updateModel()" required md-no-asterisk>
+      <md-option ng-repeat="op in $ctrl.operations track by op.value" ng-value="op.value" ng-bind="op.label"></md-option>
+    </md-select>
+  </md-input-container>
+  <md-input-container flex="40" flex-gt-sm="50" flex-gt-md="60" flex-gt-lg="70">
+    <label ma-tr="common.value"></label>
+    <input ng-model="$ctrl.node.args[1]" ng-change="$ctrl.builderCtrl.updateModel()" required md-no-asterisk>
+  </md-input-container>
+</div>

@@ -1,0 +1,7 @@
+<ma-serial-chart default-balloon-text="[[title]]: [[value]]" points="$ctrl.chartedPoints" values="$ctrl.chartValues" legend="$ctrl.legend" 
+    balloon="$ctrl.balloon" export="$ctrl.export" graph-options="$ctrl.graphOptions" options="$ctrl.chartOptions">
+</ma-serial-chart>
+
+<ma-point-values points="$ctrl.chartedPoints" values="$ctrl.chartValues" from="$ctrl.from" to="$ctrl.to" rollup="{{$ctrl.rollupType}}"
+  rollup-interval="{{$ctrl.rollupIntervals}} {{$ctrl.rollupIntervalPeriod}}" rendered="false" converted="true" on-values-updated="$ctrl.valuesUpdatedHandler($values)">
+</ma-point-values>

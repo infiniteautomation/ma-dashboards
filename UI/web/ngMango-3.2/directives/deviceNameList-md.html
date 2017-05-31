@@ -1,0 +1,4 @@
+<md-select md-on-open="onOpen()">
+  <md-option ng-if="showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
+  <md-option ng-value="deviceName" ng-repeat="deviceName in deviceNames track by $index"><span ng-bind="deviceName"></span></md-option>
+</md-select>
