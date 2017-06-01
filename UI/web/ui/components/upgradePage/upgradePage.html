@@ -1,0 +1,15 @@
+<div flex layout="column" layout-align="center center" ng-if="$ctrl.checkPromise">
+	<md-progress-circular class="md-accent" md-mode="indeterminate"></md-progress-circular>
+	<p ma-tr="ui.app.pleaseWaitCheckingForUpgrades"></p>
+</div>
+
+<div ng-if="!$ctrl.checkPromise">
+	<md-button class="md-raised md-accent" ng-disabled="$ctrl.checkPromise" ng-click="$ctrl.checkForUpgrades()">
+		<md-icon>update</md-icon>
+		<span ma-tr="modules.versionCheck"></span>
+	</md-button>
+	
+	<pre ng-bind="$ctrl.installs | json"></pre>
+	<pre ng-bind="$ctrl.upgrades | json"></pre>
+	<div md-colors="{color: 'warn'}" ng-bind="$ctrl.error"></div>
+</div>

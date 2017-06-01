@@ -1222,3 +1222,11 @@ ma-ui-modules-page md-card-content > div md-icon.material-icons {
 ma-ui-modules-page .green-color {
   color: green;
 }
+
+.ma-ui-progress-button md-progress-circular {
+	margin: 8px 0;
+}
+
+.ma-ui-progress-button div > span {
+	margin-left: 6px;
+}

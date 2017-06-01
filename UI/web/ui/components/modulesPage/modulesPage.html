@@ -1,8 +1,6 @@
 <h1 ma-tr="header.modules"></h1>
 
-<p>
-    Note, upgrades must currently still be performed from the <a href="/modules.shtm" target="mango-legacy">legacy modules page</a>.
-</p>
+<md-button class="md-raised md-accent" ui-sref="ui.settings.modules.upgrade"><md-icon>update</md-icon>&nbsp;<span ma-tr="modules.versionCheck"></span></md-button>
 
 <div layout="row" layout-wrap layout-align="start stretch">
   <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="25" layout="column" ng-repeat="module in $ctrl.modules | orderBy:['-unloaded', 'name'] track by module.name" >

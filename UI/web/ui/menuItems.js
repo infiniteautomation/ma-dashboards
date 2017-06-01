@@ -585,6 +585,28 @@ return [
         }
     },
     {
+        name: 'ui.settings.modules.upgrade',
+        url: '/upgrade',
+        views: {
+        	'@ui.settings': {
+                template: '<ma-ui-upgrade-page flex layout="column"><ma-ui-upgrade-page>'
+        	}
+        },
+        menuTr: 'modules.versionCheck',
+        menuIcon: 'update',
+        permission: 'superadmin',
+        menuHidden: true,
+        resolve: {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./components/upgradePage/upgradePage'], function (upgradePage) {
+                    angular.module('maUiUpgradeState', [])
+                        .component('maUiUpgradePage', upgradePage);
+                    $ocLazyLoad.inject('maUiUpgradeState');
+                });
+            }]
+        }
+    },
+    {
         name: 'ui.examples',
         url: '/examples',
         menuTr: 'ui.dox.examples',
