@@ -55,12 +55,14 @@ function pointValue() {
             point: '<?',
             pointXid: '@?',
             displayType: '@?',
+            labelAttr: '@?label',
             dateTimeFormat: '@?',
             sameDayDateTimeFormat: '@?',
             timezone: '@?',
             flashOnChange: '<?',
             changeDuration: '<?',
-            onValueUpdated: '&?'
+            onValueUpdated: '&?',
+            labelExpression: '&?'
         },
         designerInfo: {
             translation: 'ui.components.pointValue',
@@ -70,9 +72,10 @@ function pointValue() {
                 point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
                 pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
                 displayType: {options: ['rendered', 'raw', 'converted', 'image', 'dateTime']},
+                flashOnChange: {type: 'boolean'},
                 dateTimeFormat: {options: dateOptions},
                 sameDayDateTimeFormat: {options: dateOptions},
-                flashOnChange: {type: 'boolean'}
+                label: {options: ['NAME', 'DEVICE_AND_NAME']}
             }
         }
     };
@@ -97,11 +100,32 @@ PointValueDirectiveController.prototype.$onChanges = function(changes) {
             changes.timezone && !changes.timezone.isFirstChange()) {
         this.updateText();
     }
+    
+    if (changes.labelAttr) {
+    	this.updateLabel();
+    }
 };
 
-PointValueDirectiveController.prototype.valueChangeHandler = function() {
+PointValueDirectiveController.prototype.updateLabel = function() {
+	if (this.labelAttr === 'NAME') {
+		this.label = this.point && (this.point.name + ':');
+	} else if (this.labelAttr === 'DEVICE_AND_NAME') {
+		this.label = this.point && (this.point.deviceName + ' \u2014 ' + this.point.name + ':');
+	} else {
+		this.label = this.labelAttr;
+	}
+};
+
+PointValueDirectiveController.prototype.valueChangeHandler = function(isPointChange) {
     PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-    
+	
+    if (isPointChange) {
+    	this.updateLabel();
+		if (this.labelExpression) {
+			this.label = this.labelExpression({$point: this.point});
+		}
+	}
+	
     this.updateText();
 };
 
