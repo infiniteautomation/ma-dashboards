@@ -2,8 +2,8 @@
 
 <p>
     This example shows you how to use <code>&lt;ma-events-table&gt;</code> to display a filterable table of events.
-    A large amount of the markup below is for the dropdown controls for setting the filter options. Alternatively you can use <code>&lt;ma-events-table&gt;</code>
-    and hard code the event filters as shown on the <code>API Doc</code> for this component.
+    A large amount of the markup below is for the dropdown controls for setting the filter options. Alternatively you can use
+    <code>&lt;ma-events-table&gt;</code> and hard code the event filters as shown on the api doc for this component.
 </p>
 
 <p>
@@ -15,22 +15,31 @@
 </p>
 
 <ma-ui-dual-pane-editor>
+
 <md-card>
-    
     <md-toolbar class="md-whiteframe-1dp md-hue-3">
         <div class="md-toolbar-tools">
             <h2 flex>
-                  <span>Events Table</span>
-                </h2>
+                <span>Events Table</span>
+            </h2>
             <div>
-                <md-button class="md-raised md-primary md-hue-1" ng-init="eventType='*'" ng-class="{ 'active md-accent': eventType === '*' }" ng-click="eventType='*'">All</md-button>
-                <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': eventType === 'DATA_POINT' }" ng-click="eventType='DATA_POINT'">Data Point</md-button>
-                <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': eventType === 'DATA_SOURCE' }" ng-click="eventType='DATA_SOURCE'">Data Source</md-button>
-                <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': eventType === 'SYSTEM' }" ng-click="eventType='SYSTEM'">System</md-button>
+                <md-button class="md-raised md-primary md-hue-1" ng-init="eventType='*'"
+                           ng-class="{ 'active md-accent': eventType === '*' }" ng-click="eventType='*'">All
+                </md-button>
+                <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': eventType === 'DATA_POINT' }"
+                           ng-click="eventType='DATA_POINT'">Data Point
+                </md-button>
+                <md-button class="md-raised md-primary md-hue-1"
+                           ng-class="{ 'active md-accent': eventType === 'DATA_SOURCE' }" ng-click="eventType='DATA_SOURCE'">
+                    Data Source
+                </md-button>
+                <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': eventType === 'SYSTEM' }"
+                           ng-click="eventType='SYSTEM'">System
+                </md-button>
             </div>
         </div>
     </md-toolbar>
-    
+
     <md-card-actions layout="row" layout-align="start center" layout-wrap="">
         <md-input-container flex="">
             <label>Alarm Level</label>
@@ -39,8 +48,9 @@
                 <md-option value="NONE">None <i class="fa fa-flag fa-lg alarm-flag NONE"></i></md-option>
                 <md-option value="INFORMATION">Information <i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
                 <md-option value="IMPORTANT">Important <i class="fa fa-flag fa-lg alarm-flag IMPORTANT"></i></md-option>
-				<md-option value="WARNING">Warning <i class="fa fa-flag fa-lg alarm-flag WARNING"></i></md-option>
-                <md-option value="URGENT">{{ 'ui.app.urgent' | maTr }} <i class="fa fa-flag fa-lg alarm-flag URGENT"></i></md-option>
+                <md-option value="WARNING">Warning <i class="fa fa-flag fa-lg alarm-flag WARNING"></i></md-option>
+                <md-option value="URGENT">{{ 'ui.app.urgent' | maTr }} <i class="fa fa-flag fa-lg alarm-flag URGENT"></i>
+                </md-option>
                 <md-option value="CRITICAL">Critical <i class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
                 <md-option value="LIFE_SAFETY">Safety <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option>
             </md-select>
@@ -63,8 +73,9 @@
             </md-select>
         </md-input-container>
     </md-card-actions>
-    
-    <ma-events-table event-type="eventType" alarm-level="alarmLevel" acknowledged="acknowledged" event-id="eventId" active-status="activeStatus" limit="10" sort="'-alarmLevel'"></ma-events-table>
 
+    <ma-events-table event-type="eventType" alarm-level="alarmLevel" acknowledged="acknowledged" event-id="eventId"
+                     active-status="activeStatus" limit="10" sort="'-alarmLevel'"></ma-events-table>
 </md-card>
+
 </ma-ui-dual-pane-editor>

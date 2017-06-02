@@ -1,16 +1,24 @@
 <h1 ma-tr="ui.dox.getStatistics"></h1>
-<p>The <code>&lt;ma-point-statistics&gt;</code> directive provides access to historical stats over a time range on a data point.</p>
+
 <p>
-    The object returned by the <code>statistics</code> attribute contains <code>first, last, minimum, maximum, average, integral, sum, &amp; count</code>
-    properties. Each of these will have a <code>value</code> and a <code>timestamp</code>
+    The <code>&lt;ma-point-statistics&gt;</code> directive provides access to historical stats over a time range on a data point.
 </p>
+
 <p>
-    If you are interested only in the change in a value between two times you can add the optional <code>first-last="true"</code> attribute to only
-    return the first and last values, then simply calculate the difference with <code ng-non-bindable>{{ statsObj.last.value - statsObj.first.value }}</code>
+    The object returned by the <code>statistics</code> attribute contains <code>first, last, minimum, maximum, average, integral,
+    sum, &amp; count</code> properties. Each of these will have a <code>value</code> and a <code>timestamp</code>.
 </p>
+
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maPointStatistics"><code>&lt;ma-point-statistics&gt;</code></a>.
+    If you are interested only in the change in a value between two times you can add the optional <code>first-last="true"</code>
+    attribute to only return the first and last values as an array, then calculate the difference with
+    <code  ng-non-bindable>{{  statsObj[0].value - statsObj[1].value }}</code>.
 </p>
+
+<p>
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointStatistics"><code>&lt;ma-point-statistics&gt;</code></a>.
+</p>
+
 <ma-ui-dual-pane-editor>
 
 <div layout="row">
@@ -22,8 +30,13 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maPointStatistics"><code>&
 
 <ma-point-statistics point="myPoint" from="dateBar.from" to="dateBar.to" statistics="statsObj"></ma-point-statistics>
 
-<div>The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | maMoment:'format':'lll' }}<br>
-     The max value for the period is {{ statsObj.maximum.value }}
-</div>
+<p>
+    The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | maMoment:'format':'lll'
+    }}
+
+    <br>
+
+    The max value for the period is {{ statsObj.maximum.value }} at {{ statsObj.maximum.timestamp | maMoment:'format':'lll' }}
+</p>
 
 </ma-ui-dual-pane-editor>

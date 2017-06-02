@@ -1,23 +1,25 @@
 <h1 ma-tr="ui.dox.pointArrayTable"></h1>
+
 <p>
-  This is another more advanced example. The key component to pay attention to is
-<code>&lt;ma-point-query&gt;</code> directive. This directive allows you to do server-side
-searching and filtering for points on your Mango. The <code>limit</code> attr allows you to
-limit the number of points returned.
-</p>
-<p>
-  The <code>points</code> attribute returns an array that you can loop over with <code>ng-repeat</code>
-  as in this example.
-</p>
-<p>
-  The list of <code>points</code> outputted from <code>&lt;ma-point-query&gt;</code> is inputted into <code>&lt;ma-point-values&gt;</code> <code>points</code> property
-  (plural points property takes an array of points). The combined values are then looped over in the table.
+    This is another more advanced example. The key component to pay attention to is
+    <code>&lt;ma-point-query&gt;</code> directive. This directive allows you to do server-side
+    searching and filtering for points in your system. The <code>limit</code> attribute allows you to
+    limit the number of points returned.
 </p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maPointQuery"><code>&lt;ma-point-query&gt;</code></a> and <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
+    The list of <code>points</code> outputted from <code>&lt;ma-point-query&gt;</code> is inputted into <code>&lt;ma-point-values&gt;</code> -
+    <code>points</code> property (note plural points property takes an array of points). The combined values are then looped over in
+    the table with columns giving to each data point.
 </p>
+
+<p>
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointQuery"><code>&lt;ma-point-query&gt;</code></a> and <a
+    ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
+</p>
+
 <ma-ui-dual-pane-editor>
+
 <div layout="row">
     <md-input-container flex="50">
         <label>Device name</label>
@@ -31,25 +33,29 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maPointQuery"><code>&lt;ma
 
 <ma-point-query query="{$and: true, deviceName:dvName, name:ptName}" limit="5" points="points"></ma-point-query>
 
-<ma-point-values points="points" values="combined" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
+<ma-point-values points="points" values="combined" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}"
+                 rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
 </ma-point-values>
 
-<p></p><em>Only the first 5 points matching points are shown.</em></p>
+<p>
+    <em>Only the first 5 points matching points are shown.</em>
+</p>
 
 <md-table-container ng-init="tableOrder='timestamp'">
-  <table md-table>
-    <thead md-head md-order="tableOrder">
-      <tr>
-          <th md-column md-order-by="timestamp">Time</th>
-          <th md-column md-order-by="value_{{point.xid}}" ng-repeat="point in points">{{point.name}}</th>
-        </tr>
-    </thead>
-    <tbody md-body>
-      <tr ng-repeat="value in combined | orderBy: tableOrder">
-          <td>{{value.timestamp | maMoment:'format':'ll LTS'}}</td>
-          <td ng-repeat="point in points">{{value['value_' + point.xid]}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <table md-table>
+        <thead md-head md-order="tableOrder">
+            <tr>
+                <th md-column md-order-by="timestamp">Time</th>
+                <th md-column md-order-by="value_{{point.xid}}" ng-repeat="point in points">{{point.name}}</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr ng-repeat="value in combined | orderBy: tableOrder">
+                <td>{{value.timestamp | maMoment:'format':'ll LTS'}}</td>
+                <td ng-repeat="point in points">{{value['value_' + point.xid]}}</td>
+            </tr>
+        </tbody>
+    </table>
 </md-table-container>
+
 </ma-ui-dual-pane-editor>

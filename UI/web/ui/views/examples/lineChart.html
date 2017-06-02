@@ -1,16 +1,22 @@
 <h1 ma-tr="ui.dox.lineChart"></h1>
 <p>
-    We continue to use <a href="https://docs.amcharts.com/3/javascriptcharts/AmSerialChart">AmCharts</a> in the UI module
-    but have provided an easy to use angular directive.</p>
-    <p>
-    With <code>&lt;ma-serial-chart&gt;</code> you pass the point and value via
-    <a ui-sref="ui.examples.basics.pointValues">&lt;ma-point-values&gt;</a>. You can provide your time range and
-    rollup settings to <code>&lt;ma-point-values&gt;</code>, then pass the values data to <code>&lt;ma-serial-chart&gt;</code>.
-
+    We use <a href="https://docs.amcharts.com/3/javascriptcharts/AmSerialChart">AmCharts</a> in the UI module
+    but have provided an easy to use component to include charts on your pages.
 </p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maSerialChart"><code>&lt;ma-serial-chart&gt;</code></a> and <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
+    With <code>&lt;ma-serial-chart&gt;</code> you can input a point and it's values from
+    <a ui-sref="ui.examples.basics.pointValues">&lt;ma-point-values&gt;</a>. You can provide your time range and
+    rollup settings to <code>&lt;ma-point-values&gt;</code> via <a ui-sref="ui.examples.basics.datePresets">Date Pickers</a> on the
+    page or the
+    <a
+    ui-sref="ui.help.dateBar">Date Bar</a>,
+    then pass the value data to <code>&lt;ma-serial-chart&gt;</code>.
+</p>
+
+<p>
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maSerialChart"><code>&lt;ma-serial-chart&gt;</code></a> and <a
+    ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
@@ -22,10 +28,12 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maSerialChart"><code>&lt;m
     </md-input-container>
 </div>
 
-<ma-point-values point="point1" values="point1Values" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
+<ma-point-values point="point1" values="point1Values" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}"
+                 rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
 </ma-point-values>
 
-<ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" legend="true" balloon="true" export="true">
+<ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" legend="true"
+                 balloon="true" export="true">
 </ma-serial-chart>
 
 </ma-ui-dual-pane-editor>

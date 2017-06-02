@@ -1,82 +1,92 @@
 <h1 ma-tr="ui.dox.dataPointTable"></h1>
+
 <p>
-  This example integrates <code>&lt;ma-point-query&gt;</code> with the <a href="https://github.com/daniel-nagy/md-data-table" target="_blank">md-data-table</a> 
-  plugin. It supports sorting by name, a search bar for filtering, pagination, and the ability to select
-  points from the data table. You could build upon this example to design quite an advanced custom dashboard.
-  </table>
+    This example integrates <code>&lt;ma-point-query&gt;</code> with the <a href="https://github.com/daniel-nagy/md-data-table"
+                                                                            target="_blank">md-data-table</a>
+    plugin. It supports sorting by name, a search bar for filtering, pagination, and the ability to select
+    points from the data table.
 </p>
+
 <p>
-  See API Documentation for <a ui-sref="ui.docs.ngMango.maPointQuery"><code>&lt;ma-point-query&gt;</code></a>.
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointQuery"><code>&lt;ma-point-query&gt;</code></a>.
 </p>
+
 <ma-ui-dual-pane-editor>
+
 <style>
-md-toolbar.md-table-toolbar form > input:focus {
-    outline: none;
-}
-md-toolbar.md-table-toolbar form > input {
-    width: 100%;
-    margin-left: 16px;
-    border: none;
-}
-md-toolbar.ng-animate {
-     transition: none;
-}
-md-toolbar.md-table-toolbar em {
-    font-size:1.6rem;
-}
+    md-toolbar.md-table-toolbar form > input:focus {
+        outline: none;
+    }
+
+    md-toolbar.md-table-toolbar form > input {
+        width: 100%;
+        margin-left: 16px;
+        border: none;
+    }
+
+    md-toolbar.ng-animate {
+        transition: none;
+    }
+
+    md-toolbar.md-table-toolbar em {
+        font-size: 1.6rem;
+    }
 </style>
 
-<div ng-init="query={limit:10, page:1, order:'name', filter:''}; page.showSearch=false; page.selected=[]"></div>
+<div ng-init="query={limit:10, page:1, order:'name', filter:''}; page.showSearch=false; page.selected=[];"></div>
 
-<ma-point-query query="{name:query.filter, deviceName:query.filter}" limit="query.limit" start="(query.page-1)*query.limit" sort="query.order" points="points" promise="promise"></ma-point-query>
+<ma-point-query query="{name:query.filter, deviceName:query.filter}" limit="query.limit" start="(query.page-1)*query.limit"
+                sort="query.order" points="points" promise="promise"></ma-point-query>
 
 <md-toolbar class="md-table-toolbar md-default" ng-hide="page.showSearch">
-  <div class="md-toolbar-tools">
-    <h2 class="md-title">Data Points</h2>
-    <div flex></div>
-    <div ng-show="page.selected.length">
-        <em>{{page.selected.length}} {{page.selected.length &gt; 1 ? 'items' : 'item'}} selected</em>
-        <md-button class="md-icon-button" ng-click="page.selected=[]">
-          <md-icon>clear</md-icon>
+    <div class="md-toolbar-tools">
+        <h2 class="md-title">Data Points</h2>
+        <div flex></div>
+        <div ng-show="page.selected.length">
+            <em>{{page.selected.length}} {{page.selected.length &gt; 1 ? 'items' : 'item'}} selected</em>
+            <md-button class="md-icon-button" ng-click="page.selected=[]">
+                <md-icon>clear</md-icon>
+            </md-button>
+        </div>
+        <div flex></div>
+        <md-button class="md-icon-button" ng-click="page.showSearch=true">
+            <md-icon>search</md-icon>
         </md-button>
     </div>
-    <div flex></div>
-    <md-button class="md-icon-button" ng-click="page.showSearch=true">
-      <md-icon>search</md-icon>
-    </md-button>
-  </div>
 </md-toolbar>
 
 <md-toolbar class="md-table-toolbar md-default" ng-show="page.showSearch">
-  <div class="md-toolbar-tools">
-    <md-icon>search</md-icon>
-    <form flex name="filter.form">
-      <input type="text" ng-model="query.filter" ng-model-options="{debounce:1000}" placeholder="search">
-    </form>
-    <md-button class="md-icon-button" ng-click="query.filter='';page.showSearch=false">
-      <md-icon>close</md-icon>
-    </md-button>
-  </div>
+    <div class="md-toolbar-tools">
+        <md-icon>search</md-icon>
+        <form flex name="filter.form">
+            <input type="text" ng-model="query.filter" ng-model-options="{debounce:1000}" placeholder="search">
+        </form>
+        <md-button class="md-icon-button" ng-click="query.filter='';page.showSearch=false">
+            <md-icon>close</md-icon>
+        </md-button>
+    </div>
 </md-toolbar>
 
 <md-table-container>
-  <table md-table md-row-select multiple ng-model="page.selected" md-progress="promise">
-    <thead md-head md-order="query.order">
-      <tr md-row>
-          <th md-column md-order-by="deviceName">Device name</th>
-          <th md-column md-order-by="name">Point name</th>
-          <th md-column md-order-by="xid">XID</th>
+    <table md-table md-row-select multiple ng-model="page.selected" md-progress="promise">
+        <thead md-head md-order="query.order">
+        <tr md-row>
+            <th md-column md-order-by="deviceName">Device name</th>
+            <th md-column md-order-by="name">Point name</th>
+            <th md-column md-order-by="xid">XID</th>
         </tr>
-    </thead>
-    <tbody md-body>
-      <tr md-row md-select="point" md-select-id="id" md-auto-select ng-repeat="point in points">
-          <td md-cell>{{point.deviceName}}</td>
-          <td md-cell>{{point.name}}</td>
-          <td md-cell>{{point.xid}}</td>
-      </tr>
-    </tbody>
-  </table>
+        </thead>
+        <tbody md-body>
+        <tr md-row md-select="point" md-select-id="id" md-auto-select ng-repeat="point in points">
+            <td md-cell>{{point.deviceName}}</td>
+            <td md-cell>{{point.name}}</td>
+            <td md-cell>{{point.xid}}</td>
+        </tr>
+        </tbody>
+    </table>
 </md-table-container>
 
-<md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 20]" md-page="query.page" md-total="{{points.$total}}" md-page-select></md-table-pagination>
+<md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 20]" md-page="query.page" md-total="{{points.$total}}"
+                     md-page-select></md-table-pagination>
+
 </ma-ui-dual-pane-editor>

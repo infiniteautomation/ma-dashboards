@@ -1,14 +1,18 @@
 <h1 ma-tr="ui.dox.pointArrayLineChart"></h1>
+
 <p>
-  This is another more advanced example using the <code>&lt;ma-point-query&gt;</code> directive.
-  The list of <code>points</code> outputted from <code>&lt;ma-point-query&gt;</code> is inputted into <code>&lt;ma-point-values&gt;</code> <code>points</code> property
-  (plural points property takes an array of points). The combined values are then passed to <code>&lt;ma-serial-chart&gt;</code>.
+    This is another more advanced example using the <code>&lt;ma-point-query&gt;</code> directive.
+    The list of <code>points</code> outputted from <code>&lt;ma-point-query&gt;</code> is inputted into <code>&lt;ma-point-values&gt;</code> -
+    <code>points</code> property (note plural points property takes an array of points). The combined values are then passed to
+    <code>&lt;ma-serial-chart&gt;</code>.
 </p>
+
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maPointQuery"><code>&lt;ma-point-query&gt;</code></a>, 
-<a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a> 
-and <a ui-sref="ui.docs.ngMango.maSerialChart"><code>&lt;ma-serial-chart&gt;</code></a>.
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointQuery"><code>&lt;ma-point-query&gt;</code></a>,
+    <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>
+    and <a ui-sref="ui.docs.ngMango.maSerialChart"><code>&lt;ma-serial-chart&gt;</code></a>.
 </p>
+
 <ma-ui-dual-pane-editor>
 
 <div layout="row">
@@ -24,10 +28,13 @@ and <a ui-sref="ui.docs.ngMango.maSerialChart"><code>&lt;ma-serial-chart&gt;</co
 
 <ma-point-query query="{$and: true, deviceName:dvName, name:ptName}" limit="5" points="points"></ma-point-query>
 
-<ma-point-values points="points" values="combined" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
+<ma-point-values points="points" values="combined" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}"
+                 rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
 </ma-point-values>
 
-<p></p><em>Only the first 5 points matching points are shown.</em><p></p>
+<p>
+    <em>Only the first 5 points matching points are shown.</em>
+</p>
 
 <ma-serial-chart style="height: 300px; width: 100%" values="combined" points="points" legend="true">
 </ma-serial-chart>

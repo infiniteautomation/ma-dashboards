@@ -1,31 +1,39 @@
 <h1 ma-tr="ui.dox.sliders"></h1>
+
 <p>
-    Angular material <a href="https://material.angularjs.org/latest/demo/slider" target="_blank">slider components</a> can be used to set Mango data points. 
+    Angular material <a href="https://material.angularjs.org/latest/demo/slider" target="_blank">slider</a> components can be
+    used to set a data point's value using a drag and drop slider widget.
     Set the <code>ng-model</code> to the points <code>valueFn</code> property and
-    set <code ng-nonbinding>ng-model-options="{getterSetter:true}"</code>.
+    set <code ng-nonbinding>ng-model-options="{getterSetter:true}"</code> on the <code>&lt;md-slider&gt;</code> element.
 </p>
+
 <p>
-  See API Documentation for the <a ui-sref="ui.docs.ngMangoServices.Point({ '#': 'methods_valuefn' })"><code>valueFn</code></a> method on the <a ui-sref="ui.docs.ngMangoServices.Point"><code>Point</code></a> object.
+    See API Documentation for the <code>valueFn</code>
+    method on the <a ui-sref="ui.docs.ngMangoServices.maPoint"><code>Point</code></a> object.
 </p>
+
 <ma-ui-dual-pane-editor>
 
 <div layout="column">
-    <md-input-container class="md-block">
+    <md-input-container>
         <label>Choose a point</label>
         <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
     </md-input-container>
 
     <ma-point-value point="myPoint"></ma-point-value>
 
-    <md-slider ng-disabled="!myPoint.enabled" md-discrete step="1" min="0" max="100" ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}" >
+    <md-slider ng-disabled="!myPoint.enabled" md-discrete step="1" min="0" max="100" ng-model="myPoint.valueFn"
+               ng-model-options="{getterSetter:true}">
     </md-slider>
 </div>
 
 <md-slider-container ng-disabled="!myPoint.enabled">
     <md-input-container>
-        <input flex step="1" min="0" max="100" type="number" ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
+        <input flex step="1" min="0" max="100" type="number" ng-model="myPoint.valueFn"
+               ng-model-options="{getterSetter:true}">
     </md-input-container>
-    <md-slider step="1"  min="0" max="100" md-discrete ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}" md-vertical></md-slider>
+    <md-slider step="1" min="0" max="100" md-discrete ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}"
+               md-vertical></md-slider>
     <h5>Value</h5>
 </md-slider-container>
 

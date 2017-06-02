@@ -1,49 +1,55 @@
 <h1 ma-tr="ui.dox.pointValues"></h1>
 
 <p>
-      The <code>&lt;ma-point-values&gt;</code> returns an array of historical values on a data point to its <code>values</code> attribute. <code>&lt;ma-point-values&gt;</code> is passed a <code>to</code> &amp; <code>from</code> value the date picker directives.
-      Additionally, <code>rollup</code> &amp; <code>rollup-interval</code> is used to rollup the data to the average value over every past minute.
+    The <code>&lt;ma-point-values&gt;</code> returns an array of historical values on a data point to its <code>values</code>
+    attribute. In this example <code>&lt;ma-point-values&gt;</code> is passed <code>to</code> &amp; <code>from</code> values from the
+    <a ui-sref="ui.help.dateBar">Date Bar</a>. Additionally, <code>rollup</code> &amp; <code>rollup-interval</code> is inputted
+    from the Date Bar.
 </p>
 
 <p>
-      The resulting array of data is stored in <code>point1Values</code>. To display this data we are using a table and <code>ng-repeat</code> to loop
-      through the results and stamp out a table row for each value in the array. Angular's <a href="http://www.w3schools.com/angular/ng_ng-repeat.asp" target="_blank">ng-repeat</a> is a fundamental angular directive. 
+    The resulting array of data is stored in <code>point1Values</code>. To display this data we are using a table and <code>ng-repeat</code>
+    to loop through the results and stamp out a table row for each value in the array. Angular's
+    <a href="http://www.w3schools.com/angular/ng_ng-repeat.asp" target="_blank">ng-repeat</a> is a fundamental angular
+    directive used to loop through items in an array and display an HTML template for each item. You will have access to
+    properties of the item if you are looping through an array of objects and can display them within the repeated template.
 </p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
 
 <div layout="row">
-      <md-input-container flex="">
-            <label>Choose a point</label>
-            <ma-point-list limit="200" ng-model="point1"></ma-point-list>
-      </md-input-container>
+    <md-input-container flex>
+        <label>Choose a point</label>
+        <ma-point-list limit="200" ng-model="point1"></ma-point-list>
+    </md-input-container>
 </div>
 
-<ma-point-values point="point1" values="point1Values" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
+<ma-point-values point="point1" values="point1Values" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}"
+                 rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
 </ma-point-values>
 
 <p>There are {{point1Values.length}} rows to display.</p>
 
 
-<md-table-container ng-init="page.tableOrder='time'">
-      <table md-table="">
-            <thead md-head="">
-                  <tr>
-                        <th md-column="">TimeStamp</th>
-                        <th md-column="">Point Value</th>
-                  </tr>
-            </thead>
-            <tbody md-body="">
-                  <tr ng-repeat="value in point1Values">
-                        <td md-cell="">{{value.timestamp | maMoment:'format':'ll LTS'}}</td>
-                        <td md-cell="">{{value.value}}</td>
-                  </tr>
-            </tbody>
-      </table>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr>
+            <th md-column>TimeStamp</th>
+            <th md-column>Point Value</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr ng-repeat="value in point1Values">
+            <td md-cell>{{value.timestamp | maMoment:'format':'ll LTS'}}</td>
+            <td md-cell>{{value.rendered}}</td>
+        </tr>
+        </tbody>
+    </table>
 </md-table-container>
 
 </ma-ui-dual-pane-editor>
