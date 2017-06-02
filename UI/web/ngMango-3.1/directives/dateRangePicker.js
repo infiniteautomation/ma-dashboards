@@ -71,7 +71,18 @@ function dateRangePicker($injector) {
     return {
         restrict: 'E',
         controllerAs: '$ctrl',
-        bindToController: true,
+        scope: {},
+        bindToController: {
+            preset: '@',
+            from: '<?',
+            to: '<?',
+            format: '@',
+            updateInterval: '@',
+            refresh: '<?',
+            onChange: '&',
+            noUnderline: '<?',
+            timezone: '@'
+        },
         designerInfo: {
             translation: 'ui.components.dateRangePicker',
             icon: 'date_range',
@@ -81,17 +92,6 @@ function dateRangePicker($injector) {
                     'LAST_1_WEEKS','LAST_2_WEEKS','LAST_1_MONTHS','LAST_3_MONTHS','LAST_6_MONTHS','LAST_1_YEARS','LAST_2_YEARS','DAY_SO_FAR','WEEK_SO_FAR',
                     'MONTH_SO_FAR','YEAR_SO_FAR','PREVIOUS_DAY','PREVIOUS_WEEK','PREVIOUS_MONTH','PREVIOUS_YEAR']}
             }
-        },
-        scope: {
-            preset: '@',
-            from: '<',
-            to: '<',
-            format: '@',
-            updateInterval: '@',
-            refresh: '<?',
-            onChange: '&',
-            noUnderline: '<?',
-            timezone: '@'
         },
         template: function(element, attrs) {
             if ($injector.has('$mdUtil')) {
@@ -105,8 +105,10 @@ function dateRangePicker($injector) {
         controller: ['$attrs', '$parse', '$scope', '$interval', 'maUtil', 'MA_DATE_RANGE_PRESETS', 'MA_DATE_FORMATS',
                      function($attrs, $parse, $scope, $interval, Util, MA_DATE_RANGE_PRESETS, mangoDateFormats) {
             
-            var fromAssign = $parse($attrs.from).assign.bind(null, $scope.$parent);
-            var toAssign = $parse($attrs.to).assign.bind(null, $scope.$parent);
+        	var fromExpression = $parse($attrs.from);
+        	var toExpression = $parse($attrs.to);
+            var fromAssign = fromExpression.assign && fromExpression.assign.bind(null, $scope.$parent);
+            var toAssign = toExpression.assign && toExpression.assign.bind(null, $scope.$parent);
             
             this.$onChanges = function(changes) {
                 if (changes.preset) {
@@ -201,12 +203,16 @@ function dateRangePicker($injector) {
                 this.toMoment = to;
 
                 if (mdPickers || this.format === 'false') {
-                    fromAssign(from.toDate());
-                    toAssign(to.toDate());
+                    if (fromAssign)
+                    	fromAssign(from.toDate());
+                    if (toAssign)
+                    	toAssign(to.toDate());
                 } else {
                     var format = this.format || mangoDateFormats.dateTimeSeconds;
-                    fromAssign(from.format(format));
-                    toAssign(to.format(format));
+                    if (fromAssign)
+                    	fromAssign(from.format(format));
+                    if (toAssign)
+                    	toAssign(to.format(format));
                 }
             }.bind(this);
 
