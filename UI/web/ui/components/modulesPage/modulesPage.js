@@ -6,11 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ModulesPageController.$inject = ['maModules', 'maTranslate', '$mdDialog', '$mdToast', '$scope'];
-function ModulesPageController(maModules, maTranslate, $mdDialog, $mdToast, $scope) {
+ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$mdToast', '$scope'];
+function ModulesPageController(maModules, maTranslate, maDialogHelper, $mdToast, $scope) {
     this.maModules = maModules;
     this.maTranslate = maTranslate;
-    this.$mdDialog = $mdDialog;
+    this.maDialogHelper = maDialogHelper;
     this.$mdToast = $mdToast;
     this.$scope = $scope;
 }
@@ -37,32 +37,17 @@ ModulesPageController.prototype.bgColor = function(module) {
     return 'background-hue-1';
 };
 
-ModulesPageController.prototype.confirm = function(event, translation) {
-    var areYouSure = this.maTranslate.trSync('ui.app.areYouSure');
-    var textContent = translation ? this.maTranslate.trSync(translation) : areYouSure;
-
-    var confirm = this.$mdDialog.confirm()
-        .title(areYouSure)
-        .ariaLabel(areYouSure)
-        .textContent(textContent)
-        .targetEvent(event)
-        .ok(this.maTranslate.trSync('common.ok'))
-        .cancel(this.maTranslate.trSync('common.cancel'));
-
-    return this.$mdDialog.show(confirm);
-};
-
 ModulesPageController.prototype.deleteModule = function($event, module, doDelete) {
 	if (!doDelete)
 		return module.$delete(false);
 	
-	this.confirm($event, 'modules.module.deleteConfirm').then(function() {
+	this.maDialogHelper.confirm($event, 'modules.module.deleteConfirm').then(function() {
 		return module.$delete(true);
 	});
 };
 
 ModulesPageController.prototype.restart = function($event) {
-	this.confirm($event, 'modules.restartConfirm').then(function() {
+	this.maDialogHelper.confirm($event, 'modules.restartConfirm').then(function() {
 		this.maModules.restart();
 	}.bind(this)).then(function() {
 		var toast = this.$mdToast.simple()

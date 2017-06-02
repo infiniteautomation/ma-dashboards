@@ -6,14 +6,21 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UpgradePageController.$inject = ['maModules', 'maDialogHelper'];
-function UpgradePageController(Modules, maDialogHelper) {
+UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope'];
+function UpgradePageController(Modules, maDialogHelper, $scope) {
     this.Modules = Modules;
     this.maDialogHelper = maDialogHelper;
+    this.$scope = $scope;
 }
 
 UpgradePageController.prototype.$onInit = function() {
     this.checkForUpgrades();
+
+    this.$scope.$on('maWatchdog', function(event, current, previous) {
+    	if (current.status !== previous.status && current.status === 'LOGGED_IN') {
+    	    this.checkForUpgrades();
+    	}
+    }.bind(this));
 };
 
 UpgradePageController.prototype.checkForUpgrades = function() {
@@ -44,6 +51,13 @@ UpgradePageController.prototype.moduleSelected = function(module) {
 };
 
 UpgradePageController.prototype.moduleDeselected = function(module) {
+};
+
+UpgradePageController.prototype.doUpgrade = function($event) {
+	this.maDialogHelper.confirm($event, 'ui.app.upgradeConfirm').then(function() {
+		return this.Modules.doUpgrade(this.installsSelected, this.upgradesSelected,
+			this.backupBeforeDownload, this.restartAfterDownload);
+	}.bind(this));
 };
 
 return {

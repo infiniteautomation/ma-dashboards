@@ -6,8 +6,8 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-DialogHelperFactory.$inject = ['$mdDialog', '$mdMedia'];
-function DialogHelperFactory($mdDialog, $mdMedia) {
+DialogHelperFactory.$inject = ['$mdDialog', '$mdMedia', 'maTranslate'];
+function DialogHelperFactory($mdDialog, $mdMedia, maTranslate) {
     function DialogHelper() {
     }
     
@@ -42,7 +42,21 @@ function DialogHelperFactory($mdDialog, $mdMedia) {
             locals: locals
         });
     };
-    
+
+    DialogHelper.prototype.confirm = function(event, translation) {
+        var areYouSure = maTranslate.trSync('ui.app.areYouSure');
+        var textContent = translation ? maTranslate.trSync(translation) : areYouSure;
+
+        var confirm = $mdDialog.confirm()
+            .title(areYouSure)
+            .ariaLabel(areYouSure)
+            .textContent(textContent)
+            .targetEvent(event)
+            .ok(maTranslate.trSync('common.ok'))
+            .cancel(maTranslate.trSync('common.cancel'));
+
+        return $mdDialog.show(confirm);
+    };
 
     DialogHelper.prototype.showConfigImportDialog = function(importData, $event) {
         var locals = {importData: importData};

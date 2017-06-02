@@ -49,6 +49,25 @@ function ModulesFactory($http, $q) {
         });
     };
     
+    Modules.doUpgrade = function(selectedInstalls, selectedUpgrades, backupBeforeDownload, restartAfterDownload) {
+    	var data = {
+			newInstalls: selectedInstalls,
+			upgrades: selectedUpgrades
+    	};
+    	
+        return $http({
+            method: 'POST',
+            data: data,
+            url: modulesUrl + '/upgrade',
+            params: {
+            	backup: backupBeforeDownload,
+            	restart: restartAfterDownload
+            }
+        }).then(function(response) {
+            return response.data;
+        });
+    };
+    
     Modules.restart = function() {
         return $http({
             method: 'PUT',

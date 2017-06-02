@@ -16,12 +16,12 @@
 		<span ma-tr="modules.versionCheck"></span>
 	</md-button>
 	
-	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length" ng-click="$ctrl.doUpgrade()">
+	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length" ng-click="$ctrl.doUpgrade($event)">
 		<md-icon>check</md-icon>
 		<span ma-tr="ui.app.installUpgradeX" ma-tr-args="[$ctrl.upgradesSelected.length + $ctrl.installsSelected.length]"></span>
 	</md-button>
 	
-	<div layout="column" class="md-padding">
+	<div layout="column" layout-align="start start" class="md-padding">
 		<md-checkbox ng-model="$ctrl.backupBeforeDownload"><span ma-tr="modules.versionCheck.advanced.backup"></span></md-checkbox>
 		<md-checkbox ng-model="$ctrl.restartAfterDownload"><span ma-tr="modules.versionCheck.advanced.restart"></span></md-checkbox>
 	</div>
@@ -29,8 +29,8 @@
 	<md-card>
 		<md-card-content>
 			<h2 ma-tr="modules.versionCheck.some"></h2>
-			<div ng-if="!$ctrl.upgrades" ma-tr="modules.versionCheck.none"></div>
-			<md-table-container class="ma-ui-upgrade-table">
+			<p ng-if="!$ctrl.upgrades.length" ma-tr="modules.versionCheck.none"></p>
+			<md-table-container ng-if="$ctrl.upgrades.length" class="ma-ui-upgrade-table">
 			  <table md-table md-row-select="true" multiple="true" ng-model="$ctrl.upgradesSelected">
 			    <thead md-head md-order="query.order">
 			      <tr md-row>
@@ -59,8 +59,8 @@
 			</md-table-container>
 			
 			<h2 ma-tr="modules.versionCheck.new"></h2>
-			<div ng-if="!$ctrl.installs" ma-tr="modules.versionCheck.noneToInstall"></div>
-			<md-table-container class="ma-ui-upgrade-table">
+			<p ng-if="!$ctrl.installs.length" ma-tr="modules.versionCheck.noneToInstall"></p>
+			<md-table-container ng-if="$ctrl.installs.length" class="ma-ui-upgrade-table">
 			  <table md-table md-row-select="true" multiple="true" ng-model="$ctrl.installsSelected">
 			    <thead md-head md-order="query.order">
 			      <tr md-row>
