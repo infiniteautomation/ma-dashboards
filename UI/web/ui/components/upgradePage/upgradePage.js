@@ -10,9 +10,6 @@ UpgradePageController.$inject = ['maModules', 'maDialogHelper'];
 function UpgradePageController(Modules, maDialogHelper) {
     this.Modules = Modules;
     this.maDialogHelper = maDialogHelper;
-    
-    this.installsSelected = [];
-    this.upgradesSelected = [];
 }
 
 UpgradePageController.prototype.$onInit = function() {
@@ -20,7 +17,12 @@ UpgradePageController.prototype.$onInit = function() {
 };
 
 UpgradePageController.prototype.checkForUpgrades = function() {
+	this.installsSelected = [];
+    this.upgradesSelected = [];
+    this.backupBeforeDownload = true;
+    this.restartAfterDownload = true;
 	delete this.error;
+	
 	this.checkPromise = this.Modules.checkForUpgrades().then(function(available) {
 		this.installs = available.newInstalls;
 		this.upgrades = available.upgrades;
@@ -36,6 +38,12 @@ UpgradePageController.prototype.showReleaseNotes = function($event, module) {
 		titleTr: 'ui.app.releaseNotes',
 		contentTemplate: module.releaseNotes
 	});
+};
+
+UpgradePageController.prototype.moduleSelected = function(module) {
+};
+
+UpgradePageController.prototype.moduleDeselected = function(module) {
 };
 
 return {

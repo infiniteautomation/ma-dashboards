@@ -1240,6 +1240,23 @@ ma-ui-modules-page .green-color {
   color: green;
 }
 
+ma-ui-upgrade-page .description-column,
+ma-ui-upgrade-page .vendor-column {
+	width: 23%;
+	min-width: 100px;
+}
+
+ma-ui-upgrade-page .name-column,
+ma-ui-upgrade-page .version-column,
+ma-ui-upgrade-page .new-version-column {
+	width: 18%;
+	min-width: 100px;
+}
+
+ma-ui-upgrade-page .notes-column {
+	width: 100px;
+}
+
 /* md-button with a circular spinner */
 
 .ma-ui-progress-button md-progress-circular {
