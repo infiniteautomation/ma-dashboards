@@ -19,13 +19,14 @@ function ModulesFactory($http, $q) {
             url: modulesUrl + '/list',
             headers: {
                 'Accept': 'application/json'
-            },
-            cache: true
+            }
         }).then(function(response) {
-            return response.data;
+            return response.data.map(function(module) {
+            	return new Module(module);
+            });
         });
     };
-    
+
     Modules.getCore = function() {
         return $http({
             method: 'GET',
@@ -35,7 +36,7 @@ function ModulesFactory($http, $q) {
             },
             cache: true
         }).then(function(response) {
-            return response.data;
+            return new Module(response.data);
         });
     };
     
@@ -46,6 +47,32 @@ function ModulesFactory($http, $q) {
         }).then(function(response) {
             return response.data;
         });
+    };
+    
+    Modules.restart = function() {
+        return $http({
+            method: 'PUT',
+            url: '/rest/v1/server/restart'
+        }).then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function Module(options) {
+    	angular.extend(this, options);
+    }
+    
+    Module.prototype.$delete = function(setDeleted) {
+    	return $http({
+            method: 'PUT',
+            url: modulesUrl + '/deletion-state/' + encodeURIComponent(this.name),
+            params: {
+            	'delete': setDeleted == null ? true : !!setDeleted
+            }
+        }).then(function(response) {
+        	angular.extend(this, response.data);
+            return this;
+        }.bind(this));
     };
 
     return Modules;

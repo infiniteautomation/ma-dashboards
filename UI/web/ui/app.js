@@ -591,7 +591,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         if (message) {
             var toast = $mdToast.simple()
                 .textContent(message)
-                .action('OK')
+                .action(Translate.trSync('common.ok'))
                 .highlightAction(true)
                 .position('bottom center')
                 .hideDelay(hideDelay);
