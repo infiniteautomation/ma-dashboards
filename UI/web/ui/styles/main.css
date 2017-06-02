@@ -7,6 +7,39 @@ body {
   font-size: 1.6rem;
 }
 
+/* Default styles to match the default theme, used pre-bootstrap, before angular-material is loaded */
+
+body {
+	background-color: #303030;
+	color: rgba(255, 255, 255, 0.87);
+}
+
+a:hover, a:focus {
+    color: rgba(194, 101, 0, 1.0);
+    border-bottom-color: rgba(194, 101, 0, 1.0);
+}
+a {
+    color: rgba(255, 133, 0, 1.0);
+    border-bottom-color: rgba(255, 133, 0, 0.2);
+}
+
+#pre-bootstrap-error {
+  margin-top: 20px;
+  color: #FF5722;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#pre-bootstrap-error pre {
+  margin-top: 10px;
+  text-align: left;
+}
+
+#pre-bootstrap-error code {
+  display: block;
+}
+
 /* Login page and page template */
 
 #loading-bar .bar {
@@ -1193,22 +1226,7 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
   margin-left: 10px
 }
 
-#pre-bootstrap-error {
-  margin-top: 20px;
-  color: red;
-  max-width: 1024px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#pre-bootstrap-error pre {
-  margin-top: 10px;
-  text-align: left;
-}
-
-#pre-bootstrap-error code {
-  display: block;
-}
+/* modules page */
 
 ma-ui-modules-page md-card-content > div {
   margin-top: 2px;
@@ -1218,7 +1236,52 @@ ma-ui-modules-page md-card-content > div md-icon.material-icons {
   font-size: 20px;
 }
 
-
 ma-ui-modules-page .green-color {
   color: green;
+}
+
+/* md-button with a circular spinner */
+
+.ma-ui-progress-button md-progress-circular {
+	margin: 8px 0;
+}
+
+.ma-ui-progress-button div > span {
+	margin-left: 6px;
+}
+
+/* Loading spinner */
+
+svg.ma-ui-spinner {
+  animation: spinner-rotator 1.6s linear infinite;
+}
+
+@keyframes spinner-rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+svg.ma-ui-spinner circle {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: spinner-dash 1.6s ease-in-out infinite;
+}
+
+@keyframes spinner-dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
 }

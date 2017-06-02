@@ -33,7 +33,10 @@
     <div id="loading-bar-container" md-colors="{color: 'accent-hue-2'}"></div>
     
 	<div ng-if="appLoading" class="app-loading">
-		<i class="fa fa-cog fa-spin"></i>
+		<svg class="ma-ui-spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+		   <circle fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30" stroke="#00ADEF"></circle>
+		</svg>
+		
         <div id="pre-bootstrap-error" style="display:none">
             <div></div>
             <a href="#">Show stack trace</a>
