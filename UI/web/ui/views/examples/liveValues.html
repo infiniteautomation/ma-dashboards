@@ -5,18 +5,21 @@
 </p>
 
 <p>
-    The <code>&lt;ma-point-value&gt;</code> directive will render the live value and other data from the data point. You can optionally supply the <code>display-type</code>
+    The <code>&lt;ma-point-value&gt;</code> directive will render the live value and other data from the data point. You can
+    optionally supply the <code>display-type</code>
     attribute to get the unit converted value or data/time of the update.
 </p>
 
 <p>
-    The <code>&lt;ma-get-point-value&gt;</code> will provide a point variable (named 'myPoint' in this example) that you can use in the scope of your
+    The <code>&lt;ma-get-point-value&gt;</code> will provide a point variable (named 'myPoint' in this example) that you can use
+    in the scope of your
     angular app. Live values can be displayed as text within your HTML by using <code ng-non-bindable>{{myPoint.value}}</code> or
     <code ng-non-bindable>{{myPoint.renderedValue}}</code> syntax.
 </p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValue"><code>&lt;ma-point-value&gt;</code></a> and <a ui-sref="ui.docs.ngMango.maGetPointValue"><code>&lt;ma-get-point-value&gt;</code></a>.
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValue"><code>&lt;ma-point-value&gt;</code></a> and <a
+    ui-sref="ui.docs.ngMango.maGetPointValue"><code>&lt;ma-get-point-value&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
@@ -26,14 +29,21 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValue"><code>&lt;ma
     <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
 </md-input-container>
 
-<label>Rendered point value:</label> <ma-point-value point="myPoint"></ma-point-value><br>
+<label>Rendered point value:</label>
+<ma-point-value point="myPoint"></ma-point-value>
+<br>
 
-<label>Unit converted point value:</label> <ma-point-value point="myPoint" display-type="converted"></ma-point-value><br>
+<label>Unit converted point value:</label>
+<ma-point-value point="myPoint" display-type="converted"></ma-point-value>
+<br>
 
-<label>Date/time point value:</label> <ma-point-value point="myPoint" display-type="dateTime"></ma-point-value><br>
+<label>Date/time point value:</label>
+<ma-point-value point="myPoint" display-type="dateTime"></ma-point-value>
+<br>
 
 <label>Format time using <a href="http://momentjs.com/docs/#/displaying/" target="_blank">Moment.js format string</a>:</label>
-<ma-point-value point="myPoint" display-type="dateTime" date-time-format="LTS"></ma-point-value><br>
+<ma-point-value point="myPoint" display-type="dateTime" date-time-format="LTS"></ma-point-value>
+<br>
 
 <h3>Using AngularJS interpolation</h3>
 <p><strong>Note: You need to have a <code>&lt;ma-get-point-value&gt;</code> tag for these to work.</strong></p>

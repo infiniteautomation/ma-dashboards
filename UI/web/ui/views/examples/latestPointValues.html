@@ -1,49 +1,54 @@
 <h1 ma-tr="ui.dox.latestPointValues"></h1>
 
-<p>This example demonstrates using the <code>latest</code> attribute on <code>&lt;ma-point-values&gt;</code> rather then to/from dates to return the last X number
-of values on a data point. The <code>realtime</code> attribute can be set to <code>true</code> to have the last X number of values update with live data.</p>
+<p>
+    This example demonstrates using the <code>latest</code> attribute on <code>&lt;ma-point-values&gt;</code> rather then to/from
+    dates to return the last X number
+    of values on a data point. The <code>realtime</code> attribute can be set to <code>true</code> to have the last X number of
+    values update with live data.
+</p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
 
 <div layout="row">
-    <md-input-container flex="">
-          <label>Choose a point</label>
-          <ma-point-list limit="200" ng-model="point1"></ma-point-list>
+    <md-input-container flex>
+        <label>Choose a point</label>
+        <ma-point-list limit="200" ng-model="point1"></ma-point-list>
     </md-input-container>
+    <md-input-container flex="25">
+        <label>Number of latest values</label>
+        <input ng-init="latestX=10" type="number" step="1" min="1" max="50" ng-model="latestX"
+               ng-model-options="{debounce:500}">
+    </md-input-container>
+    <md-switch ng-init="realtime=true" ng-model="realtime">
+        Realtime
+    </md-switch>
 </div>
 
 <div layout="row">
-    <md-input-container flex="33">
-          <label>Number of latest values</label>
-          <input ng-init="latestX=10" type="number" step="1" min="1" max="20" ng-model="latestX" ng-model-options="{debounce:500}">
-    </md-input-container>
-    <span flex=""></span>
-    <md-switch ng-init="realtime=true" ng-model="realtime">
-          Realtime
-    </md-switch>
+
 </div>
 
 <ma-point-values point="point1" values="point1Values" latest="latestX" realtime="realtime" rendered="true">
 </ma-point-values>
 
 <md-table-container>
-    <table md-table="">
-          <thead md-head="">
-                <tr>
-                      <th md-column="">Time</th>
-                      <th md-column="">Value</th>
-                </tr>
-          </thead>
-          <tbody md-body="">
-                <tr ng-repeat="value in point1Values | orderBy:'-timestamp'">
-                      <td md-cell="">{{value.timestamp | maMoment:'format':'ll LTS'}}</td>
-                      <td md-cell="">{{value.value}}</td>
-                </tr>
-          </tbody>
+    <table md-table>
+        <thead md-head>
+        <tr>
+            <th md-column>Time</th>
+            <th md-column>Value</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr ng-repeat="value in point1Values | orderBy:'-timestamp'">
+            <td md-cell>{{value.timestamp | maMoment:'format':'ll LTS'}}</td>
+            <td md-cell>{{value.value}}</td>
+        </tr>
+        </tbody>
     </table>
 </md-table-container>
 

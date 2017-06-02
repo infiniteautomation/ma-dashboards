@@ -1,14 +1,17 @@
 <h1 ma-tr="ui.dox.pointHierarchyLineChart"></h1>
 
 <p>
-<code>&lt;ma-point-hierarchy&gt;</code> accepts an array of strings into its <code>path</code> attribute. You can pass
-plain strings into this array or, use <code>*</code> as a wildcard for all subfolders, or separate multiple folders by
-a <code>|</code> character.
+    <code>&lt;ma-point-hierarchy&gt;</code> accepts an array of strings into its <code>path</code> attribute. You can pass
+    plain strings into this array or, use <code>*</code> as a wildcard for all sub-folders, or separate multiple folders by
+    a <code>|</code> character. Note, you will need to <a
+    ui-sref="ui.settings.importExport">import</a> the example virtual data sources <a
+    href="/modules/mangoUI/web/demoMangoConfig.json" target="_blank">from this JSON file</a> for it to work.
 </p>
+
 <p>
-  See API Documentation for <a ui-sref="ui.docs.ngMango.maPointHierarchy"><code>&lt;ma-point-hierarchy&gt;</code></a>, 
-  <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a> 
-  and <a ui-sref="ui.docs.ngMango.maSerialChart"><code>&lt;ma-serial-chart&gt;</code></a>.
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointHierarchy"><code>&lt;ma-point-hierarchy&gt;</code></a>,
+    <a ui-sref="ui.docs.ngMango.maPointValues"><code>&lt;ma-point-values&gt;</code></a>
+    and <a ui-sref="ui.docs.ngMango.maSerialChart"><code>&lt;ma-serial-chart&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
@@ -30,26 +33,33 @@ a <code>|</code> character.
 
 <h3>Your path</h3>
 <div>
-    <span ng-repeat="segment in segments track by $index" ng-click="segments.splice($index, 1)"><strong>{{segment}}</strong><span ng-if="!$last"> &gt; </span></span>
+    <span ng-repeat="segment in segments track by $index" ng-click="segments.splice($index, 1)">
+        <strong>{{segment}}</strong><span ng-if="!$last"> &gt; </span>
+    </span>
     <em ng-if="!segments.length" md-colors="{color:'warn'}">Path is empty, add a segment above.</em>
 </div>
+
 <div ng-if="segments.length">
     <em>Click segment to remove.</em>
 </div>
+
 <div>
     <strong ng-if="!hierarchy" md-colors="{color:'warn'}">Folder not found.</strong>
     <span ng-if="hierarchy">There are {{points.length}} points under your selected path.</span>
 </div>
+<br>
+
 <ma-point-hierarchy path="segments" hierarchy="hierarchy" points="points"></ma-point-hierarchy>
 
 <h3>Chart</h3>
 <div ng-if="hierarchy">
     <em ng-if="points.length > 20" md-colors="{color:'warn'}">Chart will only show for 20 points or less.</em>
-    
+
     <div ng-if="points.length <= 20">
-        <ma-point-values points="points" values="combined" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
+        <ma-point-values points="points" values="combined" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}"
+                         rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
         </ma-point-values>
-        
+
         <ma-serial-chart style="height: 500px; width: 100%" values="combined" points="points" legend="true">
         </ma-serial-chart>
     </div>

@@ -1,16 +1,19 @@
 <h1 ma-tr="ui.dox.switchImage"></h1>
+
 <p>
-	<code>&lt;ma-switch-img&gt;</code> extends the basic HTML image element to allow switching of images based on a point value. You can switch images based on
-	binary, multi-state, string, or just map any value from a data point using <code>src-map</code>.  Use <code>default-src</code> to set the default image that will display
-	if no match is found or the point is disabled.
+    <code>&lt;ma-switch-img&gt;</code> extends the basic HTML image element to allow switching of images based on a point value.
+    You can switch images based on binary, multi-state, strings, or just map any value from a data point using
+    <code>src-map</code>. Use <code>default-src</code> to set the default image that will display if no match is found or the
+    point is disabled.
 </p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maSwitchImg"><code>&lt;ma-switch-img&gt;</code></a>.
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maSwitchImg"><code>&lt;ma-switch-img&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
 
+<h3>Select binary/multi-state point:</h3>
 <div layout="row">
     <md-input-container flex>
         <label>Choose a point</label>
@@ -18,42 +21,44 @@ See API Documentation for <a ui-sref="ui.docs.ngMango.maSwitchImg"><code>&lt;ma-
     </md-input-container>
 </div>
 
-<p><label>Point value</label> <ma-point-value point="myPoint"></ma-point-value></p>
+<p>
+    Point Value: <ma-point-value point="myPoint"></ma-point-value>
+</p>
 
 <div layout="row" layout-wrap>
-	<div flex="50">
-		<p>Map example</p>
-		<ma-switch-img point="myPoint"
-			default-src="img/close.png"
-			src-map="{'false': 'img/ligthbulb_off.png', 'true': 'img/ligthbulb_on.png'}">
-		</ma-switch-img>
-	</div>
-	<div flex="50">
-		<p>Binary example</p>
-		<ma-switch-img point="myPoint"
-			src-false="img/ligthbulb_off.png"
-			src-true="img/ligthbulb_on.png"
-			default-src="img/close.png">
-		</ma-switch-img>
-	</div>
-	<div flex="50">
-		<p>Multi-state example</p>
-		<ma-switch-img point="myPoint"
-			src-1="img/arrow_up.png"
-			src-2="img/arrow_right.png"
-			src-3="img/arrow_down.png"
-			src-4="img/arrow_left.png"
-			default-src="img/close.png">
-		</ma-switch-img>
-	</div>
-	<div flex="50">
-		<p>String example</p>
-		<ma-switch-img point="myPoint"
-			src-test="img/ligthbulb_off.png"
-			src-test-my-string="img/ligthbulb_on.png"
-			default-src="img/close.png">
-		</ma-switch-img>
-	</div>
+    <div flex="50">
+        <h3>Map example</h3>
+        <ma-switch-img point="myPoint"
+                       default-src="img/close.png"
+                       src-map="{'false': 'img/ligthbulb_off.png', 'true': 'img/ligthbulb_on.png'}">
+        </ma-switch-img>
+    </div>
+    <div flex="50">
+        <h3>Binary example</h3>
+        <ma-switch-img point="myPoint"
+                       src-false="img/ligthbulb_off.png"
+                       src-true="img/ligthbulb_on.png"
+                       default-src="img/close.png">
+        </ma-switch-img>
+    </div>
+    <div flex="50">
+        <h3>Multi-state example</h3>
+        <ma-switch-img point="myPoint"
+                       src-1="img/arrow_up.png"
+                       src-2="img/arrow_right.png"
+                       src-3="img/arrow_down.png"
+                       src-4="img/arrow_left.png"
+                       default-src="img/close.png">
+        </ma-switch-img>
+    </div>
+    <div flex="50">
+        <h3>String example</h3>
+        <ma-switch-img point="myPoint"
+                       src-test="img/ligthbulb_off.png"
+                       src-test-my-string="img/ligthbulb_on.png"
+                       default-src="img/close.png">
+        </ma-switch-img>
+    </div>
 </div>
 
 </ma-ui-dual-pane-editor>

@@ -1,24 +1,38 @@
 <h1 ma-tr="ui.dox.getPointByXid"></h1>
 
-<p>You can use this syntax for <code>&lt;ma-point-value&gt;</code>, <code>&lt;ma-get-point-value&gt;</code> &amp;
-<code>&lt;ma-point-values&gt;</code>.</p>
-
-<p>The XID of the data point you want to display is manually passed as a string to the <code>point-xid</code> attribute.</p>
-
-<p>Note, this example uses point XIDs from the example virtual data sources, you can import <a href="/modules/mangoUI/web/demoMangoConfig.json" target="_blank">this JSON file</a> or enter your own XIDs.</p>
+<p>
+    You can use this syntax for <code>&lt;ma-point-value&gt;</code>, <code>&lt;ma-get-point-value&gt;</code> &amp;
+    <code>&lt;ma-point-values&gt;</code>.
+</p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValue"><code>&lt;ma-point-value&gt;</code></a> and <a ui-sref="ui.docs.ngMango.maGetPointValue"><code>&lt;ma-get-point-value&gt;</code></a>.
+    The XID of the data point you want to display is manually passed as a string to the <code>point-xid</code> attribute.
+</p>
+
+<p>
+    Note, this example uses a data point XID from the example virtual data sources, you can <a
+    ui-sref="ui.settings.importExport">import</a> this
+    <a href="/modules/mangoUI/web/demoMangoConfig.json" target="_blank">JSON file</a>
+    or enter your own XIDs.
+</p>
+
+<p>
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointValue"><code>&lt;ma-point-value&gt;</code></a> and <a
+    ui-sref="ui.docs.ngMango.maGetPointValue"><code>&lt;ma-get-point-value&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
 
 <!-- Display a point value using only its XID -->
-<p>The point value is <ma-point-value point-xid="DP_355369"></ma-point-value>.</p>
+<p>
+    The point value is <ma-point-value point-xid="DP_355369"></ma-point-value>
+</p>
 
 <!-- Get a point (and value) using its XID and assign it to an output variable "myPoint" -->
 <ma-get-point-value point-xid="DP_698831" point="myPoint"></ma-get-point-value>
 
-<p>The point name is "{{myPoint.name}}" and its value is {{myPoint.renderedValue}}.</p>
+<p>
+    The point name is "{{myPoint.name}}" and its value is {{myPoint.renderedValue}}.
+</p>
 
 </ma-ui-dual-pane-editor>

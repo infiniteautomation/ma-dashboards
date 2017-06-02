@@ -1,18 +1,24 @@
 <h1 ma-tr="ui.dox.watchdog"></h1>
-<p>There is a watchdog service which periodically pings an API endpoint to check if the Mango API is up and if
-the user is logged in.</p>
-<p>The mangoWatchdog object is on the root scope, you can check <code>mangoWatchdog.apiUp</code> to see if the API is up
-and <code>mangoWatchdog.loggedIn</code> to see if the user is logged in. There is also a more detailed status string
-available at <code>mangoWatchdog.status</code>.</p>
 
 <p>
-See API Documentation for the <a ui-sref="ui.docs.ngMangoServices.mangoWatchdog"><code>mangoWatchdog</code></a> service.
+    There is a watchdog service which periodically pings an API endpoint to check if the Mango API is up and if
+    the user is logged in.
+</p>
+
+<p>
+    The mangoWatchdog object is on the root scope, you can check <code>mangoWatchdog.apiUp</code> to see if the API is up
+    and <code>mangoWatchdog.loggedIn</code> to see if the user is logged in. There is also a more detailed status string
+    available at <code>mangoWatchdog.status</code>.
+</p>
+
+<p>
+    See API Documentation for the <a ui-sref="ui.docs.ngMangoServices.maWatchdog"><code>mangoWatchdog</code></a> service.
 </p>
 
 <ma-ui-dual-pane-editor>
 
 <div>
-  The watchdog status is <span ng-bind="mangoWatchdog.status"></span>.
+    The watchdog status is <span ng-bind="mangoWatchdog.status"></span>.
 </div>
 
 <div ng-if="!mangoWatchdog.apiUp">

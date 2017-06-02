@@ -1,45 +1,54 @@
 <h1 ma-tr="ui.dox.bars"></h1>
 
-<p>This examples shows two different ways to create a bar to display the value of a data points.
-You can use an <a href="https://material.angularjs.org/latest/demo/progressLinear" target="blank">Angular Material
-Progress Linear</a> directive and pass the value to <code>ng-value</code>, or create your own using CSS and the <code>ng-style</code> directive.</p>
-
-<p>You can use the <code>.bar-display</code> CSS classes used in this example as a starting point, please see
-<a href="/modules/mangoUI/web/ngMango-3.1/ngMango.css" target="_blank">ngMango.css</a>.</p>
+<p>
+    This examples shows two different ways to create a bar to display the value of a data points.
+    You can use an <a href="https://material.angularjs.org/latest/demo/progressLinear" target="blank">Angular Material
+        Progress Linear</a> directive and pass the value to <code>ng-value</code>, or create your own using CSS and the <code>ng-style</code>
+    directive.
+</p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maGetPointValue"><code>&lt;ma-get-point-value&gt;</code></a>.
+    You can use the <code>.bar-display</code> CSS classes used in this example as a starting point, please see
+    <a href="/modules/mangoUI/web/ngMango-3.2/ngMango.css" target="_blank">ngMango.css</a>.
+</p>
+
+<p>
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maGetPointValue"><code>&lt;ma-get-point-value&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
 
+<h3>Select numeric point and max value:</h3>
 <div layout="row">
     <md-input-container flex="75">
         <label>Choose a point</label>
         <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
     </md-input-container>
     <md-input-container flex="25">
-    	<label>Maximum value</label>
-    	<input type="number" ng-model="max" ng-init="max=10000">
+        <label>Maximum value</label>
+        <input type="number" ng-model="max" ng-init="max=1000">
     </md-input-container>
 </div>
-
+<br>
 
 <ma-get-point-value point="myPoint"></ma-get-point-value>
 
-<p>Angular Material progress linear bar</p>
-<md-progress-linear md-mode="determinate" ng-value="myPoint.convertedValue / max * 100" style="height:10px;"></md-progress-linear>
+<h3>Angular Material progress linear bar</h3>
+<md-progress-linear md-mode="determinate" ng-value="myPoint.convertedValue / max * 100"
+                    style="height:10px;"></md-progress-linear>
+<br>
 
-<p>Custom horizontal bar</p>
+<h3>Custom horizontal bar</h3>
 <div class="bar-display" ng-class="{'point-disabled': !myPoint.enabled}">
-	<div class="bar-display-fill" ng-style="{width: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
-	<div class="bar-display-text">{{myPoint.renderedValue}}</div>
+    <div class="bar-display-fill" ng-style="{width: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
+    <div class="bar-display-text">{{myPoint.renderedValue}}</div>
 </div>
+<br>
 
-<p>Custom vertical bar</p>
+<h3>Custom vertical bar</h3>
 <div class="bar-display bar-display-vertical" ng-class="{'point-disabled': !myPoint.enabled}">
-	<div class="bar-display-fill" ng-style="{height: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
-	<div class="bar-display-text">{{myPoint.renderedValue}}</div>
+    <div class="bar-display-fill" ng-style="{height: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
+    <div class="bar-display-text">{{myPoint.renderedValue}}</div>
 </div>
 
 </ma-ui-dual-pane-editor>

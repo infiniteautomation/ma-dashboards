@@ -2,13 +2,18 @@
 
 <p>
     Google maps can be added to your custom pages using the <code>&lt;ma-map&gt;</code> component. Under the hood <code>&lt;ma-map&gt;</code> uses the
-    <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library which allows you to nest <code>&lt;marker&gt;</code> and <code>&lt;info-window&gt;</code> components inside <code>&lt;ma-map&gt;</code>.
-    The example shown here demonstrates how you can use markers to toggle Info Windows that contain other Mango Components, change marker icons, set initial marker and map location (lat/long), 
+    <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> package which allows you to nest
+    <code>&lt;marker&gt;</code> and <code>&lt;info-window&gt;</code> components inside <code>&lt;ma-map&gt;</code>.
+    The example shown here demonstrates how you can use markers to toggle Info Windows that contain other components, change
+    marker icons, set initial marker and map location (lat/long),
     make markers draggable, and use a marker to set <code>output-data</code> that can update other parts of your page. 
 </p>
 
 <p>
-   * Note: In order to use the <code>&lt;ma-map&gt;</code> component you must set up your own Google Maps API Key. You can <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">get your key</a> from Google then enter it into the <a ui-sref="ui.settings.uiSettings">UI Settings</a> page.</em>
+   * Note: In order to use the <code>&lt;ma-map&gt;</code> component you must set up your own <code>Google Maps API Key</code>. You
+    can <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">get your key</a> from
+    Google then enter it into the <a ui-sref="ui.settings.uiSettings">UI Settings</a> page. For this example you will want to
+    update the <code>point-xids</code> to match data points in your system.
 </p>
 
 <p>
@@ -16,6 +21,7 @@
 </p>
 
 <ma-ui-dual-pane-editor>
+    
 <ma-get-point-value point-xid="Demo 01-fan" point="myPoint1"></ma-get-point-value> 
 <ma-get-point-value point-xid="Demo 01-setpoint" point="myPoint2"></ma-get-point-value> 
 <ma-get-point-value point-xid="Demo 01-Temp" point="myPoint3"></ma-get-point-value>
@@ -28,9 +34,9 @@
     <li><strong>Yellow Marker:</strong> Sets output-data variable to "{{myOutputData}}".</li>
 </ul>
 
-<br><br>
+<br>
 
-<ma-map center="-12.95, -38.45" zoom="12" map-type="roadmap" info-window-theme="dark" desktop-height="600px" mobile-height="450px" 
+<ma-map lat="-12.95" long="-38.45" zoom="12" map-type="roadmap" info-window-theme="dark" desktop-height="600px" mobile-height="450px"
 ng-init="myMarkers={
         true: 'img/map-markers/purple-dot.png',
         false: 'img/map-markers/orange-dot.png'}" output-data="myOutputData">
@@ -56,4 +62,5 @@ ng-init="myMarkers={
         </div>
     </info-window>
 </ma-map>
+
 </ma-ui-dual-pane-editor>

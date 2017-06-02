@@ -1,18 +1,27 @@
 <h1 ma-tr="ui.dox.pointList"></h1>
 
-<p>The <code>&lt;ma-point-list&gt;</code> directive displays a list of data points which you can select from.
-    All data points added to your Mango system will display by default.</p>
-
-<p>You can optionally supply the <code>query</code> attribute to filter the list of points using an object where the keys are the property names to filter on, or
-supply a <a href="http://www.persvr.org/rql/" target="_blank">RQL</a> query string inside single quotes.</p>
-
-<p>The <code>&lt;ma-filtering-point-list&gt;</code> directive allows you to select a data point by filtering on device names or point names that contain the text.
-    Search results will update as you type.</p>
-    
 <p>
-    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointList"><code>&lt;ma-point-list&gt;</code></a> and <a ui-sref="ui.docs.ngMango.maFilteringPointList"><code>&lt;ma-filtering-point-list&gt;</code></a>.
-</p>    
-    
+    The <code>&lt;ma-point-list&gt;</code> directive displays a list of data points which you can select from.
+    All data points added to your Mango system will display by default.
+</p>
+
+<p>
+    You can optionally supply the <code>query</code> attribute to filter the list of points using an object where the keys are the
+    property names to filter on, or
+    supply a <a href="http://www.persvr.org/rql/" target="_blank">RQL</a> query string inside single quotes.
+</p>
+
+<p>
+    The <code>&lt;ma-filtering-point-list&gt;</code> directive allows you to select a data point by filtering on device names or
+    point names that contain the text.
+    Search results will update as you type.
+</p>
+
+<p>
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maPointList"><code>&lt;ma-point-list&gt;</code></a> and <a
+    ui-sref="ui.docs.ngMango.maFilteringPointList"><code>&lt;ma-filtering-point-list&gt;</code></a>.
+</p>
+
 <ma-ui-dual-pane-editor>
 
 <div layout="column">
@@ -21,7 +30,8 @@ supply a <a href="http://www.persvr.org/rql/" target="_blank">RQL</a> query stri
         <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
     </md-input-container>
 
-    <p>You have chosen point "{{myPoint.name}}". It is {{myPoint.enabled ? 'enabled' : 'disabled'}} and belongs to device {{myPoint.deviceName}}</p>
+    <p>You have chosen point "{{myPoint.name}}". It is {{myPoint.enabled ? 'enabled' : 'disabled'}} and belongs to device
+        {{myPoint.deviceName}}</p>
 
     <h3>Filter using second input</h3>
 

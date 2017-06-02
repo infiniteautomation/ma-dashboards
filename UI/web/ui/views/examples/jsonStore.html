@@ -1,54 +1,70 @@
 <h1 ma-tr="ui.dox.jsonStore"></h1>
-<p>You can store arbitrary data in Mango's JSON store. You can use this functionality in combination with a config page to create your own setup variables
-for your dashboard or store text that the end user can easily update via your interface. Updates to the JSON store will sync realtime with your dashboard, no refresh needed.</p>
+
 <p>
-  You can set a unique <code>xid</code> and <code>item</code> to store multiple objects in the JSON store.
-  Any data you want to store should be passed to the value object and can be retrieved
-  using <code ng-non-bindable>{{myItem.jsonData.myProperty}}</code>
-</p>
+    You can store arbitrary data in Mango's JSON store. You can use this functionality in combination with a config page to create
+    your own setup variables for your dashboard or store text that the end user can easily update via your interface. Updates
+    to the JSON store will sync real time with your dashboard, no refresh needed.</p>
 <p>
-  Note that if you do not set <code>myItem.editPermission</code> / <code>myItem.readPermission</code> permission of the item, only the Admin will have access to it.
-  You can set these permissions to <code>'user'</code> to allow other users to read or edit data in the JSON store. The <code>'user'</code> permissions group is added to created Mango users by default.
+    You can set unique values for <code>xid</code> and <code>item</code> attributes to store multiple objects in the JSON store.
+    Any data you want to store should be passed to the value object and can be retrieved using <code ng-non-bindable>{{myItem
+    .jsonData.myProperty}}</code>.
 </p>
 
 <p>
-See API Documentation for <a ui-sref="ui.docs.ngMango.maJsonStore"><code>&lt;ma-json-store&gt;</code></a>.
+    Note that if you do not set <code>myItem.editPermission</code> / <code>myItem.readPermission</code> permission of the item,
+    only the Admin will have access to it. You can set these permissions to <code>'user'</code> to allow other users to read or
+    edit data in the JSON store. The <code>'user'</code> permissions group is added to new Mango users by default.
+</p>
+
+<p>
+    See API Documentation for <a ui-sref="ui.docs.ngMango.maJsonStore"><code>&lt;ma-json-store&gt;</code></a>.
 </p>
 
 <ma-ui-dual-pane-editor>
 
 <ma-json-store xid="test" item="myItem" value="myValue"></ma-json-store>
 
+<h3>Fill out this form and click save to store it in the json store:</h3>
 <div layout="column">
-  <md-input-container class="md-block">
-    <label>Name</label>
-    <input ng-model="myValue.name">
-  </md-input-container>
-  <md-input-container class="md-block">
-    <label>Phone number</label>
-    <input ng-model="myValue.phone">
-  </md-input-container>
-  <md-input-container class="md-block">
-    <label>Address</label>
-    <textarea ng-model="myValue.address" rows="4"></textarea>
-  </md-input-container>
-  <md-input-container class="md-block">
-    <label>Edit permission</label>
-    <input ng-model="myItem.editPermission">
-  </md-input-container>
-  <md-input-container class="md-block">
-    <label>Read permission</label>
-    <input ng-model="myItem.readPermission">
-  </md-input-container>
+    <md-input-container class="md-block">
+        <label>Name</label>
+        <input ng-model="myValue.name">
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>Phone number</label>
+        <input ng-model="myValue.phone">
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>Address</label>
+        <textarea ng-model="myValue.address" rows="3"></textarea>
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>Edit permission</label>
+        <input ng-model="myItem.editPermission">
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>Read permission</label>
+        <input ng-model="myItem.readPermission">
+    </md-input-container>
+</div>
+<div layout>
+    <md-button class="md-raised md-primary md-hue-3" ng-click="myItem.$save()" flex>
+        <md-icon>save</md-icon>
+        Save
+    </md-button>
+    <md-button class="md-raised md-warn" ng-click="myItem.$delete()" flex>
+        <md-icon>delete</md-icon>
+        Delete
+    </md-button>
+    <md-button class="md-raised" ng-click="myItem.$get()" flex>
+        <md-icon>undo</md-icon>
+        Revert
+    </md-button>
 </div>
 
-<md-button class="md-raised md-primary md-hue-3" ng-click="myItem.$save()"><md-icon>save</md-icon> Save</md-button>
-<md-button class="md-raised md-warn" ng-click="myItem.$delete()"><md-icon>delete</md-icon> Delete</md-button>
-<md-button class="md-raised" ng-click="myItem.$get()"><md-icon>undo</md-icon> Revert</md-button>
-
 <div style="margin-top:10px">
-<span>Your stored object contains {{myItem.jsonData.name}} {{myItem.jsonData.phone}} {{myItem.jsonData.address}}</span>
-<pre><code>{{myItem | json}}</code></pre>
+    <span>Your stored object contains {{myItem.jsonData.name}} {{myItem.jsonData.phone}} {{myItem.jsonData.address}}</span>
+    <pre><code>{{myItem | json}}</code></pre>
 </div>
 
 </ma-ui-dual-pane-editor>

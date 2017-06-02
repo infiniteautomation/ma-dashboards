@@ -1,31 +1,47 @@
 <h1 ma-tr="ui.dox.multistateRadio"></h1>
-<p>This example showcases using angular material <a href="https://material.angularjs.org/latest/demo/radioButton" target="_blank">radio button components</a> to set the
-value of multistate data points. Set the <code>ng-model</code> to the points <code>valueFn</code> property and
-set <code ng-nonbinding>ng-model-options="{getterSetter:true}"</code>.
-</p>
-<p>The first example shows how to loop through the text renderer map of the multistate point to get the various
-options. The second example shows how to use fixed values of 1-5.</p>
+
 <p>
-  See API Documentation for the <a ui-sref="ui.docs.ngMangoServices.Point({ '#': 'methods_valuefn' })"><code>valueFn</code></a> and 
-  <a ui-sref="ui.docs.ngMangoServices.Point({ '#': 'methods_renderermap' })"><code>rendererMap</code></a> methods on the <a ui-sref="ui.docs.ngMangoServices.Point"><code>Point</code></a> object.
+    This example showcases using angular material <a href="https://material.angularjs.org/latest/demo/radioButton" target="_blank">
+    radio buttons</a> to set the value of multistate data points. Set the <code>ng-model</code> to the points
+    <code>valueFn</code> property and set <code ng-nonbinding>ng-model-options="{getterSetter:true}"</code>.
 </p>
+
+<p>
+    The first example shows how to loop through the text renderer map of the multistate point to get the various
+    options set on the data point properties. The second example shows how to use fixed values of 0-5.
+</p>
+
+<p>
+    See API Documentation for the <code>valueFn</code> and <code>rendererMap</code> methods on the
+    <a ui-sref="ui.docs.ngMangoServices.maPoint"><code>Point</code></a> object.
+</p>
+
 <ma-ui-dual-pane-editor>
 
-<md-input-container class="md-block">
+<h3>Select multi-state point:</h3>
+<md-input-container>
     <label>Choose a point</label>
     <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
 </md-input-container>
 
-<p><strong>Point value:</strong> <ma-point-value point="myPoint"></ma-point-value></p>
+<p>
+    <strong>Point value:</strong>
+    <ma-point-value point="myPoint"></ma-point-value>
+</p>
+<br>
 
-<h3>Using multistate/binary text renderer to get options</h3>
+<h3>Using multistate text renderer to get options and range</h3>
 <md-radio-group ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
-    <md-radio-button ng-repeat="value in myPoint.rendererMap()" ng-value="value.key" ng-style="value">{{value.text}}</md-radio-button>
+    <md-radio-button ng-repeat="value in myPoint.rendererMap()" ng-value="value.key" ng-style="value">{{value.text}}
+    </md-radio-button>
 </md-radio-group>
+<br>
 
-<h3>Using fixed values</h3>
+<h3>Using fixed values to set options and range</h3>
 <md-radio-group ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
-    <md-radio-button ng-repeat="i in range(1,5)" value="{{i}}" ng-style="myPoint.valueRenderer(i)">{{myPoint.valueRenderer(i).text}}</md-radio-button>
+    <md-radio-button ng-repeat="i in range(0,5)" value="{{i}}" ng-style="myPoint.valueRenderer(i)">
+        {{myPoint.valueRenderer(i).text}}
+    </md-radio-button>
 </md-radio-group>
 
 </ma-ui-dual-pane-editor>
