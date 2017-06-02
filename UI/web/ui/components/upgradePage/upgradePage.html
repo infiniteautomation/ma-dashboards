@@ -1,17 +1,78 @@
-<h1 ma-tr="modules.versionCheck"></h1>
-
 <div flex layout="column" layout-align="center center" ng-if="$ctrl.checkPromise">
 	<md-progress-circular class="md-accent" md-mode="indeterminate"></md-progress-circular>
 	<p ma-tr="ui.app.pleaseWaitCheckingForUpgrades"></p>
 </div>
 
 <div ng-if="!$ctrl.checkPromise">
+	<h1 ma-tr="ui.app.moduleUpgrades"></h1>
+	
+	<md-button class="md-raised" ui-sref="^">
+		<md-icon>arrow_back</md-icon>
+		<span ma-tr="ui.app.backToModules"></span>
+	</md-button>
+	
 	<md-button class="md-raised md-primary" ng-disabled="$ctrl.checkPromise" ng-click="$ctrl.checkForUpgrades()">
 		<md-icon>update</md-icon>
 		<span ma-tr="modules.versionCheck"></span>
 	</md-button>
+
+	<h2 ma-tr="modules.versionCheck.some"></h2>
+	<div ng-if="!$ctrl.upgrades" ma-tr="modules.versionCheck.none"></div>
+	<md-table-container>
+	  <table md-table md-row-select="true" multiple="true" ng-model="$ctrl.upgradesSelected">
+	    <thead md-head md-order="query.order">
+	      <tr md-row>
+	        <th md-column md-order-by="name" ma-tr="common.name"></th>
+	        <th md-column md-order-by="description" ma-tr="ui.app.description"></th>
+	        <th md-column md-order-by="vendor" ma-tr="modules.vendor"></th>
+	        <th md-column md-order-by="version" ma-tr="ui.app.currentVersion"></th>
+	        <th md-column md-order-by="newVersion" ma-tr="ui.app.newVersion"></th>
+	        <th md-column ma-tr="ui.app.releaseNotes"></th>
+	      </tr>
+	    </thead>
+	    <tbody md-body>
+	      <tr md-row md-select="module" md-select-id="name" ng-repeat="module in $ctrl.upgrades track by $index">
+	        <td md-cell ng-bind="module.name"></td>
+	        <td md-cell ng-bind="module.description"></td>
+	        <td md-cell><a ng-href="{{module.vendorUrl}}" target="_blank"><span ng-bind="module.vendor"></span></a></td>
+	        <td md-cell ng-bind="module.version"></td>
+	        <td md-cell ng-bind="module.newVersion"></td>
+	        <td md-cell>
+	        	<md-button class="md-icon-button" ng-click="$ctrl.showReleaseNotes($event, module)"><md-icon>info</md-icon></md-button>
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</md-table-container>
 	
-	<pre ng-bind="$ctrl.installs | json"></pre>
-	<pre ng-bind="$ctrl.upgrades | json"></pre>
+	<h2 ma-tr="modules.versionCheck.new"></h2>
+	<div ng-if="!$ctrl.installs" ma-tr="modules.versionCheck.noneToInstall"></div>
+	<md-table-container>
+	  <table md-table md-row-select="true" multiple="true" ng-model="$ctrl.installsSelected">
+	    <thead md-head md-order="query.order">
+	      <tr md-row>
+	        <th md-column md-order-by="name" ma-tr="common.name"></th>
+	        <th md-column md-order-by="description" ma-tr="ui.app.description"></th>
+	        <th md-column md-order-by="vendor" ma-tr="modules.vendor"></th>
+	        <th md-column ma-tr="ui.app.currentVersion"></th>
+	        <th md-column md-order-by="version" ma-tr="ui.app.newVersion"></th>
+	        <th md-column ma-tr="ui.app.releaseNotes"></th>
+	      </tr>
+	    </thead>
+	    <tbody md-body>
+	      <tr md-row md-select="module" md-select-id="name" ng-repeat="module in $ctrl.installs track by $index">
+	        <td md-cell ng-bind="module.name"></td>
+	        <td md-cell ng-bind="module.description"></td>
+	        <td md-cell><a ng-href="{{module.vendorUrl}}" target="_blank"><span ng-bind="module.vendor"></span></a></td>
+	        <td md-cell ma-tr="ui.app.notInstalled"></td>
+	        <td md-cell ng-bind="module.newVersion"></td>
+	        <td md-cell>
+	        	<md-button class="md-icon-button" ng-click="$ctrl.showReleaseNotes($event, module)"><md-icon>info</md-icon></md-button>
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</md-table-container>
+
 	<div md-colors="{color: 'warn'}" ng-bind="$ctrl.error"></div>
 </div>

@@ -1,0 +1,24 @@
+<md-dialog flex="100" flex-gt-sm="70" flex-gt-md="60" flex-gt-lg="50">
+	<md-toolbar>
+	  <div class="md-toolbar-tools">
+	    <h2 ng-if="$ctrl.titleTr" ma-tr="{{$ctrl.titleTr}}"></h2>
+	    <h2 ng-if="!$ctrl.titleTr" ng-bind="$ctrl.title"></h2>
+	    <span flex></span>
+	    <md-button class="md-icon-button" ng-click="$ctrl.close()">
+	      <md-icon>close</md-icon>
+	    </md-button>
+	  </div>
+	</md-toolbar>
+	
+	<md-dialog-content ng-if="!$ctrl.contentTemplateUrl" layout="column" class="md-padding" flex ng-bind-html="$ctrl.contentTemplate">
+	</md-dialog-content>
+	
+	<md-dialog-content ng-if="$ctrl.contentTemplateUrl" layout="column" class="md-padding" flex ng-include="$ctrl.contentTemplateUrl">
+	</md-dialog-content>
+	
+	<md-dialog-actions layout="row">
+	  <md-button class="md-raised" ng-click="$ctrl.close()">
+	    <md-icon>close</md-icon>&nbsp;<span ma-tr="common.close"></span>
+	  </md-button>
+	</md-dialog-actions>
+</md-dialog>

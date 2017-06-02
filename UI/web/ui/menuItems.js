@@ -592,7 +592,7 @@ return [
                 template: '<ma-ui-upgrade-page flex layout="column"><ma-ui-upgrade-page>'
         	}
         },
-        menuTr: 'modules.versionCheck',
+        menuTr: 'ui.app.moduleUpgrades',
         menuIcon: 'update',
         permission: 'superadmin',
         menuHidden: true,

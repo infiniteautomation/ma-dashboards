@@ -40,6 +40,7 @@ define(['./services/Point',
         'angular',
         'require',
         'angular-resource',
+        'angular-sanitize',
         'angular-local-storage'
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, httpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, watchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
@@ -57,7 +58,7 @@ define(['./services/Point',
  *
  *
 **/
-var ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'LocalStorageModule']);
+var ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'ngSanitize', 'LocalStorageModule']);
 
 ngMangoServices.factory('maPoint', Point);
 ngMangoServices.factory('maPointHierarchy', PointHierarchy);

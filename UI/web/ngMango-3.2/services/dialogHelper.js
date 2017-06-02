@@ -25,6 +25,25 @@ function DialogHelperFactory($mdDialog, $mdMedia) {
         });
     };
     
+    DialogHelper.prototype.showBasicDialog = function($event, locals) {
+    	return $mdDialog.show({
+            controller: function() {
+            	this.close = function() {
+            		$mdDialog.hide();
+            	};
+            },
+            templateUrl: require.toUrl('./basicDialog.html'),
+            targetEvent: $event,
+            clickOutsideToClose: true,
+            escapeToClose: true,
+            fullscreen: $mdMedia('xs') || $mdMedia('sm'),
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: locals
+        });
+    };
+    
+
     DialogHelper.prototype.showConfigImportDialog = function(importData, $event) {
         var locals = {importData: importData};
         var templateUrl = require.toUrl('../components/configImportDialog/configImportDialogContainer.html');

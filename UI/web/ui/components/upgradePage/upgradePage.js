@@ -6,9 +6,13 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UpgradePageController.$inject = ['maModules'];
-function UpgradePageController(Modules) {
+UpgradePageController.$inject = ['maModules', 'maDialogHelper'];
+function UpgradePageController(Modules, maDialogHelper) {
     this.Modules = Modules;
+    this.maDialogHelper = maDialogHelper;
+    
+    this.installsSelected = [];
+    this.upgradesSelected = [];
 }
 
 UpgradePageController.prototype.$onInit = function() {
@@ -25,6 +29,13 @@ UpgradePageController.prototype.checkForUpgrades = function() {
 	}.bind(this)).then(function() {
 		delete this.checkPromise;
 	}.bind(this));
+};
+
+UpgradePageController.prototype.showReleaseNotes = function($event, module) {
+	this.maDialogHelper.showBasicDialog($event, {
+		titleTr: 'ui.app.releaseNotes',
+		contentTemplate: module.releaseNotes
+	});
 };
 
 return {
