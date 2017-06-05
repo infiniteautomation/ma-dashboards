@@ -1,9 +1,11 @@
-*Version 3.1.0*
-* Upgraded to work with core version 3.1.x
+*Version 3.7.0*
+* Upgraded to work with core version 3.2.x
+* Note: This module is deprecated, please use the mangoUI module instead. This module is only maintained to facilitate upgrades to the UI module.
 
 *Version 3.6.0*
 * Release date 2017-05-23
 * Core 3.1.x compatible
+* Note: This module is deprecated, please use the mangoUI module instead. This module is only maintained to facilitate upgrades to the UI module.
 
 *Version 3.5.0*
 * Release date 2017-04-07
@@ -11,6 +13,7 @@
 * Should be functionally identical to dashboards v3.3.1
 * Use new REST login/logout endpoints
 * Update watchdog code for new REST responses
+* Note: This module is deprecated, please use the mangoUI module instead. This module is only maintained to facilitate upgrades to the UI module.
 
 *Version 3.4.0*
 * Release date 2016-08-23
