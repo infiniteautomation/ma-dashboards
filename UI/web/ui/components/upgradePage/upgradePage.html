@@ -11,15 +11,17 @@
 		<span ma-tr="ui.app.backToModules"></span>
 	</md-button>
 	
-	<md-button class="md-raised md-primary" ng-disabled="$ctrl.checkPromise" ng-click="$ctrl.checkForUpgrades()">
+	<md-button class="md-raised md-primary" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise" ng-click="$ctrl.checkForUpgrades()">
 		<md-icon>update</md-icon>
 		<span ma-tr="modules.versionCheck"></span>
 	</md-button>
 	
-	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length" ng-click="$ctrl.doUpgrade($event)">
+	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length || $ctrl.upgradePromise" ng-click="$ctrl.doUpgrade($event)">
 		<md-icon>check</md-icon>
 		<span ma-tr="ui.app.installUpgradeX" ma-tr-args="[$ctrl.upgradesSelected.length + $ctrl.installsSelected.length]"></span>
 	</md-button>
+	
+	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
 	
 	<div layout="column" layout-align="start start" class="md-padding">
 		<md-checkbox ng-model="$ctrl.backupBeforeDownload"><span ma-tr="modules.versionCheck.advanced.backup"></span></md-checkbox>
@@ -44,7 +46,7 @@
 			    </thead>
 			    <tbody md-body>
 			      <tr md-row md-select="module" md-select-id="name" md-on-select="$ctrl.moduleSelected" md-on-deselect="$ctrl.moduleDeselected"
-			      		ng-disabled="$ctrl.upgradePromise" ng-repeat="module in $ctrl.upgrades track by $index">
+			      		ng-disabled="$ctrl.upgradePromise || module.downloaded" ng-repeat="module in $ctrl.upgrades track by $index">
 			        <td class="name-column" md-cell ng-bind="module.name"></td>
 			        <td class="description-column" md-cell ng-bind="module.description"></td>
 			        <td class="vendor-column" md-cell><a ng-href="{{module.vendorUrl}}" target="_blank"><span ng-bind="module.vendor"></span></a></td>
@@ -74,11 +76,17 @@
 			    </thead>
 			    <tbody md-body>
 			      <tr md-row md-select="module" md-select-id="name" md-on-select="$ctrl.moduleSelected" md-on-deselect="$ctrl.moduleDeselected"
-			      		ng-disabled="$ctrl.upgradePromise" ng-repeat="module in $ctrl.installs track by $index">
+			      		ng-disabled="$ctrl.upgradePromise || module.downloaded" ng-repeat="module in $ctrl.installs track by $index">
 			        <td class="name-column" md-cell ng-bind="module.name"></td>
 			        <td class="description-column" md-cell ng-bind="module.description"></td>
 			        <td class="vendor-column" md-cell><a ng-href="{{module.vendorUrl}}" target="_blank"><span ng-bind="module.vendor"></span></a></td>
-			        <td class="version-column" md-cell ma-tr="ui.app.notInstalled"></td>
+			        <td class="version-column" md-cell>
+			        	<span ng-if="module.downloaded">
+			        		<md-icon>file_download</md-icon>&nbsp;
+			        		<span ma-tr="ui.app.awaitingRestart"></span>
+			        	</span>
+			        	<span ng-if="!module.downloaded" ma-tr="ui.app.notInstalled"></span>
+			        </td>
 			        <td class="new-version-column" md-cell ng-bind="module.newVersion"></td>
 			        <td class="notes-column" md-cell>
 			        	<md-button class="md-icon-button" ng-click="$ctrl.showReleaseNotes($event, module)"><md-icon>info</md-icon></md-button>

@@ -14,6 +14,7 @@ define(['./services/Point',
         './services/Util',
         './services/watchdog',
         './services/EventManager',
+        './services/WebSocketManager',
         './services/cssInjector',
         './services/DataSource',
         './services/DeviceName',
@@ -29,6 +30,7 @@ define(['./services/Point',
         './services/qDecorator',
         './services/UserEventManager',
         './services/Modules',
+        './services/ModulesWebSocket',
         './services/Permissions',
         './services/systemSettings',
         './services/ImportExport',
@@ -43,9 +45,10 @@ define(['./services/Point',
         'angular-sanitize',
         'angular-local-storage'
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, httpInterceptor, JsonStore,
-        JsonStoreEventManagerFactory, Util, watchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
+        JsonStoreEventManagerFactory, Util, watchdog, EventManager, WebSocketManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
-        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, systemSettingsProvider,
+        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, ModulesWebSocketFactory,
+        PermissionsFactory, systemSettingsProvider,
         ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, dateFilterFactory, trFilterFactory, angular, require) {
 'use strict';
 /**
@@ -71,6 +74,7 @@ ngMangoServices.factory('maJsonStoreEventManager', JsonStoreEventManagerFactory)
 ngMangoServices.factory('maUtil', Util);
 ngMangoServices.factory('maWatchdog', watchdog);
 ngMangoServices.factory('maEventManager', EventManager);
+ngMangoServices.factory('maWebSocketManager', WebSocketManager);
 ngMangoServices.factory('maCssInjector', cssInjector);
 ngMangoServices.factory('maDataSource', DataSourceFactory);
 ngMangoServices.factory('maDeviceName', DeviceNameFactory);
@@ -85,6 +89,7 @@ ngMangoServices.factory('maPointValues', pointValuesFactory);
 ngMangoServices.factory('maStatistics', statisticsFactory);
 ngMangoServices.factory('maUserEventManager', UserEventManager);
 ngMangoServices.factory('maModules', ModulesFactory);
+ngMangoServices.factory('maModulesWebSocket', ModulesWebSocketFactory);
 ngMangoServices.factory('maPermissions', PermissionsFactory);
 ngMangoServices.provider('maSystemSettings', systemSettingsProvider);
 ngMangoServices.factory('maImportExport', ImportExportFactory);
