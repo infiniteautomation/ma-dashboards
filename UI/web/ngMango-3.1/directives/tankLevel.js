@@ -23,7 +23,7 @@ define(['amcharts/serial', 'require', 'angular', './PointValueController'], func
  * @param {number=} value Allows you to set the tank's fill height to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
  *
  * @usage
- * <ma-tank-level point="myPoint" color="{{choosenColor}}" max="{{max}}" style="width:300px; height:200px; position:absolute; top:0; left:0px; z-index:2">
+ * <ma-tank-level point="myPoint" color="{{choosenColor}}" max="max" style="width:300px; height:200px;">
 </ma-tank-level>
  *
  */
