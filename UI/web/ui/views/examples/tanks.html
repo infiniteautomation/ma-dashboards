@@ -19,14 +19,8 @@
 <ma-ui-dual-pane-editor>
 
 <div layout="row">
-    <md-input-container flex="50">
-        <label>Point for tank 1</label>
-        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
-    </md-input-container>
-    <md-input-container flex="50">
-        <label>Point for tank 2</label>
-        <ma-point-list limit="200" ng-model="myPoint2"></ma-point-list>
-    </md-input-container>
+    <ma-filtering-point-list flex limit="200" ng-model="myPoint" auto-init="true"></ma-filtering-point-list>
+    <ma-filtering-point-list flex limit="200" ng-model="myPoint2" auto-init="true"></ma-filtering-point-list>
 </div>
 
 <div layout="row">
@@ -44,12 +38,9 @@
 <ma-get-point-value point="myPoint2" display-type="none"></ma-get-point-value>
 
 <div style="position:relative; height: 200px">
-    <ma-tank-level point="myPoint" color="{{choosenColor}}" max="{{max}}"
-                   style="width:300px; height:200px; position:absolute; top:0; left:0px; z-index:2"></ma-tank-level>
-    <div class="pipe-left-right" ng-style="{'background-color':choosenColor}"
-         style="position:absolute; top:160px; left:180px; width: 250px; z-index: 1"></div>
-    <ma-tank-level point="myPoint2" color="{{choosenColor}}" max="{{max}}"
-                   style="width:300px; height:200px; position:absolute; top:0; left:400px; z-index:2"></ma-tank-level>
+	<ma-tank-level point="myPoint" color="{{choosenColor}}" max="max" style="width:300px; height:200px; position:absolute; top:0; left:0px; z-index:2"></ma-tank-level>
+	<div class="pipe-left-right" ng-style="{'background-color':choosenColor}" style="position:absolute; top:160px; left:180px; width: 250px; z-index: 1"></div>
+	<ma-tank-level point="myPoint2" color="{{choosenColor}}" max="max" style="width:300px; height:200px; position:absolute; top:0; left:400px; z-index:2"></ma-tank-level>
 </div>
 
 </ma-ui-dual-pane-editor>
