@@ -11,7 +11,7 @@ uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD
 function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
         MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION) {
     
-    var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme'];
+    var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'userModuleName'];
     var themeId = 0;
     var userThemeGenerated = false;
     
