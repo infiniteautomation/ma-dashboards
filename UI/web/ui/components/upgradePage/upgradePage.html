@@ -51,7 +51,13 @@
 			        <td class="description-column" md-cell ng-bind="module.description"></td>
 			        <td class="vendor-column" md-cell><a ng-href="{{module.vendorUrl}}" target="_blank"><span ng-bind="module.vendor"></span></a></td>
 			        <td class="version-column" md-cell ng-bind="module.version"></td>
-			        <td class="new-version-column" md-cell ng-bind="module.newVersion"></td>
+			        <td class="new-version-column" md-cell>
+			        	<span ng-bind="module.newVersion"></span>
+			        	<span ng-if="module.downloaded">
+				        	<md-icon>file_download</md-icon>
+			        		<md-tooltip md-autohide="true" ma-tr="ui.app.awaitingRestart"></md-tooltip>
+			        	</span>
+			        </td>
 			        <td class="notes-column" md-cell>
 			        	<md-button class="md-icon-button" ng-click="$ctrl.showReleaseNotes($event, module)"><md-icon>info</md-icon></md-button>
 			        </td>
@@ -80,14 +86,14 @@
 			        <td class="name-column" md-cell ng-bind="module.name"></td>
 			        <td class="description-column" md-cell ng-bind="module.description"></td>
 			        <td class="vendor-column" md-cell><a ng-href="{{module.vendorUrl}}" target="_blank"><span ng-bind="module.vendor"></span></a></td>
-			        <td class="version-column" md-cell>
+			        <td class="version-column" md-cell ma-tr="ui.app.notInstalled"></td>
+			        <td class="new-version-column" md-cell>
+			        	<span ng-bind="module.newVersion"></span>
 			        	<span ng-if="module.downloaded">
-			        		<md-icon>file_download</md-icon>&nbsp;
-			        		<span ma-tr="ui.app.awaitingRestart"></span>
+				        	<md-icon>file_download</md-icon>
+			        		<md-tooltip md-autohide="true" ma-tr="ui.app.awaitingRestart"></md-tooltip>
 			        	</span>
-			        	<span ng-if="!module.downloaded" ma-tr="ui.app.notInstalled"></span>
 			        </td>
-			        <td class="new-version-column" md-cell ng-bind="module.newVersion"></td>
 			        <td class="notes-column" md-cell>
 			        	<md-button class="md-icon-button" ng-click="$ctrl.showReleaseNotes($event, module)"><md-icon>info</md-icon></md-button>
 			        </td>
