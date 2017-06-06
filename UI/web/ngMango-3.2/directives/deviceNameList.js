@@ -20,6 +20,8 @@ define(['angular', 'require'], function(angular, require) {
  * @param {string=} data-source-xid If provided will filter device names to a specific data source by xid.
  * @param {string=} data-source-id If provided will filter device names to a specific data source by id.
  * @param {string=} contains If provided will filter device names to those containing the specified string. Capitalization sensitive. (eg: `'Meta'`)
+ * @param {boolean=} show-clear If set to `true` a clear option will be shown at the top of the the list, allowing you to set
+ * the data source to undefined. (Defaults to `false`)
  *
  * @usage
  * <md-input-container>

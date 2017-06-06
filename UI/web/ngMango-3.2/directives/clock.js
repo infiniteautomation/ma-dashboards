@@ -19,8 +19,8 @@ define(['amcharts/gauge', 'jquery', 'moment-timezone'], function(AmCharts, $, mo
   * @param {string=} timezone If provided, will switch which timezone used for displaying the current time. Can be set as a [TZ string](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) or you can use the timezone of the user
   currently logged into Mango (by evaluating the expression `{{user.getTimezone()}}` to return a string).
   * @param {string=} text Sets the label text
-  * @param {object=} options extend AmCharts configuration object for customizing design of the clock (see [amCharts](https://www.amcharts.com/demos/clock/))
   * @param {boolean=} show-seconds Turns seconds hand on off. (Defaults to `true`)
+  * @param {object=} options extend AmCharts configuration object for customizing design of the clock (see [amCharts](https://www.amcharts.com/demos/clock/))
   *
   * @usage
   * <ma-now update-interval="1 SECONDS" output="time"></ma-now>

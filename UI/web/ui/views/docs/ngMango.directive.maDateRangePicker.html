@@ -61,5 +61,10 @@ Format the interval duration as a string starting with a number followed by one 
 </ul>
 Eg: <code>update-interval=&quot;10 minutes&quot;</code></p>
 </div></td></tr><tr><td>format <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-madaterangepicker-page"><p>Specifies the formatting of the outputted to the <code>from</code>/<code>to</code> when not using angular material (using <a href="http://momentjs.com/">momentJs</a> formatting)</p>
+</div></td></tr><tr><td>timezone <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-madaterangepicker-page"><p>If provided, will switch which timezone used for displaying the current time. Can be set as a <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">TZ string</a> or you can use the timezone of the user</p>
+</div></td></tr><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-madaterangepicker-page"><p>Set to true to force the time interval to update.</p>
+</div></td></tr><tr><td>onChange</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="ngmango-directive-page ngmango-directive-madaterangepicker-page"><p>Pass in a function or expression to be evaluated when the time updates.  (eg.
+<code>on-change=&quot;$ctrl.timeUpdated(from, to, preset)&quot;</code>)</p>
+</div></td></tr><tr><td>no-underline <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-madaterangepicker-page"><p>Set to true to disable line under input.</p>
 </div></td></tr></tbody></table></div>
 </div>

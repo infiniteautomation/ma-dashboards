@@ -13,17 +13,23 @@
   * - Use `<ma-watch-list-chart>` to display the watch list's custom chart on a custom page.
   * - Use with `<ma-watch-list-select>` and pass in data from a watch list object.
   *
-  * @param {array} add-checked Array of points to add to the chart (`myWatchlist.data.selectedPoints`).
-  * @param {object} chart-config Chart config object from the watchlist object (`myWatchlist.data.chartConfig`).
+  * @param {array} points Array of points to add to the chart (`myWatchlist.data.selectedPoints`).
+  * @param {object} watch-list Watch list object, passed in from `watch-list-get`
   * @param {string} to Timestamp to start charting. Can be from `dateBar` or `<ma-date-range-picker>`.
   * @param {string} from Timestamp to end charting. Can be from `dateBar` or `<ma-date-range-picker>`.
   * @param {string} rollup-type Rollup type.
-  * @param {string} rollup-interval-number Rollup inteval number.
+  * @param {string} rollup-interval-number Rollup interval number.
   * @param {number} rollup-interval-period Rollup interval unit.
-  * @param {string} chart-height Height of the chart. Specify with px or % (`400px`). 
-  * @param {boolean} edit-mode Set to `true` to display chart customization controls. Defaults to `false`. 
-  * @param {boolean} stats-tab Set to `true` to display stats tab. Defaults to `false`. 
-  * @param {boolean} export Set to `true` to display chart export and annotation options. Defaults to `false`. 
+  * @param {string} chart-height Height of the chart. Specify with px or % (`400px`).
+  * @param {boolean=} edit-mode Set to `true` to display chart customization controls. (Defaults to `false`).
+  * @param {boolean=} stats-tab Set to `true` to display stats tab. (Defaults to `false`_.
+  * @param {boolean=} export Set to `true` to display chart export and annotation options. Defaults to `false`.
+  *
+  * @param {boolean=} legend Set to false to hide the legend. (Defaults to `true`)
+  * @param {boolean=} balloon  Set to false to hide the balloon. (Defaults to `true`)
+  * @param {function=} on-values-updated Pass in a function or expression to be evaluated when the values update. (eg.
+  * `on-values-updated="$ctrl.valuesUpdated($values)"`)
+  *
   * 
   * @usage
   * <ma-watch-list-select no-select="true" watch-list-xid="WatchList323" watch-list="myWatchlist"></ma-watch-list-select>
@@ -44,7 +50,6 @@ function watchListChart() {
         controllerAs: '$ctrl',
         bindToController: {
             watchList: '<',
-            //parameters: '<?',
             points: '<',
             'export': '<?',
             legend: '<?',

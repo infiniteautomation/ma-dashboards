@@ -59,6 +59,11 @@ define(['moment-timezone'], function(moment) {
 </ul>
 Eg: `update-interval="10 minutes"`
  * @param {string=} format Specifies the formatting of the outputted to the `from`/`to` when not using angular material (using [momentJs](http://momentjs.com/) formatting)
+ * @param {string=} timezone If provided, will switch which timezone used for displaying the current time. Can be set as a [TZ string](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) or you can use the timezone of the user
+ * @param {string=} refresh Set to true to force the time interval to update.
+ * @param {function} onChange Pass in a function or expression to be evaluated when the time updates.  (eg.
+ * `on-change="$ctrl.timeUpdated(from, to, preset)"`)
+ * @param {boolean=} no-underline Set to true to disable line under input.
  *
  * @usage
  * <md-input-container>

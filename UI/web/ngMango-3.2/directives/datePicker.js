@@ -16,15 +16,19 @@ define(['angular', 'moment'], function(angular, moment) {
  * - <a ui-sref="ui.examples.basics.datePresets">View Demo</a>
  * @param {object} ng-model The variable to hold the resulting timestamp
  * @param {string=} format Specifies the formatting of the date/time within the input (using [momentJs](http://momentjs.com/) formatting)
+ * @param {string=} timezone Specifies the timezone
+ * @param {string=} mode Specify whether to use the date picker to set `date`, `time`, or `both` for both date and time.
+ * @param {boolean=} auto-switch-time Whether or not time picker will automatically switch to minute select after selecting
+ * hour on clock. (defaults to `true`)
  *
  * @usage
  * <md-input-container>
        <label>From date</label>
-       <ma-date-picker ng-model="from" format="MMM-Do-YY @ ha"></ma-date-picker>
+       <ma-date-picker ng-model="from" format="MMM-Do-YY" mode="date"></ma-date-picker>
   </md-input-container>
   <md-input-container>
        <label>To date</label>
-       <ma-date-picker ng-model="to" format="MMM-Do-YY @ ha"></ma-date-picker>
+       <ma-date-picker ng-model="to" format="MMM-Do-YY" mode="date"></ma-date-picker>
   </md-input-container>
  */
 function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, $q) {
@@ -35,7 +39,7 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
             icon: 'access_time',
             category: 'timeAndDate',
             attributes: {
-                mode: {options: ['date', 'time', 'datetime']}
+                mode: {options: ['date', 'time', 'both']}
             }
         },
         scope: {

@@ -22,6 +22,9 @@ define(['angular', './PointValueController'], function(angular, PointValueContro
  * @param {object=} src-map Use an object to map any data point value to an image path: (`'value1': 'img/image1.png', 'value2': 'img/image2.png'}`)
  * @param {string=} src-### The part of attribute after `src-` (the `###`) is used to compare against the point value.
  For strings with spaces replace the spaces in the point value with dashes in attribute name. *Not to be used with `src-map` attribute.
+ * @param {string=} point-xid Alternatively to inputting a point you can input a point xid.
+ * @param {boolean=} toggle-on-click Set to true to enable click to toggle.
+ * @param {string=} value REPLACE
  *
  * @usage
  <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>

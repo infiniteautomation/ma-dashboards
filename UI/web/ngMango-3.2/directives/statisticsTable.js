@@ -17,6 +17,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
  * @param {object} statistics Input the statistics object from `<ma-point-statistics>`
  * @param {boolean=} hide-starts-and-runtimes If set to `false`, `starts` and `runtimes` statistics will not display for a binary/multistate point
  (Defaults to `true`)
+ * @param {string} timezone The display date will have the given timezone.
  *
  * @usage
  * <ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>

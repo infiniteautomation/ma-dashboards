@@ -24,6 +24,8 @@ define([], function() {
  * @param {string=} point-xid If used you can hard code in a data point's `xid` to get its live values.
  * @param {array=} points Rather then passing in a single `point` object to `point` you can pass in an
  array of point objects (from `<ma-point-query>` for example) and have the live values added to each point object in the array.
+ * @param {function=} on-value-updated Pass in a function or expression to be evaluated when the value updates. (eg.
+ * `on-value-updated="$ctrl.valueUpdated(point)"`)
  *
  * @usage
  *

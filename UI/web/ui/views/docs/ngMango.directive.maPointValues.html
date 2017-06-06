@@ -16,7 +16,7 @@
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">&lt;ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes"&gt;
-&lt;/ma-point-values&gt;</pre>
+&lt;/ma-point-values&gt;</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Inputs a <code>point</code> object from <code>&lt;ma-point-list&gt;</code></p>
 </div></td></tr><tr><td>points <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Alternatively you can input an array of points from <code>&lt;ma-point-query&gt;</code></p>
 </div></td></tr><tr><td>point-xid <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Alternatively you can pass in the <code>xid</code> of a point to use.</p>
@@ -39,8 +39,7 @@
     <li>LAST</li>
     <li>COUNT</li>
     <li>INTEGRAL</li>
-</ul>
-</div></td></tr><tr><td>rollup-interval <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>The interval used with the rollup. Format the interval duration as a string starting with a number followed by one of these units:</p>
+</ul></div></td></tr><tr><td>rollup-interval <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>The interval used with the rollup. Format the interval duration as a string starting with a number followed by one of these units:</p>
 <ul>
     <li>years</li>
     <li>months</li>
@@ -50,8 +49,12 @@
     <li>minutes</li>
     <li>seconds</li>
     <li>milliseconds</li>
-</ul>
-</div></td></tr><tr><td>rendered <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If set to <code>true</code> the values will be outputted in the points text rendered value format.</p>
+</ul></div></td></tr><tr><td>rendered <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If set to <code>true</code> the values will be outputted in the points text rendered value format.</p>
+</div></td></tr><tr><td>converted <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If set to <code>true</code> the values will be outputted in the points converted format.</p>
+</div></td></tr><tr><td>timezone <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>The output date will have the given timezone.</p>
+</div></td></tr><tr><td>use-cache <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Set to true to use cached values.</p>
+</div></td></tr><tr><td>on-values-updated <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>Pass in a function or expression to be evaluated when the values update. (eg.
+<code>on-values-updated=&quot;$ctrl.valuesUpdated($values)&quot;</code>)</p>
 </div></td></tr><tr><td>date-format <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If you are passing in <code>to/from</code> as strings, then you must specify the moment.js format for parsing the values.</p>
 </div></td></tr><tr><td>timeout <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If provided you can set the timeout (in milliseconds) on the querying of point values. If not supplied the Mango system default timeout will be used.</p>
 </div></td></tr><tr><td>auto-rollup-interval <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointvalues-page"><p>If set to <code>true</code> the rollup interval will automatically be set based on the to-from duration and rollup type.

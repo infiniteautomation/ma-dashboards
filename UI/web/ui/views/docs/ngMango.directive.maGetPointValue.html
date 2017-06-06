@@ -30,5 +30,7 @@ then the point object will be extended with the live updating value.</p>
 </div></td></tr><tr><td>point-xid <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-magetpointvalue-page"><p>If used you can hard code in a data point&#39;s <code>xid</code> to get its live values.</p>
 </div></td></tr><tr><td>points <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="ngmango-directive-page ngmango-directive-magetpointvalue-page"><p>Rather then passing in a single <code>point</code> object to <code>point</code> you can pass in an
 array of point objects (from <code>&lt;ma-point-query&gt;</code> for example) and have the live values added to each point object in the array.</p>
+</div></td></tr><tr><td>on-value-updated <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="ngmango-directive-page ngmango-directive-magetpointvalue-page"><p>Pass in a function or expression to be evaluated when the value updates. (eg.
+<code>on-value-updated=&quot;$ctrl.valueUpdated(point)&quot;</code>)</p>
 </div></td></tr></tbody></table></div>
 </div>

@@ -18,9 +18,14 @@ define(['require', 'rql/query'], function(require, query) {
  * @param {object} ng-model Variable to hold the selected data point.
  * @param {number=} limit Limits the results in the list to a specified number of data points (200 defualt)
  * @param {boolean=} auto-init If set, enables auto selecting of the first data point in the list.
- * @param {string=} point-xid Used with `auto-init` to pre-select the specified point by xid. 
- * @param {string=} point-id Used with `auto-init` to pre-select the specified point by data point id. 
- 
+ * @param {string=} point-xid Used with `auto-init` to pre-select the specified point by xid.
+ * @param {string=} point-id Used with `auto-init` to pre-select the specified point by data point id.
+ * @param {string=} query REPLACE
+ * @param {string=} label Set the floating label on the input
+ * @param {function=} list-text REPLACE
+ * @param {function=} display-text REPLACE
+ * @param {boolean=} client-side-filter REPLACE
+
  *
  * @usage
  * <ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>
