@@ -1,1 +1,11 @@
-<div ng-repeat="store in $ctrl.fileStores track by $index"></div>
+<span ng-repeat="directory in $ctrl.path track by $index">
+	<strong ng-bind="directory" ng-click="$ctrl.pathClicked($event, $index)"></strong>
+	<span ng-if="!$last"><md-icon>chevron_right</md-icon></span>
+</span>
+
+<div layout flex>
+	<md-content flex="70" layout="column">
+		<div ng-repeat="file in $ctrl.files track by $index" ng-bind="file" ng-click="$ctrl.fileClicked($event, file)"
+			ng-style="{'background-color': file.filename === $ctrl.filename ? 'grey' : 'transparent'}"></div>
+	</md-content>
+</div>

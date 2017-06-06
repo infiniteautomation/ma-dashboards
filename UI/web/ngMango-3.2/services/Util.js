@@ -626,6 +626,10 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
         }
     };
     
+    Util.prototype.escapeRegExp = function(str) {
+    	  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    };
+    
     return new Util();
 }
 
