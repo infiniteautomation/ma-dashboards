@@ -683,7 +683,7 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
             });
             return deferred.promise;
         });
-        
+
         return $q.all(modulePromises);
     }, function() {
         console.log('Error loading AngularJS modules from Mango modules', arguments);
@@ -709,9 +709,13 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, angularModulesPromise]).t
     uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
 
     var angularJsModuleNames = ['maUiApp'];
-    angularModules.forEach(function(angularModule) {
+    angularModules.forEach(function(angularModule, index, array) {
         if (angularModule && angularModule.name) {
             angularJsModuleNames.push(angularModule.name);
+            
+            if (MA_UI_SETTINGS.userModule && index === (array.length - 1)) {
+            	MA_UI_SETTINGS.userModuleName = angularModule.name;
+            }
         }
     });
     
