@@ -66,6 +66,7 @@ define(['./ngMangoServices',
         './directives/change',
         './directives/switch',
         './directives/svg',
+        './directives/chooseFile',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -83,6 +84,8 @@ define(['./ngMangoServices',
         './components/configImport/configImport',
         './components/configImportDialog/configImportDialog',
         './components/maMap/maMap',
+        './components/button/button',
+        './components/fileStoreBrowser/fileStoreBrowser',
         'ng-map',
         './animations/slideUp',
         'angular',
@@ -96,10 +99,10 @@ define(['./ngMangoServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListGet, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
-        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective,
+        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, ngMap, slideUp, angular, require, moment) {
+        maMap, button, fileStoreBrowser, ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -174,6 +177,7 @@ ngMango.directive('maScaleTo', scaleTo);
 ngMango.directive('maChange', change);
 ngMango.directive('maSwitch', switchDirective);
 ngMango.directive('maSvg', svgDirective);
+ngMango.directive('maChooseFile', chooseFile);
 ngMango.component('maQueryBuilder', queryBuilder);
 ngMango.component('maQueryGroup', queryGroup);
 ngMango.component('maQueryPredicate', queryPredicate);
@@ -191,6 +195,8 @@ ngMango.component('maConfigExport', configExport);
 ngMango.component('maConfigImport', configImport);
 ngMango.component('maConfigImportDialog', configImportDialog);
 ngMango.component('maMap', maMap);
+ngMango.component('maButton', button);
+ngMango.component('maFileStoreBrowser', fileStoreBrowser);
 ngMango.animation('.ma-slide-up', slideUp);
 
 ngMango.constant('MA_INSERT_CSS', true);

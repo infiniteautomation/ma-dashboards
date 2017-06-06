@@ -7,14 +7,16 @@ define(['angular',
         './ngMango',
         './components/colorPreview/colorPreview',
         './services/dialogHelper',
+        './services/fileStoreDialog',
         'angular-material',
         'mdPickers',
-        'angular-material-data-table'], function(angular, ngMango, colorPreview, dialogHelperFactory) {
+        'angular-material-data-table'], function(angular, ngMango, colorPreview, dialogHelperFactory, fileStoreDialogFactory) {
 'use strict';
 
 var ngMangoMaterial = angular.module('ngMangoMaterial', ['ngMango', 'ngMaterial', 'mdPickers', 'md.data.table']);
 ngMangoMaterial.component('maColorPreview', colorPreview);
 ngMangoMaterial.factory('maDialogHelper', dialogHelperFactory);
+ngMangoMaterial.factory('maFileStoreDialog', fileStoreDialogFactory);
 return ngMangoMaterial;
 
 }); // define
