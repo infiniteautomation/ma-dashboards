@@ -18,15 +18,23 @@
 	        <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>
 	        <th md-column md-order-by="mimeType" ma-tr="ui.app.fileType"></th>
 	        <th md-column md-order-by="lastModified" ma-tr="ui.app.lastModified"></th>
+	        <th md-column></th>
 	      </tr>
 	    </thead>
 	    <tbody md-body>
 	      <tr md-row ng-repeat="file in $ctrl.files | orderBy:$ctrl.tableOrder track by file.filename"
 	      		ng-click="$ctrl.fileClicked($event, file)" ng-class="{'ma-file-selected': file.filename === $ctrl.filename}">
-	        <td md-cell><md-icon>{{file.directory ? 'folder' : 'attachment'}}</md-icon></td>
+	        <td md-cell>
+	        	<md-icon ng-if="file.directory">folder</md-icon>
+	        	<md-icon ng-if="!file.directory">attachment</md-icon>
+	        </td>
 	        <td md-cell ng-bind="file.filename"></td>
 	        <td md-cell ng-bind="file.mimeType"></td>
 	        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
+	        <td md-cell>
+	        	<md-button ng-if="!file.directory" ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
+	        	<md-button ng-if="!file.directory" class="md-icon-button md-warn"><md-icon>delete</md-icon></md-button>
+	        </td>
 	      </tr>
 	    </tbody>
 	  </table>

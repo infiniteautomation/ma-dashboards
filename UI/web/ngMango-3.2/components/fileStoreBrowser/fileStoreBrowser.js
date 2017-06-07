@@ -141,6 +141,10 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file) {
 	}
 };
 
+FileStoreBrowserController.prototype.cancelClick = function(event) {
+	event.stopPropagation();
+};
+
 return fileStoreBrowser;
 
 }); // define

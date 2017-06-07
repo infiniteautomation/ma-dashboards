@@ -554,6 +554,24 @@ ma-file-store-browser .ma-file-selected {
 	height: 30px;
 }
 
-.ma-file-store-browser-files table.md-table tr td.md-cell:first-child {
-	width: 24px;
+.ma-file-store-browser-files table.md-table tr td.md-cell:first-child,
+.ma-file-store-browser-files table.md-table tr th.md-column:first-child {
+	width: 24x;
+	padding: 0 0 0 5px !important;
+}
+
+.ma-file-store-browser-files table.md-table tr td.md-cell:last-child,
+.ma-file-store-browser-files table.md-table tr th.md-column:last-child {
+	width: 80px;
+	padding: 0 !important;
+}
+
+.ma-file-store-browser-files table.md-table tr td.md-cell .md-button {
+	margin: 0 -4px;
+}
+.ma-file-store-browser-files table.md-table tr td.md-cell .md-button:first-child {
+	margin-left: 0;
+}
+.ma-file-store-browser-files table.md-table tr td.md-cell .md-button:last-child {
+	margin-right: 0;
 }

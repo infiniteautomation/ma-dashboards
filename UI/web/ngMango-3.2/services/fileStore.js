@@ -62,10 +62,14 @@ function fileStore($http, maUtil) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
+    	var folderUrl = this.toUrl(path, true);
     	return $http({
     		method: 'GET',
-    		url: this.toUrl(path, true)
+    		url: folderUrl
     	}).then(function(response) {
+    		response.data.forEach(function(file) {
+    			file.url = folderUrl + file.filename;
+    		});
     		return response.data;
     	});
     };
