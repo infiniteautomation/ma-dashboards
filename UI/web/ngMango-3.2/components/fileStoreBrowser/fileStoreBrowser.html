@@ -11,7 +11,7 @@
 
 <md-content ng-if="!$ctrl.listPromise" flex class="ma-file-store-browser-files">
 	<div ng-repeat="file in $ctrl.files track by $index" ng-click="$ctrl.fileClicked($event, file)"
-		ng-style="{'background-color': file.filename === $ctrl.filename ? 'grey' : 'transparent'}" layout layout-align="start center">
+		ng-class="{'ma-file-selected': file.filename === $ctrl.filename}" layout layout-align="start center">
 		<span><md-icon>{{file.directory ? 'folder' : 'attachment'}}</md-icon></span>
 		<strong ng-bind="file.filename" flex="50"></strong>
 		<span ng-bind="file.mimeType" flex="25"></span>

@@ -541,3 +541,7 @@ ma-file-store-browser {
 	flex-direction: column;
 	box-sizing: border-box;
 }
+
+ma-file-store-browser .ma-file-selected {
+	background-color: grey;
+}

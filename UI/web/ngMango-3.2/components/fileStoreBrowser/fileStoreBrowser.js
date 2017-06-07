@@ -14,9 +14,14 @@ var fileStoreBrowser = {
     },
     bindings: {
     	restrictToStore: '@?store',
-    	directories: '<?',
-    	mimeTypes: '<?',
-    	extensions: '<?'
+    	selectDirectories: '<?',
+    	mimeTypes: '@?',
+    	extensions: '@?'
+    },
+    designerInfo: {
+    	attributes: {
+    		selectDirectories: {type: 'boolean'}
+    	}
     }
 };
 
@@ -30,7 +35,25 @@ FileStoreBrowserController.prototype.$onInit = function() {
 };
 
 FileStoreBrowserController.prototype.$onChanges = function(changes) {
-	
+	if (changes.mimeTypes) {
+		var mimeTypeMap = this.mimeTypeMap = {};
+		if (this.mimeTypes) {
+			this.mimeTypes.split(/\s*,\s*/).forEach(function(mimeType) {
+				if (!mimeType) return;
+				mimeTypeMap[mimeType] = true;
+			});
+		}
+	}
+	if (changes.extensions) {
+		var extensionMap = this.extensionMap = {};
+		if (this.extensions) {
+			this.extensions.split(/\s*,\s*/).forEach(function(ext) {
+				if (!ext) return;
+				if (ext[0] === '.') ext = ext.substr(1);
+				extensionMap[ext] = true;
+			});
+		}
+	}
 };
 
 // ng-model value changed outside of this directive
@@ -51,7 +74,11 @@ FileStoreBrowserController.prototype.render = function() {
 FileStoreBrowserController.prototype.listFiles = function() {
 	if (this.path.length) {
 		this.listPromise = this.maFileStore.listFiles(this.path).then(function(files) {
-			this.files = files;
+			if (this.mimeTypes || this.extensions) {
+				this.files = files.filter(this.filterFiles, this);
+			} else {
+				this.files = files;
+			}
 		}.bind(this));
 	} else {
 		this.listPromise = this.maFileStore.list().then(function(fileStores) {
@@ -70,6 +97,21 @@ FileStoreBrowserController.prototype.listFiles = function() {
     }.bind(this));
 };
 
+FileStoreBrowserController.prototype.filterFiles = function(file) {
+	if (file.directory) return true;
+
+	if (this.extensions) {
+		var match = /\.([^\.]+)$/.exec(file.filename);
+		if (match && this.extensionMap[match[1]]) return true;
+	}
+	if (this.mimeTypes) {
+		if (this.mimeTypeMap['*/*']) return true;
+		if (!file.mimeType) return false;
+		if (this.mimeTypeMap[file.mimeType]) return true;
+		if (this.mimeTypeMap[file.mimeType.replace(/\/.+$/, '/*')]) return true;
+	}
+};
+
 FileStoreBrowserController.prototype.pathClicked = function(event, index) {
 	var popNum = this.path.length - index - 1;
 	while(popNum-- > 0) {
@@ -78,7 +120,7 @@ FileStoreBrowserController.prototype.pathClicked = function(event, index) {
 
 	this.listFiles();
 	
-	if (this.path.length) {
+	if (this.selectDirectories && this.path.length) {
 		this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(this.path, true));
 	}
 };
@@ -93,7 +135,9 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file) {
 		this.filename = file.filename;
 		path = this.path.concat(file.filename);
 	}
-    this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(path, file.directory));
+	if (!file.directory || this.selectDirectories) {
+		this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(path, file.directory));
+	}
 };
 
 return fileStoreBrowser;
