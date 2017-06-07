@@ -545,3 +545,15 @@ ma-file-store-browser {
 ma-file-store-browser .ma-file-selected {
 	background-color: grey;
 }
+
+.ma-file-store-browser-crumbs {
+	font-size: 2.0rem;
+}
+
+.ma-file-store-browser-files  table.md-table thead.md-head > tr.md-row {
+	height: 30px;
+}
+
+.ma-file-store-browser-files table.md-table tr td.md-cell:first-child {
+	width: 24px;
+}

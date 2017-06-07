@@ -28,6 +28,7 @@ var fileStoreBrowser = {
 FileStoreBrowserController.$inject = ['maFileStore'];
 function FileStoreBrowserController(maFileStore) {
     this.maFileStore = maFileStore;
+    this.tableOrder = 'filename';
 }
 
 FileStoreBrowserController.prototype.$onInit = function() {
