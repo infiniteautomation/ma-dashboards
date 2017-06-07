@@ -7,7 +7,15 @@
 		<span ng-bind="directory" ng-click="$ctrl.pathClicked($event, $index)"></span>
 		<span ng-if="!$last"><md-icon>chevron_right</md-icon></span>
 	</span>
+	<span flex></span>
+	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.uploadFiles($event)" ng-disabled="!$ctrl.path.length">
+		<md-icon>file_upload</md-icon>
+		<md-tooltip md-autohide ma-tr="ui.app.uploadFiles"></md-tooltip>
+	</md-button>
+	<input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)">
 </div>
+
+<md-progress-linear md-mode="indeterminate" ng-if="$ctrl.uploadPromise"></md-progress-linear>
 
 <md-content ng-if="!$ctrl.listPromise" flex class="ma-file-store-browser-files">
 	<md-table-container>
@@ -16,6 +24,7 @@
 	      <tr md-row>
 	        <th md-column md-order-by="directory"></th>
 	        <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>
+	        <th md-column md-order-by="size" ma-tr="ui.app.fileSize"></th>
 	        <th md-column md-order-by="mimeType" ma-tr="ui.app.fileType"></th>
 	        <th md-column md-order-by="lastModified" ma-tr="ui.app.lastModified"></th>
 	        <th md-column></th>
@@ -29,11 +38,12 @@
 	        	<md-icon ng-if="!file.directory">attachment</md-icon>
 	        </td>
 	        <td md-cell ng-bind="file.filename"></td>
+	        <td md-cell><span ng-if="!file.directory" ng-bind="file.size"></span></td>
 	        <td md-cell ng-bind="file.mimeType"></td>
 	        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
 	        <td md-cell>
-	        	<md-button ng-if="!file.directory" ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
-	        	<md-button ng-if="!file.directory" class="md-icon-button md-warn"><md-icon>delete</md-icon></md-button>
+	        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
+	        	<md-button ng-if="!file.directory" class="md-icon-button md-warn" ng-click="$ctrl.cancelClick($event)"><md-icon>delete</md-icon></md-button>
 	        </td>
 	      </tr>
 	    </tbody>

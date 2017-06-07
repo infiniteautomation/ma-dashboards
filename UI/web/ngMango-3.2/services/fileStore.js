@@ -73,6 +73,34 @@ function fileStore($http, maUtil) {
     		return response.data;
     	});
     };
+    
+    FileStore.prototype.uploadFiles = function(path, files) {
+    	if (path.length < 1) {
+    		throw new Error('Must specify the file store name');
+    	}
+    	var folderUrl = this.toUrl(path, true);
+    	
+    	var formData = new FormData();
+    	for (var i = 0; i < files.length; i++) {
+        	formData.append('files[]', files[i]);
+    	}
+    	
+    	return $http({
+    		method: 'POST',
+    		url: folderUrl,
+    		data: formData,
+    		transformRequest: angular.identity,
+    		headers: {
+    			'Content-Type': undefined
+    		}
+    	}).then(function(response) {
+    		debugger;
+    		response.data.forEach(function(file) {
+    			file.url = folderUrl + file.filename;
+    		});
+    		return response.data;
+    	});
+    };
 
     return new FileStore();
 }

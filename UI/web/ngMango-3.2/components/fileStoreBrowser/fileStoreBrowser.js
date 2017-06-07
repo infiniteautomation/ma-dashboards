@@ -25,9 +25,11 @@ var fileStoreBrowser = {
     }
 };
 
-FileStoreBrowserController.$inject = ['maFileStore'];
-function FileStoreBrowserController(maFileStore) {
+FileStoreBrowserController.$inject = ['maFileStore', '$element'];
+function FileStoreBrowserController(maFileStore, $element) {
     this.maFileStore = maFileStore;
+    this.$element = $element;
+    
     this.tableOrder = 'filename';
 }
 
@@ -143,6 +145,21 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file) {
 
 FileStoreBrowserController.prototype.cancelClick = function(event) {
 	event.stopPropagation();
+};
+
+FileStoreBrowserController.prototype.uploadFiles = function(event) {
+	this.$element.find('input[type=file]').trigger('click');
+};
+
+FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
+	var files = event.target.files;
+	if (!files.length) return;
+
+	this.uploadPromise = this.maFileStore.uploadFiles(this.path, files);
+	
+	this.uploadPromise['finally'](function() {
+    	delete this.uploadPromise;
+    }.bind(this));
 };
 
 return fileStoreBrowser;

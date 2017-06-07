@@ -548,6 +548,13 @@ ma-file-store-browser .ma-file-selected {
 
 .ma-file-store-browser-crumbs {
 	font-size: 2.0rem;
+	margin-bottom: 20px;
+}
+
+.ma-file-store-browser-crumbs label {
+	height: 100%;
+	width: 100%;
+	display: block
 }
 
 .ma-file-store-browser-files  table.md-table thead.md-head > tr.md-row {
