@@ -534,3 +534,10 @@ ma-config-import .ma-import-dropzone {
   width: 100%;
   height: 100%;
 }
+
+/* file store browser */
+ma-file-store-browser {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+}

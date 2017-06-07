@@ -12,7 +12,12 @@ var fileStoreBrowser = {
     require: {
         'ngModelCtrl': 'ngModel'
     },
-    bindings: {}
+    bindings: {
+    	restrictToStore: '@?store',
+    	directories: '<?',
+    	mimeTypes: '<?',
+    	extensions: '<?'
+    }
 };
 
 FileStoreBrowserController.$inject = ['maFileStore'];
@@ -22,12 +27,6 @@ function FileStoreBrowserController(maFileStore) {
 
 FileStoreBrowserController.prototype.$onInit = function() {
     this.ngModelCtrl.$render = this.render.bind(this);
-    
-    this.fileStoresPromise = this.maFileStore.list().then(function(fileStores) {
-    	return (this.fileStores = fileStores);
-    }.bind(this))['finally'](function() {
-    	delete this.fileStoresPromise;
-    }.bind(this));
 };
 
 FileStoreBrowserController.prototype.$onChanges = function(changes) {
@@ -45,15 +44,29 @@ FileStoreBrowserController.prototype.render = function() {
 	} else {
 		this.filename = this.path.pop();
 	}
-	
+
 	this.listFiles();
 };
 
 FileStoreBrowserController.prototype.listFiles = function() {
-	this.listFilesPromise = this.maFileStore.listFiles(this.path).then(function(files) {
-		this.files = files;
-	}.bind(this))['finally'](function() {
-    	delete this.listFilesPromise;
+	if (this.path.length) {
+		this.listPromise = this.maFileStore.listFiles(this.path).then(function(files) {
+			this.files = files;
+		}.bind(this));
+	} else {
+		this.listPromise = this.maFileStore.list().then(function(fileStores) {
+			this.files = fileStores.map(function(store) {
+				return {
+					filename: store,
+					directory: true
+				};
+			});
+	    	return this.files;
+	    }.bind(this));
+	}
+	
+	this.listPromise['finally'](function() {
+    	delete this.listPromise;
     }.bind(this));
 };
 
@@ -62,20 +75,25 @@ FileStoreBrowserController.prototype.pathClicked = function(event, index) {
 	while(popNum-- > 0) {
 		this.path.pop();
 	}
+
 	this.listFiles();
-    this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(this.path));
+	
+	if (this.path.length) {
+		this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(this.path, true));
+	}
 };
 
 FileStoreBrowserController.prototype.fileClicked = function(event, file) {
+	var path = this.path;
 	if (file.directory) {
 		this.filename = null;
 		this.path.push(file.filename);
 		this.listFiles();
 	} else {
 		this.filename = file.filename;
+		path = this.path.concat(file.filename);
 	}
-	var path = this.path.concat(file.filename);
-    this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(path));
+    this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(path, file.directory));
 };
 
 return fileStoreBrowser;

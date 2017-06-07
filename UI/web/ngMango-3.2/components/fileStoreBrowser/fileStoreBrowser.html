@@ -1,11 +1,24 @@
-<span ng-repeat="directory in $ctrl.path track by $index">
-	<strong ng-bind="directory" ng-click="$ctrl.pathClicked($event, $index)"></strong>
-	<span ng-if="!$last"><md-icon>chevron_right</md-icon></span>
-</span>
+<div flex="none" layout="start center" class="ma-file-store-browser-crumbs">
+	<span ng-if="!$ctrl.restrictToStore" layout="start center">
+		<span ng-click="$ctrl.pathClicked($event, -1)" ma-tr="ui.app.fileStores"></span>
+		<span ng-if="$ctrl.path.length"><md-icon>chevron_right</md-icon></span>
+	</span>
+	<span ng-repeat="directory in $ctrl.path track by $index" layout="start center">
+		<span ng-bind="directory" ng-click="$ctrl.pathClicked($event, $index)"></span>
+		<span ng-if="!$last"><md-icon>chevron_right</md-icon></span>
+	</span>
+</div>
 
-<div layout flex>
-	<md-content flex="70" layout="column">
-		<div ng-repeat="file in $ctrl.files track by $index" ng-bind="file" ng-click="$ctrl.fileClicked($event, file)"
-			ng-style="{'background-color': file.filename === $ctrl.filename ? 'grey' : 'transparent'}"></div>
-	</md-content>
+<md-content ng-if="!$ctrl.listPromise" flex class="ma-file-store-browser-files">
+	<div ng-repeat="file in $ctrl.files track by $index" ng-click="$ctrl.fileClicked($event, file)"
+		ng-style="{'background-color': file.filename === $ctrl.filename ? 'grey' : 'transparent'}" layout layout-align="start center">
+		<span><md-icon>{{file.directory ? 'folder' : 'attachment'}}</md-icon></span>
+		<strong ng-bind="file.filename" flex="50"></strong>
+		<span ng-bind="file.mimeType" flex="25"></span>
+		<span ng-if="file.lastModified" ng-bind="file.lastModified | maDate" flex="25"></span>
+	</div>
+</md-content>
+
+<div ng-if="$ctrl.listPromise" flex layout="column" layout-align="center center">
+	<md-progress-circular class="md-accent" md-mode="indeterminate" md-diameter="50"></md-progress-circular>
 </div>

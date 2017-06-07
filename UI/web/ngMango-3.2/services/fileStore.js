@@ -14,11 +14,15 @@ function fileStore($http, maUtil) {
     function FileStore() {
     }
 
-    FileStore.prototype.toUrl = function(pathArray) {
+    FileStore.prototype.toUrl = function(pathArray, isDirectory) {
     	var parts = pathArray.map(function(part) {
     		return encodeURIComponent(part);
     	});
-    	return fileStoreUrl + '/' + parts.join('/');
+    	var url = fileStoreUrl + '/' + parts.join('/');
+    	if (isDirectory) {
+    		url += '/';
+    	}
+    	return url;
     };
 
     FileStore.prototype.fromUrl = function(url) {
@@ -60,7 +64,7 @@ function fileStore($http, maUtil) {
     	}
     	return $http({
     		method: 'GET',
-    		url: this.toUrl(path)
+    		url: this.toUrl(path, true)
     	}).then(function(response) {
     		return response.data;
     	});
