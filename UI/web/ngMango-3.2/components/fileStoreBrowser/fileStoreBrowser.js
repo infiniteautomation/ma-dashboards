@@ -94,6 +94,16 @@ FileStoreBrowserController.prototype.render = function() {
 };
 
 FileStoreBrowserController.prototype.listFiles = function() {
+	var listErrorHandler = function() {
+		this.files = [];
+		this.filename = null;
+		var defaultStore = this.restrictToStore || 'default';
+		if (!(this.path.length === 1 && this.path[0] === defaultStore)) {
+			this.path = [defaultStore];
+			this.listFiles();
+		}
+	}.bind(this);
+	
 	if (this.path.length) {
 		this.listPromise = this.maFileStore.listFiles(this.path).then(function(files) {
 			if (this.mimeTypes || this.extensions) {
@@ -101,7 +111,7 @@ FileStoreBrowserController.prototype.listFiles = function() {
 			} else {
 				this.files = files;
 			}
-		}.bind(this));
+		}.bind(this), listErrorHandler);
 	} else {
 		this.listPromise = this.maFileStore.list().then(function(fileStores) {
 			this.files = fileStores.map(function(store) {
@@ -111,9 +121,9 @@ FileStoreBrowserController.prototype.listFiles = function() {
 				};
 			});
 	    	return this.files;
-	    }.bind(this));
+	    }.bind(this), listErrorHandler);
 	}
-	
+
 	this.listPromise['finally'](function() {
     	delete this.listPromise;
     }.bind(this));

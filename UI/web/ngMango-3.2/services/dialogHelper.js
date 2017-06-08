@@ -53,7 +53,8 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate) {
             .textContent(textContent)
             .targetEvent(event)
             .ok(maTranslate.trSync('common.ok'))
-            .cancel(maTranslate.trSync('common.cancel'));
+            .cancel(maTranslate.trSync('common.cancel'))
+            .multiple(true);
 
         return $mdDialog.show(confirm);
     };
