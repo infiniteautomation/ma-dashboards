@@ -587,3 +587,7 @@ ma-file-store-browser .ma-file-selected {
 .ma-file-store-browser-preview img {
 	width: 100%;
 }
+
+.ma-file-store-dialog {
+	height: 100%;
+}
