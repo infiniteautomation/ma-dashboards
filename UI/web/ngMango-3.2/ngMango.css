@@ -582,3 +582,11 @@ ma-file-store-browser .ma-file-selected {
 .ma-file-store-browser-files table.md-table tr td.md-cell .md-button:last-child {
 	margin-right: 0;
 }
+
+.ma-file-store-browser-preview {
+	overflow: auto;
+}
+
+.ma-file-store-browser-preview img {
+	width: 100%;
+}

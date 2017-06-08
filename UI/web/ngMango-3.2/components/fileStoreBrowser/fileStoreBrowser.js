@@ -16,7 +16,8 @@ var fileStoreBrowser = {
     	restrictToStore: '@?store',
     	selectDirectories: '<?',
     	mimeTypes: '@?',
-    	extensions: '@?'
+    	extensions: '@?',
+    	preview: '<?'
     },
     designerInfo: {
     	attributes: {
@@ -143,6 +144,7 @@ FileStoreBrowserController.prototype.pathClicked = function(event, index) {
 };
 
 FileStoreBrowserController.prototype.fileClicked = function(event, file) {
+	this.file = file;
 	var path = this.path;
 	if (file.directory) {
 		this.filename = null;
@@ -173,10 +175,11 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
 		if (this.mimeTypes || this.extensions) {
 			uploaded = uploaded.filter(this.filterFiles, this);
 		}
-		// append uploaded to this.files
-		Array.prototype.splice.apply(this.files, [this.files.length, 0].concat(uploaded));
-		
-		this.fileClicked(null, uploaded[0]);
+		if (uploaded.length) {
+			// append uploaded to this.files
+			Array.prototype.splice.apply(this.files, [this.files.length, 0].concat(uploaded));
+			this.fileClicked(null, uploaded[0]);
+		}
 	}.bind(this));
 	
 	this.uploadPromise['finally'](function() {

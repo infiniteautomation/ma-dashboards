@@ -17,40 +17,44 @@
 
 <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.uploadPromise"></md-progress-linear>
 
-<md-content ng-if="!$ctrl.listPromise" flex class="ma-file-store-browser-files">
-	<md-table-container>
-	  <table md-table md-row-select="false">
-	    <thead md-head md-order="$ctrl.tableOrder">
-	      <tr md-row>
-	        <th md-column md-order-by="directory"></th>
-	        <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>
-	        <th md-column md-order-by="size" ma-tr="ui.app.fileSize"></th>
-	        <th md-column md-order-by="mimeType" ma-tr="ui.app.fileType"></th>
-	        <th md-column md-order-by="lastModified" ma-tr="ui.app.lastModified"></th>
-	        <th md-column></th>
-	      </tr>
-	    </thead>
-	    <tbody md-body>
-	      <tr md-row ng-repeat="file in $ctrl.files | orderBy:$ctrl.tableOrder track by file.filename"
-	      		ng-click="$ctrl.fileClicked($event, file)" ng-class="{'ma-file-selected': file.filename === $ctrl.filename}">
-	        <td md-cell>
-	        	<md-icon ng-if="file.directory">folder</md-icon>
-	        	<md-icon ng-if="!file.directory">attachment</md-icon>
-	        </td>
-	        <td md-cell ng-bind="file.filename"></td>
-	        <td md-cell><span ng-if="!file.directory" ng-bind="file.size"></span></td>
-	        <td md-cell ng-bind="file.mimeType"></td>
-	        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
-	        <td md-cell>
-	        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
-	        	<md-button ng-if="!file.directory" class="md-icon-button md-warn" ng-click="$ctrl.cancelClick($event)"><md-icon>delete</md-icon></md-button>
-	        </td>
-	      </tr>
-	    </tbody>
-	  </table>
-	</md-table-container>
-</md-content>
-
+<div flex layout="row">
+	<md-content ng-if="!$ctrl.listPromise" flex class="ma-file-store-browser-files">
+		<md-table-container>
+		  <table md-table md-row-select="false">
+		    <thead md-head md-order="$ctrl.tableOrder">
+		      <tr md-row>
+		        <th md-column md-order-by="directory"></th>
+		        <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>
+		        <th md-column md-order-by="size" ma-tr="ui.app.fileSize"></th>
+		        <th md-column md-order-by="mimeType" ma-tr="ui.app.fileType"></th>
+		        <th md-column md-order-by="lastModified" ma-tr="ui.app.lastModified"></th>
+		        <th md-column></th>
+		      </tr>
+		    </thead>
+		    <tbody md-body>
+		      <tr md-row ng-repeat="file in $ctrl.files | orderBy:$ctrl.tableOrder track by file.filename"
+		      		ng-click="$ctrl.fileClicked($event, file)" ng-class="{'ma-file-selected': file.filename === $ctrl.filename}">
+		        <td md-cell>
+		        	<md-icon ng-if="file.directory">folder</md-icon>
+		        	<md-icon ng-if="!file.directory">attachment</md-icon>
+		        </td>
+		        <td md-cell ng-bind="file.filename"></td>
+		        <td md-cell><span ng-if="!file.directory" ng-bind="file.size | maBytes"></span></td>
+		        <td md-cell ng-bind="file.mimeType"></td>
+		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
+		        <td md-cell>
+		        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
+		        	<md-button ng-if="!file.directory" class="md-icon-button md-warn" ng-click="$ctrl.cancelClick($event)"><md-icon>delete</md-icon></md-button>
+		        </td>
+		      </tr>
+		    </tbody>
+		  </table>
+		</md-table-container>
+	</md-content>
+	<div ng-if="$ctrl.preview" flex="30" class="ma-file-store-browser-preview" layout layout-align="center center">
+		<img ng-if="$ctrl.file.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.file.url}}">
+	</div>
+</div>
 <div ng-if="$ctrl.listPromise" flex layout="column" layout-align="center center">
 	<md-progress-circular class="md-accent" md-mode="indeterminate" md-diameter="50"></md-progress-circular>
 </div>
