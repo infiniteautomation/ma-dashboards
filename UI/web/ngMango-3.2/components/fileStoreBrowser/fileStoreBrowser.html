@@ -12,7 +12,7 @@
 		<md-icon>file_upload</md-icon>
 		<md-tooltip md-autohide ma-tr="ui.app.uploadFiles"></md-tooltip>
 	</md-button>
-	<input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)">
+	<input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)" ng-attr-accept="{{$ctrl.acceptAttribute}}">
 </div>
 
 <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.uploadPromise"></md-progress-linear>

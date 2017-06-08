@@ -57,6 +57,20 @@ FileStoreBrowserController.prototype.$onChanges = function(changes) {
 			});
 		}
 	}
+	
+	if (changes.extensions || changes.mimeTypes) {
+		var accept = [];
+		
+		Object.keys(this.extensionMap).forEach(function(ext) {
+			accept.push('.' + ext);
+		});
+
+		Object.keys(this.mimeTypeMap).forEach(function(mime) {
+			accept.push(mime);
+		});
+		
+		this.acceptAttribute = accept.join(',');
+	}
 };
 
 // ng-model value changed outside of this directive
