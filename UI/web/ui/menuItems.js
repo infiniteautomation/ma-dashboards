@@ -980,6 +980,24 @@ return [
         templateUrl: 'views/examples/googleMaps.html',
         url: '/google-maps',
         menuText: 'Google Maps'
+    },
+    {
+        name: 'ui.examples.svg',
+        url: '/svg',
+        menuTr: 'ui.dox.svgGraphics',
+        menuIcon: 'fa-picture-o'
+    },
+    {
+        name: 'ui.examples.svg.basicUsage',
+        templateUrl: 'views/examples/svgBasic.html',
+        url: '/basic-usage',
+        menuTr: 'ui.dox.basicSvg'
+    },
+    {
+        name: 'ui.examples.svg.interactiveSvg',
+        templateUrl: 'views/examples/svgAdvanced.html',
+        url: '/interactive-svg',
+        menuTr: 'ui.dox.interactiveSvg'
     }
 ];
 

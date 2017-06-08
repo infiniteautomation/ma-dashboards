@@ -1,0 +1,68 @@
+<h1 ma-tr="ui.dox.interactiveSvg"></h1>
+
+<p>
+    In this example we have an SVG graphic, <code>breaker-panel.svg</code> that has several of it's text and shape elements
+    tagged with <code>IDs</code>. The SVG graphic is imported into the <code>ng-include</code> attribute of
+    <code>&lt;ma-svg&gt;</code>.
+</p>
+
+<p>
+    Using the <code>ma-selector</code> directive we can assign <code>ng-bind</code> to display text within <code>tspan</code>
+    elements. Two of the text values are set via inputs on the page and the <code>#usage-amps</code> is set from the value of a
+    numeric data point.
+</p>
+
+<p>
+    The value of a multi status data point, <code>breakerStatus</code> is used to enable the <code>open/closed/tripped</code>
+    status indicator's on the right via styling the fill color based on the point's value.
+</p>
+
+<p>
+    The DAS control switch is used to control a settable binary data point called <code>dasStatus</code>. When you click on the
+    indicator you will toggle the value using <code>ng-click="dasStatus.toggleValue()"</code>. The <code>ON/OFF</code> elements
+    will set the value using <code>ng-click="dasStatus.setValue()"</code>. The fill color of the switches and indicator is set
+    using <code>ng-style</code> linked to <code>dasStatus.value</code>.
+</p>
+
+<p>
+    Note: In order for the SVG examples to work you will want to <a
+    ui-sref="ui.settings.importExport">import</a> this <a
+    href="/modules/mangoUI/web/demoSvgDataSource.json" target="_blank">JSON</a> file containing the virtual data source.
+</p>
+
+<ma-ui-dual-pane-editor>
+
+<ma-get-point-value point-xid="SVG-Demo-Status" point="breakerStatus"></ma-get-point-value>
+<ma-get-point-value point-xid="SVG-Demo-Control" point="dasStatus"></ma-get-point-value>
+<ma-get-point-value point-xid="SVG-Demo-Current-Total" point="amperage"></ma-get-point-value>
+
+<div layout>
+    <md-input-container flex>
+        <input ng-model="page.name" ng-init="page.name = 'Breaker-01'">
+    </md-input-container>
+    <md-input-container flex>
+        <input ng-model="page.amps" ng-init="page.amps = '400A'">
+    </md-input-container>
+</div>
+
+
+<ma-svg ng-include="'/modules/mangoUI/web/img/breaker-panel.svg'">
+    <div ma-selector="#usage-amps tspan" ng-bind="amperage.renderedValue"></div>
+    <div ma-selector="#name tspan" ng-bind="page.name"></div>
+    <div ma-selector="#amperage tspan" ng-bind="page.amps"></div>
+
+    <div ma-selector="#open-status" ng-style="{'fill': breakerStatus.value === 0 ? 'green' : '#6a6a6a'}"></div>
+    <div ma-selector="#closed-status" ng-style="{'fill': breakerStatus.value === 1 ? 'blue' : '#6a6a6a'}"></div>
+    <div ma-selector="#tripped-status" ng-style="{'fill': breakerStatus.value === 2 ? 'red' : '#6a6a6a'}"></div>
+
+    <div ma-selector="#DAS-Status" ng-style="{'fill': dasStatus.value ? 'green' : 'red'}" ng-click="dasStatus.toggleValue()"></div>
+
+    <div ma-selector="#DAS-ON" ng-click="dasStatus.setValue(true)"></div>
+    <div ma-selector="#DAS-ON rect" ng-style="{'fill': dasStatus.value ? 'green' : 'white'}"></div>
+
+    <div ma-selector="#DAS-OFF" ng-click="dasStatus.setValue(false)"></div>
+    <div ma-selector="#DAS-OFF rect" ng-style="{'fill': !dasStatus.value ? 'red' : 'white'}"></div>
+</ma-svg>
+
+
+</ma-ui-dual-pane-editor>

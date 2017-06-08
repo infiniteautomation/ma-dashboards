@@ -1,0 +1,56 @@
+<h1 ma-tr="ui.dox.basicSvg"></h1>
+
+<p>
+    SVG (Scalable Vector Graphics) is a modern image format built for displaying graphics on the web. Unlike jpg/png raster
+    images, SVG will scale up and down without blurring or losing resolution, due to the fact that it is rendered via
+    mathematical vector based instructions in it's XML syntax.
+</p>
+
+<p>
+    SVG graphics can be designed in a software such as <code>Adobe Illustrator</code> or <a href="https://inkscape.org"
+                                                                                            target="_blank">
+    Inkscape</a>. <code>Inkscape</code> is free and open-source option for editing vector graphics. With your graphic software or even a
+    text editor you can design your vector images and give specific <code>IDs</code> or <code>classes</code> to elements in your
+    graphic that you
+    want
+    to interact with.
+</p>
+
+<p>
+    In this example we have an SVG graphic, <code>status-panel.svg</code> that has an <code>#indicator</code> element and a
+    <code>#spinner</code> element. Using the <code>&lt;ma-svg&gt</code> component you can pass in the path to the image into the
+    <code>ng-include</code> attribute. Then use divs with <code>ma-selector</code> to select an element within the SVG
+    graphic. Any valid CSS selector can be used, in this case we are selecting by ID of an element. Once selected you can apply
+    attributes such as <code>ng-style</code>, <code>ng-class</code>, and <code>ng-click</code>.
+</p>
+
+<p>
+    Here we have the <code>#indicator</code> element's fill color set by the value of a multi status data point. We also have
+    the <code>#spinner</code> element within the SVG linked to CSS spin classes that can be toggled to reverse spin direction.
+</p>
+
+<p>
+    Note: In order for the SVG examples to work you will want to <a
+    ui-sref="ui.settings.importExport">import</a> this <a
+    href="/modules/mangoUI/web/demoSvgDataSource.json" target="_blank">JSON</a> file containing the virtual data source.
+</p>
+
+<ma-ui-dual-pane-editor>
+
+<ma-get-point-value point-xid="SVG-Demo-Status" point="indicatorStatus"></ma-get-point-value>
+
+<div layout layout-align="start center">
+    <h3 flex>
+        Indicator Status: {{indicatorStatus.renderedValue}}
+    </h3>
+    <md-checkbox ng-model="page.spin" ng-init="page={}">
+        Reverse the Spin!
+    </md-checkbox>
+</div>
+
+<ma-svg ng-include="'/modules/mangoUI/web/img/status-panel.svg'">
+    <div ma-selector="#indicator" ng-style="{'fill': indicatorStatus.value === 1 ? 'salmon' : indicatorStatus.value === 2 ? 'turquoise' : 'none'}"></div>
+    <div ma-selector="#spinner" ng-class="{'ma-spin-counterclockwise': !page.spin, 'ma-spin-clockwise': page.spin}"></div>
+</ma-svg>
+
+</ma-ui-dual-pane-editor>
