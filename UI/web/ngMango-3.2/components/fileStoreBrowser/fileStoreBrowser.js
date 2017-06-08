@@ -44,7 +44,7 @@ FileStoreBrowserController.prototype.$onChanges = function(changes) {
 		if (this.mimeTypes) {
 			this.mimeTypes.split(/\s*,\s*/).forEach(function(mimeType) {
 				if (!mimeType) return;
-				mimeTypeMap[mimeType] = true;
+				mimeTypeMap[mimeType.toLowerCase()] = true;
 			});
 		}
 	}
@@ -54,7 +54,7 @@ FileStoreBrowserController.prototype.$onChanges = function(changes) {
 			this.extensions.split(/\s*,\s*/).forEach(function(ext) {
 				if (!ext) return;
 				if (ext[0] === '.') ext = ext.substr(1);
-				extensionMap[ext] = true;
+				extensionMap[ext.toLowerCase()] = true;
 			});
 		}
 	}
@@ -120,13 +120,13 @@ FileStoreBrowserController.prototype.filterFiles = function(file) {
 
 	if (this.extensions) {
 		var match = /\.([^\.]+)$/.exec(file.filename);
-		if (match && this.extensionMap[match[1]]) return true;
+		if (match && this.extensionMap[match[1].toLowerCase()]) return true;
 	}
 	if (this.mimeTypes) {
 		if (this.mimeTypeMap['*/*']) return true;
 		if (!file.mimeType) return false;
-		if (this.mimeTypeMap[file.mimeType]) return true;
-		if (this.mimeTypeMap[file.mimeType.replace(/\/.+$/, '/*')]) return true;
+		if (this.mimeTypeMap[file.mimeType.toLowerCase()]) return true;
+		if (this.mimeTypeMap[file.mimeType.toLowerCase().replace(/\/.+$/, '/*')]) return true;
 	}
 };
 
