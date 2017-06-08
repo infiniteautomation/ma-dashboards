@@ -330,15 +330,12 @@ md-card.ma-accordion md-card-content {
 
 /* Buttons for inputs */
 
-.ma-input-button {
+.ma-input-button,
+.ma-input-button.md-icon-button.md-button {
+  margin: 0;
   position: absolute;
   top: 0;
   right: 0;
-}
-
-.ma-input-button.md-icon-button,
-.ma-input-button .md-icon-button {
-  margin: 0;
 }
 
 md-menu.ma-input-button > .md-button.md-icon-button {

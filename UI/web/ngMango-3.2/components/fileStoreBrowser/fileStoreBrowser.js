@@ -32,10 +32,11 @@ function FileStoreBrowserController(maFileStore, $element, maDialogHelper) {
     this.$element = $element;
     this.maDialogHelper = maDialogHelper;
     
-    this.tableOrder = 'filename';
+    this.tableOrder = ['-directory', 'filename'];
 }
 
 FileStoreBrowserController.prototype.$onInit = function() {
+	this.path = [this.restrictToStore || 'default'];
     this.ngModelCtrl.$render = this.render.bind(this);
 };
 
@@ -78,15 +79,17 @@ FileStoreBrowserController.prototype.$onChanges = function(changes) {
 // ng-model value changed outside of this directive
 FileStoreBrowserController.prototype.render = function() {
 	var url = this.ngModelCtrl.$viewValue;
-	if (!url) return;
-	
-	this.path = this.maFileStore.fromUrl(url);
-	if (this.path.directory) {
-		this.filename = null;
-	} else {
-		this.filename = this.path.pop();
-	}
 
+	try {
+		this.path = this.maFileStore.fromUrl(url);
+		if (this.path.directory) {
+			this.filename = null;
+		} else {
+			this.filename = this.path.pop();
+		}
+	} catch (e) {
+	}
+	
 	this.listFiles();
 };
 
