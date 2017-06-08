@@ -94,7 +94,6 @@ function fileStore($http, maUtil) {
     			'Content-Type': undefined
     		}
     	}).then(function(response) {
-    		debugger;
     		response.data.forEach(function(file) {
     			file.url = folderUrl + file.filename;
     		});
