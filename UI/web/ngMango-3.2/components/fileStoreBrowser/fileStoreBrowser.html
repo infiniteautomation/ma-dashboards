@@ -44,7 +44,7 @@
 		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
 		        <td md-cell>
 		        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
-		        	<md-button ng-if="!file.directory" class="md-icon-button md-warn" ng-click="$ctrl.cancelClick($event)"><md-icon>delete</md-icon></md-button>
+		        	<md-button ng-if="!file.directory" class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)"><md-icon>delete</md-icon></md-button>
 		        </td>
 		      </tr>
 		    </tbody>

@@ -49,6 +49,7 @@ function fileStore($http, maUtil) {
     	return path;
     };
     
+    // lists the available file stores
     FileStore.prototype.list = function() {
     	return $http({
     		method: 'GET',
@@ -58,6 +59,7 @@ function fileStore($http, maUtil) {
     	});
     };
     
+    // lists files inside a file store directory
     FileStore.prototype.listFiles = function(path) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
@@ -70,6 +72,22 @@ function fileStore($http, maUtil) {
     		response.data.forEach(function(file) {
     			file.url = folderUrl + file.filename;
     		});
+    		return response.data;
+    	});
+    };
+    
+    FileStore.prototype.remove = function(path, recursive) {
+    	if (path.length < 1) {
+    		throw new Error('Must specify the file store name');
+    	}
+    	var folderUrl = this.toUrl(path);
+    	return $http({
+    		method: 'DELETE',
+    		url: folderUrl,
+    		params: {
+    			recursive: recursive
+    		}
+    	}).then(function(response) {
     		return response.data;
     	});
     };

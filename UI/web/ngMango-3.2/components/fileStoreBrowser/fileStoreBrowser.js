@@ -26,10 +26,11 @@ var fileStoreBrowser = {
     }
 };
 
-FileStoreBrowserController.$inject = ['maFileStore', '$element'];
-function FileStoreBrowserController(maFileStore, $element) {
+FileStoreBrowserController.$inject = ['maFileStore', '$element', 'maDialogHelper'];
+function FileStoreBrowserController(maFileStore, $element, maDialogHelper) {
     this.maFileStore = maFileStore;
     this.$element = $element;
+    this.maDialogHelper = maDialogHelper;
     
     this.tableOrder = 'filename';
 }
@@ -161,6 +162,18 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file) {
 
 FileStoreBrowserController.prototype.cancelClick = function(event) {
 	event.stopPropagation();
+};
+
+FileStoreBrowserController.prototype.deleteFile = function(event, file) {
+	event.stopPropagation();
+	
+	this.maDialogHelper.confirm(event, 'ui.app.areYouSureDeleteFile').then(function() {
+		this.maFileStore.remove(this.path.concat(file.filename), false).then(function() {
+			var index = this.files.indexOf(file);
+			if (index >= 0)
+				this.files.splice(index, 1);
+		}.bind(this));
+	}.bind(this));
 };
 
 FileStoreBrowserController.prototype.uploadFiles = function(event) {
