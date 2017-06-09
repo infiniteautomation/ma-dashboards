@@ -13,8 +13,8 @@
                 <span class="md-headline" ma-tr="ui.app.editor"></span>
               </md-card-title-text>
             </md-card-title>
-            <md-card-content flex layout="column">
-              <ma-ui-live-editor flex style="height: 500px"
+            <md-card-content flex>
+              <ma-ui-live-editor style="height: 100%"
                     ng-model="$ctrl.page.jsonData.markup" ng-model-options="{debounce: 1000}"
                     ng-change="$ctrl.markupChanged()">
               </ma-ui-live-editor>

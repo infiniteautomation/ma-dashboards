@@ -479,6 +479,7 @@ ma-ui-live-editor {
 	padding-bottom: 10px;
 	min-height: 400px;
 	display: block;
+	box-sizing: border-box;
 }
 
 ma-ui-live-editor [ui-ace] {  
