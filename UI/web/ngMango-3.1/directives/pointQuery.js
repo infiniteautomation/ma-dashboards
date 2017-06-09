@@ -35,13 +35,18 @@ function pointQuery(Point) {
 
     return {
         scope: {
-        	query: '=',
-            start: '=',
-            limit: '=',
-            sort: '=',
-            points: '=',
+        	query: '<?',
+            start: '<?',
+            limit: '<?',
+            sort: '<?',
+            points: '=?',
             promise: '=?',
-            clearOnQuery: '='
+            clearOnQuery: '<?'
+        },
+        designerInfo: {
+            translation: 'ui.components.pointQuery',
+            icon: 'find_in_page',
+            category: 'pointValuesAndCharts'
         },
         link: function ($scope, $element, attr) {
             $scope.$watch(function() {
@@ -59,7 +64,7 @@ function pointQuery(Point) {
                 if ($scope.clearOnQuery) {
                     $scope.points = newPoints;
                 } else {
-                    newPoints.$promise['finally'](function(pts) {
+                    newPoints.$promise.then(function(pts) {
                         $scope.points = newPoints;
                     });
                 }

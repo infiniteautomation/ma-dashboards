@@ -43,7 +43,6 @@ function dataSourceList(DataSource, $injector) {
             category: 'dropDowns'
         },
         scope: {
-            ngModel: '=',
             autoInit: '<?',
             query: '<?',
             start: '<?',
@@ -62,7 +61,7 @@ function dataSourceList(DataSource, $injector) {
           return '<select ng-options="dataSourceLabel(dataSource) for dataSource in dataSources track by dataSource.xid"></select>';
         },
         replace: true,
-        link: function ($scope, $element, attrs) {
+        link: function ($scope, $element, attrs, ngModelCtrl) {
             if (angular.isUndefined($scope.autoInit)) {
                 $scope.autoInit = true;
             }
@@ -85,9 +84,18 @@ function dataSourceList(DataSource, $injector) {
                 promise = DataSource.objQuery(value).$promise;
                 promise.then(function(dataSources) {
                     $scope.dataSources = dataSources;
-
-                    if (!$scope.ngModel && $scope.autoInit && $scope.dataSources.length) {
-                        $scope.ngModel = $scope.dataSources[0];
+                    
+                    if ($scope.autoInit && $scope.dataSources.length) {
+                    	var doSet = true;
+                    	if (ngModelCtrl.$viewValue && ngModelCtrl.$viewValue.xid) {
+                    		doSet = !dataSources.some(function(ds) {
+                        		return ds.xid === ngModelCtrl.$viewValue.xid;
+                        	});
+                    	}
+                    	
+                    	if (doSet) {
+                        	ngModelCtrl.$setViewValue($scope.dataSources[0]);
+                    	}
                     }
                 });
             }, true);
