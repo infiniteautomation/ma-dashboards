@@ -607,6 +607,14 @@ return [
         }
     },
     {
+        name: 'ui.settings.fileStores',
+        url: '/upgrade',
+        template: '<ma-file-store-browser flex preview="true" ng-model="tmp"><ma-file-store-browser>',
+        menuTr: 'ui.app.fileStores',
+        menuIcon: 'file_upload',
+        permission: 'superadmin'
+    },
+    {
         name: 'ui.examples',
         url: '/examples',
         menuTr: 'ui.dox.examples',
