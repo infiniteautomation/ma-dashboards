@@ -46,7 +46,6 @@ function deviceNameList(DeviceName, $injector) {
             category: 'dropDowns'
         },
         scope: {
-            ngModel: '=',
             // attributes that start with data- have the prefix stripped
             dataSourceId: '<?sourceId',
             dataSourceXid: '<?sourceXid',
@@ -61,7 +60,7 @@ function deviceNameList(DeviceName, $injector) {
           return require.toUrl('./devicenameList.html');
         },
         replace: true,
-        link: function ($scope, $element, attrs) {
+        link: function ($scope, $element, attrs, ngModelCtrl) {
             if (angular.isUndefined($scope.autoInit)) {
                 $scope.autoInit = true;
             }
@@ -84,8 +83,8 @@ function deviceNameList(DeviceName, $injector) {
                 $scope.deviceNames = [];
                 promise = queryResult.$promise.then(function(deviceNames) {
                     $scope.deviceNames = deviceNames;
-                    if (!$scope.ngModel && $scope.autoInit && deviceNames.length) {
-                        $scope.ngModel = deviceNames[0];
+                    if ($scope.autoInit && deviceNames.length && deviceNames.indexOf(ngModelCtrl.$viewValue) < 0) {
+                    	ngModelCtrl.$setViewValue(deviceNames[0]);
                     }
                 });
             });
