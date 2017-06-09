@@ -10,9 +10,13 @@
 	</md-toolbar>
 	
 	<md-dialog-content layout="column" class="md-padding" flex>
-		<ma-file-store-browser flex ng-model="$ctrl.path"></ma-file-store-browser>
+		<ma-file-store-browser flex ng-model="$ctrl.path"
+			store="{{$ctrl.options.store}}"
+			select-directories="$ctrl.options.selectDirectories"
+			mime-types="{{$ctrl.options.mimeTypes}}"
+			extensions="{{$ctrl.options.extensions}}"
+			preview="$ctrl.options.preview"></ma-file-store-browser>
 	</md-dialog-content>
-
 	<md-dialog-actions layout="row">
 	  <md-button ng-click="$ctrl.close()">
 	    <md-icon>close</md-icon>&nbsp;<span ma-tr="common.cancel"></span>

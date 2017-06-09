@@ -31,6 +31,13 @@
             <md-input-container flex="100" flex-gt-md="50">
                 <label ma-tr="ui.app.logoSource"></label>
                 <input ng-model="uiSettings.logoSrc" ma-empty-input ng-model-options="{debounce: 500}">
+                <md-button class="ma-input-button md-icon-button"
+                		ma-choose-file="uiSettings.logoSrc = $path;"
+                		ma-choose-file-path="uiSettings.logoSrc"
+                		ma-choose-file-options="{mimeTypes: 'image/*', extensions: 'png,jpg,jpeg,svg', preview:true, store:'public'}">
+				  	<md-icon>attachment</md-icon>
+				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
+				</md-button>
             </md-input-container>
         </div>
     </md-card-content>
@@ -189,6 +196,14 @@
             <md-input-container flex="100" flex-gt-md="33">
                 <label ma-tr="ui.app.userModuleUrl"></label>
                 <input ng-model="uiSettings.userModule" ma-empty-input>
+
+                <md-button class="ma-input-button md-icon-button"
+                		ma-choose-file="uiSettings.userModule = $path;"
+                		ma-choose-file-path="uiSettings.userModule"
+                		ma-choose-file-options="{mimeTypes: 'application/javascript', extensions: 'js', store:'public'}">
+				  	<md-icon>attachment</md-icon>
+				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
+				</md-button>
             </md-input-container>
         </div>
     </md-card-content>

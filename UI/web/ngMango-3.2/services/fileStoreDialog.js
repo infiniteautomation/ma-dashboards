@@ -11,7 +11,7 @@ function fileStoreDialog($mdDialog, $mdMedia) {
     function FileStoreDialog() {
     }
 
-    FileStoreDialog.prototype.show = function($event, path) {
+    FileStoreDialog.prototype.show = function($event, path, options) {
     	return $mdDialog.show({
             controller: function() {
             	this.close = function() {
@@ -30,7 +30,8 @@ function fileStoreDialog($mdDialog, $mdMedia) {
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-            	path: path
+            	path: path,
+            	options: options
             }
         });
     };

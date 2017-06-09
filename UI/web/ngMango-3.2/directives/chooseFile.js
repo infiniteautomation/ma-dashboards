@@ -13,7 +13,8 @@ function chooseFile() {
         controller: ChooseFileController,
         bindToController: {
             onChoose: '&?maChooseFile',
-            path: '<?maChooseFilePath'
+            path: '<?maChooseFilePath',
+            options: '<?maChooseFileOptions'
         }
     };
 }
@@ -26,7 +27,7 @@ function ChooseFileController($element, fileStoreDialog) {
 
 ChooseFileController.prototype.$onInit = function() {
 	this.$element.on('click', function(event) {
-		this.fileStoreDialog.show(event, this.path).then(function(newPath) {
+		this.fileStoreDialog.show(event, this.path, this.options).then(function(newPath) {
 			if (this.onChoose) {
 				this.onChoose({$path: newPath});
 			}
