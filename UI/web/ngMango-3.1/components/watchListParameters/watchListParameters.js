@@ -38,19 +38,22 @@ function WatchListParametersController($parse, $interpolate, Util) {
 }
 
 WatchListParametersController.prototype.$onChanges = function(changes) {
-    if (changes.watchList && this.watchList && this.watchList.data && this.watchList.data.paramValues) {
-        this.parameters = this.watchList.data.paramValues;
+    if (changes.watchList && this.watchList) {
+    	if (this.watchList.data && this.watchList.data.paramValues) {
+    		this.parameters = this.watchList.data.paramValues;
+    	} else if (!this.parameters) {
+    		this.parameters = {};
+    	}
     }
 };
 
 WatchListParametersController.prototype.$onInit = function() {
-    if (!this.parameters) {
-        this.parameters = {};
-    }
 };
 
 WatchListParametersController.prototype.inputChanged = function inputChanged() {
-    this.parametersChanged({$parameters: angular.extend({}, this.parameters)});
+	if (this.watchList) {
+		this.parametersChanged({$parameters: angular.extend({}, this.parameters)});
+	}
 };
 
 WatchListParametersController.prototype.createDsQuery = function createDsQuery(options) {

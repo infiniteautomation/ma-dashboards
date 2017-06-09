@@ -97,9 +97,16 @@ WatchListSelectController.prototype.doGetPoints = function(parameters) {
         this.points = null;
         this.onPointsChange({$points: this.points});
     } else {
-        this.watchList.getPoints(parameters).then(null, angular.noop).then(function(points) {
+        if (this.wlPointsPromise && this.wlPointsPromise.cancel) {
+            this.wlPointsPromise.cancel();
+        }
+        this.wlPointsPromise = this.watchList.getPoints(parameters).then(null, angular.noop).then(function(points) {
             this.points = points || null;
             this.onPointsChange({$points: this.points});
+        }.bind(this));
+
+        this.wlPointsPromise['finally'](function() {
+            delete this.wlPointsPromise;
         }.bind(this));
     }
 };
