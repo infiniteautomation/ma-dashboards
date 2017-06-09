@@ -1,4 +1,4 @@
-<div ng-repeat="param in $ctrl.watchList.params" layout flex="100" flex-gt-sm="50" flex-gt-md="25">
+<div ng-if="$ctrl.parameters" ng-repeat="param in $ctrl.watchList.params" layout flex="100" flex-gt-sm="50" flex-gt-md="25">
   <md-input-container ng-if="param.type === 'input'" flex>
     <label ng-bind="param.label"></label>
     <input ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{debounce: 1000}"
@@ -57,27 +57,27 @@
   <md-input-container ng-if="param.type === 'deviceName' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
+        auto-init="true" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
         contains="$ctrl.interpolateOption(param.options.contains)" ng-if="!param.options.multiple"></ma-device-name-list>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
+        auto-init="true" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
         contains="$ctrl.interpolateOption(param.options.contains)" ng-if="param.options.multiple" multiple></ma-device-name-list>
   </md-input-container>
   <ma-filtering-device-name-list ng-if="param.type === 'deviceName' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="false" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
+      auto-init="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
       label-text="param.label">
   </ma-filtering-device-name-list>
   <md-input-container ng-if="param.type === 'dataSource' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-data-source-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value.xid'}"
-        auto-init="false" show-clear="true"
+        auto-init="true" show-clear="true"
         query="$ctrl.createDsQuery(param.options)">
     </ma-data-source-list>
   </md-input-container>
   <ma-filtering-data-source-list ng-if="param.type === 'dataSource' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="false" query="$ctrl.createDsQuery(param.options)"
+      auto-init="true" query="$ctrl.createDsQuery(param.options)"
       label-text="param.label">
   </ma-filtering-data-source-list>
   <md-input-container ng-if="param.type === 'pointHierarchy' && !param.options.filtering" flex>
@@ -103,7 +103,7 @@
   </md-input-container>
   <ma-filtering-point-hierarchy-select ng-if="param.type === 'pointHierarchy' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="false"
+      auto-init="true"
       path="$ctrl.interpolateOption(param.options.path)"
       subfolders-only="param.options.subfoldersOnly"
       max-depth="param.options.maxDepth"
