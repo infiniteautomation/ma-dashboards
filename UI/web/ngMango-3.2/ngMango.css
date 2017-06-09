@@ -420,6 +420,17 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
     color: rgb(255,133,0);
 }
 
+ma-watch-list-parameters {
+	flex-direction: row;
+	flex-wrap: wrap;
+	display: flex;
+	box-sizing: border-box;
+	align-items: center;
+	align-content: center;
+	justify-content: flex-start;
+	max-width: 100%;
+}
+
 /* SVG and animations */
 
 [ng-include] > svg {
@@ -589,5 +600,9 @@ ma-file-store-browser .ma-file-selected {
 }
 
 .ma-file-store-dialog {
+	height: 90%;
+}
+
+.mobile .ma-file-store-dialog {
 	height: 100%;
 }
