@@ -1,3 +1,13 @@
+*Version 3.1.2*
+* Ability to use user module in dashboard designer
+* Add maButton component
+* Add maSvg examples
+* Fix for page editor not being displayed in Firefox
+* Add point query to designer
+* Layout/style fixes and tweaks
+* Fix watch list parameter bug
+* Bug fixes
+
 *Version 3.1.1*
 * Option for setting label on ma-point-value
 * Make pre-bootstrap colors match default theme
