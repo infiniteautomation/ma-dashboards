@@ -166,7 +166,8 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
             options.chartCursor = {
                 oneBalloonOnly: true,
                 graphBulletSize: 2,
-                zoomable: false
+                zoomable: false,
+                categoryBalloonDateFormat: 'h:mm:ss A - MMM DD, YYYY'
             };
             options.balloon = {
                 fillAlpha: 1
@@ -448,11 +449,12 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                     labelPosition: 'right',
                     labelOffset: 5,
                     labelColorField: graph.xid + 'AnnotationTextColor',
-                    bulletSize: 0,
+                    bulletSize: 10,
                     bulletSizeField: graph.xid + 'AnnotationBulletSize',
-                    bulletHitAreaSize: 10,
-                    bulletAlpha: 0.7,
-                    bullet: 'diamond',
+                    bulletHitAreaSize: 14,
+                    bulletAlpha: 1,
+                    bulletColor: 'rgba(0, 0, 0, 0)',
+                    bullet: 'circle',
                     bulletField: graph.xid + 'AnnotationBullet'
                 };
             }
