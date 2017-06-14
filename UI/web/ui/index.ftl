@@ -10,23 +10,23 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <base href="/ui/">
 
-    <link rel="icon" type="image/png" sizes="192x192" href="/modules/mangoUI/web/img/icon192.png?v=${update?c}">
-    <link rel="icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${update?c}">
-    <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${update?c}">
-    <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${update?c}">
-    <link rel="manifest" href="/modules/mangoUI/web/ui/manifest.json?v=${update?c}">
+    <link rel="icon" type="image/png" sizes="192x192" href="/modules/mangoUI/web/img/icon192.png?v=${lastUpgrade?c}">
+    <link rel="icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${lastUpgrade?c}">
+    <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${lastUpgrade?c}">
+    <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${lastUpgrade?c}">
+    <link rel="manifest" href="/modules/mangoUI/web/ui/manifest.json?v=${lastUpgrade?c}">
     
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular/angular-csp.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-material/angular-material.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-loading-bar/loading-bar.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/material-design-icons/iconfont/material-icons.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/font-awesome/css/font-awesome.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/mdPickers/mdPickers.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/md-color-picker/mdColorPicker.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/fonts.css?v=${update?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/main.css?v=${update?c}">
-    <script>this.mangoLastUpdated=${update?c};</script>
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular/angular-csp.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-material/angular-material.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-loading-bar/loading-bar.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/material-design-icons/iconfont/material-icons.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/font-awesome/css/font-awesome.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/mdPickers/mdPickers.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/md-color-picker/mdColorPicker.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/fonts.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/main.css?v=${lastUpgrade?c}">
+    <script>this.mangoLastUpdated=${lastUpgrade?c};</script>
 </head>
 
 <body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn, mobile: !$mdMedia('gt-sm'), phone: $mdMedia('xs')}"
@@ -47,8 +47,8 @@
     <div ng-cloak ng-if="noApi" class="missing-module">mangoApi module is required.</div>
     <div ui-view ng-cloak layout="column" flex class="main-application" ng-class="stateNameClass"></div>
 
-    <script src="/modules/mangoUI/web/vendor/requirejs/require.js?v=${update?c}"></script>
-    <script src="/modules/mangoUI/web/loaderConfig.js?v=${update?c}"></script>
+    <script src="/modules/mangoUI/web/vendor/requirejs/require.js?v=${lastUpgrade?c}"></script>
+    <script src="/modules/mangoUI/web/loaderConfig.js?v=${lastUpgrade?c}"></script>
     <script>require(['maUi/app']);</script>
 </body>
 </html>
