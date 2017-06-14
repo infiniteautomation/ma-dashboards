@@ -11,7 +11,10 @@ WatchListBuilderController.$inject = ['maPoint', '$mdMedia', 'maWatchList',
 function WatchListBuilderController(Point, $mdMedia, WatchList,
         $state, $mdDialog, Translate, $timeout, $mdToast, User, $q) {
     var $ctrl = this;
-    $ctrl.baseUrl = require.toUrl('.');
+    
+    $ctrl.baseUrl = function(path) {
+    	return require.toUrl('.' + path);
+    };
     
     $ctrl.$mdMedia = $mdMedia;
     

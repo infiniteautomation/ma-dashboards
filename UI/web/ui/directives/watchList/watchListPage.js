@@ -23,8 +23,10 @@ WatchListPageController.$inject = ['$mdMedia', 'maWatchList', 'maTranslate', 'lo
     'maUiDateBar', '$mdDialog', 'maStatistics', '$scope', '$mdColorPicker'];
 function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy,
         maUiDateBar, $mdDialog, statistics, $scope, $mdColorPicker) {
-    
-    this.baseUrl = require.toUrl('.');
+
+    this.baseUrl = function(path) {
+    	return require.toUrl('.' + path);
+    };
     this.watchList = null;
     this.selectWatchList = null;
     this.dataSource = null;

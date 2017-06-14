@@ -10,7 +10,7 @@ return [
     {
         name: 'login',
         url: '/login',
-        templateUrl: 'views/login.html',
+        templateUrl: require.toUrl('./views/login.html'),
         menuHidden: true,
         menuIcon: 'exit_to_app',
         menuTr: 'header.login',
@@ -36,14 +36,14 @@ return [
     {
         name: 'agreeToLicense',
         url: '/agree-to-license',
-        templateUrl: 'views/agreeToLicense.html',
+        templateUrl: require.toUrl('./views/agreeToLicense.html'),
         menuTr: 'ui.app.agreeToLicense',
         menuIcon: 'done',
         menuHidden: true
     },
     {
         name: 'ui',
-        templateUrl: 'views/main.html',
+        templateUrl: require.toUrl('./views/main.html'),
         'abstract': true,
         menuHidden: true,
         menuTr: 'ui.app.ui',
@@ -99,7 +99,7 @@ return [
     {
         name: 'ui.notFound',
         url: '/not-found?path',
-        templateUrl: 'views/notFound.html',
+        templateUrl: require.toUrl('./views/notFound.html'),
         menuHidden: true,
         menuTr: 'ui.app.pageNotFound',
         weight: 3000
@@ -107,7 +107,7 @@ return [
     {
         name: 'ui.unauthorized',
         url: '/unauthorized?path',
-        templateUrl: 'views/unauthorized.html',
+        templateUrl: require.toUrl('./views/unauthorized.html'),
         menuHidden: true,
         menuTr: 'ui.app.unauthorized',
         weight: 3000
@@ -115,7 +115,7 @@ return [
     {
         name: 'ui.error',
         url: '/error',
-        templateUrl: 'views/error.html',
+        templateUrl: require.toUrl('./views/error.html'),
         menuHidden: true,
         menuTr: 'ui.app.error',
         weight: 3000
@@ -123,7 +123,7 @@ return [
     {
         name: 'ui.serverError',
         url: '/server-error',
-        templateUrl: 'views/serverError.html',
+        templateUrl: require.toUrl('./views/serverError.html'),
         menuHidden: true,
         menuTr: 'ui.app.serverError',
         weight: 3000
@@ -131,7 +131,7 @@ return [
     {
         name: 'ui.home',
         url: '/home',
-        templateUrl: 'views/home.html',
+        templateUrl: require.toUrl('./views/home.html'),
         menuTr: 'ui.dox.home',
         menuIcon: 'home',
         params: {
@@ -232,75 +232,75 @@ return [
     {
         url: '/getting-started',
         name: 'ui.help.gettingStarted',
-        templateUrl: 'views/help/gettingStarted.html',
+        templateUrl: require.toUrl('./views/help/gettingStarted.html'),
         menuTr: 'ui.dox.gettingStarted',
         weight: 900
     },
     {
         name: 'ui.help.legacy',
         url: '/legacy',
-        templateUrl: 'views/help/legacy.html',
+        templateUrl: require.toUrl('./views/help/legacy.html'),
         menuHidden: true,
         menuTr: 'ui.dox.legacyHelp'
     },
     {
         url: '/watch-list',
         name: 'ui.help.watchList',
-        templateUrl: 'views/help/watchList.html',
+        templateUrl: require.toUrl('./views/help/watchList.html'),
         menuTr: 'ui.dox.watchList'
     },
     {
         url: '/data-point-details',
         name: 'ui.help.dataPointDetails',
-        templateUrl: 'views/help/dataPointDetails.html',
+        templateUrl: require.toUrl('./views/help/dataPointDetails.html'),
         menuTr: 'ui.dox.dataPointDetails'
     },
     {
         url: '/events',
         name: 'ui.help.events',
-        templateUrl: 'views/help/events.html',
+        templateUrl: require.toUrl('./views/help/events.html'),
         menuTr: 'ui.dox.events'
     },
     {
         url: '/date-bar',
         name: 'ui.help.dateBar',
-        templateUrl: 'views/help/dateBar.html',
+        templateUrl: require.toUrl('./views/help/dateBar.html'),
         menuTr: 'ui.dox.dateBar'
     },
     {
         url: '/ui-settings',
         name: 'ui.help.uiSettings',
-        templateUrl: 'views/help/uiSettings.html',
+        templateUrl: require.toUrl('./views/help/uiSettings.html'),
         menuTr: 'ui.app.uiSettings'
     },
     {
         url: '/watch-list-builder',
         name: 'ui.help.watchListBuilder',
-        templateUrl: 'views/help/watchListBuilder.html',
+        templateUrl: require.toUrl('./views/help/watchListBuilder.html'),
         menuTr: 'ui.app.watchListBuilder'
     },
     {
         url: '/custom-pages',
         name: 'ui.help.customPages',
-        templateUrl: 'views/help/customPages.html',
+        templateUrl: require.toUrl('./views/help/customPages.html'),
         menuTr: 'ui.dox.customPages'
     },
     {
         url: '/menu-editor',
         name: 'ui.help.menuEditor',
-        templateUrl: 'views/help/menuEditor.html',
+        templateUrl: require.toUrl('./views/help/menuEditor.html'),
         menuTr: 'ui.dox.menuEditor'
     },
     {
         url: '/users',
         name: 'ui.help.users',
-        templateUrl: 'views/help/users.html',
+        templateUrl: require.toUrl('./views/help/users.html'),
         menuTr: 'header.users'
     },
     {
         url: '/custom-dashboards',
         name: 'ui.help.customDashboards',
-        templateUrl: 'views/help/customDashboards.html',
+        templateUrl: require.toUrl('./views/help/customDashboards.html'),
         menuTr: 'ui.dox.customDashboards'
     },
     {
@@ -334,7 +334,7 @@ return [
     {
         url: '/edit-pages/{pageXid}',
         name: 'ui.settings.editPages',
-        templateUrl: 'views/editPages.html',
+        templateUrl: require.toUrl('./views/editPages.html'),
         menuTr: 'ui.app.editPages',
         menuIcon: 'dashboard',
         permission: 'edit-ui-pages',
@@ -350,7 +350,7 @@ return [
     {
         url: '/edit-menu',
         name: 'ui.settings.editMenu',
-        templateUrl: 'views/editMenu.html',
+        templateUrl: require.toUrl('./views/editMenu.html'),
         menuTr: 'ui.app.editMenu',
         menuIcon: 'toc',
         permission: 'edit-ui-menus',
@@ -361,7 +361,7 @@ return [
     {
         url: '/auto-login-settings',
         name: 'ui.settings.autoLoginSettings',
-        templateUrl: 'views/autoLoginSettings.html',
+        templateUrl: require.toUrl('./views/autoLoginSettings.html'),
         menuTr: 'ui.app.autoLoginSettings',
         menuIcon: 'face',
         permission: 'superadmin'
@@ -369,7 +369,7 @@ return [
     {
         url: '/ui-settings',
         name: 'ui.settings.uiSettings',
-        templateUrl: 'views/uiSettings.html',
+        templateUrl: require.toUrl('./views/uiSettings.html'),
         menuTr: 'ui.app.uiSettings',
         menuIcon: 'color_lens',
         permission: 'edit-ui-settings',
@@ -626,7 +626,7 @@ return [
     {
         url: '/play-area',
         name: 'ui.examples.playArea',
-        templateUrl: 'views/examples/playArea.html',
+        templateUrl: require.toUrl('./views/examples/playArea.html'),
         menuTr: 'ui.dox.playArea',
         menuIcon: 'fa-magic',
         params: {
@@ -636,7 +636,7 @@ return [
     },
     {
         name: 'ui.examples.playAreaBig',
-        templateUrl: 'views/examples/playAreaBig.html',
+        templateUrl: require.toUrl('./views/examples/playAreaBig.html'),
         url: '/play-area-big',
         menuTr: 'ui.dox.playAreaBig',
         menuHidden: true,
@@ -652,67 +652,67 @@ return [
     },
     {
         name: 'ui.examples.basics.angular',
-        templateUrl: 'views/examples/angular.html',
+        templateUrl: require.toUrl('./views/examples/angular.html'),
         url: '/angular',
         menuTr: 'ui.dox.angular'
     },
     {
         name: 'ui.examples.basics.pointList',
-        templateUrl: 'views/examples/pointList.html',
+        templateUrl: require.toUrl('./views/examples/pointList.html'),
         url: '/point-list',
         menuTr: 'ui.dox.pointList'
     },
     {
         name: 'ui.examples.basics.getPointByXid',
-        templateUrl: 'views/examples/getPointByXid.html',
+        templateUrl: require.toUrl('./views/examples/getPointByXid.html'),
         url: '/get-point-by-xid',
         menuTr: 'ui.dox.getPointByXid'
     },
     {
         name: 'ui.examples.basics.dataSourceAndDeviceList',
-        templateUrl: 'views/examples/dataSourceAndDeviceList.html',
+        templateUrl: require.toUrl('./views/examples/dataSourceAndDeviceList.html'),
         url: '/data-source-and-device-list',
         menuTr: 'ui.dox.dataSourceAndDeviceList'
     },
     {
         name: 'ui.examples.basics.liveValues',
-        templateUrl: 'views/examples/liveValues.html',
+        templateUrl: require.toUrl('./views/examples/liveValues.html'),
         url: '/live-values',
         menuTr: 'ui.dox.liveValues'
     },
     {
         name: 'ui.examples.basics.filters',
-        templateUrl: 'views/examples/filters.html',
+        templateUrl: require.toUrl('./views/examples/filters.html'),
         url: '/filters',
         menuTr: 'ui.dox.filters'
     },
     {
         name: 'ui.examples.basics.datePresets',
-        templateUrl: 'views/examples/datePresets.html',
+        templateUrl: require.toUrl('./views/examples/datePresets.html'),
         url: '/date-presets',
         menuTr: 'ui.dox.datePresets'
     },
     {
         name: 'ui.examples.basics.styleViaValue',
-        templateUrl: 'views/examples/styleViaValue.html',
+        templateUrl: require.toUrl('./views/examples/styleViaValue.html'),
         url: '/style-via-value',
         menuTr: 'ui.dox.styleViaValue'
     },
     {
         name: 'ui.examples.basics.pointValues',
-        templateUrl: 'views/examples/pointValues.html',
+        templateUrl: require.toUrl('./views/examples/pointValues.html'),
         url: '/point-values',
         menuTr: 'ui.dox.pointValues'
     },
     {
         name: 'ui.examples.basics.latestPointValues',
-        templateUrl: 'views/examples/latestPointValues.html',
+        templateUrl: require.toUrl('./views/examples/latestPointValues.html'),
         url: '/latest-point-values',
         menuTr: 'ui.dox.latestPointValues'
     },
     {
         name: 'ui.examples.basics.clocksAndTimezones',
-        templateUrl: 'views/examples/clocksAndTimezones.html',
+        templateUrl: require.toUrl('./views/examples/clocksAndTimezones.html'),
         url: '/clocks-and-timezones',
         menuTr: 'ui.dox.clocksAndTimezones'
     },
@@ -725,25 +725,25 @@ return [
     },
     {
         name: 'ui.examples.singleValueDisplays.gauges',
-        templateUrl: 'views/examples/gauges.html',
+        templateUrl: require.toUrl('./views/examples/gauges.html'),
         url: '/gauges',
         menuTr: 'ui.dox.gauges'
     },
     {
         name: 'ui.examples.singleValueDisplays.switchImage',
-        templateUrl: 'views/examples/switchImage.html',
+        templateUrl: require.toUrl('./views/examples/switchImage.html'),
         url: '/switch-image',
         menuTr: 'ui.dox.switchImage'
     },
     {
         name: 'ui.examples.singleValueDisplays.bars',
-        templateUrl: 'views/examples/bars.html',
+        templateUrl: require.toUrl('./views/examples/bars.html'),
         url: '/bars',
         menuTr: 'ui.dox.bars'
     },
     {
         name: 'ui.examples.singleValueDisplays.tanks',
-        templateUrl: 'views/examples/tanks.html',
+        templateUrl: require.toUrl('./views/examples/tanks.html'),
         url: '/tanks',
         menuTr: 'ui.dox.tanks'
     },
@@ -756,43 +756,43 @@ return [
     },
     {
         name: 'ui.examples.charts.lineChart',
-        templateUrl: 'views/examples/lineChart.html',
+        templateUrl: require.toUrl('./views/examples/lineChart.html'),
         url: '/line-chart',
         menuTr: 'ui.dox.lineChart'
     },
     {
         name: 'ui.examples.charts.barChart',
-        templateUrl: 'views/examples/barChart.html',
+        templateUrl: require.toUrl('./views/examples/barChart.html'),
         url: '/bar-chart',
         menuTr: 'ui.dox.barChart'
     },
     {
         name: 'ui.examples.charts.advancedChart',
-        templateUrl: 'views/examples/advancedChart.html',
+        templateUrl: require.toUrl('./views/examples/advancedChart.html'),
         url: '/advanced-chart',
         menuTr: 'ui.dox.advancedChart'
     },
     {
         name: 'ui.examples.charts.stateChart',
-        templateUrl: 'views/examples/stateChart.html',
+        templateUrl: require.toUrl('./views/examples/stateChart.html'),
         url: '/state-chart',
         menuTr: 'ui.dox.stateChart'
     },
     {
         name: 'ui.examples.charts.liveUpdatingChart',
-        templateUrl: 'views/examples/liveUpdatingChart.html',
+        templateUrl: require.toUrl('./views/examples/liveUpdatingChart.html'),
         url: '/live-updating-chart',
         menuTr: 'ui.dox.liveUpdatingChart'
     },
     {
         name: 'ui.examples.charts.pieChart',
-        templateUrl: 'views/examples/pieChart.html',
+        templateUrl: require.toUrl('./views/examples/pieChart.html'),
         url: '/pie-chart',
         menuTr: 'ui.dox.pieChart'
     },
     {
         name: 'ui.examples.charts.dailyComparison',
-        templateUrl: 'views/examples/dailyComparisonChart.html',
+        templateUrl: require.toUrl('./views/examples/dailyComparisonChart.html'),
         url: '/daily-comparison',
         menuTr: 'ui.dox.dailyComparisonChart'
     },
@@ -805,25 +805,25 @@ return [
     },
     {
         name: 'ui.examples.settingPointValues.setPoint',
-        templateUrl: 'views/examples/setPoint.html',
+        templateUrl: require.toUrl('./views/examples/setPoint.html'),
         url: '/set-point',
         menuTr: 'ui.dox.settingPoint'
     },
     {
         name: 'ui.examples.settingPointValues.toggle',
-        templateUrl: 'views/examples/toggle.html',
+        templateUrl: require.toUrl('./views/examples/toggle.html'),
         url: '/toggle',
         menuTr: 'ui.dox.toggle'
     },
     {
         name: 'ui.examples.settingPointValues.sliders',
-        templateUrl: 'views/examples/sliders.html',
+        templateUrl: require.toUrl('./views/examples/sliders.html'),
         url: '/sliders',
         menuTr: 'ui.dox.sliders'
     },
     {
         name: 'ui.examples.settingPointValues.multistateRadio',
-        templateUrl: 'views/examples/multistateRadio.html',
+        templateUrl: require.toUrl('./views/examples/multistateRadio.html'),
         url: '/multistate-radio-buttons',
         menuTr: 'ui.dox.multistateRadio'
     },
@@ -835,19 +835,19 @@ return [
     },
     {
         name: 'ui.examples.statistics.getStatistics',
-        templateUrl: 'views/examples/getStatistics.html',
+        templateUrl: require.toUrl('./views/examples/getStatistics.html'),
         url: '/get-statistics',
         menuTr: 'ui.dox.getStatistics'
     },
     {
         name: 'ui.examples.statistics.statisticsTable',
-        templateUrl: 'views/examples/statisticsTable.html',
+        templateUrl: require.toUrl('./views/examples/statisticsTable.html'),
         url: '/statistics-table',
         menuTr: 'ui.dox.statisticsTable'
     },
     {
         name: 'ui.examples.statistics.statePieChart',
-        templateUrl: 'views/examples/statePieChart.html',
+        templateUrl: require.toUrl('./views/examples/statePieChart.html'),
         url: '/state-pie-chart',
         menuTr: 'ui.dox.statePieChart'
     },
@@ -859,31 +859,31 @@ return [
     },
     {
         name: 'ui.examples.pointArrays.buildPointArray',
-        templateUrl: 'views/examples/buildPointArray.html',
+        templateUrl: require.toUrl('./views/examples/buildPointArray.html'),
         url: '/build-point-array',
         menuTr: 'ui.dox.buildPointArray'
     },
     {
         name: 'ui.examples.pointArrays.pointArrayTable',
-        templateUrl: 'views/examples/pointArrayTable.html',
+        templateUrl: require.toUrl('./views/examples/pointArrayTable.html'),
         url: '/point-array-table',
         menuTr: 'ui.dox.pointArrayTable'
     },
     {
         name: 'ui.examples.pointArrays.pointArrayLineChart',
-        templateUrl: 'views/examples/pointArrayLineChart.html',
+        templateUrl: require.toUrl('./views/examples/pointArrayLineChart.html'),
         url: '/point-array-line-chart',
         menuTr: 'ui.dox.pointArrayLineChart'
     },
     {
         name: 'ui.examples.pointArrays.templating',
-        templateUrl: 'views/examples/templating.html',
+        templateUrl: require.toUrl('./views/examples/templating.html'),
         url: '/templating',
         menuTr: 'ui.dox.templating'
     },
     {
         name: 'ui.examples.pointArrays.dataPointTable',
-        templateUrl: 'views/examples/dataPointTable.html',
+        templateUrl: require.toUrl('./views/examples/dataPointTable.html'),
         url: '/data-point-table',
         menuTr: 'ui.dox.dataPointTable'
     },
@@ -895,13 +895,13 @@ return [
     },
     {
         name: 'ui.examples.pointHierarchy.displayTree',
-        templateUrl: 'views/examples/displayTree.html',
+        templateUrl: require.toUrl('./views/examples/displayTree.html'),
         url: '/display-tree',
         menuTr: 'ui.dox.displayTree'
     },
     {
         name: 'ui.examples.pointHierarchy.pointHierarchyLineChart',
-        templateUrl: 'views/examples/pointHierarchyLineChart.html',
+        templateUrl: require.toUrl('./views/examples/pointHierarchyLineChart.html'),
         url: '/line-chart',
         menuTr: 'ui.dox.pointHierarchyLineChart'
     },
@@ -913,43 +913,43 @@ return [
     },
     {
         name: 'ui.examples.templates.angularMaterial',
-        templateUrl: 'views/examples/angularMaterial.html',
+        templateUrl: require.toUrl('./views/examples/angularMaterial.html'),
         url: '/angular-material',
         menuText: 'Angular Material'
     },
     {
         name: 'ui.examples.templates.bootstrap',
-        templateUrl: 'views/examples/bootstrap.html',
+        templateUrl: require.toUrl('./views/examples/bootstrap.html'),
         url: '/bootstrap',
         menuText: 'Bootstrap 3'
     },
     {
         name: 'ui.examples.templates.autoLogin',
-        templateUrl: 'views/examples/autoLogin.html',
+        templateUrl: require.toUrl('./views/examples/autoLogin.html'),
         url: '/auto-login',
         menuTr: 'ui.dox.autoLogin'
     },
     {
         name: 'ui.examples.templates.extendApp',
-        templateUrl: 'views/examples/extendApp.html',
+        templateUrl: require.toUrl('./views/examples/extendApp.html'),
         url: '/extend-app',
         menuTr: 'ui.dox.extendApp'
     },
     {
         name: 'ui.examples.templates.loginPage',
-        templateUrl: 'views/examples/loginPageTemplate.html',
+        templateUrl: require.toUrl('./views/examples/loginPageTemplate.html'),
         url: '/login-page',
         menuTr: 'ui.dox.loginPageTemplate'
     },
     {
         name: 'ui.examples.templates.adminTemplate',
-        templateUrl: 'views/examples/adminTemplate.html',
+        templateUrl: require.toUrl('./views/examples/adminTemplate.html'),
         url: '/admin-template',
         menuTr: 'ui.dox.adminTemplate'
     },
     {
         name: 'ui.examples.templates.adaptiveLayouts',
-        templateUrl: 'views/examples/adaptiveLayouts.html',
+        templateUrl: require.toUrl('./views/examples/adaptiveLayouts.html'),
         url: '/adaptive-layouts',
         menuText: 'Adaptive Layouts'
     },
@@ -961,31 +961,31 @@ return [
     },
     {
         name: 'ui.examples.utilities.translation',
-        templateUrl: 'views/examples/translation.html',
+        templateUrl: require.toUrl('./views/examples/translation.html'),
         url: '/translation',
         menuTr: 'ui.dox.translation'
     },
     {
         name: 'ui.examples.utilities.jsonStore',
-        templateUrl: 'views/examples/jsonStore.html',
+        templateUrl: require.toUrl('./views/examples/jsonStore.html'),
         url: '/json-store',
         menuTr: 'ui.dox.jsonStore'
     },
     {
         name: 'ui.examples.utilities.watchdog',
-        templateUrl: 'views/examples/watchdog.html',
+        templateUrl: require.toUrl('./views/examples/watchdog.html'),
         url: '/watchdog',
         menuTr: 'ui.dox.watchdog'
     },
     {
         name: 'ui.examples.utilities.eventsTable',
-        templateUrl: 'views/examples/eventsTable.html',
+        templateUrl: require.toUrl('./views/examples/eventsTable.html'),
         url: '/events-table',
         menuTr: 'ui.app.eventsTable'
     },
     {
         name: 'ui.examples.utilities.googleMaps',
-        templateUrl: 'views/examples/googleMaps.html',
+        templateUrl: require.toUrl('./views/examples/googleMaps.html'),
         url: '/google-maps',
         menuText: 'Google Maps'
     },
@@ -997,13 +997,13 @@ return [
     },
     {
         name: 'ui.examples.svg.basicUsage',
-        templateUrl: 'views/examples/svgBasic.html',
+        templateUrl: require.toUrl('./views/examples/svgBasic.html'),
         url: '/basic-usage',
         menuTr: 'ui.dox.basicSvg'
     },
     {
         name: 'ui.examples.svg.interactiveSvg',
-        templateUrl: 'views/examples/svgAdvanced.html',
+        templateUrl: require.toUrl('./views/examples/svgAdvanced.html'),
         url: '/interactive-svg',
         menuTr: 'ui.dox.interactiveSvg'
     }
