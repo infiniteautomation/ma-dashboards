@@ -53,6 +53,7 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.render = false;
         $ctrl.apiKeySet = false;
         $ctrl.infoWindowCache = {};
+        $ctrl.allInfoWindows = [];
 
         if (uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
@@ -76,7 +77,7 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.toggleInfoWindow = function(e, windowId, markerId) {
-            // console.log('toggle called',e, windowId, markerId);
+            // console.log('toggle called', e, windowId, markerId);
             if (!$ctrl.infoWindowCache[windowId]) {
                 $ctrl.map.showInfoWindow(windowId, markerId);
                 $ctrl.infoWindowCache[windowId] = true;
@@ -85,6 +86,22 @@ define(['angular', 'require'], function(angular, require) {
                 $ctrl.map.hideInfoWindow(windowId);
                 $ctrl.infoWindowCache[windowId] = false;
             }
+        };
+
+        $ctrl.showInfoWindow = function(e, windowId, markerId) {
+            $ctrl.map.showInfoWindow(windowId, markerId);
+
+            $ctrl.allInfoWindows.push(windowId);
+        };
+
+        $ctrl.hideInfoWindow = function(e, windowId) {
+            $ctrl.map.hideInfoWindow(windowId);
+        };
+
+        $ctrl.hideAllInfoWindows = function(e) {
+            $ctrl.allInfoWindows.forEach(function(windowId) {
+                $ctrl.map.hideInfoWindow(windowId);
+            });
         };
 
         $ctrl.onMapLoaded = function() {
