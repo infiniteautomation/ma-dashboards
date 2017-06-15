@@ -58,6 +58,30 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate) {
 
         return $mdDialog.show(confirm);
     };
+    
+    DialogHelper.prototype.prompt = function(event, shortTr, longTr, placeHolderTr) {
+        var shortText = maTranslate.trSync(shortTr);
+        var longText = longTr && maTranslate.trSync(longTr);
+        var placeHolderText = placeHolderTr && maTranslate.trSync(placeHolderTr);
+
+        var prompt = $mdDialog.prompt()
+            .title(shortText)
+            .ariaLabel(shortText)
+            .targetEvent(event)
+            .ok(maTranslate.trSync('common.ok'))
+            .cancel(maTranslate.trSync('common.cancel'))
+            .multiple(true);
+        
+        if (longText) {
+        	prompt.textContent(longText);
+        }
+        
+        if (placeHolderText) {
+        	prompt.placeholder(placeHolderText);
+        }
+
+        return $mdDialog.show(prompt);
+    };
 
     DialogHelper.prototype.showConfigImportDialog = function(importData, $event) {
         var locals = {importData: importData};

@@ -179,9 +179,12 @@ FileStoreBrowserController.prototype.cancelClick = function(event) {
 
 FileStoreBrowserController.prototype.deleteFile = function(event, file) {
 	event.stopPropagation();
-	
-	this.maDialogHelper.confirm(event, 'ui.app.areYouSureDeleteFile').then(function() {
-		this.maFileStore.remove(this.path.concat(file.filename), false).then(function() {
+
+	var confirmPromise = this.maDialogHelper.confirm(event,
+			file.directory ? 'ui.app.areYouSureDeleteFolder' : 'ui.app.areYouSureDeleteFile');
+
+	confirmPromise.then(function() {
+		this.maFileStore.remove(this.path.concat(file.filename), true).then(function() {
 			var index = this.files.indexOf(file);
 			if (index >= 0)
 				this.files.splice(index, 1);
@@ -212,6 +215,14 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
     	delete this.uploadPromise;
     	this.$element.find('input[type=file]').val('');
     }.bind(this));
+};
+
+FileStoreBrowserController.prototype.createNewFolder = function(event) {
+	this.maDialogHelper.prompt(event, 'ui.app.createNewFolder', null, 'ui.app.folderName').then(function(folderName) {
+		this.maFileStore.createNewFolder(this.path, folderName).then(function(folder) {
+			this.files.push(folder);
+		}.bind(this));
+	}.bind(this));
 };
 
 return fileStoreBrowser;

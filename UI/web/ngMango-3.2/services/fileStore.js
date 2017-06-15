@@ -118,7 +118,23 @@ function fileStore($http, maUtil) {
     		return response.data;
     	});
     };
+    
+    FileStore.prototype.createNewFolder = function(path, name) {
+    	if (path.length < 1) {
+    		throw new Error('Must specify the file store name');
+    	}
+    	var folderUrl = this.toUrl(path.concat(name), true);
 
+    	return $http({
+    		method: 'POST',
+    		url: folderUrl
+    	}).then(function(response) {
+    		var file = response.data;
+    		file.url = folderUrl + file.filename;
+    		return file;
+    	});
+    };
+    
     return new FileStore();
 }
 

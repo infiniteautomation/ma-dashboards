@@ -8,6 +8,10 @@
 		<span ng-if="!$last"><md-icon>chevron_right</md-icon></span>
 	</span>
 	<span flex></span>
+	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFolder($event)" ng-disabled="!$ctrl.path.length">
+		<md-icon>create_new_folder</md-icon>
+		<md-tooltip md-autohide ma-tr="ui.app.createNewFolder"></md-tooltip>
+	</md-button>
 	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.uploadFiles($event)" ng-disabled="!$ctrl.path.length">
 		<md-icon>file_upload</md-icon>
 		<md-tooltip md-autohide ma-tr="ui.app.uploadFiles"></md-tooltip>
@@ -44,7 +48,7 @@
 		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
 		        <td md-cell>
 		        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
-		        	<md-button ng-if="!file.directory" class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)"><md-icon>delete</md-icon></md-button>
+		        	<md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)"><md-icon>delete</md-icon></md-button>
 		        </td>
 		      </tr>
 		    </tbody>
