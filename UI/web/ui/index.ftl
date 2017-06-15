@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="/modules/mangoUI/web/vendor/md-color-picker/mdColorPicker.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/fonts.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/main.css?v=${lastUpgrade?c}">
-    <script>this.mangoLastUpdated=${lastUpgrade?c};</script>
+    <script>this.mangoLastUpgrade=${lastUpgrade?c};</script>
 </head>
 
 <body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn, mobile: !$mdMedia('gt-sm'), phone: $mdMedia('xs')}"

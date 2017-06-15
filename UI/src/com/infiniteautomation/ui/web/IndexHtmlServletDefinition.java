@@ -83,7 +83,7 @@ public class IndexHtmlServletDefinition extends ServletDefinition {
                 resp.setContentType(MediaType.TEXT_HTML_VALUE);
 
                 Map<String, Object> data = new HashMap<>();
-                data.put("lastUpgrade", Common.lastUpgrade / 60);
+                data.put("lastUpgrade", Common.lastUpgrade);
                 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream(8192);
                 try (Writer writer = new BufferedWriter(new OutputStreamWriter(bytes, StandardCharsets.UTF_8))) {
