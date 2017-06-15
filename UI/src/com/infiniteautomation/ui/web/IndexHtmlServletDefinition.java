@@ -3,8 +3,12 @@
  */
 package com.infiniteautomation.ui.web;
 
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -77,10 +81,18 @@ public class IndexHtmlServletDefinition extends ServletDefinition {
             try {
                 resp.setHeader(HttpHeaders.CACHE_CONTROL, String.format(MangoShallowEtagHeaderFilter.MAX_AGE_TEMPLATE, 0));
                 resp.setContentType(MediaType.TEXT_HTML_VALUE);
-                
+
                 Map<String, Object> data = new HashMap<>();
                 data.put("lastUpgrade", Common.lastUpgrade / 60);
-                config.getTemplate("ui/index.ftl").process(data, resp.getWriter());
+                
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream(8192);
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(bytes, StandardCharsets.UTF_8))) {
+                    config.getTemplate("ui/index.ftl").process(data, writer);
+                    
+                    resp.setContentLength(bytes.size());
+                    bytes.writeTo(resp.getOutputStream());
+                }
+                
             } catch (TemplateException e) {
                 LOG.error("Freemarker error getting index.html", e);
                 throw new ServletException(e);
