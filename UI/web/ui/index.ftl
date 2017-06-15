@@ -29,7 +29,7 @@
     <script>this.mangoLastUpgrade=${lastUpgrade?c};</script>
 </head>
 
-<body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn, mobile: !$mdMedia('gt-sm'), phone: $mdMedia('xs')}"
+<body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn, 'ma-mobile': !$mdMedia('gt-sm'), 'ma-phone': $mdMedia('xs')}"
       md-theme="{{uiSettings.activeTheme}}" md-colors="{background: 'background'}">
     <div id="loading-bar-container" md-colors="{color: 'accent-hue-2'}"></div>
     

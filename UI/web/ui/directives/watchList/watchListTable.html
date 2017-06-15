@@ -1,5 +1,5 @@
 <md-toolbar class="md-whiteframe-1dp md-hue-3">
-    <div class="md-toolbar-tools" ng-class="{'mobile': $ctrl.$mdMedia('xs')}">
+    <div class="md-toolbar-tools">
       <md-button class="watch-list-back md-icon-button" ng-click="$ctrl.clear()" ng-if="!$ctrl.$mdMedia('gt-md')"><md-icon>arrow_back</md-icon></md-button>
       <h2><span ng-bind="$ctrl.watchList.name" ng-if="$ctrl.$mdMedia('gt-md')"></span></h2>
       <div flex></div>

@@ -75,23 +75,16 @@ a {
 	padding: 16px;
 }
 
-.ma-ui-main-view.mobile {
-	padding-left: 8px;
-	padding-right: 8px;
+.ma-mobile .ma-ui-main-view {
+	padding: 8px;
 }
 
-.ma-ui-main-view.phone {
-	padding-left: 4px;
-	padding-right: 4px;
+.ma-phone .ma-ui-main-view {
+	padding: 4px;
 }
 
 .ma-ui-main-view.ma-no-padding {
 	padding: 0;
-}
-
-.ma-ui-main-view.phone md-card {
-	margin-right: 8px;
-	margin-left: 8px;
 }
 
 ma-ui-footer {
@@ -627,8 +620,8 @@ table.md-table td.md-cell.msg-column a {
     border: none;
 }
 
-table.md-table.mobile td.md-cell.msg-column,
-table.md-table.mobile th.md-column.msg-column {
+.ma-mobile table.md-table td.md-cell.msg-column,
+.ma-mobile table.md-table th.md-column.msg-column {
 	max-width: 200px;
 }
 
