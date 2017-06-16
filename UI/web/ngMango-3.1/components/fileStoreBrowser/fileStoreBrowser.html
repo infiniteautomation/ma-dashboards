@@ -1,0 +1,62 @@
+<div flex="none" layout layout-align="start center" class="ma-file-store-browser-crumbs">
+	<span ng-if="!$ctrl.restrictToStore" layout layout-align="start center">
+		<span ng-click="$ctrl.pathClicked($event, -1)" ma-tr="ui.app.fileStores"></span>
+		<span ng-if="$ctrl.path.length"><md-icon>chevron_right</md-icon></span>
+	</span>
+	<span ng-repeat="directory in $ctrl.path track by $index" layout layout-align="start center">
+		<span ng-bind="directory" ng-click="$ctrl.pathClicked($event, $index)"></span>
+		<span ng-if="!$last"><md-icon>chevron_right</md-icon></span>
+	</span>
+	<span flex></span>
+	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFolder($event)" ng-disabled="!$ctrl.path.length">
+		<md-icon>create_new_folder</md-icon>
+		<md-tooltip md-autohide ma-tr="ui.app.createNewFolder"></md-tooltip>
+	</md-button>
+	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.uploadFiles($event)" ng-disabled="!$ctrl.path.length">
+		<md-icon>file_upload</md-icon>
+		<md-tooltip md-autohide ma-tr="ui.app.uploadFiles"></md-tooltip>
+	</md-button>
+	<input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)" ng-attr-accept="{{$ctrl.acceptAttribute}}">
+</div>
+
+<md-progress-linear ng-show="$ctrl.listPromise || $ctrl.uploadPromise" class="md-primary" md-mode="indeterminate"></md-progress-linear>
+
+<div flex layout="row">
+	<md-content flex class="ma-file-store-browser-files">
+		<md-table-container>
+		  <table md-table md-row-select="false">
+		    <thead md-head md-order="$ctrl.tableOrder">
+		      <tr md-row>
+		        <th md-column md-order-by="directory"></th>
+		        <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>
+		        <th md-column md-order-by="size" ma-tr="ui.app.fileSize"></th>
+		        <th md-column md-order-by="mimeType" ma-tr="ui.app.fileType"></th>
+		        <th md-column md-order-by="lastModified" ma-tr="ui.app.lastModified"></th>
+		        <th md-column></th>
+		      </tr>
+		    </thead>
+		    <tbody md-body>
+		      <tr md-row ng-repeat="file in $ctrl.files | orderBy:$ctrl.tableOrder track by file.filename"
+		      		ng-click="$ctrl.fileClicked($event, file)" ng-class="{'ma-file-selected': file.filename === $ctrl.filename}">
+		        <td md-cell>
+		        	<md-icon ng-if="file.directory">folder</md-icon>
+		        	<md-icon ng-if="!file.directory">attachment</md-icon>
+		        </td>
+		        <td md-cell ng-bind="file.filename"></td>
+		        <td md-cell><span ng-if="!file.directory" ng-bind="file.size | maBytes"></span></td>
+		        <td md-cell ng-bind="file.mimeType"></td>
+		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
+		        <td md-cell layout layout-align="end center">
+		        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
+		        	<md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)"><md-icon>delete</md-icon></md-button>
+		        </td>
+		      </tr>
+		    </tbody>
+		  </table>
+		</md-table-container>
+	</md-content>
+	<div ng-if="$ctrl.preview" flex="20" class="ma-file-store-browser-preview" layout layout-align="center center">
+		<img ng-if="$ctrl.file.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.file.url}}">
+		<div ng-if="$ctrl.file.mimeType.indexOf('image/') !== 0" class="ma-no-preview" layout layout-align="center center" ma-tr="ui.fileBrowser.noPreviewAvailable"></div>
+	</div>
+</div>

@@ -1,15 +1,28 @@
 <h1 ma-tr="header.modules"></h1>
 
-<p>
-    Note, upgrades must currently still be performed from the <a href="/modules.shtm" target="mango-legacy">legacy modules page</a>.
-</p>
+<md-button class="md-raised md-primary" ui-sref=".upgrade"><md-icon>update</md-icon>&nbsp;<span ma-tr="modules.versionCheck"></span></md-button>
+<md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
 
 <div layout="row" layout-wrap layout-align="start stretch">
   <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="25" layout="column" ng-repeat="module in $ctrl.modules | orderBy:['-unloaded', 'name'] track by module.name" >
       <md-card flex md-colors="{background: $ctrl.bgColor(module)}" class="ma-module-info">
         <md-card-title flex="none">
           <md-card-title-text>
-            <span class="md-headline" ng-bind="module.name"></span>
+            <span class="md-headline" layout>
+	            <span flex ng-bind="module.name"></span>
+	            <md-button ng-if="!module.markedForDeletion" class="md-icon-button" ng-click="$ctrl.deleteModule($event, module, true)">
+	            	<md-icon>delete</md-icon>
+	            	<md-tooltip md-autohide>
+                    	<span ma-tr="modules.module.delete"></span>
+                	</md-tooltip>
+	            </md-button>
+	            <md-button ng-if="module.markedForDeletion" class="md-icon-button" ng-click="$ctrl.deleteModule($event, module, false)">
+	            	<md-icon>not_interested</md-icon>
+	            	<md-tooltip md-autohide>
+                    	<span ma-tr="common.cancel"></span>
+                	</md-tooltip>
+	            </md-button>
+            </span>
             <span class="md-subhead" ng-if="module.unloaded" ma-tr="ui.app.moduleUnloaded"></span>
             <span class="md-subhead" ng-bind="module.description" ng-if="!module.unloaded"></span>
           </md-card-title-text>

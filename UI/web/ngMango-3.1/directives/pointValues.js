@@ -52,6 +52,11 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
     <li>milliseconds</li>
 </ul>
  * @param {boolean=} rendered If set to `true` the values will be outputted in the points text rendered value format.
+ * @param {boolean=} converted If set to `true` the values will be outputted in the points converted format.
+ * @param {boolean=} timezone The output date will have the given timezone.
+ * @param {boolean=} use-cache Set to true to use cached values.
+ * @param {function=} on-values-updated Pass in a function or expression to be evaluated when the values update. (eg.
+ * `on-values-updated="$ctrl.valuesUpdated($values)"`)
  * @param {string=} date-format If you are passing in `to/from` as strings, then you must specify the moment.js format for parsing the values.
  * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of point values. If not supplied the Mango system default timeout will be used.
  * @param {boolean=} auto-rollup-interval If set to `true` the rollup interval will automatically be set based on the to-from duration and rollup type. 

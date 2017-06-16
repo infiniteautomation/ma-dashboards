@@ -1,3 +1,8 @@
+*Version 3.1.3*
+* Ability to upgrade and install modules added to the modules page
+* Add file store browser page along with components, services and dialogs
+* Bug fixes
+
 *Version 3.1.2*
 * Ability to use user module in dashboard designer
 * Add maButton component
@@ -15,6 +20,7 @@
 * Bug fixes
 
 *Version 3.1.0*
+* Upgraded to work with core version 3.1.x
 * Fix bootstrapping ngMango via bootstrap.js
 * Fix bug displaying chart and table on watch list dialog
 * Add more system settings
@@ -30,7 +36,6 @@
 * Better error handling for loading module AngularJS files
 * Ability to set a user AngularJS module from UI settings page
 * Bug fixes
-* Upgraded to work with core version 3.1.x
 
 *Version 3.0.1*
 * Initial public release

@@ -15,7 +15,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * - The object returned by the `statistics` attribute contains `first`, `last`, `minimum`, `maximum`, `average`, `integral`, `sum`, & `count` properties.
  Each of these will have a `value` and a `timestamp`.
  * - If you are interested only in the change in a value between two times you can add the optional `first-last="true"` attribute to only return the first and last values,
- then simply calculate the difference with `{{ statsObj.last.value - statsObj.first.value }}`.
+ then simply calculate the difference with `statsObj[0].value - statsObj[1].value`.
  * - <a ui-sref="ui.examples.statistics.getStatistics">View Demo</a>
  *
  * @param {object} point Inputs a `point` object from `<ma-point-list>`.

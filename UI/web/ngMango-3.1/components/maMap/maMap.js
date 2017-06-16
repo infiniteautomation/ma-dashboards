@@ -32,6 +32,7 @@ define(['angular', 'require'], function(angular, require) {
   * @param {string=} mobile-height Sets the height of the map at a mobile/tablet width (<1280px). Set with px. Eg `400px`.
   * @param {object=} styles Optionally add a google map styles object to change colors and features of map details.
   * @param {string=} output-data Defines the name of a variable used to hold output data to be passed to other components on the page. From a marker you should the following syntax to set output-data: `on-click="$parent.$ctrl.setOutputData('newValue')"`.
+  * @param {string=} map-id If you have multiple `<ma-map>` components on a single page give each a unique `map-id`.
   *
   * @usage
   * <ma-map zoom="11" map-type="roadmap" flex="100" output-data="pointXID" desktop-height="400px" mobile-height="250px">
@@ -52,6 +53,7 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.render = false;
         $ctrl.apiKeySet = false;
         $ctrl.infoWindowCache = {};
+        $ctrl.allInfoWindows = [];
 
         if (uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
@@ -75,7 +77,7 @@ define(['angular', 'require'], function(angular, require) {
         };
 
         $ctrl.toggleInfoWindow = function(e, windowId, markerId) {
-            // console.log('toggle called',e, windowId, markerId);
+            // console.log('toggle called', e, windowId, markerId);
             if (!$ctrl.infoWindowCache[windowId]) {
                 $ctrl.map.showInfoWindow(windowId, markerId);
                 $ctrl.infoWindowCache[windowId] = true;
@@ -84,6 +86,22 @@ define(['angular', 'require'], function(angular, require) {
                 $ctrl.map.hideInfoWindow(windowId);
                 $ctrl.infoWindowCache[windowId] = false;
             }
+        };
+
+        $ctrl.showInfoWindow = function(e, windowId, markerId) {
+            $ctrl.map.showInfoWindow(windowId, markerId);
+
+            $ctrl.allInfoWindows.push(windowId);
+        };
+
+        $ctrl.hideInfoWindow = function(e, windowId) {
+            $ctrl.map.hideInfoWindow(windowId);
+        };
+
+        $ctrl.hideAllInfoWindows = function(e) {
+            $ctrl.allInfoWindows.forEach(function(windowId) {
+                $ctrl.map.hideInfoWindow(windowId);
+            });
         };
 
         $ctrl.onMapLoaded = function() {

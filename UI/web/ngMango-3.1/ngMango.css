@@ -330,15 +330,12 @@ md-card.ma-accordion md-card-content {
 
 /* Buttons for inputs */
 
-.ma-input-button {
+.ma-input-button,
+.ma-input-button.md-icon-button.md-button {
+  margin: 0;
   position: absolute;
   top: 0;
   right: 0;
-}
-
-.ma-input-button.md-icon-button,
-.ma-input-button .md-icon-button {
-  margin: 0;
 }
 
 md-menu.ma-input-button > .md-button.md-icon-button {
@@ -545,4 +542,82 @@ ma-config-import .ma-import-dropzone {
 .ma-color-picker-preview .ma-color-picker-result {
   width: 100%;
   height: 100%;
+}
+
+/* file store browser */
+ma-file-store-browser {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+}
+
+ma-file-store-browser .ma-file-selected {
+	background-color: grey;
+}
+
+.ma-file-store-browser-crumbs {
+	font-size: 2.0rem;
+	margin-bottom: 20px;
+}
+
+.ma-file-store-browser-crumbs label {
+	height: 100%;
+	width: 100%;
+	display: block
+}
+
+.ma-file-store-browser-files  table.md-table thead.md-head > tr.md-row {
+	height: 30px;
+}
+
+.ma-file-store-browser-files table.md-table tr td.md-cell:first-child,
+.ma-file-store-browser-files table.md-table tr th.md-column:first-child {
+	width: 24x;
+	padding: 0 0 0 5px !important;
+}
+
+.ma-file-store-browser-files table.md-table tr td.md-cell:last-child,
+.ma-file-store-browser-files table.md-table tr th.md-column:last-child {
+	width: 80px;
+	padding: 0 !important;
+}
+
+.ma-file-store-browser-files table.md-table tr td.md-cell .md-button {
+	margin: 0 -4px;
+}
+.ma-file-store-browser-files table.md-table tr td.md-cell .md-button:first-child {
+	margin-left: 0;
+}
+.ma-file-store-browser-files table.md-table tr td.md-cell .md-button:last-child {
+	margin-right: 0;
+}
+
+.ma-file-store-browser-preview {
+	overflow: auto;
+}
+
+.ma-file-store-browser-preview img {
+	max-width: 100%;
+	max-height: 500px;
+	padding-left: 20px;
+}
+
+.ma-file-store-browser-preview .ma-no-preview {
+	margin: 10px;
+	border: 1px dashed;
+	min-height: 200px;
+	width: 100%;
+}
+
+ma-file-store-browser > md-progress-linear.ng-hide:not(.ng-hide-animate) {
+  display: block !important;
+  visibility: hidden;
+}
+
+.ma-file-store-dialog {
+	height: 90%;
+}
+
+.mobile .ma-file-store-dialog {
+	height: 100%;
 }

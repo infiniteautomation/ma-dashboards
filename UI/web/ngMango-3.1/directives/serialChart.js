@@ -42,8 +42,16 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
  * @param {boolean=} one-balloon If set to true, display only one balloon at a time. Defaults to all graphs display balloon.
  * @param {string=} bullet Set to add bullets to values on graphs. Options are: `"circle"`, `"square"`, `"diamond"`, `"triangleUp"`, `"triangleDown"`, `"triangleLeft"`, `"triangleRight"`, `"bubble"`, `"xError"`, and `"yError"`.
  * @param {string=} custom-bullet Set to image path of a custom bullet image.
- * @param {boolean=} annotate-mode If set to true, clicking on value of a graph will open annotation dialog.
  * @param {boolean=} legend If set to true, chart's legend will be turned on. Defaults to off.
+ * @param {boolean=} annotate-mode If set to true, clicking on value of a graph will open annotation dialog.
+ * @param {number=} line-thickness Set to a number to increase/decrease line thickness of each graph. (Defaults to `2.0` for line
+ * chart).
+ * @param {function=} on-chart-init Set to function call which will be triggered by init chart event. (eg.
+ * `on-chart-init="$ctrl.getChart($chart)"`)
+ * @param {function=} graph-item-clicked Set to function call which will be triggered by graph click event. (eg.
+ * `graph-item-clicked="$ctrl.handleChartClick($chart, $event)"`)
+ * @param {object=} trend-lines Set trendlines object. (See
+ * [amCharts](https://docs.amcharts.com/3/javascriptcharts/TrendLine))
  * @param {object=} options extend AmCharts configuration object for customizing design of the chart (see [amCharts](https://docs.amcharts.com/3/javascriptcharts/AmSerialChart))
  * 
  * @usage
@@ -158,7 +166,8 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
             options.chartCursor = {
                 oneBalloonOnly: true,
                 graphBulletSize: 2,
-                zoomable: false
+                zoomable: false,
+                categoryBalloonDateFormat: 'h:mm:ss A - MMM DD, YYYY'
             };
             options.balloon = {
                 fillAlpha: 1
@@ -440,11 +449,12 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                     labelPosition: 'right',
                     labelOffset: 5,
                     labelColorField: graph.xid + 'AnnotationTextColor',
-                    bulletSize: 0,
+                    bulletSize: 10,
                     bulletSizeField: graph.xid + 'AnnotationBulletSize',
-                    bulletHitAreaSize: 10,
-                    bulletAlpha: 0.7,
-                    bullet: 'diamond',
+                    bulletHitAreaSize: 14,
+                    bulletAlpha: 1,
+                    bulletColor: 'rgba(0, 0, 0, 0)',
+                    bullet: 'circle',
                     bulletField: graph.xid + 'AnnotationBullet'
                 };
             }

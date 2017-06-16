@@ -46,6 +46,9 @@ public class ForwardingServlet extends DefaultServlet {
         
         String relativePath = req.getRequestURI().substring(forwardFrom.length());
         String redirectUri = forwardTo + relativePath;
+        if ("/".equals(relativePath)) {
+            redirectUri += "index.html";
+        }
         
         if (notFoundPath != null) {
             URL resourceUrl = getServletContext().getResource(redirectUri);

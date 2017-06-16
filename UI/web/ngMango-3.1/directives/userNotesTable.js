@@ -18,6 +18,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
  * @param {string} comment-type Can be `POINT` or `EVENT`
  * @param {string} timezone Timezone for displaying time stamps
  * @param {string} limit Set the initial limit of the pagination
+ * @param {boolean=} disabled Set to `true` to turn off the ability to add new user notes. (Defaults to `false`)
  *
  * @usage
  * <ma-user-notes-table></ma-user-notes-table>

@@ -44,6 +44,7 @@ requirejs.config({
             ngMango: 'ngMango-3.1'
         }
     },
+    urlArgs: 'v=' + root.mangoLastUpgrade,
     paths : {
         'modules': '/modules',
         'mangoUIModule' : module,
@@ -62,6 +63,7 @@ requirejs.config({
         'angular-messages' : vendor + '/angular-messages/angular-messages',
         'angular-aria' : vendor + '/angular-aria/angular-aria',
         'angular-resource' : vendor + '/angular-resource/angular-resource',
+        'angular-sanitize' : vendor + '/angular-sanitize/angular-sanitize',
         'moment': vendor + '/moment/moment-with-locales',
         'moment-timezone': vendor + '/moment-timezone/moment-timezone-with-data',
         'jquery': vendor + '/jquery/jquery',
@@ -128,6 +130,9 @@ requirejs.config({
             deps : ['angular']
         },
         'angular-messages' : {
+            deps : ['angular']
+        },
+        'angular-sanitize' : {
             deps : ['angular']
         },
         'angular-aria' : {

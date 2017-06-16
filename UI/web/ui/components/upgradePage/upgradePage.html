@@ -1,0 +1,108 @@
+<div flex layout="column" layout-align="center center" ng-if="$ctrl.checkPromise">
+	<md-progress-circular class="md-accent" md-mode="indeterminate"></md-progress-circular>
+	<p ma-tr="ui.app.pleaseWaitCheckingForUpgrades"></p>
+</div>
+
+<div ng-if="!$ctrl.checkPromise">
+	<h1 ma-tr="ui.app.moduleUpgrades"></h1>
+	
+	<md-button class="md-raised" ui-sref="^">
+		<md-icon>arrow_back</md-icon>
+		<span ma-tr="ui.app.backToModules"></span>
+	</md-button>
+	
+	<md-button class="md-raised md-primary" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise" ng-click="$ctrl.checkForUpgrades()">
+		<md-icon>update</md-icon>
+		<span ma-tr="modules.versionCheck"></span>
+	</md-button>
+	
+	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length || $ctrl.upgradePromise" ng-click="$ctrl.doUpgrade($event)">
+		<md-icon>check</md-icon>
+		<span ma-tr="ui.app.installUpgradeX" ma-tr-args="[$ctrl.upgradesSelected.length + $ctrl.installsSelected.length]"></span>
+	</md-button>
+	
+	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
+	
+	<div layout="column" layout-align="start start" class="md-padding">
+		<md-checkbox ng-model="$ctrl.backupBeforeDownload"><span ma-tr="modules.versionCheck.advanced.backup"></span></md-checkbox>
+		<md-checkbox ng-model="$ctrl.restartAfterDownload"><span ma-tr="modules.versionCheck.advanced.restart"></span></md-checkbox>
+	</div>
+
+	<md-card>
+		<md-card-content>
+			<h2 ma-tr="modules.versionCheck.some"></h2>
+			<p ng-if="!$ctrl.upgrades.length" ma-tr="modules.versionCheck.none"></p>
+			<md-table-container ng-if="$ctrl.upgrades.length" class="ma-ui-upgrade-table">
+			  <table md-table md-row-select="true" multiple="true" ng-model="$ctrl.upgradesSelected">
+			    <thead md-head md-order="query.order">
+			      <tr md-row>
+			        <th class="name-column" md-column md-order-by="name" ma-tr="common.name"></th>
+			        <th class="description-column" md-column md-order-by="description" ma-tr="ui.app.description"></th>
+			        <th class="vendor-column" md-column md-order-by="vendor" ma-tr="modules.vendor"></th>
+			        <th class="version-column" md-column md-order-by="version" ma-tr="ui.app.currentVersion"></th>
+			        <th class="new-version-column" md-column md-order-by="newVersion" ma-tr="ui.app.newVersion"></th>
+			        <th class="notes-column" md-column ma-tr="ui.app.releaseNotes"></th>
+			      </tr>
+			    </thead>
+			    <tbody md-body>
+			      <tr md-row md-select="module" md-select-id="name" md-on-select="$ctrl.moduleSelected" md-on-deselect="$ctrl.moduleDeselected"
+			      		ng-disabled="$ctrl.upgradePromise || module.downloaded" ng-repeat="module in $ctrl.upgrades track by $index">
+			        <td class="name-column" md-cell ng-bind="module.name"></td>
+			        <td class="description-column" md-cell ng-bind="module.description"></td>
+			        <td class="vendor-column" md-cell><a ng-href="{{module.vendorUrl}}" target="_blank"><span ng-bind="module.vendor"></span></a></td>
+			        <td class="version-column" md-cell ng-bind="module.version"></td>
+			        <td class="new-version-column" md-cell>
+			        	<span ng-bind="module.newVersion"></span>
+			        	<span ng-if="module.downloaded">
+				        	<md-icon>file_download</md-icon>
+			        		<md-tooltip md-autohide="true" ma-tr="ui.app.awaitingRestart"></md-tooltip>
+			        	</span>
+			        </td>
+			        <td class="notes-column" md-cell>
+			        	<md-button class="md-icon-button" ng-click="$ctrl.showReleaseNotes($event, module)"><md-icon>info</md-icon></md-button>
+			        </td>
+			      </tr>
+			    </tbody>
+			  </table>
+			</md-table-container>
+			
+			<h2 ma-tr="modules.versionCheck.new"></h2>
+			<p ng-if="!$ctrl.installs.length" ma-tr="modules.versionCheck.noneToInstall"></p>
+			<md-table-container ng-if="$ctrl.installs.length" class="ma-ui-upgrade-table">
+			  <table md-table md-row-select="true" multiple="true" ng-model="$ctrl.installsSelected">
+			    <thead md-head md-order="query.order">
+			      <tr md-row>
+			        <th class="name-column" md-column md-order-by="name" ma-tr="common.name"></th>
+			        <th class="description-column" md-column md-order-by="description" ma-tr="ui.app.description"></th>
+			        <th class="vendor-column" md-column md-order-by="vendor" ma-tr="modules.vendor"></th>
+			        <th class="version-column" md-column ma-tr="ui.app.currentVersion"></th>
+			        <th class="new-version-column" md-column md-order-by="version" ma-tr="ui.app.newVersion"></th>
+			        <th class="notes-column" md-column ma-tr="ui.app.releaseNotes"></th>
+			      </tr>
+			    </thead>
+			    <tbody md-body>
+			      <tr md-row md-select="module" md-select-id="name" md-on-select="$ctrl.moduleSelected" md-on-deselect="$ctrl.moduleDeselected"
+			      		ng-disabled="$ctrl.upgradePromise || module.downloaded" ng-repeat="module in $ctrl.installs track by $index">
+			        <td class="name-column" md-cell ng-bind="module.name"></td>
+			        <td class="description-column" md-cell ng-bind="module.description"></td>
+			        <td class="vendor-column" md-cell><a ng-href="{{module.vendorUrl}}" target="_blank"><span ng-bind="module.vendor"></span></a></td>
+			        <td class="version-column" md-cell ma-tr="ui.app.notInstalled"></td>
+			        <td class="new-version-column" md-cell>
+			        	<span ng-bind="module.newVersion"></span>
+			        	<span ng-if="module.downloaded">
+				        	<md-icon>file_download</md-icon>
+			        		<md-tooltip md-autohide="true" ma-tr="ui.app.awaitingRestart"></md-tooltip>
+			        	</span>
+			        </td>
+			        <td class="notes-column" md-cell>
+			        	<md-button class="md-icon-button" ng-click="$ctrl.showReleaseNotes($event, module)"><md-icon>info</md-icon></md-button>
+			        </td>
+			      </tr>
+			    </tbody>
+			  </table>
+			</md-table-container>
+		
+			<div md-colors="{color: 'warn'}" ng-bind="$ctrl.error"></div>
+		</md-card-content>
+	</md-card>
+</div>

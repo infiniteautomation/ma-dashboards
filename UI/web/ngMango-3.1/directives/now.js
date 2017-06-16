@@ -17,7 +17,6 @@ define(['moment-timezone'], function(moment) {
  * @param {object} output Variable to hold the output date.
  * @param {object} browserTimezone set to the browsers timezone (guessed)
  * @param {string} update-interval The date will update on this given interval.
- * @param {string} time-zone The output date will have the given timezone.
  Format the interval duration as a string starting with a number followed by one of these units:
 <ul>
     <li>years</li>
@@ -29,6 +28,8 @@ define(['moment-timezone'], function(moment) {
     <li>seconds</li>
     <li>milliseconds</li>
 </ul>
+ * @param {string} time-zone The output date will have the given timezone.
+ * @param {function} onChange Pass in a function or expression to be evaluated when the time updates.
  *
  * @usage
  * <ma-now update-interval="1 SECONDS" output="time"></ma-now>
