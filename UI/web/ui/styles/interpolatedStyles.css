@@ -77,8 +77,8 @@ table.ma-point-values-table .ma-point-values-non-realtime tr.ma-point-value-cach
 
 /* Toast background color */
 md-toast._md .md-toast-content {
-	color: {{getThemeColor('background-hue-2-0.87')}};
-	background-color: {{theme.isDark ? getThemeColor('background-A100') : getThemeColor('background-A200')}};
+	color: {{theme.isDark ? getThemeColor('background-A100-0.87') : getThemeColor('background-A200-0.87')}};
+	background-color: {{getThemeColor('background-hue-3')}};
 }
 
 md-toast._md.md-warn .md-toast-content {
