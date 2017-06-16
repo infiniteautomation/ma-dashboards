@@ -184,11 +184,15 @@ FileStoreBrowserController.prototype.deleteFile = function(event, file) {
 			file.directory ? 'ui.app.areYouSureDeleteFolder' : 'ui.app.areYouSureDeleteFile');
 
 	confirmPromise.then(function() {
-		this.maFileStore.remove(this.path.concat(file.filename), true).then(function() {
-			var index = this.files.indexOf(file);
-			if (index >= 0)
-				this.files.splice(index, 1);
-		}.bind(this));
+		return this.maFileStore.remove(this.path.concat(file.filename), true);
+	}.bind(this)).then(function() {
+		var index = this.files.indexOf(file);
+		if (index >= 0)
+			this.files.splice(index, 1);
+		this.maDialogHelper.toast('ui.fileBrowser.deletedSuccessfully', null, file.filename);
+	}.bind(this), function(error) {
+		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+		this.maDialogHelper.toast('ui.fileBrowser.errorDeleting', 'md-warn', file.filename, msg);
 	}.bind(this));
 };
 
@@ -208,7 +212,12 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
 			// append uploaded to this.files
 			Array.prototype.splice.apply(this.files, [this.files.length, 0].concat(uploaded));
 			this.fileClicked(null, uploaded[0]);
+			
+			this.maDialogHelper.toast('ui.fileBrowser.filesUploaded', null, uploaded.length);
 		}
+	}.bind(this), function(error) {
+		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+		this.maDialogHelper.toast('ui.fileBrowser.uploadFailed', 'md-warn', msg);
 	}.bind(this));
 	
 	this.uploadPromise['finally'](function() {
@@ -218,10 +227,20 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
 };
 
 FileStoreBrowserController.prototype.createNewFolder = function(event) {
-	this.maDialogHelper.prompt(event, 'ui.app.createNewFolder', null, 'ui.app.folderName').then(function(folderName) {
-		this.maFileStore.createNewFolder(this.path, folderName).then(function(folder) {
-			this.files.push(folder);
-		}.bind(this));
+	var folderName;
+	this.maDialogHelper.prompt(event, 'ui.app.createNewFolder', null, 'ui.app.folderName').then(function(_folderName) {
+		folderName = _folderName;
+		return this.maFileStore.createNewFolder(this.path, folderName);
+	}.bind(this)).then(function(folder) {
+		this.files.push(folder);
+		this.maDialogHelper.toast('ui.fileBrowser.folderCreated', null, folder.filename);
+	}.bind(this), function(error) {
+		if (error.status === 409) {
+			this.maDialogHelper.toast('ui.fileBrowser.folderExists', 'md-warn', folderName);
+		} else {
+			var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFolder', 'md-warn', folderName, msg);
+		}
 	}.bind(this));
 };
 
