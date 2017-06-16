@@ -74,3 +74,33 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
 table.ma-point-values-table .ma-point-values-non-realtime tr.ma-point-value-cached {
   color: {{getThemeColor('warn')}}
 }
+
+/* Toast background color */
+md-toast._md .md-toast-content {
+	color: {{getThemeColor('background-hue-2-0.87')}};
+	background-color: {{theme.isDark ? getThemeColor('background-A100') : getThemeColor('background-A200')}};
+}
+
+md-toast._md.md-warn .md-toast-content {
+	background-color: {{getThemeColor('warn')}};
+}
+
+md-toast._md.md-primary .md-toast-content {
+	background-color: {{getThemeColor('primary')}};
+}
+
+md-toast._md.md-accent .md-toast-content {
+	background-color: {{getThemeColor('accent')}};
+}
+
+md-toast._md.md-warn .md-toast-content,
+md-toast._md.md-primary .md-toast-content,
+md-toast._md.md-accent .md-toast-content {
+	color: {{getThemeColor('background-A100')}};
+}
+
+md-toast._md.md-warn .md-toast-content .md-button.md-highlight,
+md-toast._md.md-primary .md-toast-content .md-button.md-highlight,
+md-toast._md.md-accent .md-toast-content .md-button.md-highlight {
+	color: {{getThemeColor('background-A100')}};
+}

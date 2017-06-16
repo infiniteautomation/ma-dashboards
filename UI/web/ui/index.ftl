@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/vendor/md-color-picker/mdColorPicker.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/fonts.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/main.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/main.css?v=${lastUpgrade?c}" tracking-name="uiMain">
     <script>this.mangoLastUpgrade=${lastUpgrade?c};</script>
 </head>
 

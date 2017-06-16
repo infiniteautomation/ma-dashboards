@@ -6,8 +6,8 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-DialogHelperFactory.$inject = ['$mdDialog', '$mdMedia', 'maTranslate'];
-function DialogHelperFactory($mdDialog, $mdMedia, maTranslate) {
+DialogHelperFactory.$inject = ['$mdDialog', '$mdMedia', 'maTranslate', '$mdToast'];
+function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast) {
     function DialogHelper() {
     }
     
@@ -81,6 +81,23 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate) {
         }
 
         return $mdDialog.show(prompt);
+    };
+    
+    DialogHelper.prototype.toast = function(translation, classes) {
+        var text = maTranslate.trSync(translation, Array.prototype.slice.call(arguments, 2));
+        
+        var toast = $mdToast.simple()
+	        .textContent(text)
+	        .action(maTranslate.trSync('common.ok'))
+	        .highlightAction(true)
+	        .position('bottom center')
+	        .hideDelay(5000);
+        
+        if (classes) {
+        	toast.toastClass(classes);
+        }
+        
+	    return $mdToast.show(toast);
     };
 
     DialogHelper.prototype.showConfigImportDialog = function(importData, $event) {

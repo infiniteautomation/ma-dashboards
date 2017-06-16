@@ -91,6 +91,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS,
                 theme: this.activeTheme
             });
             this.generateCustomStyles();
+            this.activeThemeObj = this.theming.THEMES[this.activeTheme];
         },
         themeFromSettings: function themeFromSettings(themeName, themeSettings) {
             var theme = this.themingProvider.theme(themeName);
@@ -119,9 +120,10 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS,
                         getThemeColor: function(colorString) {
                             return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
                         }.bind(this),
-                        uiSettings: this
+                        uiSettings: this,
+                        theme: this.activeThemeObj
                     });
-                    cssInjector.injectStyle(result, 'interpolatedStyles', '[href="styles/main.css"]', false, true);
+                    cssInjector.injectStyle(result, 'interpolatedStyles', '[tracking-name="uiMain"]', false, true);
                 }.bind(this));
             }
         }
