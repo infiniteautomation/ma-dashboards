@@ -609,6 +609,11 @@ ma-file-store-browser .ma-file-selected {
 	width: 100%;
 }
 
+ma-file-store-browser > md-progress-linear.ng-hide:not(.ng-hide-animate) {
+  display: block !important;
+  visibility: hidden;
+}
+
 .ma-file-store-dialog {
 	height: 90%;
 }

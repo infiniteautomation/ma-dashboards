@@ -19,10 +19,10 @@
 	<input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)" ng-attr-accept="{{$ctrl.acceptAttribute}}">
 </div>
 
-<md-progress-linear md-mode="indeterminate" ng-if="$ctrl.uploadPromise"></md-progress-linear>
+<md-progress-linear ng-show="$ctrl.listPromise || $ctrl.uploadPromise" class="md-primary" md-mode="indeterminate"></md-progress-linear>
 
 <div flex layout="row">
-	<md-content ng-if="!$ctrl.listPromise" flex class="ma-file-store-browser-files">
+	<md-content flex class="ma-file-store-browser-files">
 		<md-table-container>
 		  <table md-table md-row-select="false">
 		    <thead md-head md-order="$ctrl.tableOrder">
@@ -59,7 +59,4 @@
 		<img ng-if="$ctrl.file.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.file.url}}">
 		<div ng-if="$ctrl.file.mimeType.indexOf('image/') !== 0" class="ma-no-preview" layout layout-align="center center" ma-tr="ui.fileBrowser.noPreviewAvailable"></div>
 	</div>
-</div>
-<div ng-if="$ctrl.listPromise" flex layout="column" layout-align="center center">
-	<md-progress-circular class="md-accent" md-mode="indeterminate" md-diameter="50"></md-progress-circular>
 </div>
