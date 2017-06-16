@@ -608,7 +608,7 @@ return [
     },
     {
         name: 'ui.settings.fileStores',
-        url: '/upgrade',
+        url: '/file-stores',
         template: '<ma-file-store-browser flex preview="true" ng-model="tmp"><ma-file-store-browser>',
         menuTr: 'ui.app.fileStores',
         menuIcon: 'file_upload',
