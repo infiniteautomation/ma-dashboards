@@ -17,7 +17,7 @@
 <div class="usage"><pre class="prettyprint linenums">&lt;ma-map zoom="11" map-type="roadmap" flex="100" output-data="pointXID" desktop-height="400px" mobile-height="250px"&gt;
     &lt;marker centered="true" position="-12.95, -38.45" on-click="$parent.$ctrl.setOutputData('Demo 01-outsidetemp')"&gt;&lt;/marker&gt;
     &lt;marker position="-12.99, -38.49" on-click="$parent.$ctrl.setOutputData('Demo 01-amps')"&gt;&lt;/marker&gt;
-&lt;/ma-map&gt;</pre>
+&lt;/ma-map&gt;</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>zoom</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Sets the zoom level of the map.</p>
 </div></td></tr><tr><td>lat</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Sets the latitude coordinate of the center of the map. Eg. <code>-12.95</code>.</p>
 </div></td></tr><tr><td>long</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Sets the longitude coordinate of the center of the map. Eg. <code>38.42</code>.</p>
@@ -27,10 +27,12 @@
     <li><code>satellite</code> displays Google Earth satellite images</li>
     <li><code>hybrid</code> displays a mixture of normal and satellite views</li>
     <li><code>terrain</code> displays a physical map based on terrain information</li>
-</ul></div></td></tr><tr><td>info-window-theme <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Can optionally be set to <code>dark</code> to use a dark theme on all <code>&lt;info-window&gt;</code> components. Defaults to a white background theme.</p>
+</ul>
+</div></td></tr><tr><td>info-window-theme <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Can optionally be set to <code>dark</code> to use a dark theme on all <code>&lt;info-window&gt;</code> components. Defaults to a white background theme.</p>
 </div></td></tr><tr><td>desktop-height <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Sets the height of the map at a desktop width (&gt;1280px). Set with px. Eg <code>800px</code>. Defaults to <code>500px</code>.</p>
 </div></td></tr><tr><td>mobile-height <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Sets the height of the map at a mobile/tablet width (&lt;1280px). Set with px. Eg <code>400px</code>.</p>
 </div></td></tr><tr><td>styles <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Optionally add a google map styles object to change colors and features of map details.</p>
 </div></td></tr><tr><td>output-data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>Defines the name of a variable used to hold output data to be passed to other components on the page. From a marker you should the following syntax to set output-data: <code>on-click=&quot;$parent.$ctrl.setOutputData(&#39;newValue&#39;)&quot;</code>.</p>
+</div></td></tr><tr><td>map-id <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mamap-page"><p>If you have multiple <code>&lt;ma-map&gt;</code> components on a single page give each a unique <code>map-id</code>.</p>
 </div></td></tr></tbody></table></div>
 </div>

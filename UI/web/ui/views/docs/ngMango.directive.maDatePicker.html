@@ -14,13 +14,17 @@
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">&lt;md-input-container&gt;
      &lt;label&gt;From date&lt;/label&gt;
-     &lt;ma-date-picker ng-model="from" format="MMM-Do-YY @ ha"&gt;&lt;/ma-date-picker&gt;
+     &lt;ma-date-picker ng-model="from" format="MMM-Do-YY" mode="date"&gt;&lt;/ma-date-picker&gt;
 &lt;/md-input-container&gt;
 &lt;md-input-container&gt;
      &lt;label&gt;To date&lt;/label&gt;
-     &lt;ma-date-picker ng-model="to" format="MMM-Do-YY @ ha"&gt;&lt;/ma-date-picker&gt;
-&lt;/md-input-container&gt;</pre>
+     &lt;ma-date-picker ng-model="to" format="MMM-Do-YY" mode="date"&gt;&lt;/ma-date-picker&gt;
+&lt;/md-input-container&gt;</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ng-model</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-madatepicker-page"><p>The variable to hold the resulting timestamp</p>
 </div></td></tr><tr><td>format <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-madatepicker-page"><p>Specifies the formatting of the date/time within the input (using <a href="http://momentjs.com/">momentJs</a> formatting)</p>
+</div></td></tr><tr><td>timezone <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-madatepicker-page"><p>Specifies the timezone</p>
+</div></td></tr><tr><td>mode <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-madatepicker-page"><p>Specify whether to use the date picker to set <code>date</code>, <code>time</code>, or <code>both</code> for both date and time.</p>
+</div></td></tr><tr><td>auto-switch-time <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-madatepicker-page"><p>Whether or not time picker will automatically switch to minute select after selecting
+hour on clock. (defaults to <code>true</code>)</p>
 </div></td></tr></tbody></table></div>
 </div>

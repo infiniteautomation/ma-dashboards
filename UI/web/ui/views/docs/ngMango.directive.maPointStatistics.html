@@ -10,7 +10,7 @@
 <li>The object returned by the <code>statistics</code> attribute contains <code>first</code>, <code>last</code>, <code>minimum</code>, <code>maximum</code>, <code>average</code>, <code>integral</code>, <code>sum</code>, &amp; <code>count</code> properties.
 Each of these will have a <code>value</code> and a <code>timestamp</code>.</li>
 <li>If you are interested only in the change in a value between two times you can add the optional <code>first-last=&quot;true&quot;</code> attribute to only return the first and last values,
-then simply calculate the difference with <code>{{ statsObj.last.value - statsObj.first.value }}</code>.</li>
+then simply calculate the difference with <code>statsObj[0].value - statsObj[1].value</code>.</li>
 <li><a ui-sref="ui.examples.statistics.getStatistics">View Demo</a></li>
 </ul>
 </div></div>

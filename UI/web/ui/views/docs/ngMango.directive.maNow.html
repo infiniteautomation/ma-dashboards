@@ -13,11 +13,10 @@
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">&lt;ma-now update-interval="1 SECONDS" output="time"&gt;&lt;/ma-now&gt;
 &lt;ma-clock style="width: 100%; height: 200px;" time="time1" text="Browser timezone"&gt;
-&lt;/ma-clock&gt;</pre>
+&lt;/ma-clock&gt;</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>output</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-manow-page"><p>Variable to hold the output date.</p>
 </div></td></tr><tr><td>browserTimezone</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-manow-page"><p>set to the browsers timezone (guessed)</p>
-</div></td></tr><tr><td>update-interval</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-manow-page"><p>The date will update on this given interval.</p>
-</div></td></tr><tr><td>time-zone</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-manow-page"><p>The output date will have the given timezone.
+</div></td></tr><tr><td>update-interval</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-manow-page"><p>The date will update on this given interval.
 Format the interval duration as a string starting with a number followed by one of these units:</p>
 <ul>
    <li>years</li>
@@ -28,5 +27,8 @@ Format the interval duration as a string starting with a number followed by one 
    <li>minutes</li>
    <li>seconds</li>
    <li>milliseconds</li>
-</ul></div></td></tr></tbody></table></div>
+</ul>
+</div></td></tr><tr><td>time-zone</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-manow-page"><p>The output date will have the given timezone.</p>
+</div></td></tr><tr><td>onChange</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="ngmango-directive-page ngmango-directive-manow-page"><p>Pass in a function or expression to be evaluated when the time updates.</p>
+</div></td></tr></tbody></table></div>
 </div>

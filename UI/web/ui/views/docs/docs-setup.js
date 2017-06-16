@@ -18,8 +18,8 @@ NG_DOCS={
       "shortName": "maCalc",
       "type": "directive",
       "moduleName": "ngMango",
-      "shortDescription": "&lt;ma-calc input=&quot;&quot; output=&quot;&quot;&gt;&lt;/ma-calc&gt;",
-      "keywords": "allows angular api array declare directive evaluate evaluated example expression filter hold input macalc mafirst model ngmango objects output passed phase points power property real result store variable"
+      "shortDescription": "&lt;ma-calc input=&quot;points | filter:&#123;name:&#39;Energy Accumulator (kWh)&#39;&#125; | maFirst&quot; output=&quot;energy&quot;&gt;&lt;/ma-calc&gt;",
+      "keywords": "accumulator allows angular api array called changed declare directive energy evaluate evaluated example expression filter function hold input macalc mafirst model ngmango objects onchange output pass passed phase points power property real result store variable"
     },
     {
       "section": "api",
@@ -46,7 +46,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-data-source-list ng-model=&quot;myDataSource&quot;&gt;&lt;/ma-data-source-list&gt;",
-      "keywords": "api array attribute auto auto-init basics chosen conjunction data datasourceanddevicelist declare defaults defualt demo descending directive disabled displays drop enabled enables examples false filters hold limit limits list madatasourcelist mango meta mydatasource ng-model ngmango number object outputed passed place property query returns selected selecting selector sets sort sorting sorts source sources start starting string strings takes true ui ui-sref variable xid"
+      "keywords": "allowing api array attribute auto auto-init basics chosen clear conjunction data datasourceanddevicelist declare default defaults demo descending directive disabled displays drop enabled enables examples false filters hold limit limits list madatasourcelist mango meta mydatasource ng-model ngmango number object option outputed passed place property query returns selected selecting selector set sets show-clear sort sorting sorts source sources start starting string strings takes top true ui ui-sref undefined variable xid"
     },
     {
       "section": "api",
@@ -64,7 +64,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-date-picker ng-model=&quot;time&quot;&gt;&lt;/ma-date-picker&gt;",
-      "keywords": "add api attribute basics conjunction datepresets demo directive display examples existing format formatting ha hold input madatepicker mmm-do-yy ng-model ngmango note picker specifies tag time timestamp ui ui-sref variable"
+      "keywords": "add api attribute auto-switch-time automatically basics clock conjunction datepresets demo directive display examples existing format formatting hold hour input madatepicker minute mmm-do-yy mode ng-model ngmango note picker select selecting set specifies switch tag time timestamp timezone true ui ui-sref variable"
     },
     {
       "section": "api",
@@ -73,7 +73,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-date-range-picker from=&quot;from&quot; to=&quot;to&quot; preset=&quot;LAST_1_DAYS&quot; update-interval=&quot;5 seconds&quot;&gt;&lt;/ma-date-range-picker&gt;",
-      "keywords": "10 angular api attribute attributes automatically basics choose commonly current datepresets demo directive dropdown duration enables examples format formatting hold insert interval last_1_days list madaterangepicker material minutes ng-model ngmango number options outputted picker pickers pre-selected preset previous provided range ranges seconds set specifies starting string tie time timestamp today ui ui-sref units update update-interval variable week"
+      "keywords": "$ctrl 10 angular api attribute attributes automatically basics choose commonly current datepresets demo directive disable displaying dropdown duration enables evaluated examples expression force format formatting function hold input insert interval last_1_days list madaterangepicker material minutes ng-model ngmango no-underline number on-change onchange options org outputted pass picker pickers pre-selected preset previous provided range ranges refresh seconds set specifies starting string switch tie time timestamp timeupdated timezone today true ui ui-sref units update update-interval updates user variable week wikipedia"
     },
     {
       "section": "api",
@@ -82,7 +82,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-device-name-list ng-model=&quot;myDeviceName&quot; data-source-xid=&quot;myDataSource.xid&quot;&gt;&lt;/ma-device-name-list&gt;",
-      "keywords": "100 api attribute auto auto-init basics capitalization data data-source-id data-source-xid datasourceanddevicelist demo device directive displays drop enables example examples filter generated hold limit list madevicenamelist mango meta mydatasource mydevicename mypoint names ng-model ngmango outputed points provided query selected selecting selector sensitive source specific string true ui ui-sref variable xid"
+      "keywords": "100 allowing api attribute auto auto-init basics capitalization clear data data-source-id data-source-xid datasourceanddevicelist demo device directive displays drop enables example examples false filter generated hold limit list madevicenamelist mango meta mydatasource mydevicename mypoint names ng-model ngmango option outputed points provided query selected selecting selector sensitive set show-clear source specific string top true ui ui-sref undefined variable xid"
     },
     {
       "section": "api",
@@ -118,7 +118,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-filtering-point-list ng-model=&quot;myPoint&quot;&gt;&lt;/ma-filtering-point-list&gt;",
-      "keywords": "allows api auto auto-init basics creates data defualt demo device directive enables examples filtering hold limit limits list mafilteringpointlist mypoint names ng-model ngmango number point point-id point-xid pointlist points pre-select search select selected selecting self-filtering set text type ui ui-sref update variable xid"
+      "keywords": "allows api auto auto-init basics client-side-filter creates data defualt demo device directive display-text enables examples filtering floating hold input label limit limits list list-text mafilteringpointlist mypoint names ng-model ngmango number point point-id point-xid pointlist points pre-select query replace search select selected selecting self-filtering set text type ui ui-sref update variable xid"
     },
     {
       "section": "api",
@@ -154,7 +154,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-get-point-value point=&quot;myPoint&quot;&gt;&lt;/ma-get-point-value&gt;",
-      "keywords": "additionally api array attribute basics class code custom data demo directive displayed dp_698831 example examples expressions extended getpointbyxid hard html live livevalues magetpointvalue md-block meters mypoint mypoint1 mypoint2 ng-model ng-non-bindable ngmango object objects outputs outputted pass passed passing point point-xid points property pulls renderedvalue single text ui ui-sref updating values variable xid"
+      "keywords": "$ctrl additionally api array attribute basics class code custom data demo directive displayed dp_698831 evaluated example examples expression expressions extended function getpointbyxid hard html live livevalues magetpointvalue md-block meters mypoint mypoint1 mypoint2 ng-model ng-non-bindable ngmango object objects on-value-updated outputs outputted pass passed passing point point-xid points property pulls renderedvalue single text ui ui-sref updates updating values valueupdated variable xid"
     },
     {
       "section": "api",
@@ -181,7 +181,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-map zoom=&quot;10&quot; map-type=&quot;roadmap&quot; center=&quot;-12.95, -38.45&quot; desktop-height=&quot;950px&quot; mobile-height=&quot;450px&quot;&gt;&lt;/ma-map&gt;",
-      "keywords": "$ctrl $parent 01-amps 01-outsidetemp 10 100 11 250px 38 400px 42 45 450px 49 500px 800px 95 950px 99 _blank add api aquired background based center centered change colors component components coordinate custom dark dashboard data default defaults defines demo desktop desktop-height details directive display displays earth examples features flex github google googlemaps height hold href html https hybrid images info-window-theme io key lat latitude level library long longitude mamap map map-type marker mixture mobile mobile-height nested newvalue ngmango normal note object on-click optionally options output output-data passed physical pointxid position px road roadmap satellite set setoutputdata sets settings styles syntax target terrain theme true type ui ui-sref uisettings utilities utilizes variable view views white width window zoom"
+      "keywords": "$ctrl $parent 01-amps 01-outsidetemp 10 100 11 250px 38 400px 42 45 450px 49 500px 800px 95 950px 99 _blank add api aquired background based center centered change colors component components coordinate custom dark dashboard data default defaults defines demo desktop desktop-height details directive display displays earth examples features flex github google googlemaps height hold href html https hybrid images info-window-theme io key lat latitude level library long longitude mamap map map-id map-type marker mixture mobile mobile-height multiple nested newvalue ngmango normal note object on-click optionally options output output-data passed physical pointxid position px road roadmap satellite set setoutputdata sets settings single styles syntax target terrain theme true type ui ui-sref uisettings unique utilities utilizes variable view views white width window zoom"
     },
     {
       "section": "api",
@@ -190,7 +190,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-now update-interval=&quot;1 SECONDS&quot; output=&quot;time&quot;&gt;&lt;/ma-now&gt;",
-      "keywords": "100 200px api basics browser browsers browsertimezone clocksandtimezones current demo directive duration examples format height hold interval js manow moment ngmango number object output seconds set starting string style text time time-zone time1 timezone ui ui-sref units update update-interval variable width"
+      "keywords": "100 200px api basics browser browsers browsertimezone clocksandtimezones current demo directive duration evaluated examples expression format function height hold interval js manow moment ngmango number object onchange output pass seconds set starting string style text time time-zone time1 timezone ui ui-sref units update update-interval updates variable width"
     },
     {
       "section": "api",
@@ -208,7 +208,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-point-hierarchy path=&quot;[]&quot; hierarchy=&quot;folder&quot;&gt;&lt;/ma-point-hierarchy&gt;",
-      "keywords": "accepts access api array attribute character chart children contained default demo descendant directive directly displaytree examples false folder folders hierarchy inputs level mapointhierarchy multiple nested ngmango object objects outlining outputs pass path plain point pointhierarchy points portion query return separate set strings subfolder subfolders target targeting top true ui ui-sref wildcard"
+      "keywords": "accepts access api array attribute character chart children contained default demo descendant directive directly displaytree examples false folder folders hierarchy inputs level mapointhierarchy multiple nested ngmango note object objects order outlining outputs pass path plain point pointhierarchy points portion query return separate set strings subfolder subfolders target targeting top true ui ui-sref wildcard"
     },
     {
       "section": "api",
@@ -226,7 +226,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-point-query query=&quot;&#123;$and: true, deviceName:dvName, name:ptName&#125;&quot; limit=&quot;5&quot; points=&quot;points&quot;&gt;&lt;/ma-point-query&gt;",
-      "keywords": "api array attribute conjunction data datapointtable default defaults defualt demo descending devicename directive display dvname examples fetched filter filters hold inside limit limits list mango mapointquery meta names ngmango number object objects oibject order outputs page-1 passed place point pointarrays points promise properties property ptname query quotes returned returns rql set sets single sort sorting sorts start starting string strings supply system takes true ui ui-sref variable xid"
+      "keywords": "api array attribute clear-on-query conjunction data datapointtable default defaults defualt demo descending devicename directive display dvname examples fetched filter filters hold inside limit limits list mango mapointquery meta names ngmango number object objects order outputs page-1 passed place point pointarrays points promise properties property ptname query quotes replace returned returns rql set sets single sort sorting sorts start starting string strings supply system takes true ui ui-sref variable xid"
     },
     {
       "section": "api",
@@ -253,7 +253,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-point-values point=&quot;point1&quot; values=&quot;point1Values&quot; from=&quot;from&quot; to=&quot;to&quot; rollup=&quot;AVERAGE&quot; rollup-interval=&quot;1 minutes&quot;&gt;",
-      "keywords": "additionally alternatively api apply array attribute auto-rollup-interval automatically average based basics choose chunked data date-format default delta demo directive duration examples false format historical ignored input inputs interval js latest latestpointvalues mango manually mapointvalues milliseconds minutes moment ngmango number object operation outputs outputted parsing pass passed passing period picker point point-xid point1 point1values points pointvalues possibilities property provided pushed query querying realtime rendered returns rollup rollup-interval set starting statistical string strings supplied system text time timeout to-from true turned type ui ui-sref units update values xid"
+      "keywords": "$ctrl additionally alternatively api apply array attribute auto-rollup-interval automatically average based basics cached choose chunked converted data date-format default delta demo directive duration evaluated examples expression false format function historical ignored input inputs interval js latest latestpointvalues mango manually mapointvalues milliseconds minutes moment ngmango number object on-values-updated operation output outputs outputted parsing pass passed passing period picker point point-xid point1 point1values points pointvalues possibilities property provided pushed query querying realtime rendered returns rollup rollup-interval set starting statistical string strings supplied system text time timeout timezone to-from true turned type ui ui-sref units update use-cache values valuesupdated xid"
     },
     {
       "section": "api",
@@ -262,7 +262,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-serial-chart style=&quot;height: 300px; width: 100%&quot; series-1-values=&quot;point1Values&quot; series-1-point=&quot;point1&quot; default-type=&quot;column&quot;&gt;",
-      "keywords": "10 100 300px 3d add advanced advancedchart allows amcharts annotate-mode annotation api array attributes axis balloon bar bubble bullet bullets chart charts circle clicking color column config configuration create created custom custom-bullet customizing data default default-axis default-balloon-text default-color default-graph-options default-type defaults demo design dialog diamond directive display displaying element example examples export extend format functionality generated graph graph-options graphs height hex image inputs js left legend linechart maserialchart mode moment ngmango note number object objects one-balloon open option options overides pass path point point1 point1values points provide provided range regular render replace rollup series series-1-point series-1-values series-x- series-x-axis series-x-balloon-text series-x-color series-x-graph-options series-x-point series-x-title series-x-type series-x-values set sets settings smoothedline square stack-type stacking starting step string style text time time-format timestamps timezone triangledown triangleleft triangleright triangleup true turned type ui ui-sref values variations width xerror yerror"
+      "keywords": "$ctrl $event 10 100 300px 3d add advanced advancedchart allows amcharts annotate-mode annotation api array attributes axis balloon bar bubble bullet bullets call chart charts circle click clicking color column config configuration create created custom custom-bullet customizing data default default-axis default-balloon-text default-color default-graph-options default-type defaults demo design dialog diamond directive display displaying element event example examples export extend format function functionality generated getchart graph graph-item-clicked graph-options graphs handlechartclick height hex image increase init inputs js left legend line-thickness linechart maserialchart mode moment ngmango note number object objects on-chart-init one-balloon open option options overides pass path point point1 point1values points provide provided range regular render replace rollup series series-1-point series-1-values series-x- series-x-axis series-x-balloon-text series-x-color series-x-graph-options series-x-point series-x-title series-x-type series-x-values set sets settings smoothedline square stack-type stacking starting step string style text thickness time time-format timestamps timezone trend-lines trendlines triangledown triangleleft triangleright triangleup triggered true turned type ui ui-sref values variations width xerror yerror"
     },
     {
       "section": "api",
@@ -298,7 +298,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-statistics-table statistics=&quot;statsObj&quot;&gt;&lt;/ma-statistics-table&gt;",
-      "keywords": "api binary data demo directive display examples false formatted hide-starts-and-runtimes input mastatisticstable mypoint ngmango object point runtimes set starts statistics statisticstable statsobj table timestamps true ui ui-sref values"
+      "keywords": "api binary data demo directive display examples false formatted hide-starts-and-runtimes input mastatisticstable mypoint ngmango object point runtimes set starts statistics statisticstable statsobj table timestamps timezone true ui ui-sref values"
     },
     {
       "section": "api",
@@ -307,7 +307,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-switch-img&gt;&lt;/ma-switch-img&gt;",
-      "keywords": "200 50 api attribute based compare dashes data default default-src demo determining directive disabled display displayed displays example examples false flex image img input limit map maswitchimg match mypoint ng-model ngmango object path png point replace set singlevaluedisplays source spaces src- src-1 src-2 src-3 src-4 src-false src-map src-test src-test-my-string src-true strings switched switchimage true ui ui-sref value1 value2"
+      "keywords": "200 50 alternatively api attribute based click compare dashes data default default-src demo determining directive disabled display displayed displays enable example examples false flex image img input inputting limit map maswitchimg match mypoint ng-model ngmango object path png point point-xid replace set singlevaluedisplays source spaces src- src-1 src-2 src-3 src-4 src-false src-map src-test src-test-my-string src-true strings switched switchimage toggle toggle-on-click true ui ui-sref value1 value2 xid"
     },
     {
       "section": "api",
@@ -316,7 +316,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-tank-level point=&quot;myPoint&quot; color=&quot;&quot; max=&quot;&quot; style=&quot;width:300px; height:200px;&quot;&gt;&lt;/ma-tank-level&gt;",
-      "keywords": "0px 100 200px 300px absolute allows amcharts api attribute color configuration custom customizing data demo design directive display element examples extend fill filled height increases left liquid live matanklevel max mypoint ngmango note object options point position provided represents set sets singlevaluedisplays style tank tanks top ui ui-sref visualization volume width z-index"
+      "keywords": "100 200px 300px allows amcharts api attribute color configuration custom customizing data demo design directive display element examples extend fill filled height increases liquid live matanklevel max mypoint ngmango note object options point provided represents set sets singlevaluedisplays style tank tanks ui ui-sref visualization volume width"
     },
     {
       "section": "api",
@@ -343,7 +343,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-user-notes-table&gt;&lt;/ma-user-notes-table&gt;",
-      "keywords": "api comment-type configured directive displaying displays event initial limit list load mausernotestable ngmango notes pagination point query reference-id referenceid set specific stamps table time timezone user"
+      "keywords": "ability add api comment-type configured directive disabled displaying displays event false initial limit list load mausernotestable ngmango notes pagination point query reference-id referenceid set specific stamps table time timezone true turn user"
     },
     {
       "section": "api",
@@ -352,7 +352,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-watch-list-chart&gt;&lt;/ma-watch-list-chart&gt;",
-      "keywords": "400px 450px add add-checked annotation api array chart chart-config chart-height chartconfig charting config controls custom customization data datebar defaults directive display edit-mode export false flex height interval inteval list mawatchlistchart mywatchlist ngmango no-select number object options pass points px rollup rollup-interval-number rollup-interval-period rollup-type rollupintervalperiod rollupintervals rolluptype selectedpoints set start stats stats-tab tab timestamp true type unit watch watch-list watch-list-xid watchlist watchlist323"
+      "keywords": "$ctrl 400px 450px add add-checked annotation api array balloon chart chart-config chart-height chartconfig charting controls custom customization data datebar defaults directive display edit-mode evaluated export expression false flex function height hide interval legend list mawatchlistchart mywatchlist ngmango no-select number object on-values-updated options pass passed points px rollup rollup-interval-number rollup-interval-period rollup-type rollupintervalperiod rollupintervals rolluptype selectedpoints set start stats stats-tab tab timestamp true type unit update values valuesupdated watch watch-list watch-list-get watch-list-xid watchlist323"
     },
     {
       "section": "api",
@@ -361,7 +361,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-watch-list-select watch-list=&quot;myWatchlist&quot;&gt;&lt;/ma-watch-list-select&gt;",
-      "keywords": "api array auto availble bind chart combined component contained custom data designed directive disable disabled display dropdown dynamic false hide holds input list load loading mawatchlistselect mywatchlist ngmango no-select object objects point points select select-first set string switching true variable watch watch-list watch-list-xid watchlist xid"
+      "keywords": "$ctrl api array auto change chart combined component conjunction custom data default descending designed directive disable display dropdown evaluated expression false filters function holds input limit limits list lists load mawatchlistselect mywatchlist ng-disabled ng-model ngmango no-select number object on-points-change parameters pass passed place points pointschanged property query select select-first set sets sort sorting sorts start starting strings takes true variable watch watch-list watch-list-xid xid"
     },
     {
       "section": "api",
