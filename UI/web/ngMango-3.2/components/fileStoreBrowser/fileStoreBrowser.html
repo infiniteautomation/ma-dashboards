@@ -46,7 +46,7 @@
 		        <td md-cell><span ng-if="!file.directory" ng-bind="file.size | maBytes"></span></td>
 		        <td md-cell ng-bind="file.mimeType"></td>
 		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
-		        <td md-cell>
+		        <td md-cell layout layout-align="end center">
 		        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)"><md-icon>file_download</md-icon></md-button>
 		        	<md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)"><md-icon>delete</md-icon></md-button>
 		        </td>
@@ -57,6 +57,7 @@
 	</md-content>
 	<div ng-if="$ctrl.preview" flex="20" class="ma-file-store-browser-preview" layout layout-align="center center">
 		<img ng-if="$ctrl.file.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.file.url}}">
+		<div ng-if="$ctrl.file.mimeType.indexOf('image/') !== 0" class="ma-no-preview" layout layout-align="center center" ma-tr="ui.fileBrowser.noPreviewAvailable"></div>
 	</div>
 </div>
 <div ng-if="$ctrl.listPromise" flex layout="column" layout-align="center center">

@@ -602,6 +602,13 @@ ma-file-store-browser .ma-file-selected {
 	padding-left: 20px;
 }
 
+.ma-file-store-browser-preview .ma-no-preview {
+	margin: 10px;
+	border: 1px dashed;
+	min-height: 200px;
+	width: 100%;
+}
+
 .ma-file-store-dialog {
 	height: 90%;
 }
