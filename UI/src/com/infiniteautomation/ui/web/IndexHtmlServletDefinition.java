@@ -26,8 +26,8 @@ import org.springframework.http.MediaType;
 
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.Constants;
+import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.module.ServletDefinition;
-import com.serotonin.m2m2.web.filter.MangoShallowEtagHeaderFilter;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -65,6 +65,7 @@ public class IndexHtmlServletDefinition extends ServletDefinition {
         private static final long serialVersionUID = 1L;
         
         final Configuration config;
+        final int lastUpgrade;
 
         public IndexHtmlServlet() throws IOException {
             File directory = Paths.get(Common.MA_HOME, IndexHtmlServletDefinition.this.getModule().getDirectoryPath(), Constants.DIR_WEB).toFile();
@@ -74,16 +75,21 @@ public class IndexHtmlServletDefinition extends ServletDefinition {
             config.setDefaultEncoding(StandardCharsets.UTF_8.name());
             config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
             config.setLogTemplateExceptions(false);
+            
+            lastUpgrade = SystemSettingsDao.getIntValue("lastUpgrade", (int) System.currentTimeMillis() / 1000);
         }
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             try {
-                resp.setHeader(HttpHeaders.CACHE_CONTROL, String.format(MangoShallowEtagHeaderFilter.MAX_AGE_TEMPLATE, 0));
+                resp.setHeader(HttpHeaders.CACHE_CONTROL, "max-age=0, must-revalidate");
                 resp.setContentType(MediaType.TEXT_HTML_VALUE);
 
                 Map<String, Object> data = new HashMap<>();
-                data.put("lastUpgrade", Common.lastUpgrade);
+                
+                // This will refer to Common.lastUpgrade in 3.2.x series, for now we are getting it from system settings if it exists,
+                // if not we just use the current time. This means the cache will be "busted" after every reboot 
+                data.put("lastUpgrade", lastUpgrade);
                 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream(8192);
                 try (Writer writer = new BufferedWriter(new OutputStreamWriter(bytes, StandardCharsets.UTF_8))) {
@@ -101,7 +107,7 @@ public class IndexHtmlServletDefinition extends ServletDefinition {
 
         @Override
         protected long getLastModified(HttpServletRequest req) {
-            return Common.lastUpgrade;
+            return lastUpgrade;
         }
     }
 }
