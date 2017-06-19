@@ -76,7 +76,7 @@ public class IndexHtmlServletDefinition extends ServletDefinition {
             config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
             config.setLogTemplateExceptions(false);
             
-            lastUpgrade = SystemSettingsDao.getIntValue("lastUpgrade", (int) System.currentTimeMillis() / 1000);
+            lastUpgrade = SystemSettingsDao.getIntValue("lastUpgrade", (int) (System.currentTimeMillis() / 1000));
         }
 
         @Override
