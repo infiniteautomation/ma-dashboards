@@ -107,7 +107,7 @@ public class IndexHtmlServletDefinition extends ServletDefinition {
 
         @Override
         protected long getLastModified(HttpServletRequest req) {
-            return lastUpgrade;
+            return lastUpgrade * 1000L;
         }
     }
 }
