@@ -421,6 +421,10 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
     color: rgb(255,133,0);
 }
 
+ma-point-value > label {
+	margin-right: 3px;
+}
+
 ma-watch-list-parameters {
 	flex-direction: row;
 	flex-wrap: wrap;

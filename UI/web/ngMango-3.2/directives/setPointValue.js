@@ -44,7 +44,9 @@ function setPointValue($injector) {
             point: '<?',
             pointXid: '@?',
             showButton: '<?',
-            setOnChange: '<?'
+            setOnChange: '<?',
+            labelAttr: '@?label',
+            labelExpression: '&?'
         },
         designerInfo: {
             translation: 'ui.components.setPointValue',
@@ -52,7 +54,8 @@ function setPointValue($injector) {
             category: 'pointValue',
             attributes: {
                 point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'}
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
+                label: {options: ['NAME', 'DEVICE_AND_NAME']}
             }
         }
     };
@@ -89,11 +92,39 @@ SetPointValueController.prototype.$onInit = function() {
     this.pointChanged();
 };
 
+SetPointValueController.prototype.$onChanges = function(changes) {
+    PointValueController.prototype.$onChanges.apply(this, arguments);
+
+    if (changes.labelAttr || changes.labelExpression) {
+		if (this.labelExpression) {
+			this.label = this.labelExpression({$point: this.point});
+		} else {
+			this.updateLabel();
+		}
+    }
+};
+
+SetPointValueController.prototype.updateLabel = function() {
+	if (this.labelAttr === 'NAME') {
+		this.label = this.point && (this.point.name + ':');
+	} else if (this.labelAttr === 'DEVICE_AND_NAME') {
+		this.label = this.point && (this.point.deviceName + ' \u2014 ' + this.point.name + ':');
+	} else {
+		this.label = this.labelAttr;
+	}
+};
+
 SetPointValueController.prototype.valueChangeHandler = function(pointChanged) {
     PointValueController.prototype.valueChangeHandler.apply(this, arguments);
 
     if (pointChanged) {
         this.pointChanged();
+
+		if (this.labelExpression) {
+			this.label = this.labelExpression({$point: this.point});
+		} else {
+			this.updateLabel();
+		}
     }
 
     this.updateValue();
