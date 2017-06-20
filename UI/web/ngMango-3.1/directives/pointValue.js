@@ -101,8 +101,12 @@ PointValueDirectiveController.prototype.$onChanges = function(changes) {
         this.updateText();
     }
     
-    if (changes.labelAttr) {
-    	this.updateLabel();
+    if (changes.labelAttr || changes.labelExpression) {
+		if (this.labelExpression) {
+			this.label = this.labelExpression({$point: this.point});
+		} else {
+			this.updateLabel();
+		}
     }
 };
 
@@ -123,6 +127,8 @@ PointValueDirectiveController.prototype.valueChangeHandler = function(isPointCha
     	this.updateLabel();
 		if (this.labelExpression) {
 			this.label = this.labelExpression({$point: this.point});
+		} else {
+			this.updateLabel();
 		}
 	}
 	
