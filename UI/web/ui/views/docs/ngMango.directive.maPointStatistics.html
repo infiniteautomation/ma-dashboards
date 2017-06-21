@@ -21,18 +21,19 @@ The average for the period is <span>{{</span> statsObj.average.value <span>}}</s
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>point</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Inputs a <code>point</code> object from <code>&lt;ma-point-list&gt;</code>.</p>
 </div></td></tr><tr><td>from</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Sets the starting time for the time range which is used in the statistical query.</p>
 </div></td></tr><tr><td>to</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Sets the ending time for the time range which is used in the statistical query.</p>
-</div></td></tr><tr><td>statistics</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Outputs the object containg the statistcal information. The object will contain the following properties:</p>
-<p><ul>
-   <li><code>first</code></li>
-   <li><code>last</code></li>
-   <li><code>minimum</code></li>
-   <li><code>maximum</code></li>
-   <li><code>average</code></li>
-   <li><code>integral</code></li>
-   <li><code>sum</code></li>
-   <li><code>count</code></li>
-</ul>
-Each of these will have a value and a timestamp.</p>
+</div></td></tr><tr><td>statistics</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Outputs the object containing the statistical information. The object will contain the following
+properties:
+ <ul>
+    <li><code>first</code></li>
+    <li><code>last</code></li>
+    <li><code>minimum</code></li>
+    <li><code>maximum</code></li>
+    <li><code>average</code></li>
+    <li><code>integral</code></li>
+    <li><code>sum</code></li>
+    <li><code>count</code></li>
+ </ul>
+ Each of these will have a value and a timestamp.</p>
 </div></td></tr><tr><td>first-last <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>If you are only interested in calculating the delta value, setting this to <code>true</code> will
 run a more efficient query and only return <code>first</code> and <code>last</code> properties on the <code>statistics</code> object.</p>
 </div></td></tr><tr><td>points <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>Alternatively you can input an array of points from <code>&lt;ma-point-query&gt;</code>. If used the <code>statistics</code> object will output an array.</p>
@@ -41,5 +42,17 @@ run a more efficient query and only return <code>first</code> and <code>last</co
 </div></td></tr><tr><td>timeout <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>If provided you can set the timeout (in milliseconds) on the querying of of the statistical provider.
 If not supplied the Mango system default timeout will be used.</p>
 </div></td></tr><tr><td>rendered <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>(default true) Return the statistics as a rendered value rather than a number</p>
+</div></td></tr><tr><td>display-mode <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="ngmango-directive-page ngmango-directive-mapointstatistics-page"><p>If you want the directive to render a stat value to the page set this attribute to one of the
+following values:
+ <ul>
+ <li><code>first</code></li>
+ <li><code>last</code></li>
+ <li><code>minimum</code></li>
+ <li><code>maximum</code></li>
+ <li><code>average</code></li>
+ <li><code>integral</code></li>
+ <li><code>sum</code></li>
+ <li><code>count</code></li>
+ </ul></p>
 </div></td></tr></tbody></table></div>
 </div>
