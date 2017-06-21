@@ -60,6 +60,9 @@ AceEditorController.prototype.$onChanges = function(changes) {
     if (changes.theme) {
         this.setTheme();
     }
+    if (changes.mode) {
+        this.setMode();
+    }
 };
 
 AceEditorController.prototype.aceLoaded = function aceLoaded(editor) {
@@ -102,6 +105,12 @@ AceEditorController.prototype.loadFromSrc = function loadFromSrc() {
 AceEditorController.prototype.setTheme = function setTheme() {
     if (this.editor && this.theme) {
         this.editor.setTheme('ace/theme/' + this.theme);
+    }
+};
+
+AceEditorController.prototype.setMode = function setMode() {
+    if (this.editor && this.mode) {
+        this.editor.getSession().setMode('ace/mode/' + this.mode);
     }
 };
 
