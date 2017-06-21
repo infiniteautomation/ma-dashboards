@@ -654,6 +654,11 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
         MA_UI_SETTINGS.initialSettings = customUiSettings.jsonData;
         angular.merge(MA_UI_SETTINGS, customUiSettings.jsonData);
     }
+
+    if (MA_UI_SETTINGS.userCss) {
+    	var maCssInjector = servicesInjector.get('maCssInjector');
+    	maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', '[tracking-name="uiMain"]');
+    }
     
     return MA_UI_SETTINGS;
 });
