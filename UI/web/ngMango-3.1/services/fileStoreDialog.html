@@ -15,13 +15,15 @@
 			select-directories="$ctrl.options.selectDirectories"
 			mime-types="{{$ctrl.options.mimeTypes}}"
 			extensions="{{$ctrl.options.extensions}}"
-			preview="$ctrl.options.preview"></ma-file-store-browser>
+			preview="$ctrl.options.preview"
+			disable-edit="$ctrl.options.disableEdit"
+			editing-file="$ctrl.editingFile = $file"></ma-file-store-browser>
 	</md-dialog-content>
 	<md-dialog-actions layout="row">
 	  <md-button ng-click="$ctrl.close()">
 	    <md-icon>close</md-icon>&nbsp;<span ma-tr="common.cancel"></span>
 	  </md-button>
-	  <md-button class="md-raised md-primary" ng-click="$ctrl.done($ctrl.test)" ng-disabled="!$ctrl.path">
+	  <md-button class="md-raised md-primary" ng-click="$ctrl.done($ctrl.test)" ng-disabled="!$ctrl.path || $ctrl.editingFile">
 	    <md-icon>done</md-icon>&nbsp;<span ma-tr="common.ok"></span>
 	  </md-button>
 	</md-dialog-actions>

@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
 'use strict';
 
 fileStore.$inject = ['$http', 'maUtil'];
@@ -69,10 +69,9 @@ function fileStore($http, maUtil) {
     		method: 'GET',
     		url: folderUrl
     	}).then(function(response) {
-    		response.data.forEach(function(file) {
-    			file.url = folderUrl + file.filename;
+    		return response.data.map(function(file) {
+        		return new FileStoreFile(folderUrl, file);
     		});
-    		return response.data;
     	});
     };
     
@@ -92,7 +91,7 @@ function fileStore($http, maUtil) {
     	});
     };
     
-    FileStore.prototype.uploadFiles = function(path, files) {
+    FileStore.prototype.uploadFiles = function(path, files, overwrite) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
@@ -110,12 +109,14 @@ function fileStore($http, maUtil) {
     		transformRequest: angular.identity,
     		headers: {
     			'Content-Type': undefined
+    		},
+    		params: {
+    			overwrite: !!overwrite
     		}
     	}).then(function(response) {
-    		response.data.forEach(function(file) {
-    			file.url = folderUrl + file.filename;
+    		return response.data.map(function(file) {
+        		return new FileStoreFile(folderUrl, file);
     		});
-    		return response.data;
     	});
     };
     
@@ -129,12 +130,46 @@ function fileStore($http, maUtil) {
     		method: 'POST',
     		url: folderUrl
     	}).then(function(response) {
-    		var file = response.data;
-    		file.url = folderUrl + file.filename;
-    		return file;
+    		return new FileStoreFile(folderUrl, response.data);
     	});
     };
     
+    FileStore.prototype.downloadFile = function(file) {
+    	return $http({
+    		method: 'GET',
+    		url: file.url,
+    		responseType: '',
+    		transformResponse: angular.identity,
+    		headers: {
+    			'Accept': '*/*'
+    		}
+    	}).then(function(response) {
+    		return response.data;
+    	});
+    };
+
+    function FileStoreFile(folderUrl, file) {
+    	angular.extend(this, file);
+    	this.url = folderUrl + this.filename;
+    	this.editMode = this.editModes[this.mimeType];
+    }
+    
+    FileStoreFile.prototype.editModes = {
+    	'application/json': 'json',
+    	'application/javascript': 'javascript',
+    	'text/css': 'css',
+    	'text/html': 'html',
+    	'text/plain': 'text',
+    	'image/svg+xml': 'svg'
+	};
+    
+    FileStoreFile.prototype.createFile = function(content) {
+    	return new File([content], this.filename, {
+    		type: this.mimeType,
+    		lastModified: moment(this.lastModified).valueOf()
+    	});
+    };
+
     return new FileStore();
 }
 

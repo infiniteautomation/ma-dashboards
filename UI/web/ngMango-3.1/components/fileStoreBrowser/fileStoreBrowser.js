@@ -17,7 +17,9 @@ var fileStoreBrowser = {
     	selectDirectories: '<?',
     	mimeTypes: '@?',
     	extensions: '@?',
-    	preview: '<?'
+    	preview: '<?',
+    	disableEdit: '<?',
+    	editingFile: '&?'
     },
     designerInfo: {
     	attributes: {
@@ -242,6 +244,47 @@ FileStoreBrowserController.prototype.createNewFolder = function(event) {
 			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFolder', 'md-warn', folderName, msg);
 		}
 	}.bind(this));
+};
+
+FileStoreBrowserController.prototype.doEditFile = function(event, file) {
+	event.stopPropagation();
+	
+	this.maFileStore.downloadFile(file).then(function(textContent) {
+		this.editFile = file;
+		this.editText = textContent;
+		if (this.editingFile) {
+			this.editingFile({$file: this.editFile});
+		}
+	}.bind(this), function(error) {
+		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+		this.maDialogHelper.toast('ui.fileBrowser.errorDownloading', 'md-warn', file.filename, msg);
+	}.bind(this));
+};
+
+FileStoreBrowserController.prototype.saveEditFile = function(event) {
+	var files = [this.editFile.createFile(this.editText)];
+	this.maFileStore.uploadFiles(this.path, files, true).then(function(uploaded) {
+		var index = this.files.indexOf(this.editFile);
+		this.files.splice(index, 1, uploaded[0]);
+		
+		this.maDialogHelper.toast('ui.fileBrowser.savedSuccessfully', null, this.editFile.filename);
+		this.editFile = null;
+		this.editText = null;
+		if (this.editingFile) {
+			this.editingFile({$file: null});
+		}
+	}.bind(this), function(error) {
+		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+		this.maDialogHelper.toast('ui.fileBrowser.errorUploading', 'md-warn', this.editFile.filename, msg);
+	}.bind(this));
+};
+
+FileStoreBrowserController.prototype.cancelEditFile = function(event) {
+	this.editFile = null;
+	this.editText = null;
+	if (this.editingFile) {
+		this.editingFile({$file: null});
+	}
 };
 
 return fileStoreBrowser;
