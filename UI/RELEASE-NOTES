@@ -1,3 +1,7 @@
+*Version 3.1.4*
+* Add label option to ma-set-point-value
+* Selected points on watchlist are now bound by xid first then by name
+
 *Version 3.1.3*
 * Ability to upgrade and install modules added to the modules page
 * Add file store browser page along with components, services and dialogs
