@@ -60,18 +60,18 @@
         <div ng-if="$ctrl.chartOptions.configAllPoints" ng-repeat="point in $ctrl.selected track by point.xid" layout layout-align="start center" layout-wrap>
             <strong flex="100" flex-gt-xs="30" flex-gt-md="15" ng-bind="point.name"></strong>
             <div class="ma-color-picker-preview"
-                ng-click="$ctrl.showColorPicker($event, $ctrl.chartConfig.selectedPoints[point.name], 'lineColor', true)" role="button" tabindex="-1">
-              <div class="ma-color-picker-result" ng-style="{'background-color': $ctrl.chartConfig.selectedPoints[point.name].lineColor}"></div>
+                ng-click="$ctrl.showColorPicker($event, $ctrl.selectedPointConfigsByXid[point.xid] || $ctrl.selectedPointConfigsByName[point.name], 'lineColor', true)" role="button" tabindex="-1">
+              <div class="ma-color-picker-result" ng-style="{'background-color': ($ctrl.selectedPointConfigsByXid[point.xid] || $ctrl.selectedPointConfigsByName[point.name]).lineColor}"></div>
             </div>
 
             <md-input-container flex>
                 <label ma-tr="ui.app.lineColor"></label>
-                <input ma-empty-input="undefined" ng-model="$ctrl.chartConfig.selectedPoints[point.name].lineColor" ng-model-options="{debounce: 1000}" ng-change="$ctrl.rebuildChart()">
+                <input ma-empty-input="undefined" ng-model="($ctrl.selectedPointConfigsByXid[point.xid] || $ctrl.selectedPointConfigsByName[point.name]).lineColor" ng-model-options="{debounce: 1000}" ng-change="$ctrl.rebuildChart()">
             </md-input-container>
             
             <md-input-container flex>
                 <label ma-tr="ui.app.chartType"></label>
-                <md-select ma-empty-input="undefined" ng-model="$ctrl.chartConfig.selectedPoints[point.name].type" ng-change="$ctrl.rebuildChart()">
+                <md-select ma-empty-input="undefined" ng-model="($ctrl.selectedPointConfigsByXid[point.xid] || $ctrl.selectedPointConfigsByName[point.name]).type" ng-change="$ctrl.rebuildChart()">
                     <md-option value=""><em ma-tr="ui.app.clear"></em></md-option>
                     <md-option value="smoothedLine" ma-tr="ui.app.smooth"></md-option>
                     <md-option value="line" ma-tr="ui.app.line"></md-option>
@@ -82,7 +82,7 @@
 
             <md-input-container flex>
                 <label ma-tr="ui.app.pointAxis"></label>
-                <md-select ma-empty-input="undefined" ng-model="$ctrl.chartConfig.selectedPoints[point.name].valueAxis" ng-change="$ctrl.rebuildChart()">
+                <md-select ma-empty-input="undefined" ng-model="($ctrl.selectedPointConfigsByXid[point.xid] || $ctrl.selectedPointConfigsByName[point.name]).valueAxis" ng-change="$ctrl.rebuildChart()">
                     <md-option value=""><em ma-tr="ui.app.clear"></em></md-option>
                     <md-option ng-repeat="axis in $ctrl.axisOptions track by axis.name" ng-value="axis.name">
                         <span ma-tr="{{axis.translation}}"></span>
@@ -162,3 +162,5 @@
     </md-tab-body>
   </md-tab>
 </md-tabs>
+<pre ng-bind="$ctrl.selectedPointConfigsByXid | json"></pre>
+<pre ng-bind="$ctrl.selectedPointConfigsByName | json"></pre>

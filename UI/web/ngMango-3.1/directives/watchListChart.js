@@ -37,7 +37,7 @@
   *
   */
 
-define(['require'], function(require) {
+define(['require', 'angular'], function(require, angular) {
 'use strict';
 
 watchListChart.$inject = [];
@@ -109,11 +109,40 @@ WatchListChartController.prototype.filterPoints = function() {
     var watchList = this.watchList || {data:{}};
     var allPoints = this.points || [];
     var chartConfig = watchList.data.chartConfig || {};
-    var selectedPoints = chartConfig.selectedPoints || {};
-    var graphOptions = this.graphOptions = [];
+    var selectedPoints = chartConfig.selectedPoints || [];
     
+	// convert old object with point names as keys to array form
+	if (!angular.isArray(selectedPoints)) {
+		newSelectedPointArray = [];
+		for (var ptName in selectedPoints) {
+			var config = selectedPoints[ptName];
+			config.name = ptName;
+			newSelectedPointArray.push(config);
+		}
+		selectedPoints = chartConfig.selectedPoints = newSelectedPointArray;
+	}
+	
+	var selectedPointConfigsByName = {};
+    var selectedPointConfigsByXid = {};
+    selectedPoints.forEach(function(ptConfig) {
+    	selectedPointConfigsByName[ptConfig.name] = ptConfig;
+    	if (ptConfig.xid) {
+    		selectedPointConfigsByXid[ptConfig.xid] = ptConfig;
+    	}
+    });
+    
+    var pointNameCounts = {};
+    allPoints.forEach(function(pt) {
+    	var count = pointNameCounts[pt.name];
+    	pointNameCounts[pt.name] = (count || 0) + 1;
+    });
+    
+    var graphOptions = this.graphOptions = [];
     this.chartedPoints = allPoints.filter(function(point) {
-        var pointOptions = selectedPoints[point.name];
+        var pointOptions = selectedPointConfigsByXid[point.xid];
+        if (!pointOptions && pointNameCounts[point.name] === 1) {
+        	pointOptions = selectedPointConfigsByName[point.name];
+        }
         if (pointOptions) {
             graphOptions.push(pointOptions);
             return true;
