@@ -633,13 +633,14 @@ ma-ace-editor {
 	resize: vertical;
 	overflow-y: auto;
 	padding-bottom: 10px;
-	min-height: 400px;
-	height: 400px;
-	display: block;
+	height: 300px;
+	display: flex;
+	flex-direction: column;
 	box-sizing: border-box;
 }
 
 ma-ace-editor > .ace_editor {
-	height: 100%;
-	font-size: 14px;
+	display: flex;
+	flex-grow: 1;
+	font-size: 1.4rem;
 }
