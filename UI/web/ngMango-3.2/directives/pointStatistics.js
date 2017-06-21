@@ -92,7 +92,7 @@ function pointValues(Point, Util, $q, statistics) {
             rendered: '<?',
             displayMode: '@'
         },
-        template: '<span ng-bind="statistics[displayMode].value"></span>',
+        template: '<span ng-bind="displayMode === \'count\' ? statistics[displayMode] : statistics[displayMode].value"></span>',
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
         	var stats = {};
