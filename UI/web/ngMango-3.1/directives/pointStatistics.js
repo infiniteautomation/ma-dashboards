@@ -21,7 +21,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * @param {object} point Inputs a `point` object from `<ma-point-list>`.
  * @param {object} from Sets the starting time for the time range which is used in the statistical query.
  * @param {object} to Sets the ending time for the time range which is used in the statistical query.
- * @param {object} statistics Outputs the object containg the statistcal information. The object will contain the following properties:
+ * @param {object} statistics Outputs the object containing the statistical information. The object will contain the following
+ * properties:
  <ul>
     <li>`first`</li>
     <li>`last`</li>
@@ -41,6 +42,18 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of of the statistical provider.
  If not supplied the Mango system default timeout will be used.
  * @param {boolean=} rendered (default true) Return the statistics as a rendered value rather than a number
+ * @param {string=} display-mode If you want the directive to render a stat value to the page set this attribute to one of the
+ * following values:
+ <ul>
+ <li>`first`</li>
+ <li>`last`</li>
+ <li>`minimum`</li>
+ <li>`maximum`</li>
+ <li>`average`</li>
+ <li>`integral`</li>
+ <li>`sum`</li>
+ <li>`count`</li>
+ </ul>
  *
  * @usage
  * <ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj">
@@ -58,21 +71,28 @@ function pointValues(Point, Util, $q, statistics) {
             category: 'statistics',
             attributes: {
                 from: {defaultValue: 'dateBar.from'},
-                to: {defaultValue: 'dateBar.to'}
+                to: {defaultValue: 'dateBar.to'},
+                firstLast: {type: 'boolean', defaultValue: false},
+                rendered: {type: 'boolean', defaultValue: true},
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
+                displayMode: {type: 'string', options: ['first', 'last', 'minimum', 'maximum', 'average', 'integral', 'sum', 'count']}
             }
         },
         scope: {
-            point: '=?',
-            points: '=?',
+            point: '<?',
+            points: '<?',
             pointXid: '@',
             statistics: '=',
-            from: '=?',
-            to: '=?',
+            from: '<?',
+            to: '<?',
             dateFormat: '@',
-            firstLast: '@',
+            firstLast: '<?',
             timeout: '<?',
-            rendered: '<?'
+            rendered: '<?',
+            displayMode: '@'
         },
+        template: '<span ng-bind="statistics[displayMode].value"></span>',
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
         	var stats = {};

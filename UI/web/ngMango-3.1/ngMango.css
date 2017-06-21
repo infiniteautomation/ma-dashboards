@@ -402,7 +402,7 @@ ma-tank-level .amcharts-graph-tank-remainder .amcharts-graph-column-bottom {
 
 ma-get-point-value,
 ma-point-values,
-ma-point-statistics,
+ma-point-statistics:not([display-mode]),
 ma-watch-list-get,
 ma-point-query {
   display: none;
