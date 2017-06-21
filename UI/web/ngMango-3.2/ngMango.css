@@ -582,7 +582,7 @@ ma-file-store-browser .ma-file-selected {
 
 .ma-file-store-browser-files table.md-table tr td.md-cell:last-child,
 .ma-file-store-browser-files table.md-table tr th.md-column:last-child {
-	width: 80px;
+	width: 120px;
 	padding: 0 !important;
 }
 
