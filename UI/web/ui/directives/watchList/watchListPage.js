@@ -131,10 +131,14 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     this.clearSelected = function () {
         this.selected = [];
         this.selectedStats = [];
-        this.chartConfig = {};
-        if (this.watchList && this.watchList.data) {
+        this.chartConfig = {
+    		selectedPoints: []
+        };
+        if (this.watchList) {
+        	if (!this.watchList.data) this.watchList.data = {};
             this.watchList.data.chartConfig = this.chartConfig;
         }
+        this.updateSelectedPointMaps();
     };
     
     this.rebuildChart = function() {
@@ -162,7 +166,22 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             }
             
             this.chartConfig = this.watchList.data.chartConfig;
+            if (this.chartConfig.selectedPoints) {
+            	// convert old object with point names as keys to array form
+            	if (!angular.isArray(this.chartConfig.selectedPoints)) {
+            		var selectedPointConfigs = [];
+            		for (var ptName in this.chartConfig.selectedPoints) {
+            			var config = this.chartConfig.selectedPoints[ptName];
+            			config.name = ptName;
+            			selectedPointConfigs.push(config);
+            		}
+            		this.chartConfig.selectedPoints = selectedPointConfigs;
+            	}
+            } else {
+            	this.chartConfig.selectedPoints = [];
+            }
 
+            this.updateSelectedPointMaps();
             this.getPoints();
         }
 
@@ -178,13 +197,20 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         this.pointsPromise = this.watchList.getPoints(this.watchListParams).then(null, angular.noop).then(function(points) {
             this.points = points || [];
             
-            if (this.watchList.data && this.watchList.data.chartConfig && this.watchList.data.chartConfig.selectedPoints) {
-                var selectedPoints = this.watchList.data.chartConfig.selectedPoints;
-                this.selected = this.points.filter(function(point) {
-                    return selectedPoints[point.name];
-                });
-                this.updateStats();
-            }
+            var pointNameCounts = this.pointNameCounts = {};
+            this.points.forEach(function(pt) {
+            	var count = pointNameCounts[pt.name];
+            	pointNameCounts[pt.name] = (count || 0) + 1;
+            });
+
+            this.selected = this.points.filter(function(point) {
+            	var pointOptions = this.selectedPointConfigsByXid[point.xid];
+            	if (!pointOptions && pointNameCounts[point.name] === 1) {
+            		pointOptions = this.selectedPointConfigsByName[point.name];
+            	}
+            	if (pointOptions) return point;
+            }.bind(this));
+            this.updateStats();
         }.bind(this));
     };
 
@@ -206,11 +232,8 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.type = 'query';
             watchList.name = Translate.trSync('ui.app.dataSourceX', [this.dataSource.name]);
             watchList.query = dsQuery.toString();
-            watchList.data = {
-                chartConfig: {}
-            };
             this.watchList = watchList;
-            this.chartConfig = this.watchList.data.chartConfig;
+            this.clearSelected();
             this.getPoints();
         }
 
@@ -233,11 +256,8 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.type = 'query';
             watchList.name = Translate.trSync('ui.app.deviceNameX', [this.deviceName]);
             watchList.query = dnQuery.toString();
-            watchList.data = {
-                chartConfig: {}
-            };
             this.watchList = watchList;
-            this.chartConfig = this.watchList.data.chartConfig;
+            this.clearSelected();
             this.getPoints();
         }
 
@@ -259,11 +279,8 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             watchList.type = 'hierarchy';
             watchList.name = Translate.trSync('ui.app.hierarchyFolderX', [this.hierarchyFolders[0].name]);
             watchList.hierarchyFolders = this.hierarchyFolders;
-            watchList.data = {
-                chartConfig: {}
-            };
             this.watchList = watchList;
-            this.chartConfig = this.watchList.data.chartConfig;
+            this.clearSelected();
             this.getPoints();
         }
 
@@ -295,9 +312,19 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         }
     };
     
+    this.updateSelectedPointMaps = function() {
+        this.selectedPointConfigsByName = {};
+        this.selectedPointConfigsByXid = {};
+        this.chartConfig.selectedPoints.forEach(function(ptConfig) {
+        	this.selectedPointConfigsByName[ptConfig.name] = ptConfig;
+        	if (ptConfig.xid) {
+        		this.selectedPointConfigsByXid[ptConfig.xid] = ptConfig;
+        	}
+        }.bind(this));
+    };
+    
     this.selectedPointsChanged = function() {
-        var oldSelectedPoints = this.chartConfig.selectedPoints || {};
-        var newSelectedPoints = this.chartConfig.selectedPoints = {};
+        var newSelectedPoints = this.chartConfig.selectedPoints = [];
         
         var newPointChartOptions = {};
         if (this.chartOptions.configNextPoint) {
@@ -310,9 +337,16 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         }
         
         this.selected.forEach(function(point) {
-            newSelectedPoints[point.name] = oldSelectedPoints[point.name] || newPointChartOptions;
-        });
+        	var config = this.selectedPointConfigsByXid[point.xid] ||
+        		(this.pointNameCounts[point.name] === 1 && this.selectedPointConfigsByName[point.name]) ||
+        		newPointChartOptions;
+        	config.name = point.name;
+        	config.xid = point.xid;
+        	newSelectedPoints.push(config);
+        }.bind(this));
         
+        this.updateSelectedPointMaps();
+
         this.rebuildChart();
         this.updateStats();
     }.bind(this);
