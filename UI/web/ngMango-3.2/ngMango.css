@@ -625,3 +625,21 @@ ma-file-store-browser > md-progress-linear.ng-hide:not(.ng-hide-animate) {
 .mobile .ma-file-store-dialog {
 	height: 100%;
 }
+
+
+/* Ace editor styles */
+
+ma-ace-editor {
+	resize: vertical;
+	overflow-y: auto;
+	padding-bottom: 10px;
+	min-height: 400px;
+	height: 400px;
+	display: block;
+	box-sizing: border-box;
+}
+
+ma-ace-editor > .ace_editor {
+	height: 100%;
+	font-size: 14px;
+}
