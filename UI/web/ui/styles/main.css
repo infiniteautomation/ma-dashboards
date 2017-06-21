@@ -456,29 +456,6 @@ code:not(.highlight) {
   margin: 8px;
 }
 
-/* Live editor styles */
-
-.ace_editor {
-	height: 200px;
-}
-
-div.ace_editor {
-  font-size: 14px;
-}
-
-ma-ui-live-editor {
-	resize: vertical;
-	overflow-y: auto;
-	padding-bottom: 10px;
-	min-height: 400px;
-	display: block;
-	box-sizing: border-box;
-}
-
-ma-ui-live-editor [ui-ace] {  
-	height: 100%;
-}
-
 /* mdPickers font-size adjustments for base font size of 10px */
 
 .mdp-calendar-week-days {

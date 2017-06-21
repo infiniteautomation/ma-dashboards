@@ -13,6 +13,6 @@
 <div layout>
   <textarea flex ng-if="$ctrl.usePlainEditor" style="height: 600px;" ng-model="$ctrl.jsonString" ng-change="$ctrl.editorChanged()" class="ma-code-font"></textarea>
   <div flex ng-if="!$ctrl.usePlainEditor">
-    <ma-ui-live-editor style="height: 600px;" ng-model="$ctrl.jsonString" ng-change="$ctrl.editorChanged()" mode="json" copy-to-clipboard="$ctrl.doCopy"></ma-ui-live-editor>
+    <ma-ace-editor style="height: 600px;" ng-model="$ctrl.jsonString" ng-change="$ctrl.editorChanged()" mode="json" copy-to-clipboard="$ctrl.doCopy"></ma-ace-editor>
   </div>
 </div>

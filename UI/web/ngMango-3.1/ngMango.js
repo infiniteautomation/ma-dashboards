@@ -67,6 +67,7 @@ define(['./ngMangoServices',
         './directives/switch',
         './directives/svg',
         './directives/chooseFile',
+        './directives/aceEditor',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -99,7 +100,7 @@ define(['./ngMangoServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListGet, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
-        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile,
+        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile, aceEditor,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
         maMap, button, fileStoreBrowser, ngMap, slideUp, angular, require, moment) {
@@ -178,6 +179,7 @@ ngMango.directive('maChange', change);
 ngMango.directive('maSwitch', switchDirective);
 ngMango.directive('maSvg', svgDirective);
 ngMango.directive('maChooseFile', chooseFile);
+ngMango.directive('maAceEditor', aceEditor);
 ngMango.component('maQueryBuilder', queryBuilder);
 ngMango.component('maQueryGroup', queryGroup);
 ngMango.component('maQueryPredicate', queryPredicate);
