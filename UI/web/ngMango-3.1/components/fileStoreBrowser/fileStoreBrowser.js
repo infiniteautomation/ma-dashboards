@@ -194,6 +194,7 @@ FileStoreBrowserController.prototype.deleteFile = function(event, file) {
 			this.files.splice(index, 1);
 		this.maDialogHelper.toast('ui.fileBrowser.deletedSuccessfully', null, file.filename);
 	}.bind(this), function(error) {
+		if (!error) return; // dialog cancelled
 		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
 		this.maDialogHelper.toast('ui.fileBrowser.errorDeleting', 'md-warn', file.filename, msg);
 	}.bind(this));
