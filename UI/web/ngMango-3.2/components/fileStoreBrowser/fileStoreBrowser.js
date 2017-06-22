@@ -237,6 +237,7 @@ FileStoreBrowserController.prototype.createNewFolder = function(event) {
 		this.files.push(folder);
 		this.maDialogHelper.toast('ui.fileBrowser.folderCreated', null, folder.filename);
 	}.bind(this), function(error) {
+		if (!error) return; // dialog cancelled
 		if (error.status === 409) {
 			this.maDialogHelper.toast('ui.fileBrowser.folderExists', 'md-warn', folderName);
 		} else {
@@ -257,6 +258,7 @@ FileStoreBrowserController.prototype.createNewFile = function(event) {
 		if (file.editMode)
 			this.doEditFile(event, file);
 	}.bind(this), function(error) {
+		if (!error) return; // dialog cancelled
 		if (error.status === 409) {
 			this.maDialogHelper.toast('ui.fileBrowser.fileExists', 'md-warn', fileName);
 		} else {
