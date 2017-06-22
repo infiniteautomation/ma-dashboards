@@ -18,38 +18,21 @@ define(['angular', './PointValueController'], function(angular, PointValueContro
  *
  * @param {object} point Input the point object whos value will be used in
  determining the image displayed. (using `<ma-get-point-value point="myPoint"></ma-point-value>`)
+ * @param {string=} point-xid Alternatively to inputting a point you can input a point xid.
  * @param {string} default-src Set the default image path that will display if no match is found or the point is disabled.
- * @param {object=} src-map Use an object to map any data point value to an image path: (`'value1': 'img/image1.png', 'value2': 'img/image2.png'}`)
+ * @param {object=} src-map Use an object to map any data point value to an image path: (`{'value1': 'img/image1.png',
+ * 'value2': 'img/image2.png'}`)
  * @param {string=} src-### The part of attribute after `src-` (the `###`) is used to compare against the point value.
  For strings with spaces replace the spaces in the point value with dashes in attribute name. *Not to be used with `src-map` attribute.
- * @param {string=} point-xid Alternatively to inputting a point you can input a point xid.
+ * @param {string=} value Alternatively to passing in a point you can use the `value` attribute to pass in a raw value.
  * @param {boolean=} toggle-on-click Set to true to enable click to toggle.
- * @param {string=} value REPLACE
  *
  * @usage
  <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
  <ma-point-value point="myPoint"></ma-point-value>
- <div flex="50">
-        <p>Map example</p>
-        <ma-switch-img point="myPoint" default-src="img/close.png" src-map="{'false': 'img/ligthbulb_off.png', 'true': 'img/ligthbulb_on.png'}">
-        </ma-switch-img>
-    </div>
-    <div flex="50">
-        <p>Binary example</p>
-        <ma-switch-img point="myPoint" src-false="img/ligthbulb_off.png" src-true="img/ligthbulb_on.png" default-src="img/close.png">
-        </ma-switch-img>
-    </div>
-    <div flex="50">
-        <p>Multi-state example</p>
-        <ma-switch-img point="myPoint" src-1="img/arrow_up.png" src-2="img/arrow_right.png" src-3="img/arrow_down.png" src-4="img/arrow_left.png" default-src="img/close.png">
-        </ma-switch-img>
-    </div>
-    <div flex="50">
-        <p>String example</p>
-        <ma-switch-img point="myPoint" src-test="img/ligthbulb_off.png" src-test-my-string="img/ligthbulb_on.png" default-src="img/close.png">
-        </ma-switch-img>
-    </div>
-</div>
+
+ <ma-switch-img point="myPoint" src-false="img/ligthbulb_off.png" src-true="img/ligthbulb_on.png"
+ default-src="img/close.png" toggle-on-click="true"></ma-switch-img>
  *
  */
 function switchImg() {
@@ -64,8 +47,8 @@ function switchImg() {
             pointXid: '@?',
             srcMap: '<?',
             defaultSrc: '@?',
-            toggleOnClick: '<?',
-            value: '<?'
+            value: '<?',
+            toggleOnClick: '<?'
         },
         designerInfo: {
             translation: 'ui.components.switchImg',
@@ -74,9 +57,12 @@ function switchImg() {
             attributes: {
                 point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
                 pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
-                toggleOnClick: {options: ['true', 'false']},
-                srcTrue: {type: 'string', optional: true},
-                srcFalse: {type: 'string', optional: true}
+                toggleOnClick: {nameTr: 'ui.components.toggleOnClick', type: 'boolean'},
+                srcTrue: {type: 'choosefile', optional: true},
+                srcFalse: {type: 'choosefile', optional: true},
+                defaultSrc: {type: 'choosefile'},
+                srcMap: {type: 'string'},
+                value: {type: 'string'}
             }
         }
     };
