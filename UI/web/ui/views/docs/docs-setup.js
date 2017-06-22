@@ -298,7 +298,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-statistics-table statistics=&quot;statsObj&quot;&gt;&lt;/ma-statistics-table&gt;",
-      "keywords": "api binary data demo directive display examples false formatted hide-starts-and-runtimes input mastatisticstable mypoint ngmango object point runtimes set starts statistics statisticstable statsobj table timestamps timezone true ui ui-sref values"
+      "keywords": "alternatively api attribute binary data demo directive display examples false formatted hide-starts-and-runtimes input inputs mastatisticstable mypoint ngmango object output pass point point-xid precedence runtimes set starts statistics statisticstable statsobj table takes timestamps timezone true ui ui-sref values xid"
     },
     {
       "section": "api",
