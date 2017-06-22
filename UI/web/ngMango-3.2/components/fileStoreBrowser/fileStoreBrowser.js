@@ -28,11 +28,12 @@ var fileStoreBrowser = {
     }
 };
 
-FileStoreBrowserController.$inject = ['maFileStore', '$element', 'maDialogHelper'];
-function FileStoreBrowserController(maFileStore, $element, maDialogHelper) {
+FileStoreBrowserController.$inject = ['maFileStore', '$element', 'maDialogHelper', '$q'];
+function FileStoreBrowserController(maFileStore, $element, maDialogHelper, $q) {
     this.maFileStore = maFileStore;
     this.$element = $element;
     this.maDialogHelper = maDialogHelper;
+    this.$q = $q;
     
     this.tableOrder = ['-directory', 'filename'];
 }
@@ -307,6 +308,30 @@ FileStoreBrowserController.prototype.cancelEditFile = function(event) {
 	if (this.editingFile) {
 		this.editingFile({$file: null});
 	}
+};
+
+FileStoreBrowserController.prototype.renameFile = function(event, file) {
+	event.stopPropagation();
+
+	var newName;
+	this.maDialogHelper.prompt(event, 'ui.app.rename', null, 'ui.app.fileName', file.filename).then(function(_newName) {
+		newName = _newName;
+		if (newName === file.filename)
+			return this.$q.reject();
+		return this.maFileStore.renameFile(this.path, file, newName);
+	}.bind(this)).then(function(renamedFile) {
+		var index = this.files.indexOf(file);
+		this.files.splice(index, 1, renamedFile);
+		this.maDialogHelper.toast('ui.fileBrowser.fileRenamed', null, renamedFile.filename);
+	}.bind(this), function(error) {
+		if (!error) return; // dialog cancelled or filename the same
+		if (error.status === 409) {
+			this.maDialogHelper.toast('ui.fileBrowser.fileExists', 'md-warn', newName);
+		} else {
+			var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFile', 'md-warn', newName, msg);
+		}
+	}.bind(this));
 };
 
 return fileStoreBrowser;
