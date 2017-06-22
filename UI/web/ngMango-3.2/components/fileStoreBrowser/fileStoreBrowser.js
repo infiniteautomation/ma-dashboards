@@ -246,6 +246,26 @@ FileStoreBrowserController.prototype.createNewFolder = function(event) {
 	}.bind(this));
 };
 
+FileStoreBrowserController.prototype.createNewFile = function(event) {
+	var fileName;
+	this.maDialogHelper.prompt(event, 'ui.app.createNewFile', null, 'ui.app.fileName').then(function(_fileName) {
+		fileName = _fileName;
+		return this.maFileStore.createNewFile(this.path, fileName);
+	}.bind(this)).then(function(file) {
+		this.files.push(file);
+		this.maDialogHelper.toast('ui.fileBrowser.fileCreated', null, file.filename);
+		if (file.editMode)
+			this.doEditFile(event, file);
+	}.bind(this), function(error) {
+		if (error.status === 409) {
+			this.maDialogHelper.toast('ui.fileBrowser.fileExists', 'md-warn', fileName);
+		} else {
+			var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFile', 'md-warn', fileName, msg);
+		}
+	}.bind(this));
+};
+
 FileStoreBrowserController.prototype.doEditFile = function(event, file) {
 	event.stopPropagation();
 	
