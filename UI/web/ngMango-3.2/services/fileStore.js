@@ -70,7 +70,7 @@ function fileStore($http, maUtil) {
     		url: folderUrl
     	}).then(function(response) {
     		return response.data.map(function(file) {
-        		return new FileStoreFile(folderUrl, file);
+        		return new FileStoreFile(path[0], file);
     		});
     	});
     };
@@ -115,7 +115,7 @@ function fileStore($http, maUtil) {
     		}
     	}).then(function(response) {
     		return response.data.map(function(file) {
-        		return new FileStoreFile(folderUrl, file);
+        		return new FileStoreFile(path[0], file);
     		});
     	});
     };
@@ -130,7 +130,7 @@ function fileStore($http, maUtil) {
     		method: 'POST',
     		url: folderUrl
     	}).then(function(response) {
-    		return new FileStoreFile(folderUrl, response.data);
+    		return new FileStoreFile(path[0], response.data);
     	});
     };
     
@@ -154,7 +154,7 @@ function fileStore($http, maUtil) {
     			moveTo: newName
     		}
     	}).then(function(response) {
-    		return new FileStoreFile(folderUrl, response.data);
+    		return new FileStoreFile(path[0], response.data);
     	});
     };
     
@@ -172,9 +172,10 @@ function fileStore($http, maUtil) {
     	});
     };
 
-    function FileStoreFile(folderUrl, file) {
+    function FileStoreFile(fileStore, file) {
     	angular.extend(this, file);
-    	this.url = folderUrl + this.filename;
+    	this.fileStore = fileStore;
+    	this.url = fileStoreUrl + '/' + fileStore + '/' + this.folderPath + this.filename;
     	this.editMode = this.editModes[this.mimeType];
     }
     

@@ -315,15 +315,25 @@ FileStoreBrowserController.prototype.renameFile = function(event, file) {
 	event.stopPropagation();
 
 	var newName;
-	this.maDialogHelper.prompt(event, 'ui.app.rename', null, 'ui.app.fileName', file.filename).then(function(_newName) {
+	this.maDialogHelper.prompt(event, 'ui.app.renameOrMove', null, 'ui.app.fileName', file.filename).then(function(_newName) {
 		newName = _newName;
 		if (newName === file.filename)
 			return this.$q.reject();
 		return this.maFileStore.renameFile(this.path, file, newName);
 	}.bind(this)).then(function(renamedFile) {
 		var index = this.files.indexOf(file);
-		this.files.splice(index, 1, renamedFile);
-		this.maDialogHelper.toast('ui.fileBrowser.fileRenamed', null, renamedFile.filename);
+		if (renamedFile.folderPath === file.folderPath) {
+			// replace it
+			this.files.splice(index, 1, renamedFile);
+		} else {
+			// remove it
+			this.files.splice(index, 1);
+		}
+		if (renamedFile.filename === file.filename) {
+			this.maDialogHelper.toast('ui.fileBrowser.fileMoved', null, renamedFile.filename, renamedFile.fileStore + '/' + renamedFile.folderPath);
+		} else {
+			this.maDialogHelper.toast('ui.fileBrowser.fileRenamed', null, renamedFile.filename);
+		}
 	}.bind(this), function(error) {
 		if (!error) return; // dialog cancelled or filename the same
 		if (error.status === 409) {
