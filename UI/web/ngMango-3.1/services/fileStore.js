@@ -134,6 +134,12 @@ function fileStore($http, maUtil) {
     	});
     };
     
+    FileStore.prototype.createNewFile = function(path, name) {
+    	return this.uploadFiles(path, [new File([], name)], false).then(function(files) {
+    		return files[0];
+    	});
+    };
+    
     FileStore.prototype.downloadFile = function(file) {
     	return $http({
     		method: 'GET',
