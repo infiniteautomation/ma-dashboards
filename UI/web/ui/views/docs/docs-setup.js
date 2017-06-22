@@ -307,7 +307,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-switch-img&gt;&lt;/ma-switch-img&gt;",
-      "keywords": "200 50 alternatively api attribute based click compare dashes data default default-src demo determining directive disabled display displayed displays enable example examples false flex image img input inputting limit map maswitchimg match mypoint ng-model ngmango object path png point point-xid replace set singlevaluedisplays source spaces src- src-1 src-2 src-3 src-4 src-false src-map src-test src-test-my-string src-true strings switched switchimage toggle toggle-on-click true ui ui-sref value1 value2 xid"
+      "keywords": "200 alternatively api attribute based click compare dashes data default default-src demo determining directive disabled display displayed displays enable examples image img input inputting limit map maswitchimg match mypoint ng-model ngmango object pass passing path png point point-xid raw replace set singlevaluedisplays source spaces src- src-false src-map src-true strings switched switchimage toggle toggle-on-click true ui ui-sref value1 value2 xid"
     },
     {
       "section": "api",
