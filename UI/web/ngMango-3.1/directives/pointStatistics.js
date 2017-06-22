@@ -81,14 +81,14 @@ function pointValues(Point, Util, $q, statistics) {
         },
         scope: {
             point: '<?',
-            points: '<?',
             pointXid: '@',
+            points: '<?',
             statistics: '=',
             from: '<?',
             to: '<?',
             dateFormat: '@',
-            firstLast: '<?',
             timeout: '<?',
+            firstLast: '<?',
             rendered: '<?',
             displayMode: '@'
         },

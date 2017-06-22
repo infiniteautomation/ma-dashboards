@@ -15,9 +15,13 @@ define(['require', 'moment-timezone'], function(require, moment) {
  * - <a ui-sref="ui.examples.statistics.statisticsTable">View Demo</a> 
  *
  * @param {object} statistics Input the statistics object from `<ma-point-statistics>`
- * @param {boolean=} hide-starts-and-runtimes If set to `false`, `starts` and `runtimes` statistics will not display for a binary/multistate point
- (Defaults to `true`)
- * @param {string} timezone The display date will have the given timezone.
+ * @param {object=} point Inputs a `point` object from `<ma-point-list>`. If used statistics attribute becomes an output of the
+ * `statistics` object. Takes precedence over `point-xid`.
+ * @param {string=} point-xid Alternatively you can pass in the `xid` of a point to use.
+ * @param {boolean=} hide-starts-and-runtimes If set to `true`, `starts` and `runtimes` statistics will not display for a
+ * binary/multistate point
+ (Defaults to `false`)
+ * @param {string=} timezone The display date will have the given timezone.
  *
  * @usage
  * <ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
@@ -31,14 +35,24 @@ function statisticsTable($injector, mangoDateFormats) {
         designerInfo: {
             translation: 'ui.components.statisticsTable',
             icon: 'grid_on',
-            category: 'statistics'
+            category: 'statistics',
+            attributes: {
+                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
+                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
+                from: {defaultValue: 'dateBar.from'},
+                to: {defaultValue: 'dateBar.to'},
+                hideStartsAndRuntimes: {type: 'boolean', nameTr: 'ui.components.hideStartsAndRuntimes', defaultValue: false}
+            }
         },
         scope: {
+            point: '<?',
+            pointXid: '@',
             statistics: '=',
             timezone: '@',
-            hideStartsAndRuntimes: '@'
+            from: '<?',
+            to: '<?',
+            hideStartsAndRuntimes: '<?'
         },
-        replace: true,
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
                 return require.toUrl('./statisticsTable-md.html');
