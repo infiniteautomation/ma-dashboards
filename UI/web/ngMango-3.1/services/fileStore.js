@@ -140,6 +140,24 @@ function fileStore($http, maUtil) {
     	});
     };
     
+    FileStore.prototype.renameFile = function(path, oldFile, newName) {
+    	if (path.length < 1) {
+    		throw new Error('Must specify the file store name');
+    	}
+    	var folderUrl = this.toUrl(path, true);
+    	var fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
+
+    	return $http({
+    		method: 'POST',
+    		url: fileUrl,
+    		params: {
+    			moveTo: newName
+    		}
+    	}).then(function(response) {
+    		return new FileStoreFile(folderUrl, response.data);
+    	});
+    };
+    
     FileStore.prototype.downloadFile = function(file) {
     	return $http({
     		method: 'GET',
