@@ -156,6 +156,7 @@ ngMangoFilters.filter('maNoNaN', function () {
 
 ngMangoFilters.filter("maBytes", function() {
 	return function(bytes, precision) {
+		if (bytes === 0) return '0 B';
 		if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
 		if (typeof precision === 'undefined') precision = 1;
 		var units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'],
