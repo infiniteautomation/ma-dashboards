@@ -59,7 +59,7 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast) {
         return $mdDialog.show(confirm);
     };
     
-    DialogHelper.prototype.prompt = function(event, shortTr, longTr, placeHolderTr) {
+    DialogHelper.prototype.prompt = function(event, shortTr, longTr, placeHolderTr, initialValue) {
         var shortText = maTranslate.trSync(shortTr);
         var longText = longTr && maTranslate.trSync(longTr);
         var placeHolderText = placeHolderTr && maTranslate.trSync(placeHolderTr);
@@ -78,6 +78,10 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast) {
         
         if (placeHolderText) {
         	prompt.placeholder(placeHolderText);
+        }
+        
+        if (initialValue != null) {
+        	prompt.initialValue(initialValue);
         }
 
         return $mdDialog.show(prompt);
