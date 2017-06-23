@@ -10,7 +10,7 @@ function arrayInput() {
     return {
         require: 'ngModel',
         link: function($scope, $element, $attrs, ngModel) {
-            ngModel.$parsers.unshift(function toArray(viewValue) {
+            ngModel.$parsers.push(function toArray(viewValue) {
                 return (typeof viewValue === 'string') ? viewValue.split($attrs.arrayDelimiter || ',') : viewValue;
             });
             
