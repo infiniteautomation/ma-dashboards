@@ -93,7 +93,16 @@ FileStoreBrowserController.prototype.render = function() {
 	} catch (e) {
 	}
 	
-	this.listFiles();
+	this.listFiles().then(function(files) {
+		if (this.filename) {
+			files.some(function(file) {
+				if (file.filename === this.filename) {
+					this.file = file;
+					return true;
+				}
+			}.bind(this));
+		}
+	}.bind(this));
 };
 
 FileStoreBrowserController.prototype.listFiles = function() {
@@ -114,6 +123,7 @@ FileStoreBrowserController.prototype.listFiles = function() {
 			} else {
 				this.files = files;
 			}
+	    	return this.files;
 		}.bind(this), listErrorHandler);
 	} else {
 		this.listPromise = this.maFileStore.list().then(function(fileStores) {
@@ -130,6 +140,8 @@ FileStoreBrowserController.prototype.listFiles = function() {
 	this.listPromise['finally'](function() {
     	delete this.listPromise;
     }.bind(this));
+	
+	return this.listPromise;
 };
 
 FileStoreBrowserController.prototype.filterFiles = function(file) {
