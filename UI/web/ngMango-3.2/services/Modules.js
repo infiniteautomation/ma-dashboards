@@ -40,6 +40,15 @@ function ModulesFactory($http, $q) {
         });
     };
     
+    Modules.getUpdateLicensePayload = function() {
+    	return $http({
+            method: 'GET',
+            url: modulesUrl + '/update-license-payload'
+        }).then(function(response) {
+            return response.data;
+        });
+    };
+    
     Modules.checkForUpgrades = function() {
         return $http({
             method: 'GET',
