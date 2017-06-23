@@ -61,7 +61,8 @@ function switchImg() {
                 srcTrue: {type: 'choosefile', optional: true},
                 srcFalse: {type: 'choosefile', optional: true},
                 defaultSrc: {type: 'choosefile'},
-                srcMap: {type: 'string'},
+                srcMap: {type: 'string', defaultValue: "{'0': 'image1', '1':" +
+                " 'image2', '2': 'image3'}"},
                 value: {type: 'string'}
             }
         }
