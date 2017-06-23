@@ -3,6 +3,7 @@
   <input ng-if="$ctrl.inputType === 'text'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled">
   <input ng-if="$ctrl.inputType === 'password'" type="password" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled">
   <input ng-if="$ctrl.inputType === 'number'" type="number" min="{{$ctrl.min}}" max="{{$ctrl.max}}" step="{{$ctrl.step}}" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled">
+  <input ng-if="$ctrl.inputType === 'date'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled" ma-date-input scale-number="1000">
   <md-select ng-if="$ctrl.inputType === 'select'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled">
     <div ng-transclude="options"></div>
   </md-select>
