@@ -315,7 +315,7 @@ FileStoreBrowserController.prototype.renameFile = function(event, file) {
 	event.stopPropagation();
 
 	var newName;
-	this.maDialogHelper.prompt(event, 'ui.app.renameOrMove', null, 'ui.app.fileName', file.filename).then(function(_newName) {
+	this.maDialogHelper.prompt(event, 'ui.app.renameOrMoveTo', null, 'ui.app.fileName', file.filename).then(function(_newName) {
 		newName = _newName;
 		if (newName === file.filename)
 			return this.$q.reject();
@@ -334,6 +334,31 @@ FileStoreBrowserController.prototype.renameFile = function(event, file) {
 		} else {
 			this.maDialogHelper.toast('ui.fileBrowser.fileRenamed', null, renamedFile.filename);
 		}
+	}.bind(this), function(error) {
+		if (!error) return; // dialog cancelled or filename the same
+		if (error.status === 409) {
+			this.maDialogHelper.toast('ui.fileBrowser.fileExists', 'md-warn', newName);
+		} else {
+			var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFile', 'md-warn', newName, msg);
+		}
+	}.bind(this));
+};
+
+FileStoreBrowserController.prototype.copyFile = function(event, file) {
+	event.stopPropagation();
+
+	var newName;
+	this.maDialogHelper.prompt(event, 'ui.app.copyFileTo', null, 'ui.app.fileName', file.filename).then(function(_newName) {
+		newName = _newName;
+		if (newName === file.filename)
+			return this.$q.reject();
+		return this.maFileStore.copyFile(this.path, file, newName);
+	}.bind(this)).then(function(copiedFile) {
+		if (copiedFile.folderPath === file.folderPath) {
+			this.files.push(copiedFile);
+		}
+		this.maDialogHelper.toast('ui.fileBrowser.fileCopied', null, copiedFile.filename, copiedFile.fileStore + '/' + copiedFile.folderPath);
 	}.bind(this), function(error) {
 		if (!error) return; // dialog cancelled or filename the same
 		if (error.status === 409) {
