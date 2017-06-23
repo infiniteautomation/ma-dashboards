@@ -296,9 +296,10 @@ uiApp.run([
     'maWebAnalytics',
     'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
     '$window',
+    'maModules',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
-        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window) {
+        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, maModules) {
 
     if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
         webAnalytics.enableGoogleAnalytics(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
@@ -603,6 +604,10 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $document.on('dragover drop', function($event) {
         return false;
     });
+    
+    maModules.getCore().then(function(coreModule) {
+        $rootScope.coreModule = coreModule;
+    }.bind(this));
 }]);
 
 /**
