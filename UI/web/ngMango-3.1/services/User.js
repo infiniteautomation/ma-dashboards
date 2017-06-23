@@ -176,8 +176,7 @@ function UserProvider() {
                 transformResponse: Util.transformArrayResponse,
                 interceptor: {
                     response: Util.arrayResponseInterceptor
-                },
-                cache: true
+                }
             },
             rql: {
                 url: '/rest/v1/users?:query',
@@ -186,20 +185,17 @@ function UserProvider() {
                 transformResponse: Util.transformArrayResponse,
                 interceptor: {
                     response: Util.arrayResponseInterceptor
-                },
-                cache: true
+                }
             },
             getById: {
                 url: '/rest/v1/users/by-id/:id',
                 method: 'GET',
-                isArray: false,
-                cache: true
+                isArray: false
             },
             getCurrent: {
                 url: '/rest/v1/users/current',
                 method: 'GET',
                 isArray: false,
-                cache: false,
                 interceptor: {
                     response: loginInterceptor
                 }
@@ -208,7 +204,6 @@ function UserProvider() {
                 url: '/rest/v2/login',
                 method: 'POST',
                 isArray: false,
-                cache: false,
                 interceptor: {
                     response: loginInterceptor
                 }
@@ -217,7 +212,6 @@ function UserProvider() {
                 url: '/rest/v2/login/su',
                 method: 'POST',
                 isArray: false,
-                cache: false,
                 interceptor: {
                     response: loginInterceptor
                 }
@@ -226,7 +220,6 @@ function UserProvider() {
                 url: '/rest/v2/login/exit-su',
                 method: 'POST',
                 isArray: false,
-                cache: false,
                 interceptor: {
                     response: loginInterceptor
                 }
@@ -235,7 +228,6 @@ function UserProvider() {
                 url: '/rest/v2/logout',
                 method: 'POST',
                 isArray: false,
-                cache: false,
                 interceptor: {
                     response: logoutInterceptor
                 }
