@@ -84,6 +84,26 @@ ModulesPageController.prototype.restart = function($event) {
 	}.bind(this));
 };
 
+ModulesPageController.prototype.downloadLicense = function($event) {
+	var username;
+	
+	this.maDialogHelper.showBasicDialog($event, {
+		titleTr: 'ui.app.enterStoreCredentials',
+		contentTemplateUrl: require.toUrl('./usernamePasswordPrompt.html'),
+		showCancel: true,
+		smallDialog: true
+	}).then(function(result) {
+		return this.maModules.downloadLicense(result.username, result.password);
+	}.bind(this)).then(function() {
+		this.maDialogHelper.toast('ui.app.licenseDownloaded');
+		this.getModules();
+	}.bind(this), function(error) {
+		if (!error) return; // prompt cancelled
+		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+		this.maDialogHelper.toast('ui.app.failedToDownloadLicense', 'md-warn', msg);
+	}.bind(this));
+};
+
 return {
     controller: ModulesPageController,
     templateUrl: require.toUrl('./modulesPage.html')

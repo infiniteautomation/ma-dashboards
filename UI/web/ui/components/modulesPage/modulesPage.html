@@ -10,11 +10,10 @@
 	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
 	<form action="{{::$ctrl.storeUrl}}" method="post" target="mangoStore" enctype="application/x-www-form-urlencoded">
 		<md-button class="md-raised md-accent" type="sumbit" ng-disabled="!$ctrl.storeUrl"><md-icon>store</md-icon>&nbsp;<span ma-tr="modules.update"></span></md-button>
-	
 		<textarea style="display:none;" name="orderJson" ng-model="$ctrl.updateLicenseStr"></textarea>
 		<input type="hidden" name="redirect" ng-value="$ctrl.pageUrl">
 	</form>
-	<md-button class="md-raised md-accent"><md-icon>cloud_download</md-icon>&nbsp;<span ma-tr="modules.downloadLicense"></span></md-button>
+	<md-button class="md-raised md-accent" ng-click="$ctrl.downloadLicense($event)"><md-icon>cloud_download</md-icon>&nbsp;<span ma-tr="modules.downloadLicense"></span></md-button>
 </div>
 
 <div layout="row" layout-wrap layout-align="start stretch">

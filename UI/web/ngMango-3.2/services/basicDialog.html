@@ -1,10 +1,10 @@
-<md-dialog flex="100" flex-gt-sm="70" flex-gt-md="60" flex-gt-lg="50">
+<md-dialog flex="100" flex-gt-xs="{{$ctrl.smallDialog ? 60 : 80}}" flex-gt-sm="{{$ctrl.smallDialog ? 40 : 70}}" flex-gt-md="{{$ctrl.smallDialog ? 30 : 60}}" flex-gt-lg="{{$ctrl.smallDialog ? 20 : 50}}">
 	<md-toolbar>
 	  <div class="md-toolbar-tools">
 	    <h2 ng-if="$ctrl.titleTr" ma-tr="{{$ctrl.titleTr}}"></h2>
 	    <h2 ng-if="!$ctrl.titleTr" ng-bind="$ctrl.title"></h2>
 	    <span flex></span>
-	    <md-button class="md-icon-button" ng-click="$ctrl.close()">
+	    <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
 	      <md-icon>close</md-icon>
 	    </md-button>
 	  </div>
@@ -17,8 +17,11 @@
 	</md-dialog-content>
 	
 	<md-dialog-actions layout="row">
-	  <md-button class="md-raised" ng-click="$ctrl.close()">
-	    <md-icon>close</md-icon>&nbsp;<span ma-tr="common.close"></span>
+	  <md-button ng-if="$ctrl.showCancel" class="md-warn" ng-click="$ctrl.cancel()">
+	    <span ma-tr="common.cancel"></span>
+	  </md-button>
+	  <md-button class="md-raised" ng-click="$ctrl.ok()">
+	    <span ma-tr="common.ok"></span>
 	  </md-button>
 	</md-dialog-actions>
 </md-dialog>

@@ -33,8 +33,7 @@ function ModulesFactory($http, $q) {
             url: modulesUrl + '/core',
             headers: {
                 'Accept': 'application/json'
-            },
-            cache: true
+            }
         }).then(function(response) {
             return new Module(response.data);
         });
@@ -46,6 +45,17 @@ function ModulesFactory($http, $q) {
             url: modulesUrl + '/update-license-payload'
         }).then(function(response) {
             return response.data;
+        });
+    };
+    
+    Modules.downloadLicense = function(username, password) {
+    	return $http({
+            method: 'PUT',
+            url: modulesUrl + '/download-license',
+            data: {
+            	username: username,
+            	password: password
+            }
         });
     };
     
