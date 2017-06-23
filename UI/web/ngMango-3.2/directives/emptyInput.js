@@ -16,7 +16,7 @@ function emptyInput($parse) {
             var emptyValueGetter = $parse($attrs.maEmptyInput);
             var wasUndefined = false;
             
-            ngModel.$parsers.unshift(function toArray(viewValue) {
+            ngModel.$parsers.unshift(function (viewValue) {
                 if (viewValue === '') {
                     var newValue = emptyValueGetter($scope);
                     if (angular.isUndefined(newValue)) {
