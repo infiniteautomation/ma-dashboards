@@ -70,6 +70,10 @@
 		        		<md-icon>file_download</md-icon>
 		        		<md-tooltip md-autohide ma-tr="common.download"></md-tooltip>
 		        	</md-button>
+		        	<md-button ng-if="!file.directory" class="md-icon-button" ng-click="$ctrl.copyFile($event, file)">
+		        		<md-icon>content_copy</md-icon>
+		        		<md-tooltip md-autohide ma-tr="common.copy"></md-tooltip>
+		        	</md-button>
 		        	<md-button class="md-icon-button" ng-click="$ctrl.renameFile($event, file)">
 		        		<md-icon>arrow_forward</md-icon>
 		        		<md-tooltip md-autohide ma-tr="ui.app.renameOrMove"></md-tooltip>

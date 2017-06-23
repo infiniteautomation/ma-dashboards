@@ -144,7 +144,6 @@ function fileStore($http, maUtil) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
-    	var folderUrl = this.toUrl(path, true);
     	var fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
 
     	return $http({
@@ -152,6 +151,23 @@ function fileStore($http, maUtil) {
     		url: fileUrl,
     		params: {
     			moveTo: newName
+    		}
+    	}).then(function(response) {
+    		return new FileStoreFile(path[0], response.data);
+    	});
+    };
+    
+    FileStore.prototype.copyFile = function(path, oldFile, newName) {
+    	if (path.length < 1) {
+    		throw new Error('Must specify the file store name');
+    	}
+    	var fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
+
+    	return $http({
+    		method: 'POST',
+    		url: fileUrl,
+    		params: {
+    			copyTo: newName
     		}
     	}).then(function(response) {
     		return new FileStoreFile(path[0], response.data);
