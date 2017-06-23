@@ -28,15 +28,21 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast) {
     DialogHelper.prototype.showBasicDialog = function($event, locals) {
     	return $mdDialog.show({
             controller: function() {
-            	this.close = function() {
-            		$mdDialog.hide();
+            	this.result = {};
+            	
+            	this.cancel = function() {
+            		$mdDialog.cancel();
+            	};
+            	
+            	this.ok = function() {
+            		$mdDialog.hide(this.result);
             	};
             },
             templateUrl: require.toUrl('./basicDialog.html'),
             targetEvent: $event,
             clickOutsideToClose: true,
             escapeToClose: true,
-            fullscreen: $mdMedia('xs') || $mdMedia('sm'),
+            fullscreen: $mdMedia('xs') || (!locals.smallDialog && $mdMedia('sm')),
             controllerAs: '$ctrl',
             bindToController: true,
             locals: locals
