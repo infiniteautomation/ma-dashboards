@@ -6,17 +6,27 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$mdToast', '$scope'];
-function ModulesPageController(maModules, maTranslate, maDialogHelper, $mdToast, $scope) {
+ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$mdToast', '$scope', '$sce', '$window'];
+function ModulesPageController(maModules, maTranslate, maDialogHelper, $mdToast, $scope, $sce, $window) {
     this.maModules = maModules;
     this.maTranslate = maTranslate;
     this.maDialogHelper = maDialogHelper;
     this.$mdToast = $mdToast;
     this.$scope = $scope;
+    this.$sce = $sce;
+    this.$window = $window;
 }
 
 ModulesPageController.prototype.$onInit = function() {
     this.getModules();
+
+    this.pageUrl = this.$window.location.href;
+    
+    this.maModules.getUpdateLicensePayload().then(function(payload) {
+    	this.storeUrl = this.$sce.trustAsResourceUrl(payload.storeUrl + '/account/store');
+    	delete payload.storeUrl;
+    	this.updateLicenseStr = angular.toJson(payload, false);
+    }.bind(this));
     
     this.$scope.$on('maWatchdog', function(event, current, previous) {
     	if (current.status !== previous.status && current.status === 'LOGGED_IN') {
