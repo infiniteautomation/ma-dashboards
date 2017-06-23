@@ -1,0 +1,12 @@
+<ma-get-point-value point-xid="{{$ctrl.pointXid}}" point="$ctrl.point"></ma-get-point-value>
+
+<md-slider-container ng-disabled="!$ctrl.point.enabled || !$ctrl.point.pointLocator.settable" style="height: 100%;">
+    <md-input-container>
+        <input step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}" type="number" ng-model="$ctrl.point.valueFn"
+               ng-model-options="{getterSetter:true}">
+    </md-input-container>
+    <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
+               ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}">
+    </md-slider>
+    <h5 ng-bind="$ctrl.point.name"></h5>
+</md-slider-container>
