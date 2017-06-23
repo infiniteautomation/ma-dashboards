@@ -36,7 +36,7 @@
 
 <md-progress-linear ng-show="$ctrl.listPromise || $ctrl.uploadPromise" class="md-primary" md-mode="indeterminate"></md-progress-linear>
 
-<div flex layout="row" ng-if="!$ctrl.editFile">
+<div flex layout="row" layout-xs="column" layout-sm="column" ng-if="!$ctrl.editFile">
 	<md-content flex class="ma-file-store-browser-files">
 		<md-table-container>
 		  <table md-table md-row-select="false">
@@ -88,7 +88,7 @@
 		  </table>
 		</md-table-container>
 	</md-content>
-	<div ng-if="$ctrl.preview" flex="20" class="ma-file-store-browser-preview" layout layout-align="center center">
+	<div ng-if="$ctrl.preview" flex-order-xs="-1" flex-order-sm="-1" class="ma-file-store-browser-preview" layout layout-align="center center">
 		<img ng-if="$ctrl.file.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.file.url}}">
 		<div ng-if="$ctrl.file.mimeType.indexOf('image/') !== 0" class="ma-no-preview" layout layout-align="center center" ma-tr="ui.fileBrowser.noPreviewAvailable"></div>
 	</div>
