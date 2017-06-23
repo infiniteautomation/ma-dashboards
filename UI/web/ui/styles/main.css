@@ -1211,6 +1211,20 @@ ma-ui-modules-page .green-color {
   color: green;
 }
 
+ma-ui-modules-page md-card md-card-title {
+	padding-top: 16px;
+	padding-bottom: 10px;
+}
+
+ma-ui-modules-page md-card md-card-title md-card-title-text:only-child .md-subhead {
+	padding-top: 0;
+}
+
+ma-ui-modules-page .ma-guid-and-release-channel,
+ma-ui-upgrade-page .ma-guid-and-release-channel {
+	padding: 8px 8px 8px 32px;
+}
+
 ma-ui-upgrade-page .description-column,
 ma-ui-upgrade-page .vendor-column {
 	width: 23%;

@@ -27,7 +27,21 @@ ModulesPageController.prototype.$onInit = function() {
 
 ModulesPageController.prototype.getModules = function() {
 	this.maModules.getAll().then(function(modules) {
-        this.modules = modules;
+		var coreModule;
+        this.modules = modules.filter(function(module) {
+        	if (module.name == 'core') {
+        		coreModule = module;
+        		return false;
+        	}
+        	return true;
+        }).sort(function(a, b) {
+        	var aName = a.name.toLowerCase();
+        	var bName = b.name.toLowerCase();
+            if (aName < bName) return -1;
+            if (aName > bName) return 1;
+            return 0;
+        });
+		this.coreModule = coreModule;
     }.bind(this));
 };
 

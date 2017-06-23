@@ -19,6 +19,10 @@ function UpgradePageController(maModules, maDialogHelper, $scope, maModulesWebSo
 
 UpgradePageController.prototype.$onInit = function() {
     this.checkForUpgrades();
+    
+    this.maModules.getCore().then(function(coreModule) {
+        this.coreModule = coreModule;
+    }.bind(this));
 
     this.$scope.$on('maWatchdog', function(event, current, previous) {
     	if (current.status !== previous.status && current.status === 'LOGGED_IN') {

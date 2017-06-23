@@ -1,10 +1,47 @@
-<h1 ma-tr="header.modules"></h1>
+<div layout layout-align="start center">
+	<h1 ma-tr="header.modules"></h1>
+	<div class="ma-guid-and-release-channel">
+		<div><span ma-tr="modules.guid"></span>:&nbsp;<strong ng-bind="$ctrl.coreModule.guid"></strong></div>
+	</div>
+</div>
 
 <md-button class="md-raised md-primary" ui-sref=".upgrade"><md-icon>update</md-icon>&nbsp;<span ma-tr="modules.versionCheck"></span></md-button>
 <md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
 
 <div layout="row" layout-wrap layout-align="start stretch">
-  <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="25" layout="column" ng-repeat="module in $ctrl.modules | orderBy:['-unloaded', 'name'] track by module.name" >
+	<div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="25" layout="column">
+	    <md-card flex class="ma-module-info">
+	      <md-card-title flex="none">
+	        <md-card-title-text>
+	          <span class="md-headline" layout>
+	            <span flex ng-bind="$ctrl.coreModule.name"></span>
+	          </span>
+	          <span class="md-subhead" ng-bind="$ctrl.coreModule.description"></span>
+	        </md-card-title-text>
+	      </md-card-title>
+	      <md-card-content flex>
+	        <p ng-if="$ctrl.coreModule.longDescription" ng-bind="$ctrl.coreModule.longDescription"></p>
+	        <div layout="row">
+	          <span flex="30" ma-tr="modules.version"></span>
+	          <span flex="70" ng-bind="$ctrl.coreModule.version"></span>
+	        </div>
+	        <div layout="row" ng-if="$ctrl.coreModule.buildNumber > 0">
+	          <span flex="30" ma-tr="modules.buildNumber"></span>
+	          <span flex="70" ng-bind="$ctrl.coreModule.buildNumber"></span>
+	        </div>
+	        <div layout="row">
+	          <span flex="30" ma-tr="ui.app.license"></span>
+	          <span ng-if="$ctrl.coreModule.licenseType" flex="70" class="green-color"><md-icon class="green-color">done</md-icon> <span ng-bind="$ctrl.coreModule.licenseType"></span></span>
+	          <span ng-if="!$ctrl.coreModule.licenseType" flex="70" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="modules.unlicenced"></span></span>
+	        </div>
+	        <div layout="row">
+	          <span flex="30" ma-tr="modules.vendor"></span>
+	          <span flex="70"><a ng-bind="$ctrl.coreModule.vendor" ng-href="{{$ctrl.coreModule.vendorUrl}}" target="_blank"></a></span>
+	        </div>
+	      </md-card-content>
+	    </md-card>
+	</div>
+  <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="25" layout="column" ng-repeat="module in $ctrl.modules track by module.name" >
       <md-card flex md-colors="{background: $ctrl.bgColor(module)}" class="ma-module-info">
         <md-card-title flex="none">
           <md-card-title-text>
@@ -30,30 +67,30 @@
         <md-card-content flex>
           <p ng-if="module.longDescription" ng-bind="module.longDescription"></p>
           <div layout="row">
-            <span flex="50" ma-tr="modules.version"></span>
-            <span flex="50" ng-bind="module.version"></span>
+            <span flex="30" ma-tr="modules.version"></span>
+            <span flex="70" ng-bind="module.version"></span>
           </div>
           <div layout="row" ng-if="module.buildNumber > 0">
-            <span flex="50" ma-tr="modules.buildNumber"></span>
-            <span flex="50" ng-bind="module.buildNumber"></span>
+            <span flex="30" ma-tr="modules.buildNumber"></span>
+            <span flex="70" ng-bind="module.buildNumber"></span>
           </div>
           <div layout="row">
-            <span flex="50" ma-tr="ui.app.license"></span>
-            <span ng-if="module.licenseType" flex="50" class="green-color"><md-icon class="green-color">done</md-icon> <span ng-bind="module.licenseType"></span></span>
-            <span ng-if="!module.licenseType" flex="50" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="modules.unlicenced"></span></span>
+            <span flex="30" ma-tr="ui.app.license"></span>
+            <span ng-if="module.licenseType" flex="70" class="green-color"><md-icon class="green-color">done</md-icon> <span ng-bind="module.licenseType"></span></span>
+            <span ng-if="!module.licenseType" flex="70" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="modules.unlicenced"></span></span>
           </div>
           <div layout="row">
-            <span flex="50" ma-tr="ui.app.moduleSignature"></span>
-            <span ng-if="module.signed" flex="50" class="green-color"><md-icon class="green-color">verified_user</md-icon> <span ma-tr="ui.app.moduleSigned"></span></span>
-            <span ng-if="!module.signed" flex="50" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="ui.app.moduleUnsigned"></span></span>
+            <span flex="30" ma-tr="ui.app.moduleSignature"></span>
+            <span ng-if="module.signed" flex="70" class="green-color"><md-icon class="green-color">verified_user</md-icon> <span ma-tr="ui.app.moduleSigned"></span></span>
+            <span ng-if="!module.signed" flex="70" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="ui.app.moduleUnsigned"></span></span>
           </div>
           <div layout="row" ng-if="module.vendor">
-            <span flex="50" ma-tr="modules.vendor"></span>
-            <span flex="50"><a ng-bind="module.vendor" ng-href="{{module.vendorUrl}}" target="_blank"></a></span>
+            <span flex="30" ma-tr="modules.vendor"></span>
+            <span flex="70"><a ng-bind="module.vendor" ng-href="{{module.vendorUrl}}" target="_blank"></a></span>
           </div>
           <div layout="row" ng-if="module.dependencies">
-            <span flex="50" ma-tr="modules.dependencies"></span>
-            <span flex="50" ng-bind="module.dependencies"></span>
+            <span flex="30" ma-tr="modules.dependencies"></span>
+            <span flex="70" ng-bind="module.dependencies"></span>
           </div>
         </md-card-content>
       </md-card>
