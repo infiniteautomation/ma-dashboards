@@ -1,3 +1,16 @@
+*Version 3.1.5*
+* Add ability to set a site wide custom user stylesheet
+* Improvements to ma-point-statistics and ma-statistics-table directives
+* Ability to edit filestore text files through the built in editor
+* Use the filestore browser for setting ma-switch-img src attributes in designer
+* Ability to create, move and copy files in the filestore browser
+* Improvements to modules page
+* Ability to update and download your license on the modules page
+* Add bust cache button to system settings
+* Add documentation
+* Add ma-slider directive for setting point value via a slider
+* Bug fixes
+
 *Version 3.1.4*
 * Add label option to ma-set-point-value
 * Selected points on watchlist are now bound by xid first then by name
