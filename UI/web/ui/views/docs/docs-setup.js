@@ -64,7 +64,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-date-picker ng-model=&quot;time&quot;&gt;&lt;/ma-date-picker&gt;",
-      "keywords": "add api attribute auto-switch-time automatically basics clock conjunction datepresets demo directive display examples existing format formatting hold hour input madatepicker minute mmm-do-yy mode ng-model ngmango note picker select selecting set specifies switch tag time timestamp timezone true ui ui-sref variable"
+      "keywords": "api auto-switch-time automatically basics clock conjunction datepresets demo directive display examples format formatting hold hour input madatepicker minute mmm-do-yy mode ng-model ngmango picker select selecting set specifies switch time timestamp timezone true ui ui-sref variable"
     },
     {
       "section": "api",
@@ -235,7 +235,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-point-statistics point=&quot;myPoint&quot; from=&quot;from&quot; to=&quot;to&quot; statistics=&quot;statsObj&quot;&gt;&lt;/ma-point-statistics&gt;",
-      "keywords": "access add alternatively api array attribute average calculate calculating change containg count data date-format default delta demo difference directive efficient examples first-last format getstatistics historical input inputs integral interested js lll mamoment mango mapointstatistics maximum milliseconds minimum moment mypoint ngmango number object optional output outputs parsing pass passing period point point-xid points properties provided provider query querying range rendered return returned set sets setting simply starting statistcal statistical statistics stats statsobj strings sum supplied system time timeout times timestamp true ui ui-sref values xid"
+      "keywords": "access add alternatively api array attribute average calculate calculating change count data date-format default delta demo difference directive display-mode efficient examples first-last format getstatistics historical input inputs integral interested js lll mamoment mango mapointstatistics maximum milliseconds minimum moment mypoint ngmango number object optional output outputs parsing pass passing period point point-xid points properties provided provider query querying range render rendered return returned set sets setting simply starting stat statistical statistics stats statsobj strings sum supplied system time timeout times timestamp true ui ui-sref values xid"
     },
     {
       "section": "api",
@@ -275,6 +275,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "ngMango.directive:maSlider",
+      "shortName": "maSlider",
+      "type": "directive",
+      "moduleName": "ngMango",
+      "shortDescription": "&lt;ma-slider&gt;&lt;/ma-slider&gt;",
+      "keywords": "100 25 api component data defaults directive disables discrete display displaying drag dragging enables false hide hide-input input interval invert inverted label left limit maslider max min mode move mypoint ngmango numeric object passing pin point point-xid reverses select set sets slider step string tick true update updated vertical xid"
+    },
+    {
+      "section": "api",
       "id": "ngMango.directive:maStartsAndRuntimesTable",
       "shortName": "maStartsAndRuntimesTable",
       "type": "directive",
@@ -298,7 +307,16 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-statistics-table statistics=&quot;statsObj&quot;&gt;&lt;/ma-statistics-table&gt;",
-      "keywords": "api binary data demo directive display examples false formatted hide-starts-and-runtimes input mastatisticstable mypoint ngmango object point runtimes set starts statistics statisticstable statsobj table timestamps timezone true ui ui-sref values"
+      "keywords": "alternatively api attribute binary data demo directive display examples false formatted hide-starts-and-runtimes input inputs mastatisticstable mypoint ngmango object output pass point point-xid precedence runtimes set starts statistics statisticstable statsobj table takes timestamps timezone true ui ui-sref values xid"
+    },
+    {
+      "section": "api",
+      "id": "ngMango.directive:maSwitch",
+      "shortName": "maSwitch",
+      "type": "directive",
+      "moduleName": "ngMango",
+      "shortDescription": "&lt;ma-switch&gt;&lt;/ma-switch&gt;",
+      "keywords": "api binary buttons checkbox component data directive display display-type maswitch mypoint ngmango object options passing point point-xid radio select set sets string switch toggle type xid"
     },
     {
       "section": "api",
@@ -307,7 +325,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-switch-img&gt;&lt;/ma-switch-img&gt;",
-      "keywords": "200 50 alternatively api attribute based click compare dashes data default default-src demo determining directive disabled display displayed displays enable example examples false flex image img input inputting limit map maswitchimg match mypoint ng-model ngmango object path png point point-xid replace set singlevaluedisplays source spaces src- src-1 src-2 src-3 src-4 src-false src-map src-test src-test-my-string src-true strings switched switchimage toggle toggle-on-click true ui ui-sref value1 value2 xid"
+      "keywords": "200 alternatively api attribute based click compare dashes data default default-src demo determining directive disabled display displayed displays enable examples image img input inputting limit map maswitchimg match mypoint ng-model ngmango object pass passing path png point point-xid raw replace set singlevaluedisplays source spaces src- src-false src-map src-true strings switched switchimage toggle toggle-on-click true ui ui-sref value1 value2 xid"
     },
     {
       "section": "api",
