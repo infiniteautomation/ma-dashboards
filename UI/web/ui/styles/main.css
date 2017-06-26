@@ -302,6 +302,10 @@ md-sidenav.site-sidenav.md-closed {
   float: right;
 }
 
+.ma-help-sidebar md-content li {
+  list-style-type: disc;
+}
+
 /***************
  * TYPE DEFAULTS
  ***************/
