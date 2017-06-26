@@ -109,6 +109,10 @@ FileStoreBrowserController.prototype.listFiles = function() {
 	var listErrorHandler = function() {
 		this.files = [];
 		this.filename = null;
+		
+		if (this.path.length === 1 && this.fileStoreNames[this.path[0]])
+			return;
+		
 		var defaultStore = this.restrictToStore || 'default';
 		if (!(this.path.length === 1 && this.path[0] === defaultStore)) {
 			this.path = [defaultStore];
@@ -127,7 +131,10 @@ FileStoreBrowserController.prototype.listFiles = function() {
 		}.bind(this), listErrorHandler);
 	} else {
 		this.listPromise = this.maFileStore.list().then(function(fileStores) {
+			var fileStoreNames = this.fileStoreNames = {};
 			this.files = fileStores.map(function(store) {
+				fileStoreNames[store] = true;
+				
 				return {
 					filename: store,
 					directory: true
