@@ -311,6 +311,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "ngMango.directive:maSwitch",
+      "shortName": "maSwitch",
+      "type": "directive",
+      "moduleName": "ngMango",
+      "shortDescription": "&lt;ma-switch&gt;&lt;/ma-switch&gt;",
+      "keywords": "api binary buttons checkbox component data directive display display-type maswitch mypoint ngmango object options passing point point-xid radio select set sets string switch toggle type xid"
+    },
+    {
+      "section": "api",
       "id": "ngMango.directive:maSwitchImg",
       "shortName": "maSwitchImg",
       "type": "directive",
