@@ -41,6 +41,7 @@ PermissionsMenuController.prototype.render = function render() {
             this.permissions.splice(i, 1);
             delete this.permissionsByName[permission.name];
         } else {
+        	permission.value = false;
             i++;
         }
     }
