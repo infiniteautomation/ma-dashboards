@@ -1,7 +1,7 @@
 <ma-get-point-value point-xid="{{$ctrl.pointXid}}" point="$ctrl.point"></ma-get-point-value>
 
 <md-slider-container ng-disabled="!$ctrl.point.enabled || !$ctrl.point.pointLocator.settable" style="height: 100%;">
-    <md-input-container>
+    <md-input-container  ng-if="!$ctrl.hideInput">
         <input step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}" type="number" ng-model="$ctrl.point.valueFn"
                ng-model-options="{getterSetter:true}">
     </md-input-container>
@@ -42,5 +42,5 @@
                ng-if="$ctrl.vertical && $ctrl.invert && $ctrl.discrete" md-vertical md-invert md-discrete>
     </md-slider>
 
-    <h5 ng-bind="$ctrl.point.name"></h5>
+    <h5 ng-if="$ctrl.label !== 'none'" ng-bind="$ctrl.label || $ctrl.point.name"></h5>
 </md-slider-container>

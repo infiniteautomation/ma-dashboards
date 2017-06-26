@@ -64,7 +64,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-date-picker ng-model=&quot;time&quot;&gt;&lt;/ma-date-picker&gt;",
-      "keywords": "add api attribute auto-switch-time automatically basics clock conjunction datepresets demo directive display examples existing format formatting hold hour input madatepicker minute mmm-do-yy mode ng-model ngmango note picker select selecting set specifies switch tag time timestamp timezone true ui ui-sref variable"
+      "keywords": "api auto-switch-time automatically basics clock conjunction datepresets demo directive display examples format formatting hold hour input madatepicker minute mmm-do-yy mode ng-model ngmango picker select selecting set specifies switch time timestamp timezone true ui ui-sref variable"
     },
     {
       "section": "api",
@@ -272,6 +272,15 @@ NG_DOCS={
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-set-point-value point=&quot;myPoint&quot;&gt;&lt;/ma-set-point-value&gt;",
       "keywords": "200 alphanumeric alternatively api appropriate binary button called calling create data demo directive display dropdown element example examples expression false function handle input interface limit masetpointvalue method multistate mypoint ng-click ng-model ngmango numeric object option point require selected set setpoint settable settingpointvalues setvalue show-button specifies true types ui ui-sref"
+    },
+    {
+      "section": "api",
+      "id": "ngMango.directive:maSlider",
+      "shortName": "maSlider",
+      "type": "directive",
+      "moduleName": "ngMango",
+      "shortDescription": "&lt;ma-slider&gt;&lt;/ma-slider&gt;",
+      "keywords": "100 25 api component data defaults directive disables discrete display displaying drag dragging enables false hide hide-input input interval invert inverted label left limit maslider max min mode move mypoint ngmango numeric object passing pin point point-xid reverses select set sets slider step string tick true update updated vertical xid"
     },
     {
       "section": "api",
