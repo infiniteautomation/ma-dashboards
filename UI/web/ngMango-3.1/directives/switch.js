@@ -3,6 +3,22 @@
  * @author Jared Wiltshire
  */
 
+/**
+ * @ngdoc directive
+ * @name ngMango.directive:maSwitch
+ * @restrict E
+ * @description
+ * `<ma-switch></ma-switch>`
+ * - This component will display a switch that can be used to toggle a binary data point's value.
+ * - It can be set to display either radio buttons, checkbox or toggle switch.
+ * @param {point} point Select the point to use with the switch by passing in a point object.
+ * @param {string} point-xid Select the point to use with the switch by passing in a point's xid as a string.
+ * @param {string} display-type Sets the display type of the binary switch. Options are `radio`, `checkbox` or `switch`.
+ * @usage
+ * <ma-switch point="myPoint" display-type="switch"></ma-switch>
+ *
+ */
+
 define(['angular', 'require', './PointValueController'], function(angular, require, PointValueController) {
 'use strict';
 
