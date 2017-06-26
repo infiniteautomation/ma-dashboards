@@ -116,6 +116,10 @@ SystemSettingsPageController.prototype.saveSection = function() {
     }.bind(this));
 };
 
+SystemSettingsPageController.prototype.currentTime = function() {
+	return Math.floor((new Date()).valueOf() / 1000);
+};
+
 return {
     controller: SystemSettingsPageController,
     templateUrl: require.toUrl('./systemSettingsPage.html')
