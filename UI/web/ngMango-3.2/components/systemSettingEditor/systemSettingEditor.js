@@ -21,7 +21,8 @@ var systemSettingEditor = {
         onValueSaved: '&?',
         name: '@?',
         disabled: '<?',
-        saveOnChange: '<?'
+        saveOnChange: '<?',
+        onInit: '&?'
     },
     transclude: {
         options: '?mdOption'
@@ -50,6 +51,9 @@ SystemSettingEditorController.prototype.$onInit = function() {
     if (!this.inputType) {
         this.inputType = this.type === 'INTEGER' ? 'number' : 'text';
     }
+    if (this.onInit) {
+    	this.onInit({$ctrl: this});
+    }
 };
 
 SystemSettingEditorController.prototype.$onChanges = function(changes) {
@@ -64,6 +68,11 @@ SystemSettingEditorController.prototype.$onChanges = function(changes) {
     if (changes.saveOnChange) {
         this.debounceTime = this.saveOnChange ? 1000 : 0;
     }
+};
+
+SystemSettingEditorController.prototype.setValue = function setValue(value) {
+	this.systemSetting.value = value;
+	this.valueChanged();
 };
 
 SystemSettingEditorController.prototype.valueChanged = function valueChanged() {
