@@ -1,6 +1,6 @@
 <md-input-container class="ma-icon-inside" ng-if="$ctrl.inputType !== 'checkbox' && $ctrl.inputType !== 'color'">
   <label ma-tr="{{$ctrl.labelTr}}"></label>
-  <input ng-if="$ctrl.inputType === 'text'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled">
+  <input ng-if="$ctrl.inputType === 'text' || $ctrl.inputType === 'permission'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled">
   <input ng-if="$ctrl.inputType === 'password'" type="password" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled">
   <input ng-if="$ctrl.inputType === 'number'" type="number" min="{{$ctrl.min}}" max="{{$ctrl.max}}" step="{{$ctrl.step}}" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled">
   <input ng-if="$ctrl.inputType === 'date'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}" ng-disabled="$ctrl.disabled" ma-date-input scale-number="1000">
@@ -24,6 +24,7 @@
     <md-option value="MONTHS"><span ma-tr="common.tp.months"></span></md-option>
     <md-option value="YEARS"><span ma-tr="common.tp.years"></span></md-option>
   </md-select>
+  <ma-permissions-menu ng-if="$ctrl.inputType === 'permission' && !$ctrl.disabled" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()"></ma-permissions-menu>
   <textarea ng-if="$ctrl.inputType === 'textarea'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" name="{{$ctrl.name}}" id="{{$ctrl.name}}"  ng-disabled="$ctrl.disabled"></textarea>
   <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" ng-class="{'md-warn': $ctrl.error}">{{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}</md-icon>
   <div ng-messages="$ctrl.messages" md-auto-hide="false">

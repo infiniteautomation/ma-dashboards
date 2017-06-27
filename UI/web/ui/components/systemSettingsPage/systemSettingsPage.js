@@ -48,6 +48,10 @@ SystemSettingsPageController.prototype.$onInit = function() {
             }
         }
     }.bind(this));
+    
+    this.SystemSettings.listPermissions().then(function(permissions) {
+    	this.permissions = permissions;
+    }.bind(this));
 };
 
 SystemSettingsPageController.prototype.sendTestEmail = function() {

@@ -43,6 +43,7 @@ function SystemSettingsProvider() {
 SystemSettingsFactory.$inject = ['$http'];
 function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLevelSettings, $http) {
     var systemSettingsUrl = '/rest/v1/system-settings';
+    var permissionsUrl = '/rest/v2/permissions';
     
     function SystemSettings(key, type) {
         this.key = key;
@@ -121,6 +122,15 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
         }).then(function(response) {
             $this.value = response.data;
             return $this.value;
+        });
+    };
+    
+    SystemSettings.listPermissions = function() {
+    	return $http({
+            method: 'GET',
+            url: permissionsUrl
+        }).then(function(response) {
+            return response.data;
         });
     };
 

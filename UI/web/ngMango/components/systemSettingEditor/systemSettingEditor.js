@@ -20,7 +20,7 @@ var systemSettingEditor = {
         onValueChanged: '&?',
         onValueSaved: '&?',
         name: '@?',
-        disabled: '<?',
+        disabled: '<?ngDisabled',
         saveOnChange: '<?',
         onInit: '&?'
     },
