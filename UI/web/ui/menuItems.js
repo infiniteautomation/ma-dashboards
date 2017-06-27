@@ -522,6 +522,13 @@ return [
         menuHidden: true
     },
     {
+        name: 'ui.settings.system.permissions',
+        url: '/permissions',
+        menuTr: 'systemSettings.systemPermissions',
+        templateUrl: require.toUrl('./systemSettings/permissions.html'),
+        menuHidden: true
+    },
+    {
         name: 'ui.settings.watchListBuilder',
         url: '/watch-list-builder/{watchListXid}',
         template: '<h1 ma-tr="ui.app.watchListBuilder"></h1>\n<ma-ui-watch-list-builder></ma-ui-watch-list-builder>',
