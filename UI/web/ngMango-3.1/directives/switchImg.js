@@ -47,6 +47,8 @@ function switchImg() {
             pointXid: '@?',
             srcMap: '<?',
             defaultSrc: '@?',
+            srcFalse: '@?',
+            srcTrue: '@?',
             value: '<?',
             toggleOnClick: '<?'
         },
@@ -61,8 +63,7 @@ function switchImg() {
                 srcTrue: {type: 'choosefile', optional: true},
                 srcFalse: {type: 'choosefile', optional: true},
                 defaultSrc: {type: 'choosefile'},
-                srcMap: {type: 'string', defaultValue: "{'0': 'image1', '1':" +
-                " 'image2', '2': 'image3'}"},
+                srcMap: {type: 'string'},
                 value: {type: 'string'}
             }
         }
