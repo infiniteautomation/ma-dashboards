@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$mdToast', 'maTranslate', '$mdDialog', '$state', 'maUiMenu', '$mdMedia', '$scope', '$timeout'];
-function SystemSettingsPageController(SystemSettings, maLocales, User, $mdToast, maTranslate, $mdDialog, $state, maUiMenu, $mdMedia, $scope, $timeout) {
+SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$mdToast', 'maTranslate', '$mdDialog', '$state', 'maUiMenu', '$mdMedia', '$scope', '$timeout', 'maSystemActions'];
+function SystemSettingsPageController(SystemSettings, maLocales, User, $mdToast, maTranslate, $mdDialog, $state, maUiMenu, $mdMedia, $scope, $timeout, maSystemActions) {
     this.SystemSettings = SystemSettings;
     this.User = User;
     this.$mdToast = $mdToast;
@@ -18,6 +18,7 @@ function SystemSettingsPageController(SystemSettings, maLocales, User, $mdToast,
     this.$mdMedia = $mdMedia;
     this.$scope = $scope;
     this.$timeout = $timeout;
+    this.maSystemActions = maSystemActions;
     
     maLocales.get().then(function(locales) {
         locales.forEach(function(locale) {
@@ -52,6 +53,17 @@ SystemSettingsPageController.prototype.$onInit = function() {
     this.SystemSettings.listPermissions().then(function(permissions) {
     	this.permissions = permissions;
     }.bind(this));
+};
+
+SystemSettingsPageController.prototype.triggerAction = function(name, data) {
+	return function() {
+		this.maSystemActions.trigger(name, data).then(function(result) {
+			console.log(result);
+			result.refreshUntilFinished().then(function(result2) {
+				console.log(result2);
+			});
+		});
+	}.bind(this);
 };
 
 SystemSettingsPageController.prototype.sendTestEmail = function() {
