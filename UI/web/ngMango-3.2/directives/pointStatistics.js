@@ -15,7 +15,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * - The object returned by the `statistics` attribute contains `first`, `last`, `minimum`, `maximum`, `average`, `integral`, `sum`, & `count` properties.
  Each of these will have a `value` and a `timestamp`.
  * - If you are interested only in the change in a value between two times you can add the optional `first-last="true"` attribute to only return the first and last values,
- then simply calculate the difference with `statsObj[0].value - statsObj[1].value`.
+ then simply calculate the difference with `statsObj[1].value - statsObj[0].value`.
  * - <a ui-sref="ui.examples.statistics.getStatistics">View Demo</a>
  *
  * @param {object} point Inputs a `point` object from `<ma-point-list>`.
@@ -35,15 +35,17 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  </ul>
  Each of these will have a value and a timestamp.
  * @param {boolean=} first-last If you are only interested in calculating the delta value, setting this to `true` will
- run a more efficient query and only return `first` and `last` properties on the `statistics` object.
+ run a more efficient query and only return `first` and `last` properties as a two item array. You can then calculate the
+ delta with `statsObj[1].value - statsObj[0].value`
  * @param {array=} points Alternatively you can input an array of points from `<ma-point-query>`. If used the `statistics` object will output an array.
  * @param {string=} point-xid Alternatively you can pass in the `xid` of a point to use.
  * @param {string=} date-format If you are passing in `to/from` as strings, then you must specify the moment.js format for parsing the values.
  * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of of the statistical provider.
  If not supplied the Mango system default timeout will be used.
  * @param {boolean=} rendered (default true) Return the statistics as a rendered value rather than a number
- * @param {string=} display-mode If you want the directive to render a stat value to the page set this attribute to one of the
- * following values:
+ * @param {string=} display-mode If you want the directive to display a stat value on the page set this attribute to one of
+ * the following values (if `delta` is used `rendered` must be `false`, and `first-last="true"` for all other display modes
+ * you should leave `first-last="false"`):
  <ul>
  <li>`first`</li>
  <li>`last`</li>
@@ -53,6 +55,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  <li>`integral`</li>
  <li>`sum`</li>
  <li>`count`</li>
+ <li>`delta`</li>
  </ul>
  *
  * @usage
@@ -76,14 +79,14 @@ function pointValues(Point, Util, $q, statistics) {
                 rendered: {type: 'boolean', defaultValue: true},
                 point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
                 pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
-                displayMode: {type: 'string', options: ['first', 'last', 'minimum', 'maximum', 'average', 'integral', 'sum', 'count']}
+                displayMode: {type: 'string', options: ['first', 'last', 'minimum', 'maximum', 'average', 'integral', 'sum', 'count', 'delta']}
             }
         },
         scope: {
             point: '<?',
             pointXid: '@',
             points: '<?',
-            statistics: '=',
+            statistics: '=?',
             from: '<?',
             to: '<?',
             dateFormat: '@',
@@ -92,7 +95,11 @@ function pointValues(Point, Util, $q, statistics) {
             rendered: '<?',
             displayMode: '@'
         },
-        template: '<span ng-bind="displayMode === \'count\' ? statistics[displayMode] : statistics[displayMode].value"></span>',
+        template: '<span ng-if="displayMode && displayMode !== \'delta\'" ng-bind="displayMode === \'count\' ?' +
+        ' statistics[displayMode] :' +
+        ' statistics[displayMode].value"></span>' +
+        '<span ng-if="displayMode && displayMode === \'delta\'" ng-bind="(statistics[1].value - statistics[0].value) +' +
+        ' \' \' + point.unit"></span>',
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
         	var stats = {};

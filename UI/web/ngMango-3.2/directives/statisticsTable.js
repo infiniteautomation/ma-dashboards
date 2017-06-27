@@ -47,7 +47,7 @@ function statisticsTable($injector, mangoDateFormats) {
         scope: {
             point: '<?',
             pointXid: '@',
-            statistics: '=',
+            statistics: '=?',
             timezone: '@',
             from: '<?',
             to: '<?',

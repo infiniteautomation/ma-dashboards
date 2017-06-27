@@ -235,7 +235,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "ngMango",
       "shortDescription": "&lt;ma-point-statistics point=&quot;myPoint&quot; from=&quot;from&quot; to=&quot;to&quot; statistics=&quot;statsObj&quot;&gt;&lt;/ma-point-statistics&gt;",
-      "keywords": "access add alternatively api array attribute average calculate calculating change count data date-format default delta demo difference directive display-mode efficient examples first-last format getstatistics historical input inputs integral interested js lll mamoment mango mapointstatistics maximum milliseconds minimum moment mypoint ngmango number object optional output outputs parsing pass passing period point point-xid points properties provided provider query querying range render rendered return returned set sets setting simply starting stat statistical statistics stats statsobj strings sum supplied system time timeout times timestamp true ui ui-sref values xid"
+      "keywords": "access add alternatively api array attribute average calculate calculating change count data date-format default delta demo difference directive display display-mode efficient examples false first-last format getstatistics historical input inputs integral interested item js leave lll mamoment mango mapointstatistics maximum milliseconds minimum modes moment mypoint ngmango number object optional output outputs parsing pass passing period point point-xid points properties provided provider query querying range rendered return returned set sets setting simply starting stat statistical statistics stats statsobj strings sum supplied system time timeout times timestamp true ui ui-sref values xid"
     },
     {
       "section": "api",
