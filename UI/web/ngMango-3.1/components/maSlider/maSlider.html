@@ -1,4 +1,4 @@
-<ma-get-point-value point-xid="{{$ctrl.pointXid}}" point="$ctrl.point"></ma-get-point-value>
+<ma-get-point-value ng-if="$ctrl.pointXid" point-xid="{{$ctrl.pointXid}}" point="$ctrl.point"></ma-get-point-value>
 
 <md-slider-container ng-disabled="!$ctrl.point.enabled || !$ctrl.point.pointLocator.settable" style="height: 100%;">
     <md-input-container  ng-if="!$ctrl.hideInput">
@@ -42,5 +42,7 @@
                ng-if="$ctrl.vertical && $ctrl.invert && $ctrl.discrete" md-vertical md-invert md-discrete>
     </md-slider>
 
-    <h5 ng-if="$ctrl.label !== 'none'" ng-bind="$ctrl.label || $ctrl.point.name"></h5>
+    <h5 ng-if="$ctrl.label === 'Name'" ng-bind="$ctrl.point.name"></h5>
+    <h5 ng-if="$ctrl.label === 'Device & Name'" ng-bind="$ctrl.point.deviceName + ' - ' + $ctrl.point.name"></h5>
+    <h5 ng-if="$ctrl.label && $ctrl.label !== 'Name' && $ctrl.label !== 'Device & Name'" ng-bind="$ctrl.label"></h5>
 </md-slider-container>

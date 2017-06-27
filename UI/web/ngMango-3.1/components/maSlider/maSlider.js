@@ -71,7 +71,7 @@ define(['angular', 'require'], function(angular, require) {
                 min: {type: 'string', defaultValue: 0},
                 max: {type: 'string', defaultValue: 100},
                 step: {type: 'string', defaultValue: 1},
-                label: {type: 'string'},
+                label: {options: ['Name', 'Device & Name']},
                 vertical: {type: 'boolean', defaultValue: false},
                 invert: {type: 'boolean', defaultValue: false},
                 discrete: {type: 'boolean', defaultValue: false},
