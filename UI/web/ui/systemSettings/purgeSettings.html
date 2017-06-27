@@ -83,16 +83,14 @@
   </div>
 </div>
 
-<!-- 
 <div layout="row" layout-align="start start">
-  <md-button class="md-raised md-warn" ng-click="$ctrl.confirm($event, $ctrl.purgeAllData, 'systemSettings.purgeDataConfirm')">
+  <md-button class="md-raised md-warn" ng-click="$ctrl.confirm($event, $$ctrl.triggerAction('purgeAllPointValues'), 'systemSettings.purgeDataConfirm')">
     <md-icon>delete_forever</md-icon> <span ma-tr="systemSettings.purgeData"></span>
   </md-button>
-  <md-button class="md-raised md-warn" ng-click="$ctrl.confirm($event, $ctrl.purgeAllEvents, 'systemSettings.purgeAllEventsConfirm')">
+  <md-button class="md-raised md-warn" ng-click="$ctrl.confirm($event, $ctrl.triggerAction('purgeAllEvents'), 'systemSettings.purgeAllEventsConfirm')">
     <md-icon>delete_forever</md-icon> <span ma-tr="systemSettings.purgeAllEvents"></span>
   </md-button>
-  <md-button class="md-raised md-warn md-hue-3" ng-click="$ctrl.confirm($event, $ctrl.purgeData, 'systemSettings.purgeDataWithPurgeSettingsConfirm')">
+  <md-button class="md-raised md-warn md-hue-3" ng-click="$ctrl.confirm($event, $ctrl.triggerAction('purgeUsingSettings'), 'systemSettings.purgeDataWithPurgeSettingsConfirm')">
     <md-icon>delete</md-icon> <span ma-tr="systemSettings.purgeNow"></span>
   </md-button>
 </div>
- -->

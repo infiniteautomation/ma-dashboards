@@ -38,6 +38,7 @@ define(['./services/Point',
         './services/requireQ',
         './services/locales',
         './services/fileStore',
+        './services/systemActions',
         './filters/dateFilter',
         './filters/trFilter',
         'angular',
@@ -50,7 +51,7 @@ define(['./services/Point',
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, ModulesWebSocketFactory,
         PermissionsFactory, systemSettingsProvider,
-        ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory,
+        ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
         dateFilterFactory, trFilterFactory, angular, require) {
 'use strict';
 /**
@@ -99,6 +100,7 @@ ngMangoServices.factory('maWebAnalytics', webAnalyticsFactory);
 ngMangoServices.provider('maRequireQ', requireQProvider);
 ngMangoServices.factory('maLocales', localesFactory);
 ngMangoServices.factory('maFileStore', fileStoreFactory);
+ngMangoServices.factory('maSystemActions', systemActionsFactory);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 
