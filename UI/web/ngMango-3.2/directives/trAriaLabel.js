@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['jquery', 'angular'], function($, angular) {
+define(['angular'], function(angular) {
 'use strict';
 /**
  * @ngdoc directive
@@ -17,7 +17,8 @@ define(['jquery', 'angular'], function($, angular) {
  * @usage
  * <button ma-tr-aria-label="ui.dox.input"></button>
  */
-function maTrAriaLabel(Translate) {
+maTrAriaLabel.$inject = ['maTranslate', '$q'];
+function maTrAriaLabel(Translate, $q) {
     return {
         restrict: 'A',
         scope: false,
@@ -38,7 +39,17 @@ function maTrAriaLabel(Translate) {
                 trKey = newKey;
                 trArgs = newArgs;
                 if (!trKey) return;
-
+                // dont attempt translation if args attribute exists but trArgs is currently undefined
+                // or any element in trArgs is undefined, prevents flicking from an error message to the real
+                // translation once the arguments load
+                if (typeof $attrs.maTrAriaLabelArgs !== 'undefined') {
+                	if (!angular.isArray(trArgs)) return;
+                	var containsUndefined = trArgs.some(function(arg) {
+                		return typeof arg === 'undefined';
+                	});
+                	if (containsUndefined) return;
+                }
+                
 	            Translate.tr(trKey, trArgs || []).then(function(translation) {
 	            	return {
 	            		failed: false,
@@ -49,7 +60,7 @@ function maTrAriaLabel(Translate) {
 	            		failed: true,
 	            		text: '!!' + $attrs.maTrAriaLabel + '!!'
 	            	};
-	            	return $.Deferred().resolve(result);
+	            	return $q.resolve(result);
 	            }).then(function(result) {
                     $attrs.$set('aria-label', result.text);
 	            });
@@ -58,7 +69,6 @@ function maTrAriaLabel(Translate) {
     };
 }
 
-maTrAriaLabel.$inject = ['maTranslate'];
 return maTrAriaLabel;
 
 }); // define

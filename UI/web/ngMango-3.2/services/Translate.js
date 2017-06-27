@@ -68,11 +68,7 @@ function translateFactory($http, $q) {
 
         var namespace = key.split('.')[0];
         return Translate.loadNamespaces(namespace).then(function() {
-        	try {
-        		return Translate.trSync(key, args);
-        	} catch (e) {
-        		return $.Deferred().reject(e);
-        	}
+        	return Translate.trSync(key, args);
         });
 	};
 
