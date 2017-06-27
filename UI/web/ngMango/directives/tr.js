@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['jquery', 'angular'], function($, angular) {
+define(['angular'], function(angular) {
 'use strict';
 /**
  * @ngdoc directive
@@ -17,12 +17,13 @@ define(['jquery', 'angular'], function($, angular) {
  * @usage
  * <span ma-tr="ui.dox.input"></span>
  */
-function maTr(Translate) {
+maTr.$inject = ['maTranslate', '$q'];
+function maTr(Translate, $q) {
     return {
         restrict: 'A',
         scope: false,
         link: function ($scope, $elem, $attrs) {
-            var trKey, trArgs;
+            var trKey, trArgs, trPromise;
 
             $scope.$watch(function() {
                 return {
@@ -37,18 +38,27 @@ function maTr(Translate) {
                 trKey = newKey;
                 trArgs = newArgs;
                 if (!trKey) return;
+            	// dont attempt translation if args attribute exists but trArgs is currently undefined
+                // or any element in trArgs is undefined, prevents flicking from an error message to the real
+                // translation once the arguments load
+                if (typeof $attrs.maTrArgs !== 'undefined') {
+                	if (!angular.isArray(trArgs)) return;
+                	var containsUndefined = trArgs.some(function(arg) {
+                		return typeof arg === 'undefined';
+                	});
+                	if (containsUndefined) return;
+                }
 
-	            Translate.tr(trKey, trArgs || []).then(function(translation) {
+                trPromise = Translate.tr(trKey, trArgs || []).then(function(translation) {
 	            	return {
 	            		failed: false,
 	            		text: translation
 	            	};
 	            }, function(error) {
-	            	var result = {
-	            		failed: true,
-	            		text: '!!' + $attrs.maTr + '!!'
-	            	};
-	            	return $.Deferred().resolve(result);
+            		return $q.resolve({
+            			failed: true,
+            			text: '!!' + $attrs.maTr + '!!'
+            		});
 	            }).then(function(result) {
 	            	var text = result.text;
 	            	var tagName = $elem.prop('tagName');
@@ -86,7 +96,6 @@ function maTr(Translate) {
     };
 }
 
-maTr.$inject = ['maTranslate'];
 return maTr;
 
 }); // define
