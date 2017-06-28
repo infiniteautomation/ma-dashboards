@@ -1,6 +1,6 @@
 *Version 3.2.0*
 * Upgraded to work with core version 3.2.x
-* Ability to upgrade and install modules added to the modules page
+* Latest ngMango API is located in web/ngMango instead of ngMango-3.2
 * Bug fixes
 
 *Version 3.1.1*
