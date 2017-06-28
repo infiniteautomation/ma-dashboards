@@ -8,13 +8,15 @@ define(['angular'], function(angular) {
 
 var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
 
-PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint'];
-function PointValueController($scope, $element, $attrs, pointEventManager, Point) {
+PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint', 'maStatsDialog', 'maSetPointDialog'];
+function PointValueController($scope, $element, $attrs, pointEventManager, Point, maStatsDialog, maSetPointDialog) {
     this.$scope = $scope;
     this.$element = $element;
     this.$attrs = $attrs;
     this.pointEventManager = pointEventManager;
     this.Point = Point;
+    this.showStatsDialog = maStatsDialog.show;
+    this.showSetPointDialog = maSetPointDialog.show;
 
     if (this.changeDuration == null)
         this.changeDuration = 400;
