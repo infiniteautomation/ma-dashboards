@@ -48,12 +48,21 @@
                       </configuration>
                   </execution>
                   <execution>
-                      <id>Run gulp copy-docs</id>
+                      <id>Run Bower install</id>
+                      <goals>
+                          <goal>bower</goal>
+                      </goals>
+                      <configuration>
+                          <arguments>install</arguments>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>Run gulp default</id>
                       <goals>
                           <goal>gulp</goal>
                       </goals>
                       <configuration>
-                          <arguments>copy-docs</arguments>
+                          <arguments>default</arguments>
                       </configuration>
                   </execution>
               </executions>

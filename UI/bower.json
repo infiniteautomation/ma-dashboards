@@ -16,7 +16,6 @@
     "angular-ui-router": "~0.3.1",
     "angular-ui-ace": "~0.2.3",
     "ace-builds": "~1.2.5",
-    "material-design-icons": "~3.0.1",
     "mdPickers": "~0.7.2",
     "moment": "~2.18.1",
     "moment-timezone": "~0.5.10",
@@ -42,9 +41,6 @@
         "css/font-awesome.css",
         "fonts/*.*"
       ]
-    },
-    "material-design-icons": {
-      "main": "iconfont/**"
     },
     "moment-timezone": {
       "main": "builds/moment-timezone-with-data.min.js"

@@ -16,7 +16,11 @@ var paths = {
     dest: 'web/vendor'
 };
 
-gulp.task('default', function() {
+gulp.task('default', ['copy-docs', 'copy-vendor']);
+
+gulp.task('copy-vendor', function() {
+	console.log('Copying main JS files from bower_components into web/vendor');
+	
     var mainFiles = plugins.mainBowerFiles().map(function(path, index, arr) {
         var newPath = path.replace(/.([^.]+)$/g, '.min.$1');
         return exists(newPath) ? newPath : path;
@@ -43,7 +47,6 @@ gulp.task('clean', function() {
         })
         .pipe(plugins.clean());
 });
-
 
 gulp.task('build-ngdocs', [], function() {
     var gulpDocs = require('gulp-ngdocs');
