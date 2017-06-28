@@ -61,19 +61,23 @@ function translateFactory($http, $q) {
 		Globalize.load(likelySubtags.data);
 	});
 
-	Translate.tr = function(key, args) {
-		if (!angular.isArray(args)) {
-            args = Array.prototype.slice.call(arguments, 1);
-        }
+	Translate.tr = function(key) {
+		var functionArgs = arguments;
+		if (angular.isArray(key)) {
+			key = key[0];
+		}
 
         var namespace = key.split('.')[0];
         return Translate.loadNamespaces(namespace).then(function() {
-        	return Translate.trSync(key, args);
+        	return Translate.trSync.apply(null, functionArgs);
         });
 	};
 
 	Translate.trSync = function(key, args) {
-		if (!angular.isArray(args)) {
+		if (angular.isArray(key)) {
+			args = key;
+			key = key.shift();
+		} else if (!angular.isArray(args)) {
             args = Array.prototype.slice.call(arguments, 1);
         }
 		return Globalize.messageFormatter(key).apply(Globalize, args);

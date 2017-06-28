@@ -109,6 +109,23 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast) {
         
 	    return $mdToast.show(toast);
     };
+    
+    DialogHelper.prototype.toastOptions = function(options) {
+    	var text = options.textTr ? maTranslate.trSync(options.textTr) : options.text;
+        
+        var toast = $mdToast.simple()
+	        .textContent(text)
+	        .action(maTranslate.trSync('common.ok'))
+	        .highlightAction(true)
+	        .position('bottom center')
+	        .hideDelay(isFinite(options.hideDelay) ? options.hideDelay : 5000);
+        
+        if (options.classes) {
+        	toast.toastClass(options.classes);
+        }
+        
+	    return $mdToast.show(toast);
+    };
 
     DialogHelper.prototype.showConfigImportDialog = function(importData, $event) {
         var locals = {importData: importData};

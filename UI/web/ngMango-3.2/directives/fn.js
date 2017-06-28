@@ -24,7 +24,8 @@ define([], function() {
  * <ma-fn expression="" fn="myFunction" ready="" arg-names="">
  * </ma-fn>
  */
-function enter($parse) {
+maFnDirective.$inject = ['$parse'];
+function maFnDirective($parse) {
     return {
         scope: {
             fn: '=',
@@ -52,8 +53,6 @@ function enter($parse) {
     };
 }
 
-enter.$inject = ['$parse'];
-
-return enter;
+return maFnDirective;
 
 }); // define
