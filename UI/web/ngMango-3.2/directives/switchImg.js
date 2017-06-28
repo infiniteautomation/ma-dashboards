@@ -19,13 +19,13 @@ define(['angular', './PointValueController'], function(angular, PointValueContro
  * @param {object} point Input the point object whos value will be used in
  determining the image displayed. (using `<ma-get-point-value point="myPoint"></ma-point-value>`)
  * @param {string=} point-xid Alternatively to inputting a point you can input a point xid.
- * @param {string} default-src Set the default image path that will display if no match is found or the point is disabled.
+ * @param {string=} default-src Set the default image path that will display if no match is found or the point is disabled.
  * @param {object=} src-map Use an object to map any data point value to an image path: (`{'value1': 'img/image1.png',
  * 'value2': 'img/image2.png'}`)
  * @param {string=} src-### The part of attribute after `src-` (the `###`) is used to compare against the point value.
  For strings with spaces replace the spaces in the point value with dashes in attribute name. *Not to be used with `src-map` attribute.
  * @param {string=} value Alternatively to passing in a point you can use the `value` attribute to pass in a raw value.
- * @param {boolean=} toggle-on-click Set to true to enable click to toggle.
+ * @param {boolean=} toggle-on-click Set to true to enable click to toggle. *Only works with binary data points.
  *
  * @usage
  <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
@@ -45,10 +45,13 @@ function switchImg() {
         bindToController: {
             point: '<?',
             pointXid: '@?',
-            srcMap: '<?',
-            defaultSrc: '@?',
             srcFalse: '@?',
             srcTrue: '@?',
+            defaultSrc: '@?',
+            src0: '@?',
+            src1: '@?',
+            src2: '@?',
+            srcMap: '<?',
             value: '<?',
             toggleOnClick: '<?'
         },
@@ -64,6 +67,9 @@ function switchImg() {
                 srcFalse: {type: 'choosefile', optional: true},
                 defaultSrc: {type: 'choosefile'},
                 srcMap: {type: 'string'},
+                src0: {type: 'choosefile', optional: true},
+                src1: {type: 'choosefile', optional: true},
+                src2: {type: 'choosefile', optional: true},
                 value: {type: 'string'}
             }
         }
