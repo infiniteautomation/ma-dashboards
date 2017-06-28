@@ -18,8 +18,14 @@ var paths = {
 
 gulp.task('default', ['copy-docs', 'copy-vendor']);
 
-gulp.task('copy-vendor', function() {
-	console.log('Copying main JS files from bower_components into web/vendor');
+gulp.task('copy-vendor', ['copy-bower'], function() {
+    console.log('Copying JS files from vendor into web/vendor');
+    return gulp.src('vendor/**')
+        .pipe(gulp.dest(paths.dest));
+});
+
+gulp.task('copy-bower', ['clean:vendor'], function() {
+    console.log('Copying main JS files from bower_components into web/vendor');
 	
     var mainFiles = plugins.mainBowerFiles().map(function(path, index, arr) {
         var newPath = path.replace(/.([^.]+)$/g, '.min.$1');
@@ -67,6 +73,13 @@ gulp.task('clean:docs', function() {
 	console.log('Cleaning web/ui/views/docs');
 	return del([
 		'web/ui/views/docs/**'
+	]);
+});
+
+gulp.task('clean:vendor', function() {
+	console.log('Cleaning web/vendor');
+	return del([
+		paths.dest + '/**'
 	]);
 });
 
