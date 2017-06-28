@@ -6,19 +6,19 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$mdToast', 'maTranslate', '$mdDialog', '$state', 'maUiMenu', '$mdMedia', '$scope', '$timeout', 'maSystemActions'];
-function SystemSettingsPageController(SystemSettings, maLocales, User, $mdToast, maTranslate, $mdDialog, $state, maUiMenu, $mdMedia, $scope, $timeout, maSystemActions) {
+SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$state', 'maUiMenu', '$mdMedia',
+	'$scope', '$timeout', 'maSystemActions', 'maDialogHelper'];
+function SystemSettingsPageController(SystemSettings, maLocales, User, $state, maUiMenu, $mdMedia,
+		$scope, $timeout, maSystemActions, maDialogHelper) {
     this.SystemSettings = SystemSettings;
     this.User = User;
-    this.$mdToast = $mdToast;
-    this.maTranslate = maTranslate;
-    this.$mdDialog = $mdDialog;
     this.$state = $state;
     this.menu = maUiMenu;
     this.$mdMedia = $mdMedia;
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.maSystemActions = maSystemActions;
+    this.maDialogHelper = maDialogHelper;
     
     maLocales.get().then(function(locales) {
         locales.forEach(function(locale) {
@@ -55,52 +55,44 @@ SystemSettingsPageController.prototype.$onInit = function() {
     }.bind(this));
 };
 
-SystemSettingsPageController.prototype.triggerAction = function(name, data) {
+SystemSettingsPageController.prototype.triggerPurge = function(name) {
+	var $ctrl = this;
 	return function() {
-		this.maSystemActions.trigger(name, data).then(function(result) {
-			console.log(result);
-			result.refreshUntilFinished().then(function(result2) {
-				console.log(result2);
+		$ctrl.maSystemActions.trigger(name).then(function(triggerResult) {
+			$ctrl.maDialogHelper.toastOptions({textTr: 'ui.app.purge.purgingStarted', hideDelay: 0});
+			triggerResult.refreshUntilFinished().then(function(finishedResult) {
+				var results = finishedResult.results;
+				if (results.failed) {
+					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.purge.purgeFailed', results.exception.message], hideDelay: 10000, classes: 'md-warn'});
+				} else {
+					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.purge.purgingEnded', results.deletedPointValues, results.deletedEvents]});
+				}
 			});
+		}, function(error) {
+			var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
+			$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.purge.startingPurgeFailed', msg], hideDelay: 10000, classes: 'md-warn'});
 		});
-	}.bind(this);
+	};
 };
 
 SystemSettingsPageController.prototype.sendTestEmail = function() {
     var $ctrl = this;
     this.User.current.sendTestEmail().then(function(response) {
-        var toast = $ctrl.$mdToast.simple()
-            .textContent(response.data)
-            .action($ctrl.maTranslate.trSync('common.ok'))
-            .highlightAction(true)
-            .position('bottom center')
-            .hideDelay(10000);
-        $ctrl.$mdToast.show(toast);
+        $ctrl.maDialogHelper.toastOptions({
+    		text: response.data,
+    		hideDelay: 10000
+    	});
     }, function(response) {
-        var toast = $ctrl.$mdToast.simple()
-            .textContent($ctrl.maTranslate.trSync('ui.components.errorSendingEmail', emailAddress))
-            .action($ctrl.maTranslate.trSync('common.ok'))
-            .highlightAction(true)
-            .highlightClass('md-warn')
-            .position('bottom center')
-            .hideDelay(10000);
-        $ctrl.$mdToast.show(toast);
+    	$ctrl.maDialogHelper.toastOptions({
+    		textTr: ['ui.components.errorSendingEmail', emailAddress],
+    		hideDelay: 10000,
+    		classes: 'md-warn'
+    	});
     });
 };
 
 SystemSettingsPageController.prototype.confirm = function(event, onConfirmed, translation) {
-    var areYouSure = this.maTranslate.trSync('ui.app.areYouSure');
-    var textContent = translation ? this.maTranslate.trSync(translation) : areYouSure;
-
-    var confirm = this.$mdDialog.confirm()
-        .title(areYouSure)
-        .ariaLabel(areYouSure)
-        .textContent(textContent)
-        .targetEvent(event)
-        .ok(this.maTranslate.trSync('common.ok'))
-        .cancel(this.maTranslate.trSync('common.cancel'));
-
-    return this.$mdDialog.show(confirm).then(onConfirmed);
+	return this.maDialogHelper.confirm(event, translation).then(onConfirmed);
 };
 
 SystemSettingsPageController.prototype.valueChanged = function(systemSetting) {
