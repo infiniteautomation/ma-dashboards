@@ -1,3 +1,6 @@
+*Version 3.1.6*
+* Latest ngMango API is located in web/ngMango instead of ngMango-3.1
+
 *Version 3.1.5*
 * Add ability to set a site wide custom user stylesheet
 * Improvements to ma-point-statistics and ma-statistics-table directives

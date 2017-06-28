@@ -49,7 +49,7 @@ requirejs.config({
         'modules': '/modules',
         'mangoUIModule' : module,
         'ngMango-3.0' : module + '/ngMango-3.0',
-        'ngMango-3.1' : module + '/ngMango-3.1',
+        'ngMango-3.1' : module + '/ngMango',
         'maUi' : module + '/ui',
         'angular' : vendor + '/angular/angular',
         'angular-ui-router' : vendor + '/angular-ui-router/angular-ui-router',
