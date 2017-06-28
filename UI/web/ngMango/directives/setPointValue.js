@@ -19,9 +19,9 @@ define(['require', 'angular', './PointValueController'], function(require, angul
  * - <a ui-sref="ui.examples.settingPointValues.setPoint">View Demo</a> 
  *
  * @param {object} point Input the point object of a settable data point.
- * @param {boolean} [show-button=true] Specifies if the button is shown.
- * @param {boolean} [set-on-change=false] Specifies if the point value is set when an option is selected from the dropdown (always true if show-button is false)
- *
+ * @param {boolean} [show-button=true] Specifies if the button is shown (shouldn't be used with numeric data points).
+ * @param {boolean} [set-on-change=false] Specifies if the point value is set when an option is selected from the dropdown
+ * (always true if show-button is false and doesn't apply to numeric data points).
  * @usage
  * <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
  <ma-set-point-value point="myPoint"></ma-set-point-value>
@@ -43,10 +43,12 @@ function setPointValue($injector) {
         bindToController: {
             point: '<?',
             pointXid: '@?',
+            labelAttr: '@?label',
+            labelExpression: '&?',
             showButton: '<?',
             setOnChange: '<?',
-            labelAttr: '@?label',
-            labelExpression: '&?'
+            enablePopup: '<?'
+
         },
         designerInfo: {
             translation: 'ui.components.setPointValue',
@@ -55,7 +57,10 @@ function setPointValue($injector) {
             attributes: {
                 point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
                 pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
-                label: {options: ['NAME', 'DEVICE_AND_NAME']}
+                label: {options: ['NAME', 'DEVICE_AND_NAME']},
+                showButton: {type: 'boolean', defaultValue: true},
+                setOnChange: {type: 'boolean', defaultValue: false},
+                enablePopup: {type: 'boolean', defaultValue: false}
             }
         }
     };

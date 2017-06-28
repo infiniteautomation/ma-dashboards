@@ -1,5 +1,5 @@
 <form>
-    <div layout="row" layout-align="start center">
+    <div layout="row" layout-align="start center" ng-mouseenter="$ctrl.isOpen=true" ng-mouseleave="$ctrl.isOpen=false">
     	<label ng-if="$ctrl.label" ng-bind="$ctrl.label"></label>
         <md-input-container flex ng-if="$ctrl.inputType === 'numeric'">
             <input type="number" step="{{$ctrl.step}}" ng-model="$ctrl.inputValue"  aria-label="{{'common.value' | maTr}}"
@@ -14,10 +14,11 @@
               ng-disabled="!$ctrl.point.pointLocator.settable" aria-label="{{'common.value' | maTr}}">
             <md-option ng-repeat="option in $ctrl.options track by option.id" ng-style="option.style" ng-value="option.id" ng-bind="option.label"></md-option>
         </md-select>
+
         <md-button type="submit" class="md-raised md-accent" ng-show="$ctrl.showButton"
-                ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.result.pending" ng-click="$ctrl.result=$ctrl.point.setValueResult($ctrl.inputValue)"
-                ng-class="{'set-pending': $ctrl.result.pending, 'set-success': $ctrl.result.success, 'set-error': $ctrl.result.error, 'md-warn': $ctrl.result.error}"
-                aria-label="{{'common.set' | maTr}}">
+                   ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.result.pending" ng-click="$ctrl.result=$ctrl.point.setValueResult($ctrl.inputValue)"
+                   ng-class="{'set-pending': $ctrl.result.pending, 'set-success': $ctrl.result.success, 'set-error': $ctrl.result.error, 'md-warn': $ctrl.result.error}"
+                   aria-label="{{'common.set' | maTr}}">
             <div layout="row" layout-align="center center">
                 <span ma-tr="common.set"></span>
                 <md-progress-circular md-diameter="18px" md-mode="indeterminate" ng-if="$ctrl.result.pending"></md-progress-circular>
@@ -25,5 +26,30 @@
                 <md-icon ng-if="$ctrl.result.error" class="md-primary">error</md-icon>
             </div>
         </md-button>
+
+        <md-fab-speed-dial ng-if="$ctrl.enablePopup" md-direction="right" md-open="$ctrl.isOpen"
+                           class="md-scale" ng-cloak>
+            <md-fab-trigger>
+                <!--<md-button class="md-fab md-primary md-mini">-->
+                    <!--<md-icon>assessment</md-icon>-->
+                <!--</md-button>-->
+
+            </md-fab-trigger>
+
+            <md-fab-actions>
+                <md-button class="md-fab md-primary md-mini" ng-click="$ctrl.showStatsDialog($event, $ctrl.point)">
+                    <md-tooltip md-direction="top">Show Stats</md-tooltip>
+                    <md-icon>extension</md-icon>
+                </md-button>
+                <md-button class="md-fab md-primary md-mini" ng-click="$ctrl.showSetPointDialog($event, $ctrl.point)">
+                    <md-tooltip md-direction="top">Set Point</md-tooltip>
+                    <md-icon>favorite</md-icon>
+                </md-button>
+                <md-button class="md-fab md-primary md-mini">
+                    <md-tooltip md-direction="top">Other</md-tooltip>
+                    <md-icon>grade</md-icon>
+                </md-button>
+            </md-fab-actions>
+        </md-fab-speed-dial>
     </div>
 </form>
