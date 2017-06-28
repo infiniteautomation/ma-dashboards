@@ -24,6 +24,40 @@
           <plugin>
               <artifactId>maven-antrun-plugin</artifactId>
           </plugin>
+          <plugin>
+              <groupId>com.github.eirslett</groupId>
+              <artifactId>frontend-maven-plugin</artifactId>
+              <version>1.4</version>
+              <executions>
+                  <execution>
+                      <id>Install node and npm</id>
+                      <goals>
+                          <goal>install-node-and-npm</goal>
+                      </goals>
+                      <configuration>
+                          <nodeVersion>v6.11.0</nodeVersion>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>Run npm install</id>
+                      <goals>
+                          <goal>npm</goal>
+                      </goals>
+                      <configuration>
+                          <arguments>install</arguments>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>Run gulp copy-docs</id>
+                      <goals>
+                          <goal>gulp</goal>
+                      </goals>
+                      <configuration>
+                          <arguments>copy-docs</arguments>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
       </plugins>
     </build>
     <description>Provides an AngularJS user interface, including the ability to create custom pages</description>

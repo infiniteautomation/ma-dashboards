@@ -4,6 +4,7 @@ var gulpIgnore = require('gulp-ignore');
 var concat = require('gulp-concat');
 var merge = require('merge-stream');
 var watch = require('gulp-watch');
+var del = require('del');
 var MA_HOME = process.env.MA_HOME;
 
 var plugins = require("gulp-load-plugins")({
@@ -47,7 +48,7 @@ gulp.task('clean', function() {
 gulp.task('build-ngdocs', [], function() {
     var gulpDocs = require('gulp-ngdocs');
 
-    console.log('Compiling Docs');
+    console.log('Compiling docs into docs/ngMango');
 
     var options = {
         title: "Mango UI 3.x Documentation",
@@ -59,10 +60,16 @@ gulp.task('build-ngdocs', [], function() {
         .pipe(gulp.dest('docs/ngMango'));
 });
 
-gulp.task('copy-docs', ['build-ngdocs'], function() {
+gulp.task('clean:docs', function() {
+	console.log('Cleaning web/ui/views/docs');
+	return del([
+		'web/ui/views/docs/**'
+	]);
+});
 
-    console.log('Copying Doc Partials');
-    
+gulp.task('copy-docs', ['build-ngdocs', 'clean:docs'], function() {
+    console.log('Copying docs from docs/ngMango to web/ui/views/docs');
+
     return gulp.src(['docs/ngMango/partials/api/*.html','docs/ngMango/js/docs-setup.js'])
         .pipe(gulp.dest('web/ui/views/docs'));
 });
