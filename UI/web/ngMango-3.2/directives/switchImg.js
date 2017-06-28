@@ -48,10 +48,11 @@ function switchImg() {
             srcFalse: '@?',
             srcTrue: '@?',
             defaultSrc: '@?',
+            srcMap: '<?',
             src0: '@?',
             src1: '@?',
             src2: '@?',
-            srcMap: '<?',
+            src3: '@?',
             value: '<?',
             toggleOnClick: '<?'
         },
@@ -70,6 +71,7 @@ function switchImg() {
                 src0: {type: 'choosefile', optional: true},
                 src1: {type: 'choosefile', optional: true},
                 src2: {type: 'choosefile', optional: true},
+                src3: {type: 'choosefile', optional: true},
                 value: {type: 'string'}
             }
         }
