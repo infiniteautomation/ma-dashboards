@@ -6,8 +6,8 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-ModulesFactory.$inject = ['$http', '$q'];
-function ModulesFactory($http, $q) {
+ModulesFactory.$inject = ['$http', '$q', 'maServer'];
+function ModulesFactory($http, $q, maServer) {
     var modulesUrl = '/rest/v1/modules';
     
     function Modules() {
@@ -88,12 +88,7 @@ function ModulesFactory($http, $q) {
     };
     
     Modules.restart = function() {
-        return $http({
-            method: 'PUT',
-            url: '/rest/v1/server/restart'
-        }).then(function(response) {
-            return response.data;
-        });
+    	return maServer.restart();
     };
     
     function Module(options) {
