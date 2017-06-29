@@ -701,8 +701,10 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
 });
 
 $q.all([userAndUserSettingsPromise, uiSettingsPromise, angularModulesPromise]).then(function(data) {
-    // destroy the services injector
-    servicesInjector.get('$rootScope').$destroy();
+    // *dont* destroy the services injector
+	// If you do, you end up with two $rootScopes once the app bootstraps, the first with id 1, the second with id 2
+	// This caused the "send test email" button not to work on first load
+    //servicesInjector.get('$rootScope').$destroy();
 
     var user = data[0].user;
     var userMenuStore = data[0].userMenuStore;
