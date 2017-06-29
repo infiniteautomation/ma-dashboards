@@ -6,12 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$mdToast', '$scope', '$sce', '$window'];
-function ModulesPageController(maModules, maTranslate, maDialogHelper, $mdToast, $scope, $sce, $window) {
+ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$scope', '$sce', '$window'];
+function ModulesPageController(maModules, maTranslate, maDialogHelper, $scope, $sce, $window) {
     this.maModules = maModules;
     this.maTranslate = maTranslate;
     this.maDialogHelper = maDialogHelper;
-    this.$mdToast = $mdToast;
     this.$scope = $scope;
     this.$sce = $sce;
     this.$window = $window;
@@ -72,15 +71,19 @@ ModulesPageController.prototype.deleteModule = function($event, module, doDelete
 
 ModulesPageController.prototype.restart = function($event) {
 	this.maDialogHelper.confirm($event, 'modules.restartConfirm').then(function() {
-		this.maModules.restart();
+		return this.maModules.restart();
 	}.bind(this)).then(function() {
-		var toast = this.$mdToast.simple()
-	        .textContent(this.maTranslate.trSync('modules.restartScheduled'))
-	        .action(this.maTranslate.trSync('common.ok'))
-	        .highlightAction(true)
-	        .position('bottom center')
-	        .hideDelay(10000);
-		this.$mdToast.show(toast);
+		this.maDialogHelper.toastOptions({
+			textTr: 'modules.restartScheduled',
+			hideDelay: 20000
+		});
+	}.bind(this), function(error) {
+		var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
+		this.maDialogHelper.toastOptions({
+			textTr: ['ui.app.restartFailed', msg],
+			hideDelay: 10000,
+			classes: 'md-warn'
+		});
 	}.bind(this));
 };
 

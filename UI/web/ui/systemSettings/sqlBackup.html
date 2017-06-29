@@ -1,3 +1,21 @@
+<div class="ma-margin-bottom">
+	<md-button class="md-raised md-primary" ng-click="$ctrl.doSqlBackup($event)"><span ma-tr="systemSettings.backupNow"></span></md-button>
+</div>
+
+<div class="ma-margin-bottom" layout layout-align="start center">
+	<md-input-container flex flex-gt-sm="50" flex-gt-lg="30">
+		<label ma-tr="ui.app.backup.selectFile"></label>
+		<md-select ng-model="selectedBackup" md-on-open="$ctrl.getBackupFiles()">
+			<md-option ng-value="undefined"><em ma-tr="systemSettings.noBackupSelected"></em></md-option>
+			<md-option ng-repeat="file in $ctrl.backupFiles" ng-value="file" ng-bind="file"></md-option>
+		</md-select>
+	</md-input-container>
+
+	<md-button class="md-raised md-warn" ng-disabled="!selectedBackup" ng-click="$ctrl.doSqlRestore($event, selectedBackup)">
+		<span ma-tr="systemSettings.restoreDatabase"></span>
+	</md-button>
+</div>
+
 <div layout="column" layout-align="start start">
     <ma-system-setting-editor label-tr="systemSettings.backupEnable" key="databaseBackupEnabled" type="BOOLEAN" input-type="checkbox" on-value-changed="databaseBackupEnabled = $value"></ma-system-setting-editor>
 </div>
@@ -17,18 +35,3 @@
       <ma-system-setting-editor label-tr="systemSettings.backupFileCount" key="databaseBackupFileCount" type="INTEGER"></ma-system-setting-editor>
   </div>
 </div>
-
-<div layout layout-align="start center">
-	<md-input-container flex flex-gt-sm="50" flex-gt-lg="30">
-		<label ma-tr="ui.app.backup.selectFile"></label>
-		<md-select ng-model="selectedBackup" md-on-open="$ctrl.getBackupFiles()">
-			<md-option ng-value="undefined"><em ma-tr="systemSettings.noBackupSelected"></em></md-option>
-			<md-option ng-repeat="file in $ctrl.backupFiles" ng-value="file" ng-bind="file"></md-option>
-		</md-select>
-	</md-input-container>
-
-	<md-button class="md-raised md-warn" ng-disabled="!selectedBackup" ng-click="$ctrl.doSqlRestore($event, selectedBackup)">
-		<span ma-tr="systemSettings.restoreDatabase"></span>
-	</md-button>
-</div>
-<md-button class="md-raised md-primary" ng-click="$ctrl.doSqlBackup($event)"><span ma-tr="systemSettings.backupNow"></span></md-button>

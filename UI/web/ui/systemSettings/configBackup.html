@@ -1,3 +1,7 @@
+<div class="ma-margin-bottom">
+	<md-button class="md-raised md-primary" ng-click="$ctrl.doConfigBackup($event)"><span ma-tr="systemSettings.backupNow"></span></md-button>
+</div>
+
 <div layout="column" layout-align="start start">
     <ma-system-setting-editor label-tr="systemSettings.backupEnable" key="backupEnabled" type="BOOLEAN" input-type="checkbox" on-value-changed="backupEnabled = $value"></ma-system-setting-editor>
 </div>
