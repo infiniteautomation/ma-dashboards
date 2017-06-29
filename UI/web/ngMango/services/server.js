@@ -29,9 +29,7 @@ function ServerFactory($http, $q) {
                 username: usernameInEmail,
                 email: toEmail
             },
-            method: 'PUT',
-            data: null,
-            accept: 'application/json'
+            method: 'PUT'
         });
     };
     

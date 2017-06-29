@@ -83,7 +83,7 @@ SystemSettingsPageController.prototype.sendTestEmail = function() {
     		text: response.data,
     		hideDelay: 10000
     	});
-    }, function(response) {
+    }, function(error) {
     	$ctrl.maDialogHelper.toastOptions({
     		textTr: ['ui.components.errorSendingEmail', emailAddress],
     		hideDelay: 10000,
