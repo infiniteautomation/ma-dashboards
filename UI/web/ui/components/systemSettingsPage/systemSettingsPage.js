@@ -7,9 +7,9 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$state', 'maUiMenu', '$mdMedia',
-	'$scope', '$timeout', 'maSystemActions', 'maDialogHelper'];
+	'$scope', '$timeout', 'maSystemActions', 'maDialogHelper', 'maServer'];
 function SystemSettingsPageController(SystemSettings, maLocales, User, $state, maUiMenu, $mdMedia,
-		$scope, $timeout, maSystemActions, maDialogHelper) {
+		$scope, $timeout, maSystemActions, maDialogHelper, maServer) {
     this.SystemSettings = SystemSettings;
     this.User = User;
     this.$state = $state;
@@ -19,6 +19,7 @@ function SystemSettingsPageController(SystemSettings, maLocales, User, $state, m
     this.$timeout = $timeout;
     this.maSystemActions = maSystemActions;
     this.maDialogHelper = maDialogHelper;
+    this.maServer = maServer;
     
     maLocales.get().then(function(locales) {
         locales.forEach(function(locale) {
@@ -126,6 +127,52 @@ SystemSettingsPageController.prototype.saveSection = function() {
 
 SystemSettingsPageController.prototype.currentTime = function() {
 	return Math.floor((new Date()).valueOf() / 1000);
+};
+
+SystemSettingsPageController.prototype.getBackupFiles = function() {
+	return this.maServer.getSystemInfo('sqlDatabaseBackupFileList').then(function(list) {
+		return (this.backupFiles = list);
+	}.bind(this));
+};
+
+SystemSettingsPageController.prototype.doSqlBackup = function(event) {
+	var $ctrl = this;
+	return this.maDialogHelper.confirm(event, 'systemSettings.backupNow').then(function() {
+		$ctrl.maSystemActions.trigger('sqlBackup').then(function(triggerResult) {
+			$ctrl.maDialogHelper.toastOptions({textTr: 'ui.app.backup.sqlBackupStarted', hideDelay: 0});
+			triggerResult.refreshUntilFinished().then(function(finishedResult) {
+				var results = finishedResult.results;
+				if (results.failed) {
+					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlBackupFailed', results.exception.message], hideDelay: 10000, classes: 'md-warn'});
+				} else {
+					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlBackupSuccess', results.backupFile]});
+				}
+			});
+		}, function(error) {
+			var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
+			$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlBackupStartingFailed', msg], hideDelay: 10000, classes: 'md-warn'});
+		});
+	});
+};
+
+SystemSettingsPageController.prototype.doSqlRestore = function(event, filename) {
+	var $ctrl = this;
+	return this.maDialogHelper.confirm(event, 'systemSettings.confirmRestoreDatabase').then(function() {
+		$ctrl.maSystemActions.trigger('sqlRestore', {filename: filename}).then(function(triggerResult) {
+			$ctrl.maDialogHelper.toastOptions({textTr: 'ui.app.backup.sqlRestoreStarted', hideDelay: 0});
+			triggerResult.refreshUntilFinished().then(function(finishedResult) {
+				var results = finishedResult.results;
+				if (results.failed) {
+					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlRestoreFailed', results.exception.message], hideDelay: 10000, classes: 'md-warn'});
+				} else {
+					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlRestoreSuccess']});
+				}
+			});
+		}, function(error) {
+			var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
+			$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlRestoreStartingFailed', msg], hideDelay: 10000, classes: 'md-warn'});
+		});
+	});
 };
 
 return {
