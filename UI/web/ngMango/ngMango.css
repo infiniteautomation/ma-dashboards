@@ -487,6 +487,19 @@ md-card md-card-content.ma-no-padding {
   cursor: pointer;
 }
 
+.ma-margin-top {
+	margin-top: 8px;
+}
+
+.ma-margin-bottom {
+	margin-bottom: 8px;
+}
+
+.ma-margin-top-bottom {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
 /* permissions menu */
 
 .ma-permissions-menu {

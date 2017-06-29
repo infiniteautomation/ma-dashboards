@@ -135,6 +135,26 @@ SystemSettingsPageController.prototype.getBackupFiles = function() {
 	}.bind(this));
 };
 
+SystemSettingsPageController.prototype.doConfigBackup = function(event) {
+	var $ctrl = this;
+	return this.maDialogHelper.confirm(event, 'systemSettings.backupNow').then(function() {
+		$ctrl.maSystemActions.trigger('backupConfiguration').then(function(triggerResult) {
+			$ctrl.maDialogHelper.toastOptions({textTr: 'ui.app.backup.configBackupStarted', hideDelay: 0});
+			triggerResult.refreshUntilFinished().then(function(finishedResult) {
+				var results = finishedResult.results;
+				if (results.failed) {
+					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.configBackupFailed', results.exception.message], hideDelay: 10000, classes: 'md-warn'});
+				} else {
+					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.configBackupSuccess', results.backupFile]});
+				}
+			});
+		}, function(error) {
+			var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
+			$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.configBackupStartingFailed', msg], hideDelay: 10000, classes: 'md-warn'});
+		});
+	});
+};
+
 SystemSettingsPageController.prototype.doSqlBackup = function(event) {
 	var $ctrl = this;
 	return this.maDialogHelper.confirm(event, 'systemSettings.backupNow').then(function() {
