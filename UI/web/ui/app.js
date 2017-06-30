@@ -719,6 +719,7 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, angularModulesPromise]).t
     uiApp.constant('MA_UI_SETTINGS', MA_UI_SETTINGS);
     uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', customMenuItems);
     uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
+    uiApp.constant('MA_POINT_VALUES_CONFIG', {limit: MA_UI_SETTINGS.pointValuesLimit});
 
     var angularJsModuleNames = ['maUiApp'];
     angularModules.forEach(function(angularModule, index, array) {

@@ -7,9 +7,9 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'maCssInjector', '$templateRequest', '$interpolate',
-    'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION'];
+    'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION', 'MA_POINT_VALUES_CONFIG'];
 function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
-        MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION) {
+        MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION, MA_POINT_VALUES_CONFIG) {
     
     var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'userModuleName'];
     var themeId = 0;
@@ -37,6 +37,9 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS,
             return this.userSettingsStore.$save().then(function(store) {
                 angular.merge(this, this.defaultSettings);
                 angular.merge(this, store.jsonData);
+                if (isFinite(this.pointValuesLimit)) {
+                	MA_POINT_VALUES_CONFIG.limit = this.pointValuesLimit;
+                }
                 return store;
             }.bind(this));
         },
