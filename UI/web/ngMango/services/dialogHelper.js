@@ -6,8 +6,8 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-DialogHelperFactory.$inject = ['$mdDialog', '$mdMedia', 'maTranslate', '$mdToast'];
-function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast) {
+DialogHelperFactory.$inject = ['$mdDialog', '$mdMedia', 'maTranslate', '$mdToast', 'maSystemActions', '$q'];
+function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast, maSystemActions, $q) {
     function DialogHelper() {
     }
     
@@ -132,6 +132,38 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast) {
         var templateUrl = require.toUrl('../components/configImportDialog/configImportDialogContainer.html');
         return this.showDialog(templateUrl, locals, $event);
     };
+    
+//    options = {
+//    	event,
+//    	confirmTr,
+//    	actionName,
+//    	actionData,
+//    	descriptionTr,
+//    	resultsTr
+//    }
+    DialogHelper.prototype.confirmSystemAction = function(options) {
+		var maDialogHelper = this;
+		var description = maTranslate.trSync(options.descriptionTr);
+		
+		return maDialogHelper.confirm(options.event, options.confirmTr).then(function() {
+			return maSystemActions.trigger(options.actionName, options.actionData).then(function(triggerResult) {
+				maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.started', description], hideDelay: 0});
+				return triggerResult.refreshUntilFinished();
+			}, function(error) {
+				var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
+				maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.startFailed', description, msg], hideDelay: 10000, classes: 'md-warn'});
+				return $q.reject();
+			});
+		}).then(function(finishedResult) {
+			var results = finishedResult.results;
+			if (results.failed) {
+				maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.failed', description, results.exception.message], hideDelay: 10000, classes: 'md-warn'});
+			} else {
+				var resultTxt = maTranslate.trSync(options.resultsTr, results);
+				maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.succeeded', description, resultTxt]});
+			}
+		}, angular.noop);
+	};
     
     return new DialogHelper();
 }
