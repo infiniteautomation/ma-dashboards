@@ -56,24 +56,41 @@ SystemSettingsPageController.prototype.$onInit = function() {
     }.bind(this));
 };
 
-SystemSettingsPageController.prototype.triggerPurge = function(name) {
-	var $ctrl = this;
-	return function() {
-		$ctrl.maSystemActions.trigger(name).then(function(triggerResult) {
-			$ctrl.maDialogHelper.toastOptions({textTr: 'ui.app.purge.purgingStarted', hideDelay: 0});
-			triggerResult.refreshUntilFinished().then(function(finishedResult) {
-				var results = finishedResult.results;
-				if (results.failed) {
-					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.purge.purgeFailed', results.exception.message], hideDelay: 10000, classes: 'md-warn'});
-				} else {
-					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.purge.purgingEnded', results.deletedPointValues, results.deletedEvents]});
-				}
-			});
-		}, function(error) {
-			var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
-			$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.purge.startingPurgeFailed', msg], hideDelay: 10000, classes: 'md-warn'});
-		});
-	};
+SystemSettingsPageController.prototype.actions = {
+	purgeUsingSettings: {
+		confirmTr: 'systemSettings.purgeDataWithPurgeSettingsConfirm',
+		descriptionTr: 'ui.app.purgeUsingSettings',
+		resultsTr: 'ui.app.purgeSuccess'
+	},
+	purgeAllPointValues: {
+		confirmTr: 'systemSettings.purgeDataConfirm',
+		descriptionTr: 'ui.app.pointValuePurge',
+		resultsTr: 'systemSettings.excelreports.purgeSuccess'
+	},
+	purgeAllEvents: {
+		confirmTr: 'systemSettings.purgeAllEventsConfirm',
+		descriptionTr: 'ui.app.eventPurge',
+		resultsTr: 'systemSettings.excelreports.purgeSuccess'
+	},
+	backupConfiguration: {
+		confirmTr: 'systemSettings.backupNow',
+		descriptionTr: 'ui.app.configBackup',
+		resultsTr: 'ui.app.configBackupSuccess'
+	},
+	sqlBackup: {
+		confirmTr: 'systemSettings.backupNow',
+		descriptionTr: 'ui.app.sqlBackup',
+		resultsTr: 'ui.app.sqlBackupSuccess'
+	},
+	sqlRestore: {
+		confirmTr: 'systemSettings.confirmRestoreDatabase',
+		descriptionTr: 'ui.app.sqlRestore',
+		resultsTr: 'ui.app.sqlRestoreSuccess'
+	}
+};
+
+SystemSettingsPageController.prototype.doAction = function(event, name, data) {
+	this.maDialogHelper.confirmSystemAction(angular.extend({event: event, actionName: name, actionData: data}, this.actions[name]));
 };
 
 SystemSettingsPageController.prototype.sendTestEmail = function() {
@@ -133,66 +150,6 @@ SystemSettingsPageController.prototype.getBackupFiles = function() {
 	return this.maServer.getSystemInfo('sqlDatabaseBackupFileList').then(function(list) {
 		return (this.backupFiles = list);
 	}.bind(this));
-};
-
-SystemSettingsPageController.prototype.doConfigBackup = function(event) {
-	var $ctrl = this;
-	return this.maDialogHelper.confirm(event, 'systemSettings.backupNow').then(function() {
-		$ctrl.maSystemActions.trigger('backupConfiguration').then(function(triggerResult) {
-			$ctrl.maDialogHelper.toastOptions({textTr: 'ui.app.backup.configBackupStarted', hideDelay: 0});
-			triggerResult.refreshUntilFinished().then(function(finishedResult) {
-				var results = finishedResult.results;
-				if (results.failed) {
-					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.configBackupFailed', results.exception.message], hideDelay: 10000, classes: 'md-warn'});
-				} else {
-					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.configBackupSuccess', results.backupFile]});
-				}
-			});
-		}, function(error) {
-			var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
-			$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.configBackupStartingFailed', msg], hideDelay: 10000, classes: 'md-warn'});
-		});
-	});
-};
-
-SystemSettingsPageController.prototype.doSqlBackup = function(event) {
-	var $ctrl = this;
-	return this.maDialogHelper.confirm(event, 'systemSettings.backupNow').then(function() {
-		$ctrl.maSystemActions.trigger('sqlBackup').then(function(triggerResult) {
-			$ctrl.maDialogHelper.toastOptions({textTr: 'ui.app.backup.sqlBackupStarted', hideDelay: 0});
-			triggerResult.refreshUntilFinished().then(function(finishedResult) {
-				var results = finishedResult.results;
-				if (results.failed) {
-					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlBackupFailed', results.exception.message], hideDelay: 10000, classes: 'md-warn'});
-				} else {
-					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlBackupSuccess', results.backupFile]});
-				}
-			});
-		}, function(error) {
-			var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
-			$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlBackupStartingFailed', msg], hideDelay: 10000, classes: 'md-warn'});
-		});
-	});
-};
-
-SystemSettingsPageController.prototype.doSqlRestore = function(event, filename) {
-	var $ctrl = this;
-	return this.maDialogHelper.confirm(event, 'systemSettings.confirmRestoreDatabase').then(function() {
-		$ctrl.maSystemActions.trigger('sqlRestore', {filename: filename}).then(function(triggerResult) {
-			$ctrl.maDialogHelper.toastOptions({textTr: 'ui.app.backup.sqlRestoreStarted', hideDelay: 0});
-			triggerResult.refreshUntilFinished().then(function(finishedResult) {
-				var results = finishedResult.results;
-				if (results.failed) {
-					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlRestoreFailed', results.exception.message], hideDelay: 10000, classes: 'md-warn'});
-				} else {
-					$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlRestoreSuccess']});
-				}
-			});
-		}, function(error) {
-			var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
-			$ctrl.maDialogHelper.toastOptions({textTr: ['ui.app.backup.sqlRestoreStartingFailed', msg], hideDelay: 10000, classes: 'md-warn'});
-		});
-	});
 };
 
 return {
