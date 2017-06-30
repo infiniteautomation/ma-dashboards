@@ -217,6 +217,10 @@
 				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
 				</md-button>
             </md-input-container>
+            <md-input-container flex="100" flex-gt-md="50">
+                <label ma-tr="ui.app.pointValuesLimit"></label>
+                <input ng-model="uiSettings.pointValuesLimit" type="number" min="100" max="100000" step="100">
+            </md-input-container>
         </div>
     </md-card-content>
 </md-card>

@@ -89,5 +89,6 @@
   	"heading": "Roboto",
   	"paragraph": "Roboto",
   	"code": "'Roboto Mono'"
-  }
+  },
+  "pointValuesLimit": 5001
 }

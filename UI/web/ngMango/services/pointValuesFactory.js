@@ -6,8 +6,8 @@
 define(['require', 'angular', 'moment-timezone'], function(require, angular, moment) {
 'use strict';
 
-pointValuesFactory.$inject = ['$http', '$q', 'maUtil', 'MA_POINT_VALUES_LIMIT', '$injector'];
-function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_LIMIT, $injector) {
+pointValuesFactory.$inject = ['$http', '$q', 'maUtil', 'MA_POINT_VALUES_CONFIG', '$injector'];
+function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) {
     var pointValuesUrl = '/rest/v1/point-values/';
     var maDialogHelper;
     
@@ -198,7 +198,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_LIMIT, $injector) {
             var now = new Date();
             var from = params.from = Util.toMoment(options.from, now, options.dateFormat);
             var to = params.to = Util.toMoment(options.to, now, options.dateFormat);
-            var limit = params.limit = isFinite(options.limit) && options.limit > 0 ? options.limit : MA_POINT_VALUES_LIMIT;
+            var limit = params.limit = isFinite(options.limit) && options.limit > 0 ? options.limit : MA_POINT_VALUES_CONFIG.limit;
 
             params.push('from=' + encodeURIComponent(from.toISOString()));
             params.push('to=' + encodeURIComponent(to.toISOString()));
