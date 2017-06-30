@@ -112,6 +112,7 @@ ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUT', 30000);
 ngMangoServices.constant('MA_WATCHDOG_TIMEOUT', 10000);
 ngMangoServices.constant('MA_RECONNECT_DELAY', 5000);
+ngMangoServices.constant('MA_POINT_VALUES_LIMIT', 5000);
 
 ngMangoServices.constant('MA_DATE_FORMATS', {
     dateTime: 'lll',

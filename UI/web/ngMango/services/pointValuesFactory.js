@@ -6,10 +6,15 @@
 define(['require', 'angular', 'moment-timezone'], function(require, angular, moment) {
 'use strict';
 
-pointValuesFactory.$inject = ['$http', '$q', 'maUtil'];
-function pointValuesFactory($http, $q, Util) {
+pointValuesFactory.$inject = ['$http', '$q', 'maUtil', 'MA_POINT_VALUES_LIMIT', '$injector'];
+function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_LIMIT, $injector) {
     var pointValuesUrl = '/rest/v1/point-values/';
-
+    var maDialogHelper;
+    
+    if ($injector.has('maDialogHelper')) {
+    	maDialogHelper = $injector.get('maDialogHelper');
+    }
+    
     function PointValues() {
     }
     
@@ -53,8 +58,21 @@ function pointValuesFactory($http, $q, Util) {
                 var values = response.data;
                 if (reverseData)
                     values.reverse();
+                
+                if (maDialogHelper && values.length === params.limit) {
+                	var now = (new Date()).valueOf();
+                	if (!this.lastToast || (now - this.lastToast) > 10000) {
+                		this.lastToast = now;
+                		maDialogHelper.toastOptions({
+                			textTr: ['ui.app.pointValuesLimited', [params.limit]],
+                			hideDelay: 10000,
+                			classes: 'md-warn'
+                		});
+                	}
+                }
+                
                 return values;
-            }).setCancel(canceler.resolve);
+            }.bind(this)).setCancel(canceler.resolve);
         } catch (error) {
             return $q.reject(error);
         }
@@ -180,9 +198,11 @@ function pointValuesFactory($http, $q, Util) {
             var now = new Date();
             var from = params.from = Util.toMoment(options.from, now, options.dateFormat);
             var to = params.to = Util.toMoment(options.to, now, options.dateFormat);
+            var limit = params.limit = isFinite(options.limit) && options.limit > 0 ? options.limit : MA_POINT_VALUES_LIMIT;
 
             params.push('from=' + encodeURIComponent(from.toISOString()));
             params.push('to=' + encodeURIComponent(to.toISOString()));
+            params.push('limit=' + encodeURIComponent(limit));
             var timezone = options.timezone || moment().tz();
             if (timezone)
                 params.push('timezone=' + encodeURIComponent(timezone));
