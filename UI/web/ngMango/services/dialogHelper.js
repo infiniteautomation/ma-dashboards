@@ -157,7 +157,8 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast, maSyste
 		}).then(function(finishedResult) {
 			var results = finishedResult.results;
 			if (results.failed) {
-				maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.failed', description, results.exception.message], hideDelay: 10000, classes: 'md-warn'});
+				var msg = results.exception ? results.exception.message : '';
+				maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.failed', description, msg], hideDelay: 10000, classes: 'md-warn'});
 			} else {
 				var resultTxt = maTranslate.trSync(options.resultsTr, results);
 				maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.succeeded', description, resultTxt]});
