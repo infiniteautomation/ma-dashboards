@@ -721,6 +721,7 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, angularModulesPromise]).t
     uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
     uiApp.constant('MA_POINT_VALUES_CONFIG', {limit: MA_UI_SETTINGS.pointValuesLimit});
 
+    MA_UI_SETTINGS.mangoModuleNames = [];
     var angularJsModuleNames = ['maUiApp'];
     angularModules.forEach(function(angularModule, index, array) {
         if (angularModule && angularModule.name) {
@@ -728,6 +729,8 @@ $q.all([userAndUserSettingsPromise, uiSettingsPromise, angularModulesPromise]).t
             
             if (MA_UI_SETTINGS.userModule && index === (array.length - 1)) {
             	MA_UI_SETTINGS.userModuleName = angularModule.name;
+            } else {
+            	MA_UI_SETTINGS.mangoModuleNames.push(angularModule.name);
             }
         }
     });
