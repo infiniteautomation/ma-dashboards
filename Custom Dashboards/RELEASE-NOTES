@@ -1,5 +1,7 @@
-*Version 3.1.0*
-* Upgraded to work with core version 3.1.x
+*Version 3.6.1*
+* Release date 2017-07-06
+* Bug fix only, works with cache busting parameter in 3.1.x
+* Note: This module is deprecated, please use the mangoUI module instead. This module is only maintained to facilitate upgrades to the UI module.
 
 *Version 3.6.0*
 * Release date 2017-05-23
