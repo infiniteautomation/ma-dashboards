@@ -23,9 +23,15 @@ for (var i = scriptTags.length - 1; i >= 0; i--) {
 var module = mangoUrl + '/modules/dashboards/web';
 var vendor = module + '/vendor';
 
+// set the base url to the old base prefixed by the mango server base url
+var oldBaseUrl = require.toUrl('');
+var vParamIndex = oldBaseUrl.indexOf('?v=');
+if (vParamIndex >= 0) {
+	oldBaseUrl = oldBaseUrl.substring(0, vParamIndex);
+}
+
 require.config({
-    // set the base url to the old base prefixed by the mango server base url
-    baseUrl: mangoUrl + require.toUrl(''),
+    baseUrl: mangoUrl + oldBaseUrl,
     paths : {
         'dashboards' : module,
         // The mango-3.0 folder contains the actual 3.0 code, however when 3.1 was released the updated
