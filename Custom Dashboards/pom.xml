@@ -3,12 +3,12 @@
     <parent>
       <artifactId>ma-dashboards-parent</artifactId>
       <groupId>com.infiniteautomation.mango</groupId>
-      <version>3.1.0</version>
+      <version>3.1.2-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>dashboards</artifactId>
     <name>dashboards</name>
-    <version>3.6.1</version>
+    <version>3.6.2-SNAPSHOT</version>
     <build>
         <plugins>
             <plugin>
@@ -31,8 +31,4 @@
         </plugins>
     </build>
     <description>Provides an AngularJS dashboards interface, including the ability to create custom pages</description>
-
-  <scm>
-    <tag>dashboards-v3.6.1</tag>
-  </scm>
 </project>
