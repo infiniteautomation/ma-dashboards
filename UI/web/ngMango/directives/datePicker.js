@@ -81,9 +81,17 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
                 return mangoDateFormats.dateTimeSeconds;
             }
         };
-
+        
+        $scope.$watch('format + timezone', function(newVal, oldVal) {
+        	if (newVal === oldVal) return;
+            ngModel.$viewValue = modelToView(ngModel.$modelValue);
+            ngModel.$render();
+        });
+        
         // formatter converts from Date ($modelValue) into String ($viewValue)
-        ngModel.$formatters.push(function(value) {
+        ngModel.$formatters.push(modelToView);
+
+        function modelToView(value) {
             if (angular.isDate(value) || moment.isMoment(value)) {
                 var m = moment(value);
                 if ($scope.timezone) {
@@ -91,7 +99,7 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
                 }
                 return m.format($scope.getFormat());
             }
-        });
+        }
 
         // parser converts from String ($viewValue) into Date ($modelValue)
         ngModel.$parsers.push(function(value) {
@@ -126,6 +134,8 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
             var $mdpTimePicker = $injector.get('$mdpTimePicker');
 
             $scope.showPicker = function showPicker(ev) {
+            	if (ev.altKey) return;
+            	
                 var autoSwitchTime = angular.isUndefined($scope.autoSwitchTime) ? true : $scope.autoSwitchTime;
                 var initialDate;
                 
