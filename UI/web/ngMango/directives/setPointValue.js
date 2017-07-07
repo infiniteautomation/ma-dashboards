@@ -47,7 +47,7 @@ function setPointValue($injector) {
             labelExpression: '&?',
             showButton: '<?',
             setOnChange: '<?',
-            enablePopup: '<?'
+            enablePopup: '@?'
 
         },
         designerInfo: {
@@ -60,7 +60,7 @@ function setPointValue($injector) {
                 label: {options: ['NAME', 'DEVICE_AND_NAME']},
                 showButton: {type: 'boolean', defaultValue: true},
                 setOnChange: {type: 'boolean', defaultValue: false},
-                enablePopup: {type: 'boolean', defaultValue: false}
+                enablePopup: {type: 'string', defaultValue: 'hide', options: ['hide', 'right', 'left', 'up', 'down']}
             }
         }
     };

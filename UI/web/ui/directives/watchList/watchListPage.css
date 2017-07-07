@@ -49,31 +49,6 @@ ma-ui-watch-list-page ma-watch-list-parameters.md-padding {
   padding-bottom: 0;
 }
 
-/* Stats Dialog */
-
-.watch-list-stats-dialog {
-    width: 700px;
-}
-.watch-list-stats-dialog .md-toolbar-tools h2 {
-    line-height: 20px;
-    font-size: 16px;
-    text-align: center;
-}
-
-.watch-list-stats-dialog .md-toolbar-tools h2 span.nowrap {
-    white-space: nowrap;
-}
-.watch-list-stats-dialog.mobile table.md-table td.md-cell, table.md-table th.md-column {
-    font-size: 1.4rem;
-}
-.watch-list-stats-dialog table.md-table thead.md-head>tr.md-row {
-    height: 0px;
-}
-
-.watch-list-stats-dialog input#number-of-values {
-  width: 55px;
-}
-
 /* Pagination mobile fixes*/
 .watchlist-main .md-table-pagination, .watch-list-stats-dialog .md-table-pagination {
     padding: 0 10px 0 0;
