@@ -10,7 +10,7 @@ statsDialog.$inject = ['$mdDialog', '$mdMedia', 'maUiDateBar', 'localStorageServ
 function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
     var StatsDialog = {};
 
-    StatsDialog.show = function(ev, point) {
+    StatsDialog.show = function(ev, point, tab) {
     	return $mdDialog.show({
             controller: function() {
                 this.dateBar = maUiDateBar;
@@ -38,6 +38,7 @@ function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
                 this.retrievePreferences();
 
                 this.point = point;
+                this.tab = tab;
                 this.timeRange = moment.duration(moment(this.dateBar.to).diff(moment(this.dateBar.from))).humanize();
                 this.cancel = function cancel() {
                     $mdDialog.cancel();

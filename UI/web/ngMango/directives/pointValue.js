@@ -62,7 +62,8 @@ function pointValue() {
             flashOnChange: '<?',
             changeDuration: '<?',
             onValueUpdated: '&?',
-            labelExpression: '&?'
+            labelExpression: '&?',
+            enablePopup: '@?'
         },
         designerInfo: {
             translation: 'ui.components.pointValue',
@@ -75,7 +76,8 @@ function pointValue() {
                 flashOnChange: {type: 'boolean'},
                 dateTimeFormat: {options: dateOptions},
                 sameDayDateTimeFormat: {options: dateOptions},
-                label: {options: ['NAME', 'DEVICE_AND_NAME']}
+                label: {options: ['NAME', 'DEVICE_AND_NAME']},
+                enablePopup: {type: 'string', defaultValue: 'hide', options: ['hide', 'right', 'left', 'up', 'down']}
             }
         }
     };
