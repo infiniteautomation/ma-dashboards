@@ -14,7 +14,7 @@ define([], function() {
 */
 
 function isApiCall(config) {
-	if (config.url.indexOf('/') === 0) {
+	if (('' + config.url).indexOf('/') === 0) {
 		return true;
 	}
 }
