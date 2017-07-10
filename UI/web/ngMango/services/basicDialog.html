@@ -15,12 +15,12 @@
 	
 	<md-dialog-content ng-if="$ctrl.contentTemplateUrl" layout="column" class="md-padding" flex ng-include="$ctrl.contentTemplateUrl">
 	</md-dialog-content>
-	
+
 	<md-dialog-actions layout="row">
-	  <md-button ng-if="$ctrl.showCancel" class="md-warn" ng-click="$ctrl.cancel()">
+	  <md-button ng-if="$ctrl.showCancel" class="md-warn" ng-click="$ctrl.cancel($event)" ng-disabled="$ctrl.cancelDisabled()">
 	    <span ma-tr="common.cancel"></span>
 	  </md-button>
-	  <md-button class="md-raised" ng-click="$ctrl.ok()">
+	  <md-button class="md-raised" ng-click="$ctrl.ok($event)" ng-disabled="$ctrl.okDisabled()">
 	    <span ma-tr="common.ok"></span>
 	  </md-button>
 	</md-dialog-actions>
