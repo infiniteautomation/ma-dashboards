@@ -22,6 +22,9 @@ define(['require', 'angular', './PointValueController'], function(require, angul
  * @param {boolean} [show-button=true] Specifies if the button is shown (shouldn't be used with numeric data points).
  * @param {boolean} [set-on-change=false] Specifies if the point value is set when an option is selected from the dropdown
  * (always true if show-button is false and doesn't apply to numeric data points).
+ * @param {string} [enable-popup="hide"] Set to one of the following values to enable shortcut icons to open stats dialog box
+ * for details on the selected point. Options are: `right`, `left`, `up`, or `down` to set the direction the icons will open
+ * in. Shortcut icons will be shown on mouse over. Stats dialog will use date range from the date bar.
  * @usage
  * <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
  <ma-set-point-value point="myPoint"></ma-set-point-value>

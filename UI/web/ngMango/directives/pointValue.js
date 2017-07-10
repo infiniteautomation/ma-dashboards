@@ -29,6 +29,9 @@ define(['require', 'moment-timezone', './PointValueController'], function(requir
  </ul>
  * @param {string=} date-time-format If `dateTime` is used with `display-type`
  then you can pass in a [momentJs](http://momentjs.com/) string to format the timestamp. (Defaults to Mango default date format set in system settings)
+ * @param {string} [enable-popup="hide"] Set to one of the following values to enable shortcut icons to open stats or set point
+ * dialog box for the selected point. Options are: `right`, `left`, `up`, or `down` to set the direction the icons
+ * will open in. Shortcut icons will be shown on mouse over. Stats dialog will use date range from the date bar.
  *
  * @usage
  *
