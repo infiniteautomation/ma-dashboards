@@ -29,13 +29,14 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast, maSyste
     	return $mdDialog.show({
             controller: function() {
             	this.result = {};
+            	this.$mdDialog = $mdDialog;
             	
             	this.cancel = function() {
-            		$mdDialog.cancel();
+            		this.$mdDialog.cancel();
             	};
             	
             	this.ok = function() {
-            		$mdDialog.hide(this.result);
+            		this.$mdDialog.hide(this.result);
             	};
             },
             templateUrl: require.toUrl('./basicDialog.html'),
