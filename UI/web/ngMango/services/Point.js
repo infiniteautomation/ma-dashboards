@@ -210,8 +210,7 @@ function PointFactory($resource, $http, $timeout, Util, User) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            },
-            cache: true
+            }
         },
         rql: {
         	url: '/rest/v1/data-points?:query',
@@ -220,14 +219,12 @@ function PointFactory($resource, $http, $timeout, Util, User) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            },
-            cache: true
+            }
         },
         getById: {
             url: '/rest/v1/data-points/by-id/:id',
             method: 'GET',
-            isArray: false,
-            cache: true
+            isArray: false
         },
         save: {
             method: 'POST',
