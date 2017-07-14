@@ -111,12 +111,13 @@ function pointValues(Point, Util, $q, statistics) {
             });
 
             $scope.$watch('point.xid', function(newValue, oldValue) {
+                if (newValue === undefined) return;
             	$scope.points = [$scope.point];
             });
 
             $scope.$watch(function() {
             	var xids = [];
-            	if ($scope.points) {
+            	if ($scope.points.length > 0) {
 	            	for (var i = 0; i < $scope.points.length; i++) {
 	            		if (!$scope.points[i]) continue;
 	            		xids.push($scope.points[i].xid);
