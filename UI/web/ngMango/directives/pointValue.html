@@ -28,7 +28,7 @@
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Show Table</md-tooltip>
                 <md-icon>format_align_justify</md-icon>
             </md-button>
-            <md-button class="md-primary md-icon-button" ng-click="$ctrl.showSetPointDialog($event, $ctrl.point)">
+            <md-button class="md-primary md-icon-button" ng-if="$ctrl.point.pointLocator.settable" ng-click="$ctrl.showSetPointDialog($event, $ctrl.point)">
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Set Point</md-tooltip>
                 <md-icon>edit</md-icon>
             </md-button>
