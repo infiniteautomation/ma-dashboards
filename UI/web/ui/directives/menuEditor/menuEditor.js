@@ -60,6 +60,11 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
             };
             
             $scope.getChildren = function getChildren() {
+            	if (!$scope.currentItem.children) {
+            		$scope.editItems = [];
+            		return;
+            	}
+            	
                 // sort items by weight then name
                 $scope.editItems = $scope.currentItem.children.sort(function(a, b) {
                     if (a.weight < b.weight) return -1;
@@ -161,12 +166,8 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                                 }
                             });
                         }
-                        
-                        // prevent stack overflow from cyclic copy of parent/children
-                        delete item.parent;
-                        delete item.children;
-                        angular.copy(item, origItem);
-                        item = origItem;
+
+                        item = angular.extend(origItem, item);
                     }
 
                     // add item back into new parent's children
