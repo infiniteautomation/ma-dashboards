@@ -624,6 +624,7 @@ var User = servicesInjector.get('maUser');
 var JsonStore = servicesInjector.get('maJsonStore');
 var $q = servicesInjector.get('$q');
 var $http = servicesInjector.get('$http');
+var maCssInjector = servicesInjector.get('maCssInjector');
 
 var userAndUserSettingsPromise = User.getCurrent().$promise.then(null, function() {
     return User.autoLogin();
@@ -661,8 +662,14 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     }
 
     if (MA_UI_SETTINGS.userCss) {
-    	var maCssInjector = servicesInjector.get('maCssInjector');
     	maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', '[tracking-name="uiMain"]');
+    }
+    
+    // contains fix for https://github.com/angular/material/issues/10516
+    var userAgent = navigator.userAgent;
+    if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
+    		userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
+    	maCssInjector.injectLink(require.toUrl('./styles/safari.css'), 'safariCss', '[tracking-name="uiMain"]');
     }
     
     return MA_UI_SETTINGS;
