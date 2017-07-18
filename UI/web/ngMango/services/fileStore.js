@@ -191,7 +191,14 @@ function fileStore($http, maUtil) {
     function FileStoreFile(fileStore, file) {
     	angular.extend(this, file);
     	this.fileStore = fileStore;
-    	this.url = fileStoreUrl + '/' + fileStore + '/' + this.folderPath + this.filename;
+    	
+    	var urlArray = [fileStoreUrl, fileStore];
+    	if (this.folderPath) {
+    		urlArray.push(this.folderPath);
+    	}
+    	urlArray.push(this.filename);
+    	this.url = urlArray.join('/');
+    	
     	this.editMode = this.editModes[this.mimeType];
     }
     
