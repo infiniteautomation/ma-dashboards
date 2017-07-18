@@ -31,7 +31,8 @@
     "ngmap": "~1.17.7",
     "js-sha512": "~0.3.0",
     "papaparse": "~4.1.4",
-    "globalize": "~1.2.3"
+    "globalize": "~1.2.3",
+    "ipaddr": "~1.4.0"
   },
   "overrides": {
     "ace-builds": {

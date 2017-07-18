@@ -88,6 +88,7 @@ requirejs.config({
         'globalize': vendor + '/globalize/globalize',
         'cldr': vendor + '/cldrjs/cldr',
         'cldr-data': vendor + '/cldr-data',
+        'ipaddr': vendor + '/ipaddr/ipaddr'
     },
     shim : {
         'angular': {
@@ -274,6 +275,11 @@ requirejs.config({
         },
         'amcharts/plugins/responsive/responsive': {
             deps: ['amcharts/amcharts']
+        },
+        'ipaddr': {
+            init: function() {
+                return window.ipaddr;
+            }
         }
     }
 });
