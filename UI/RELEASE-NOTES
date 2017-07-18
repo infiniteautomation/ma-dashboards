@@ -1,3 +1,9 @@
+*Version 3.1.7*
+* Fix incorrect file store URLs
+* Fix bugs editing menu items
+* Fix some Safari rendering issues for flex box
+* Bug fixes
+
 *Version 3.1.6*
 * Latest ngMango API is located in web/ngMango instead of ngMango-3.1
 * Number of point values returned from the API are now limited so UI doesn't crash (configurable via UI settings page)
