@@ -23,6 +23,10 @@ define(['amcharts/gauge', 'require', 'angular', './PointValueController'], funct
  * @param {number=} value Allows you to set the gauge to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
  * @param {number=} start Sets the starting value for the gauge.
  * @param {number=} end Sets the ending value for the gauge.
+ * @param {boolean=} auto-start Set to `true` to enable auto selecting a `start` value for the gauge based on minimum value
+ * from past week.
+ * @param {boolean=} auto-end Set to `true` to enable auto selecting an `end` value for the gauge based on maximum value
+ * from past week.
  * @param {number=} band-1-end Sets the ending value for the first band.
  * @param {string=} band-1-color Sets the color for the first band.
  * @param {number=} band-2-end Sets the ending value for the second band.
@@ -68,7 +72,11 @@ band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:100%; height
 function gaugeChart() {
     return {
         restrict: 'E',
-        template: '<div ng-class="classes" class="amchart"></div>',
+        template: '<div ng-class="classes" class="amchart"></div>' +
+        '<ma-point-statistics point="$ctrl.point" point-xid="{{$ctrl.pointXid}}"' +
+        ' from="from" to="to" statistics="$ctrl.pointStats"></ma-point-statistics>' +
+        '<ma-date-range-picker from="from" to="to" preset="LAST_1_WEEKS" update-interval="1 minutes"' +
+        ' style="display: none;"></ma-date-range-picker>',
         scope: {},
         controller: GaugeChartController,
         controllerAs: '$ctrl',
@@ -77,6 +85,8 @@ function gaugeChart() {
           pointXid: '@?',
           start: '<?',
           end: '<?',
+          autoStart: '<?',
+          autoEnd: '<?',
           interval: '<?',
           band1End: '<?',
           band1Color: '@',
@@ -109,13 +119,16 @@ function gaugeChart() {
                 pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
                 band1Color: {type: 'color'},
                 band2Color: {type: 'color'},
-                band3Color: {type: 'color'}
+                band3Color: {type: 'color'},
+                autoStart: {type: 'boolean'},
+                autoEnd: {type: 'boolean'}
             }
         }
     };
 }
 
 GaugeChartController.$inject = PointValueController.$inject;
+
 function GaugeChartController() {
     PointValueController.apply(this, arguments);
     
@@ -129,6 +142,22 @@ GaugeChartController.prototype.$onInit = function() {
     this.updateChart();
     this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
     this.updateChartValue();
+
+
+
+    if(this.autoStart || this.autoEnd) {
+        this.$scope.$watch('$ctrl.pointStats', function(newValue, oldValue) {
+            if (newValue === undefined) return;
+
+            if (this.autoStart) {
+                this.start = Math.floor(newValue.minimum.value / 10) * 10;
+            }
+            if (this.autoEnd) {
+                this.end =  Math.ceil(newValue.maximum.value / 10) * 10;
+            }
+            this.updateChart();
+        }.bind(this));
+    }
 };
 
 GaugeChartController.prototype.$onChanges = function(changes) {
