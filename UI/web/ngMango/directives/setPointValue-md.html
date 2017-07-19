@@ -1,6 +1,6 @@
 <form>
     <div layout="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'column' : 'row'}}" layout-align="start center" ng-mouseenter="$ctrl.isOpen=true" ng-mouseleave="$ctrl.isOpen=false">
-    	<div layout>
+    	<div layout="row" layout-align="start center">
             <label ng-if="$ctrl.label" ng-bind="$ctrl.label"></label>
             <md-input-container flex ng-if="$ctrl.inputType === 'numeric'">
                 <input type="number" step="{{$ctrl.step}}" ng-model="$ctrl.inputValue"  aria-label="{{'common.value' | maTr}}"

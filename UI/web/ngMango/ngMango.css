@@ -437,6 +437,23 @@ ma-watch-list-chart ma-serial-chart {
   height: 100%;
 }
 
+ma-slider md-slider-container {
+  height: 100%;
+}
+
+ma-slider md-input-container {
+  max-height: 10px;
+  max-width: 77px !important;
+}
+
+ma-slider h5 {
+  max-width: 100% !important;
+}
+
+ma-point-value, ma-slider {
+  white-space: nowrap;
+}
+
 ma-point-value.ma-flash-on-change {
     transition: color 0.2s;
 }

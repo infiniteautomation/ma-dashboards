@@ -1,45 +1,45 @@
 <ma-get-point-value ng-if="$ctrl.pointXid" point-xid="{{$ctrl.pointXid}}" point="$ctrl.point"></ma-get-point-value>
 
-<md-slider-container ng-disabled="!$ctrl.point.enabled || !$ctrl.point.pointLocator.settable" style="height: 100%;">
-    <md-input-container  ng-if="!$ctrl.hideInput">
+<md-slider-container ng-disabled="!$ctrl.point.enabled || !$ctrl.point.pointLocator.settable">
+    <md-input-container ng-if="!$ctrl.hideInput" flex>
         <input step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}" type="number" ng-model="$ctrl.point.valueFn"
                ng-model-options="{getterSetter:true}">
     </md-input-container>
 
     <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
                ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
-               ng-if="!$ctrl.vertical && !$ctrl.invert && !$ctrl.discrete">
+               ng-if="!$ctrl.vertical && !$ctrl.invert && !$ctrl.discrete" flex>
     </md-slider>
 
     <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
                ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
-               ng-if="$ctrl.vertical && !$ctrl.invert && !$ctrl.discrete" md-vertical>
+               ng-if="$ctrl.vertical && !$ctrl.invert && !$ctrl.discrete" md-vertical flex>
     </md-slider>
     <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
                ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
-               ng-if="!$ctrl.vertical && $ctrl.invert && !$ctrl.discrete" md-invert>
+               ng-if="!$ctrl.vertical && $ctrl.invert && !$ctrl.discrete" md-invert flex>
     </md-slider>
     <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
                ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
-               ng-if="!$ctrl.vertical && !$ctrl.invert && $ctrl.discrete" md-discrete>
-    </md-slider>
-
-    <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
-               ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
-               ng-if="$ctrl.vertical && $ctrl.invert && !$ctrl.discrete" md-vertical md-invert>
-    </md-slider>
-    <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
-               ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
-               ng-if="$ctrl.vertical && !$ctrl.invert && $ctrl.discrete" md-vertical md-discrete>
-    </md-slider>
-    <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
-               ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
-               ng-if="!$ctrl.vertical && $ctrl.invert && $ctrl.discrete" md-invert md-discrete>
+               ng-if="!$ctrl.vertical && !$ctrl.invert && $ctrl.discrete" md-discrete flex>
     </md-slider>
 
     <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
                ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
-               ng-if="$ctrl.vertical && $ctrl.invert && $ctrl.discrete" md-vertical md-invert md-discrete>
+               ng-if="$ctrl.vertical && $ctrl.invert && !$ctrl.discrete" md-vertical md-invert flex>
+    </md-slider>
+    <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
+               ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
+               ng-if="$ctrl.vertical && !$ctrl.invert && $ctrl.discrete" md-vertical md-discrete flex>
+    </md-slider>
+    <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
+               ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
+               ng-if="!$ctrl.vertical && $ctrl.invert && $ctrl.discrete" md-invert md-discrete flex>
+    </md-slider>
+
+    <md-slider step="{{$ctrl.step}}" min="{{$ctrl.min}}" max="{{$ctrl.max}}"
+               ng-model="$ctrl.point.valueFn" ng-model-options="{getterSetter:true}"
+               ng-if="$ctrl.vertical && $ctrl.invert && $ctrl.discrete" md-vertical md-invert md-discrete flex>
     </md-slider>
 
     <h5 ng-if="$ctrl.label === 'Name'" ng-bind="$ctrl.point.name"></h5>
