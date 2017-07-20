@@ -175,6 +175,13 @@ function DataSourceFactory($resource, Util) {
             method: 'GET',
             isArray: false,
             cache: true
+        },
+        save: {
+            method: 'POST',
+            url: '/rest/v1/data-sources'
+        },
+        update: {
+            method: 'PUT'
         }
     });
 
