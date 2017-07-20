@@ -131,6 +131,7 @@ FileStoreBrowserController.prototype.listFiles = function() {
 		this.file = null;
 		this.filenames = {};
 		this.selectedFiles = [];
+		delete this.lastIndex;
 		
 		if (this.path.length === 1 && this.fileStoreNames[this.path[0]])
 			return;
@@ -145,6 +146,7 @@ FileStoreBrowserController.prototype.listFiles = function() {
 	this.file = null;
 	this.filenames = {};
 	this.selectedFiles = [];
+	delete this.lastIndex;
 	
 	if (this.path.length) {
 		this.listPromise = this.maFileStore.listFiles(this.path).then(function(files) {
@@ -211,7 +213,7 @@ FileStoreBrowserController.prototype.pathClicked = function(event, index) {
 	}
 };
 
-FileStoreBrowserController.prototype.fileClicked = function(event, file) {
+FileStoreBrowserController.prototype.fileClicked = function(event, file, index) {
 	this.file = file;
 	
 	if (file.directory) {
@@ -223,18 +225,38 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file) {
 		}
 		return;
 	}
-
+	
 	if (this.multiple && (event.ctrlKey || event.metaKey)) {
 		if (this.filenames[file.filename]) {
 			this.removeFile(file);
 		} else {
 			this.addFile(file);
 		}
+	} else if (this.multiple && event.shiftKey && isFinite(this.lastIndex)) {
+		event.preventDefault();
+		
+		var fromIndex, toIndex;
+		if (this.lastIndex < index) {
+			fromIndex = this.lastIndex;
+			toIndex = index;
+		} else {
+			fromIndex = index;
+			toIndex = this.lastIndex;
+		}
+		
+		for (var i = fromIndex; i <= toIndex; i++) {
+			var loopFile = this.files[i];
+			if (!this.filenames[loopFile.filename]) {
+				this.addFile(loopFile);
+			}
+		}
 	} else {
 		this.selectedFiles = [];
 		this.filenames = {};
 		this.addFile(file);
 	}
+	
+	this.lastIndex = index;
 	
 	var urls = this.selectedFiles.map(function(file) {
 		return file.url;
