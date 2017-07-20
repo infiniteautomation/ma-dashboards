@@ -19,11 +19,13 @@ var fileStoreBrowser = {
     	extensions: '@?',
     	preview: '<?',
     	disableEdit: '<?',
-    	editingFile: '&?'
+    	editingFile: '&?',
+    	multiple: '<?'
     },
     designerInfo: {
     	attributes: {
-    		selectDirectories: {type: 'boolean'}
+    		selectDirectories: {type: 'boolean'},
+    		multiple: {type: 'boolean'}
     	}
     }
 };
@@ -81,34 +83,52 @@ FileStoreBrowserController.prototype.$onChanges = function(changes) {
 
 // ng-model value changed outside of this directive
 FileStoreBrowserController.prototype.render = function() {
-	var url = this.ngModelCtrl.$viewValue;
-
-	try {
-		this.path = this.maFileStore.fromUrl(url);
-		if (this.path.directory) {
-			this.filename = null;
-		} else {
-			this.filename = this.path.pop();
-		}
-	} catch (e) {
+	var urls = this.ngModelCtrl.$viewValue;
+	if (!angular.isArray(urls)) {
+		urls = urls ? [urls] : [];
 	}
+
+	this.path = [this.restrictToStore || 'default'];
 	
-	this.listFiles().then(function(files) {
-		if (this.filename) {
-			files.some(function(file) {
-				if (file.filename === this.filename) {
-					this.file = file;
-					return true;
-				}
-			}.bind(this));
+	var filenames = {};
+	urls.forEach(function(url, index) {
+		var path;
+		try {
+			path = this.maFileStore.fromUrl(url);
+		} catch (e) {
+			return;
 		}
+
+		if (!path.directory) {
+			var filename = path.pop(); // remove filename from path
+			filenames[filename] = true;
+		}
+		
+		if (index === 0) {
+			this.path = path;
+		}
+	}.bind(this));
+
+	this.listFiles().then(function(files) {
+		this.filenames = filenames;
+		this.selectedFiles = files.filter(function(file, index) {
+			if (filenames[file.filename]) {
+				// set the preview file to the first file in filenames
+				if (index === 0) {
+					this.file = file;
+				}
+				return true;
+			}
+		}.bind(this));
 	}.bind(this));
 };
 
 FileStoreBrowserController.prototype.listFiles = function() {
 	var listErrorHandler = function() {
 		this.files = [];
-		this.filename = null;
+		this.file = null;
+		this.filenames = {};
+		this.selectedFiles = [];
 		
 		if (this.path.length === 1 && this.fileStoreNames[this.path[0]])
 			return;
@@ -119,6 +139,10 @@ FileStoreBrowserController.prototype.listFiles = function() {
 			this.listFiles();
 		}
 	}.bind(this);
+	
+	this.file = null;
+	this.filenames = {};
+	this.selectedFiles = [];
 	
 	if (this.path.length) {
 		this.listPromise = this.maFileStore.listFiles(this.path).then(function(files) {
@@ -174,25 +198,52 @@ FileStoreBrowserController.prototype.pathClicked = function(event, index) {
 
 	this.listFiles();
 	
-	if (this.selectDirectories && this.path.length) {
+	if (!this.multiple && this.selectDirectories && this.path.length) {
 		this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(this.path, true));
 	}
 };
 
 FileStoreBrowserController.prototype.fileClicked = function(event, file) {
 	this.file = file;
-	var path = this.path;
+	
 	if (file.directory) {
-		this.filename = null;
 		this.path.push(file.filename);
 		this.listFiles();
+		
+		if (!this.multiple && this.selectDirectories) {
+			this.ngModelCtrl.$setViewValue(file.url);
+		}
+		return;
+	}
+
+	if (this.multiple && (event.ctrlKey || event.metaKey)) {
+		if (this.filenames[file.filename]) {
+			this.removeFile(file);
+		} else {
+			this.addFile(file);
+		}
 	} else {
-		this.filename = file.filename;
-		path = this.path.concat(file.filename);
+		this.selectedFiles = [];
+		this.filenames = {};
+		this.addFile(file);
 	}
-	if (!file.directory || this.selectDirectories) {
-		this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(path, file.directory));
-	}
+	
+	var urls = this.selectedFiles.map(function(file) {
+		return file.url;
+	});
+	
+	this.ngModelCtrl.$setViewValue(this.multiple ? urls : urls[0]);
+};
+
+FileStoreBrowserController.prototype.addFile = function(file) {
+	this.filenames[file.filename] = true;
+	this.selectedFiles.push(file);
+};
+
+FileStoreBrowserController.prototype.removeFile = function(file) {
+	delete this.filenames[file.filename];
+	var index = this.selectedFiles.indexOf(file);
+	this.selectedFiles.splice(index, 1);
 };
 
 FileStoreBrowserController.prototype.cancelClick = function(event) {
