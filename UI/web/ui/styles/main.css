@@ -306,6 +306,10 @@ md-sidenav.site-sidenav.md-closed {
   list-style-type: disc;
 }
 
+.ma-help-sidebar .usage table {
+  table-layout: fixed;
+}
+
 /***************
  * TYPE DEFAULTS
  ***************/
