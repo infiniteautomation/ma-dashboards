@@ -542,6 +542,10 @@ md-card md-card-content.ma-no-padding {
 	margin-bottom: 8px;
 }
 
+.ma-text-centered {
+	text-align: center;
+}
+
 /* permissions menu */
 
 .ma-permissions-menu {
