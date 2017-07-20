@@ -30,14 +30,16 @@ var fileStoreBrowser = {
     }
 };
 
-FileStoreBrowserController.$inject = ['maFileStore', '$element', 'maDialogHelper', '$q'];
-function FileStoreBrowserController(maFileStore, $element, maDialogHelper, $q) {
+FileStoreBrowserController.$inject = ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter'];
+function FileStoreBrowserController(maFileStore, $element, maDialogHelper, $q, $filter) {
     this.maFileStore = maFileStore;
     this.$element = $element;
     this.maDialogHelper = maDialogHelper;
     this.$q = $q;
+    this.$filter = $filter;
     
     this.tableOrder = ['-directory', 'filename'];
+    this.filterAndReorderFiles = this.filterAndReorderFiles.bind(this);
 }
 
 FileStoreBrowserController.prototype.$onInit = function() {
@@ -146,11 +148,8 @@ FileStoreBrowserController.prototype.listFiles = function() {
 	
 	if (this.path.length) {
 		this.listPromise = this.maFileStore.listFiles(this.path).then(function(files) {
-			if (this.mimeTypes || this.extensions) {
-				this.files = files.filter(this.filterFiles, this);
-			} else {
-				this.files = files;
-			}
+			this.unFilteredFiles = files;
+			this.filterAndReorderFiles();
 	    	return this.files;
 		}.bind(this), listErrorHandler);
 	} else {
@@ -188,6 +187,15 @@ FileStoreBrowserController.prototype.filterFiles = function(file) {
 		if (this.mimeTypeMap[file.mimeType.toLowerCase()]) return true;
 		if (this.mimeTypeMap[file.mimeType.toLowerCase().replace(/\/.+$/, '/*')]) return true;
 	}
+};
+
+FileStoreBrowserController.prototype.filterAndReorderFiles = function(file) {
+	var files = this.unFilteredFiles;
+	if (this.mimeTypes || this.extensions) {
+		files = files.filter(this.filterFiles, this);
+	}
+
+	this.files = this.$filter('orderBy')(files, this.tableOrder);
 };
 
 FileStoreBrowserController.prototype.pathClicked = function(event, index) {
@@ -279,14 +287,12 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
 	if (!files.length) return;
 
 	this.uploadPromise = this.maFileStore.uploadFiles(this.path, files).then(function(uploaded) {
-		if (this.mimeTypes || this.extensions) {
-			uploaded = uploaded.filter(this.filterFiles, this);
-		}
+		// append uploaded to this.unFilteredFiles
+		Array.prototype.splice.apply(this.unFilteredFiles, [this.unFilteredFiles.length, 0].concat(uploaded));
+		this.filterAndReorderFiles();
+
 		if (uploaded.length) {
-			// append uploaded to this.files
-			Array.prototype.splice.apply(this.files, [this.files.length, 0].concat(uploaded));
 			this.fileClicked(null, uploaded[0]);
-			
 			this.maDialogHelper.toast('ui.fileBrowser.filesUploaded', null, uploaded.length);
 		}
 	}.bind(this), function(error) {

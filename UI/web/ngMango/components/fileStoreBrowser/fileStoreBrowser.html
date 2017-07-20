@@ -40,7 +40,7 @@
 	<md-content flex class="ma-file-store-browser-files">
 		<md-table-container>
 		  <table md-table md-row-select="false">
-		    <thead md-head md-order="$ctrl.tableOrder">
+		    <thead md-head md-order="$ctrl.tableOrder" md-on-reorder="$ctrl.filterAndReorderFiles">
 		      <tr md-row>
 		        <th md-column md-order-by="directory"></th>
 		        <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>
@@ -51,7 +51,7 @@
 		      </tr>
 		    </thead>
 		    <tbody md-body>
-		      <tr md-row ng-repeat="file in $ctrl.files | orderBy:$ctrl.tableOrder track by file.filename"
+		      <tr md-row ng-repeat="file in $ctrl.files track by file.filename"
 		      		ng-click="$ctrl.fileClicked($event, file, $index)" ng-class="{'ma-file-selected': $ctrl.filenames[file.filename]}">
 		        <td md-cell>
 		        	<md-icon ng-if="file.directory">folder</md-icon>
