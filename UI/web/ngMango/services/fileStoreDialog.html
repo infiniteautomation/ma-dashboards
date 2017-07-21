@@ -17,7 +17,9 @@
 			extensions="{{$ctrl.options.extensions}}"
 			preview="$ctrl.options.preview"
 			disable-edit="$ctrl.options.disableEdit"
-			editing-file="$ctrl.editingFile = $file"></ma-file-store-browser>
+			editing-file="$ctrl.editingFile = $file"
+			multiple="$ctrl.options.multiple">
+		</ma-file-store-browser>
 	</md-dialog-content>
 	<md-dialog-actions layout="row">
 	  <md-button ng-click="$ctrl.close()">
