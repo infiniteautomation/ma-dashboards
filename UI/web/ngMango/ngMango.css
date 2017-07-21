@@ -546,6 +546,13 @@ md-card md-card-content.ma-no-padding {
 	text-align: center;
 }
 
+.ma-no-user-select {
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
 /* permissions menu */
 
 .ma-permissions-menu {

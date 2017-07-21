@@ -52,7 +52,9 @@
 		    </thead>
 		    <tbody md-body>
 		      <tr md-row ng-repeat="file in $ctrl.files track by file.filename"
-		      		ng-click="$ctrl.fileClicked($event, file, $index)" ng-class="{'ma-file-selected': $ctrl.filenames[file.filename]}">
+		      		ng-click="$ctrl.fileClicked($event, file, $index)"
+		      		ng-class="{'ma-file-selected': $ctrl.filenames[file.filename]}"
+		      		class="ma-no-user-select">
 		        <td md-cell>
 		        	<md-icon ng-if="file.directory">folder</md-icon>
 		        	<md-icon ng-if="!file.directory">attachment</md-icon>

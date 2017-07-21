@@ -240,7 +240,6 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file, index) 
 		}
 	} else if (this.multiple && event.shiftKey && isFinite(this.lastIndex)) {
 		event.preventDefault();
-		event.stopImmediatePropagation();
 		
 		var fromIndex, toIndex;
 		if (this.lastIndex < index) {
