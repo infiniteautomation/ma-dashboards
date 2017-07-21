@@ -138,15 +138,13 @@ FileStoreBrowserController.prototype.listFiles = function() {
 		this.filenames = {};
 		this.selectedFiles = [];
 		delete this.lastIndex;
-		
-		if (this.path.length === 1 && this.fileStoreNames[this.path[0]])
-			return;
-		
+
 		var defaultStore = this.restrictToStore || 'default';
 		if (!(this.path.length === 1 && this.path[0] === defaultStore)) {
 			this.path = [defaultStore];
-			this.listFiles();
+			return this.listFiles();
 		}
+		return this.files;
 	}.bind(this);
 	
 	this.previewFile = null;
