@@ -89,8 +89,8 @@
 		</md-table-container>
 	</md-content>
 	<div ng-if="$ctrl.preview" flex-order-xs="-1" flex-order-sm="-1" class="ma-file-store-browser-preview" layout layout-align="center center">
-		<img ng-if="$ctrl.file.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.file.url}}">
-		<div ng-if="$ctrl.file.mimeType.indexOf('image/') !== 0" class="ma-no-preview" layout layout-align="center center" ma-tr="ui.fileBrowser.noPreviewAvailable"></div>
+		<img ng-if="$ctrl.previewFile.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.previewFile.url}}">
+		<div ng-if="$ctrl.previewFile.mimeType.indexOf('image/') !== 0" class="ma-no-preview" layout layout-align="center center" ma-tr="ui.fileBrowser.noPreviewAvailable"></div>
 	</div>
 </div>
 

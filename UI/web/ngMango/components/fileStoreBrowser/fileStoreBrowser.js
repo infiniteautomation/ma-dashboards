@@ -118,7 +118,7 @@ FileStoreBrowserController.prototype.render = function() {
 			if (filenames[file.filename]) {
 				if (firstSelected) {
 					// set the preview file to the first file in filenames
-					this.file = file;
+					this.previewFile = file;
 					
 					// set the lastIndex for shift clicking to the first selected file
 					this.lastIndex = index;
@@ -134,7 +134,7 @@ FileStoreBrowserController.prototype.render = function() {
 FileStoreBrowserController.prototype.listFiles = function() {
 	var listErrorHandler = function() {
 		this.files = [];
-		this.file = null;
+		this.previewFile = null;
 		this.filenames = {};
 		this.selectedFiles = [];
 		delete this.lastIndex;
@@ -149,7 +149,7 @@ FileStoreBrowserController.prototype.listFiles = function() {
 		}
 	}.bind(this);
 	
-	this.file = null;
+	this.previewFile = null;
 	this.filenames = {};
 	this.selectedFiles = [];
 	delete this.lastIndex;
@@ -220,7 +220,7 @@ FileStoreBrowserController.prototype.pathClicked = function(event, index) {
 };
 
 FileStoreBrowserController.prototype.fileClicked = function(event, file, index) {
-	this.file = file;
+	this.previewFile = file;
 	
 	if (file.directory) {
 		this.path.push(file.filename);
@@ -236,12 +236,13 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file, index) 
 		this.lastIndex = index;
 		
 		if (this.filenames[file.filename]) {
-			this.removeFile(file);
+			this.removeFileFromSelection(file);
 		} else {
-			this.addFile(file);
+			this.addFileToSelection(file);
 		}
 	} else if (this.multiple && event.shiftKey && isFinite(this.lastIndex)) {
 		event.preventDefault();
+		event.stopImmediatePropagation();
 		
 		var fromIndex, toIndex;
 		if (this.lastIndex < index) {
@@ -252,19 +253,16 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file, index) 
 			toIndex = this.lastIndex;
 		}
 		
-		this.selectedFiles = [];
-		this.filenames = {};
-		for (var i = fromIndex; i <= toIndex; i++) {
-			this.addFile(this.files[i]);
-		}
+		this.setSelection(this.files.slice(fromIndex, toIndex + 1));
 	} else {
 		this.lastIndex = index;
-		
-		this.selectedFiles = [];
-		this.filenames = {};
-		this.addFile(file);
+		this.setSelection([file]);
 	}
 	
+	this.setViewValueToSelection();
+};
+
+FileStoreBrowserController.prototype.setViewValueToSelection = function() {
 	var urls = this.selectedFiles.map(function(file) {
 		return file.url;
 	});
@@ -272,15 +270,24 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file, index) 
 	this.ngModelCtrl.$setViewValue(this.multiple ? urls : urls[0]);
 };
 
-FileStoreBrowserController.prototype.addFile = function(file) {
+FileStoreBrowserController.prototype.setSelection = function(files) {
+	this.selectedFiles = [];
+	this.filenames = {};
+	for (var i = 0; i < files.length; i++) {
+		this.addFileToSelection(files[i]);
+	}
+};
+
+FileStoreBrowserController.prototype.addFileToSelection = function(file) {
 	this.filenames[file.filename] = true;
 	this.selectedFiles.push(file);
 };
 
-FileStoreBrowserController.prototype.removeFile = function(file) {
+FileStoreBrowserController.prototype.removeFileFromSelection = function(file) {
 	delete this.filenames[file.filename];
 	var index = this.selectedFiles.indexOf(file);
-	this.selectedFiles.splice(index, 1);
+	if (index >= 0)
+		return this.selectedFiles.splice(index, 1);
 };
 
 FileStoreBrowserController.prototype.cancelClick = function(event) {
@@ -297,8 +304,15 @@ FileStoreBrowserController.prototype.deleteFile = function(event, file) {
 		return this.maFileStore.remove(this.path.concat(file.filename), true);
 	}.bind(this)).then(function() {
 		var index = this.files.indexOf(file);
-		if (index >= 0)
+		if (index >= 0) {
 			this.files.splice(index, 1);
+		}
+		if (this.removeFileFromSelection(file)) {
+			this.setViewValueToSelection();
+		}
+		if (this.previewFile === file) {
+			this.previewFile = this.selectedFiles.length ? this.selectedFiles[0] : null;
+		}
 		this.maDialogHelper.toast('ui.fileBrowser.deletedSuccessfully', null, file.filename);
 	}.bind(this), function(error) {
 		if (!error) return; // dialog cancelled
@@ -321,7 +335,10 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
 		this.filterAndReorderFiles();
 
 		if (uploaded.length) {
-			this.fileClicked(null, uploaded[0]);
+			this.setSelection(uploaded.filter(this.filterFiles, this));
+			this.setViewValueToSelection();
+			this.previewFile = this.selectedFiles.length ? this.selectedFiles[0] : null;
+			
 			this.maDialogHelper.toast('ui.fileBrowser.filesUploaded', null, uploaded.length);
 		}
 	}.bind(this), function(error) {

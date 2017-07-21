@@ -30,7 +30,8 @@ var button = {
     		hue: {options: ['hue-1', 'hue-2', 'hue-3']},
     		uiSref: { type: 'state-name'},
     		maChooseFile: {},
-    		maChooseFilePath: {}
+    		maChooseFilePath: {},
+    		maChooseFileOptions: {}
     	}
     }
 };
