@@ -25,9 +25,9 @@ function pageEditorControls() {
 }
 
 PageEditorControlsController.$inject = ['$scope', 'maUiPages', 'maJsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
-    'localStorageService', '$mdDialog', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateRequest', '$document'];
+    'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateRequest', '$document'];
 function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
-        localStorageService, $mdDialog, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION, $templateRequest, $document) {
+        localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION, $templateRequest, $document) {
     this.$scope = $scope;
     this.maUiPages = maUiPages;
     this.jsonStoreEventManager = jsonStoreEventManager;
@@ -36,6 +36,7 @@ function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, 
     this.$state = $state;
     this.localStorageService = localStorageService;
     this.$mdDialog = $mdDialog;
+    this.$mdToast = $mdToast;
     this.Translate = Translate;
     this.Menu = Menu;
     this.$window = $window;
@@ -253,6 +254,15 @@ PageEditorControlsController.prototype.savePage = function savePage() {
             if (!found) {
                 pageSummaries.push(this.selectedPageSummary);
             }
+
+            var toast = this.$mdToast.simple()
+                .textContent(this.Translate.trSync('ui.app.pageSaved', [this.selectedPageSummary.name]))
+                .action(this.Translate.trSync('common.ok'))
+                .highlightAction(true)
+                .position('bottom center')
+                .hideDelay(2000);
+
+            this.$mdToast.show(toast);
 
             return this.pageSummaryStore.$save();
         }.bind(this));
