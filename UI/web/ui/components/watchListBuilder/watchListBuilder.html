@@ -34,7 +34,7 @@
       <md-tab id="watchlist-query" ng-if="$ctrl.watchlist.type === 'query'">
         <md-tab-label><span ma-tr="ui.app.query"></span></md-tab-label>
         <md-tab-body>
-          <div ng-include="$ctrl.baseUrl('/query.html')"></div>
+          <div ng-include="$ctrl.baseUrl('/query.html')" ng-hide="$ctrl.selectedTab === 0"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-query-preview" ng-if="$ctrl.watchlist.type === 'query'">
@@ -58,7 +58,7 @@
       <md-tab id="watchlist-select-hierarchy" ng-if="$ctrl.watchlist.type === 'static'">
         <md-tab-label><span ma-tr="ui.app.selectFromHierarchy"></span></md-tab-label>
         <md-tab-body>
-          <div ng-include="$ctrl.baseUrl('/selectFromHierarchy.html')"></div>
+          <div ng-include="$ctrl.baseUrl('/selectFromHierarchy.html')" ng-hide="$ctrl.selectedTab === 0"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-selected-points" ng-if="$ctrl.watchlist.type === 'static'">
