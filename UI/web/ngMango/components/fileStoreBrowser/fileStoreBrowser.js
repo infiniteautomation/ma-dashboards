@@ -113,11 +113,17 @@ FileStoreBrowserController.prototype.render = function() {
 
 	this.listFiles().then(function(files) {
 		this.filenames = filenames;
+		var firstSelected = true;
 		this.selectedFiles = files.filter(function(file, index) {
 			if (filenames[file.filename]) {
-				// set the preview file to the first file in filenames
-				if (index === 0) {
+				if (firstSelected) {
+					// set the preview file to the first file in filenames
 					this.file = file;
+					
+					// set the lastIndex for shift clicking to the first selected file
+					this.lastIndex = index;
+					
+					firstSelected = false;
 				}
 				return true;
 			}
@@ -227,6 +233,8 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file, index) 
 	}
 	
 	if (this.multiple && (event.ctrlKey || event.metaKey)) {
+		this.lastIndex = index;
+		
 		if (this.filenames[file.filename]) {
 			this.removeFile(file);
 		} else {
@@ -244,19 +252,18 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file, index) 
 			toIndex = this.lastIndex;
 		}
 		
+		this.selectedFiles = [];
+		this.filenames = {};
 		for (var i = fromIndex; i <= toIndex; i++) {
-			var loopFile = this.files[i];
-			if (!this.filenames[loopFile.filename]) {
-				this.addFile(loopFile);
-			}
+			this.addFile(this.files[i]);
 		}
 	} else {
+		this.lastIndex = index;
+		
 		this.selectedFiles = [];
 		this.filenames = {};
 		this.addFile(file);
 	}
-	
-	this.lastIndex = index;
 	
 	var urls = this.selectedFiles.map(function(file) {
 		return file.url;
