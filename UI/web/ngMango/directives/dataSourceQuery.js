@@ -48,6 +48,10 @@ function dataSourceQuery(DataSource) {
                 value.sort = value.sort || DEFAULT_SORT;
                 $scope.dataSources = DataSource.objQuery(value);
             }, true);
+        },
+        designerInfo: {
+            translation: 'ui.components.dataSourceQuery',
+            icon: 'device_hub'
         }
     };
 }

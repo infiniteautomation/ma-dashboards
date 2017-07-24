@@ -50,6 +50,10 @@ function deviceNameQuery(DeviceName) {
 
                 $scope.deviceNames = queryResult;
             });
+        },
+        designerInfo: {
+            translation: 'ui.components.deviceNameQuery',
+            icon: 'device_hub'
         }
     };
 }

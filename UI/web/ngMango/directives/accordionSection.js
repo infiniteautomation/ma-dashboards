@@ -16,15 +16,19 @@ function accordionSection() {
             maAccordionOpen: '<?'
         },
         template: '<div class="ma-slide-up" ng-if="accordionController.section[id]" ng-transclude></div>',
-        link: function($scope, $element, $attrs, accordionController) {
+        link: function ($scope, $element, $attrs, accordionController) {
             var id = $attrs.id;
-            
+
             $scope.accordionController = accordionController;
             $scope.id = id;
 
             if ($scope.maAccordionOpen) {
                 accordionController.open(id);
             }
+        },
+        designerInfo: {
+            translation: 'ui.components.accordionSection',
+            icon: 'line_weight'
         }
     };
 }

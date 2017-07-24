@@ -12,19 +12,19 @@ function indicator() {
         scope: {},
         controller: IndicatorController,
         bindToController: {
+            toggleOnClick: '<?',
             point: '<?',
             pointXid: '@?',
-            toggleOnClick: '<?',
             value: '<?'
         },
         designerInfo: {
             translation: 'ui.components.indicator',
-            icon: 'lightbulb_outline',
+            icon: 'flare',
             category: 'pointValue',
             attributes: {
                 point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
                 pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
-                toggleOnClick: {options: ['true', 'false']},
+                toggleOnClick: {type: 'boolean'},
                 colorTrue: {
                     type: 'color'
                 },

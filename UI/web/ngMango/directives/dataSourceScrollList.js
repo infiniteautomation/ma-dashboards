@@ -33,7 +33,11 @@ function dataSourceScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['maDataSource', DataSourceScrollListController]
+        controller: ['maDataSource', DataSourceScrollListController],
+        designerInfo: {
+            translation: 'ui.components.dataSourceScrollList',
+            icon: 'playlist_play'
+        }
     };
     
     function DataSourceScrollListController(DataSource) {

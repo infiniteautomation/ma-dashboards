@@ -39,6 +39,10 @@ function calc() {
             	}
     		});
         	$scope.$on('$destroy', deregister);
+        },
+        designerInfo: {
+            translation: 'ui.components.maCalc',
+            icon: 'add'
         }
     };
 }

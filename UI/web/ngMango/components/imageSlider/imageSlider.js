@@ -37,7 +37,11 @@ return {
         pointValues: '<'
     },
     controller: ImageSliderController,
-    templateUrl: require.toUrl('./imageSlider.html')
+    templateUrl: require.toUrl('./imageSlider.html'),
+    designerInfo: {
+        translation: 'ui.components.imageSlider',
+        icon: 'photo_library'
+    }
 };
 
 }); // define

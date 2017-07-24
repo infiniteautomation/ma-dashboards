@@ -135,7 +135,11 @@ function AceEditor() {
             mode: '@',
             theme: '@'
         },
-        controller: AceEditorController
+        controller: AceEditorController,
+        designerInfo: {
+            translation: 'ui.components.aceEditor',
+            icon: 'code'
+        }
     };
 }
 

@@ -35,7 +35,11 @@ function deviceNameScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['maDeviceName', '$timeout', DeviceNameScrollListController]
+        controller: ['maDeviceName', '$timeout', DeviceNameScrollListController],
+        designerInfo: {
+            translation: 'ui.components.deviceNameScrollList',
+            icon: 'playlist_play'
+        }
     };
     
     function DeviceNameScrollListController(DeviceName, $timeout) {

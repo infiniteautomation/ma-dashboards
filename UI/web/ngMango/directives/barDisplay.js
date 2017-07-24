@@ -23,7 +23,7 @@ function barDisplay() {
         },
         designerInfo: {
             translation: 'ui.components.barDisplay',
-            icon: 'trending_flat',
+            icon: 'insert_chart',
             category: 'pointValue',
             attributes: {
                 point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},

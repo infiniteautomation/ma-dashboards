@@ -17,6 +17,10 @@ function arrayInput() {
             ngModel.$formatters.push(function fromArray(modelValue) {
                 return angular.isArray(modelValue) ? modelValue.join($attrs.arrayDelimiter || ',') : modelValue;
             });
+        },
+        designerInfo: {
+            translation: 'ui.components.arrayInput',
+            icon: 'settings_input_component'
         }
     };
 }
