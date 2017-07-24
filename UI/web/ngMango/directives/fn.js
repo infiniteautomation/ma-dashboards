@@ -49,7 +49,11 @@ function maFnDirective($parse) {
                 }
                 return parsedFn(context, overrides);
             }
-    	}
+    	},
+        designerInfo: {
+            translation: 'ui.components.maFn',
+            icon: 'transform'
+        }
     };
 }
 

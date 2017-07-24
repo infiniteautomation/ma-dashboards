@@ -46,6 +46,10 @@ function filteringDeviceNameList($injector, $timeout, DeviceName) {
             };
             
             $scope.queryDeviceNames();
+        },
+        designerInfo: {
+            translation: 'ui.components.filteringDeviceNameList',
+            icon: 'filter_list'
         }
     };
 }

@@ -23,10 +23,12 @@ var fileStoreBrowser = {
     	multiple: '<?'
     },
     designerInfo: {
-    	attributes: {
-    		selectDirectories: {type: 'boolean'},
-    		multiple: {type: 'boolean'}
-    	}
+        attributes: {
+            selectDirectories: {type: 'boolean'},
+            multiple: {type: 'boolean'}
+        },
+        translation: 'ui.components.fileStoreBrowser',
+        icon: 'folder_open'
     }
 };
 

@@ -50,6 +50,10 @@ function filteringDataSourceList($injector, $timeout, DataSource) {
             
             if ($scope.autoInit)
                 $scope.queryDataSources();
+        },
+        designerInfo: {
+            translation: 'ui.components.filteringDataSourceList',
+            icon: 'filter_list'
         }
     };
 }

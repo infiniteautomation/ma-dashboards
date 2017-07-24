@@ -97,6 +97,10 @@ return {
     templateUrl: require.toUrl('./configExport.html'),
     bindings: {
         onExport: '&?'
+    },
+    designerInfo: {
+        translation: 'ui.components.configExport',
+        icon: 'import_export'
     }
 };
 

@@ -1,4 +1,3 @@
-
 <div ng-class="{'desktop': $mdMedia('gt-sm')}" layout="column" layout-gt-sm="row" flex layout-align="end end">
     <md-table-pagination flex flex-order="3" flex-order-gt-sm="1" class="underline" md-limit="limit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]" md-page="page" md-total="{{total}}" md-page-select md-on-paginate="onPaginate"></md-table-pagination>
     <md-button flex-order="2" class="md-raised md-primary md-hue-2" ng-click="acknowledgeAll()" ng-disabled="!totalUnAcknowledged"><span ma-tr="ui.app.acknowledge"></span> {{totalUnAcknowledged}} <span ma-tr="ui.app.events"></span></md-button>

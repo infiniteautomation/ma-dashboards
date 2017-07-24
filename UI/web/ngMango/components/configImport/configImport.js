@@ -52,6 +52,10 @@ return {
     templateUrl: require.toUrl('./configImport.html'),
     bindings: {
         jsonString: '<?'
+    },
+    designerInfo: {
+        translation: 'ui.components.configImport',
+        icon: 'import_export'
     }
 };
 

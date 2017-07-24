@@ -26,7 +26,11 @@ function filteringPointHierarchySelect($injector) {
             uniqueNames: '<?',
             labelText: '<'
         },
-        controller: PointHierarchyController
+        controller: PointHierarchyController,
+        designerInfo: {
+            translation: 'ui.components.filteringPointHierarchySelect',
+            icon: 'filter_list'
+        }
     };
 }
 

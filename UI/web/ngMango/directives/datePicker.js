@@ -36,7 +36,7 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
         restrict: 'E',
         designerInfo: {
             translation: 'ui.components.datePicker',
-            icon: 'access_time',
+            icon: 'date_range',
             category: 'timeAndDate',
             attributes: {
                 mode: {options: ['date', 'time', 'both']}

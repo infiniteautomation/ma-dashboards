@@ -33,6 +33,10 @@ function emptyInput($parse) {
                     wasUndefined = false;
                 }
             });
+        },
+        designerInfo: {
+            translation: 'ui.components.emptyInput',
+            icon: 'input'
         }
     };
 }

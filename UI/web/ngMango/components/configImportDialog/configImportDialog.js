@@ -89,6 +89,10 @@ return {
     templateUrl: require.toUrl('./configImportDialog.html'),
     bindings: {
         importData: '<'
+    },
+    designerInfo: {
+        translation: 'ui.components.configImportDialog',
+        icon: 'import_export'
     }
 };
 
