@@ -36,6 +36,11 @@ function watchListListFactory($injector) {
         },
         require: {
             'ngModelCtrl': 'ngModel'
+        },
+        designerInfo: {
+            translation: 'ui.components.watchListList',
+            icon: 'remove_red_eye',
+            category: 'watchLists'
         }
     };
 }

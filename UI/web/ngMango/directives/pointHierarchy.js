@@ -71,6 +71,10 @@ function pointHierarchy(PointHierarchy) {
             	    });
             	}
             }, true);
+        },
+        designerInfo: {
+            translation: 'ui.components.maPointHierarchy',
+            icon: 'share'
         }
     };
 

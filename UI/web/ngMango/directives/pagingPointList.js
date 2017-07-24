@@ -52,6 +52,10 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
             $scope.pointLabel = function(point) {
                 return point.deviceName + ' - ' + point.name;
             };
+        },
+        designerInfo: {
+            translation: 'ui.components.maPermissionsMenu',
+            icon: 'verified_user'
         }
     };
 }

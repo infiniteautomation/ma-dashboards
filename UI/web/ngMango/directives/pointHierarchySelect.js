@@ -30,7 +30,11 @@ function pointHierarchySelect($injector) {
             uniqueNames: '<?',
             showClear: '<?'
         },
-        controller: PointHierarchyController
+        controller: PointHierarchyController,
+        designerInfo: {
+            translation: 'ui.components.maPointHierarchySelect',
+            icon: 'share'
+        }
     };
 }
 

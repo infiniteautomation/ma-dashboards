@@ -94,6 +94,10 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
                 	}
                 });
             }
+        },
+        designerInfo: {
+            translation: 'ui.dox.jsonStore',
+            icon: 'sd_storage'
         }
     };
 }

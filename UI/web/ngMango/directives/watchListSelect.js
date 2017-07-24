@@ -63,7 +63,7 @@ function watchListSelectFactory($injector) {
         },
         designerInfo: {
             translation: 'ui.components.watchListSelect',
-            icon: 'arrow_drop_down',
+            icon: 'remove_red_eye',
             category: 'watchLists',
             attributes: {
                 ngModel: {defaultValue: 'designer.watchList', type: 'bidirectional', optional: false},

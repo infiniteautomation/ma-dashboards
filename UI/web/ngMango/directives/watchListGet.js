@@ -20,6 +20,11 @@ function watchListGetFactory() {
         },
         require: {
             'ngModelCtrl': 'ngModel'
+        },
+        designerInfo: {
+            translation: 'ui.components.watchListGet',
+            icon: 'remove_red_eye',
+            category: 'watchLists'
         }
     };
 }

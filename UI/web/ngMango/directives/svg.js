@@ -33,7 +33,9 @@ function svg($document, $templateCache) {
             size: {
                 width: '50px',
                 height: '50px'
-            }
+            },
+            translation: 'ui.components.maSvg',
+            icon: 'widgets'
         },
         compile: function(tElement, tAtts) {
             var attributesBySelector = {};

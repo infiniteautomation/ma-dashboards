@@ -58,6 +58,10 @@ return {
     bindings: {},
     transclude: {
         label: '?maLabel'
+    },
+    designerInfo: {
+        translation: 'ui.components.maUserSelect',
+        icon: 'people'
     }
 };
 

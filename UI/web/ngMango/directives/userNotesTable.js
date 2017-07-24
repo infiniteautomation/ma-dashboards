@@ -35,6 +35,10 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
             timezone: '@',
             disabled: '=?'
         },
+        designerInfo: {
+            translation: 'ui.components.maUserNotesTable',
+            icon: 'people'
+        },
         templateUrl: require.toUrl('./userNotesTable.html'),
         link: function ($scope, $element, attrs) {
             

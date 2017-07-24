@@ -16,7 +16,7 @@ var watchListParameters = {
     },
     designerInfo: {
         translation: 'ui.components.watchListParameters',
-        icon: 'settings',
+        icon: 'remove_red_eye',
         category: 'watchLists',
         size: {
             width: '100%'

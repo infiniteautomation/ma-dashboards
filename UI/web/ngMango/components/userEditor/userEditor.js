@@ -185,6 +185,10 @@ return {
         originalUser: '<?user',
         onSave: '&?',
         onDelete: '&?'
+    },
+    designerInfo: {
+        translation: 'ui.components.maUserEditor',
+        icon: 'people'
     }
 };
 

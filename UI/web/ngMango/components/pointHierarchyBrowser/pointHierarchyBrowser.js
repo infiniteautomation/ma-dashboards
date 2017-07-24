@@ -102,6 +102,10 @@ return {
         expanded: '<',
         selectSubfolders: '<',
         selectOneFolder: '<'
+    },
+    designerInfo: {
+        translation: 'ui.components.maPointHierarchyBrowser',
+        icon: 'share'
     }
 };
 

@@ -37,6 +37,10 @@ function startsAndRuntimesTable($injector) {
                 return require.toUrl('./startsAndRuntimesTable-md.html');
             }
             return require.toUrl('./startsAndRuntimesTable.html');
+        },
+        designerInfo: {
+            translation: 'ui.components.maStartAndRuntimesTable',
+            icon: 'grid_on'
         }
     };
 }

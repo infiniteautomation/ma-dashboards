@@ -142,6 +142,10 @@ return {
         expanded: '<',
         selectSubfolders: '<',
         showDeviceNames: '<'
+    },
+    designerInfo: {
+        translation: 'ui.components.maPointHierarchySelector',
+        icon: 'share'
     }
 };
 
