@@ -59,6 +59,10 @@ return {
     bindings: {
         showNewButton: '<?',
         newButtonClicked: '&'
+    },
+    designerInfo: {
+        translation: 'ui.components.maUserList',
+        icon: 'people'
     }
 };
 

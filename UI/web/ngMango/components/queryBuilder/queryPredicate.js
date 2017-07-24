@@ -38,6 +38,10 @@ return {
         node: '<',
         properties: '<',
         onDelete: '&'
+    },
+    designerInfo: {
+        translation: 'ui.components.maQueryPredicate',
+        icon: 'format_textdirection_l_to_r'
     }
 };
 

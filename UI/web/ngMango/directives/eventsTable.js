@@ -63,22 +63,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             timezone: '@'
         },
         designerInfo: {
-            translation: 'ui.components.gaugeChart',
-            icon: 'donut_large',
-            category: 'pointValue',
-            size: {
-                width: '200px',
-                height: '200px'
-            },
-            attributes: {
-                point: {nameTr: 'ui.app.dataPoint', type: 'datapoint'},
-                pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
-                band1Color: {type: 'color'},
-                band2Color: {type: 'color'},
-                band3Color: {type: 'color'},
-                autoStart: {type: 'boolean'},
-                autoEnd: {type: 'boolean'}
-            }
+            translation: 'ui.app.eventsTable',
+            icon: 'alarm'
         },
         templateUrl: require.toUrl('./eventsTable.html'),
         link: function ($scope, $element, attrs) {

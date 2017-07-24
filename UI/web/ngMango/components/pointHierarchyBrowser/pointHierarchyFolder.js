@@ -41,6 +41,10 @@ return {
     require: {
         browserCtrl: '^^?maPointHierarchyBrowser',
         pointSelectorCtrl: '^^?maPointHierarchyPointSelector'
+    },
+    designerInfo: {
+        translation: 'ui.components.maPointHierarchyFolder',
+        icon: 'share'
     }
 };
 

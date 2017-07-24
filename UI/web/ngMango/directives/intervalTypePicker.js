@@ -68,6 +68,10 @@ function intervalTypePicker($injector) {
         },
         link: function ($scope, $element, attr) {
         	$scope.types = types;
+        },
+        designerInfo: {
+            translation: 'ui.components.intervalTypePicker',
+            icon: 'date_range'
         }
     };
 }

@@ -21,6 +21,10 @@ function intervalPicker() {
         	$scope.$watchGroup(['intervals', 'type'], function() {
         		$scope.interval = $scope.intervals + ' ' + $scope.type;
         	});
+        },
+        designerInfo: {
+            translation: 'ui.components.intervalPicker',
+            icon: 'date_range'
         }
     };
 }

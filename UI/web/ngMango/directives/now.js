@@ -101,7 +101,11 @@ function now() {
                 var duration = moment.duration(parseFloat(parts[0]), parts[1]);
                 return duration.asMilliseconds();
             }
-        }]
+        }],
+        designerInfo: {
+            translation: 'ui.components.maNow',
+            icon: 'av_timer'
+        }
     };
 }
 

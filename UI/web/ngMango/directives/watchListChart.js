@@ -63,7 +63,7 @@ function watchListChart() {
         },
         designerInfo: {
             translation: 'ui.components.watchListChart',
-            icon: 'show_chart',
+            icon: 'remove_red_eye',
             category: 'watchLists',
             size: {
                 width: '400px',

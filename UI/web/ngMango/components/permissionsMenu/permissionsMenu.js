@@ -81,7 +81,11 @@ return {
     require: {
         'ngModelCtrl': 'ngModel'
     },
-    bindings: {}
+    bindings: {},
+    designerInfo: {
+        translation: 'ui.components.maPagingPointList',
+        icon: 'format_list_bulleted'
+    }
 };
 
 }); // define

@@ -65,6 +65,10 @@ return {
         depth: '<',
         properties: '<',
         onDelete: '&'
+    },
+    designerInfo: {
+        translation: 'ui.components.maQueryGroup',
+        icon: 'format_textdirection_l_to_r'
     }
 };
 

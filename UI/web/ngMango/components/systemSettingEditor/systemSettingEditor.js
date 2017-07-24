@@ -30,6 +30,10 @@ var systemSettingEditor = {
     require: {
         settingsPageController: '^^?maUiSystemSettingsPage',
         ngFormController: '^^?form'
+    },
+    designerInfo: {
+        translation: 'ui.components.maSystemSettingEditor',
+        icon: 'settings_applications'
     }
 };
 

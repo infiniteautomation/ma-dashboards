@@ -150,6 +150,10 @@ define(['angular', 'require'], function(angular, require) {
         },
         controller: MaMapController,
         templateUrl: require.toUrl('./maMap.html'),
-        transclude: true
+        transclude: true,
+        designerInfo: {
+            translation: 'ui.components.maMap',
+            icon: 'map'
+        }
     };
 }); // define
