@@ -5,7 +5,35 @@
 
 define(['angular', 'require'], function(angular, require) {
 'use strict';
-
+/**
+ * @ngdoc directive
+ * @name ngMango.directive:maButton
+ *
+ * @description
+ * `<ma-button></ma-button>`
+ * - This component displays a button that can be configured with built in functionality such as linking to a page,
+ * uploading a file, and displaying a tooltip.
+ *
+ * @param {string} label The label to display on the button
+ * @param {string=} label-tr The translation key to use for the label rather than hardcoded `label`
+ * @param {array=} label-tr-args Array of argument objects to pass to the translation key
+ * @param {string=} tooltip Text to use in a tooltip
+ * @param {string=} tooltip-tr The translation key to use for the tooltip rather than hardcoded `tooltip`
+ * @param {string=} icon A <a href="https://material.io/icons/" target="_blank">material icon</a> (`home`, `text_fields`) to use
+ * in the button. Note spaces in icon name should be replaced with underscore
+ * @param {string=} palette The color palette from the dashboards theme to use for the button. Options are `primary`, `accent`,
+ * or `warn`
+ * @param {string=} hue The hue or the selected color palette to use for the button. Options are `hue-1`, `hue-2`,
+ * or `hue-3`
+ * @param {string=} raised If set to `true` the button will display with a color filled background
+ * @param {string=} ma-choose-file Set to an expression and the file browser dialog will open. After selecting a file the
+ * `$path` variable will contain the path to the file
+ *
+ * @usage
+ * <ma-button label="Upload" tooltip="Upload File" raised="true" hue="hue-2" palette="primary" icon="home"
+ * ma-choose-file="myPath = $path"></ma-button>
+ *
+ **/
 var button = {
     controller: ButtonController,
     templateUrl: require.toUrl('./button.html'),
