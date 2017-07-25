@@ -157,8 +157,7 @@ function DataSourceFactory($resource, Util) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            },
-            cache: true
+            }
         },
         rql: {
         	url: '/rest/v1/data-sources?:query',
@@ -167,14 +166,12 @@ function DataSourceFactory($resource, Util) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            },
-            cache: true
+            }
         },
         getById: {
             url: '/rest/v1/data-sources/by-id/:id',
             method: 'GET',
-            isArray: false,
-            cache: true
+            isArray: false
         },
         save: {
             method: 'POST',
