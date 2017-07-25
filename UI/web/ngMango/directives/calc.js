@@ -19,10 +19,11 @@ define([], function() {
  *
  * @param {expression} input The expression to be evaluated
  * @param {object} output Declare a variable to hold the result of the evaluated expression.
- * @param {function} onChange Pass in a function to be called when the input is changed.
+ * @param {function} onChange Pass in a function or expression to be called when the input is changed.
+ * `$value` object will contain the `output`
  *
  * @usage
- * <ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | maFirst" output="power">
+ * <ma-calc input="points | filter:{name:'Real Power ' + phase + ' (kW)'} | maFirst" output="power" on-change="myVar = $value">
  * </ma-calc>
  */
 function calc() {
@@ -42,7 +43,10 @@ function calc() {
         },
         designerInfo: {
             translation: 'ui.components.maCalc',
-            icon: 'add'
+            icon: 'add',
+            attributes: {
+                input: {type: 'string'}
+            }
         }
     };
 }
