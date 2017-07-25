@@ -14,7 +14,6 @@ function setPointDialog($mdDialog, $mdMedia) {
     	return $mdDialog.show({
             controller: function() {
                 this.point = point;
-                console.log()
                 this.cancel = function cancel() {
                     $mdDialog.cancel();
                 };
