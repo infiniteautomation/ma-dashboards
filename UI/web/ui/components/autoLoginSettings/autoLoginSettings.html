@@ -1,7 +1,7 @@
 <form name="autoLoginSettings">
   <div layout="column">
 
-    <div><strong ma-tr="ui.app.autoLoginWarning"></strong></div>
+    <div md-colors="{color: 'warn'}"><strong ma-tr="ui.app.autoLoginWarning"></strong></div>
     <div ma-tr="ui.app.autoLoginNote"></div>
 
     <md-input-container>
@@ -22,12 +22,13 @@
       </div>
     </md-input-container>
     
+    <div ma-tr="ui.app.autoLoginTestManually"></div>
     <div>
       <md-button type="submit" ng-click="$ctrl.saveCredentials()" ma-tr="common.save" class="md-primary md-raised" aria-label="{{'common.save'|maTr}}"></md-button>
       <md-button ng-disabled="!$ctrl.storedUsername" ng-click="$ctrl.deleteCredentials()" ma-tr="common.delete" class="md-warn md-raised" aria-label="{{'common.delete'|maTr}}"></md-button>
       
-      <span ng-if="$ctrl.storedUsername" ma-tr="ui.app.savedAutoLoginUser" ma-tr-args="[$ctrl.storedUsername]"></span>
-      <span ng-if="!$ctrl.storedUsername" ma-tr="ui.app.noSavedAutoLoginUser"></span>
+      <span md-colors="{color: 'accent'}" ng-if="$ctrl.storedUsername" ma-tr="ui.app.savedAutoLoginUser" ma-tr-args="[$ctrl.storedUsername]"></span>
+      <span md-colors="{color: 'accent'}" ng-if="!$ctrl.storedUsername" ma-tr="ui.app.noSavedAutoLoginUser"></span>
     </div>
   </div>
 </form>
