@@ -165,8 +165,8 @@ function UserProvider() {
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer'];
-    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer) {
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector'];
+    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector) {
         var User = $resource('/rest/v1/users/:username', {
                 username: '@username'
             }, {
@@ -278,9 +278,36 @@ function UserProvider() {
             return credentials ? credentials.username : null;
         };
         
-        User.autoLogin = function autoLogin() {
-            var credentials = localStorageService.get('storedCredentials');
-            if (!credentials) return $q.reject('No stored credentials');
+        User.getCredentialsFromUrl = function() {
+        	var params = new URL(window.location.href).searchParams;
+        	var credentials = {
+        		username: params.get('autoLoginUsername'),
+        		password: params.get('autoLoginPassword') || ''
+        	};
+        	
+        	if (params.get('autoLoginDeleteCredentials') != null) {
+        		User.clearStoredCredentials();
+        	} else if (params.get('autoLoginStoreCredentials') != null && credentials.username) {
+        		User.storeCredentials(credentials.username, credentials.password);
+        	}
+        	
+        	return credentials.username && credentials;
+        };
+        
+        User.autoLogin = function autoLogin(maUiSettings) {
+        	var credentials = User.getCredentialsFromUrl() || localStorageService.get('storedCredentials');
+        	if (!credentials && (maUiSettings || $injector.has('maUiSettings'))) {
+        		maUiSettings = maUiSettings || $injector.get('maUiSettings');
+        		if (maUiSettings.autoLoginUsername) {
+        			credentials = {
+    					username: maUiSettings.autoLoginUsername,
+    					password: maUiSettings.autoLoginPassword || ''
+    				};
+        		}
+        	}
+            if (!credentials) {
+            	return $q.reject('No stored credentials');
+            }
             return this.login.call(this, credentials).$promise;
         };
         

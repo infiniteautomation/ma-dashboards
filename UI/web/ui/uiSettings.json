@@ -90,5 +90,7 @@
   	"paragraph": "Roboto",
   	"code": "'Roboto Mono'"
   },
-  "pointValuesLimit": 5001
+  "pointValuesLimit": 5001,
+  "autoLoginUsername": "",
+  "autoLoginPassword": ""
 }

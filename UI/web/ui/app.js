@@ -626,24 +626,8 @@ var $q = servicesInjector.get('$q');
 var $http = servicesInjector.get('$http');
 var maCssInjector = servicesInjector.get('maCssInjector');
 
-var params = new URL(window.location.href).searchParams;
-if (params.get('autoLoginDeleteCredentials') != null) {
-	User.clearStoredCredentials();
-} else if (params.get('autoLoginUsername') != null) {
-	User.storeCredentials(params.get('autoLoginUsername'), params.get('autoLoginPassword') || '');
-}
-
-var userAndUserSettingsPromise = User.getCurrent().$promise.then(null, function() {
-    return User.autoLogin();
-}).then(function(user) {
-    var userMenuPromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(null, angular.noop);
-    return $q.all([user, userMenuPromise]);
-}, angular.noop).then(function(data) {
-    return {
-        user: data && data[0],
-        userMenuStore: data && data[1]
-    };
-});
+// ensures credentials are saved/deleted on first page load if params are set
+User.getCredentialsFromUrl();
 
 var defaultUiSettingsPromise = $http({
     method: 'GET',
@@ -682,6 +666,20 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     return MA_UI_SETTINGS;
 });
 
+var userAndMenuPromise = User.getCurrent().$promise.then(null, function() {
+	return uiSettingsPromise.then(function(MA_UI_SETTINGS) {
+		return User.autoLogin(MA_UI_SETTINGS);
+	});
+}).then(function(user) {
+    var userMenuPromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(null, angular.noop);
+    return $q.all([user, userMenuPromise]);
+}, angular.noop).then(function(data) {
+    return {
+        user: data && data[0],
+        userMenuStore: data && data[1]
+    };
+});
+
 var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
     return $http({
         method: 'GET',
@@ -714,7 +712,7 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
     });
 });
 
-$q.all([userAndUserSettingsPromise, uiSettingsPromise, angularModulesPromise]).then(function(data) {
+$q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(function(data) {
     // *dont* destroy the services injector
 	// If you do, you end up with two $rootScopes once the app bootstraps, the first with id 1, the second with id 2
 	// This caused the "send test email" button not to work on first load
