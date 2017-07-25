@@ -27,7 +27,7 @@ define(['angular', 'require'], function(angular, require) {
  * or `hue-3`
  * @param {string=} raised If set to `true` the button will display with a color filled background
  * @param {string=} ma-choose-file Set to an expression and the file browser dialog will open. After selecting a file the
- * `$path` variable will contain the path to the file
+ * `$url` variable will contain the path to the file
  *
  * @usage
  * <ma-button label="Upload" tooltip="Upload File" raised="true" hue="hue-2" palette="primary" icon="home"
@@ -58,7 +58,7 @@ var button = {
     		hue: {options: ['hue-1', 'hue-2', 'hue-3']},
     		uiSref: { type: 'state-name'},
     		maChooseFile: {},
-    		maChooseFilePath: {},
+    		maChooseFileSelected: {},
     		maChooseFileOptions: {}
     	}
     }
