@@ -629,7 +629,7 @@ var maCssInjector = servicesInjector.get('maCssInjector');
 var params = new URL(window.location.href).searchParams;
 if (params.get('autoLoginDeleteCredentials') != null) {
 	User.clearStoredCredentials();
-} else if (params.get('autoLoginStoreCredentials') != null) {
+} else if (params.get('autoLoginUsername') != null) {
 	User.storeCredentials(params.get('autoLoginUsername'), params.get('autoLoginPassword') || '');
 }
 
