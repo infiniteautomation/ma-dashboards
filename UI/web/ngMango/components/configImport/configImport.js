@@ -55,7 +55,8 @@ return {
     },
     designerInfo: {
         translation: 'ui.components.configImport',
-        icon: 'import_export'
+        icon: 'import_export',
+        hideFromMenu: true
     }
 };
 

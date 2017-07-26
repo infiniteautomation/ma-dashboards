@@ -54,8 +54,8 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
             };
         },
         designerInfo: {
-            translation: 'ui.components.maPermissionsMenu',
-            icon: 'verified_user'
+            translation: 'ui.components.maPagingPointList',
+            icon: 'format_list_bulleted'
         }
     };
 }

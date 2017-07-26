@@ -27,8 +27,7 @@ function accordionSection() {
             }
         },
         designerInfo: {
-            translation: 'ui.components.accordionSection',
-            icon: 'line_weight'
+            hideFromMenu: true
         }
     };
 }

@@ -126,8 +126,7 @@ return {
         hideSortLimit: '<?'
     },
     designerInfo: {
-        translation: 'ui.components.maQueryBuilder',
-        icon: 'format_textdirection_l_to_r'
+        hideFromMenu: true
     }
 };
 

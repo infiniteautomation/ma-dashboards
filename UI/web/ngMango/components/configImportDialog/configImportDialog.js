@@ -92,7 +92,8 @@ return {
     },
     designerInfo: {
         translation: 'ui.components.configImportDialog',
-        icon: 'import_export'
+        icon: 'import_export',
+        hideFromMenu: true
     }
 };
 

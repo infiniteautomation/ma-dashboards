@@ -32,8 +32,7 @@ var systemSettingEditor = {
         ngFormController: '^^?form'
     },
     designerInfo: {
-        translation: 'ui.components.maSystemSettingEditor',
-        icon: 'settings_applications'
+        hideFromMenu: true
     }
 };
 

@@ -83,8 +83,8 @@ return {
     },
     bindings: {},
     designerInfo: {
-        translation: 'ui.components.maPagingPointList',
-        icon: 'format_list_bulleted'
+        translation: 'ui.components.maPermissionsMenu',
+        icon: 'verified_user'
     }
 };
 
