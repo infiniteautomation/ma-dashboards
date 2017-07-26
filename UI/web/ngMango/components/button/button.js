@@ -31,7 +31,7 @@ define(['angular', 'require'], function(angular, require) {
  *
  * @usage
  * <ma-button label="Upload" tooltip="Upload File" raised="true" hue="hue-2" palette="primary" icon="home"
- * ma-choose-file="myPath = $path"></ma-button>
+ * ma-choose-file="fileUrl = $url"></ma-button>
  *
  **/
 var button = {

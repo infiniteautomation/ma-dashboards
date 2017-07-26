@@ -43,8 +43,7 @@ return {
         pointSelectorCtrl: '^^?maPointHierarchyPointSelector'
     },
     designerInfo: {
-        translation: 'ui.components.maPointHierarchyFolder',
-        icon: 'share'
+        hideFromMenu: true
     }
 };
 
