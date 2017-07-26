@@ -9,6 +9,7 @@ define([], function() {
 function arrayInput() {
     return {
         require: 'ngModel',
+        restrict: 'A',
         link: function($scope, $element, $attrs, ngModel) {
             ngModel.$parsers.push(function toArray(viewValue) {
                 return (typeof viewValue === 'string') ? viewValue.split($attrs.arrayDelimiter || ',') : viewValue;
@@ -17,10 +18,6 @@ function arrayInput() {
             ngModel.$formatters.push(function fromArray(modelValue) {
                 return angular.isArray(modelValue) ? modelValue.join($attrs.arrayDelimiter || ',') : modelValue;
             });
-        },
-        designerInfo: {
-            translation: 'ui.components.arrayInput',
-            icon: 'settings_input_component'
         }
     };
 }
