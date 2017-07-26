@@ -11,6 +11,7 @@ function emptyInput($parse) {
     
     return {
         require: 'ngModel',
+        restrict: 'A',
         scope: false,
         link: function($scope, $element, $attrs, ngModel) {
             var emptyValueGetter = $parse($attrs.maEmptyInput);
@@ -33,10 +34,6 @@ function emptyInput($parse) {
                     wasUndefined = false;
                 }
             });
-        },
-        designerInfo: {
-            translation: 'ui.components.emptyInput',
-            icon: 'input'
         }
     };
 }
