@@ -49,9 +49,11 @@
 <md-table-container ng-init="page.tableOrder='name'">
     <table md-table>
         <thead md-head md-order="page.tableOrder">
-        <th md-column md-order-by="deviceName">Device name</th>
-        <th md-column md-order-by="name">Point name</th>
-        <th md-column md-order-by="xid">XID</th>
+        <tr>
+            <th md-column md-order-by="deviceName">Device name</th>
+            <th md-column md-order-by="name">Point name</th>
+            <th md-column md-order-by="xid">XID</th>
+        </tr>
         </thead>
         <tbody md-body>
         <tr ng-repeat="point in page.points | orderBy: page.tableOrder">
