@@ -75,7 +75,7 @@ function gaugeChart() {
         template: '<div ng-class="classes" class="amchart"></div>' +
         '<ma-point-statistics point="$ctrl.point" point-xid="{{$ctrl.pointXid}}"' +
         ' from="from" to="to" statistics="$ctrl.pointStats"></ma-point-statistics>' +
-        '<ma-date-range-picker from="from" to="to" preset="LAST_1_WEEKS" update-interval="1 minutes"' +
+        '<ma-date-range-picker from="from" to="to" preset="LAST_1_MONTHS" update-interval="1 minutes"' +
         ' style="display: none;"></ma-date-range-picker>',
         scope: {},
         controller: GaugeChartController,
