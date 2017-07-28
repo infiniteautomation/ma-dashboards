@@ -12,9 +12,10 @@ define([], function() {
  * @restrict A
  * @element input
  * @priority 0
- * @description Sets the focus on the element when the expression evaluates to a truthy value
+ * @description Sets the focus on the element when the expression changes from a falsy value to a truthy value
+ * or is truthy on initialization
  * 
- * @param {boolean} ma-focus-on Sets the focus on the element when a truthy value
+ * @param {boolean} ma-focus-on Sets the focus on the element when this value becomes truthy
  * 
  * @usage <input ma-focus-on="{boolean}">
  */
@@ -26,9 +27,9 @@ function focusOn($timeout) {
     	scope: false,
     	link: function($scope, $element, $attrs) {
         	$scope.$watch($attrs.maFocusOn, function(newValue, oldValue) {
-        		if (newValue !== oldValue && newValue) {
-        		    $timeout(function() {
-        		        $element.focus();
+        		if (newValue) {
+        		    $timeout(() => {
+                        $element.focus();
         		    });
         		}
         	});
