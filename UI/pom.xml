@@ -57,12 +57,25 @@
                       </configuration>
                   </execution>
                   <execution>
-                      <id>Run gulp default</id>
+                      <id>Run gulp copy-vendor</id>
                       <goals>
                           <goal>gulp</goal>
                       </goals>
                       <configuration>
-                          <arguments>default</arguments>
+                          <arguments>copy-vendor</arguments>
+                          <srcdir>${project.basedir}/bower_components</srcdir>
+                          <outputdir>${project.basedir}/web/vendor</outputdir>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>Run gulp copy-docs</id>
+                      <goals>
+                          <goal>gulp</goal>
+                      </goals>
+                      <configuration>
+                          <arguments>copy-docs</arguments>
+                          <srcdir>${project.basedir}/web/ngMango</srcdir>
+                          <outputdir>${project.basedir}/web/ui/views/docs</outputdir>
                       </configuration>
                   </execution>
               </executions>
