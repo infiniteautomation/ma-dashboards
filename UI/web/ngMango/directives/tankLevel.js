@@ -20,7 +20,8 @@ define(['amcharts/serial', 'require', 'angular', './PointValueController'], func
  * @param {number=} max Sets the max value for a 100% filled tank.
  * @param {string=} color Sets the fill color for the tank visualization.
  * @param {object=} options Extend [amCharts](https://www.amcharts.com/) configuration object for customizing the design of the tank.
- * @param {number=} value Allows you to set the tank's fill height to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
+ * @param {number=} value Allows you to set the tank's fill height to a value that is not provided by the `point` attribute.
+ *     Only use without the `point` attribute.
  *
  * @usage
  * <ma-tank-level point="myPoint" color="{{choosenColor}}" max="max" style="width:300px; height:200px;">
@@ -124,11 +125,11 @@ TankLevelController.prototype.updateChart = function() {
 
 function defaultOptions() {
     return {
-        type: "serial",
-        theme: "light",
+        type: 'serial',
+        theme: 'light',
         addClassNames: true,
         dataProvider: [{
-            tank: "tank1",
+            tank: 'tank1',
             remainder: 100.0,
             tankLevel: 0.0
         }],
@@ -136,10 +137,10 @@ function defaultOptions() {
             axisAlpha: 0.0,
             gridAlpha: 0.0,
             labelsEnabled: false,
-            stackType: "100%"
+            stackType: '100%'
         }],
         categoryAxis: {
-            gridPosition: "start",
+            gridPosition: 'start',
             axisAlpha: 0.0,
             gridAlpha: 0.0,
             labelsEnabled: false
@@ -148,26 +149,26 @@ function defaultOptions() {
         angle: 30,
         startDuration: 0,
         graphs: [{
-            id: "tank-level",
-            type: "column",
-            valueField: "tankLevel",
-            balloonText: "",
+            id: 'tank-level',
+            type: 'column',
+            valueField: 'tankLevel',
+            balloonText: '',
             fillAlphas: 0.8,
             lineAlpha: 0.5,
             lineThickness: 2,
             columnWidth: 1,
             topRadius: 1,
             lineColor: '#cdcdcd',
-            fillColors: "#67b7dc"
+            fillColors: '#67b7dc'
             //showOnAxis: true,
             //clustered: false,
-            //labelText: "[[percents]] %",
-            //labelPosition: "top"
+            //labelText: '[[percents]] %',
+            //labelPosition: 'top'
         },{
-            id: "tank-remainder",
-            type: "column",
-            valueField: "remainder",
-            balloonText: "",
+            id: 'tank-remainder',
+            type: 'column',
+            valueField: 'remainder',
+            balloonText: '',
             fillAlphas: 0.3,
             lineAlpha: 0.5,
             lineThickness: 2,
@@ -177,7 +178,7 @@ function defaultOptions() {
             //showOnAxis: true
         }],
         plotAreaFillAlphas: 0.0,
-        categoryField: "tank",
+        categoryField: 'tank',
         'export': {
             enabled: false
         }

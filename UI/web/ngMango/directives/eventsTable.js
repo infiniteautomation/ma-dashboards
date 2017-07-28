@@ -23,11 +23,14 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
  * @param {string=} point-id Filter on the Id property of a point, use with `"single-point=true"`.
  * @param {boolean=} single-point Set to `"true"` and use with point-id attribute to return events related to just a single Data Point.
  * @param {number=} event-id Filter on a specific Event Id, should return a single event.
- * @param {string=} alarm-level Filter on Alarm Level. Possible values are: `"'NONE'"`, `"'INFORMATION'"`, `"'IMPORTANT'"`, `"'WARNING'"`, `"'URGENT'"`, `"'CRITICAL'"`, `"'LIFE_SAFETY'"` or `"'*'"` for any.
+ * @param {string=} alarm-level Filter on Alarm Level. Possible values are:
+ *     `"'NONE'"`, `"'INFORMATION'"`, `"'IMPORTANT'"`, `"'WARNING'"`, `"'URGENT'"`, `"'CRITICAL'"`, `"'LIFE_SAFETY'"` or `"'*'"` for any.
  * @param {string=} event-type Filter on Event Type. Possible values are: `"'DATA_POINT'"`, `"'DATA_SOURCE'"`, `"'SYSTEM'"` or `"'*'"` for any.
  * @param {string=} acknowledged Filter on whether the event has been acknowledged. Possible values are: `"'true'"`, `"'false'"` or `"'*'"` for either.
  * @param {string=} active-status Filter on Active Status. Possible values are: `"'active'"`, `"'noRtn'"`, `"'normal'"` or `"'*'"` for any.
- * @param {string=} sort Set the initial sorting column of the table. Possible values are: `"'alarmLevel'"`, `"'activeTimestamp'"`, `"'message'"` or `"'acknowledged'"`. Precede value with a negative (eg. `"'-activeTimestamp'"`) to reverse sorting.
+ * @param {string=} sort Set the initial sorting column of the table. Possible values are:
+ *     `"'alarmLevel'"`, `"'activeTimestamp'"`, `"'message'"` or `"'acknowledged'"`.
+ *     Precede value with a negative (eg. `"'-activeTimestamp'"`) to reverse sorting.
  * @param {string=} from From time used for filtering by date range. Pass the value from a `<ma-date-picker>`.
  * @param {string=} to To time used for filtering by date range.
  * @param {boolean=} date-filter Turn on date filtering of events. Set value to `"'true'"` and use with from/to attribute to use. Defaults to off.
@@ -220,13 +223,13 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 );
             }, true);
             
-            var doQuery = function(options) {
+            function doQuery(options) {
                 var params = [];
                 
-                if (options.alarmLevel && options.alarmLevel != '*') {
+                if (options.alarmLevel && options.alarmLevel !== '*') {
                     params.push('alarmLevel=' + options.alarmLevel);
                 }
-                if (options.eventType && options.eventType != '*') {
+                if (options.eventType && options.eventType !== '*') {
                     params.push('eventType=' + options.eventType);
                 }
                 if (options.pointId) {
@@ -235,7 +238,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 if (options.eventId) {
                     params.push('id=' + options.eventId);
                 }
-                if (options.activeStatus && options.activeStatus != '*') {
+                if (options.activeStatus && options.activeStatus !== '*') {
                     if (options.activeStatus==='active') {
                         params.push('active=true');
                     }
@@ -246,7 +249,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                         params.push('active=false');
                     }
                 }
-                if (options.acknowledged && options.acknowledged != '*') {
+                if (options.acknowledged && options.acknowledged !== '*') {
                     if (options.acknowledged==='true') {
                         params.push('acknowledged=true');
                     }
@@ -265,7 +268,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 var RQLforDisplay = params.join('&');
                 
                 
-                if (options.acknowledged != 'false') {
+                if (options.acknowledged !== 'false') {
                     RQLforAcknowldege += '&acknowledged=false';
                 }
                 
@@ -282,7 +285,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 }
 
                 return {RQLforAcknowldege: RQLforAcknowldege, RQLforDisplay: RQLforDisplay}; 
-            };
+            }
             
         }
     };

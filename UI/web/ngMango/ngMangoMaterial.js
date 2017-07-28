@@ -12,7 +12,8 @@ define(['angular',
         './services/setPointDialog',
         'angular-material',
         'mdPickers',
-        'angular-material-data-table'], function(angular, ngMango, colorPreview, dialogHelperFactory, fileStoreDialogFactory, statsDialogFactory, setPointDialogFactory) {
+        'angular-material-data-table'],
+function(angular, ngMango, colorPreview, dialogHelperFactory, fileStoreDialogFactory, statsDialogFactory, setPointDialogFactory) {
 'use strict';
 
 var ngMangoMaterial = angular.module('ngMangoMaterial', ['ngMango', 'ngMaterial', 'mdPickers', 'md.data.table']);

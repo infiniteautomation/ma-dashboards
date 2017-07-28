@@ -18,7 +18,7 @@ var dualPaneEditor = function() {
         link: function($scope, $element, $attrs) {
             var content = $element.data('htmlContent');
             $element.removeData('htmlContent');
-            content = content.replace(RegExp('=""', 'g'),'');
+            content = content.replace(new RegExp('=""', 'g'),'');
             $scope.text = content;
         }
     };

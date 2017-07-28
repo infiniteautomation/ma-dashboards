@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
 'use strict';
 
 UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales'];
@@ -141,14 +141,14 @@ UserEditorController.prototype.sendTestEmail = function() {
         $ctrl.$mdToast.show(toast);
     }, function(response) {
         var toast = $ctrl.$mdToast.simple()
-            .textContent($ctrl.Translate.trSync('ui.components.errorSendingEmail', emailAddress))
+            .textContent($ctrl.Translate.trSync('ui.components.errorSendingEmail', this.User.current.email))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
             .highlightClass('md-warn')
             .position('bottom center')
             .hideDelay(10000);
         $ctrl.$mdToast.show(toast);
-    });
+    }.bind(this));
 };
 
 UserEditorController.prototype.switchUser = function(event) {

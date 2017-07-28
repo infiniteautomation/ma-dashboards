@@ -3,12 +3,10 @@
  * @author Jared Wiltshire
  */
 
-define([], function() {
+define(['angular'], function(angular) {
 'use strict';
 
 function emptyInput($parse) {
-    var UNDEFINED = {};
-    
     return {
         require: 'ngModel',
         restrict: 'A',

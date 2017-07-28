@@ -38,7 +38,7 @@ ModulesPageController.prototype.getModules = function() {
 	this.maModules.getAll().then(function(modules) {
 		var coreModule;
         this.modules = modules.filter(function(module) {
-        	if (module.name == 'core') {
+        	if (module.name === 'core') {
         		coreModule = module;
         		return false;
         	}
@@ -88,8 +88,6 @@ ModulesPageController.prototype.restart = function($event) {
 };
 
 ModulesPageController.prototype.downloadLicense = function($event) {
-	var username;
-	
 	this.maDialogHelper.showBasicDialog($event, {
 		titleTr: 'ui.app.enterStoreCredentials',
 		contentTemplateUrl: require.toUrl('./usernamePasswordPrompt.html'),

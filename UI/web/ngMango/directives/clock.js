@@ -15,8 +15,10 @@ define(['amcharts/gauge', 'jquery', 'moment-timezone'], function(AmCharts, $, mo
   * - Note, you will need to set a width and height on the element.
   * - <a ui-sref="ui.examples.basics.clocksAndTimezones">View Demo</a>
   *
-  * @param {string} time Takes in a timestamp. The current live time can be provided by the `<ma-now>` directive. The timestamp can be later be filtered with [momentJs](http://momentjs.com/) to display as a formatted date/time on the page.
-  * @param {string=} timezone If provided, will switch which timezone used for displaying the current time. Can be set as a [TZ string](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) or you can use the timezone of the user
+  * @param {string} time Takes in a timestamp. The current live time can be provided by the `<ma-now>` directive.
+  *     The timestamp can be later be filtered with [momentJs](http://momentjs.com/) to display as a formatted date/time on the page.
+  * @param {string=} timezone If provided, will switch which timezone used for displaying the current time.
+  *     Can be set as a [TZ string](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) or you can use the timezone of the user
   currently logged into Mango (by evaluating the expression `{{user.getTimezone()}}` to return a string).
   * @param {string=} text Sets the label text
   * @param {boolean=} show-seconds Turns seconds hand on off. (Defaults to `true`)
@@ -80,8 +82,8 @@ function clock() {
 
 function defaultOptions() {
     return {
-        type: "gauge",
-        theme: "light",
+        type: 'gauge',
+        theme: 'light',
         addClassNames: true,
         startDuration: 0.3,
         marginTop: 0,
@@ -97,19 +99,19 @@ function defaultOptions() {
             valueInterval: 1
         }],
         arrows: [{
-            radius: "50%",
+            radius: '50%',
             innerRadius: 0,
             clockWiseOnly: true,
             nailRadius: 10,
             nailAlpha: 1
         }, {
             nailRadius: 0,
-            radius: "80%",
+            radius: '80%',
             startWidth: 6,
             innerRadius: 0,
             clockWiseOnly: true
         }, {
-            color: "#CC0000",
+            color: '#CC0000',
             nailRadius: 4,
             startWidth: 3,
             innerRadius: 0,

@@ -11,7 +11,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 * @description
 * Provides a service for getting list of users from the Mango system, as well as logging users in and out.
-* - All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a> objects that can call the following methods available to those objects:
+* - All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a>
+*   objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
 *   - `$delete`

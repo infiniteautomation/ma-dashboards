@@ -4,7 +4,7 @@
  */
 
 define(['require', 'angular'], function(require, angular) {
-"use strict";
+'use strict';
 
 function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicItems) {
     return {

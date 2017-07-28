@@ -3,7 +3,7 @@
  * @author Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
 'use strict';
 
 statsDialog.$inject = ['$mdDialog', '$mdMedia', 'maUiDateBar', 'localStorageService'];

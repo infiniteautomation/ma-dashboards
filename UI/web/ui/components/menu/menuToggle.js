@@ -15,7 +15,7 @@ function MenuToggleController($state, $timeout, $element, $scope, Translate) {
         this.addedHeight = 0;
         
         // close/open menus when changing states
-        $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
             if ($state.includes(this.item.name)) {
                 this.open();
             } else {

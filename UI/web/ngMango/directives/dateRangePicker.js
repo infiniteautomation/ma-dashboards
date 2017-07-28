@@ -14,7 +14,8 @@ define(['moment-timezone'], function(moment) {
  * - Use the `<ma-date-range-picker>` directive to insert a date range preset picker.
  This enables you to choose from a list of commonly used date ranges, such as "Today so far" or "Previous week".
  * - Set the update-interval attribute to have it update automatically.
- * - You can tie the `<ma-date-range-picker>` and `<ma-date-picker>` together using the `from` and `to` attributes on the preset picker, and `ng-model` on the date pickers.
+ * - You can tie the `<ma-date-range-picker>` and `<ma-date-picker>` together using the `from` and `to` attributes on
+ *   the preset picker, and `ng-model` on the date pickers.
  * - <a ui-sref="ui.examples.basics.datePresets">View Demo</a>
  * @param {string=} preset If provided the specified preset will be pre-selected in the dropdown.
  Possible options are:
@@ -58,8 +59,10 @@ define(['moment-timezone'], function(moment) {
     <li>milliseconds</li>
 </ul>
 Eg: `update-interval="10 minutes"`
- * @param {string=} format Specifies the formatting of the outputted to the `from`/`to` when not using angular material (using [momentJs](http://momentjs.com/) formatting)
- * @param {string=} timezone If provided, will switch which timezone used for displaying the current time. Can be set as a [TZ string](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) or you can use the timezone of the user
+ * @param {string=} format Specifies the formatting of the outputted to the `from`/`to` when not using angular material
+ *     (using [momentJs](http://momentjs.com/) formatting)
+ * @param {string=} timezone If provided, will switch which timezone used for displaying the current time.
+ *     Can be set as a [TZ string](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) or you can use the timezone of the user
  * @param {string=} refresh Set to true to force the time interval to update.
  * @param {function} onChange Pass in a function or expression to be evaluated when the time updates.  (eg.
  * `on-change="$ctrl.timeUpdated(from, to, preset)"`)
@@ -93,14 +96,24 @@ function dateRangePicker($injector) {
             icon: 'date_range',
             category: 'timeAndDate',
             attributes: {
-                preset: {options: ['LAST_5_MINUTES','LAST_15_MINUTES','LAST_30_MINUTES','LAST_1_HOURS','LAST_3_HOURS','LAST_6_HOURS','LAST_12_HOURS','LAST_1_DAYS',
-                    'LAST_1_WEEKS','LAST_2_WEEKS','LAST_1_MONTHS','LAST_3_MONTHS','LAST_6_MONTHS','LAST_1_YEARS','LAST_2_YEARS','DAY_SO_FAR','WEEK_SO_FAR',
-                    'MONTH_SO_FAR','YEAR_SO_FAR','PREVIOUS_DAY','PREVIOUS_WEEK','PREVIOUS_MONTH','PREVIOUS_YEAR']}
+                preset: {
+                    options: [
+                        'LAST_5_MINUTES','LAST_15_MINUTES','LAST_30_MINUTES',
+                        'LAST_1_HOURS','LAST_3_HOURS','LAST_6_HOURS','LAST_12_HOURS',
+                        'LAST_1_DAYS',
+                        'LAST_1_WEEKS','LAST_2_WEEKS',
+                        'LAST_1_MONTHS','LAST_3_MONTHS','LAST_6_MONTHS',
+                        'LAST_1_YEARS','LAST_2_YEARS',
+                        'DAY_SO_FAR','WEEK_SO_FAR','MONTH_SO_FAR','YEAR_SO_FAR',
+                        'PREVIOUS_DAY','PREVIOUS_WEEK','PREVIOUS_MONTH','PREVIOUS_YEAR'
+                    ]
+                }
             }
         },
         template: function(element, attrs) {
             if ($injector.has('$mdUtil')) {
-                return '<md-select ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)" ma-tr="ui.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">' +
+                return '<md-select ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)" ' +
+                    'ma-tr="ui.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">' +
                 '<md-option ng-value="p.type" ng-repeat="p in $ctrl.presets track by p.type">{{p.label}}</md-option>' +
                 '</md-select>';
             }

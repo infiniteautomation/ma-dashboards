@@ -75,7 +75,6 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
     };
     
     SystemSettings.setValues = function(values) {
-        var $this = this;
         return $http({
             method: 'POST',
             url: systemSettingsUrl,

@@ -173,84 +173,84 @@ requirejs.config({
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/gauge': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/pie': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/radar': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/serial': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/xy': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/gantt': {
             deps: ['amcharts/serial'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/themes/chalk': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/themes/light': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/themes/dark': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/themes/black': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/themes/patterns': {
             deps: ['amcharts/amcharts'],
             exports: 'AmCharts',
             init: function() {
-                AmCharts.isReady = true;
+                window.AmCharts.isReady = true;
             }
         },
         'amcharts/plugins/export/export': {
@@ -279,6 +279,11 @@ requirejs.config({
         'ipaddr': {
             init: function() {
                 return window.ipaddr;
+            }
+        },
+        'ace': {
+            init: function() {
+                return window.ace;
             }
         }
     }

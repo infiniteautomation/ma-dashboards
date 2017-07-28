@@ -154,7 +154,7 @@ PointValueController.prototype.getPointByXid = function() {
     
     if (!this.pointXid) {
         this.pointRequest = null;
-        $ctrl.setPoint(point);
+        $ctrl.setPoint();
         return;
     }
     

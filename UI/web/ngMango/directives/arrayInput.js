@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define([], function() {
+define(['angular'], function(angular) {
 'use strict';
 
 function arrayInput() {
