@@ -62,7 +62,7 @@ PageEditorControlsController.prototype.$onInit = function() {
         if (event.defaultPrevented) return;
         
         if (this.pageEditorForm.$dirty || this.selectedPage.$dirty) {
-            if ($window.confirm(Translate.trSync('ui.app.discardUnsavedChanges'))) {
+            if (!$window.confirm(Translate.trSync('ui.app.discardUnsavedChanges'))) {
                 event.preventDefault();
             }
         }
@@ -117,7 +117,7 @@ PageEditorControlsController.prototype.createNewPage = function createNewPage(ma
 
 PageEditorControlsController.prototype.confirmLoadPage = function confirmLoadPage(xid) {
     if (this.pageEditorForm.$dirty || this.selectedPage.$dirty) {
-        if (this.$window.confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'))) {
+        if (!this.$window.confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'))) {
             return;
         }
     }
