@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.servlet.DefaultServlet;
 
+import com.serotonin.m2m2.web.mvc.spring.security.MangoSecurityConfiguration;
+
 /**
  * @author Jared Wiltshire
  */
@@ -53,11 +55,16 @@ public class ForwardingServlet extends DefaultServlet {
         if (notFoundPath != null) {
             URL resourceUrl = getServletContext().getResource(redirectUri);
             if (resourceUrl == null) {
-                int nextSlash;
-                if (notFoundInSubdir && (nextSlash = relativePath.indexOf("/", 1)) >= 0) {
-                    redirectUri = forwardTo + relativePath.substring(0, nextSlash) + notFoundPath;
+                if (MangoSecurityConfiguration.browserHtmlRequestMatcher().matches(req)) {
+                    int nextSlash;
+                    if (notFoundInSubdir && (nextSlash = relativePath.indexOf("/", 1)) >= 0) {
+                        redirectUri = forwardTo + relativePath.substring(0, nextSlash) + notFoundPath;
+                    } else {
+                        redirectUri = forwardTo + notFoundPath;
+                    }
                 } else {
-                    redirectUri = forwardTo + notFoundPath;
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    return;
                 }
             }
         }
