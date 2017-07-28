@@ -72,7 +72,9 @@ ImportExportPageController.prototype.doExport = function(download) {
             this.writeIndentedJson();
         }
     }.bind(this), function(response) {
-        this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ? this.Translate.trSync('ui.app.cancelledOrNoResponse') : response.toString());
+        this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ?
+                this.Translate.trSync('ui.app.cancelledOrNoResponse') :
+                response.toString());
         this.downloadStatus.downloading = false;
         console.log(response);
     }.bind(this));
@@ -106,8 +108,6 @@ ImportExportPageController.prototype.fileSelected = function($event) {
 };
 
 ImportExportPageController.prototype.importFile = function(file) {
-    var $ctrl = this;
-
     delete this.importStatus;
 
     this.ImportExport.importData(file).then(function(importStatus) {

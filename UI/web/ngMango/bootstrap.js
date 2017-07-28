@@ -17,7 +17,7 @@ function findMangoConnections() {
 	var defaultModule = 'ngMango';
 	var dependencies = ['angular', './ngMango'];
 
-	var connectionElements = document.querySelectorAll("[ma-app], ma-app");
+	var connectionElements = document.querySelectorAll('[ma-app], ma-app');
 	for (i = 0; i < connectionElements.length; i++) {
 		connectionElement = connectionElements[i];
 		mangoConnection = {};

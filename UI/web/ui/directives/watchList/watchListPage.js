@@ -463,7 +463,8 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);
                     }.bind(this), function(response) {
-                        this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ? Translate.trSync('ui.app.cancelledOrNoResponse') : response.toString());
+                        this.downloadStatus.error = response.statusText || response.message ||
+                            (response.status === -1 ? Translate.trSync('ui.app.cancelledOrNoResponse') : response.toString());
                         this.downloadStatus.downloading = false;
                         console.log(response);
                     }.bind(this));

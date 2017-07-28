@@ -74,7 +74,8 @@ function PointHierarchyController($attrs, PointHierarchy, $timeout) {
                     }
                 }
                 var displayName = subFolder[this.displayProp];
-                if ((!matcher || subFolder.matches) && !(this.uniqueNames && seenNames[displayName]) && (!displayNameMatcher || displayName.match(displayNameMatcher))) {
+                if ((!matcher || subFolder.matches) && !(this.uniqueNames && seenNames[displayName]) &&
+                        (!displayNameMatcher || displayName.match(displayNameMatcher))) {
                     this.folderList.push(subFolder);
                     seenNames[displayName] = true;
                 }

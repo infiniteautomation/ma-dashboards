@@ -16,7 +16,8 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
  * -  `<ma-point-values>` is passed a `to` & `from` values from a date picker.
  * - Additionally, `rollup` & `rollup-interval` can be used to average the data
  * - You can use the `point-xid` property or pass in a point from `<ma-point-list>`.
- * - <a ui-sref="ui.examples.basics.pointValues">View <strong>to/from</strong> Demo</a> / <a ui-sref="ui.examples.basics.latestPointValues">View <strong>latest values</strong> Demo</a>
+ * - <a ui-sref="ui.examples.basics.pointValues">View <strong>to/from</strong> Demo</a> /
+ *   <a ui-sref="ui.examples.basics.latestPointValues">View <strong>latest values</strong> Demo</a>
  * @param {object} point Inputs a `point` object from `<ma-point-list>`
  * @param {object=} points Alternatively you can input an array of points from `<ma-point-query>`
  * @param {string=} point-xid Alternatively you can pass in the `xid` of a point to use.
@@ -24,8 +25,10 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
  * @param {object} from The starting time to query the point values over a time period.
  * @param {object} to The ending time to query the point values over a time period.
  * @param {number=} latest Rather then `to/from` you can choose to use this property with the latest `X` number of values.
- * @param {boolean=} realtime Used with the `latest` attribute, if set to `true` the latest `X` number of values will update as new values are pushed to a data point.
- * @param {string=} rollup The statistical operation to apply to the values over the given `rollup-interval`. This will effect the outputted `values`. Rollup possibilities are:
+ * @param {boolean=} realtime Used with the `latest` attribute, if set to `true` the latest `X` number of values will update
+ *     as new values are pushed to a data point.
+ * @param {string=} rollup The statistical operation to apply to the values over the given `rollup-interval`.
+ *     This will effect the outputted `values`. Rollup possibilities are:
 <ul>
     <li>POINT_DEFAULT</li>
     <li>NONE</li>
@@ -40,7 +43,8 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
     <li>COUNT</li>
     <li>INTEGRAL</li>
 </ul>
- * @param {string=} rollup-interval The interval used with the rollup. Format the interval duration as a string starting with a number followed by one of these units:
+ * @param {string=} rollup-interval The interval used with the rollup. Format the interval duration as a string starting
+ *     with a number followed by one of these units:
 <ul>
     <li>years</li>
     <li>months</li>
@@ -56,11 +60,14 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
  * @param {boolean=} timezone The output date will have the given timezone.
  * @param {boolean=} use-cache Set to true to use cached values.
  * @param {function=} on-values-updated Pass in a function or expression to be evaluated when the values update. (eg.
- * `on-values-updated="$ctrl.valuesUpdated($values)"`)
- * @param {string=} date-format If you are passing in `to/from` as strings, then you must specify the moment.js format for parsing the values.
- * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of point values. If not supplied the Mango system default timeout will be used.
- * @param {boolean=} auto-rollup-interval If set to `true` the rollup interval will automatically be set based on the to-from duration and rollup type. 
- `DELTA` rollup type will have a more chunked rollup interval. If turned on the manually set `rollup-interval` value will be ignored (defaults to `false`).
+ *     `on-values-updated="$ctrl.valuesUpdated($values)"`)
+ * @param {string=} date-format If you are passing in `to/from` as strings, then you must specify the moment.js format for
+ *     parsing the values.
+ * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of point values.
+ *     If not supplied the Mango system default timeout will be used.
+ * @param {boolean=} auto-rollup-interval If set to `true` the rollup interval will automatically be set based on the
+ *     to-from duration and rollup type.  `DELTA` rollup type will have a more chunked rollup interval.
+ *     If turned on the manually set `rollup-interval` value will be ignored (defaults to `false`).
  * @usage
  *
 <ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
@@ -77,7 +84,11 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             attributes: {
                 from: {defaultValue: 'dateBar.from'},
                 to: {defaultValue: 'dateBar.to'},
-                rollup: {defaultValue: '{{dateBar.rollupType}}', options: ['NONE', 'AVERAGE', 'DELTA', 'MINIMUM', 'MAXIMUM', 'ACCUMULATOR', 'SUM', 'FIRST', 'LAST', 'COUNT', 'INTEGRAL']},
+                rollup: {
+                    defaultValue: '{{dateBar.rollupType}}',
+                    options: ['NONE', 'AVERAGE', 'DELTA', 'MINIMUM', 'MAXIMUM', 'ACCUMULATOR',
+                        'SUM', 'FIRST', 'LAST', 'COUNT', 'INTEGRAL']
+                },
                 rollupInterval: {defaultValue: '{{dateBar.rollupIntervals + \' \' + dateBar.rollupIntervalPeriod}}'},
                 points: {defaultValue: 'designer.points'}
             }

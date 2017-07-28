@@ -10,10 +10,10 @@ define(['angular'], function(angular) {
 WebSocketManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT'];
 function WebSocketManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
 
-	var READY_STATE_CONNECTING = 0;
-	var READY_STATE_OPEN = 1;
-	var READY_STATE_CLOSING = 2;
-	var READY_STATE_CLOSED = 3;
+	//var READY_STATE_CONNECTING = 0;
+	//var READY_STATE_OPEN = 1;
+	//var READY_STATE_CLOSING = 2;
+	//var READY_STATE_CLOSED = 3;
 
 	function WebSocketManager(options) {
 	    angular.extend(this, options);

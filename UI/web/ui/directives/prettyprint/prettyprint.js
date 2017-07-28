@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require', 'ace'], function(require) {
+define(['require', 'ace'], function(require, ace) {
 'use strict';
 
 var prettyprint = function(uiSettings) {
@@ -14,8 +14,8 @@ var prettyprint = function(uiSettings) {
         },
         link: function($scope, $element) {
             $scope.editor = ace.edit($element[0]);
-            $scope.editor.setTheme("ace/theme/"+ uiSettings.codeTheme);
-            $scope.editor.getSession().setMode("ace/mode/" + ($scope.prettyprintMode || 'html'));
+            $scope.editor.setTheme('ace/theme/' + uiSettings.codeTheme);
+            $scope.editor.getSession().setMode('ace/mode/' + ($scope.prettyprintMode || 'html'));
             $scope.editor.setShowPrintMargin(false);
             $scope.editor.setReadOnly(true);
             $scope.editor.setHighlightActiveLine(false);

@@ -22,8 +22,10 @@ define(['amcharts/pie', 'angular', 'require'], function(AmCharts, angular, requi
     <li>`text` - Text label</li>
     <li>`color` - Color of the pie piece</li>
 </ul>
- * @param {object=} options extend AmCharts configuration object for customizing design of the chart (see [amCharts](https://www.amcharts.com/demos/simple-pie-chart/))
- * @param {object=} value-labels For use with the multi state data point render map. (see [multi-state pie chart demo](/modules/mangoUI/web/ui/#/dashboard/examples/statistics/state-pie-chart))
+ * @param {object=} options extend AmCharts configuration object for customizing design of the chart
+ *     (see [amCharts](https://www.amcharts.com/demos/simple-pie-chart/))
+ * @param {object=} value-labels For use with the multi state data point render map.
+ *     (see [multi-state pie chart demo](/modules/mangoUI/web/ui/#/dashboard/examples/statistics/state-pie-chart))
  *
  * @usage
  * <ma-pie-chart style="height: 300px; width: 600px" values="[ { value: 30, text: 'hot', color: '#ff9300' }, { value: 70, text: 'cold', color: '#942192' } ]"
@@ -99,12 +101,12 @@ function pieChart($http, MA_INSERT_CSS, maCssInjector) {
 
 function defaultOptions() {
     return {
-        type: "pie",
-        theme: "light",
+        type: 'pie',
+        theme: 'light',
         dataProvider: [],
-        valueField: "value",
-        titleField: "text",
-        colorField: "color",
+        valueField: 'value',
+        titleField: 'text',
+        colorField: 'color',
         balloon:{
             fixedPosition:true
         },

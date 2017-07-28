@@ -6,8 +6,6 @@
 define(['require', 'moment-timezone', 'angular'], function(require, moment, angular) {
 'use strict';
 
-var FLASH_CLASS = 'flash-on-change';
-
 watchListTableRow.$inject = ['$mdMedia', '$timeout', 'maUserNotes', '$state', 'maUiDateBar', 'localStorageService', 'maStatsDialog', 'maSetPointDialog'];
 function watchListTableRow($mdMedia, $timeout, UserNotes, $state, maUiDateBar, localStorageService, maStatsDialog, maSetPointDialog) {
     return {

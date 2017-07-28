@@ -10,7 +10,8 @@ define([], function() {
 * @name ngMangoServices.maJsonStoreEventManager
 *
 * @description
-* Provides an <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> factory pointing to the json-data websocket endpoint at `'/rest/v1/websocket/json-data'`
+* Provides an <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> factory pointing to the json-data websocket
+* endpoint at `'/rest/v1/websocket/json-data'`
 * - All methods available to <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> are available.
 * - Used by <a ui-sref="ui.docs.ngMango.maJsonStore">`<ma-json-store>`</a> directive.
 *

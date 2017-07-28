@@ -19,7 +19,6 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
     $ctrl.$mdMedia = $mdMedia;
     
     var defaultTotal = $ctrl.total = '\u2026';
-    var defaultQuery ='sort(deviceName,name)&limit(200)';
     $ctrl.tableSelection = [];
     $ctrl.hierarchySelection = [];
     $ctrl.staticSelected = [];

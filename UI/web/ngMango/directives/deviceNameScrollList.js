@@ -10,8 +10,6 @@ deviceNameScrollList.$inject = ['$injector'];
 return deviceNameScrollList;
 
 function deviceNameScrollList($injector) {
-    var DEFAULT_SORT = ['name'];
-
     return {
         restrict: 'E',
         controllerAs: '$ctrl',

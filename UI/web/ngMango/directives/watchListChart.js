@@ -33,7 +33,9 @@
   * 
   * @usage
   * <ma-watch-list-select no-select="true" watch-list-xid="WatchList323" watch-list="myWatchlist"></ma-watch-list-select>
-  * <ma-watch-list-chart flex add-checked="myWatchlist.data.selectedPoints" chart-config="myWatchlist.data.chartConfig" to="dateBar.to" from="dateBar.from" rollup-type="dateBar.rollupType" rollup-interval-number="dateBar.rollupIntervals" rollup-interval-period="dateBar.rollupIntervalPeriod" chart-height="450px"></watch-list-chart>
+  * <ma-watch-list-chart flex add-checked="myWatchlist.data.selectedPoints" chart-config="myWatchlist.data.chartConfig"
+  *     to="dateBar.to" from="dateBar.from" rollup-type="dateBar.rollupType" rollup-interval-number="dateBar.rollupIntervals"
+  *     rollup-interval-period="dateBar.rollupIntervalPeriod" chart-height="450px"></watch-list-chart>
   *
   */
 
@@ -113,7 +115,7 @@ WatchListChartController.prototype.filterPoints = function() {
     
 	// convert old object with point names as keys to array form
 	if (!angular.isArray(selectedPoints)) {
-		newSelectedPointArray = [];
+		var newSelectedPointArray = [];
 		for (var ptName in selectedPoints) {
 			var config = selectedPoints[ptName];
 			config.name = ptName;

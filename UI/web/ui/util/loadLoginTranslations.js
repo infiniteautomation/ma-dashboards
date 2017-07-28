@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define([], function() {
+define(['moment-timezone'], function(moment) {
 'use strict';
 
 loadLoginTranslations.$inject = ['maTranslate', 'maUser', '$window'];

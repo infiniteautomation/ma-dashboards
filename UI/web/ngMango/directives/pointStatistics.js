@@ -14,7 +14,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * - The `<ma-point-statistics>` directive provides access to historical stats over a time range on a data point.
  * - The object returned by the `statistics` attribute contains `first`, `last`, `minimum`, `maximum`, `average`, `integral`, `sum`, & `count` properties.
  Each of these will have a `value` and a `timestamp`.
- * - If you are interested only in the change in a value between two times you can add the optional `first-last="true"` attribute to only return the first and last values,
+ * - If you are interested only in the change in a value between two times you can add the optional `first-last="true"`
+ *   attribute to only return the first and last values,
  then simply calculate the difference with `statsObj[1].value - statsObj[0].value`.
  * - <a ui-sref="ui.examples.statistics.getStatistics">View Demo</a>
  *

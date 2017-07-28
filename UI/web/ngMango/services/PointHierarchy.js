@@ -12,7 +12,8 @@ define(['angular', 'rql/query'], function(angular, query) {
 * @description
 * Provides service for getting point hierarchy
 * - Used by <a ui-sref="ui.docs.ngMango.maPointHierarchy">`<ma-point-hierarchy>`</a> directive.
-* - All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a> objects that can call the following methods available to those objects:
+* - All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a>
+*   objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
 *   - `$delete`
@@ -93,8 +94,9 @@ define(['angular', 'rql/query'], function(angular, query) {
 * @description
 * Uses the http GET method to retrieve the hierarchy at the specifed path `/rest/v1/hierarchy/by-path/:path`
 * @param {object} query Object containing a `path` property which will be used to narrow the hierarchy query to the specifed folder path.
-Additionally a `subfolders` property containing a boolean value can be passed via the query object. If set to `false`, `points` will only return points that are contained directly as children in the target folders.
-By default this is set to `true` and all descendant points are given, even those within subfolders. 
+*   Additionally a `subfolders` property containing a boolean value can be passed via the query object. If set to `false`, `points`
+*   will only return points that are containeddirectly as children in the target folders.
+*   By default this is set to `true` and all descendant points are given, even those within subfolders. 
 * @returns {object} Returns a point hierarchy object. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -109,8 +111,9 @@ By default this is set to `true` and all descendant points are given, even those
 * @description
 * Uses the http GET method to retrieve the hierarchy at the specifed path `/rest/v1/hierarchy/by-name/:name`
 * @param {object} query Object containing a `name` property which will be used to narrow the hierarchy query to the specifed folder name.
-Additionally a `subfolders` property containing a boolean value can be passed via the query object. If set to `false`, `points` will only return points that are contained directly as children in the target folders.
-By default this is set to `true` and all descendant points are given, even those within subfolders. 
+*     Additionally a `subfolders` property containing a boolean value can be passed via the query object. If set to `false`,
+*     `points` will only return points that are contained directly as children in the target folders.
+*     By default this is set to `true` and all descendant points are given, even those within subfolders. 
 * @returns {object} Returns a point hierarchy object. Objects will be of the resource class and have resource actions available to them.
 *
 */

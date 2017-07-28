@@ -11,8 +11,10 @@ define(['angular'], function(angular) {
 *
 * @description
 * Provides service for getting and and updating a list of points.
-* - Used by <a ui-sref="ui.docs.ngMango.maPointList">`<ma-point-list>`</a> and <a ui-sref="ui.docs.ngMango.maFilteringPointList">`<ma-filtering-point-list>`</a> directives.
-* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods available to those objects:
+* - Used by <a ui-sref="ui.docs.ngMango.maPointList">`<ma-point-list>`</a> and
+*   <a ui-sref="ui.docs.ngMango.maFilteringPointList">`<ma-filtering-point-list>`</a> directives.
+* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following
+*   methods available to those objects:
 *   - `$save`
 *   - `$remove`
 *   - `$delete`

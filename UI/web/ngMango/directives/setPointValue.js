@@ -78,7 +78,7 @@ function SetPointValueController() {
     var $q = arguments[firstArg + 1];
 
     this.defaultBinaryOptions = [];
-    var trPromise = $q.all([Translate.tr('common.false'), Translate.tr('common.true')]).then(function(trs) {
+    $q.all([Translate.tr('common.false'), Translate.tr('common.true')]).then(function(trs) {
         this.defaultBinaryOptions.push({
             id: false,
             label: trs[0]
@@ -139,7 +139,7 @@ SetPointValueController.prototype.valueChangeHandler = function(pointChanged) {
 };
 
 SetPointValueController.prototype.updateValue = function() {
-    var focus = this.$element.find('input, select, md-select').is(":focus");
+    var focus = this.$element.find('input, select, md-select').is(':focus');
     if (!focus) {
         if (this.inputType === 'numeric') {
             this.inputValue = this.convertRendered();

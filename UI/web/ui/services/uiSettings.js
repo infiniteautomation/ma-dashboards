@@ -8,7 +8,7 @@ define(['angular', 'require'], function(angular, require) {
 
 uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'maCssInjector', '$templateRequest', '$interpolate',
     'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION', 'MA_POINT_VALUES_CONFIG'];
-function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
+function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
         MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION, MA_POINT_VALUES_CONFIG) {
     
     var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'userModuleName', 'mangoModuleNames'];
@@ -115,7 +115,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS,
         },
         generateCustomStyles: function generateCustomStyles() {
             // inserts a style tag to style <a> tags with accent color
-            if ($MD_THEME_CSS) {
+            if (MD_THEME_CSS) {
                 angular.element('head > style[tracking-name="interpolatedStyles"]').remove();
                 
                 $templateRequest(require.toUrl('../styles/interpolatedStyles.css')).then(function(text) {

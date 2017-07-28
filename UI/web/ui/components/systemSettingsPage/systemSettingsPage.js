@@ -102,11 +102,11 @@ SystemSettingsPageController.prototype.sendTestEmail = function() {
     	});
     }, function(error) {
     	$ctrl.maDialogHelper.toastOptions({
-    		textTr: ['ui.components.errorSendingEmail', emailAddress],
+    		textTr: ['ui.components.errorSendingEmail', this.User.current.email],
     		hideDelay: 10000,
     		classes: 'md-warn'
     	});
-    });
+    }.bind(this));
 };
 
 SystemSettingsPageController.prototype.confirm = function(event, onConfirmed, translation) {

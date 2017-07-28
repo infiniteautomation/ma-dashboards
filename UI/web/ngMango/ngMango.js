@@ -208,29 +208,29 @@ ngMango.animation('.ma-slide-up', slideUp);
 ngMango.constant('MA_INSERT_CSS', true);
 
 ngMango.constant('MA_DATE_RANGE_PRESETS', [
-   {type: "LAST_5_MINUTES", label: 'Last 5 minutes'},
-   {type: "LAST_15_MINUTES", label: 'Last 15 minutes'},
-   {type: "LAST_30_MINUTES", label: 'Last 30 minutes'},
-   {type: "LAST_1_HOURS", label: 'Last 1 hours'},
-   {type: "LAST_3_HOURS", label: 'Last 3 hours'},
-   {type: "LAST_6_HOURS", label: 'Last 6 hours'},
-   {type: "LAST_12_HOURS", label: 'Last 12 hours'},
-   {type: "LAST_1_DAYS", label: 'Last 1 days'},
-   {type: "LAST_1_WEEKS", label: 'Last 1 weeks'},
-   {type: "LAST_2_WEEKS", label: 'Last 2 weeks'},
-   {type: "LAST_1_MONTHS", label: 'Last 1 months'},
-   {type: "LAST_3_MONTHS", label: 'Last 3 months'},
-   {type: "LAST_6_MONTHS", label: 'Last 6 months'},
-   {type: "LAST_1_YEARS", label: 'Last 1 years'},
-   {type: "LAST_2_YEARS", label: 'Last 2 years'},
-   {type: "DAY_SO_FAR", label: 'Today so far'},
-   {type: "WEEK_SO_FAR", label: 'This week so far'},
-   {type: "MONTH_SO_FAR", label: 'This month so far'},
-   {type: "YEAR_SO_FAR", label: 'This year so far'},
-   {type: "PREVIOUS_DAY", label: 'Yesterday'},
-   {type: "PREVIOUS_WEEK", label: 'Previous week'},
-   {type: "PREVIOUS_MONTH", label: 'Previous month'},
-   {type: "PREVIOUS_YEAR", label: 'Previous year'}
+   {type: 'LAST_5_MINUTES', label: 'Last 5 minutes'},
+   {type: 'LAST_15_MINUTES', label: 'Last 15 minutes'},
+   {type: 'LAST_30_MINUTES', label: 'Last 30 minutes'},
+   {type: 'LAST_1_HOURS', label: 'Last 1 hours'},
+   {type: 'LAST_3_HOURS', label: 'Last 3 hours'},
+   {type: 'LAST_6_HOURS', label: 'Last 6 hours'},
+   {type: 'LAST_12_HOURS', label: 'Last 12 hours'},
+   {type: 'LAST_1_DAYS', label: 'Last 1 days'},
+   {type: 'LAST_1_WEEKS', label: 'Last 1 weeks'},
+   {type: 'LAST_2_WEEKS', label: 'Last 2 weeks'},
+   {type: 'LAST_1_MONTHS', label: 'Last 1 months'},
+   {type: 'LAST_3_MONTHS', label: 'Last 3 months'},
+   {type: 'LAST_6_MONTHS', label: 'Last 6 months'},
+   {type: 'LAST_1_YEARS', label: 'Last 1 years'},
+   {type: 'LAST_2_YEARS', label: 'Last 2 years'},
+   {type: 'DAY_SO_FAR', label: 'Today so far'},
+   {type: 'WEEK_SO_FAR', label: 'This week so far'},
+   {type: 'MONTH_SO_FAR', label: 'This month so far'},
+   {type: 'YEAR_SO_FAR', label: 'This year so far'},
+   {type: 'PREVIOUS_DAY', label: 'Yesterday'},
+   {type: 'PREVIOUS_WEEK', label: 'Previous week'},
+   {type: 'PREVIOUS_MONTH', label: 'Previous month'},
+   {type: 'PREVIOUS_YEAR', label: 'Previous year'}
 ]);
 
 ngMango.constant('MA_ROLLUP_TYPES', [
@@ -266,31 +266,34 @@ ngMango.constant('MA_CHART_TYPES', [
  {type: 'column', label: 'Bar'}
 ]);
 
-ngMango.constant('MA_RELATIVE_DATE_TYPES', [
- {type: "", label: 'Now'},
- {type: "moment:'subtract':5:'minutes'", label: '5 minutes ago'},
- {type: "moment:'subtract':15:'minutes'", label: '15 minutes ago'},
- {type: "moment:'subtract':30:'minutes'", label: '30 minutes ago'},
- {type: "moment:'subtract':1:'hours'", label: '1 hour ago'},
- {type: "moment:'subtract':3:'hours'", label: '3 hours ago'},
- {type: "moment:'subtract':5:'hours'", label: '6 hours ago'},
- {type: "moment:'subtract':12:'hours'", label: '12 hours ago'},
- {type: "moment:'startOf':'day'", label: 'Start of day'},
- {type: "moment:'subtract':1:'days'|maMoment:'startOf':'day'", label: 'Start of previous day'},
- {type: "moment:'subtract':1:'days'", label: '1 day ago'},
- {type: "moment:'startOf':'week'", label: 'Start of week'},
- {type: "moment:'subtract':1:'weeks'|maMoment:'startOf':'week'", label: 'Start of last week'},
- {type: "moment:'subtract':1:'weeks'", label: '1 week ago'},
- {type: "moment:'subtract':2:'weeks'", label: '2 weeks ago'},
- {type: "moment:'startOf':'month'", label: 'Start of month'},
- {type: "moment:'subtract':1:'months'|maMoment:'startOf':'month'", label: 'Start of last month'},
- {type: "moment:'subtract':1:'months'", label: '1 month ago'},
- {type: "moment:'subtract':3:'months'", label: '3 months ago'},
- {type: "moment:'subtract':6:'months'", label: '6 months ago'},
- {type: "moment:'startOf':'year'", label: 'Start of year'},
- {type: "moment:'subtract':1:'years'|maMoment:'startOf':'year'", label: 'Start of last year'},
- {type: "moment:'subtract':1:'years'", label: '1 year ago'}
-]);
+{
+    // jshint quotmark:false
+    ngMango.constant('MA_RELATIVE_DATE_TYPES', [
+        {type: "", label: 'Now'},
+        {type: "moment:'subtract':5:'minutes'", label: '5 minutes ago'},
+        {type: "moment:'subtract':15:'minutes'", label: '15 minutes ago'},
+        {type: "moment:'subtract':30:'minutes'", label: '30 minutes ago'},
+        {type: "moment:'subtract':1:'hours'", label: '1 hour ago'},
+        {type: "moment:'subtract':3:'hours'", label: '3 hours ago'},
+        {type: "moment:'subtract':5:'hours'", label: '6 hours ago'},
+        {type: "moment:'subtract':12:'hours'", label: '12 hours ago'},
+        {type: "moment:'startOf':'day'", label: 'Start of day'},
+        {type: "moment:'subtract':1:'days'|maMoment:'startOf':'day'", label: 'Start of previous day'},
+        {type: "moment:'subtract':1:'days'", label: '1 day ago'},
+        {type: "moment:'startOf':'week'", label: 'Start of week'},
+        {type: "moment:'subtract':1:'weeks'|maMoment:'startOf':'week'", label: 'Start of last week'},
+        {type: "moment:'subtract':1:'weeks'", label: '1 week ago'},
+        {type: "moment:'subtract':2:'weeks'", label: '2 weeks ago'},
+        {type: "moment:'startOf':'month'", label: 'Start of month'},
+        {type: "moment:'subtract':1:'months'|maMoment:'startOf':'month'", label: 'Start of last month'},
+        {type: "moment:'subtract':1:'months'", label: '1 month ago'},
+        {type: "moment:'subtract':3:'months'", label: '3 months ago'},
+        {type: "moment:'subtract':6:'months'", label: '6 months ago'},
+        {type: "moment:'startOf':'year'", label: 'Start of year'},
+        {type: "moment:'subtract':1:'years'|maMoment:'startOf':'year'", label: 'Start of last year'},
+        {type: "moment:'subtract':1:'years'", label: '1 year ago'}
+    ]);
+}
 
 ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDateFormats) {
     return {

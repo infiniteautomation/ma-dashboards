@@ -32,7 +32,6 @@ define(['angular', 'require'], function(angular, require) {
   
     MaSliderController.$inject = ['$element'];
     function MaSliderController($element) {
-        var sliderElement = $element.find('md-slider');
         var sliderContainerElement = $element.find('md-slider-container');
 
         this.$onChanges = function(changes) {

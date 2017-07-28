@@ -97,10 +97,10 @@ define(['angular'], function(angular) {
 
 function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
-	var READY_STATE_CONNECTING = 0;
+	//var READY_STATE_CONNECTING = 0;
 	var READY_STATE_OPEN = 1;
-	var READY_STATE_CLOSING = 2;
-	var READY_STATE_CLOSED = 3;
+	//var READY_STATE_CLOSING = 2;
+	//var READY_STATE_CLOSED = 3;
 
 	function EventManager(options) {
 		 // keys are xid, value is object where key is event type and value is the number of subscriptions

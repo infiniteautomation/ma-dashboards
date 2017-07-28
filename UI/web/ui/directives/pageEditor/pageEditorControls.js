@@ -25,9 +25,11 @@ function pageEditorControls() {
 }
 
 PageEditorControlsController.$inject = ['$scope', 'maUiPages', 'maJsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
-    'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateRequest', '$document'];
+    'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION',
+    '$templateRequest', '$document'];
 function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
-        localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION, $templateRequest, $document) {
+        localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION,
+        $templateRequest, $document) {
     this.$scope = $scope;
     this.maUiPages = maUiPages;
     this.jsonStoreEventManager = jsonStoreEventManager;
@@ -60,7 +62,7 @@ PageEditorControlsController.prototype.$onInit = function() {
         if (event.defaultPrevented) return;
         
         if (this.pageEditorForm.$dirty || this.selectedPage.$dirty) {
-            if (!confirm(Translate.trSync('ui.app.discardUnsavedChanges'))) {
+            if ($window.confirm(Translate.trSync('ui.app.discardUnsavedChanges'))) {
                 event.preventDefault();
             }
         }
@@ -115,7 +117,7 @@ PageEditorControlsController.prototype.createNewPage = function createNewPage(ma
 
 PageEditorControlsController.prototype.confirmLoadPage = function confirmLoadPage(xid) {
     if (this.pageEditorForm.$dirty || this.selectedPage.$dirty) {
-        if (!confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'))) {
+        if (this.$window.confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'))) {
             return;
         }
     }

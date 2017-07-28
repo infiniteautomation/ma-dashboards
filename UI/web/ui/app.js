@@ -23,16 +23,17 @@ define([
     'angular-loading-bar',
     './views/docs/docs-setup',
     'md-color-picker/mdColorPicker'
-], function(angular, ngMangoMaterial, require, menuProvider, pagesFactory, dateBarFactory, uiSettingsFactory, pageView, livePreview, stateParams, iframeView, menuItems, moment) {
+], function(angular, ngMangoMaterial, require, menuProvider, pagesFactory, dateBarFactory, uiSettingsFactory, pageView, livePreview,
+        stateParams, iframeView, menuItems, moment) {
 'use strict';
 
 // must match variables defined in UIInstallUpgrade.java
 var MA_UI_MENU_XID = 'mangoUI-menu';
 var MA_UI_PAGES_XID = 'mangoUI-pages';
 var MA_UI_SETTINGS_XID = 'mangoUI-settings';
-var MA_UI_EDIT_MENUS_PERMISSION = "edit-ui-menus";
-var MA_UI_EDIT_PAGES_PERMISSION = "edit-ui-pages";
-var MA_UI_EDIT_SETTINGS_PERMISSION = "edit-ui-settings";
+var MA_UI_EDIT_MENUS_PERMISSION = 'edit-ui-menus';
+var MA_UI_EDIT_PAGES_PERMISSION = 'edit-ui-pages';
+var MA_UI_EDIT_SETTINGS_PERMISSION = 'edit-ui-settings';
 
 var uiApp = angular.module('maUiApp', [
     'oc.lazyLoad',
@@ -58,7 +59,7 @@ uiApp.provider('maUiMenu', menuProvider)
     .constant('MA_UI_EDIT_MENUS_PERMISSION', MA_UI_EDIT_MENUS_PERMISSION)
     .constant('MA_UI_EDIT_PAGES_PERMISSION', MA_UI_EDIT_PAGES_PERMISSION)
     .constant('MA_UI_EDIT_SETTINGS_PERMISSION', MA_UI_EDIT_SETTINGS_PERMISSION)
-    .constant('MA_UI_NG_DOCS', NG_DOCS)
+    .constant('MA_UI_NG_DOCS', window.NG_DOCS)
     .constant('MA_UI_MENU_ITEMS', menuItems);
 
 uiApp.config([
@@ -136,8 +137,8 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
     $httpProvider.useApplyAsync(true);
 
     if ($injector.has('$mdpTimePickerProvider')) {
-        var $mdpTimePickerProvider = $injector.get('$mdpTimePickerProvider');
         /*
+        var $mdpTimePickerProvider = $injector.get('$mdpTimePickerProvider');
         $mdpTimePickerProvider.setOKButtonLabel();
         $mdpTimePickerProvider.setCancelButtonLabel();
         */
@@ -209,7 +210,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
     var modules = DOCS_PAGES.map(function(page) {
         return page.moduleName;
     }).filter(function(item, index, array) {
-        return index == array.indexOf(item);
+        return index === array.indexOf(item);
     });
 
     // Create module menu items & states
@@ -364,7 +365,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     };
 
-    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
         event.preventDefault();
         if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
             $state.loginRedirectUrl = $state.href(toState, toParams);
@@ -381,7 +382,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
 
-    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         if (toState.href) {
             event.preventDefault();
             $window.open(toState.href, toState.target || '_self');
@@ -427,7 +428,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
     
-    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         var crumbs = [];
         var state = $state.$current;
         do {

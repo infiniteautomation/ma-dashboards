@@ -154,7 +154,7 @@ ngMangoFilters.filter('maNoNaN', function () {
     };
 });
 
-ngMangoFilters.filter("maBytes", function() {
+ngMangoFilters.filter('maBytes', function() {
 	return function(bytes, precision) {
 		if (bytes === 0) return '0 B';
 		if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';

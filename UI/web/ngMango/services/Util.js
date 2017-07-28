@@ -44,7 +44,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 * Converts an input to a momentjs object
 * @param {string} input If input = 'now', moment(now) will be returned
 * @param {string} now standard date timestamp for converting to moment
-* @param {string} format If input equals a formatted date/time string, specify what format it is in to return moment(input, format || mangoDateFormats.dateTimeSeconds);
+* @param {string} format If input equals a formatted date/time string, specify what format it is in to return
+*     moment(input, format || mangoDateFormats.dateTimeSeconds);
 * @returns {object}  Returns a moment js object.
 
 *
@@ -322,14 +323,14 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     };
 
     Util.prototype.uuid = function uuid() {
-        var uuid = "", i, random;
+        var uuid = '', i, random;
         for (i = 0; i < 32; i++) {
             random = Math.random() * 16 | 0;
 
-            if (i == 8 || i == 12 || i == 16 || i == 20) {
-                uuid += "-";
+            if (i === 8 || i === 12 || i === 16 || i === 20) {
+                uuid += '-';
             }
-            uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
+            uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
         }
         return uuid;
     };
@@ -356,7 +357,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 1800001 && duration <= 10800001) {
 			// 30 mins - 3 hours
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
 	            result = {intervals: 5, units: 'MINUTES'};
 			}
 			else {
@@ -365,7 +366,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 10800001 && duration <= 21600001) {
 			// 3 hours - 6 hours
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 30, units: 'MINUTES'};
 			}
 			else {
@@ -374,7 +375,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 21600001 && duration <= 86400001) {
 			// 6 hours - 24 hours
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 1, units: 'HOURS'};
 			}
 			else {
@@ -383,7 +384,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 86400001 && duration <= 259200001) {
 			// 1 day - 3 days
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 6, units: 'HOURS'};
 			}
 			else {
@@ -392,7 +393,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 259200001 && duration <= 604800001) {
 			// 3 days - 1 week
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 12, units: 'HOURS'};
 			}
 			else {
@@ -401,7 +402,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 604800001 && duration <= 1209600001) {
 			// 1 week - 2 weeks
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 1, units: 'DAYS'};
 			}
 			else {
@@ -410,7 +411,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 1209600001 && duration <= 2678400001) {
 			// 2 weeks - 1 month
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 1, units: 'DAYS'};
 			}
 			else {
@@ -419,7 +420,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 2678400001 && duration <= 15721200001) {
 			// 1 month - 6 months
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 1, units: 'WEEKS'};
 			}
 			else {
@@ -428,7 +429,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 15721200001 && duration <= 31622400001) {
 			// 6 months - 1 YR
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 2, units: 'WEEKS'};
 			}
 			else {
@@ -437,7 +438,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
 		}
 		else if (duration > 31622400001) {
 			// > 1 YR
-			if (rollupType == 'DELTA') {
+			if (rollupType === 'DELTA') {
                 result = {intervals: 1, units: 'MONTHS'};
 			}
 			else {
@@ -627,7 +628,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     };
     
     Util.prototype.escapeRegExp = function(str) {
-    	  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    	  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
     };
     
     return new Util();

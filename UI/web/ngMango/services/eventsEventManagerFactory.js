@@ -17,17 +17,21 @@ define([], function() {
 
 function eventsEventManager(EventManager) {
     
-    var READY_STATE_CONNECTING = 0;
+    //var READY_STATE_CONNECTING = 0;
 	var READY_STATE_OPEN = 1;
-	var READY_STATE_CLOSING = 2;
-	var READY_STATE_CLOSED = 3;
+	//var READY_STATE_CLOSING = 2;
+	//var READY_STATE_CLOSED = 3;
     
     var eventsEventManager = new EventManager({
     	url: '/rest/v1/websocket/events'
     });
     
-    // var message = {"eventTypes":["ACKNOWLEDGED","RAISED","RETURN_TO_NORMAL","DEACTIVATED"], "levels":["LIFE_SAFETY","CRITICAL","URGENT","INFORMATION","NONE"]};
-    var message = {"eventTypes":["RAISED", "ACKNOWLEDGED"], "levels":["LIFE_SAFETY","CRITICAL","URGENT","WARNING","IMPORTANT","INFORMATION","NONE"]};
+    // var message = {'eventTypes':['ACKNOWLEDGED','RAISED','RETURN_TO_NORMAL','DEACTIVATED'],
+    //     'levels':['LIFE_SAFETY','CRITICAL','URGENT','INFORMATION','NONE']};
+    var message = {
+        eventTypes: ['RAISED', 'ACKNOWLEDGED'],
+        levels: ['LIFE_SAFETY','CRITICAL','URGENT','WARNING','IMPORTANT','INFORMATION','NONE']
+    };
     
     eventsEventManager.eventHandlers = [];
     

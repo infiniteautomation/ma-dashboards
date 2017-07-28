@@ -18,8 +18,10 @@ define([], function() {
  * - <a ui-sref="ui.examples.pointArrays.dataPointTable">View Demo</a>
  *
  * @param {array} points Variable to hold the array of point objects returned by the query.
- * @param {object} query Filters the results by a property of the data points (eg: `{name: 'meta'}` returns data points containing the string `'meta'` in the `name` property)
- * @param {array=} sort Sorts the resulting list by a properties of the data points. Passed as array of strings. (eg: `['-xid']` sorts descending by xid of the data points. Defaults to `['name']`)
+ * @param {object} query Filters the results by a property of the data points
+ *     (eg: `{name: 'meta'}` returns data points containing the string `'meta'` in the `name` property)
+ * @param {array=} sort Sorts the resulting list by a properties of the data points. Passed as array of strings.
+ *     (eg: `['-xid']` sorts descending by xid of the data points. Defaults to `['name']`)
  * @param {number=} start Sets the starting index for the resulting list. Must be used in conjunction with a `limit` value. (Defaults to `0`)
  * @param {number=} limit Limits the results in the list to a specified number of data points. Limit takes place after query and sorting (no limit by defualt)
  * @param {object=} promise Promise object used to tell if query data is being fetched.

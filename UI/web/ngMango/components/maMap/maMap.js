@@ -14,7 +14,8 @@ define(['angular', 'require'], function(angular, require) {
   * - This component will display a Google Map that can be used within your custom dashboard pages.
   * - Note, you will need to set your Google Map Api Key on the <a ui-sref="ui.settings.uiSettings">Dashboard Settings</a> page.
   * - A Google Map Api Key can be aquired <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">here</a>.
-  * - `<ma-map>` utilizes the <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library and therefore can use nested `<marker>` and `<info window>` components.
+  * - `<ma-map>` utilizes the <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library and
+  *   therefore can use nested `<marker>` and `<info window>` components.
   * - <a ui-sref="ui.examples.utilities.googleMaps">View Demo</a>
   *
   * @param {number} zoom Sets the zoom level of the map.
@@ -27,11 +28,13 @@ define(['angular', 'require'], function(angular, require) {
     <li>`hybrid` displays a mixture of normal and satellite views</li>
     <li>`terrain` displays a physical map based on terrain information</li>
 </ul>
-  * @param {string=} info-window-theme Can optionally be set to `dark` to use a dark theme on all `<info-window>` components. Defaults to a white background theme.
+  * @param {string=} info-window-theme Can optionally be set to `dark` to use a dark theme on all `<info-window>` components.
+  *     Defaults to a white background theme.
   * @param {string=} desktop-height Sets the height of the map at a desktop width (>1280px). Set with px. Eg `800px`. Defaults to `500px`.
   * @param {string=} mobile-height Sets the height of the map at a mobile/tablet width (<1280px). Set with px. Eg `400px`.
   * @param {object=} styles Optionally add a google map styles object to change colors and features of map details.
-  * @param {string=} output-data Defines the name of a variable used to hold output data to be passed to other components on the page. From a marker you should the following syntax to set output-data: `on-click="$parent.$ctrl.setOutputData('newValue')"`.
+  * @param {string=} output-data Defines the name of a variable used to hold output data to be passed to other components on the page.
+  *     From a marker you should the following syntax to set output-data: `on-click="$parent.$ctrl.setOutputData('newValue')"`.
   * @param {string=} map-id If you have multiple `<ma-map>` components on a single page give each a unique `map-id`.
   *
   * @usage
@@ -54,6 +57,7 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.apiKeySet = false;
         $ctrl.infoWindowCache = {};
         $ctrl.allInfoWindows = [];
+        var google = window.google;
 
         if (uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
@@ -111,7 +115,7 @@ define(['angular', 'require'], function(angular, require) {
                 google.maps.event.trigger($ctrl.map, 'resize');
                 $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long));
 
-                google.maps.event.addListener($ctrl.map, "idle", function() {
+                google.maps.event.addListener($ctrl.map, 'idle', function() {
                     google.maps.event.trigger($ctrl.map, 'resize');
                     // $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long)); 
                 });
@@ -122,7 +126,7 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.$onChanges = function(changes) {
             // console.log(changes);
             if (!$ctrl.desktopHeight) {
-                $ctrl.height = "500px";
+                $ctrl.height = '500px';
             }
             if (!$mdMedia('gt-md') && $ctrl.mobileHeight) {
                 $ctrl.height = $ctrl.mobileHeight;

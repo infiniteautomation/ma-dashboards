@@ -189,7 +189,8 @@ return [
                     angular.module('maUiDataPointDetailsState', [])
                         .component('maUiDataPointDetails', dataPointDetails);
                     $ocLazyLoad.inject('maUiDataPointDetailsState');
-                    cssInjector.injectLink(require.toUrl('./components/dataPointDetails/dataPointDetails.css'), 'dataPointDetails' ,'link[href="styles/main.css"]');
+                    cssInjector.injectLink(require.toUrl('./components/dataPointDetails/dataPointDetails.css'),
+                            'dataPointDetails' ,'link[href="styles/main.css"]');
                 });
             }]
         }
@@ -540,12 +541,14 @@ return [
         },
         resolve: {
             loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
-                return maRequireQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'], function (watchListBuilder, bracketEscape) {
+                return maRequireQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'],
+                        function (watchListBuilder, bracketEscape) {
                     angular.module('maUiWatchListBuilderState', [])
                         .directive('maUiBracketEscape', bracketEscape)
                         .component('maUiWatchListBuilder', watchListBuilder);
                     $ocLazyLoad.inject('maUiWatchListBuilderState');
-                    cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'), 'watchListBuilder' ,'link[href="styles/main.css"]');
+                    cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'),
+                            'watchListBuilder' ,'link[href="styles/main.css"]');
                 });
             }]
         }

@@ -46,7 +46,8 @@ Time: <ma-point-value point="myPoint1" display-type="dateTime" date-time-format=
  *
  */
 function pointValue() {
-    var dateOptions = ['dateTime', 'shortDateTime', 'dateTimeSeconds', 'shortDateTimeSeconds', 'date', 'shortDate', 'time', 'timeSeconds', 'monthDay', 'month', 'year', 'iso'];
+    var dateOptions = ['dateTime', 'shortDateTime', 'dateTimeSeconds', 'shortDateTimeSeconds', 'date', 'shortDate', 'time',
+        'timeSeconds', 'monthDay', 'month', 'year', 'iso'];
     
     return {
         restrict: 'E',

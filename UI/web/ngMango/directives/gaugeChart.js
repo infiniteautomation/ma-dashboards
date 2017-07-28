@@ -39,7 +39,8 @@ define(['amcharts/gauge', 'require', 'angular', './PointValueController'], funct
  * @param {number=} axis-label-font-size Sets the fontsize of the labels around the axis.
  * @param {number=} axis-thickness Sets the thickness of the axis circle. (default: 1)
  * @param {number=} interval Sets the interval for each numbered tick on the gauge. (default: 6 evenly distributed numbered ticks)
- * @param {number=} tick-interval Sets the interval for the minor ticks. Divide this number into the numbered tick interval to get the number of minor ticks per numbered interval. (default: 5 evenly distributed minor ticks per numbered interval)
+ * @param {number=} tick-interval Sets the interval for the minor ticks. Divide this number into the numbered tick interval to
+ *     get the number of minor ticks per numbered interval. (default: 5 evenly distributed minor ticks per numbered interval)
  * @param {number=} arrow-inner-radius Radius of the ring the arrow is attached to. (default: 8)
  * @param {number=} arrow-alpha Opacity of the arrow and the arrow ring. Ranges 0-1 as a decimal. (default: 1)
  * @param {number=} axis-alpha Opacity of the circular axis. Ranges 0-1 as a decimal. (default: 0.5)
@@ -204,7 +205,7 @@ GaugeChartController.prototype.updateChart = function() {
         var stop1 = asNumber(this.band1End);
         axis.bands.push({
             id: 'band1',
-            color: this.band1Color || "#84b761",
+            color: this.band1Color || '#84b761',
             startValue: axis.startValue,
             endValue: stop1
         });
@@ -215,7 +216,7 @@ GaugeChartController.prototype.updateChart = function() {
         var stop2 = asNumber(this.band2End);
         axis.bands.push({
             id: 'band2',
-            color: this.band2Color || "#fdd400",
+            color: this.band2Color || '#fdd400',
             startValue: axis.bands[0].endValue,
             endValue: stop2
         });
@@ -226,7 +227,7 @@ GaugeChartController.prototype.updateChart = function() {
         var stop3 = asNumber(this.band3End);
         axis.bands.push({
             id: 'band3',
-            color: this.band3Color || "#cc4748",
+            color: this.band3Color || '#cc4748',
             startValue: axis.bands[1].endValue,
             endValue: stop3
         });
@@ -272,14 +273,14 @@ function asNumber(value, defaultValue) {
 
 function defaultOptions() {
     return {
-        type: "gauge",
-        theme: "light",
+        type: 'gauge',
+        theme: 'light',
         addClassNames: true,
         axes: [{
             startValue: 0,
             endValue: 100,
             bands: [],
-            bottomText: ""
+            bottomText: ''
         }],
         arrows: [{
             nailAlpha: 0,

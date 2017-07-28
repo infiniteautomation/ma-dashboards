@@ -37,7 +37,7 @@ function ColorPreviewController($mdColors) {
     
     this.toHex = function toHex(rgbaString) {
         var matches = /^rgba\((.+?)\)$/.exec(rgbaString);
-        if (matches && matches.length == 2) {
+        if (matches && matches.length === 2) {
             var split = matches[1].split(/\s*,\s*/);
             if (split.length < 3) return rgbaString;
             var result = '#';

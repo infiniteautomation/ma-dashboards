@@ -39,7 +39,7 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
                 
             });
             
-            var counter = function(payloadEvent, payloadType) {
+            function counter(payloadEvent, payloadType) {
                 // console.log(payloadEvent, payloadType);
                 
                 if (payloadType === 'RAISED') {
@@ -50,8 +50,7 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
                     $ctrl.events[payloadEvent.alarmLevel].unsilencedCount--;
                     $ctrl.events.totalCount--;
                 }
-                
-            };
+            }
             
         },
         function(data) {
