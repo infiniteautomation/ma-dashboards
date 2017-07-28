@@ -529,6 +529,10 @@ md-card md-card-content.ma-no-padding {
   cursor: pointer;
 }
 
+.ma-no-margin {
+	margin: 0;
+}
+
 .ma-margin-top {
 	margin-top: 8px;
 }
@@ -551,6 +555,10 @@ md-card md-card-content.ma-no-padding {
 	-ms-user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
+}
+
+.ma-full-width {
+	width: 100%;
 }
 
 /* permissions menu */
