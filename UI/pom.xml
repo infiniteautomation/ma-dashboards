@@ -63,6 +63,7 @@
                       </goals>
                       <configuration>
                           <arguments>copy-vendor</arguments>
+                          <!-- srcdir and outputdir only affect Eclipse -->
                           <srcdir>${project.basedir}/bower_components</srcdir>
                           <outputdir>${project.basedir}/web/vendor</outputdir>
                       </configuration>
@@ -74,6 +75,7 @@
                       </goals>
                       <configuration>
                           <arguments>copy-docs</arguments>
+                          <!-- srcdir and outputdir only affect Eclipse -->
                           <srcdir>${project.basedir}/web/ngMango</srcdir>
                           <outputdir>${project.basedir}/web/ui/views/docs</outputdir>
                       </configuration>

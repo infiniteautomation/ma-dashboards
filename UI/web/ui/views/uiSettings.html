@@ -232,8 +232,10 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-	    <div md-colors="{color: 'warn'}"><strong ma-tr="ui.app.autoLoginWarning"></strong></div>
-	    <div ma-tr="ui.app.autoLoginNoteUI"></div>
+        <div class="md-padding ma-margin-bottom" md-colors="{background: 'warn'}">
+            <div><strong ma-tr="ui.app.autoLoginWarning"></strong></div>
+            <div ma-tr="ui.app.autoLoginNoteUI"></div>
+        </div>
         <div layout layout-align="start center" layout-wrap>
             <md-input-container flex="100" flex-gt-md="50">
                 <label ma-tr="login.userId"></label>
@@ -244,6 +246,6 @@
                 <input ng-model="uiSettings.autoLoginPassword" ma-empty-input>
             </md-input-container>
         </div>
-    	<div ma-tr="ui.app.autoLoginTestManually"></div>
+    	<div><em ma-tr="ui.app.autoLoginTestManually"></em></div>
     </md-card-content>
 </md-card>
