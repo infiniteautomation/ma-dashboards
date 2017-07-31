@@ -1,8 +1,10 @@
 <form name="autoLoginSettings">
   <div layout="column">
 
-    <div md-colors="{color: 'warn'}"><strong ma-tr="ui.app.autoLoginWarning"></strong></div>
-    <div ma-tr="ui.app.autoLoginNote"></div>
+    <div class="md-padding ma-margin-bottom" md-colors="{background: 'warn'}">
+        <div><strong ma-tr="ui.app.autoLoginWarning"></strong></div>
+        <div ma-tr="ui.app.autoLoginNote"></div>
+    </div>
 
     <md-input-container>
       <label ma-tr="login.userId"></label>
@@ -16,13 +18,14 @@
     
     <md-input-container>
       <label ma-tr="login.password"></label>
-      <input required type="password" name="password" ng-model="$ctrl.password">
+      <input required name="password" ng-model="$ctrl.password">
       <div ng-messages="autoLoginSettings.password.$error">
         <div ng-message="required" ma-tr="ui.app.required"></div>
       </div>
     </md-input-container>
     
-    <div ma-tr="ui.app.autoLoginTestManually"></div>
+    <div><em ma-tr="ui.app.autoLoginTestManually"></em></div>
+    
     <div>
       <md-button type="submit" ng-click="$ctrl.saveCredentials()" ma-tr="common.save" class="md-primary md-raised" aria-label="{{'common.save'|maTr}}"></md-button>
       <md-button ng-disabled="!$ctrl.storedUsername" ng-click="$ctrl.deleteCredentials()" ma-tr="common.delete" class="md-warn md-raised" aria-label="{{'common.delete'|maTr}}"></md-button>
