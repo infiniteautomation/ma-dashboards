@@ -1,3 +1,13 @@
+*Version 3.1.8*
+* Support multiple selection in ma-file-store-browser component
+* Add auto login setting to UI settings page and add auto login url parameters
+* Layout fixes to components
+* Improve rendering in Safari
+* Add more icons and descriptions for components for use in Dashboard Designer
+* Update component documentation
+* Add maTemporaryResource service
+* Bug fixes
+
 *Version 3.1.7*
 * Fix incorrect file store URLs
 * Fix bugs editing menu items
