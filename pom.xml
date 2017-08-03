@@ -20,7 +20,7 @@
 	  <tag>HEAD</tag>
   </scm>
 	<modules>
-		<module>Custom Dashboards</module>
+		
 		<module>UI</module>
     </modules>
 </project>

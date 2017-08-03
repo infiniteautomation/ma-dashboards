@@ -1,4 +1,0 @@
-eclipse.preferences.version=1
-excluded=web/js/jsdoc//*
-included=web/js//*.js
-projectSpecificOptions=true
