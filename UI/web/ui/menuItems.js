@@ -530,6 +530,68 @@ return [
         menuHidden: true
     },
     {
+        name: 'ui.settings.systemStatus',
+        url: '/system-status',
+        template: '<ma-ui-system-status-page flex="noshrink" layout="column"><ma-ui-system-status-page>',
+        menuTr: 'ui.settings.systemStatus',
+        menuIcon: 'new_releases',
+        permission: 'superadmin',
+        params: {
+            helpPage: 'ui.help.systemStatus'
+        },
+        resolve: {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./components/systemStatusPage/systemStatusPage'], function (systemStatusPage) {
+                    angular.module('maUiSystemStatusState', [])
+                        .component('maUiSystemStatusPage', systemStatusPage);
+                    $ocLazyLoad.inject('maUiSystemStatusState');
+                });
+            }]
+        }
+    },
+    {
+        name: 'ui.settings.systemStatus.auditTrail',
+        url: '/audit-trail',
+        menuTr: 'ui.settings.systemStatus.auditTrail',
+        templateUrl: require.toUrl('./systemStatus/auditTrail.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.systemStatus.loggingConsole',
+        url: '/logging-console',
+        menuTr: 'ui.settings.systemStatus.loggingConsole',
+        templateUrl: require.toUrl('./systemStatus/loggingConsole.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.systemStatus.internalMetrics',
+        url: '/internal-metrics',
+        menuTr: 'ui.settings.systemStatus.internalMetrics',
+        templateUrl: require.toUrl('./systemStatus/internalMetrics.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.systemStatus.workItems',
+        url: '/work-items',
+        menuTr: 'ui.settings.systemStatus.workItems',
+        templateUrl: require.toUrl('./systemStatus/workItems.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.systemStatus.threads',
+        url: '/threads',
+        menuTr: 'ui.settings.systemStatus.threads',
+        templateUrl: require.toUrl('./systemStatus/threads.html'),
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.systemStatus.serverInfo',
+        url: '/server-info',
+        menuTr: 'ui.settings.systemStatus.serverInfo',
+        templateUrl: require.toUrl('./systemStatus/serverInfo.html'),
+        menuHidden: true
+    },
+    {
         name: 'ui.settings.watchListBuilder',
         url: '/watch-list-builder/{watchListXid}',
         template: '<h1 ma-tr="ui.app.watchListBuilder"></h1>\n<ma-ui-watch-list-builder></ma-ui-watch-list-builder>',

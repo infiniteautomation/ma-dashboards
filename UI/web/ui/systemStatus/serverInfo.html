@@ -1,0 +1,25 @@
+<div layout="column">
+    <div layout layout-align="end">
+        <md-button ng-click="$ctrl.getSystemInfo()" class="md-raised md-accent">
+            <md-icon>
+                refresh
+            </md-icon>
+            <span ma-tr="ui.app.refreshTable"></span>
+        </md-button>
+    </div>
+
+    <md-input-container flex>
+        <label>System Info:</label>
+        <textarea ng-model="$ctrl.sytemInfo | json" md-maxlength="150" rows="25" max-rows="25" md-select-on-focus
+                  id="system-info-console"></textarea>
+    </md-input-container>
+
+    <div layout layout-align="end">
+        <md-button ng-click="$ctrl.copySystemInfoToClipboard()" class="md-raised md-accent">
+            <md-icon>
+                content_copy
+            </md-icon>
+            <span ma-tr="ui.settings.systemStatus.copyToClipboard"></span>
+        </md-button>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<md-card ng-if="!$ctrl.$mdMedia('gt-md')">
+    <md-card-content class="ma-ui-system-settings-dropdown" layout>
+        <md-input-container flex>
+            <label ma-tr="ui.app.chooseASection"></label>
+            <md-select ng-init="section = $ctrl.$state.current" ng-model="section" ng-change="" ng-model-options="{trackBy: '$value.name'}">
+                <md-option ng-repeat="child in $ctrl.menu.menuItemsByName['ui.settings.systemStatus'].children | orderBy:['weight', 'name'] track by child.name"
+                    ng-value="child" ui-sref="{{child.name}}"><span ma-tr="{{child.menuTr}}"></span></md-option>
+            </md-select>
+        </md-input-container>
+    </md-card-content>
+</md-card>
+
+<div flex="noshrink" layout>
+    <div layout="column" flex="20" ng-if="$ctrl.$mdMedia('gt-md')">
+        <md-card flex>
+            <md-card-title flex="none">
+              <md-card-title-text>
+                <div class="md-headline" ma-tr="ui.app.chooseASection"></div>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content class="ma-no-padding">
+                <md-list class="ma-no-padding">
+                    <md-list-item
+                        ng-repeat="child in $ctrl.menu.menuItemsByName['ui.settings.systemStatus'].children | orderBy:['weight', 'name'] track by child.name"
+                            ui-sref="{{child.name}}" md-colors="{'background': $ctrl.$state.current.name === child.name ? 'accent' : 'background-hue-1'}">
+                        <p ma-tr="{{child.menuTr}}"></p>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+    </div>
+    
+    <div layout="column" flex>
+        <md-card class="ma-ui-system-settings-main">
+            <md-card-title ng-if="$ctrl.$mdMedia('gt-md')">
+              <md-card-title-text>
+                <div class="md-headline" ma-tr="{{$ctrl.$state.current.menuTr}}"></div>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content ng-form="$ctrl.settingForm">
+                <div ui-view></div>
+            </md-card-content>
+            <!--<md-card-actions>-->
+                <!--<md-button class="md-raised md-primary md-hue-1" ng-click="$ctrl.saveSection()" ng-disabled="$ctrl.settingForm.$pristine || $ctrl.savePromise">-->
+                    <!--<md-icon ng-hide="$ctrl.savedIcon || $ctrl.errorIcon">save</md-icon>-->
+                    <!--<md-icon ng-show="$ctrl.savedIcon">check</md-icon>-->
+                    <!--<md-icon ng-show="$ctrl.errorIcon">error_outline</md-icon>-->
+                    <!--<span ma-tr="common.save"></span>-->
+                <!--</md-button>-->
+                <!--<span ng-if="$ctrl.error" md-colors="{color: 'warn'}" ma-tr="ui.components.errorSavingSettings" ma-tr-args="[$ctrl.error.message]"></span>-->
+                <!--<span ng-if="$ctrl.savedMessage" md-colors="{color: 'accent'}" ma-tr="ui.app.settingsSaved"></span>-->
+            <!--</md-card-actions>-->
+        </md-card>
+    </div>
+</div>

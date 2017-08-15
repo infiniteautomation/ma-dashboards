@@ -1,0 +1,40 @@
+<div>
+    <div layout layout-align="end">
+        <md-button ng-click="$ctrl.getWorkItems()" class="md-raised md-accent">
+            <md-icon>
+                refresh
+            </md-icon>
+            <span ma-tr="ui.app.refreshTable"></span>
+        </md-button>
+    </div>
+
+    <!--<md-list flex class="md-dense">-->
+        <!--<div ng-repeat="workItem in $ctrl.workItems">-->
+            <!--<md-list-item>-->
+                <!--<span ng-bind="workItem.description + ':'"></span>-->
+                <!--<span flex></span>-->
+                <!--<span ng-bind="workItem.priority"></span>-->
+            <!--</md-list-item>-->
+            <!--<md-divider></md-divider>-->
+        <!--</div>-->
+    <!--</md-list>-->
+
+    <md-table-container>
+        <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
+            <thead md-head md-order="description">
+                <tr md-row>
+                    <th md-column md-order-by="description">Description</th>
+                    <th md-column md-order-by="priority">Priority</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="workItem in $ctrl.workItems">
+                    <td md-cell ng-bind="workItem.description">
+
+                    </td>
+                    <td md-cell ng-bind="workItem.priority"></td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>

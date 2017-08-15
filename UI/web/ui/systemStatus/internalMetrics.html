@@ -1,0 +1,40 @@
+<div>
+    <div layout layout-align="end">
+        <md-button ng-click="$ctrl.getInternalMetrics()" class="md-raised md-accent">
+            <md-icon>
+                refresh
+            </md-icon>
+            <span ma-tr="ui.app.refreshTable"></span>
+        </md-button>
+    </div>
+
+    <!--<md-list flex class="md-dense">-->
+        <!--<div ng-repeat="metric in $ctrl.internalMetrics">-->
+            <!--<md-list-item>-->
+                <!--<span ng-bind="metric.name + ':'"></span>-->
+                <!--<span flex></span>-->
+                <!--<span ng-bind="metric.value"></span>-->
+            <!--</md-list-item>-->
+            <!--<md-divider></md-divider>-->
+        <!--</div>-->
+    <!--</md-list>-->
+
+    <md-table-container>
+        <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
+            <thead md-head md-order="name">
+                <tr md-row>
+                    <th md-column md-order-by="name">Name</th>
+                    <th md-column md-order-by="value">Value</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="metric in $ctrl.internalMetrics">
+                    <td md-cell ng-bind="metric.name">
+
+                    </td>
+                    <td md-cell ng-bind="metric.value"></td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>

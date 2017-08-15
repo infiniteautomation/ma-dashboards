@@ -1,0 +1,48 @@
+<div layout="column">
+    <div layout layout-align="end">
+        <md-button ng-click="$ctrl.getLogFilesList()" class="md-raised md-accent">
+            <md-icon>
+                refresh
+            </md-icon>
+            <span ma-tr="ui.app.refreshTable"></span>
+        </md-button>
+    </div>
+
+    <md-list flex class="md-dense">
+        <div ng-repeat="fileName in $ctrl.logFilesList">
+            <md-list-item>
+                <span ng-bind="fileName"></span>
+                <span flex></span>
+                <md-button ng-click="$ctrl.displayLogFile(fileName)" class="md-raised md-accent md-hue-1">
+                    <md-icon>
+                        remove_red_eye
+                    </md-icon>
+                    <span>View</span>
+                </md-button>
+                <md-button href="{{$ctrl.getLogDownloadUrl(fileName)}}" download
+                           class="md-raised md-accent md-hue-3">
+                    <md-icon>
+                        file_download
+                    </md-icon>
+                    <span ma-tr="ui.settings.systemStatus.downloadLog"></span>
+                </md-button>
+            </md-list-item>
+            <md-divider></md-divider>
+        </div>
+    </md-list>
+
+    <md-input-container flex ng-if="$ctrl.selectedLogFile">
+        <label>Displaying Log File: {{$ctrl.selectedLogFile}}</label>
+        <textarea ng-model="$ctrl.selectedLogContent" md-maxlength="150" rows="5" max-rows="15" md-select-on-focus
+                  id="logging-console"></textarea>
+    </md-input-container>
+
+    <div layout layout-align="end" ng-if="$ctrl.selectedLogFile">
+        <md-button ng-click="$ctrl.copyLogToClipboard()" class="md-raised md-accent">
+            <md-icon>
+                content_copy
+            </md-icon>
+            <span ma-tr="ui.settings.systemStatus.copyToClipboard"></span>
+        </md-button>
+    </div>
+</div>

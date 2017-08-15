@@ -33,6 +33,7 @@ define(['./services/Point',
         './services/ModulesWebSocket',
         './services/Permissions',
         './services/systemSettings',
+        './services/systemStatus',
         './services/ImportExport',
         './services/analytics',
         './services/requireQ',
@@ -52,7 +53,7 @@ define(['./services/Point',
         JsonStoreEventManagerFactory, Util, watchdog, EventManager, WebSocketManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, ModulesWebSocketFactory,
-        PermissionsFactory, systemSettingsProvider,
+        PermissionsFactory, systemSettingsProvider, systemStatusFactory,
         ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
         serverFactory, temporaryResourceFactory,
         dateFilterFactory, trFilterFactory, angular, require) {
@@ -98,6 +99,7 @@ ngMangoServices.factory('maModules', ModulesFactory);
 ngMangoServices.factory('maModulesWebSocket', ModulesWebSocketFactory);
 ngMangoServices.factory('maPermissions', PermissionsFactory);
 ngMangoServices.provider('maSystemSettings', systemSettingsProvider);
+ngMangoServices.factory('maSystemStatus', systemStatusFactory);
 ngMangoServices.factory('maImportExport', ImportExportFactory);
 ngMangoServices.factory('maWebAnalytics', webAnalyticsFactory);
 ngMangoServices.provider('maRequireQ', requireQProvider);

@@ -1,0 +1,48 @@
+<div layout="column">
+    <div layout layout-align="end">
+        <md-button ng-click="$ctrl.getThreads()" class="md-raised md-accent">
+            <md-icon>
+                refresh
+            </md-icon>
+            <span ma-tr="ui.app.refreshTable"></span>
+        </md-button>
+    </div>
+
+    <md-list flex class="md-dense">
+        <div ng-repeat="thread in $ctrl.threads">
+            <md-list-item>
+                <span ng-bind="thread.name"></span>
+                <span flex></span>
+                <md-button ng-click="$ctrl.displayThread($index)" class="md-raised md-accent md-hue-1">
+                    <md-icon>
+                        remove_red_eye
+                    </md-icon>
+                    <span>View</span>
+                </md-button>
+                <!--<md-button href="{{$ctrl.getLogDownloadUrl(fileName)}}" download-->
+                           <!--class="md-raised md-accent md-hue-3">-->
+                    <!--<md-icon>-->
+                        <!--file_download-->
+                    <!--</md-icon>-->
+                    <!--<span ma-tr="ui.settings.systemStatus.downloadLog"></span>-->
+                <!--</md-button>-->
+            </md-list-item>
+            <md-divider></md-divider>
+        </div>
+    </md-list>
+
+    <md-input-container flex ng-if="$ctrl.selectedThread">
+        <label>Displaying Thread: {{$ctrl.selectedThread.name}}</label>
+        <textarea ng-model="$ctrl.selectedThread | json" md-maxlength="150" rows="5" max-rows="15" md-select-on-focus
+                  id="thread-console"></textarea>
+    </md-input-container>
+
+    <div layout layout-align="end" ng-if="$ctrl.selectedThread">
+        <md-button ng-click="$ctrl.copyThreadToClipboard()" class="md-raised md-accent">
+            <md-icon>
+                content_copy
+            </md-icon>
+            <span ma-tr="ui.settings.systemStatus.copyToClipboard"></span>
+        </md-button>
+    </div>
+</div>
