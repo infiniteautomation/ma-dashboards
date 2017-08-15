@@ -13,20 +13,21 @@
         </md-fab-trigger>
 
         <md-fab-actions>
-            <md-button class="md-primary md-icon-button" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'stats')">
+            <md-button class="md-primary md-raised" id="popup-btn" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'stats')">
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Show
                     Stats</md-tooltip>
                 <md-icon>multiline_chart</md-icon>
             </md-button>
-            <md-button class="md-primary md-icon-button" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'chart')">
+            <md-button class="md-primary md-raised" id="popup-btn" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'chart')">
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Show Chart</md-tooltip>
                 <md-icon>equalizer</md-icon>
             </md-button>
-            <md-button class="md-primary md-icon-button" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'table')">
+            <md-button class="md-primary md-raised" id="popup-btn" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'table')">
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Show Table</md-tooltip>
                 <md-icon>format_align_justify</md-icon>
             </md-button>
-            <md-button class="md-primary md-icon-button" ng-if="$ctrl.point.pointLocator.settable" ng-click="$ctrl.showSetPointDialog($event, $ctrl.point)">
+            <md-button class="md-primary md-raised" id="popup-btn" ng-if="$ctrl.point.pointLocator.settable"
+                       ng-click="$ctrl.showSetPointDialog($event, $ctrl.point)">
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Set Point</md-tooltip>
                 <md-icon>edit</md-icon>
             </md-button>

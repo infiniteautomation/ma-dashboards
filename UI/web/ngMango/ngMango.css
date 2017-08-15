@@ -1,3 +1,28 @@
+/* Popup Speed Dial */
+
+ma-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item,
+ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item {
+  -webkit-transition: all .1s cubic-bezier(.55,0,.55,.2);
+  transition: all .1s cubic-bezier(.55,0,.55,.2);
+}
+ma-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item button#popup-btn,
+ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item button#popup-btn {
+  padding: 0;
+  margin: 0 2px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+  border-radius: 0;
+}
+
+ma-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item md-icon,
+ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item md-icon {
+  font-size: 16px;
+  padding-bottom: 3px;
+  margin: 0;
+}
+
 /* Stats Dialog */
 
 .stats-dialog {
