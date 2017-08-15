@@ -26,14 +26,13 @@ ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item
 /* Stats Dialog */
 
 .stats-dialog {
-  width: 700px;
+  width: 730px;
 }
 .stats-dialog .md-toolbar-tools h2 {
   line-height: 20px;
   font-size: 16px;
   text-align: center;
 }
-
 .stats-dialog .md-toolbar-tools h2 span.nowrap {
   white-space: nowrap;
 }
@@ -43,7 +42,6 @@ ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item
 .stats-dialog table.md-table thead.md-head>tr.md-row {
   height: 0px;
 }
-
 .stats-dialog input#number-of-values {
   width: 55px;
 }

@@ -50,26 +50,31 @@
                         <md-tab label="{{'ui.app.latestValueTable' | maTr}}" md-active="$ctrl.tab === 'table'">
                               <md-content class="md-padding" ng-init="tableTab = {}">
                                     <ma-point-values point="myPoint" values="tableTab.renderedRealtimePointValues" realtime="$ctrl.realtimeMode" use-cache="$ctrl.showCachedData"
-                                        rendered="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
+                                                     rendered="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
                                     </ma-point-values>
 
                                     <md-table-container ng-init="myOrder='-timestamp'">
                                           <table md-table class="ma-point-values-table">
                                                 <thead md-head md-order="myOrder">
-                                                      <tr md-row>
-                                                            <th md-column md-order-by="timestamp" ma-tr="ui.app.time"></th>
-                                                            <th md-column md-order-by="value" ma-tr="ui.app.pointValue"></th>
-                                                      </tr>
+                                                <tr md-row>
+                                                      <th md-column md-order-by="timestamp" ma-tr="ui.app.time"></th>
+                                                      <th md-column md-order-by="value" ma-tr="ui.app.pointValue"></th>
+                                                </tr>
                                                 </thead>
                                                 <tbody md-body ng-class="{'ma-point-values-non-realtime': !$ctrl.realtimeMode}">
-                                                      <tr md-row ng-repeat="value in tableTab.renderedRealtimePointValues | orderBy: myOrder" ng-class="{'ma-point-value-cached': value.cached}">
-                                                            <td md-cell ng-bind="value.timestamp | maDate:'shortDateTimeSeconds'"></td>
-                                                            <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
-                                                <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
-                                                      </tr>
+                                                <tr md-row ng-repeat="value in tableTab.renderedRealtimePointValues | orderBy: myOrder" ng-class="{'ma-point-value-cached': value.cached}">
+                                                      <td md-cell ng-bind="value.timestamp | maDate:'shortDateTimeSeconds'"></td>
+                                                      <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
+                                                      <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
+                                                </tr>
                                                 </tbody>
                                           </table>
                                     </md-table-container>
+                              </md-content>
+                        </md-tab>
+                        <md-tab label="{{'ui.app.eventsTable' | maTr}}" md-active="$ctrl.tab === 'events'">
+                              <md-content class="md-padding" ng-init="tableTab = {}">{{myPoint.id}}
+                                    <ma-events-table single-point="true" point-id="myPoint.id" limit="10" sort="'-activeTimestamp'"></ma-events-table>
                               </md-content>
                         </md-tab>
                   </md-tabs>

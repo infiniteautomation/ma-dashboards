@@ -40,17 +40,24 @@
                            ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'stats')">
                     <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Show
                         Stats</md-tooltip>
-                    <md-icon>multiline_chart</md-icon>
+                    <md-icon>format_list_numbered</md-icon>
                 </md-button>
                 <md-button class="md-primary md-raised" id="popup-btn"
                            ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'chart')">
                     <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Show Chart</md-tooltip>
-                    <md-icon>equalizer</md-icon>
+                    <md-icon>timeline</md-icon>
                 </md-button>
                 <md-button class="md-primary md-raised" id="popup-btn"
                            ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'table')">
                     <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Show Table</md-tooltip>
-                    <md-icon>format_align_justify</md-icon>
+                    <md-icon>grid_on</md-icon>
+                </md-button>
+                <md-button class="md-primary md-raised" id="popup-btn"
+                           ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'events')">
+                    <md-tooltip
+                        md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">Show
+                        Events</md-tooltip>
+                    <md-icon>alarm</md-icon>
                 </md-button>
             </md-fab-actions>
         </md-fab-speed-dial>
