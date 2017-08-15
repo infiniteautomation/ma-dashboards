@@ -280,8 +280,10 @@ function UserProvider() {
         };
         
         User.getCredentialsFromUrl = function() {
-        	var params = new URL(window.location.href).searchParams;
-        	var credentials = {
+        	const params = new URL(window.location.href).searchParams;
+        	if (!params) return;
+        	
+        	const credentials = {
         		username: params.get('autoLoginUsername'),
         		password: params.get('autoLoginPassword') || ''
         	};
