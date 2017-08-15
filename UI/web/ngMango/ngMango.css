@@ -5,8 +5,8 @@ ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item
   -webkit-transition: all .1s cubic-bezier(.55,0,.55,.2);
   transition: all .1s cubic-bezier(.55,0,.55,.2);
 }
-ma-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item button#popup-btn,
-ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item button#popup-btn {
+ma-point-value md-fab-speed-dial.md-right md-fab-actions#popup-btns .md-fab-action-item button,
+ma-set-point-value md-fab-speed-dial.md-right md-fab-actions#popup-btns .md-fab-action-item button {
   padding: 0;
   margin: 0 2px;
   width: 22px;
@@ -16,8 +16,8 @@ ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item
   border-radius: 0;
 }
 
-ma-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item md-icon,
-ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item md-icon {
+ma-point-value md-fab-speed-dial.md-right md-fab-actions#popup-btns .md-fab-action-item md-icon,
+ma-set-point-value md-fab-speed-dial.md-right md-fab-actions#popup-btns .md-fab-action-item md-icon {
   font-size: 16px;
   padding-bottom: 3px;
   margin: 0;
