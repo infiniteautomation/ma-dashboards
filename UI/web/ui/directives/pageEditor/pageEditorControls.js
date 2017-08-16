@@ -47,6 +47,8 @@ function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, 
     this.MA_UI_EDIT_MENUS_PERMISSION = MA_UI_EDIT_MENUS_PERMISSION; // used in template
     this.$templateRequest = $templateRequest;
     this.$document = $document;
+    
+    this.showInputs = false;
 }
 
 PageEditorControlsController.prototype.$onInit = function() {
@@ -112,6 +114,7 @@ PageEditorControlsController.prototype.createNewPage = function createNewPage(ma
     }
     page.jsonData.markup = markup || '';
     this.menuItem = null;
+    this.showInputs = true;
     return this.setSelectedPage(page);
 };
 
@@ -121,7 +124,7 @@ PageEditorControlsController.prototype.confirmLoadPage = function confirmLoadPag
             return;
         }
     }
-    
+
     if (xid) {
         this.loadPage(xid);
     } else {
@@ -143,6 +146,7 @@ PageEditorControlsController.prototype.loadPage = function loadPage(xid) {
     }.bind(this));
     
     return this.$q.all([menuItemPromise, pagePromise]).then(function(result) {
+        this.showInputs = false;
         return this.setSelectedPage(result[1]);
     }.bind(this), function() {
         return this.createNewPage();
@@ -233,6 +237,8 @@ PageEditorControlsController.prototype.savePage = function savePage() {
     this.pageEditorForm.$setSubmitted();
     if (this.pageEditorForm.$valid) {
         return this.selectedPage.$save().then(function(page) {
+            this.showInputs = false;
+            
             this.localStorageService.set('lastSelectedPage', {
                 pageXid: page.xid
             });
@@ -268,6 +274,8 @@ PageEditorControlsController.prototype.savePage = function savePage() {
 
             return this.pageSummaryStore.$save();
         }.bind(this));
+    } else {
+        this.showInputs = true;
     }
 };
 

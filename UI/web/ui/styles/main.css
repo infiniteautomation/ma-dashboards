@@ -831,10 +831,18 @@ md-input-container .hint.ng-hide {
 }
 
 /* Page editor */
-.ma-ui-page-editor-inputs md-input-container {
+
+.ma-ui-page-editor-inputs {
+	margin-top: -8px;
+}
+
+.ma-ui-page-editor-top-row > md-input-container {
   margin-bottom: 5px;
 }
 
+.ma-ui-page-editor-inputs .md-button.md-icon-button {
+	margin: 0;
+}
 
 /* Alarm Flags */
 .alarm-flag.ALL {
