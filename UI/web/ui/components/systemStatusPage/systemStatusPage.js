@@ -60,13 +60,6 @@ SystemStatusPageController.prototype.getLogFilesList = function() {
     });
 };
 
-// SystemStatusPageController.prototype.downloadLogFile = function(filename) {
-//     this.systemStatus.getLogFile(filename).then(function(response) {
-//         console.log(response.data);
-//         // Download as a .log file!
-//     });
-// };
-
 SystemStatusPageController.prototype.getLogDownloadUrl = function(filename) {
     return this.logByFileNameUrl + filename;
 };
@@ -77,7 +70,7 @@ SystemStatusPageController.prototype.displayLogFile = function(filename) {
     this.selectedLogFile = filename;
 
     this.systemStatus.getLogFile(filename).then(function(response) {
-        $this.selectedLogContent = response.data;
+        $this.selectedLogContent = response.data.join('\n');
     });
 };
 
@@ -117,7 +110,8 @@ SystemStatusPageController.prototype.getSystemInfo = function() {
     var $this = this;
 
     this.systemStatus.getFullSystemInfo().then(function(response) {
-        $this.sytemInfo = response.data;
+        console.log(response);
+        $this.systemInfo = JSON.stringify(response.data);
     });
 };
 
