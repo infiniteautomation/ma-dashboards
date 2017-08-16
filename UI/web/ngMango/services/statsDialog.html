@@ -73,7 +73,7 @@
                               </md-content>
                         </md-tab>
                         <md-tab label="{{'ui.app.eventsTable' | maTr}}" md-active="$ctrl.tab === 'events'">
-                              <md-content class="md-padding" ng-init="tableTab = {}">{{myPoint.id}}
+                              <md-content class="md-padding" ng-init="tableTab = {}">
                                     <ma-events-table single-point="true" point-id="myPoint.id" limit="10" sort="'-activeTimestamp'"></ma-events-table>
                               </md-content>
                         </md-tab>
