@@ -4,12 +4,12 @@
         <span ng-if="$ctrl.displayType !== 'image'" ng-style="$ctrl.valueStyle" ng-class="classes" class="value" ng-bind="$ctrl.displayValue"></span>
         <img ng-if="$ctrl.displayType === 'image'" ng-style="$ctrl.valueStyle" ng-class="classes" class="value" ng-src="{{$ctrl.point.value}}" alt="Image point value">
         <span ng-if="$ctrl.point && !$ctrl.point.enabled" class="disabled-text" ma-tr="common.disabled"></span>
-        <md-button class="md-accent md-raised event-indicator" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'events')"
+        <md-button class="md-accent event-indicator" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'events')"
                    ng-if="$ctrl.showEventIcon">
             <md-tooltip md-direction="top">
                 <span ma-tr="ui.components.showEvents"></span>
             </md-tooltip>
-            <md-icon>alarm</md-icon>
+            <md-icon>warning</md-icon>
         </md-button>
     </div>
 
