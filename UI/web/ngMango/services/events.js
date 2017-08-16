@@ -198,6 +198,70 @@ function eventsFactory($resource, Util) {
         return params.length ? this.rql({query: params.join('&')}) : this.query();
     };
 
+    events.getRQL = function(options) {
+        var params = [];
+
+        if (options.alarmLevel && options.alarmLevel !== '*') {
+            params.push('alarmLevel=' + options.alarmLevel);
+        }
+        if (options.eventType && options.eventType !== '*') {
+            params.push('eventType=' + options.eventType);
+        }
+        if (options.pointId) {
+            params.push('dataPointId=' + options.pointId);
+        }
+        if (options.eventId) {
+            params.push('id=' + options.eventId);
+        }
+        if (options.activeStatus && options.activeStatus !== '*') {
+            if (options.activeStatus==='active') {
+                params.push('active=true');
+            }
+            else if (options.activeStatus==='noRtn') {
+                params.push('rtnApplicable=false');
+            }
+            else if (options.activeStatus==='normal') {
+                params.push('active=false');
+            }
+        }
+        if (options.acknowledged && options.acknowledged !== '*') {
+            if (options.acknowledged==='true') {
+                params.push('acknowledged=true');
+            }
+            else if (options.acknowledged==='false') {
+                params.push('acknowledged=false');
+            }
+        }
+        if (options.from && options.dateFilter) {
+            params.push('activeTimestamp=ge=' + options.from.valueOf());
+        }
+        if (options.to && options.dateFilter) {
+            params.push('activeTimestamp=lt=' + options.to.valueOf());
+        }
+
+        var RQLforAcknowldege = params.join('&');
+        var RQLforDisplay = params.join('&');
+
+
+        if (options.acknowledged !== 'false') {
+            RQLforAcknowldege += '&acknowledged=false';
+        }
+
+        if (options.sort) {
+            var sort = options.sort;
+            if (angular.isArray(sort)) {
+                sort = sort.join(',');
+            }
+            RQLforDisplay += '&sort(' + sort + ')';
+        }
+        if (options.limit) {
+            var start = options.start || 0;
+            RQLforDisplay += '&limit(' + options.limit + ',' + start + ')';
+        }
+
+        return {RQLforAcknowldege: RQLforAcknowldege, RQLforDisplay: RQLforDisplay};
+    }
+
     return events;
 }
 

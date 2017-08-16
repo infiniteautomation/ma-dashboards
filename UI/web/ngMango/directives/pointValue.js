@@ -67,7 +67,8 @@ function pointValue() {
             changeDuration: '<?',
             onValueUpdated: '&?',
             labelExpression: '&?',
-            enablePopup: '@?'
+            enablePopup: '@?',
+            hideEventIndicator: '<?'
         },
         designerInfo: {
             translation: 'ui.components.pointValue',
@@ -81,7 +82,8 @@ function pointValue() {
                 dateTimeFormat: {options: dateOptions},
                 sameDayDateTimeFormat: {options: dateOptions},
                 label: {options: ['NAME', 'DEVICE_AND_NAME']},
-                enablePopup: {type: 'string', defaultValue: 'hide', options: ['hide', 'right', 'left', 'up', 'down']}
+                enablePopup: {type: 'string', defaultValue: 'hide', options: ['hide', 'right', 'left', 'up', 'down']},
+                hideEventIndicator: {type: 'boolean', default: false}
             }
         }
     };
@@ -178,8 +180,18 @@ PointValueDirectiveController.prototype.updateText = function() {
     default:
         this.displayValue = this.point.value;
     }
-};
 
+    if (!this.hideEventIndicator) {
+        this.doQuery({
+            query: 'dataPointId=' + this.point.id + '&limit(0,0)'
+        }).$promise
+        .then(function(result) {
+            if (result.$total > 0) {
+                this.showEventIcon = true;
+            }
+        }.bind(this));
+    }
+};
 
 return pointValue;
 

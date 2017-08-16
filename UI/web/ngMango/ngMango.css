@@ -1,4 +1,4 @@
-/* Popup Speed Dial */
+/* Popup Icons / Event Icon */
 
 ma-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item,
 ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item {
@@ -10,9 +10,9 @@ ma-set-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-it
 ma-point-value button.event-indicator {
   padding: 0;
   margin: 3px 3px;
-  width: 22px;
+  width: 24px;
   height: 22px;
-  min-width: 22px;
+  min-width: 24px;
   min-height: 22px;
   border-radius: 0;
 }
@@ -21,7 +21,7 @@ ma-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-item m
 ma-set-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-item md-icon,
 ma-point-value button.event-indicator md-icon {
   font-size: 16px;
-  padding-bottom: 3px;
+  padding: 0 0 4px 0px;
   margin: 0;
 }
 
