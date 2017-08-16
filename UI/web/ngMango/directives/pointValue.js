@@ -183,11 +183,14 @@ PointValueDirectiveController.prototype.updateText = function() {
 
     if (!this.hideEventIndicator) {
         this.doQuery({
-            query: 'dataPointId=' + this.point.id + '&limit(0,0)'
+            query: 'dataPointId=' + this.point.id + '&active=true&limit(0,0)'
         }).$promise
         .then(function(result) {
             if (result.$total > 0) {
                 this.showEventIcon = true;
+            }
+            else {
+                this.showEventIcon = false;
             }
         }.bind(this));
     }
