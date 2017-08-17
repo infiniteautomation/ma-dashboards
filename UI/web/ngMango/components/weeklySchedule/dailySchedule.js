@@ -38,8 +38,10 @@ class DailyScheduleController {
     static get $inject() { return $inject; }
     
     constructor() {
-        this.weekDays = moment.weekdays();
+        this.weekDays = moment.weekdaysShort();
         this.showLabel = true;
+        this.numTicks = 9;
+        this.createTicks();
     }
     
     $onInit() {
@@ -47,6 +49,9 @@ class DailyScheduleController {
     }
     
     $onChanges(changes) {
+        if (changes.numTicks && this.numTicks != null) {
+            this.createTicks();
+        }
     }
     
     render() {
@@ -86,25 +91,41 @@ class DailyScheduleController {
     }
     
     createActive(event) {
-        const target = event.currentTarget;
-        const x = event.offsetX;
-        
-        event.preventDefault();
-        event.stopImmediatePropagation();
-
         // only interested in clicks on the bar itself
         if (event.target !== event.currentTarget) return;
         
-        // click on border etc
-        if (x < 0) return;
+        // not interested in right/middle click, ctrl-click, alt-click or shift-click
+        if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
 
-        const positionInDay = x / target.clientWidth;
+        // not interested in click on border
+        if (event.offsetX < 0) return;
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        const positionInDay = event.offsetX / event.currentTarget.clientWidth;
         const startTime = Math.floor(positionInDay * millisecondsInDay);
         const duration = 120 * 60 * 1000;
         
         this.activeSegments.push(new ActiveSegment(startTime, duration));
 
         this.setViewValue();
+    }
+    
+    createTicks() {
+        this.ticks = [];
+        if (this.numTicks < 1) return;
+        
+        const increment = millisecondsInDay / (this.numTicks - 1);
+        for (let tick = 0; tick <= millisecondsInDay; tick += increment) {
+            this.ticks.push({
+                label: moment.tz(tick, 'UTC').format('LT'),
+                value: tick,
+                style: {
+                    left: (tick / millisecondsInDay * 100) + '%'
+                }
+            });
+        }
     }
 }
 
@@ -118,7 +139,8 @@ return {
     },
     bindings: {
         dayOfWeek: '<',
-        showLabel: '<?'
+        showLabel: '<?',
+        numTicks: '<?'
     },
     designerInfo: {
         translation: 'ui.dox.dailySchedule',

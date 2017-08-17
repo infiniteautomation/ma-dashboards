@@ -8,4 +8,8 @@
         <div class="ma-segment-resize ma-segment-resize-left"></div>
         <div class="ma-segment-resize ma-segment-resize-right"></div>
     </div>
+    <div ng-repeat="tick in $ctrl.ticks track by $index" class="ma-daily-schedule-tick" ng-style="tick.style">
+        <div class="ma-daily-schedule-tick-mark"></div>
+        <div class="ma-daily-schedule-tick-label" ng-bind="tick.label"></div>
+    </div>
 </div>

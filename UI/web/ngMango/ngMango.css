@@ -772,12 +772,18 @@ ma-weekly-schedule {
 	display: block;
 }
 
+ma-daily-schedule {
+	margin-bottom: 30px;
+}
+
 ma-daily-schedule .ma-daily-schedule-bar {
 	height: 100px;
 	border: 2px solid grey;
-	margin-bottom: 25px;
 	position: relative;
 	cursor: pointer;
+	margin-left: 10px;
+	margin-right: 10px;
+	background-color: #444;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
@@ -790,7 +796,7 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-label {
 	position: absolute;
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-start {
@@ -826,8 +832,27 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize-right {
 	right: 0;
 }
 
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick {
+	position: absolute;
+	bottom: 0px;
+	transform: translateY(100%);
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick-mark {
+	width: 2px;
+	height: 8px;
+	transform: translateX(-1px);
+	background-color: grey;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick-label {
+	font-size: 1.1rem;
+	transform: translateX(-50%);
+	white-space: nowrap;
+}
+
 ma-daily-schedule .ma-day-label {
-	width: 80px;
+	width: 30px;
 	text-align: right;
-	margin-right: 10px;
+	font-weight: bold;
 }
