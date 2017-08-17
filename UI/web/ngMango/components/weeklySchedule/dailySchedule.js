@@ -23,8 +23,8 @@ class ActiveSegment {
     }
     
     recalculate() {
-        this.startLabel = moment.tz(this.startTime, 'UTC').format('LTS');
-        this.endLabel = moment.tz(this.startTime + this.duration, 'UTC').format('LTS');
+        this.startLabel = moment.tz(this.startTime, 'UTC').format('LT');
+        this.endLabel = moment.tz(this.startTime + this.duration, 'UTC').format('LT');
         this.durationLabel = moment.duration(this.duration).humanize();
         this.style = {
             left: (this.startTime / millisecondsInDay * 100) + '%',

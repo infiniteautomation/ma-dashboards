@@ -807,17 +807,15 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-segment-start {
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-end {
-	top: 0px;
-	right: 0;
+	bottom: 0px;
+	right: 7px;
 	/*transform: translateX(50%);*/
-	display: none;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-duration {
-	bottom: 0;
-	left: 7px;
-	/*left: 50%;*/
-	/*transform: translateX(-50%);*/
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize {
