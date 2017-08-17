@@ -53,12 +53,15 @@ class DailyScheduleController {
         this.activeSegments = [];
         var timestamps = this.ngModelCtrl.$viewValue || [];
         
+        // convert active/inactive timestamps to segments
         for (let i = 0; i < timestamps.length; i++) {
             const nextIndex = i + 1;
             const activeTime = timestamps[i];
+            // if there is no next timestamp the inactive time is the end of the day
             let inactiveTime = millisecondsInDay;
             if (nextIndex < timestamps.length) {
                 inactiveTime = timestamps[nextIndex];
+                // skip the next timestamp, its an end time not a start time
                 i++;
             }
             this.activeSegments.push(new ActiveSegment(activeTime, inactiveTime - activeTime));
@@ -68,10 +71,12 @@ class DailyScheduleController {
     setViewValue() {
         const timestamps = [];
         
+        // convert segments to active/inactive timestamps
         this.activeSegments.forEach((segment) => {
             timestamps.push(segment.startTime);
             
             const inactiveTime = segment.startTime + segment.duration;
+            // if it doesn't become inactive in this day we don't need to add a timestamp for it
             if (inactiveTime < millisecondsInDay) {
                 timestamps.push(inactiveTime);
             }
