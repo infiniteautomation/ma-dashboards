@@ -72,7 +72,7 @@ PageEditorControlsController.prototype.$onInit = function() {
 
     var oldUnload = $window.onbeforeunload;
     $window.onbeforeunload = function(event) {
-        if (this.pageEditorForm.$dirty || this.selectedPage.$dirty) {
+        if (this.inputsDirty() || this.selectedPage.$dirty) {
             var text = Translate.trSync('ui.app.discardUnsavedChanges');
             event.returnValue = text;
             return text;
@@ -118,8 +118,13 @@ PageEditorControlsController.prototype.createNewPage = function createNewPage(ma
     return this.setSelectedPage(page);
 };
 
+PageEditorControlsController.prototype.inputsDirty = function() {
+    const form = this.pageEditorForm;
+    return form.pageName.$dirty || form.readPermission.$dirty || form.editPermission.$dirty;
+};
+
 PageEditorControlsController.prototype.confirmLoadPage = function confirmLoadPage(xid) {
-    if (this.pageEditorForm.$dirty || this.selectedPage.$dirty) {
+    if (this.inputsDirty() || this.selectedPage.$dirty) {
         if (!this.$window.confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'))) {
             return;
         }

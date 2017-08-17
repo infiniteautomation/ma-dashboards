@@ -3,7 +3,7 @@
         <div flex layout layout-align="start center" class="ma-ui-page-editor-top-row">
             <md-input-container flex="flex" flex-gt-md="33">
               <label ma-tr="ui.app.choosePageToEdit"></label>
-              <md-select ng-model="$ctrl.selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.confirmLoadPage($ctrl.selectedPageSummary.xid)">
+              <md-select name="pageSelector" ng-model="$ctrl.selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.confirmLoadPage($ctrl.selectedPageSummary.xid)">
                 <md-option ng-repeat="page in $ctrl.pageSummaryStore.jsonData.pages track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
               </md-select>
             </md-input-container>
@@ -13,7 +13,7 @@
                     <span ma-tr="ui.app.newPage"></span>
                 </md-tooltip>
             </md-button>
-            <md-button class="md-icon-button md-primary" ng-click="$ctrl.savePage()" ng-disabled="!($ctrl.pageEditorForm.$dirty || $ctrl.selectedPage.$dirty)">
+            <md-button class="md-icon-button md-primary" ng-click="$ctrl.savePage()" ng-disabled="!($ctrl.inputsDirty() || $ctrl.selectedPage.$dirty)">
                 <md-icon>save</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
                     <span ma-tr="common.save"></span>
