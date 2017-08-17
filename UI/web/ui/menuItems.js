@@ -686,6 +686,14 @@ return [
         permission: 'superadmin'
     },
     {
+        name: 'ui.settings.jsonStore',
+        url: '/json-store',
+        template: '<h1 ma-tr="ui.app.jsonStorePage"></h1><ma-json-store-table><ma-json-store-table>',
+        menuTr: 'ui.app.jsonStorePage',
+        menuIcon: 'sd_storage',
+        permission: 'superadmin'
+    },
+    {
         name: 'ui.examples',
         url: '/examples',
         menuTr: 'ui.dox.examples',
