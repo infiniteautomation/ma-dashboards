@@ -41,7 +41,9 @@ class DailyScheduleController {
         this.weekDays = moment.weekdaysShort();
         this.showLabel = true;
         this.numTicks = 9;
+        this.numGuides = 25;
         this.createTicks();
+        this.createGuides();
     }
     
     $onInit() {
@@ -51,6 +53,9 @@ class DailyScheduleController {
     $onChanges(changes) {
         if (changes.numTicks && this.numTicks != null) {
             this.createTicks();
+        }
+        if (changes.numGuides && this.numGuides != null) {
+            this.createGuides();
         }
     }
     
@@ -98,7 +103,7 @@ class DailyScheduleController {
         if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
 
         // not interested in click on border
-        if (event.offsetX < 0) return;
+        if (event.offsetX < 0 || event.offsetX > event.currentTarget.clientWidth) return;
 
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -117,12 +122,27 @@ class DailyScheduleController {
         if (this.numTicks < 1) return;
         
         const increment = millisecondsInDay / (this.numTicks - 1);
-        for (let tick = 0; tick <= millisecondsInDay; tick += increment) {
+        for (let time = 0; time <= millisecondsInDay; time += increment) {
             this.ticks.push({
-                label: moment.tz(tick, 'UTC').format('LT'),
-                value: tick,
+                label: moment.tz(time, 'UTC').format('LT'),
+                value: time,
                 style: {
-                    left: (tick / millisecondsInDay * 100) + '%'
+                    left: (time / millisecondsInDay * 100) + '%'
+                }
+            });
+        }
+    }
+    
+    createGuides() {
+        this.guides = [];
+        if (this.numGuides < 1) return;
+        
+        const increment = millisecondsInDay / (this.numGuides - 1);
+        for (let time = 0; time <= millisecondsInDay; time += increment) {
+            this.guides.push({
+                value: time,
+                style: {
+                    left: (time / millisecondsInDay * 100) + '%'
                 }
             });
         }

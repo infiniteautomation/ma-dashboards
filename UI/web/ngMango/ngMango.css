@@ -778,7 +778,8 @@ ma-daily-schedule {
 
 ma-daily-schedule .ma-daily-schedule-bar {
 	height: 100px;
-	border: 2px solid grey;
+	border: 1px solid grey;
+	border-style: solid none;
 	position: relative;
 	cursor: pointer;
 	margin-left: 10px;
@@ -822,7 +823,7 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-segment-duration {
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize {
 	position: absolute;
 	top: 0;
-	width: 5px;
+	width: 3px;
 	height: 100%;
 	background-color: rgba(0,0,0,0.25);
 	cursor: col-resize;
@@ -830,6 +831,15 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize {
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize-right {
 	right: 0;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-guide {
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	border-left: 1px dashed grey;
+	transform: translateX(-50%);
+	width: 0;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick {
@@ -841,7 +851,7 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick {
 ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick-mark {
 	width: 2px;
 	height: 8px;
-	transform: translateX(-1px);
+	transform: translateX(-50%);
 	background-color: grey;
 }
 
