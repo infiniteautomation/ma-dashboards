@@ -1,0 +1,33 @@
+<md-table-container>
+    <table md-table>
+        <thead md-head md-order="$ctrl.tableOrder" md-on-reorder="$ctrl.reorder">
+            <tr md-row>
+                <th md-column md-order-by="xid" ma-tr="common.xid"></th>
+                <th md-column md-order-by="name" ma-tr="common.name"></th>
+                <th md-column md-order-by="publicData" ma-tr="ui.app.publicData"></th>
+                <th md-column md-order-by="readPermission" ma-tr="ui.app.readPermission"></th>
+                <th md-column md-order-by="editPermission" ma-tr="ui.app.editPermission"></th>
+                <th md-column ma-tr="ui.app.data"></th>
+                <th md-column></th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row ng-repeat="item in $ctrl.orderedItems track by item.xid">
+                <td md-cell ng-bind="item.xid" ng-init="item.$get()"></td>
+                <td md-cell ng-bind="item.name"></td>
+                <td md-cell ng-bind="item.publicData"></td>
+                <td md-cell ng-bind="item.readPermission"></td>
+                <td md-cell ng-bind="item.editPermission"></td>
+                <td md-cell>
+                    <em ng-hide="showData" ma-tr="ui.components.showData" ng-click="showData = true"></em>
+                    <pre class="ng-hide" ng-show="showData" ng-bind="item.jsonData | json" ng-click="showData = false"></pre>
+                </td>
+                <td>
+                    <md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteItem($event, item, $index)">
+                        <md-icon>delete</md-icon>
+                    </md-button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>

@@ -119,6 +119,17 @@ function JsonStoreFactory($resource, Util) {
         editPermission: '@editPermission',
         publicData: '@publicData'
     }, {
+        query: {
+            method: 'GET',
+            isArray: true,
+            interceptor: {
+                response: (data) => {
+                    return data.resource.map((xid) => {
+                        return new JsonStore({xid});
+                    });
+                }
+            }
+        },
     	get: {
     	    interceptor: {
                 response: setDataPathInterceptor
