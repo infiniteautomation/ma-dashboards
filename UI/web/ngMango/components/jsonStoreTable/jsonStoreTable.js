@@ -71,7 +71,10 @@ return {
     templateUrl: require.toUrl('./jsonStoreTable.html'),
     controller: JsonStoreTableController,
     bindings: {},
-    designerInfo: {}
+    designerInfo: {
+        translation: 'ui.dox.jsonStoreTable',
+        icon: 'sd_storage'
+    }
 };
 
 }); // define
