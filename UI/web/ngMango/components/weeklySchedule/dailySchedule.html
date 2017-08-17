@@ -1,0 +1,11 @@
+<span ng-if="$ctrl.showLabel" class="ma-day-label" ng-bind="$ctrl.weekDays[$ctrl.dayOfWeek]"></span>
+<div flex class="ma-daily-schedule-bar" ng-mousedown="$ctrl.createActive($event)">
+    <div class="ma-active-segment" ng-repeat="segment in $ctrl.activeSegments track by segment.startTime" ng-style="segment.style">
+        <div class="ma-segment-label ma-segment-start" ng-bind="segment.startLabel"></div>
+        <div class="ma-segment-label ma-segment-end" ng-bind="segment.endLabel"></div>
+        <div class="ma-segment-label ma-segment-duration" ng-bind="segment.durationLabel"></div>
+        
+        <div class="ma-segment-resize ma-segment-resize-left"></div>
+        <div class="ma-segment-resize ma-segment-resize-right"></div>
+    </div>
+</div>

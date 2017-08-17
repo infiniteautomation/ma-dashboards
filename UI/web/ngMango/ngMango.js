@@ -90,6 +90,8 @@ define(['./ngMangoServices',
         './components/fileStoreBrowser/fileStoreBrowser',
         './components/maSlider/maSlider',
         './components/jsonStoreTable/jsonStoreTable',
+        './components/weeklySchedule/weeklySchedule',
+        './components/weeklySchedule/dailySchedule',
         'ng-map',
         './animations/slideUp',
         'angular',
@@ -106,7 +108,7 @@ define(['./ngMangoServices',
         dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile, aceEditor, dateInput,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, ngMap, slideUp, angular, require, moment) {
+        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, weeklySchedule, dailySchedule, ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -205,6 +207,8 @@ ngMango.component('maButton', button);
 ngMango.component('maFileStoreBrowser', fileStoreBrowser);
 ngMango.component('maSlider', maSlider);
 ngMango.component('maJsonStoreTable', jsonStoreTable);
+ngMango.component('maWeeklySchedule', weeklySchedule);
+ngMango.component('maDailySchedule', dailySchedule);
 ngMango.animation('.ma-slide-up', slideUp);
 
 ngMango.constant('MA_INSERT_CSS', true);

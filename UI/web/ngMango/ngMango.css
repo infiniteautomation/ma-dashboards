@@ -766,3 +766,68 @@ ma-ace-editor > .ace_editor {
 	flex-grow: 1;
 	font-size: 1.4rem;
 }
+
+ma-daily-schedule,
+ma-weekly-schedule {
+	display: block;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar {
+	height: 100px;
+	border: 2px solid grey;
+	margin-bottom: 25px;
+	position: relative;
+	cursor: pointer;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	background-color: red;
+	cursor: move;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-label {
+	position: absolute;
+	font-size: 1.2rem;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-start {
+	top: 0px;
+	left: 7px;
+	/*transform: translate(-50%);*/
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-end {
+	top: 0px;
+	right: 0;
+	/*transform: translateX(50%);*/
+	display: none;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-duration {
+	bottom: 0;
+	left: 7px;
+	/*left: 50%;*/
+	/*transform: translateX(-50%);*/
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize {
+	position: absolute;
+	top: 0;
+	width: 5px;
+	height: 100%;
+	background-color: rgba(0,0,0,0.25);
+	cursor: col-resize;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize-right {
+	right: 0;
+}
+
+ma-daily-schedule .ma-day-label {
+	width: 80px;
+	text-align: right;
+	margin-right: 10px;
+}

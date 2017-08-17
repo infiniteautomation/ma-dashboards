@@ -1,0 +1,3 @@
+<ma-daily-schedule ng-repeat="item in $ctrl.weeklySchedule track by $index"
+    ng-model="item.dailySchedule" ng-change="$ctrl.setViewValue()" day-of-week="item.dayOfWeek" layout layout-align="start center">
+</ma-daily-schedule>
