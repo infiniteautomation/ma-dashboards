@@ -56,6 +56,7 @@ class DailyScheduleController {
         this.showLabel = true;
         this.numTicks = 9;
         this.numGuides = 25;
+        this.roundTo = 300000;
         this.createTicks();
         this.createGuides();
     }
@@ -199,7 +200,7 @@ class DailyScheduleController {
     }
     
     roundTime(time) {
-        return Math.round(time / 60000) * 60000;
+        return Math.round(time / this.roundTo) * this.roundTo;
     }
     
     createTicks() {
@@ -245,7 +246,8 @@ return {
     bindings: {
         dayOfWeek: '<',
         showLabel: '<?',
-        numTicks: '<?'
+        numTicks: '<?',
+        roundTo: '<?'
     },
     designerInfo: {
         translation: 'ui.dox.dailySchedule',
