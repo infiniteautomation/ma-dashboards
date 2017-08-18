@@ -109,7 +109,7 @@ class DailyScheduleController {
         event.stopImmediatePropagation();
 
         const positionInDay = event.offsetX / event.currentTarget.clientWidth;
-        const startTime = Math.floor(positionInDay * millisecondsInDay);
+        const startTime = Math.round(positionInDay * millisecondsInDay / 60000) * 60000;
         const duration = 120 * 60 * 1000;
         
         this.activeSegments.push(new ActiveSegment(startTime, duration));
