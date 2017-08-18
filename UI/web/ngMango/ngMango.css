@@ -797,6 +797,8 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-label {
 	position: absolute;
 	font-size: 1.1rem;
+	white-space: nowrap;
+	pointer-events: none;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-start {

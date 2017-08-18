@@ -38,7 +38,7 @@ class ActiveSegment {
     }
     
     setDuration(duration) {
-        this.duration = duration;
+        this.duration = duration < 0 ? 0 : duration;
         this.recalculate();
     }
 
@@ -100,10 +100,10 @@ class DailyScheduleController {
             return a.startTime - b.startTime;
         });
         
-        // remove any segments that start past end of day
+        // remove any segments that start past end of day or have 0 duration
         // could get a segment that starts at millisecondsInDay due to rounding
         this.activeSegments = this.activeSegments.filter((segment) => {
-            return segment.startTime < millisecondsInDay;
+            return segment.startTime < millisecondsInDay && segment.duration > 0;
         });
         
         for (let i = 0; i < this.activeSegments.length; i++) {
@@ -115,17 +115,20 @@ class DailyScheduleController {
             }
             
             // merge overlapping segments
-            if ((i+1) < this.activeSegments.length) {
-                const nextSegment = this.activeSegments[i+1];
-                if (nextSegment.startTime <= segment.endTime) {
-                    // set the new duration if the overlapping segment extends the end time
-                    if (nextSegment.endTime > segment.endTime) {
-                        segment.setDuration(nextSegment.endTime - segment.startTime);
-                    }
-                    
-                    // remove next segment
-                    this.activeSegments.splice(i+1, 1);
+            for (let j = i + 1; j < this.activeSegments.length;) {
+                const nextSegment = this.activeSegments[j];
+                
+                // next segment is distinct, break out
+                if (nextSegment.startTime > segment.endTime)
+                    break;
+                
+                // set the new duration if the overlapping segment extends the end time
+                if (nextSegment.endTime > segment.endTime) {
+                    segment.setDuration(nextSegment.endTime - segment.startTime);
                 }
+                
+                // remove next segment
+                this.activeSegments.splice(j, 1);
             }
         }
 
@@ -142,7 +145,7 @@ class DailyScheduleController {
         this.ngModelCtrl.$setViewValue(timestamps);
     }
     
-    createActive(event) {
+    createSegment(event) {
         // only interested in clicks on the bar itself
         if (event.target !== event.currentTarget) return;
         
@@ -151,16 +154,52 @@ class DailyScheduleController {
 
         // not interested in click on border
         if (event.offsetX < 0 || event.offsetX > event.currentTarget.clientWidth) return;
+        
+        // already creating a segment
+        if (this.newSegment) return;
 
         event.preventDefault();
         event.stopImmediatePropagation();
 
-        const positionInDay = event.offsetX / event.currentTarget.clientWidth;
-        const startTime = Math.round(positionInDay * millisecondsInDay / 60000) * 60000;
-        const duration = 120 * 60 * 1000;
-        this.activeSegments.push(new ActiveSegment(startTime, duration));
+        const startTime = this.calculateTime(event);
+        this.newSegment = new ActiveSegment(startTime, 0);
+        this.activeSegments.push(this.newSegment);
 
-        this.setViewValue();
+        //this.setViewValue();
+    }
+    
+    mouseMove(event) {
+        if (this.newSegment) {
+            const endTime = this.calculateTime(event);
+            this.newSegment.setDuration(endTime - this.newSegment.startTime);
+        }
+    }
+    
+    mouseUp(event) {
+        if (this.newSegment) {
+            const endTime = this.calculateTime(event);
+            this.newSegment.setDuration(endTime - this.newSegment.startTime);
+            delete this.newSegment;
+            this.setViewValue();
+        }
+    }
+    
+    calculateTime(event) {
+        let target = event.target;
+        let offset = event.offsetX;
+        
+        while (target !== event.currentTarget) {
+            //target = target.parentNode;
+            offset += target.offsetLeft;
+            target = target.offsetParent;
+        }
+        
+        const positionInDay = offset / event.currentTarget.clientWidth;
+        return this.roundTime(positionInDay * millisecondsInDay);
+    }
+    
+    roundTime(time) {
+        return Math.round(time / 60000) * 60000;
     }
     
     createTicks() {
