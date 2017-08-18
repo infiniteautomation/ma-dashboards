@@ -778,20 +778,19 @@ ma-daily-schedule {
 
 ma-daily-schedule .ma-daily-schedule-bar {
 	height: 100px;
-	border: 1px solid grey;
+	border: 1px solid rgba(100,100,100,0.7);
 	border-style: solid none;
 	position: relative;
 	cursor: pointer;
 	margin-left: 10px;
 	margin-right: 10px;
-	background-color: #444;
+	background-color: rgba(120,120,120,0.5);
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
 	position: absolute;
 	top: 0;
 	height: 100%;
-	background-color: red;
 	cursor: move;
 }
 
@@ -835,20 +834,31 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-guide {
 	position: absolute;
 	top: 0px;
 	height: 100%;
-	border-left: 1px dashed grey;
+	border-left: 1px dashed rgba(130,130,130,1);
 	transform: translateX(-50%);
 	width: 0;
+	pointer-events: none;
 }
+
+/* makes the first and last guides form end caps for the bar in lieu of border */
+/*
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-guide.ma-daily-schedule-guide-end {
+	border-left: 1px solid grey;
+	top: -1px;
+	height: calc(100% + 1px);
+}
+*/
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick {
 	position: absolute;
 	bottom: 0px;
 	transform: translateY(100%);
+	pointer-events: none;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick-mark {
 	width: 2px;
-	height: 8px;
+	height: 6px;
 	transform: translateX(-50%);
 	background-color: grey;
 }
