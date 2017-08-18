@@ -41,9 +41,21 @@ class ActiveSegment {
         };
     }
     
+    /**
+     * Moves the segment to the specified start time, does not change duration
+     */
     setStartTime(startTime) {
         this.startTime = startTime;
         this.recalculate();
+    }
+    
+    /**
+     * Resizes the segment so it begins at the specified start time, changes the duration
+     */
+    resizeStartTime(startTime) {
+        const endTime = this.endTime;
+        this.startTime = startTime;
+        this.setEndTime(endTime);
     }
     
     setDuration(duration) {
@@ -160,38 +172,84 @@ class DailyScheduleController {
         // not interested in right/middle click, ctrl-click, alt-click or shift-click
         if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
 
-        // already creating a segment
-        if (this.newSegment) return;
+        // already creating/resizing/moving a segment
+        if (this.editSegment) return;
 
         event.preventDefault();
         event.stopImmediatePropagation();
 
+        this.editAction = 'create';
         const startTime = this.calculateTime(event);
-        this.newSegment = new ActiveSegment(startTime, 0);
-        this.activeSegments.push(this.newSegment);
+        this.editSegment = new ActiveSegment(startTime, 0);
+        this.activeSegments.push(this.editSegment);
+    }
+    
+    resizeSegment(event, segment, resizeLeft) {
+        // not interested in right/middle click, ctrl-click, alt-click or shift-click
+        if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+        
+        // already creating/resizing/moving a segment
+        if (this.editSegment) return;
+        
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        this.editAction = resizeLeft ? 'resizeLeft' : 'resizeRight';
+        this.editSegment = segment;
+    }
+    
+    moveSegment(event, segment) {
+        // not interested in right/middle click, ctrl-click, alt-click or shift-click
+        if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+        
+        // already creating/resizing/moving a segment
+        if (this.editSegment) return;
+        
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        this.editAction = 'move';
+        this.editSegment = segment;
     }
     
     mouseMove(event) {
-        if (this.newSegment) {
-            const endTime = this.calculateTime(event);
-            this.newSegment.setEndTime(endTime);
+        if (!this.editSegment) return;
+        const timeAtCursor = this.calculateTime(event);
+        
+        if (this.editAction === 'create' || this.editAction === 'resizeRight') {
+            this.editSegment.setEndTime(timeAtCursor);
+        } else if (this.editAction === 'resizeLeft') {
+            this.editSegment.resizeStartTime(timeAtCursor);
+        } else if (this.editAction === 'move') {
+            this.editSegment.setStartTime(timeAtCursor);
         }
     }
     
     mouseUp(event) {
-        if (this.newSegment) {
-            const endTime = this.calculateTime(event);
-            this.newSegment.setEndTime(endTime);
+        if (!this.editSegment) return;
+        const timeAtCursor = this.calculateTime(event);
+        
+        if (this.editAction === 'create') {
+            this.editSegment.setEndTime(timeAtCursor);
             
             // only set the view value if new segment is valid
-            if (this.newSegment.duration > 0) {
+            if (this.editSegment.duration > 0) {
                 this.setViewValue();
             } else {
                 this.activeSegments.pop();
             }
-            
-            delete this.newSegment;
+        } else if (this.editAction === 'resizeRight') {
+            this.editSegment.setEndTime(timeAtCursor);
+            this.setViewValue();
+        } else if (this.editAction === 'resizeLeft') {
+            this.editSegment.resizeStartTime(timeAtCursor);
+            this.setViewValue();
+        } else if (this.editAction === 'move') {
+            this.editSegment.setStartTime(timeAtCursor);
+            this.setViewValue();
         }
+        
+        delete this.editSegment;
     }
     
     calculateTime(event) {

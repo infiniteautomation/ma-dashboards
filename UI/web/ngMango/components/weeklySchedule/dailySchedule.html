@@ -5,12 +5,13 @@
         <div class="ma-daily-schedule-tick-mark"></div>
         <div class="ma-daily-schedule-tick-label" ng-bind="tick.label"></div>
     </div>
-    <div class="ma-active-segment" md-colors="::{background: 'accent-A200-0.7'}" ng-repeat="segment in $ctrl.activeSegments track by segment.startTime" ng-style="segment.style">
+    <div class="ma-active-segment" md-colors="::{background: 'accent-A200-0.7'}" ng-repeat="segment in $ctrl.activeSegments track by segment.startTime"
+            ng-style="segment.style" ng-mousedown="$ctrl.moveSegment($event, segment)">
         <div class="ma-segment-label ma-segment-start" ng-bind="segment.startLabel"></div>
         <div class="ma-segment-label ma-segment-end" ng-bind="segment.endLabel"></div>
         <div class="ma-segment-label ma-segment-duration" ng-bind="segment.durationLabel"></div>
         
-        <div class="ma-segment-resize ma-segment-resize-left"></div>
-        <div class="ma-segment-resize ma-segment-resize-right"></div>
+        <div class="ma-segment-resize ma-segment-resize-left" ng-mousedown="$ctrl.resizeSegment($event, segment, true)"></div>
+        <div class="ma-segment-resize ma-segment-resize-right" ng-mousedown="$ctrl.resizeSegment($event, segment, false)"></div>
     </div>
 </div>
