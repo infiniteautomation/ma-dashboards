@@ -23,6 +23,15 @@ class ActiveSegment {
     }
     
     recalculate() {
+        if (this.startTime < 0)
+            this.startTime = 0;
+        if (this.startTime > millisecondsInDay)
+            this.startTime = millisecondsInDay;
+        if (this.duration < 0)
+            this.duration = 0;
+        if (this.endTime > millisecondsInDay)
+            this.duration = millisecondsInDay - this.startTime;
+        
         this.startLabel = moment.tz(this.startTime, 'UTC').format('LT');
         this.endLabel = moment.tz(this.endTime, 'UTC').format('LT');
         this.durationLabel = moment.duration(this.duration).humanize();
@@ -38,8 +47,12 @@ class ActiveSegment {
     }
     
     setDuration(duration) {
-        this.duration = duration < 0 ? 0 : duration;
+        this.duration = duration;
         this.recalculate();
+    }
+    
+    setEndTime(endTime) {
+        this.setDuration(endTime - this.startTime);
     }
 
     get endTime () {
@@ -101,20 +114,14 @@ class DailyScheduleController {
             return a.startTime - b.startTime;
         });
         
-        // remove any segments that start past end of day or have 0 duration
-        // could get a segment that starts at millisecondsInDay due to rounding
+        // remove any 0 duration segments, segment recalculate() handles segments with wrong start/end times
         this.activeSegments = this.activeSegments.filter((segment) => {
-            return segment.startTime < millisecondsInDay && segment.duration > 0;
+            return segment.duration > 0;
         });
         
         for (let i = 0; i < this.activeSegments.length; i++) {
             const segment = this.activeSegments[i];
-            
-            // ensure segment can't end past end of day
-            if (segment.endTime > millisecondsInDay) {
-                segment.setDuration(millisecondsInDay - segment.startTime);
-            }
-            
+
             // merge overlapping segments
             for (let j = i + 1; j < this.activeSegments.length;) {
                 const nextSegment = this.activeSegments[j];
@@ -125,7 +132,7 @@ class DailyScheduleController {
                 
                 // set the new duration if the overlapping segment extends the end time
                 if (nextSegment.endTime > segment.endTime) {
-                    segment.setDuration(nextSegment.endTime - segment.startTime);
+                    segment.setEndTime(nextSegment.endTime);
                 }
                 
                 // remove next segment
@@ -153,9 +160,6 @@ class DailyScheduleController {
         // not interested in right/middle click, ctrl-click, alt-click or shift-click
         if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
 
-        // not interested in click on border
-        if (event.offsetX < 0 || event.offsetX > event.currentTarget.clientWidth) return;
-        
         // already creating a segment
         if (this.newSegment) return;
 
@@ -165,23 +169,28 @@ class DailyScheduleController {
         const startTime = this.calculateTime(event);
         this.newSegment = new ActiveSegment(startTime, 0);
         this.activeSegments.push(this.newSegment);
-
-        //this.setViewValue();
     }
     
     mouseMove(event) {
         if (this.newSegment) {
             const endTime = this.calculateTime(event);
-            this.newSegment.setDuration(endTime - this.newSegment.startTime);
+            this.newSegment.setEndTime(endTime);
         }
     }
     
     mouseUp(event) {
         if (this.newSegment) {
             const endTime = this.calculateTime(event);
-            this.newSegment.setDuration(endTime - this.newSegment.startTime);
+            this.newSegment.setEndTime(endTime);
+            
+            // only set the view value if new segment is valid
+            if (this.newSegment.duration > 0) {
+                this.setViewValue();
+            } else {
+                this.activeSegments.pop();
+            }
+            
             delete this.newSegment;
-            this.setViewValue();
         }
     }
     

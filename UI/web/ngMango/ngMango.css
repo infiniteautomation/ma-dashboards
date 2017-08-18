@@ -778,12 +778,12 @@ ma-daily-schedule {
 
 ma-daily-schedule .ma-daily-schedule-bar {
 	height: 100px;
-	border: 1px solid rgba(100,100,100,0.7);
+	border-color: rgba(100,100,100,0.7);
+	border-width: 1px;
 	border-style: solid none;
 	position: relative;
 	cursor: pointer;
-	margin-left: 10px;
-	margin-right: 10px;
+	margin: 0 10px;
 	background-color: rgba(120,120,120,0.5);
 }
 
