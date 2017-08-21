@@ -822,14 +822,21 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-segment-duration {
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize {
 	position: absolute;
 	top: 0;
-	width: 3px;
 	height: 100%;
-	background-color: rgba(0,0,0,0.25);
+	width: 0;
+	border-color: rgba(255,255,255,0.15);
+	border-width: 5px;
+	border-style: none;
 	cursor: col-resize;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize-right {
 	right: 0;
+	border-style: none double none none;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize-left {
+	border-style: none none none double;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-guide {

@@ -210,6 +210,8 @@ class DailyScheduleController {
 
         this.editAction = 'move';
         this.editSegment = segment;
+        
+        this.initialOffset = event.offsetX;
     }
     
     mouseMove(event) {
@@ -250,6 +252,7 @@ class DailyScheduleController {
         }
         
         delete this.editSegment;
+        delete this.initialOffset;
     }
     
     calculateTime(event) {
@@ -257,9 +260,13 @@ class DailyScheduleController {
         let offset = event.offsetX;
         
         while (target !== event.currentTarget) {
-            //target = target.parentNode;
             offset += target.offsetLeft;
             target = target.offsetParent;
+        }
+        
+        // used for move operations
+        if (this.initialOffset != null) {
+            offset -= this.initialOffset;
         }
         
         const positionInDay = offset / event.currentTarget.clientWidth;
