@@ -228,7 +228,11 @@ class DailyScheduleController {
         } else if (this.editAction === 'resizeRight') {
             this.editSegment.setEndTime(timeAtCursor);
         } else if (this.editAction === 'resizeLeft') {
-            this.editSegment.setStartTime(timeAtCursor);
+            if (timeAtCursor > this.editSegment.endTime) {
+                this.editSegment.setStartTime(this.editSegment.endTime);
+            } else {
+                this.editSegment.setStartTime(timeAtCursor);
+            }
         } else if (this.editAction === 'move') {
             if (timeAtCursor < 0) {
                 this.editSegment.moveToStartTime(0);
