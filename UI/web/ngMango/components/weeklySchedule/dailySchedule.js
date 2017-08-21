@@ -16,9 +16,9 @@ define(['angular', 'require', 'moment-timezone'], function(angular, require, mom
 const millisecondsInDay = 24 * 3600 * 1000;
 
 class ActiveSegment {
-    constructor(startTime, duration) {
+    constructor(startTime, endTime) {
         this.startTime = startTime;
-        this.duration = duration;
+        this.endTime = endTime;
         this.recalculate();
     }
     
@@ -27,11 +27,13 @@ class ActiveSegment {
             this.startTime = 0;
         if (this.startTime > millisecondsInDay)
             this.startTime = millisecondsInDay;
-        if (this.duration < 0)
-            this.duration = 0;
+        if (this.endTime < 0)
+            this.endTime = 0;
         if (this.endTime > millisecondsInDay)
-            this.duration = millisecondsInDay - this.startTime;
-        
+            this.endTime = millisecondsInDay;
+        if (this.endTime < this.startTime)
+            this.endTime = this.startTime;
+
         this.startLabel = moment.tz(this.startTime, 'UTC').format('LT');
         this.endLabel = moment.tz(this.endTime, 'UTC').format('LT');
         this.durationLabel = moment.duration(this.duration).humanize();
@@ -40,35 +42,34 @@ class ActiveSegment {
             width: (this.duration / millisecondsInDay * 100) + '%'
         };
     }
-    
+
     /**
-     * Moves the segment to the specified start time, does not change duration
+     * Sets the start time, changes the duration
      */
     setStartTime(startTime) {
         this.startTime = startTime;
         this.recalculate();
     }
-    
+
     /**
-     * Resizes the segment so it begins at the specified start time, changes the duration
+     * Sets the end time, changes the duration
      */
-    resizeStartTime(startTime) {
-        const endTime = this.endTime;
-        this.startTime = startTime;
-        this.setEndTime(endTime);
-    }
-    
-    setDuration(duration) {
-        this.duration = duration;
+    setEndTime(endTime) {
+        this.endTime = endTime;
         this.recalculate();
     }
-    
-    setEndTime(endTime) {
-        this.setDuration(endTime - this.startTime);
+
+    /**
+     * Moves the segment so it begins at the specified start time, does not change the duration
+     */
+    moveToStartTime(startTime) {
+        const duration = this.duration;
+        this.startTime = startTime;
+        this.setEndTime(startTime + duration);
     }
 
-    get endTime () {
-        return this.startTime + this.duration;
+    get duration () {
+        return this.endTime - this.startTime;
     }
 }
 
@@ -114,7 +115,7 @@ class DailyScheduleController {
                 // skip the next timestamp, its an end time not a start time
                 i++;
             }
-            this.activeSegments.push(new ActiveSegment(activeTime, inactiveTime - activeTime));
+            this.activeSegments.push(new ActiveSegment(activeTime, inactiveTime));
         }
     }
     
@@ -180,7 +181,7 @@ class DailyScheduleController {
 
         this.editAction = 'create';
         const startTime = this.calculateTime(event);
-        this.editSegment = new ActiveSegment(startTime, 0);
+        this.editSegment = new ActiveSegment(startTime, startTime);
         this.activeSegments.push(this.editSegment);
         
         this.initialTime = startTime;
@@ -222,19 +223,21 @@ class DailyScheduleController {
         
         if (this.editAction === 'create') {
             if (timeAtCursor < this.initialTime) {
-                this.editSegment.resizeStartTime(timeAtCursor);
+                this.editSegment.setStartTime(timeAtCursor);
             } else {
                 this.editSegment.setEndTime(timeAtCursor);
             }
         } else if (this.editAction === 'resizeRight') {
             this.editSegment.setEndTime(timeAtCursor);
         } else if (this.editAction === 'resizeLeft') {
-            this.editSegment.resizeStartTime(timeAtCursor);
+            this.editSegment.setStartTime(timeAtCursor);
         } else if (this.editAction === 'move') {
-            if (timeAtCursor + this.editSegment.duration <= millisecondsInDay) {
-                this.editSegment.setStartTime(timeAtCursor);
+            if (timeAtCursor < 0) {
+                this.editSegment.moveToStartTime(0);
+            } else if (timeAtCursor + this.editSegment.duration > millisecondsInDay) {
+                this.editSegment.moveToStartTime(millisecondsInDay - this.editSegment.duration);
             } else {
-                this.editSegment.setStartTime(millisecondsInDay - this.editSegment.duration);
+                this.editSegment.moveToStartTime(timeAtCursor);
             }
         }
     }
@@ -245,7 +248,7 @@ class DailyScheduleController {
         
         if (this.editAction === 'create') {
             if (timeAtCursor < this.initialTime) {
-                this.editSegment.resizeStartTime(timeAtCursor);
+                this.editSegment.setStartTime(timeAtCursor);
             } else {
                 this.editSegment.setEndTime(timeAtCursor);
             }
@@ -260,13 +263,15 @@ class DailyScheduleController {
             this.editSegment.setEndTime(timeAtCursor);
             this.setViewValue();
         } else if (this.editAction === 'resizeLeft') {
-            this.editSegment.resizeStartTime(timeAtCursor);
+            this.editSegment.setStartTime(timeAtCursor);
             this.setViewValue();
         } else if (this.editAction === 'move') {
-            if (timeAtCursor + this.editSegment.duration <= millisecondsInDay) {
-                this.editSegment.setStartTime(timeAtCursor);
+            if (timeAtCursor < 0) {
+                this.editSegment.moveToStartTime(0);
+            } else if (timeAtCursor + this.editSegment.duration > millisecondsInDay) {
+                this.editSegment.moveToStartTime(millisecondsInDay - this.editSegment.duration);
             } else {
-                this.editSegment.setStartTime(millisecondsInDay - this.editSegment.duration);
+                this.editSegment.moveToStartTime(timeAtCursor);
             }
             this.setViewValue();
         }
