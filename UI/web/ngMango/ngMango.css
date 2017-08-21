@@ -785,6 +785,12 @@ ma-daily-schedule .ma-daily-schedule-bar {
 	cursor: pointer;
 	margin: 0 10px;
 	background-color: rgba(120,120,120,0.5);
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar:before,
