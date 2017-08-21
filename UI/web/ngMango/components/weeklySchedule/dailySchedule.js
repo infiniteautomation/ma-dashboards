@@ -231,7 +231,11 @@ class DailyScheduleController {
         } else if (this.editAction === 'resizeLeft') {
             this.editSegment.resizeStartTime(timeAtCursor);
         } else if (this.editAction === 'move') {
-            this.editSegment.setStartTime(timeAtCursor);
+            if (timeAtCursor + this.editSegment.duration <= millisecondsInDay) {
+                this.editSegment.setStartTime(timeAtCursor);
+            } else {
+                this.editSegment.setStartTime(millisecondsInDay - this.editSegment.duration);
+            }
         }
     }
     
@@ -259,7 +263,11 @@ class DailyScheduleController {
             this.editSegment.resizeStartTime(timeAtCursor);
             this.setViewValue();
         } else if (this.editAction === 'move') {
-            this.editSegment.setStartTime(timeAtCursor);
+            if (timeAtCursor + this.editSegment.duration <= millisecondsInDay) {
+                this.editSegment.setStartTime(timeAtCursor);
+            } else {
+                this.editSegment.setStartTime(millisecondsInDay - this.editSegment.duration);
+            }
             this.setViewValue();
         }
         
