@@ -13,14 +13,13 @@ define(['angular', 'require', 'moment-timezone'], function(angular, require, mom
  * @description Displays and allows editing of a weekly schedule object
  */
 
-const emptySchedule = Object.freeze(Array(7).fill());
-
 const $inject = Object.freeze([]);
 class WeeklyScheduleController {
     static get $inject() { return $inject; }
     
     constructor() {
         this.firstDayOfWeek = moment.localeData().firstDayOfWeek();
+        this.weekDays = moment.weekdaysShort(true);
     }
     
     $onInit() {
@@ -31,12 +30,10 @@ class WeeklyScheduleController {
     }
     
     render() {
-        this.weeklySchedule = (this.ngModelCtrl.$viewValue || emptySchedule).map((value, i) => {
-            return {
-                dayOfWeek: i,
-                dailySchedule: value || []
-            };
-        });
+        this.weeklySchedule = this.ngModelCtrl.$viewValue && this.ngModelCtrl.$viewValue.slice() || [];
+        while (this.weeklySchedule.length < 7) {
+            this.weeklySchedule.push([]);
+        }
 
         for (let i = 0; i < this.firstDayOfWeek; i++) {
             this.weeklySchedule.push(this.weeklySchedule.shift());
@@ -44,7 +41,7 @@ class WeeklyScheduleController {
     }
     
     setViewValue() {
-        const newViewValue = this.weeklySchedule.map((value) => value.dailySchedule);
+        const newViewValue = this.weeklySchedule.slice();
         for (let i = 0; i < this.firstDayOfWeek; i++) {
             newViewValue.unshift(newViewValue.pop());
         }

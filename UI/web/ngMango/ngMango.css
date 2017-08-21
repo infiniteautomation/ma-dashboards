@@ -777,7 +777,7 @@ ma-daily-schedule {
 }
 
 ma-daily-schedule .ma-daily-schedule-bar {
-	height: 100px;
+	height: 80px;
 	border-color: rgba(100,100,100,0.7);
 	border-width: 1px;
 	border-style: solid none;
@@ -901,7 +901,7 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick-label {
 	white-space: nowrap;
 }
 
-ma-daily-schedule .ma-day-label {
+ma-daily-schedule .ma-daily-schedule-label {
 	width: 30px;
 	text-align: right;
 	font-weight: bold;

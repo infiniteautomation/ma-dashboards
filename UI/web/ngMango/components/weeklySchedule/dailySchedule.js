@@ -78,8 +78,6 @@ class DailyScheduleController {
     static get $inject() { return $inject; }
     
     constructor() {
-        this.weekDays = moment.weekdaysShort();
-        this.showLabel = true;
         this.numTicks = 9;
         this.numGuides = 25;
         this.roundTo = 300000;
@@ -344,10 +342,11 @@ return {
         ngModelCtrl: 'ngModel'
     },
     bindings: {
-        dayOfWeek: '<',
-        showLabel: '<?',
         numTicks: '<?',
         roundTo: '<?'
+    },
+    transclude: {
+        labelSlot: '?span'
     },
     designerInfo: {
         translation: 'ui.dox.dailySchedule',

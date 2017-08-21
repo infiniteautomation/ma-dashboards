@@ -1,4 +1,4 @@
-<span ng-if="$ctrl.showLabel" class="ma-day-label" ng-bind="$ctrl.weekDays[$ctrl.dayOfWeek]"></span>
+<div ng-transclude="labelSlot"></div>
 <div flex class="ma-daily-schedule-bar" ng-mousedown="$ctrl.createSegment($event)" ng-mousemove="$ctrl.mouseMove($event)" ng-mouseup="$ctrl.mouseUp($event)" ng-mouseleave="$ctrl.mouseUp($event)">
     <div ng-repeat="guide in $ctrl.guides track by $index" class="ma-daily-schedule-guide" ng-class="{'ma-daily-schedule-guide-end': $first || $last}" ng-style="guide.style"></div>
     <div ng-repeat="tick in $ctrl.ticks track by $index" class="ma-daily-schedule-tick" ng-style="tick.style">
