@@ -787,6 +787,23 @@ ma-daily-schedule .ma-daily-schedule-bar {
 	background-color: rgba(120,120,120,0.5);
 }
 
+ma-daily-schedule .ma-daily-schedule-bar:before,
+ma-daily-schedule .ma-daily-schedule-bar:after {
+	position: absolute;
+	width: 15px;
+	height: 100%;
+	content: '';
+	display: block;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar:before {
+	left: -15px;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar:after {
+	right: -15px;
+}
+
 ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
 	position: absolute;
 	top: 0;
