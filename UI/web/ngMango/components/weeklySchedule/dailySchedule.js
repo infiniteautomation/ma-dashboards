@@ -242,38 +242,18 @@ class DailyScheduleController {
     
     mouseUp(event) {
         if (!this.editSegment) return;
-        const timeAtCursor = this.calculateTime(event);
         
-        if (this.editAction === 'create') {
-            if (timeAtCursor < this.initialTime) {
-                this.editSegment.setStartTime(timeAtCursor);
-            } else {
-                this.editSegment.setEndTime(timeAtCursor);
-            }
-            
-            // only set the view value if new segment is valid
-            if (this.editSegment.duration > 0) {
-                this.setViewValue();
-            } else {
-                this.activeSegments.pop();
-            }
-        } else if (this.editAction === 'resizeRight') {
-            this.editSegment.setEndTime(timeAtCursor);
-            this.setViewValue();
-        } else if (this.editAction === 'resizeLeft') {
-            this.editSegment.setStartTime(timeAtCursor);
-            this.setViewValue();
-        } else if (this.editAction === 'move') {
-            if (timeAtCursor < 0) {
-                this.editSegment.moveToStartTime(0);
-            } else if (timeAtCursor + this.editSegment.duration > millisecondsInDay) {
-                this.editSegment.moveToStartTime(millisecondsInDay - this.editSegment.duration);
-            } else {
-                this.editSegment.moveToStartTime(timeAtCursor);
-            }
+        // use the mouse move handler to update the start/end times
+        this.mouseMove(event);
+
+        // only set the view value if new segment is valid
+        if (this.editAction === 'create' && this.editSegment.duration <= 0) {
+            this.activeSegments.pop();
+        } else {
             this.setViewValue();
         }
         
+        // clear our state
         delete this.editSegment;
         delete this.initialOffset;
         delete this.initialTime;
@@ -332,8 +312,6 @@ class DailyScheduleController {
         }
     }
 }
-
-
 
 return {
     templateUrl: require.toUrl('./dailySchedule.html'),
