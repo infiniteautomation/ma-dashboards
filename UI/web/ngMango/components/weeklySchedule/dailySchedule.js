@@ -182,6 +182,8 @@ class DailyScheduleController {
         const startTime = this.calculateTime(event);
         this.editSegment = new ActiveSegment(startTime, 0);
         this.activeSegments.push(this.editSegment);
+        
+        this.initialTime = startTime;
     }
     
     resizeSegment(event, segment, resizeLeft) {
@@ -218,7 +220,13 @@ class DailyScheduleController {
         if (!this.editSegment) return;
         const timeAtCursor = this.calculateTime(event);
         
-        if (this.editAction === 'create' || this.editAction === 'resizeRight') {
+        if (this.editAction === 'create') {
+            if (timeAtCursor < this.initialTime) {
+                this.editSegment.resizeStartTime(timeAtCursor);
+            } else {
+                this.editSegment.setEndTime(timeAtCursor);
+            }
+        } else if (this.editAction === 'resizeRight') {
             this.editSegment.setEndTime(timeAtCursor);
         } else if (this.editAction === 'resizeLeft') {
             this.editSegment.resizeStartTime(timeAtCursor);
@@ -232,7 +240,11 @@ class DailyScheduleController {
         const timeAtCursor = this.calculateTime(event);
         
         if (this.editAction === 'create') {
-            this.editSegment.setEndTime(timeAtCursor);
+            if (timeAtCursor < this.initialTime) {
+                this.editSegment.resizeStartTime(timeAtCursor);
+            } else {
+                this.editSegment.setEndTime(timeAtCursor);
+            }
             
             // only set the view value if new segment is valid
             if (this.editSegment.duration > 0) {
@@ -253,6 +265,7 @@ class DailyScheduleController {
         
         delete this.editSegment;
         delete this.initialOffset;
+        delete this.initialTime;
     }
     
     calculateTime(event) {
