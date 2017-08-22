@@ -69,6 +69,7 @@ define(['./ngMangoServices',
         './directives/chooseFile',
         './directives/aceEditor',
         './directives/dateInput',
+        './directives/eventHandler',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -105,7 +106,7 @@ define(['./ngMangoServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListGet, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
-        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile, aceEditor, dateInput,
+        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile, aceEditor, dateInput, eventHandler,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
         maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, weeklySchedule, dailySchedule, ngMap, slideUp, angular, require, moment) {
@@ -210,6 +211,14 @@ ngMango.component('maJsonStoreTable', jsonStoreTable);
 ngMango.component('maWeeklySchedule', weeklySchedule);
 ngMango.component('maDailySchedule', dailySchedule);
 ngMango.animation('.ma-slide-up', slideUp);
+
+// add some additional event handlers which aren't in Angular by default
+'touchstart touchend touchmove'.split(' ').forEach((eventName) => {
+    const directiveName = 'ma' + eventName.charAt(0).toUpperCase() + eventName.slice(1);
+    const fn = eventHandler.bind(null, eventName, directiveName);
+    fn.$inject = eventHandler.$inject;
+    ngMango.directive(directiveName, fn);
+});
 
 ngMango.constant('MA_INSERT_CSS', true);
 
