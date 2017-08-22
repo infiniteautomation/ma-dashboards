@@ -22,6 +22,8 @@ class WeeklyScheduleController {
     constructor() {
         this.firstDayOfWeek = moment.localeData().firstDayOfWeek();
         this.weekDays = moment.weekdaysShort();
+        
+        this.roundTo = 300000;
     }
     
     $onInit() {
@@ -82,6 +84,7 @@ return {
         lockAll: '<?',
         lockWeekends: '<?',
         lockWeekdays: '<?',
+        roundTo: '<?'
     },
     designerInfo: {
         translation: 'ui.dox.weeklySchedule',
