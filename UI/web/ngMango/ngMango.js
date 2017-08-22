@@ -213,7 +213,7 @@ ngMango.component('maDailySchedule', dailySchedule);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default
-'touchstart touchend touchmove'.split(' ').forEach((eventName) => {
+'touchstart touchend touchmove touchcancel'.split(' ').forEach((eventName) => {
     const directiveName = 'ma' + eventName.charAt(0).toUpperCase() + eventName.slice(1);
     const fn = eventHandler.bind(null, eventName, directiveName);
     fn.$inject = eventHandler.$inject;

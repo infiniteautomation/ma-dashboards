@@ -205,59 +205,58 @@ class DailyScheduleController {
         // only interested in clicks on the bar itself
         if (event.target !== event.currentTarget) return;
         
-        // not interested in right/middle click, ctrl-click, alt-click or shift-click
-        if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+        if (!this.checkStartNewAction(event)) return;
 
-        // already creating/resizing/moving a segment
-        if (this.editSegment) return;
-
-        event.preventDefault();
-        event.stopImmediatePropagation();
+        const startTime = this.initialCursorPosition.time;
 
         this.editAction = 'create';
-        const startTime = this.calculateTime(event);
         this.editSegment = new ActiveSegment(startTime, startTime);
         this.activeSegments.push(this.editSegment);
-        
-        this.initialTime = startTime;
     }
     
     resizeSegment(event, segment, resizeLeft) {
-        // not interested in right/middle click, ctrl-click, alt-click or shift-click
-        if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
-        
-        // already creating/resizing/moving a segment
-        if (this.editSegment) return;
-        
-        event.preventDefault();
-        event.stopImmediatePropagation();
+        if (!this.checkStartNewAction(event)) return;
 
         this.editAction = resizeLeft ? 'resizeLeft' : 'resizeRight';
         this.editSegment = segment;
     }
     
     moveSegment(event, segment) {
-        // not interested in right/middle click, ctrl-click, alt-click or shift-click
-        if (event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
-        
-        // already creating/resizing/moving a segment
-        if (this.editSegment) return;
-        
-        event.preventDefault();
-        event.stopImmediatePropagation();
+        if (!this.checkStartNewAction(event)) return;
 
         this.editAction = 'move';
         this.editSegment = segment;
+    }
+    
+    /**
+     * Check if we should continue with a new action
+     */
+    checkStartNewAction(event) {
+        // not interested in right/middle click, ctrl-click, alt-click or shift-click
+        if (event.type === 'mousedown' && event.which !== 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey)
+            return;
         
-        this.initialOffset = event.offsetX;
+        // already creating/resizing/moving a segment
+        if (this.editSegment)
+            return;
+        
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        
+        this.touchId = event.type === 'touchstart' && event.touches[0].identifier;
+        this.initialCursorPosition = this.cursorPosition(event);
+        
+        return true;
     }
     
     mouseMove(event) {
         if (!this.editSegment) return;
-        const timeAtCursor = this.calculateTime(event);
+        
+        const cursorPosition = this.cursorPosition(event);
+        const timeAtCursor = cursorPosition.time;
         
         if (this.editAction === 'create') {
-            if (timeAtCursor < this.initialTime) {
+            if (timeAtCursor < this.initialCursorPosition.time) {
                 this.editSegment.setStartTime(timeAtCursor);
             } else {
                 this.editSegment.setEndTime(timeAtCursor);
@@ -296,26 +295,35 @@ class DailyScheduleController {
         
         // clear our state
         delete this.editSegment;
-        delete this.initialOffset;
-        delete this.initialTime;
+        delete this.initialCursorPosition;
+        delete this.touchId;
+    }
+
+    getPageX(event) {
+        if (event.type.indexOf('touch') === 0) {
+            // touch events
+            return Array.prototype.filter.call(event.changedTouches, (touch) => {
+                return touch.identifier === this.touchId;
+            })[0].pageX;
+        } else {
+            // mouse events
+            return event.pageX;
+        }
     }
     
-    calculateTime(event) {
-        let target = event.target;
-        let offset = event.offsetX;
+    cursorPosition(event) {
+        const pageX = this.getPageX(event);
+        const rect = event.currentTarget.getBoundingClientRect();
+        const offsetX = pageX - rect.left;
+        const position = offsetX / event.currentTarget.clientWidth;
+        const time = this.roundTime(position * millisecondsInDay);
         
-        while (target !== event.currentTarget) {
-            offset += target.offsetLeft;
-            target = target.offsetParent;
-        }
-        
-        // used for move operations
-        if (this.initialOffset != null) {
-            offset -= this.initialOffset;
-        }
-        
-        const positionInDay = offset / event.currentTarget.clientWidth;
-        return this.roundTime(positionInDay * millisecondsInDay);
+        return {
+            pageX,
+            offsetX,
+            position,
+            time
+        };
     }
     
     roundTime(time) {
