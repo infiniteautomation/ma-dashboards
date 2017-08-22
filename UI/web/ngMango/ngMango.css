@@ -905,4 +905,5 @@ ma-daily-schedule .ma-daily-schedule-label {
 	width: 30px;
 	text-align: right;
 	font-weight: bold;
+	display: block;
 }

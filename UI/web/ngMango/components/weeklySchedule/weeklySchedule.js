@@ -13,13 +13,15 @@ define(['angular', 'require', 'moment-timezone'], function(angular, require, mom
  * @description Displays and allows editing of a weekly schedule object
  */
 
+const emptySchedule = Object.freeze(Array(7).fill());
+
 const $inject = Object.freeze([]);
 class WeeklyScheduleController {
     static get $inject() { return $inject; }
     
     constructor() {
         this.firstDayOfWeek = moment.localeData().firstDayOfWeek();
-        this.weekDays = moment.weekdaysShort(true);
+        this.weekDays = moment.weekdaysShort();
     }
     
     $onInit() {
@@ -30,22 +32,43 @@ class WeeklyScheduleController {
     }
     
     render() {
-        this.weeklySchedule = this.ngModelCtrl.$viewValue && this.ngModelCtrl.$viewValue.slice() || [];
-        while (this.weeklySchedule.length < 7) {
-            this.weeklySchedule.push([]);
-        }
-
-        for (let i = 0; i < this.firstDayOfWeek; i++) {
-            this.weeklySchedule.push(this.weeklySchedule.shift());
-        }
+        this.weeklySchedule = (this.ngModelCtrl.$viewValue || emptySchedule).map((value, i) => {
+            return {
+                dayOfWeek: i,
+                localeDayOfWeek: (i - this.firstDayOfWeek + 7) % 7,
+                dailySchedule: value || [],
+                weekend: i === 0 || i === 6
+            };
+        });
     }
     
     setViewValue() {
-        const newViewValue = this.weeklySchedule.slice();
-        for (let i = 0; i < this.firstDayOfWeek; i++) {
-            newViewValue.unshift(newViewValue.pop());
-        }
+        const newViewValue = this.weeklySchedule.map((value) => value.dailySchedule);
         this.ngModelCtrl.$setViewValue(newViewValue);
+    }
+    
+    dailyScheduleChanged(changedDay) {
+        let updateWeekends = false;
+        let updateWeekdays = false;
+        
+        if (this.lockAll) {
+            updateWeekends = true;
+            updateWeekdays = true;
+        } else if (this.lockWeekends && changedDay.weekend) {
+            updateWeekends = true;
+        } else if (this.lockWeekdays && !changedDay.weekend) {
+            updateWeekdays = true;
+        }
+        
+        if (updateWeekends || updateWeekdays) {
+            this.weeklySchedule.forEach((item) => {
+                if (item !== changedDay && (item.weekend && updateWeekends || !item.weekend && updateWeekdays)) {
+                    item.dailySchedule = changedDay.dailySchedule.slice();
+                }
+            });
+        }
+
+        this.setViewValue();
     }
 }
 
@@ -55,7 +78,11 @@ return {
     require: {
         ngModelCtrl: 'ngModel'
     },
-    bindings: {},
+    bindings: {
+        lockAll: '<?',
+        lockWeekends: '<?',
+        lockWeekdays: '<?',
+    },
     designerInfo: {
         translation: 'ui.dox.weeklySchedule',
         icon: 'sd_storage'
