@@ -9,17 +9,17 @@
     </div>
 
     <md-list flex class="md-dense">
-        <div ng-repeat="fileName in $ctrl.logFilesList">
+        <div ng-repeat="logFileMeta in $ctrl.logFilesList">
             <md-list-item>
-                <span ng-bind="fileName"></span>
+                <span ng-bind="logFileMeta.filename"></span>
                 <span flex></span>
-                <md-button ng-click="$ctrl.displayLogFile(fileName)" class="md-raised md-accent md-hue-1">
+                <md-button ng-click="$ctrl.displayLogFile(logFileMeta.filename)" class="md-raised md-accent md-hue-1">
                     <md-icon>
                         remove_red_eye
                     </md-icon>
                     <span>View</span>
                 </md-button>
-                <md-button href="{{$ctrl.getLogDownloadUrl(fileName)}}" download
+                <md-button href="{{$ctrl.getLogDownloadUrl(logFileMeta.filename)}}"
                            class="md-raised md-accent md-hue-3">
                     <md-icon>
                         file_download

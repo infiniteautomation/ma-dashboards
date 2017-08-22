@@ -20,7 +20,7 @@ function SystemStatusPageController(systemStatus, maServer, User, $state, maUiMe
     this.$timeout = $timeout;
     this.maDialogHelper = maDialogHelper;
 
-    this.logByFileNameUrl = '/rest/v1/logging/by-filename/';
+    this.logByFileNameUrl = '/rest/v1/logging/view/';
 }
 
 SystemStatusPageController.prototype.$onChanges = function(changes) {
@@ -61,7 +61,7 @@ SystemStatusPageController.prototype.getLogFilesList = function() {
 };
 
 SystemStatusPageController.prototype.getLogDownloadUrl = function(filename) {
-    return this.logByFileNameUrl + filename;
+    return this.logByFileNameUrl + filename + '?download=true';
 };
 
 SystemStatusPageController.prototype.displayLogFile = function(filename) {
@@ -70,7 +70,7 @@ SystemStatusPageController.prototype.displayLogFile = function(filename) {
     this.selectedLogFile = filename;
 
     this.systemStatus.getLogFile(filename).then(function(response) {
-        $this.selectedLogContent = response.data.join('\n');
+        $this.selectedLogContent = response.data;
     });
 };
 
@@ -110,7 +110,6 @@ SystemStatusPageController.prototype.getSystemInfo = function() {
     var $this = this;
 
     this.systemStatus.getFullSystemInfo().then(function(response) {
-        console.log(response);
         $this.systemInfo = JSON.stringify(response.data);
     });
 };
