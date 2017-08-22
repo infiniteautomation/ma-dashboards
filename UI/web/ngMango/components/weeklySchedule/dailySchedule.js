@@ -110,11 +110,13 @@ class ActiveSegment {
     }
 }
 
-const $inject = Object.freeze([]);
+const $inject = Object.freeze(['$element']);
 class DailyScheduleController {
     static get $inject() { return $inject; }
     
-    constructor() {
+    constructor($element) {
+        this.barElement = $element[0].querySelector('.ma-daily-schedule-bar');
+        
         this.numTicks = 9;
         this.numGuides = 25;
         this.roundTo = 300000;
@@ -207,7 +209,7 @@ class DailyScheduleController {
         
         if (!this.checkStartNewAction(event)) return;
 
-        const startTime = this.initialCursorPosition.time;
+        const startTime = this.initialCursorPosition.roundedTime;
 
         this.editAction = 'create';
         this.editSegment = new ActiveSegment(startTime, startTime);
@@ -253,7 +255,7 @@ class DailyScheduleController {
         if (!this.editSegment) return;
         
         const cursorPosition = this.cursorPosition(event);
-        const timeAtCursor = cursorPosition.time;
+        const timeAtCursor = cursorPosition.roundedTime;
         
         if (this.editAction === 'create') {
             if (timeAtCursor < this.initialCursorPosition.time) {
@@ -270,12 +272,16 @@ class DailyScheduleController {
                 this.editSegment.setStartTime(timeAtCursor);
             }
         } else if (this.editAction === 'move') {
-            if (timeAtCursor < 0) {
+            // use the adjusted cursor time, we don't want to move the segment to where the cursor is as
+            // we may have clicked in the middle of the segment
+            const adjustedTime = cursorPosition.adjustedTime;
+            
+            if (adjustedTime < 0) {
                 this.editSegment.moveToStartTime(0);
-            } else if (timeAtCursor + this.editSegment.duration > millisecondsInDay) {
+            } else if (adjustedTime + this.editSegment.duration > millisecondsInDay) {
                 this.editSegment.moveToStartTime(millisecondsInDay - this.editSegment.duration);
             } else {
-                this.editSegment.moveToStartTime(timeAtCursor);
+                this.editSegment.moveToStartTime(adjustedTime);
             }
         }
     }
@@ -313,19 +319,31 @@ class DailyScheduleController {
     
     cursorPosition(event) {
         const pageX = this.getPageX(event);
-        const rect = event.currentTarget.getBoundingClientRect();
+        const rect = this.barElement.getBoundingClientRect();
         const offsetX = pageX - rect.left;
-        const position = offsetX / event.currentTarget.clientWidth;
-        const time = this.roundTime(position * millisecondsInDay);
+        const position = offsetX / this.barElement.clientWidth;
+        const time = position * millisecondsInDay;
+        const roundedTime = this.roundTime(time);
+        const targetOffsetX = pageX - event.currentTarget.getBoundingClientRect().left;
         
-        return {
+        const result = {
             pageX,
             offsetX,
+            targetOffsetX,
             position,
-            time
+            time,
+            roundedTime
         };
+        
+        // calculate an adjusted time for use when moving a segment
+        if (this.initialCursorPosition) {
+            const adjustedOffset = offsetX - this.initialCursorPosition.targetOffsetX;
+            result.adjustedTime = this.roundTime(adjustedOffset / this.barElement.clientWidth * millisecondsInDay);
+        }
+        
+        return result;
     }
-    
+
     roundTime(time) {
         if (!this.roundTo) return time;
         return Math.round(time / this.roundTo) * this.roundTo;
