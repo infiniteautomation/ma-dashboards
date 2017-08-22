@@ -62,14 +62,14 @@ class ActiveSegment {
         
         this.durationLabel = '';
         
-        if (hours !== 0) {
+        if (hours) {
             this.durationLabel += moment.localeData().relativeTime(hours, false, 'hh', false);
         }
-        if (minutes !== 0) {
+        if (minutes || (hours && seconds)) {
             if (this.durationLabel) this.durationLabel += '\n';
             this.durationLabel += moment.localeData().relativeTime(minutes, false, 'mm', false);
         }
-        if (seconds !== 0) {
+        if (seconds) {
             if (this.durationLabel) this.durationLabel += '\n';
             this.durationLabel += moment.localeData().relativeTime(seconds, false, 'ss', false);
         }
