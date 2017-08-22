@@ -258,9 +258,13 @@ class DailyScheduleController {
         const timeAtCursor = cursorPosition.roundedTime;
         
         if (this.editAction === 'create') {
-            if (timeAtCursor < this.initialCursorPosition.time) {
+            const initialTime = this.initialCursorPosition.roundedTime;
+            
+            if (timeAtCursor < initialTime) {
                 this.editSegment.setStartTime(timeAtCursor);
+                this.editSegment.setEndTime(initialTime);
             } else {
+                this.editSegment.setStartTime(initialTime);
                 this.editSegment.setEndTime(timeAtCursor);
             }
         } else if (this.editAction === 'resize-right') {
