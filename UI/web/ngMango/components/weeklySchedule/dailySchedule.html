@@ -1,5 +1,5 @@
 <div ng-transclude="labelSlot"></div>
-<div flex class="ma-daily-schedule-bar"
+<div flex class="ma-daily-schedule-bar" ng-class="'ma-daily-schedule-bar-' + ($ctrl.editAction || 'none')"
         ng-mousedown="$ctrl.createSegment($event)" ng-mousemove="$ctrl.mouseMove($event)" ng-mouseup="$ctrl.mouseUp($event)" ng-mouseleave="$ctrl.mouseUp($event)"
         ma-touchstart="$ctrl.createSegment($event)" ma-touchmove="$ctrl.mouseMove($event)"  ma-touchend="$ctrl.mouseUp($event)" ma-touchcancel="$ctrl.mouseUp($event)">
     <div ng-repeat="guide in $ctrl.guides track by $index" class="ma-daily-schedule-guide" ng-class="{'ma-daily-schedule-guide-end': $first || $last}" ng-style="guide.style"></div>

@@ -793,6 +793,16 @@ ma-daily-schedule .ma-daily-schedule-bar {
 	user-select: none;
 }
 
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-create,
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-resize-left,
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-resize-right {
+	cursor: col-resize;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-move {
+	cursor: move;
+}
+
 ma-daily-schedule .ma-daily-schedule-bar:before,
 ma-daily-schedule .ma-daily-schedule-bar:after {
 	position: absolute;
@@ -814,6 +824,9 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
 	position: absolute;
 	top: 0;
 	height: 100%;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-none .ma-active-segment {
 	cursor: move;
 }
 
@@ -853,6 +866,9 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize {
 	border-color: rgba(255,255,255,0.15);
 	border-width: 5px;
 	border-style: none;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-none .ma-segment-resize {
 	cursor: col-resize;
 }
 

@@ -219,7 +219,7 @@ class DailyScheduleController {
     resizeSegment(event, segment, resizeLeft) {
         if (!this.checkStartNewAction(event)) return;
 
-        this.editAction = resizeLeft ? 'resizeLeft' : 'resizeRight';
+        this.editAction = resizeLeft ? 'resize-left' : 'resize-right';
         this.editSegment = segment;
     }
     
@@ -263,9 +263,9 @@ class DailyScheduleController {
             } else {
                 this.editSegment.setEndTime(timeAtCursor);
             }
-        } else if (this.editAction === 'resizeRight') {
+        } else if (this.editAction === 'resize-right') {
             this.editSegment.setEndTime(timeAtCursor);
-        } else if (this.editAction === 'resizeLeft') {
+        } else if (this.editAction === 'resize-left') {
             if (timeAtCursor > this.editSegment.endTime) {
                 this.editSegment.setStartTime(this.editSegment.endTime);
             } else {
@@ -303,6 +303,7 @@ class DailyScheduleController {
         delete this.editSegment;
         delete this.initialCursorPosition;
         delete this.touchId;
+        delete this.editAction;
     }
 
     getPageX(event) {
