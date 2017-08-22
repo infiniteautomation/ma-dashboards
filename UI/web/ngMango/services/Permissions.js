@@ -6,6 +6,8 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
+const uiModulePermissions = Object.freeze(['edit-ui-menus', 'edit-ui-pages', 'edit-ui-settings']);
+
 PermissionsFactory.$inject = ['$http'];
 function PermissionsFactory($http) {
     var allPermissionsUrl = '/rest/v1/users/permissions-groups';
@@ -21,7 +23,10 @@ function PermissionsFactory($http) {
                 'Accept': 'application/json'
             }
         }).then(function(response) {
-            return response.data;
+            const seen = {};
+            return response.data.concat(uiModulePermissions).filter((permission) => {
+                return seen[permission] ? false : (seen[permission] = true);
+            });
         });
     };
 
