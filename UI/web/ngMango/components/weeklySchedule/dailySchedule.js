@@ -54,7 +54,26 @@ class ActiveSegment {
 
         this.startLabel = moment.tz(this.startTime, 'UTC').format('LT');
         this.endLabel = moment.tz(this.endTime, 'UTC').format('LT');
-        this.durationLabel = moment.duration(this.duration).humanize();
+        
+        const duration = moment.duration(this.duration);
+        const hours = duration.hours();
+        const minutes = duration.minutes();
+        const seconds = duration.seconds();
+        
+        this.durationLabel = '';
+        
+        if (hours !== 0) {
+            this.durationLabel += moment.localeData().relativeTime(hours, false, 'hh', false);
+        }
+        if (minutes !== 0) {
+            if (this.durationLabel) this.durationLabel += '\n';
+            this.durationLabel += moment.localeData().relativeTime(minutes, false, 'mm', false);
+        }
+        if (seconds !== 0) {
+            if (this.durationLabel) this.durationLabel += '\n';
+            this.durationLabel += moment.localeData().relativeTime(seconds, false, 'ss', false);
+        }
+        
         this.style = {
             left: (this.startTime / millisecondsInDay * 100) + '%',
             width: (this.duration / millisecondsInDay * 100) + '%'

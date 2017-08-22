@@ -9,7 +9,7 @@
             ng-style="segment.style" ng-mousedown="$ctrl.moveSegment($event, segment)">
         <div class="ma-segment-label ma-segment-start" ng-bind="segment.startLabel"></div>
         <div class="ma-segment-label ma-segment-end" ng-bind="segment.endLabel"></div>
-        <div class="ma-segment-label ma-segment-duration" ng-bind="segment.durationLabel"></div>
+        <em class="ma-segment-label ma-segment-duration" ng-bind="segment.durationLabel"></em>
         
         <div class="ma-segment-resize ma-segment-resize-left" ng-mousedown="$ctrl.resizeSegment($event, segment, true)"></div>
         <div class="ma-segment-resize ma-segment-resize-right" ng-mousedown="$ctrl.resizeSegment($event, segment, false)"></div>

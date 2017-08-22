@@ -820,7 +820,7 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-label {
 	position: absolute;
 	font-size: 1.1rem;
-	white-space: nowrap;
+	white-space: pre;
 	pointer-events: none;
 }
 
@@ -828,18 +828,21 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-segment-start {
 	top: 0px;
 	left: 7px;
 	/*transform: translate(-50%);*/
+	text-align: left;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-end {
 	bottom: 0px;
 	right: 7px;
 	/*transform: translateX(50%);*/
+	text-align: right;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-duration {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	text-align: center;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize {
