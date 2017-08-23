@@ -6,43 +6,41 @@
             </md-icon>
             <span ma-tr="ui.app.refreshTable"></span>
         </md-button>
-    </div>
-
-    <md-list flex class="md-dense">
-        <div ng-repeat="thread in $ctrl.threads">
-            <md-list-item>
-                <span ng-bind="thread.name"></span>
-                <span flex></span>
-                <md-button ng-click="$ctrl.displayThread($index)" class="md-raised md-accent md-hue-1">
-                    <md-icon>
-                        remove_red_eye
-                    </md-icon>
-                    <span>View</span>
-                </md-button>
-                <!--<md-button href="{{$ctrl.getLogDownloadUrl(fileName)}}" download-->
-                           <!--class="md-raised md-accent md-hue-3">-->
-                    <!--<md-icon>-->
-                        <!--file_download-->
-                    <!--</md-icon>-->
-                    <!--<span ma-tr="ui.settings.systemStatus.downloadLog"></span>-->
-                <!--</md-button>-->
-            </md-list-item>
-            <md-divider></md-divider>
-        </div>
-    </md-list>
-
-    <md-input-container flex ng-if="$ctrl.selectedThread">
-        <label>Displaying Thread: {{$ctrl.selectedThread.name}}</label>
-        <textarea ng-model="$ctrl.selectedThread | json" md-maxlength="150" rows="5" max-rows="15" md-select-on-focus
-                  id="thread-console"></textarea>
-    </md-input-container>
-
-    <div layout layout-align="end" ng-if="$ctrl.selectedThread">
-        <md-button ng-click="$ctrl.copyThreadToClipboard()" class="md-raised md-accent">
+        <md-button href="/rest/v1/threads?stackDepth=30&asFile=true"
+                   class="md-raised md-accent md-hue-3">
             <md-icon>
-                content_copy
+                file_download
             </md-icon>
-            <span ma-tr="ui.settings.systemStatus.copyToClipboard"></span>
+            <span ma-tr="ui.settings.systemStatus.downloadThreadDump"></span>
         </md-button>
     </div>
+
+    <md-table-container>
+        <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
+            <thead md-head md-order="name">
+            <tr md-row>
+                <th md-column md-order-by="name">Name</th>
+                <th md-column md-order-by="id">ID</th>
+                <th md-column md-order-by="cpuTime">CPU Time</th>
+                <th md-column md-order-by="userTime">User Time</th>
+                <th md-column md-order-by="state">State</th>
+                <th md-column md-order-by="priority">Priority</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="thread in $ctrl.threads" ng-class="{'blocked-thread': thread.state === 'BLOCKED'}">
+                <td md-cell ng-bind="thread.name"></td>
+                <td md-cell ng-bind="thread.id"></td>
+                <td md-cell ng-bind="thread.cpuTime | maMoment:'format':'l LT'"></td>
+                <td md-cell ng-bind="thread.userTime| maMoment:'format':'l LT'"></td>
+                <td md-cell ng-bind="thread.state">
+                    <md-tooltip ng-if="thread.state === 'BLOCKED'">
+                        {{thread.lockOwnerName}}, {{thread.lockOwnerId}}, {{thread.lockInfo}}
+                    </md-tooltip>
+                </td>
+                <td md-cell ng-bind="thread.priority"></td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
 </div>

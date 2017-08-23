@@ -27,7 +27,7 @@ SystemStatusPageController.prototype.$onChanges = function(changes) {
 };
 
 SystemStatusPageController.prototype.$onInit = function() {
-    // var auditTrail = this.systemStatus.getAuditTrail();
+    this.getAuditTrail();
     this.getInternalMetrics();
     this.getLogFilesList();
     this.getWorkItems();
@@ -35,6 +35,14 @@ SystemStatusPageController.prototype.$onInit = function() {
     this.getSystemInfo();
 };
 
+SystemStatusPageController.prototype.getAuditTrail = function() {
+    var $this = this;
+
+    this.systemStatus.getAuditTrail().then(function(response) {
+        $this.auditTrail = response.data.items;
+        console.log($this.auditTrail);
+    });
+};
 
 SystemStatusPageController.prototype.getWorkItems = function() {
     var $this = this;
@@ -92,35 +100,11 @@ SystemStatusPageController.prototype.getThreads = function() {
     });
 };
 
-SystemStatusPageController.prototype.displayThread = function(index) {
-    this.selectedThread = this.threads[index];
-};
-
-SystemStatusPageController.prototype.copyThreadToClipboard = function() {
-    document.querySelector('#thread-console').select();
-    document.execCommand('copy');
-
-    this.maDialogHelper.toastOptions({
-        text: this.selectedThread.name + ' copied to clipboard',
-        hideDelay: 4000
-    });
-};
-
 SystemStatusPageController.prototype.getSystemInfo = function() {
     var $this = this;
 
     this.systemStatus.getFullSystemInfo().then(function(response) {
-        $this.systemInfo = JSON.stringify(response.data);
-    });
-};
-
-SystemStatusPageController.prototype.copySystemInfoToClipboard = function() {
-    document.querySelector('#system-info-console').select();
-    document.execCommand('copy');
-
-    this.maDialogHelper.toastOptions({
-        text: 'System info copied to clipboard',
-        hideDelay: 4000
+        $this.systemInfo = response.data;
     });
 };
 

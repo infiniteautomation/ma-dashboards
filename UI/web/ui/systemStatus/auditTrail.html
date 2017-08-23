@@ -1,3 +1,33 @@
-<div layout layout-wrap>
-  Audit Trail Placeholder
+<div layout="column">
+  <div layout layout-align="end">
+    <md-button ng-click="$ctrl.getAuditTrail()" class="md-raised md-accent">
+      <md-icon>
+        refresh
+      </md-icon>
+      <span ma-tr="ui.app.refreshTable"></span>
+    </md-button>
+  </div>
+
+  <md-table-container>
+    <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
+      <thead md-head md-order="name">
+      <tr md-row>
+        <th md-column md-order-by="alarmLevel">Name</th>
+        <th md-column md-order-by="changeType">ID</th>
+        <th md-column md-order-by="message">CPU Time</th>
+        <th md-column md-order-by="timestamp">User Time</th>
+        <th md-column md-order-by="username">State</th>
+      </tr>
+      </thead>
+      <tbody md-body>
+      <tr md-row ng-repeat="auditItem in $ctrl.auditTrail" ng-class="{'blocked-thread': thread.state === 'BLOCKED'}">
+        <td md-cell ng-bind="auditItem.alarmLevel"></td>
+        <td md-cell ng-bind="auditItem.changeType"></td>
+        <td md-cell ng-bind="auditItem.message"></td>
+        <td md-cell ng-bind="auditItem.timestamp| maMoment:'format':'l LT'"></td>
+        <td md-cell ng-bind="auditItem.username"></td>
+      </tr>
+      </tbody>
+    </table>
+  </md-table-container>
 </div>

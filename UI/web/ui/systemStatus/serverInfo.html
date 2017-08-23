@@ -8,18 +8,58 @@
         </md-button>
     </div>
 
-    <md-input-container flex>
-        <label>System Info:</label>
-        <textarea ng-model="$ctrl.systemInfo" md-maxlength="150" rows="25" max-rows="25" md-select-on-focus
-                  id="system-info-console"></textarea>
-    </md-input-container>
-
-    <div layout layout-align="end">
-        <md-button ng-click="$ctrl.copySystemInfoToClipboard()" class="md-raised md-accent">
-            <md-icon>
-                content_copy
-            </md-icon>
-            <span ma-tr="ui.settings.systemStatus.copyToClipboard"></span>
-        </md-button>
-    </div>
+    <md-table-container>
+        <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
+            <tbody md-body>
+            <tr md-row>
+                <td md-cell>
+                    Time zone
+                </td>
+                <td md-cell>
+                    {{$ctrl.systemInfo.timezone}}
+                </td>
+            </tr>
+            <tr md-row>
+                <td md-cell>
+                    Database type
+                </td>
+                <td md-cell>
+                    {{$ctrl.systemInfo.databaseType}}
+                </td>
+            </tr>
+            <tr md-row>
+                <td md-cell>
+                    SQL Database size
+                </td>
+                <td md-cell>
+                    {{$ctrl.systemInfo.sqlDatabaseSize}}
+                </td>
+            </tr>
+            <tr md-row>
+                <td md-cell>
+                    NoSQL database size
+                </td>
+                <td md-cell>
+                    {{$ctrl.systemInfo.noSqlPointValueDatabaseSize}}
+                </td>
+            </tr>
+            <tr md-row>
+                <td md-cell>
+                    Filedata size
+                </td>
+                <td md-cell>
+                    {{$ctrl.systemInfo.filedataSize}} ({{$ctrl.systemInfo.filedataCount}} files)
+                </td>
+            </tr>
+            <tr md-row>
+                <td md-cell>
+                    Events count
+                </td>
+                <td md-cell>
+                    {{$ctrl.systemInfo.eventsCount}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
 </div>

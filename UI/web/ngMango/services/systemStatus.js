@@ -25,8 +25,6 @@ function SystemStatusFactory($http) {
         return $http({
             method: 'GET',
             url: auditTrailUrl
-        }).then(function(response) {
-            return response.data;
         });
     };
 
