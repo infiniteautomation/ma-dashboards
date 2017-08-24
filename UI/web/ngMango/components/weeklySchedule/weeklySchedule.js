@@ -65,7 +65,7 @@ class WeeklyScheduleController {
         if (updateWeekends || updateWeekdays) {
             this.weeklySchedule.forEach((item) => {
                 if (item !== changedDay && (item.weekend && updateWeekends || !item.weekend && updateWeekdays)) {
-                    item.dailySchedule = changedDay.dailySchedule.slice();
+                    item.dailySchedule = [...changedDay.dailySchedule];
                 }
             });
         }

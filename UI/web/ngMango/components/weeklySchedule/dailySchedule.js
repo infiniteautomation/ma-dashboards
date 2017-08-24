@@ -16,14 +16,15 @@ define(['angular', 'require', 'moment-timezone'], function(angular, require, mom
 const millisecondsInDay = 24 * 3600 * 1000;
 const timeFormats = ['HH:mm:ss.SSS', 'HH:mm:ss', 'HH:mm'];
 
-function parseTime(input) {
+const parseTime = function parseTime(input) {
     if (typeof input !== 'string') return input;
     return moment.utc('1970-01-01 ' + input, 'YYYY-MM-DD ' + timeFormats[0]).valueOf();
-}
+};
 
-function formatTime(input) {
+const formatTime = function formatTime(input) {
     if (typeof input !== 'number') return input;
     const m = moment.utc(input);
+
     if (m.milliseconds() === 0) {
         if (m.seconds() === 0) {
             return m.format(timeFormats[2]);
@@ -31,7 +32,7 @@ function formatTime(input) {
         return m.format(timeFormats[1]);
     }
     return m.format(timeFormats[0]);
-}
+};
 
 class ActiveSegment {
     constructor(startTime, endTime) {

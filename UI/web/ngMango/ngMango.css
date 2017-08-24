@@ -838,17 +838,19 @@ ma-daily-schedule .ma-daily-schedule-bar .ma-segment-label {
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-start {
-	top: 0px;
-	left: 7px;
+	top: 0;
+	left: 0;
 	/*transform: translate(-50%);*/
 	text-align: left;
+	margin-left: 7px;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-end {
-	bottom: 0px;
-	right: 7px;
+	bottom: 0;
+	right: 0;
 	/*transform: translateX(50%);*/
 	text-align: right;
+	margin-right: 7px;
 }
 
 ma-daily-schedule .ma-daily-schedule-bar .ma-segment-duration {
@@ -925,4 +927,38 @@ ma-daily-schedule .ma-daily-schedule-label {
 	text-align: right;
 	font-weight: bold;
 	display: block;
+}
+
+/**
+ * Mini schedule styles
+ */
+ma-weekly-schedule.ma-schedule-mini ma-daily-schedule,
+ma-daily-schedule.ma-schedule-mini {
+	margin-bottom: 3px;
+}
+
+.ma-schedule-mini .ma-daily-schedule-bar {
+	height: 20px;
+	margin: 0 0 0 5px;
+	pointer-events: none;
+}
+
+.ma-schedule-mini .ma-daily-schedule-guide,
+.ma-schedule-mini .ma-daily-schedule-tick,
+.ma-schedule-mini .ma-active-segment .ma-segment-duration,
+.ma-schedule-mini .ma-daily-schedule-bar .ma-segment-resize {
+	display: none;
+}
+
+.ma-schedule-mini .ma-active-segment .ma-segment-start,
+.ma-schedule-mini .ma-active-segment .ma-segment-end {
+	top: 50%;
+	bottom: auto;
+	transform: translateY(-50%);
+	margin: 0 3px;
+}
+
+.ma-schedule-mini .ma-daily-schedule-label {
+	width: 20px;
+	font-size: 1.2rem;
 }
