@@ -138,6 +138,9 @@ myAdminApp.config([
     '$mdAriaProvider',
 function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider, $locationProvider, $mdAriaProvider) {
 
+    // Need this for AngularJS 1.6.x, all our directives should be updated so they dont use bindings in the constructor
+    // Most things seem to work but mdPickers do not
+    $compileProvider.preAssignBindingsEnabled(true);
     // disable angular debug info to speed up app
     $compileProvider.debugInfoEnabled(false);
     // disable aria warnings
