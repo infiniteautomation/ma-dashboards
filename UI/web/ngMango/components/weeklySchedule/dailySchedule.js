@@ -118,8 +118,8 @@ class DailyScheduleController {
     constructor($element) {
         this.barElement = $element[0].querySelector('.ma-daily-schedule-bar');
         
-        this.numTicks = 9;
-        this.numGuides = 25;
+        this.tickSegments = 8;
+        this.guideSegments = 24;
         this.roundTo = 300000;
         this.createTicks();
         this.createGuides();
@@ -130,10 +130,10 @@ class DailyScheduleController {
     }
     
     $onChanges(changes) {
-        if (changes.numTicks && this.numTicks != null) {
+        if (changes.tickSegments && this.tickSegments != null) {
             this.createTicks();
         }
-        if (changes.numGuides && this.numGuides != null) {
+        if (changes.guideSegments && this.guideSegments != null) {
             this.createGuides();
         }
     }
@@ -357,9 +357,9 @@ class DailyScheduleController {
     
     createTicks() {
         this.ticks = [];
-        if (this.numTicks < 1) return;
-        
-        const increment = millisecondsInDay / (this.numTicks - 1);
+        if (this.tickSegments < 1) return;
+
+        const increment = millisecondsInDay / this.tickSegments;
         for (let time = 0; time <= millisecondsInDay; time += increment) {
             this.ticks.push({
                 label: moment.tz(time, 'UTC').format('LT'),
@@ -373,9 +373,9 @@ class DailyScheduleController {
     
     createGuides() {
         this.guides = [];
-        if (this.numGuides < 1) return;
+        if (this.guideSegments < 1) return;
         
-        const increment = millisecondsInDay / (this.numGuides - 1);
+        const increment = millisecondsInDay / this.guideSegments;
         for (let time = 0; time <= millisecondsInDay; time += increment) {
             this.guides.push({
                 value: time,
@@ -394,7 +394,8 @@ return {
         ngModelCtrl: 'ngModel'
     },
     bindings: {
-        numTicks: '<?',
+        tickSegments: '<?',
+        guideSegments: '<?',
         roundTo: '<?'
     },
     transclude: {

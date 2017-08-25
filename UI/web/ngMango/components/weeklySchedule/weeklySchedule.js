@@ -84,7 +84,9 @@ return {
         lockAll: '<?',
         lockWeekends: '<?',
         lockWeekdays: '<?',
-        roundTo: '<?'
+        roundTo: '<?',
+        tickSegments: '<?',
+        guideSegments: '<?'
     },
     designerInfo: {
         translation: 'ui.dox.weeklySchedule',

@@ -260,7 +260,7 @@ function eventsFactory($resource, Util) {
         }
 
         return {RQLforAcknowldege: RQLforAcknowldege, RQLforDisplay: RQLforDisplay};
-    }
+    };
 
     return events;
 }
