@@ -40,15 +40,22 @@ SystemStatusPageController.prototype.getAuditTrail = function() {
 
     this.systemStatus.getAuditTrail().then(function(response) {
         $this.auditTrail = response.data.items;
-        console.log($this.auditTrail);
     });
 };
 
 SystemStatusPageController.prototype.getWorkItems = function() {
     var $this = this;
 
-    this.systemStatus.getWorkItems().then(function(response) {
-        $this.workItems = response.data;
+    this.systemStatus.getWorkItemsQueueCounts().then(function(response) {
+        $this.workItemsQueueCounts = response.data;
+    });
+
+    this.systemStatus.getWorkItemsRunningStats().then(function(response) {
+        $this.workItemsRunningStats = response.data;
+    });
+
+    this.systemStatus.getWorkItemsRejectedStats().then(function(response) {
+        $this.workItemsRejectedStats = response.data;
     });
 };
 
@@ -105,7 +112,15 @@ SystemStatusPageController.prototype.getSystemInfo = function() {
 
     this.systemStatus.getFullSystemInfo().then(function(response) {
         $this.systemInfo = response.data;
+        console.log($this.systemInfo);
     });
+};
+
+SystemStatusPageController.prototype.isEmptyObj = function(obj) {
+    if (obj === undefined) {
+        return true;
+    }
+    return Object.keys(obj).length === 0;
 };
 
     return {

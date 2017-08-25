@@ -9,15 +9,15 @@
     </div>
 
     <md-table-container>
-        <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
-            <thead md-head md-order="name">
+        <table md-table>
+            <thead md-head md-order="sortOrder">
                 <tr md-row>
                     <th md-column md-order-by="name">Name</th>
                     <th md-column md-order-by="value">Value</th>
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row ng-repeat="metric in $ctrl.internalMetrics">
+                <tr md-row ng-repeat="metric in $ctrl.internalMetrics | orderBy: sortOrder">
                     <td md-cell ng-bind="metric.name">
 
                     </td>
