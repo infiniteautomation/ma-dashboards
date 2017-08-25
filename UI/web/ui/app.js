@@ -407,10 +407,15 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                 $state.go('login');
             });
         }
-        
+
         if (toState.name === 'ui.settings.system') {
             event.preventDefault();
             $state.go('ui.settings.system.systemInformation', toParams);
+        }
+
+        if (toState.name === 'ui.settings.systemStatus') {
+            event.preventDefault();
+            $state.go('ui.settings.systemStatus.loggingConsole', toParams);
         }
 
         if (toState.name.indexOf('ui.help.') === 0 || toState.name.indexOf('ui.docs.') === 0) {
