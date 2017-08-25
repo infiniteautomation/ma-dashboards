@@ -15,7 +15,7 @@ function SystemStatusFactory($http) {
     var internalMetricsUrl = '/rest/v1/system-metrics';
     var logFilesListUrl = '/rest/v1/logging/files';
     var logByFileNameUrl = '/rest/v1/logging/view/';
-    var workItemsUrl = '/rest/v1/work-items';
+    var workItemsUrl = '/rest/v1/work-items/';
     var threadsUrl = '/rest/v1/threads';
     var systemInfoUrl = '/rest/v2/server/system-info';
 
@@ -49,10 +49,24 @@ function SystemStatusFactory($http) {
         });
     };
 
-    SystemStatus.getWorkItems = function() {
+    SystemStatus.getWorkItemsQueueCounts = function() {
         return $http({
             method: 'GET',
-            url: workItemsUrl
+            url: workItemsUrl + 'queue-counts'
+        });
+    };
+
+    SystemStatus.getWorkItemsRunningStats = function() {
+        return $http({
+            method: 'GET',
+            url: workItemsUrl + 'running-stats'
+        });
+    };
+
+    SystemStatus.getWorkItemsRejectedStats = function() {
+        return $http({
+            method: 'GET',
+            url: workItemsUrl + 'rejected-stats'
         });
     };
 

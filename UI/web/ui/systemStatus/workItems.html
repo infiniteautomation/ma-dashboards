@@ -8,32 +8,206 @@
         </md-button>
     </div>
 
-    <!--<md-list flex class="md-dense">-->
-        <!--<div ng-repeat="workItem in $ctrl.workItems">-->
-            <!--<md-list-item>-->
-                <!--<span ng-bind="workItem.description + ':'"></span>-->
-                <!--<span flex></span>-->
-                <!--<span ng-bind="workItem.priority"></span>-->
-            <!--</md-list-item>-->
-            <!--<md-divider></md-divider>-->
-        <!--</div>-->
-    <!--</md-list>-->
+
+
+    <h3>Queue Counts</h3>
 
     <md-table-container>
-        <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
-            <thead md-head md-order="description">
+        <h4>High Priority</h4>
+        <h5 ng-if="$ctrl.isEmptyObj($ctrl.workItemsQueueCounts.highPriorityServiceQueueClassCounts)">None Found</h5>
+        <table md-table
+               ng-if="!$ctrl.isEmptyObj($ctrl.workItemsQueueCounts.highPriorityServiceQueueClassCounts)">
+            <thead md-head>
                 <tr md-row>
-                    <th md-column md-order-by="description">Description</th>
-                    <th md-column md-order-by="priority">Priority</th>
+                    <th md-column>Class Name</th>
+                    <th md-column>Count</th>
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row ng-repeat="workItem in $ctrl.workItems">
-                    <td md-cell ng-bind="workItem.description">
-
-                    </td>
-                    <td md-cell ng-bind="workItem.priority"></td>
+                <tr md-row ng-repeat="(item, count) in $ctrl.workItemsQueueCounts.highPriorityServiceQueueClassCounts">
+                    <td md-cell ng-bind="item"></td>
+                    <td md-cell ng-bind="count"></td>
                 </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-table-container>
+        <h4>Medium Priority</h4>
+        <h5 ng-if="$ctrl.isEmptyObj($ctrl.workItemsQueueCounts.mediumPriorityServiceQueueClassCounts)">None Found</h5>
+        <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}"
+               ng-if="!$ctrl.isEmptyObj($ctrl.workItemsQueueCounts.mediumPriorityServiceQueueClassCounts)">
+            <thead md-head>
+                <tr md-row>
+                    <th md-column>Class Name</th>
+                    <th md-column>Count</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="(item, count) in $ctrl.workItemsQueueCounts.mediumPriorityServiceQueueClassCounts">
+                    <td md-cell ng-bind="item"></td>
+                    <td md-cell ng-bind="count"></td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-table-container>
+        <h4>Low Priority</h4>
+        <h5 ng-if="$ctrl.isEmptyObj($ctrl.workItemsQueueCounts.lowPriorityServiceQueueClassCounts)">None Found</h5>
+        <table md-table
+               ng-if="!$ctrl.isEmptyObj($ctrl.workItemsQueueCounts.lowPriorityServiceQueueClassCounts)">
+            <thead md-head>
+                <tr md-row>
+                    <th md-column>Class Name</th>
+                    <th md-column>Count</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="(item, count) in $ctrl.workItemsQueueCounts.lowPriorityServiceQueueClassCounts">
+                    <td md-cell ng-bind="item"></td>
+                    <td md-cell ng-bind="count"></td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <br><br>
+    <md-divider></md-divider>
+    <br><br>
+
+    <h3>Rejected Stats</h3>
+
+    <md-table-container>
+        <h4>High Priority</h4>
+        <h5 ng-if="!$ctrl.workItemsRejectedStats.highPriorityRejectedTaskStats.length">None Found</h5>
+        <table md-table
+               ng-if="$ctrl.workItemsRejectedStats.highPriorityRejectedTaskStats.length">
+            <thead md-head md-order="sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="currentlyRunning">Currently Running</th>
+                <th md-column md-order-by="id">ID</th>
+                <th md-column md-order-by="lastAccess">Last Access</th>
+                <th md-column md-order-by="name">Name</th>
+                <th md-column md-order-by="poolFull">Pool Full</th>
+                <th md-column md-order-by="queueFull">Queue Full</th>
+                <th md-column md-order-by="totalRejections">Total Rejections</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="rejectedTaskStat in $ctrl.workItemsRejectedStats.highPriorityRejectedTaskStats | orderBy: sortOrder">
+                <td md-cell ng-bind="rejectedTaskStat.currentlyRunning"></td>
+                <td md-cell ng-bind="rejectedTaskStat.id"></td>
+                <td md-cell ng-bind="rejectedTaskStat.lastAccess"></td>
+                <td md-cell ng-bind="rejectedTaskStat.name"></td>
+                <td md-cell ng-bind="rejectedTaskStat.poolFull"></td>
+                <td md-cell ng-bind="rejectedTaskStat.queueFull"></td>
+                <td md-cell ng-bind="rejectedTaskStat.totalRejections"></td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-table-container>
+        <h4>Medium Priority</h4>
+        <h5 ng-if="!$ctrl.workItemsRejectedStats.mediumPriorityRejectedTaskStats.length">None Found</h5>
+        <table md-table
+               ng-if="$ctrl.workItemsRejectedStats.mediumPriorityRejectedTaskStats.length">
+            <thead md-head md-order="sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="currentlyRunning">Currently Running</th>
+                <th md-column md-order-by="id">ID</th>
+                <th md-column md-order-by="lastAccess">Last Access</th>
+                <th md-column md-order-by="name">Name</th>
+                <th md-column md-order-by="poolFull">Pool Full</th>
+                <th md-column md-order-by="queueFull">Queue Full</th>
+                <th md-column md-order-by="totalRejections">Total Rejections</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="rejectedTaskStat in $ctrl.workItemsRejectedStats.mediumPriorityRejectedTaskStats | orderBy: sortOrder">
+                <td md-cell ng-bind="rejectedTaskStat.currentlyRunning"></td>
+                <td md-cell ng-bind="rejectedTaskStat.id"></td>
+                <td md-cell ng-bind="rejectedTaskStat.lastAccess"></td>
+                <td md-cell ng-bind="rejectedTaskStat.name"></td>
+                <td md-cell ng-bind="rejectedTaskStat.poolFull"></td>
+                <td md-cell ng-bind="rejectedTaskStat.queueFull"></td>
+                <td md-cell ng-bind="rejectedTaskStat.totalRejections"></td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <br><br>
+    <md-divider></md-divider>
+    <br><br>
+
+    <h3>Running Stats</h3>
+
+    <md-table-container>
+        <h4>High Priority</h4>
+        <h5 ng-if="!$ctrl.workItemsRunningStats.highPriorityOrderedQueueStats.length">None Found</h5>
+        <table md-table
+               ng-if="$ctrl.workItemsRunningStats.highPriorityOrderedQueueStats.length">
+            <thead md-head md-order="sortOrder">
+                <tr md-row>
+                    <th md-column md-order-by="id">ID</th>
+                    <th md-column md-order-by="name">Name</th>
+                    <th md-column md-order-by="queueSizeLimit">Queue Size Limit</th>
+                    <th md-column md-order-by="maxQueueSize">Max Queue Size</th>
+                    <th md-column md-order-by="currentQueueSize">Current Queue Size</th>
+                    <th md-column md-order-by="executionCount">Execution Count</th>
+                    <th md-column md-order-by="avgExecutionTimeMs">Avg Execution Time ms</th>
+                    <th md-column md-order-by="lastExecutionTimeMs">Last Execution Time ms</th>
+                    <th md-column md-order-by="rejections">Rejections</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="runningStat in $ctrl.workItemsRunningStats.highPriorityOrderedQueueStats | orderBy: sortOrder">
+                    <td md-cell ng-bind="runningStat.id"></td>
+                    <td md-cell ng-bind="runningStat.name"></td>
+                    <td md-cell ng-bind="runningStat.queueSizeLimit"></td>
+                    <td md-cell ng-bind="runningStat.maxQueueSize"></td>
+                    <td md-cell ng-bind="runningStat.currentQueueSize"></td>
+                    <td md-cell ng-bind="runningStat.executionCount"></td>
+                    <td md-cell ng-bind="runningStat.avgExecutionTimeMs"></td>
+                    <td md-cell ng-bind="runningStat.lastExecutionTimeMs"></td>
+                    <td md-cell ng-bind="runningStat.rejections"></td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-table-container>
+        <h4>Medium Priority</h4>
+        <h5 ng-if="!$ctrl.workItemsRunningStats.mediumPriorityOrderedQueueStats.length">None Found</h5>
+        <table md-table
+               ng-if="$ctrl.workItemsRunningStats.mediumPriorityOrderedQueueStats.length">
+            <thead md-head md-order="sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="id">ID</th>
+                <th md-column md-order-by="name">Name</th>
+                <th md-column md-order-by="queueSizeLimit">Queue Size Limit</th>
+                <th md-column md-order-by="maxQueueSize">Max Queue Size</th>
+                <th md-column md-order-by="currentQueueSize">Current Queue Size</th>
+                <th md-column md-order-by="executionCount">Execution Count</th>
+                <th md-column md-order-by="avgExecutionTimeMs">Avg Execution Time ms</th>
+                <th md-column md-order-by="lastExecutionTimeMs">Last Execution Time ms</th>
+                <th md-column md-order-by="rejections">Rejections</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="runningStat in $ctrl.workItemsRunningStats.mediumPriorityOrderedQueueStats | orderBy: sortOrder">
+                <td md-cell ng-bind="runningStat.id"></td>
+                <td md-cell ng-bind="runningStat.name"></td>
+                <td md-cell ng-bind="runningStat.queueSizeLimit"></td>
+                <td md-cell ng-bind="runningStat.maxQueueSize"></td>
+                <td md-cell ng-bind="runningStat.currentQueueSize"></td>
+                <td md-cell ng-bind="runningStat.executionCount"></td>
+                <td md-cell ng-bind="runningStat.avgExecutionTimeMs"></td>
+                <td md-cell ng-bind="runningStat.lastExecutionTimeMs"></td>
+                <td md-cell ng-bind="runningStat.rejections"></td>
+            </tr>
             </tbody>
         </table>
     </md-table-container>
