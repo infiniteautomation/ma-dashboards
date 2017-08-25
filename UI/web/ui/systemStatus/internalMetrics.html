@@ -12,15 +12,13 @@
         <table md-table>
             <thead md-head md-order="sortOrder">
                 <tr md-row>
-                    <th md-column md-order-by="name">Name</th>
-                    <th md-column md-order-by="value">Value</th>
+                    <th md-column md-order-by="name" ma-tr="ui.settings.systemStatus.name"></th>
+                    <th md-column md-order-by="value" ma-tr="ui.settings.systemStatus.value"></th>
                 </tr>
             </thead>
             <tbody md-body>
                 <tr md-row ng-repeat="metric in $ctrl.internalMetrics | orderBy: sortOrder">
-                    <td md-cell ng-bind="metric.name">
-
-                    </td>
+                    <td md-cell ng-bind="metric.name"></td>
                     <td md-cell ng-bind="metric.value"></td>
                 </tr>
             </tbody>

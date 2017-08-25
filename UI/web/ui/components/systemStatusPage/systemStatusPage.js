@@ -112,7 +112,6 @@ SystemStatusPageController.prototype.getSystemInfo = function() {
 
     this.systemStatus.getFullSystemInfo().then(function(response) {
         $this.systemInfo = response.data;
-        console.log($this.systemInfo);
     });
 };
 

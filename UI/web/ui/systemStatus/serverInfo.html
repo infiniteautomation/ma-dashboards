@@ -12,55 +12,44 @@
         <table md-table>
             <thead md-head>
             <tr md-row>
-                <th md-column>Name</th>
-                <th md-column>Value</th>
+                <th md-column ma-tr="ui.settings.systemStatus.name"></th>
+                <th md-column ma-tr="ui.settings.systemStatus.value"></th>
             </tr>
             </thead>
             <tbody md-body>
             <tr md-row>
-                <td md-cell>
-                    Time zone
-                </td>
+                <td md-cell ma-tr="ui.settings.systemStatus.timeZone"></td>
                 <td md-cell>
                     {{$ctrl.systemInfo.timezone}}
                 </td>
             </tr>
             <tr md-row>
-                <td md-cell>
-                    Database type
-                </td>
+                <td md-cell ma-tr="ui.settings.systemStatus.databaseType"></td>
                 <td md-cell>
                     {{$ctrl.systemInfo.databaseType}}
                 </td>
             </tr>
             <tr md-row>
-                <td md-cell>
-                    SQL Database size
-                </td>
+                <td md-cell ma-tr="ui.settings.systemStatus.sqlDatabaseSize"></td>
                 <td md-cell>
                     {{$ctrl.systemInfo.sqlDatabaseSize}}
                 </td>
             </tr>
             <tr md-row>
-                <td md-cell>
-                    NoSQL database size
-                </td>
+                <td md-cell ma-tr="ui.settings.systemStatus.noSqlPointValueDatabaseSize"></td>
                 <td md-cell>
                     {{$ctrl.systemInfo.noSqlPointValueDatabaseSize}}
                 </td>
             </tr>
             <tr md-row>
+                <td md-cell ma-tr="ui.settings.systemStatus.filedataSize"></td>
                 <td md-cell>
-                    Filedata size
-                </td>
-                <td md-cell>
-                    {{$ctrl.systemInfo.filedataSize}} ({{$ctrl.systemInfo.filedataCount}} files)
+                    {{$ctrl.systemInfo.filedataSize}} ({{$ctrl.systemInfo.filedataCount}}
+                    <span ma-tr="ui.settings.systemStatus.files"></span>)
                 </td>
             </tr>
             <tr md-row>
-                <td md-cell>
-                    Events count
-                </td>
+                <td md-cell ma-tr="ui.settings.systemStatus.eventsCount"></td>
                 <td md-cell>
                     {{$ctrl.systemInfo.eventsCount}}
                 </td>
