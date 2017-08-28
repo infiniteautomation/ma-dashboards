@@ -111,9 +111,7 @@ SystemStatusPageController.prototype.showBlockedThreadDetails = function($event,
         });
     };
 
-
-
-    SystemStatusPageController.prototype.getSystemInfo = function() {
+SystemStatusPageController.prototype.getSystemInfo = function() {
     var $this = this;
 
     this.systemStatus.getFullSystemInfo().then(function(response) {
