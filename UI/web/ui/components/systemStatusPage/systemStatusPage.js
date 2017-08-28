@@ -1,23 +1,17 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights relockved.
  * @author Will Geller
  */
 
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemStatusPageController.$inject = ['maSystemStatus', 'maServer', 'maUser', '$state', 'maUiMenu', '$mdMedia',
-	'$scope', '$timeout', 'maDialogHelper'];
-function SystemStatusPageController(systemStatus, maServer, User, $state, maUiMenu, $mdMedia,
-		$scope, $timeout, maDialogHelper) {
+SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', 'maDialogHelper'];
+function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, maDialogHelper) {
     this.systemStatus = systemStatus;
-    this.maServer = maServer;
-    this.User = User;
     this.$state = $state;
     this.menu = maUiMenu;
     this.$mdMedia = $mdMedia;
-    this.$scope = $scope;
-    this.$timeout = $timeout;
     this.maDialogHelper = maDialogHelper;
 
     this.logByFileNameUrl = '/rest/v1/logging/view/';
@@ -107,7 +101,19 @@ SystemStatusPageController.prototype.getThreads = function() {
     });
 };
 
-SystemStatusPageController.prototype.getSystemInfo = function() {
+SystemStatusPageController.prototype.showBlockedThreadDetails = function($event, thread) {
+    this.maDialogHelper.showBasicDialog($event, {
+        titleTr: 'ui.settings.systemStatus.blockedThreadDetails',
+        contentTemplate: '<p>lockOwnerName: ' + thread.lockOwnerName + '</p>' +
+                '<p>lockOwnerId: ' + thread.lockOwnerId + '</p>' +
+                '<p>className: ' +thread.lockInfo.className + '</p>' +
+                '<p>identityHashCode: ' +thread.lockInfo.identityHashCode + '</p>'
+        });
+    };
+
+
+
+    SystemStatusPageController.prototype.getSystemInfo = function() {
     var $this = this;
 
     this.systemStatus.getFullSystemInfo().then(function(response) {

@@ -33,10 +33,11 @@
                 <td md-cell ng-bind="thread.id"></td>
                 <td md-cell ng-bind="thread.cpuTime | maMoment:'format':'l LT'"></td>
                 <td md-cell ng-bind="thread.userTime| maMoment:'format':'l LT'"></td>
-                <td md-cell ng-bind="thread.state">
-                    <md-tooltip ng-if="thread.state === 'BLOCKED'">
-                        {{thread.lockOwnerName}}, {{thread.lockOwnerId}}, {{thread.lockInfo}}
-                    </md-tooltip>
+                <td md-cell>
+                    {{thread.state}}
+                    <md-icon class="md-accent" ng-if="thread.state === 'BLOCKED'" style="font-size: 20px"
+                             ng-click="$ctrl.showBlockedThreadDetails($event, thread)">warning
+                    </md-icon>
                 </td>
                 <td md-cell ng-bind="thread.priority"></td>
             </tr>
