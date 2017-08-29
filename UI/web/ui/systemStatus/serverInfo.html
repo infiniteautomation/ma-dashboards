@@ -32,19 +32,19 @@
             <tr md-row>
                 <td md-cell ma-tr="ui.settings.systemStatus.sqlDatabaseSize"></td>
                 <td md-cell>
-                    {{$ctrl.systemInfo.sqlDatabaseSize}}
+                    {{$ctrl.systemInfo.sqlDatabaseSize | maBytes}}
                 </td>
             </tr>
             <tr md-row>
                 <td md-cell ma-tr="ui.settings.systemStatus.noSqlPointValueDatabaseSize"></td>
                 <td md-cell>
-                    {{$ctrl.systemInfo.noSqlPointValueDatabaseSize}}
+                    {{$ctrl.systemInfo.noSqlPointValueDatabaseSize | maBytes}}
                 </td>
             </tr>
             <tr md-row>
                 <td md-cell ma-tr="ui.settings.systemStatus.filedataSize"></td>
                 <td md-cell>
-                    {{$ctrl.systemInfo.filedataSize}} ({{$ctrl.systemInfo.filedataCount}}
+                    {{$ctrl.systemInfo.filedataSize | maBytes }} ({{$ctrl.systemInfo.filedataCount}}
                     <span ma-tr="ui.settings.systemStatus.files"></span>)
                 </td>
             </tr>
