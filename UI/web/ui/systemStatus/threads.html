@@ -28,7 +28,8 @@
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row ng-repeat="thread in $ctrl.threads | orderBy: sortOrder" ng-class="{'blocked-thread': thread.state === 'BLOCKED'}">
+            <tr md-row ng-repeat="thread in $ctrl.threads | orderBy: sortOrder"
+                ng-class="{'blocked-thread': thread.state === 'BLOCKED'}" ng-click="$ctrl.showStackTrace(thread)">
                 <td md-cell ng-bind="thread.name"></td>
                 <td md-cell ng-bind="thread.id"></td>
                 <td md-cell ng-bind="thread.cpuTime | maMoment:'format':'l LT'"></td>
@@ -44,4 +45,19 @@
             </tbody>
         </table>
     </md-table-container>
+
+    <md-input-container flex ng-if="$ctrl.selectedThread">
+        <label><span ma-tr="ui.settings.systemStatus.displayingStackTraceForThread"></span>: {{$ctrl.selectedThread}}</label>
+        <textarea ng-model="$ctrl.selectedThreadStackTrace" md-maxlength="150" rows="5" max-rows="15" md-select-on-focus
+                  id="stack-trace"></textarea>
+    </md-input-container>
+
+    <div layout layout-align="end" ng-if="$ctrl.selectedThread">
+        <md-button ng-click="$ctrl.copyStackTraceToClipboard()" class="md-raised md-accent">
+            <md-icon>
+                content_copy
+            </md-icon>
+            <span ma-tr="ui.settings.systemStatus.copyToClipboard"></span>
+        </md-button>
+    </div>
 </div>

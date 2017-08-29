@@ -21,18 +21,24 @@ SystemStatusPageController.prototype.$onChanges = function(changes) {
 };
 
 SystemStatusPageController.prototype.$onInit = function() {
-    this.getAuditTrail();
     this.getInternalMetrics();
     this.getLogFilesList();
     this.getWorkItems();
     this.getThreads();
     this.getSystemInfo();
+
+    this.auditQuery = {
+        alarmLevel: '*'
+    };
+    this.updateAuditQuery();
 };
 
-SystemStatusPageController.prototype.getAuditTrail = function() {
-    var $this = this;
 
-    this.systemStatus.getAuditTrail().then(function(response) {
+SystemStatusPageController.prototype.updateAuditQuery = function() {
+    var $this = this;
+    // console.log(this.auditQuery);
+
+    this.systemStatus.getAuditTrail(this.auditQuery).then(function(response) {
         $this.auditTrail = response.data.items;
     });
 };
@@ -108,8 +114,28 @@ SystemStatusPageController.prototype.showBlockedThreadDetails = function($event,
                 '<p>lockOwnerId: ' + thread.lockOwnerId + '</p>' +
                 '<p>className: ' +thread.lockInfo.className + '</p>' +
                 '<p>identityHashCode: ' +thread.lockInfo.identityHashCode + '</p>'
-        });
-    };
+    });
+};
+
+SystemStatusPageController.prototype.showStackTrace = function(thread) {
+    var $this = this;
+    this.selectedThread = thread.name;
+
+    $this.selectedThreadStackTrace = '';
+    thread.location.forEach(function(item) {
+        $this.selectedThreadStackTrace += item.className + '.' + item.methodName + ':' + item.lineNumber + '\n';
+    });
+};
+
+SystemStatusPageController.prototype.copyStackTraceToClipboard = function() {
+    document.querySelector('#stack-trace').select();
+    document.execCommand('copy');
+
+    this.maDialogHelper.toastOptions({
+        text: this.selectedThread + ' stack trace copied to clipboard',
+        hideDelay: 4000
+    });
+};
 
 SystemStatusPageController.prototype.getSystemInfo = function() {
     var $this = this;
@@ -132,4 +158,3 @@ SystemStatusPageController.prototype.isEmptyObj = function(obj) {
 };
 
 }); // define
-

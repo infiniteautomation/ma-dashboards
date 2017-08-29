@@ -32,7 +32,7 @@
     </md-list>
 
     <md-input-container flex ng-if="$ctrl.selectedLogFile">
-        <label>Displaying Log File: {{$ctrl.selectedLogFile}}</label>
+        <label><span ma-tr="ui.settings.systemStatus.displayingLogFile"></span>: {{$ctrl.selectedLogFile}}</label>
         <textarea ng-model="$ctrl.selectedLogContent" md-maxlength="150" rows="5" max-rows="15" md-select-on-focus
                   id="logging-console"></textarea>
     </md-input-container>
