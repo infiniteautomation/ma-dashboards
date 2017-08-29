@@ -11,7 +11,10 @@
     <md-list flex class="md-dense">
         <div ng-repeat="logFileMeta in $ctrl.logFilesList">
             <md-list-item>
-                <span ng-bind="logFileMeta.filename"></span>
+                <span>
+                    <strong>{{logFileMeta.filename}}</strong>
+                    ({{logFileMeta.lastModified | maMoment:'format':'l LT'}} - {{logFileMeta.size / 1000 | number:1}}kB)
+                </span>
                 <span flex></span>
                 <md-button ng-click="$ctrl.displayLogFile(logFileMeta.filename)" class="md-raised md-accent md-hue-1">
                     <md-icon>
