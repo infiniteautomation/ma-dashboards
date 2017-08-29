@@ -1,3 +1,13 @@
+*Version 3.2.1*
+* Added a system status page
+* Add page for viewing/deleting JSON store items
+* More compact layout for buttons and controls on "Edit pages"
+* Add maTouchstart, maTouchend, maTouchmove and maTouchcancel directives
+* Fix bug loading UI in Edge
+* Add default version parameter for loading resources
+* Fix date pickers not working in adminTemplate
+* Bug fixes and tweaks
+
 *Version 3.2.0*
 * Upgraded to work with core version 3.2.x
 * Latest ngMango API is located in web/ngMango instead of ngMango-3.2
