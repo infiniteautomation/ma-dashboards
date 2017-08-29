@@ -21,10 +21,10 @@ function SystemStatusFactory($http) {
 
     var SystemStatus = {};
 
-    SystemStatus.getAuditTrail = function() {
+    SystemStatus.getAuditTrail = function(params) {
         return $http({
             method: 'GET',
-            url: auditTrailUrl
+            url: auditTrailUrl + params
         });
     };
 

@@ -28,7 +28,9 @@ SystemStatusPageController.prototype.$onInit = function() {
     this.getSystemInfo();
 
     this.auditQuery = {
-        alarmLevel: '*'
+        alarmLevel: '*',
+        changeType: '*',
+        typeName: '*',
     };
     this.updateAuditQuery();
 };
@@ -36,10 +38,18 @@ SystemStatusPageController.prototype.$onInit = function() {
 
 SystemStatusPageController.prototype.updateAuditQuery = function() {
     var $this = this;
-    // console.log(this.auditQuery);
+    var params = '';
 
-    this.systemStatus.getAuditTrail(this.auditQuery).then(function(response) {
-        $this.auditTrail = response.data.items;
+    for (var key in this.auditQuery) {
+        var operator = params.length === 0 ? '?' : '&';
+        if (this.auditQuery[key] !== '*') {
+            params += operator + key + '=' + this.auditQuery[key];
+        }
+    }
+
+    this.systemStatus.getAuditTrail(params).then(function(response) {
+        $this.auditTrail = response.data;
+        // console.log(response.data);
     });
 };
 

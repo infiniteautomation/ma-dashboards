@@ -1,28 +1,65 @@
 <div layout="column">
-  <div layout layout-align="end">
-    <md-button ng-click="$ctrl.getAuditTrail()" class="md-raised md-accent">
-      <md-icon>
-        refresh
-      </md-icon>
-      <span ma-tr="ui.app.refreshTable"></span>
-    </md-button>
+  <div layout="row" layout-align="start center" layout-wrap>
+    <md-input-container flex>
+      <label ma-tr="ui.app.alarmLvl"></label>
+      <md-select ng-model="$ctrl.auditQuery.alarmLevel" ng-change="$ctrl.updateAuditQuery()">
+        <md-option value="*"><span ma-tr="ui.app.all"></span> <i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
+        <md-option value="NONE"><span ma-tr="ui.app.none"></span> <i class="fa fa-flag fa-lg alarm-flag NONE"></i></md-option>
+        <md-option value="INFORMATION"><span ma-tr="ui.app.information"></span> <i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
+        <md-option value="IMPORTANT"><span ma-tr="ui.app.important"></span> <i class="fa fa-flag fa-lg alarm-flag IMPORTANT"></i></md-option>
+        <md-option value="WARNING"><span ma-tr="ui.app.warning"></span> <i class="fa fa-flag fa-lg alarm-flag WARNING"></i></md-option>
+        <md-option value="URGENT"><span ma-tr="ui.app.urgent"></span> <i class="fa fa-flag fa-lg alarm-flag URGENT"></i></md-option>
+        <md-option value="CRITICAL"><span ma-tr="ui.app.critical"></span> <i class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
+        <md-option value="LIFE_SAFETY"><span ma-tr="ui.app.safety"></span> <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container flex>
+      <label ma-tr="ui.settings.systemStatus.changeType"></label>
+      <md-select ng-model="$ctrl.auditQuery.changeType" ng-change="$ctrl.updateAuditQuery()">
+        <md-option value="*"><span ma-tr="ui.app.all"></span></md-option>
+        <md-option value="CREATE">CREATE</md-option>
+        <md-option value="MODIFY">MODIFY</md-option>
+        <md-option value="DELETE">DELETE</md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container flex>
+      <label ma-tr="ui.settings.systemStatus.type"></label>
+      <md-select ng-model="$ctrl.auditQuery.typeName" ng-change="$ctrl.updateAuditQuery()">
+        <md-option value="*"><span ma-tr="ui.app.all"></span></md-option>
+        <md-option value="DATA_POINT">DATA_POINT</md-option>
+        <md-option value="DATA_SOURCE">DATA_SOURCE</md-option>
+        <md-option value="JSON_DATA">JSON_DATA</md-option>
+        <md-option value="WATCH_LIST">WATCH_LIST</md-option>
+        <md-option value="USER">USER</md-option>
+        <md-option value="TEMPLATE">TEMPLATE</md-option>
+        <md-option value="EVENT_DETECTOR">EVENT_DETECTOR</md-option>
+      </md-select>
+    </md-input-container>
   </div>
+
+  <md-table-pagination class="underline" md-limit="auditTableLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]"
+                       md-page="auditTablePage" md-total="{{$ctrl.auditTrail.total}}" md-page-select
+                       ng-init="auditTableLimit=25; auditTablePage=1; auditTableOrder='-timestamp'"></md-table-pagination>
 
   <md-table-container>
     <table md-table>
-      <thead md-head md-order="name">
+      <thead md-head md-order="auditTableOrder">
       <tr md-row>
         <th md-column md-order-by="alarmLevel" ma-tr="ui.settings.systemStatus.alarmLevel"></th>
         <th md-column md-order-by="changeType" ma-tr="ui.settings.systemStatus.changeType"></th>
+        <th md-column md-order-by="typeName" ma-tr="ui.settings.systemStatus.type"></th>
         <th md-column md-order-by="message" ma-tr="ui.settings.systemStatus.message"></th>
         <th md-column md-order-by="timestamp" ma-tr="ui.settings.systemStatus.timestamp"></th>
         <th md-column md-order-by="username" ma-tr="ui.settings.systemStatus.username"></th>
       </tr>
       </thead>
       <tbody md-body>
-      <tr md-row ng-repeat="auditItem in $ctrl.auditTrail" ng-class="{'blocked-thread': thread.state === 'BLOCKED'}">
+      <tr md-row
+          ng-repeat="auditItem in $ctrl.auditTrail.items | orderBy: auditTableOrder | limitTo: auditTableLimit: (auditTablePage - 1) * auditTableLimit"
+          ng-class="{'blocked-thread': thread.state === 'BLOCKED'}">
         <td md-cell ng-bind="auditItem.alarmLevel"></td>
         <td md-cell ng-bind="auditItem.changeType"></td>
+        <td md-cell ng-bind="auditItem.typeName"></td>
         <td md-cell ng-bind="auditItem.message"></td>
         <td md-cell ng-bind="auditItem.timestamp| maMoment:'format':'l LT'"></td>
         <td md-cell ng-bind="auditItem.username"></td>
