@@ -554,7 +554,12 @@ return [
         url: '/audit-trail',
         menuTr: 'ui.settings.systemStatus.auditTrail',
         templateUrl: require.toUrl('./systemStatus/auditTrail.html'),
-        menuHidden: true
+        menuHidden: true,
+        params: {
+            dateBar: {
+                rollupControls: false
+            }
+        },
     },
     {
         name: 'ui.settings.systemStatus.loggingConsole',

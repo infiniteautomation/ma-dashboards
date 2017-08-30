@@ -6,13 +6,14 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', 'maDialogHelper'];
-function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, maDialogHelper) {
+SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', 'maDialogHelper', 'maUiDateBar'];
+function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, maDialogHelper, maUiDateBar) {
     this.systemStatus = systemStatus;
     this.$state = $state;
     this.menu = maUiMenu;
     this.$mdMedia = $mdMedia;
     this.maDialogHelper = maDialogHelper;
+    this.dateBar = maUiDateBar;
 
     this.logByFileNameUrl = '/rest/v1/logging/view/';
 }
@@ -28,6 +29,7 @@ SystemStatusPageController.prototype.$onInit = function() {
         alarmLevel: '*',
         changeType: '*',
         typeName: '*',
+        dateFilter: false
     };
     this.systemStatus.getAuditEventTypes().then((response) => {
         this.auditEventTypes = response.data;
@@ -39,15 +41,21 @@ SystemStatusPageController.prototype.$onInit = function() {
 SystemStatusPageController.prototype.updateAuditQuery = function() {
     var params = '';
 
+    // &activeTimestamp=ge=1504065600000&activeTimestamp=lt=1504126630158&sort(-activeTimestamp)&limit(50,0)
+
     for (var key in this.auditQuery) {
         var operator = params.length === 0 ? '?' : '&';
-        if (this.auditQuery[key] !== '*') {
+        if (this.auditQuery[key] !== '*' && key !== 'dateFilter') {
             params += operator + key + '=' + this.auditQuery[key];
+        }
+        if (key === 'dateFilter' && this.auditQuery.dateFilter) {
+            params += operator + 'ts=ge=' + this.dateBar.data.from + '&ts=lt=' + this.dateBar.data.to;
         }
     }
 
     this.systemStatus.getAuditTrail(params).then((response) => {
         this.auditTrail = response.data;
+        // console.log(this.auditTrail);
     });
 };
 

@@ -13,6 +13,7 @@
         <md-option value="LIFE_SAFETY"><span ma-tr="ui.app.safety"></span> <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option>
       </md-select>
     </md-input-container>
+
     <md-input-container flex>
       <label ma-tr="ui.settings.systemStatus.changeType"></label>
       <md-select ng-model="$ctrl.auditQuery.changeType" ng-change="$ctrl.updateAuditQuery()">
@@ -22,6 +23,7 @@
         <md-option value="DELETE" ma-tr="ui.settings.systemStatus.delete"></md-option>
       </md-select>
     </md-input-container>
+
     <md-input-container flex>
       <label ma-tr="ui.settings.systemStatus.type"></label>
       <md-select ng-model="$ctrl.auditQuery.typeName" ng-change="$ctrl.updateAuditQuery()">
@@ -29,6 +31,11 @@
         <md-option ng-value="type.subtype" ng-repeat="type in $ctrl.auditEventTypes" ng-bind="type.description"></md-option>
       </md-select>
     </md-input-container>
+
+    <span style="padding-right: 5px;">{{'ui.app.dateFilter' | maTr}}: </span>
+
+    <md-switch ng-model="$ctrl.auditQuery.dateFilter" ng-change="$ctrl.updateAuditQuery()"
+               aria-label="{{'ui.app.DateFilter' | maTr}}"></md-switch>
   </div>
 
   <md-table-pagination class="underline" md-limit="auditTableLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]"
