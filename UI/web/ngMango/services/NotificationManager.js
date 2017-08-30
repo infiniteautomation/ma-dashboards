@@ -14,6 +14,12 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
 	const READY_STATE_OPEN = 1;
 	//const READY_STATE_CLOSING = 2;
 	//const READY_STATE_CLOSED = 3;
+	
+	const actionNameToEventType = {
+        add: 'create',
+        update: 'update',
+        'delete': 'delete'
+	};
 
     class NotificationManager {
         constructor(options) {
@@ -33,7 +39,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
         }
 
         openSocket() {
-            if (this.socket || !this.websocketUrl) {
+            if (this.socket || !this.webSocketUrl) {
                 return;
             }
 
@@ -56,7 +62,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
 
             protocol = protocol === 'https:' ? 'wss:' : 'ws:';
 
-            const socket = this.socket = new WebSocket(protocol + '//' + host + this.websocketUrl);
+            const socket = this.socket = new WebSocket(protocol + '//' + host + this.webSocketUrl);
 
             const closeSocket = () => this.closeSocket();
             
@@ -78,7 +84,17 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
                         error.message = message;
                         throw error;
                     }
-                    this.notify('webSocketMessage', message.payload);
+                    const payload = message.payload;
+                    this.notify('webSocketMessage', payload);
+                    
+                    if (payload.object) {
+                        const eventType = actionNameToEventType[payload.action];
+                        if (eventType) {
+                            const item = this.itemPrototype ? new this.itemPrototype(payload.object) : payload.object;
+                            this.notify(eventType, item);
+                        }
+                    }
+                    
                 } catch (e) {
                     this.notify('webSocketError', e);
                 }
@@ -156,8 +172,20 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
             return manualDeregister;
         }
         
-        notify(...args) {
-            this.eventScope.$broadcast(...args);
+        /**
+         * Notifies the event listeners of an event
+         */
+        notify(type, ...args) {
+            this.eventScope.$broadcast(type, ...args);
+        }
+        
+        /**
+         * Notifies the event listeners only if the websocket is not connected. This is so the listener is not notified twice of the same change.
+         */
+        notifyIfNotConnected(type, ...args) {
+            if (['create', 'update', 'delete'].indexOf(type) < 0 || !this.socket || this.socket.readyState !== READY_STATE_OPEN) {
+                this.notify(type, ...args);
+            }
         }
     }
 	
