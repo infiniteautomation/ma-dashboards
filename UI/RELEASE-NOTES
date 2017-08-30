@@ -6,6 +6,10 @@
 * Fix bug loading UI in Edge
 * Add default version parameter for loading resources
 * Fix date pickers not working in adminTemplate
+* Add popup icons to pointValue directives
+* Display data point events on watchlist popup
+* Add auto scaling mode to gaugeChart
+* Add slider component
 * Bug fixes and tweaks
 
 *Version 3.2.0*
