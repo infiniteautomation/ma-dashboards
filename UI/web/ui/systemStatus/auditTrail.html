@@ -39,7 +39,7 @@
   </div>
 
   <md-table-pagination class="underline" md-limit="auditTableLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]"
-                       md-page="auditTablePage" md-total="{{$ctrl.auditTrail.total}}" md-page-select
+                       md-page="auditTablePage" md-total="{{$ctrl.auditTrail.$total}}" md-page-select
                        ng-init="auditTableLimit=25; auditTablePage=1; auditTableOrder='-timestamp'"></md-table-pagination>
 
   <md-table-container>
@@ -56,7 +56,7 @@
       </thead>
       <tbody md-body>
       <tr md-row
-          ng-repeat="auditItem in $ctrl.auditTrail.items | orderBy: auditTableOrder | limitTo: auditTableLimit: (auditTablePage - 1) * auditTableLimit"
+          ng-repeat="auditItem in $ctrl.auditTrail | orderBy: auditTableOrder | limitTo: auditTableLimit: (auditTablePage - 1) * auditTableLimit"
           ng-class="{'blocked-thread': thread.state === 'BLOCKED'}">
         <td md-cell ng-bind="auditItem.alarmLevel"></td>
         <td md-cell ng-bind="auditItem.changeType"></td>

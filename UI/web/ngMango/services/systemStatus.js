@@ -21,10 +21,29 @@ function SystemStatusFactory($http) {
 
     var SystemStatus = {};
 
-    SystemStatus.getAuditTrail = function(params) {
+    /**
+     * param {string} rql A query.Query object or an encoded RQL string
+     */
+    SystemStatus.getAuditTrail = function(rql) {
+        const params = {};
+        
+        if (rql) {
+            // coerce to string
+            const rqlString = '' + rql;
+            
+            // only add parameter if string is not empty
+            if (rqlString) {
+                params.rqlQuery = rqlString;
+            }
+        }
+        
         return $http({
             method: 'GET',
-            url: auditTrailUrl + params
+            url: auditTrailUrl,
+            params: params
+        }).then(response => {
+            response.data.items.$total = response.data.total;
+            return response.data.items;
         });
     };
 
@@ -52,7 +71,7 @@ function SystemStatusFactory($http) {
     SystemStatus.getLogFile = function(filename) {
         return $http({
             method: 'GET',
-            url: logByFileNameUrl + filename
+            url: logByFileNameUrl + encodeURIComponent(filename)
         });
     };
 

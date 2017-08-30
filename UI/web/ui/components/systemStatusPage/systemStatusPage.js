@@ -3,7 +3,7 @@
  * @author Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
 SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', 'maDialogHelper', 'maUiDateBar'];
@@ -39,23 +39,42 @@ SystemStatusPageController.prototype.$onInit = function() {
 
 
 SystemStatusPageController.prototype.updateAuditQuery = function() {
-    var params = '';
+    // create a base rql query, will be of type 'and'
+    const rootRql = new query.Query();
+    
+    Object.keys(this.auditQuery).forEach(key => {
+        const value = this.auditQuery[key];
 
-    // &activeTimestamp=ge=1504065600000&activeTimestamp=lt=1504126630158&sort(-activeTimestamp)&limit(50,0)
-
-    for (var key in this.auditQuery) {
-        var operator = params.length === 0 ? '?' : '&';
-        if (this.auditQuery[key] !== '*' && key !== 'dateFilter') {
-            params += operator + key + '=' + this.auditQuery[key];
+        if (key === 'dateFilter') {
+            if (this.auditQuery.dateFilter) {
+                rootRql.args.push(new query.Query({
+                    name: 'ge',
+                    args: ['ts', this.dateBar.data.from]
+                }), new query.Query({
+                    name: 'lt',
+                    args: ['ts', this.dateBar.data.to]
+                }));
+            }
+        } else if (value !== '*') {
+            const comparison = new query.Query({
+                name: 'eq',
+                args: [key, value]
+            });
+            // add comparison to the and query
+            rootRql.args.push(comparison);
         }
-        if (key === 'dateFilter' && this.auditQuery.dateFilter) {
-            params += operator + 'ts=ge=' + this.dateBar.data.from + '&ts=lt=' + this.dateBar.data.to;
-        }
-    }
+    });
 
-    this.systemStatus.getAuditTrail(params).then((response) => {
-        this.auditTrail = response.data;
-        // console.log(this.auditTrail);
+    rootRql.args.push(new query.Query({
+        name: 'sort',
+        args: ['alarmLevel', '-changeType']
+    }), new query.Query({
+        name: 'limit',
+        args: [10, 20] // limit, offset
+    }));
+
+    this.systemStatus.getAuditTrail(rootRql).then((auditTrail) => {
+        this.auditTrail = auditTrail;
     });
 };
 
