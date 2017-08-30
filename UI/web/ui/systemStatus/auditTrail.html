@@ -16,23 +16,17 @@
     <md-input-container flex>
       <label ma-tr="ui.settings.systemStatus.changeType"></label>
       <md-select ng-model="$ctrl.auditQuery.changeType" ng-change="$ctrl.updateAuditQuery()">
-        <md-option value="*"><span ma-tr="ui.app.all"></span></md-option>
-        <md-option value="CREATE">CREATE</md-option>
-        <md-option value="MODIFY">MODIFY</md-option>
-        <md-option value="DELETE">DELETE</md-option>
+        <md-option value="*" ma-tr="ui.app.all"></md-option>
+        <md-option value="CREATE" ma-tr="ui.settings.systemStatus.create"></md-option>
+        <md-option value="MODIFY" ma-tr="ui.settings.systemStatus.modify"></md-option>
+        <md-option value="DELETE" ma-tr="ui.settings.systemStatus.delete"></md-option>
       </md-select>
     </md-input-container>
     <md-input-container flex>
       <label ma-tr="ui.settings.systemStatus.type"></label>
       <md-select ng-model="$ctrl.auditQuery.typeName" ng-change="$ctrl.updateAuditQuery()">
-        <md-option value="*"><span ma-tr="ui.app.all"></span></md-option>
-        <md-option value="DATA_POINT">DATA_POINT</md-option>
-        <md-option value="DATA_SOURCE">DATA_SOURCE</md-option>
-        <md-option value="JSON_DATA">JSON_DATA</md-option>
-        <md-option value="WATCH_LIST">WATCH_LIST</md-option>
-        <md-option value="USER">USER</md-option>
-        <md-option value="TEMPLATE">TEMPLATE</md-option>
-        <md-option value="EVENT_DETECTOR">EVENT_DETECTOR</md-option>
+        <md-option value="*" ma-tr="ui.app.all"></md-option>
+        <md-option ng-value="type.subtype" ng-repeat="type in $ctrl.auditEventTypes" ng-bind="type.description"></md-option>
       </md-select>
     </md-input-container>
   </div>

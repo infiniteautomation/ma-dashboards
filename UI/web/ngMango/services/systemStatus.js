@@ -28,6 +28,13 @@ function SystemStatusFactory($http) {
         });
     };
 
+    SystemStatus.getAuditEventTypes = function() {
+        return $http({
+            method: 'GET',
+            url: auditTrailUrl + '/list-event-types'
+        });
+    };
+
     SystemStatus.getInternalMetrics = function() {
         return $http({
             method: 'GET',

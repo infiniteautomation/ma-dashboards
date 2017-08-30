@@ -17,9 +17,6 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, ma
     this.logByFileNameUrl = '/rest/v1/logging/view/';
 }
 
-SystemStatusPageController.prototype.$onChanges = function(changes) {
-};
-
 SystemStatusPageController.prototype.$onInit = function() {
     this.getInternalMetrics();
     this.getLogFilesList();
@@ -32,12 +29,14 @@ SystemStatusPageController.prototype.$onInit = function() {
         changeType: '*',
         typeName: '*',
     };
+    this.systemStatus.getAuditEventTypes().then((response) => {
+        this.auditEventTypes = response.data;
+    });
     this.updateAuditQuery();
 };
 
 
 SystemStatusPageController.prototype.updateAuditQuery = function() {
-    var $this = this;
     var params = '';
 
     for (var key in this.auditQuery) {
@@ -47,41 +46,34 @@ SystemStatusPageController.prototype.updateAuditQuery = function() {
         }
     }
 
-    this.systemStatus.getAuditTrail(params).then(function(response) {
-        $this.auditTrail = response.data;
-        // console.log(response.data);
+    this.systemStatus.getAuditTrail(params).then((response) => {
+        this.auditTrail = response.data;
     });
 };
 
 SystemStatusPageController.prototype.getWorkItems = function() {
-    var $this = this;
-
-    this.systemStatus.getWorkItemsQueueCounts().then(function(response) {
-        $this.workItemsQueueCounts = response.data;
+    this.systemStatus.getWorkItemsQueueCounts().then((response) => {
+        this.workItemsQueueCounts = response.data;
     });
 
-    this.systemStatus.getWorkItemsRunningStats().then(function(response) {
-        $this.workItemsRunningStats = response.data;
+    this.systemStatus.getWorkItemsRunningStats().then((response) => {
+        this.workItemsRunningStats = response.data;
     });
 
-    this.systemStatus.getWorkItemsRejectedStats().then(function(response) {
-        $this.workItemsRejectedStats = response.data;
+    this.systemStatus.getWorkItemsRejectedStats().then((response) => {
+        this.workItemsRejectedStats = response.data;
     });
 };
 
 SystemStatusPageController.prototype.getInternalMetrics = function() {
-    var $this = this;
-
-    this.systemStatus.getInternalMetrics().then(function(response) {
-        $this.internalMetrics = response.data;
+    this.systemStatus.getInternalMetrics().then((response) => {
+        this.internalMetrics = response.data;
     });
 };
 
 SystemStatusPageController.prototype.getLogFilesList = function() {
-    var $this = this;
-
-    this.systemStatus.getLogFilesList().then(function(response) {
-        $this.logFilesList = response.data;
+    this.systemStatus.getLogFilesList().then((response) => {
+        this.logFilesList = response.data;
     });
 };
 
@@ -90,12 +82,10 @@ SystemStatusPageController.prototype.getLogDownloadUrl = function(filename) {
 };
 
 SystemStatusPageController.prototype.displayLogFile = function(filename) {
-    var $this = this;
-
     this.selectedLogFile = filename;
 
-    this.systemStatus.getLogFile(filename).then(function(response) {
-        $this.selectedLogContent = response.data;
+    this.systemStatus.getLogFile(filename).then((response) => {
+        this.selectedLogContent = response.data;
     });
 };
 
@@ -110,10 +100,8 @@ SystemStatusPageController.prototype.copyLogToClipboard = function() {
 };
 
 SystemStatusPageController.prototype.getThreads = function() {
-    var $this = this;
-
-    this.systemStatus.getThreads().then(function(response) {
-        $this.threads = response.data;
+    this.systemStatus.getThreads().then((response) => {
+        this.threads = response.data;
     });
 };
 
@@ -128,12 +116,11 @@ SystemStatusPageController.prototype.showBlockedThreadDetails = function($event,
 };
 
 SystemStatusPageController.prototype.showStackTrace = function(thread) {
-    var $this = this;
     this.selectedThread = thread.name;
 
-    $this.selectedThreadStackTrace = '';
+    this.selectedThreadStackTrace = '';
     thread.location.forEach(function(item) {
-        $this.selectedThreadStackTrace += item.className + '.' + item.methodName + ':' + item.lineNumber + '\n';
+        this.selectedThreadStackTrace += item.className + '.' + item.methodName + ':' + item.lineNumber + '\n';
     });
 };
 
@@ -148,10 +135,8 @@ SystemStatusPageController.prototype.copyStackTraceToClipboard = function() {
 };
 
 SystemStatusPageController.prototype.getSystemInfo = function() {
-    var $this = this;
-
-    this.systemStatus.getFullSystemInfo().then(function(response) {
-        $this.systemInfo = response.data;
+    this.systemStatus.getFullSystemInfo().then((response) => {
+        this.systemInfo = response.data;
     });
 };
 
