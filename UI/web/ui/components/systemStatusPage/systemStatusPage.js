@@ -127,7 +127,7 @@ SystemStatusPageController.prototype.showStackTrace = function(thread) {
     this.selectedThread = thread.name;
 
     this.selectedThreadStackTrace = '';
-    thread.location.forEach(function(item) {
+    thread.location.forEach( (item) => {
         this.selectedThreadStackTrace += item.className + '.' + item.methodName + ':' + item.lineNumber + '\n';
     });
 };
