@@ -3,11 +3,11 @@
  * @author Will Geller
  */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
+define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', 'maDialogHelper', 'maUiDateBar', '$scope'];
-function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, maDialogHelper, maUiDateBar, $scope) {
+SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', 'maDialogHelper', 'maUiDateBar', '$scope', 'maRqlBuilder'];
+function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, maDialogHelper, maUiDateBar, $scope, RqlBuilder) {
     this.systemStatus = systemStatus;
     this.$state = $state;
     this.$scope = $scope;
@@ -15,6 +15,7 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, ma
     this.$mdMedia = $mdMedia;
     this.maDialogHelper = maDialogHelper;
     this.dateBar = maUiDateBar;
+    this.RqlBuilder = RqlBuilder;
 
     this.logByFileNameUrl = '/rest/v1/logging/view/';
 }
@@ -47,48 +48,27 @@ SystemStatusPageController.prototype.$onInit = function() {
 
 SystemStatusPageController.prototype.updateAuditQuery = function() {
     // create a base rql query, will be of type 'and'
-    const rootRql = new query.Query();
+    const rootRql = new this.RqlBuilder();
     
     Object.keys(this.auditQuery).forEach(key => {
         const value = this.auditQuery[key];
 
         if (key === 'dateFilter') {
             if (this.auditQuery.dateFilter) {
-                rootRql.args.push(new query.Query({
-                    name: 'ge',
-                    args: ['ts', this.dateBar.data.from]
-                }), new query.Query({
-                    name: 'lt',
-                    args: ['ts', this.dateBar.data.to]
-                }));
+                rootRql.ge('ts', this.dateBar.data.from)
+                    .lt('ts', this.dateBar.data.to);
             }
         } else if (key === 'userId') {
-            console.log(value);
-            if (value !== undefined) {
-                const comparison = new query.Query({
-                    name: 'eq',
-                    args: [key, value.id]
-                });
-                // add comparison to the and query
-                rootRql.args.push(comparison);
+            if (value) {
+                rootRql.eq(key, value.id);
             }
         } else if (value !== '*') {
-            const comparison = new query.Query({
-                name: 'eq',
-                args: [key, value]
-            });
-            // add comparison to the and query
-            rootRql.args.push(comparison);
+            rootRql.eq(key, value);
         }
     });
 
-    // rootRql.args.push(new query.Query({
-    //     name: 'sort',
-    //     args: ['alarmLevel', '-changeType']
-    // }), new query.Query({
-    //     name: 'limit',
-    //     args: [10, 20] // limit, offset
-    // }));
+//    rootRql.sort('alarmLevel', '-changeType')
+//        .limit(10, 20);
 
     this.systemStatus.getAuditTrail(rootRql).then((auditTrail) => {
         this.auditTrail = auditTrail;
