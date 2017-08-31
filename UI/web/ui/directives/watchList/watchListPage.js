@@ -84,14 +84,10 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             this.listType = 'watchLists';
             this.selectFirstWatchList = $mdMedia('gt-md');
         }
-        
-        $scope.$watch(function() {
-            return {
-                //points: this.selected && this.selected.map(function(pt) { return pt.xid }),
-                from: this.dateBar.from.valueOf(),
-                to: this.dateBar.to.valueOf()
-            };
-        }.bind(this), this.updateStats.bind(this), true);
+
+        this.dateBar.subscribe((event, changedProperties) => {
+            this.updateStats();
+        }, $scope);
     };
 
     this.updateState = function(state) {

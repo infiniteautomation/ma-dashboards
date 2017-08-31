@@ -124,7 +124,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
             }
         }
 
-        subscribe(handler, $scope, eventTypes = ['webSocketMessage']) {
+        subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete']) {
             if (this.listeners === 0) {
                 this.openSocket();
             }

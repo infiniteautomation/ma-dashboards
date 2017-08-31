@@ -6,8 +6,8 @@
 define(['require', 'moment-timezone', 'angular'], function(require, moment, angular) {
 'use strict';
 
-watchListTableRow.$inject = ['$mdMedia', '$timeout', 'maUserNotes', '$state', 'maUiDateBar', 'localStorageService', 'maStatsDialog', 'maSetPointDialog'];
-function watchListTableRow($mdMedia, $timeout, UserNotes, $state, maUiDateBar, localStorageService, maStatsDialog, maSetPointDialog) {
+watchListTableRow.$inject = ['$mdMedia', 'maUserNotes', '$state', 'maStatsDialog', 'maSetPointDialog'];
+function watchListTableRow($mdMedia, UserNotes, $state, maStatsDialog, maSetPointDialog) {
     return {
         templateUrl: require.toUrl('./watchListTableRow.html'),
         link: watchListTableRowLink
