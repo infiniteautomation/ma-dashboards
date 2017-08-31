@@ -6,10 +6,11 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', 'maDialogHelper', 'maUiDateBar'];
-function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, maDialogHelper, maUiDateBar) {
+SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', 'maDialogHelper', 'maUiDateBar', '$scope'];
+function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, maDialogHelper, maUiDateBar, $scope) {
     this.systemStatus = systemStatus;
     this.$state = $state;
+    this.$scope = $scope;
     this.menu = maUiMenu;
     this.$mdMedia = $mdMedia;
     this.maDialogHelper = maDialogHelper;
@@ -35,6 +36,12 @@ SystemStatusPageController.prototype.$onInit = function() {
         this.auditEventTypes = response.data;
     });
     this.updateAuditQuery();
+
+    this.dateBar.subscribe((event, changedProperties) => {
+        if (this.auditQuery.dateFilter) {
+            this.updateAuditQuery();
+        }
+    }, this.$scope);
 };
 
 
