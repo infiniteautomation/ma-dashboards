@@ -6,8 +6,8 @@
 define(['angular'], function(angular) {
 'use strict';
 
-restResourceFactory.$inject = ['$http', 'maUtil', 'maNotificationManager'];
-function restResourceFactory($http, maUtil, NotificationManager) {
+restResourceFactory.$inject = ['$http', 'maUtil', 'maNotificationManager', 'maRqlBuilder'];
+function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
 
     class RestResource {
         constructor(properties) {
@@ -30,11 +30,25 @@ function restResourceFactory($http, maUtil, NotificationManager) {
 
             return this._notificationManager;
         }
-
+        
         static list() {
+            return this.query();
+        }
+
+        static query(queryObject) {
+            const params = {};
+            
+            if (queryObject) {
+                let rqlQuery = queryObject.toString();
+                if (rqlQuery) {
+                    params.rqlQuery = rqlQuery;
+                }
+            }
+            
             return $http({
                 url: this.baseUrl,
-                method: 'GET'
+                method: 'GET',
+                params: params
             }).then(response => {
                 const items = response.data.items.map(item => {
                     return new this(item);
@@ -42,6 +56,14 @@ function restResourceFactory($http, maUtil, NotificationManager) {
                 items.$total = response.data.total;
                 return items;
             });
+        }
+        
+        static buildQuery(name, ...args) {
+            const builder = new RqlBuilder(name, ...args);
+            builder.queryFunction = queryObj => {
+                return this.query(queryObj);
+            };
+            return builder;
         }
 
         static get(xid) {
