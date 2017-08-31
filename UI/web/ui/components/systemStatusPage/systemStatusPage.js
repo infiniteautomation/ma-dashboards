@@ -65,13 +65,13 @@ SystemStatusPageController.prototype.updateAuditQuery = function() {
         }
     });
 
-    rootRql.args.push(new query.Query({
-        name: 'sort',
-        args: ['alarmLevel', '-changeType']
-    }), new query.Query({
-        name: 'limit',
-        args: [10, 20] // limit, offset
-    }));
+    // rootRql.args.push(new query.Query({
+    //     name: 'sort',
+    //     args: ['alarmLevel', '-changeType']
+    // }), new query.Query({
+    //     name: 'limit',
+    //     args: [10, 20] // limit, offset
+    // }));
 
     this.systemStatus.getAuditTrail(rootRql).then((auditTrail) => {
         this.auditTrail = auditTrail;

@@ -38,13 +38,14 @@
                aria-label="{{'ui.app.DateFilter' | maTr}}"></md-switch>
   </div>
 
-  <md-table-pagination class="underline" md-limit="auditTableLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]"
-                       md-page="auditTablePage" md-total="{{$ctrl.auditTrail.$total}}" md-page-select
-                       ng-init="auditTableLimit=25; auditTablePage=1; auditTableOrder='-timestamp'"></md-table-pagination>
+  <md-table-pagination class="underline" md-limit="$ctrl.auditTableLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]"
+                       md-page="$ctrl.auditTablePage" md-total="{{$ctrl.auditTrail.$total}}" md-page-select
+                       ng-init="$ctrl.auditTableLimit=25; $ctrl.auditTablePage=1; $ctrl.auditTableOrder='-timestamp'"
+                       ></md-table-pagination>
 
   <md-table-container>
     <table md-table>
-      <thead md-head md-order="auditTableOrder">
+      <thead md-head md-order="$ctrl.auditTableOrder">
       <tr md-row>
         <th md-column md-order-by="alarmLevel" ma-tr="ui.settings.systemStatus.alarmLevel"></th>
         <th md-column md-order-by="changeType" ma-tr="ui.settings.systemStatus.changeType"></th>
@@ -56,8 +57,7 @@
       </thead>
       <tbody md-body>
       <tr md-row
-          ng-repeat="auditItem in $ctrl.auditTrail | orderBy: auditTableOrder | limitTo: auditTableLimit: (auditTablePage - 1) * auditTableLimit"
-          ng-class="{'blocked-thread': thread.state === 'BLOCKED'}">
+          ng-repeat="auditItem in $ctrl.auditTrail | orderBy: $ctrl.auditTableOrder | limitTo: $ctrl.auditTableLimit: ($ctrl.auditTablePage - 1) * $ctrl.auditTableLimit">
         <td md-cell ng-bind="auditItem.alarmLevel"></td>
         <td md-cell ng-bind="auditItem.changeType"></td>
         <td md-cell ng-bind="auditItem.typeName"></td>
