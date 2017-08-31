@@ -48,7 +48,7 @@ function DateBarFactory(localStorageService, MA_ROLLUP_TYPES, $filter, $rootScop
                     
                     this.changedProperties = [];
                     delete this.timeoutPromise;
-                }, 100);
+                }, 100, false);
             }
             
             return this;

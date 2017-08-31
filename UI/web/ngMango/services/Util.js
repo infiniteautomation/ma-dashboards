@@ -576,7 +576,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     Util.prototype.cancelOrTimeout = function cancelOrTimeout(cancelPromise, timeout) {
         timeout = isFinite(timeout) ? timeout : mangoTimeout;
         if (timeout > 0) {
-            var timeoutPromise = $timeout(angular.noop, timeout);
+            var timeoutPromise = $timeout(null, timeout, false);
             return $q.race([cancelPromise, timeoutPromise]);
         }
         return cancelPromise;
@@ -634,7 +634,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     return new Util();
 }
 
-UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q'];
+UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT'];
 return UtilFactory;
 
 }); // define
