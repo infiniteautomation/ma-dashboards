@@ -55,13 +55,18 @@ return {
     require: {
         'ngModelCtrl': 'ngModel'
     },
-    bindings: {},
+    bindings: {
+        showClear: '<?'
+    },
     transclude: {
         label: '?maLabel'
     },
     designerInfo: {
         translation: 'ui.components.maUserSelect',
-        icon: 'people'
+        icon: 'people',
+        attributes: {
+            showClear: {type: 'boolean'}
+        },
     }
 };
 
