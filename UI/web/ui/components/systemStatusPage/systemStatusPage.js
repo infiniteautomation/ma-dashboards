@@ -62,6 +62,16 @@ SystemStatusPageController.prototype.updateAuditQuery = function() {
                     args: ['ts', this.dateBar.data.to]
                 }));
             }
+        } else if (key === 'userId') {
+            console.log(value);
+            if (value !== undefined) {
+                const comparison = new query.Query({
+                    name: 'eq',
+                    args: [key, value.id]
+                });
+                // add comparison to the and query
+                rootRql.args.push(comparison);
+            }
         } else if (value !== '*') {
             const comparison = new query.Query({
                 name: 'eq',
