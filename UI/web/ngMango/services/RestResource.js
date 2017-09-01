@@ -6,8 +6,8 @@
 define(['angular'], function(angular) {
 'use strict';
 
-restResourceFactory.$inject = ['$http', 'maUtil', 'maNotificationManager', 'maRqlBuilder'];
-function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
+restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUT'];
+function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUT) {
 
     class RestResource {
         constructor(properties) {
@@ -18,6 +18,10 @@ function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
             } else {
                 this.xid = (this.constructor.xidPrefix || '') + maUtil.uuid();
             }
+        }
+        
+        static get timeout() {
+            return MA_TIMEOUT;
         }
 
         static get notificationManager() {
@@ -31,11 +35,11 @@ function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
             return this._notificationManager;
         }
         
-        static list() {
-            return this.query();
+        static list(opts) {
+            return this.query(null, opts);
         }
 
-        static query(queryObject) {
+        static query(queryObject, opts) {
             const params = {};
             
             if (queryObject) {
@@ -45,11 +49,11 @@ function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
                 }
             }
             
-            return $http({
+            return this.http({
                 url: this.baseUrl,
                 method: 'GET',
                 params: params
-            }).then(response => {
+            }, opts).then(response => {
                 const items = response.data.items.map(item => {
                     return new this(item);
                 });
@@ -58,18 +62,18 @@ function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
             });
         }
         
-        static buildQuery(name, ...args) {
-            const builder = new RqlBuilder(name, ...args);
-            builder.queryFunction = queryObj => {
-                return this.query(queryObj);
+        static buildQuery() {
+            const builder = new RqlBuilder();
+            builder.queryFunction = (queryObj, opts) => {
+                return this.query(queryObj, opts);
             };
             return builder;
         }
 
-        static get(xid) {
+        static get(xid, opts) {
             const item = Object.create(this.prototype);
             item.originalXid = xid;
-            return item.get();
+            return item.get(opts);
         }
 
         static subscribe(...args) {
@@ -82,18 +86,18 @@ function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
             return this.notificationManager.notifyIfNotConnected(...args);
         }
 
-        get() {
-            return $http({
+        get(opts) {
+            return this.constructor.http({
                 url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this.originalXid),
                 method: 'GET'
-            }).then(response => {
+            }, opts).then(response => {
                 angular.copy(response.data, this);
                 this.originalXid = this.xid;
                 return this;
             });
         }
         
-        save() {
+        save(opts) {
             const originalXid = this.originalXid;
             
             let url, method;
@@ -105,11 +109,11 @@ function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
                 method = 'POST';
             }
             
-            return $http({
+            return this.constructor.http({
                 url,
                 method,
                 data: this
-            }).then(response => {
+            }, opts).then(response => {
                 angular.copy(response.data, this);
                 this.originalXid = this.xid;
                 this.constructor.notify(originalXid ? 'update' : 'create', this, originalXid);
@@ -117,18 +121,61 @@ function restResourceFactory($http, maUtil, NotificationManager, RqlBuilder) {
             });
         }
         
-        delete() {
+        delete(opts) {
             const originalXid = this.originalXid;
             
-            return $http({
+            return this.constructor.http({
                 url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this.originalXid),
                 method: 'DELETE'
-            }).then(response => {
+            }, opts).then(response => {
                 angular.copy(response.data, this);
                 this.constructor.notify('delete', this, originalXid);
                 return this;
             });
         }
+        
+        static http(httpConfig, opts = {}) {
+            if (!httpConfig.timeout) {
+                const timeout = isFinite(opts.timeout) ? opts.timeout : this.timeout;
+                
+                if (!opts.cancel && timeout > 0) {
+                    httpConfig.timeout = timeout;
+                } else if (opts.cancel && timeout <= 0) {
+                    httpConfig.timeout = opts.cancel;
+                } else {
+                    const timeoutPromise = $timeout(angular.noop, timeout, false);
+                    const userCancelledPromise = opts.cancel.then(() => {
+                        $timeout.cancel(timeoutPromise);
+                    });
+                    httpConfig.timeout = $q.race([userCancelledPromise, timeoutPromise.catch(angular.noop)]);
+                }
+            }
+            return $http(httpConfig);
+        }
+        
+        static defer() {
+            return $q.defer();
+        }
+        
+//        static createCancel(timeout = this.timeout) {
+//            const deferred = $q.defer();
+//            let timeoutPromise;
+//            
+//            const cancel = () => {
+//                if (timeoutPromise) {
+//                    $timeout.cancel(timeoutPromise);
+//                }
+//                deferred.resolve();
+//            };
+//            
+//            if (timeout > 0) {
+//                timeoutPromise = $timeout(cancel, timeout, false);
+//            }
+//            
+//            cancel.promise = deferred.promise;
+//            
+//            return cancel;
+//        }
 
         setEnabled(enable) {
             if (enable == null) {

@@ -128,9 +128,9 @@ function rqlBuilderFactory() {
             return this.op(name, ...args);
         }
 
-        query() {
+        query(opts) {
             if (this.queryFunction) {
-                return this.queryFunction(this);
+                return this.queryFunction(this, opts);
             }
         }
     }

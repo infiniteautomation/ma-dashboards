@@ -576,7 +576,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     Util.prototype.cancelOrTimeout = function cancelOrTimeout(cancelPromise, timeout) {
         timeout = isFinite(timeout) ? timeout : mangoTimeout;
         if (timeout > 0) {
-            var timeoutPromise = $timeout(null, timeout, false);
+            var timeoutPromise = $timeout(angular.noop, timeout, false);
             return $q.race([cancelPromise, timeoutPromise]);
         }
         return cancelPromise;
