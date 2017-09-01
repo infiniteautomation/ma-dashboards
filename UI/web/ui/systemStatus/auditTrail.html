@@ -1,72 +1,88 @@
 <div layout="column">
-  <div layout="row" layout-align="start center" layout-wrap>
-    <md-input-container flex>
-      <label ma-tr="ui.app.alarmLvl"></label>
-      <md-select ng-model="$ctrl.auditQuery.alarmLevel" ng-change="$ctrl.updateAuditQuery()">
-        <md-option value="*"><span ma-tr="ui.app.all"></span> <i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
-        <md-option value="NONE"><span ma-tr="ui.app.none"></span> <i class="fa fa-flag fa-lg alarm-flag NONE"></i></md-option>
-        <md-option value="INFORMATION"><span ma-tr="ui.app.information"></span> <i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
-        <md-option value="IMPORTANT"><span ma-tr="ui.app.important"></span> <i class="fa fa-flag fa-lg alarm-flag IMPORTANT"></i></md-option>
-        <md-option value="WARNING"><span ma-tr="ui.app.warning"></span> <i class="fa fa-flag fa-lg alarm-flag WARNING"></i></md-option>
-        <md-option value="URGENT"><span ma-tr="ui.app.urgent"></span> <i class="fa fa-flag fa-lg alarm-flag URGENT"></i></md-option>
-        <md-option value="CRITICAL"><span ma-tr="ui.app.critical"></span> <i class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
-        <md-option value="LIFE_SAFETY"><span ma-tr="ui.app.safety"></span> <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option>
-      </md-select>
+    <div layout="row" layout-align="start center" layout-wrap>
+        <md-input-container flex>
+            <label ma-tr="ui.app.alarmLvl"></label>
+            <md-select ng-model="$ctrl.auditQuery.alarmLevel" ng-change="$ctrl.updateAuditQuery()">
+                <md-option value="*"><span ma-tr="ui.app.all"></span> <i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
+                <md-option value="NONE"><span ma-tr="ui.app.none"></span> <i class="fa fa-flag fa-lg alarm-flag NONE"></i>
+                </md-option>
+                <md-option value="INFORMATION"><span ma-tr="ui.app.information"></span> <i
+                    class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
+                <md-option value="IMPORTANT"><span ma-tr="ui.app.important"></span> <i
+                    class="fa fa-flag fa-lg alarm-flag IMPORTANT"></i></md-option>
+                <md-option value="WARNING"><span ma-tr="ui.app.warning"></span> <i
+                    class="fa fa-flag fa-lg alarm-flag WARNING"></i></md-option>
+                <md-option value="URGENT"><span ma-tr="ui.app.urgent"></span> <i class="fa fa-flag fa-lg alarm-flag URGENT"></i>
+                </md-option>
+                <md-option value="CRITICAL"><span ma-tr="ui.app.critical"></span> <i
+                    class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
+                <md-option value="LIFE_SAFETY"><span ma-tr="ui.app.safety"></span> <i
+                    class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container flex>
+            <label ma-tr="ui.settings.systemStatus.changeType"></label>
+            <md-select ng-model="$ctrl.auditQuery.changeType" ng-change="$ctrl.updateAuditQuery()">
+                <md-option value="*" ma-tr="ui.app.all"></md-option>
+                <md-option value="CREATE" ma-tr="ui.settings.systemStatus.create"></md-option>
+                <md-option value="MODIFY" ma-tr="ui.settings.systemStatus.modify"></md-option>
+                <md-option value="DELETE" ma-tr="ui.settings.systemStatus.delete"></md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container flex>
+            <label ma-tr="ui.settings.systemStatus.type"></label>
+            <md-select ng-model="$ctrl.auditQuery.typeName" ng-change="$ctrl.updateAuditQuery()">
+                <md-option value="*" ma-tr="ui.app.all"></md-option>
+                <md-option ng-value="type.subtype" ng-repeat="type in $ctrl.auditEventTypes"
+                           ng-bind="type.description"></md-option>
+            </md-select>
+        </md-input-container>
+
+        <ma-user-select ng-model="$ctrl.auditQuery.userId" ng-change="$ctrl.updateAuditQuery()"
+                        show-clear="true"></ma-user-select>
+
+        <span style="padding-right: 5px;">{{'ui.app.dateFilter' | maTr}}: </span>
+
+        <md-switch ng-model="$ctrl.auditQuery.dateFilter" ng-change="$ctrl.updateAuditQuery()"
+                   aria-label="{{'ui.app.DateFilter' | maTr}}"></md-switch>
+    </div>
+
+    <md-table-pagination class="underline" md-limit="$ctrl.auditTableLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]"
+                         md-page="$ctrl.auditTablePage" md-total="{{$ctrl.auditTrail.$total}}" md-page-select
+                         md-on-paginate="$ctrl.updateAuditQuery"></md-table-pagination>
+
+    <md-table-container>
+        <table md-table md-row-select ng-model="$ctrl.selectedAuditEvent">
+            <thead md-head md-order="$ctrl.auditTableOrder" md-on-reorder="$ctrl.updateAuditQuery">
+            <tr md-row>
+                <th md-column md-order-by="alarmLevel" ma-tr="ui.settings.systemStatus.alarmLevel"></th>
+                <th md-column md-order-by="changeType" ma-tr="ui.settings.systemStatus.changeType"></th>
+                <th md-column md-order-by="typeName" ma-tr="ui.settings.systemStatus.type"></th>
+                <th md-column md-order-by="message" ma-tr="ui.settings.systemStatus.message"></th>
+                <th md-column md-order-by="ts" ma-tr="ui.settings.systemStatus.timestamp"></th>
+                <th md-column md-order-by="userId" ma-tr="ui.settings.systemStatus.username"></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row
+                ng-repeat="auditItem in $ctrl.auditTrail" md-select="auditItem" md-auto-select
+                md-on-select="$ctrl.displayAuditContext">
+                <td md-cell ng-bind="auditItem.alarmLevel"></td>
+                <td md-cell ng-bind="auditItem.changeType"></td>
+                <td md-cell ng-bind="auditItem.typeName"></td>
+                <td md-cell ng-bind="auditItem.message"></td>
+                <td md-cell ng-bind="auditItem.timestamp| maMoment:'format':'l LT'"></td>
+                <td md-cell ng-bind="auditItem.username"></td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-input-container flex ng-if="$ctrl.selectedAuditEvent.length">
+        <label><span ma-tr="ui.settings.systemStatus.displayingAuditContext"></span>: {{$ctrl.selectedAuditEvent[0].message}}</label>
+        <textarea ng-model="$ctrl.selectedAuditEventContext" md-maxlength="150" rows="5" max-rows="15"
+                  md-select-on-focus></textarea>
     </md-input-container>
-
-    <md-input-container flex>
-      <label ma-tr="ui.settings.systemStatus.changeType"></label>
-      <md-select ng-model="$ctrl.auditQuery.changeType" ng-change="$ctrl.updateAuditQuery()">
-        <md-option value="*" ma-tr="ui.app.all"></md-option>
-        <md-option value="CREATE" ma-tr="ui.settings.systemStatus.create"></md-option>
-        <md-option value="MODIFY" ma-tr="ui.settings.systemStatus.modify"></md-option>
-        <md-option value="DELETE" ma-tr="ui.settings.systemStatus.delete"></md-option>
-      </md-select>
-    </md-input-container>
-
-    <md-input-container flex>
-      <label ma-tr="ui.settings.systemStatus.type"></label>
-      <md-select ng-model="$ctrl.auditQuery.typeName" ng-change="$ctrl.updateAuditQuery()">
-        <md-option value="*" ma-tr="ui.app.all"></md-option>
-        <md-option ng-value="type.subtype" ng-repeat="type in $ctrl.auditEventTypes" ng-bind="type.description"></md-option>
-      </md-select>
-    </md-input-container>
-
-    <ma-user-select ng-model="$ctrl.auditQuery.userId" ng-change="$ctrl.updateAuditQuery()" show-clear="true"></ma-user-select>
-
-    <span style="padding-right: 5px;">{{'ui.app.dateFilter' | maTr}}: </span>
-
-    <md-switch ng-model="$ctrl.auditQuery.dateFilter" ng-change="$ctrl.updateAuditQuery()"
-               aria-label="{{'ui.app.DateFilter' | maTr}}"></md-switch>
-  </div>
-
-  <md-table-pagination class="underline" md-limit="$ctrl.auditTableLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]"
-                       md-page="$ctrl.auditTablePage" md-total="{{$ctrl.auditTrail.$total}}" md-page-select
-                       md-on-paginate="$ctrl.updateAuditQuery"></md-table-pagination>
-
-  <md-table-container>
-    <table md-table>
-      <thead md-head md-order="$ctrl.auditTableOrder" md-on-reorder="$ctrl.updateAuditQuery">
-      <tr md-row>
-        <th md-column md-order-by="alarmLevel" ma-tr="ui.settings.systemStatus.alarmLevel"></th>
-        <th md-column md-order-by="changeType" ma-tr="ui.settings.systemStatus.changeType"></th>
-        <th md-column md-order-by="typeName" ma-tr="ui.settings.systemStatus.type"></th>
-        <th md-column md-order-by="message" ma-tr="ui.settings.systemStatus.message"></th>
-        <th md-column md-order-by="ts" ma-tr="ui.settings.systemStatus.timestamp"></th>
-        <th md-column md-order-by="userId" ma-tr="ui.settings.systemStatus.username"></th>
-      </tr>
-      </thead>
-      <tbody md-body>
-      <tr md-row
-          ng-repeat="auditItem in $ctrl.auditTrail">
-        <td md-cell ng-bind="auditItem.alarmLevel"></td>
-        <td md-cell ng-bind="auditItem.changeType"></td>
-        <td md-cell ng-bind="auditItem.typeName"></td>
-        <td md-cell ng-bind="auditItem.message"></td>
-        <td md-cell ng-bind="auditItem.timestamp| maMoment:'format':'l LT'"></td>
-        <td md-cell ng-bind="auditItem.username"></td>
-      </tr>
-      </tbody>
-    </table>
-  </md-table-container>
 </div>

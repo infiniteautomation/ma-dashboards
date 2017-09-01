@@ -19,7 +19,7 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, ma
 
     this.logByFileNameUrl = '/rest/v1/logging/view/';
 
-    this.updateAuditQuery = function() {
+    this.updateAuditQuery = () => {
         // create a base rql query, will be of type 'and'
         const rootRql = new this.RqlBuilder();
 
@@ -45,7 +45,13 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, ma
         this.systemStatus.getAuditTrail(rootRql).then((auditTrail) => {
             this.auditTrail = auditTrail;
         });
-    }.bind(this);
+    };
+
+    this.displayAuditContext = () => {
+        console.log(this.selectedAuditEvent[0]);
+
+        this.selectedAuditEventContext = JSON.stringify(this.selectedAuditEvent[0].context);
+    };
 }
 
 SystemStatusPageController.prototype.$onInit = function() {
@@ -64,6 +70,7 @@ SystemStatusPageController.prototype.$onInit = function() {
     this.auditTableLimit = 25;
     this.auditTablePage = 1;
     this.auditTableOrder = '-ts';
+    this.selectedAuditEvent = [];
 
     this.systemStatus.getAuditEventTypes().then((response) => {
         this.auditEventTypes = response.data;
