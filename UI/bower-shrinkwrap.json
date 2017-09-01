@@ -3,7 +3,7 @@
     "4.7.0": "a3fe90fa5f6fac55d197f9cbd18e3f57dafb716c"
   },
   "https://github.com/ajaxorg/ace-builds.git": {
-    "1.2.7": "0b01260b38f4db87b2b862e0c7f12e7e2e2905fd"
+    "1.2.8": "812e2c56aed246931a667f16c28b096e34597016"
   },
   "https://github.com/alenaksu/mdPickers.git": {
     "0.7.5": "72592ae51c81a7260701055ea21870efa57fa7c8"
@@ -18,32 +18,32 @@
     "0.2.3": "36844ff7c0e0d9445bc8e31514d7f0f59cb8b048"
   },
   "https://github.com/angular-ui/ui-sortable.git": {
-    "0.17.1": "3168bcc0c83ac63b1791ba5fb21be0b9b2ed18e4"
+    "0.17.2": "017fbd3f911576914915aa3dd08022c83b7fd3a3"
   },
   "https://github.com/angular/bower-angular-animate.git": {
-    "1.6.4": "a6c7e14a23096348e55a342a8f671466239ed3ab"
+    "1.6.6": "1.6.6"
   },
   "https://github.com/angular/bower-angular-aria.git": {
-    "1.6.4": "ad51b1b65c8607d7982e608db7f6efecb66c0f86"
+    "1.6.6": "1.6.6"
   },
   "https://github.com/angular/bower-angular-cookies.git": {
-    "1.6.4": "62006f295af81a066be66f98408d0e5fcfb645ce"
+    "1.6.6": "1.6.6"
   },
   "https://github.com/angular/bower-angular-messages.git": {
-    "1.6.4": "85d6be93b8a9495acf0a88ba1874cfcf8f19ccff"
+    "1.6.6": "1.6.6"
   },
   "https://github.com/angular/bower-angular-resource.git": {
-    "1.6.4": "b4d5e6c41d68390398cc50df58fea090d6b1afca"
+    "1.6.6": "1.6.6"
   },
   "https://github.com/angular/bower-angular-sanitize.git": {
-    "1.6.4": "8fd69d2b0f451b39ab324ff9a8df51e5fec4355a"
+    "1.6.6": "1.6.6"
   },
   "https://github.com/angular/bower-angular-touch.git": {
-    "1.6.4": "469dd5c52e2d8fd82e88d85524bad0eebd200a03"
+    "1.6.6": "1.6.6"
   },
   "https://github.com/angular/bower-angular.git": {
     "1.4.14": "63133dadd7831af4226b7ceaf8be8b68a7e284d9",
-    "1.6.4": "097304875bf47c499c7a45711e28f16937dfacfd"
+    "1.6.6": "1.6.6"
   },
   "https://github.com/angular/bower-material.git": {
     "1.0.9": "a8c93a292d7d07cb1057d3b8bf1ef85d654d7241",
@@ -69,6 +69,9 @@
   },
   "https://github.com/furf/jquery-ui-touch-punch.git": {
     "master": "4bc009145202d9c7483ba85f3a236a8f3470354d"
+  },
+  "https://github.com/google/material-design-icons.git": {
+    "3.0.1": "40ef0f297970f0e78bf87569f43ea90ec53d571c"
   },
   "https://github.com/grevory/angular-local-storage.git": {
     "0.3.0": "85a243879f7a91afcce12782fe79018841a9f83b"
@@ -99,6 +102,6 @@
     "0.4.8": "0098333d0ddb7b28cdeb1cfefb39544712d21645"
   },
   "https://github.com/whitequark/ipaddr.js.git": {
-    "1.4.0": "e0f2a074f47c51941cbfd26cf38a327f847e6286"
+    "1.4.0": "1.4.0"
   }
 }

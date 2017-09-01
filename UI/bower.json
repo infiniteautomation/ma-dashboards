@@ -1,14 +1,14 @@
 {
   "name": "mango_automation_ui",
   "dependencies": {
-    "angular": "~1.6.4",
-    "angular-resource": "~1.6.4",
-    "angular-cookies": "~1.6.4",
-    "angular-sanitize": "~1.6.4",
-    "angular-animate": "~1.6.4",
-    "angular-touch": "~1.6.4",
-    "angular-aria": "~1.6.4",
-    "angular-messages": "~1.6.4",
+    "angular": "~1.6.6",
+    "angular-resource": "~1.6.6",
+    "angular-cookies": "~1.6.6",
+    "angular-sanitize": "~1.6.6",
+    "angular-animate": "~1.6.6",
+    "angular-touch": "~1.6.6",
+    "angular-aria": "~1.6.6",
+    "angular-messages": "~1.6.6",
     "angular-material": "1.1.4",
     "font-awesome": "~4.7.0",
     "oclazyload": "~1.1.0",
@@ -18,7 +18,7 @@
     "ace-builds": "~1.2.5",
     "mdPickers": "~0.7.2",
     "moment": "~2.18.1",
-    "moment-timezone": "~0.5.10",
+    "moment-timezone": "~0.5.13",
     "jquery": "~3.2.1",
     "jquery-ui": "~1.12.1",
     "angular-material-data-table": "~0.10.5",
@@ -68,7 +68,7 @@
     }
   },
   "resolutions": {
-    "angular": "~1.6.4",
+    "angular": "~1.6.6",
     "angular-material": "1.1.4",
     "moment": "~2.18.1"
   }
