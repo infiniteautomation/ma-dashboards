@@ -28,7 +28,9 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             if (!this._notificationManager) {
                 this._notificationManager = new NotificationManager({
                     webSocketUrl: this.webSocketUrl,
-                    itemPrototype: this
+                    transformObject: (...args) => {
+                        return this.transformObject(...args);
+                    }
                 });
             }
 
@@ -55,7 +57,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 params: params
             }, opts).then(response => {
                 const items = response.data.items.map(item => {
-                    return new this(item);
+                    return this.transformObject(item);
                 });
                 items.$total = response.data.total;
                 return items;
@@ -71,8 +73,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         }
 
         static get(xid, opts) {
-            const item = Object.create(this.prototype);
-            item.originalXid = xid;
+            const item = this.transformObject({originalXid: xid}, false);
             return item.get(opts);
         }
 
@@ -84,6 +85,15 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             // we only want to notify the listeners if they dont have a connected websocket
             // otherwise they will get 2 events
             return this.notificationManager.notifyIfNotConnected(...args);
+        }
+        
+        static transformObject(object, callConstructor = true) {
+            if (callConstructor) {
+                return new this(object);
+            } else {
+                const item = Object.create(this.prototype);
+                return Object.assign(item, object);
+            }
         }
 
         get(opts) {

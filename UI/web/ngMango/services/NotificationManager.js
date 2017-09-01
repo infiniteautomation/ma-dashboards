@@ -90,7 +90,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
                     if (payload.object) {
                         const eventType = actionNameToEventType[payload.action];
                         if (eventType) {
-                            const item = this.itemPrototype ? new this.itemPrototype(payload.object) : payload.object;
+                            const item = this.transformObject(payload.object);
                             this.notify(eventType, item);
                         }
                     }
@@ -186,6 +186,10 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
             if (['create', 'update', 'delete'].indexOf(type) < 0 || !this.socket || this.socket.readyState !== READY_STATE_OPEN) {
                 this.notify(type, ...args);
             }
+        }
+        
+        transformObject(obj) {
+            return obj;
         }
     }
 	
