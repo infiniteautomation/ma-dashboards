@@ -18,6 +18,34 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, ma
     this.RqlBuilder = RqlBuilder;
 
     this.logByFileNameUrl = '/rest/v1/logging/view/';
+
+    this.updateAuditQuery = function() {
+        // create a base rql query, will be of type 'and'
+        const rootRql = new this.RqlBuilder();
+
+        Object.keys(this.auditQuery).forEach(key => {
+            const value = this.auditQuery[key];
+
+            if (key === 'dateFilter') {
+                if (this.auditQuery.dateFilter) {
+                    rootRql.ge('ts', this.dateBar.data.from)
+                        .lt('ts', this.dateBar.data.to);
+                }
+            } else if (key === 'userId') {
+                if (value) {
+                    rootRql.eq(key, value.id);
+                }
+            } else if (value !== '*') {
+                rootRql.eq(key, value);
+            }
+        });
+
+        rootRql.sort(this.auditTableOrder).limit(this.auditTableLimit, (this.auditTablePage - 1) * this.auditTableLimit);
+
+        this.systemStatus.getAuditTrail(rootRql).then((auditTrail) => {
+            this.auditTrail = auditTrail;
+        });
+    }.bind(this);
 }
 
 SystemStatusPageController.prototype.$onInit = function() {
@@ -33,6 +61,10 @@ SystemStatusPageController.prototype.$onInit = function() {
         typeName: '*',
         dateFilter: false
     };
+    this.auditTableLimit = 25;
+    this.auditTablePage = 1;
+    this.auditTableOrder = '-ts';
+
     this.systemStatus.getAuditEventTypes().then((response) => {
         this.auditEventTypes = response.data;
     });
@@ -43,36 +75,6 @@ SystemStatusPageController.prototype.$onInit = function() {
             this.updateAuditQuery();
         }
     }, this.$scope);
-};
-
-
-SystemStatusPageController.prototype.updateAuditQuery = function() {
-    // create a base rql query, will be of type 'and'
-    const rootRql = new this.RqlBuilder();
-    
-    Object.keys(this.auditQuery).forEach(key => {
-        const value = this.auditQuery[key];
-
-        if (key === 'dateFilter') {
-            if (this.auditQuery.dateFilter) {
-                rootRql.ge('ts', this.dateBar.data.from)
-                    .lt('ts', this.dateBar.data.to);
-            }
-        } else if (key === 'userId') {
-            if (value) {
-                rootRql.eq(key, value.id);
-            }
-        } else if (value !== '*') {
-            rootRql.eq(key, value);
-        }
-    });
-
-//    rootRql.sort('alarmLevel', '-changeType')
-//        .limit(10, 20);
-
-    this.systemStatus.getAuditTrail(rootRql).then((auditTrail) => {
-        this.auditTrail = auditTrail;
-    });
 };
 
 SystemStatusPageController.prototype.getWorkItems = function() {
