@@ -51,11 +51,11 @@
 
     <md-table-pagination class="underline" md-limit="$ctrl.auditTableLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]"
                          md-page="$ctrl.auditTablePage" md-total="{{$ctrl.auditTrail.$total}}" md-page-select
-                         md-on-paginate="$ctrl.updateAuditQuery"></md-table-pagination>
+                         md-on-paginate="$ctrl.boundAuditQuery"></md-table-pagination>
 
     <md-table-container>
         <table md-table md-row-select ng-model="$ctrl.selectedAuditEvent">
-            <thead md-head md-order="$ctrl.auditTableOrder" md-on-reorder="$ctrl.updateAuditQuery">
+            <thead md-head md-order="$ctrl.auditTableOrder" md-on-reorder="$ctrl.boundAuditQuery">
             <tr md-row>
                 <th md-column md-order-by="alarmLevel" ma-tr="ui.settings.systemStatus.alarmLevel"></th>
                 <th md-column md-order-by="changeType" ma-tr="ui.settings.systemStatus.changeType"></th>
@@ -68,7 +68,7 @@
             <tbody md-body>
             <tr md-row
                 ng-repeat="auditItem in $ctrl.auditTrail" md-select="auditItem" md-auto-select
-                md-on-select="$ctrl.displayAuditContext">
+                md-on-select="$ctrl.boundDisplayAuditContext">
                 <td md-cell ng-bind="auditItem.alarmLevel"></td>
                 <td md-cell ng-bind="auditItem.changeType"></td>
                 <td md-cell ng-bind="auditItem.typeName"></td>
@@ -79,6 +79,8 @@
             </tbody>
         </table>
     </md-table-container>
+
+    <br><br>
 
     <md-input-container flex ng-if="$ctrl.selectedAuditEvent.length">
         <label><span ma-tr="ui.settings.systemStatus.displayingAuditContext"></span>: {{$ctrl.selectedAuditEvent[0].message}}</label>
