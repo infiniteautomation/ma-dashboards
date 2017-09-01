@@ -6,12 +6,19 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-ModulesFactory.$inject = ['$http', '$q', 'maServer'];
-function ModulesFactory($http, $q, maServer) {
+ModulesFactory.$inject = ['$http', '$q', 'maServer', 'maNotificationManager'];
+function ModulesFactory($http, $q, maServer, NotificationManager) {
     var modulesUrl = '/rest/v1/modules';
     
     function Modules() {
     }
+    
+    Modules.notificationManager = new NotificationManager({
+        webSocketUrl: '/rest/v1/websocket/modules',
+        transformObject: (object) => {
+            return new Module(object);
+        }
+    });
     
     Modules.getAll = function() {
         return $http({

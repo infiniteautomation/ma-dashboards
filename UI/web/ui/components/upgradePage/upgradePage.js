@@ -6,12 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope', 'maModulesWebSocket', '$q', '$mdToast', 'maTranslate'];
-function UpgradePageController(maModules, maDialogHelper, $scope, maModulesWebSocket, $q, $mdToast, maTranslate) {
+UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope', '$q', '$mdToast', 'maTranslate'];
+function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, maTranslate) {
     this.maModules = maModules;
     this.maDialogHelper = maDialogHelper;
     this.$scope = $scope;
-    this.maModulesWebSocket = maModulesWebSocket;
     this.$q = $q;
     this.$mdToast = $mdToast;
     this.maTranslate = maTranslate;
@@ -30,8 +29,8 @@ UpgradePageController.prototype.$onInit = function() {
     	}
     }.bind(this));
 
-	this.maModulesWebSocket.subscribe(this.$scope, function(event, message) {
-		if (event.name === 'maWebSocketMessage') {
+    this.maModules.notificationManager.subscribe((event, message) => {
+		if (event.name === 'webSocketMessage') {
 			if (message.type === 'MODULE_DOWNLOADED') {
 				if (!moduleDownloaded(message.name, this.upgradesSelected)) {
 					moduleDownloaded(message.name, this.installsSelected);
@@ -60,7 +59,7 @@ UpgradePageController.prototype.$onInit = function() {
 				}
 			}
 		}
-	}.bind(this));
+	}, this.$scope, ['webSocketMessage']);
 };
 
 UpgradePageController.prototype.checkForUpgrades = function() {
