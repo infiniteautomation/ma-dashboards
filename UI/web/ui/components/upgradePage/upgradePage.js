@@ -14,6 +14,8 @@ function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, 
     this.$q = $q;
     this.$mdToast = $mdToast;
     this.maTranslate = maTranslate;
+    
+    this.moduleSelectedBound = (module) => this.moduleSelected(module);
 }
 
 UpgradePageController.prototype.$onInit = function() {
@@ -72,6 +74,20 @@ UpgradePageController.prototype.checkForUpgrades = function() {
 	this.checkPromise = this.maModules.checkForUpgrades().then(function(available) {
 		this.installs = available.newInstalls;
 		this.upgrades = available.upgrades;
+		
+		// ensure module has a dependencyVersions property
+		this.installs.concat(this.upgrades).forEach((module) => {
+		    if (!module.dependencyVersions) {
+                module.dependencyVersions = {};
+                if (module.dependencies) {
+                    module.dependencies.split(/\s*,\s*/).forEach(depStr => {
+                        const parts = depStr.split(/\s*:\s*/);
+                        module.dependencyVersions[parts[0]] = parts[1];
+                    });
+                }
+		    }
+		});
+		
 	}.bind(this), function(error) {
 		this.error = error;
 	}.bind(this)).then(function() {
@@ -86,10 +102,21 @@ UpgradePageController.prototype.showReleaseNotes = function($event, module) {
 	});
 };
 
-UpgradePageController.prototype.moduleSelected = function(module) {
-};
+UpgradePageController.prototype.moduleSelected = function(selected) {
+    // select any dependencies automatically
+    Object.keys(selected.dependencyVersions).forEach((depName) => {
+        const moduleFinder = module => module.name === depName;
+        
+        const installModule = this.installs.find(moduleFinder);
+        if (installModule && this.installsSelected.indexOf(installModule) < 0) {
+            this.installsSelected.push(installModule);
+        }
 
-UpgradePageController.prototype.moduleDeselected = function(module) {
+        const upgradeModule = this.upgrades.find(moduleFinder);
+        if (upgradeModule && this.upgradesSelected.indexOf(upgradeModule) < 0) {
+            this.upgradesSelected.push(upgradeModule);
+        }
+    });
 };
 
 UpgradePageController.prototype.doUpgrade = function($event) {

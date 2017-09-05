@@ -60,7 +60,7 @@
 			      </tr>
 			    </thead>
 			    <tbody md-body>
-			      <tr md-row md-select="module" md-select-id="name" md-on-select="$ctrl.moduleSelected" md-on-deselect="$ctrl.moduleDeselected"
+			      <tr md-row md-select="module" md-select-id="name" md-on-select="$ctrl.moduleSelectedBound"
 			      		ng-disabled="$ctrl.upgradePromise || module.downloaded" ng-repeat="module in $ctrl.upgrades track by $index">
 			        <td class="name-column" md-cell ng-bind="module.name"></td>
 			        <td class="description-column" md-cell ng-bind="module.description"></td>
@@ -96,7 +96,7 @@
 			      </tr>
 			    </thead>
 			    <tbody md-body>
-			      <tr md-row md-select="module" md-select-id="name" md-on-select="$ctrl.moduleSelected" md-on-deselect="$ctrl.moduleDeselected"
+			      <tr md-row md-select="module" md-select-id="name" md-on-select="$ctrl.moduleSelectedBound"
 			      		ng-disabled="$ctrl.upgradePromise || module.downloaded" ng-repeat="module in $ctrl.installs track by $index">
 			        <td class="name-column" md-cell ng-bind="module.name"></td>
 			        <td class="description-column" md-cell ng-bind="module.description"></td>
