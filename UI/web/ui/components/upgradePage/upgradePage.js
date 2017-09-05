@@ -120,6 +120,34 @@ UpgradePageController.prototype.moduleSelected = function(selected) {
 };
 
 UpgradePageController.prototype.doUpgrade = function($event) {
+    const missingDep = this.installsSelected.concat(this.upgradesSelected).some(module => {
+        return Object.keys(module.dependencyVersions).some(depName => {
+            const moduleFinder = module => module.name === depName;
+            
+            const installModule = this.installs.find(moduleFinder);
+            if (installModule && this.installsSelected.indexOf(installModule) < 0) {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['ui.app.moduleNotSelectedForInstall', module.name, depName],
+                    classes: 'md-warn',
+                    timeout: 10000
+                });
+                return true;
+            }
+            
+            const upgradeModule = this.upgrades.find(moduleFinder);
+            if (upgradeModule && this.upgradesSelected.indexOf(upgradeModule) < 0) {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['ui.app.moduleNotSelectedForUpgrade', module.name, depName],
+                    classes: 'md-warn',
+                    timeout: 10000
+                });
+                return true;
+            }
+        });
+    });
+    
+    if (missingDep) return;
+    
 	this.upgradePromise = this.maDialogHelper.confirm($event, 'ui.app.upgradeConfirm').then(function() {
 		return this.maModules.doUpgrade(this.installsSelected, this.upgradesSelected,
 			this.backupBeforeDownload, this.restartAfterDownload);
