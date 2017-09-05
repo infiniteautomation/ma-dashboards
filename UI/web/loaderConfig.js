@@ -44,7 +44,7 @@ requirejs.config({
             ngMango: 'ngMango-3.2'
         }
     },
-    urlArgs: 'v=' + (root.mangoLastUpgrade || '3.2.1'),
+    urlArgs: 'v=' + (root.mangoLastUpgrade || '3.2.2'),
     paths : {
         'modules': '/modules',
         'mangoUIModule' : module,
