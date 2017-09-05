@@ -21,6 +21,7 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, ma
 
     this.boundAuditQuery = (...args) => this.updateAuditQuery(...args);
     this.boundDisplayAuditContext = (...args) => this.displayAuditContext(...args);
+    this.boundShowStackTrace = (...args) => this.showStackTrace(...args);
 }
 
 SystemStatusPageController.prototype.$onInit = function() {
@@ -40,6 +41,7 @@ SystemStatusPageController.prototype.$onInit = function() {
     this.auditTablePage = 1;
     this.auditTableOrder = '-ts';
     this.selectedAuditEvent = [];
+    this.selectedThread = [];
 
     this.systemStatus.getAuditEventTypes().then((response) => {
         this.auditEventTypes = response.data;
@@ -150,11 +152,9 @@ SystemStatusPageController.prototype.showBlockedThreadDetails = function($event,
     });
 };
 
-SystemStatusPageController.prototype.showStackTrace = function(thread) {
-    this.selectedThread = thread.name;
-
+SystemStatusPageController.prototype.showStackTrace = function() {
     this.selectedThreadStackTrace = '';
-    thread.location.forEach( (item) => {
+    this.selectedThread[0].location.forEach( (item) => {
         this.selectedThreadStackTrace += item.className + '.' + item.methodName + ':' + item.lineNumber + '\n';
     });
 };
