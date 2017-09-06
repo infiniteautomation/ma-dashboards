@@ -20,11 +20,11 @@
             <thead md-head md-order="sortOrder">
             <tr md-row>
                 <th md-column md-order-by="name" ma-tr="ui.settings.systemStatus.name"></th>
-                <th md-column md-order-by="id" ma-tr="ui.settings.systemStatus.id"></th>
                 <th md-column md-order-by="cpuTime" ma-tr="ui.settings.systemStatus.cpuTime"></th>
                 <th md-column md-order-by="userTime" ma-tr="ui.settings.systemStatus.userTime"></th>
                 <th md-column md-order-by="state" ma-tr="ui.settings.systemStatus.state"></th>
-                <th md-column md-order-by="priority" ma-tr="ui.settings.systemStatus.priority"></th>
+                <th md-column md-numeric md-order-by="priority"><span ma-tr="ui.settings.systemStatus.priority"></span></th>
+                <th md-column md-numeric md-order-by="id"><span ma-tr="ui.settings.systemStatus.id"></span></th>
             </tr>
             </thead>
             <tbody md-body>
@@ -32,7 +32,6 @@
                 ng-class="{'blocked-thread': thread.state === 'BLOCKED'}" md-select="thread" md-auto-select
                 md-on-select="$ctrl.boundShowStackTrace">
                 <td md-cell ng-bind="thread.name"></td>
-                <td md-cell ng-bind="thread.id"></td>
                 <td md-cell>{{thread.cpuTime / 1000000 | maDuration:'seconds'}}s</td>
                 <td md-cell>{{thread.userTime / 1000000 | maDuration:'seconds'}}s</td>
                 <td md-cell>
@@ -42,6 +41,7 @@
                     </md-icon>
                 </td>
                 <td md-cell ng-bind="thread.priority"></td>
+                <td md-cell ng-bind="thread.id"></td>
             </tr>
             </tbody>
         </table>
