@@ -1,5 +1,6 @@
 *Version 3.2.2*
 * Added point history counts to system info page
+* Fix trying to load maUiDateBar service when its not available
 
 *Version 3.2.1*
 * Added a system status page
