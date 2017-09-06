@@ -18,6 +18,7 @@ function SystemStatusFactory($http) {
     var workItemsUrl = '/rest/v1/work-items/';
     var threadsUrl = '/rest/v1/threads';
     var systemInfoUrl = '/rest/v2/server/system-info';
+    var pointHistoryCountsUrl = '/rest/v2/server/point-history-counts';
 
     var SystemStatus = {};
 
@@ -107,6 +108,13 @@ function SystemStatusFactory($http) {
         return $http({
             method: 'GET',
             url: systemInfoUrl
+        });
+    };
+
+    SystemStatus.getPointCounts = function() {
+        return $http({
+            method: 'GET',
+            url: pointHistoryCountsUrl
         });
     };
 

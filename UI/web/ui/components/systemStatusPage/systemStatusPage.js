@@ -175,6 +175,13 @@ SystemStatusPageController.prototype.getSystemInfo = function() {
     });
 };
 
+SystemStatusPageController.prototype.getPointCounts = function() {
+
+    this.systemStatus.getPointCounts().then((response) => {
+        this.pointCounts = response.data;
+    });
+};
+
 SystemStatusPageController.prototype.isEmptyObj = function(obj) {
     if (obj === undefined) {
         return true;

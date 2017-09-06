@@ -6,6 +6,12 @@
             </md-icon>
             <span ma-tr="ui.app.refreshTable"></span>
         </md-button>
+        <md-button ng-click="$ctrl.getPointCounts()" class="md-raised md-accent md-hue-3">
+            <md-icon>
+                timeline
+            </md-icon>
+            <span>Get Point Counts</span>
+        </md-button>
     </div>
 
     <md-list flex class="md-dense">
@@ -53,4 +59,25 @@
         </md-list-item>
         <md-divider></md-divider>
     </md-list>
+
+    <br><br>
+
+    <md-table-container ng-if="$ctrl.pointCounts.length">
+        <table md-table>
+            <thead md-head md-order="sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="pointName" ma-tr="ui.settings.systemStatus.pointName"></th>
+                <th md-column md-numeric md-order-by="pointId"><span ma-tr="ui.settings.systemStatus.pointId"></span></th>
+                <th md-column md-numeric md-order-by="count"><span ma-tr="ui.settings.systemStatus.count"></span></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="point in $ctrl.pointCounts | orderBy: sortOrder">
+                <td md-cell ng-bind="point.pointName"></td>
+                <td md-cell ng-bind="point.pointId"></td>
+                <td md-cell ng-bind="point.count"></td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
 </div>
