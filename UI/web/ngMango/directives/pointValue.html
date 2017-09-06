@@ -20,28 +20,28 @@
         </md-fab-trigger>
 
         <md-fab-actions id="popup-btns">
-            <md-button class="md-primary md-raised"
+            <md-button ng-if="$ctrl.showStatsDialog" class="md-primary md-raised"
                        ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'stats')">
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">
                     <span ma-tr="ui.components.showStats"></span>
                 </md-tooltip>
                 <md-icon>format_list_numbered</md-icon>
             </md-button>
-            <md-button class="md-primary md-raised"
+            <md-button ng-if="$ctrl.showStatsDialog" class="md-primary md-raised"
                        ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'chart')">
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">
                     <span ma-tr="ui.components.showChart"></span>
                 </md-tooltip>
                 <md-icon>timeline</md-icon>
             </md-button>
-            <md-button class="md-primary md-raised"
+            <md-button ng-if="$ctrl.showStatsDialog" class="md-primary md-raised"
                        ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'table')">
                 <md-tooltip md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">
                     <span ma-tr="ui.components.showTable"></span>
                 </md-tooltip>
                 <md-icon>grid_on</md-icon>
             </md-button>
-            <md-button class="md-primary md-raised"
+            <md-button ng-if="$ctrl.showStatsDialog" class="md-primary md-raised"
                        ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'events')">
                 <md-tooltip
                     md-direction="{{$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">

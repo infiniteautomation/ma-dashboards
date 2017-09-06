@@ -8,17 +8,26 @@ define(['angular'], function(angular) {
 
 var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
 
-PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint', 'maStatsDialog', 'maSetPointDialog', 'maEvents'];
-function PointValueController($scope, $element, $attrs, pointEventManager, Point, maStatsDialog, maSetPointDialog, maEvents) {
+PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint', '$injector', 'maEvents'];
+function PointValueController($scope, $element, $attrs, pointEventManager, Point, $injector, maEvents) {
     this.$scope = $scope;
     this.$element = $element;
     this.$attrs = $attrs;
     this.pointEventManager = pointEventManager;
     this.Point = Point;
-    this.showStatsDialog = maStatsDialog.show;
-    this.showSetPointDialog = maSetPointDialog.show;
+    
     this.getRQL = maEvents.getRQL;
     this.doQuery = maEvents.rql;
+    
+    // stats dialog depends on ui date bar, check that too
+    if ($injector.has('maStatsDialog') && $injector.has('maUiDateBar')) {
+        const maStatsDialog = $injector.get('maStatsDialog');
+        this.showStatsDialog = maStatsDialog.show;
+    }
+    if ($injector.has('maSetPointDialog')) {
+        const maSetPointDialog = $injector.get('maSetPointDialog');
+        this.showSetPointDialog = maSetPointDialog.show;
+    }
 
     if (this.changeDuration == null)
         this.changeDuration = 400;
