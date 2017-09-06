@@ -1,3 +1,6 @@
+*Version 3.2.2*
+* Added point history counts to system info page
+
 *Version 3.2.1*
 * Added a system status page
 * Add page for viewing/deleting JSON store items
