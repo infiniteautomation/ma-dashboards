@@ -4,11 +4,12 @@
 	<p>
 		Custom pages can be created from within the app's CMS environment, using our 
 		built in Code Editor and UI Component Library to create and link new pages to the app.
-		Mango's HTML Web Components combined with Angular templating logic allows you to create dynamic pages of any complexity, pulling data
+		Mango's HTML Components combined with Angular's templating syntax allows you to create
+		dynamic pages of any complexity, pulling data
 		from Mango's database and visualizing the data as responsive interface elements, charts and tables.
 		Interactive <code>Demos</code> and <code>Examples</code> can be found under the <code>Examples</code> menu section.
-		Full documentation of all parameters of each component can be found under <code>API Docs</code>. You may need to edit
-		the app's menu to see these menu items.
+		Full documentation of all parameters of each component can be found under <code>API Docs</code>. You may need to
+		<a ui-sref="ui.settings.editMenu">enable</a> these menu items to see them.
 	</p>
 	
 	<br>
@@ -23,40 +24,44 @@
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditPages-Controls.png" alt="Help-ScreenShots-EditPages-Controls"/>
 	
 	<p>
-		The inputs above the button row allow you to choose an existing page to edit, change the name of the page you are editing, and set the page's permissions.
-		<code>Read / Edit Permissions</code> can be used to prevent access to a page. The first button will <code>Save</code> your changes to the 
-		page you are currently editing. The <code>Revert</code>	button will reset the code editor to the last saved state. The <code>Delete</code> 
-		button will remove a page from the system after confirming.	The <code>New Page</code> button will set-up a blank page for you to work with. 
+		The drop down to the left of the icon buttons allows you to choose an existing page to edit.
+		The <code>New page</code> button will set-up a blank page for you to work with.
+		The <code>Save</code> button will save your changes to	the page you are currently editing.
+		Before you can <code>Save</code> a new page you will need to give it a <code>Page name</code>.
+		The <code>Delete</code> button will remove a page from the system after confirming.
 	</p>
 	
 	<p>
-		Be sure to <code>Save</code> changes to the previous page first. You can use the keyboard hot-key
+		Be sure to <code>Save</code> changes to your page often. You can use the keyboard hot-key
 		<code>Ctrl/Cmd+S</code> to quickly save your changes to the code without leaving the keyboard.
 	</p>
-	
+
 	<p>
-		Before you can <code>Save</code> a new page you will need to give it a <code>Page name</code>.
+		The <code>Edit name and permissions</code> button will open the controls for editing page properties.
+		<code>Read / Edit Permissions</code> can be used to prevent access to a page based on <a
+		ui-sref="ui.help.users">user permissions</a>. <code>Page name</code> can be updated independently of of pages menu item
+		and url.
 	</p>
 	
-	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditPages-ButtonsNoName.png" alt="Help-ScreenShots-EditPages-ButtonsNoName"/>
-	
-	<p>
-		You can toggle on and off the <code>Editor</code> pane and <code>Preview</code> pane, allowing you to view just one pane or both in a side-by-side view.
-	</p>
-	
-	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditPages-Toggles.png" alt="Help-ScreenShots-EditPages-Toggles"/>
-	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditPages-EditNameAndPermissions.png" alt="Help-ScreenShots-EditPages-ButtonsNoName"/>
+
 	<br><br>
 	
 	<h2>Editing Code</h2>
 	
 	<p> 
-		You will enter HTML into the code editor on the left. If you prefer you can work in your desktop code editor of choice and copy-paste
+		You will enter HTML into the code editor on the left. If you prefer you can work in your desktop code editor of choice and copy
 		your code into the <code>Editor</code> pane.
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditPages-CodePane.png" alt="Help-ScreenShots-EditPages-CodePane"/>
-	
+
+	<p>
+		You can toggle on and off the <code>Editor</code> pane and <code>Preview</code> pane, allowing you to view just one pane or both in a side-by-side view.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditPages-Toggles.png" alt="Help-ScreenShots-EditPages-Toggles"/>
+
 	<br><br>
 	
 	<h2>Previewing the Page</h2>
@@ -68,9 +73,9 @@
 	</p>
 	
 	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-EditPages-PreviewPane.png" alt="Help-ScreenShots-EditPages-PreviewPane"/>
-	
+
 	<p>
-		The <code>View Page</code> button will open the last saved state of the page in a new tab. 
+		The <code>View page</code> button will open the last saved state of the page in a new tab.
 		This is the same URL that you can use to share the page with somebody and will be used by the page's menu item.
 	</p>
 	
@@ -101,11 +106,10 @@
 	<h2>Adding Your Own Images</h2>
 
 	<p>
-		If you would like to include your own images on a page you can put them in an 
-		image folder in your overrides. Create a new folder at
-		<code>Mango/overrides/web/modules/mangoUI/web/images</code> and place 
-		your image files in there. You can then insert the image onto a page using:
-		<code ng-non-bindable>&lt;img ng-src="/modules/mangoUI/web/images/myImage.png" alt="My Image"/&gt;</code>
+		If you would like to include your own images on a page you upload them using the
+		<a ui-sref="ui.settings.fileStores">File store</a>.
+		You can then insert the image onto a page using:
+		<code ng-non-bindable>&lt;img src="/rest/v2/file-stores/default/MyImage.jpg" alt="My Image"/&gt;</code>
 	</p>
 	
 	<br>
@@ -139,7 +143,6 @@
 		From here you will give the menu item a <code>Parent item</code>,  <code>URL</code>, <code>Menu text</code>, and <code>Menu icon</code>. 
 		The entire menu is completely customizable from the <a ui-sref="ui.settings.editMenu">Menu Editor</a> under 
 		<code>Administration > Edit menu</code> in the menu, or at the URL <code>/ui/administration/edit-menu</code>.
-		You can hide or show items with the toggle switch (not visible on small screens), edit the menu item using the pencil icon to set item labels, links or icons,
-		reorder menu items, add new menu items (+ button in the corner) and delete custom menu items (trashcan icon). For more information see the <a ui-sref="ui.help.menuEditor">Menu Help Page</a>.
+		For more information see the <a ui-sref="ui.help.menuEditor">Menu Help Page</a>.
 	</p>
 </div>
