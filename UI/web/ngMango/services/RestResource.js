@@ -18,6 +18,8 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             } else {
                 this.xid = (this.constructor.xidPrefix || '') + maUtil.uuid();
             }
+            
+            this.initialize('constructor');
         }
         
         static get timeout() {
@@ -29,7 +31,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 this._notificationManager = new NotificationManager({
                     webSocketUrl: this.webSocketUrl,
                     transformObject: (...args) => {
-                        return this.transformObject(...args);
+                        return new this(...args);
                     }
                 });
             }
@@ -57,7 +59,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 params: params
             }, opts).then(response => {
                 const items = response.data.items.map(item => {
-                    return this.transformObject(item);
+                    return new this(item);
                 });
                 items.$total = response.data.total;
                 return items;
@@ -73,8 +75,12 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         }
 
         static get(xid, opts) {
-            const item = this.transformObject({originalXid: xid}, false);
-            return item.get(opts);
+            const item = Object.create(this.prototype);
+            item.originalXid = xid;
+            
+            return item.get(opts).then(item => {
+                return new this(item);
+            });
         }
 
         static subscribe(...args) {
@@ -86,15 +92,6 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             // otherwise they will get 2 events
             return this.notificationManager.notifyIfNotConnected(...args);
         }
-        
-        static transformObject(object, callConstructor = true) {
-            if (callConstructor) {
-                return new this(object);
-            } else {
-                const item = Object.create(this.prototype);
-                return Object.assign(item, object);
-            }
-        }
 
         get(opts) {
             return this.constructor.http({
@@ -102,6 +99,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 method: 'GET'
             }, opts).then(response => {
                 angular.copy(response.data, this);
+                this.initialize('get');
                 this.originalXid = this.xid;
                 return this;
             });
@@ -124,9 +122,12 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 method,
                 data: this
             }, opts).then(response => {
+                const saveType = originalXid ? 'update' : 'create';
+                
                 angular.copy(response.data, this);
+                this.initialize(saveType);
                 this.originalXid = this.xid;
-                this.constructor.notify(originalXid ? 'update' : 'create', this, originalXid);
+                this.constructor.notify(saveType, this, originalXid);
                 return this;
             });
         }
@@ -139,9 +140,13 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 method: 'DELETE'
             }, opts).then(response => {
                 angular.copy(response.data, this);
+                this.initialize('delete');
                 this.constructor.notify('delete', this, originalXid);
                 return this;
             });
+        }
+        
+        initialize(reason) {
         }
         
         static http(httpConfig, opts = {}) {
