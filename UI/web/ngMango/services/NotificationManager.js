@@ -87,15 +87,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
                     }
                     const payload = message.payload;
                     this.notify('webSocketMessage', payload);
-                    
-                    if (payload.object) {
-                        const eventType = actionNameToEventType[payload.action];
-                        if (eventType) {
-                            const item = this.transformObject(payload.object);
-                            this.notify(eventType, item);
-                        }
-                    }
-                    
+                    this.notifyFromPayload(payload);
                 } catch (e) {
                     this.notify('webSocketError', e);
                 }
@@ -106,6 +98,19 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
         
         onOpen() {
             // do nothing
+        }
+        
+        /**
+         * default notifier for CRUD type websocket payloads, they have a action and object property
+         */
+        notifyFromPayload(payload) {
+            if (payload.object) {
+                const eventType = actionNameToEventType[payload.action];
+                if (eventType) {
+                    const item = this.transformObject(payload.object);
+                    this.notify(eventType, item);
+                }
+            }
         }
 
         closeSocket() {
