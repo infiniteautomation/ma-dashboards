@@ -46,8 +46,8 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
  * <!-- Example For Restricting Events to those Related to a Data Point -->
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
-eventsTable.$inject = ['maEvents', 'maEventsEventManager', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS', '$state'];
-function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats, $state) {
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS', '$state'];
+function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats, $state) {
     return {
         restrict: 'E',
         scope: {

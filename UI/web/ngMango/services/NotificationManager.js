@@ -73,6 +73,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
             socket.onopen = () => {
                 clearTimeout(this.connectTimer);
                 delete this.connectTimer;
+                this.onOpen();
                 this.notify('webSocketOpen');
             };
             
@@ -101,6 +102,10 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
             };
 
             return socket;
+        }
+        
+        onOpen() {
+            // do nothing
         }
 
         closeSocket() {

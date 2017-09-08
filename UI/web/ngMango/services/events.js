@@ -123,8 +123,9 @@ define(['angular'], function(angular) {
 *
 */
 
-function eventsFactory($resource, Util) {
-    var events = $resource('/rest/v1/events', {
+eventsFactory.$inject = ['$resource', 'maUtil', 'maNotificationManager'];
+function eventsFactory($resource, Util, NotificationManager) {
+    var Events = $resource('/rest/v1/events', {
         id: '@id'
     }, {
         query: {
@@ -161,7 +162,22 @@ function eventsFactory($resource, Util) {
         }
     });
     
-    events.objQuery = function(options) {
+    const subscriptionMessage = {
+        eventTypes: ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED'],
+        levels: ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE']
+    };
+    
+    Events.notificationManager = new NotificationManager({
+        webSocketUrl: '/rest/v1/websocket/events',
+        transformObject(object) {
+            return new Events(object);
+        },
+        onOpen() {
+            this.sendMessage(subscriptionMessage);
+        }
+    });
+    
+    Events.objQuery = function(options) {
         if (!options) return this.query();
         if (typeof options.query === 'string') {
             return this.rql({query: options.query});
@@ -198,7 +214,7 @@ function eventsFactory($resource, Util) {
         return params.length ? this.rql({query: params.join('&')}) : this.query();
     };
 
-    events.getRQL = function(options) {
+    Events.getRQL = function(options) {
         var params = [];
 
         if (options.alarmLevel && options.alarmLevel !== '*') {
@@ -262,10 +278,9 @@ function eventsFactory($resource, Util) {
         return {RQLforAcknowldege: RQLforAcknowldege, RQLforDisplay: RQLforDisplay};
     };
 
-    return events;
+    return Events;
 }
 
-eventsFactory.$inject = ['$resource', 'maUtil'];
 return eventsFactory;
 
 }); // define

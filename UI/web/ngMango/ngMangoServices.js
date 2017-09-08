@@ -22,7 +22,6 @@ define(['./services/Point',
         './services/WatchListEventManager',
         './services/rqlParamSerializer',
         './services/UserNotes',
-        './services/eventsEventManagerFactory',
         './services/events',
         './services/DynamicItems',
         './services/pointValuesFactory',
@@ -52,7 +51,7 @@ define(['./services/Point',
         'angular-local-storage'
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, httpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, watchdog, EventManager, NotificationManagerFactory, cssInjector, DataSourceFactory, DeviceNameFactory,
-        WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
+        WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, events,
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory,
         PermissionsFactory, systemSettingsProvider, systemStatusFactory,
         ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
@@ -90,7 +89,6 @@ ngMangoServices.factory('maWatchList', WatchListFactory);
 ngMangoServices.factory('maWatchListEventManager', WatchListEventManagerFactory);
 ngMangoServices.factory('maRqlParamSerializer', rqlParamSerializer);
 ngMangoServices.factory('maUserNotes', UserNotes);
-ngMangoServices.factory('maEventsEventManager', eventsEventManagerFactory);
 ngMangoServices.factory('maEvents', events);
 ngMangoServices.factory('maDynamicItems', DynamicItems);
 ngMangoServices.factory('maPointValues', pointValuesFactory);
