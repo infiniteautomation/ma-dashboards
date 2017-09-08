@@ -134,7 +134,8 @@ function eventsFactory($resource, Util, NotificationManager) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            }
+            },
+            cancellable: true
         },
         rql: {
         	url: '/rest/v1/events?:query',
@@ -143,7 +144,8 @@ function eventsFactory($resource, Util, NotificationManager) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            }
+            },
+            cancellable: true
         },
         acknowledge: {
             method: 'PUT',

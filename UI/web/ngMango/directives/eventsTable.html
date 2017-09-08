@@ -9,7 +9,7 @@
 </div>
 <md-table-container class="events-table">
     <table md-table ng-class="{'mobile': !$ctrl.$mdMedia('gt-sm')}" md-progress="$ctrl.tableQueryPromise">
-        <thead md-head md-order="$ctrl.sort">
+        <thead md-head md-order="$ctrl.sort" md-on-reorder="$ctrl.onReorderBound">
             <tr md-row>
                 <th md-column md-order-by="alarmLevel" ma-tr="ui.app.alarmLvl" class="narrow-column"></th>
                 <th md-column md-order-by="activeTimestamp" ma-tr="ui.app.time" class="medium-column"></th>
