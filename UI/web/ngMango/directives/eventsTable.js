@@ -50,6 +50,35 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
 eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS'];
 function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats) {
 
+    class Equals {
+        constructor(value, filter) {
+            this.value = value;
+            this.filter = filter;
+        }
+
+        test() {
+            if (this.filter == null || this.filter === '*')
+                return true;
+            return this.testOp();
+        }
+        
+        testOp() {
+            return this.value === this.filter;
+        }
+    }
+    
+    class GreaterThanEquals extends Equals {
+        testOp() {
+            return this.value >= this.filter;
+        }
+    }
+    
+    class LessThan extends Equals {
+        testOp() {
+            return this.value < this.filter;
+        }
+    }
+    
     const $inject = Object.freeze(['$scope']);
     class EventsTableController {
         static get $inject() { return $inject; }
@@ -58,8 +87,12 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             this.$scope = $scope;
             
             this.$mdMedia = $mdMedia;
+            this.start = 0;
             this.page = 1;
             this.total = 0;
+            this.limit = 50;
+            this.events = [];
+            this.sort = '-activeTimestamp';
             this.totalUnAcknowledged = 0;
             
             this.onPaginateBound = (...args) => this.onPaginate(...args);
@@ -68,35 +101,53 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
 
         $onInit() {
             Events.notificationManager.subscribe((event, mangoEvent) => {
-                console.log(event.name, mangoEvent);
-                
+                // if event is already in current page update it
                 const index = this.events.findIndex((item) => {
                     return item.id === mangoEvent.id;
                 });
-                
                 if (index >= 0) {
                     this.events[index] = mangoEvent;
                 }
                 
-                if (event.name === 'RAISED' && this.sort === '-activeTimestamp') {
+                if (this.eventMatchesFilters(mangoEvent)) {
+                    if (event.name === 'ACKNOWLEDGED') {
+                        this.totalUnAcknowledged--;
+                    }
                     
+                    if (event.name === 'RAISED' && !this.dateFilter) {
+                        if (this.sort === '-activeTimestamp' && this.start === 0) {
+                            // sorted by descending time and on the first page
+                            this.events.unshift(mangoEvent);
+                        } else if (this.sort === 'activeTimestamp' && this.events.length < this.limit) {
+                            // sorted by ascending time and on the last page
+                            this.events.push(mangoEvent);
+                        }
+                        
+                        if (this.events.length > this.limit) {
+                            this.events.pop();
+                        }
+                        
+                        this.total++;
+                        this.totalUnAcknowledged++;
+                    }
                 }
-                
             }, this.$scope, ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
-
-            // Watch events.$total to return a clean this.total that isn't ever undefined
-            this.$scope.$watch('$ctrl.events.$total', (newValue, oldValue) => {
-                if (newValue === undefined || newValue === oldValue) return;
-                this.total = newValue;
-                
-
-            });
         }
         
         $onChanges(changes) {
+            const numChanges = Object.keys(changes).length;
+
+            // don't re-query if only the to and from changed and we are not using the date filter
+            if ((changes.from || changes.to) && !this.dateFilter) {
+                const both = changes.from && changes.to;
+                if (both && numChanges === 2 || numChanges === 1) {
+                    return;
+                }
+            }
+            
             this.doQuery();
         }
-        
+
         doQuery() {
             // Return if singlePoint and pointId doesn't exist yet
             if (this.singlePoint && !this.pointId) {
@@ -203,7 +254,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         acknowledgeEvent(event) {
             event.$acknowledge().then(() => {
                 event.acknowledged = true;
-                this.totalUnAcknowledged--;
+                if (!Events.notificationManager.socketConnected()) {
+                    this.totalUnAcknowledged--;
+                }
             });
         }
         
@@ -222,6 +275,28 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
                     this.doQuery();
                 }
             });
+        }
+
+        eventMatchesFilters(event) {
+            const tests = [
+                new Equals(event.eventType.eventType, this.eventType),
+                new Equals(event.alarmLevel, this.alarmLevel),
+                new Equals(event.active, this.active),
+                new Equals(event.acknowledged, this.acknowledged),
+                new Equals(event.eventType.dataPointId, this.pointId),
+                new Equals(event.id, this.eventId),
+            ];
+            
+            if (this.dateFilter) {
+                tests.push(
+                    new GreaterThanEquals(event.activeTimestamp, this.from.valueOf()),
+                    new LessThan(event.activeTimestamp, this.to.valueOf())
+                );
+            }
+            
+            return tests.reduce((accum, test) => {
+                return accum && test.test();
+            }, true);
         }
     }
     
