@@ -111,6 +111,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
                 
                 if (this.eventMatchesFilters(mangoEvent)) {
                     if (event.name === 'ACKNOWLEDGED') {
+                        if (this.acknowledged === false) {
+                            this.removeEvent(event);
+                        }
                         this.totalUnAcknowledged--;
                     }
                     
@@ -250,11 +253,20 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             return m.format(mangoDateFormats.shortDateTimeSeconds);
         }
         
+        removeEvent(event) {
+            const index = this.events.findIndex(item => item.id === event.id);
+            if (index >= 0)
+	            this.events.splice(index, 1);
+        }
+        
         // Acknowledge single event
         acknowledgeEvent(event) {
             event.$acknowledge().then(() => {
                 event.acknowledged = true;
                 if (!Events.notificationManager.socketConnected()) {
+                    if (this.acknowledged === false) {
+                        this.removeEvent(event);
+                    }
                     this.totalUnAcknowledged--;
                 }
             });
