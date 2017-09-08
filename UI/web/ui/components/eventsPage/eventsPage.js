@@ -13,6 +13,8 @@ function EventsPageController($mdMedia, $stateParams, $state, localStorageServic
     $ctrl.$mdMedia = $mdMedia;
     $ctrl.dateBar = maUiDateBar;
     
+    this.sort = '-activeTimestamp';
+    
     $ctrl.$onInit = function() {
         for (let prop in $stateParams) {
             let stateFilterValue = $stateParams[prop];
