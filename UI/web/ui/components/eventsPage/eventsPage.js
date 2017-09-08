@@ -30,7 +30,7 @@ function EventsPageController($mdMedia, $stateParams, $state, localStorageServic
                     }
                 }
                 else {
-                    $ctrl[prop] = stateFilterValue === 'true' ? true : stateFilterValue;
+                    $ctrl[prop] = stateFilterValue === 'true' ? true : false;
                 }
             }
         }
