@@ -197,7 +197,7 @@ return [
     },
     {
         name: 'ui.events',
-        url: '/events?eventType&alarmLevel&sortOrder&acknowledged',
+        url: '/events?eventType&alarmLevel&activeStatus&acknowledged&dateFilter',
         template: '<ma-ui-events-page></ma-ui-events-page>',
         menuTr: 'ui.app.events',
         menuIcon: 'alarm',

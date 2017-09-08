@@ -6,122 +6,42 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-EventsPageController.$inject = ['$scope', '$mdMedia', '$stateParams', '$state', 'localStorageService', 'maUiDateBar'];
-function EventsPageController($scope, $mdMedia, $stateParams, $state, localStorageService, maUiDateBar) {
+EventsPageController.$inject = ['$mdMedia', '$stateParams', '$state', 'localStorageService', 'maUiDateBar'];
+function EventsPageController($mdMedia, $stateParams, $state, localStorageService, maUiDateBar) {
     
     var $ctrl = this;
     $ctrl.$mdMedia = $mdMedia;
     $ctrl.dateBar = maUiDateBar;
     
     $ctrl.$onInit = function() {
-        
-        if ($stateParams.sortOrder) {
-            console.log($stateParams.sortOrder);
-            $ctrl.sort = $stateParams.sortOrder;
-        }
-        else {
-            $ctrl.sort = '-activeTimestamp';
-        }
-        
-        if ($stateParams.eventType) {
-            // console.log($stateParams.eventType);
-            $ctrl.eventType = $stateParams.eventType;
-        }
-        else {
-            // Attempt load from local storage
-            var storedEventType = localStorageService.get('lastEventTypeItem');
-            if (storedEventType) {
-                $ctrl.eventType = storedEventType;
-            }
-            else {
-                // Otherwise set to all
-                $ctrl.eventType = '*';
+        for (let prop in $stateParams) {
+            let stateFilterValue = $stateParams[prop];
+            if (prop !== 'dateBar' && prop !== 'helpPage') {
+                if (stateFilterValue === undefined) {
+                    let storedFilterValue = localStorageService.get('lastEvent-' + prop);
+
+                    if (prop === 'dateFilter') {
+                        $ctrl[prop] = storedFilterValue || false;
+                    }
+                    else {
+                        $ctrl[prop] = storedFilterValue || '*';
+                    }
+                }
+                else {
+                    $ctrl[prop] = stateFilterValue === 'true' ? true : stateFilterValue;
+                }
             }
         }
-        
-        if ($stateParams.alarmLevel) {
-            // console.log($stateParams.alarmLevel);
-            $ctrl.alarmLevel = $stateParams.alarmLevel;
-        }
-        else {
-            // Attempt load from local storage
-            var storedAlarmLevel = localStorageService.get('lastAlarmLevelItem');
-            if (storedAlarmLevel) {
-                $ctrl.alarmLevel = storedAlarmLevel;
-            }
-            else {
-                // Otherwise set to all
-                $ctrl.alarmLevel = '*';
-            }
-        }
-        
-        if ($stateParams.acknowledged) {
-            // console.log($stateParams.acknowledged);
-            $ctrl.acknowledged = $stateParams.acknowledged;
-        }
-        else {
-            // Attempt load from local storage
-            var storedAcknowledged = localStorageService.get('acknowledged');
-            if (storedAcknowledged) {
-                $ctrl.acknowledged = storedAcknowledged;
-            }
-            else {
-                // Otherwise set to all
-                $ctrl.acknowledged = '*';
-            }
-        }
-        
-        if ($stateParams.dateFilter) {
-            $ctrl.dateFilter = $stateParams.dateFilter;
-        }
-        else {
-            // Attempt load from local storage
-            var storedDateFilter = localStorageService.get('dateFilter');
-            
-            if (storedDateFilter) {
-                $ctrl.dateFilter = storedDateFilter;
-            }
-            else {
-                // Otherwise set to false
-                $ctrl.dateFilter = false;
-            }
-        }
-        
-        $scope.$watch('$ctrl.eventType', function(newValue, oldValue) {
-            if (newValue === undefined || newValue === oldValue) return;
-            
-            $state.go('.', {eventType: newValue}, {location: 'replace', notify: false});
-            localStorageService.set('lastEventTypeItem', newValue);
-        });
-        
-        $scope.$watch('$ctrl.alarmLevel', function(newValue, oldValue) {
-            if (newValue === undefined || newValue === oldValue) return;
-            
-            $state.go('.', {alarmLevel: newValue}, {location: 'replace', notify: false});
-            localStorageService.set('lastAlarmLevelItem', newValue);
-        });
-        
-        $scope.$watch('$ctrl.acknowledged', function(newValue, oldValue) {
-            if (newValue === undefined || newValue === oldValue) return;
-            
-            $state.go('.', {acknowledged: newValue}, {location: 'replace', notify: false});
-            localStorageService.set('acknowledged', newValue);
-        });
-        
-        $scope.$watch('$ctrl.dateFilter', function(newValue, oldValue) {
-            if (newValue === undefined) return;
-            
-            $state.go('.', {dateFilter: newValue}, {location: 'replace', notify: false});
-            localStorageService.set('dateFilter', newValue);
-            
-            if (newValue === false) {
-                $state.go('.', {dateBar: false}, {location: 'replace', notify: false});
-            }
-            else {
-                $state.go('.', {dateBar: {rollupControls: false}}, {location: 'replace', notify: false});
-            }
-        });
-        
+    };
+
+    $ctrl.storeState = (type) => {
+        let newFilterValue = $ctrl[type];
+        let storageKey = 'lastEvent-' + type;
+        let stateObj = {};
+        stateObj[type] = newFilterValue;
+
+        $state.go('.', stateObj, {location: 'replace', notify: false});
+        localStorageService.set(storageKey, newFilterValue);
     };
 }
 
