@@ -208,12 +208,11 @@ return [
             helpPage: 'ui.help.events'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
                 return maRequireQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
                     angular.module('maUiEventsState', [])
                         .component('maUiEventsPage', eventsPage);
                     $ocLazyLoad.inject('maUiEventsState');
-                    cssInjector.injectLink(require.toUrl('./components/eventsPage/eventsPage.css'), 'eventsPage' ,'link[href="styles/main.css"]');
                 });
             }]
         }

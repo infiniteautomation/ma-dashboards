@@ -1333,3 +1333,9 @@ svg.ma-ui-spinner circle {
     transform: rotate(450deg);
   }
 }
+
+/* events page */
+.events-page md-table-container {
+    /*max-height: 600px;*/
+    padding-bottom: 10px;
+}
