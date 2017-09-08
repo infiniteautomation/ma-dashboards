@@ -46,11 +46,180 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
  * <!-- Example For Restricting Events to those Related to a Data Point -->
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
+
 eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS'];
 function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats) {
+
+    const $inject = Object.freeze(['$scope']);
+    class EventsTableController {
+        static get $inject() { return $inject; }
+        
+        constructor($scope) {
+            this.$scope = $scope;
+            
+            this.$mdMedia = $mdMedia;
+            this.page = 1;
+            this.total = 0;
+            this.totalUnAcknowledged = 0;
+            
+            this.onPaginateBound = (...args) => this.onPaginate(...args);
+        }
+
+        $onInit() {
+            Events.notificationManager.subscribe((event, mangoEvent) => {
+                console.log(event.name, mangoEvent);
+                
+                const index = this.events.findIndex((item) => {
+                    return item.id === mangoEvent.id;
+                });
+                
+                if (index >= 0) {
+                    this.events[index] = mangoEvent;
+                }
+                
+                if (event.name === 'RAISED' && this.sort === '-activeTimestamp') {
+                    
+                }
+                
+            }, this.$scope, ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
+
+            // Watch events.$total to return a clean this.total that isn't ever undefined
+            // Also query with limit(0) with RQLforAcknowldege to get a count of unacknowledged events to display on acknowledgeAll button
+            this.$scope.$watch('$ctrl.events.$total', (newValue, oldValue) => {
+                if (newValue === undefined || newValue === oldValue) return;
+                this.total = newValue;
+                
+                if (this.acknowledged === 'false' || this.acknowledged === '*' || this.acknowledged === undefined) {
+                    Events.rql({query: this.RQL.RQLforAcknowldege+'&limit(0)'}, null).$promise.then((data) => {
+                        this.totalUnAcknowledged = data.$total;
+                    }, (error) => {
+                        console.log('Error', error);
+                    });
+                } else {
+                    this.totalUnAcknowledged = 0;
+                }
+            });
+            
+            // Watch for changes to controls on directive to update query
+            // Contains logic for building the RWL string in doQuery
+            this.$scope.$watch(() => {
+                return {
+                    eventType: this.eventType,
+                    start: this.start,
+                    limit: this.limit,
+                    sort: this.sort,
+                    alarmLevel: this.alarmLevel,
+                    acknowledged: this.acknowledged,
+                    activeStatus: this.activeStatus,
+                    pointId: this.pointId,
+                    eventId: this.eventId,
+                    from: this.from,
+                    to: this.to,
+                    dateFilter: this.dateFilter
+                };
+            }, (value) => {
+                console.log(value);
+                
+                // Return if singlePoint and pointId doesn't exist yet
+                if (this.singlePoint && !this.pointId) {
+                    return;
+                }
+                
+                this.RQL = Events.getRQL(value);
+
+                this.tableQueryPromise = Events.rql({query: this.RQL.RQLforDisplay}).$promise.then((data) => {
+                    // Set Events For Table
+                    this.events = data;
+
+                    // Query for Notes for each
+                    this.events.forEach((event) => {
+
+                        UserNotes.query({
+                            commentType: 'Event',
+                            referenceId: event.id
+                        }).$promise.then((notes) => {
+                            if (notes.length) {
+                                event.hasNotes = true;
+                            }
+                            
+                            notes.forEach((note, index) => {
+                                event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - ' +
+                                    this.formatDate(note.timestamp)+ ')';
+                            });
+                        }, (error) => {
+                            console.log(error);
+                        });
+                    });
+                }, (error) => {
+                    console.log('Error', error);
+                });
+            }, true);
+        }
+        
+        addNote($event, event) {
+            const callback = (note, event) => {
+                event.hasNotes = true;
+                event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - ' +
+                    this.formatDate(note.timestamp)+ ')';
+            };
+            
+            UserNotes.addNote($event, 'Event', event.id, callback , event);
+        }
+
+        onPaginate(page, limit) {
+            this.start = (page - 1) * limit;
+        }
+        
+        parseHTML(text) {
+            return $sce.trustAsHtml(text);
+        }
+        
+        formatDate(date) {
+            var m = moment(date);
+            if (this.timezone) {
+                m.tz(this.timezone);
+            }
+            return m.format(mangoDateFormats.shortDateTimeSeconds);
+        }
+        
+        // Acknowledge single event
+        acknowledgeEvent(event) {
+            event.$acknowledge().then(() => {
+                event.acknowledged = true;
+                this.totalUnAcknowledged--;
+            }, (error) => {
+                console.log('Error', error);
+            });
+        }
+        
+        // Acknowledge multiple events
+        acknowledgeEvents(events) {
+            events.forEach((event) => {
+                this.acknowledgeEvent(event);
+            });
+        }
+        
+        // Acknowledge all matching RQL with button
+        acknowledgeAll() {
+            Events.acknowledgeViaRql({rql: this.RQL.RQLforAcknowldege}, null).$promise.then((data) => {
+                if (data.count) {
+                    // console.log('Acknowledged ', data.count, ' events with RQL', this.RQL.RQLforAcknowldege);
+                    // re-query
+                    this.events = Events.rql({query: this.RQL.RQLforDisplay});
+                }
+            }, (error) => {
+                console.log('Error', error);
+            });
+        }
+    }
+    
     return {
         restrict: 'E',
-        scope: {
+        templateUrl: require.toUrl('./eventsTable.html'),
+        scope: {},
+        controller: EventsTableController,
+        controllerAs: '$ctrl',
+        bindToController: {
             pointId: '=?',
             singlePoint: '@',
             eventId: '=?',
@@ -69,147 +238,6 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         designerInfo: {
             translation: 'ui.app.eventsTable',
             icon: 'alarm'
-        },
-        templateUrl: require.toUrl('./eventsTable.html'),
-        link: function ($scope, $element, attrs) {
-
-            $scope.$mdMedia = $mdMedia;
-            $scope.page = 1;
-            $scope.total = 0;
-            $scope.totalUnAcknowledged = 0;
-
-            $scope.addNote = UserNotes.addNote;
-
-            $scope.pushNote = function(note, event){
-                console.log(note, event);
-
-                event.hasNotes = true;
-                event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - ' +
-                    $scope.formatDate(note.timestamp)+ ')';
-            };
-            
-            $scope.onPaginate = function(page, limit) {
-                $scope.start = (page - 1) * limit;
-            };
-            
-            $scope.parseHTML = function(text) {
-                return $sce.trustAsHtml(text);
-            };
-            
-            $scope.formatDate = function formatDate(date) {
-                var m = moment(date);
-                if ($scope.timezone) {
-                    m.tz($scope.timezone);
-                }
-                return m.format(mangoDateFormats.shortDateTimeSeconds);
-            };
-            
-            // Acknowledge single event
-            $scope.acknowledgeEvents = function(events) {
-                events.forEach(function(event) {
-                    event.$acknowledge().then(() => {
-                        event.acknowledged = true;
-                    }, (error) => {
-                        console.log('Error', error);
-                    });
-                });
-            };
-            
-            // Acknowledge all matching RQL with button
-            $scope.acknowledgeAll = function() {
-                Events.acknowledgeViaRql({rql: $scope.RQL.RQLforAcknowldege}, null).$promise.then(
-                    function (data) {
-                        if (data.count) {
-                            // console.log('Acknowledged ', data.count, ' events with RQL', $scope.RQL.RQLforAcknowldege);
-                            // re-query
-                            $scope.events = Events.rql({query: $scope.RQL.RQLforDisplay});
-                        }
-                    },
-                    function (data) {
-                        console.log('Error', data);
-                    }
-                );
-            };
-            
-            // Watch events.$total to return a clean $scope.total that isn't ever undefined
-            // Also query with limit(0) with RQLforAcknowldege to get a count of unacknowledged events to display on acknowledgeAll button
-            $scope.$watch('events.$total', function(newValue, oldValue) {
-                if (newValue === undefined || newValue === oldValue) return;
-                $scope.total = newValue;
-                
-                if ($scope.acknowledged === 'false' || $scope.acknowledged === '*' || $scope.acknowledged === undefined) {
-                    Events.rql({query: $scope.RQL.RQLforAcknowldege+'&limit(0)'}, null).$promise.then(
-                        function (data) {
-                            // console.log($scope.RQL.RQLforAcknowldege+'&limit(0)', data.$total);
-                            $scope.totalUnAcknowledged = data.$total;
-                        },
-                        function (data) {
-                            console.log('Error', data);
-                        }
-                    );
-                }
-                else {
-                    $scope.totalUnAcknowledged = 0;
-                }
-            });
-            
-            // Watch for changes to controls on directive to update query
-            // Contains logic for building the RWL string in doQuery
-            $scope.$watch(function() {
-                return {
-                    eventType: $scope.eventType,
-                    start: $scope.start,
-                    limit: $scope.limit,
-                    sort: $scope.sort,
-                    alarmLevel: $scope.alarmLevel,
-                    acknowledged: $scope.acknowledged,
-                    activeStatus: $scope.activeStatus,
-                    pointId: $scope.pointId,
-                    eventId: $scope.eventId,
-                    from: $scope.from,
-                    to: $scope.to,
-                    dateFilter: $scope.dateFilter
-                };
-            }, function(value) {
-                
-                // Return if singlePoint and pointId doesn't exist yet
-                if ($scope.singlePoint && !$scope.pointId) {
-                    // console.log('Returning', $scope.singlePoint, $scope.pointId);
-                    return;
-                }
-                
-                $scope.RQL = Events.getRQL(value);
-
-                Events.rql({query: $scope.RQL.RQLforDisplay}).$promise.then(
-                    function (data) {
-                        // Set Events For Table
-                        $scope.events = data;
-
-                        // Query for Notes for each
-                        $scope.events.forEach(function(event) {
-
-                            UserNotes.query({
-                                commentType: 'Event',
-                                referenceId: event.id
-                            }).$promise.then(function(notes) {
-                                // console.log(notes);
-                                if (notes.length)
-                                    event.hasNotes = true;
-                                notes.forEach(function(note, index){
-                                    event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - ' +
-                                        $scope.formatDate(note.timestamp)+ ')';
-                                });
-                            }, function(error) {
-                                console.log(error);
-                            });
-
-                        });
-                    },
-                    function (error) {
-                        console.log('Error', error);
-                    }
-                );
-            }, true);
         }
     };
 }
