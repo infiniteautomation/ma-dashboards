@@ -127,9 +127,13 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
                 delete this.socket;
             }
         }
+        
+        socketConnected() {
+            return this.socket && this.socket.readyState === READY_STATE_OPEN;
+        }
 
         sendMessage(message) {
-            if (this.socket && this.socket.readyState === READY_STATE_OPEN) {
+            if (this.socketConnected()) {
                 this.socket.send(angular.toJson(message));
             }
         }
