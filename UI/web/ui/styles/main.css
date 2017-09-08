@@ -1339,3 +1339,41 @@ svg.ma-ui-spinner circle {
     /*max-height: 600px;*/
     padding-bottom: 10px;
 }
+
+/* data point details page */
+.data-point-details-page md-card.dpd-small-card {
+    height: 305px;
+    max-height: 305px;
+}
+
+.data-point-details-page md-card.dpd-small-card > div {
+  overflow-y: auto;
+}
+
+.data-point-details-page .amchart {
+    height: 420px;
+    max-height: 420px;
+}
+.data-point-details-page table.md-table thead.md-head>tr.md-row {
+    height: 30px;
+}
+.data-point-details-page table.md-table thead.md-head>tr.md-row th{
+    padding-top: 5px !important;
+}
+.data-point-details-page .point-details label{
+    font-weight: bold;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.data-point-details-page .dpd-num-values input {
+  width: 55px;
+}
+
+.data-point-details-page .dpd-table-refresh {
+  margin: 0;
+}
+
+.data-point-details-page .md-button.force-read {
+  margin-bottom: -18px;
+}

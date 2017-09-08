@@ -184,13 +184,11 @@ return [
             helpPage: 'ui.help.dataPointDetails'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
                 return maRequireQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
                     angular.module('maUiDataPointDetailsState', [])
                         .component('maUiDataPointDetails', dataPointDetails);
                     $ocLazyLoad.inject('maUiDataPointDetailsState');
-                    cssInjector.injectLink(require.toUrl('./components/dataPointDetails/dataPointDetails.css'),
-                            'dataPointDetails' ,'link[href="styles/main.css"]');
                 });
             }]
         }

@@ -148,7 +148,9 @@ function eventsFactory($resource, Util, NotificationManager) {
         acknowledge: {
             method: 'PUT',
             url: '/rest/v1/events/acknowledge/:id',
-            cache: true
+            transformRequest: (data, headersGetter) => {
+                return null;
+            }
         },
         acknowledgeViaRql: {
             method: 'POST',
@@ -157,8 +159,7 @@ function eventsFactory($resource, Util, NotificationManager) {
         getActiveSummary: {
         	url: '/rest/v1/events/active-summary',
             method: 'GET',
-            isArray: true,
-            cache: true
+            isArray: true
         }
     });
     

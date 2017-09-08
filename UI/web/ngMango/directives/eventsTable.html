@@ -33,7 +33,7 @@
                 <td md-cell class="medium-column" ng-bind="formatDate(event.activeTimestamp)"></td>
                 <td md-cell class="msg-column" ng-class="{'truncated' : !toggle}" ng-click="toggle = !toggle" >
                     <a ui-sref="ui.dataPointDetails({pointId: event.eventType.dataPointId})"
-                       ng-if="event.eventType.eventType==='DATA_POINT' && currentPage !== 'ui.dataPointDetails'">
+                       ng-if="event.eventType.eventType==='DATA_POINT' && !hideDataPointLink">
                         <md-icon md-colors="{'color': 'accent-hue-2'}">
                             timeline
                             <md-tooltip md-delay="250" md-direction="right" md-autohide><span ma-tr="ui.app.dpd"></span></md-tooltip>

@@ -46,8 +46,8 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
  * <!-- Example For Restricting Events to those Related to a Data Point -->
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
-eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS', '$state'];
-function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats, $state) {
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS'];
+function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats) {
     return {
         restrict: 'E',
         scope: {
@@ -63,7 +63,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             from: '=?',
             to: '=?',
             dateFilter: '=?',
-            timezone: '@'
+            timezone: '@',
+            hideDataPointLink: '<?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',
@@ -71,9 +72,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         },
         templateUrl: require.toUrl('./eventsTable.html'),
         link: function ($scope, $element, attrs) {
-            
+
             $scope.$mdMedia = $mdMedia;
-            $scope.currentPage = $state.current.name;
             $scope.page = 1;
             $scope.total = 0;
             $scope.totalUnAcknowledged = 0;
@@ -107,22 +107,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             // Acknowledge single event
             $scope.acknowledgeEvents = function(events) {
                 events.forEach(function(event) {
-                    Events.acknowledge({id: event.id}, null).$promise.then(
-                        function (data) {
-                            // console.log('Success', data);
-                            
-                            if (data.id) {
-                                $scope.events.some(function(item) {
-                                    if (item.id === data.id) {
-                                        return (item.acknowledged = true);
-                                    }
-                                });
-                            }
-                        },
-                        function (data) {
-                            console.log('Error', data);
-                        }
-                    );
+                    event.$acknowledge().then(() => {
+                        event.acknowledged = true;
+                    }, (error) => {
+                        console.log('Error', error);
+                    });
                 });
             };
             
