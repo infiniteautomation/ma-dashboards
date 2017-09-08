@@ -16,9 +16,9 @@ function ActiveEventIconsController(Events, $scope) {
             this.events.totalCount += item.unsilencedCount;
         });
 
-        Events.notificationManager.subscribe((event, message) => {
-            this.counter(message.event, message.type);
-        }, $scope, ['webSocketMessage']);
+        Events.notificationManager.subscribe((event, mangoEvent) => {
+            this.counter(mangoEvent, event.name);
+        }, $scope, ['RAISED', 'ACKNOWLEDGED']);
 
     }, (error) => {
         console.log('error', error);

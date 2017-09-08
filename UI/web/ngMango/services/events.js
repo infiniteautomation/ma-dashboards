@@ -169,11 +169,14 @@ function eventsFactory($resource, Util, NotificationManager) {
     
     Events.notificationManager = new NotificationManager({
         webSocketUrl: '/rest/v1/websocket/events',
-        transformObject(object) {
-            return new Events(object);
-        },
         onOpen() {
             this.sendMessage(subscriptionMessage);
+        },
+        notifyFromPayload(payload) {
+            if (payload.type && payload.event) {
+                const item = new Events(payload.event);
+                this.notify(payload.type, item);
+            }
         }
     });
     
