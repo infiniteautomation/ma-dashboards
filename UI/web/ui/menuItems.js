@@ -301,6 +301,12 @@ return [
         menuTr: 'ui.dox.customDashboards'
     },
     {
+        url: '/system-status',
+        name: 'ui.help.systemStatus',
+        templateUrl: require.toUrl('./views/help/systemStatus.html'),
+        menuTr: 'ui.settings.systemStatus'
+    },
+    {
         url: '/view-page/{pageXid}',
         name: 'ui.viewPage',
         template: '<ma-ui-page-view xid="{{pageXid}}" flex layout="column"></ma-ui-page-view>',

@@ -1,0 +1,206 @@
+<div class="help-doc-container">
+	<h1 ma-tr="ui.settings.systemStatus"></h1>
+
+	<p>
+		The system status pages provide insight into the performance and health of your Mango System. The various sections
+		provide information on system logs, processor threads, audit history and much more.
+	</p>
+
+	<br>
+
+	<h2>Audit Trail</h2>
+
+	<p>
+		The <a ui-sref="ui.settings.systemStatus.auditTrail">Audit Trail</a> section shows a table of any changes to the
+		system. <code>Audit Events</code> can be sorted and filtered by <code>Alarm Level</code>, <code>Change Type</code>,
+		<code>Event Type</code>, <code>User</code> and <code>Time</code>.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-AuditTrail.png"
+		 alt="Help-ScreenShots-SystemStatus-AuditTrail"/>
+
+	<p>
+		Enabling the <code>Date filter</code> will limit the <code>Audit Events</code> shown in the table to those that
+		were created within the time range selected in the <a ui-sref="ui.help.dateBar">Date Bar</a>.
+	</p>
+
+	<p>
+		Click any row to select that <code>Audit Event</code> and have its context be displayed as JSON in an output pane below
+		the table.
+	</p>
+
+	<br>
+
+	<h2>Internal Metrics</h2>
+
+	<p>
+		The <a ui-sref="ui.settings.systemStatus.internalMetrics">Internal Metrics</a> section shows various metrics
+		that are related to your system. The table can be refreshed on demand and sorted by name or value.
+		Descriptions of these metrics are detailed below:
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-InternalMetrics.png"
+		 alt="Help-ScreenShots-SystemStatus-InternalMetrics"/>
+
+	<h3>Point values to be written</h3>
+	<p>This value represents the number of point values queued up waiting to be dumped to the database by the Batch Write Behind sub-system.</p>
+
+	<h3>Point value write threads</h3>
+	<p>This value represents the number of threads concurrently writing point values from the queue.</p>
+
+	<h3>High priority work items currently running</h3>
+	<p>This value represents the number of currently executing high priority tasks. The following is a list of some high priority work items that Mango has:</p>
+
+	<ul>
+		<li><strong>Database batch write behind</strong> - writing point values from the queue</li>
+		<li><strong>Process Work Item</strong> - Event handlers that run a process use this</li>
+		<li><strong>Set Point Work Item</strong> - Setting a point value from outside of the data source runtime, for example a Point Link uses this.</li>
+		<li><strong>HttpImageRetriever</strong> - This data source uses a work item to retrieve the images.</li>
+		<li><strong>BACnet Device Poller</strong> - BACnet data source device polling</li>
+	</ul>
+
+
+	<h3>Medium priority work items</h3>
+	<p>
+		This value represents the number of queued Medium priority work items that will be executed when a free thread from the
+		medium priority pool is available. The queue for this pool has no bounds and can grow indefinitely.
+		The following is a list of some medium priority work items that Mango has:
+	</p>
+
+	<ul>
+		<li><strong>Event Notify Work Item</strong> - When a data point is saved or updated anything in Mango that needs to know is notified in a separate thread.</li>
+		<li><strong>Backups</strong> - Backups happen from this pool.</li>
+	</ul>
+	
+	<h3>Low priority work items</h3>
+	<p>Low priority work items run in a separate pool that is not monitored for size. The following is a list of low priority tasks:</p>
+
+	<ul>
+		<li><strong>Reports</strong></li>
+		<li><strong>Excel Reports</strong></li>
+		<li><strong>Email</strong></li>
+		<li><strong>Event Notify Work Item</strong> - Anything listening for events/alarms</li>
+	</ul>
+
+	<h3>Currently scheduled high priority work items</h3>
+	<p>This value represents the number of High priority tasks that are scheduled to run in the future.</p>
+
+	<h3>Maximum thread stack height</h3>
+	<p>This value represents the largest thread stack of any thread within Mango.</p>
+
+	<h3>Active thread count</h3>
+	<p>This value represents the total number of active threads.</p>
+
+	<h3>Active database connections</h3>
+	<p>This value represents the active connections in the pool and is only useful if using JDBC Pooling.</p>
+
+	<h3>Idle database connections</h3>
+	<p>This value represents the idle connections in the pool and is only useful if using JDBC Pooling.</p>
+
+	<h3>Writes per second during database batches</h3>
+	<p>This value represents the number of point values going into the database per second if there are values queued.</p>
+
+	<h3>JVM free memory</h3>
+	<p>This value represents the amount of memory left before the heap will attempt to grow.</p>
+
+	<h3>JVM used memory</h3>
+	<p>This value represents the current amount of memory being used by the JVM.</p>
+
+	<h3>JVM max memory</h3>
+	<p>This value represents the maximum amount of memory that the heap can potentially acquire.</p>
+
+	<h3>JVM available processors</h3>
+	<p>This value represents the number of CPU cores that the JVM can access.</p>
+
+	<br>
+
+	<h2>Logging Console</h2>
+
+	<p>
+		The <a ui-sref="ui.settings.systemStatus.loggingConsole">Logging Console</a> section shows a table of all log files
+		that have been created by your system. Log files can be useful for debugging a system.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-LogFilesTable.png"
+		 alt="Help-ScreenShots-SystemStatus-LogFilesTable"/>
+
+	<p>
+		You can <code>View</code> a log file in the text pane below the table, or you can <code>Download</code> a log file to
+		your desktop.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%"
+		 ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-LogFileView.png"
+		 alt="Help-ScreenShots-SystemStatus-LogFileView"/>
+
+	<p>
+		If you are viewing the log file you can click the <code>Copy to Clipboard</code> button for easy pasting into an email
+		or text editor.
+	</p>
+
+	<br>
+
+	<h2>Server Info</h2>
+
+	<p>
+		The <a ui-sref="ui.settings.systemStatus.serverInfo">Server Info</a> section shows information such as
+		your server's <code>Time zone</code>, <code>Database type</code> and <code>Database size</code>.
+	</p>
+
+	<p>
+		The <code>Database size</code> is the currently amount of storage space consumed by the Mango database. The majority of space is
+		typically taken up by report instances, point readings, and events. To minimize the database size the purging
+		characteristics for each of these items should be set as aggressively as is practical. For more information on how to 
+		prevent Mango from running out of disk space see this <a href="https://help.infiniteautomation.com/managing-disk-space/" target="_blank">help article</a>.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%"
+		 ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-ServerInfo.png"
+		 alt="Help-ScreenShots-SystemStatus-ServerInfo"/>
+
+	<p>
+		Click the <code>Get Point Counts</code> button to view a table of point counts. A point's count refers to the number of
+		histories that are stored in the database for a specific data point.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%"
+		 ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-ServerPointCounts.png"
+		 alt="Help-ScreenShots-SystemStatus-ServerPointCounts"/>
+
+	<p>
+		The table can be sorted by <code>Point Name</code>, <code>Point ID</code>, or <code>Count</code>.
+	</p>
+
+	<br>
+
+	<h2>Threads</h2>
+
+	<p>
+		The <a ui-sref="ui.settings.systemStatus.threads">Threads</a> section shows all the processor threads running on your
+		system. Threads can be sorted by their <code>Name</code>, <code>CPU Time</code>, <code>User Time</code>, or
+		<code>State</code>. The entire thread dump can be downloaded as a json file by clicking the <code>Download Thread Dump</code> button.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-Threads.png" alt="Help-ScreenShots-SystemStatus-Threads"/>
+
+	<p>
+		Clicking any row will show the <code>Stack Trace</code> for that selected thread. These details can be useful for
+		debugging blocked threads.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-ThreadTrace.png" alt="Help-ScreenShots-SystemStatus-ThreadTrace"/>
+
+	<br><br><br>
+
+	<h2>Work Items</h2>
+
+	<p>
+		The <a ui-sref="ui.settings.systemStatus.workItems">Work Items</a> section shows information on various tasks that are
+		running in your system. Tasks are organized by type and priority. The <code>Rejected Stats</code> and
+		<code>Running Stats</code> tables will show data specific to those types.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%"
+		 ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-SystemStatus-WorkItems.png"
+		 alt="Help-ScreenShots-SystemStatus-WorkItems"/>
+</div>
