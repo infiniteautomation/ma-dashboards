@@ -1087,7 +1087,7 @@ md-icon {
 
 .amcharts-category-axis .amcharts-axis-tick, .amcharts-category-axis .amcharts-axis-tick-minor, 
 .amcharts-category-axis .amcharts-axis-line, .amcharts-category-axis .amcharts-axis-label, 
-.amcharts-axis-grid,
+.amcharts-axis-grid:not(.amcharts-guide),
 .amcharts-axis-bottom-label  {
     fill: inherit;
     stroke: inherit;
