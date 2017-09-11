@@ -278,6 +278,15 @@ PageEditorControlsController.prototype.savePage = function savePage() {
             this.$mdToast.show(toast);
 
             return this.pageSummaryStore.$save();
+        }.bind(this), function(error) {
+            var errorToast = this.$mdToast.simple()
+                .textContent(this.Translate.trSync('ui.app.errorSavingPage', [this.selectedPageSummary.name, error.status, error.statusText]))
+                .action(this.Translate.trSync('common.ok'))
+                .highlightAction(true)
+                .position('bottom center')
+                .hideDelay(2000);
+
+            this.$mdToast.show(errorToast);
         }.bind(this));
     } else {
         this.showInputs = true;
