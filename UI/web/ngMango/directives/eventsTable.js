@@ -101,22 +101,14 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
 
         $onInit() {
             Events.notificationManager.subscribe((event, mangoEvent) => {
-                // if event is already in current page update it
-                const index = this.events.findIndex((item) => {
-                    return item.id === mangoEvent.id;
-                });
-                if (index >= 0) {
-                    this.events[index] = mangoEvent;
+                if (event.name === 'ACKNOWLEDGED' && this.acknowledged !== true && this.totalUnAcknowledged > 0 && this.eventMatchesFilters(mangoEvent, true)) {
+                    this.totalUnAcknowledged--;
                 }
                 
                 if (this.eventMatchesFilters(mangoEvent)) {
-                    if (event.name === 'ACKNOWLEDGED') {
-                        if (this.acknowledged === false) {
-                            this.removeEvent(event);
-                        }
-                        this.totalUnAcknowledged--;
-                    }
-                    
+                    // if event is already in current page replace it
+                    this.removeEvent(mangoEvent.id, mangoEvent);
+
                     if (event.name === 'RAISED' && !this.dateFilter) {
                         if (this.sort === '-activeTimestamp' && this.start === 0) {
                             // sorted by descending time and on the first page
@@ -126,6 +118,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
                             this.events.push(mangoEvent);
                         }
                         
+                        // ensure that we don't have more items than items per page
                         if (this.events.length > this.limit) {
                             this.events.pop();
                         }
@@ -133,6 +126,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
                         this.total++;
                         this.totalUnAcknowledged++;
                     }
+                } else {
+                    // event may no longer match the filters, remove it if so
+                    this.removeEvent(mangoEvent.id);
                 }
             }, this.$scope, ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
         }
@@ -252,22 +248,35 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             }
             return m.format(mangoDateFormats.shortDateTimeSeconds);
         }
-        
-        removeEvent(event) {
-            const index = this.events.findIndex(item => item.id === event.id);
-            if (index >= 0)
-	            this.events.splice(index, 1);
+
+        removeEvent(eventId, replacement) {
+            const index = this.events.findIndex(item => item.id === eventId);
+            if (index >= 0) {
+                let removed;
+                if (replacement) {
+                    removed = this.events.splice(index, 1, replacement);
+                } else {
+                    removed = this.events.splice(index, 1);
+                }
+                return removed[0];
+            }
         }
         
         // Acknowledge single event
         acknowledgeEvent(event) {
+            const didMatchFilters = this.eventMatchesFilters(event);
+            
             event.$acknowledge().then(() => {
                 event.acknowledged = true;
+                
                 if (!Events.notificationManager.socketConnected()) {
-                    if (this.acknowledged === false) {
+                    if (didMatchFilters && this.totalUnAcknowledged > 0) {
+                        this.totalUnAcknowledged--;
+                    }
+                    
+                    if (!this.eventMatchesFilters(event)) {
                         this.removeEvent(event);
                     }
-                    this.totalUnAcknowledged--;
                 }
             });
         }
@@ -289,15 +298,18 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             });
         }
 
-        eventMatchesFilters(event) {
+        eventMatchesFilters(event, ignoreAckFilter) {
             const tests = [
                 new Equals(event.eventType.eventType, this.eventType),
                 new Equals(event.alarmLevel, this.alarmLevel),
                 new Equals(event.active, this.active),
-                new Equals(event.acknowledged, this.acknowledged),
                 new Equals(event.eventType.dataPointId, this.pointId),
                 new Equals(event.id, this.eventId),
             ];
+            
+            if (!ignoreAckFilter) {
+                tests.push(new Equals(event.acknowledged, this.acknowledged));
+            }
             
             if (this.dateFilter) {
                 tests.push(
