@@ -57,7 +57,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         }
 
         test() {
-            if (this.filter == null || this.filter === '*')
+            if (this.filter == null || this.filter === 'any')
                 return true;
             return this.testOp();
         }
@@ -208,8 +208,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
                 this.countUnacknowledgedResource.$cancelRequest();
             }
             
-            if (this.acknowledged === 'false' || this.acknowledged === '*' || this.acknowledged === undefined) {
-                this.countUnacknowledgedResource = Events.rql({query: this.RQL.RQLforAcknowldege+'&limit(0)'}, null);
+            if (!this.acknowledged || this.acknowledged === 'any') {
+                this.countUnacknowledgedResource = Events.rql({query: this.RQL.RQLforCountUnacknowledged}, null);
                 this.countUnacknowledgedResource.$promise.then((data) => {
                     this.totalUnAcknowledged = data.$total;
                 });
@@ -332,7 +332,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         controllerAs: '$ctrl',
         bindToController: {
             pointId: '<?',
-            singlePoint: '@',
+            singlePoint: '<?',
             eventId: '<?',
             alarmLevel: '<?',
             eventType:'<?',

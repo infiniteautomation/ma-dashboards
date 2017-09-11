@@ -6,44 +6,59 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-EventsPageController.$inject = ['$mdMedia', '$stateParams', '$state', 'localStorageService', 'maUiDateBar'];
-function EventsPageController($mdMedia, $stateParams, $state, localStorageService, maUiDateBar) {
-    
-    var $ctrl = this;
-    $ctrl.$mdMedia = $mdMedia;
-    $ctrl.dateBar = maUiDateBar;
+const paramNames = ['eventType', 'alarmLevel', 'activeStatus', 'acknowledged', 'dateFilter'];
+
+EventsPageController.$inject = ['$mdMedia', '$state', 'localStorageService', 'maUiDateBar'];
+function EventsPageController($mdMedia, $state, localStorageService, maUiDateBar) {
+
+    this.$mdMedia = $mdMedia;
+    this.dateBar = maUiDateBar;
     
     this.sort = '-activeTimestamp';
-    
-    $ctrl.$onInit = function() {
-        for (let prop in $stateParams) {
-            let stateFilterValue = $stateParams[prop];
-            if (prop !== 'dateBar' && prop !== 'helpPage') {
-                if (stateFilterValue === undefined) {
-                    let storedFilterValue = localStorageService.get('lastEvent-' + prop);
+    this.params = $state.params;
 
-                    if (prop === 'dateFilter') {
-                        $ctrl[prop] = storedFilterValue || false;
-                    }
-                    else {
-                        $ctrl[prop] = storedFilterValue || '*';
-                    }
-                }
-                else {
-                    $ctrl[prop] = stateFilterValue === 'true' ? true : false;
-                }
+    this.$onInit = function() {
+        const params = this.params;
+        
+        paramNames.forEach(prop => {
+            const storageKey = 'lastEvent-' + prop;
+            
+            const paramValue = params[prop];
+            const filterValue = paramValue != null ? paramValue : localStorageService.get(storageKey);
+            const normalized = this.normalizeFilter(filterValue, prop === 'dateFilter' ? false : 'any');
+
+            params[prop] = normalized;
+            localStorageService.set(storageKey, normalized);
+        });
+        
+        $state.go('.', params, {location: 'replace', notify: false});
+    };
+    
+    this.normalizeFilter = function(value, defaultValue) {
+        if (typeof value === 'string') {
+            const lower = value.toLowerCase();
+            if (lower === 'true') {
+                return true;
+            } else if (lower === 'false') {
+                return false;
             }
         }
+        // map old wildcard value
+        if (value === '*') {
+            return 'any';
+        }
+        if (value == null) {
+            return defaultValue;
+        }
+        return value;
     };
 
-    $ctrl.storeState = (type) => {
-        let newFilterValue = $ctrl[type];
-        let storageKey = 'lastEvent-' + type;
-        let stateObj = {};
-        stateObj[type] = newFilterValue;
+    this.storeState = function(type) {
+        const filterValue = this.params[type];
+        const storageKey = 'lastEvent-' + type;
 
-        $state.go('.', stateObj, {location: 'replace', notify: false});
-        localStorageService.set(storageKey, newFilterValue);
+        $state.go('.', this.params, {location: 'replace', notify: false});
+        localStorageService.set(storageKey, filterValue);
     };
 }
 

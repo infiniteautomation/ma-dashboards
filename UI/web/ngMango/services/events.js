@@ -221,21 +221,21 @@ function eventsFactory($resource, Util, NotificationManager) {
     };
 
     Events.getRQL = function(options) {
-        var params = [];
+        const params = [];
 
-        if (options.alarmLevel && options.alarmLevel !== '*') {
-            params.push('alarmLevel=' + options.alarmLevel);
+        if (options.alarmLevel && options.alarmLevel !== 'any') {
+            params.push(`alarmLevel=${options.alarmLevel}`);
         }
-        if (options.eventType && options.eventType !== '*') {
-            params.push('eventType=' + options.eventType);
+        if (options.eventType && options.eventType !== 'any') {
+            params.push(`eventType=${options.eventType}`);
         }
         if (options.pointId) {
-            params.push('dataPointId=' + options.pointId);
+            params.push(`dataPointId=${options.pointId}`);
         }
         if (options.eventId) {
-            params.push('id=' + options.eventId);
+            params.push(`id=${options.eventId}`);
         }
-        if (options.activeStatus && options.activeStatus !== '*') {
+        if (options.activeStatus && options.activeStatus !== 'any') {
             if (options.activeStatus==='active') {
                 params.push('active=true');
             }
@@ -246,42 +246,42 @@ function eventsFactory($resource, Util, NotificationManager) {
                 params.push('active=false');
             }
         }
-        if (options.acknowledged && options.acknowledged !== '*') {
-            if (options.acknowledged==='true') {
-                params.push('acknowledged=true');
-            }
-            else if (options.acknowledged==='false') {
-                params.push('acknowledged=false');
-            }
-        }
         if (options.from && options.dateFilter) {
-            params.push('activeTimestamp=ge=' + options.from.valueOf());
+            const from = options.from.valueOf();
+            params.push(`activeTimestamp=ge=${from}`);
         }
         if (options.to && options.dateFilter) {
-            params.push('activeTimestamp=lt=' + options.to.valueOf());
+            const to = options.to.valueOf();
+            params.push(`activeTimestamp=lt=${to}`);
         }
 
-        var RQLforAcknowldege = params.join('&');
-        var RQLforDisplay = params.join('&');
+        const ackAllParams = params.slice();
+        ackAllParams.push('acknowledged=false');
+        
+        const countUnAckParams = params.slice();
+        countUnAckParams.push('acknowledged=false', 'limit(0)');
 
-
-        if (options.acknowledged !== 'false') {
-            RQLforAcknowldege += '&acknowledged=false';
+        if (options.acknowledged != null && options.acknowledged !== 'any') {
+            params.push(`acknowledged=${options.acknowledged}`);
         }
 
         if (options.sort) {
-            var sort = options.sort;
+            let sort = options.sort;
             if (angular.isArray(sort)) {
                 sort = sort.join(',');
             }
-            RQLforDisplay += '&sort(' + sort + ')';
+            params.push(`sort(${sort})`);
         }
         if (options.limit) {
-            var start = options.start || 0;
-            RQLforDisplay += '&limit(' + options.limit + ',' + start + ')';
+            const start = options.start || 0;
+            params.push(`limit(${options.limit},${start})`);
         }
 
-        return {RQLforAcknowldege: RQLforAcknowldege, RQLforDisplay: RQLforDisplay};
+        return {
+            RQLforAcknowldege: ackAllParams.join('&'),
+            RQLforCountUnacknowledged: countUnAckParams.join('&'),
+            RQLforDisplay: params.join('&')
+        };
     };
 
     return Events;

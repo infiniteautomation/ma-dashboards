@@ -8,24 +8,24 @@
                   <h2 style="padding-right: 5px;" ng-if="$ctrl.$mdMedia('gt-xs')">
                         <span><span ma-tr="ui.app.dateFilter"></span>: </span>
                   </h2>
-                  <md-switch ng-model="$ctrl.dateFilter" aria-label="{{'ui.app.dateFilter' | maTr}}" ng-change="$ctrl.storeState('dateFilter')"></md-switch>
+                  <md-switch ng-model="$ctrl.params.dateFilter" aria-label="{{'ui.app.dateFilter' | maTr}}" ng-change="$ctrl.storeState('dateFilter')"></md-switch>
 
                   <div ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}">
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === '*' }"
-                                ng-click="$ctrl.eventType='*'; $ctrl.storeState('eventType')" ma-tr="ui.app.all">
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'any' }"
+                                ng-click="$ctrl.params.eventType='any'; $ctrl.storeState('eventType')" ma-tr="ui.app.any">
                         </md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_POINT' }"
-                                ng-click="$ctrl.eventType='DATA_POINT'; $ctrl.storeState('eventType')">
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'DATA_POINT' }"
+                                ng-click="$ctrl.params.eventType='DATA_POINT'; $ctrl.storeState('eventType')">
                             <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
                             <span ma-tr="ui.app.point"></span>
                         </md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_SOURCE' }"
-                                ng-click="$ctrl.eventType='DATA_SOURCE'; $ctrl.storeState('eventType')">
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'DATA_SOURCE' }"
+                                ng-click="$ctrl.params.eventType='DATA_SOURCE'; $ctrl.storeState('eventType')">
                             <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
                             <span ma-tr="ui.app.source"></span>
                         </md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'SYSTEM' }"
-                                ng-click="$ctrl.eventType='SYSTEM'; $ctrl.storeState('eventType')" ma-tr="ui.app.system">
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'SYSTEM' }"
+                                ng-click="$ctrl.params.eventType='SYSTEM'; $ctrl.storeState('eventType')" ma-tr="ui.app.system">
                         </md-button>
                   </div>
             </div>
@@ -33,8 +33,8 @@
       <md-card-actions layout="row" layout-align="start center" layout-wrap>
             <md-input-container flex>
                   <label ma-tr="ui.app.alarmLvl"></label>
-                  <md-select ng-model="$ctrl.alarmLevel" ng-change="$ctrl.storeState('alarmLevel')">
-                        <md-option value="*"><span ma-tr="ui.app.all"></span>&nbsp;<i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
+                  <md-select ng-model="$ctrl.params.alarmLevel" ng-change="$ctrl.storeState('alarmLevel')">
+                        <md-option value="any"><span ma-tr="ui.app.any"></span>&nbsp;<i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
                         <md-option value="NONE"><span ma-tr="ui.app.none"></span>&nbsp;<i class="fa fa-flag fa-lg alarm-flag NONE"></i></md-option>
                         <md-option value="INFORMATION"><span ma-tr="ui.app.information"></span>&nbsp;<i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
                         <md-option value="IMPORTANT"><span ma-tr="ui.app.important"></span>&nbsp;<i class="fa fa-flag fa-lg alarm-flag IMPORTANT"></i></md-option>
@@ -46,8 +46,8 @@
             </md-input-container>
             <md-input-container flex>
                   <label ma-tr="ui.app.activeStatus"></label>
-                  <md-select ng-model="$ctrl.activeStatus" ng-change="$ctrl.storeState('activeStatus')">
-                        <md-option value="*"><span ma-tr="ui.app.all"></span></md-option>
+                  <md-select ng-model="$ctrl.params.activeStatus" ng-change="$ctrl.storeState('activeStatus')">
+                        <md-option value="any"><span ma-tr="ui.app.any"></span></md-option>
                         <md-option value="active"><span ma-tr="ui.app.active"></span></md-option>
                         <md-option value="noRtn"><span ma-tr="ui.app.noRtn"></span></md-option>
                         <md-option value="normal"><span ma-tr="ui.app.returnedToNormal"></span></md-option>
@@ -55,14 +55,14 @@
             </md-input-container>
             <md-input-container flex>
                   <label ma-tr="ui.app.acknowledged"></label>
-                  <md-select ng-model="$ctrl.acknowledged" ng-change="$ctrl.storeState('acknowledged')">
-                        <md-option value="*"><span ma-tr="ui.app.all"></span></md-option>
-                        <md-option value="true"><span ma-tr="ui.app.acknowledged"></span></md-option>
-                        <md-option value="false"><span ma-tr="ui.app.unAcknowledged"></span></md-option>
+                  <md-select ng-model="$ctrl.params.acknowledged" ng-change="$ctrl.storeState('acknowledged')">
+                        <md-option ng-value="'any'"><span ma-tr="ui.app.any"></span></md-option>
+                        <md-option ng-value="true"><span ma-tr="ui.app.acknowledged"></span></md-option>
+                        <md-option ng-value="false"><span ma-tr="ui.app.unAcknowledged"></span></md-option>
                   </md-select>
             </md-input-container>
       </md-card-actions>
-      <ma-events-table event-type="$ctrl.eventType" alarm-level="$ctrl.alarmLevel" acknowledged="$ctrl.acknowledged"
-        event-id="eventId" active-status="$ctrl.activeStatus" date-filter="$ctrl.dateFilter"
+      <ma-events-table event-type="$ctrl.params.eventType" alarm-level="$ctrl.params.alarmLevel" acknowledged="$ctrl.params.acknowledged"
+        event-id="eventId" active-status="$ctrl.params.activeStatus" date-filter="$ctrl.params.dateFilter"
         from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" limit="50" sort="$ctrl.sort"></ma-events-table>
 </md-card>
