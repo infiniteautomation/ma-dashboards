@@ -766,3 +766,9 @@ ma-ace-editor > .ace_editor {
 	flex-grow: 1;
 	font-size: 1.4rem;
 }
+
+/* Events table */
+
+ma-events-table .active-status {
+	font-weight: bold;
+}

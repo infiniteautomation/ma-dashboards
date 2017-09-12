@@ -158,12 +158,19 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             if (this.singlePoint && !this.pointId) {
                 return;
             }
+            
+            let sort = this.sort;
+            if (sort === 'activeRtn') {
+                sort = ['rtnTs', 'rtnApplicable'];
+            } else if (sort === '-activeRtn') {
+                sort = ['-rtnTs', '-rtnApplicable'];
+            }
 
             this.RQL = Events.getRQL({
                 eventType: this.eventType,
                 start: this.start,
                 limit: this.limit,
-                sort: this.sort,
+                sort: sort,
                 alarmLevel: this.alarmLevel,
                 acknowledged: this.acknowledged,
                 activeStatus: this.activeStatus,

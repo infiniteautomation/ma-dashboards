@@ -164,7 +164,21 @@ function eventsFactory($resource, Util, NotificationManager) {
             isArray: true
         }
     });
-    
+
+    Object.defineProperty(Events.prototype, 'duration', {
+        get: function() {
+            if (this.returnToNormalTimestamp === 0) {
+                if (!this.active) return null;
+                
+                // round to prevent infinite digests
+                const time = Math.floor(new Date().valueOf() / 1000) * 1000;
+                return time - this.activeTimestamp;
+            } else {
+                return this.returnToNormalTimestamp - this.activeTimestamp;
+            }
+        }
+    });
+
     const subscriptionMessage = {
         eventTypes: ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED'],
         levels: ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE']
