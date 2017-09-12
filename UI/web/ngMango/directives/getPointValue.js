@@ -57,7 +57,8 @@ function getPointValue(pointEventManager, Point, Util) {
             point: '=?',
             pointXid: '@?',
             points: '<?',
-            onValueUpdated: '&?'
+            onValueUpdated: '&?',
+            onGetPoint: '&?'
         },
         link: function ($scope, $element, attrs) {
 
@@ -94,6 +95,9 @@ function getPointValue(pointEventManager, Point, Util) {
                 $scope.pointResource = Point.get({xid: newXid});
                 $scope.pointResource.$promise.then(function(point) {
                     $scope.point = point;
+                    if ($scope.onGetPoint) {
+                        $scope.onGetPoint({$point: point});
+                    }
                 });
             });
 

@@ -90,8 +90,9 @@ function pointList(Point, $injector) {
                 promise.then(function(points) {
                     $scope.points = points;
 
-                    if ($scope.initPoint && !$scope.ngModel && $scope.points.length) {
+                    if ($scope.initPoint && !$scope.autoInitDone && !$scope.ngModel && $scope.points.length) {
                         $scope.ngModel = $scope.points[0];
+                        $scope.autoInitDone = true;
                     }
                 });
             }, true);

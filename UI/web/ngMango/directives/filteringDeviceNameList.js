@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-filteringDeviceNameList.$inject = ['$injector', '$timeout', 'maDeviceName'];
-function filteringDeviceNameList($injector, $timeout, DeviceName) {
+filteringDeviceNameList.$inject = ['$injector', 'maDeviceName'];
+function filteringDeviceNameList($injector, DeviceName) {
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -40,12 +40,17 @@ function filteringDeviceNameList($injector, $timeout, DeviceName) {
                 }
 
                 return queryResult.$promise.then(function(deviceNames) {
-                    if (!$scope.ngModel && $scope.autoInit && deviceNames.length) {
-                        $scope.ngModel = deviceNames[0];
+                    if (!$scope.selected && $scope.autoInit && !$scope.autoInitDone && deviceNames.length) {
+                        $scope.selected = deviceNames[0];
+                        $scope.autoInitDone = true;
                     }
                     return deviceNames;
                 });
             };
+            
+            if ($scope.autoInit && !$scope.selected) {
+                $scope.queryDeviceNames();
+            }
         },
         designerInfo: {
             translation: 'ui.components.filteringDeviceNameList',

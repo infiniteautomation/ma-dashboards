@@ -1,9 +1,9 @@
 <md-autocomplete
   md-selected-item-change="$ctrl.onChange()"
-  md-selected-item="$ctrl.ngModel"
+  md-selected-item="$ctrl.selected"
   md-search-text="$ctrl.searchText"
   md-items="folder in $ctrl.queryFolders()"
-  md-item-text="folder[$ctrl.displayProp]"
+  md-item-text="$ctrl.selected[$ctrl.displayProp]"
   md-no-cache="true"
   md-min-length="0"
   md-floating-label="{{$ctrl.labelText}}"

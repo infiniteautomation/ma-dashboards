@@ -6,16 +6,14 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-filteringDataSourceList.$inject = ['$injector', '$timeout', 'maDataSource'];
-function filteringDataSourceList($injector, $timeout, DataSource) {
+filteringDataSourceList.$inject = ['$injector', 'maDataSource'];
+function filteringDataSourceList($injector, DataSource) {
     var DEFAULT_SORT = ['name'];
     
     return {
         restrict: 'E',
         require: 'ngModel',
         scope: {
-            ngModel: '=',
-            ngChange: '&?',
             autoInit: '<?',
             query: '<?',
             start: '<?',
@@ -25,11 +23,15 @@ function filteringDataSourceList($injector, $timeout, DataSource) {
         },
         templateUrl: require.toUrl('./filteringDataSourceList.html'),
         replace: false,
-        link: function($scope, $element, $attrs) {
-            $scope.onChange = function() {
-                $timeout($scope.ngChange, 0);
+        link: function($scope, $element, $attrs, ngModelCtrl) {
+            ngModelCtrl.render = () => {
+                $scope.selected = ngModelCtrl.$viewValue;
             };
             
+            $scope.onChange = function() {
+                ngModelCtrl.$setViewValue($scope.selected);
+            };
+
             $scope.queryDataSources = function() {
                 var q = $scope.query ? angular.copy($scope.query) : new query.Query();
                 if ($scope.searchText)
@@ -41,15 +43,17 @@ function filteringDataSourceList($injector, $timeout, DataSource) {
                     limit: $scope.limit,
                     sort: $scope.sort || DEFAULT_SORT
                 }).$promise.then(function(dataSources) {
-                    if (!$scope.ngModel && $scope.autoInit && dataSources.length) {
-                        $scope.ngModel = dataSources[0];
+                    if (!$scope.selected && $scope.autoInit && !$scope.autoInitDone && dataSources.length) {
+                        $scope.selected = dataSources[0];
+                        $scope.autoInitDone = true;
                     }
                     return dataSources;
                 });
             };
             
-            if ($scope.autoInit)
+            if ($scope.autoInit && !$scope.selected) {
                 $scope.queryDataSources();
+            }
         },
         designerInfo: {
             translation: 'ui.components.filteringDataSourceList',

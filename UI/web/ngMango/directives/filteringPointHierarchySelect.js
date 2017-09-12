@@ -10,12 +10,10 @@ filteringPointHierarchySelect.$inject = ['$injector'];
 function filteringPointHierarchySelect($injector) {
     return {
         restrict: 'E',
+        scope: {},
         templateUrl: require.toUrl('./filteringPointHierarchySelect.html'),
         controllerAs: '$ctrl',
-        bindToController: true,
-        scope: {
-            ngModel: '=',
-            ngChange: '&?',
+        bindToController: {
             path: '<?',
             points: '<?',
             subfolders: '<?',
@@ -25,6 +23,9 @@ function filteringPointHierarchySelect($injector) {
             replaceName: '@?',
             uniqueNames: '<?',
             labelText: '<'
+        },
+        require: {
+            ngModelCtrl: 'ngModel'
         },
         controller: PointHierarchyController,
         designerInfo: {
@@ -38,8 +39,14 @@ PointHierarchyController.$inject = ['$attrs', 'maPointHierarchy', '$timeout'];
 function PointHierarchyController($attrs, PointHierarchy, $timeout) {
     this.displayProp = this.replaceName ? 'replacedName' : 'name';
     
+    this.$onInit = function() {
+        this.ngModelCtrl.render = () => {
+            this.selected = this.ngModelCtrl.$viewValue;
+        };
+    };
+
     this.onChange = function() {
-        $timeout(this.ngChange, 0);
+        this.ngModelCtrl.$setViewValue(this.selected);
     };
     
     this.queryFolders = function queryFolders() {
