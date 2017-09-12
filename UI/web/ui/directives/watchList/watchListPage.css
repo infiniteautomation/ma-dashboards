@@ -161,6 +161,11 @@ ma-ui-watch-list-page ma-watch-list-parameters md-input-container {
   margin-bottom: 0;
 }
 
+/* md-autocomplete must have the margin at the bottom or the drop down shows up covering the input */
+ma-ui-watch-list-page ma-watch-list-parameters md-autocomplete md-input-container {
+  margin-bottom: 18px;
+}
+
 ma-ui-watch-list-page .md-table-pagination > * {
   height: 32px;
 }

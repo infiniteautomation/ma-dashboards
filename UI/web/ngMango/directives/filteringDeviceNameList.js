@@ -12,8 +12,6 @@ function filteringDeviceNameList($injector, $timeout, DeviceName) {
         restrict: 'E',
         require: 'ngModel',
         scope: {
-            ngModel: '=',
-            ngChange: '&?',
             // attributes that start with data- have the prefix stripped
             dataSourceId: '<?sourceId',
             dataSourceXid: '<?sourceXid',
@@ -22,9 +20,13 @@ function filteringDeviceNameList($injector, $timeout, DeviceName) {
         },
         templateUrl: require.toUrl('./filteringDeviceNameList.html'),
         replace: false,
-        link: function($scope, $element, $attrs) {
+        link: function($scope, $element, $attrs, ngModelCtrl) {
+            ngModelCtrl.render = () => {
+                $scope.selected = ngModelCtrl.$viewValue;
+            };
+            
             $scope.onChange = function() {
-                $timeout($scope.ngChange, 0);
+                ngModelCtrl.$setViewValue($scope.selected);
             };
             
             $scope.queryDeviceNames = function() {
@@ -44,8 +46,6 @@ function filteringDeviceNameList($injector, $timeout, DeviceName) {
                     return deviceNames;
                 });
             };
-            
-            $scope.queryDeviceNames();
         },
         designerInfo: {
             translation: 'ui.components.filteringDeviceNameList',
