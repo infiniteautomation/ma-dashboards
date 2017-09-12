@@ -47,8 +47,8 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
 
-eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS'];
-function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats) {
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO'];
+function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats, MA_EVENT_LINK_INFO) {
 
     class Equals {
         constructor(value, filter) {
@@ -94,6 +94,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             this.events = [];
             this.sort = '-activeTimestamp';
             this.totalUnAcknowledged = 0;
+            this.linkInfo = MA_EVENT_LINK_INFO;
             
             this.onPaginateBound = (...args) => this.onPaginate(...args);
             this.onReorderBound = (...args) => this.onReorder(...args);
@@ -357,7 +358,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             to: '<?',
             dateFilter: '<?',
             timezone: '@',
-            hideDataPointLink: '<?'
+            hideLink: '@?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',

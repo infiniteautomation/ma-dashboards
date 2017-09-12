@@ -306,6 +306,9 @@ ngMango.constant('MA_CHART_TYPES', [
     ]);
 }
 
+// defined in UI module
+ngMango.constant('MA_EVENT_LINK_INFO', {});
+
 ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDateFormats) {
     return {
         categoryAxis: [

@@ -62,6 +62,35 @@ uiApp.provider('maUiMenu', menuProvider)
     .constant('MA_UI_NG_DOCS', window.NG_DOCS)
     .constant('MA_UI_MENU_ITEMS', menuItems);
 
+
+// override constant from ngMango module
+uiApp.constant('MA_EVENT_LINK_INFO', {
+    DATA_POINT: {
+        icon: 'timeline',
+        tooltipTranslation: 'ui.app.dpd',
+        stateName: 'ui.dataPointDetails',
+        stateParams: event => {
+            return { pointId: event.eventType.dataPointId };
+        }
+    },
+    DATA_SOURCE: {
+        icon: 'device_hub',
+        tooltipTranslation: 'header.dataSources',
+        stateName: 'ui.settings.dataSources',
+        stateParams: event => {
+            return { dataSourceId: event.eventType.dataSourceId };
+        }
+    },
+    LICENSE_CHECK: {
+        icon: 'extension',
+        tooltipTranslation: 'header.modules',
+        stateName: 'ui.settings.modules',
+        stateParams: event => {
+            return {};
+        }
+    }
+});
+
 uiApp.config([
     'MA_UI_SETTINGS',
     'MA_UI_NG_DOCS',

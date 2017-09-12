@@ -772,3 +772,7 @@ ma-ace-editor > .ace_editor {
 ma-events-table .active-status {
 	font-weight: bold;
 }
+
+ma-events-table .event-link md-icon {
+	font-size: 22px;
+}
