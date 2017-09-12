@@ -46,22 +46,4 @@
             </tbody>
         </table>
     </md-table-container>
-
-    <br><br>
-
-    <md-input-container flex ng-if="$ctrl.selectedThread.length">
-        <label><span ma-tr="ui.settings.systemStatus.displayingStackTraceForThread"></span>: {{$ctrl.selectedThread[0]
-            .name}}</label>
-        <textarea ng-model="$ctrl.selectedThreadStackTrace" md-maxlength="150" rows="5" max-rows="15" md-select-on-focus
-                  id="stack-trace"></textarea>
-    </md-input-container>
-
-    <div layout layout-align="end" ng-if="$ctrl.selectedThread.length">
-        <md-button ng-click="$ctrl.copyStackTraceToClipboard()" class="md-raised md-accent">
-            <md-icon>
-                content_copy
-            </md-icon>
-            <span ma-tr="ui.settings.systemStatus.copyToClipboard"></span>
-        </md-button>
-    </div>
 </div>

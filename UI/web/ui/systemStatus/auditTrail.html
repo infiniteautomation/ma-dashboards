@@ -79,12 +79,4 @@
             </tbody>
         </table>
     </md-table-container>
-
-    <br><br>
-
-    <md-input-container flex ng-if="$ctrl.selectedAuditEvent.length">
-        <label><span ma-tr="ui.settings.systemStatus.displayingAuditContext"></span>: {{$ctrl.selectedAuditEvent[0].message}}</label>
-        <textarea ng-model="$ctrl.selectedAuditEventContext" md-maxlength="150" rows="5" max-rows="15"
-                  md-select-on-focus></textarea>
-    </md-input-container>
 </div>
