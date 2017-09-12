@@ -36,7 +36,7 @@ function EventsPageController($mdMedia, $state, localStorageService, maUiDateBar
     
     this.normalizeFilter = function(value, defaultValue) {
         if (typeof value === 'string') {
-            const lower = value.toLowerCase();
+            const lower = value.trim().toLowerCase();
             if (lower === 'true') {
                 return true;
             } else if (lower === 'false') {
