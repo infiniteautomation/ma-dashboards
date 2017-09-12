@@ -93,10 +93,11 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return this.notificationManager.notifyIfNotConnected(...args);
         }
 
-        get(opts) {
+        get(opts = {}) {
             return this.constructor.http({
                 url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this.originalXid),
-                method: 'GET'
+                method: 'GET',
+                params: opts.params
             }, opts).then(response => {
                 angular.copy(response.data, this);
                 this.initialize('get');
@@ -105,7 +106,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             });
         }
         
-        save(opts) {
+        save(opts = {}) {
             const originalXid = this.originalXid;
             
             let url, method;
@@ -120,7 +121,8 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return this.constructor.http({
                 url,
                 method,
-                data: this
+                data: this,
+                params: opts.params
             }, opts).then(response => {
                 const saveType = originalXid ? 'update' : 'create';
                 
@@ -132,12 +134,13 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             });
         }
         
-        delete(opts) {
+        delete(opts = {}) {
             const originalXid = this.originalXid;
             
             return this.constructor.http({
                 url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this.originalXid),
-                method: 'DELETE'
+                method: 'DELETE',
+                params: opts.params
             }, opts).then(response => {
                 angular.copy(response.data, this);
                 this.initialize('delete');
