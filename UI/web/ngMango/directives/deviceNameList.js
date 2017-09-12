@@ -56,9 +56,9 @@ function deviceNameList(DeviceName, $injector) {
         },
         templateUrl: function(element, attrs) {
           if ($injector.has('mdSelectDirective') || $injector.has('mdAutocompleteDirective')) {
-            return require.toUrl('./devicenameList-md.html');
+            return require.toUrl('./deviceNameList-md.html');
           }
-          return require.toUrl('./devicenameList.html');
+          return require.toUrl('./deviceNameList.html');
         },
         replace: true,
         link: function ($scope, $element, attrs, ngModelCtrl) {
