@@ -1243,6 +1243,12 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
   margin-left: 10px
 }
 
+/* system status page */
+
+ma-ui-system-status-page #server-info md-table-container, ma-ui-system-status-page #server-info md-list {
+  max-width: 650px;
+}
+
 /* modules page */
 
 ma-ui-modules-page md-card-content > div {

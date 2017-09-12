@@ -1,4 +1,4 @@
-<div layout="column">
+<div layout="column" id="server-info">
     <div layout layout-align="end">
         <md-button ng-click="$ctrl.getSystemInfo()" class="md-raised md-accent">
             <md-icon>
@@ -15,47 +15,42 @@
     </div>
 
     <md-list flex class="md-dense">
-        <md-list-item>
-            <span>
-                <strong ma-tr="ui.settings.systemStatus.timeZone"></strong>:
-                <span ng-bind="$ctrl.systemInfo.timezone"></span>
-            </span>
+        <md-list-item layout>
+            <strong ma-tr="ui.settings.systemStatus.timeZone"></strong>:
+            <span flex></span>
+            <span ng-bind="$ctrl.systemInfo.timezone"></span>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item>
-            <span>
-                <strong ma-tr="ui.settings.systemStatus.databaseType"></strong>:
-                <span ng-bind="$ctrl.systemInfo.databaseType"></span>
-            </span>
+        <md-list-item layout>
+            <strong ma-tr="ui.settings.systemStatus.databaseType"></strong>:
+            <span flex></span>
+            <span ng-bind="$ctrl.systemInfo.databaseType"></span>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item>
-            <span>
-                <strong ma-tr="ui.settings.systemStatus.sqlDatabaseSize"></strong>:
-                <span ng-bind="$ctrl.systemInfo.sqlDatabaseSize | maBytes"></span>
-            </span>
+        <md-list-item layout>
+            <strong ma-tr="ui.settings.systemStatus.sqlDatabaseSize"></strong>:
+            <span flex></span>
+            <span ng-bind="$ctrl.systemInfo.sqlDatabaseSize | maBytes"></span>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item>
-            <span>
-                <strong ma-tr="ui.settings.systemStatus.noSqlPointValueDatabaseSize"></strong>:
-                <span ng-bind="$ctrl.systemInfo.noSqlPointValueDatabaseSize | maBytes"></span>
-            </span>
+        <md-list-item layout>
+            <strong ma-tr="ui.settings.systemStatus.noSqlPointValueDatabaseSize"></strong>:
+            <span flex></span>
+            <span ng-bind="$ctrl.systemInfo.noSqlPointValueDatabaseSize | maBytes"></span>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item>
-            <span>
-                <strong ma-tr="ui.settings.systemStatus.filedataSize"></strong>:
-                {{$ctrl.systemInfo.filedataSize | maBytes }} ({{$ctrl.systemInfo.filedataCount}}
-                    <span ma-tr="ui.settings.systemStatus.files"></span>)
-            </span>
+        <md-list-item layout>
+            <strong ma-tr="ui.settings.systemStatus.fileDataSize"></strong>:
+            <span flex></span>
+            <span ng-bind="$ctrl.systemInfo.filedataSize | maBytes"></span>
+            &nbsp;
+            <span ma-tr="ui.settings.systemStatus.formatfiledataCount" ma-tr-args="[$ctrl.systemInfo.filedataCount]"></span>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item>
-            <span>
-                <strong ma-tr="ui.settings.systemStatus.eventsCount"></strong>:
-                <span ng-bind="$ctrl.systemInfo.eventsCount"></span>
-            </span>
+        <md-list-item layout>
+            <strong ma-tr="ui.settings.systemStatus.eventsCount"></strong>:
+            <span flex></span>
+            <span ng-bind="$ctrl.systemInfo.eventsCount"></span>
         </md-list-item>
         <md-divider></md-divider>
     </md-list>
@@ -73,7 +68,9 @@
             </thead>
             <tbody md-body>
             <tr md-row ng-repeat="point in $ctrl.pointCounts | orderBy: sortOrder">
-                <td md-cell ng-bind="point.pointName"></td>
+                <td md-cell>
+                    <a ng-bind="point.pointName" ui-sref="ui.dataPointDetails({pointId: point.pointId})"></a>
+                </td>
                 <td md-cell ng-bind="point.pointId"></td>
                 <td md-cell ng-bind="point.count"></td>
             </tr>
