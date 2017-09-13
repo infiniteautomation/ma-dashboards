@@ -43,8 +43,7 @@ return function pageView() {
         controller: PageViewController,
         controllerAs: '$ctrl', // put controller on scope
         bindToController: {
-            xid: '@',
-            nonEditMode: '='
+            xid: '@'
         },
         templateUrl: require.toUrl('./pageView.html')
     };
