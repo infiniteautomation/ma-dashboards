@@ -1,5 +1,11 @@
 <div layout="column">
     <div layout layout-align="end">
+        <md-button ng-click="$ctrl.displayLogFile('ma.log')" class="md-raised md-accent md-hue-1">
+            <md-icon>
+                remove_red_eye
+            </md-icon>
+            <span ma-tr="ui.settings.systemStatus.viewCurrentMaLog"></span>
+        </md-button>
         <md-button ng-click="$ctrl.getLogFilesList()" class="md-raised md-accent">
             <md-icon>
                 refresh
