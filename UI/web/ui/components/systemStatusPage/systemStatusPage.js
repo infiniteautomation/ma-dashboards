@@ -6,13 +6,14 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', '$mdDialog', 'maDialogHelper',  'maUiDateBar', '$scope', 'maRqlBuilder'];
-function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, $mdDialog, maDialogHelper, maUiDateBar, $scope, RqlBuilder) {
+SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', '$mdDialog', 'maTranslate', 'maDialogHelper',  'maUiDateBar', '$scope', 'maRqlBuilder'];
+function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, $mdDialog, maTranslate, maDialogHelper, maUiDateBar, $scope, RqlBuilder) {
     this.systemStatus = systemStatus;
     this.$state = $state;
     this.$scope = $scope;
     this.menu = maUiMenu;
     this.$mdMedia = $mdMedia;
+    this.maTranslate = maTranslate;
     this.maDialogHelper = maDialogHelper;
     this.$mdDialog = $mdDialog;
     this.dateBar = maUiDateBar;
@@ -59,10 +60,10 @@ SystemStatusPageController.prototype.$onInit = function() {
 /** Audit Context **/
 
 SystemStatusPageController.prototype.displayAuditContext = function() {
-    let selectedAuditEventContext = JSON.stringify(this.selectedAuditEvent[0].context);
-    let selectedAuditEventTitle = this.selectedAuditEvent[0].message;
+    let content = JSON.stringify(this.selectedAuditEvent[0].context);
+    let title = this.maTranslate.trSync('ui.settings.systemStatus.displayingAuditContext', this.selectedAuditEvent[0].message);
 
-    this.showTextAreaDialog(selectedAuditEventTitle, selectedAuditEventContext);
+    this.showTextAreaDialog(title, content);
 };
 
 SystemStatusPageController.prototype.updateAuditQuery = function() {
@@ -117,8 +118,10 @@ SystemStatusPageController.prototype.displayLogFile = function(filename) {
     this.selectedLogFile = filename;
 
     this.systemStatus.getLogFile(filename).then((response) => {
-        this.selectedLogContent = response.data;
-        this.showTextAreaDialog(this.selectedLogFile, this.selectedLogContent);
+        let content = response.data;
+        let title = this.maTranslate.trSync('ui.settings.systemStatus.displayingLogFile', this.selectedLogFile);
+
+        this.showTextAreaDialog(title, content);
     });
 };
 
@@ -131,7 +134,6 @@ SystemStatusPageController.prototype.getSystemInfo = function() {
 };
 
 SystemStatusPageController.prototype.getPointCounts = function() {
-
     this.systemStatus.getPointCounts().then((response) => {
         this.pointCounts = response.data;
     });
@@ -160,7 +162,11 @@ SystemStatusPageController.prototype.showStackTrace = function() {
     this.selectedThread[0].location.forEach( (item) => {
         this.selectedThreadStackTrace += item.className + '.' + item.methodName + ':' + item.lineNumber + '\n';
     });
-    this.showTextAreaDialog(this.selectedThread[0].name, this.selectedThreadStackTrace);
+
+    let content = this.selectedThreadStackTrace;
+    let title = this.maTranslate.trSync('ui.settings.systemStatus.displayingStackTraceForThread', this.selectedThread[0].name);
+
+    this.showTextAreaDialog(title, content);
 };
 
 /** Work Items **/
