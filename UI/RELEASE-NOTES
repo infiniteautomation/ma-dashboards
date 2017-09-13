@@ -1,3 +1,13 @@
+*Version 3.2.3*
+* Updated help doc for page editor
+* Updated help doc for system status page
+* Events page now updates in realtime via websockets
+* Fix bugs and enhance events page, progress bar, more sort options, refresh on restart etc
+* Fixes to RestResource
+* Fix filtering device name list, data source list and point hierarchy list
+* Removed maEventsEventManager service, use maEvents.notificationManager instead
+* Bug fixes and tweaks
+
 *Version 3.2.2*
 * Added point history counts to system info page
 * Fix trying to load maUiDateBar service when its not available
