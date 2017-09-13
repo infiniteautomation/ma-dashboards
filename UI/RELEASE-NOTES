@@ -1,6 +1,7 @@
 *Version 3.2.3*
 * Updated help doc for page editor
 * Updated help doc for system status page
+* Use popup dialogs on status page json outputs
 * Events page now updates in realtime via websockets
 * Fix bugs and enhance events page, progress bar, more sort options, refresh on restart etc
 * Fixes to RestResource
