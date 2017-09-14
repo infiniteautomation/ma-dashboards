@@ -614,9 +614,8 @@ table.md-table td.md-cell.msg-column.truncated {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-  max-height: 20px;
-  line-height: 20px;
-  display: block;
+	max-height: 20px;
+	line-height: 20px;
 }
 table.md-table.statistics tbody.md-body td.md-cell {
 	border-top: none;
