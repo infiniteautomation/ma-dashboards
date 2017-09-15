@@ -89,7 +89,8 @@ requirejs.config({
         'globalize': vendor + '/globalize/globalize',
         'cldr': vendor + '/cldrjs/cldr',
         'cldr-data': vendor + '/cldr-data',
-        'ipaddr': vendor + '/ipaddr/ipaddr'
+        'ipaddr': vendor + '/ipaddr/ipaddr',
+        'mathjs': vendor + '/mathjs'
     },
     shim : {
         'angular': {

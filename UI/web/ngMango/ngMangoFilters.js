@@ -5,8 +5,9 @@
 
 define(['./filters/momentFilter',
         './filters/durationFilter',
-        'angular'
-], function(momentFilter, durationFilter, angular) {
+        'angular',
+        'mathjs/math'
+], function(momentFilter, durationFilter, angular, math) {
 'use strict';
 /**
  * @ngdoc overview
@@ -164,6 +165,36 @@ ngMangoFilters.filter('maBytes', function() {
 		if (number === 0) precision = 0;
 		return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
 	};
+});
+
+ngMangoFilters.filter('maMath', function() {
+    const callFn = (object, fnName, ...args) => {
+        if (typeof object[fnName] === 'function') {
+            return object[fnName](...args);
+        }
+        return object[fnName];
+    };
+
+    return function(input, ...args) {
+        if (!args[0]) return math;
+        
+        // add the input as the first argument for the function to call
+        args[0].splice(1, 0, input);
+        
+        let result = math;
+        args.forEach(fnNameAndArgs => {
+            result = callFn(result, ...fnNameAndArgs);
+        });
+        
+        return result;
+    };
+});
+
+ngMangoFilters.filter('maConvertUnit', function() {
+    return function(input, from, to) {
+        if (input == null) return input;
+        return math.unit(input, from).toNumber(to);
+    };
 });
 
 return ngMangoFilters;

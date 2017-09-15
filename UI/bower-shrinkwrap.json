@@ -18,7 +18,7 @@
     "0.2.3": "36844ff7c0e0d9445bc8e31514d7f0f59cb8b048"
   },
   "https://github.com/angular-ui/ui-sortable.git": {
-    "0.17.2": "017fbd3f911576914915aa3dd08022c83b7fd3a3"
+    "0.17.2": "0.17.2"
   },
   "https://github.com/angular/bower-angular-animate.git": {
     "1.6.6": "1.6.6"
@@ -75,6 +75,9 @@
   },
   "https://github.com/grevory/angular-local-storage.git": {
     "0.3.0": "85a243879f7a91afcce12782fe79018841a9f83b"
+  },
+  "https://github.com/josdejong/mathjs.git": {
+    "3.16.3": "3.16.3"
   },
   "https://github.com/jquery/globalize.git": {
     "1.2.3": "ca1639c6265ea0a4e9d5dc8431efc81a90f4fc42"

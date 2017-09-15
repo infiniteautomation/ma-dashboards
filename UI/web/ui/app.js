@@ -17,6 +17,7 @@ define([
     './directives/iframeView/iframeView',
     './menuItems',
     'moment-timezone',
+    'mathjs/math',
     'angular-ui-router',
     'angular-ui-sortable',
     'oclazyload',
@@ -24,7 +25,7 @@ define([
     './views/docs/docs-setup',
     'md-color-picker/mdColorPicker'
 ], function(angular, ngMangoMaterial, require, menuProvider, pagesFactory, dateBarFactory, uiSettingsFactory, pageView, livePreview,
-        stateParams, iframeView, menuItems, moment) {
+        stateParams, iframeView, menuItems, moment, mathjs) {
 'use strict';
 
 // must match variables defined in UIInstallUpgrade.java
@@ -341,6 +342,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.uiSettings = uiSettings;
     $rootScope.User = User;
     $rootScope.Math = Math;
+    $rootScope.mathjs = mathjs;
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
     $rootScope.pageOpts = {};
