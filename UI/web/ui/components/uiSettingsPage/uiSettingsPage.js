@@ -1,0 +1,65 @@
+/**
+ * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @author Jared Wiltshire
+ */
+
+define(['angular', 'require'], function(angular, require) {
+'use strict';
+
+class UiSettingsPageController {
+    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate']; }
+    constructor(maUiSettings, $scope, $window, maTranslate) {
+        this.uiSettings = maUiSettings;
+        this.$scope = $scope;
+        this.$window = $window;
+        this.maTranslate = maTranslate;
+    }
+    
+    $onInit() {
+        this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+            if (event.defaultPrevented) return;
+            
+            if (this.form.$dirty) {
+                if (!this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'))) {
+                    event.preventDefault();
+                    return;
+                }
+            }
+            
+            this.uiSettings.reset();
+            this.uiSettings.generateTheme();
+        });
+
+        const oldUnload = this.$window.onbeforeunload;
+        this.$window.onbeforeunload = (event) => {
+            if (this.form.$dirty) {
+                const text = this.maTranslate.trSync('ui.app.discardUnsavedChanges');
+                event.returnValue = text;
+                return text;
+            }
+        };
+        
+        this.$scope.$on('$destroy', () => {
+            this.$window.onbeforeunload = oldUnload;
+        });
+    }
+    
+    save(event) {
+        this.uiSettings.save().then(() => {
+            this.form.$setPristine();
+        });
+    }
+    
+    revert(event) {
+        this.uiSettings.reset();
+        this.uiSettings.generateTheme();
+        this.form.$setPristine();
+    }
+}
+
+return {
+    controller: UiSettingsPageController,
+    templateUrl: require.toUrl('./uiSettingsPage.html')
+};
+
+}); // define

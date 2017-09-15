@@ -420,12 +420,6 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             return;
         }
         
-        if ($state.includes('ui.settings.uiSettings')) {
-            // resets themes to the last saved state when leaving the settings page
-            uiSettings.reset();
-            uiSettings.generateTheme();
-        }
-        
         if ($state.includes('ui') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }

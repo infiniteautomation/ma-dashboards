@@ -372,12 +372,22 @@ return [
     {
         url: '/ui-settings',
         name: 'ui.settings.uiSettings',
-        templateUrl: require.toUrl('./views/uiSettings.html'),
+        template: '<ma-ui-settings-page></ma-ui-settings-page>',
         menuTr: 'ui.app.uiSettings',
         menuIcon: 'color_lens',
         permission: 'edit-ui-settings',
         params: {
             helpPage: 'ui.help.uiSettings'
+        },
+        resolve: {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./components/uiSettingsPage/uiSettingsPage'],
+                function (uiSettingsPage) {
+                    angular.module('maUiSettingsPage', [])
+                        .component('maUiSettingsPage', uiSettingsPage);
+                    $ocLazyLoad.inject('maUiSettingsPage');
+                });
+            }]
         }
     },
     {
