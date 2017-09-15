@@ -42,6 +42,7 @@ define(['./services/Point',
         './services/TemporaryResource',
         './services/RestResource',
         './services/RqlBuilder',
+        './services/math',
         './filters/dateFilter',
         './filters/trFilter',
         'angular',
@@ -55,7 +56,7 @@ define(['./services/Point',
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory,
         PermissionsFactory, systemSettingsProvider, systemStatusFactory,
         ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
-        serverFactory, temporaryResourceFactory, restResourceFactory, rqlBuilderFactory,
+        serverFactory, temporaryResourceFactory, restResourceFactory, rqlBuilderFactory, mathFactory,
         dateFilterFactory, trFilterFactory, angular, require) {
 'use strict';
 /**
@@ -108,6 +109,7 @@ ngMangoServices.factory('maServer', serverFactory);
 ngMangoServices.factory('maTemporaryResource', temporaryResourceFactory);
 ngMangoServices.factory('maRestResource', restResourceFactory);
 ngMangoServices.factory('maRqlBuilder', rqlBuilderFactory);
+ngMangoServices.factory('maMath', mathFactory);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 

@@ -5,10 +5,10 @@
 
 define(['./filters/momentFilter',
         './filters/durationFilter',
-        'angular',
-        'mathjs/math'
-], function(momentFilter, durationFilter, angular, math) {
+        'angular'
+], function(momentFilter, durationFilter, angular) {
 'use strict';
+
 /**
  * @ngdoc overview
  * @name ngMangoFilters
@@ -167,7 +167,7 @@ ngMangoFilters.filter('maBytes', function() {
 	};
 });
 
-ngMangoFilters.filter('maMath', function() {
+ngMangoFilters.filter('maMath', ['maMath', function(math) {
     const callFn = (object, fnName, ...args) => {
         if (typeof object[fnName] === 'function') {
             return object[fnName](...args);
@@ -196,14 +196,14 @@ ngMangoFilters.filter('maMath', function() {
         
         return result;
     };
-});
+}]);
 
-ngMangoFilters.filter('maConvertUnit', function() {
+ngMangoFilters.filter('maConvertUnit', ['maMath', function(math) {
     return function(input, from, to) {
         if (input == null) return input;
         return math.unit(input, from).toNumber(to);
     };
-});
+}]);
 
 return ngMangoFilters;
 
