@@ -148,8 +148,7 @@ function UserProvider() {
     function setUser(user) {
         cachedUser = user;
         if (user) {
-            if (user.locale)
-                moment.locale(user.locale);
+            moment.locale(user.getLocale());
             moment.tz.setDefault(user.getTimezone());
         } else {
             // reset moment to initial settings?
@@ -358,6 +357,10 @@ function UserProvider() {
         
         User.prototype.sendTestEmail = function(toEmail, usernameInEmail) {
         	return maServer.sendTestEmail(toEmail || this.email, usernameInEmail || this.username);
+        };
+        
+        User.prototype.getLocale = function() {
+            return this.locale || this.systemLocale;
         };
 
         return User;
