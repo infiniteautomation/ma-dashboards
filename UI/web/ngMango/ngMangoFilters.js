@@ -176,8 +176,16 @@ ngMangoFilters.filter('maMath', function() {
     };
 
     return function(input, ...args) {
-        if (!args[0]) return math;
+        if (!args.length) {
+            return input == null ? math : input;
+        }
         
+        for (let i = 0; i < args.length; i++) {
+            if (!Array.isArray(args[i])) {
+                args[i] = [args[i]];
+            }
+        }
+
         // add the input as the first argument for the function to call
         args[0].splice(1, 0, input);
         
