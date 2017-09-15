@@ -14,11 +14,10 @@
     <h2>Custom Logo</h2>
 
     <p>
-        If you would like to use your own logo, you should put it inside
-		your Mango/overrides so that it persists through module updates. For instance, create
-		<code>${MA_HOME}/overrides/web/modules/mangoUI/web/images</code> if you haven't already and place
-		your logo image in there. You can then reference the logo using
-		<code>/modules/mangoUI/web/images/myLogo.png</code>
+        If you would like to use your own logo, you can upload the file by clicking the paper clip icon to open the file store
+        dialog. Once selected the image path should display in the <code>Logo source</code> input and you should save the UI
+        settings to see the dashboard logo update. We recommend using a <code>.png</code>  or <code>.svg</code> image with a
+        transparent background for the best look.
     </p>
 
     <br>
@@ -55,8 +54,8 @@
     <p> 
         Additionally you can set the <code>Code coloring</code> theme to be used across the dashboard. 
         Choose a theme from the dropdown and you will see a live preview of the code coloring below.
-        Once saved, the <code>Code coloring</code>  will be used in <code>Edit pages</code>, <code>Play area</code>, <code>Examples</code>,
-        and <code>API Docs</code>.
+        Once saved, the <code>Code coloring</code>  will be used in <code>Edit pages</code>, <code>Play area</code>, and <code>
+        Examples</code> pages.
     </p>
 
     <br>
@@ -71,4 +70,15 @@
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/mangoUI/web/ui/views/help/images/Help-ScreenShots-UiSettings-GoogleApiKeys.png"
          alt="Help-ScreenShots-UiSettings-GoogleApiKeys"/>
 
+    <br><br><br>
+
+    <h2>User Module Settings</h2>
+
+    <p>
+        You may want to extend the dashboard tools you have available by writing your own AngularJS code. Using the <code>User module
+        URL</code> feature you can add your own Angular components, directives, filters and controllers. Read the full
+        <a href="https://help.infiniteautomation.com/getting-started-with-a-user-module/" target="_blank">support article</a> to
+        learn how to leverage writing your own Angular code to extend the application. You can also add your own custom
+        <code>.css</code> file to the <code>User stylesheet URL</code> to apply to all your pages or override the dashboard UI.
+    </p>
 </div>
