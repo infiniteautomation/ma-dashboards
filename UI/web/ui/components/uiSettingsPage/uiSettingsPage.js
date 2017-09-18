@@ -7,12 +7,13 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 class UiSettingsPageController {
-    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate']; }
-    constructor(maUiSettings, $scope, $window, maTranslate) {
+    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper']; }
+    constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper) {
         this.uiSettings = maUiSettings;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
+        this.maDialogHelper = maDialogHelper;
     }
     
     $onInit() {
@@ -47,6 +48,10 @@ class UiSettingsPageController {
     save(event) {
         this.uiSettings.save().then(() => {
             this.form.$setPristine();
+
+            this.maDialogHelper.toast('ui.app.uiSettingsSaved');
+        }, error => {
+            this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.statusText]);
         });
     }
     

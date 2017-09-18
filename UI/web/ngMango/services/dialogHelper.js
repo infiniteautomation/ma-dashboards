@@ -111,6 +111,20 @@ function DialogHelperFactory($mdDialog, $mdMedia, maTranslate, $mdToast, maSyste
 	    return $mdToast.show(toast);
     };
     
+    DialogHelper.prototype.errorToast = function(translation) {
+        const text = maTranslate.trSync(translation);
+        
+        const toast = $mdToast.simple()
+            .textContent(text)
+            .action(maTranslate.trSync('common.ok'))
+            .highlightAction(true)
+            .position('bottom center')
+            .hideDelay(10000)
+            .toastClass('md-warn');
+
+        return $mdToast.show(toast);
+    };
+    
     DialogHelper.prototype.toastOptions = function(options) {
     	var text = options.textTr ? maTranslate.trSync(options.textTr) : options.text;
         
