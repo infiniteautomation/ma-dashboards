@@ -72,9 +72,7 @@ ImportExportPageController.prototype.doExport = function(download) {
             this.writeIndentedJson();
         }
     }.bind(this), function(response) {
-        this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ?
-                this.Translate.trSync('ui.app.cancelledOrNoResponse') :
-                response.toString());
+        this.downloadStatus.error = response.mangoStatusText;
         this.downloadStatus.downloading = false;
         console.log(response);
     }.bind(this));

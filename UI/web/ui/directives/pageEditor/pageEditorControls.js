@@ -280,7 +280,7 @@ PageEditorControlsController.prototype.savePage = function savePage() {
             return this.pageSummaryStore.$save();
         }.bind(this), function(error) {
             var errorToast = this.$mdToast.simple()
-                .textContent(this.Translate.trSync('ui.app.errorSavingPage', [this.selectedPageSummary.name, error.status, error.statusText]))
+                .textContent(this.Translate.trSync('ui.app.errorSavingPage', [this.selectedPageSummary.name, error.status, error.mangoStatusText]))
                 .action(this.Translate.trSync('common.ok'))
                 .highlightAction(true)
                 .position('bottom center')

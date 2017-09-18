@@ -171,11 +171,9 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
     
                 $ctrl.resetForm();
             }, function(response) {
-                var errorMsg = response.status === 422 ? Translate.trSync('ui.app.validationError') : response.statusText;
-
                 // error saving
                 var toast = $mdToast.simple()
-                    .textContent(Translate.trSync('ui.app.errorSavingWatchlist', errorMsg))
+                    .textContent(Translate.trSync('ui.app.errorSavingWatchlist', response.mangoStatusText))
                     .action(Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .highlightClass('md-warn')

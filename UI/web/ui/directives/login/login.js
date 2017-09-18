@@ -41,10 +41,8 @@ function loginFactory($state, User, $rootScope, $window) {
                     if (error.status === 401) {
                         $scope.errors.invalidLogin = true;
                         $scope.errors.otherError = false;
-                    } else if (error.status === -1) {
-                        $scope.errors.otherError = 'Connection refused';
                     } else {
-                        $scope.errors.otherError = error.statusText || 'HTTP ' + error.status;
+                        $scope.errors.otherError = error.mangoStatusText;
                     }
                 });
             };

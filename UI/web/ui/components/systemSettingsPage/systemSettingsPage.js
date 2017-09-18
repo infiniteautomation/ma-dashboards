@@ -133,10 +133,10 @@ SystemSettingsPageController.prototype.saveSection = function() {
             this.savedMessage = false;
         }.bind(this), 5000);
     }.bind(this), function(e) {
-        this.error = {response: e};
-        this.error.message = e.data && typeof e.data === 'object' && e.data.message;
-        if (!this.error.message && e.statusText) this.error.message = e.statusText;
-        if (!this.error.message) this.error.message = 'Unknown';
+        this.error = {
+            response: e,
+            message: e.mangoStatusText
+        };
     }.bind(this)).then(function() {
         delete this.savePromise;
     }.bind(this));

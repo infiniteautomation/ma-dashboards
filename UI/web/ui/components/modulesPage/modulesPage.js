@@ -78,9 +78,8 @@ ModulesPageController.prototype.restart = function($event) {
 			hideDelay: 20000
 		});
 	}.bind(this), function(error) {
-		var msg = error.statusText + ' \u2014 ' + error.data.localizedMessage;
 		this.maDialogHelper.toastOptions({
-			textTr: ['ui.app.restartFailed', msg],
+			textTr: ['ui.app.restartFailed', error.mangoStatusText],
 			hideDelay: 10000,
 			classes: 'md-warn'
 		});

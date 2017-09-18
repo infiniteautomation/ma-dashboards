@@ -50,7 +50,7 @@ class UiSettingsPageController {
 
             this.maDialogHelper.toast('ui.app.uiSettingsSaved');
         }, error => {
-            this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.statusText]);
+            this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
         });
     }
     
@@ -66,7 +66,7 @@ class UiSettingsPageController {
                 
                 this.maDialogHelper.toast('ui.app.uiSettingsSaved');
             }, error => {
-                this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.statusText]);
+                this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
             });
         }, angular.noop);
     }
