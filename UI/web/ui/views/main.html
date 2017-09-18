@@ -1,6 +1,6 @@
 <div layout="row" flex>
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-print
-        md-is-locked-open="navLockedOpen" class="navigation-menu">
+        md-is-locked-open="navLockedOpen" md-swipe-left="closeMenu()" class="navigation-menu">
     <md-toolbar class="md-tall md-primary md-hue-1 ma-ui-sidebar-header md-whiteframe-glow-z1">
       <ma-now update-interval="1 MINUTES" output="currentTime"></ma-now>
       <div flex layout="row">
@@ -100,7 +100,7 @@
     </md-content>
   </div>
   
-  <md-sidenav class="ma-help-sidebar md-sidenav-right md-whiteframe-z2" md-component-id="right" hide-print md-is-locked-open="$mdMedia('gt-md') && pageOpts.helpUrl" md-is-open="pageOpts.helpUrl">
+  <md-sidenav class="ma-help-sidebar md-sidenav-right md-whiteframe-z2" md-component-id="right" hide-print md-is-locked-open="$mdMedia('gt-md') && pageOpts.helpUrl" md-is-open="pageOpts.helpUrl" md-swipe-right="closeHelp()">
     <md-content class="md-padding">
         <md-button class="md-icon-button" md-no-ink ng-click="pageOpts.helpUrl = null">
             <md-icon>close</md-icon>
