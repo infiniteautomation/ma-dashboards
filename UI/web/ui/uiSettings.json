@@ -92,5 +92,7 @@
   },
   "pointValuesLimit": 5001,
   "autoLoginUsername": "",
-  "autoLoginPassword": ""
+  "autoLoginPassword": "",
+  "userModule": "",
+  "userCss": ""
 }

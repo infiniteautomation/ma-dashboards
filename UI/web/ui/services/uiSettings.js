@@ -22,7 +22,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
         this.userSettingsStore = new JsonStore();
         this.userSettingsStore.name = 'UI Settings';
         this.userSettingsStore.xid = MA_UI_SETTINGS_XID;
-        this.userSettingsStore.jsonData = this.initialSettings || {};
+        this.userSettingsStore.jsonData = this.initialSettings || null;
         this.userSettingsStore.publicData = true;
         this.userSettingsStore.readPermission = '';
         this.userSettingsStore.editPermission = MA_UI_EDIT_SETTINGS_PERMISSION;
@@ -53,9 +53,12 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
         reset: function reset() {
             angular.merge(this, this.defaultSettings);
             angular.merge(this, this.userSettingsStore.jsonData);
+            this.generateTheme();
         },
         'delete': function deleteSettings() {
-            return this.userSettingsStore.$delete();
+            return this.userSettingsStore.$delete().then(() => {
+                this.reset();
+            });
         },
         generateTheme: function generateTheme() {
             var themeName = this.defaultTheme;

@@ -28,7 +28,6 @@ class UiSettingsPageController {
             }
             
             this.uiSettings.reset();
-            this.uiSettings.generateTheme();
         });
 
         const oldUnload = this.$window.onbeforeunload;
@@ -57,8 +56,19 @@ class UiSettingsPageController {
     
     revert(event) {
         this.uiSettings.reset();
-        this.uiSettings.generateTheme();
         this.form.$setPristine();
+    }
+
+    resetToDefault(event) {
+        this.maDialogHelper.confirm(event, 'ui.app.confirmResetUiSettings').then(() => {
+            this.uiSettings.delete().then(() => {
+                this.form.$setPristine();
+                
+                this.maDialogHelper.toast('ui.app.uiSettingsSaved');
+            }, error => {
+                this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.statusText]);
+            });
+        }, angular.noop);
     }
 }
 

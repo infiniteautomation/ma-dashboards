@@ -4,6 +4,7 @@
     <div layout layout-align="start end" layout-wrap>
       <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
       <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.uiSettings.userSettingsStore.jsonData"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
     
     <md-card>
@@ -255,5 +256,6 @@
     <div layout layout-align="start end" layout-wrap>
       <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
       <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.uiSettings.userSettingsStore.jsonData"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
 </form>
