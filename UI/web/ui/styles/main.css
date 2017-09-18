@@ -1382,3 +1382,9 @@ svg.ma-ui-spinner circle {
 .data-point-details-page .md-button.force-read {
   margin-bottom: -18px;
 }
+
+/* hide messages for untouched/unsubmitted invalid inputs, work around for bug in ng-messages */
+form:not(.ng-submitted) .ng-untouched ~ [ng-messages],
+[ng-form]:not(.ng-submitted) .ng-untouched ~ [ng-messages] {
+	display: none;
+}

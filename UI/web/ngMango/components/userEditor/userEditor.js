@@ -125,10 +125,6 @@ UserEditorController.prototype.remove = function(event) {
     });
 };
 
-UserEditorController.prototype.showMessages = function(field) {
-    return this.userForm[field].$invalid && (this.userForm[field].$touched || this.userForm.$submitted);
-};
-
 UserEditorController.prototype.sendTestEmail = function() {
     var $ctrl = this;
     this.User.current.sendTestEmail().then(function(response) {
