@@ -6,7 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', '$mdDialog', 'maTranslate', 'maDialogHelper',  'maUiDateBar', '$scope', 'maRqlBuilder'];
+SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', '$mdDialog', 'maTranslate', 'maDialogHelper', 
+    'maUiDateBar', '$scope', 'maRqlBuilder'];
 function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, $mdDialog, maTranslate, maDialogHelper, maUiDateBar, $scope, RqlBuilder) {
     this.systemStatus = systemStatus;
     this.$state = $state;
