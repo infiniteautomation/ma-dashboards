@@ -138,9 +138,6 @@ myAdminApp.config([
     '$mdAriaProvider',
 function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider, $locationProvider, $mdAriaProvider) {
 
-    // Need this for AngularJS 1.6.x, all our directives should be updated so they dont use bindings in the constructor
-    // Most things seem to work but mdPickers do not
-    $compileProvider.preAssignBindingsEnabled(true);
     // disable angular debug info to speed up app
     $compileProvider.debugInfoEnabled(false);
     // disable aria warnings
@@ -204,13 +201,13 @@ myAdminApp.run([
     '$mdSidenav',
     '$mdMedia',
     '$mdColors',
-    '$MD_THEME_CSS',
+    '$mdThemeCss',
     'maCssInjector',
     '$mdToast',
     'maUser',
     'ADMIN_SETTINGS',
     'maTranslate',
-function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $mdThemeCss, cssInjector,
         $mdToast, User, ADMIN_SETTINGS, Translate) {
 
     // add the current user to the root scope
@@ -221,7 +218,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     $rootScope.Math = Math;
     
     // inserts a style tag to style <a> tags with accent color
-    if ($MD_THEME_CSS) {
+    if ($mdThemeCss) {
         var acc = $mdColors.getThemeColor('accent-500-1.0');
         var accT = $mdColors.getThemeColor('accent-500-0.2');
         var accD = $mdColors.getThemeColor('accent-700-1.0');
@@ -233,7 +230,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     }
 
     // redirect to login page if we can't retrieve the current user when changing state
-    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
         if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
             event.preventDefault();
             $state.loginRedirectUrl = $state.href(toState, toParams);
@@ -244,7 +241,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     });
 
     // change the bread-crumbs on the toolbar when we change state
-    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         var crumbs = [];
         var state = $state.$current;
         do {
@@ -258,7 +255,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     });
     
     // close the menu when we change state
-    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         if ($state.includes('dashboard') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }

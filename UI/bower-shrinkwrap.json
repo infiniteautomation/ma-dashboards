@@ -64,6 +64,9 @@
   "https://github.com/daniel-nagy/md-data-table.git": {
     "0.10.10": "d20fb0c2126fcecdfa6cb7bb9923887c44a4dc0a"
   },
+  "https://github.com/dpoetzsch/md-pickers.git": {
+    "1.1.0": "123f0047e0f63b15619f86aea753f74abe9b0648"
+  },
   "https://github.com/emn178/js-sha512.git": {
     "0.3.0": "56066c7fd2a7d818bd2c68cd93d963a458caba6b"
   },

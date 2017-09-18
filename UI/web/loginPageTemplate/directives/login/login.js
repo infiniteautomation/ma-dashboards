@@ -40,7 +40,7 @@ var login = function($state, User, $rootScope, $window) {
                         $scope.errors.otherError = error.statusText || 'Connection refused';
                     }
                 });
-            }
+            };
         }
     };
 };

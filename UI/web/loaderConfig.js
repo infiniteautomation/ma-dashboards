@@ -70,7 +70,7 @@ requirejs.config({
         'jquery': vendor + '/jquery/jquery',
         'jquery-ui': vendor + '/jquery-ui/jquery-ui',
         'jquery-ui-touch-punch': vendor + '/jqueryui-touch-punch/jquery.ui.touch-punch',
-        'mdPickers': vendor + '/mdPickers/mdPickers',
+        'mdPickers': vendor + '/md-pickers/mdPickers',
         'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table',
         'ng-map': vendor + '/ngmap/ng-map',
         'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage',

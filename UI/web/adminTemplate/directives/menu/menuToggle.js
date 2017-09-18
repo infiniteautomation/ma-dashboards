@@ -14,7 +14,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
         this.addedHeight = 0;
         
         // close/open menus when changing states
-        $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
             if ($state.includes(this.item.name)) {
                 this.open();
             } else {
@@ -107,7 +107,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
             position: 'absolute',
             transition: 'none !important'
         });
-        if (this.wasHidden = this.$ul.hasClass('ng-hide'))
+        if ((this.wasHidden = this.$ul.hasClass('ng-hide')))
             this.$ul.removeClass('ng-hide');
     };
     

@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-loading-bar/loading-bar.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/vendor/material-design-icons/iconfont/material-icons.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/vendor/font-awesome/css/font-awesome.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/mdPickers/mdPickers.css?v=${lastUpgrade?c}">
+    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/md-pickers/mdPickers.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/vendor/md-color-picker/mdColorPicker.css?v=${lastUpgrade?c}">
     <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/fonts.css?v=${lastUpgrade?c}">

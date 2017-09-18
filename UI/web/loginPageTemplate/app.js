@@ -69,7 +69,7 @@ function($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider
 
 mySinglePageApp.run(['$rootScope', '$state', function($rootScope, $state) {
     // redirect to login page if we can't retrieve the current user when changing state
-    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
         if (error && (error.status === 401 || error.status === 403)) {
             event.preventDefault();
             // store the requested state so we can redirect there after login
