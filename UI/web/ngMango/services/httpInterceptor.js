@@ -69,9 +69,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     	    } else {
     	        error.mangoStatusText = message;
     	    }
-    	    
-    	    console.log(error.mangoStatusText);
-    	    
+
             return $q.reject(error);    
         }
     };

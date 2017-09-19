@@ -13,13 +13,12 @@ define(['angular', 'require'], function(angular, require) {
  * @description Displays a table of all the JSON store objects and allows editing and deleting them
  */
 
-const $inject = Object.freeze(['maJsonStore', 'maJsonStoreEventManager', '$q', '$filter', '$injector', '$window', 'maTranslate']);
+const $inject = Object.freeze(['maJsonStore', '$q', '$filter', '$injector', '$window', 'maTranslate']);
 class JsonStoreTableController {
     static get $inject() { return $inject; }
     
-    constructor(maJsonStore, maJsonStoreEventManager, $q, $filter, $injector, $window, maTranslate) {
+    constructor(maJsonStore, $q, $filter, $injector, $window, maTranslate) {
         this.maJsonStore = maJsonStore;
-        this.maJsonStoreEventManager = maJsonStoreEventManager;
         this.$q = $q;
         this.$filter = $filter;
         this.$window = $window;
@@ -70,7 +69,9 @@ class JsonStoreTableController {
 return {
     templateUrl: require.toUrl('./jsonStoreTable.html'),
     controller: JsonStoreTableController,
-    bindings: {},
+    bindings: {
+        editClicked: '&?'
+    },
     designerInfo: {
         translation: 'ui.dox.jsonStoreTable',
         icon: 'sd_storage'

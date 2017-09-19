@@ -706,10 +706,27 @@ return [
     {
         name: 'ui.settings.jsonStore',
         url: '/json-store',
-        template: '<h1 ma-tr="ui.app.jsonStorePage"></h1><ma-json-store-table><ma-json-store-table>',
+        template: `<h1 ma-tr="ui.app.jsonStorePage"></h1>
+            <ma-json-store-table edit-clicked="$state.go(\'ui.settings.jsonStoreEditor\', {xid: $item.xid})"><ma-json-store-table>`,
         menuTr: 'ui.app.jsonStorePage',
         menuIcon: 'sd_storage',
         permission: 'superadmin'
+    },
+    {
+        name: 'ui.settings.jsonStoreEditor',
+        url: '/json-store-editor/{xid}',
+        template: `<h1 ma-tr="ui.app.jsonStoreEditorPage"></h1>
+            <div>
+                <md-button class="md-raised" ui-sref="ui.settings.jsonStore">
+                    <md-icon>arrow_back</md-icon>
+                    <span ma-tr="ui.app.backToJsonTable"></span>
+                </md-button>
+            </div>
+            <ma-json-store-editor xid="{{$state.params.xid}}"><ma-json-store-editor>`,
+        menuTr: 'ui.app.jsonStoreEditorPage',
+        menuIcon: 'sd_storage',
+        permission: 'superadmin',
+        menuHidden: true
     },
     {
         name: 'ui.examples',

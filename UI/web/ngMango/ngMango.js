@@ -70,6 +70,7 @@ define(['./ngMangoServices',
         './directives/aceEditor',
         './directives/dateInput',
         './directives/eventHandler',
+        './directives/jsonModel',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -91,6 +92,7 @@ define(['./ngMangoServices',
         './components/fileStoreBrowser/fileStoreBrowser',
         './components/maSlider/maSlider',
         './components/jsonStoreTable/jsonStoreTable',
+        './components/jsonStoreEditor/jsonStoreEditor',
         'ng-map',
         './animations/slideUp',
         'angular',
@@ -104,10 +106,11 @@ define(['./ngMangoServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListGet, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
-        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile, aceEditor, dateInput, eventHandler,
+        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile, aceEditor, dateInput,
+        eventHandler, jsonModel,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, ngMap, slideUp, angular, require, moment) {
+        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -185,6 +188,7 @@ ngMango.directive('maSvg', svgDirective);
 ngMango.directive('maChooseFile', chooseFile);
 ngMango.directive('maAceEditor', aceEditor);
 ngMango.directive('maDateInput', dateInput);
+ngMango.directive('maJsonModel', jsonModel);
 ngMango.component('maQueryBuilder', queryBuilder);
 ngMango.component('maQueryGroup', queryGroup);
 ngMango.component('maQueryPredicate', queryPredicate);
@@ -206,6 +210,7 @@ ngMango.component('maButton', button);
 ngMango.component('maFileStoreBrowser', fileStoreBrowser);
 ngMango.component('maSlider', maSlider);
 ngMango.component('maJsonStoreTable', jsonStoreTable);
+ngMango.component('maJsonStoreEditor', jsonStoreEditor);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default

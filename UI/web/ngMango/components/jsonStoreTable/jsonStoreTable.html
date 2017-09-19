@@ -26,6 +26,9 @@
                     <md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteItem($event, item, $index)">
                         <md-icon>delete</md-icon>
                     </md-button>
+                    <md-button class="md-icon-button" ng-click="$ctrl.editClicked({$event: $event, $item: item})">
+                        <md-icon>edit</md-icon>
+                    </md-button>
                 </td>
             </tr>
         </tbody>
