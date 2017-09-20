@@ -165,6 +165,18 @@ function JsonStoreFactory($resource, Util) {
             }
         }
     });
+
+    JsonStore.newItem = function(xid = Util.uuid()) {
+        const item = new this();
+        item.xid = xid;
+        item.name = xid;
+        item.readPermission = 'user';
+        item.editPermission = '';
+        item.publicData = false;
+        item.jsonData = {};
+        item.isNew = true;
+        return item;
+    };
     
     JsonStore.objQuery = Util.objQuery;
 

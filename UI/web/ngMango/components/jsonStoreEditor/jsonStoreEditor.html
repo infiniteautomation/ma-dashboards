@@ -2,44 +2,43 @@
     <div layout="column">
         <md-input-container>
             <label ma-tr="common.name"></label>
-            <input ng-model="$ctrl.storeItem.name" ng-disabled="!$ctrl.storeItem">
+            <input ng-model="$ctrl.storeItem.name">
         </md-input-container>
         
         <md-input-container>
             <label ma-tr="common.xid"></label>
-            <input ng-model="$ctrl.storeItem.xid" ng-disabled="!$ctrl.storeItem">
+            <input ng-model="$ctrl.storeItem.xid">
         </md-input-container>
         
         <md-input-container>
             <label ma-tr="ui.app.editPermission"></label>
-            <input ng-model="$ctrl.storeItem.editPermission" ng-disabled="!$ctrl.storeItem">
+            <input ng-model="$ctrl.storeItem.editPermission">
             <ma-permissions-menu ng-model="$ctrl.storeItem.editPermission"></ma-permissions-menu>
         </md-input-container>
         
         <md-input-container>
             <label ma-tr="ui.app.readPermission"></label>
-            <input ng-model="$ctrl.storeItem.readPermission" ng-disabled="!$ctrl.storeItem">
+            <input ng-model="$ctrl.storeItem.readPermission">
             <ma-permissions-menu ng-model="$ctrl.storeItem.readPermission"></ma-permissions-menu>
         </md-input-container>
         
-        <md-checkbox ng-model="$ctrl.storeItem.publicData" ng-disabled="!$ctrl.storeItem"><span ma-tr="ui.app.publicData"></span></md-checkbox>
+        <md-checkbox ng-model="$ctrl.storeItem.publicData"><span ma-tr="ui.app.publicData"></span></md-checkbox>
     </div>
     
-    <ma-ace-editor mode="json" ng-model="$ctrl.storeItem.jsonData" ng-model-options="{debounce: 500}" ng-disabled="!$ctrl.storeItem" ma-json-model ma-json-model-pretty="4"></ma-ace-editor>
+    <ma-ace-editor mode="json" ng-model="$ctrl.storeItem.jsonData" ng-model-options="{debounce: 500}" ma-json-model ma-json-model-pretty="4"></ma-ace-editor>
 
     <div layout>
-        <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.storeItem.$save()" ng-disabled="!$ctrl.storeItem">
+        <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.storeItem.isNew && $ctrl.form.$pristine">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
         </md-button>
-        <md-button class="md-raised" ng-click="$ctrl.storeItem.$get()" ng-disabled="!$ctrl.storeItem">
+        <md-button class="md-raised" ng-click="$ctrl.revertItem($event)" ng-disabled="$ctrl.form.$pristine">
             <md-icon>undo</md-icon>
             <span ma-tr="ui.app.revert"></span>
         </md-button>
-        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem()" ng-disabled="!$ctrl.storeItem">
+        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.storeItem.isNew">
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>
     </div>
-
 </form>

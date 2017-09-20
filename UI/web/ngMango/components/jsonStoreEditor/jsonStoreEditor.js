@@ -24,33 +24,73 @@ class JsonStoreEditorController {
     }
     
     $onInit() {
+        this.ngModelCtrl.$render = () => this.render();
     }
     
     $onChanges(changes) {
-        if (changes.xid && this.xid) {
-            this.loadXid();
+        if (changes.xid) {
+            
         }
     }
     
+    render() {
+        this.validationMessages = [];
+        
+        if (this.ngModelCtrl.$viewValue) {
+            this.storeItem = angular.copy(this.ngModelCtrl.$viewValue);
+        } else {
+            this.storeItem = this.maJsonStore.newItem();
+        }
+
+        this.form.$setPristine();
+        this.form.$setUntouched();
+    }
+    
+    setViewValue() {
+        this.ngModelCtrl.$setViewValue(this.storeItem);
+    }
+
     loadXid() {
-        return this.maJsonStore.get({xid: this.xid}).$promise.then(null, error => {
+        this.maJsonStore.get({xid: this.xid}).$promise.then(null, error => {
             if (error.status === 404) {
-                var item = new this.maJsonStore();
-                item.xid = this.xid;
-                item.name = this.xid;
-                item.jsonData = {};
-                return item;
+                this.storeItem = this.maJsonStore.newItem(this.xid);
+            } else {
+                this.maDialogHelper.errorToast(['ui.components.jsonStoreGetError', error.mangoStatusText]);
             }
-            return this.$q.reject(error);
         }).then(item => {
             this.storeItem = item;
         });
     }
+    
+    saveItem(event) {
+        this.form.$setSubmitted();
+        
+        if (!this.form.$valid) {
+            this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
+            return;
+        }
+        
+        this.storeItem.$save().then(item => {
+            this.setViewValue();
+            this.render();
+            this.maDialogHelper.toast(['ui.components.jsonStoreSaved', this.storeItem.name]);
+        }, error => {
+            this.validationMessages = error.validationMessages;
+            this.maDialogHelper.errorToast(['ui.components.jsonStoreSaveError', error.mangoStatusText]);
+        });
+    }
+    
+    revertItem(event) {
+        this.render();
+    }
 
     deleteItem(event) {
-        this.maDialogHelper.confirm(event, ['ui.components.confirmDeleteJsonStore', this.storeItem.name]).then(() => {
-            return this.storeItem.$delete().then(() => {
-                this.loadXid();
+        this.maDialogHelper.confirm(event, ['ui.components.jsonStoreConfirmDelete', this.storeItem.name]).then(() => {
+            this.storeItem.$delete().then(() => {
+                this.maDialogHelper.toast(['ui.components.jsonStoreDeleted', this.storeItem.name]);
+                this.storeItem = this.maJsonStore.newItem();
+                this.setViewValue();
+                this.render();
             });
         }, angular.noop);
     }
@@ -60,7 +100,9 @@ return {
     templateUrl: require.toUrl('./jsonStoreEditor.html'),
     controller: JsonStoreEditorController,
     bindings: {
-        xid: '@'
+    },
+    require: {
+        ngModelCtrl: 'ngModel'
     },
     designerInfo: {
         translation: 'ui.dox.jsonStoreEditor',

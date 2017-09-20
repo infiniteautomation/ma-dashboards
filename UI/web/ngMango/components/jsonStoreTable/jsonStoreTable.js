@@ -35,8 +35,16 @@ class JsonStoreTableController {
     }
     
     $onInit() {
-        this.maJsonStore.query().$promise.then((items) => {
+        this.queryPromise = this.maJsonStore.query().$promise.then((items) => {
             this.items = items;
+            
+            const promises = [];
+            items.forEach(item => {
+                promises.push(item.$get().$promise);
+            });
+            
+            return this.$q.all(promises);
+        }).then(() => {
             this.reorderTable();
         });
     }
@@ -51,9 +59,9 @@ class JsonStoreTableController {
     deleteItem(event, item, index) {
         let confirm;
         if (this.maDialogHelper) {
-            confirm = this.maDialogHelper.confirm(event, ['ui.components.confirmDeleteJsonStore', item.name]);
+            confirm = this.maDialogHelper.confirm(event, ['ui.components.jsonStoreConfirmDelete', item.name]);
         } else {
-            const confirmText = this.maTranslate.trSync(['ui.components.confirmDeleteJsonStore', item.name]);
+            const confirmText = this.maTranslate.trSync(['ui.components.jsonStoreConfirmDelete', item.name]);
             confirm = this.$window.confirm(confirmText) ? this.$q.when() : this.$q.reject();
         }
         

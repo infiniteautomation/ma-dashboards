@@ -57,9 +57,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             		return item;
             	}, function(response) {
             	    if (response.status === 404) {
-                		var item = new JsonStore();
-                		item.xid = newXid;
-                		item.name = newXid;
+            	        const item = JsonStore.newItem(newXid);
                 		item.jsonData = $scope.value || {};
                 		return angular.extend(item, $scope.item);
             	    }

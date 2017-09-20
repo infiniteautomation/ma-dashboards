@@ -722,7 +722,8 @@ return [
                     <span ma-tr="ui.app.backToJsonTable"></span>
                 </md-button>
             </div>
-            <ma-json-store-editor xid="{{$state.params.xid}}"><ma-json-store-editor>`,
+            <ma-json-store item="item" xid="{{$state.params.xid}}"></ma-json-store>
+            <ma-json-store-editor ng-if="item || !$state.params.xid" ng-model="item"><ma-json-store-editor>`,
         menuTr: 'ui.app.jsonStoreEditorPage',
         menuIcon: 'sd_storage',
         permission: 'superadmin',
