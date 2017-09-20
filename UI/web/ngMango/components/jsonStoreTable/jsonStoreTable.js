@@ -13,21 +13,22 @@ define(['angular', 'require'], function(angular, require) {
  * @description Displays a table of all the JSON store objects and allows editing and deleting them
  */
 
-const $inject = Object.freeze(['maJsonStore', '$q', '$filter', '$injector', '$window', 'maTranslate']);
+const $inject = Object.freeze(['maJsonStore', '$q', '$filter', '$injector', '$window', 'maTranslate', '$scope']);
 class JsonStoreTableController {
     static get $inject() { return $inject; }
     
-    constructor(maJsonStore, $q, $filter, $injector, $window, maTranslate) {
+    constructor(maJsonStore, $q, $filter, $injector, $window, maTranslate, $scope) {
         this.maJsonStore = maJsonStore;
         this.$q = $q;
         this.$filter = $filter;
         this.$window = $window;
         this.maTranslate = maTranslate;
+        this.$scope = $scope;
         
         if ($injector.has('maDialogHelper')) {
             this.maDialogHelper = $injector.get('maDialogHelper');
         }
-        
+
         this.tableOrder = 'name';
         
         // so mdDataTable can call reorder with correct context
@@ -46,10 +47,28 @@ class JsonStoreTableController {
             return this.$q.all(promises);
         }).then(() => {
             this.reorderTable();
+            
+            this.maJsonStore.notificationManager.subscribe((...args) => {
+                this.updateHandler(...args);
+            }, this.$scope);
         });
     }
-    
+
     $onChanges(changes) {
+    }
+    
+    updateHandler(event, item, originalXid) {
+        const index = this.items.findIndex(listItem => listItem.id === item.id);
+        if (index >= 0) {
+            if (event.name === 'update' || event.name === 'create') {
+                this.items[index] = item;
+            } else if (event.name === 'delete') {
+                this.items.splice(index, 1);
+            }
+        } else if (event.name === 'update' || event.name === 'create') {
+            this.items.push(item);
+        }
+        this.reorderTable();
     }
     
     reorderTable() {
@@ -67,8 +86,8 @@ class JsonStoreTableController {
         
         confirm.then(() => {
             item.$delete().then(() => {
-               this.items.splice(index, 1);
-               this.reorderTable();
+                // just in case the websocket is not connected, we still want to remove the item from our list
+                this.maJsonStore.notificationManager.notifyIfNotConnected('delete', item, item.xid);
             });
         }, angular.noop);
     }

@@ -103,7 +103,8 @@ define(['angular'], function(angular) {
 * @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions available to them.
 *
 */
-function JsonStoreFactory($resource, Util) {
+JsonStoreFactory.$inject = ['$resource', 'maUtil', 'maNotificationManager'];
+function JsonStoreFactory($resource, Util, NotificationManager) {
 
     function setDataPathInterceptor(data) {
         var urlParts = data.config.url.split('/');
@@ -166,6 +167,13 @@ function JsonStoreFactory($resource, Util) {
         }
     });
 
+    JsonStore.notificationManager = new NotificationManager({
+        webSocketUrl: '/rest/v1/websocket/json-data',
+        transformObject: (...args) => {
+            return new JsonStore(...args);
+        }
+    });
+
     JsonStore.newItem = function(xid = Util.uuid()) {
         const item = new this();
         item.xid = xid;
@@ -183,7 +191,6 @@ function JsonStoreFactory($resource, Util) {
     return JsonStore;
 }
 
-JsonStoreFactory.$inject = ['$resource', 'maUtil'];
 return JsonStoreFactory;
 
 }); // define
