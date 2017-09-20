@@ -707,6 +707,12 @@ return [
         name: 'ui.settings.jsonStore',
         url: '/json-store',
         template: `<h1 ma-tr="ui.app.jsonStorePage"></h1>
+            <div>
+                <md-button class="md-raised" ui-sref="ui.settings.jsonStoreEditor">
+                    <md-icon>add</md-icon>
+                    <span ma-tr="ui.app.jsonStoreNew"></span>
+                </md-button>
+            </div>
             <ma-json-store-table edit-clicked="$state.go(\'ui.settings.jsonStoreEditor\', {xid: $item.xid})"><ma-json-store-table>`,
         menuTr: 'ui.app.jsonStorePage',
         menuIcon: 'sd_storage',

@@ -55,9 +55,6 @@ class JsonStoreEditorController {
     }
     
     $onChanges(changes) {
-        if (changes.xid) {
-            
-        }
     }
     
     render() {
@@ -102,7 +99,9 @@ class JsonStoreEditorController {
             this.render();
             this.maDialogHelper.toast(['ui.components.jsonStoreSaved', this.storeItem.name]);
         }, error => {
-            this.validationMessages = error.validationMessages;
+            if (error.status === 422) {
+                this.validationMessages = error.data.validationMessages;
+            }
             this.maDialogHelper.errorToast(['ui.components.jsonStoreSaveError', error.mangoStatusText]);
         });
     }

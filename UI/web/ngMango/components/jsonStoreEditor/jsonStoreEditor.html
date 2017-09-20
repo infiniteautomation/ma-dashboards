@@ -2,23 +2,37 @@
     <div layout="column">
         <md-input-container>
             <label ma-tr="common.name"></label>
-            <input ng-model="$ctrl.storeItem.name">
+            <input name="name" ng-model="$ctrl.storeItem.name" required ma-validation-messages="$ctrl.validationMessages">
+            <div ng-messages="$ctrl.form.name.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
+            </div>
         </md-input-container>
         
         <md-input-container>
             <label ma-tr="common.xid"></label>
-            <input ng-model="$ctrl.storeItem.xid">
+            <input name="xid" ng-model="$ctrl.storeItem.xid" required ma-validation-messages="$ctrl.validationMessages">
+            <div ng-messages="$ctrl.form.xid.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
+            </div>
         </md-input-container>
         
         <md-input-container>
             <label ma-tr="ui.app.editPermission"></label>
-            <input ng-model="$ctrl.storeItem.editPermission">
+            <input name="editPermission" ng-model="$ctrl.storeItem.editPermission" ma-validation-messages="$ctrl.validationMessages">
+            <div ng-messages="$ctrl.form.editPermission.$error">
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.editPermission.validationMessage"></div>
+            </div>
             <ma-permissions-menu ng-model="$ctrl.storeItem.editPermission"></ma-permissions-menu>
         </md-input-container>
         
         <md-input-container>
             <label ma-tr="ui.app.readPermission"></label>
-            <input ng-model="$ctrl.storeItem.readPermission">
+            <input name="readPermission" ng-model="$ctrl.storeItem.readPermission" ma-validation-messages="$ctrl.validationMessages">
+            <div ng-messages="$ctrl.form.readPermission.$error">
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.readPermission.validationMessage"></div>
+            </div>
             <ma-permissions-menu ng-model="$ctrl.storeItem.readPermission"></ma-permissions-menu>
         </md-input-container>
         
