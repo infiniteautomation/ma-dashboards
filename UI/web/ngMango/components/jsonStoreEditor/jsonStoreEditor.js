@@ -13,18 +13,45 @@ define(['angular', 'require'], function(angular, require) {
  * @description Given a JSON store XID, allows editing of the JSON store's name, permissions and content
  */
 
-const $inject = Object.freeze(['maJsonStore', '$q', 'maDialogHelper']);
+const $inject = Object.freeze(['maJsonStore', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate']);
 class JsonStoreEditorController {
     static get $inject() { return $inject; }
     
-    constructor(maJsonStore, $q, maDialogHelper) {
+    constructor(maJsonStore, $q, maDialogHelper, $scope, $window, maTranslate) {
         this.maJsonStore = maJsonStore;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
+        this.$scope = $scope;
+        this.$window = $window;
+        this.maTranslate = maTranslate;
     }
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
+        
+        this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+            if (event.defaultPrevented) return;
+            
+            if (this.form.$dirty) {
+                if (!this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'))) {
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
+
+        const oldUnload = this.$window.onbeforeunload;
+        this.$window.onbeforeunload = (event) => {
+            if (this.form.$dirty) {
+                const text = this.maTranslate.trSync('ui.app.discardUnsavedChanges');
+                event.returnValue = text;
+                return text;
+            }
+        };
+        
+        this.$scope.$on('$destroy', () => {
+            this.$window.onbeforeunload = oldUnload;
+        });
     }
     
     $onChanges(changes) {
