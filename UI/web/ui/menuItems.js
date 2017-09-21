@@ -736,6 +736,23 @@ return [
         menuHidden: true
     },
     {
+        name: 'ui.settings.eventHandlers',
+        url: '/event-handlers/{xid}',
+        template: '<ma-ui-event-handler-page flex="noshrink" layout="column"><ma-ui-event-handler-page>',
+        menuTr: 'ui.app.eventHandlers',
+        menuIcon: 'link',
+        permission: 'superadmin',
+        resolve: {
+            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+                return maRequireQ(['./components/eventHandlerPage/eventHandlerPage'], function (eventHandlerPage) {
+                    angular.module('eventHandlerPage', [])
+                        .component('maUiEventHandlerPage', eventHandlerPage);
+                    $ocLazyLoad.inject('eventHandlerPage');
+                });
+            }]
+        }
+    },
+    {
         name: 'ui.examples',
         url: '/examples',
         menuTr: 'ui.dox.examples',

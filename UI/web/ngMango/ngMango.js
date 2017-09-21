@@ -93,6 +93,7 @@ define(['./ngMangoServices',
         './components/maSlider/maSlider',
         './components/jsonStoreTable/jsonStoreTable',
         './components/jsonStoreEditor/jsonStoreEditor',
+        './components/eventHandlerEditor/eventHandlerEditor',
         'ng-map',
         './animations/slideUp',
         'angular',
@@ -110,7 +111,8 @@ define(['./ngMangoServices',
         eventHandler, jsonModel,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, ngMap, slideUp, angular, require, moment) {
+        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, eventHandlerEditor,
+        ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -210,6 +212,7 @@ ngMango.component('maButton', button);
 ngMango.component('maFileStoreBrowser', fileStoreBrowser);
 ngMango.component('maSlider', maSlider);
 ngMango.component('maJsonStoreTable', jsonStoreTable);
+ngMango.component('maEventHandlerEditor', eventHandlerEditor);
 ngMango.component('maJsonStoreEditor', jsonStoreEditor);
 ngMango.animation('.ma-slide-up', slideUp);
 

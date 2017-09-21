@@ -6,16 +6,43 @@
 define(['angular'], function(angular) {
 'use strict';
 
-eventHandlerFactory.$inject = ['maRestResource'];
-function eventHandlerFactory(RestResource) {
-    
+eventHandlerFactory.$inject = ['maRestResource', 'MA_EVENT_HANDLER_TYPES'];
+function eventHandlerFactory(RestResource, MA_EVENT_HANDLER_TYPES) {
+
+    const typesByName = Object.create(null);
+    MA_EVENT_HANDLER_TYPES.forEach(type => {
+        typesByName[type.type] = type;
+    });
+
     const eventHandlerBaseUrl = '/rest/v1/event-handlers';
     const eventHandlerWebSocketUrl = '/rest/v1/websocket/event-handlers';
     const eventHandlerXidPrefix = 'EH_';
-    
-	const defaultProperties = {
-	};
 
+	const defaultProperties = {
+        alias: '',
+        eventType: {
+            typeName: 'SYSTEM',
+            systemEventType: 'SET_POINT_HANDLER_FAILURE',
+            refId1: 0
+        },
+        
+        handlerType: 'EMAIL',
+        activeRecipients: [{type: 'USER', username: 'admin'}],
+        additionalContext: [],
+        customTemplate: '',
+        disabled: false,
+        sendEscalation: false,
+        escalationDelay: 1,
+        escalationDelayType: 'HOURS',
+        escalationRecipients: [],
+        sendInactive: false,
+        inactiveOverride: false,
+        inactiveRecipients: [],
+        includeLogfile: false,
+        includePointValueCount: 10,
+        includeSystemInfo: false
+	};
+	
     class EventHandler extends RestResource {
         static get defaultProperties() {
             return defaultProperties;
@@ -32,8 +59,32 @@ function eventHandlerFactory(RestResource) {
         static get xidPrefix() {
             return eventHandlerXidPrefix;
         }
+        
+        static get handlerTypes() {
+            return MA_EVENT_HANDLER_TYPES;
+        }
+        
+        static get handlerTypesByName() {
+            return typesByName;
+        }
+        
+        static forEventType(eventType, subType, ref1, ref2) {
+            const queryBuilder = this.buildQuery()
+                .eq('eventTypeName', eventType);
+            
+            if (subType !== undefined) {
+                queryBuilder.eq('eventSubtypeName', subType);
+            }
+            if (ref1 !== undefined) {
+                queryBuilder.eq('eventTypeRef1', ref1);
+            }
+            if (ref2 !== undefined) {
+                queryBuilder.eq('eventTypeRef2', ref2);
+            }
+            return queryBuilder.query();
+        }
     }
-    
+
     return EventHandler;
 }
 

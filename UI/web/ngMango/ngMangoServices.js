@@ -140,6 +140,24 @@ ngMangoServices.constant('MA_DATE_FORMATS', {
     iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 });
 
+ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
+    {
+        type: 'EMAIL',
+        description: 'eventHandlers.type.email',
+        editorTemplateUrl: require.toUrl('./components/eventHandlerEditor/email.html')
+    },
+    {
+        type: 'PROCESS',
+        description: 'eventHandlers.type.process',
+        editorTemplateUrl: require.toUrl('./components/eventHandlerEditor/process.html')
+    },
+    {
+        type: 'SET_POINT',
+        description: 'eventHandlers.type.setPoint',
+        editorTemplateUrl: require.toUrl('./components/eventHandlerEditor/setPoint.html')
+    }
+]);
+
 ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide',
         function(localStorageServiceProvider, $httpProvider, $provide, maRequireQProvider) {
     localStorageServiceProvider
