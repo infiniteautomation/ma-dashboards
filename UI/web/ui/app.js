@@ -11,7 +11,7 @@ define([
     './services/pages',
     './services/dateBar',
     './services/uiSettings',
-    './directives/pageView/pageView',
+    './directives/pageView/page_view',
     './directives/liveEditor/livePreview',
     './directives/stateParams/stateParams',
     './directives/iframeView/iframeView',
