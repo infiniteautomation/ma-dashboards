@@ -413,11 +413,11 @@ FileStoreBrowserController.prototype.saveEditFile = function(event) {
 		this.files.splice(index, 1, uploaded[0]);
 		
 		this.maDialogHelper.toast('ui.fileBrowser.savedSuccessfully', null, this.editFile.filename);
-		this.editFile = null;
-		this.editText = null;
-		if (this.editingFile) {
-			this.editingFile({$file: null});
-		}
+//		this.editFile = null;
+//		this.editText = null;
+//		if (this.editingFile) {
+//			this.editingFile({$file: null});
+//		}
 	}.bind(this), function(error) {
 		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
 		this.maDialogHelper.toast('ui.fileBrowser.errorUploading', 'md-warn', this.editFile.filename, msg);

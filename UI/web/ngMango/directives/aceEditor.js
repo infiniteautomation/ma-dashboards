@@ -44,7 +44,7 @@ AceEditorController.prototype.$onInit = function() {
     
     this.aceConfig = {
         useWrapMode : true,
-        showGutter: false,
+        showGutter: !!this.showGutter,
         showPrintMargin: false,
         theme: this.theme || (this.uiSettings && this.uiSettings.codeTheme),
         mode: this.mode || 'html',
@@ -62,6 +62,9 @@ AceEditorController.prototype.$onChanges = function(changes) {
     }
     if (changes.mode) {
         this.setMode();
+    }
+    if (changes.showGutter) {
+        this.setShowGutter();
     }
 };
 
@@ -114,6 +117,12 @@ AceEditorController.prototype.setMode = function setMode() {
     }
 };
 
+AceEditorController.prototype.setShowGutter = function setShowGutter() {
+    if (this.editor) {
+        this.editor.renderer.setShowGutter(!!this.showGutter);
+    }
+};
+
 AceEditor.$inject = [];
 function AceEditor() {
     return {
@@ -131,9 +140,10 @@ function AceEditor() {
         scope: {},
         controllerAs: '$ctrl',
         bindToController: {
-            src: '@',
-            mode: '@',
-            theme: '@'
+            src: '@?',
+            mode: '@?',
+            theme: '@?',
+            showGutter: '<?'
         },
         controller: AceEditorController,
         designerInfo: {
