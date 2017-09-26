@@ -757,7 +757,8 @@ return [
         url: '/examples',
         menuTr: 'ui.dox.examples',
         menuIcon: 'info',
-        menuHidden: true,
+        // menuHidden: true,
+        permission: 'edit-ui-pages',
         submenu: true,
         weight: 2001
     },
