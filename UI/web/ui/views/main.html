@@ -94,7 +94,7 @@
     
     <ma-ui-date-bar on-refresh="dateBar.refresh = $event" ng-if="stateParams.dateBar" ng-show="dateBar.expanded" class="ng-hide"></ma-ui-date-bar>
 
-    <md-content md-scroll-y layout="column" flex class="main-content">
+    <md-content layout="column" flex class="main-content">
       <div flex="noshrink" ui-view layout="column" class="ma-ui-main-view" ng-class="{'ma-no-padding': $state.params.noPadding}" role="main"></div>
       <ma-ui-footer flex="none" aria-role="contentinfo" layout ng-if="!$state.params.hideFooter"></ma-ui-footer>
     </md-content>
