@@ -21,7 +21,7 @@ ma-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-item m
 ma-set-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-item md-icon,
 ma-point-value button.event-indicator md-icon {
   font-size: 16px;
-  padding: 0 0 4px 0px;
+  padding: 0 0 8px 0px;
   margin: 0;
 }
 
