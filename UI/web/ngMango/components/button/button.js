@@ -53,7 +53,7 @@ var button = {
     	icon: 'touch_app',
     	translation: 'dashboardDesigner.button',
     	attributes: {
-    		raised: {type: 'boolean'},
+    		raised: {type: 'boolean', defaultValue: true},
     		palette: {options: ['primary', 'accent', 'warn']},
     		hue: {options: ['hue-1', 'hue-2', 'hue-3']},
     		uiSref: { type: 'state-name'},
