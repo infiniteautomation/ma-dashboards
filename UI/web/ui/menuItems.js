@@ -93,7 +93,11 @@ return [
                     $ocLazyLoad.inject('maUiRootState');
                 });
             }],
-            instanceDescription: ['$rootScope', 'maSystemSettings', function($rootScope, SystemSettings) {
+            rootScopeData: ['$rootScope', 'maSystemSettings', 'maModules', function($rootScope, SystemSettings, maModules) {
+                maModules.getCore().then((coreModule) => {
+                    $rootScope.coreModule = coreModule;
+                }, angular.noop);
+
                 new SystemSettings('instanceDescription').getValue().then((result) => {
                     $rootScope.instanceDescription = result;
                 }, angular.noop);

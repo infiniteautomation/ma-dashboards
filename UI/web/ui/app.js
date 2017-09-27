@@ -632,10 +632,6 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $document.on('dragover drop', function($event) {
         return false;
     });
-    
-    maModules.getCore().then(function(coreModule) {
-        $rootScope.coreModule = coreModule;
-    }.bind(this));
 }]);
 
 /**
