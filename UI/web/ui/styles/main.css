@@ -1388,3 +1388,7 @@ form:not(.ng-submitted) .ng-untouched ~ [ng-messages],
 [ng-form]:not(.ng-submitted) .ng-untouched ~ [ng-messages] {
 	display: none;
 }
+
+ma-ui-state-params {
+	display: none;
+}
