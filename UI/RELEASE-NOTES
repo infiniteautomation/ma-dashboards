@@ -1,3 +1,18 @@
+*Version 3.2.4*
+* Add math.js to root scope and add filters for converting units
+* Improve UI settings page to give save/error feedback
+* Update AngularJS Material library
+* Add component for editing JSON store items
+* Enable editing JSON store items from "JSON store" page
+* Add services for event detectors and handlers
+* Rename pageView.js so it isn't blocked by adblockers
+* Show line numbers in file store editor, dont close on save
+* Display examples menu if you have 'edit-ui-pages' permission
+* Watch list components now output parameters and compare each parameter value
+* Display instance description under username
+* Layout fixes
+* Bug fixes
+
 *Version 3.2.3*
 * Updated help doc for page editor
 * Updated help doc for system status page
