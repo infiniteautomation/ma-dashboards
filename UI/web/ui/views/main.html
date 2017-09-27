@@ -16,7 +16,7 @@
           <div layout="row" layout-align="start center" ng-click="$mdMenu.open($event)">
             <div flex layout="column">
               <span><span ng-bind="User.current.username"></span> <em ng-if="User.current.name" ng-bind="'(' + User.current.name + ')'"></em></span>
-              <span class="email" ng-bind="User.current.email"></span>
+              <span class="email" ng-bind="instanceDescription || User.current.email"></span>
             </div>
             <md-icon>arrow_drop_down</md-icon>
           </div>

@@ -123,10 +123,15 @@ SystemSettingsPageController.prototype.saveSection = function() {
     this.$timeout.cancel(this.savedMessageTimeout);
     this.error = null;
     this.savedMessage = false;
-    
+
     this.savePromise = this.SystemSettings.setValues(this.changedValues).then(function() {
         this.settingForm.$setPristine();
         this.settingForm.$setUntouched();
+        
+        if (this.changedValues.instanceDescription != null) {
+            this.$scope.$root.instanceDescription = this.changedValues.instanceDescription;
+        }
+        
         this.changedValues = {};
         this.savedMessage = true;
         this.savedMessageTimeout = this.$timeout(function() {

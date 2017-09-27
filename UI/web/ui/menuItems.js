@@ -92,6 +92,11 @@ return [
                         .component('maUiFooter', footer);
                     $ocLazyLoad.inject('maUiRootState');
                 });
+            }],
+            instanceDescription: ['$rootScope', 'maSystemSettings', function($rootScope, SystemSettings) {
+                new SystemSettings('instanceDescription').getValue().then((result) => {
+                    $rootScope.instanceDescription = result;
+                }, angular.noop);
             }]
         }
     },
