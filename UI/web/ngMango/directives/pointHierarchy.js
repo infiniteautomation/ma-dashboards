@@ -49,7 +49,7 @@ function pointHierarchy(PointHierarchy) {
                     return;
                 }
 
-                if (typeof value === 'string') {
+                if (typeof path === 'string') {
                     path = path.split(',');
                 }
 
