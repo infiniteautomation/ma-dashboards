@@ -41,6 +41,20 @@ function WatchListParametersController($parse, $interpolate, Util) {
 }
 
 WatchListParametersController.prototype.$onChanges = function(changes) {
+    if (!this.ngModelCtrl && changes.watchList && this.watchList) {
+        if (!this.parameters) {
+            this.parameters = {};
+        }
+        
+        const defaultParams = this.watchList.data && this.watchList.data.paramValues;
+    	if (defaultParams) {
+    	    Object.keys(defaultParams).forEach(paramName => {
+    	        if (this.parameters[paramName] === undefined) {
+    	            this.parameters[paramName] = defaultParams[paramName];
+    	        }
+    	    });
+    	}
+    }
 };
 
 WatchListParametersController.prototype.$onInit = function() {
