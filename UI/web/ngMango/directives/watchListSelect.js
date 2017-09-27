@@ -54,7 +54,7 @@ function watchListSelectFactory($injector) {
             start: '<?',
             limit: '<?',
             sort: '<?',
-            parameters: '<?',
+            parameters: '=?',
             onPointsChange: '&?',
             ngDisabled: '<?'
         },

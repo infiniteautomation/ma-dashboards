@@ -11,8 +11,11 @@ var watchListParameters = {
     templateUrl: require.toUrl('./watchListParameters.html'),
     bindings: {
         watchList: '<',
-        parametersChanged: '&',
+        parametersChanged: '&?',
         parameters: '<?'
+    },
+    require: {
+        ngModelCtrl: '?ngModel'
     },
     designerInfo: {
         translation: 'ui.components.watchListParameters',
@@ -23,7 +26,7 @@ var watchListParameters = {
         },
         attributes: {
             watchList: {defaultValue: 'designer.watchList'},
-            parametersChanged: {defaultValue: 'designer.parameters = $parameters'}
+            ngModel: {defaultValue: 'designer.parameters'}
         }
     }
 };
@@ -38,21 +41,24 @@ function WatchListParametersController($parse, $interpolate, Util) {
 }
 
 WatchListParametersController.prototype.$onChanges = function(changes) {
-    if (changes.watchList && this.watchList) {
-    	if (this.watchList.data && this.watchList.data.paramValues) {
-    		this.parameters = this.watchList.data.paramValues;
-    	} else if (!this.parameters) {
-    		this.parameters = {};
-    	}
-    }
 };
 
 WatchListParametersController.prototype.$onInit = function() {
+    if (this.ngModelCtrl) {
+        this.ngModelCtrl.$render = () => {
+            this.parameters = this.ngModelCtrl.$viewValue;
+        };
+    }
 };
 
 WatchListParametersController.prototype.inputChanged = function inputChanged() {
-	if (this.watchList) {
-		this.parametersChanged({$parameters: angular.extend({}, this.parameters)});
+    this.parameters = Object.assign({}, this.parameters);
+    
+	if (this.watchList && this.parametersChanged) {
+		this.parametersChanged({$parameters: this.parameters});
+	}
+	if (this.ngModelCtrl) {
+	    this.ngModelCtrl.$setViewValue(this.parameters);
 	}
 };
 

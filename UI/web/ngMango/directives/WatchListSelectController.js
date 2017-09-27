@@ -31,7 +31,7 @@ WatchListSelectController.prototype.$onInit = function() {
 };
 
 WatchListSelectController.prototype.$onChanges = function(changes) {
-    if (changes.watchListXid && (changes.watchListXid.currentValue || !changes.watchListXid.isFirstChange())) {
+    if (changes.watchListXid && !changes.watchListXid.isFirstChange()) {
         this.setWatchListByXid(this.watchListXid);
     }
 
@@ -39,23 +39,62 @@ WatchListSelectController.prototype.$onChanges = function(changes) {
             changes.limit && !changes.limit.isFirstChange() || changes.sort && !changes.sort.isFirstChange()) {
         this.doQuery();
     }
-    
-    if (changes.parameters && (changes.parameters.currentValue || !changes.parameters.isFirstChange())) {
-        this.doGetPoints(this.parameters);
+};
+
+WatchListSelectController.prototype.$doCheck = function() {
+    if (this.parameters && this.prevParams && this.watchListParams && this.onPointsChange) {
+        const changeDetected = Object.keys(this.parameters).some(param => {
+            return this.watchListParams[param] && this.parameters[param] !== this.prevParams[param];
+        });
+        
+        if (changeDetected) {
+            this.doGetPoints(this.parameters);
+        }
     }
 };
 
 WatchListSelectController.prototype.setViewValue = function(item) {
     this.ngModelCtrl.$setViewValue(item);
     this.render();
-    if (item && item.data && item.data.paramValues) {
-        this.parameters = item.data.paramValues;
-    }
-    this.doGetPoints(this.parameters);
 };
 
 WatchListSelectController.prototype.render = function() {
     this.watchList = this.ngModelCtrl.$viewValue;
+    this.watchListParams = null;
+
+    // the $onChanges hook doesn't call setWatchListByXid() for the first change (i.e. on initialization)
+    // we handle this here so that if the $viewValue already has the same XID we don't fetch it again
+    if (!this.firstRenderComplete) {
+        this.firstRenderComplete = true;
+        if (this.watchListXid && (!this.ngModelCtrl.$viewValue || this.ngModelCtrl.$viewValue.xid !== this.watchListXid)) {
+            this.setWatchListByXid(this.watchListXid);
+            return;
+        }
+    }
+
+    if (this.watchList) {
+        if (this.watchList.params && this.watchList.params.length) {
+            this.watchListParams = {};
+            this.watchList.params.forEach(param => {
+                this.watchListParams[param.name] = true;
+            });
+        }
+
+        if (this.watchList.data && this.watchList.data.paramValues) {
+            const defaultParams = this.watchList.data.paramValues;
+            if (!this.parameters) {
+                this.parameters = {};
+            }
+            
+            Object.keys(defaultParams).forEach(paramName => {
+                if (this.parameters[paramName] === undefined) {
+                    this.parameters[paramName] = defaultParams[paramName];
+                }
+            });
+        }
+    }
+
+    this.doGetPoints(this.parameters);
 };
 
 WatchListSelectController.prototype.subscribe = function() {
@@ -91,6 +130,8 @@ WatchListSelectController.prototype.doQuery = function() {
 };
 
 WatchListSelectController.prototype.doGetPoints = function(parameters) {
+    this.prevParams = Object.assign({}, parameters);
+    
     if (!this.onPointsChange) return;
     
     if (!this.watchList) {

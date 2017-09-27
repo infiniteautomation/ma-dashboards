@@ -15,7 +15,7 @@ function watchListGetFactory() {
         controllerAs: '$ctrl',
         bindToController: {
             watchListXid: '@?',
-            parameters: '<?',
+            parameters: '=?',
             onPointsChange: '&?'
         },
         require: {

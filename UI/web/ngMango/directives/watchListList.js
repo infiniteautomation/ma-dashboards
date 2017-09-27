@@ -26,7 +26,7 @@ function watchListListFactory($injector) {
             start: '<?',
             limit: '<?',
             sort: '<?',
-            parameters: '<?',
+            parameters: '=?',
             onPointsChange: '&?',
 
             showNewButton: '<?',
