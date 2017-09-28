@@ -8,7 +8,11 @@ define(['require', 'angular'], function(require, angular) {
 
 ModulesFactory.$inject = ['$http', '$q', 'maServer', 'maNotificationManager'];
 function ModulesFactory($http, $q, maServer, NotificationManager) {
-    var modulesUrl = '/rest/v1/modules';
+    const modulesUrl = '/rest/v1/modules';
+    
+    // Mango API should return in less than 60s
+    // Mango HTTP client that talks to the store has a timeout of 30s and retries once 
+    const storeTimeout = 30000 * 2 + 10000;
     
     function Modules() {
     }
@@ -62,14 +66,16 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
             data: {
             	username: username,
             	password: password
-            }
+            },
+            timeout: storeTimeout
         });
     };
     
     Modules.checkForUpgrades = function() {
         return $http({
             method: 'GET',
-            url: modulesUrl + '/upgrades-available'
+            url: modulesUrl + '/upgrades-available',
+            timeout: storeTimeout
         }).then(function(response) {
             return response.data;
         });

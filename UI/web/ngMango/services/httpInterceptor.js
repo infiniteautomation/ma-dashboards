@@ -51,6 +51,11 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     	responseError: function(error) {
     	    let message = error.data && angular.isObject(error.data) && (error.data.message || error.data.localizedMessage);
     	    
+    	    // try the 'errors' header
+    	    if (!message) {
+                message = error.headers('errors');
+            }
+    	    
     	    // if no message in the response body use the HTTP status text
     	    if (!message) {
     	        message = safeTranslate(`ui.app.httpStatus.${error.status}`, error.statusText);

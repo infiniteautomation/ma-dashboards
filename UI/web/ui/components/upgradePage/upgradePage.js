@@ -89,7 +89,7 @@ UpgradePageController.prototype.checkForUpgrades = function() {
 		});
 		
 	}.bind(this), function(error) {
-		this.error = error;
+		this.error = error.mangoStatusText;
 	}.bind(this)).then(function() {
 		delete this.checkPromise;
 	}.bind(this));

@@ -42,6 +42,8 @@
 		<md-checkbox ng-model="$ctrl.backupBeforeDownload"><span ma-tr="modules.versionCheck.advanced.backup"></span></md-checkbox>
 		<md-checkbox ng-model="$ctrl.restartAfterDownload"><span ma-tr="modules.versionCheck.advanced.restart"></span></md-checkbox>
 	</div>
+    
+    <p ng-if="$ctrl.error" md-colors="{color: 'warn'}" ma-tr="ui.app.errorCheckingForUpgrades" ma-tr-args="[$ctrl.error]"></p>
 
 	<md-card>
 		<md-card-content>
@@ -116,8 +118,6 @@
 			    </tbody>
 			  </table>
 			</md-table-container>
-		
-			<div md-colors="{color: 'warn'}" ng-bind="$ctrl.error"></div>
 		</md-card-content>
 	</md-card>
 </div>
