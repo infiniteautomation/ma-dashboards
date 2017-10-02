@@ -245,6 +245,23 @@ function PointFactory($resource, $http, $timeout, Util, User) {
         var url = '/rest/v1/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
         return $http.put(url, null);
     };
+
+    Point.prototype.enable = function enable(enabled = true, restart = false) {
+        var url = '/rest/v1/data-points/enable-disable/' + encodeURIComponent(this.xid);
+        return $http({
+            url,
+            params: {
+                enabled,
+                restart
+            }
+        }).then(() => {
+            this.enabled = enabled;
+        });
+    };
+
+    Point.prototype.restart = function restart() {
+        return this.enable(true, true);
+    };
     
     Point.prototype.setValue = function setValue(value, options) {
     	options = options || {};
