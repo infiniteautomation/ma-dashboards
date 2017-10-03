@@ -250,6 +250,7 @@ function PointFactory($resource, $http, $timeout, Util, User) {
         var url = '/rest/v1/data-points/enable-disable/' + encodeURIComponent(this.xid);
         return $http({
             url,
+            method: 'PUT',
             params: {
                 enabled,
                 restart
