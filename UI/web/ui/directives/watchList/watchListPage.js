@@ -454,7 +454,8 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                         to: maUiDateBar.to,
                         rollup: this.rollupType,
                         rollupInterval: maUiDateBar.rollupIntervals,
-                        rollupIntervalType: maUiDateBar.rollupIntervalPeriod
+                        rollupIntervalType: maUiDateBar.rollupIntervalPeriod,
+                        limit: -1
                     }).then(function(response) {
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);

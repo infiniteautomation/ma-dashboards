@@ -198,11 +198,13 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             var now = new Date();
             var from = params.from = Util.toMoment(options.from, now, options.dateFormat);
             var to = params.to = Util.toMoment(options.to, now, options.dateFormat);
-            var limit = params.limit = isFinite(options.limit) && options.limit > 0 ? options.limit : MA_POINT_VALUES_CONFIG.limit;
+            var limit = params.limit = isFinite(options.limit) ? options.limit : MA_POINT_VALUES_CONFIG.limit;
 
             params.push('from=' + encodeURIComponent(from.toISOString()));
             params.push('to=' + encodeURIComponent(to.toISOString()));
-            params.push('limit=' + encodeURIComponent(limit));
+            if (limit >= 0) {
+                params.push('limit=' + encodeURIComponent(limit));
+            }
             var timezone = options.timezone || moment().tz();
             if (timezone)
                 params.push('timezone=' + encodeURIComponent(timezone));
