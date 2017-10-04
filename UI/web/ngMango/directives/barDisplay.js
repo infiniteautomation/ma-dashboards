@@ -19,7 +19,8 @@ function barDisplay() {
             direction: '@?',
             maximum: '<?',
             minimum: '<?',
-            value: '<?'
+            value: '<?',
+            renderValue: '&?'
         },
         designerInfo: {
             translation: 'ui.components.barDisplay',

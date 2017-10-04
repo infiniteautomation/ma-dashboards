@@ -83,7 +83,12 @@ PointValueController.prototype.getValue = function() {
 
 PointValueController.prototype.getTextValue = function() {
     if (this.value != null) {
-        return this.value.toFixed(2);
+        if (this.renderValue) {
+            return this.renderValue({$value: this.value});
+        } else {
+            console.log(this.value);
+            return isFinite(this.value) ? this.value.toFixed(2) : this.value;
+        }
     } else if (this.point && this.point.renderedValue != null) {
         return this.point.renderedValue;
     } else if (this.point && this.point.convertedValue != null) {

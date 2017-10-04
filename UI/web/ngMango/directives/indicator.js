@@ -15,7 +15,8 @@ function indicator() {
             toggleOnClick: '<?',
             point: '<?',
             pointXid: '@?',
-            value: '<?'
+            value: '<?',
+            renderValue: '&?'
         },
         designerInfo: {
             translation: 'ui.components.indicator',

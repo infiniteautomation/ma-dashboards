@@ -41,6 +41,7 @@ function tankLevel() {
           min: '<?',
           color: '@?',
           value: '<?',
+          renderValue: '&?',
           options: '<?'
         },
         designerInfo: {

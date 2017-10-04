@@ -105,7 +105,8 @@ function gaugeChart() {
           arrowAlpha: '<?',
           axisAlpha: '<?',
           options: '<?',
-          value: '<?'
+          value: '<?',
+          renderValue: '&?'
         },
         designerInfo: {
             translation: 'ui.components.gaugeChart',
