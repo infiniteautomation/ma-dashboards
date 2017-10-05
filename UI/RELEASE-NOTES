@@ -1,3 +1,11 @@
+*Version 3.2.5*
+* Better display of error messages on the upgrade page
+* Improvements to ma-scale directive
+* Add enable and restart methods to data point service
+* Don't limit the number of point values when downloading JSON/CSV files from watch list
+* Fix rendering NaN values on point value displays
+* Provide way to round and add suffix to values passed into point value displays
+
 *Version 3.2.4*
 * Add math.js to root scope and add filters for converting units
 * Improve UI settings page to give save/error feedback
