@@ -454,7 +454,8 @@ ma-get-point-value,
 ma-point-values,
 ma-point-statistics:not([display-mode]),
 ma-watch-list-get,
-ma-point-query {
+ma-point-query,
+ma-event-audio {
   display: none;
 }
 
