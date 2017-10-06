@@ -18,37 +18,82 @@ define(['angular', 'require'], function(angular, require) {
  *
  **/
 
+const localStorageKey = 'eventAudioPlayerId';
+
 class EventAudioController {
-    static get $inject() { return ['maEvents', '$scope']; }
+    static get $inject() { return ['maEvents', '$scope', '$window', 'localStorageService', 'maUtil']; }
     
-    constructor(maEvents, $scope) {
+    constructor(maEvents, $scope, $window, localStorageService, maUtil) {
         this.maEvents = maEvents;
         this.$scope = $scope;
+        this.$window = $window;
+        this.localStorageService = localStorageService;
+        this.maUtil = maUtil;
     }
     
     $onInit() {
+        this.id = this.maUtil.uuid();
+        this.localStorageService.set(localStorageKey, this.id);
+        
+        this.$scope.$on('$destroy', () => {
+            if (this.isCurrentAudioPlayer()) {
+                // relinquish control
+                this.localStorageService.remove(localStorageKey);
+            }
+        });
+        
         this.maEvents.notificationManager.subscribe((event, mangoEvent) => {
             this.eventRaised(mangoEvent);
         }, this.$scope, ['RAISED']);
+    }
+    
+    isCurrentAudioPlayer() {
+        const activeId = this.localStorageService.get(localStorageKey);
+        if (activeId == null) {
+            this.localStorageService.set(localStorageKey, this.id);
+            return true;
+        }
+        return activeId === this.id;
     }
 
     eventRaised(mangoEvent) {
         if (!this.audioFiles) return;
         const file = this.audioFiles[mangoEvent.alarmLevel] || this.audioFiles.DEFAULT;
-        if (file) {
+        const readAloud = this.readAloud[mangoEvent.alarmLevel] || this.readAloud.DEFAULT;
+        
+        if ((file || readAloud) && this.isCurrentAudioPlayer()) {
             if (this.currentAudio) {
                 this.currentAudio.pause();
+                delete this.currentAudio;
             }
             
-            this.currentAudio = new Audio(file);
-            this.currentAudio.play();
+            let promise;
+            if (file) {
+                const audio = new Audio(file);
+                promise = audio.play().then(() => {
+                    this.currentAudio = audio;
+                }, () => {
+                    delete this.currentAudio;
+                    return Promise.resolve();
+                });
+            } else {
+                promise = Promise.resolve();
+            }
+            
+            if (readAloud && this.$window.speechSynthesis && this.$window.SpeechSynthesisUtterance) {
+                promise.then(() => {
+                    const utterance = new this.$window.SpeechSynthesisUtterance(mangoEvent.message);
+                    this.$window.speechSynthesis.speak(utterance);
+                });
+            }
         }
     }
 }
 
 return {
     bindings: {
-        audioFiles: '<'
+        audioFiles: '<',
+        readAloud: '<'
     },
     controller: EventAudioController
 };

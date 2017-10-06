@@ -94,5 +94,25 @@
   "autoLoginUsername": "",
   "autoLoginPassword": "",
   "userModule": "",
-  "userCss": ""
+  "userCss": "",
+  "eventAudioFiles": {
+  	"NONE": "",
+  	"INFORMATION": "",
+  	"IMPORTANT": "",
+  	"WARNING": "",
+    "URGENT": "/audio/urgent.mp3",
+    "CRITICAL": "/audio/critical.mp3",
+    "LIFE_SAFETY": "/audio/lifesafety.mp3",
+    "DO_NOT_LOG": ""
+  },
+  "eventReadAloud": {
+  	"NONE": false,
+  	"INFORMATION": false,
+  	"IMPORTANT": false,
+  	"WARNING": false,
+    "URGENT": false,
+    "CRITICAL": false,
+    "LIFE_SAFETY": false,
+    "DO_NOT_LOG": false
+  }
 }

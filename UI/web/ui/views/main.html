@@ -64,6 +64,7 @@
           <!-- use up the empty space -->
 
           <div flex="none" class="md-toolbar-item ma-ui-tools" layout="row" layout-align="start center">
+            <ma-event-audio ng-if="User.current && !User.current.muted" audio-files="uiSettings.eventAudioFiles" read-aloud="uiSettings.eventReadAloud"></ma-event-audio>
             <ma-ui-active-event-icons style="padding-right: 8px;" ng-if="$mdMedia('gt-xs')"></ma-ui-active-event-icons>
 
             <div ng-if="stateParams.dateBar">
