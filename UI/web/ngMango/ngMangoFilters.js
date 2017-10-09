@@ -205,6 +205,22 @@ ngMangoFilters.filter('maConvertUnit', ['maMath', function(math) {
     };
 }]);
 
+ngMangoFilters.filter('maExtractBits', function () {
+    return function(input, mask, shift = 0) {
+        if (typeof mask === 'string') {
+            let radix = mask.substr(0, 2) === '0x' ? 16 : 10;
+            mask = parseInt(mask, radix);
+        }
+        let output = input & mask;
+        if (shift > 0) {
+            output = output >>> shift;
+        } else if (shift < 0) {
+            output = output << shift;
+        }
+        return output;
+    };
+});
+
 return ngMangoFilters;
 
 }); // require
