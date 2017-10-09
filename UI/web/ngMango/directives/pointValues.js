@@ -111,7 +111,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             timeout: '<?',
             autoRollupInterval: '<?',
             timezone: '@',
-            onValuesUpdated: '&?'
+            onValuesUpdated: '&?',
+            simplifyTolerance: '<?'
         },
         bindToController: {
             refresh: '<?'
@@ -169,7 +170,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             		rollupInterval: $scope.rollupInterval,
             		rendered: $scope.rendered,
                     converted: $scope.converted,
-                    autoRollupInterval: $scope.autoRollupInterval
+                    autoRollupInterval: $scope.autoRollupInterval,
+                    simplifyTolerance: $scope.simplifyTolerance
             	};
             }, function(newValue, oldValue) {
             	var changedXids, i;
@@ -479,7 +481,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         converted: dataType === 'NUMERIC' && $scope.converted,
                         rollupInterval: $scope.actualRollupInterval,
                         timeout: $scope.timeout,
-                        timezone: $scope.timezone
+                        timezone: $scope.timezone,
+                        simplifyTolerance: $scope.simplifyTolerance
                     };
                     
                     if (options.rollup === 'POINT_DEFAULT') {

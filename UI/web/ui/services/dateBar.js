@@ -21,7 +21,8 @@ function DateBarFactory(localStorageService, MA_ROLLUP_TYPES, $filter, $rootScop
         updateIntervalPeriod: 'MINUTES',
         autoUpdate: true,
         expanded: false,
-        rollupTypesFilter: {}
+        rollupTypesFilter: {},
+        simplifyTolerance: 1
     };
 
     class DateBar {
@@ -125,6 +126,11 @@ function DateBarFactory(localStorageService, MA_ROLLUP_TYPES, $filter, $rootScop
             this.save('to');
         }
 
+        set simplifyTolerance(value) {
+            this.data.simplifyTolerance = value;
+            this.save('simplifyTolerance');
+        }
+
         get preset() {
             return this.data.preset;
         }
@@ -179,6 +185,10 @@ function DateBarFactory(localStorageService, MA_ROLLUP_TYPES, $filter, $rootScop
                 this.cache.to = new Date(this.data.to);
             }
             return this.cache.to;
+        }
+
+        get simplifyTolerance() {
+            return this.data.simplifyTolerance;
         }
         
         subscribe(handler, $scope, eventName = changeEventName) {

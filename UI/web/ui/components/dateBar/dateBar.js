@@ -18,6 +18,7 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
         this.calcAutoRollup();
         this.updateIntervalFromRollupInterval();
         this.calcUpdateIntervalString();
+        this.checkAutoSimplifyTolerance();
         this.prevSettings = angular.copy(this.params.data);
     };
     
@@ -27,6 +28,7 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
             this.calcAutoRollup();
             this.updateIntervalFromRollupInterval();
             this.calcUpdateIntervalString();
+            this.checkAutoSimplifyTolerance();
         }
     };
     
@@ -53,6 +55,10 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
             this.params.rollupIntervalPeriod = calc.units;
             this.updateIntervalFromRollupInterval();
         }
+    };
+    
+    this.checkAutoSimplifyTolerance = function checkAutoSimplifyTolerance() {
+        this.autoSimplifyTolerance = this.params.simplifyTolerance < 0;
     };
 }
 

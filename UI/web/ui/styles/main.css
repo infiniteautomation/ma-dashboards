@@ -981,10 +981,29 @@ ma-ui-date-bar.ng-hide md-toolbar.ma-ui-date-bar {
   max-height: 0;
 }
 
+ma-ui-date-bar md-toolbar.ma-ui-date-bar.four-rows {
+	padding-top: 10px;
+}
+
+ma-ui-date-bar md-toolbar.ma-ui-date-bar:not(.four-rows) .update-and-rollup {
+	max-width: 400px;
+	margin-right: 20px;
+}
+
+ma-ui-date-bar md-toolbar.ma-ui-date-bar:not(.four-rows) .date-pickers {
+	max-width: 300px;
+}
+
+ma-ui-date-bar md-toolbar.ma-ui-date-bar .date-pickers .md-icon-button {
+	margin: 0;
+}
+
 /* checkbox with label at top */
 
 md-checkbox.checkbox-top-label {
   margin-top: 16px;
+  width: 60px;
+  margin-right: 8px;
 }
 
 md-checkbox.checkbox-top-label.checkbox-centered .md-container {

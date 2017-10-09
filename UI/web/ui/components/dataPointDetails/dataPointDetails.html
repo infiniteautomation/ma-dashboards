@@ -1,7 +1,11 @@
 <div layout="column" ng-init="page={}" class="data-point-details-page">
 	<div flex layout="column" layout-gt-sm="row">
-        <ma-point-values point="myPoint" values="pointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" converted="true" rollup="{{$ctrl.dateBar.rollupType}}"
-          rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="$ctrl.dateBar.autoRollup">
+
+        <ma-point-values point="myPoint" values="pointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" converted="true"
+            rollup="{{$ctrl.dateBar.rollupType}}"
+        	rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}"
+            auto-rollup-interval="$ctrl.dateBar.autoRollup"
+            simplify-tolerance="$ctrl.dateBar.simplifyTolerance">
         </ma-point-values>
 
         <ma-point-values point="myPoint" values="realtimePointValues" realtime="$ctrl.realtimeMode" rendered="true" latest="$ctrl.numValues" use-cache="$ctrl.showCachedData"

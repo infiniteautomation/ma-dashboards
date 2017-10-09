@@ -61,6 +61,7 @@ function watchListChart() {
             rollupType: '<?',
             rollupIntervals: '<?',
             rollupIntervalPeriod: '<?',
+            simplifyTolerance: '<?',
             onValuesUpdated: '&?'
         },
         designerInfo: {
@@ -79,6 +80,7 @@ function watchListChart() {
                 rollupType: {defaultValue: 'dateBar.rollupType'},
                 rollupIntervals: {defaultValue: 'dateBar.rollupIntervals'},
                 rollupIntervalPeriod: {defaultValue: 'dateBar.rollupIntervalPeriod'},
+                simplifyTolerance: {defaultValue: 'dateBar.simplifyTolerance'}
             }
         }
     };

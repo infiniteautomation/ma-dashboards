@@ -257,6 +257,7 @@ ngMango.constant('MA_DATE_RANGE_PRESETS', [
 ngMango.constant('MA_ROLLUP_TYPES', [
  {type: 'POINT_DEFAULT', nonNumeric: true, label: 'Point default', translation: 'common.rollup.pointDefault'},
  {type: 'NONE', nonNumeric: true, label: 'None', translation: 'common.rollup.none'},
+ {type: 'SIMPLIFY', nonNumeric: false, label: 'Simplify', translation: 'ui.app.simplify'},
  {type: 'AVERAGE', nonNumeric: false, label: 'Average', translation: 'common.rollup.average'},
  {type: 'DELTA', nonNumeric: false, label: 'Delta', translation: 'common.rollup.delta'},
  {type: 'MINIMUM', nonNumeric: false, label: 'Minimum', translation: 'common.rollup.minimum'},

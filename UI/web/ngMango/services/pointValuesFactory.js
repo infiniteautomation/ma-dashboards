@@ -3,13 +3,13 @@
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular', 'moment-timezone'], function(require, angular, moment) {
+define(['require', 'angular', 'moment-timezone', 'simplify-js'], function(require, angular, moment, simplify) {
 'use strict';
 
 pointValuesFactory.$inject = ['$http', '$q', 'maUtil', 'MA_POINT_VALUES_CONFIG', '$injector'];
 function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) {
-    var pointValuesUrl = '/rest/v1/point-values/';
-    var maDialogHelper;
+    const pointValuesUrl = '/rest/v1/point-values/';
+    let maDialogHelper;
     
     if ($injector.has('maDialogHelper')) {
     	maDialogHelper = $injector.get('maDialogHelper');
@@ -23,9 +23,9 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             if (!angular.isString(xid)) throw new Error('Requires xid parameter');
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
             
-            var url = pointValuesUrl + encodeURIComponent(xid);
-            var params = optionsToParamArray(options);
-            var reverseData = false;
+            let url = pointValuesUrl + encodeURIComponent(xid);
+            const params = optionsToParamArray(options);
+            let reverseData = false;
             
             if (options.latest) {
                 url += '/latest';
@@ -38,15 +38,16 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
 
             url += '?' + params.join('&');
             
-            var canceler = $q.defer();
-            var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+            const canceler = $q.defer();
+            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
             return $http.get(url, {
                 timeout: cancelOrTimeout,
                 headers: {
                     'Accept': options.mimeType || 'application/json'
                 },
-                responseType: options.responseType
+                responseType: options.responseType,
+                cache: true
             }).then(function(response) {
                 if (options.responseType) {
                     return response.data;
@@ -55,12 +56,16 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 if (!response || !angular.isArray(response.data)) {
                     throw new Error('Incorrect response from REST end point ' + url);
                 }
-                var values = response.data;
+                let values = response.data;
                 if (reverseData)
                     values.reverse();
                 
+                if (options.rollup === 'SIMPLIFY' && !options.rendered && options.simplifyTolerance) {
+                    values = simplifyValues(values, options.simplifyTolerance, options.simplifyHighQuality);
+                }
+                
                 if (maDialogHelper && values.length === params.limit) {
-                	var now = (new Date()).valueOf();
+                	const now = (new Date()).valueOf();
                 	if (!this.lastToast || (now - this.lastToast) > 10000) {
                 		this.lastToast = now;
                 		maDialogHelper.toastOptions({
@@ -83,15 +88,15 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
             
-            var emptyResponse = {};
-            for (var i = 0; i < xids.length; i++) {
+            const emptyResponse = {};
+            for (let i = 0; i < xids.length; i++) {
                 xids[i] = encodeURIComponent(xids[i]);
                 emptyResponse[xids[i]] = [];
             }
             
-            var url = pointValuesUrl + xids.join(',');
-            var params = optionsToParamArray(options);
-            var reverseData = false;
+            let url = pointValuesUrl + xids.join(',');
+            const params = optionsToParamArray(options);
+            let reverseData = false;
 
             if (options.latest) {
                 url += '/latest-multiple-points-multiple-arrays';
@@ -105,8 +110,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
 
             url += '?' + params.join('&');
             
-            var canceler = $q.defer();
-            var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+            const canceler = $q.defer();
+            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
             return $http.get(url, {
                 timeout: cancelOrTimeout,
@@ -123,9 +128,9 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     throw new Error('Incorrect response from REST end point ' + url);
                 }
                 
-                var dataByXid = response.data;
+                const dataByXid = response.data;
                 if (reverseData) {
-                    for (var xid in dataByXid) {
+                    for (const xid in dataByXid) {
                         dataByXid[xid].reverse();
                     }
                 }
@@ -141,13 +146,13 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
 
-            for (var i = 0; i < xids.length; i++) {
+            for (let i = 0; i < xids.length; i++) {
                 xids[i] = encodeURIComponent(xids[i]);
             }
             
-            var url = pointValuesUrl + xids.join(',');
-            var params = optionsToParamArray(options);
-            var reverseData = false;
+            let url = pointValuesUrl + xids.join(',');
+            const params = optionsToParamArray(options);
+            let reverseData = false;
 
             if (options.latest) {
                 url += '/latest-multiple-points-single-array';
@@ -161,8 +166,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
 
             url += '?' + params.join('&');
             
-            var canceler = $q.defer();
-            var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+            const canceler = $q.defer();
+            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
             return $http.get(url, {
                 timeout: cancelOrTimeout,
@@ -178,7 +183,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 if (!response || !angular.isArray(response.data)) {
                     throw new Error('Incorrect response from REST end point ' + url);
                 }
-                var values = response.data;
+                const values = response.data;
                 if (reverseData) {
                     values.reverse();
                 }
@@ -190,33 +195,39 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     };
     
     function optionsToParamArray(options) {
-        var params = [];
+        const params = [];
         
         if (options.latest) {
             params.push('limit=' + encodeURIComponent(options.latest));
         } else if (!angular.isUndefined(options.from) && !angular.isUndefined(options.to)) {
-            var now = new Date();
-            var from = params.from = Util.toMoment(options.from, now, options.dateFormat);
-            var to = params.to = Util.toMoment(options.to, now, options.dateFormat);
-            var limit = params.limit = isFinite(options.limit) ? options.limit : MA_POINT_VALUES_CONFIG.limit;
+            const now = new Date();
+            const from = params.from = Util.toMoment(options.from, now, options.dateFormat);
+            const to = params.to = Util.toMoment(options.to, now, options.dateFormat);
+            const limit = params.limit = isFinite(options.limit) ? options.limit : MA_POINT_VALUES_CONFIG.limit;
 
             params.push('from=' + encodeURIComponent(from.toISOString()));
             params.push('to=' + encodeURIComponent(to.toISOString()));
-            if (limit >= 0) {
+
+            let rollup = options.rollup;
+            if (rollup === 'SIMPLIFY') {
+                rollup = 'NONE';
+                delete params.limit;
+            } else if (limit >= 0) {
                 params.push('limit=' + encodeURIComponent(limit));
             }
-            var timezone = options.timezone || moment().tz();
+            
+            const timezone = options.timezone || moment().tz();
             if (timezone)
                 params.push('timezone=' + encodeURIComponent(timezone));
-            
-            if (angular.isString(options.rollup) && options.rollup !== 'NONE') {
-                params.push('rollup=' + encodeURIComponent(options.rollup));
 
-                var timePeriodType = 'DAYS';
-                var timePeriods = 1;
+            if (angular.isString(rollup) && rollup !== 'NONE') {
+                params.push('rollup=' + encodeURIComponent(rollup));
+
+                let timePeriodType = 'DAYS';
+                let timePeriods = 1;
 
                 if (angular.isString(options.rollupInterval)) {
-                    var parts = options.rollupInterval.split(' ');
+                    const parts = options.rollupInterval.split(' ');
                     if (parts.length === 2 && angular.isString(parts[0]) && angular.isString(parts[1])) {
                         timePeriods = parseInt(parts[0], 10);
                         if (!isFinite(timePeriods) || timePeriods <= 0) {
@@ -257,6 +268,26 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         }
         
         return params;
+    }
+    
+    function simplifyValues(values, tolerance, highQuality) {
+        if (tolerance === -1) {
+            const min = values.reduce((prevMin, value) => {
+                return value.value < prevMin ? value.value : prevMin;
+            }, Number.POSITIVE_INFINITY);
+            
+            const max = values.reduce((prevMax, value) => {
+                return value.value > prevMax ? value.value : prevMax;
+            }, Number.NEGATIVE_INFINITY);
+            
+            tolerance = (max - min) / 20;
+        }
+
+        const simplified = simplify(values, tolerance, highQuality);
+        const percent = (simplified.length / values.length * 100).toFixed(2);
+        console.log(`Simplify - before: ${values.length}, after: ${simplified.length}, percent: ${percent}% (tolerance ${tolerance.toPrecision(3)})`);
+        
+        return simplified;
     }
 
     return new PointValues();
