@@ -1,9 +1,5 @@
 <div layout="column" ng-init="page={}" class="data-point-details-page">
 	<div flex layout="column" layout-gt-sm="row">
-		<ma-point-values point="myPoint" values="renderedPointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" rendered="true" rollup="{{$ctrl.dateBar.rollupType}}"
-	      rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="$ctrl.dateBar.autoRollup">
-	    </ma-point-values>
-        
         <ma-point-values point="myPoint" values="pointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" converted="true" rollup="{{$ctrl.dateBar.rollupType}}"
           rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="$ctrl.dateBar.autoRollup">
         </ma-point-values>
@@ -148,7 +144,7 @@
           </h2>
         </div>
       </md-toolbar>
-      <ma-image-slider point-values="renderedPointValues"></ma-image-slider>
+      <ma-image-slider point-values="pointValues"></ma-image-slider>
     </md-card>
 
 	<md-card flex>
