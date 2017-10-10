@@ -496,6 +496,12 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                 opts.lineThickness = opts.type === 'column' ? 1.0 : 2.0;
             }
 
+            // using smoothing without equal spacing gives strange loopy lines due to bug in amCharts
+            // https://stackoverflow.com/questions/45863892/random-curves-in-js-chart-line-graph-by-amcharts
+            if (!chart.categoryAxis.equalSpacing && opts.type === 'smoothedLine') {
+                opts.type = 'line';
+            }
+
             $.extend(true, graph, opts);
         }
         
