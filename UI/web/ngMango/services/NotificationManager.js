@@ -105,7 +105,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
          */
         notifyFromPayload(payload) {
             if (payload.object) {
-                const eventType = actionNameToEventType[payload.action];
+                const eventType = actionNameToEventType[payload.action] || payload.action;
                 if (eventType) {
                     const item = this.transformObject(payload.object);
                     this.notify(eventType, item);
