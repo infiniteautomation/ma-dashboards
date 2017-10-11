@@ -270,22 +270,66 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         return params;
     }
     
-    function simplifyValues(values, tolerance, highQuality) {
+    function simplifyValues(values, tolerance = -1, highQuality = true) {
         if (tolerance === -1) {
-            const min = values.reduce((prevMin, value) => {
-                return value.value < prevMin ? value.value : prevMin;
-            }, Number.POSITIVE_INFINITY);
-            
-            const max = values.reduce((prevMax, value) => {
-                return value.value > prevMax ? value.value : prevMax;
-            }, Number.NEGATIVE_INFINITY);
-            
-            tolerance = (max - min) / 20;
+            return simplifyValuesAuto(values, highQuality);
         }
 
+        //console.time('Simplify time');
         const simplified = simplify(values, tolerance, highQuality);
         const percent = (simplified.length / values.length * 100).toFixed(2);
         console.log(`Simplify - before: ${values.length}, after: ${simplified.length}, percent: ${percent}% (tolerance ${tolerance.toPrecision(3)})`);
+        //console.timeEnd('Simplify time');
+        
+        return simplified;
+    }
+    
+    function simplifyValuesAuto(values, highQuality = true, target = 1000, plusMinus = 100) {
+        const upperTarget = target + plusMinus;
+        const lowerTarget = target - plusMinus;
+        
+        if (values.length < upperTarget) return values;
+        
+        const min = values.reduce((prevMin, value) => {
+            return value.value < prevMin ? value.value : prevMin;
+        }, Number.POSITIVE_INFINITY);
+        
+        const max = values.reduce((prevMax, value) => {
+            return value.value > prevMax ? value.value : prevMax;
+        }, Number.NEGATIVE_INFINITY);
+
+        const difference = max - min;
+        
+        let iterations = 1;
+        let tolerance = difference / 20;
+        let topBound = difference;
+        let bottomBound = 0;
+        
+        //console.time('Simplify auto time');
+        let simplified = simplify(values, tolerance, highQuality);
+        
+        while(simplified.length < lowerTarget || simplified.length > upperTarget) {
+            //console.log(`length ${simplified.length}, tolerance: ${tolerance}, topBound ${topBound}, bottomBound: ${bottomBound}`);
+            
+            if (simplified.length > target) {
+                bottomBound = tolerance;
+            } else {
+                topBound = tolerance;
+            }
+            
+            tolerance = bottomBound + (topBound - bottomBound) / 2;
+            simplified = simplify(values, tolerance, highQuality);
+            
+            iterations++;
+            if (iterations > 100) {
+                break;
+            }
+        }
+
+        const percent = (simplified.length / values.length * 100).toFixed(2);
+        console.log(`Simplify - before: ${values.length}, after: ${simplified.length}, percent: ${percent}%` +
+            ` (tolerance ${tolerance.toPrecision(3)}, iterations ${iterations})`);
+        //console.timeEnd('Simplify auto time');
         
         return simplified;
     }
