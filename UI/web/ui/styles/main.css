@@ -1394,9 +1394,30 @@ ma-ui-data-point-details .md-button.force-read {
   margin-bottom: -18px;
 }
 
-ma-ui-data-point-details .ma-dpd-value-table > md-card,
-ma-ui-data-point-details .ma-dpd-user-comments > md-card {
-	max-height: 305px;
+ma-ui-data-point-details .ma-dpd-row-container {
+	position: relative;
+}
+
+ma-ui-data-point-details .ma-dpd-row-container .ma-dpd-value-table,
+ma-ui-data-point-details .ma-dpd-row-container .ma-dpd-user-comments {
+	max-height: 400px;
+}
+
+@media (min-width: 1280px) {
+	ma-ui-data-point-details .ma-dpd-point-value > md-card,
+	ma-ui-data-point-details .ma-dpd-point-statistics > md-card {
+		min-height: 200px;
+	}
+
+	ma-ui-data-point-details .ma-dpd-row-container .ma-dpd-value-table,
+	ma-ui-data-point-details .ma-dpd-row-container .ma-dpd-user-comments {
+		position: absolute;
+		left: 50%;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		max-height: none;
+	}
 }
 
 ma-ui-data-point-details .ma-dpd-value-table > md-card > md-table-container,
