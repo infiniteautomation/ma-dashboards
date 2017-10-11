@@ -20,12 +20,26 @@ class ImageSliderController {
     }
     
     $onInit() {
-        this.resetLooping();
     }
     
     $onChanges(changes) {
-        if (changes.pointValues && this.pointValues && this.pointValues.length)
-            this.updateImage();
+        if (changes.pointValues) {
+            if (!this.pointValues || !this.pointValues.length) {
+                delete this.currentValue;
+                this.cancelInterval();
+            }
+            if (this.pointValues && this.pointValues.length) {
+                this.updateImage();
+                this.resetLooping();
+            }
+        }
+    }
+    
+    cancelInterval() {
+        if (this.intervalPromise) {
+            this.$interval.cancel(this.intervalPromise);
+            delete this.intervalPromise;
+        }
     }
     
     resetLooping() {
