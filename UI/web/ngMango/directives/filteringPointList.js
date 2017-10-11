@@ -47,7 +47,8 @@ function filteringPointList() {
             label: '@?',
             listText: '&?',
             displayText: '&?',
-            clientSideFilter: '<?'
+            clientSideFilter: '<?',
+            getByXid: '<?'
         },
         require: {
             ngModelCtrl: 'ngModel'
@@ -55,7 +56,10 @@ function filteringPointList() {
         designerInfo: {
             translation: 'ui.components.filteringPointList',
             icon: 'filter_list',
-            category: 'dropDowns'
+            category: 'dropDowns',
+            attributes: {
+                getByXid: {type: 'boolean', defaultValue: true}
+            }
         }
     };
 }
@@ -65,6 +69,8 @@ function FilteringPointListController(Point, $filter, Translate) {
     this.Point = Point;
     this.$filter = $filter;
     this.Translate = Translate;
+    
+    this.getByXid = true;
 }
 
 FilteringPointListController.prototype.$onChanges = function(changes) {
@@ -122,34 +128,41 @@ FilteringPointListController.prototype.querySearch = function(inputText) {
     
     this.highlight = '';
     
+    if (inputText)
+        inputText = inputText.trim();
+    
     if (inputText) {
         var nameLike, deviceNameLike;
-        var queryJoin = 'or';
+        var searchByDeviceAndName = false;
         
-        var split = inputText.split('\u2014');
+        var split = inputText.split(/\s*[-\u2014]\s*/);
         if (split.length === 2) {
-            deviceNameLike = split[0].trim();
-            nameLike = split[1].trim();
-            queryJoin = 'and';
+            searchByDeviceAndName = true;
+            deviceNameLike = split[0];
+            nameLike = split[1];
             this.highlight = nameLike;
         } else {
             nameLike = deviceNameLike = inputText;
             this.highlight = inputText;
         }
-
+        
         var nameQuery = new query.Query({name: 'like', args: ['name', '*' + nameLike + '*']});
         var deviceNameQuery = new query.Query({name: 'like', args: ['deviceName', '*' + deviceNameLike + '*']});
+
+        rqlQuery = new query.Query();
         
-        if (!nameLike) {
-            rqlQuery = deviceNameQuery;
-        } else if (!deviceNameLike) {
-            rqlQuery = nameQuery;
-        } else {
-            rqlQuery = new query.Query();
+        if (nameLike) {
             rqlQuery.push(nameQuery);
-            rqlQuery.push(deviceNameQuery);
-            rqlQuery.name = queryJoin;
         }
+        if (deviceNameLike) {
+            rqlQuery.push(deviceNameQuery);
+        }
+        if (!searchByDeviceAndName && this.getByXid) {
+            var xidEquals = new query.Query({name: 'eq', args: ['xid', inputText]});
+            rqlQuery.push(xidEquals);
+        }
+        
+        rqlQuery.name = searchByDeviceAndName ? 'and' : 'or';
     }
 
     if (this.query) {
