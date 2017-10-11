@@ -145,21 +145,20 @@ PointValueDirectiveController.prototype.valueChangeHandler = function(isPointCha
 
 PointValueDirectiveController.prototype.updateText = function() {
     delete this.valueStyle.color;
+    
     if (!this.point || this.point.time == null) {
         this.displayValue = '';
+        this.resolvedDisplayType = this.displayType || 'rendered';
         return;
     }
     
     var valueRenderer = this.point.valueRenderer(this.point.value);
     var color = valueRenderer ? valueRenderer.color : null;
-    
-    if (!this.displayType) {
-        this.displayType = this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered';
-    }
 
+    this.resolvedDisplayType = this.displayType || (this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered');
     delete this.valueStyle.color;
 
-    switch(this.displayType) {
+    switch(this.resolvedDisplayType) {
     case 'converted':
         this.displayValue = this.point.convertedValue;
         break;
