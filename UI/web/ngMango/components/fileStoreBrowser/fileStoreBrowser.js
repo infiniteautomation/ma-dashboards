@@ -116,6 +116,7 @@ FileStoreBrowserController.prototype.render = function() {
 	this.listFiles().then(function(files) {
 		this.filenames = filenames;
 		var firstSelected = true;
+		
 		this.selectedFiles = files.filter(function(file, index) {
 			if (filenames[file.filename]) {
 				if (firstSelected) {
@@ -136,6 +137,7 @@ FileStoreBrowserController.prototype.render = function() {
 FileStoreBrowserController.prototype.listFiles = function() {
 	var listErrorHandler = function() {
 		this.files = [];
+        this.filteredFiles = [];
 		this.previewFile = null;
 		this.filenames = {};
 		this.selectedFiles = [];
@@ -146,7 +148,7 @@ FileStoreBrowserController.prototype.listFiles = function() {
 			this.path = [defaultStore];
 			return this.listFiles();
 		}
-		return this.files;
+		return this.filteredFiles;
 	}.bind(this);
 	
 	this.previewFile = null;
@@ -156,9 +158,9 @@ FileStoreBrowserController.prototype.listFiles = function() {
 	
 	if (this.path.length) {
 		this.listPromise = this.maFileStore.listFiles(this.path).then(function(files) {
-			this.unFilteredFiles = files;
+			this.files = files;
 			this.filterAndReorderFiles();
-	    	return this.files;
+	    	return this.filteredFiles;
 		}.bind(this), listErrorHandler);
 	} else {
 		this.listPromise = this.maFileStore.list().then(function(fileStores) {
@@ -171,7 +173,8 @@ FileStoreBrowserController.prototype.listFiles = function() {
 					directory: true
 				};
 			});
-	    	return this.files;
+            this.filterAndReorderFiles();
+	    	return this.filteredFiles;
 	    }.bind(this), listErrorHandler);
 	}
 
@@ -195,15 +198,17 @@ FileStoreBrowserController.prototype.filterFiles = function(file) {
 		if (this.mimeTypeMap[file.mimeType.toLowerCase()]) return true;
 		if (this.mimeTypeMap[file.mimeType.toLowerCase().replace(/\/.+$/, '/*')]) return true;
 	}
+	
+	return !this.extensions && !this.mimeTypes;
 };
 
 FileStoreBrowserController.prototype.filterAndReorderFiles = function(file) {
-	var files = this.unFilteredFiles;
+	var files = this.files;
 	if (this.mimeTypes || this.extensions) {
 		files = files.filter(this.filterFiles, this);
 	}
 
-	this.files = this.$filter('orderBy')(files, this.tableOrder);
+	this.filteredFiles = this.$filter('orderBy')(files, this.tableOrder);
 };
 
 FileStoreBrowserController.prototype.pathClicked = function(event, index) {
@@ -252,7 +257,7 @@ FileStoreBrowserController.prototype.fileClicked = function(event, file, index) 
 			toIndex = this.lastIndex;
 		}
 		
-		this.setSelection(this.files.slice(fromIndex, toIndex + 1));
+		this.setSelection(this.filteredFiles.slice(fromIndex, toIndex + 1));
 	} else {
 		this.lastIndex = index;
 		this.setSelection([file]);
@@ -306,6 +311,7 @@ FileStoreBrowserController.prototype.deleteFile = function(event, file) {
 		if (index >= 0) {
 			this.files.splice(index, 1);
 		}
+		this.filterAndReorderFiles();
 		if (this.removeFileFromSelection(file)) {
 			this.setViewValueToSelection();
 		}
@@ -329,8 +335,8 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
 	if (!files.length) return;
 
 	this.uploadPromise = this.maFileStore.uploadFiles(this.path, files).then(function(uploaded) {
-		// append uploaded to this.unFilteredFiles
-		Array.prototype.splice.apply(this.unFilteredFiles, [this.unFilteredFiles.length, 0].concat(uploaded));
+		// append uploaded to this.files
+		Array.prototype.splice.apply(this.files, [this.files.length, 0].concat(uploaded));
 		this.filterAndReorderFiles();
 
 		if (uploaded.length) {
@@ -358,6 +364,7 @@ FileStoreBrowserController.prototype.createNewFolder = function(event) {
 		return this.maFileStore.createNewFolder(this.path, folderName);
 	}.bind(this)).then(function(folder) {
 		this.files.push(folder);
+        this.filterAndReorderFiles();
 		this.maDialogHelper.toast('ui.fileBrowser.folderCreated', null, folder.filename);
 	}.bind(this), function(error) {
 		if (!error) return; // dialog cancelled
@@ -377,6 +384,7 @@ FileStoreBrowserController.prototype.createNewFile = function(event) {
 		return this.maFileStore.createNewFile(this.path, fileName);
 	}.bind(this)).then(function(file) {
 		this.files.push(file);
+        this.filterAndReorderFiles();
 		this.maDialogHelper.toast('ui.fileBrowser.fileCreated', null, file.filename);
 		if (file.editMode)
 			this.doEditFile(event, file);
@@ -411,6 +419,7 @@ FileStoreBrowserController.prototype.saveEditFile = function(event) {
 	this.maFileStore.uploadFiles(this.path, files, true).then(function(uploaded) {
 		var index = this.files.indexOf(this.editFile);
 		this.files.splice(index, 1, uploaded[0]);
+        this.filterAndReorderFiles();
 		
 		this.maDialogHelper.toast('ui.fileBrowser.savedSuccessfully', null, this.editFile.filename);
 //		this.editFile = null;
@@ -450,6 +459,8 @@ FileStoreBrowserController.prototype.renameFile = function(event, file) {
 			// remove it
 			this.files.splice(index, 1);
 		}
+        this.filterAndReorderFiles();
+        
 		if (renamedFile.filename === file.filename) {
 			this.maDialogHelper.toast('ui.fileBrowser.fileMoved', null, renamedFile.filename, renamedFile.fileStore + '/' + renamedFile.folderPath);
 		} else {
@@ -478,6 +489,7 @@ FileStoreBrowserController.prototype.copyFile = function(event, file) {
 	}.bind(this)).then(function(copiedFile) {
 		if (copiedFile.folderPath === file.folderPath) {
 			this.files.push(copiedFile);
+	        this.filterAndReorderFiles();
 		}
 		this.maDialogHelper.toast('ui.fileBrowser.fileCopied', null, copiedFile.filename, copiedFile.fileStore + '/' + copiedFile.folderPath);
 	}.bind(this), function(error) {
