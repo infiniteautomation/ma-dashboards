@@ -33,7 +33,8 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
             referenceId: '=?',
             commentType: '@',
             timezone: '@',
-            disabled: '=?'
+            disabled: '=?',
+            addNote: '=?'
         },
         designerInfo: {
             translation: 'ui.components.maUserNotesTable',
@@ -42,12 +43,12 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
         templateUrl: require.toUrl('./userNotesTable.html'),
         link: function ($scope, $element, attrs) {
             
-            $scope.addNote = UserNotes.addNote;
-            
-            $scope.updateWithNewNote = function(data) {
-                $scope.userNotes.push(data);
+            $scope.addNote = (event) => {
+                UserNotes.addNote(event, $scope.commentType, $scope.referenceId).then(note => {
+                    $scope.userNotes.push(note);
+                });
             };
-            
+
             $scope.formatDate = function(date) {
                 var m = moment(date);
                 if ($scope.timezone) {

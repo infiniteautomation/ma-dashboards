@@ -1,30 +1,31 @@
-<div layout="column" ng-init="page={}" class="data-point-details-page">
-	<div flex layout="column" layout-gt-sm="row">
+<ma-point-values point="myPoint" values="pointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" converted="true"
+    rollup="{{$ctrl.dateBar.rollupType}}"
+    rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}"
+    auto-rollup-interval="$ctrl.dateBar.autoRollup"
+    simplify-tolerance="$ctrl.dateBar.simplifyTolerance">
+</ma-point-values>
 
-        <ma-point-values point="myPoint" values="pointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" converted="true"
-            rollup="{{$ctrl.dateBar.rollupType}}"
-        	rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}"
-            auto-rollup-interval="$ctrl.dateBar.autoRollup"
-            simplify-tolerance="$ctrl.dateBar.simplifyTolerance">
-        </ma-point-values>
+<ma-point-values point="myPoint" values="realtimePointValues" realtime="$ctrl.realtimeMode" rendered="true" latest="$ctrl.numValues" use-cache="$ctrl.showCachedData"
+    refresh="$ctrl.refreshTable"></ma-point-values>
 
-        <ma-point-values point="myPoint" values="realtimePointValues" realtime="$ctrl.realtimeMode" rendered="true" latest="$ctrl.numValues" use-cache="$ctrl.showCachedData"
-            refresh="$ctrl.refreshTable"></ma-point-values>
+<ma-point-statistics point="myPoint" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
 
-		<md-card flex class="dpd-small-card">
-			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-				<div class="md-toolbar-tools">
-					<h2 flex>
-		              <span><span ma-tr="ui.app.dataPoint"></span>: <span ng-bind="myPoint.deviceName"></span> &mdash; <span ng-bind="myPoint.name"></span></span>
-			        </h2>
-				</div>
-			</md-toolbar>
-			<md-card-content layout="column" layout-align="space-between" flex>
-				<ma-filtering-point-list ng-model="selectedPoint" ng-change="$ctrl.pointChanged(selectedPoint)" auto-init="true"
+<div layout="row" layout-wrap class="data-point-details-page">
+    <div flex="100" flex-gt-md="50" layout="column" class="ma-dpd-point-value">
+        <md-card flex>
+        	<md-toolbar class="md-whiteframe-1dp md-hue-3">
+        		<div class="md-toolbar-tools">
+        			<h2>
+                      <span><span ma-tr="ui.app.dataPoint"></span>: <span ng-bind="myPoint.deviceName"></span> &mdash; <span ng-bind="myPoint.name"></span></span>
+        	        </h2>
+        		</div>
+        	</md-toolbar>
+        	<md-card-content flex layout="column" layout-align="space-between stretch">
+        		<ma-filtering-point-list ng-model="selectedPoint" ng-change="$ctrl.pointChanged(selectedPoint)" auto-init="true"
                     point-xid="{{$ctrl.pointXid}}" point-id="$ctrl.pointId"></ma-filtering-point-list>
-				
-				<div layout="row" layout-wrap class="point-details">
-					<div ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" flex="100" layout layout-align="start center">
+        		
+        		<div layout="row" layout-wrap class="point-details">
+        			<div flex="100" layout layout-align="start center">
                       <label flex="35" layout layout-align="end center">
                         <md-button class="md-icon-button force-read" ng-click="myPoint.forceRead()">
                             <md-tooltip><span ma-tr="ui.app.forceRead"></span></md-tooltip>
@@ -36,26 +37,28 @@
                         <ma-point-value point="myPoint" flash-on-change="true"></ma-point-value>
                       </div>
                     </div>
-					<ma-point-value ng-if="myPoint.pointLocator.dataType === 'IMAGE'" flex="100" point="myPoint"></ma-point-value>
-					<label flex="35"><span ma-tr="ui.app.time"></span>:</label> 
+        			<label flex="35"><span ma-tr="ui.app.time"></span>:</label> 
                     <ma-point-value flex="65" display-type="dateTime" flash-on-change="true" same-day-date-time-format="timeSeconds" point="myPoint"
-					hide-event-indicator="true"></ma-point-value>
+        			hide-event-indicator="true"></ma-point-value>
                     <label flex="35"><span ma-tr="ui.app.xid"></span>:</label> <div flex="65" ng-bind="myPoint.xid"></div>
-					<label flex="35"><span ma-tr="ui.app.path"></span>:</label>  <div flex="65"><span ng-repeat="folder in $ctrl.path track by $index"><span ng-bind="folder"></span> <span ng-if="!$last"> &gt; </span></span></div>
-					<label flex="35"><span ma-tr="ui.app.dataSource"></span>:</label> <div flex="65" ng-bind="myPoint.dataSourceName"></div>
-					<div flex="65">
-						<!-- <ma-point-hierarchy></ma-point-hierarchy> -->
-					</div>
-				</div>
-				<div layout="row">
-					<ma-set-point-value ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" point="myPoint" flex="95"></ma-set-point-value>
-					<md-button class="md-accent md-raised" ng-show="$ctrl.User.current.hasPermission('superadmin')"
+        			<label flex="35"><span ma-tr="ui.app.path"></span>:</label>  <div flex="65"><span ng-repeat="folder in $ctrl.path track by $index"><span ng-bind="folder"></span> <span ng-if="!$last"> &gt; </span></span></div>
+        			<label flex="35"><span ma-tr="ui.app.dataSource"></span>:</label> <div flex="65" ng-bind="myPoint.dataSourceName"></div>
+        			<div flex="65">
+        				<!-- <ma-point-hierarchy></ma-point-hierarchy> -->
+        			</div>
+        		</div>
+                
+        		<div layout="row">
+        			<ma-set-point-value ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" point="myPoint" flex="95"></ma-set-point-value>
+        			<md-button class="md-accent md-raised" ng-show="$ctrl.User.current.hasPermission('superadmin')"
                         ng-href="/data_point_edit.shtm?dpid={{myPoint.id}}" target="_blank"><md-icon>open_in_new</md-icon> <span ma-tr="ui.app.edit"></span></md-button>
-				</div>
-			</md-card-content>
-		</md-card>
-		
-		<md-card flex class="dpd-small-card">
+        		</div>
+        	</md-card-content>
+        </md-card>
+    </div>
+    
+    <div flex="100" flex-gt-md="50" layout="column" class="ma-dpd-value-table">
+        <md-card flex>
             <md-toolbar class="md-whiteframe-1dp md-hue-3">
                 <div class="md-toolbar-tools">
                     <h2 ma-tr="ui.app.pointValueHistory"></h2>
@@ -83,82 +86,98 @@
                     <span ma-tr="pointDetails.useCache"></span>
                 </md-switch>
             </md-toolbar>
-            <div flex>
-                <md-table-container ng-init="myOrder='-timestamp'">
-                    <table md-table class="ma-point-values-table">
-                        <thead md-head md-order="myOrder">
-                            <tr md-row>
-                                <th md-column md-order-by="timestamp" ma-tr="ui.app.time"></th>
-                                <th md-column md-order-by="value" ma-tr="ui.app.pointValue"></th>
-                            </tr>
-                        </thead>
-                        <tbody md-body ng-class="{'ma-point-values-non-realtime' : !$ctrl.realtimeMode}">
-                            <tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder track by value.timestamp" ng-class="{'ma-point-value-cached': value.cached}">
-                                <td md-cell ng-bind="value.timestamp | maDate:'shortDateTimeSeconds'"></td>
-                                <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell><span ng-bind="value.value"></span> <strong ng-if="value.annotation"><em>(<span ng-bind="value.annotation"></span>)</em></strong></td>
-                                <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </md-table-container>
+            <md-table-container ng-init="myOrder='-timestamp'">
+                <table md-table class="ma-point-values-table">
+                    <thead md-head md-order="myOrder">
+                        <tr md-row>
+                            <th md-column md-order-by="timestamp" ma-tr="ui.app.time"></th>
+                            <th md-column md-order-by="value" ma-tr="ui.app.pointValue"></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body ng-class="{'ma-point-values-non-realtime' : !$ctrl.realtimeMode}">
+                        <tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder track by value.timestamp" ng-class="{'ma-point-value-cached': value.cached}">
+                            <td md-cell ng-bind="value.timestamp | maDate:'shortDateTimeSeconds'"></td>
+                            <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell><span ng-bind="value.value"></span> <strong ng-if="value.annotation"><em>(<span ng-bind="value.annotation"></span>)</em></strong></td>
+                            <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-card>
+    </div>
+
+    <div flex="100" flex-gt-md="50" layout="column" class="ma-dpd-point-statistics">
+    	<md-card flex>
+    		<md-toolbar class="md-whiteframe-1dp md-hue-3">
+    			<div class="md-toolbar-tools">
+    				<h2><span ma-tr="ui.app.pointStatistics"></span></h2>
+    			</div>
+    		</md-toolbar>
+            <md-card-content>
+    		  <ma-statistics-table statistics="statsObj"></ma-statistics-table>
+            </md-card-content>
+    	</md-card>
+    </div>
+    
+    <div flex="100" flex-gt-md="50" layout="column" class="ma-dpd-user-comments">
+        <md-card flex>
+            <md-toolbar class="md-whiteframe-1dp md-hue-3">
+                <div class="md-toolbar-tools">
+                    <h2><span ma-tr="ui.app.userComments"></span></h2>
+                    <div flex></div>
+                    <md-button ng-hide="disabled" class="md-icon-button" ng-click="addNote($event)">
+                        <md-icon>add</md-icon>
+                        <md-tooltip><span ma-tr="notes.addNote"></span></md-tooltip>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <ma-user-notes-table reference-id="myPoint.id" comment-type="POINT" add-note="addNote"></ma-user-notes-table>
+        </md-card>
+    </div>
+    
+    <div flex="100" class="ma-dpd-chart" ng-if="myPoint.pointLocator.dataType !== 'ALPHANUMERIC' && myPoint.pointLocator.dataType !== 'IMAGE'">
+        <md-card>
+        	<md-toolbar class="md-whiteframe-1dp md-hue-3">
+        		<div class="md-toolbar-tools">
+        			<h2 flex>
+        				  <span ma-tr="ui.app.chart"></span>
+        			</h2>
+        			<md-select ng-model="$ctrl.chartType" aria-label="Chart Type">
+        				<md-option value="smoothedLine" ma-tr="ui.app.smooth"></md-option>
+        				<md-option value="line" ma-tr="ui.app.line"></md-option>
+        				<md-option value="step" ma-tr="ui.app.step"></md-option>
+        				<md-option value="column" ma-tr="ui.app.bar"></md-option>
+        			</md-select>
+        		</div>
+        	</md-toolbar>
+        	<ma-serial-chart style="width: 100%" series-1-values="pointValues" series-1-point="myPoint" series-1-type="{{$ctrl.chartType}}" legend="false" balloon="true" export="true">
+        	</ma-serial-chart>
+        </md-card>
+    </div>
+    
+    <div flex="100" class="ma-dpd-image-slider" ng-if="myPoint.pointLocator.dataType == 'IMAGE'">
+        <md-card>
+          <md-toolbar class="md-whiteframe-1dp md-hue-3">
+            <div class="md-toolbar-tools">
+              <h2 flex>
+                  <span ma-tr="ui.app.images"></span>
+              </h2>
             </div>
-		</md-card>
-	</div>
-	
-	<div flex layout="column" layout-gt-sm="row">
-		<md-card flex class="dpd-small-card">
-			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-				<div class="md-toolbar-tools">
-					<h2 flex>
-			              <span ma-tr="ui.app.pointStatistics"></span>
-			        </h2>
-				</div>
-			</md-toolbar>
-			<ma-point-statistics point="myPoint" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
-			<ma-statistics-table statistics="statsObj"></ma-statistics-table>
-			<br />
-		</md-card>
-		
-		<ma-user-notes-table reference-id="myPoint.id" comment-type="POINT" flex class="dpd-small-card"></ma-user-notes-table>	
-	</div>
-
-	<md-card flex ng-if="myPoint.pointLocator.dataType !== 'ALPHANUMERIC' && myPoint.pointLocator.dataType !== 'IMAGE'">
-		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools">
-				<h2 flex>
-					  <span ma-tr="ui.app.chart"></span>
-				</h2>
-				<md-select ng-model="$ctrl.chartType" aria-label="Chart Type">
-					<md-option value="smoothedLine" ma-tr="ui.app.smooth"></md-option>
-					<md-option value="line" ma-tr="ui.app.line"></md-option>
-					<md-option value="step" ma-tr="ui.app.step"></md-option>
-					<md-option value="column" ma-tr="ui.app.bar"></md-option>
-				</md-select>
-			</div>
-		</md-toolbar>
-		<ma-serial-chart style="width: 100%" series-1-values="pointValues" series-1-point="myPoint" series-1-type="{{$ctrl.chartType}}" legend="false" balloon="true" export="true">
-		</ma-serial-chart>
-	</md-card>
-
-    <md-card flex ng-if="myPoint.pointLocator.dataType == 'IMAGE'">
-      <md-toolbar class="md-whiteframe-1dp md-hue-3">
-        <div class="md-toolbar-tools">
-          <h2 flex>
-              <span ma-tr="ui.app.images"></span>
-          </h2>
-        </div>
-      </md-toolbar>
-      <ma-image-slider point-values="pointValues"></ma-image-slider>
-    </md-card>
-
-	<md-card flex>
-		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools">
-				<h2 flex>
-					  <span ma-tr="ui.app.pointEvents"></span>
-				</h2>
-			</div>
-		</md-toolbar>
-		<ma-events-table single-point="true" point-id="myPoint.id" limit="15" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" sort="'-activeTimestamp'" hide-link="DATA_POINT"></ma-events-table>
-	</md-card>
+          </md-toolbar>
+          <ma-image-slider point-values="pointValues"></ma-image-slider>
+        </md-card>
+    </div>
+    
+    <div flex="100" class="ma-dpd-image-slider">
+        <md-card>
+        	<md-toolbar class="md-whiteframe-1dp md-hue-3">
+        		<div class="md-toolbar-tools">
+        			<h2 flex>
+        				  <span ma-tr="ui.app.pointEvents"></span>
+        			</h2>
+        		</div>
+        	</md-toolbar>
+        	<ma-events-table single-point="true" point-id="myPoint.id" limit="15" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" sort="'-activeTimestamp'" hide-link="DATA_POINT"></ma-events-table>
+        </md-card>
+    </div>
 </div>

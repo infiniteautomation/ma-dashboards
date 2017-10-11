@@ -92,6 +92,15 @@ function UserNotesFactory($resource, Util, $mdDialog) {
     });
     
     UserNotes.addNote = function(ev, commentType, referenceId, callback, other) {
+        return UserNotes.addNotePromise(ev, commentType, referenceId).then(note => {
+            if (typeof callback === 'function') {
+                callback(note, other);
+            }
+            return note;
+        });
+    };
+    
+    UserNotes.addNotePromise = function(ev, commentType, referenceId) {
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.prompt()
             .title('Add Comment:')
@@ -99,24 +108,11 @@ function UserNotesFactory($resource, Util, $mdDialog) {
             .targetEvent(ev)
             .ok('OK')
             .cancel('Cancel');
-            
-        $mdDialog.show(confirm).then(function(result) {
-            // console.log(commentType, referenceId, result);
-            UserNotes.save({referenceId: referenceId, comment: result, commentType: commentType}).$promise.then(
-                function (data) {
-                    // console.log('Success', data, referenceId);
-                    if (callback) {
-                        callback(data, other);
-                    }
-                },
-                function (data) {
-                    console.log('Error:', data.data.message);
-                }
-            );
-        }, function() {
-            // Canceled dialog
+        
+        return $mdDialog.show(confirm).then(function(result) {
+            return UserNotes.save({referenceId: referenceId, comment: result, commentType: commentType}).$promise;
         });
-  };
+    };
 
     return UserNotes;
 }

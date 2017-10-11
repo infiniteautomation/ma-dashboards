@@ -169,3 +169,8 @@ ma-ui-watch-list-page ma-watch-list-parameters md-autocomplete md-input-containe
 ma-ui-watch-list-page .md-table-pagination > * {
   height: 32px;
 }
+
+ma-ui-watch-list-page ma-point-value img {
+	max-width: 200px;
+	max-height: 200px;
+}

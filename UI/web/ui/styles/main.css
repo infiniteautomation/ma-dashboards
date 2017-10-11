@@ -1365,41 +1365,50 @@ svg.ma-ui-spinner circle {
 }
 
 /* data point details page */
-.data-point-details-page md-card.dpd-small-card {
-    height: 305px;
-    max-height: 305px;
-}
 
-.data-point-details-page md-card.dpd-small-card > div {
-  overflow-y: auto;
-}
-
-.data-point-details-page .amchart {
+ma-ui-data-point-details .amchart {
     height: 420px;
     max-height: 420px;
 }
-.data-point-details-page table.md-table thead.md-head>tr.md-row {
+ma-ui-data-point-details table.md-table thead.md-head>tr.md-row {
     height: 30px;
 }
-.data-point-details-page table.md-table thead.md-head>tr.md-row th{
+ma-ui-data-point-details table.md-table thead.md-head>tr.md-row th{
     padding-top: 5px !important;
 }
-.data-point-details-page .point-details label{
+ma-ui-data-point-details .point-details label{
     font-weight: bold;
     text-align: right;
     padding-right: 20px;
 }
 
-.data-point-details-page .dpd-num-values input {
+ma-ui-data-point-details .dpd-num-values input {
   width: 55px;
 }
 
-.data-point-details-page .dpd-table-refresh {
+ma-ui-data-point-details .dpd-table-refresh {
   margin: 0;
 }
 
-.data-point-details-page .md-button.force-read {
+ma-ui-data-point-details .md-button.force-read {
   margin-bottom: -18px;
+}
+
+ma-ui-data-point-details .ma-dpd-value-table > md-card,
+ma-ui-data-point-details .ma-dpd-user-comments > md-card {
+	max-height: 305px;
+}
+
+ma-ui-data-point-details .ma-dpd-value-table > md-card > md-table-container,
+ma-ui-data-point-details .ma-dpd-user-comments > md-card > md-table-container {
+	overflow-y: auto;
+}
+
+ma-ui-data-point-details .ma-dpd-value-table img.imageValue,
+ma-ui-data-point-details ma-point-value img {
+	max-height: 300px;
+	max-width: 300px;
+	margin: 10px;
 }
 
 /* hide messages for untouched/unsubmitted invalid inputs, work around for bug in ng-messages */
