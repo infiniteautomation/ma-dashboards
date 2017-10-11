@@ -6,30 +6,52 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ImageSliderController.$inject = ['$interval'];
-function ImageSliderController($interval) {
-    this.imageIndex = 0;
+class ImageSliderController {
+    static get $inject() {
+        return ['$interval'];
+    }
     
-    $interval(function() {
-        this.imageIndex++;
-        if (this.imageIndex >= this.pointValues.length) {
-            this.imageIndex = 0;
-        }
-        this.updateImage();
-    }.bind(this), 1000);
+    constructor($interval) {
+        this.$interval = $interval;
+        
+        this.imageIndex = 0;
+        this.autoLoop = true;
+        this.autoLoopInterval = 1000;
+    }
     
-    this.$onChanges = function(changes) {
+    $onInit() {
+        this.resetLooping();
+    }
+    
+    $onChanges(changes) {
         if (changes.pointValues && this.pointValues && this.pointValues.length)
             this.updateImage();
-    };
+    }
     
-    this.sliderChanged = function sliderChanged() {
+    resetLooping() {
+        if (this.intervalPromise) {
+            this.$interval.cancel(this.intervalPromise);
+            delete this.intervalPromise;
+        }
+        
+        if (!this.autoLoop) return;
+        
+        this.intervalPromise = this.$interval(() => {
+            this.imageIndex++;
+            if (this.imageIndex >= this.pointValues.length) {
+                this.imageIndex = 0;
+            }
+            this.updateImage();
+        }, this.autoLoopInterval);
+    }
+
+    sliderChanged() {
         this.updateImage();
-    };
+    }
     
-    this.updateImage = function updateImage() {
+    updateImage() {
         this.currentValue = this.pointValues[this.imageIndex];
-    };
+    }
 }
 
 return {

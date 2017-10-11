@@ -1405,7 +1405,8 @@ ma-ui-data-point-details .ma-dpd-user-comments > md-card > md-table-container {
 }
 
 ma-ui-data-point-details .ma-dpd-value-table img.imageValue,
-ma-ui-data-point-details ma-point-value img {
+ma-ui-data-point-details ma-point-value img,
+ma-ui-data-point-details ma-image-slider img {
 	max-height: 300px;
 	max-width: 300px;
 	margin: 10px;
