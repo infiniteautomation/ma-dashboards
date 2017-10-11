@@ -95,7 +95,7 @@
                                 <th md-column md-order-by="value" ma-tr="ui.app.pointValue"></th>
                             </tr>
                         </thead>
-                        <tbody md-body ng-class="{'ma-point-values-non-realtime' : !$ctrl.realtimeMode}">
+                        <tbody md-body ng-class="{'ma-point-values-non-realtime' : !$ctrl.realtimeMode}" ng-if="realtimePointValues">
                             <tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder track by value.timestamp" ng-class="{'ma-point-value-cached': value.cached}">
                                 <td md-cell ng-bind="value.timestamp | maDate:'shortDateTimeSeconds'"></td>
                                 <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell><span ng-bind="value.value"></span> <strong ng-if="value.annotation"><em>(<span ng-bind="value.annotation"></span>)</em></strong></td>

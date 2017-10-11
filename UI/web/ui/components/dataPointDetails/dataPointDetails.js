@@ -35,6 +35,9 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     
     this.pointChanged = function(point) {
         if (!point) return;
+
+        delete $scope.pointValues;
+        delete $scope.realtimePointValues;
         
         $scope.myPoint = point;
         var xid = point.xid;
