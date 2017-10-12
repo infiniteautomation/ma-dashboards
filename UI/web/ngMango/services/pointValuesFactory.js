@@ -47,7 +47,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     'Accept': options.mimeType || 'application/json'
                 },
                 responseType: options.responseType,
-                cache: true
+                cache: !options.latest
             }).then(function(response) {
                 if (options.responseType) {
                     return response.data;
