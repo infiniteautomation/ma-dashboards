@@ -70,6 +70,7 @@ function PointHierarchyController($attrs, PointHierarchy) {
                 if ((subfoldersOnly && subFolder === folder) || (this.maxDepth != null && depth > this.maxDepth)) return;
                 if (matcher) {
                     subFolder.matches = matcher.exec(subFolder.name);
+                    matcher.lastIndex = 0;
                     if (this.replaceName && subFolder.matches) {
                         subFolder.replacedName = subFolder.name.replace(matcher, this.replaceName);
                     }

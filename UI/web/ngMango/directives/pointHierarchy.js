@@ -67,7 +67,10 @@ function pointHierarchy(PointHierarchy) {
             	// only do the work if we are actually going to use it
             	if (shouldGetPoints) {
             	    $scope.hierarchy.$promise.then(function(folder) {
-                        $scope.points = getPoints(folder);
+            	        // check for missing folder, REST API returns 200 OK when folder is not found
+            	        if (folder.hasOwnProperty('name')) {
+                            $scope.points = getPoints(folder);
+            	        }
             	    });
             	}
             }, true);
