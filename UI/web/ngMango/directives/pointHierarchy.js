@@ -35,10 +35,11 @@ By default this is set to `true` and all descendant points are given, even those
 function pointHierarchy(PointHierarchy) {
     return {
         scope: {
-        	path: '=',
-            hierarchy: '=',
+        	path: '<',
+            hierarchy: '=?',
             points: '=?',
-            subfolders: '='
+            subfolders: '<?',
+            onGetFolder: '&?'
         },
         link: function ($scope, $element, attrs) {
             $scope.$watch('[path, subfolders]', function() {
@@ -64,15 +65,19 @@ function pointHierarchy(PointHierarchy) {
                     delete $scope.points;
             	});
 
-            	// only do the work if we are actually going to use it
-            	if (shouldGetPoints) {
-            	    $scope.hierarchy.$promise.then(function(folder) {
-            	        // check for missing folder, REST API returns 200 OK when folder is not found
-            	        if (folder.hasOwnProperty('name')) {
+        	    $scope.hierarchy.$promise.then((folder) => {
+                    // check for missing folder, REST API returns 200 OK when folder is not found
+        	        if (folder.hasOwnProperty('name')) {
+                        // only do the work if we are actually going to use it
+                        if (shouldGetPoints) {
                             $scope.points = getPoints(folder);
-            	        }
-            	    });
-            	}
+                        }
+                        
+                        if ($scope.onGetFolder) {
+                            $scope.onGetFolder({$folder: folder, $points: $scope.points});
+                        }
+        	        }
+        	    });
             }, true);
         },
         designerInfo: {

@@ -221,6 +221,13 @@ ngMangoFilters.filter('maExtractBits', function () {
     };
 });
 
+ngMangoFilters.filter('maFindBy', function () {
+    return function(input, property, value) {
+        if (!angular.isArray(input)) return input;
+        return input.find((item) => item[property] === value);
+    };
+});
+
 return ngMangoFilters;
 
 }); // require
