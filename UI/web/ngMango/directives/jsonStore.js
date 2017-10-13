@@ -47,17 +47,26 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
         	xid: '@',
             item: '=?',
             value: '=?',
-            itemLoaded: '&'
+            itemLoaded: '&',
+            path: '<?'
         },
         link: function ($scope, $element, attr) {
-            $scope.$watch('xid', function(newXid, oldXid) {
+            $scope.$watch('{xid: xid, path: path}', function(newValue, oldValue) {
+                const newXid = newValue.xid;
+                const oldXid = oldValue.xid;
+                const newPath = newValue.path || null;
+                
             	if (!newXid) return;
-                // console.log(newXid);
-            	JsonStore.get({xid: newXid}).$promise.then(function(item) {
+            	if (angular.isArray(newPath)) {
+            	    const invalidPath = newPath.some(component => component == null);
+            	    if (invalidPath) return;
+            	}
+
+            	JsonStore.newItem(newXid, newPath).$get().then(function(item) {
             		return item;
             	}, function(response) {
             	    if (response.status === 404) {
-            	        const item = JsonStore.newItem(newXid);
+            	        const item = JsonStore.newItem(newXid, newPath);
                 		item.jsonData = $scope.value || {};
                 		return angular.extend(item, $scope.item);
             	    }
@@ -71,7 +80,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
                 if (oldXid && oldXid !== newXid) {
                 	jsonStoreEventManager.unsubscribe(oldXid, SUBSCRIPTION_TYPES, websocketHandler);
                 }
-            });
+            }, true);
 
             $scope.$watch('item.jsonData', function(newData) {
             	if (newData) {
@@ -87,9 +96,27 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
 
             function websocketHandler(event, payload) {
                 $scope.$applyAsync(function() {
-                	if (!angular.equals(payload.object, $scope.item)) {
-                		angular.copy(payload.object, $scope.item);
-                	}
+                    const oldData = $scope.item.jsonData;
+                    let newData = payload.object.jsonData;
+                    const path = $scope.path || null;
+
+                    if (angular.isArray(path)) {
+                        path.some((prop) => {
+                            if (newData == null) {
+                                return true;
+                            }
+                            newData = newData[prop];
+                        });
+                    }
+
+                    angular.copy(payload.object, $scope.item);
+                    $scope.item.dataPath = path;
+                    
+                    // if the old data is the same, keep it
+                    // stops updates because of new objects etc
+                    if (angular.equals(newData, oldData)) {
+                        $scope.item.jsonData = oldData;
+                    }
                 });
             }
         },

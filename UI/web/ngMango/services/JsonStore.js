@@ -105,16 +105,26 @@ define(['angular'], function(angular) {
 */
 JsonStoreFactory.$inject = ['$resource', 'maUtil', 'maNotificationManager'];
 function JsonStoreFactory($resource, Util, NotificationManager) {
-
+    const jsonStoreUrl = '/rest/v1/json-data/';
+    
     function setDataPathInterceptor(data) {
-        var urlParts = data.config.url.split('/');
-        data.resource.dataPath = urlParts.length >= 6 ? urlParts[5] : null;
+        const urlParts = data.config.url.split('/');
+        const jsonPath = urlParts[urlParts.length - 1];
+        const jsonPathParts = jsonPath.split('.');
+        
+        const dataPath = [];
+        jsonPathParts.forEach(part => {
+            const decoded = decodeURIComponent(part);
+            dataPath.push(decoded);
+        });
+        
+        data.resource.dataPath = dataPath;
         return data.resource;
     }
 
-    var JsonStore = $resource('/rest/v1/json-data/:xid/:dataPath', {
+    var JsonStore = $resource(jsonStoreUrl + ':xid/:dataPathStr', {
     	xid: '@xid',
-    	dataPath: '@dataPath',
+    	dataPathStr: '@dataPathStr',
         name: '@name',
         readPermission: '@readPermission',
         editPermission: '@editPermission',
@@ -160,10 +170,18 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
         },
         getPublic: {
             method: 'GET',
-            url: '/rest/v1/json-data/public/:xid/:dataPath',
+            url: jsonStoreUrl + 'public/:xid/:dataPathStr',
             interceptor: {
                 response: setDataPathInterceptor
             }
+        }
+    });
+    
+    Object.defineProperty(JsonStore.prototype, 'dataPathStr', {
+        get: function() {
+            if (!this.dataPath) return '';
+            const encoded = this.dataPath.map(part => encodeURIComponent(part));
+            return encoded.join('/');
         }
     });
 
@@ -174,7 +192,7 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
         }
     });
 
-    JsonStore.newItem = function(xid = Util.uuid()) {
+    JsonStore.newItem = function(xid = Util.uuid(), dataPath = []) {
         const item = new this();
         item.xid = xid;
         item.name = xid;
@@ -183,6 +201,7 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
         item.publicData = false;
         item.jsonData = {};
         item.isNew = true;
+        item.dataPath = dataPath;
         return item;
     };
     
