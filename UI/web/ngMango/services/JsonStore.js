@@ -109,16 +109,14 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
     
     function setDataPathInterceptor(data) {
         const urlParts = data.config.url.split('/');
-        const jsonPath = urlParts[urlParts.length - 1];
-        const jsonPathParts = jsonPath.split('.');
+        const lastPart = decodeURIComponent(urlParts[urlParts.length - 1]);
         
-        const dataPath = [];
-        jsonPathParts.forEach(part => {
-            const decoded = decodeURIComponent(part);
-            dataPath.push(decoded);
-        });
+        if (lastPart !== data.data.xid) {
+            data.resource.dataPath = lastPart.split('.');
+        } else {
+            data.resource.dataPath = [];
+        }
         
-        data.resource.dataPath = dataPath;
         return data.resource;
     }
 
