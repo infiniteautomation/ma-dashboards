@@ -42,6 +42,11 @@
 	          <span ng-if="$ctrl.coreModule.licenseType" flex="70" class="green-color"><md-icon class="green-color">done</md-icon> <span ng-bind="$ctrl.coreModule.licenseType"></span></span>
 	          <span ng-if="!$ctrl.coreModule.licenseType" flex="70" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="modules.unlicenced"></span></span>
 	        </div>
+            <div layout="row">
+              <span flex="30" ma-tr="ui.app.moduleSignature"></span>
+              <span ng-if="$ctrl.coreModule.signed" flex="70" class="green-color"><md-icon class="green-color">verified_user</md-icon> <span ma-tr="ui.app.moduleSigned"></span></span>
+              <span ng-if="!$ctrl.coreModule.signed" flex="70" md-colors="::{color: 'warn'}"><md-icon md-colors="::{color: 'warn'}">warning</md-icon> <span ma-tr="ui.app.moduleUnsigned"></span></span>
+            </div>
 	        <div layout="row">
 	          <span flex="30" ma-tr="modules.vendor"></span>
 	          <span flex="70"><a ng-bind="$ctrl.coreModule.vendor" ng-href="{{$ctrl.coreModule.vendorUrl}}" target="_blank"></a></span>
