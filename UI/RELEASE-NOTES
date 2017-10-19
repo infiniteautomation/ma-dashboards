@@ -1,3 +1,12 @@
+*Version 3.2.6*
+* Experimental simplify rollup type, reduces number of point values for charting
+* Data point details page layout fixes
+* Data point details page supports image data points better
+* Improve filtering point list
+* Bug fixes for file store browser
+* Fix some bugs in point hierarchy components
+* Improve support for data paths in JSON store components and services
+
 *Version 3.2.5*
 * Better display of error messages on the upgrade page
 * Ability to set custom sounds which are played when events are raised
