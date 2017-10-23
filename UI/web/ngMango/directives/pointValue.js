@@ -155,7 +155,7 @@ PointValueDirectiveController.prototype.updateText = function() {
     var valueRenderer = this.point.valueRenderer(this.point.value);
     var color = valueRenderer ? valueRenderer.color : null;
 
-    this.resolvedDisplayType = this.displayType || (this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered');
+    this.resolvedDisplayType = this.displayType || (this.point.pointLocator && this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered');
     delete this.valueStyle.color;
 
     switch(this.resolvedDisplayType) {
