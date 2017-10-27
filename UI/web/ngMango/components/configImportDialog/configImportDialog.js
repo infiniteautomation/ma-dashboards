@@ -56,24 +56,36 @@ ConfigImportDialogController.prototype.doImport = function() {
         
         // start polling
         this.getImportStatus();
-    }.bind(this), function(response) {
-        this.error = 'HTTP ' + response.status + ': ';
-        if (response.data && response.data.message) {
-            this.error += response.data.message;
-        }
+    }.bind(this), function(error) {
+        this.error = error.mangoStatusText;
     }.bind(this));
 };
 
 ConfigImportDialogController.prototype.getImportStatus = function() {
     if (this.importStatus) {
-        this.importStatus.getStatus().then(function(status) {
+        this.importStatus.getStatus().then(status => {
             this.updateScrollPosition();
             if ((status.state !== 'COMPLETED' || status.state !== 'CANCELLED') && status.progress !== 100) {
-                this.$timeout(function() {
+                this.$timeout(() => {
                     this.getImportStatus();
-                }.bind(this), 1000);
+                }, 1000);
             }
-        }.bind(this));
+        }, error => {
+            if (this.importStatus.errors == null) {
+                this.importStatus.errors = 0;
+            }
+            this.importStatus.errors++;
+            
+            // retry 10 times
+            if (this.importStatus.errors < 10) {
+                this.$timeout(() => {
+                    this.getImportStatus();
+                }, 1000);
+            } else {
+                this.importStatus.cancel();
+                this.error = error.mangoStatusText;
+            }
+        });
     }
 };
 
