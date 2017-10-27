@@ -468,17 +468,22 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
             delete options.query.$exact;
             delete options.query.$and;
 
-            var parts = [];
-            for (var key in options.query) {
-                var val = options.query[key] || '';
-                var comparison = '=';
-                var autoLike = false;
-                if (typeof val === 'string' && val.indexOf('=') < 0 && !exact) {
-                    comparison += 'like=*';
-                    autoLike = true;
-                }
-                parts.push(key + comparison + val + (autoLike ? '*': ''));
-            }
+            const parts = Object.keys(options.query).map(key => {
+            	let value = options.query[key];
+            	if (exact) {
+            		if (value === undefined) return;
+            		return `${key}=${value}`;
+            	} else {
+            		if (value == null) value = '';
+					let comparison = '=';
+					if (typeof value === 'string' && value.indexOf('=') < 0) {
+						comparison = '=like=';
+						value = `*${value}*`;
+					}
+					return key + comparison + value;
+            	}
+
+            }).filter(part => part != null);
 
             var queryPart;
             if (and || parts.length === 1) {
