@@ -18,7 +18,7 @@
 </ul>
 
 <ul ng-if="$ctrl.open && $ctrl.selectPoints">
-  <li ng-repeat="subfolder in $ctrl.folder.subfolders track by subfolder.id">
+  <li ng-repeat="subfolder in $ctrl.folder.subfolders track by subfolder.id" ng-if="$ctrl.canOpenFolder(subfolder)">
     <ma-point-hierarchy-folder folder="subfolder" parent="$ctrl.folder" depth="$ctrl.depth + 1"
       select-points="$ctrl.selectPoints" show-device-names="$ctrl.showDeviceNames">
     </ma-point-hierarchy-folder>

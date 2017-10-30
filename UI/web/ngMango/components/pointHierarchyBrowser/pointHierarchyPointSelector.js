@@ -19,8 +19,29 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
                     PointHierarchy.getRoot({subfolders: true, points: true});
             resourceObj.$promise.then(function(hierarchy) {
                 this.hierarchy = hierarchy;
+                this.calculateTotalPoints();
                 this.render();
             }.bind(this));
+        }
+    };
+    
+    this.calculateTotalPoints = function calculateTotalPoints() {
+        this.walkHierarchy(this.hierarchy, (folder, parent, index) => {
+            folder.parent = parent;
+            this.incrementTotalPoints(folder);
+        });
+        
+        // remove parent so there isn't a recursive structure that causes issues for deep copy and JSON
+        this.walkHierarchy(this.hierarchy, (folder, parent, index) => {
+            delete folder.parent;
+        });
+    };
+
+    this.incrementTotalPoints = (folder, amount = folder.pointCount) => {
+        folder.totalPoints = (folder.totalPoints || 0) + amount;
+        
+        if (folder.parent && amount > 0) {
+            this.incrementTotalPoints(folder.parent, amount);
         }
     };
 
@@ -42,9 +63,9 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
             selectedPointsByXid[point.xid] = point;
         }
         
-        this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
+        this.walkHierarchy(this.hierarchy, (folder, parent, index) => {
             this.updateCheckboxes(folder, selectedPointsByXid);
-        }.bind(this));
+        });
     }.bind(this);
 
     /**
@@ -139,9 +160,10 @@ return {
     },
     bindings: {
         path: '<',
-        expanded: '<',
-        selectSubfolders: '<',
-        showDeviceNames: '<'
+        expanded: '<?',
+        selectSubfolders: '<?',
+        showDeviceNames: '<?',
+        hideFoldersWithNoPoints: '<?'
     },
     designerInfo: {
         translation: 'ui.components.maPointHierarchySelector',

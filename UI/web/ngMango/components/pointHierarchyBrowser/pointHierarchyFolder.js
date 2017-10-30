@@ -9,9 +9,22 @@ define(['angular', 'require'], function(angular, require) {
 var pointHierarchyFolder = function pointHierarchyFolder() {
     this.$onInit = function() {
         this.parentController = this.browserCtrl || this.pointSelectorCtrl;
-        var expanded = this.parentController.expanded;
-        this.open = isFinite(expanded) ? this.depth < expanded : !!expanded;
         this.hideFoldersWithNoPoints = this.parentController.hideFoldersWithNoPoints;
+        this.checkIfShouldOpen();
+    };
+    
+    this.$onChanges = function(changes) {
+        if (changes.folder) {
+            this.checkIfShouldOpen();
+        }
+    };
+    
+    this.checkIfShouldOpen = function() {
+        this.open = false;
+        if (this.parentController && this.canOpenFolder()) {
+            const expanded = this.parentController.expanded;
+            this.open = isFinite(expanded) ? this.depth < expanded : !!expanded;
+        }
     };
     
     this.folderClicked = function folderClicked($event) {
@@ -20,16 +33,16 @@ var pointHierarchyFolder = function pointHierarchyFolder() {
         }
     };
     
-    this.canOpenFolder = function() {
-        if (!this.folder) return false;
+    this.canOpenFolder = function(folder = this.folder) {
+        if (!folder) return false;
         
-        if (this.selectPoints && this.folder.points.length) return true;
+        if (this.selectPoints && folder.points.length) return true;
         
         if (this.hideFoldersWithNoPoints) {
-            return this.folder.totalPoints > this.folder.points.length;
+            return folder.totalPoints > folder.points.length;
         }
         
-        return this.folder.subfolders.length > 0;
+        return folder.subfolders.length > 0;
     };
     
     this.folderCheckChanged = function folderCheckChanged() {
