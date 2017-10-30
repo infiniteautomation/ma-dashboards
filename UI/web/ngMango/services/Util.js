@@ -160,7 +160,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 */
 
-function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout) {
+UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT', 'maRqlBuilder'];
+function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout, RqlBuilder) {
 	function Util() {}
 
 	/**
@@ -457,54 +458,54 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     Util.prototype.objQuery = function objQuery(options) {
         if (!options) return this.query();
 
-        var params = [];
+        const rqlBuilder = new RqlBuilder();
+        const params = [];
+        
         if (typeof options.query === 'string' && options.query) {
             params.push(options.query);
         } else if (options.query && typeof options.query.walk === 'function') { // RQL query object
             params.push(options.query.toString());
         } else if (options.query) {
-            var and = !!options.query.$and;
-            var exact = !!options.query.$exact;
+            let and = !!options.query.$and;
+            let exact = !!options.query.$exact;
             delete options.query.$exact;
             delete options.query.$and;
 
-            const parts = Object.keys(options.query).map(key => {
-            	let value = options.query[key];
-            	if (exact) {
-            		if (value === undefined) return;
-            		return `${key}=${value}`;
-            	} else {
-            		if (value == null) value = '';
-					let comparison = '=';
-					if (typeof value === 'string' && value.indexOf('=') < 0) {
-						comparison = '=like=';
-						value = `*${value}*`;
-					}
-					return key + comparison + value;
-            	}
-
-            }).filter(part => part != null);
-
-            var queryPart;
-            if (and || parts.length === 1) {
-                queryPart = parts.join('&');
-            } else {
-                queryPart = 'or(' + parts.join(',') + ')';
+            if (!and) {
+                rqlBuilder.or();
             }
-            params.push(queryPart);
+            
+            for (let key in options.query) {
+                let val = options.query[key];
+                if (val === undefined) continue;
+                
+                if (typeof val === 'string' && val.indexOf('=') < 0 && !exact) {
+                    rqlBuilder.like(key, '*' + val + '*');
+                } else {
+                    rqlBuilder.eq(key, val);
+                }
+            }
+            
+            if (!and) {
+                rqlBuilder.up();
+            }
         }
 
         if (options.sort) {
-            var sort = options.sort;
-            if (angular.isArray(sort)) {
-                sort = sort.join(',');
+            if (angular.isArray(options.sort)) {
+                rqlBuilder.sort(...options.sort);
+            } else {
+                rqlBuilder.sort(options.sort);
             }
-            params.push('sort(' + sort + ')');
         }
 
         if (options.limit) {
-            var start = options.start || 0;
-            params.push('limit(' + options.limit + ',' + start + ')');
+            rqlBuilder.limit(options.limit, options.start || 0);
+        }
+        
+        const rqlBuilderString = rqlBuilder.toString();
+        if (rqlBuilderString) {
+            params.push(rqlBuilderString);
         }
 
         return params.length ? this.query({rqlQuery: params.join('&')}) : this.query();
@@ -639,7 +640,6 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     return new Util();
 }
 
-UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT'];
 return UtilFactory;
 
 }); // define
