@@ -1,3 +1,6 @@
+*Version 3.2.7*
+* Hide point hierarchy folders that contain no points
+
 *Version 3.2.6*
 * Experimental simplify rollup type, reduces number of point values for charting
 * Data point details page layout fixes
