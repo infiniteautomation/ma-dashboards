@@ -9,7 +9,7 @@ define([], function() {
 function rqlParamSerializerFactory($httpParamSerializer) {
     return function(params) {
         var rqlPart;
-        if (params && params.rqlQuery) {
+        if (params && params.hasOwnProperty('rqlQuery')) {
             rqlPart = params.rqlQuery;
             delete params.rqlQuery;
         }

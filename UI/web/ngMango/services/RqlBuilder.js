@@ -13,7 +13,7 @@ function rqlBuilderFactory() {
     
     const andOr = ['and', 'or'];
     const sortLimit = ['sort', 'limit'];
-    const operators = ['match', 'in', 'out', 'select', 'contains', 'excludes', 'values', 'distinct', 'recurse',
+    const operators = ['match', 'like', 'nmatch', 'nlike', 'in', 'out', 'select', 'contains', 'excludes', 'values', 'distinct', 'recurse',
         'aggregate', 'between', 'sum', 'mean', 'max', 'min', 'count', 'first', 'one', 'eq', 'ne', 'le', 'ge', 'lt', 'gt',
         'mean', 'sum', 'min', 'max', 'count', 'first', 'one'];
 
