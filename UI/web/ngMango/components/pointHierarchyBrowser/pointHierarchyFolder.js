@@ -11,10 +11,25 @@ var pointHierarchyFolder = function pointHierarchyFolder() {
         this.parentController = this.browserCtrl || this.pointSelectorCtrl;
         var expanded = this.parentController.expanded;
         this.open = isFinite(expanded) ? this.depth < expanded : !!expanded;
+        this.hideFoldersWithNoPoints = this.parentController.hideFoldersWithNoPoints;
     };
     
     this.folderClicked = function folderClicked($event) {
-        this.open = !this.open;
+        if (this.canOpenFolder()) {
+            this.open = !this.open;
+        }
+    };
+    
+    this.canOpenFolder = function() {
+        if (!this.folder) return false;
+        
+        if (this.selectPoints && this.folder.points.length) return true;
+        
+        if (this.hideFoldersWithNoPoints) {
+            return this.folder.totalPoints > this.folder.points.length;
+        }
+        
+        return this.folder.subfolders.length > 0;
     };
     
     this.folderCheckChanged = function folderCheckChanged() {
