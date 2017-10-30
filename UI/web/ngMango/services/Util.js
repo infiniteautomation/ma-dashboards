@@ -479,7 +479,9 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                 let val = options.query[key];
                 if (val === undefined) continue;
                 
-                if (typeof val === 'string' && val.indexOf('=') < 0 && !exact) {
+                if (angular.isArray(val)) {
+                    rqlBuilder.in(key, ...val);
+                } else if (typeof val === 'string' && val.indexOf('=') < 0 && !exact) {
                     rqlBuilder.like(key, '*' + val + '*');
                 } else {
                     rqlBuilder.eq(key, val);
