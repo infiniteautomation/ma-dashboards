@@ -45,8 +45,25 @@ function PointHierarchyBrowserController(PointHierarchy) {
         this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
             //folder.checked = !!selectedFoldersById[folder.id] || (parent && parent.checked && this.selectSubfolders);
             folder.checked = !!selectedFoldersById[folder.id];
+            
+            folder.parent = parent;
+            this.incrementTotalPoints(folder);
         }.bind(this));
+        
+        // remove parent so there isn't a recursive structure that causes issues for deep copy and JSON
+        this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
+            delete folder.parent;
+        });
+        
     }.bind(this);
+
+    this.incrementTotalPoints = (folder, amount = folder.pointCount) => {
+        folder.totalPoints = (folder.totalPoints || 0) + amount;
+        
+        if (folder.parent && amount > 0) {
+            this.incrementTotalPoints(folder.parent, amount);
+        }
+    };
 
     /**
      * Triggered when a checkbox changes and the $viewValue should be updated, and hence the $modelValue
@@ -99,9 +116,10 @@ return {
     },
     bindings: {
         path: '<',
-        expanded: '<',
-        selectSubfolders: '<',
-        selectOneFolder: '<'
+        expanded: '<?',
+        selectSubfolders: '<?',
+        selectOneFolder: '<?',
+        hideFoldersWithNoPoints: '<?'
     },
     designerInfo: {
         translation: 'ui.components.maPointHierarchyBrowser',

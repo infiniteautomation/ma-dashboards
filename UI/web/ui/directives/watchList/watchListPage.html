@@ -40,7 +40,7 @@
 
         <div ng-show="$ctrl.listType === 'hierarchy'" flex layout="column" class="ma-scroll-parent">
             <ma-point-hierarchy-browser expanded="1" select-subfolders="true" select-one-folder="true" class="md-padding ma-scroll-child"
-                ng-model="$ctrl.hierarchyFolders" ng-change="$ctrl.hierarchyChanged()">
+                ng-model="$ctrl.hierarchyFolders" ng-change="$ctrl.hierarchyChanged()" hide-folders-with-no-points="true">
             </ma-point-hierarchy-browser>
         </div>
     </md-card>
