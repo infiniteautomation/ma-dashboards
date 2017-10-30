@@ -49,6 +49,7 @@ define(['./services/Point',
         './filters/trFilter',
         'angular',
         'require',
+        'rql/query',
         'angular-resource',
         'angular-sanitize',
         'angular-local-storage'
@@ -59,8 +60,16 @@ define(['./services/Point',
         PermissionsFactory, systemSettingsProvider, systemStatusFactory,
         ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
         serverFactory, temporaryResourceFactory, restResourceFactory, rqlBuilderFactory, mathFactory, maEventDetector, maEventHandler,
-        dateFilterFactory, trFilterFactory, angular, require) {
+        dateFilterFactory, trFilterFactory, angular, require, rqlQuery) {
 'use strict';
+
+// rql library doesn't encode null correctly (it encodes as string:null)
+const oldEncodeValue = rqlQuery.encodeValue;
+rqlQuery.encodeValue = function(val) {
+    if (val === null) return 'null';
+    return oldEncodeValue.apply(this, arguments);
+};
+
 /**
  * @ngdoc overview
  * @name ngMangoServices
