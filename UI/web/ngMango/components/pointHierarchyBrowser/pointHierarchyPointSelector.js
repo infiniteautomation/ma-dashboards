@@ -145,10 +145,13 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
     };
 
     this.walkHierarchy = function walkHierarchy(folder, fn, parent, index) {
+        var result = fn(folder, parent, index);
+        if (result) return result;
+        
         for (var i = 0; i < folder.subfolders.length; i++) {
-            this.walkHierarchy(folder.subfolders[i], fn, folder, i);
+            result = this.walkHierarchy(folder.subfolders[i], fn, folder, i);
+            if (result) return result;
         }
-        fn(folder, parent, index);
     }.bind(this);
 }
 
