@@ -21,28 +21,35 @@ var pointHierarchyFolder = function pointHierarchyFolder() {
     
     this.checkIfShouldOpen = function() {
         this.open = false;
-        if (this.parentController && this.canOpenFolder()) {
+        if (this.parentController && this.hasContents()) {
             const expanded = this.parentController.expanded;
             this.open = isFinite(expanded) ? this.depth < expanded : !!expanded;
         }
     };
     
     this.folderClicked = function folderClicked($event) {
-        if (this.canOpenFolder()) {
+        if (this.hasContents()) {
             this.open = !this.open;
         }
     };
     
-    this.canOpenFolder = function(folder = this.folder) {
+    this.showFolder = function(folder) {
         if (!folder) return false;
-        
-        if (this.selectPoints && folder.points.length) return true;
+        if (!this.hideFoldersWithNoPoints) {
+            return true;
+        }
+        return folder.totalPoints > 0;
+    };
+    
+    this.hasContents = function() {
+        if (!this.folder) return false;
+        if (this.selectPoints && this.folder.points.length) return true;
         
         if (this.hideFoldersWithNoPoints) {
-            return folder.totalPoints > folder.points.length;
+            return this.folder.totalPoints > this.folder.points.length;
         }
         
-        return folder.subfolders.length > 0;
+        return this.folder.subfolders.length > 0;
     };
     
     this.folderCheckChanged = function folderCheckChanged() {
