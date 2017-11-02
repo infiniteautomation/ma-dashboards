@@ -45,8 +45,8 @@ define(['angular', 'require'], function(angular, require) {
   *
   */
   
-    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'maUiSettings', '$injector'];
-    function MaMapController($scope, $mdMedia, NgMap, uiSettings, $injector) {
+    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'maUiSettings', '$injector', '$window'];
+    function MaMapController($scope, $mdMedia, NgMap, uiSettings, $injector, $window) {
         var $state;
         if ($injector.has('$state')) {
             $state = $injector.get('$state');
@@ -57,7 +57,6 @@ define(['angular', 'require'], function(angular, require) {
         $ctrl.apiKeySet = false;
         $ctrl.infoWindowCache = {};
         $ctrl.allInfoWindows = [];
-        var google = window.google;
 
         if (uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
@@ -112,12 +111,12 @@ define(['angular', 'require'], function(angular, require) {
             NgMap.getMap($ctrl.mapId).then(function(map) {
                 $ctrl.map = map;
 
-                google.maps.event.trigger($ctrl.map, 'resize');
-                $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long));
+                $window.google.maps.event.trigger($ctrl.map, 'resize');
+                $ctrl.map.setCenter(new $window.google.maps.LatLng($ctrl.lat, $ctrl.long));
 
-                google.maps.event.addListener($ctrl.map, 'idle', function() {
-                    google.maps.event.trigger($ctrl.map, 'resize');
-                    // $ctrl.map.setCenter(new google.maps.LatLng($ctrl.lat, $ctrl.long)); 
+                $window.google.maps.event.addListener($ctrl.map, 'idle', function() {
+                    $window.google.maps.event.trigger($ctrl.map, 'resize');
+                    // $ctrl.map.setCenter(new $window.google.maps.LatLng($ctrl.lat, $ctrl.long)); 
                 });
             });
         };
