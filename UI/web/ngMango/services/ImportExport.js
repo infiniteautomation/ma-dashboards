@@ -8,7 +8,7 @@ define(['require', 'angular'], function(require, angular) {
 
 ImportExportFactory.$inject = ['$http', '$q', '$timeout', 'maUtil'];
 function ImportExportFactory($http, $q, $timeout, Util) {
-    var importExportUrl = '/rest/v1/json-emport';
+    var importExportUrl = '/rest/v2/json-emport';
     
     function ImportStatus(location) {
         this.location = location;
