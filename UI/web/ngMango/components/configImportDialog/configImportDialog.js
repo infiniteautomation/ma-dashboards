@@ -52,7 +52,9 @@ ConfigImportDialogController.prototype.doImport = function() {
     
     this.ImportExport.importData(this.importData).then(function(importStatus) {
         this.importStatus = importStatus;
+        
         this.updateScrollPosition();
+        this.updateProgress();
         
         // start polling
         this.getImportStatus();
@@ -65,12 +67,16 @@ ConfigImportDialogController.prototype.getImportStatus = function() {
     if (this.importStatus) {
         this.importStatus.getStatus().then(status => {
             this.updateScrollPosition();
+            this.updateProgress();
+            
             if ((status.state !== 'COMPLETED' || status.state !== 'CANCELLED') && status.progress !== 100) {
                 this.$timeout(() => {
                     this.getImportStatus();
                 }, 1000);
             }
         }, error => {
+            this.updateProgress();
+            
             if (this.importStatus.errors == null) {
                 this.importStatus.errors = 0;
             }
@@ -87,6 +93,10 @@ ConfigImportDialogController.prototype.getImportStatus = function() {
             }
         });
     }
+};
+
+ConfigImportDialogController.prototype.updateProgress = function() {
+    this.progress = Math.floor(this.inportStatus.progress || 0);
 };
 
 ConfigImportDialogController.prototype.cancelImport = function() {
