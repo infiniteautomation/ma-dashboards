@@ -6,12 +6,13 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ConfigImportDialogController.$inject = ['$mdDialog', 'maImportExport', '$timeout', '$element'];
-function ConfigImportDialogController($mdDialog, ImportExport, $timeout, $element) {
+ConfigImportDialogController.$inject = ['$mdDialog', 'maImportExport', '$timeout', '$element', '$q'];
+function ConfigImportDialogController($mdDialog, ImportExport, $timeout, $element, $q) {
     this.$mdDialog = $mdDialog;
     this.ImportExport = ImportExport;
     this.$timeout = $timeout;
     this.$element = $element;
+    this.$q = $q;
 }
 
 ConfigImportDialogController.prototype.$onInit = function() {
@@ -54,7 +55,6 @@ ConfigImportDialogController.prototype.doImport = function() {
         this.importStatus = importStatus;
         
         this.updateScrollPosition();
-        this.updateProgress();
         
         // start polling
         this.getImportStatus();
@@ -63,32 +63,26 @@ ConfigImportDialogController.prototype.doImport = function() {
     }.bind(this));
 };
 
-ConfigImportDialogController.prototype.getImportStatus = function() {
+ConfigImportDialogController.prototype.getImportStatus = function(retryCount = 0) {
     if (this.importStatus) {
         this.importStatus.getStatus().then(status => {
             this.updateScrollPosition();
             this.updateProgress();
             
             if ((status.state !== 'COMPLETED' || status.state !== 'CANCELLED') && status.progress !== 100) {
-                this.$timeout(() => {
+                this.timeoutPromise = this.$timeout(() => {
                     this.getImportStatus();
                 }, 1000);
             }
         }, error => {
             this.updateProgress();
-            
-            if (this.importStatus.errors == null) {
-                this.importStatus.errors = 0;
-            }
-            this.importStatus.errors++;
-            
-            // retry 10 times
-            if (this.importStatus.errors < 10) {
-                this.$timeout(() => {
-                    this.getImportStatus();
-                }, 1000);
+
+            if (retryCount < 3) {
+                this.timeoutPromise = this.$timeout(() => {
+                    this.getImportStatus(retryCount + 1);
+                }, 5000);
             } else {
-                this.importStatus.cancel();
+                this.doCancel();
                 this.error = error.mangoStatusText;
             }
         });
@@ -96,14 +90,32 @@ ConfigImportDialogController.prototype.getImportStatus = function() {
 };
 
 ConfigImportDialogController.prototype.updateProgress = function() {
-    this.progress = Math.floor(this.inportStatus.progress || 0);
+    this.progress = Math.floor(this.importStatus && this.importStatus.progress || 0);
 };
 
 ConfigImportDialogController.prototype.cancelImport = function() {
-    if (this.importStatus) {
-        this.importStatus.cancel();
+    if (this.cancelPromise) return;
+    
+    this.cancelPromise = this.doCancel().finally(() => {
+        delete this.cancelPromise;
+    });
+    
+    if (this.timeoutPromise) {
+        this.$timeout.cancel(this.timeoutPromise);
     }
+    
     this.close();
+};
+
+ConfigImportDialogController.prototype.doCancel = function(retryCount = 0) {
+    return this.importStatus.cancel().then(null, () => {
+        if (retryCount < 3) {
+            return this.$timeout(angular.noop, 5000).then(() => {
+                return this.doCancel(retryCount + 1);
+            });
+        }
+        return this.$q.reject('cancel failed');
+    });
 };
 
 return {
