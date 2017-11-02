@@ -24,20 +24,18 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
             
             let url = pointValuesUrl + encodeURIComponent(xid);
-            const params = optionsToParamArray(options);
+            const data = optionsToPostBody(options);
             let reverseData = false;
             
             if (options.latest) {
                 url += '/latest';
                 reverseData = true;
             } else {
-                if (params.from.valueOf() === params.to.valueOf()) {
+                if (data.from === data.to) {
                     return $q.when([]);
                 }
             }
 
-            url += '?' + params.join('&');
-            
             const canceler = $q.defer();
             const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
@@ -47,7 +45,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     'Accept': options.mimeType || 'application/json'
                 },
                 responseType: options.responseType,
-                cache: !options.latest
+                cache: !options.latest,
+                params: data
             }).then(function(response) {
                 if (options.responseType) {
                     return response.data;
@@ -64,12 +63,12 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     values = simplifyValues(values, options.simplifyTolerance, options.simplifyHighQuality);
                 }
                 
-                if (maDialogHelper && values.length === params.limit) {
+                if (maDialogHelper && values.length === data.limit) {
                 	const now = (new Date()).valueOf();
                 	if (!this.lastToast || (now - this.lastToast) > 10000) {
                 		this.lastToast = now;
                 		maDialogHelper.toastOptions({
-                			textTr: ['ui.app.pointValuesLimited', [params.limit]],
+                			textTr: ['ui.app.pointValuesLimited', [data.limit]],
                 			hideDelay: 10000,
                 			classes: 'md-warn'
                 		});
@@ -90,34 +89,35 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             
             const emptyResponse = {};
             for (let i = 0; i < xids.length; i++) {
-                xids[i] = encodeURIComponent(xids[i]);
                 emptyResponse[xids[i]] = [];
             }
             
-            let url = pointValuesUrl + xids.join(',');
-            const params = optionsToParamArray(options);
+            let url = pointValuesUrl;
+            const data = optionsToPostBody(options);
+            data.xids = xids;
             let reverseData = false;
 
             if (options.latest) {
-                url += '/latest-multiple-points-multiple-arrays';
+                url += 'latest-multiple-points-multiple-arrays';
                 reverseData = true;
             } else {
-                url += '/multiple-points-multiple-arrays';
-                if (params.from.valueOf() === params.to.valueOf()) {
+                url += 'multiple-points-multiple-arrays';
+                if (data.from === data.to) {
                     return $q.when(emptyResponse);
                 }
             }
 
-            url += '?' + params.join('&');
-            
             const canceler = $q.defer();
             const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
-            return $http.get(url, {
+            return $http({
+                method: 'POST',
+                url: url,
                 timeout: cancelOrTimeout,
                 headers: {
                     'Accept': options.mimeType || 'application/json'
                 },
+                data: data,
                 responseType: options.responseType
             }).then(function(response) {
                 if (options.responseType) {
@@ -146,34 +146,32 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
 
-            for (let i = 0; i < xids.length; i++) {
-                xids[i] = encodeURIComponent(xids[i]);
-            }
-            
-            let url = pointValuesUrl + xids.join(',');
-            const params = optionsToParamArray(options);
+            let url = pointValuesUrl;
+            const data = optionsToPostBody(options);
+            data.xids = xids;
             let reverseData = false;
 
             if (options.latest) {
-                url += '/latest-multiple-points-single-array';
+                url += 'latest-multiple-points-single-array';
                 reverseData = true;
             } else {
-                url += '/multiple-points-single-array';
-                if (params.from.valueOf() === params.to.valueOf()) {
+                url += 'multiple-points-single-array';
+                if (data.from === data.to) {
                     return $q.when([]);
                 }
             }
 
-            url += '?' + params.join('&');
-            
             const canceler = $q.defer();
             const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
-            return $http.get(url, {
+            return $http({
+                method: 'POST',
+                url: url,
                 timeout: cancelOrTimeout,
                 headers: {
                     'Accept': options.mimeType || 'application/json'
                 },
+                data: data,
                 responseType: options.responseType
             }).then(function(response) {
                 if (options.responseType) {
@@ -193,36 +191,36 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             return $q.reject(error);
         }
     };
-    
-    function optionsToParamArray(options) {
-        const params = [];
+
+    function optionsToPostBody(options) {
+        const body = {};
         
         if (options.latest) {
-            params.push('limit=' + encodeURIComponent(options.latest));
+            body.limit = options.latest;
         } else if (!angular.isUndefined(options.from) && !angular.isUndefined(options.to)) {
             const now = new Date();
-            const from = params.from = Util.toMoment(options.from, now, options.dateFormat);
-            const to = params.to = Util.toMoment(options.to, now, options.dateFormat);
-            const limit = params.limit = isFinite(options.limit) ? options.limit : MA_POINT_VALUES_CONFIG.limit;
+            const from = Util.toMoment(options.from, now, options.dateFormat);
+            const to = Util.toMoment(options.to, now, options.dateFormat);
+            const limit = isFinite(options.limit) ? options.limit : MA_POINT_VALUES_CONFIG.limit;
 
-            params.push('from=' + encodeURIComponent(from.toISOString()));
-            params.push('to=' + encodeURIComponent(to.toISOString()));
+            body.from = from.toISOString();
+            body.to = to.toISOString();
 
             let rollup = options.rollup;
             if (rollup === 'SIMPLIFY') {
                 rollup = 'NONE';
-                delete params.limit;
             } else if (limit >= 0) {
-                params.push('limit=' + encodeURIComponent(limit));
+                body.limit = limit;
             }
             
             const timezone = options.timezone || moment().tz();
-            if (timezone)
-                params.push('timezone=' + encodeURIComponent(timezone));
+            if (timezone) {
+                body.timezone = timezone;
+            }
 
             if (angular.isString(rollup) && rollup !== 'NONE') {
-                params.push('rollup=' + encodeURIComponent(rollup));
-
+                body.rollup = rollup;
+                
                 let timePeriodType = 'DAYS';
                 let timePeriods = 1;
 
@@ -249,25 +247,25 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     }
                     timePeriodType = options.rollupIntervalType;
                 }
-
-                params.push('timePeriodType=' + encodeURIComponent(timePeriodType));
-                params.push('timePeriods=' + encodeURIComponent(timePeriods));
+                
+                body.timePeriodType = timePeriodType;
+                body.timePeriods = timePeriods;
             }
         } else {
             throw new Error('Requires options.to and options.from or options.latest');
         }
         
         if (options.rendered) {
-            params.push('useRendered=true');
+            body.useRendered = true;
         } else if (options.converted) {
-            params.push('unitConversion=true');
+            body.unitConversion = true;
         }
 
         if (options.useCache != null) {
-            params.push('useCache=' + !!options.useCache);
+            body.useCache = !!options.useCache;
         }
         
-        return params;
+        return body;
     }
     
     function simplifyValues(values, tolerance = -1, highQuality = true) {
