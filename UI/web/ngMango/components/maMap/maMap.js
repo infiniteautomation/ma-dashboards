@@ -120,8 +120,13 @@ define(['angular', 'require'], function(angular, require) {
                 });
             });
         };
-
-
+        
+        $ctrl.$onInit = function() {
+            if (this.onInit) {
+                this.onInit({$maMapCtrl: this});
+            }
+        };
+        
         $ctrl.$onChanges = function(changes) {
             // console.log(changes);
             if (!$ctrl.desktopHeight) {
@@ -149,7 +154,8 @@ define(['angular', 'require'], function(angular, require) {
             desktopHeight: '@',
             mobileHeight: '@',
             outputData: '=',
-            mapId: '@'
+            mapId: '@',
+            onInit: '&?'
         },
         controller: MaMapController,
         templateUrl: require.toUrl('./maMap.html'),

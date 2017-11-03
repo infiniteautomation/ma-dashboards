@@ -20,7 +20,7 @@
 <ng-map ng-if="$ctrl.render" center="{{$ctrl.lat + ', ' + $ctrl.long}}" style="display:block; height: {{$ctrl.height}}; min-height: 100%" trigger-resize="true" 
  map-initialized="$ctrl.onMapLoaded()" zoom="{{$ctrl.zoom}}" 
  map-type-id="{{$ctrl.mapType}}" styles="{{$ctrl.styles}}" id="{{$ctrl.mapId}}">
-  <ng-transclude></ng-transclude>
+    <div ng-transclude></div>
 </ng-map>
 
 <strong ng-if="!$ctrl.render &&  !$ctrl.apiKeySet"><em>
