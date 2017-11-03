@@ -27,6 +27,11 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
     
     this.calculateTotalPoints = function calculateTotalPoints() {
         this.walkHierarchy(this.hierarchy, (folder, parent, index) => {
+            if (parent) {
+                folder.path = parent.path ? parent.path + ',' + folder.name : folder.name;
+            } else {
+                folder.path = '';
+            }
             folder.parent = parent;
             this.incrementTotalPoints(folder);
         });
@@ -166,7 +171,10 @@ return {
         expanded: '<?',
         selectSubfolders: '<?',
         showDeviceNames: '<?',
-        hideFoldersWithNoPoints: '<?'
+        hideFoldersWithNoPoints: '<?',
+        folderIcon: '@?',
+        folderStatusPoint: '@?',
+        folderStyle: '<?'
     },
     designerInfo: {
         translation: 'ui.components.maPointHierarchySelector',

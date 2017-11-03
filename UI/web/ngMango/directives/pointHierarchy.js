@@ -74,7 +74,11 @@ function pointHierarchy(PointHierarchy) {
                         }
                         
                         if ($scope.onGetFolder) {
-                            $scope.onGetFolder({$folder: folder, $points: $scope.points});
+                            const allFolders = [];
+                            PointHierarchy.walkHierarchy(folder, (folder, parent, index, depth) => {
+                                allFolders.push(folder);
+                            });
+                            $scope.onGetFolder({$folder: folder, $points: $scope.points, $allFolders: allFolders});
                         }
         	        }
         	    });
