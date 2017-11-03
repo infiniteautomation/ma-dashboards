@@ -23,7 +23,9 @@ var pointHierarchyFolder = function pointHierarchyFolder() {
     
     this.findStatusPoint = function() {
         if (!this.folder || !this.folder.points || !this.parentController || !this.parentController.folderStatusPoint) return;
-        const statusPoint = this.folder.points.find(pt => pt.name === this.parentController.folderStatusPoint);
+        
+        const regex = new RegExp(this.parentController.folderStatusPoint);
+        const statusPoint = this.folder.points.find(pt => regex.test(pt.name));
         if (statusPoint) {
             this.statusPointXid = statusPoint.xid;
         }

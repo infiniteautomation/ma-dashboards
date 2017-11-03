@@ -36,17 +36,19 @@ function pointHierarchy(PointHierarchy) {
     return {
         scope: {
         	path: '<',
+            folderId: '<',
             hierarchy: '=?',
             points: '=?',
             subfolders: '<?',
             onGetFolder: '&?'
         },
         link: function ($scope, $element, attrs) {
-            $scope.$watch('[path, subfolders]', function() {
+            $scope.$watch('[path, subfolders, folderId]', function() {
                 var path = $scope.path;
-                if (!path) {
+                if (!path && $scope.folderId == null) {
                     delete $scope.hierarchy;
                     delete $scope.points;
+                    delete $scope.folderId;
                     return;
                 }
 
@@ -57,12 +59,18 @@ function pointHierarchy(PointHierarchy) {
                 var subfolders = typeof attrs.subfolders === 'undefined' ? true : !!$scope.subfolders;
                 var shouldGetPoints = attrs.points !== undefined;
                 
-            	$scope.hierarchy = path.length ?
-            	        PointHierarchy.byPath({path: path, subfolders: subfolders, points: shouldGetPoints}) :
-            	        PointHierarchy.getRoot({subfolders: subfolders, points: shouldGetPoints});
+                if ($scope.folderId != null) {
+                    $scope.hierarchy = PointHierarchy.get({id: $scope.folderId});
+                } else {
+                    $scope.hierarchy = path.length ?
+                            PointHierarchy.byPath({path: path, subfolders: subfolders, points: shouldGetPoints}) :
+                            PointHierarchy.getRoot({subfolders: subfolders, points: shouldGetPoints});
+                }
+            	
             	$scope.hierarchy.$promise.then(null, function() {
             	    delete $scope.hierarchy;
                     delete $scope.points;
+                    delete $scope.folderId;
             	});
 
         	    $scope.hierarchy.$promise.then((folder) => {
