@@ -11,11 +11,21 @@ var pointHierarchyFolder = function pointHierarchyFolder() {
         this.parentController = this.browserCtrl || this.pointSelectorCtrl;
         this.hideFoldersWithNoPoints = this.parentController.hideFoldersWithNoPoints;
         this.checkIfShouldOpen();
+        this.findStatusPoint();
     };
     
     this.$onChanges = function(changes) {
         if (changes.folder) {
             this.checkIfShouldOpen();
+            this.findStatusPoint();
+        }
+    };
+    
+    this.findStatusPoint = function() {
+        if (!this.folder || !this.folder.points || !this.parentController || !this.parentController.folderStatusPoint) return;
+        const statusPoint = this.folder.points.find(pt => pt.name === this.parentController.folderStatusPoint);
+        if (statusPoint) {
+            this.statusPointXid = statusPoint.xid;
         }
     };
     

@@ -3,8 +3,10 @@
     ng-disabled="$ctrl.browserCtrl.selectSubfolders && $ctrl.browserCtrl.selectOneFolder && $ctrl.parent.checked" ng-class="{'md-indeterminate': $ctrl.folder.partial}">
   </md-checkbox>
   
+  <ma-get-point-value ng-if="$ctrl.statusPointXid" point-xid="{{$ctrl.statusPointXid}}" point="$ctrl.statusPoint"></ma-get-point-value>
+
   <span ng-click="$ctrl.folderClicked($event)">
-    <md-icon>folder</md-icon>
+    <md-icon ng-style="$ctrl.parentController.folderStyle[$ctrl.statusPoint.value]">{{$ctrl.parentController.folderIcon || 'folder'}}</md-icon>
     <strong>{{$ctrl.folder.name}}</strong>&nbsp;<em>({{$ctrl.folder.totalPoints}} points)</em>
     <md-icon ng-if="$ctrl.hasContents()">{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
   </span>
