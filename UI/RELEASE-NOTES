@@ -1,5 +1,11 @@
 *Version 3.2.7*
 * Hide point hierarchy folders that contain no points
+* Fix for displaying point value on point where no point locator is present
+* Fixes to configuration import dialog
+* Fixes to RQL point queries
+* Don't timeout waiting for point value download on watchlist page
+* Bug fix to ma-map component
+* Ability to display a status point icon/color for ma-point-hierarchy-browser
 
 *Version 3.2.6*
 * Experimental simplify rollup type, reduces number of point values for charting
