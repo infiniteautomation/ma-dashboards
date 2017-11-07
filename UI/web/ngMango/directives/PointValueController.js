@@ -8,17 +8,14 @@ define(['angular'], function(angular) {
 
 var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
 
-PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint', '$injector', 'maEvents'];
-function PointValueController($scope, $element, $attrs, pointEventManager, Point, $injector, maEvents) {
+PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint', '$injector'];
+function PointValueController($scope, $element, $attrs, pointEventManager, Point, $injector) {
     this.$scope = $scope;
     this.$element = $element;
     this.$attrs = $attrs;
     this.pointEventManager = pointEventManager;
     this.Point = Point;
-    
-    this.getRQL = maEvents.getRQL;
-    this.doQuery = maEvents.rql;
-    
+
     // stats dialog depends on ui date bar, check that too
     if ($injector.has('maStatsDialog') && $injector.has('maUiDateBar')) {
         const maStatsDialog = $injector.get('maStatsDialog');

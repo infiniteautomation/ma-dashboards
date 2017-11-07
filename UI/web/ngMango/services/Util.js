@@ -502,7 +502,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             }
         }
 
-        if (options.limit) {
+        if (options.limit != null) {
             rqlBuilder.limit(options.limit, options.start || 0);
         }
         

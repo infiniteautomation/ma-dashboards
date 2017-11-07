@@ -179,6 +179,23 @@ ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provid
     $httpProvider.interceptors.push('maHttpInterceptor');
 
     $provide.decorator('$q', qDecorator);
+    
+    $provide.decorator('$resource', ['$delegate', 'maRqlBuilder', 'maUtil', function($delegate, RqlBuilder, maUtil) {
+        const buildQuery = function() {
+            const builder = new RqlBuilder();
+            builder.queryFunction = (queryObj, opts) => {
+                return this.query({rqlQuery: queryObj.toString()}).$promise;
+            };
+            return builder;
+        };
+        
+        return function resourceWithBuildQuery() {
+            const resource = $delegate.apply(this, arguments);
+            resource.buildQuery = buildQuery;
+            resource.objQuery = maUtil.objQuery;
+            return resource;
+        };
+    }]);
 }]);
 
 return ngMangoServices;

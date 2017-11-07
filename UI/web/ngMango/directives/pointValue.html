@@ -5,7 +5,7 @@
         <img ng-if="$ctrl.resolvedDisplayType === 'image'" ng-style="$ctrl.valueStyle" ng-class="classes" class="value" ng-src="{{$ctrl.point.value}}" alt="Image point value">
         <span ng-if="$ctrl.point && !$ctrl.point.enabled" class="disabled-text" ma-tr="common.disabled"></span>
         <md-button class="md-accent event-indicator" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'events')"
-                   ng-if="$ctrl.showEventIcon">
+                   ng-if="$ctrl.activeEvents > 0">
             <md-tooltip md-direction="top">
                 <span ma-tr="ui.components.showEvents"></span>
             </md-tooltip>

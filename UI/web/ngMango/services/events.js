@@ -196,43 +196,6 @@ function eventsFactory($resource, Util, NotificationManager) {
             }
         }
     });
-    
-    Events.objQuery = function(options) {
-        if (!options) return this.query();
-        if (typeof options.query === 'string') {
-            return this.rql({query: options.query});
-        }
-
-        var params = [];
-        if (options.query) {
-            var and = !!options.query.$and;
-            var exact = !!options.query.$exact;
-            delete options.query.$exact;
-            delete options.query.$and;
-
-            var parts = [];
-            for (var key in options.query) {
-                var val = options.query[key] || '';
-                var comparison = '=';
-                var autoLike = false;
-                if (val.indexOf('=') < 0 && !exact) {
-                    comparison += 'like=*';
-                    autoLike = true;
-                }
-                parts.push(key + comparison + val + (autoLike ? '*': ''));
-            }
-
-            var queryPart;
-            if (and || parts.length === 1) {
-                queryPart = parts.join('&');
-            } else {
-                queryPart = 'or(' + parts.join(',') + ')';
-            }
-            params.push(queryPart);
-        }
-        
-        return params.length ? this.rql({query: params.join('&')}) : this.query();
-    };
 
     Events.getRQL = function(options) {
         const params = [];
