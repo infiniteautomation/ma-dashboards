@@ -63,7 +63,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     values = simplifyValues(values, options.simplifyTolerance, options.simplifyHighQuality);
                 }
                 
-                if (maDialogHelper && values.length === data.limit) {
+                if (!options.latest && maDialogHelper && values.length === data.limit) {
                 	const now = (new Date()).valueOf();
                 	if (!this.lastToast || (now - this.lastToast) > 10000) {
                 		this.lastToast = now;
