@@ -89,12 +89,14 @@ function pointValue() {
     };
 }
 
-PointValueDirectiveController.$inject = PointValueController.$inject.concat('MA_DATE_FORMATS');
+PointValueDirectiveController.$inject = PointValueController.$inject.concat('MA_DATE_FORMATS', 'maEvents');
 function PointValueDirectiveController() {
     PointValueController.apply(this, arguments);
     var firstArg = PointValueController.$inject.length;
     
     this.mangoDateFormats = arguments[firstArg];
+    this.maEvents = arguments[firstArg + 1];
+    
     this.valueStyle = {};
 }
 
@@ -141,6 +143,36 @@ PointValueDirectiveController.prototype.valueChangeHandler = function(isPointCha
 	}
 	
     this.updateText();
+    
+    if (isPointChange) {
+        this.activeEvents = 0;
+        if (!this.hideEventIndicator) {
+            this.getActiveEvents();
+        }
+    }
+};
+
+PointValueDirectiveController.prototype.getActiveEvents = function() {
+    this.maEvents.buildQuery()
+        .eq('dataPointId', this.point.id)
+        .eq('active', true)
+        .limit(0)
+        .query().then(result => {
+            this.activeEvents += result.$total;
+        });
+    
+    if (!this.deregisterWebsocket) {
+        this.deregisterWebsocket = this.maEvents.notificationManager.subscribe((event, mangoEvent) => {
+            if (mangoEvent.eventType.dataPointId !== this.point.id) return;
+            
+            if (event.name === 'RAISED' && mangoEvent.active) {
+                this.activeEvents += 1;
+            } else if (event.name === 'RETURN_TO_NORMAL') { // what does DEACTIVATED mean?
+                this.activeEvents -= 1;
+            }
+            
+        }, this.$scope, ['RAISED', 'RETURN_TO_NORMAL']);
+    }
 };
 
 PointValueDirectiveController.prototype.updateText = function() {
@@ -178,20 +210,6 @@ PointValueDirectiveController.prototype.updateText = function() {
         break;
     default:
         this.displayValue = this.point.value;
-    }
-
-    if (!this.hideEventIndicator) {
-        this.doQuery({
-            query: 'dataPointId=' + this.point.id + '&active=true&limit(0,0)'
-        }).$promise
-        .then(function(result) {
-            if (result.$total > 0) {
-                this.showEventIcon = true;
-            }
-            else {
-                this.showEventIcon = false;
-            }
-        }.bind(this));
     }
 };
 
