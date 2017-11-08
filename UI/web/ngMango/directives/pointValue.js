@@ -146,7 +146,7 @@ PointValueDirectiveController.prototype.valueChangeHandler = function(isPointCha
     
     if (isPointChange) {
         this.activeEvents = 0;
-        if (!this.hideEventIndicator) {
+        if (!this.hideEventIndicator && this.point) {
             this.getActiveEvents();
         }
     }
