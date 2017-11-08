@@ -1,0 +1,16 @@
+<md-input-container flex>
+    <label>Choose a value for {{$ctrl.key}}</label>
+    <md-select ng-if="!$ctrl.selectMultiple" ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()">
+        <md-option ng-value="undefined" md-option-empty><em>Any</em></md-option>
+        <md-option ng-repeat="value in $ctrl.values" ng-value="value">
+            <em ng-if="value === null">No {{$ctrl.key}}</em>
+            <span ng-if="value !== null" ng-bind="value"></span>
+        </md-option>
+    </md-select>
+    <md-select ng-if="$ctrl.selectMultiple" multiple="true" ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()">
+        <md-option ng-repeat="value in $ctrl.values" ng-value="value">
+            <em ng-if="value === null">No {{$ctrl.key}}</em>
+            <span ng-if="value !== null" ng-bind="value"></span>
+        </md-option>
+    </md-select>
+</md-input-container>
