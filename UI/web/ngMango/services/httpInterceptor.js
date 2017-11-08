@@ -58,7 +58,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     	    
     	    // if no message in the response body use the HTTP status text
     	    if (!message) {
-    	        message = safeTranslate(`ui.app.httpStatus.${error.status}`, error.statusText);
+    	        message = safeTranslate(`rest.httpStatus.${error.status}`, error.statusText);
     	    }
     	    
     	    // error.statusText is empty if its an XHR error
