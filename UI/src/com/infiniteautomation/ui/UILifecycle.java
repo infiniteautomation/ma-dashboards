@@ -30,7 +30,7 @@ public class UILifecycle extends ModuleElementDefinition {
     }
     
     @Override
-    public void postInitialize() {
+    public void postInitialize(boolean install, boolean upgrade) {
         installMenuData();
         installPageData();
         installSettingsData();
