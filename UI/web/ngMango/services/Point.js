@@ -207,6 +207,7 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     		xid: '@xid'
     	}, {
         query: {
+        	url: '/rest/v2/data-points',
             method: 'GET',
             isArray: true,
             transformResponse: Util.transformArrayResponse,
@@ -215,7 +216,7 @@ function PointFactory($resource, $http, $timeout, Util, User) {
             }
         },
         rql: {
-        	url: '/rest/v1/data-points?:query',
+        	url: '/rest/v2/data-points?:query',
             method: 'GET',
             isArray: true,
             transformResponse: Util.transformArrayResponse,
@@ -227,6 +228,10 @@ function PointFactory($resource, $http, $timeout, Util, User) {
             url: '/rest/v1/data-points/by-id/:id',
             method: 'GET',
             isArray: false
+        },
+        get: {
+            method: 'GET',
+            url: '/rest/v2/data-points/:xid'
         },
         save: {
             method: 'POST',
