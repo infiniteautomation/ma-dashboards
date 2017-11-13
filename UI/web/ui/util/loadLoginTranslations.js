@@ -8,7 +8,7 @@ define(['moment-timezone'], function(moment) {
 
 loadLoginTranslations.$inject = ['maTranslate', 'maUser', '$window'];
 function loadLoginTranslations(Translate, User, $window) {
-    return Translate.loadNamespaces(['login', 'rest']).then(function(data) {
+    return Translate.loadNamespaces('login').then(function(data) {
         var user = User.current;
         moment.locale((user && user.locale) || data.locale || $window.navigator.languages || $window.navigator.language);
         moment.tz.setDefault(user ? user.getTimezone() : moment.tz.guess());
