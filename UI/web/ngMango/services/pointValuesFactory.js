@@ -59,11 +59,16 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 if (reverseData)
                     values.reverse();
                 
-                if (options.rollup === 'SIMPLIFY' && !options.rendered && options.simplifyTolerance) {
-                    values = simplifyValues(values, options.simplifyTolerance, options.simplifyHighQuality);
+                let simplifyLimited = false;
+                if (options.rollup === 'SIMPLIFY' && !options.rendered) {
+                    values = simplifyValues(values, options.simplifyTolerance || 0, options.simplifyHighQuality);
+                    if (values.length > MA_POINT_VALUES_CONFIG.limit) {
+                        values = values.slice(0, MA_POINT_VALUES_CONFIG.limit);
+                        simplifyLimited = true;
+                    }
                 }
                 
-                if (!options.latest && maDialogHelper && values.length === data.limit) {
+                if ((!options.latest && maDialogHelper && values.length === data.limit) || simplifyLimited) {
                 	const now = (new Date()).valueOf();
                 	if (!this.lastToast || (now - this.lastToast) > 10000) {
                 		this.lastToast = now;
