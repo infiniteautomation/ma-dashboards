@@ -60,7 +60,7 @@ define(['angular', 'require'], function(angular, require) {
 
         if (uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
-            require(['https://maps.google.com/maps/api/js?key=' + uiSettings.googleMapsApiKey], function() {
+            require(['https://maps.google.com/maps/api/js?v=3&key=' + uiSettings.googleMapsApiKey], function() {
                 $scope.$applyAsync(function() {
                     $ctrl.render = true;
                 });
