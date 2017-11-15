@@ -203,11 +203,10 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="ui.
  */
 PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser'];
 function PointFactory($resource, $http, $timeout, Util, User) {
-    var Point = $resource('/rest/v1/data-points/:xid', {
+    var Point = $resource('/rest/v2/data-points/:xid', {
     		xid: '@xid'
     	}, {
         query: {
-        	url: '/rest/v2/data-points',
             method: 'GET',
             isArray: true,
             transformResponse: Util.transformArrayResponse,
@@ -225,17 +224,13 @@ function PointFactory($resource, $http, $timeout, Util, User) {
             }
         },
         getById: {
-            url: '/rest/v1/data-points/by-id/:id',
+            url: '/rest/v2/data-points/by-id/:id',
             method: 'GET',
             isArray: false
         },
-        get: {
-            method: 'GET',
-            url: '/rest/v2/data-points/:xid'
-        },
         save: {
             method: 'POST',
-            url: '/rest/v1/data-points'
+            url: '/rest/v2/data-points'
         },
         update: {
             method: 'PUT'
