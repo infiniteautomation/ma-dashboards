@@ -95,6 +95,8 @@ define(['./ngMangoServices',
         './components/jsonStoreEditor/jsonStoreEditor',
         './components/eventHandlerEditor/eventHandlerEditor',
         './components/eventAudio/eventAudio',
+        './components/getService/getService',
+        './components/pointEventDetector/pointEventDetector',
         'ng-map',
         './animations/slideUp',
         'angular',
@@ -112,7 +114,8 @@ define(['./ngMangoServices',
         eventHandler, jsonModel,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, eventHandlerEditor, eventAudio,
+        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, eventHandlerEditor, eventAudio, getService,
+        pointEventDetector,
         ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
@@ -216,6 +219,8 @@ ngMango.component('maJsonStoreTable', jsonStoreTable);
 ngMango.component('maEventHandlerEditor', eventHandlerEditor);
 ngMango.component('maJsonStoreEditor', jsonStoreEditor);
 ngMango.component('maEventAudio', eventAudio);
+ngMango.component('maGetService', getService);
+ngMango.component('maPointEventDetector', pointEventDetector);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default

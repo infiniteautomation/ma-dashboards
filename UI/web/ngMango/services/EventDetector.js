@@ -6,12 +6,17 @@
 define(['angular'], function(angular) {
 'use strict';
 
-eventDetectorFactory.$inject = ['maRestResource'];
-function eventDetectorFactory(RestResource) {
-    
+eventDetectorFactory.$inject = ['maRestResource', '$injector', '$q'];
+function eventDetectorFactory(RestResource, $injector, $q) {
+
     const eventDetectorBaseUrl = '/rest/v2/event-detectors';
     const eventDetectorWebSocketUrl = '/rest/v1/websocket/event-detectors';
     const eventDetectorXidPrefix = 'ED_';
+    
+    let maDialogHelper;
+    if ($injector.has('maDialogHelper')) {
+        maDialogHelper = $injector.get('maDialogHelper');
+    }
     
 	const defaultProperties = {
 	};
@@ -31,6 +36,49 @@ function eventDetectorFactory(RestResource) {
         
         static get xidPrefix() {
             return eventDetectorXidPrefix;
+        }
+        
+        static findPointDetector(options = {}) {
+            if (!(isFinite(options.sourceId) && options.sourceId > 0)) {
+                return $q.reject(new Error('Invalid data point ID'));
+            }
+            
+            const queryPromise = this.buildQuery()
+                .eq('sourceTypeName', 'DATA_POINT')
+                .eq('dataPointId', options.sourceId)
+                .query();
+            
+            return queryPromise.then(eventDetectors => {
+                const detector = eventDetectors.find(ed => ed.detectorType === options.detectorType) || new this({
+                    durationType: 'SECONDS',
+                    alarmLevel: 'WARNING',
+                    detectorSourceType: 'DATA_POINT',
+                    rtnApplicable: true
+                });
+                return Object.assign(detector, options);
+            });
+        }
+        
+        saveAndNotify() {
+            return this.constructor.saveAndNotify(this);
+        }
+        
+        static saveAndNotify(detector) {
+            return $q.when(detector).then(detector => {
+                return detector.save();
+            }).then(detector => {
+                if (!maDialogHelper) return;
+                maDialogHelper.toastOptions({
+                    textTr: ['ui.components.eventDetectorSaved', detector.description]
+                });
+            }, error => {
+                if (!maDialogHelper) return;
+                maDialogHelper.toastOptions({
+                    textTr: ['ui.components.eventDetectorSaveError', error.mangoStatusText || '' + error],
+                    classes: 'md-warn',
+                    timeout: 10000
+                });
+            });
         }
     }
     
