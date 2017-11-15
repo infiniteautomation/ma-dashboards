@@ -41,7 +41,7 @@ requirejs.config({
     baseUrl: mangoUrl + requirejs.toUrl(''),
     map: {
         '*': {
-            ngMango: 'ngMango-3.2'
+            ngMango: 'ngMango-3.3'
         }
     },
     urlArgs: function(id, url) {
@@ -55,7 +55,8 @@ requirejs.config({
         'mangoUIModule' : module,
         'ngMango-3.0' : module + '/ngMango-3.0',
         'ngMango-3.1' : module + '/ngMango-3.1',
-        'ngMango-3.2' : module + '/ngMango',
+        'ngMango-3.2' : module + '/ngMango-3.2',
+        'ngMango-3.3' : module + '/ngMango',
         'maUi' : module + '/ui',
         'angular' : vendor + '/angular/angular',
         'angular-ui-router' : vendor + '/angular-ui-router/angular-ui-router',
