@@ -35,6 +35,10 @@ class PointEventDetectorController {
             detectorType: this.detectorType
         }, this.options);
         
+        if (this.alarmLevel) {
+            options.alarmLevel = this.alarmLevel;
+        }
+        
         this.maEventDetector.findPointDetector(options).then(detector => {
             this.detector = detector;
             if (this.onDetector) {
@@ -48,8 +52,9 @@ return {
     bindings: {
         point: '<',
         detectorType: '@',
+        alarmLevel: '@?',
         detector: '=',
-        onDetector: '@?',
+        onDetector: '&?',
         options: '<?'
     },
     controller: PointEventDetectorController
