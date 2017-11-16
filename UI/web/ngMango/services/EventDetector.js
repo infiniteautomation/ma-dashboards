@@ -49,12 +49,23 @@ function eventDetectorFactory(RestResource, $injector, $q) {
                 .query();
             
             return queryPromise.then(eventDetectors => {
-                const detector = eventDetectors.find(ed => ed.detectorType === options.detectorType) || new this({
-                    durationType: 'SECONDS',
-                    alarmLevel: 'WARNING',
-                    detectorSourceType: 'DATA_POINT',
-                    rtnApplicable: true
+                let detector = eventDetectors.find(ed => {
+                   const typeMatches = ed.detectorType === options.detectorType;
+                   if (options.alarmLevel) {
+                       return ed.alarmLevel === options.alarmLevel && typeMatches;
+                   }
+                   return typeMatches;
                 });
+                
+                if (!detector) {
+                    detector = new this({
+                        durationType: 'SECONDS',
+                        alarmLevel: 'WARNING',
+                        detectorSourceType: 'DATA_POINT',
+                        rtnApplicable: true
+                    });
+                }
+                
                 return Object.assign(detector, options);
             });
         }
