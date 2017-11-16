@@ -92,6 +92,10 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             // otherwise they will get 2 events
             return this.notificationManager.notifyIfNotConnected(...args);
         }
+        
+        isNew() {
+            return this.originalXid == null;
+        }
 
         get(opts = {}) {
             return this.constructor.http({
