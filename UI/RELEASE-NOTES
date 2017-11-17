@@ -1,3 +1,11 @@
+*Version 3.2.8*
+* Use Websocket to get event/alarm updates on ma-point-value
+* Limit number of point values when using simplify
+* Fix error popup when number of point values are limited
+* Add component for getting/changing point event detectors (ma-point-event-detector)
+* Dont cache point hierarchy REST calls
+* Fix for JSON store service for when using paths
+
 *Version 3.2.7*
 * Hide point hierarchy folders that contain no points
 * Fix for displaying point value on point where no point locator is present
