@@ -48,7 +48,7 @@ requirejs.config({
         if (url.indexOf('?v=') > 0 || url.indexOf('&v=') > 0) {
             return '';
         }
-        return (url.indexOf('?') > 0 ? '&' : '?') + 'v=' + (root.mangoLastUpgrade || '3.3.0');
+        return (url.indexOf('?') > 0 ? '&' : '?') + 'v=' + (root.mangoLastUpgrade || '3.2.8');
     },
     paths : {
         'modules': '/modules',
