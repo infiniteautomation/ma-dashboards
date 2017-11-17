@@ -129,26 +129,22 @@ function PointHierarchyFactory($resource, Point) {
     	    method: 'GET',
             url: '/rest/v1/hierarchy/full',
             isArray: false,
-            cache: true,
             timeout: 60000
     	},
         byPath: {
             method: 'GET',
             url: '/rest/v1/hierarchy/by-path/:path',
-            isArray: false,
-            cache: true
+            isArray: false
         },
         byName: {
             method: 'GET',
             url: '/rest/v1/hierarchy/by-name/:name',
-            isArray: false,
-            cache: true
+            isArray: false
         },
         pathByXid: {
             method: 'GET',
             url: ' /rest/v1/hierarchy/path/:xid',
-            isArray: true,
-            cache: true
+            isArray: true
         }
     });
     
