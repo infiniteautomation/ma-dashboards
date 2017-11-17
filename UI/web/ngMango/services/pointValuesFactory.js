@@ -73,7 +73,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 	if (!this.lastToast || (now - this.lastToast) > 10000) {
                 		this.lastToast = now;
                 		maDialogHelper.toastOptions({
-                			textTr: ['ui.app.pointValuesLimited', [data.limit]],
+                			textTr: ['ui.app.pointValuesLimited', [data.limit || MA_POINT_VALUES_CONFIG.limit]],
                 			hideDelay: 10000,
                 			classes: 'md-warn'
                 		});
