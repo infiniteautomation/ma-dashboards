@@ -178,8 +178,7 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
     Object.defineProperty(JsonStore.prototype, 'dataPathStr', {
         get: function() {
             if (!this.dataPath) return '';
-            const encoded = this.dataPath.map(part => encodeURIComponent(part));
-            return encoded.join('/');
+            return this.dataPath.join('.');
         }
     });
 
