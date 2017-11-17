@@ -428,13 +428,31 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
-            controller: ['maUiDateBar', 'maPointValues', 'maUtil', 'MA_ROLLUP_TYPES', function(maUiDateBar, pointValues, Util, MA_ROLLUP_TYPES) {
+            controller: ['maUiDateBar', 'maPointValues', 'maUtil', 'MA_ROLLUP_TYPES', 'MA_DATE_TIME_FORMATS', 'maUser',
+                    function(maUiDateBar, pointValues, Util, MA_ROLLUP_TYPES, MA_DATE_TIME_FORMATS, maUser) {
+                
                 this.dateBar = maUiDateBar;
                 this.rollupTypes = MA_ROLLUP_TYPES;
                 this.rollupType = 'NONE';
+                this.timeFormats = MA_DATE_TIME_FORMATS;
+                this.timeFormat = this.timeFormats[0].format;
+                this.allPoints = !this.selected.length;
+
+                this.timezones = [{
+                    translation: 'ui.app.timezone.user',
+                    value: maUser.current.getTimezone()
+                }, {
+                    translation: 'ui.app.timezone.server',
+                    value: maUser.current.systemTimezone
+                }, {
+                    translation: 'ui.app.timezone.utc',
+                    value: 'UTC'
+                }];
                 
-                this.downloadData = function downloadData(downloadType, all) {
-                    var points = all ? this.points : this.selected;
+                this.timezone = this.timezones[0].value;
+                
+                this.downloadData = function downloadData(downloadType) {
+                    var points = this.allPoints ? this.points : this.selected;
                     var xids = points.map(function(pt) {
                         return pt.xid;
                     });
@@ -456,7 +474,9 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                         rollupInterval: maUiDateBar.rollupIntervals,
                         rollupIntervalType: maUiDateBar.rollupIntervalPeriod,
                         limit: -1,
-                        timeout: 0
+                        timeout: 0,
+                        dateTimeFormat: this.timeFormat,
+                        timezone: this.timezone
                     }).then(function(response) {
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);

@@ -278,6 +278,16 @@ ngMango.constant('MA_ROLLUP_TYPES', [
  //{name: 'FFT', nonNumeric: false}
 ]);
 
+ngMango.constant('MA_DATE_TIME_FORMATS', [
+    {
+        translation: 'ui.app.timeFormat.iso',
+        format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX'
+    }, {
+        translation: 'ui.app.timeFormat.epoch',
+        format: ''
+    }
+]);
+
 ngMango.constant('MA_TIME_PERIOD_TYPES', [
  {type: 'SECONDS', label: 'Seconds'},
  {type: 'MINUTES', label: 'Minutes'},

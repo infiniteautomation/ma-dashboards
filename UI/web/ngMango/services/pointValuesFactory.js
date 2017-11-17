@@ -200,6 +200,10 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     function optionsToPostBody(options) {
         const body = {};
         
+        if (options.dateTimeFormat ) {
+            body.dateTimeFormat = options.dateTimeFormat ;
+        }
+        
         if (options.latest) {
             body.limit = options.latest;
         } else if (!angular.isUndefined(options.from) && !angular.isUndefined(options.to)) {

@@ -13,7 +13,7 @@
     <div layout flex="none"><strong flex="30" ma-tr="common.dateRangeTo"></strong><span flex ng-bind="$ctrl.dateBar.to | maDate"></span></div>
     <div layout flex="none"><strong flex="30" ma-tr="ui.app.duration"></strong><span flex ng-bind="$ctrl.dateBar.to.valueOf() - $ctrl.dateBar.from.valueOf() | maDuration:'humanize'"></span></div>
 
-    <md-radio-group ng-model="allPoints" ng-init="allPoints = false">
+    <md-radio-group ng-model="$ctrl.allPoints">
       <md-radio-button ng-value="false"><span ma-tr="ui.app.downloadDataForCheckedPoints"></span></md-radio-button>
       <md-radio-button ng-value="true"><span ma-tr="ui.app.downloadDataForAllPoints"></span></md-radio-button>
     </md-radio-group>
@@ -27,16 +27,34 @@
         </md-select>
     </md-input-container>
     
-    <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
+    <md-input-container>
+        <label ma-tr="ui.app.timeFormat"></label>
+        <md-select name="timeFormat" ng-model="$ctrl.timeFormat">
+          <md-option ng-repeat="format in $ctrl.timeFormats track by format.format" ng-value="format.format">
+          	<span ma-tr="{{::format.translation}}"></span>
+          </md-option>
+        </md-select>
+    </md-input-container>
+    
+    <md-input-container>
+        <label ma-tr="ui.app.timezone"></label>
+        <md-select name="timezone" ng-model="$ctrl.timezone">
+          <md-option ng-repeat="zone in $ctrl.timezones track by zone.value" ng-value="zone.value">
+            <span><span ma-tr="{{::zone.translation}}"></span> (<em ng-bind="zone.value"></em>)</span>
+          </md-option>
+        </md-select>
+    </md-input-container>
+    
+    <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV')" ng-disabled="$ctrl.downloadStatus.downloading">
       <md-icon>file_download</md-icon> <span ma-tr="ui.app.csv"></span>
     </md-button>
-    <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV_COMBINED', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
+    <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV_COMBINED')" ng-disabled="$ctrl.downloadStatus.downloading">
       <md-icon>file_download</md-icon> <span ma-tr="ui.app.csvCombined"></span>
     </md-button>
-      <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
+      <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON')" ng-disabled="$ctrl.downloadStatus.downloading">
     <md-icon>file_download</md-icon> <span ma-tr="ui.app.json"></span>
     </md-button>
-    <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON_COMBINED', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
+    <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON_COMBINED')" ng-disabled="$ctrl.downloadStatus.downloading">
       <md-icon>file_download</md-icon> <span ma-tr="ui.app.jsonCombined"></span>
     </md-button>
     
