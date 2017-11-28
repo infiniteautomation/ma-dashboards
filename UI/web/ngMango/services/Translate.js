@@ -118,7 +118,16 @@ function translateFactory($http, $q, maUser) {
                             maUser.setSystemLocale(response.data.locale);
                         }
                         
-                        Globalize.loadMessages(response.data.translations);
+                        const translations = response.data.translations;
+                        
+                        // translations will never contain the an entry for language tags with a script
+                        // eg zn-Hans-HK or pt_Latn_BR
+                        if (!translations[response.data.locale]) {
+                            translations[response.data.locale] = {};
+                        }
+                        
+                        Globalize.loadMessages(translations);
+                        // locale must be set after messages are loaded
                         this.setLocale(response.data.locale);
                         
                         this.loadedNamespaces[namespace] = response.data;
@@ -145,13 +154,14 @@ function translateFactory($http, $q, maUser) {
 
 	// Must wait on likelySubtags before calling this
 	Translate.setLocale = function(locale) {
-	    const globalizeLocale = Globalize.locale();
+	    let globalizeLocale = Globalize.locale();
         if (!globalizeLocale || globalizeLocale.locale !== locale) {
-            Globalize.locale(locale);
+            globalizeLocale = Globalize.locale(locale);
             
             // remove all currently loaded namespaces
             Translate.loadedNamespaces = {};
         }
+        return globalizeLocale;
 	};
 	
 	maUser.notificationManager.subscribe((event, newLocale, first) => {
