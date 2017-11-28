@@ -639,6 +639,38 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
     Util.prototype.escapeRegExp = function(str) {
     	  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
     };
+
+    /**
+     * @ngdoc method
+     * @methodOf ngMangoServices.maUtil
+     * @name deepReplace
+     *
+     * @description does a deep replace of object values, i.e. keeps the same array/object but replaces all of its keys
+     */
+    Util.prototype.deepReplace = function deepReplace(oldObject, newObject) {
+        
+        // remove keys from oldObject which don't exist in newObject
+        if (Array.isArray(newObject) && Array.isArray(oldObject)) {
+            oldObject.length = newObject.length;
+        } else {
+            Object.keys(oldObject).forEach(oldKey => {
+                if (!newObject.hasOwnProperty(oldKey)) {
+                    delete oldObject[oldKey];
+                }
+            });
+        }
+
+        Object.keys(newObject).forEach(key => {
+            const newValue = newObject[key];
+            const oldValue = oldObject[key];
+            
+            if (newValue != null && oldValue != null && typeof newValue === 'object' && typeof oldValue === 'object') {
+                deepReplace(oldValue, newValue);
+            } else {
+                oldObject[key] = newValue;
+            }
+        });
+    };
     
     return new Util();
 }

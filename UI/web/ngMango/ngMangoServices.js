@@ -81,7 +81,7 @@ rqlQuery.encodeValue = function(val) {
  *
  *
 **/
-var ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'ngSanitize', 'LocalStorageModule']);
+var ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'ngSanitize', 'LocalStorageModule', 'ngLocale']);
 
 ngMangoServices.factory('maPoint', Point);
 ngMangoServices.factory('maPointHierarchy', PointHierarchy);

@@ -45,7 +45,7 @@ requirejs.config({
         }
     },
     urlArgs: function(id, url) {
-        if (url.indexOf('?v=') > 0 || url.indexOf('&v=') > 0) {
+        if (url.indexOf('?v=') > 0 || url.indexOf('&v=') > 0 || url.match(/^(https?:)?\/\//i)) {
             return '';
         }
         return (url.indexOf('?') > 0 ? '&' : '?') + 'v=' + (root.mangoLastUpgrade || '3.3.0');
@@ -103,7 +103,13 @@ requirejs.config({
         'angular': {
             deps: ['jquery'],
             init: function() {
-                return window.angular;
+                const angular = window.angular;
+                require.config({
+                    paths: {
+                        'angular-i18n': `https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/${angular.version.full}`
+                    }
+                });
+                return angular;
             }
         },
         'angular-resource': {

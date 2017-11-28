@@ -5,6 +5,11 @@
 
 define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
+
+// Stores the locales which have been loaded using require, must be cached as we can't call
+// require twice and fetch the locale again.
+const localeCache = {};
+
 /**
 * @ngdoc service
 * @name ngMangoServices.maUser
@@ -142,7 +147,7 @@ User.logout();
 UserProvider.$inject = ['MA_DEFAULT_TIMEZONE', 'MA_DEFAULT_LOCALE'];
 function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     let bootstrapUser = null;
-    
+
     this.setUser = function(user) {
         bootstrapUser = user;
     };
@@ -263,12 +268,55 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             }
         };
 
+        let angularLocaleDeferred;
         User.configureLocale = function(locale = this.getLocale()) {
             if (locale !== this.locale) {
                 const firstChange = this.locale == null;
                 this.locale = locale;
                 
                 moment.locale(locale);
+
+                const localeId = locale.toLowerCase();
+                const $locale = $injector.get('$locale');
+                if (localeId !== $locale.id) {
+                    // cancel any pending request for a locale
+                    if (angularLocaleDeferred) {
+                        angularLocaleDeferred.reject('cancel');
+                    }
+                    
+                    let newLocalePromise;
+                    if (localeCache[localeId]) {
+                        // use cached locale when available
+                        newLocalePromise = $q.when(localeCache[localeId]);
+                    } else {
+                        const url = `angular-i18n/angular-locale_${localeId}`;
+                        
+                        let localDeferred = $q.defer();
+                        angularLocaleDeferred = localDeferred;
+                        
+                        // load the locale using require and resolve the deferred
+                        require([url], () => {
+                            // get the newly loaded locale from a new injector for ngLocale
+                            var ngLocaleInjector = angular.injector(['ngLocale'], true);
+                            const newLocale = ngLocaleInjector.get('$locale');
+                            
+                            // cache the result, we can't ever retrieve this locale again using require
+                            localeCache[newLocale.id] = newLocale;
+                            localDeferred.resolve(newLocale);
+                        }, error => localDeferred.reject(error));
+                        
+                        newLocalePromise = localDeferred.promise;
+                    }
+                    
+                    newLocalePromise.then(newLocale => {
+                        // deep replace all properties of existing locale with the keys from the new locale
+                        // this is necessary as the filters cache $locale.NUMBER_FORMATS for example
+                        Util.deepReplace($locale, newLocale);
+                    }, error => {
+                        if (error === 'cancel') return;
+                        throw error;
+                    });
+                }
 
                 this.notificationManager.notify('localeChanged', locale, firstChange);
             }
