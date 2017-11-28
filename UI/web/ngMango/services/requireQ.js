@@ -24,11 +24,11 @@ define([], function() {
     menuIcon: 'fa-sign-in',
     menuTr: 'header.login',
     resolve: {
-        deps: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+        deps: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
             return maRequireQ(['./directives/login/login'], function(login) {
                 angular.module('login', [])
                     .directive('login', login);
-                $ocLazyLoad.inject('login');
+                $injector.loadNewModules(['login']);
             });
         }],
         loginTranslations: ['maTranslate', function(Translate) {

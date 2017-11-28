@@ -15,11 +15,11 @@ return [
         menuIcon: 'exit_to_app',
         menuTr: 'header.login',
         resolve: {
-            deps: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            deps: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./directives/login/login'], function(login) {
                     angular.module('maUiLoginState', [])
                         .directive('maUiLogin', login);
-                    $ocLazyLoad.inject('maUiLoginState');
+                    $injector.loadNewModules(['maUiLoginState']);
                 });
             }],
             loginTranslations: loadLoginTranslations
@@ -59,7 +59,7 @@ return [
                 // preloads the error page so if the server goes down we can still display the page
                 return $templateRequest('views/error.html');
             }],
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./services/menuEditor',
                            './components/menu/jsonStoreMenu',
                            './components/menu/menu',
@@ -90,7 +90,7 @@ return [
                         .component('maUiActiveEventIcons', activeEventIcons)
                         .component('maUiDateBar', dateBar)
                         .component('maUiFooter', footer);
-                    $ocLazyLoad.inject('maUiRootState');
+                    $injector.loadNewModules(['maUiRootState']);
                 });
             }],
             rootScopeData: ['$rootScope', 'maSystemSettings', 'maModules', function($rootScope, SystemSettings, maModules) {
@@ -167,14 +167,14 @@ return [
             helpPage: 'ui.help.watchList'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+            loadMyDirectives: ['maRequireQ', '$injector', 'maCssInjector', function(maRequireQ, $injector, cssInjector) {
                 return maRequireQ(['./directives/watchList/watchListPage',
                             './directives/watchList/watchListTableRow'], 
                 function (watchListPage, watchListTableRow) {
                     angular.module('maUiWatchListState', [])
                         .directive('maUiWatchListPage', watchListPage)
                         .directive('maUiWatchListTableRow', watchListTableRow);
-                    $ocLazyLoad.inject('maUiWatchListState');
+                    $injector.loadNewModules(['maUiWatchListState']);
                     cssInjector.injectLink(require.toUrl('./directives/watchList/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });
             }]
@@ -193,11 +193,11 @@ return [
             helpPage: 'ui.help.dataPointDetails'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
                     angular.module('maUiDataPointDetailsState', [])
                         .component('maUiDataPointDetails', dataPointDetails);
-                    $ocLazyLoad.inject('maUiDataPointDetailsState');
+                    $injector.loadNewModules(['maUiDataPointDetailsState']);
                 });
             }]
         }
@@ -215,11 +215,11 @@ return [
             helpPage: 'ui.help.events'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
                     angular.module('maUiEventsState', [])
                         .component('maUiEventsPage', eventsPage);
-                    $ocLazyLoad.inject('maUiEventsState');
+                    $injector.loadNewModules(['maUiEventsState']);
                 });
             }]
         }
@@ -389,12 +389,12 @@ return [
             helpPage: 'ui.help.uiSettings'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/uiSettingsPage/uiSettingsPage'],
                 function (uiSettingsPage) {
                     angular.module('maUiSettingsPage', [])
                         .component('maUiSettingsPage', uiSettingsPage);
-                    $ocLazyLoad.inject('maUiSettingsPage');
+                    $injector.loadNewModules(['maUiSettingsPage']);
                 });
             }]
         }
@@ -410,11 +410,11 @@ return [
             helpPage: 'ui.help.users'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/usersPage/usersPage'], function (usersPage) {
                     angular.module('maUiUsersState', [])
                         .component('maUiUsersPage', usersPage);
-                    $ocLazyLoad.inject('maUiUsersState');
+                    $injector.loadNewModules(['maUiUsersState']);
                 });
             }]
         }
@@ -430,11 +430,11 @@ return [
             helpPage: 'ui.help.systemSettings'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/systemSettingsPage/systemSettingsPage'], function (systemSettingsPage) {
                     angular.module('maUiSystemSettingsState', [])
                         .component('maUiSystemSettingsPage', systemSettingsPage);
-                    $ocLazyLoad.inject('maUiSystemSettingsState');
+                    $injector.loadNewModules(['maUiSystemSettingsState']);
                 });
             }]
         }
@@ -562,11 +562,11 @@ return [
             helpPage: 'ui.help.systemStatus'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/systemStatusPage/systemStatusPage'], function (systemStatusPage) {
                     angular.module('maUiSystemStatusState', [])
                         .component('maUiSystemStatusPage', systemStatusPage);
-                    $ocLazyLoad.inject('maUiSystemStatusState');
+                    $injector.loadNewModules(['maUiSystemStatusState']);
                 });
             }]
         }
@@ -629,13 +629,13 @@ return [
             helpPage: 'ui.help.watchListBuilder'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', 'maCssInjector', function(maRequireQ, $ocLazyLoad, cssInjector) {
+            loadMyDirectives: ['maRequireQ', '$injector', 'maCssInjector', function(maRequireQ, $injector, cssInjector) {
                 return maRequireQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'],
                         function (watchListBuilder, bracketEscape) {
                     angular.module('maUiWatchListBuilderState', [])
                         .directive('maUiBracketEscape', bracketEscape)
                         .component('maUiWatchListBuilder', watchListBuilder);
-                    $ocLazyLoad.inject('maUiWatchListBuilderState');
+                    $injector.loadNewModules(['maUiWatchListBuilderState']);
                     cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'),
                             'watchListBuilder' ,'link[href="styles/main.css"]');
                 });
@@ -653,11 +653,11 @@ return [
             helpPage: 'ui.help.importExport'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/importExportPage/importExportPage'], function (importExportPage) {
                     angular.module('maUiImportExportState', [])
                         .component('maUiImportExportPage', importExportPage);
-                    $ocLazyLoad.inject('maUiImportExportState');
+                    $injector.loadNewModules(['maUiImportExportState']);
                 });
             }]
         }
@@ -673,11 +673,11 @@ return [
             helpPage: 'ui.help.modules'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/modulesPage/modulesPage'], function (modulesPage) {
                     angular.module('maUiModulesState', [])
                         .component('maUiModulesPage', modulesPage);
-                    $ocLazyLoad.inject('maUiModulesState');
+                    $injector.loadNewModules(['maUiModulesState']);
                 });
             }]
         }
@@ -695,11 +695,11 @@ return [
         permission: 'superadmin',
         menuHidden: true,
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./components/upgradePage/upgradePage'], function (upgradePage) {
                     angular.module('maUiUpgradeState', [])
                         .component('maUiUpgradePage', upgradePage);
-                    $ocLazyLoad.inject('maUiUpgradeState');
+                    $injector.loadNewModules(['maUiUpgradeState']);
                 });
             }]
         }
@@ -752,11 +752,11 @@ return [
 //        menuIcon: 'link',
 //        permission: 'superadmin',
 //        resolve: {
-//            loadMyDirectives: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+//            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
 //                return maRequireQ(['./components/eventHandlerPage/eventHandlerPage'], function (eventHandlerPage) {
 //                    angular.module('eventHandlerPage', [])
 //                        .component('maUiEventHandlerPage', eventHandlerPage);
-//                    $ocLazyLoad.inject('eventHandlerPage');
+//                    $injector.loadNewModules(['eventHandlerPage']);
 //                });
 //            }]
 //        }

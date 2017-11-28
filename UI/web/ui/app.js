@@ -19,7 +19,6 @@ define([
     'moment-timezone',
     'angular-ui-router',
     'angular-ui-sortable',
-    'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup',
     'md-color-picker/mdColorPicker'
@@ -36,7 +35,6 @@ var MA_UI_EDIT_PAGES_PERMISSION = 'edit-ui-pages';
 var MA_UI_EDIT_SETTINGS_PERMISSION = 'edit-ui-settings';
 
 var uiApp = angular.module('maUiApp', [
-    'oc.lazyLoad',
     'ui.router',
     'ui.sortable',
     'angular-loading-bar',
@@ -96,7 +94,6 @@ uiApp.config([
     'MA_UI_NG_DOCS',
     '$stateProvider',
     '$urlRouterProvider',
-    '$ocLazyLoadProvider',
     '$httpProvider',
     '$mdThemingProvider',
     '$injector',
@@ -109,7 +106,7 @@ uiApp.config([
     'MA_UI_MENU_XID',
     'MA_UI_PAGES_XID',
     'maRequireQProvider',
-function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
+function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
         cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider) {
 
@@ -170,11 +167,6 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
         */
     }
 
-    $ocLazyLoadProvider.config({
-        debug: false,
-        events: true
-    });
-
     $locationProvider.html5Mode(true);
 
     $urlRouterProvider.otherwise(function($injector, $location) {
@@ -216,11 +208,11 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider, $ocL
         submenu: true,
         weight: 2002,
         resolve: {
-            prettyprint: ['maRequireQ', '$ocLazyLoad', function(maRequireQ, $ocLazyLoad) {
+            prettyprint: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
                 return maRequireQ(['./directives/prettyprint/prettyprint'], function(prettyprint) {
                     angular.module('maUiDocsState', [])
                         .directive('prettyprint', prettyprint); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
-                    $ocLazyLoad.inject('maUiDocsState');
+                    $injector.loadNewModules(['maUiDocsState']);
                 });
             }]
         },
