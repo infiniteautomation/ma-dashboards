@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'moment-timezone'], function(angular, moment) {
+define(['angular', 'moment-timezone', 'cldr'], function(angular, moment, Cldr) {
 'use strict';
 
 // Stores the locales which have been loaded using require, must be cached as we can't call
@@ -273,8 +273,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             if (locale !== this.locale) {
                 const firstChange = this.locale == null;
                 this.locale = locale;
-                
-                moment.locale(locale);
+
+                // moment doesn't support locales with a script, just supply it with language and region
+                const cldrAttributes = new Cldr(locale).attributes;
+                moment.locale(`${cldrAttributes.language}-${cldrAttributes.region}`);
 
                 const localeId = locale.toLowerCase();
                 const $locale = $injector.get('$locale');

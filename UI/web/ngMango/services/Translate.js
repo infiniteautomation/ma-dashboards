@@ -121,11 +121,11 @@ function translateFactory($http, $q, maUser) {
                         const translations = response.data.translations;
                         
                         // translations will never contain the an entry for language tags with a script
-                        // eg zn-Hans-HK or pt_Latn_BR
+                        // eg zn-Hans-HK or pt-Latn-BR
                         if (!translations[response.data.locale]) {
                             translations[response.data.locale] = {};
                         }
-                        
+
                         Globalize.loadMessages(translations);
                         // locale must be set after messages are loaded
                         this.setLocale(response.data.locale);
