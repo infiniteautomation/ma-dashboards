@@ -53,7 +53,8 @@ define(['require', 'angular', 'globalize', 'globalize/message', 'cldr/unresolved
 * @param {object} namespaces REPLACE
 *
 */
-function translateFactory($http, $q) {
+translateFactory.$inject = ['$http', '$q', 'maUser'];
+function translateFactory($http, $q, maUser) {
 	var Translate = function() {};
 
 	var likelySubtagsUrl = require.toUrl('cldr-data/supplemental/likelySubtags.json');
@@ -84,62 +85,82 @@ function translateFactory($http, $q) {
 	};
 
 	Translate.loadedNamespaces = {};
+    Translate.pendingRequests = {};
 
 	Translate.loadNamespaces = function(namespaces) {
 		if (!angular.isArray(namespaces)) {
 			namespaces = Array.prototype.slice.call(arguments);
         }
 
-		return Translate.likelySubtags.then(function() {
-			var namespaceRequests = [];
-			for (var i = 0; i < namespaces.length; i++) {
-				var namespace = namespaces[i];
-				var request = Translate.loadedNamespaces[namespace];
-				if (!request) {
-					var translationsUrl = '/rest/v1/translations/';
-					if (namespace === 'public' || namespace === 'login' || namespace === 'header') {
-						translationsUrl += 'public/';
-					}
+		return this.likelySubtags.then(() => {
+			let namespacePromises = namespaces.map(namespace => {
+			    let loadedNamespace = this.loadedNamespaces[namespace];
+			    if (loadedNamespace) {
+			        return $q.when(loadedNamespace);
+			    }
+			    
+                let request = this.pendingRequests[namespace];
+                if (!request) {
+                    let translationsUrl = '/rest/v1/translations/';
+                    if (namespace === 'public' || namespace === 'login' || namespace === 'header') {
+                        translationsUrl += 'public/';
+                    }
 
-					request = $http.get(translationsUrl + encodeURIComponent(namespace), {
-						params: {
-							//language: 'en-US',
-						    //server: true,
-						    //browser: true
-						}
-					});
-					request.then(null, removeFromLoaded.bind(null, namespace));
-					Translate.loadedNamespaces[namespace] = request;
-				}
-				namespaceRequests.push(request);
-			}
-			return $q.all(namespaceRequests);
+                    request = $http.get(translationsUrl + encodeURIComponent(namespace), {
+                        params: {
+                            //language: 'en-US',
+                            //server: true,
+                            //browser: true
+                        }
+                    }).then(response => {
+                        // we know if the user isn't logged in then the locale in the response is the system locale
+                        if (!maUser.current) {
+                            maUser.setSystemLocale(response.data.locale);
+                        }
+                        
+                        Globalize.loadMessages(response.data.translations);
+                        this.setLocale(response.data.locale);
+                        
+                        this.loadedNamespaces[namespace] = response.data;
+                        return response.data;
+                    }).finally(() => {
+                        delete this.pendingRequests[namespace];
+                    });
+
+                    this.pendingRequests[namespace] = request;
+                }
+                return request;
+			});
+			return $q.all(namespacePromises);
 		}).then(function(result) {
-		    var allData = {};
-			for (var i = 0; i < result.length; i++) {
-				var data = result[i].data;
-				angular.merge(allData, data);
-				if (!data.loaded) {
-					Globalize.loadMessages(data.translations);
-					data.loaded = true;
-				}
-				// use server returned language
-				if (!Globalize.locale()) {
-					Globalize.locale(data.locale);
-				}
-			}
+		    const allData = {};
+		    
+		    result.forEach(data => {
+		        angular.merge(allData, data);
+		    });
+
 			return allData;
 		});
 	};
 
-	function removeFromLoaded(namespace) {
-		delete Translate.loadedNamespaces[namespace];
-	}
+	// Must wait on likelySubtags before calling this
+	Translate.setLocale = function(locale) {
+	    const globalizeLocale = Globalize.locale();
+        if (!globalizeLocale || globalizeLocale.locale !== locale) {
+            Globalize.locale(locale);
+            
+            // remove all currently loaded namespaces
+            Translate.loadedNamespaces = {};
+        }
+	};
+	
+	maUser.notificationManager.subscribe((event, newLocale, first) => {
+	    // remove all currently loaded namespaces
+        Translate.loadedNamespaces = {};
+	}, null, ['localeChanged']);
 
 	return Translate;
 }
-
-translateFactory.$inject = ['$http', '$q'];
 
 return translateFactory;
 

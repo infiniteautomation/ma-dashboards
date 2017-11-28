@@ -353,9 +353,6 @@ ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDa
     };
 }]);
 
-ngMango.constant('MA_DEFAULT_TIMEZONE', '');
-ngMango.constant('MA_DEFAULT_LOCALE', '');
-
 ngMango.run([
     '$rootScope',
     'maWatchdog',
@@ -366,11 +363,9 @@ ngMango.run([
     'MA_CHART_TYPES',
     'MA_RELATIVE_DATE_TYPES',
     'MA_DATE_RANGE_PRESETS',
-    'MA_DEFAULT_TIMEZONE',
-    'MA_DEFAULT_LOCALE',
     'maUser',
 function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
-        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE, User) {
+        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, User) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
     
@@ -404,9 +399,6 @@ function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYP
     $rootScope.chartTypes = MA_CHART_TYPES;
     $rootScope.relativeDateTypes = MA_RELATIVE_DATE_TYPES;
     $rootScope.dateRangePresets = MA_DATE_RANGE_PRESETS;
-
-    moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
-    moment.locale(MA_DEFAULT_LOCALE || window.navigator.languages || window.navigator.language);
 
     require(['amcharts/amcharts'], function(AmCharts) {
         AmCharts._formatDate = AmCharts.formatDate;

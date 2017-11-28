@@ -139,34 +139,28 @@ User.logout();
 *
 */
 
-UserProvider.$inject = [];
-function UserProvider() {
-    var cachedUser = null;
-    this.setUser = setUser;
-    this.getUser = getUser;
+UserProvider.$inject = ['MA_DEFAULT_TIMEZONE', 'MA_DEFAULT_LOCALE'];
+function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
+    let bootstrapUser = null;
     
-    function setUser(user) {
-        cachedUser = user;
-        if (user) {
-            moment.locale(user.getLocale());
-            moment.tz.setDefault(user.getTimezone());
-        } else {
-            // reset moment to initial settings?
-            // probably not what we want if API goes down temporarily
-        }
-    }
+    this.setUser = function(user) {
+        bootstrapUser = user;
+    };
     
-    function getUser() {
-        return cachedUser;
-    }
+    moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
+    moment.locale(MA_DEFAULT_LOCALE || window.navigator.languages || window.navigator.language);
 
     this.$get = UserFactory;
     
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector'];
-    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector) {
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector', 'maNotificationManager'];
+    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector, NotificationManager) {
+        let cachedUser;
+        let systemLocale;
+        let systemTimezone;
+
         var User = $resource('/rest/v1/users/:username', {
                 username: '@username'
             }, {
@@ -241,11 +235,77 @@ function UserProvider() {
             }
         });
 
-        Object.defineProperty(User, 'current', {
-            get: getUser,
-            set: setUser
-        });
+        User.notificationManager = new NotificationManager();
+
+        User.setUser = function(user) {
+            if (!angular.equals(user, cachedUser)) {
+                const firstChange = cachedUser === undefined;
+                cachedUser = user;
+                
+                if (user) {
+                    systemLocale = user.systemLocale;
+                    systemTimezone = user.systemTimezone;
+                }
+                
+                this.configureLocale();
+                this.configureTimezone();
+                
+                this.notificationManager.notify('userChanged', user, firstChange);
+            }
+        };
+
+        User.setSystemLocale = function(locale) {
+            if (systemLocale !== locale) {
+                systemLocale = locale;
+                
+                // the system locale might be the new locale if there is no cachedUser (aka not logged in)
+                this.configureLocale();
+            }
+        };
+
+        User.configureLocale = function(locale = this.getLocale()) {
+            if (locale !== this.locale) {
+                const firstChange = this.locale == null;
+                this.locale = locale;
+                
+                moment.locale(locale);
+
+                this.notificationManager.notify('localeChanged', locale, firstChange);
+            }
+        };
+
+        User.configureTimezone = function(timezone = this.getTimezone()) {
+            if (timezone !== this.timezone) {
+                const firstChange = this.timezone == null;
+                this.timezone = timezone;
+                
+                moment.tz.setDefault(timezone);
+                
+                this.notificationManager.notify('timezoneChanged', timezone, firstChange);
+            }
+        };
         
+        User.getLocale = function() {
+            if (cachedUser) {
+                return cachedUser.getLocale();
+            }
+            return systemLocale || MA_DEFAULT_LOCALE || (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language;
+        };
+
+        User.getTimezone = function() {
+            if (cachedUser) {
+                return cachedUser.getTimezone();
+            }
+            return systemTimezone || MA_DEFAULT_TIMEZONE || moment.tz.guess();
+        };
+
+        Object.defineProperty(User, 'current', {
+            get: function() {
+                return cachedUser;
+            },
+            set: User.setUser
+        });
+
         User.loginInterceptors = [];
         User.logoutInterceptors = [];
 
@@ -362,6 +422,10 @@ function UserProvider() {
         User.prototype.getLocale = function() {
             return this.locale || this.systemLocale;
         };
+
+        // set the initial user and configure initial locale and timezone
+        User.setUser(bootstrapUser || null);
+        bootstrapUser = undefined;
 
         return User;
     }

@@ -151,6 +151,9 @@ ngMangoServices.constant('MA_DATE_FORMATS', {
     iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 });
 
+ngMangoServices.constant('MA_DEFAULT_TIMEZONE', '');
+ngMangoServices.constant('MA_DEFAULT_LOCALE', '');
+
 ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
     {
         type: 'EMAIL',

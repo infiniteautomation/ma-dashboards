@@ -742,7 +742,7 @@ $q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(func
 	// This caused the "send test email" button not to work on first load
     //servicesInjector.get('$rootScope').$destroy();
 
-    var user = data[0].user;
+    var user = data[0].user || null;
     var userMenuStore = data[0].userMenuStore;
     var MA_UI_SETTINGS = data[1];
     var angularModules = data[2] || [];
