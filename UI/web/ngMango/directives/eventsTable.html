@@ -3,7 +3,7 @@
             md-limit-options="[5, 10, 15, 25, 50, 100, 200]" md-page="$ctrl.page" md-total="{{$ctrl.total}}"
             md-page-select md-on-paginate="$ctrl.onPaginateBound">
     </md-table-pagination>
-    <md-button flex-order="2" class="md-raised md-primary md-hue-2" ng-click="$ctrl.acknowledgeAll()" ng-disabled="!$ctrl.totalUnAcknowledged">
+    <md-button ng-if="!$ctrl.hideAckButton" flex-order="2" class="md-raised md-primary md-hue-2" ng-click="$ctrl.acknowledgeAll()" ng-disabled="!$ctrl.totalUnAcknowledged">
         <span ma-tr="ui.app.acknowledgeXEvents" ma-tr-args="[$ctrl.totalUnAcknowledged]"></span>
     </md-button>
 </div>
@@ -69,7 +69,7 @@
                 </td>
                 
                 <td md-cell class="narrow-column">
-                    <i class="fa fa-circle-o fa-lg acknowledged-checkbox" ng-click="$ctrl.acknowledgeEvent(event);" ng-if="!event.acknowledged"></i>
+                    <i class="fa fa-circle-o fa-lg acknowledged-checkbox" ng-click="$ctrl.acknowledgeEvent(event);" ng-if="!$ctrl.hideAckButton && !event.acknowledged"></i>
                     <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>
                 </td>
             </tr>

@@ -206,10 +206,16 @@ function eventsFactory($resource, Util, NotificationManager) {
         if (options.eventType && options.eventType !== 'any') {
             params.push(`eventType=${options.eventType}`);
         }
-        if (options.pointId) {
+        if (options.pointId != null) {
             params.push(`dataPointId=${options.pointId}`);
         }
-        if (options.eventId) {
+        if (options.referenceId1 != null) {
+            params.push(`referenceId1=${options.referenceId1}`);
+        }
+        if (options.referenceId2 != null) {
+            params.push(`referenceId2=${options.referenceId2}`);
+        }
+        if (options.eventId != null) {
             params.push(`id=${options.eventId}`);
         }
         if (options.activeStatus && options.activeStatus !== 'any') {
@@ -223,11 +229,11 @@ function eventsFactory($resource, Util, NotificationManager) {
                 params.push('active=false');
             }
         }
-        if (options.from && options.dateFilter) {
+        if (options.from != null && options.dateFilter) {
             const from = options.from.valueOf();
             params.push(`activeTimestamp=ge=${from}`);
         }
-        if (options.to && options.dateFilter) {
+        if (options.to != null && options.dateFilter) {
             const to = options.to.valueOf();
             params.push(`activeTimestamp=lt=${to}`);
         }

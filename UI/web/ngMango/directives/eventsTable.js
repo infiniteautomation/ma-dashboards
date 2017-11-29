@@ -78,13 +78,15 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             return this.value < this.filter;
         }
     }
-    
-    const $inject = Object.freeze(['$scope']);
+
+    const $inject = Object.freeze(['$scope', '$attrs', '$element']);
     class EventsTableController {
         static get $inject() { return $inject; }
         
-        constructor($scope) {
+        constructor($scope, $attrs, $element) {
             this.$scope = $scope;
+            this.$attrs = $attrs;
+            this.$element = $element;
             
             this.$mdMedia = $mdMedia;
             this.start = 0;
@@ -155,11 +157,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         }
 
         doQuery() {
-            // Return if singlePoint and pointId doesn't exist yet
-            if (this.singlePoint && !this.pointId) {
+            // dont query if element has a pointId attribute but its not defined
+            if (this.$attrs.hasOwnProperty('pointId') && this.pointId == null) {
                 return;
             }
-            
+
             let sort = this.sort;
             if (sort === 'activeRtn') {
                 sort = ['rtnTs', 'rtnApplicable'];
@@ -179,7 +181,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
                 eventId: this.eventId,
                 from: this.from,
                 to: this.to,
-                dateFilter: this.dateFilter
+                dateFilter: this.dateFilter,
+                referenceId1: this.referenceId1,
+                referenceId2: this.referenceId2
             });
             
             // cancel the previous request if its ongoing
@@ -192,7 +196,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
                 // Set Events For Table
                 this.events = data;
                 this.total = this.events.$total;
-                this.countUnacknowledged();
+                if (!this.hideAckButton) {
+                    this.countUnacknowledged();
+                }
 
                 // Query for Notes for each
                 this.events.forEach((event) => {
@@ -313,12 +319,18 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         }
 
         eventMatchesFilters(event, ignoreAckFilter) {
+            if (this.$attrs.hasOwnProperty('pointId') && this.pointId == null) {
+                return false;
+            }
+            
             const tests = [
                 new Equals(event.eventType.eventType, this.eventType),
                 new Equals(event.alarmLevel, this.alarmLevel),
                 new Equals(event.active, this.active),
                 new Equals(event.eventType.dataPointId, this.pointId),
                 new Equals(event.id, this.eventId),
+                new Equals(event.eventType.referenceId1, this.referenceId1),
+                new Equals(event.eventType.referenceId2, this.referenceId2)
             ];
             
             if (!ignoreAckFilter) {
@@ -346,7 +358,6 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         controllerAs: '$ctrl',
         bindToController: {
             pointId: '<?',
-            singlePoint: '<?',
             eventId: '<?',
             alarmLevel: '<?',
             eventType:'<?',
@@ -358,7 +369,10 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
             to: '<?',
             dateFilter: '<?',
             timezone: '@',
-            hideLink: '@?'
+            hideLink: '@?',
+            hideAckButton: '<?',
+            referenceId1: '<?',
+            referenceId2: '<?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',
