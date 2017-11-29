@@ -386,9 +386,15 @@ function PointFactory($resource, $http, $timeout, Util, User) {
 
             this.value = payload.value.value;
             this.time = payload.value.timestamp;
-            this.convertedValue = payload.convertedValue;
-            this.renderedValue = payload.renderedValue;
             this.renderedColor = color;
+        }
+        this.convertedValue = payload.convertedValue;
+        this.renderedValue = payload.renderedValue;
+        
+        if (payload.attributes) {
+            this.unreliable = !!payload.attributes.UNRELIABLE;
+        } else {
+            this.unreliable = false;
         }
     };
 
