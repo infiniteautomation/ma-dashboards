@@ -1,3 +1,8 @@
+*Version 3.2.9*
+* Update JavaScript libraries
+* Ability to use refence ids in event table
+* Copy unreliable attribute and rendered value to point from websocket update
+
 *Version 3.2.8*
 * Use Websocket to get event/alarm updates on ma-point-value
 * Limit number of point values when using simplify
