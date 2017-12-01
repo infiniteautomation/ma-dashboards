@@ -103,6 +103,24 @@ function PointValueDirectiveController() {
 PointValueDirectiveController.prototype = Object.create(PointValueController.prototype);
 PointValueDirectiveController.prototype.constructor = PointValueDirectiveController;
 
+PointValueDirectiveController.prototype.$onInit = function() {
+    this.$element.on('mouseenter', (event) => {
+        this.$scope.$apply(() => {
+            this.isOpen = true;
+        });
+    });
+    
+    this.$element.on('mouseleave', (event) => {
+        this.$scope.$apply(() => {
+            this.isOpen = false;
+        });
+    });
+    
+//    this.$scope.$on('$destroy', () => {
+//        
+//    });
+};
+
 PointValueDirectiveController.prototype.$onChanges = function(changes) {
     PointValueController.prototype.$onChanges.apply(this, arguments);
     
