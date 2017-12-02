@@ -468,12 +468,12 @@ ma-point-value > md-fab-speed-dial {
 
 ma-point-value > md-fab-speed-dial[md-direction=right] {
 	left: 100%;
-	top: calc(50% - 14px);
+	top: 0;
 }
 
 ma-point-value > md-fab-speed-dial[md-direction=left] {
 	right: 100%;
-	top: calc(50% - 14px);
+	top: 0;
 }
 
 ma-point-value > md-fab-speed-dial[md-direction=up] {
