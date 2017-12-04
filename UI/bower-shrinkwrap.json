@@ -2,6 +2,9 @@
   "https://github.com/FortAwesome/Font-Awesome.git": {
     "4.7.0": "a3fe90fa5f6fac55d197f9cbd18e3f57dafb716c"
   },
+  "https://github.com/Stuk/jszip.git": {
+    "3.1.5": "3.1.5"
+  },
   "https://github.com/ajaxorg/ace-builds.git": {
     "1.2.9": "1.2.9"
   },

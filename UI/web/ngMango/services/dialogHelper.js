@@ -72,7 +72,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
 
             return $mdDialog.show(confirm);
         }
-        
+
         prompt(event, shortTr, longTr, placeHolderTr, initialValue) {
             var shortText = maTranslate.trSync(shortTr);
             var longText = longTr && maTranslate.trSync(longTr);

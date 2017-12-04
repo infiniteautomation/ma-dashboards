@@ -330,11 +330,28 @@ FileStoreBrowserController.prototype.uploadFiles = function(event) {
 	this.$element.find('input[type=file]').trigger('click');
 };
 
-FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
-	var files = event.target.files;
+FileStoreBrowserController.prototype.uploadFilesChanged = function(event, allowZip = true) {
+	const files = event.target.files;
 	if (!files.length) return;
 
-	this.uploadPromise = this.maFileStore.uploadFiles(this.path, files).then(function(uploaded) {
+	this.uploadPromise = this.$q.when().then(() => {
+	    if (allowZip && files.length === 1) {
+	        const file = files[0];
+	        if (file.type === 'application/x-zip-compressed' || file.type === 'application/zip' || file.name.substr(-4) === '.zip') {
+
+	            return this.maDialogHelper.confirm(event, 'ui.fileBrowser.confirmExtractZip').then(() => {
+	                return this.maFileStore.uploadZipFile(this.path, file, this.overwrite);
+	            }, angular.noop);
+	        }
+	    }
+	}).then(uploaded => {
+	    // already did zip upload
+        if (uploaded) {
+            return uploaded;
+        }
+        
+        return this.maFileStore.uploadFiles(this.path, files, this.overwrite);
+	}).then((uploaded) => {
 		// append uploaded to this.files
 		Array.prototype.splice.apply(this.files, [this.files.length, 0].concat(uploaded));
 		this.filterAndReorderFiles();
@@ -346,15 +363,22 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event) {
 			
 			this.maDialogHelper.toast('ui.fileBrowser.filesUploaded', null, uploaded.length);
 		}
-	}.bind(this), function(error) {
-		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+	}, (error) => {
+	    let msg;
+	    if (error.status && error.data) {
+	        msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+	    } else {
+	        msg = '' + error;
+	    }
 		this.maDialogHelper.toast('ui.fileBrowser.uploadFailed', 'md-warn', msg);
-	}.bind(this));
-	
-	this.uploadPromise['finally'](function() {
-    	delete this.uploadPromise;
-    	this.$element.find('input[type=file]').val('');
-    }.bind(this));
+	}).finally(() => {
+	    delete this.uploadPromise;
+        this.$element.find('input[type=file]').val('');
+	});
+};
+
+FileStoreBrowserController.prototype.downloadFiles = function(event) {
+    this.maFileStore.downloadFiles(this.path);
 };
 
 FileStoreBrowserController.prototype.createNewFolder = function(event) {

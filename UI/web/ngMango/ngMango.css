@@ -1,4 +1,4 @@
-/* Stats Dialog */
+ma-file-store-browser-crumbs/* Stats Dialog */
 
 .stats-dialog {
   width: 730px;
@@ -694,8 +694,15 @@ ma-file-store-browser .ma-file-selected {
 	background-color: grey;
 }
 
-.ma-file-store-browser-crumbs {
+.ma-file-store-browser-crumbs > span {
 	font-size: 2.0rem;
+}
+
+.ma-file-store-browser-crumbs > md-checkbox {
+	margin-bottom: 0;
+}
+
+.ma-file-store-browser-crumbs {
 	margin-bottom: 20px;
 }
 

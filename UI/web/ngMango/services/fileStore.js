@@ -3,11 +3,11 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
+define(['angular', 'require', 'moment-timezone', 'jszip'], function(angular, require, moment, JSZip) {
 'use strict';
 
-fileStore.$inject = ['$http', 'maUtil'];
-function fileStore($http, maUtil) {
+fileStore.$inject = ['$http', 'maUtil', '$q'];
+function fileStore($http, maUtil, $q) {
 	var fileStoreUrl = '/rest/v2/file-stores';
 	var fileStoreUrlSplit = fileStoreUrl.split('/');
 	
@@ -95,29 +95,52 @@ function fileStore($http, maUtil) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
-    	var folderUrl = this.toUrl(path, true);
     	
-    	var formData = new FormData();
+    	const formData = new FormData();
     	for (var i = 0; i < files.length; i++) {
         	formData.append('files[]', files[i]);
     	}
-    	
-    	return $http({
-    		method: 'POST',
-    		url: folderUrl,
-    		data: formData,
-    		transformRequest: angular.identity,
-    		headers: {
-    			'Content-Type': undefined
-    		},
-    		params: {
-    			overwrite: !!overwrite
-    		}
-    	}).then(function(response) {
-    		return response.data.map(function(file) {
-        		return new FileStoreFile(path[0], file);
-    		});
-    	});
+
+        return this.uploadFormData(path, formData, overwrite);
+    };
+
+    FileStore.prototype.uploadZipFile = function(path, file, overwrite) {
+        return $q.when(JSZip.loadAsync(file)).then(zip => {
+            const formData = new FormData();
+            
+            const promises = Object.keys(zip.files).map(fileName => zip.files[fileName])
+            .filter(file => !file.dir)
+            .map(file => {
+                return file.async('blob').then(blob => {
+                    formData.append('files[]', blob, file.name);
+                });
+            });
+            
+            return $q.all(promises).then(() => formData);
+         }).then(formData => {
+             return this.uploadFormData(path, formData, overwrite);
+         });
+    };
+    
+    FileStore.prototype.uploadFormData = function(path, formData, overwrite) {
+        const folderUrl = this.toUrl(path, true);
+
+        return $http({
+            method: 'POST',
+            url: folderUrl,
+            data: formData,
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined
+            },
+            params: {
+                overwrite: !!overwrite
+            }
+        }).then(function(response) {
+            return response.data.map(function(file) {
+                return new FileStoreFile(path[0], file);
+            });
+        });
     };
     
     FileStore.prototype.createNewFolder = function(path, name) {
@@ -186,6 +209,32 @@ function fileStore($http, maUtil) {
     	}).then(function(response) {
     		return response.data;
     	});
+    };
+
+    FileStore.prototype.downloadFiles = function(path) {
+        const zip = new JSZip();
+        return this.addPathToZip(path, zip).then(() => {
+            return zip.generateAsync({type : 'blob'});
+        }).then(data => {
+            const zipName = path.join('_') + '.zip';
+            maUtil.downloadBlob(data, zipName);
+        });
+    };
+    
+    FileStore.prototype.addPathToZip = function(path, zip) {
+        return this.listFiles(path).then(files => {
+            const promises = files.map(file => {
+                if (file.directory) {
+                    const folder = zip.folder(file.filename);
+                    return this.addPathToZip(path.concat(file.filename), folder);
+                }
+                
+                return this.downloadFile(file).then(content => {
+                    zip.file(file.filename, content);
+                });
+            });
+            return $q.all(promises);
+        });
     };
 
     function FileStoreFile(fileStore, file) {

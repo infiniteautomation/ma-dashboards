@@ -97,7 +97,8 @@ requirejs.config({
         'cldr-data': vendor + '/cldr-data',
         'ipaddr': vendor + '/ipaddr/ipaddr',
         'mathjs': vendor + '/mathjs',
-        'simplify-js': vendor + '/simplify-js/simplify'
+        'simplify-js': vendor + '/simplify-js/simplify',
+        'jszip': vendor + '/jszip/jszip'
     },
     shim : {
         'angular': {
