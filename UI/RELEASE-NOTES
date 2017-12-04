@@ -1,3 +1,6 @@
+*Version 3.2.10*
+* Fix ma-point-value so it displays as inline element again and absolutely position the popover
+
 *Version 3.2.9*
 * Update JavaScript libraries
 * Ability to use refence ids in event table
