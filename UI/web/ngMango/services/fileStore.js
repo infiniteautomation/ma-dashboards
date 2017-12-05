@@ -198,11 +198,11 @@ function fileStore($http, maUtil, $q) {
     	});
     };
     
-    FileStore.prototype.downloadFile = function(file) {
+    FileStore.prototype.downloadFile = function(file, blob) {
     	return $http({
     		method: 'GET',
     		url: file.url,
-    		responseType: '',
+    		responseType: blob ? 'blob' : '',
     		transformResponse: angular.identity,
     		headers: {
     			'Accept': '*/*'
@@ -231,8 +231,17 @@ function fileStore($http, maUtil, $q) {
                     return this.addPathToZip(path.concat(file.filename), folder);
                 }
                 
-                return this.downloadFile(file).then(content => {
-                    zip.file(file.filename, content);
+                return this.downloadFile(file, true).then(content => {
+                    zip.file(file.filename, content, {
+                        // jszip handles this incorrectly see #369, but better than nothing
+                        date: moment(file.lastModified).toDate()
+                        
+                        // compression is a little slow and we have to download the full files anyway
+//                        compression: 'DEFLATE',
+//                        compressionOptions: {
+//                            level: 6
+//                        }
+                    });
                 });
             });
             return $q.all(promises);

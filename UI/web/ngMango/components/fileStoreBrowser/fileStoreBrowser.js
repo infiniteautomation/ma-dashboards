@@ -411,7 +411,9 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event, allowZ
 };
 
 FileStoreBrowserController.prototype.downloadFiles = function(event) {
-    this.maFileStore.downloadFiles(this.path);
+    this.downloadPromise = this.maFileStore.downloadFiles(this.path).finally(() => {
+        delete this.downloadPromise;
+    });
 };
 
 FileStoreBrowserController.prototype.createNewFolder = function(event) {

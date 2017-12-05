@@ -37,8 +37,9 @@
 		<md-icon>file_upload</md-icon>
 		<md-tooltip md-autohide ma-tr="ui.app.uploadFiles"></md-tooltip>
 	</md-button>
-    <md-button ng-if="!$ctrl.editFile" class="md-icon-button md-primary md-raised" ng-click="$ctrl.downloadFiles($event)" ng-disabled="!$ctrl.path.length || !$ctrl.filteredFiles.length">
-        <md-icon>archive</md-icon>
+    <md-button ng-if="!$ctrl.editFile" class="md-icon-button md-primary md-raised" ng-click="$ctrl.downloadFiles($event)" ng-disabled="!$ctrl.path.length || !$ctrl.filteredFiles.length || $ctrl.downloadPromise">
+        <md-icon ng-if="!$ctrl.downloadPromise">archive</md-icon>
+        <md-progress-circular ng-if="$ctrl.downloadPromise" md-mode="indeterminate" md-diameter="24"></md-progress-circular>
         <md-tooltip md-autohide ma-tr="ui.app.downloadFiles"></md-tooltip>
     </md-button>
 	<input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)" ng-attr-accept="{{$ctrl.acceptAttribute}}">
