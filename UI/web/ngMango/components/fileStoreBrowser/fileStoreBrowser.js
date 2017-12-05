@@ -186,9 +186,11 @@ FileStoreBrowserController.prototype.listFiles = function() {
 };
 
 FileStoreBrowserController.prototype.filterFiles = function(file) {
-    const currentFolderPath = this.path.slice(1).join('/');
-    if (file.folderPath !== currentFolderPath) {
-        return false;
+    if (this.path.length) {
+        const currentFolderPath = this.path.slice(1).join('/');
+        if (file.folderPath !== currentFolderPath) {
+            return false;
+        }
     }
     
 	if (file.directory) return true;

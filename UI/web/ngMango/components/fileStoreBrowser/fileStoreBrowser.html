@@ -11,6 +11,12 @@
 		<span ng-bind="$ctrl.editFile.filename"></span>
 	</span>
 	<span flex></span>
+    <div>
+        <md-checkbox ng-model="$ctrl.overwrite" class="checkbox-top-label checkbox-centered">
+            <span ma-tr="ui.fileBrowser.overwrite"></span>
+        </md-checkbox>
+        <md-tooltip ma-tr="ui.fileBrowser.overwriteWhenUploading"></md-tooltip>
+    </div>
 	<md-button ng-if="$ctrl.editFile" class="md-icon-button md-warn md-raised" ng-click="$ctrl.cancelEditFile($event)">
 		<md-icon>cancel</md-icon>
 		<md-tooltip md-autohide ma-tr="common.cancel"></md-tooltip>
