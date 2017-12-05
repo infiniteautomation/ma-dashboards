@@ -121,7 +121,7 @@ function fileStore($http, maUtil, $q) {
              return this.uploadFormData(path, formData, overwrite);
          });
     };
-    
+
     FileStore.prototype.uploadFormData = function(path, formData, overwrite) {
         const folderUrl = this.toUrl(path, true);
 
@@ -135,7 +135,8 @@ function fileStore($http, maUtil, $q) {
             },
             params: {
                 overwrite: !!overwrite
-            }
+            },
+            timeout: 0
         }).then(function(response) {
             return response.data.map(function(file) {
                 return new FileStoreFile(path[0], file);
@@ -205,7 +206,8 @@ function fileStore($http, maUtil, $q) {
     		transformResponse: angular.identity,
     		headers: {
     			'Accept': '*/*'
-    		}
+    		},
+    		timeout: 0
     	}).then(function(response) {
     		return response.data;
     	});
