@@ -238,6 +238,10 @@ function fileStore($http, maUtil, $q) {
             return $q.all(promises);
         });
     };
+    
+    FileStore.prototype.newFileStoreFile = function(...args) {
+        return new FileStoreFile(...args);
+    };
 
     function FileStoreFile(fileStore, file) {
     	angular.extend(this, file);

@@ -186,6 +186,11 @@ FileStoreBrowserController.prototype.listFiles = function() {
 };
 
 FileStoreBrowserController.prototype.filterFiles = function(file) {
+    const currentFolderPath = this.path.slice(1).join('/');
+    if (file.folderPath !== currentFolderPath) {
+        return false;
+    }
+    
 	if (file.directory) return true;
 
 	if (this.extensions) {
@@ -203,11 +208,7 @@ FileStoreBrowserController.prototype.filterFiles = function(file) {
 };
 
 FileStoreBrowserController.prototype.filterAndReorderFiles = function(file) {
-	var files = this.files;
-	if (this.mimeTypes || this.extensions) {
-		files = files.filter(this.filterFiles, this);
-	}
-
+	const files = this.files.filter(this.filterFiles, this);
 	this.filteredFiles = this.$filter('orderBy')(files, this.tableOrder);
 };
 
@@ -352,8 +353,38 @@ FileStoreBrowserController.prototype.uploadFilesChanged = function(event, allowZ
         
         return this.maFileStore.uploadFiles(this.path, files, this.overwrite);
 	}).then((uploaded) => {
-		// append uploaded to this.files
-		Array.prototype.splice.apply(this.files, [this.files.length, 0].concat(uploaded));
+		// this code block is a little complicated, could just refresh the current folder?
+	    const strPath = this.path.slice(1).join('/');
+	    uploaded.forEach(file => {
+	        if (file.folderPath === strPath) {
+	            // file is in this folder
+	            const existingFileIndex = this.files.findIndex(f => f.filename === file.filename);
+	            if (existingFileIndex >= 0) {
+	                this.files[existingFileIndex] = file;
+	            } else {
+	                this.files.push(file);
+	            }
+	        } else if (file.folderPath.indexOf(strPath) === 0) {
+	            // file is in a subdirectory
+	            const uploadedFilePath = file.folderPath.split('/');
+	            const folderName = uploadedFilePath[this.path.length - 1];
+	            
+	            const existingSubFolder = this.files.findIndex(f => f.filename === folderName);
+	            if (existingSubFolder < 0)  {
+	                // file upload created a subdirectory, add it to the view
+	                
+	                this.files.push(new this.maFileStore.newFileStoreFile(this.path[0], {
+                        directory: true,
+	                    filename: folderName,
+	                    folderPath: strPath,
+	                    lastModified: file.lastModified,
+	                    mimeType: null,
+	                    size: 0
+	                }));
+	            }
+	        }
+	    });
+
 		this.filterAndReorderFiles();
 
 		if (uploaded.length) {
