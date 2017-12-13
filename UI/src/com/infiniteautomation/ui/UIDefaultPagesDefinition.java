@@ -31,6 +31,17 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 		}
     }
 	
+	@Override
+	public String getPasswordResetPageUri() {
+	    String passwordResetPage = SystemSettingsDao.getValue(UICommon.UI_PASSWORD_RESET_PAGE, UICommon.DEFAULT_UI_PASSWORD_RESET_PAGE);
+        
+        if(!StringUtils.isEmpty(passwordResetPage)){
+            return passwordResetPage;
+        }else{
+            return null;
+        }
+    }
+	
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getFirstLoginPageUri(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
