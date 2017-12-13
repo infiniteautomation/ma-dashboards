@@ -6,7 +6,7 @@
 define(['angular'], function(angular) {
 'use strict';
 
-var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
+var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE', 'ATTRIBUTE_CHANGE'];
 
 PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint', '$injector'];
 function PointValueController($scope, $element, $attrs, pointEventManager, Point, $injector) {
