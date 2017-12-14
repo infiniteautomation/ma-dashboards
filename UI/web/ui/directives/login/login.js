@@ -20,6 +20,8 @@ function loginFactory($state, User, $rootScope, $window) {
             });
             
             $scope.doLogin = function() {
+                $scope.loggingIn = true;
+                
                 var user = User.login({
                     username: $scope.username,
                     password: $scope.password
@@ -37,6 +39,7 @@ function loginFactory($state, User, $rootScope, $window) {
                     }
                     $window.location = redirectUrl;
                 }, function(error) {
+                    $scope.loggingIn = false;
                     $scope.errors.invalidLogin = false;
                     if (error.status === 401) {
                         $scope.errors.invalidLogin = true;

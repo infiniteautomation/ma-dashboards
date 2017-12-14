@@ -6,7 +6,7 @@
 	  </md-card-title-text>
 	</md-card-title>
 	<md-card-content layout="column">
-        <div class="already-logged-in" ng-if="User.current">
+        <div class="already-logged-in" ng-if="!loggingIn && User.current">
             <span ma-tr="login.aleadyLoggedIn" ma-tr-args="[User.current.username]"></span>
             <a ui-sref="ui.home" ma-tr="login.goToHome"></a>
         </div>
