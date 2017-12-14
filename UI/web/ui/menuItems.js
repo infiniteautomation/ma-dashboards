@@ -26,6 +26,24 @@ return [
         }
     },
     {
+        name: 'resetPassword',
+        url: '/reset-password?resetToken',
+        templateUrl: require.toUrl('./views/resetPassword.html'),
+        menuHidden: true,
+        menuIcon: 'vpn_key',
+        menuTr: 'header.resetPassword',
+        resolve: {
+            deps: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
+                return maRequireQ(['./components/resetPassword/resetPassword'], function(resetPassword) {
+                    angular.module('maUiResetPasswordState', [])
+                        .component('maUiResetPassword', resetPassword);
+                    $injector.loadNewModules(['maUiResetPasswordState']);
+                });
+            }],
+            loginTranslations: loadLoginTranslations
+        }
+    },
+    {
         name: 'logout',
         url: '/logout',
         menuHidden: true,

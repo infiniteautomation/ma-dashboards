@@ -6,12 +6,15 @@
 	  </md-card-title-text>
 	</md-card-title>
 	<md-card-content layout="column">
-        <div class="already-logged-in" ng-if="User.current">You are currently logged in as {{User.current.username}}, <a ui-sref="ui.home">go to the home page</a>.</div>
+        <div class="already-logged-in" ng-if="User.current">
+            <span ma-tr="login.aleadyLoggedIn" ma-tr-args="[User.current.username]"></span>
+            <a ui-sref="ui.home" ma-tr="login.goToHome"></a>
+        </div>
 		<md-input-container class="md-icon-float md-block">
 	      <label for="username" ma-tr="login.userId"></label>
           <md-icon>person</md-icon>
 	      <input id="username" name="username" ng-model="username" type="text" autofocus required md-no-asterisk aria-label="{{'login.userId'|maTr}}">
-	      <div ng-messages="loginForm.name.$error">
+	      <div ng-messages="loginForm.username.$error">
 	        <div ng-message="required" ma-tr="login.validation.noUsername"></div>
 	      </div>
 	    </md-input-container>
@@ -28,8 +31,10 @@
           <div ng-message="otherError" ma-tr="login.error" ma-tr-args="[errors.otherError]"></div>
         </div>
 	</md-card-content>
-	<md-card-actions layout="row" layout-align="end center">
-      <md-button type="submit" ng-click="doLogin()" ma-tr="login.loginButton" class="md-accent" aria-label="{{'login.loginButton'|maTr}}"></md-button>
+	<md-card-actions layout="row" layout-align="start center">
+      <a ui-sref="resetPassword" ma-tr="login.forgotYourPassword"></a>
+      <div flex></div>
+      <md-button type="submit" ng-click="doLogin()" ma-tr="login.loginButton" class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}"></md-button>
     </md-card-actions>
     </form>
 </md-card>

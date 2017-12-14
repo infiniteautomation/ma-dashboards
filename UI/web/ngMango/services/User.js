@@ -426,6 +426,30 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.clearStoredCredentials = function clearStoredCredentials() {
             localStorageService.remove('storedCredentials');
         };
+        
+        const passwordResetUrl = '/rest/v2/password-reset';
+        
+        User.sendPasswordResetEmail = function sendPasswordResetEmail(username, email) {
+            return $http({
+                url: `${passwordResetUrl}/send-email`,
+                method: 'POST',
+                data: {
+                    username,
+                    email
+                }
+            });
+        };
+        
+        User.passwordReset = function passwordReset(token, newPassword) {
+            return $http({
+                url: `${passwordResetUrl}/reset`,
+                method: 'POST',
+                data: {
+                    token,
+                    newPassword
+                }
+            });
+        };
 
         // returns true if user has any of the desired permissions (can be an array or comma separated string)
         User.prototype.hasPermission = function(desiredPerms) {
