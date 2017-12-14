@@ -66,8 +66,8 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                 .ariaLabel(areYouSure)
                 .textContent(textContent)
                 .targetEvent(event)
-                .ok(maTranslate.trSync('common.ok'))
-                .cancel(maTranslate.trSync('common.cancel'))
+                .ok(maTranslate.trSync('login.ok'))
+                .cancel(maTranslate.trSync('login.cancel'))
                 .multiple(true);
 
             return $mdDialog.show(confirm);
@@ -82,8 +82,8 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                 .title(shortText)
                 .ariaLabel(shortText)
                 .targetEvent(event)
-                .ok(maTranslate.trSync('common.ok'))
-                .cancel(maTranslate.trSync('common.cancel'))
+                .ok(maTranslate.trSync('login.ok'))
+                .cancel(maTranslate.trSync('login.cancel'))
                 .multiple(true);
             
             if (longText) {
@@ -106,7 +106,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
             
             var toast = $mdToast.simple()
                 .textContent(text)
-                .action(maTranslate.trSync('common.ok'))
+                .action(maTranslate.trSync('login.ok'))
                 .highlightAction(true)
                 .position('bottom center')
                 .hideDelay(5000);
@@ -123,7 +123,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
             
             const toast = $mdToast.simple()
                 .textContent(text)
-                .action(maTranslate.trSync('common.ok'))
+                .action(maTranslate.trSync('login.ok'))
                 .highlightAction(true)
                 .position('bottom center')
                 .hideDelay(10000)
@@ -137,7 +137,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
             
             var toast = $mdToast.simple()
                 .textContent(text)
-                .action(maTranslate.trSync('common.ok'))
+                .action(maTranslate.trSync('login.ok'))
                 .highlightAction(true)
                 .position('bottom center')
                 .hideDelay(isFinite(options.hideDelay) ? options.hideDelay : 5000);
