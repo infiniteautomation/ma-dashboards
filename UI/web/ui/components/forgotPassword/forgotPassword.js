@@ -7,11 +7,13 @@ define(['require'], function(require) {
 'use strict';
 
 class ForgotPasswordController {
-    static get $inject() { return ['maUser', '$stateParams']; }
+    static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$state']; }
     
-    constructor(maUser, $stateParams) {
+    constructor(maUser, $stateParams, maDialogHelper, $state) {
         this.maUser = maUser;
         this.$stateParams = $stateParams;
+        this.maDialogHelper = maDialogHelper;
+        this.$state = $state;
     }
     
     $onInit() {
@@ -19,27 +21,36 @@ class ForgotPasswordController {
             this.username = this.$stateParams.username;
         }
     }
+    
+    resetServerErrors() {
+        this.forgotForm.username.$setValidity('userExists', true);
+        this.forgotForm.email.$setValidity('emailMatches', true);
+    }
 
     sendEmail() {
         this.forgotForm.$setSubmitted();
-
-        if (this.forgotForm && this.forgotForm.username) {
-            this.forgotForm.username.$setValidity('found', true);
-        }
-        if (this.forgotForm && this.forgotForm.email) {
-            this.forgotForm.email.$setValidity('matches', true);
-        }
-        
         if (this.forgotForm.$invalid) return;
-        
+
+        this.disableButton = true;
         return this.maUser.sendPasswordResetEmail(this.username, this.email).then(response => {
-            console.log(response);
+            this.maDialogHelper.toastOptions({
+                textTr: ['login.emailSent', this.email],
+                hideDelay: 10000
+            });
+            this.$state.go('resetPassword');
         }, error => {
-            if (this.forgotForm && this.forgotForm.username) {
-                this.forgotForm.username.$setValidity('found', false);
-            }
-            if (this.forgotForm && this.forgotForm.email) {
-                this.forgotForm.email.$setValidity('matches', false);
+            this.disableButton = false;
+
+            if (error.status === 404) {
+                this.forgotForm.username.$setValidity('userExists', false);
+            } else if (error.status === 400 && error.data && error.data.mangoStatusCode === 4005) {
+                this.forgotForm.email.$setValidity('emailMatches', false);
+            } else {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['login.errorSendingEmail', error.mangoStatusText],
+                    hideDelay: 10000,
+                    classes: 'md-warn'
+                });
             }
         });
     }

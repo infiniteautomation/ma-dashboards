@@ -68,6 +68,7 @@ class ResetPasswordController {
             }
             this.$window.location = redirectUrl;
         }, error => {
+            this.disableButton = false;
             this.showTokenInput = true;
             this.maDialogHelper.toastOptions({
                 textTr: ['login.validation.invalidLogin'],
@@ -83,20 +84,22 @@ class ResetPasswordController {
         this.resetForm.$setSubmitted();
 
         if (this.resetForm.$invalid) return;
-        
+
+        this.disableButton = true;
         return this.maUser.passwordReset(this.resetToken, this.newPassword).then(response => {
             this.doLogin();
         }, error => {
+            this.disableButton = false;
             this.showTokenInput = true;
-            
-            this.maDialogHelper.toastOptions({
-                textTr: ['login.errorResettingPassword', error.mangoStatusText],
-                hideDelay: 10000,
-                classes: 'md-warn'
-            });
-            
+
             if (error.status === 400 && error.data && error.data.mangoStatusCode === 4005) {
                 this.resetForm.resetToken.$setValidity('serverValid', false);
+            } else {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['login.errorResettingPassword', error.mangoStatusText],
+                    hideDelay: 10000,
+                    classes: 'md-warn'
+                });
             }
         });
     }
