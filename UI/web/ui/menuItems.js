@@ -30,7 +30,7 @@ return [
         url: '/reset-password?resetToken',
         templateUrl: require.toUrl('./views/resetPassword.html'),
         menuHidden: true,
-        menuIcon: 'vpn_key',
+        menuIcon: 'code',
         menuTr: 'header.resetPassword',
         resolve: {
             deps: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
@@ -38,6 +38,24 @@ return [
                     angular.module('maUiResetPasswordState', [])
                         .component('maUiResetPassword', resetPassword);
                     $injector.loadNewModules(['maUiResetPasswordState']);
+                });
+            }],
+            loginTranslations: loadLoginTranslations
+        }
+    },
+    {
+        name: 'forgotPassword',
+        url: '/forgot-password?username',
+        templateUrl: require.toUrl('./views/forgotPassword.html'),
+        menuHidden: true,
+        menuIcon: 'live_help',
+        menuTr: 'header.forgotPassword',
+        resolve: {
+            deps: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
+                return maRequireQ(['./components/forgotPassword/forgotPassword'], function(forgotPassword) {
+                    angular.module('maUiForgotPasswordState', [])
+                        .component('maUiForgotPassword', forgotPassword);
+                    $injector.loadNewModules(['maUiForgotPasswordState']);
                 });
             }],
             loginTranslations: loadLoginTranslations

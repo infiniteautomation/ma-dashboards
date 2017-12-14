@@ -32,7 +32,7 @@
         </div>
 	</md-card-content>
 	<md-card-actions layout="row" layout-align="start center">
-      <a ui-sref="resetPassword" ma-tr="login.forgotYourPassword"></a>
+      <a ui-sref="forgotPassword({username: username})" ma-tr="login.forgotYourPassword"></a>
       <div flex></div>
       <md-button type="submit" ng-click="doLogin()" ma-tr="login.loginButton" class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}"></md-button>
     </md-card-actions>
