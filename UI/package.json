@@ -5,12 +5,8 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "angular": "^1.5.8",
-    "angular-mocks": "^1.5.8",
-    "bower": "^1.8.0",
+    "bower": "^1.8.2",
     "bower-shrinkwrap-resolver": "^0.5.1",
-    "chai": "^3.5.0",
-    "cldr-data": "^31.0.2",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
@@ -22,14 +18,9 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.4",
     "gulp-watch": "^4.3.11",
-    "jsdom": "^9.8.3",
-    "jsdom-global": "^2.1.0",
     "main-bower-files": "^2.13.1",
     "merge-stream": "^1.0.0",
-    "mocha": "^3.1.2",
-    "path-exists": "^3.0.0",
-    "requirejs": "^2.3.2",
-    "sinon": "^1.17.6"
+    "path-exists": "^3.0.0"
   },
   "scripts": {
     "test": "mocha web/ngMango/**/*.spec.js"
