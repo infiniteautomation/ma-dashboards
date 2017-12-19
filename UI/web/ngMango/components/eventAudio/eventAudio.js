@@ -14,7 +14,7 @@ define(['angular', 'require'], function(angular, require) {
  * @param {Object} audio-files An object which maps event levels to audio file urls. Keys are the event level in capitals (e.g. URGENT, LIFE_SAFETY) or DEFAULT
  *
  * @usage
- * <ma-event-audio audio-files="{CRITICAL: '/audio/critical.mp3'"></ma-event-audio>
+ * <ma-event-audio audio-files="{CRITICAL: '/audio/critical.mp3'}"></ma-event-audio>
  *
  **/
 
@@ -57,9 +57,8 @@ class EventAudioController {
     }
 
     eventRaised(mangoEvent) {
-        if (!this.audioFiles) return;
-        const file = this.audioFiles[mangoEvent.alarmLevel] || this.audioFiles.DEFAULT;
-        const readAloud = this.readAloud[mangoEvent.alarmLevel] || this.readAloud.DEFAULT;
+        const file = this.audioFiles && (this.audioFiles[mangoEvent.alarmLevel] || this.audioFiles.DEFAULT);
+        const readAloud = this.readAloud && (this.readAloud[mangoEvent.alarmLevel] || this.readAloud.DEFAULT);
         
         if ((file || readAloud) && this.isCurrentAudioPlayer()) {
             if (this.currentAudio) {
@@ -92,8 +91,8 @@ class EventAudioController {
 
 return {
     bindings: {
-        audioFiles: '<',
-        readAloud: '<'
+        audioFiles: '<?',
+        readAloud: '<?'
     },
     controller: EventAudioController
 };
