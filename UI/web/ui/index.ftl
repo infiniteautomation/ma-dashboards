@@ -12,6 +12,9 @@
 
     <link rel="icon" type="image/png" sizes="192x192" href="/modules/mangoUI/web/img/icon192.png?v=${lastUpgrade?c}">
     <link rel="icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${lastUpgrade?c}">
+    <link rel="icon" type="image/png" sizes="96x96" href="/modules/mangoUI/web/img/icon96.png?v=${lastUpgrade?c}">
+    <link rel="icon" type="image/png" sizes="32x32" href="/modules/mangoUI/web/img/icon32.png?v=${lastUpgrade?c}">
+    <link rel="icon" type="image/png" sizes="16x16" href="/modules/mangoUI/web/img/icon16.png?v=${lastUpgrade?c}">
     <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${lastUpgrade?c}">
     <link rel="manifest" href="/modules/mangoUI/web/ui/manifest.json?v=${lastUpgrade?c}">
     
