@@ -200,21 +200,14 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
                     this.countUnacknowledged();
                 }
 
-                // Query for Notes for each
                 this.events.forEach((event) => {
-                    UserNotes.query({
-                        commentType: 'Event',
-                        referenceId: event.id
-                    }).$promise.then((notes) => {
-                        if (notes.length) {
-                            event.hasNotes = true;
-                        }
-                        
-                        notes.forEach((note, index) => {
-                            event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - ' +
-                                this.formatDate(note.timestamp)+ ')';
+                    event.hasNotes = event.comments && !!event.comments.length;
+                    if (event.hasNotes) {
+                        event.comments.forEach((note, index) => {
+                            const time = this.formatDate(note.timestamp);
+                            event.message += `<br><strong>${note.comment}</strong> (${note.username} &mdash; ${time})`;
                         });
-                    });
+                    }
                 });
             });
         }
@@ -241,8 +234,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         addNote($event, event) {
             const callback = (note, event) => {
                 event.hasNotes = true;
-                event.message += '<br> <strong>' + note.comment + '</strong> (' + note.username + ' - ' +
-                    this.formatDate(note.timestamp)+ ')';
+                const time = this.formatDate(note.timestamp);
+                event.message += `<br><strong>${note.comment}</strong> (${note.username} &mdash; ${time})`;
             };
             
             UserNotes.addNote($event, 'Event', event.id, callback , event);
