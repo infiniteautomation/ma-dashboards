@@ -3,10 +3,10 @@
     "4.7.0": "a3fe90fa5f6fac55d197f9cbd18e3f57dafb716c"
   },
   "https://github.com/Stuk/jszip.git": {
-    "3.1.5": "a4138a23cb9b8eb773c19af7d36d5ce2bcf4bfda"
+    "3.1.5": "3.1.5"
   },
   "https://github.com/ajaxorg/ace-builds.git": {
-    "1.2.9": "ba3b91e04a5aa559d56ac70964f9054baa0f4caf"
+    "1.2.9": "1.2.9"
   },
   "https://github.com/allenhwkim/angularjs-google-maps.git": {
     "1.17.8": "413d8dacc39c1ec3248f8de0b499eef2311d8f51"
@@ -18,34 +18,34 @@
     "0.2.3": "36844ff7c0e0d9445bc8e31514d7f0f59cb8b048"
   },
   "https://github.com/angular-ui/ui-sortable.git": {
-    "0.17.2": "017fbd3f911576914915aa3dd08022c83b7fd3a3"
+    "0.17.2": "0.17.2"
   },
   "https://github.com/angular/bower-angular-animate.git": {
-    "1.6.7": "11953fa28eea83030aa29484728a53e58cd3e520"
+    "1.6.7": "1.6.7"
   },
   "https://github.com/angular/bower-angular-aria.git": {
-    "1.6.7": "e3a7d3413d81cc9aa6bd492c0a5d17d3aa9f5e55"
+    "1.6.7": "1.6.7"
   },
   "https://github.com/angular/bower-angular-cookies.git": {
-    "1.6.7": "68c8fa837e01108735c2ac53a54654528cbd9237"
+    "1.6.7": "1.6.7"
   },
   "https://github.com/angular/bower-angular-messages.git": {
-    "1.6.7": "f2889bec076b06de917afdffd781e9d964506e29"
+    "1.6.7": "1.6.7"
   },
   "https://github.com/angular/bower-angular-resource.git": {
-    "1.6.7": "0c706fe974aa8065cb696a14143bada761046b06"
+    "1.6.7": "1.6.7"
   },
   "https://github.com/angular/bower-angular-sanitize.git": {
-    "1.6.7": "33f83f6234686d411269c9ce7b292ad51f0b1be1"
+    "1.6.7": "1.6.7"
   },
   "https://github.com/angular/bower-angular-touch.git": {
-    "1.6.7": "ca886bd884bf4633b9885343f507f6a743b93b9f"
+    "1.6.7": "1.6.7"
   },
   "https://github.com/angular/bower-angular.git": {
-    "1.6.7": "03cf5343bfd0d30b7b72a48f7974cd6ef6842630"
+    "1.6.7": "1.6.7"
   },
   "https://github.com/angular/bower-material.git": {
-    "1.1.5": "571732036559e01141a73b6cab107adff4f17353"
+    "1.1.5": "1.1.5"
   },
   "https://github.com/bgrins/TinyColor.git": {
     "1.4.1": "80f7225029c428c0de0757f7d98ac15f497bee57"
@@ -63,10 +63,10 @@
     "0.10.10": "d20fb0c2126fcecdfa6cb7bb9923887c44a4dc0a"
   },
   "https://github.com/dpoetzsch/md-pickers.git": {
-    "1.1.1": "b4f1d1fc63fe9aef6874d134f695c905d70f2cc0"
+    "1.1.1": "1.1.1"
   },
   "https://github.com/emn178/js-sha512.git": {
-    "0.7.0": "0d5c8ad0b75d9376ab933ca87749a01765597185"
+    "0.7.0": "0.7.0"
   },
   "https://github.com/furf/jquery-ui-touch-punch.git": {
     "master": "4bc009145202d9c7483ba85f3a236a8f3470354d"
@@ -78,7 +78,7 @@
     "0.3.0": "85a243879f7a91afcce12782fe79018841a9f83b"
   },
   "https://github.com/josdejong/mathjs.git": {
-    "3.16.5": "311fffdf8cd921a791bf2cd182aece0dbe27f49a"
+    "3.16.5": "3.16.5"
   },
   "https://github.com/jquery/globalize.git": {
     "1.2.3": "ca1639c6265ea0a4e9d5dc8431efc81a90f4fc42"
@@ -90,7 +90,7 @@
     "4.1.4": "35e62c1b7ab640b73386f3ac794d54c2bb70cc3e"
   },
   "https://github.com/moment/moment-timezone.git": {
-    "0.5.14": "e843cfd21b13ea0e03dd06e518bff0fdef514a62"
+    "0.5.14": "0.5.14"
   },
   "https://github.com/moment/moment.git": {
     "2.11.2": "c9afcbd8c4e0177d03b220a89ab19f62c6cc7bcf",
@@ -107,6 +107,6 @@
     "0.4.8": "0098333d0ddb7b28cdeb1cfefb39544712d21645"
   },
   "https://github.com/whitequark/ipaddr.js.git": {
-    "1.4.0": "e0f2a074f47c51941cbfd26cf38a327f847e6286"
+    "1.4.0": "1.4.0"
   }
 }
