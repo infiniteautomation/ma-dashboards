@@ -71,6 +71,7 @@ requirejs.config({
         'angular-aria' : vendor + '/angular-aria/angular-aria',
         'angular-resource' : vendor + '/angular-resource/angular-resource',
         'angular-sanitize' : vendor + '/angular-sanitize/angular-sanitize',
+        'angular-cookies' : vendor + '/angular-cookies/angular-cookies',
         'moment': vendor + '/moment/moment-with-locales',
         'moment-timezone': vendor + '/moment-timezone/moment-timezone-with-data',
         'jquery': vendor + '/jquery/jquery',
@@ -150,6 +151,9 @@ requirejs.config({
             deps : ['angular']
         },
         'angular-sanitize' : {
+            deps : ['angular']
+        },
+        'angular-cookies' : {
             deps : ['angular']
         },
         'angular-aria' : {

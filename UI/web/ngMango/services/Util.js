@@ -160,8 +160,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 */
 
-UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT', 'maRqlBuilder'];
-function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout, RqlBuilder) {
+UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT', 'maRqlBuilder', '$window'];
+function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout, RqlBuilder, $window) {
 	function Util() {}
 
 	/**
@@ -323,19 +323,26 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         };
     };
 
-    Util.prototype.uuid = function uuid() {
-        var uuid = '', i, random;
-        for (i = 0; i < 32; i++) {
-            random = Math.random() * 16 | 0;
+    if ($window.crypto && typeof $window.crypto.getRandomValues === 'function') {
+        Util.prototype.uuid = function uuid() {
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => {
+                return (c ^ $window.crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+            });
+        };
+    } else {
+        Util.prototype.uuid = function uuid() {
+            var uuid = '', i, random;
+            for (i = 0; i < 32; i++) {
+                random = Math.random() * 16 | 0;
 
-            if (i === 8 || i === 12 || i === 16 || i === 20) {
-                uuid += '-';
+                if (i === 8 || i === 12 || i === 16 || i === 20) {
+                    uuid += '-';
+                }
+                uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
             }
-            uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
-        }
-        return uuid;
-    };
-	
+            return uuid;
+        };
+    }
 
     Util.prototype.rollupIntervalCalculator = function rollupIntervalCalculator(from, to, rollupType, asObject) {
 
