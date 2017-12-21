@@ -440,16 +440,19 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
                 this.timezones = [{
                     translation: 'ui.app.timezone.user',
-                    value: maUser.current.getTimezone()
+                    value: maUser.current.getTimezone(),
+                    id: 'user'
                 }, {
                     translation: 'ui.app.timezone.server',
-                    value: maUser.current.systemTimezone
+                    value: maUser.current.systemTimezone,
+                    id: 'server'
                 }, {
                     translation: 'ui.app.timezone.utc',
-                    value: 'UTC'
+                    value: 'UTC',
+                    id: 'utc'
                 }];
                 
-                this.timezone = this.timezones[0].value;
+                this.timezone = this.timezones[0];
                 
                 this.downloadData = function downloadData(downloadType) {
                     var points = this.allPoints ? this.points : this.selected;
@@ -476,7 +479,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                         limit: -1,
                         timeout: 0,
                         dateTimeFormat: this.timeFormat,
-                        timezone: this.timezone
+                        timezone: this.timezone.value
                     }).then(function(response) {
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);

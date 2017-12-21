@@ -39,7 +39,7 @@
     <md-input-container>
         <label ma-tr="ui.app.timezone"></label>
         <md-select name="timezone" ng-model="$ctrl.timezone">
-          <md-option ng-repeat="zone in $ctrl.timezones track by zone.value" ng-value="zone.value">
+          <md-option ng-repeat="zone in $ctrl.timezones track by zone.id" ng-value="zone">
             <span><span ma-tr="{{::zone.translation}}"></span> (<em ng-bind="zone.value"></em>)</span>
           </md-option>
         </md-select>
