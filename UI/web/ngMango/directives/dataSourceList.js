@@ -19,7 +19,7 @@ define(['angular'], function(angular) {
  * @param {boolean=} auto-init Enables auto selecting of the first data source in the list (Defaults to `true`)
  * @param {object=} query Filters the results by a property of the data source object (eg: `{name: 'meta'}` returns data
  *     sources containing the string `'meta'` in the `name` property)
- * @param {array=} sort Sorts the resulting list by a property of the data source object. Passed as array of strings.
+ * @param {string[]=} sort Sorts the resulting list by a property of the data source object. Passed as array of strings.
  *     (eg: `['-xid']` sorts descending by xid of data sources. Defaults to `['name']`)
  * @param {number=} start Sets the starting index for the resulting list. Must be used in conjunction with a `limit` value. (Defaults to `0`)
  * @param {number=} limit Limits the results in the list to a specified number of data sources. Limit takes place after query

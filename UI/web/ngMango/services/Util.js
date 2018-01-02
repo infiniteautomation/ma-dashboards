@@ -26,8 +26,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 * @description
 * Utility for providing information about the difference between two arrays
-* @param {array} newArray New array to compare against old array.
-* @param {array} oldArray Old array that new array will compare against.
+* @param {*[]} newArray New array to compare against old array.
+* @param {*[]} oldArray Old array that new array will compare against.
 * @returns {object}  Returns an object with the following properties:
 
 <ul><li>`added` - ARRAY of items that were added in newArray that were not in oldArray.</li>
@@ -83,7 +83,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 * @description
 * remove all elements from cancelFns array so cancel fns are never called again
-* @param {array} cancelFns Array of functions to be cancelled
+* @param {function[]} cancelFns Array of functions to be cancelled
 *
 */
 
@@ -107,10 +107,10 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 * @description
 * Parses an array response from a Mango endpoint which contains a total
 * and assigns it as the property $total on the array
-* @param {json} data array response from Mango endpoint
+* @param {string} data JSON response from Mango endpoint
 * @param {string} fn REPLACE
 * @param {number} code String used for testing keys
-* @returns {array}  Array with $ total appended
+* @returns {object[]}  Array with $total property
 *
 */
 
@@ -142,7 +142,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 * @name uuid
 *
 * @description
-* REPLACE
+* Generates a v4 UUID
 *
 */
 

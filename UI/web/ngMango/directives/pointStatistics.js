@@ -38,7 +38,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * @param {boolean=} first-last If you are only interested in calculating the delta value, setting this to `true` will
  run a more efficient query and only return `first` and `last` properties as a two item array. You can then calculate the
  delta with `statsObj[1].value - statsObj[0].value`
- * @param {array=} points Alternatively you can input an array of points from `<ma-point-query>`. If used the `statistics` object will output an array.
+ * @param {object[]=} points Alternatively you can input an array of points from `<ma-point-query>`. If used the `statistics` object will output an array.
  * @param {string=} point-xid Alternatively you can pass in the `xid` of a point to use.
  * @param {string=} date-format If you are passing in `to/from` as strings, then you must specify the moment.js format for parsing the values.
  * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of of the statistical provider.

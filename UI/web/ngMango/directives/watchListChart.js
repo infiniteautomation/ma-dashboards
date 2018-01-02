@@ -13,10 +13,10 @@
   * - Use `<ma-watch-list-chart>` to display the watch list's custom chart on a custom page.
   * - Use with `<ma-watch-list-select>` and pass in data from a watch list object.
   *
-  * @param {array} points Array of points to add to the chart (`myWatchlist.data.selectedPoints`).
+  * @param {object[]} points Array of points to add to the chart (`myWatchlist.data.selectedPoints`).
   * @param {object} watch-list Watch list object, passed in from `watch-list-get`
-  * @param {expression} to Expression that evaluates to a date, moment, or timestamp. Time to start charting. Can be from `dateBar` or `<ma-date-range-picker>`.
-  * @param {expression} from Expression that evaluates to a date, moment, or timestamp. Time to end charting. Can be from `dateBar` or `<ma-date-range-picker>`.
+  * @param {expression} to Should evaluate to a date, moment, or timestamp. Time to start charting. Can be from `dateBar` or `<ma-date-range-picker>`.
+  * @param {expression} from Should evaluate to a date, moment, or timestamp. Time to end charting. Can be from `dateBar` or `<ma-date-range-picker>`.
   * @param {string} rollup-type Rollup type.
   * @param {number} rollup-intervals Rollup interval number.
   * @param {expression} rollup-interval-period Should evaluate to string. Rollup interval unit. e.g. 'seconds'

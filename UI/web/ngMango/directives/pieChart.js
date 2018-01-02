@@ -16,7 +16,7 @@ define(['amcharts/pie', 'angular', 'require'], function(AmCharts, angular, requi
  * - Note, you will need to set a width and height on the element.
  * - <a ui-sref="ui.examples.charts.pieChart">View Demo</a>
  *
- * @param {array} values Takes in an array of value objects to use in the pie chart. Each value object can contain the following properties:
+ * @param {object[]} values Takes in an array of value objects to use in the pie chart. Each value object can contain the following properties:
 <ul>
     <li>`value` - Numeric Value</li>
     <li>`text` - Text label</li>

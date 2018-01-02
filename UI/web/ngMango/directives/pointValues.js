@@ -21,7 +21,7 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
  * @param {object} point Inputs a `point` object from `<ma-point-list>`
  * @param {object=} points Alternatively you can input an array of points from `<ma-point-query>`
  * @param {string=} point-xid Alternatively you can pass in the `xid` of a point to use.
- * @param {array} values Outputs the array of historical point values.
+ * @param {expression} values Assignable expression to output the array of point values.
  * @param {object} from The starting time to query the point values over a time period.
  * @param {object} to The ending time to query the point values over a time period.
  * @param {number=} latest Rather then `to/from` you can choose to use this property with the latest `X` number of values.

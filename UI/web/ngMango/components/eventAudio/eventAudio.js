@@ -11,7 +11,7 @@ define(['angular', 'require'], function(angular, require) {
  *
  * @description Plays audio files when events are raised. You can configure which audio files play at which level.
  *
- * @param {Object} audio-files An object which maps event levels to audio file urls. Keys are the event level in capitals (e.g. URGENT, LIFE_SAFETY) or DEFAULT
+ * @param {object} audio-files An object which maps event levels to audio file urls. Keys are the event level in capitals (e.g. URGENT, LIFE_SAFETY) or DEFAULT
  *
  * @usage
  * <ma-event-audio audio-files="{CRITICAL: '/audio/critical.mp3'}"></ma-event-audio>
