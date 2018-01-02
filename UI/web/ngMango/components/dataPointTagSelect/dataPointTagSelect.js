@@ -9,12 +9,14 @@ define(['angular', 'require'], function(angular, require) {
 /**
  * @ngdoc directive
  * @name ngMango.directive:maDataPointTagSelect
+ * @restrict 'E'
+ * @scope
  *
  * @description Displays a drop down list of tag values for a given key. You can set restrictions for other tag keys.
  *
- * @param {String} key The tag key
- * @param {Object} restrictions Restrictions for other tag keys. The object is a map of tag keys to tag values
- * @param {Boolean} select-multiple Set to true in order to enable selecting multiple tag values
+ * @param {string} key The tag key to display available values for.
+ * @param {object=} restrictions Restrictions for other tag keys. The object is a map of tag keys to tag values.
+ * @param {boolean=} [select-multiple=false] Set to true in order to enable selecting multiple tag values.
  * 
  * @usage
  * <ma-data-point-tag-select key="name" restrictions="{device: 'Device 1'}" select-multiple="true"></ma-data-point-tag-select>
