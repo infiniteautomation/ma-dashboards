@@ -19,27 +19,30 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
  * - Note in usage examples below raw string literals are wrapped in single quotes where as variable names / numbers / booleans are not.
  * - <a ui-sref="ui.examples.utilities.eventsTable">View Demo</a>
  *
- * @param {number} limit Set the initial limit of the pagination.
- * @param {string=} point-id Filter on the Id property of a point, use with `"single-point=true"`.
- * @param {boolean=} single-point Set to `"true"` and use with point-id attribute to return events related to just a single Data Point.
+ * @param {number=} limit Set the initial limit of the pagination.
+ * @param {number=} point-id Filter on the Id property of a point, use with `single-point="true"`.
+ * @param {boolean=} single-point Set to `true` and use with point-id attribute to return events related to just a single Data Point.
  * @param {number=} event-id Filter on a specific Event Id, should return a single event.
- * @param {string=} alarm-level Filter on Alarm Level. Possible values are:
- *     `"'NONE'"`, `"'INFORMATION'"`, `"'IMPORTANT'"`, `"'WARNING'"`, `"'URGENT'"`, `"'CRITICAL'"`, `"'LIFE_SAFETY'"` or `"'*'"` for any.
- * @param {string=} event-type Filter on Event Type. Possible values are: `"'DATA_POINT'"`, `"'DATA_SOURCE'"`, `"'SYSTEM'"` or `"'*'"` for any.
- * @param {string=} acknowledged Filter on whether the event has been acknowledged. Possible values are: `"'true'"`, `"'false'"` or `"'*'"` for either.
- * @param {string=} active-status Filter on Active Status. Possible values are: `"'active'"`, `"'noRtn'"`, `"'normal'"` or `"'*'"` for any.
+ * @param {expression=} alarm-level Expression which should evaluate to a string. Filter on Alarm Level. Possible values are:
+ *     `'NONE'`, `'INFORMATION'`, `'IMPORTANT'`, `'WARNING'`, `'URGENT'`, `'CRITICAL'`, `'LIFE_SAFETY'` or `'any'`.
+ * @param {expression=} event-type Expression which should evaluate to a string. Filter on Event Type.
+ *     Possible values are: `'DATA_POINT'`, `'DATA_SOURCE'`, `'SYSTEM'` or `'any'`.
+ * @param {expression=} acknowledged Expression which should evaluate to a boolean or the string 'any'.
+ *     Filter on whether the event has been acknowledged. Possible values are: `true`, `false` or `'any'` for either.
+ * @param {string=} active-status Filter on Active Status. Possible values are: `'active'`, `'noRtn'`, `'normal'` or `'any'`.
  * @param {string=} sort Set the initial sorting column of the table. Possible values are:
- *     `"'alarmLevel'"`, `"'activeTimestamp'"`, `"'message'"` or `"'acknowledged'"`.
- *     Precede value with a negative (eg. `"'-activeTimestamp'"`) to reverse sorting.
- * @param {string=} from From time used for filtering by date range. Pass the value from a `<ma-date-picker>`.
- * @param {string=} to To time used for filtering by date range.
- * @param {boolean=} date-filter Turn on date filtering of events. Set value to `"'true'"` and use with from/to attribute to use. Defaults to off.
+ *     `'alarmLevel'`, `'activeTimestamp'`, `'message'` or `'acknowledged'`.
+ *     Precede value with a negative (eg. `'-activeTimestamp'`) to reverse sorting.
+ * @param {expression=} from Should evaluate to a date, moment or time-stamp. From time used for filtering by date range.
+ *     Pass the value from a `<ma-date-picker>`.
+ * @param {expression=} to Should evaluate to a date, moment or time-stamp. To time used for filtering by date range.
+ * @param {boolean=} [date-filter=false] Turn on date filtering of events. Set value to `true` and use with from/to attribute to use.
  * @param {string=} timezone Display the timestamps in this timezone
 
  *
  * @usage
  * <!-- Example Using filters on Table Attributes -->
- * <ma-events-table event-type="'SYSTEM'" alarm-level="'URGENT'" acknowledged="'*'"
+ * <ma-events-table event-type="'SYSTEM'" alarm-level="'URGENT'" acknowledged="'any'"
  * active-status="'active' date-filter="true" from="fromTime" to="toTime" limit="50" 
  * sort="'-alarmLevel'"></ma-events-table>
  *

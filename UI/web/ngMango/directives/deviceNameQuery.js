@@ -15,10 +15,11 @@ define(['angular'], function(angular) {
  * - In the example below the list is filtered to those containing a specified string and the resulting array is printed to the screen.
  * - <a ui-sref="ui.examples.basics.dataSourceAndDeviceList">View Demo</a>
  *
- * @param {array} device-names Array Variable to hold the array of outputted device names.
- * @param {string=} data-source-xid If provided will filter device names to a specific data source by xid.
- * @param {string=} data-source-id If provided will filter device names to a specific data source by id.
- * @param {string=} contains If provided will filter device names to those containing the specified string. Capitalization sensitive. (eg: `'Meta'`)
+ * @param {expression} device-names Assignable expression. Outputs the device names as an array of strings.
+ * @param {expression=} data-source-xid Expression which should evaluate to a string. If provided will filter device names to a specific data source by xid.
+ * @param {number=} data-source-id If provided will filter device names to a specific data source by id.
+ * @param {expression=} contains Expression which should evaluate to a string. If provided will filter device names to those containing the specified string.
+ *     Capitalization sensitive. (eg: `'Meta'`)
  *
  * @usage
  * <h2>Device names containing 'meter'</h2>
@@ -30,9 +31,9 @@ function deviceNameQuery(DeviceName) {
     return {
         scope: {
             // attributes that start with data- have the prefix stripped
-            dataSourceId: '=?sourceId',
-            dataSourceXid: '=?sourceXid',
-            contains: '=?',
+            dataSourceId: '<?sourceId',
+            dataSourceXid: '<?sourceXid',
+            contains: '<?',
             deviceNames: '=?'
         },
         link: function ($scope, $element, attrs) {

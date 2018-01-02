@@ -14,8 +14,8 @@ define(['moment-timezone'], function(moment) {
  * - This directive will output the current browser time as a Moment.js date object.
  * - <a ui-sref="ui.examples.basics.clocksAndTimezones">View Demo</a>
  *
- * @param {object} output Variable to hold the output date.
- * @param {object} browserTimezone set to the browsers timezone (guessed)
+ * @param {expression} output Assignable expression to output the date.
+ * @param {boolean=} browserTimezone set to the browsers timezone (guessed)
  * @param {string} update-interval The date will update on this given interval.
  Format the interval duration as a string starting with a number followed by one of these units:
 <ul>
@@ -29,7 +29,8 @@ define(['moment-timezone'], function(moment) {
     <li>milliseconds</li>
 </ul>
  * @param {string} time-zone The output date will have the given timezone.
- * @param {function} onChange Pass in a function or expression to be evaluated when the time updates.
+ * @param {expression=} on-change Expression which is evaluated when the time updates.
+ *     Available scope parameters are `$value` (contains the current time as a moment object).
  *
  * @usage
  * <ma-now update-interval="1 SECONDS" output="time"></ma-now>

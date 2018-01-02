@@ -18,9 +18,10 @@ define(['angular', 'require'], function(angular, require) {
  *
  * @param {object} ng-model Variable to hold the selected device name.
  * @param {boolean=} auto-init Enables auto selecting of the first device name in the list. (Defaults to `true`)
- * @param {string=} data-source-xid If provided will filter device names to a specific data source by xid.
- * @param {string=} data-source-id If provided will filter device names to a specific data source by id.
- * @param {string=} contains If provided will filter device names to those containing the specified string. Capitalization sensitive. (eg: `'Meta'`)
+ * @param {expression=} data-source-xid Expression which should evaluate to a string. If provided will filter device names to a specific data source by xid.
+ * @param {number=} data-source-id If provided will filter device names to a specific data source by id.
+ * @param {expression=} contains Expression which should evaluate to a string. If provided will filter device names to those containing the specified string.
+ *     Capitalization sensitive. (eg: `'Meta'`)
  * @param {boolean=} show-clear If set to `true` a clear option will be shown at the top of the the list, allowing you to set
  * the data source to undefined. (Defaults to `false`)
  *

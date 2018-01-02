@@ -21,7 +21,7 @@ define(['angular', 'require'], function(angular, require) {
   * @param {number} zoom Sets the zoom level of the map.
   * @param {number} lat Sets the latitude coordinate of the center of the map. Eg. `-12.95`.
   * @param {number} long Sets the longitude coordinate of the center of the map. Eg. `38.42`.
-  * @param {string=} map-type Sets the map type. Possible options are:
+  * @param {string=} map-type Sets the map type. Possible options are:          
 <ul>
     <li>`roadmap` displays the default road map view</li>
     <li>`satellite` displays Google Earth satellite images</li>
@@ -33,7 +33,7 @@ define(['angular', 'require'], function(angular, require) {
   * @param {string=} desktop-height Sets the height of the map at a desktop width (>1280px). Set with px. Eg `800px`. Defaults to `500px`.
   * @param {string=} mobile-height Sets the height of the map at a mobile/tablet width (<1280px). Set with px. Eg `400px`.
   * @param {object=} styles Optionally add a google map styles object to change colors and features of map details.
-  * @param {string=} output-data Defines the name of a variable used to hold output data to be passed to other components on the page.
+  * @param {object=} output-data Defines the name of a variable used to hold output data to be passed to other components on the page.
   *     From a marker you should the following syntax to set output-data: `on-click="$parent.$ctrl.setOutputData('newValue')"`.
   * @param {string=} map-id If you have multiple `<ma-map>` components on a single page give each a unique `map-id`.
   *

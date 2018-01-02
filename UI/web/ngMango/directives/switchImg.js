@@ -24,7 +24,7 @@ define(['angular', './PointValueController'], function(angular, PointValueContro
  * 'value2': 'img/image2.png'}`)
  * @param {string=} src-### The part of attribute after `src-` (the `###`) is used to compare against the point value.
  For strings with spaces replace the spaces in the point value with dashes in attribute name. *Not to be used with `src-map` attribute.
- * @param {string=} value Alternatively to passing in a point you can use the `value` attribute to pass in a raw value.
+ * @param {*=} value Alternatively to passing in a point you can use the `value` attribute to pass in a raw value.
  * @param {boolean=} toggle-on-click Set to true to enable click to toggle. *Only works with binary data points.
  *
  * @usage

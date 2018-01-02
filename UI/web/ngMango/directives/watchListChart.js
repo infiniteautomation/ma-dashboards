@@ -15,11 +15,11 @@
   *
   * @param {array} points Array of points to add to the chart (`myWatchlist.data.selectedPoints`).
   * @param {object} watch-list Watch list object, passed in from `watch-list-get`
-  * @param {string} to Timestamp to start charting. Can be from `dateBar` or `<ma-date-range-picker>`.
-  * @param {string} from Timestamp to end charting. Can be from `dateBar` or `<ma-date-range-picker>`.
+  * @param {expression} to Expression that evaluates to a date, moment, or timestamp. Time to start charting. Can be from `dateBar` or `<ma-date-range-picker>`.
+  * @param {expression} from Expression that evaluates to a date, moment, or timestamp. Time to end charting. Can be from `dateBar` or `<ma-date-range-picker>`.
   * @param {string} rollup-type Rollup type.
-  * @param {string} rollup-interval-number Rollup interval number.
-  * @param {number} rollup-interval-period Rollup interval unit.
+  * @param {number} rollup-intervals Rollup interval number.
+  * @param {expression} rollup-interval-period Should evaluate to string. Rollup interval unit. e.g. 'seconds'
   * @param {string} chart-height Height of the chart. Specify with px or % (`400px`).
   * @param {boolean=} edit-mode Set to `true` to display chart customization controls. (Defaults to `false`).
   * @param {boolean=} stats-tab Set to `true` to display stats tab. (Defaults to `false`_.

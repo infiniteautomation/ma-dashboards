@@ -14,11 +14,11 @@ define(['require', 'moment-timezone'], function(require, moment) {
  * - Displays a list of User Notes in a table
  * - Can be configured to load a specific `reference-id`
  *
- * @param {string} reference-id Query via referenceId
+ * @param {number=} reference-id Query via referenceId
  * @param {string} comment-type Can be `POINT` or `EVENT`
  * @param {string} timezone Timezone for displaying time stamps
  * @param {string} limit Set the initial limit of the pagination
- * @param {boolean=} disabled Set to `true` to turn off the ability to add new user notes. (Defaults to `false`)
+ * @param {boolean=} [disabled=false] Set to `true` to turn off the ability to add new user notes.
  *
  * @usage
  * <ma-user-notes-table></ma-user-notes-table>

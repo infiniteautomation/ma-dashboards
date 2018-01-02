@@ -22,9 +22,9 @@
   * @param {number=} start Sets the starting index for the resulting list. Must be used in conjunction with a `limit` value. (Defaults to `0`)
   * @param {number=} limit Limits the results in the list to a specified number of watch lists. Limit takes place after query
   * and sorting (no limit by default)
-  * @param {string=} parameters Pass in parameters from `<ma-watch-list-paremeters>`
-  * @param {string=} on-points-change Pass in a function or expression to be evaluated when the points change. (eg.
-  * `on-points-change="$ctrl.pointsChanged($points)"`)
+  * @param {object=} parameters Pass in parameters from `<ma-watch-list-parameters>`
+  * @param {expression=} on-points-change Expression is evaluated when the points change. Available scope parameters are `$points`.
+  *     e.g. `on-points-change="$ctrl.pointsChanged($points)"`)
   * 
   * @usage
   * <ma-watch-list-select no-select="true" watch-list-xid="{{watchlistXID}}" watch-list="myWatchlist"></ma-watch-list-select>

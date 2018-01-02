@@ -19,12 +19,13 @@ define(['require', 'rql/query'], function(require, query) {
  * @param {number=} limit Limits the results in the list to a specified number of data points (200 defualt)
  * @param {boolean=} auto-init If set, enables auto selecting of the first data point in the list.
  * @param {string=} point-xid Used with `auto-init` to pre-select the specified point by xid.
- * @param {string=} point-id Used with `auto-init` to pre-select the specified point by data point id.
- * @param {string=} query REPLACE
+ * @param {number=} point-id Used with `auto-init` to pre-select the specified point by data point id.
+ * @param {expression=} query Expression should evaluate to a RQL query string.
  * @param {string=} label Set the floating label on the input
- * @param {function=} list-text REPLACE
- * @param {function=} display-text REPLACE
- * @param {boolean=} client-side-filter REPLACE
+ * @param {expression=} list-text Expression is evaluated and the resulting string is used as the list text label.
+ * @param {expression=} display-text Expression is evaluated and the resulting string is used as the display text label.
+ * @param {object=} client-side-filter Uses the {@link https://docs.angularjs.org/api/ng/filter/filter AngularJS filter} to filter results
+ *     returned from the REST API. The expression argument in the AngularJS documentation describes the object passed to this attribute.
 
  *
  * @usage
