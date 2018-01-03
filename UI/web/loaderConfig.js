@@ -99,7 +99,8 @@ requirejs.config({
         'ipaddr': vendor + '/ipaddr/ipaddr',
         'mathjs': vendor + '/mathjs',
         'simplify-js': vendor + '/simplify-js/simplify',
-        'jszip': vendor + '/jszip/jszip'
+        'jszip': vendor + '/jszip/jszip',
+        'plotly': vendor + '/plotly.js/plotly',
     },
     shim : {
         'angular': {

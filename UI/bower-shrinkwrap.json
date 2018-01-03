@@ -103,6 +103,9 @@
   "https://github.com/persvr/rql.git": {
     "0.3.3": "f3640c368d074ce19b87615f65f0c4c1f5494cff"
   },
+  "https://github.com/plotly/plotly.js.git": {
+    "1.31.2": "8ede952f6eb9d7c9e8bcc2c0697840499cdcf908"
+  },
   "https://github.com/rxaviers/cldrjs.git": {
     "0.4.8": "0098333d0ddb7b28cdeb1cfefb39544712d21645"
   },

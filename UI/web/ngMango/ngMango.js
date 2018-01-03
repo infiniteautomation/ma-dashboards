@@ -72,6 +72,7 @@ define(['./ngMangoServices',
         './directives/eventHandler',
         './directives/jsonModel',
         './directives/jwtInput',
+        './directives/plotly',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -113,7 +114,7 @@ define(['./ngMangoServices',
         eventsTable, watchListGet, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
         dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile, aceEditor, dateInput,
-        eventHandler, jsonModel, jwtInput,
+        eventHandler, jsonModel, jwtInput, plotly,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
         maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, eventHandlerEditor, eventAudio, dataPointTagSelect, getService,
@@ -198,6 +199,7 @@ ngMango.directive('maAceEditor', aceEditor);
 ngMango.directive('maDateInput', dateInput);
 ngMango.directive('maJsonModel', jsonModel);
 ngMango.directive('maJwtInput', jwtInput);
+ngMango.directive('maPlotly', plotly);
 ngMango.component('maQueryBuilder', queryBuilder);
 ngMango.component('maQueryGroup', queryGroup);
 ngMango.component('maQueryPredicate', queryPredicate);
