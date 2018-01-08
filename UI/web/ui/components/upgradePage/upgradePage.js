@@ -33,22 +33,37 @@ UpgradePageController.prototype.$onInit = function() {
 
     this.maModules.notificationManager.subscribe((event, message) => {
 		if (event.name === 'webSocketMessage') {
+		    let toastMessage;
+		    let isError = false;
+		    
 			if (message.type === 'MODULE_DOWNLOADED') {
 				if (!moduleDownloaded(message.name, this.upgradesSelected)) {
 					moduleDownloaded(message.name, this.installsSelected);
 				}
 			} else if (message.type === 'UPGRADE_STATE_CHANGE') {
-				var toast = this.$mdToast.simple()
-			        .textContent(this.maTranslate.trSync('ui.app.upgradeProgress', message.upgradeProcessState))
-			        .action(this.maTranslate.trSync('common.ok'))
-			        .highlightAction(true)
-			        .position('bottom center')
-			        .hideDelay(10000);
-				this.$mdToast.show(toast);
-				
-				if (this.upgradeDeferred && (message.upgradeProcessState === 'Done' || message.upgradeProcessState === 'Restarting...')) {
-					this.upgradeDeferred.resolve();
-				}
+			    toastMessage = this.maTranslate.trSync('ui.app.upgradeProgress', message.stateDescription);
+			} else if (message.type === 'UPGRADE_FINISHED') {
+			    if (this.upgradeDeferred) {
+			        this.upgradeDeferred.resolve();
+                }
+			} else if (message.type === 'UPGRADE_ERROR') {
+			    isError = true;
+                toastMessage = this.maTranslate.trSync('ui.app.upgradeError', message.error);
+                
+                if (this.upgradeDeferred) {
+                    this.upgradeDeferred.reject(message.error);
+                }
+            }
+			
+			if (toastMessage) {
+                const toast = this.$mdToast.simple()
+                    .textContent(toastMessage)
+                    .action(this.maTranslate.trSync('common.ok'))
+                    .highlightAction(true)
+                    .position('bottom center')
+                    .toastClass(isError ? 'md-warn' : '')
+                    .hideDelay(10000);
+                this.$mdToast.show(toast);
 			}
 		}
 		
