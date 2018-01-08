@@ -66,6 +66,12 @@ ModulesPageController.prototype.deleteModule = function($event, module, doDelete
 	
 	this.maDialogHelper.confirm($event, 'modules.module.deleteConfirm').then(function() {
 		return module.$delete(true);
+	}).catch(error => {
+		this.maDialogHelper.toastOptions({
+			textTr: ['ui.app.deleteModuleFailed', error.mangoStatusText],
+			hideDelay: 10000,
+			classes: 'md-warn'
+		});
 	});
 };
 
