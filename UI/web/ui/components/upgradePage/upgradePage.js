@@ -162,15 +162,15 @@ UpgradePageController.prototype.doUpgrade = function($event) {
                 return true;
             }
             
-            const upgradeModule = this.upgrades.find(moduleFinder);
-            if (upgradeModule && this.upgradesSelected.indexOf(upgradeModule) < 0) {
-                this.maDialogHelper.toastOptions({
-                    textTr: ['ui.app.moduleNotSelectedForUpgrade', module.name, depName],
-                    classes: 'md-warn',
-                    timeout: 10000
-                });
-                return true;
-            }
+//            const upgradeModule = this.upgrades.find(moduleFinder);
+//            if (upgradeModule && this.upgradesSelected.indexOf(upgradeModule) < 0) {
+//                this.maDialogHelper.toastOptions({
+//                    textTr: ['ui.app.moduleNotSelectedForUpgrade', module.name, depName],
+//                    classes: 'md-warn',
+//                    timeout: 10000
+//                });
+//                return true;
+//            }
         });
     });
     
