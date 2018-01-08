@@ -15,9 +15,12 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERM
     Page.prototype.getPages = function getPages() {
         return JsonStore.get({
             xid: MA_UI_PAGES_XID
-        }).$promise.then(null, function() {
-            return this.getDefaultPages();
-        }.bind(this));
+        }).$promise.then(null, error => {
+            if (error.status === 404) {
+                return this.getDefaultPages();
+            }
+            return $q.reject(error);
+        });
     };
     
     Page.prototype.getDefaultPages = function getDefaultPages() {

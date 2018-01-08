@@ -26,10 +26,10 @@ function pageEditorControls() {
 
 PageEditorControlsController.$inject = ['$scope', 'maUiPages', 'maJsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
     'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION',
-    '$templateRequest', '$document'];
+    '$templateRequest', '$document', 'maDialogHelper'];
 function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
         localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION,
-        $templateRequest, $document) {
+        $templateRequest, $document, maDialogHelper) {
     this.$scope = $scope;
     this.maUiPages = maUiPages;
     this.jsonStoreEventManager = jsonStoreEventManager;
@@ -47,6 +47,7 @@ function PageEditorControlsController($scope, maUiPages, jsonStoreEventManager, 
     this.MA_UI_EDIT_MENUS_PERMISSION = MA_UI_EDIT_MENUS_PERMISSION; // used in template
     this.$templateRequest = $templateRequest;
     this.$document = $document;
+    this.maDialogHelper = maDialogHelper;
     
     this.showInputs = false;
 }
@@ -87,9 +88,16 @@ PageEditorControlsController.prototype.$onInit = function() {
         $document.off('keydown', keyDownHandler);
     });
 
-    this.maUiPages.getPages().then(function(pageSummaryStore) {
+    this.maUiPages.getPages().then(pageSummaryStore => {
         this.pageSummaryStore = pageSummaryStore;
-    }.bind(this));
+    }, error => {
+        this.pageSummaryStore = null;
+        this.maDialogHelper.toastOptions({
+            textTr: ['ui.app.errorGettingPages', 'error.mangoStatusText'],
+            hideDelay: 10000,
+            classes: 'md-warn'
+        });
+    });
 
     // Attempt load lastSelectedPage from local storage
     var lastSelectedPage = this.localStorageService.get('lastSelectedPage');
