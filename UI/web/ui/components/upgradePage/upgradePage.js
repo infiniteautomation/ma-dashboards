@@ -6,14 +6,15 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope', '$q', '$mdToast', 'maTranslate'];
-function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, maTranslate) {
+UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope', '$q', '$mdToast', 'maTranslate', '$timeout'];
+function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, maTranslate, $timeout) {
     this.maModules = maModules;
     this.maDialogHelper = maDialogHelper;
     this.$scope = $scope;
     this.$q = $q;
     this.$mdToast = $mdToast;
     this.maTranslate = maTranslate;
+    this.$timeout = $timeout;
     
     this.moduleSelectedBound = (module) => this.moduleSelected(module);
 }
@@ -119,17 +120,29 @@ UpgradePageController.prototype.showReleaseNotes = function($event, module) {
 
 UpgradePageController.prototype.moduleSelected = function(selected) {
     // select any dependencies automatically
-    Object.keys(selected.dependencyVersions).forEach((depName) => {
+    
+    // md-data-table wont update the installsSelected/upgradesSelected array until after all the callbacks are run (for select all for example)
+    this.$timeout(() => {
+        this.$scope.$applyAsync(() => {
+            this.checkDependenciesForModule(selected);
+        });
+    }, 0, false);
+};
+
+UpgradePageController.prototype.checkDependenciesForModule = function(module) {
+    Object.keys(module.dependencyVersions).forEach((depName) => {
         const moduleFinder = module => module.name === depName;
         
         const installModule = this.installs.find(moduleFinder);
         if (installModule && this.installsSelected.indexOf(installModule) < 0) {
             this.installsSelected.push(installModule);
+            this.checkDependenciesForModule(installModule);
         }
 
         const upgradeModule = this.upgrades.find(moduleFinder);
         if (upgradeModule && this.upgradesSelected.indexOf(upgradeModule) < 0) {
             this.upgradesSelected.push(upgradeModule);
+            this.checkDependenciesForModule(upgradeModule);
         }
     });
 };
