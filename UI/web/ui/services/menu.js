@@ -18,6 +18,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
     };
     
     this.registerCustomMenuItems = function registerCustomMenuItems() {
+        if (!MA_UI_CUSTOM_MENU_ITEMS) return;
+        
         var menuItemsByName = {};
         MA_UI_MENU_ITEMS.forEach(function(item) {
             menuItemsByName[item.name] = item;
@@ -80,22 +82,14 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
 
     this.$get = MenuFactory;
 
-    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maJsonStoreEventManager', 'MA_UI_EDIT_MENUS_PERMISSION'];
-    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION) {
+    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maJsonStoreEventManager', 'MA_UI_EDIT_MENUS_PERMISSION',
+        'MA_UI_CUSTOM_MENU_STORE'];
+    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION,
+            MA_UI_CUSTOM_MENU_STORE) {
 
         var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
 
         function Menu() {
-            this.storeObject = new JsonStore();
-            this.storeObject.xid = MA_UI_MENU_XID;
-            this.storeObject.name = 'UI Menu';
-            this.storeObject.editPermission = MA_UI_EDIT_MENUS_PERMISSION;
-            this.storeObject.readPermission = 'user';
-            this.storeObject.publicData = false;
-            this.storeObject.jsonData = {
-                menuItems: MA_UI_CUSTOM_MENU_ITEMS
-            };
-    
             this.defaultMenuItems = MA_UI_MENU_ITEMS;
             this.defaultMenuItemsByName = {};
     
@@ -104,10 +98,34 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                 item.builtIn = true;
                 this.defaultMenuItemsByName[item.name] = item;
             }.bind(this));
+
+            this.firstRefresh = true;
             
+            if (MA_UI_CUSTOM_MENU_STORE) {
+                this.storeObject = new JsonStore(MA_UI_CUSTOM_MENU_STORE);
+                delete this.storeObject.$promise;
+                delete this.storeObject.$resolved;
+            } else {
+                this.storeObject = this.defaultStoreObject();
+            }
             jsonStoreEventManager.subscribe(MA_UI_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler.bind(this));
         }
-        
+
+        Menu.prototype.defaultMenuStore = function defaultMenuStore() {
+            const storeObject = new JsonStore();
+            
+            storeObject.xid = MA_UI_MENU_XID;
+            storeObject.name = 'UI Menu';
+            storeObject.editPermission = MA_UI_EDIT_MENUS_PERMISSION;
+            storeObject.readPermission = 'user';
+            storeObject.publicData = false;
+            storeObject.jsonData = {
+                menuItems: []
+            };
+            
+            return storeObject;
+        };
+
         Menu.prototype.updateHandler = function updateHandler(event, payload) {
             var changed = false;
             if (payload.action === 'delete') {
@@ -134,25 +152,31 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         };
 
         Menu.prototype.refresh = function refresh(forceRefresh) {
-            if (!forceRefresh && this.jsonStorePromise) {
-                return this.jsonStorePromise;
+            // if the websocket is connected then we can assume we always have the latest menu items
+            // just return our current store item
+            if (!forceRefresh && this.storePromise && jsonStoreEventManager.isConnected()) {
+                return this.storePromise;
             }
             
             // custom menu items are retrieved on bootstrap, don't get them twice on app startup
             // after first run use the standard JsonStore http request
-            if (!this.firstRefresh) {
-                this.firstRefresh = true;
-                this.jsonStorePromise = $q.when(this.storeObject);
+            if (MA_UI_CUSTOM_MENU_STORE && this.firstRefresh) {
+                this.storePromise = $q.when(this.storeObject);
             } else {
-                this.jsonStorePromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(function(store) {
-                    return (this.storeObject = store);
-                }.bind(this), function() {
-                    // MA_UI_MENU_XID doesn't exist, or error
-                    return this.storeObject;
-                }.bind(this));
+                this.storePromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(null, error => {
+                    if (error.status === 404) {
+                        return this.defaultStoreObject();
+                    }
+                    delete this.storePromise;
+                    return $q.reject(error);
+                }).then(store => {
+                    this.storeObject = store;
+                    return store;
+                });
             }
-
-            return this.jsonStorePromise;
+            
+            this.firstRefresh = false;
+            return this.storePromise;
         };
 
         Menu.prototype.combineMenuItems = function combineMenuItems() {

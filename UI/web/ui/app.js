@@ -738,14 +738,11 @@ $q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(func
     var userMenuStore = data[0].userMenuStore;
     var MA_UI_SETTINGS = data[1];
     var angularModules = data[2] || [];
-    var customMenuItems = [];
 
-    if (userMenuStore) {
-        customMenuItems = userMenuStore.jsonData.menuItems;
-    }
+    uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', userMenuStore ? userMenuStore.jsonData.menuItems : null);
+    uiApp.constant('MA_UI_CUSTOM_MENU_STORE', userMenuStore ? userMenuStore : null);
 
     uiApp.constant('MA_UI_SETTINGS', MA_UI_SETTINGS);
-    uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', customMenuItems);
     uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
     uiApp.constant('MA_POINT_VALUES_CONFIG', {limit: MA_UI_SETTINGS.pointValuesLimit});
 
