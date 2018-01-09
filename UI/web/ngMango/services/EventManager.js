@@ -366,6 +366,10 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	        this.socket.send(JSON.stringify(message));
 	    }
 	};
+	
+	EventManager.prototype.isConnected = function() {
+        return this.socket && this.socket.readyState === READY_STATE_OPEN;
+	};
 
 	function arraysEqual(a, b) {
 		if (a.length !== b.length) return false;
