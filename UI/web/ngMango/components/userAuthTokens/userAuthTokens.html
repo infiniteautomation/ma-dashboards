@@ -1,0 +1,46 @@
+
+<div layout="column" layout-gt-md="row" layout-align-gt-md="start center">
+    <md-input-container flex>
+        <label ma-tr="ui.app.expiryPreset"></label>
+        <md-select ng-model="$ctrl.expiryPreset" ng-change="$ctrl.expiryPresetChanged()">
+            <md-option value="1 day" ma-tr="ui.time.daysFromNow" ma-tr-args="[1]"></md-option>
+            <md-option value="1 week" ma-tr="ui.time.weeksFromNow" ma-tr-args="[1]"></md-option>
+            <md-option value="2 week" ma-tr="ui.time.weeksFromNow" ma-tr-args="[2]"></md-option>
+            <md-option value="1 month" ma-tr="ui.time.monthsFromNow" ma-tr-args="[1]"></md-option>
+            <md-option value="3 month" ma-tr="ui.time.monthsFromNow" ma-tr-args="[3]"></md-option>
+            <md-option value="6 month" ma-tr="ui.time.monthsFromNow" ma-tr-args="[6]"></md-option>
+            <md-option value="1 year" ma-tr="ui.time.yearsFromNow" ma-tr-args="[1]"></md-option>
+            <md-option value="2 year" ma-tr="ui.time.yearsFromNow" ma-tr-args="[2]"></md-option>
+            <md-option value="5 year" ma-tr="ui.time.yearsFromNow" ma-tr-args="[5]"></md-option>
+            <md-option value="10 year" ma-tr="ui.time.yearsFromNow" ma-tr-args="[10]"></md-option>
+        </md-select>
+    </md-input-container>
+    
+    <md-input-container flex>
+        <label ma-tr="ui.app.expiryDate"></label>
+        <ma-date-picker ng-model="$ctrl.expiryDate" ng-change="$ctrl.expiryDateChanged()"></ma-date-picker>
+    </md-input-container>
+</div>
+
+<div layout layout-align="start center">
+    <md-input-container flex>
+        <label ma-tr="ui.app.authToken"></label>
+        <textarea class="ma-user-auth-token" ng-model="$ctrl.authToken" rows="3"></textarea>
+    </md-input-container>
+    <md-button class="md-icon-button" ng-click="$ctrl.copyToClipboard($event)" ng-disabled="!$ctrl.authToken">
+        <md-icon>content_copy</md-icon>
+        <md-tooltip ma-tr="ui.app.copyToClipboard"></md-tooltip>
+    </md-button>
+</div>
+
+<div layout="column" layout-gt-md="row" layout-align-gt-md="start center">
+    <md-button class="md-raised" ng-disabled="!$ctrl.user" ng-click="$ctrl.createAuthToken($event)">
+        <span ma-tr="ui.app.createAuthToken"></span>
+    </md-button>
+    <md-button class="md-raised md-warn" ng-disabled="!$ctrl.user" ng-click="$ctrl.revokeAuthTokens($event)">
+        <span ma-tr="ui.app.revokeAuthTokensForUser" ma-tr-args="[$ctrl.user.username]"></span>
+    </md-button>
+    <md-button class="md-raised md-warn" ng-if="$ctrl.maUser.current.admin" ng-click="$ctrl.revokeAllAuthTokens($event)">
+        <span ma-tr="ui.app.revokeAllAuthTokens"></span>
+    </md-button>
+</div>

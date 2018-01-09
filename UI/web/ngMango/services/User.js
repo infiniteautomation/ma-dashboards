@@ -496,6 +496,57 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.prototype.getLocale = function() {
             return this.locale || this.systemLocale;
         };
+        
+        const authTokenBaseUrl = '/rest/v2/auth-tokens';
+        
+        User.createAuthToken = function createAuthToken(expiry, username) {
+            let url = `${authTokenBaseUrl}/create`;
+            if (username != null && username !== (this.current && this.current.username)) {
+                url += `/${encodeURIComponent(username)}`;
+            }
+
+            return $http({
+                url,
+                method: 'POST',
+                params: {
+                    expiry
+                }
+            }).then(response => {
+                return response.data;
+            });
+        };
+
+        User.revokeAuthTokens = function revokeAuthTokens(username) {
+            let url = `${authTokenBaseUrl}/revoke`;
+            if (username != null && username !== (this.current && this.current.username)) {
+                url += `/${encodeURIComponent(username)}`;
+            }
+
+            return $http({
+                url,
+                method: 'POST'
+            }).then(response => {
+                return response.data;
+            });
+        };
+
+        User.revokeAllAuthTokens = function revokeAllAuthTokens() {
+            let url = `${authTokenBaseUrl}/reset-keys`;
+            return $http({
+                url,
+                method: 'POST'
+            }).then(response => {
+                return response.data;
+            });
+        };
+
+        User.prototype.createAuthToken = function createAuthToken(expiry) {
+            return this.constructor.createAuthToken(expiry);
+        };
+        
+        User.prototype.revokeAuthTokens = function revokeAuthTokens() {
+            return this.constructor.revokeAuthTokens();
+        };
 
         // set the initial user and configure initial locale and timezone
         User.setUser(bootstrapUser || null);

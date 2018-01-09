@@ -43,6 +43,16 @@
                     </div>
                 </md-tab-body>
             </md-tab>
+            <md-tab ng-if="!$ctrl.user.isNew">
+                <md-tab-label>
+                    <span ma-tr="ui.app.authTokens"></span>
+                </md-tab-label>
+                <md-tab-body>
+                    <div class="md-padding" layout="column">
+                        <ma-user-auth-tokens flex user="$ctrl.user"></ma-user-auth-tokens>
+                    </div>
+                </md-tab-body>
+            </md-tab>
         </md-tabs>
     </md-card>
 </div>
