@@ -588,6 +588,13 @@ return [
         menuHidden: true
     },
     {
+        name: 'ui.settings.system.pointHierarchy',
+        url: '/point-hierarchy',
+        menuTr: 'systemSettings.pointHierarchySettings',
+        templateUrl: require.toUrl('./systemSettings/pointHierarchySettings.html'),
+        menuHidden: true
+    },
+    {
         name: 'ui.settings.systemStatus',
         url: '/system-status',
         template: '<ma-ui-system-status-page flex="noshrink" layout="column"><ma-ui-system-status-page>',
