@@ -15,6 +15,15 @@
             </md-button>
         </md-menu-item>
         
+        <md-menu-item ng-if="$ctrl.events.NONE.unsilencedCount">
+            <md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'NONE'})">
+                <div layout="row" flex layout-align="start center" layout-fill>
+                    <i class="fa fa-flag fa-lg alarm-flag NONE" style="padding-right:10px"></i>
+                    <p flex ma-tr="ui.eventCount.none" ma-tr-args="[$ctrl.events.NONE.unsilencedCount]"></p>
+                </div>
+            </md-button>
+        </md-menu-item>
+        
         <md-menu-item ng-if="$ctrl.events.INFORMATION.unsilencedCount">
             <md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'INFORMATION'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
