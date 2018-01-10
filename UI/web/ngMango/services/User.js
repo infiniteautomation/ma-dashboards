@@ -512,7 +512,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     expiry
                 }
             }).then(response => {
-                return response.data;
+                return response.data.token;
             });
         };
 
