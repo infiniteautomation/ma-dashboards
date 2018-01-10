@@ -7,6 +7,7 @@ define(['angular'], function(angular) {
 'use strict';
 
 class GetServiceController {
+    static get $$ngIsClass() { return true; }
     static get $inject () {
         return ['$injector'];
     }

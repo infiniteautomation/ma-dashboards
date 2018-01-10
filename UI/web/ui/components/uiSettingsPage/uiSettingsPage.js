@@ -7,6 +7,7 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 class UiSettingsPageController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper']; }
     constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper) {
         this.uiSettings = maUiSettings;

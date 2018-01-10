@@ -7,6 +7,8 @@ define(['angular'], function(angular) {
 'use strict';
 
 class JsonModelController {
+    static get $$ngIsClass() { return true; }
+    
     constructor() {
         this.pretty = 4;
     }

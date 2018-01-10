@@ -15,6 +15,7 @@ define(['angular', 'require'], function(angular, require) {
 
 const $inject = Object.freeze(['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate']);
 class EventHandlerEditorController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate) {

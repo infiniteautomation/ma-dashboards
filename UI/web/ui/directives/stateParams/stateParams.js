@@ -11,6 +11,7 @@ function stateParams($stateParams, $state, $timeout) {
 
     const $inject = ['$scope'];
     class StateParamsController {
+        static get $$ngIsClass() { return true; }
         static get $inject() { return $inject; }
         
         constructor($scope) {

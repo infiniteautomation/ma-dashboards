@@ -15,6 +15,7 @@ define(['angular', 'require'], function(angular, require) {
 
 const $inject = Object.freeze(['maJsonStore', '$q', '$filter', '$injector', '$window', 'maTranslate', '$scope']);
 class JsonStoreTableController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maJsonStore, $q, $filter, $injector, $window, maTranslate, $scope) {

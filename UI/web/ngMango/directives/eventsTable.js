@@ -84,6 +84,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
 
     const $inject = Object.freeze(['$scope', '$attrs', '$element']);
     class EventsTableController {
+        static get $$ngIsClass() { return true; }
         static get $inject() { return $inject; }
         
         constructor($scope, $attrs, $element) {

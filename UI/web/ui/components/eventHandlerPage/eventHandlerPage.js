@@ -8,6 +8,7 @@ define(['angular', 'require'], function(angular, require) {
 
 const $inject = Object.freeze(['maEventHandler', '$state']);
 class EventHandlerPageController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maEventHandler, $state) {

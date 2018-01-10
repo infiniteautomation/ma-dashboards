@@ -20,6 +20,7 @@ define(['angular'], function(angular) {
  **/
 
 class PlotlyController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', '$element', 'maRequireQ']; }
     
     constructor($scope, $element, maRequireQ) {

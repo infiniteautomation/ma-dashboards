@@ -7,6 +7,7 @@ define(['angular'], function(angular) {
 'use strict';
 
 class ScaleToController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', '$element', '$window', '$timeout', '$interval']; }
     constructor($scope, $element, $window, $timeout, $interval) {
         this.$scope = $scope;

@@ -7,6 +7,7 @@ define(['require'], function(require) {
 'use strict';
 
 class ForgotPasswordController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$state']; }
     
     constructor(maUser, $stateParams, maDialogHelper, $state) {

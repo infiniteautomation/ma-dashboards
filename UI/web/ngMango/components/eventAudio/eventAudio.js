@@ -21,6 +21,7 @@ define(['angular', 'require'], function(angular, require) {
 const localStorageKey = 'eventAudioPlayerId';
 
 class EventAudioController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return ['maEvents', '$scope', '$window', 'localStorageService', 'maUtil']; }
     
     constructor(maEvents, $scope, $window, localStorageService, maUtil) {

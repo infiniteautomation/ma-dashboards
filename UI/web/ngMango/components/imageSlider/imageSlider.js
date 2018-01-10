@@ -7,6 +7,7 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 class ImageSliderController {
+    static get $$ngIsClass() { return true; }
     static get $inject() {
         return ['$interval'];
     }

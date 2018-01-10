@@ -18,6 +18,7 @@ define(['angular', 'require', 'moment-timezone'], function(angular, require, mom
  */
 
 class UserAuthTokensController {
+    static get $$ngIsClass() { return true; }
     static get $inject() {
         return ['maUser', '$element', 'maDialogHelper'];
     }

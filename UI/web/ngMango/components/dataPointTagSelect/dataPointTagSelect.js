@@ -24,6 +24,7 @@ define(['angular', 'require'], function(angular, require) {
  **/
 
 class DataPointTagSelectController {
+    static get $$ngIsClass() { return true; }
     static get $inject() { return ['maDataPointTags']; }
     
     constructor(maDataPointTags) {
