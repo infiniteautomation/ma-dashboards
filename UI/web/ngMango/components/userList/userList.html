@@ -9,7 +9,7 @@
     </md-button>
   </md-list-item>
 
-  <md-list-item class="md-2-line" ng-repeat="user in $ctrl.users track by user.username"
+  <md-list-item class="md-2-line" ng-repeat="user in $ctrl.users track by user.id"
                 ng-class="{'ma-list-selected': $ctrl.selectedUser.id === user.id}"
                 md-colors="{'background': $ctrl.selectedUser.id === user.id ? 'accent-hue-1' : 'background-hue-1'}"
                 ng-click="$ctrl.selectUser(user)">

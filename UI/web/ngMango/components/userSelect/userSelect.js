@@ -30,23 +30,20 @@ UserSelectController.prototype.selectUser = function(user) {
 };
 
 UserSelectController.prototype.updateHandler = function(event, update) {
-    this.users.$promise.then(function(users) {
-        var user;
-        for (var i = 0; i < users.length; i++) {
-            if (users[i].username === update.object.username) {
-                user = users[i];
-                break;
-            }
-        }
+    this.users.$promise.then(users => {
+        const userIndex = users.findIndex(u => u.id === update.object.id);
 
-        if (update.action === 'add' && !user) {
-            users.push(angular.merge(new this.User(), update.object));
-        } else if (update.action === 'update') {
-            angular.merge(user, update.object);
-        } else if (update.action === 'delete') {
-            users.splice(i, 1);
+        if (update.action === 'add' || update.action === 'update') {
+            const user = userIndex >= 0 && users[userIndex];
+            if (user) {
+                angular.merge(user, update.object);
+            } else {
+                users.push(angular.merge(new this.User(), update.object));
+            }
+        } else if (update.action === 'delete' && userIndex >= 0) {
+            users.splice(userIndex, 1);
         }
-    }.bind(this));
+    });
 };
 
 return {
