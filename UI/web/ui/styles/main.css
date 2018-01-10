@@ -526,7 +526,7 @@ code:not(.highlight) {
 
 /* md-toolbar inside of md-card */
 
-md-card md-toolbar:not(.mdp-pointer):not(.mdp-clock-center),
+md-card md-toolbar,
 md-card md-toolbar .md-toolbar-tools,
 md-toolbar.small-toolbar,
 md-toolbar.small-toolbar .md-toolbar-tools {
@@ -534,6 +534,12 @@ md-toolbar.small-toolbar .md-toolbar-tools {
   height: 42px;
   min-height: 42px;
   max-height: 42px;
+}
+
+md-card md-toolbar.mdp-pointer,
+md-card md-toolbar.mdp-clock-center {
+	font-size: unset;
+	max-height: unset;
 }
 
 md-toolbar.small-toolbar-font,
