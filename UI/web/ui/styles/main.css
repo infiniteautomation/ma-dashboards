@@ -526,7 +526,7 @@ code:not(.highlight) {
 
 /* md-toolbar inside of md-card */
 
-md-card md-toolbar:not(.mdp-pointer).not(.mdp-clock-center),
+md-card md-toolbar:not(.mdp-pointer):not(.mdp-clock-center),
 md-card md-toolbar .md-toolbar-tools,
 md-toolbar.small-toolbar,
 md-toolbar.small-toolbar .md-toolbar-tools {
