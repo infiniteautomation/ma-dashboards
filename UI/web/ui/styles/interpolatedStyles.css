@@ -29,10 +29,6 @@ mdp-calendar .md-button.md-raised:not(.md-accent) {
     background-color: {{getThemeColor('background-100-0.8')}} !important;
 }
 
-.mdp-clock .md-button:not(.md-primary):not(:hover) {
-    color: {{getThemeColor('primary-hue-2-1.0')}} !important;
-}
-
 button, html, input, select, textarea, .ma-default-font {
   font-family: {{uiSettings.fonts.default}}, sans-serif;
 }
@@ -107,4 +103,17 @@ md-toast._md.md-warn .md-toast-content .md-button.md-highlight,
 md-toast._md.md-primary .md-toast-content .md-button.md-highlight,
 md-toast._md.md-accent .md-toast-content .md-button.md-highlight {
 	color: {{getThemeColor('background-A100')}};
+}
+
+/* when hovering over a number on the clock */
+.mdp-clock .mdp-clock-container > .md-button.md-icon-button.md-raised:hover,
+.mdp-clock .mdp-clock-container > .md-button.md-icon-button.md-raised.md-primary:hover {
+	background-color: {{getThemeColor('background-300')}};
+	color: {{getThemeColor('background-A200-0.87')}};
+}
+
+/* the selected number on the clock */
+.mdp-clock .mdp-clock-container > .md-button.md-icon-button.md-raised.md-primary {
+	background-color: {{getThemeColor('accent')}};
+	color: {{getThemeColor('background-A100-0.87')}};
 }
