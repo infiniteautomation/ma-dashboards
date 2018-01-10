@@ -117,3 +117,8 @@ md-toast._md.md-accent .md-toast-content .md-button.md-highlight {
 	background-color: {{getThemeColor('accent')}};
 	color: {{getThemeColor('background-A100-0.87')}};
 }
+
+/* the circle at the end of the clock pointer */
+.mdp-clock .mdp-clock-container > .mdp-pointer > .mdp-clock-selected {
+	background-color: {{getThemeColor('primary')}};
+}
