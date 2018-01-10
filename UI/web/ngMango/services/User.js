@@ -500,15 +500,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         const authTokenBaseUrl = '/rest/v2/auth-tokens';
         
         User.createAuthToken = function createAuthToken(expiry, username) {
-            let url = `${authTokenBaseUrl}/create`;
-            if (username != null && username !== (this.current && this.current.username)) {
-                url += `/${encodeURIComponent(username)}`;
-            }
-
             return $http({
-                url,
+                url: `${authTokenBaseUrl}/create`,
                 method: 'POST',
-                params: {
+                data: {
+                    username,
                     expiry
                 }
             }).then(response => {
