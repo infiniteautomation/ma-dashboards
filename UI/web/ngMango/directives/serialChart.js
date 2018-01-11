@@ -325,7 +325,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                 validateData = undefined;
                 skipEvents = undefined;
                 $scope.$applyAsync(() => {
-                    console.log(`chart.validateNow(${localValidateData}, ${localSkipEvents})`);
+                    //console.log(`chart.validateNow(${localValidateData}, ${localSkipEvents})`);
                     chart.validateNow(localValidateData, localSkipEvents);
                 });
             }, 100, false);
