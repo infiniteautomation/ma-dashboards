@@ -34,6 +34,7 @@
           <md-option ng-value="'deviceName'" ma-tr="common.deviceName"></md-option>
           <md-option ng-value="'dataSource'" ma-tr="ui.app.dataSource"></md-option>
           <md-option ng-value="'pointHierarchy'" ma-tr="ui.app.pointHierarchy"></md-option>
+          <md-option ng-value="'tagValue'" ma-tr="ui.app.dataPointTag"></md-option>
         </md-select>
       </md-input-container>
       <md-button class="md-icon-button" ng-click="showSettings=!showSettings" ng-class="{'md-accent': showSettings}"><md-icon>settings</md-icon></md-button>
@@ -149,6 +150,9 @@
         <md-checkbox ng-model="param.options.multiple" ng-disabled="param.options.filtering"><span ma-tr="ui.app.selectMultiple"></span></md-checkbox>
         <md-checkbox ng-model="param.options.subfoldersOnly"><span ma-tr="ui.app.subFoldersOnly"></span></md-checkbox>
         <md-checkbox ng-model="param.options.filtering" ng-change="param.options.multiple = undefined"><span ma-tr="ui.app.filteringSelect"></span></md-checkbox>
+      </div>
+      <div ng-if="param.type === 'tagValue'" layout="row" layout-align="end center">
+        <ma-data-point-tag-key-select ng-model="param.options.tagKey"></ma-data-point-tag-key-select>
       </div>
     </div>
   </div>
