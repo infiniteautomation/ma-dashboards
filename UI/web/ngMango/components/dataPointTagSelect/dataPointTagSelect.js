@@ -61,7 +61,14 @@ return {
         ngModelCtrl: 'ngModel'
     },
     templateUrl: require.toUrl('./dataPointTagSelect.html'),
-    controller: DataPointTagSelectController
+    controller: DataPointTagSelectController,
+    designerInfo: {
+        translation: 'ui.components.maDataPointTagSelect',
+        icon: 'label',
+        attributes: {
+            key: {options: ['name', 'device']},
+        }
+    }
 };
 
 }); // define
