@@ -1,15 +1,15 @@
 <md-input-container flex>
-    <label>Choose a value for {{$ctrl.key}}</label>
+    <label ma-tr="ui.components.selectTagValue" ma-tr-args="[$ctrl.key]"></label>
     <md-select ng-if="!$ctrl.selectMultiple" ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()">
-        <md-option ng-value="undefined" md-option-empty><em>Any</em></md-option>
+        <md-option ng-value="undefined" md-option-empty><em ma-tr="ui.app.any"></em></md-option>
         <md-option ng-repeat="value in $ctrl.values" ng-value="value">
-            <em ng-if="value === null">No {{$ctrl.key}}</em>
+            <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em>
             <span ng-if="value !== null" ng-bind="value"></span>
         </md-option>
     </md-select>
     <md-select ng-if="$ctrl.selectMultiple" multiple="true" ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()">
         <md-option ng-repeat="value in $ctrl.values" ng-value="value">
-            <em ng-if="value === null">No {{$ctrl.key}}</em>
+            <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em>
             <span ng-if="value !== null" ng-bind="value"></span>
         </md-option>
     </md-select>

@@ -98,6 +98,7 @@ define(['./ngMangoServices',
         './components/eventHandlerEditor/eventHandlerEditor',
         './components/eventAudio/eventAudio',
         './components/dataPointTagSelect/dataPointTagSelect',
+        './components/dataPointTagKeySelect/dataPointTagKeySelect',
         './components/getService/getService',
         './components/pointEventDetector/pointEventDetector',
         './components/userAuthTokens/userAuthTokens',
@@ -118,8 +119,8 @@ define(['./ngMangoServices',
         eventHandler, jsonModel, jwtInput, plotly,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, eventHandlerEditor, eventAudio, dataPointTagSelect, getService,
-        pointEventDetector, userAuthTokens,
+        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, eventHandlerEditor, eventAudio, dataPointTagSelect, dataPointTagKeySelect,
+        getService, pointEventDetector, userAuthTokens,
         ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
@@ -226,6 +227,7 @@ ngMango.component('maEventHandlerEditor', eventHandlerEditor);
 ngMango.component('maJsonStoreEditor', jsonStoreEditor);
 ngMango.component('maEventAudio', eventAudio);
 ngMango.component('maDataPointTagSelect', dataPointTagSelect);
+ngMango.component('maDataPointTagKeySelect', dataPointTagKeySelect);
 ngMango.component('maGetService', getService);
 ngMango.component('maPointEventDetector', pointEventDetector);
 ngMango.component('maUserAuthTokens', userAuthTokens);
