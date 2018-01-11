@@ -1098,9 +1098,12 @@ md-icon {
   stroke-width: 0;
 }
 
-.amchart:not(.amcharts-custom-color) .amcharts-axis-tick, .amchart:not(.amcharts-custom-color) .amcharts-axis-tick-minor, 
-.amchart:not(.amcharts-custom-color) .amcharts-axis-line, .amchart:not(.amcharts-custom-color) .amcharts-axis-label,
-.amchart:not(.amcharts-custom-color) .amcharts-axis-title {
+.amchart:not(.amcharts-custom-color) .amcharts-axis-tick,
+.amchart:not(.amcharts-custom-color) .amcharts-axis-tick-minor, 
+.amchart:not(.amcharts-custom-color) .amcharts-axis-line,
+.amchart:not(.amcharts-custom-color) .amcharts-axis-label,
+.amchart:not(.amcharts-custom-color) .amcharts-axis-title,
+.amchart:not(.amcharts-custom-color) .amcharts-guide {
     fill: inherit;
     stroke: inherit;
 }
