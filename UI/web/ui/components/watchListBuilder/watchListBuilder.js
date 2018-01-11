@@ -39,45 +39,6 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
     $ctrl.selectedTab = 0;
     $ctrl.tableUpdateCount = 0;
 
-    $ctrl.queryProperties = [
-        {
-            label: 'Point name',
-            value: 'name'
-        },
-        {
-            label: 'Device name',
-            value: 'deviceName'
-        },
-        {
-            label: 'XID',
-            value: 'xid'
-        },
-        {
-            label: 'Data source name',
-            value: 'dataSourceName'
-        },
-        {
-            label: 'Data source XID',
-            value: 'dataSourceXid'
-        },
-        {
-            label: 'Point hierarchy folder ID',
-            value: 'pointFolderId'
-        },
-        {
-            label: 'Enabled',
-            value: 'enabled'
-        },
-        {
-            label: 'Read permission',
-            value: 'readPermission'
-        },
-        {
-            label: 'Set permission',
-            value: 'setPermission'
-        }
-    ];
-    
     $ctrl.newWatchlist = function newWatchlist(name) {
         $ctrl.selectedWatchlist = null;
         var watchlist = new WatchList();

@@ -414,6 +414,11 @@ ma-svg {
   display: block;
 }
 
+ma-data-point-tag-select,
+ma-data-point-tag-key-select {
+	display: flex;
+}
+
 ma-gauge-chart .amchart,
 ma-tank-level .amchart {
   height: 100%;
@@ -812,4 +817,17 @@ ma-events-table .active-status {
 
 ma-events-table .event-link md-icon {
 	font-size: 22px;
+}
+
+ma-query-predicate > div > .md-button.md-icon-button {
+	margin: 0;
+}
+
+ma-query-predicate .ma-query-predicate-property,
+ma-query-predicate .ma-query-predicate-operation {
+	width: 160px;
+}
+
+ma-query-predicate ma-data-point-tag-key-select {
+	width: 120px;
 }

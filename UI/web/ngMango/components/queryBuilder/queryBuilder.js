@@ -6,7 +6,51 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
+const queryProperties = [
+    {
+        labelTr: 'common.name',
+        value: 'name'
+    },
+    {
+        labelTr: 'common.deviceName',
+        value: 'deviceName'
+    },
+    {
+        labelTr: 'common.xid',
+        value: 'xid'
+    },
+    {
+        labelTr: 'ui.app.dataSourceName',
+        value: 'dataSourceName'
+    },
+    {
+        labelTr: 'ui.app.dataSourceXid',
+        value: 'dataSourceXid'
+    },
+    {
+        labelTr: 'ui.components.queryProperty.pointFolderId',
+        value: 'pointFolderId'
+    },
+    {
+        labelTr: 'common.enabled',
+        value: 'enabled'
+    },
+    {
+        labelTr: 'ui.app.readPermission',
+        value: 'readPermission'
+    },
+    {
+        labelTr: 'ui.app.setPermission',
+        value: 'setPermission'
+    },
+    {
+        labelTr: 'ui.components.queryProperty.tag',
+        value: 'tags.'
+    }
+];
+
 var queryBuilder = function queryBuilder(cssInjector) {
+    this.properties = queryProperties;
     this.rootQueryNode = new query.Query();
     this.sort = [{desc: false}];
     this.limit = [];
@@ -122,7 +166,6 @@ return {
         'ngModelCtrl': 'ngModel'
     },
     bindings: {
-        properties: '<',
         hideSortLimit: '<?'
     },
     designerInfo: {
