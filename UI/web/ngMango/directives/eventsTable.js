@@ -108,7 +108,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
 
         $onInit() {
             Events.notificationManager.subscribe((event, mangoEvent) => {
-                if (event.name === 'ACKNOWLEDGED' && this.acknowledged !== true && this.totalUnAcknowledged > 0 && this.eventMatchesFilters(mangoEvent, true)) {
+                if (event.name === 'ACKNOWLEDGED' && (!this.acknowledged || this.acknowledged === 'any') &&
+                        this.totalUnAcknowledged > 0 && this.eventMatchesFilters(mangoEvent, true)) {
                     this.totalUnAcknowledged--;
                 }
                 
