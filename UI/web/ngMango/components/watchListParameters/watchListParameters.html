@@ -57,59 +57,59 @@
   <md-input-container ng-if="param.type === 'deviceName' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="true" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
-        contains="$ctrl.interpolateOption(param.options.contains)" ng-if="!param.options.multiple"></ma-device-name-list>
+        auto-init="false" show-clear="true" data-source-xid="$ctrl.getParamOption(param, 'dataSourceXid')"
+        contains="$ctrl.getParamOption(param, 'contains')" ng-if="!param.options.multiple"></ma-device-name-list>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="true" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
-        contains="$ctrl.interpolateOption(param.options.contains)" ng-if="param.options.multiple" multiple></ma-device-name-list>
+        auto-init="false" show-clear="true" data-source-xid="$ctrl.getParamOption(param, 'dataSourceXid')"
+        contains="$ctrl.getParamOption(param, 'contains')" ng-if="param.options.multiple" multiple></ma-device-name-list>
   </md-input-container>
   <ma-filtering-device-name-list ng-if="param.type === 'deviceName' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
+      auto-init="false" data-source-xid="$ctrl.getParamOption(param, 'dataSourceXid')"
       label-text="param.label">
   </ma-filtering-device-name-list>
   <md-input-container ng-if="param.type === 'dataSource' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-data-source-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value.xid'}"
-        auto-init="true" show-clear="true"
-        query="$ctrl.createDsQuery(param.options)">
+        auto-init="false" show-clear="true"
+        query="$ctrl.getDsQuery(param)">
     </ma-data-source-list>
   </md-input-container>
   <ma-filtering-data-source-list ng-if="param.type === 'dataSource' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="true" query="$ctrl.createDsQuery(param.options)"
+      auto-init="false" query="$ctrl.getDsQuery(param)"
       label-text="param.label">
   </ma-filtering-data-source-list>
   <md-input-container ng-if="param.type === 'pointHierarchy' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-point-hierarchy-select ng-if="!param.options.multiple" show-clear="true"
         ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value.id'}"
-        path="$ctrl.interpolateOption(param.options.path)"
+        path="$ctrl.getParamOption(param, 'path')"
         subfolders-only="param.options.subfoldersOnly"
         max-depth="param.options.maxDepth"
         points="false"
-        name-matches="{{$ctrl.interpolateOption(param.options.nameMatches)}}"
-        replace-name="{{$ctrl.interpolateOption(param.options.replaceName)}}"
+        name-matches="{{$ctrl.getParamOption(param, 'nameMatches')}}"
+        replace-name="{{$ctrl.getParamOption(param, 'replaceName')}}"
         unique-names="param.options.uniqueNames"></ma-point-hierarchy-select>
     <ma-point-hierarchy-select ng-if="param.options.multiple" multiple show-clear="true"
         ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value.id'}"
-        path="$ctrl.interpolateOption(param.options.path)"
+        path="$ctrl.getParamOption(param, 'path')"
         subfolders-only="param.options.subfoldersOnly"
         max-depth="param.options.maxDepth"
         points="false"
-        name-matches="{{$ctrl.interpolateOption(param.options.nameMatches)}}"
-        replace-name="{{$ctrl.interpolateOption(param.options.replaceName)}}"
+        name-matches="{{$ctrl.getParamOption(param, 'nameMatches')}}"
+        replace-name="{{$ctrl.getParamOption(param, 'replaceName')}}"
         unique-names="param.options.uniqueNames"></ma-point-hierarchy-select>
   </md-input-container>
   <ma-filtering-point-hierarchy-select ng-if="param.type === 'pointHierarchy' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="true"
-      path="$ctrl.interpolateOption(param.options.path)"
+      auto-init="false"
+      path="$ctrl.getParamOption(param, 'path')"
       subfolders-only="param.options.subfoldersOnly"
       max-depth="param.options.maxDepth"
       points="false"
-      name-matches="{{$ctrl.interpolateOption(param.options.nameMatches)}}"
-      replace-name="{{$ctrl.interpolateOption(param.options.replaceName)}}"
+      name-matches="{{$ctrl.getParamOption(param, 'nameMatches')}}"
+      replace-name="{{$ctrl.getParamOption(param, 'replaceName')}}"
       unique-names="param.options.uniqueNames"
       label-text="param.label">
   </ma-filtering-point-hierarchy-select>
@@ -117,6 +117,7 @@
       ng-model="$ctrl.parameters[param.name]"
       ng-change="$ctrl.inputChanged()"
       key="{{param.options.tagKey}}"
+      restrictions="$ctrl.getParamOption(param,'restrictions')"
       select-multiple="param.options.multiple">
   </ma-data-point-tag-select>
 </div>

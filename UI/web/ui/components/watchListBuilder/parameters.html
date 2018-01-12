@@ -13,7 +13,7 @@
   
   <p ng-if="!$ctrl.watchlist.params.length" ma-tr="ui.app.noParameters"></p>
   
-  <div ng-repeat="param in $ctrl.watchlist.params" layout="column" class="watchlist-parameter-row" >
+  <div ng-repeat="param in $ctrl.watchlist.params" layout="column" class="watchlist-parameter-row">
     <div layout="row" layout-align="start center" class="watchlist-parameter-main">
       <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.deleteParamValues(param); $ctrl.watchlist.params.splice($index, 1);"><md-icon>clear</md-icon></md-button>
       <md-input-container flex>

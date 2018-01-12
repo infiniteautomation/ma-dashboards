@@ -120,9 +120,14 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
     };
     
     WatchList.prototype.sanitizeParamValues = function() {
-        if (this.data && this.data.paramValues) {
-            for (var paramName in this.data.paramValues) {
-                var paramValue = this.data.paramValues[paramName];
+        if (!this.data || !this.data.paramValues) return;
+        
+        Object.keys(this.data.paramValues).forEach(paramName => {
+            const wlParam = this.params.find(p => p.name === paramName);
+            if (!wlParam) {
+                delete this.data.paramValues[paramName];
+            } else {
+                const paramValue = this.data.paramValues[paramName];
                 if (paramValue != null && typeof paramValue === 'object' && (paramValue.id != null || paramValue.xid)) {
                     this.data.paramValues[paramName] = {
                         id: paramValue.id,
@@ -131,7 +136,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
                     };
                 }
             }
-        }
+        });
     };
     
     var saveMethod = WatchList.prototype.$save;
