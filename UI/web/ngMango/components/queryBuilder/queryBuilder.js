@@ -107,25 +107,18 @@ var queryBuilder = function queryBuilder(cssInjector) {
     }.bind(this);
     
     this.updateModel = function() {
-        var node = angular.copy(this.rootQueryNode);
-        var sortNode, limitNode;
-        
-        if (this.sort[this.sort.length-1].prop) {
-            this.sort.push({desc: false});
-        }
-        for (var i = 0; i < this.sort.length - 1; i++) {
-            if (!this.sort[i].prop)
-                this.sort.splice(i--, 1);
-        }
-        if (this.sort.length > 1) {
-            var sortArgs = [];
-            for (i = 0; i < this.sort.length - 1; i++) {
-                var sortProp = this.sort[i];
-                sortArgs.push((sortProp.desc ? '-' : '') + sortProp.prop);
-            }
+        let node = angular.copy(this.rootQueryNode);
+        let sortNode, limitNode;
+
+        this.sort = this.sort.filter(s => !!s.prop);
+        if (this.sort.length) {
+            const sortArgs = this.sort.map(s => {
+                return (s.desc ? '-' : '') + s.prop;
+            });
             sortNode = new query.Query({name: 'sort', args: sortArgs});
         }
-        
+        this.sort.push({desc: false});
+
         if (this.limit.length) {
             if (this.limit.length > 1 && this.limit[1] === null) {
                 this.limit.pop();

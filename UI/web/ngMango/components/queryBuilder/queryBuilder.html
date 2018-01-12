@@ -8,12 +8,12 @@
   </md-toolbar>
   <md-card-content>
     <div layout="row" layout-align="start center" layout-wrap flex>
-      <div class="query-sort-property" layout="row" layout-align="start center" flex="35" flex-gt-sm="35" flex-gt-md="30" flex-gt-lg="20" ng-repeat="sort in $ctrl.sort track by $index">
+      <div class="query-sort-property" layout="row" layout-align="start center" flex="35" flex-gt-sm="35" flex-gt-md="30" flex-gt-lg="20" ng-repeat="sort in $ctrl.sort">
         <md-input-container flex>
           <label ma-tr="ui.app.sort" ma-tr-args="[$index+1]"></label>
           <md-select ng-model="sort.prop" ng-change="$ctrl.updateModel()">
             <md-option ng-value="undefined"></md-option>
-            <md-option ng-repeat="prop in $ctrl.properties track by prop.value" ng-value="prop.value" ng-bind="prop.label"></md-option>
+            <md-option ng-repeat="prop in $ctrl.properties track by prop.value" ng-value="prop.value" ma-tr="{{prop.labelTr}}"></md-option>
           </md-select>
         </md-input-container>
         <md-button class="md-icon-button" ng-click="sort.desc = !sort.desc; $ctrl.updateModel()">
