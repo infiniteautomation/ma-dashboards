@@ -12,7 +12,7 @@
         <md-input-container flex>
           <label ma-tr="ui.app.sort" ma-tr-args="[$index+1]"></label>
           <md-select ng-model="sort.prop" ng-change="$ctrl.updateModel()">
-            <md-option ng-value="undefined"></md-option>
+            <md-option ng-value="undefined" md-option-empty><em ma-tr="ui.app.clear"></em></md-option>
             <md-option ng-repeat="prop in $ctrl.properties track by prop.value" ng-value="prop.value" ma-tr="{{prop.labelTr}}"></md-option>
           </md-select>
         </md-input-container>
