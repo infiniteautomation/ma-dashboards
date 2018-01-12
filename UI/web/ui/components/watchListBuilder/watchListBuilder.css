@@ -68,11 +68,6 @@ ma-ui-watch-list-builder .watchlist-parameter-options {
   padding: 5px 10px 10px 10px;
 }
 
-ma-ui-watch-list-builder .watchlist-parameter-options > div > md-input-container {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-ma-ui-watch-list-builder .watchlist-parameter-options > div > md-checkbox {
+ma-ui-watch-list-builder .watchlist-parameter-options > div md-checkbox {
   margin: 0 12px 0 12px;
 }

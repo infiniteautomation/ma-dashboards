@@ -1,5 +1,5 @@
 <md-input-container flex>
-    <label ma-tr="ui.components.selectTagKey"></label>
+    <label ng-transclude="label"><span ma-tr="ui.components.selectTagKey"></span></label>
     <md-select ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()">
         <md-option ng-repeat="value in $ctrl.values" ng-value="value">
             <span ng-bind="value"></span>

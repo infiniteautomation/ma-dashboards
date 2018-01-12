@@ -52,6 +52,9 @@ return {
     require: {
         ngModelCtrl: 'ngModel'
     },
+    transclude: {
+        label: '?maLabel'
+    },
     templateUrl: require.toUrl('./dataPointTagKeySelect.html'),
     controller: DataPointTagKeySelectController,
     designerInfo: {

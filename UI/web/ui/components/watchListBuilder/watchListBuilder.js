@@ -507,6 +507,12 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         }
         delete this.watchListParams[param.name];
     };
+    
+    $ctrl.deleteProperty = function(obj, propertyName) {
+        if (typeof obj === 'object' && typeof propertyName === 'string') {
+            delete obj[propertyName];
+        }
+    };
 }
 
 return {

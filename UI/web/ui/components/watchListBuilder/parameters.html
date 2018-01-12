@@ -152,9 +152,25 @@
         <md-checkbox ng-model="param.options.subfoldersOnly"><span ma-tr="ui.app.subFoldersOnly"></span></md-checkbox>
         <md-checkbox ng-model="param.options.filtering" ng-change="param.options.multiple = undefined"><span ma-tr="ui.app.filteringSelect"></span></md-checkbox>
       </div>
-      <div ng-if="param.type === 'tagValue'" layout="row" layout-align="end center">
-        <md-checkbox ng-model="param.options.multiple" ng-change="$ctrl.deleteParamValues(param)"><span ma-tr="ui.app.selectMultiple"></span></md-checkbox>
-        <ma-data-point-tag-key-select ng-model="param.options.tagKey"></ma-data-point-tag-key-select>
+      <div ng-if="param.type === 'tagValue'">
+        <div layout="row" layout-align="end center">
+            <md-checkbox ng-model="param.options.multiple" ng-change="$ctrl.deleteParamValues(param)"><span ma-tr="ui.app.selectMultiple"></span></md-checkbox>
+            <ma-data-point-tag-key-select ng-model="param.options.tagKey"></ma-data-point-tag-key-select>
+        </div>
+        <div layout="column" layout-align="start end">
+            <md-button class="md-raised" ng-click="param.options.restrictions[''] = ''" ma-tr="ui.components.addRestriction"></md-button>
+            <div ng-repeat="(key, value) in param.options.restrictions" layout="row" layout-align="end center">
+                <md-button class="md-icon-button" ng-click="$ctrl.deleteProperty(param.options.restrictions, key)"><md-icon>clear</md-icon></md-button>
+                <ma-data-point-tag-key-select ng-init="tagKey = key" ng-model="tagKey"
+                    ng-change="param.options.restrictions[tagKey] = value; $ctrl.deleteProperty(param.options.restrictions, key)">
+                        <ma-label ma-tr="ui.components.restrictTagKey"></ma-label>
+                </ma-data-point-tag-key-select>
+                <md-input-container>
+                    <label ma-tr="ui.components.restrictTagKeyTo" ma-tr-args="[key]"></label>
+                    <input ng-model="param.options.restrictions[key]">
+                </md-input-container>
+            </div>
+        </div>
       </div>
     </div>
   </div>
