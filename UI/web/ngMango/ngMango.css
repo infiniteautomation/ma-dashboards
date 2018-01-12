@@ -417,6 +417,7 @@ ma-svg {
 ma-data-point-tag-select,
 ma-data-point-tag-key-select {
 	display: flex;
+	width: 150px;
 }
 
 ma-gauge-chart .amchart,

@@ -80,7 +80,7 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         if (!$ctrl.watchlist.params) {
             $ctrl.watchlist.params = [];
         }
-        $ctrl.watchlist.params.push({type:'input'});
+        $ctrl.watchlist.params.push({type:'input', options: {}});
     };
     
     $ctrl.isError = function isError(name) {
@@ -106,6 +106,11 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         });
         
         if ($ctrl.watchListForm.$valid) {
+            if ($ctrl.watchlist.type === 'query') {
+                if (!$ctrl.watchlist.data) $ctrl.watchlist.data = {};
+                $ctrl.watchlist.data.paramValues = Object.assign({}, $ctrl.watchListParams);
+            }
+            
             $ctrl.watchlist[saveMethod]().then(function(wl) {
                 $ctrl.selectedWatchlist = wl;
                 $ctrl.watchlistSelected();
@@ -249,6 +254,11 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         $ctrl.total = defaultTotal;
         $ctrl.queryPromise = null;
         $ctrl.folders = [];
+
+        $ctrl.watchListParams = {};
+        if (watchlist.data && watchlist.data.paramValues) {
+            Object.assign($ctrl.watchListParams, watchlist.data.paramValues);
+        }
         
         $ctrl.clearSearch(false);
         
@@ -355,7 +365,7 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
         if ($ctrl.queryPreviewPromise && typeof $ctrl.queryPreviewPromise.cancel === 'function') {
             $ctrl.queryPreviewPromise.cancel();
         }
-        $ctrl.queryPreviewPromise = $ctrl.watchlist.getPoints().then(function(watchlistPoints) {
+        $ctrl.queryPreviewPromise = $ctrl.watchlist.getPoints($ctrl.watchListParams).then(function(watchlistPoints) {
             $ctrl.queryPreviewPoints = watchlistPoints;
             $ctrl.queryPreviewTable.total = watchlistPoints.length;
         }, function() {
@@ -475,6 +485,27 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
     // ensures that rows are re-rendered every time we update the table selections
     $ctrl.pointTrack = function(point) {
         return '' + $ctrl.tableUpdateCount + '_' + point.xid;
+    };
+    
+    $ctrl.paramTypeChanged = function(param) {
+        if (!param.options) {
+            param.options = {};
+        }
+
+        this.deleteParamValues(param);
+
+        if (param && param.type === 'tagValue') {
+            if (!param.options.tagKey) {
+                param.options.tagKey = 'device';
+            }
+        }
+    };
+    
+    $ctrl.deleteParamValues = function(param) {
+        if (this.watchlist.data && this.watchlist.data.paramValues) {
+            delete this.watchlist.data.paramValues[param.name];
+        }
+        delete this.watchListParams[param.name];
     };
 }
 

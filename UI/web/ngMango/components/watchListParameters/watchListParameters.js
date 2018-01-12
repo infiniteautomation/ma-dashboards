@@ -40,6 +40,15 @@ function WatchListParametersController($parse, $interpolate, Util) {
     this.createDsQuery = this.Util.memoize(this.createDsQuery.bind(this));
 }
 
+WatchListParametersController.prototype.$onInit = function() {
+    if (this.ngModelCtrl) {
+        this.ngModelCtrl.$render = () => {
+            this.parameters = this.ngModelCtrl.$viewValue;
+            this.prevParameters = angular.copy(this.parameters);
+        };
+    }
+};
+
 WatchListParametersController.prototype.$onChanges = function(changes) {
     if (!this.ngModelCtrl && changes.watchList && this.watchList) {
         if (!this.parameters) {
@@ -54,19 +63,18 @@ WatchListParametersController.prototype.$onChanges = function(changes) {
     	        }
     	    });
     	}
-    }
-};
-
-WatchListParametersController.prototype.$onInit = function() {
-    if (this.ngModelCtrl) {
-        this.ngModelCtrl.$render = () => {
-            this.parameters = this.ngModelCtrl.$viewValue;
-        };
+    	
+        this.prevParameters = angular.copy(this.parameters);
     }
 };
 
 WatchListParametersController.prototype.inputChanged = function inputChanged() {
+    if (angular.equals(this.parameters, this.prevParameters)) {
+        return;
+    }
+    
     this.parameters = Object.assign({}, this.parameters);
+    this.prevParameters = angular.copy(this.parameters);
     
 	if (this.watchList && this.parametersChanged) {
 		this.parametersChanged({$parameters: this.parameters});

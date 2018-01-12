@@ -1,78 +1,78 @@
-watch-list-builder md-toolbar.md-table-toolbar form > input:focus {
+ma-ui-watch-list-builder md-toolbar.md-table-toolbar form > input:focus {
     outline: none;
 }
 
-watch-list-builder md-toolbar.md-table-toolbar form > input {
+ma-ui-watch-list-builder md-toolbar.md-table-toolbar form > input {
     width: 100%;
     margin-left: 16px;
     border: none;
 }
 
-watch-list-builder md-toolbar.ng-animate {
+ma-ui-watch-list-builder md-toolbar.ng-animate {
      transition: none;
 }
 
-watch-list-builder md-toolbar.md-table-toolbar em {
+ma-ui-watch-list-builder md-toolbar.md-table-toolbar em {
     font-size:1.6rem;
 }
 
-watch-list-builder md-card {
+ma-ui-watch-list-builder md-card {
   margin: 16px 0;
 }
 
-watch-list-builder md-card.query-group > md-card-content,
-watch-list-builder md-card md-card-content.no-padding {
+ma-ui-watch-list-builder md-card.query-group > md-card-content,
+ma-ui-watch-list-builder md-card md-card-content.no-padding {
   padding: 0;
 }
 
-watch-list-builder ma-query-group md-card.query-group-depth-0 {
+ma-ui-watch-list-builder ma-query-group md-card.query-group-depth-0 {
   margin: 0;
 }
 
-watch-list-builder ma-query-group .button-group {
+ma-ui-watch-list-builder ma-query-group .button-group {
   margin: 0;
 }
 
-watch-list-builder ma-query-group .button-group .md-button {
+ma-ui-watch-list-builder ma-query-group .button-group .md-button {
   font-weight: bold;
 }
 
-watch-list-builder .watchlist-settings md-radio-group {
+ma-ui-watch-list-builder .watchlist-settings md-radio-group {
   margin-bottom: 18px;
 }
 
-watch-list-builder .watchlist-selected-tools {
+ma-ui-watch-list-builder .watchlist-selected-tools {
   position: relative;
 }
 
-watch-list-builder .watchlist-selected-delete {
+ma-ui-watch-list-builder .watchlist-selected-delete {
   position: absolute;
   left: 0;
   top: 0;
 }
 
-watch-list-builder .watchlist-select-table > div.md-padding > md-input-container {
+ma-ui-watch-list-builder .watchlist-select-table > div.md-padding > md-input-container {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-watch-list-builder .watchlist-select-table > div.md-padding > .md-icon-button {
+ma-ui-watch-list-builder .watchlist-select-table > div.md-padding > .md-icon-button {
   margin-left: -40px;
 }
 
-watch-list-builder .watchlist-parameter-row .md-icon-button {
+ma-ui-watch-list-builder .watchlist-parameter-row .md-icon-button {
   margin: 0;
 }
 
-watch-list-builder .watchlist-parameter-options {
+ma-ui-watch-list-builder .watchlist-parameter-options {
   padding: 5px 10px 10px 10px;
 }
 
-watch-list-builder .watchlist-parameter-options > div > md-input-container {
+ma-ui-watch-list-builder .watchlist-parameter-options > div > md-input-container {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-watch-list-builder .watchlist-parameter-options > div > md-checkbox {
-  margin: 0 5px 0 5px;
+ma-ui-watch-list-builder .watchlist-parameter-options > div > md-checkbox {
+  margin: 0 12px 0 12px;
 }
