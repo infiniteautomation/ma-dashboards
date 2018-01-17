@@ -39,11 +39,6 @@ var vendor = module + '/vendor';
 requirejs.config({
     // set the base url to the old base prefixed by the mango server base url
     baseUrl: mangoUrl + requirejs.toUrl(''),
-    map: {
-        '*': {
-            ngMango: 'ngMango-3.3'
-        }
-    },
     urlArgs: function(id, url) {
         if (url.indexOf('?v=') > 0 || url.indexOf('&v=') > 0 || url.match(/^(https?:)?\/\//i)) {
             return '';
@@ -53,10 +48,7 @@ requirejs.config({
     paths : {
         'modules': '/modules',
         'mangoUIModule' : module,
-        'ngMango-3.0' : module + '/ngMango-3.0',
-        'ngMango-3.1' : module + '/ngMango-3.1',
-        'ngMango-3.2' : module + '/ngMango-3.2',
-        'ngMango-3.3' : module + '/ngMango',
+        'ngMango' : module + '/ngMango',
         'maUi' : module + '/ui',
         'angular' : vendor + '/angular/angular',
         'angular-ui-router' : vendor + '/angular-ui-router/angular-ui-router',

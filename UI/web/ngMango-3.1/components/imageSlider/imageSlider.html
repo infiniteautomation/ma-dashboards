@@ -1,6 +1,0 @@
-<div layout="column">
-  <img ng-src="{{$ctrl.currentValue.value}}" alt="{{$ctrl.currentValue.annotation||''}}">
-  <div>
-    <md-slider flex md-discrete ng-model="$ctrl.imageIndex" ng-change="$ctrl.sliderChanged()" step="1" min="0" max="{{$ctrl.pointValues.length-1}}"></md-slider>
-  </div>
-</div>
