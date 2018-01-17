@@ -36,6 +36,7 @@ class UserAuthTokensController {
     }
 
     $onChanges(changes) {
+        delete this.authToken;
     }
 
     expiryDateChanged() {
