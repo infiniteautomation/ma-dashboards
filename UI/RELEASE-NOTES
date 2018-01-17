@@ -1,5 +1,58 @@
+*Version 3.3.1*
+* Remove old ngMango-3.x folders
+* Fix release notes
+
 *Version 3.3.0*
 * Upgraded to work with core version 3.3.x
+* Add ma-data-point-tag-select and ma-data-point-tag-keys-select components
+* Use data points v2 REST controller
+* Ability to choose date/time format and timezone when downloading point values from watchlist page
+* Update to AngularJS 1.6.7 and remove use of ocLazyLoad
+* Load the correct AngularJS locale file from a CDN according to the user's locale 
+* Ability to use refence ids in event table
+* Add zip upload and download to the file browser
+* Remove timeout for upload and download of files from file browser
+* Allow overwriting files from file browser
+* Can now reset a user's password via the login page (sends a password reset email)
+* Dont query for event comments for every event on the events table
+* Better display of error and messages from the upgrade/install modules websocket
+* Fixes to upgrade page around dependencies
+* AngularJS component documentation updated
+* Various other small bugfixes
+
+*Version 3.2.10*
+* Fix ma-point-value so it displays as inline element again and absolutely position the popover
+
+*Version 3.2.9*
+* Update JavaScript libraries
+* Ability to use refence ids in event table
+* Copy unreliable attribute and rendered value to point from websocket update
+
+*Version 3.2.8*
+* Use Websocket to get event/alarm updates on ma-point-value
+* Limit number of point values when using simplify
+* Fix error popup when number of point values are limited
+* Add component for getting/changing point event detectors (ma-point-event-detector)
+* Dont cache point hierarchy REST calls
+* Fix for JSON store service for when using paths
+
+*Version 3.2.7*
+* Hide point hierarchy folders that contain no points
+* Fix for displaying point value on point where no point locator is present
+* Fixes to configuration import dialog
+* Fixes to RQL point queries
+* Don't timeout waiting for point value download on watchlist page
+* Bug fix to ma-map component
+* Ability to display a status point icon/color for ma-point-hierarchy-browser
+
+*Version 3.2.6*
+* Experimental simplify rollup type, reduces number of point values for charting
+* Data point details page layout fixes
+* Data point details page supports image data points better
+* Improve filtering point list
+* Bug fixes for file store browser
+* Fix some bugs in point hierarchy components
+* Improve support for data paths in JSON store components and services
 
 *Version 3.2.5*
 * Better display of error messages on the upgrade page
