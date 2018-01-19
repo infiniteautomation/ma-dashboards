@@ -130,7 +130,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             this.loggedIn = false;
             this.apiUp = false;
             // setup a faster check while API is down
-            if (this.interval !== this.reconnectDelay) {
+            if (this.enabled && this.interval !== this.reconnectDelay) {
                 this.setInterval(this.reconnectDelay);
             }
             break;
@@ -140,7 +140,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             this.loggedIn = false;
             this.apiUp = true;
             // consider API up but not logged in as a failure but stop the faster retry
-            if (this.interval !== this.timeout) {
+            if (this.enabled && this.interval !== this.timeout) {
                 this.setInterval(this.timeout);
             }
             break;
@@ -156,7 +156,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             this.loggedIn = true;
             this.apiUp = true;
             // stop the faster retry
-            if (this.interval !== this.timeout) {
+            if (this.enabled && this.interval !== this.timeout) {
                 this.setInterval(this.timeout);
             }
             break;
