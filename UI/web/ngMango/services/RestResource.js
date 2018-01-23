@@ -8,18 +8,28 @@ define(['angular'], function(angular) {
 
 restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUT'];
 function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUT) {
+    
+    const idProperty = 'xid';
+    const originalIdProperty = typeof Symbol === 'function' ? Symbol('originalId') : 'originalId';
 
     class RestResource {
         constructor(properties) {
             Object.assign(this, angular.copy(this.constructor.defaultProperties), properties);
             
-            if (this.xid) {
-                this.originalXid = this.xid;
+            const itemId = this[this.constructor.idProperty];
+            if (itemId) {
+                // item already has an ID store it in a private property so we can use it later when updating the item
+                this[originalIdProperty] = itemId;
             } else {
-                this.xid = (this.constructor.xidPrefix || '') + maUtil.uuid();
+                // new item, generate a new id for the item
+                this[this.constructor.idProperty] = (this.constructor.xidPrefix || '') + maUtil.uuid();
             }
             
             this.initialize('constructor');
+        }
+
+        static get idProperty() {
+            return idProperty;
         }
         
         static get timeout() {
@@ -74,9 +84,9 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return builder;
         }
 
-        static get(xid, opts) {
+        static get(id, opts) {
             const item = Object.create(this.prototype);
-            item.originalXid = xid;
+            item[originalIdProperty] = id;
             
             return item.get(opts).then(item => {
                 return new this(item);
@@ -94,28 +104,31 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         }
         
         isNew() {
-            return this.originalXid == null;
+            return this.hasOwnProperty(originalIdProperty);
+        }
+        
+        getOriginalId() {
+            return this[originalIdProperty];
         }
 
         get(opts = {}) {
             return this.constructor.http({
-                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this.originalXid),
+                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this[originalIdProperty]),
                 method: 'GET',
                 params: opts.params
             }, opts).then(response => {
-                angular.copy(response.data, this);
+                this.itemUpdated(response.data);
                 this.initialize('get');
-                this.originalXid = this.xid;
                 return this;
             });
         }
         
         save(opts = {}) {
-            const originalXid = this.originalXid;
+            const originalId = this[originalIdProperty];
             
             let url, method;
-            if (originalXid) {
-                url = this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this.originalXid);
+            if (originalId) {
+                url = this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(originalId);
                 method = 'PUT';
             } else {
                 url = this.constructor.baseUrl;
@@ -128,27 +141,31 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 data: this,
                 params: opts.params
             }, opts).then(response => {
-                const saveType = originalXid ? 'update' : 'create';
-                
-                angular.copy(response.data, this);
+                const saveType = originalId ? 'update' : 'create';
+
+                this.itemUpdated(response.data);
                 this.initialize(saveType);
-                this.originalXid = this.xid;
-                this.constructor.notify(saveType, this, originalXid);
+                this.constructor.notify(saveType, this, originalId);
                 return this;
             });
         }
         
+        itemUpdated(item) {
+            angular.copy(item, this);
+            this[originalIdProperty] = this[this.constructor.idProperty];
+        }
+        
         delete(opts = {}) {
-            const originalXid = this.originalXid;
+            const originalId = this[originalIdProperty];
             
             return this.constructor.http({
-                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this.originalXid),
+                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(originalId),
                 method: 'DELETE',
                 params: opts.params
             }, opts).then(response => {
-                angular.copy(response.data, this);
+                this.itemUpdated(response.data);
                 this.initialize('delete');
-                this.constructor.notify('delete', this, originalXid);
+                this.constructor.notify('delete', this, originalId);
                 return this;
             });
         }
@@ -206,7 +223,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             
             this.enabled = enable;
             
-            if (this.originalXid) {
+            if (this[originalIdProperty]) {
                 this.save();
             }
         }

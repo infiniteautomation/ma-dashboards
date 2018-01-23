@@ -37,7 +37,7 @@ class EventHandlerPageController {
     }
     
     eventHandlerChanged() {
-        this.$state.params.xid = this.eventHandler.originalXid || null;
+        this.$state.params.xid = this.eventHandler.getOriginalId() || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
 }

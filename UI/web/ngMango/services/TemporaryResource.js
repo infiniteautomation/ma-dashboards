@@ -6,6 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
+/**
+ * Old temporary resource service, use maTemporaryRestResource instead.
+ * This service is used for Haystack history import and SNMP walk. 
+ */
+
 temporaryResourceFactory.$inject = ['$q', '$http', '$timeout'];
 function temporaryResourceFactory($q, $http, $timeout) {
 

@@ -41,6 +41,7 @@ define(['./services/Point',
         './services/server',
         './services/TemporaryResource',
         './services/RestResource',
+        './services/TemporaryRestResource',
         './services/RqlBuilder',
         './services/math',
         './services/EventDetector',
@@ -60,8 +61,8 @@ define(['./services/Point',
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory,
         PermissionsFactory, systemSettingsProvider, systemStatusFactory,
         ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
-        serverFactory, temporaryResourceFactory, restResourceFactory, rqlBuilderFactory, mathFactory, maEventDetector, maEventHandler, maDataPointTags,
-        dateFilterFactory, trFilterFactory, angular, require, rqlQuery) {
+        serverFactory, temporaryResourceFactory, restResourceFactory, temporaryRestResourceFactory, rqlBuilderFactory, mathFactory, maEventDetector,
+        maEventHandler, maDataPointTags, dateFilterFactory, trFilterFactory, angular, require, rqlQuery) {
 'use strict';
 
 // rql library doesn't encode null correctly (it encodes as string:null)
@@ -120,6 +121,7 @@ ngMangoServices.factory('maSystemActions', systemActionsFactory);
 ngMangoServices.factory('maServer', serverFactory);
 ngMangoServices.factory('maTemporaryResource', temporaryResourceFactory);
 ngMangoServices.factory('maRestResource', restResourceFactory);
+ngMangoServices.factory('maTemporaryRestResource', temporaryRestResourceFactory);
 ngMangoServices.factory('maRqlBuilder', rqlBuilderFactory);
 ngMangoServices.factory('maMath', mathFactory);
 ngMangoServices.factory('maEventDetector', maEventDetector);

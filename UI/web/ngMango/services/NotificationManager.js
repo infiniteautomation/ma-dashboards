@@ -7,8 +7,8 @@
 define(['angular'], function(angular) {
 'use strict';
 
-NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT'];
-function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
+NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', '$q'];
+function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q) {
 
 	//const READY_STATE_CONNECTING = 0;
 	const READY_STATE_OPEN = 1;
@@ -31,7 +31,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
 
             $rootScope.$on('maWatchdog', (event, current, previous) => {
                 if (current.status === 'LOGGED_IN' && this.listeners > 0) {
-                    this.openSocket();
+                    this.openSocket().catch(angular.noop);
                 } else {
                     this.closeSocket();
                 }
@@ -39,13 +39,19 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
         }
 
         openSocket() {
-            if (this.socket || !this.webSocketUrl) {
-                return;
-            }
-
             if (!('WebSocket' in window)) {
-                throw new Error('WebSocket not supported');
+                return $q.reject('WebSocket not supported in this browser');
             }
+            if (!this.webSocketUrl) {
+                return $q.reject('No websocket URL');
+            }
+            
+            // socket already open
+            if (this.socket) {
+                return $q.resolve(this.socket);
+            }
+            
+            const socketDeferred = $q.defer();
 
             let host = document.location.host;
             let protocol = document.location.protocol;
@@ -75,6 +81,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
                 delete this.connectTimer;
                 this.onOpen();
                 this.notify('webSocketOpen');
+                socketDeferred.resolve(this.socket);
             };
             
             socket.onmessage = (event) => {
@@ -93,7 +100,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
                 }
             };
 
-            return socket;
+            return socketDeferred.promise;
         }
         
         onOpen() {
@@ -101,15 +108,19 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
         }
         
         /**
-         * default notifier for CRUD type websocket payloads, they have a action and object property
+         * Processes the websocket payload and calls notify() with the appropriate event type
          */
         notifyFromPayload(payload) {
             if (payload.object) {
+                // default notifier for CRUD type websocket payloads, they have a action and object property
                 const eventType = actionNameToEventType[payload.action] || payload.action;
                 if (eventType) {
                     const item = this.transformObject(payload.object);
                     this.notify(eventType, item);
                 }
+            } else if (typeof payload.status === 'string') {
+                // notifier for temporary resources
+                this.notify(payload.status, payload);
             }
         }
 
@@ -140,7 +151,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT) {
 
         subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete']) {
             if (this.listeners === 0) {
-                this.openSocket();
+                this.openSocket().catch(angular.noop);
             }
             this.listeners++;
 

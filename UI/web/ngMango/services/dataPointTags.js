@@ -6,8 +6,15 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-dataPointTagsFactory.$inject = ['$http', 'maRqlBuilder'];
-function dataPointTagsFactory($http, RqlBuilder) {
+dataPointTagsFactory.$inject = ['$http', 'maRqlBuilder', 'maTemporaryRestResource'];
+function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
+
+    class BulkTagsTemporaryResource extends TemporaryRestResource {
+        static get baseUrl() {
+            return '/rest/v2/data-point-tags/bulk';
+        }
+    }
+
     class DataPointTags {
         keys() {
             return $http.get('/rest/v2/data-point-tags/keys').then(response => response.data);
@@ -49,8 +56,13 @@ function dataPointTagsFactory($http, RqlBuilder) {
                 }
             }).then(response => response.data);
         }
+        
+        bulk(options, $scope) {
+            const tmpResource = new BulkTagsTemporaryResource(options);
+            return tmpResource.start($scope);
+        }
     }
-    
+
     return new DataPointTags();
 }
 
