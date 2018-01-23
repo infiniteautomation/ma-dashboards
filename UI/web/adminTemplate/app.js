@@ -201,13 +201,12 @@ myAdminApp.run([
     '$mdSidenav',
     '$mdMedia',
     '$mdColors',
-    '$mdThemeCss',
     'maCssInjector',
     '$mdToast',
     'maUser',
     'ADMIN_SETTINGS',
     'maTranslate',
-function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $mdThemeCss, cssInjector,
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, cssInjector,
         $mdToast, User, ADMIN_SETTINGS, Translate) {
 
     // add the current user to the root scope
@@ -218,16 +217,14 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     $rootScope.Math = Math;
     
     // inserts a style tag to style <a> tags with accent color
-    if ($mdThemeCss) {
-        var acc = $mdColors.getThemeColor('accent-500-1.0');
-        var accT = $mdColors.getThemeColor('accent-500-0.2');
-        var accD = $mdColors.getThemeColor('accent-700-1.0');
-        var styleContent =
-            'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
-            'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
-        
-        cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
-    }
+    var acc = $mdColors.getThemeColor('accent-500-1.0');
+    var accT = $mdColors.getThemeColor('accent-500-0.2');
+    var accD = $mdColors.getThemeColor('accent-700-1.0');
+    var styleContent =
+        'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
+        'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
+    
+    cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
 
     // redirect to login page if we can't retrieve the current user when changing state
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
