@@ -201,8 +201,15 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="ui.
 /*
  * Provides service for getting list of points and create, update, delete
  */
-PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser'];
-function PointFactory($resource, $http, $timeout, Util, User) {
+PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource'];
+function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource) {
+    
+    class BulkDataPointTemporaryResource extends TemporaryRestResource {
+        static get baseUrl() {
+            return '/rest/v2/data-points/bulk';
+        }
+    }
+    
     var Point = $resource('/rest/v2/data-points/:xid', {
     		xid: '@xid'
     	}, {
@@ -409,6 +416,11 @@ function PointFactory($resource, $http, $timeout, Util, User) {
         case 'bar': return 'column';
         default: return type;
         }
+    };
+
+    Point.bulk = function bulk(options, $scope) {
+        const tmpResource = new BulkDataPointTemporaryResource(options);
+        return tmpResource.start($scope);
     };
     
     return Point;
