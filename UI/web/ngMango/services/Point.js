@@ -418,10 +418,7 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         }
     };
 
-    Point.bulk = function bulk(options, $scope) {
-        const tmpResource = new BulkDataPointTemporaryResource(options);
-        return tmpResource.start($scope);
-    };
+    Point.bulk = BulkDataPointTemporaryResource;
     
     return Point;
 }

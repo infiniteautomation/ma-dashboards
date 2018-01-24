@@ -16,11 +16,11 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
     }
 
     class DataPointTags {
-        keys() {
+        static keys() {
             return $http.get('/rest/v2/data-point-tags/keys').then(response => response.data);
         }
         
-        values(key, restrictions) {
+        static values(key, restrictions) {
             const rqlBuilder = new RqlBuilder();
             Object.keys(restrictions).forEach(key => {
                 let value = restrictions[key];
@@ -56,14 +56,11 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
                 }
             }).then(response => response.data);
         }
-        
-        bulk(options, $scope) {
-            const tmpResource = new BulkTagsTemporaryResource(options);
-            return tmpResource.start($scope);
-        }
     }
+    
+    DataPointTags.bulk = BulkTagsTemporaryResource;
 
-    return new DataPointTags();
+    return DataPointTags;
 }
 
 return dataPointTagsFactory;
