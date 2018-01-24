@@ -112,13 +112,17 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         }
 
         get(opts = {}) {
+            const originalId = this[originalIdProperty];
             return this.constructor.http({
-                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(this[originalIdProperty]),
+                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(originalId),
                 method: 'GET',
                 params: opts.params
             }, opts).then(response => {
                 this.itemUpdated(response.data);
                 this.initialize('get');
+                if (this.constructor.notifyUpdateOnGet) {
+                    this.constructor.notify('update', this, originalId);
+                }
                 return this;
             });
         }
