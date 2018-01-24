@@ -27,6 +27,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
         }
         
         itemUpdated(item) {
+            // only update if the new resource version is newer than what we already have
             if (this.resourceVersion == null || item.resourceVersion > this.resourceVersion) {
                 super.itemUpdated(item);
             }
@@ -51,7 +52,9 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                         deregister();
                         $timeout.cancel(timeoutPromise);
                     } else {
-                        tmpResourceDeferred.notify(this);
+                        // notify with a copy as the listener as the subscribe callback uses $applyAsync
+                        // resulting in a batch of messages being processed at once, we might want to see each progress message separately
+                        tmpResourceDeferred.notify(angular.copy(this));
                     }
                 }
             };
@@ -68,19 +71,15 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                     });
                 }, this.constructor.pollPeriod, false);
             };
-            
-            this.constructor.notificationManager.openSocket().then(() => {
-                deregister = this.constructor.subscribe((event, item) => {
-                    if (item.id === this.id) {
-                        this.itemUpdated(item);
-                        notifyDeferred();
-                        
-                        if ($scope) {
-                            $scope.$apply();
-                        }
-                    }
-                }, null, ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR']);
-            }, angular.noop).then(() => {
+
+            deregister = this.constructor.subscribe((event, item) => {
+                if (item.id === this.id) {
+                    this.itemUpdated(item);
+                    notifyDeferred();
+                }
+            }, $scope, ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR']);
+
+            this.constructor.notificationManager.openSocket().catch(angular.noop).then(() => {
                 return this.save();
             }).then(item => {
                 notifyDeferred();
@@ -98,7 +97,8 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
     }
 
     TemporaryRestResource.notificationManager.onOpen = function() {
-        this.sendMessage({
+        return this.sendRequest({
+            messageType: 'SUBSCRIPTION',
             ownResourcesOnly: true,
             statuses: ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR']
         });

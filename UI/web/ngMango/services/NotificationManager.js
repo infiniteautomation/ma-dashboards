@@ -7,8 +7,8 @@
 define(['angular'], function(angular) {
 'use strict';
 
-NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', '$q'];
-function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q) {
+NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', '$q', '$timeout'];
+function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $timeout) {
 
 	//const READY_STATE_CONNECTING = 0;
 	const READY_STATE_OPEN = 1;
@@ -28,6 +28,8 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q) {
             this.listeners = 0;
             this.eventScope = $rootScope.$new(true);
             this.eventScope.notificationManager = this;
+            this.pendingRequests = {};
+            this.sequenceNumber = 0;
 
             $rootScope.$on('maWatchdog', (event, current, previous) => {
                 if (current.status === 'LOGGED_IN' && this.listeners > 0) {
@@ -39,6 +41,10 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q) {
         }
 
         openSocket() {
+            // socket already open
+            if (this.socketDeferred) {
+                return this.socketDeferred.promise;
+            }
             if (!('WebSocket' in window)) {
                 return $q.reject('WebSocket not supported in this browser');
             }
@@ -46,12 +52,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q) {
                 return $q.reject('No websocket URL');
             }
             
-            // socket already open
-            if (this.socket) {
-                return $q.resolve(this.socket);
-            }
-            
-            const socketDeferred = $q.defer();
+            const socketDeferred = this.socketDeferred = $q.defer();
 
             let host = document.location.host;
             let protocol = document.location.protocol;
@@ -70,63 +71,102 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q) {
 
             const socket = this.socket = new WebSocket(protocol + '//' + host + this.webSocketUrl);
 
-            const closeSocket = () => this.closeSocket();
+            this.connectTimer = $timeout(() => {
+                socketDeferred.reject('Timeout opening socket');
+                this.closeSocket();
+            }, MA_TIMEOUT);
             
-            this.connectTimer = setTimeout(closeSocket, MA_TIMEOUT);
-            socket.onclose = closeSocket;
-            socket.onerror = closeSocket;
+            socket.onclose = () => {
+                socketDeferred.reject('Socket closed');
+                this.closeSocket();
+            };
+            
+            socket.onerror = () => {
+                socketDeferred.reject('Socket error');
+                this.closeSocket();
+            };
 
             socket.onopen = () => {
-                clearTimeout(this.connectTimer);
+                $timeout.cancel(this.connectTimer);
                 delete this.connectTimer;
-                this.onOpen();
-                this.notify('webSocketOpen');
-                socketDeferred.resolve(this.socket);
+                
+                this.pendingRequests = {};
+                this.sequenceNumber = 0;
+                
+                $q.resolve(this.onOpen()).then(() => {
+                    this.notify('webSocketOpen', this);
+                    socketDeferred.resolve(this.socket);
+                }).then(null, error => {
+                    this.closeSocket();
+                });
             };
             
             socket.onmessage = (event) => {
                 try {
                     const message = angular.fromJson(event.data);
-                    if (message.status !== 'OK') {
-                        const error = new Error('Web socket status != OK');
+                    
+                    if (message.status === 'ERROR') {
+                        const error = new Error('Web socket status ERROR');
                         error.message = message;
                         throw error;
+                    } else if (message.status === 'OK') {
+                        const payload = message.payload;
+                        this.notify('webSocketMessage', payload, this);
+                        this.notifyFromPayload(payload);
+                    } else if (typeof message.messageType === 'string') {
+                        this.messageReceived(message);
                     }
-                    const payload = message.payload;
-                    this.notify('webSocketMessage', payload);
-                    this.notifyFromPayload(payload);
                 } catch (e) {
-                    this.notify('webSocketError', e);
+                    this.notify('webSocketError', e, this);
                 }
             };
 
             return socketDeferred.promise;
         }
-        
+
         onOpen() {
             // do nothing
         }
         
         /**
-         * Processes the websocket payload and calls notify() with the appropriate event type
+         * Processes the websocket payload and calls notify() with the appropriate event type.
+         * Default notifier for CRUD type websocket payloads, they have a action and object property.
          */
         notifyFromPayload(payload) {
-            if (payload.object) {
-                // default notifier for CRUD type websocket payloads, they have a action and object property
+            if (typeof payload.action === 'string' && payload.object != null) {
                 const eventType = actionNameToEventType[payload.action] || payload.action;
                 if (eventType) {
                     const item = this.transformObject(payload.object);
-                    this.notify(eventType, item);
+                    this.notify(eventType, item, this);
                 }
-            } else if (typeof payload.status === 'string') {
-                // notifier for temporary resources
-                this.notify(payload.status, payload);
+            }
+        }
+        
+        /**
+         * Processes a V2 websocket message and calls notify()
+         */
+        messageReceived(message) {
+            if (message.messageType === 'RESPONSE') {
+                if (isFinite(message.sequenceNumber)) {
+                    const request = this.pendingRequests[message.sequenceNumber];
+                    if (request != null) {
+                        request.deferred.resolve(message.payload);
+                        $timeout.cancel(request.timeoutPromise);
+                    }
+                    delete this.pendingRequests[message.sequenceNumber];
+                }
+            } else if (message.messageType === 'NOTIFICATION') {
+                this.notify(message.notificationType, message.payload, this);
             }
         }
 
         closeSocket() {
+            if (this.socketDeferred) {
+                this.socketDeferred.reject('Socket closed');
+                delete this.socketDeferred;
+            }
             if (this.connectTimer) {
-                clearTimeout(this.connectTimer);
+                $timeout.cancel(this.connectTimer);
                 delete this.connectTimer;
             }
             if (this.socket) {
@@ -137,6 +177,13 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q) {
                 this.socket.close();
                 delete this.socket;
             }
+            
+            Object.keys(this.pendingRequests).forEach(request => {
+                request.deferred.reject('Socket closed');
+                $timeout.cancel(request.timeoutPromise);
+            });
+            this.pendingRequests = {};
+            this.sequenceNumber = 0;
         }
         
         socketConnected() {
@@ -146,6 +193,27 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q) {
         sendMessage(message) {
             if (this.socketConnected()) {
                 this.socket.send(angular.toJson(message));
+            }
+        }
+        
+        sendRequest(message, timeout = MA_TIMEOUT) {
+            if (this.socketConnected()) {
+                const deferred = $q.defer();
+                const timeoutPromise = $timeout(() => {
+                    deferred.reject('Timeout');
+                }, timeout);
+                const sequenceNumber = this.sequenceNumber++;
+                
+                message.sequenceNumber = sequenceNumber;
+                this.pendingRequests[sequenceNumber] = {
+                    deferred,
+                    timeoutPromise
+                };
+                
+                this.socket.send(angular.toJson(message));
+                return deferred.promise;
+            } else {
+                return $q.reject('Socket is not open');
             }
         }
 
