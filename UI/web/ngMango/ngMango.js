@@ -102,6 +102,7 @@ define(['./ngMangoServices',
         './components/getService/getService',
         './components/pointEventDetector/pointEventDetector',
         './components/userAuthTokens/userAuthTokens',
+        './components/bulkDataPointJobs/bulkDataPointJobs',
         'ng-map',
         './animations/slideUp',
         'angular',
@@ -120,7 +121,7 @@ define(['./ngMangoServices',
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
         maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, eventHandlerEditor, eventAudio, dataPointTagSelect, dataPointTagKeySelect,
-        getService, pointEventDetector, userAuthTokens,
+        getService, pointEventDetector, userAuthTokens, bulkDataPointJobs,
         ngMap, slideUp, angular, require, moment) {
 'use strict';
 /**
@@ -231,6 +232,7 @@ ngMango.component('maDataPointTagKeySelect', dataPointTagKeySelect);
 ngMango.component('maGetService', getService);
 ngMango.component('maPointEventDetector', pointEventDetector);
 ngMango.component('maUserAuthTokens', userAuthTokens);
+ngMango.component('maBulkDataPointJobs', bulkDataPointJobs);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default

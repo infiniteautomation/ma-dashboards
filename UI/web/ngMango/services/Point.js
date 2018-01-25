@@ -208,6 +208,9 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         static get baseUrl() {
             return '/rest/v2/data-points/bulk';
         }
+        static get resourceType() {
+            return 'BULK_DATA_POINT';
+        }
     }
     
     var Point = $resource('/rest/v2/data-points/:xid', {

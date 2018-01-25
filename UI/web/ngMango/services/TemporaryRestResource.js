@@ -110,15 +110,26 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             });
         }
         
+        static getSubscription() {
+            const sub = {
+                messageType: 'SUBSCRIPTION',
+                ownResourcesOnly: true,
+                showIncompleteResult: false,
+                anyStatus: false,
+                statuses: ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR'],
+                anyResourceType: false,
+                resourceTypes: []
+            };
+            if (this.resourceType) {
+                sub.resourceTypes.push(this.resourceType);
+            }
+        }
+        
         static createNotificationManager() {
             const notificationManager = super.createNotificationManager();
+            const tmpResource = this;
             notificationManager.onOpen = function() {
-                return this.sendRequest({
-                    messageType: 'SUBSCRIPTION',
-                    ownResourcesOnly: true,
-                    showIncompleteResult: false,
-                    statuses: ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR']
-                });
+                return this.sendRequest(tmpResource.getSubscription());
             };
             return notificationManager;
         }
