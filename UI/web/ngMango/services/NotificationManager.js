@@ -156,7 +156,8 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                     delete this.pendingRequests[message.sequenceNumber];
                 }
             } else if (message.messageType === 'NOTIFICATION') {
-                this.notify(message.notificationType, message.payload, this);
+                const item = this.transformObject(message.payload);
+                this.notify(message.notificationType, item, this);
             }
         }
 

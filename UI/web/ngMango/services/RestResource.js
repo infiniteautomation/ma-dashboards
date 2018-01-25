@@ -11,6 +11,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
     
     const idProperty = 'xid';
     const originalIdProperty = typeof Symbol === 'function' ? Symbol('originalId') : 'originalId';
+    const notificationManagerProperty = typeof Symbol === 'function' ? Symbol('notificationManager') : '_notificationManager';
 
     class RestResource {
         constructor(properties) {
@@ -35,20 +36,27 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         static get timeout() {
             return MA_TIMEOUT;
         }
-
-        static get notificationManager() {
-            if (!this._notificationManager) {
-                this._notificationManager = new NotificationManager({
-                    webSocketUrl: this.webSocketUrl,
-                    transformObject: (...args) => {
-                        return new this(...args);
-                    }
-                });
-            }
-
-            return this._notificationManager;
+        
+        static createNotificationManager() {
+            return new NotificationManager({
+                webSocketUrl: this.webSocketUrl,
+                transformObject: (...args) => {
+                    return new this(...args);
+                }
+            });
         }
         
+        static get notificationManager() {
+            let notificationManager = this[notificationManagerProperty];
+            
+            if (!notificationManager) {
+                notificationManager = this.createNotificationManager();
+                this[notificationManagerProperty] = notificationManager;
+            }
+            
+            return notificationManager;
+        }
+
         static list(opts) {
             return this.query(null, opts);
         }

@@ -91,16 +91,38 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             
             return tmpResourceDeferred.promise;
         }
+        
+        cancel(opts = {}) {
+            const originalId = this.getOriginalId();
+            
+            return this.constructor.http({
+                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(originalId),
+                method: 'PUT',
+                data: {
+                    status: 'CANCELLED'
+                },
+                params: opts.params
+            }, opts).then(response => {
+                this.itemUpdated(response.data);
+                this.initialize('update');
+                this.constructor.notify('update', this, originalId);
+                return this;
+            });
+        }
+        
+        static createNotificationManager() {
+            const notificationManager = super.createNotificationManager();
+            notificationManager.onOpen = function() {
+                return this.sendRequest({
+                    messageType: 'SUBSCRIPTION',
+                    ownResourcesOnly: true,
+                    showIncompleteResult: false,
+                    statuses: ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR']
+                });
+            };
+            return notificationManager;
+        }
     }
-
-    TemporaryRestResource.notificationManager.onOpen = function() {
-        return this.sendRequest({
-            messageType: 'SUBSCRIPTION',
-            ownResourcesOnly: true,
-            showIncompleteResult: false,
-            statuses: ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR']
-        });
-    };
 
     return TemporaryRestResource;
 }
