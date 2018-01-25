@@ -97,6 +97,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
         return this.sendRequest({
             messageType: 'SUBSCRIPTION',
             ownResourcesOnly: true,
+            showIncompleteResult: false,
             statuses: ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR']
         });
     };
