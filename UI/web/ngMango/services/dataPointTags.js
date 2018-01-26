@@ -13,6 +13,9 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
         static get baseUrl() {
             return '/rest/v2/data-point-tags/bulk';
         }
+        static get resourceType() {
+            return 'BULK_DATA_POINT_TAGS';
+        }
     }
 
     class DataPointTags {

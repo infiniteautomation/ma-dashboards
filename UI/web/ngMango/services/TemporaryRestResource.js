@@ -111,7 +111,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
         }
         
         static getSubscription() {
-            const sub = {
+            const subscription = {
                 messageType: 'SUBSCRIPTION',
                 ownResourcesOnly: true,
                 showIncompleteResult: false,
@@ -121,8 +121,9 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                 resourceTypes: []
             };
             if (this.resourceType) {
-                sub.resourceTypes.push(this.resourceType);
+                subscription.resourceTypes.push(this.resourceType);
             }
+            return subscription;
         }
         
         static createNotificationManager() {
