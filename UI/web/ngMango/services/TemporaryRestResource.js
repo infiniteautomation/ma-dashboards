@@ -38,7 +38,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
         }
         
         isComplete() {
-            return !(this.status === 'SCHEDULED' || this.status === 'RUNNING');
+            return !(this.status === 'VIRGIN' || this.status === 'SCHEDULED' || this.status === 'RUNNING');
         }
 
         start($scope) {
@@ -116,7 +116,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                 ownResourcesOnly: true,
                 showIncompleteResult: false,
                 anyStatus: false,
-                statuses: ['SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR'],
+                statuses: ['VIRGIN', 'SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR'],
                 anyResourceType: false,
                 resourceTypes: []
             };
