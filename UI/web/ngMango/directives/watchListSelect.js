@@ -8,7 +8,7 @@
   * @name ngMango.directive:maWatchListSelect
   * @restrict E
   * @description
-  * `<ma-watch-list-select watch-list="myWatchlist"></ma-watch-list-select>`
+  * `<ma-watch-list-select ng-model="myWatchlist"></ma-watch-list-select>`
   * - The `<ma-watch-list-select>` component can be used to load watch list data onto a custom page.
   * - Can be combined with `<ma-watch-list-chart>` to display the watch list's custom chart designed on the watch list page.
   *
@@ -27,7 +27,7 @@
   *     e.g. `on-points-change="$ctrl.pointsChanged($points)"`)
   * 
   * @usage
-  * <ma-watch-list-select no-select="true" watch-list-xid="{{watchlistXID}}" watch-list="myWatchlist"></ma-watch-list-select>
+  * <ma-watch-list-select no-select="true" watch-list-xid="{{watchlistXID}}" ng-model="myWatchlist"></ma-watch-list-select>
   *
   */
 
