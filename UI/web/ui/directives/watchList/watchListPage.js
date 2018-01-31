@@ -41,7 +41,10 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
 
     this.selectFirstWatchList = false;
     this.$mdMedia = $mdMedia;
-    this.numberOfRows = $mdMedia('gt-sm') ? 200 : 25;
+    this.numberOfRows = $mdMedia('gt-sm') ? 100 : 25;
+    this.pageNumber = 1;
+    this.tableOrder = '';
+    
     this.downloadStatus = {};
     this.chartOptions = {
         selectedAxis: 'left',
@@ -221,7 +224,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             var dsQuery = new query.Query()
                 .eq('dataSourceXid', this.dataSource.xid)
                 .sort('name')
-                .limit(200);
+                .limit(1000);
 
             var watchList = new WatchList();
             watchList.isNew = true;
@@ -245,7 +248,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             var dnQuery = new query.Query()
                 .eq('deviceName', this.deviceName)
                 .sort('name')
-                .limit(200);
+                .limit(1000);
 
             var watchList = new WatchList();
             watchList.isNew = true;

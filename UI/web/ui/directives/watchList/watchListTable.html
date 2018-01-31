@@ -24,12 +24,12 @@
   class="parameter-inputs md-padding" layout layout-wrap>
 </ma-watch-list-parameters>
 
-<md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="myPage" md-total="{{$ctrl.points.length}}"></md-table-pagination>
+<md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination>
 
-<md-table-container ng-class="{'lg-screen': $ctrl.$mdMedia('gt-lg')}" ng-init="myPage=1; myOrder=''">
+<md-table-container ng-class="{'lg-screen': $ctrl.$mdMedia('gt-lg')}">
     <table md-table md-row-select multiple ng-model="$ctrl.selected"
             md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}" class="watch-list-table">
-        <thead md-head md-order="myOrder">
+        <thead md-head md-order="$ctrl.tableOrder">
             <tr md-row>
                 <th md-column ma-tr="ui.app.tools"></th>
                 <th md-column md-order-by="deviceName" ma-tr="ui.app.device"></th>
@@ -40,7 +40,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr ng-repeat="point in $ctrl.points | orderBy: myOrder | limitTo: $ctrl.numberOfRows: (myPage - 1) * $ctrl.numberOfRows"
+            <tr ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows"
                 md-select="point" md-row md-select-id="xid"
                 md-on-select="$ctrl.selectedPointsChanged"
                 md-on-deselect="$ctrl.selectedPointsChanged"
