@@ -47,6 +47,9 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             let timeoutPromise;
 
             const startTimeout = () => {
+                if (timeoutPromise) {
+                    $timeout.cancel(timeoutPromise);
+                }
                 timeoutPromise = $timeout(() => {
                     this.get().then(() => {
                         if (!this.isComplete()) {
@@ -72,6 +75,9 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                             // notify with a copy as the listener as the subscribe callback uses $applyAsync
                             // resulting in a batch of messages being processed at once, we might want to see each progress message separately
                             tmpResourceDeferred.notify(angular.copy(this));
+                            
+                            // cancel and restart the timer every time we get an update
+                            startTimeout();
                         }
                     }
                 }
@@ -114,7 +120,8 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             const subscription = {
                 messageType: 'SUBSCRIPTION',
                 ownResourcesOnly: true,
-                showIncompleteResult: false,
+                showResultWhenIncomplete: false,
+                showResultWhenComplete: true,
                 anyStatus: false,
                 statuses: ['VIRGIN', 'SCHEDULED', 'RUNNING', 'TIMED_OUT', 'CANCELLED', 'SUCCESS', 'ERROR'],
                 anyResourceType: false,
