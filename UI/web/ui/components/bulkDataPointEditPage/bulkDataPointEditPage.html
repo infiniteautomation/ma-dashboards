@@ -11,10 +11,10 @@
 
 <div layout layout-align="start end">
     <md-checkbox aria-label="Select all" class="ma-select-all-checkbox" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
-            ng-disabled="$ctrl.bulkTaskPromise" md-indeterminate="$ctrl.selectAllIndeterminate">
+            ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" md-indeterminate="$ctrl.selectAllIndeterminate">
     </md-checkbox>
     <div flex></div>
-    <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="$ctrl.pageNumber" md-total="{{$ctrl.points.length}}"></md-table-pagination>
+    <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination>
 </div>
 <md-table-container>
     <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.pointsPromise" class="ma-no-select-all">
@@ -35,7 +35,7 @@
         </thead>
         <tbody md-body>
             <tr md-row ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows track by point.xid"
-                    ng-disabled="$ctrl.bulkTaskPromise"
+                    ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise"
                     md-select="point"
                     md-select-id="xid"
                     md-on-select="$ctrl.selectedPointsChangedBound"

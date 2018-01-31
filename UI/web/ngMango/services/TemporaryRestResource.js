@@ -21,11 +21,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
         static get webSocketUrl() {
             return '/rest/v2/websocket/temporary-resources';
         }
-        
-        static get pollPeriod() {
-            return 1000;
-        }
-        
+
         static get notifyUpdateOnGet() {
             return true;
         }
@@ -45,6 +41,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             const tmpResourceDeferred = $q.defer();
             let lastSeenVersion = -1;
             let timeoutPromise;
+            let pollPeriod = this.constructor.pollPeriodOpenSocket || 10000;
 
             const startTimeout = () => {
                 if (timeoutPromise) {
@@ -58,7 +55,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                     }, error => {
                         tmpResourceDeferred.reject(error);
                     });
-                }, this.constructor.pollPeriod, false);
+                }, pollPeriod, false);
             };
 
             const deregister = this.constructor.subscribe((event, item) => {
@@ -72,18 +69,21 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                             deregister();
                             $timeout.cancel(timeoutPromise);
                         } else {
+                            // cancel and restart the timer every time we get an update
+                            startTimeout();
+                            
                             // notify with a copy as the listener as the subscribe callback uses $applyAsync
                             // resulting in a batch of messages being processed at once, we might want to see each progress message separately
                             tmpResourceDeferred.notify(angular.copy(this));
-                            
-                            // cancel and restart the timer every time we get an update
-                            startTimeout();
                         }
                     }
                 }
             }, $scope);
 
-            this.constructor.notificationManager.openSocket().catch(angular.noop).then(() => {
+            this.constructor.notificationManager.openSocket().then(null, error => {
+                // set the poll period faster if the websocket cant be opened
+                pollPeriod = this.constructor.pollPeriod || 1000;
+            }).then(() => {
                 return this.save();
             }).then(item => {
                 if (!this.isComplete()) {

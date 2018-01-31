@@ -73,8 +73,17 @@ class BulkDataPointEditPageController {
     watchListChanged() {
         if (!this.watchList) return;
         
+        this.selectedPoints = [];
+        this.selectAll = false;
+        this.selectAllIndeterminate = false;
+
         this.pointsPromise = this.watchList.getPoints().then(points => {
             this.points = points;
+        }, () => {
+            // TODO toast error
+            this.points = [];
+        }).finally(() => {
+            delete this.pointsPromise;
         });
     }
     
