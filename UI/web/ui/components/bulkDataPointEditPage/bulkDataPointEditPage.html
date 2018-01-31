@@ -1,0 +1,58 @@
+<ma-watch-list-select ng-model="$ctrl.watchList" ng-change="$ctrl.watchListChanged()" watch-list-xid="WL_ac76beaa-10f4-40f0-b714-d0fda1c1e801"></ma-watch-list-select>
+
+<ma-bulk-data-point-tasks all-users="true"></ma-bulk-data-point-tasks>
+
+<md-input-container>
+    <label>Set permission</label>
+    <input ng-model="$ctrl.setPermission">
+</md-input-container>
+
+<md-button ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length">Start</md-button>
+
+<div layout layout-align="start end">
+    <md-checkbox aria-label="Select all" class="ma-select-all-checkbox" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
+            ng-disabled="$ctrl.bulkTaskPromise" md-indeterminate="$ctrl.selectAllIndeterminate">
+    </md-checkbox>
+    <div flex></div>
+    <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="$ctrl.pageNumber" md-total="{{$ctrl.points.length}}"></md-table-pagination>
+</div>
+<md-table-container>
+    <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.pointsPromise" class="ma-no-select-all">
+        <thead md-head md-order="$ctrl.tableOrder">
+            <tr md-row>
+                <th md-column md-order-by="deviceName">Device</th>
+                <th md-column md-order-by="name">Name</th>
+                <th md-column md-order-by="xid">XID</th>
+                <th md-column>Tags</th>
+                <th md-column md-order-by="readPermission">Read permission</th>
+                <th md-column md-order-by="setPermission">Set permission</th>
+                <th md-column md-order-by="unit">Unit</th>
+                <th md-column md-order-by="chartColor">Chart color</th>
+                <th md-column md-order-by="plotType">Plot type</th>
+                <th md-column md-order-by="rollup">Rollup</th>
+                <th md-column md-order-by="templateXid">Template XID</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows track by point.xid"
+                    ng-disabled="$ctrl.bulkTaskPromise"
+                    md-select="point"
+                    md-select-id="xid"
+                    md-on-select="$ctrl.selectedPointsChangedBound"
+                    md-on-deselect="$ctrl.selectedPointsChangedBound"
+                    md-colors="{background: $ctrl.results[$index].error ? 'warn' : 'background'}">
+                <td md-cell ng-bind="point.deviceName"></td>
+                <td md-cell ng-bind="point.name"></td>
+                <td md-cell ng-bind="point.xid"></td>
+                <td md-cell ng-bind="point.tags | json"></td>
+                <td md-cell ng-bind="point.readPermission"></td>
+                <td md-cell ng-bind="point.setPermission"></td>
+                <td md-cell ng-bind="point.unit"></td>
+                <td md-cell ng-bind="point.chartColor"></td>
+                <td md-cell ng-bind="point.plotType"></td>
+                <td md-cell ng-bind="point.rollup"></td>
+                <td md-cell ng-bind="point.templateXid"></td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>

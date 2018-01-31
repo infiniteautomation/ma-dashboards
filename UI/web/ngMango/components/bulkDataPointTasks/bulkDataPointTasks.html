@@ -1,0 +1,11 @@
+<div ng-repeat="item in $ctrl.items track by item.id" layout layout-align="start center" md-colors="{background: item.error ? 'warn' : 'background'}">
+    <div ng-bind="item.id"></div>
+    <div ng-bind="item.username"></div>
+    <div ng-bind="item.status"></div>
+    <div flex layout="column" layout-align="start center">
+        <md-progress-linear md-mode="determinate" ng-value="item.progress"></md-progress-linear>
+        <div><span ng-bind="item.progress"></span>%</div>
+    </div>
+    <md-button class="md-raised md-warn" ng-if="item.isComplete()" ng-click="item.delete()"><md-icon>delete</md-icon> <span ma-tr="common.delete"></span></md-button>
+    <md-button class="md-raised md-warn" ng-if="!item.isComplete()" ng-click="item.cancel()"><md-icon>cancel</md-icon> <span ma-tr="common.cancel"></span></md-button>
+</div>

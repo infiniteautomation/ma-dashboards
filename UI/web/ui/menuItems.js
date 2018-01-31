@@ -787,6 +787,23 @@ return [
         permission: 'superadmin',
         menuHidden: true
     },
+    {
+        name: 'ui.settings.bulkDataPointEdit',
+        url: '/bulk-data-point-edit',
+        template: '<ma-ui-bulk-data-point-edit-page></ma-ui-bulk-data-point-edit-page>',
+        menuTr: 'ui.app.bulkDataPointEdit',
+        menuIcon: 'fitness_center',
+        permission: 'superadmin',
+        resolve: {
+            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
+                return maRequireQ(['./components/bulkDataPointEditPage/bulkDataPointEditPage'], function (bulkDataPointEditPage) {
+                    angular.module('maUiBulkDataPointEditState', [])
+                        .component('maUiBulkDataPointEditPage', bulkDataPointEditPage);
+                    $injector.loadNewModules(['maUiBulkDataPointEditState']);
+                });
+            }]
+        }
+    },
 //    {
 //        name: 'ui.settings.eventHandlers',
 //        url: '/event-handlers/{xid}',

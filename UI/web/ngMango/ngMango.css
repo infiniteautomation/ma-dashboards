@@ -410,7 +410,8 @@ ma-indicator,
 ma-switch-img,
 ma-serial-chart,
 ma-watch-list-chart,
-ma-svg {
+ma-svg,
+ma-bulk-data-point-tasks {
   display: block;
 }
 
@@ -831,4 +832,17 @@ ma-query-predicate .ma-query-predicate-operation {
 
 ma-query-predicate ma-data-point-tag-key-select {
 	width: 120px;
+}
+
+table.md-table.ma-no-select-all th.md-column.md-checkbox-column > md-checkbox {
+	display: none;
+}
+
+md-checkbox.ma-no-margin-checkbox {
+	margin: 0;
+}
+
+md-checkbox.ma-select-all-checkbox,
+md-checkbox.ma-select-all-checkbox:last-of-type {
+	margin: 0 0 -40px 24px;
 }
