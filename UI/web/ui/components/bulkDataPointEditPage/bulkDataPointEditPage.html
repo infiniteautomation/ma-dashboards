@@ -2,12 +2,41 @@
 
 <ma-bulk-data-point-tasks all-users="true"></ma-bulk-data-point-tasks>
 
+<div>
+    <md-input-container>
+        <label>Set permission</label>
+        <input ng-model="$ctrl.setPermission" ng-change="$ctrl.setSetPermission()">
+    </md-input-container>
+    <md-input-container>
+        <label>Tag val</label>
+        <input ng-model="$ctrl.tagVal">
+    </md-input-container>
+    
+    <md-button class="md-raised" ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody">Start</md-button>
+</div>
+
 <md-input-container>
-    <label>Set permission</label>
-    <input ng-model="$ctrl.setPermission">
+    <label>Select columns</label>
+    <md-select multiple="true" ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}">
+        <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column" ng-disabled="column.disabled"><span ng-bind="column.label"></span></md-option>
+    </md-select>
 </md-input-container>
 
-<md-button ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length">Start</md-button>
+<md-input-container>
+    <label>Select tag columns</label>
+    <md-select multiple="true" ng-model="$ctrl.selectedTags" ng-model-options="{trackBy: '$value.name'}">
+        <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
+    </md-select>
+</md-input-container>
+
+<div>
+    <md-input-container>
+        <label>Tag column</label>
+        <input ng-model="$ctrl.tagColumnToAdd">
+    </md-input-container>
+    
+    <md-button class="md-raised" ng-click="$ctrl.addTagColumn($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">Add tag column</md-button>
+</div>
 
 <div layout layout-align="start end">
     <md-checkbox aria-label="Select all" class="ma-select-all-checkbox" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
@@ -20,17 +49,14 @@
     <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.pointsPromise" class="ma-no-select-all">
         <thead md-head md-order="$ctrl.tableOrder">
             <tr md-row>
-                <th md-column md-order-by="deviceName">Device</th>
-                <th md-column md-order-by="name">Name</th>
-                <th md-column md-order-by="xid">XID</th>
-                <th md-column>Tags</th>
-                <th md-column md-order-by="readPermission">Read permission</th>
-                <th md-column md-order-by="setPermission">Set permission</th>
-                <th md-column md-order-by="unit">Unit</th>
-                <th md-column md-order-by="chartColor">Chart color</th>
-                <th md-column md-order-by="plotType">Plot type</th>
-                <th md-column md-order-by="rollup">Rollup</th>
-                <th md-column md-order-by="templateXid">Template XID</th>
+                <th ng-repeat="column in $ctrl.selectedColumns track by column.name" md-column md-order-by="{{column.sortable ? column.name : ''}}">
+                    <span ng-bind="column.label"></span>
+                </th>
+                <th ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-column>
+                    <span ng-bind="tag.label"></span>
+                    <md-button class="md-icon-button" ng-click="$ctrl.setTag(tag)"><md-icon>edit</md-icon></md-button>
+                    <md-button class="md-icon-button" ng-click="$ctrl.removeTag(tag)"><md-icon>delete</md-icon></md-button>
+                </th>
             </tr>
         </thead>
         <tbody md-body>
@@ -41,17 +67,8 @@
                     md-on-select="$ctrl.selectedPointsChangedBound"
                     md-on-deselect="$ctrl.selectedPointsChangedBound"
                     md-colors="{background: $ctrl.results[$index].error ? 'warn' : 'background'}">
-                <td md-cell ng-bind="point.deviceName"></td>
-                <td md-cell ng-bind="point.name"></td>
-                <td md-cell ng-bind="point.xid"></td>
-                <td md-cell ng-bind="point.tags | json"></td>
-                <td md-cell ng-bind="point.readPermission"></td>
-                <td md-cell ng-bind="point.setPermission"></td>
-                <td md-cell ng-bind="point.unit"></td>
-                <td md-cell ng-bind="point.chartColor"></td>
-                <td md-cell ng-bind="point.plotType"></td>
-                <td md-cell ng-bind="point.rollup"></td>
-                <td md-cell ng-bind="point.templateXid"></td>
+                <td ng-repeat="column in $ctrl.selectedColumns track by column.name" md-cell ng-bind="point[column.name]"></td>
+                <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell ng-bind="point.tags[tag.name]"></td>
             </tr>
         </tbody>
     </table>
