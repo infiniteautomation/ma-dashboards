@@ -12,7 +12,7 @@
         <input ng-model="$ctrl.tagVal">
     </md-input-container>
     
-    <md-button class="md-raised" ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody">Start</md-button>
+    <md-button class="md-raised" ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody || $ctrl.bulkTaskPromise || $ctrl.pointsPromise">Start</md-button>
 </div>
 
 <md-input-container>
