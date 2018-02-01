@@ -6,36 +6,46 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
+const selectedProperty = typeof Symbol === 'function' ? Symbol('selected') : '___selected___';
+const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error___';
+
 class BulkDataPointEditPageController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maPoint', 'maDataPointTags']; }
-    constructor(maPoint, maDataPointTags) {
+    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate']; }
+    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
+        this.maDialogHelper = maDialogHelper;
+        this.maTranslate = maTranslate;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
         this.tableOrder = 'name';
 
         this.columns = [
-            {name: 'deviceName', label: 'Device'},
-            {name: 'name', label: 'Name'},
-            {name: 'readPermission', label: 'Read permission'},
-            {name: 'setPermission', label: 'Set permission'},
-            {name: 'unit', label: 'Unit'},
-            {name: 'chartColour', label: 'Chart color'},
-            {name: 'plotType', label: 'Plot type'},
-            {name: 'rollup', label: 'Rollup type'},
-            {name: 'templateXid', label: 'Template XID'}
+            {name: 'deviceName', label: 'common.deviceName'},
+            {name: 'name', label: 'common.name'},
+            {name: 'readPermission', label: 'pointEdit.props.permission.read'},
+            {name: 'setPermission', label: 'pointEdit.props.permission.set'},
+            {name: 'unit', label: 'pointEdit.props.unit'},
+            {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
+            {name: 'chartColour', label: 'pointEdit.props.chartColour'},
+            {name: 'plotType', label: 'pointEdit.plotType'},
+            {name: 'rollup', label: 'common.rollup'},
+            {name: 'templateXid', label: 'ui.app.templateXid'}
         ];
+
         this.selectedColumns = this.columns.slice();
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
 
-        this.selectedPointsChangedBound = (...args) => {
-            this.selectedPointsChanged(...args);
+        this.pointSelectedBound = (...args) => {
+            this.pointSelected(...args);
+        };
+        this.pointDeselectedBound = (...args) => {
+            this.pointDeselected(...args);
         };
         
         this.reset();
@@ -66,7 +76,7 @@ class BulkDataPointEditPageController {
         
         const option = {
             name: tagKey,
-            label: `Tag '${tagKey}'`
+            label: this.maTranslate.trSync('ui.app.tag', tagKey)
         };
         
         this.availableTags.push(option);
@@ -74,10 +84,18 @@ class BulkDataPointEditPageController {
         
         return option;
     }
-    
+
+    addTagColumn(event) {
+        this.maDialogHelper.prompt(event, 'ui.app.tagName').then(tagKey => {
+            const newOption = this.addTagToAvailable(tagKey);
+            if (!newOption) {
+                return;
+            }
+            this.selectedTags.push(newOption);
+        }, angular.noop);
+    }
+
     start(event) {
-        this.results = [];
-        
         const body = angular.copy(this.updateBody);
         if (!Object.keys(body.tags).length) {
             delete body.tags;
@@ -91,25 +109,32 @@ class BulkDataPointEditPageController {
         });
         
         this.bulkTaskPromise = this.bulkTask.start().then(resource => {
-            this.results = resource.result.responses;
-            this.results.forEach((result, i) => {
-                if (result.body) {
-                    angular.copy(result.body, this.selectedPoints[i]);
+            const responses = resource.result.responses;
+            responses.forEach((response, i) => {
+                const point = this.selectedPoints[i];
+                if (response.body) {
+                    angular.copy(response.body, point);
+                } else if (response.error) {
+                    point[errorProperty] = response.error;
                 }
             });
-            this.reset();
+            
+            // deselect the points without errors
+            for (let i = 0; i < this.selectedPoints.length;) {
+                const point = this.selectedPoints[i];
+                if (!point[errorProperty]) {
+                    this.selectedPoints.splice(i, 1);
+                    this.pointDeselected(point);
+                } else {
+                    i++;
+                }
+            }
+            
             //resource.delete();
         }, error => {
             console.error(error);
         }, resource => {
-            if (!resource.result || !resource.result.responses) return;
-            
-            this.results = resource.result.responses;
-            this.results.forEach((result, i) => {
-                if (result.body) {
-                    angular.copy(result.body, this.selectedPoints[i]);
-                }
-            });
+            // progress
         }).finally(() => {
             delete this.bulkTaskPromise;
         });
@@ -140,15 +165,18 @@ class BulkDataPointEditPageController {
         });
     }
     
-    addTagColumn() {
-        const tagKey = this.tagColumnToAdd;
-        delete this.tagColumnToAdd;
+    getPointError(point) {
+        return point && point[errorProperty];
+    }
 
-        const newOption = this.addTagToAvailable(tagKey);
-        if (!newOption) {
-            return;
-        }
-        this.selectedTags.push(newOption);
+    pointSelected(point) {
+        point[selectedProperty] = true;
+        this.selectedPointsChanged();
+    }
+    
+    pointDeselected(point) {
+        delete point[selectedProperty];
+        this.selectedPointsChanged();
     }
     
     selectedPointsChanged() {
@@ -170,6 +198,12 @@ class BulkDataPointEditPageController {
         }
         
         this.selectAllIndeterminate = false;
+        
+        if (this.selectAll) {
+            this.points.forEach(pt => pt[selectedProperty] = true);
+        } else {
+            this.points.forEach(pt => delete pt[selectedProperty]);
+        }
     }
 
     sortColumn(column) {
@@ -193,11 +227,11 @@ class BulkDataPointEditPageController {
     }
     
     columnModified(column, point) {
-        return this.selectedPoints.includes(point) && this.updateBody.hasOwnProperty(column.name);
+        return point[selectedProperty] && this.updateBody.hasOwnProperty(column.name);
     }
     
     tagModified(tag, point) {
-        return this.selectedPoints.includes(point) && this.updateBody.tags.hasOwnProperty(tag.name);
+        return point[selectedProperty] && this.updateBody.tags.hasOwnProperty(tag.name);
     }
     
     valueForColumn(column, point) {

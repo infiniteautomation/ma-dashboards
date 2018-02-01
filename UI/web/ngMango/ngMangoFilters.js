@@ -228,18 +228,15 @@ ngMangoFilters.filter('maFindBy', function () {
     };
 });
 
-ngMangoFilters.filter('maDisplayNull', function () {
-    return function(input) {
-        if (input === null) {
-            return '<null>';
-        } else if (input === undefined) {
-            return '<undefined>';
-        } else if (input === '') {
-            return '<empty>';
+ngMangoFilters.filter('maDisplayNull', ['maTranslate', function (maTranslate) {
+    const nullStr = maTranslate.trSync('ui.app.null');
+    return function(input, strict) {
+        if (!strict && input == null || input === null) {
+            return nullStr;
         }
         return input;
     };
-});
+}]);
 
 return ngMangoFilters;
 
