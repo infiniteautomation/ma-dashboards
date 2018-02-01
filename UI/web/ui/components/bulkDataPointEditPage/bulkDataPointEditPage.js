@@ -6,6 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
+const deleteTagSymbol = typeof Symbol === 'function' ? Symbol('deleteTag') : '___deleteTag___';
+
 class BulkDataPointEditPageController {
     static get $$ngIsClass() { return true; }
     
@@ -80,9 +82,25 @@ class BulkDataPointEditPageController {
         
         this.bulkTask = new this.maPoint.bulk({
             action: 'UPDATE',
-            body: this.updateBody,
             requests: this.selectedPoints.map(pt => {
-                return {xid: pt.xid};
+                const body = Object.assign({}, this.updateBody);
+                if (body.tags) {
+                    const tags = Object.assign({}, pt.tags);
+                    Object.keys(body.tags).forEach(tagKey => {
+                        const tagVal = body.tags[tagKey];
+                        if (tagVal === deleteTagSymbol || tagVal === '') {
+                            delete tags[tagKey];
+                        } else {
+                            tags[tagKey] = tagVal;
+                        }
+                    });
+                    body.tags = tags;
+                }
+                
+                return {
+                    xid: pt.xid,
+                    body
+                };
             })
         });
         
@@ -182,7 +200,7 @@ class BulkDataPointEditPageController {
     removeTag(tag) {
         if (!this.updateBody) this.updateBody = {};
         if (!this.updateBody.tags) this.updateBody.tags = {};
-        delete this.updateBody.tags[tag.name];
+        this.updateBody.tags[tag.name] = deleteTagSymbol;
     }
     
     setSetPermission() {
