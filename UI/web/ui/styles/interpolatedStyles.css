@@ -122,3 +122,7 @@ md-toast._md.md-accent .md-toast-content .md-button.md-highlight {
 .mdp-clock .mdp-clock-container > .mdp-pointer > .mdp-clock-selected {
 	background-color: {{getThemeColor('primary')}};
 }
+
+thead.ma-bulk-edit-controls tr.ma-bulk-edit-input-row th md-input-container label {
+	color: {{theme.isDark ? getThemeColor('background-A100-0.87') : getThemeColor('background-A200-0.87')}};
+}

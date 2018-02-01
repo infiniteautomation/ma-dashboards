@@ -9,11 +9,9 @@ define(['angular', 'require'], function(angular, require) {
 class BulkDataPointEditPageController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maPoint', '$timeout', '$scope', 'maDataPointTags']; }
-    constructor(maPoint, $timeout, $scope, maDataPointTags) {
+    static get $inject() { return ['maPoint', 'maDataPointTags']; }
+    constructor(maPoint, maDataPointTags) {
         this.maPoint = maPoint;
-        this.$timeout = $timeout;
-        this.$scope = $scope;
         this.maDataPointTags = maDataPointTags;
         
         this.numberOfRows = 25;
@@ -21,16 +19,15 @@ class BulkDataPointEditPageController {
         this.tableOrder = 'name';
 
         this.columns = [
-            {name: 'xid', label: 'XID', sortable: true, disabled: true},
-            {name: 'deviceName', label: 'Device', sortable: true, disabled: true},
-            {name: 'name', label: 'Name', sortable: true, disabled: true},
-            {name: 'readPermission', label: 'Read permission', sortable: true},
-            {name: 'setPermission', label: 'Set permission', sortable: true},
-            {name: 'unit', label: 'Unit', sortable: true},
-            {name: 'chartColor', label: 'Chart color', sortable: true},
-            {name: 'plotType', label: 'Plot type', sortable: true},
-            {name: 'rollup', label: 'Rollup type', sortable: true},
-            {name: 'templateXid', label: 'Template XID', sortable: true}
+            {name: 'deviceName', label: 'Device'},
+            {name: 'name', label: 'Name'},
+            {name: 'readPermission', label: 'Read permission'},
+            {name: 'setPermission', label: 'Set permission'},
+            {name: 'unit', label: 'Unit'},
+            {name: 'chartColour', label: 'Chart color'},
+            {name: 'plotType', label: 'Plot type'},
+            {name: 'rollup', label: 'Rollup type'},
+            {name: 'templateXid', label: 'Template XID'}
         ];
         this.selectedColumns = this.columns.slice();
         this.availableTagsByKey = {};
@@ -48,7 +45,10 @@ class BulkDataPointEditPageController {
         this.selectedPoints = [];
         this.selectAll = false;
         this.selectAllIndeterminate = false;
-        this.updateBody = null;
+        this.updateBody = {
+            tags: {},
+            mergeTags: true
+        };
     }
     
     
@@ -78,9 +78,15 @@ class BulkDataPointEditPageController {
     start(event) {
         this.results = [];
         
+        const body = angular.copy(this.updateBody);
+        if (!Object.keys(body.tags).length) {
+            delete body.tags;
+            delete body.mergeTags;
+        }
+        
         this.bulkTask = new this.maPoint.bulk({
             action: 'UPDATE',
-            body: this.updateBody,
+            body,
             requests: this.selectedPoints.map(pt => ({xid: pt.xid}))
         });
         
@@ -91,6 +97,8 @@ class BulkDataPointEditPageController {
                     angular.copy(result.body, this.selectedPoints[i]);
                 }
             });
+            this.reset();
+            //resource.delete();
         }, error => {
             console.error(error);
         }, resource => {
@@ -144,20 +152,13 @@ class BulkDataPointEditPageController {
     }
     
     selectedPointsChanged() {
-        if (this.selectedPointsTimeout) return;
-        
-        this.selectedPointsTimeout = this.$timeout(() => {
-            delete this.selectedPointsTimeout;
-            this.$scope.$apply(() => {
-                if (this.selectedPoints.length === this.points.length) {
-                    this.selectAll = true;
-                    this.selectAllIndeterminate = false;
-                } else {
-                    this.selectAll = false;
-                    this.selectAllIndeterminate = !!this.selectedPoints.length;
-                }
-            });
-        }, 100, false);
+        if (this.selectedPoints.length === this.points.length) {
+            this.selectAll = true;
+            this.selectAllIndeterminate = false;
+        } else {
+            this.selectAll = false;
+            this.selectAllIndeterminate = !!this.selectedPoints.length;
+        }
     }
     
     selectAllChanged() {
@@ -170,24 +171,49 @@ class BulkDataPointEditPageController {
         
         this.selectAllIndeterminate = false;
     }
+
+    sortColumn(column) {
+        if (column.name === this.tableOrder) {
+            this.tableOrder = '-' + column.name;
+        } else {
+            this.tableOrder = column.name;
+        }
+    }
     
-    setTag(tag) {
-        if (!this.updateBody) this.updateBody = {};
-        if (!this.updateBody.tags) this.updateBody.tags = {};
-        this.updateBody.mergeTags = true;
-        this.updateBody.tags[tag.name] = this.tagVal;
+    resetColumn(column) {
+        delete this.updateBody[column.name];
+    }
+    
+    resetTag(tag) {
+        delete this.updateBody.tags[tag.name];
     }
     
     removeTag(tag) {
-        if (!this.updateBody) this.updateBody = {};
-        if (!this.updateBody.tags) this.updateBody.tags = {};
-        this.updateBody.mergeTags = true;
         this.updateBody.tags[tag.name] = null;
     }
     
-    setSetPermission() {
-        if (!this.updateBody) this.updateBody = {};
-        this.updateBody.setPermission = this.setPermission;
+    columnModified(column, point) {
+        return this.selectedPoints.includes(point) && this.updateBody.hasOwnProperty(column.name);
+    }
+    
+    tagModified(tag, point) {
+        return this.selectedPoints.includes(point) && this.updateBody.tags.hasOwnProperty(tag.name);
+    }
+    
+    valueForColumn(column, point) {
+        if (this.columnModified(column, point)) {
+            return this.updateBody[column.name];
+        } else {
+            return point[column.name];
+        }
+    }
+    
+    valueForTag(tag, point) {
+        if (this.tagModified(tag, point)) {
+            return this.updateBody.tags[tag.name];
+        } else {
+            return point.tags[tag.name];
+        }
     }
 }
 

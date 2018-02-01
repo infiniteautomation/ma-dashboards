@@ -1451,3 +1451,53 @@ form:not(.ng-submitted) .ng-untouched ~ [ng-messages],
 ma-ui-state-params {
 	display: none;
 }
+
+/*
+ * Data point bulk edit page
+ */
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls tr th {
+	font-weight: normal;
+	text-align: left;
+	padding: 0 20px 0 0;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls tr.ma-bulk-edit-input-row th {
+	font-weight: bold;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th:first-of-type {
+	padding: 0 0 0 24px;
+	width: 20px;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th:first-of-type > md-checkbox {
+	margin: 0;
+	width: 20px;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th:nth-child(2) {
+	padding: 0 24px;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th:last-of-type {
+	padding: 0;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th .md-button.md-icon-button {
+	margin: 0 -3px;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th md-input-container {
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
+ma-ui-bulk-data-point-edit-page table .ma-empty-null {
+	opacity: 0.5;
+	font-style: italic;
+}
+
+ma-ui-bulk-data-point-edit-page table .ma-cell-modified {
+	background-color: rgba(255,0,0,0.3)
+}
