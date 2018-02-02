@@ -34,10 +34,16 @@
       <md-tab id="watchlist-query" ng-if="$ctrl.watchlist.type === 'query'">
         <md-tab-label><span ma-tr="ui.app.query"></span></md-tab-label>
         <md-tab-body>
-          <div ng-include="$ctrl.baseUrl('/query.html')" ng-hide="$ctrl.selectedTab === 0"></div>
+          <div ng-include="$ctrl.baseUrl('/query.html')"></div>
         </md-tab-body>
       </md-tab>
-      <md-tab id="watchlist-query-preview" ng-if="$ctrl.watchlist.type === 'query'">
+      <md-tab id="watchlist-tags" ng-if="$ctrl.watchlist.type === 'tags'">
+        <md-tab-label><span ma-tr="ui.app.selectTags"></span></md-tab-label>
+        <md-tab-body>
+          <div ng-include="$ctrl.baseUrl('/selectTags.html')"></div>
+        </md-tab-body>
+      </md-tab>
+      <md-tab id="watchlist-query-preview" ng-if="$ctrl.watchlist.type === 'query' || $ctrl.watchlist.type === 'tags'">
         <md-tab-label><span ma-tr="ui.app.queryPreview"></span>&nbsp;<span>(<span ng-bind="$ctrl.queryPreviewTable.total"></span>)</span></md-tab-label>
         <md-tab-body>
           <div ng-include="$ctrl.baseUrl('/queryPreview.html')"></div>

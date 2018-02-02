@@ -1,0 +1,29 @@
+<div class="md-padding watchlist-select-tags" layout="column" ng-model="$ctrl.watchlist.params" ui-sortable="{handle: '.watchlist-parameter-main > .move-handle'}">
+
+    <div ng-repeat="param in $ctrl.watchlist.params" ng-if="param.type === 'tagValue'" layout="column" class="watchlist-parameter-row">
+        <div layout="row" layout-align="start center" class="watchlist-parameter-main">
+            <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.deleteParamValues(param); $ctrl.watchlist.params.splice($index, 1);"><md-icon>clear</md-icon></md-button>
+            <md-input-container flex>
+                <label ma-tr="ui.app.label"></label>
+                <input ng-model="param.label">
+            </md-input-container>
+            <ma-data-point-tag-key-select flex ng-model="param.options.tagKey" ng-change="$ctrl.changedTagKey(param)"></ma-data-point-tag-key-select>
+            <md-button class="md-icon-button" ng-click="showSettings=!showSettings" ng-class="{'md-accent': showSettings}"><md-icon>settings</md-icon></md-button>
+            <md-icon class="move-handle">reorder</md-icon>
+        </div>
+        <div ng-if="showSettings" class="watchlist-parameter-options">
+            <div layout="row" layout-align="end center">
+                <ma-data-point-tag-select key="{{param.options.tagKey}}" ng-model="param.options.fixedValue"
+                        ng-change="$ctrl.checkFixedValue(param)" select-multiple="param.options.multiple">
+                    <ma-label ma-tr="ui.app.fixedTagValue"></ma-label>
+                </ma-data-point-tag-select>
+                <md-checkbox ng-model="param.options.multiple" ng-change="$ctrl.deleteParamValues(param)"><span ma-tr="ui.app.selectMultiple"></span></md-checkbox>
+            </div>
+        </div>
+    </div>
+
+    <div layout="row" layout-align="start center">
+        <md-button class="md-raised" ma-tr="ui.app.addATag" ng-click="$ctrl.addTag()"></md-button>
+    </div>
+
+</div>

@@ -19,7 +19,7 @@ define(['angular', 'require'], function(angular, require) {
  * @param {boolean=} [select-multiple=false] Set to true in order to enable selecting multiple tag values.
  * 
  * @usage
- * <ma-data-point-tag-select key="name" restrictions="{device: 'Device 1'}" select-multiple="true"></ma-data-point-tag-select>
+ * <ma-data-point-tag-select ng-model="selectedTagValue" key="name" restrictions="{device: 'Device 1'}" select-multiple="true"></ma-data-point-tag-select>
  *
  **/
 

@@ -86,6 +86,7 @@ class WatchListBuilderController {
             const lastTab = this.watchlist.params && this.watchlist.params.length ?  2 : 3;
             return this.selectedTab === lastTab;
         case 'hierarchy': return this.selectedTab === 1;
+        case 'tags': return this.selectedTab === 2;
         }
         return true;
     }
@@ -94,7 +95,32 @@ class WatchListBuilderController {
         if (!this.watchlist.params) {
             this.watchlist.params = [];
         }
-        this.watchlist.params.push({type:'input', options: {}});
+        this.watchlist.params.push({type: 'input', options: {}});
+    }
+
+    addTag() {
+        if (!this.watchlist.params) {
+            this.watchlist.params = [];
+        }
+        this.watchlist.params.push({type: 'tagValue', options: {multiple: true}});
+    }
+    
+    checkFixedValue(param) {
+        if (Array.isArray(param.options.fixedValue) && !param.options.fixedValue.length || param.options.fixedValue === undefined) {
+            delete param.options.fixedValue;
+        }
+    }
+    
+    changedTagKey(param) {
+        let paramName = 'tag_' + param.options.tagKey;
+        const findParam = p => p.name === paramName;
+        
+        let i = 2;
+        while (this.watchlist.params.find(findParam)) {
+            paramName = 'tag_' + param.options.tagKey + i++;
+        }
+        
+        param.name = paramName;
     }
     
     isError(name) {
@@ -121,7 +147,7 @@ class WatchListBuilderController {
         });
         
         if (this.watchListForm.$valid) {
-            if (this.watchlist.type === 'query') {
+            if (this.watchlist.type === 'query' || this.watchlist.type === 'tags') {
                 if (!this.watchlist.data) this.watchlist.data = {};
                 this.watchlist.data.paramValues = Object.assign({}, this.watchListParams);
             }
@@ -309,6 +335,10 @@ class WatchListBuilderController {
                 
                 this.folders = watchlist.folderIds.map(folderId => ({id: folderId}));
             }
+        } else if (watchlist.type === 'tags') {
+            if (!watchlist.data) watchlist.data = {};
+            if (!watchlist.data.paramValues) watchlist.data.paramValues = {};
+            this.queryChanged();
         }
     }
     

@@ -1,4 +1,4 @@
-<div ng-if="$ctrl.parameters" ng-repeat="param in $ctrl.watchList.params" layout flex="100" flex-gt-sm="50" flex-gt-md="25">
+<div ng-repeat="param in $ctrl.watchList.params" ng-if="$ctrl.parameters && !param.options.fixedValue" layout flex="100" flex-gt-sm="50" flex-gt-md="25">
   <md-input-container ng-if="param.type === 'input'" flex>
     <label ng-bind="param.label"></label>
     <input ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{debounce: 1000}"
@@ -113,13 +113,16 @@
       unique-names="param.options.uniqueNames"
       label-text="param.label">
   </ma-filtering-point-hierarchy-select>
-  <ma-data-point-tag-select ng-if="param.type === 'tagValue' && !param.options.fixedValue" flex
+  <ma-data-point-tag-select ng-if="param.type === 'tagValue'" flex
       ng-model="$ctrl.parameters[param.name]"
       ng-change="$ctrl.inputChanged()"
       key="{{param.options.tagKey}}"
       restrictions="$ctrl.getParamOption(param,'restrictions')"
       select-multiple="param.options.multiple"
       deselect-on-query="true">
-      <ma-label ng-bind="param.label"></ma-label>
+      <ma-label>
+          <span ng-if="param.label" ng-bind="param.label"></span>
+          <span ng-if="!param.label" ma-tr="ui.app.tag" ma-tr-args="[param.options.tagKey]"></span>
+      </ma-label>
   </ma-data-point-tag-select>
 </div>

@@ -88,7 +88,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q,
                 if (param.options.fixedValue) {
                     paramValue = param.options.fixedValue;
                 }
-                const rqlProperty = `tags.${param.name}`;
+                const rqlProperty = `tags.${param.options.tagKey}`;
                 
                 if (param.options.multiple) {
                     const arrayVal = Array.isArray(paramValue) ? paramValue : [paramValue];
