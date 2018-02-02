@@ -43,6 +43,21 @@ class DataPointTagSelectController {
         
         this.maDataPointTags.values(this.key, restrictions).then(values => {
             this.values = values.sort();
+            
+            if (this.deselectOnQuery) {
+                if (this.selected == null || typeof this.selected === 'string') {
+                    if (!this.values.includes(this.selected)) {
+                        this.selected = undefined;
+                        this.inputChanged();
+                    }
+                } else if (Array.isArray(this.selected)) {
+                    const newSelections = this.selected.filter(s => this.values.includes(s));
+                    if (newSelections.length !== this.selected.length) {
+                        this.selected = newSelections;
+                        this.inputChanged();
+                    }
+                }
+            }
         });
     }
     
@@ -55,7 +70,8 @@ return {
     bindings: {
         key: '@',
         restrictions: '<?',
-        selectMultiple: '<?'
+        selectMultiple: '<?',
+        deselectOnQuery: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
