@@ -101,26 +101,42 @@ class BulkDataPointEditPageController {
             delete body.tags;
             delete body.mergeTags;
         }
-        
-        this.bulkTask = new this.maPoint.bulk({
-            action: 'UPDATE',
-            body,
-            requests: this.selectedPoints.map(pt => ({xid: pt.xid}))
-        });
-        
+
+        let tagsOnly = false;
+        const requests = this.selectedPoints.map(pt => ({xid: pt.xid}));
+        if (body.tags && Object.keys(body).length === 2) {
+            tagsOnly = true;
+            
+            this.bulkTask = new this.maDataPointTags.bulk({
+                action: 'MERGE',
+                body: body.tags,
+                requests
+            });
+        } else {
+            this.bulkTask = new this.maPoint.bulk({
+                action: 'UPDATE',
+                body,
+                requests
+            });
+        }
+
         this.bulkTaskPromise = this.bulkTask.start().then(resource => {
             const responses = resource.result.responses;
             responses.forEach((response, i) => {
                 const point = this.selectedPoints[i];
                 if (response.body) {
-                    angular.copy(response.body, point);
+                    if (tagsOnly) {
+                        point.tags = response.body;
+                    } else {
+                        angular.copy(response.body, point);
+                    }
                 } else if (response.error) {
                     point[errorProperty] = response.error;
                 }
             });
             
             // deselect the points without errors
-            for (let i = 0; i < this.selectedPoints.length;) {
+            for (let i = 0, j = 0; i < this.selectedPoints.length && j < responses.length; j++) {
                 const point = this.selectedPoints[i];
                 if (!point[errorProperty]) {
                     this.selectedPoints.splice(i, 1);
@@ -139,11 +155,21 @@ class BulkDataPointEditPageController {
             delete this.bulkTaskPromise;
         });
     }
+    
+    cancel(event) {
+        this.bulkTask.cancel();
+    }
 
     watchListChanged() {
         if (!this.watchList) return;
         this.reset();
-        this.pointsPromise = this.watchList.getPoints().then(points => {
+        
+        if (this.wlPointsPromise) {
+            this.wlPointsPromise.cancel();
+        }
+        this.wlPointsPromise = this.watchList.getPoints();
+        
+        this.pointsPromise = this.wlPointsPromise.then(points => {
             this.points = points;
             
             const seenTagKeys = {};
