@@ -65,7 +65,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             const params = {};
             
             if (queryObject) {
-                let rqlQuery = queryObject.toString();
+                const rqlQuery = queryObject.toString();
                 if (rqlQuery) {
                     params.rqlQuery = rqlQuery;
                 }
