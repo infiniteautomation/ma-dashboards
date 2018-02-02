@@ -19,8 +19,8 @@
     </div>
 </md-toolbar>
 
-<ma-watch-list-parameters ng-if="$ctrl.watchList.type === 'query' && $ctrl.watchList.params.length"
-  watch-list="$ctrl.watchList" parameters="$ctrl.watchListParams" parameters-changed="$ctrl.getPoints($parameters)"
+<ma-watch-list-parameters ng-if="($ctrl.watchList.type === 'query' || $ctrl.watchList.type === 'tags') && $ctrl.watchList.params.length"
+  watch-list="$ctrl.watchList" ng-model="$ctrl.watchListParams" ng-change="$ctrl.getPoints($ctrl.watchListParams)"
   class="parameter-inputs md-padding" layout layout-wrap>
 </ma-watch-list-parameters>
 

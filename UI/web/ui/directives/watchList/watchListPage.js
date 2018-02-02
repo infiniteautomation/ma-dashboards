@@ -193,7 +193,13 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         if (parameters) {
             this.watchListParams = parameters;
         }
-        this.pointsPromise = this.watchList.getPoints(this.watchListParams).then(null, angular.noop).then(function(points) {
+        
+        if (this.wlPointsPromise) {
+            this.wlPointsPromise.cancel();
+        }
+        
+        this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
+        this.pointsPromise = this.wlPointsPromise.then(null, angular.noop).then(function(points) {
             this.points = points || [];
             
             var pointNameCounts = this.pointNameCounts = {};

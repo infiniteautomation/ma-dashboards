@@ -113,12 +113,13 @@
       unique-names="param.options.uniqueNames"
       label-text="param.label">
   </ma-filtering-point-hierarchy-select>
-  <ma-data-point-tag-select ng-if="param.type === 'tagValue'" flex
+  <ma-data-point-tag-select ng-if="param.type === 'tagValue' && !param.options.fixedValue" flex
       ng-model="$ctrl.parameters[param.name]"
       ng-change="$ctrl.inputChanged()"
       key="{{param.options.tagKey}}"
       restrictions="$ctrl.getParamOption(param,'restrictions')"
-      select-multiple="param.options.multiple">
+      select-multiple="param.options.multiple"
+      deselect-on-query="true">
       <ma-label ng-bind="param.label"></ma-label>
   </ma-data-point-tag-select>
 </div>
