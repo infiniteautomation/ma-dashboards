@@ -1,321 +1,332 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-WatchListBuilderController.$inject = ['maPoint', '$mdMedia', 'maWatchList',
-    '$state', '$mdDialog', 'maTranslate', '$timeout', '$mdToast', 'maUser', '$q'];
-function WatchListBuilderController(Point, $mdMedia, WatchList,
-        $state, $mdDialog, Translate, $timeout, $mdToast, User, $q) {
-    var $ctrl = this;
-    
-    $ctrl.baseUrl = function(path) {
-    	return require.toUrl('.' + path);
-    };
-    
-    $ctrl.$mdMedia = $mdMedia;
-    
-    var defaultTotal = $ctrl.total = '\u2026';
-    $ctrl.tableSelection = [];
-    $ctrl.hierarchySelection = [];
-    $ctrl.staticSelected = [];
-    $ctrl.allPoints = [];
-    $ctrl.tableQuery = {
-        limit: 20,
-        page: 1,
-        order: 'deviceName'
-    };
-    $ctrl.staticTableQuery = {
-        limit: 20,
-        page: 1
-    };
-    $ctrl.queryPreviewTable = {
-        limit: 20,
-        page: 1
-    };
-    $ctrl.selectedTab = 0;
-    $ctrl.tableUpdateCount = 0;
+const defaultTotal = '\u2026';
+const $inject = ['maPoint', '$mdMedia', 'maWatchList','$state', '$mdDialog', 'maTranslate', '$mdToast', 'maUser', '$q'];
 
-    $ctrl.newWatchlist = function newWatchlist(name) {
-        $ctrl.selectedWatchlist = null;
-        var watchlist = new WatchList();
+class WatchListBuilderController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return $inject; }
+    
+    constructor(Point, $mdMedia, WatchList, $state, $mdDialog, Translate, $mdToast, User, $q) {
+        this.Point = Point;
+        this.$mdMedia = $mdMedia;
+        this.WatchList = WatchList;
+        this.$state = $state;
+        this.$mdDialog = $mdDialog;
+        this.Translate = Translate;
+        this.$mdToast = $mdToast;
+        this.User = User;
+        this.$q = $q;
+
+        this.total = defaultTotal;
+        this.tableSelection = [];
+        this.hierarchySelection = [];
+        this.staticSelected = [];
+        this.allPoints = [];
+        this.tableQuery = {
+            limit: 20,
+            page: 1,
+            order: 'deviceName'
+        };
+        this.staticTableQuery = {
+            limit: 20,
+            page: 1
+        };
+        this.queryPreviewTable = {
+            limit: 20,
+            page: 1
+        };
+        this.selectedTab = 0;
+        this.tableUpdateCount = 0;
+    }
+
+    baseUrl(path) {
+    	return require.toUrl('.' + path);
+    }
+
+    newWatchlist(name) {
+        this.selectedWatchlist = null;
+        const watchlist = new this.WatchList();
         watchlist.isNew = true;
         watchlist.name = name;
         watchlist.xid = '';
         watchlist.points = [];
-        watchlist.username = User.current.username;
+        watchlist.username = this.User.current.username;
         watchlist.type = 'static';
         watchlist.readPermission = 'user';
-        watchlist.editPermission = User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
-        $ctrl.editWatchlist(watchlist);
-        $ctrl.resetForm();
-    };
+        watchlist.editPermission = this.User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
+        this.editWatchlist(watchlist);
+        this.resetForm();
+    }
     
-    $ctrl.typeChanged = function typeChanged() {
-        $ctrl.editWatchlist($ctrl.watchlist);
-    };
+    typeChanged() {
+        this.editWatchlist(this.watchlist);
+    }
 
-    $ctrl.nextStep = function() {
-        $ctrl.selectedTab++;
-    };
-    $ctrl.prevStep = function() {
-        $ctrl.selectedTab--;
-    };
-    $ctrl.isLastStep = function() {
-        if (!$ctrl.watchlist) return false;
-        switch($ctrl.watchlist.type) {
-        case 'static': return $ctrl.selectedTab === 3;
+    nextStep() {
+        this.selectedTab++;
+    }
+    
+    prevStep() {
+        this.selectedTab--;
+    }
+    
+    isLastStep() {
+        if (!this.watchlist) return false;
+        
+        switch(this.watchlist.type) {
+        case 'static': return this.selectedTab === 3;
         case 'query':
-            var lastTab = $ctrl.watchlist.params && $ctrl.watchlist.params.length ?  2 : 3;
-            return $ctrl.selectedTab === lastTab;
-        case 'hierarchy': return $ctrl.selectedTab === 1;
+            const lastTab = this.watchlist.params && this.watchlist.params.length ?  2 : 3;
+            return this.selectedTab === lastTab;
+        case 'hierarchy': return this.selectedTab === 1;
         }
         return true;
-    };
+    }
     
-    $ctrl.addParam = function addParam() {
-        if (!$ctrl.watchlist.params) {
-            $ctrl.watchlist.params = [];
+    addParam() {
+        if (!this.watchlist.params) {
+            this.watchlist.params = [];
         }
-        $ctrl.watchlist.params.push({type:'input', options: {}});
-    };
+        this.watchlist.params.push({type:'input', options: {}});
+    }
     
-    $ctrl.isError = function isError(name) {
-        if (!$ctrl.watchListForm || !$ctrl.watchListForm[name]) return false;
-        return $ctrl.watchListForm[name].$invalid && ($ctrl.watchListForm.$submitted || $ctrl.watchListForm[name].$touched);
-    };
+    isError(name) {
+        if (!this.watchListForm || !this.watchListForm[name]) return false;
+        return this.watchListForm[name].$invalid && (this.watchListForm.$submitted || this.watchListForm[name].$touched);
+    }
     
-    $ctrl.resetForm = function resetForm() {
-        if ($ctrl.watchListForm) {
-            $ctrl.watchListForm.$setUntouched();
-            $ctrl.watchListForm.$setPristine();
+    resetForm() {
+        if (this.watchListForm) {
+            this.watchListForm.$setUntouched();
+            this.watchListForm.$setPristine();
         }
-    };
+    }
     
-    $ctrl.save = function save() {
-        var saveMethod = $ctrl.watchlist.isNew ? '$save' : '$updateWithRename';
+    save() {
+        const saveMethod = this.watchlist.isNew ? '$save' : '$updateWithRename';
 
         // reset all server error messages to allow saving
-        angular.forEach($ctrl.watchListForm, function(item, key) {
+        Object.keys(this.watchListForm).forEach(key => {
             if (key.indexOf('$') !== 0) {
+                const item = this.watchListForm[key];
                 item.$setValidity('server-error', true);
             }
         });
         
-        if ($ctrl.watchListForm.$valid) {
-            if ($ctrl.watchlist.type === 'query') {
-                if (!$ctrl.watchlist.data) $ctrl.watchlist.data = {};
-                $ctrl.watchlist.data.paramValues = Object.assign({}, $ctrl.watchListParams);
+        if (this.watchListForm.$valid) {
+            if (this.watchlist.type === 'query') {
+                if (!this.watchlist.data) this.watchlist.data = {};
+                this.watchlist.data.paramValues = Object.assign({}, this.watchListParams);
             }
             
-            $ctrl.watchlist[saveMethod]().then(function(wl) {
-                $ctrl.selectedWatchlist = wl;
-                $ctrl.watchlistSelected();
+            this.watchlist[saveMethod]().then(wl => {
+                this.selectedWatchlist = wl;
+                this.watchlistSelected();
                 
-                var found = false;
-                for (var i = 0; i < $ctrl.watchlists.length; i++) {
-                    if ($ctrl.watchlists[i].xid === wl.xid) {
-                        $ctrl.watchlists.splice(i, 1, wl);
+                let found = false;
+                for (let i = 0; i < this.watchlists.length; i++) {
+                    if (this.watchlists[i].xid === wl.xid) {
+                        this.watchlists.splice(i, 1, wl);
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    $ctrl.watchlists.push(wl);
+                    this.watchlists.push(wl);
                 }
                 
-                var toast = $mdToast.simple()
-                    .textContent(Translate.trSync('ui.app.watchListSaved'))
-                    .action(Translate.trSync('common.ok'))
+                const toast = this.$mdToast.simple()
+                    .textContent(this.Translate.trSync('ui.app.watchListSaved'))
+                    .action(this.Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .position('bottom center')
                     .hideDelay(2000);
-                $mdToast.show(toast);
+                this.$mdToast.show(toast);
     
-                $ctrl.resetForm();
-            }, function(response) {
+                this.resetForm();
+            }, response => {
                 // error saving
-                var toast = $mdToast.simple()
-                    .textContent(Translate.trSync('ui.app.errorSavingWatchlist', response.mangoStatusText))
-                    .action(Translate.trSync('common.ok'))
+                const toast = this.$mdToast.simple()
+                    .textContent(this.Translate.trSync('ui.app.errorSavingWatchlist', response.mangoStatusText))
+                    .action(this.Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .highlightClass('md-warn')
                     .position('bottom center')
                     .hideDelay(5000);
-                $mdToast.show(toast);
+                this.$mdToast.show(toast);
 
-                $ctrl.selectedTab = 0;
+                this.selectedTab = 0;
                 if (response.data && response.data.validationMessages) {
-                    response.data.validationMessages.forEach(function(info) {
-                        if ($ctrl.watchListForm[info.property]) {
-                            $ctrl.watchListForm[info.property].$setValidity('server-error', false);
-                            $ctrl.watchListForm[info.property].serverErrorMessage = info.message;
+                    response.data.validationMessages.forEach(info => {
+                        if (this.watchListForm[info.property]) {
+                            this.watchListForm[info.property].$setValidity('server-error', false);
+                            this.watchListForm[info.property].serverErrorMessage = info.message;
                         }
                     });
                 }
             });
         } else {
-            $ctrl.selectedTab = 0;
+            this.selectedTab = 0;
         }
-    };
+    }
     
-    $ctrl.deleteWatchlist = function deleteWatchlist(event) {
-        var confirm = $mdDialog.confirm()
-            .title(Translate.trSync('ui.app.areYouSure'))
-            .textContent(Translate.trSync('ui.app.confirmDeleteWatchlist'))
-            .ariaLabel(Translate.trSync('ui.app.areYouSure'))
+    deleteWatchlist(event) {
+        const confirm = this.$mdDialog.confirm()
+            .title(this.Translate.trSync('ui.app.areYouSure'))
+            .textContent(this.Translate.trSync('ui.app.confirmDeleteWatchlist'))
+            .ariaLabel(this.Translate.trSync('ui.app.areYouSure'))
             .targetEvent(event)
-            .ok(Translate.trSync('common.ok'))
-            .cancel(Translate.trSync('common.cancel'));
+            .ok(this.Translate.trSync('common.ok'))
+            .cancel(this.Translate.trSync('common.cancel'));
         
-        $mdDialog.show(confirm).then(function() {
-            $ctrl.watchlist.$delete().then(function(wl) {
-                $ctrl.newWatchlist();
-                for (var i = 0; i < $ctrl.watchlists.length; i++) {
-                    if ($ctrl.watchlists[i].xid === wl.xid) {
-                        $ctrl.watchlists.splice(i, 1);
+        this.$mdDialog.show(confirm).then(() => {
+            this.watchlist.$delete().then(wl => {
+                this.newWatchlist();
+                for (let i = 0; i < this.watchlists.length; i++) {
+                    if (this.watchlists[i].xid === wl.xid) {
+                        this.watchlists.splice(i, 1);
                         break;
                     }
                 }
             });
         });
-    };
+    }
     
-    $ctrl.$onInit = function() {
-        $ctrl.refreshWatchlists();
-        if ($state.params.watchListXid) {
-            $ctrl.getWatchlist($state.params.watchListXid);
-        } else if ($state.params.watchList) {
+    $onInit() {
+        this.refreshWatchlists();
+        if (this.$state.params.watchListXid) {
+            this.getWatchlist(this.$state.params.watchListXid);
+        } else if (this.$state.params.watchList) {
             // Whole watchlist object sent from watchlist page (save button)
-            $ctrl.selectedWatchlist = null;
-            var watchlist = $state.params.watchList;
-            watchlist.username = User.current.username;
+            this.selectedWatchlist = null;
+            const watchlist = this.$state.params.watchList;
+            watchlist.username = this.User.current.username;
             watchlist.readPermission = 'user';
-            watchlist.editPermission = User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
-            $ctrl.editWatchlist(watchlist);
-            $ctrl.resetForm();
+            watchlist.editPermission = this.User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
+            this.editWatchlist(watchlist);
+            this.resetForm();
         } else {
-            $ctrl.newWatchlist();
+            this.newWatchlist();
         }
-    };
+    }
     
-    $ctrl.getWatchlist = function getWatchlist(xid) {
-        WatchList.get({xid: xid}).$promise.then(function(wl) {
-            var user = User.current;
+    getWatchlist(xid) {
+        this.WatchList.get({xid: xid}).$promise.then(wl => {
+            const user = this.User.current;
             if (wl.username !== user.username && !user.hasPermission(wl.editPermission)) {
                 throw 'no edit permission';
             }
-            $ctrl.selectedWatchlist = wl;
-            $ctrl.watchlistSelected();
-        }, function() {
-            $ctrl.newWatchlist();
+            this.selectedWatchlist = wl;
+            this.watchlistSelected();
+        }, () => {
+            this.newWatchlist();
         });
-    };
+    }
     
-    $ctrl.refreshWatchlists = function refreshWatchlists() {
-        WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchlists) {
-            var filtered = [];
-            var user = User.current;
-            for (var i = 0; i < watchlists.length; i++) {
-                var wl = watchlists[i];
+    refreshWatchlists() {
+        this.WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(watchlists => {
+            const filtered = [];
+            const user = this.User.current;
+            for (let i = 0; i < watchlists.length; i++) {
+                const wl = watchlists[i];
                 if (wl.username === user.username || user.hasPermission(wl.editPermission)) {
-                    if ($ctrl.selectedWatchlist && $ctrl.selectedWatchlist.xid === wl.xid) {
-                        filtered.push($ctrl.selectedWatchlist);
+                    if (this.selectedWatchlist && this.selectedWatchlist.xid === wl.xid) {
+                        filtered.push(this.selectedWatchlist);
                     } else {
                         wl.points = [];
                         filtered.push(wl);
                     }
                 }
             }
-            $ctrl.watchlists = filtered;
+            this.watchlists = filtered;
         });
-    };
+    }
 
-    $ctrl.watchlistSelected = function watchlistSelected() {
-        if ($ctrl.selectedWatchlist) {
-            var copiedWatchList = angular.copy($ctrl.selectedWatchlist);
+    watchlistSelected() {
+        if (this.selectedWatchlist) {
+            const copiedWatchList = angular.copy(this.selectedWatchlist);
             copiedWatchList.originalXid = copiedWatchList.xid;
-            $ctrl.editWatchlist(copiedWatchList);
-            $ctrl.resetForm();
-        } else if (!$ctrl.watchlist || !$ctrl.watchlist.isNew) {
-            $ctrl.newWatchlist();
+            this.editWatchlist(copiedWatchList);
+            this.resetForm();
+        } else if (!this.watchlist || !this.watchlist.isNew) {
+            this.newWatchlist();
         }
-    };
+    }
     
-    $ctrl.editWatchlist = function editWatchlist(watchlist) {
-        $ctrl.watchlist = watchlist;
-        $state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
+    editWatchlist(watchlist) {
+        this.watchlist = watchlist;
+        this.$state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
         
-        $ctrl.staticSelected = [];
-        $ctrl.allPoints = [];
-        $ctrl.total = defaultTotal;
-        $ctrl.queryPromise = null;
-        $ctrl.folders = [];
+        this.staticSelected = [];
+        this.allPoints = [];
+        this.total = defaultTotal;
+        this.queryPromise = null;
+        this.folders = [];
 
-        $ctrl.watchListParams = {};
+        this.watchListParams = {};
         if (watchlist.data && watchlist.data.paramValues) {
-            Object.assign($ctrl.watchListParams, watchlist.data.paramValues);
+            Object.assign(this.watchListParams, watchlist.data.paramValues);
         }
         
-        $ctrl.clearSearch(false);
+        this.clearSearch(false);
         
         if (watchlist.type === 'static') {
-            var pointsPromise;
+            let pointsPromise;
             if (watchlist.isNew) {
                 watchlist.points = [];
-                pointsPromise = $q.when(watchlist.points);
+                pointsPromise = this.$q.when(watchlist.points);
             } else {
                 pointsPromise = watchlist.getPoints();
             }
-            $ctrl.watchlistPointsPromise = pointsPromise.then(function() {
-                $ctrl.resetSort();
-                $ctrl.sortAndLimit();
+            this.watchlistPointsPromise = pointsPromise.then(() => {
+                this.resetSort();
+                this.sortAndLimit();
             });
-            $ctrl.doPointQuery();
+            this.doPointQuery();
         } else if (watchlist.type === 'query') {
             if (!watchlist.data) watchlist.data = {};
             if (!watchlist.data.paramValues) watchlist.data.paramValues = {};
             if (!watchlist.query) {
                 watchlist.query = 'sort(deviceName,name)&limit(200)';
             }
-            $ctrl.queryChanged();
+            this.queryChanged();
         } else if (watchlist.type === 'hierarchy') {
             // if a user is browsing a hierarchy folder on the watch list page
             // the watchlist will have a hierarchyFolders property, set the folderIds property from this
             if (watchlist.hierarchyFolders) {
-                $ctrl.folders = watchlist.hierarchyFolders;
-                $ctrl.updateWatchListFolderIds();
+                this.folders = watchlist.hierarchyFolders;
+                this.updateWatchListFolderIds();
             } else {
                 if (!watchlist.folderIds)
                     watchlist.folderIds =[];
                 
-                $ctrl.folders = watchlist.folderIds.map(function(folderId) {
-                    return {id: folderId};
-                });
+                this.folders = watchlist.folderIds.map(folderId => ({id: folderId}));
             }
         }
-        
-        
-    };
+    }
     
-    $ctrl.onPaginateOrSort = function onPaginateOrSort() {
-        $ctrl.doPointQuery(true);
-    };
+    onPaginateOrSort() {
+        this.doPointQuery(true);
+    }
 
-    $ctrl.doPointQuery = function doPointQuery(isPaginateOrSort) {
-        if ($ctrl.queryPromise && typeof $ctrl.queryPromise.cancel === 'function') {
-            $ctrl.queryPromise.cancel();
+    doPointQuery(isPaginateOrSort) {
+        if (this.queryPromise && typeof this.queryPromise.cancel === 'function') {
+            this.queryPromise.cancel();
         }
         
         if (!isPaginateOrSort) {
-            $ctrl.total = defaultTotal;
-            $ctrl.allPoints = [];
+            this.total = defaultTotal;
+            this.allPoints = [];
         }
 
-        var queryObj = new query.Query(angular.copy($ctrl.tableQuery.rql));
+        let queryObj = new query.Query(angular.copy(this.tableQuery.rql));
         if (queryObj.name !== 'and') {
             if (!queryObj.args.length) {
                 queryObj = new query.Query();
@@ -323,171 +334,165 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
                 queryObj = new query.Query({name: 'and', args: [queryObj]});
             }
         }
-        queryObj = queryObj.sort($ctrl.tableQuery.order);
-        queryObj = queryObj.limit($ctrl.tableQuery.limit, ($ctrl.tableQuery.page - 1) * $ctrl.tableQuery.limit);
+        queryObj = queryObj.sort(this.tableQuery.order);
+        queryObj = queryObj.limit(this.tableQuery.limit, (this.tableQuery.page - 1) * this.tableQuery.limit);
         
-        var pointQuery = Point.query({rqlQuery: queryObj.toString()});
+        const pointQuery = this.Point.query({rqlQuery: queryObj.toString()});
         pointQuery.$promise.setCancel(pointQuery.$cancelRequest);
-        $ctrl.queryPromise = pointQuery.$promise.then(null, function(response) {
-            return [];
-        });
+        this.queryPromise = pointQuery.$promise.then(null, response => []);
         
-        $q.all([$ctrl.queryPromise, $ctrl.watchlistPointsPromise]).then(function(results) {
-            $ctrl.allPoints = results[0];
-            $ctrl.total = $ctrl.allPoints.$total || $ctrl.allPoints.length;
+        this.$q.all([this.queryPromise, this.watchlistPointsPromise]).then(results => {
+            this.allPoints = results[0];
+            this.total = this.allPoints.$total || this.allPoints.length;
             
-            $ctrl.updateSelections(true, true);
+            this.updateSelections(true, true);
         });
         
-        return $ctrl.queryPromise;
-    };
+        return this.queryPromise;
+    }
 
-    $ctrl.doSearch = function doSearch() {
-        var props = ['name', 'deviceName', 'dataSourceName', 'xid'];
-        var args = [];
-        for (var i = 0; i < props.length; i++) {
-            args.push(new query.Query({name: 'like', args: [props[i], '*' + $ctrl.tableSearch + '*']}));
+    doSearch() {
+        const props = ['name', 'deviceName', 'dataSourceName', 'xid'];
+        const args = [];
+        for (let i = 0; i < props.length; i++) {
+            args.push(new query.Query({name: 'like', args: [props[i], '*' + this.tableSearch + '*']}));
         }
-        $ctrl.tableQuery.rql = new query.Query({name: 'or', args: args});
-        $ctrl.doPointQuery();
-    };
+        this.tableQuery.rql = new query.Query({name: 'or', args: args});
+        this.doPointQuery();
+    }
     
-    $ctrl.clearSearch = function clearSearch(doQuery) {
-        $ctrl.tableSearch = '';
-        $ctrl.tableQuery.rql = new query.Query();
+    clearSearch(doQuery) {
+        this.tableSearch = '';
+        this.tableQuery.rql = new query.Query();
         if (doQuery || doQuery == null)
-            $ctrl.doPointQuery();
-    };
+            this.doPointQuery();
+    }
     
-    $ctrl.queryChanged = function queryChanged() {
-        $ctrl.queryPreviewPoints = [];
-        $ctrl.queryPreviewTable.total = defaultTotal;
-        if ($ctrl.queryPreviewPromise && typeof $ctrl.queryPreviewPromise.cancel === 'function') {
-            $ctrl.queryPreviewPromise.cancel();
+    queryChanged() {
+        this.queryPreviewPoints = [];
+        this.queryPreviewTable.total = defaultTotal;
+        if (this.queryPreviewPromise && typeof this.queryPreviewPromise.cancel === 'function') {
+            this.queryPreviewPromise.cancel();
         }
-        $ctrl.queryPreviewPromise = $ctrl.watchlist.getPoints($ctrl.watchListParams).then(function(watchlistPoints) {
-            $ctrl.queryPreviewPoints = watchlistPoints;
-            $ctrl.queryPreviewTable.total = watchlistPoints.length;
-        }, function() {
-            $ctrl.queryPreviewTable.total = 0;
+        this.queryPreviewPromise = this.watchlist.getPoints(this.watchListParams).then(watchlistPoints => {
+            this.queryPreviewPoints = watchlistPoints;
+            this.queryPreviewTable.total = watchlistPoints.length;
+        }, () => {
+            this.queryPreviewTable.total = 0;
         });
-    };
+    }
 
-    $ctrl.tableSelectionChanged = function() {
-        $ctrl.watchlist.points = $ctrl.tableSelection.slice();
-        $ctrl.updateSelections(false, true);
-        $ctrl.resetSort();
-        $ctrl.sortAndLimit();
-    };
+    tableSelectionChanged() {
+        this.watchlist.points = this.tableSelection.slice();
+        this.updateSelections(false, true);
+        this.resetSort();
+        this.sortAndLimit();
+    }
 
-    $ctrl.hierarchySelectionChanged = function() {
-        var pointXidsToGet = $ctrl.hierarchySelection.map(function(item) {
-            return item.xid;
-        });
+    hierarchySelectionChanged() {
+        const updateSelection = points => {
+            this.watchlist.points = points.slice();
+            this.updateSelections(true, false);
+            this.resetSort();
+            this.sortAndLimit();
+        };
+        
+        const pointXidsToGet = this.hierarchySelection.map(item => item.xid);
         if (pointXidsToGet.length) {
             // fetch full points
-            var ptQuery = new query.Query({name: 'in', args: ['xid'].concat(pointXidsToGet)});
-            Point.query({rqlQuery: ptQuery.toString()}).$promise.then(updateSelection);
+            const ptQuery = new query.Query({name: 'in', args: ['xid'].concat(pointXidsToGet)});
+            this.Point.query({rqlQuery: ptQuery.toString()}).$promise.then(updateSelection);
         } else {
             updateSelection([]);
         }
-        
-        function updateSelection(points) {
-            $ctrl.watchlist.points = points.slice();
-            $ctrl.updateSelections(true, false);
-            $ctrl.resetSort();
-            $ctrl.sortAndLimit();
-        }
-    };
+    }
 
-    $ctrl.updateWatchListFolderIds = function updateWatchListFolderIds() {
-        $ctrl.watchlist.folderIds = $ctrl.folders.map(function(folder) {
-            return folder.id;
-        });
-    };
+    updateWatchListFolderIds() {
+        this.watchlist.folderIds = this.folders.map(folder => folder.id);
+    }
     
-    $ctrl.resetSort = function() {
-        delete $ctrl.staticTableQuery.order;
-    };
+    resetSort() {
+        delete this.staticTableQuery.order;
+    }
     
-    $ctrl.sortAndLimit = function() {
-        var order = $ctrl.staticTableQuery.order;
+    sortAndLimit() {
+        let order = this.staticTableQuery.order;
         if (order) {
-            var desc = false;
+            let desc = false;
             if ((desc = order.indexOf('-') === 0 || order.indexOf('+') === 0)) {
                 order = order.substring(1);
             }
-            $ctrl.watchlist.points.sort(function(a, b) {
+            this.watchlist.points.sort((a, b) => {
                 if (a[order] > b[order]) return desc ? -1 : 1;
                 if (a[order] < b[order]) return desc ? 1 : -1;
                 return 0;
             });
         }
         
-        var limit = $ctrl.staticTableQuery.limit;
-        var start = $ctrl.staticTableQuery.start = ($ctrl.staticTableQuery.page - 1) * $ctrl.staticTableQuery.limit;
-        $ctrl.pointsInView = $ctrl.watchlist.points.slice(start, start + limit);
-    };
+        const limit = this.staticTableQuery.limit;
+        const start = this.staticTableQuery.start = (this.staticTableQuery.page - 1) * this.staticTableQuery.limit;
+        this.pointsInView = this.watchlist.points.slice(start, start + limit);
+    }
     
-    $ctrl.dragAndDrop = function(event, ui) {
-        $ctrl.resetSort();
-        var from = $ctrl.staticTableQuery.start + ui.item.sortable.index;
-        var to = $ctrl.staticTableQuery.start + ui.item.sortable.dropindex;
+    dragAndDrop(event, ui) {
+        this.resetSort();
+        const from = this.staticTableQuery.start + ui.item.sortable.index;
+        const to = this.staticTableQuery.start + ui.item.sortable.dropindex;
         
-        var item = $ctrl.watchlist.points[from];
-        $ctrl.watchlist.points.splice(from, 1);
-        $ctrl.watchlist.points.splice(to, 0, item);
-    };
+        const item = this.watchlist.points[from];
+        this.watchlist.points.splice(from, 1);
+        this.watchlist.points.splice(to, 0, item);
+    }
     
-    $ctrl.removeFromWatchlist = function() {
-        var map = {};
-        for (var i = 0; i < $ctrl.staticSelected.length; i++) {
-            map[$ctrl.staticSelected[i].xid] = true;
+    removeFromWatchlist() {
+        const map = {};
+        for (let i = 0; i < this.staticSelected.length; i++) {
+            map[this.staticSelected[i].xid] = true;
         }
-        for (i = 0; i < $ctrl.watchlist.points.length; i++) {
-            if (map[$ctrl.watchlist.points[i].xid]) {
-                $ctrl.watchlist.points.splice(i--, 1);
+        for (let i = 0; i < this.watchlist.points.length; i++) {
+            if (map[this.watchlist.points[i].xid]) {
+                this.watchlist.points.splice(i--, 1);
             }
         }
-        $ctrl.staticSelected = [];
-        $ctrl.updateSelections(true, true);
-        $ctrl.sortAndLimit();
-    };
+        this.staticSelected = [];
+        this.updateSelections(true, true);
+        this.sortAndLimit();
+    }
     
-    $ctrl.updateSelections = function(updateTable, updateHierarchy) {
+    updateSelections(updateTable, updateHierarchy) {
         if (updateTable) {
             // ensures that rows are re-rendered every time we update the table selections
-            $ctrl.tableUpdateCount++;
+            this.tableUpdateCount++;
             
             // updates the table selection with a shallow copy of the watch list points
             // so that md-data-table's $watchcollection detects a change for each point
-            $ctrl.tableSelection = $ctrl.watchlist.points.map(function(point) {
-                return angular.extend(Object.create(Point.prototype), point);
+            this.tableSelection = this.watchlist.points.map(point => {
+                return angular.extend(Object.create(this.Point.prototype), point);
             });
             
-            var pointMap = {};
-            $ctrl.tableSelection.forEach(function(point) {
+            const pointMap = {};
+            this.tableSelection.forEach(point => {
                 pointMap[point.xid] = point;
             });
 
             // replace the point in all points with the exact one from the table selection so the table is updated
             // correctly
-            $ctrl.allPoints = $ctrl.allPoints.map(function(point, i) {
+            this.allPoints = this.allPoints.map((point, i) => {
                 return pointMap[point.xid] || point;
             });
         }
         if (updateHierarchy) {
-            $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
+            this.hierarchySelection = this.watchlist.points.slice();
         }
-    };
+    }
 
     // track points in table by their xid and an incrementing count
     // ensures that rows are re-rendered every time we update the table selections
-    $ctrl.pointTrack = function(point) {
-        return '' + $ctrl.tableUpdateCount + '_' + point.xid;
-    };
+    pointTrack(point) {
+        return '' + this.tableUpdateCount + '_' + point.xid;
+    }
     
-    $ctrl.paramTypeChanged = function(param) {
+    paramTypeChanged(param) {
         if (!param.options) {
             param.options = {};
         }
@@ -499,20 +504,20 @@ function WatchListBuilderController(Point, $mdMedia, WatchList,
                 param.options.tagKey = 'device';
             }
         }
-    };
+    }
     
-    $ctrl.deleteParamValues = function(param) {
+    deleteParamValues(param) {
         if (this.watchlist.data && this.watchlist.data.paramValues) {
             delete this.watchlist.data.paramValues[param.name];
         }
         delete this.watchListParams[param.name];
-    };
+    }
     
-    $ctrl.deleteProperty = function(obj, propertyName) {
+    deleteProperty(obj, propertyName) {
         if (typeof obj === 'object' && typeof propertyName === 'string') {
             delete obj[propertyName];
         }
-    };
+    }
 }
 
 return {
