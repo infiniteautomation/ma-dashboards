@@ -12,12 +12,13 @@ const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error
 class BulkDataPointEditPageController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate']; }
-    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate) {
+    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout']; }
+    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate, $timeout) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
         this.maTranslate = maTranslate;
+        this.$timeout = $timeout;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
@@ -207,8 +208,11 @@ class BulkDataPointEditPageController {
     
     selectedPointsChanged() {
         if (this.selectedPoints.length === this.points.length) {
-            this.selectAll = true;
             this.selectAllIndeterminate = false;
+            // seems to be a bug changing md-checkbox indeterminate and checked at same time
+            this.$timeout(() => {
+                this.selectAll = true;
+            }, 0);
         } else {
             this.selectAll = false;
             this.selectAllIndeterminate = !!this.selectedPoints.length;
