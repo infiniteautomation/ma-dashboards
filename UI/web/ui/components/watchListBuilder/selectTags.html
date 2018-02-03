@@ -1,5 +1,7 @@
 <div class="md-padding watchlist-select-tags" layout="column" ng-model="$ctrl.watchlist.params" ui-sortable="{handle: '.watchlist-parameter-main > .move-handle'}">
 
+    <p ng-if="!$ctrl.watchlist.params.length" ma-tr="ui.app.noTags"></p>
+    
     <div ng-repeat="param in $ctrl.watchlist.params" ng-if="param.type === 'tagValue'" layout="column" class="watchlist-parameter-row">
         <div layout="row" layout-align="start center" class="watchlist-parameter-main">
             <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.deleteParamValues(param); $ctrl.watchlist.params.splice($index, 1);"><md-icon>clear</md-icon></md-button>
@@ -18,6 +20,7 @@
                     <ma-label ma-tr="ui.app.fixedTagValue"></ma-label>
                 </ma-data-point-tag-select>
                 <md-checkbox ng-model="param.options.multiple" ng-change="$ctrl.deleteParamValues(param)"><span ma-tr="ui.app.selectMultiple"></span></md-checkbox>
+                <md-checkbox ng-model="param.options.required"><span ma-tr="ui.app.tagRequired"></span></md-checkbox>
             </div>
         </div>
     </div>

@@ -58,7 +58,7 @@ class WatchListBuilderController {
         watchlist.xid = '';
         watchlist.points = [];
         watchlist.username = this.User.current.username;
-        watchlist.type = 'static';
+        watchlist.type = 'tags';
         watchlist.readPermission = 'user';
         watchlist.editPermission = this.User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
         this.editWatchlist(watchlist);
@@ -336,6 +336,7 @@ class WatchListBuilderController {
                 this.folders = watchlist.folderIds.map(folderId => ({id: folderId}));
             }
         } else if (watchlist.type === 'tags') {
+            if (!watchlist.params) watchlist.params = [];
             if (!watchlist.data) watchlist.data = {};
             if (!watchlist.data.paramValues) watchlist.data.paramValues = {};
             this.queryChanged();
@@ -541,6 +542,10 @@ class WatchListBuilderController {
             delete this.watchlist.data.paramValues[param.name];
         }
         delete this.watchListParams[param.name];
+        
+        if (param.options && param.options) {
+            delete param.options.fixedValue;
+        }
     }
     
     deleteProperty(obj, propertyName) {

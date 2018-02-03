@@ -1,5 +1,5 @@
 <div class="md-padding watchlist-parameters" layout="column" ng-model="$ctrl.watchlist.params" ui-sortable="{handle: '.watchlist-parameter-main > .move-handle'}">
-  <md-card md-colors="::{background: 'background-700'}" ng-if="$ctrl.watchlist.params.length">
+  <md-card md-colors="::{background: 'background-700'}" ng-if="$ctrl.watchlist.hasParamOptions()">
     <md-card-title>
         <md-card-title-text>
             <em ma-tr="ui.app.previewWatchListParameters"></em>

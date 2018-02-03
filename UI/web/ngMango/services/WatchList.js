@@ -91,24 +91,21 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q,
                 const rqlProperty = `tags.${param.options.tagKey}`;
                 
                 if (param.options.multiple) {
-                    const arrayVal = Array.isArray(paramValue) ? paramValue : [paramValue];
-                    
-                    if (!arrayVal.length) {
+                    if (!Array.isArray(paramValue) || !paramValue.length) {
                         if (param.options.required) {
                             emptyResult = true;
                         }
                         return;
                     }
-                    
                     // remove the null from the in query and add a separate eq==null query
-                    if (arrayVal.includes(null)) {
-                        const filteredArrayVal = arrayVal.filter(v => v != null);
+                    if (paramValue.includes(null)) {
+                        const filteredParamValue = paramValue.filter(v => v != null);
                         builder.or()
-                            .in(rqlProperty, filteredArrayVal)
+                            .in(rqlProperty, filteredParamValue)
                             .eq(rqlProperty, null)
                             .up();
                     } else {
-                        builder.in(rqlProperty, arrayVal);
+                        builder.in(rqlProperty, paramValue);
                     }
                     
                 } else {
@@ -191,6 +188,10 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q,
                 }
             }
         });
+    };
+    
+    WatchList.prototype.hasParamOptions = function() {
+        return this.params && this.params.length && this.params.some(p => !p.options || !p.options.hasOwnProperty('fixedValue'));
     };
     
     const saveMethod = WatchList.prototype.$save;
