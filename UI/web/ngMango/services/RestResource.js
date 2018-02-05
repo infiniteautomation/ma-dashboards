@@ -112,7 +112,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         }
         
         isNew() {
-            return this.hasOwnProperty(originalIdProperty);
+            return !this.hasOwnProperty(originalIdProperty);
         }
         
         getOriginalId() {
