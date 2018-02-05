@@ -99,10 +99,12 @@ function pointHierarchy(PointHierarchy) {
     };
 
     function getPoints(folder) {
-        var points = [];
-        Array.prototype.push.apply(points, folder.points);
-        for (var i = 0; i < folder.subfolders.length; i++) {
-            Array.prototype.push.apply(points, getPoints(folder.subfolders[i]));
+        const points = [];
+        const pushToPoints = (pt) => points.push(pt);
+        
+        folder.points.forEach(pushToPoints);
+        for (let i = 0; i < folder.subfolders.length; i++) {
+            getPoints(folder.subfolders[i]).forEach(pushToPoints);
         }
         return points;
     }
