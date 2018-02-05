@@ -316,19 +316,15 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
             if (_skipEvents && skipEvents === undefined) {
                 skipEvents = true;
             }
-            
+
             if (timeoutPromise) return;
             timeoutPromise = $timeout(() => {
-                const localValidateData = validateData;
-                const localSkipEvents = skipEvents;
+                chart.validateNow(validateData, skipEvents);
+                
                 timeoutPromise = null;
                 validateData = undefined;
                 skipEvents = undefined;
-                $scope.$applyAsync(() => {
-                    //console.log(`chart.validateNow(${localValidateData}, ${localSkipEvents})`);
-                    chart.validateNow(localValidateData, localSkipEvents);
-                });
-            }, 100, false);
+            }, 0, false);
         }
 
         function watchValues(newValues, oldValues) {
