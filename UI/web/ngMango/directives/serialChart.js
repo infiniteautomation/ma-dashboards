@@ -65,6 +65,7 @@ define(['angular', 'amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plu
  *     (see [amCharts Guide](https://docs.amcharts.com/3/javascriptcharts/Guide))
  * @param {object=} options extend AmCharts configuration object for customizing design of the chart
  *     (see [amCharts](https://docs.amcharts.com/3/javascriptcharts/AmSerialChart))
+ * @param {string=} cursor-sync-id If you set two or more charts to the same string value then their cursors and zoom will be synced
  * 
  * @usage
  * <ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" default-type="column">
@@ -98,7 +99,8 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         onChartInit: '&?',
         graphItemClicked: '&?',
         trendLines: '<?',
-        guides: '<?'
+        guides: '<?',
+        cursorSyncId: '@?'
 	};
 
 	for (var j = 1; j <= MAX_SERIES; j++) {
@@ -111,6 +113,65 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         scope['series' + j + 'Point'] = '<?';
         scope['series' + j + 'GraphOptions'] = '<?';
 	}
+	
+	const cursorSyncCharts = {};
+	
+	const addCursorSyncChart = (cursorSyncId, chart) => {
+	    if (!cursorSyncCharts.hasOwnProperty(cursorSyncId)) {
+	        cursorSyncCharts[cursorSyncId] = [];
+	    }
+	    if (cursorSyncCharts[cursorSyncId].includes(chart)) return;
+	    cursorSyncCharts[cursorSyncId].push(chart);
+	};
+	
+    const removeCursorSyncChart = (cursorSyncId, chart) => {
+        const chartsArray = cursorSyncCharts[cursorSyncId];
+        if (!chartsArray) return;
+        const index = chartsArray.indexOf(chart);
+        if (index >= 0) {
+            chartsArray.splice(index, 1);
+        }
+        if (!chartsArray.length) {
+            delete cursorSyncCharts[cursorSyncId];
+        }
+    };
+    
+    const chartZoomed = (cursorSyncId, event) => {
+        const chartsArray = cursorSyncCharts[cursorSyncId];
+        if (!chartsArray) return;
+        chartsArray.forEach(chart => {
+            if (chart.ignoreZoom) {
+                chart.ignoreZoom = false;
+            }
+            if (chart !== event.chart) {
+                chart.ignoreZoom = true;
+                try {
+                	chart.zoomToDates(event.startDate, event.endDate);
+                } catch (e) {} // throws error on first run
+            }
+        });
+    };
+    
+    const cursorChanged = (cursorSyncId, event) => {
+        const chartsArray = cursorSyncCharts[cursorSyncId];
+        if (!chartsArray) return;
+        chartsArray.forEach(chart => {
+            if (chart !== event.chart) {
+                chart.chartCursor.syncWithCursor(event.chart.chartCursor);
+            }
+        });
+    };
+    
+    const cursorHidden = (cursorSyncId, event) => {
+        const chartsArray = cursorSyncCharts[cursorSyncId];
+        if (!chartsArray) return;
+        chartsArray.forEach(chart => {
+            if (chart.chartCursor.hideCursor) {
+                chart.chartCursor.forceShow = false;
+                chart.chartCursor.hideCursor(false);
+            }
+        });
+    };
 
     return {
         restrict: 'E',
@@ -195,6 +256,31 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         
         if ($scope.onChartInit) {
             $scope.onChartInit({$chart: chart});
+        }
+        
+        if ($scope.cursorSyncId) {
+            addCursorSyncChart($scope.cursorSyncId, chart);
+            $scope.$on('$destroy', () => removeCursorSyncChart($scope.cursorSyncId, chart));
+        }
+        
+        chart.addListener('zoomed', event => {
+            if ($scope.cursorSyncId) {
+                chartZoomed($scope.cursorSyncId, event);
+            }
+        });
+        
+        if (chart.chartCursor) {
+            chart.chartCursor.addListener('changed', event => {
+                if ($scope.cursorSyncId) {
+                    cursorChanged($scope.cursorSyncId, event);
+                }
+            });
+    
+            chart.chartCursor.addListener('onHideCursor', event => {
+                if ($scope.cursorSyncId) {
+                    cursorHidden($scope.cursorSyncId, event);
+                }
+            });
         }
 
         chart.addListener('changed', function(event) {
