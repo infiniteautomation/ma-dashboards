@@ -278,7 +278,7 @@ requirejs.config({
             deps: ['amcharts/plugins/export/libs/pdfmake/pdfmake.min']
         },
         'amcharts/plugins/export/libs/xlsx/xlsx.min': {
-            deps: ['amcharts/plugins/export/libs/jszip/jszip_shim']
+            deps: ['amcharts/plugins/export/libs/jszip/jszip']
         },
         'amcharts/plugins/dataloader/dataloader': {
             deps: ['amcharts/amcharts']
