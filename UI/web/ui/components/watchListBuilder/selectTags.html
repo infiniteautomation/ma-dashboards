@@ -1,15 +1,16 @@
-<div class="md-padding watchlist-select-tags" layout="column" ng-model="$ctrl.watchlist.params" ui-sortable="{handle: '.watchlist-parameter-main > .move-handle'}">
+<div class="md-padding watchlist-select-tags" layout="column" ng-model="$ctrl.watchlist.params"
+    ui-sortable="{handle: '.watchlist-parameter-main > .move-handle'}"  ui-sortable-stop="$ctrl.tagParamsChanged()">
 
     <p ng-if="!$ctrl.watchlist.params.length" ma-tr="ui.app.noTags"></p>
     
     <div ng-repeat="param in $ctrl.watchlist.params" ng-if="param.type === 'tagValue'" layout="column" class="watchlist-parameter-row">
         <div layout="row" layout-align="start center" class="watchlist-parameter-main">
-            <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.deleteParamValues(param); $ctrl.watchlist.params.splice($index, 1);"><md-icon>clear</md-icon></md-button>
+            <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.deleteParamValues(param); $ctrl.watchlist.params.splice($index, 1); $ctrl.tagParamsChanged()"><md-icon>clear</md-icon></md-button>
             <md-input-container flex>
                 <label ma-tr="ui.app.label"></label>
                 <input ng-model="param.label">
             </md-input-container>
-            <ma-data-point-tag-key-select flex ng-model="param.options.tagKey" ng-change="$ctrl.changedTagKey(param)"></ma-data-point-tag-key-select>
+            <ma-data-point-tag-key-select flex ng-model="param.options.tagKey" ng-change="$ctrl.changedTagKey(param)" disabled-options="$ctrl.selectedTagKeys"></ma-data-point-tag-key-select>
             <md-button class="md-icon-button" ng-click="showSettings=!showSettings" ng-class="{'md-accent': showSettings}"><md-icon>settings</md-icon></md-button>
             <md-icon class="move-handle">reorder</md-icon>
         </div>
@@ -28,5 +29,4 @@
     <div layout="row" layout-align="start center">
         <md-button class="md-raised" ma-tr="ui.app.addATag" ng-click="$ctrl.addTag()"></md-button>
     </div>
-
 </div>

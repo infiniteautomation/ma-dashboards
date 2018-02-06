@@ -33,12 +33,26 @@ class DataPointTagKeySelectController {
         this.ngModelCtrl.$render = () => {
             this.selected = this.ngModelCtrl.$viewValue;
         };
-    }
-    
-    $onChanges(changes) {
+        
         this.maDataPointTags.keys().then(values => {
             this.values = values.sort();
         });
+    }
+    
+    $onChanges(changes) {
+        if (changes.disabledOptions) {
+            this.rebuildDisabledOptions();
+        }
+    }
+    
+    rebuildDisabledOptions() {
+        this.disabledOptionsMap = {};
+        if (this.disabledOptions) {
+            this.disabledOptions.forEach(o => this.disabledOptionsMap[o] = true);
+        }
+        if (this.ngModelCtrl) {
+            delete this.disabledOptionsMap[this.ngModelCtrl.$modelValue];
+        }
     }
     
     inputChanged() {
@@ -48,6 +62,7 @@ class DataPointTagKeySelectController {
 
 return {
     bindings: {
+        disabledOptions: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

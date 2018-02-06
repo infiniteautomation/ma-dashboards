@@ -112,15 +112,30 @@ class WatchListBuilderController {
     }
     
     changedTagKey(param) {
-        let paramName = 'tag_' + param.options.tagKey;
-        const findParam = p => p.name === paramName;
+        param.name = 'tag_' + param.options.tagKey;
+        this.tagParamsChanged();
+    }
+    
+    rebuildSelectedTagKeys() {
+        this.selectedTagKeys = [];
+        this.watchlist.params.forEach(param => {
+            if (param.type === 'tagValue') {
+                this.selectedTagKeys.push(param.options.tagKey);
+            }
+        });
+    }
+    
+    tagParamsChanged() {
+        this.rebuildSelectedTagKeys();
         
-        let i = 2;
-        while (this.watchlist.params.find(findParam)) {
-            paramName = 'tag_' + param.options.tagKey + i++;
-        }
-        
-        param.name = paramName;
+        const prevParams = [];
+        this.watchlist.params.forEach(param => {
+            param.options.restrictions = {};
+            prevParams.forEach(prevParam => {
+                param.options.restrictions[prevParam.options.tagKey] = '{{' + prevParam.name + '}}';
+            });
+            prevParams.push(param);
+        });
     }
     
     isError(name) {
@@ -339,6 +354,7 @@ class WatchListBuilderController {
             if (!watchlist.params) watchlist.params = [];
             if (!watchlist.data) watchlist.data = {};
             if (!watchlist.data.paramValues) watchlist.data.paramValues = {};
+            this.rebuildSelectedTagKeys();
             this.queryChanged();
         }
     }
