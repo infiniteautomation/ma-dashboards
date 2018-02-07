@@ -115,16 +115,7 @@ class WatchListBuilderController {
         param.name = 'tag_' + param.options.tagKey;
         this.tagParamsChanged();
     }
-    
-    rebuildSelectedTagKeys() {
-        this.selectedTagKeys = [];
-        this.watchlist.params.forEach(param => {
-            if (param.type === 'tagValue') {
-                this.selectedTagKeys.push(param.options.tagKey);
-            }
-        });
-    }
-    
+
     tagParamsChanged() {
         this.rebuildSelectedTagKeys();
         
@@ -135,6 +126,15 @@ class WatchListBuilderController {
                 param.options.restrictions[prevParam.options.tagKey] = '{{' + prevParam.name + '}}';
             });
             prevParams.push(param);
+        });
+    }
+    
+    rebuildSelectedTagKeys() {
+        this.selectedTagKeys = [];
+        this.watchlist.params.forEach(param => {
+            if (param.type === 'tagValue') {
+                this.selectedTagKeys.push(param.options.tagKey);
+            }
         });
     }
     
@@ -164,7 +164,7 @@ class WatchListBuilderController {
         if (this.watchListForm.$valid) {
             if (this.watchlist.type === 'query' || this.watchlist.type === 'tags') {
                 if (!this.watchlist.data) this.watchlist.data = {};
-                this.watchlist.data.paramValues = Object.assign({}, this.watchListParams);
+                this.watchlist.data.paramValues = angular.copy(this.watchListParams);
             }
             
             this.watchlist[saveMethod]().then(wl => {
@@ -311,11 +311,8 @@ class WatchListBuilderController {
         this.queryPromise = null;
         this.folders = [];
 
-        this.watchListParams = {};
-        if (watchlist.data && watchlist.data.paramValues) {
-            Object.assign(this.watchListParams, watchlist.data.paramValues);
-        }
-        
+        this.watchListParams = watchlist.defaultParamValues();
+
         this.clearSearch(false);
         
         if (watchlist.type === 'static') {
