@@ -45,7 +45,7 @@ class DataPointTagSelectController {
             this.values = values.sort();
             
             if (this.deselectOnQuery) {
-                if (this.selected == null || typeof this.selected === 'string') {
+                if (this.selected === null || typeof this.selected === 'string') {
                     if (!this.values.includes(this.selected)) {
                         this.selected = undefined;
                         this.inputChanged();
