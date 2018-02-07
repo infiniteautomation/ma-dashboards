@@ -42,7 +42,8 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q,
     WatchList.prototype.defaultParamValues = function defaultParamValues(paramValues = {}) {
         if (this.data && this.data.paramValues) {
             Object.keys(this.data.paramValues).forEach(paramName => {
-                if (paramValues[paramName] === undefined) {
+                const paramValue = paramValues[paramName];
+                if (paramValue === undefined || Array.isArray(paramValue) && !paramValue.length) {
                     paramValues[paramName] = angular.copy(this.data.paramValues[paramName]);
                 }
             });
