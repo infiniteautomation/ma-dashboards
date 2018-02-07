@@ -7,28 +7,23 @@
   * @ngdoc directive
   * @name ngMango.directive:maWatchListSelect
   * @restrict E
-  * @description
-  * `<ma-watch-list-select ng-model="myWatchlist"></ma-watch-list-select>`
-  * - The `<ma-watch-list-select>` component can be used to load watch list data onto a custom page.
+  * @description Displays a drop-down input for selecting a watch list.
   * - Can be combined with `<ma-watch-list-chart>` to display the watch list's custom chart designed on the watch list page.
   *
-  * @param {object} ng-model Variable holds the resulting watch list object.
+  * @param {expression} ng-model Assignable expression to output the selected watch list to.
   * @param {string=} watch-list-xid Set to the XID of a watch list to auto load.
-  * @param {boolean=} select-first Set to `false` to not auto select a the first watch list. (Defaults to `true`)
-  * @param {boolean=} ng-disabled Set to `true` to disable the dropdown input. (Defaults to `false`)
-  * @param {object=} query Filters the results by a property of the watch list object
-  * @param {string[]=} sort Sorts the resulting list by a property of the watch list object. Passed as array of strings. (eg:
-  * `['-xid']` sorts descending by xid)
-  * @param {number=} start Sets the starting index for the resulting list. Must be used in conjunction with a `limit` value. (Defaults to `0`)
+  * @param {boolean=} [select-first=true] Set to `false` to not auto select a the first watch list.
+  * @param {boolean=} [ng-disabled=false] Set to `true` to disable the drop-down input.
+  * @param {object=} query Query object, filters the resulting list of watch lists. e.g. `{name: 'boiler'}` means watch list name contains boiler .
+  * @param {string[]=} sort Sorts the resulting list by a property of the watch list object. Passed as array of strings. e.g.
+  * `['-xid', 'name']` sorts descending by xid, then by name).
+  * @param {number=} [start=0] Sets the starting index for the resulting list. Must be used in conjunction with a `limit` value.
   * @param {number=} limit Limits the results in the list to a specified number of watch lists. Limit takes place after query
-  * and sorting (no limit by default)
-  * @param {object=} parameters Pass in parameters from `<ma-watch-list-parameters>`
+  * and sorting.
+  * @param {expression=} parameters Assignable expression to output the watch list parameters to. If parameters are passed in the defaults for the
+  *     selected watch list will be applied to it.
   * @param {expression=} on-points-change Expression is evaluated when the points change. Available scope parameters are `$points`.
   *     e.g. `on-points-change="$ctrl.pointsChanged($points)"`)
-  * 
-  * @usage
-  * <ma-watch-list-select no-select="true" watch-list-xid="{{watchlistXID}}" ng-model="myWatchlist"></ma-watch-list-select>
-  *
   */
 
 define(['angular', 'require', './WatchListSelectController'], function(angular, require, WatchListSelectController) {
