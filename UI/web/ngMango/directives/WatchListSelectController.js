@@ -80,18 +80,10 @@ WatchListSelectController.prototype.render = function() {
             });
         }
 
-        if (this.watchList.data && this.watchList.data.paramValues) {
-            const defaultParams = this.watchList.data.paramValues;
-            if (!this.parameters) {
-                this.parameters = {};
-            }
-            
-            Object.keys(defaultParams).forEach(paramName => {
-                if (this.parameters[paramName] === undefined) {
-                    this.parameters[paramName] = defaultParams[paramName];
-                }
-            });
+        if (!this.parameters) {
+            this.parameters = {};
         }
+        this.watchList.defaultParamValues(this.parameters);
     }
 
     this.doGetPoints(this.parameters);
