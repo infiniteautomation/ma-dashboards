@@ -317,9 +317,10 @@ uiApp.run([
     '$window',
     'maModules',
     'maMath',
+    '$log',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
-        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, maModules, mathjs) {
+        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, maModules, mathjs, $log) {
 
     if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
         webAnalytics.enableGoogleAnalytics(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
@@ -335,6 +336,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
     $rootScope.pageOpts = {};
+    $rootScope.$log = $log;
 
     $rootScope.openHelp = function() {
         if ($state.params.helpPage) {
