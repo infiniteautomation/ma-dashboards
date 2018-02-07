@@ -59,8 +59,10 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q,
         return paramValues;
     };
 
-    WatchList.prototype.getPoints = function(paramValues = {}) {
-        this.defaultParamValues(paramValues);
+    WatchList.prototype.getPoints = function(paramValues) {
+        if (paramValues == null) {
+            paramValues = this.defaultParamValues();
+        }
         
         if (this.type === 'static') {
             return $http({
