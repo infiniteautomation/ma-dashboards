@@ -38,11 +38,30 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q,
     });
     
     WatchList.objQuery = Util.objQuery;
-
-    WatchList.prototype.getPoints = function(paramValues) {
-        if (!paramValues && this.data && this.data.paramValues) {
-            paramValues = this.data.paramValues;
+    
+    WatchList.prototype.defaultParamValues = function defaultParamValues(paramValues = {}) {
+        if (this.data && this.data.paramValues) {
+            Object.keys(this.data.paramValues).forEach(paramName => {
+                if (paramValues[paramName] === undefined) {
+                    paramValues[paramName] = angular.copy(this.data.paramValues[paramName]);
+                }
+            });
         }
+        
+        if (this.params) {
+            this.params.forEach(param => {
+                if (param.options && param.options.fixedValue !== undefined) {
+                    paramValues[param.name] = angular.copy(param.options.fixedValue);
+                }
+            });
+        }
+        
+        return paramValues;
+    };
+
+    WatchList.prototype.getPoints = function(paramValues = {}) {
+        this.defaultParamValues(paramValues);
+        
         if (this.type === 'static') {
             return $http({
                 method: 'GET',
@@ -84,10 +103,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q,
             
             this.params.filter(p => p.type === 'tagValue')
             .forEach(param => {
-                let paramValue = paramValues[param.name];
-                if (param.options.fixedValue) {
-                    paramValue = param.options.fixedValue;
-                }
+                const paramValue = paramValues[param.name];
                 const rqlProperty = `tags.${param.options.tagKey}`;
                 
                 if (param.options.multiple) {
@@ -191,6 +207,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q,
     };
     
     WatchList.prototype.hasParamOptions = function() {
+        if (!(this.type === 'query' || this.type === 'tags')) return false;
         return this.params && this.params.length && this.params.some(p => !p.options || !p.options.hasOwnProperty('fixedValue'));
     };
     
