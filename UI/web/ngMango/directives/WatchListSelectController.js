@@ -44,7 +44,7 @@ WatchListSelectController.prototype.$onChanges = function(changes) {
 WatchListSelectController.prototype.$doCheck = function() {
     if (this.parameters && this.prevParams && this.watchListParams && this.onPointsChange) {
         const changeDetected = Object.keys(this.parameters).some(param => {
-            return this.watchListParams[param] && this.parameters[param] !== this.prevParams[param];
+            return this.watchListParams[param] && !angular.equals(this.parameters[param], this.prevParams[param]);
         });
         
         if (changeDetected) {
@@ -121,8 +121,12 @@ WatchListSelectController.prototype.doQuery = function() {
     return this.queryPromise;
 };
 
-WatchListSelectController.prototype.doGetPoints = function(parameters) {
-    this.prevParams = Object.assign({}, parameters);
+WatchListSelectController.prototype.doGetPoints = function() {
+    this.prevParams = Object.assign({}, this.parameters);
+    
+    if (this.onParametersChange) {
+        this.onParametersChange({$parameters: this.parameters});
+    }
     
     if (!this.onPointsChange) return;
     
@@ -133,7 +137,7 @@ WatchListSelectController.prototype.doGetPoints = function(parameters) {
         if (this.wlPointsPromise && this.wlPointsPromise.cancel) {
             this.wlPointsPromise.cancel();
         }
-        this.wlPointsPromise = this.watchList.getPoints(parameters).then(null, angular.noop).then(function(points) {
+        this.wlPointsPromise = this.watchList.getPoints(this.parameters).then(null, angular.noop).then(function(points) {
             this.points = points || null;
             this.onPointsChange({$points: this.points});
         }.bind(this));

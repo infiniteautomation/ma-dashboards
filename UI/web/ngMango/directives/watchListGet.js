@@ -15,6 +15,8 @@
   *     selected watch list will be applied to it.
   * @param {expression=} on-points-change Expression is evaluated when the points change. Available scope parameters are `$points`.
   *     e.g. `on-points-change="$ctrl.pointsChanged($points)"`)
+  * @param {expression=} on-parameters-change Expression is evaluated when the parameter values change. Available scope parameters are `$parameters`.
+  *     e.g. `on-parameters-change="$ctrl.paramsChanged($parameters)"`)
   */
 
 define(['angular', 'require', './WatchListSelectController'], function(angular, require, WatchListSelectController) {
@@ -30,7 +32,8 @@ function watchListGetFactory() {
         bindToController: {
             watchListXid: '@?',
             parameters: '=?',
-            onPointsChange: '&?'
+            onPointsChange: '&?',
+            onParametersChange: '&?'
         },
         require: {
             'ngModelCtrl': 'ngModel'

@@ -24,6 +24,8 @@
   *     selected watch list will be applied to it.
   * @param {expression=} on-points-change Expression is evaluated when the points change. Available scope parameters are `$points`.
   *     e.g. `on-points-change="$ctrl.pointsChanged($points)"`)
+  * @param {expression=} on-parameters-change Expression is evaluated when the parameter values change. Available scope parameters are `$parameters`.
+  *     e.g. `on-parameters-change="$ctrl.paramsChanged($parameters)"`)
   * @param {boolean=} [show-new-button=false] Show a button for adding a new watch list
   * @param {boolean=} [show-edit-buttons=false] Show edit buttons next to each watch list
   * @param {expression=} new-button-clicked Action to take when button is clicked. Available scope parameters are `$event` and `$watchList`.
@@ -56,6 +58,7 @@ function watchListListFactory($injector) {
             sort: '<?',
             parameters: '=?',
             onPointsChange: '&?',
+            onParametersChange: '&?',
 
             showNewButton: '<?',
             showEditButtons: '<?',
