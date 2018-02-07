@@ -59,7 +59,7 @@
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
         auto-init="false" show-clear="true" data-source-xid="$ctrl.getParamOption(param, 'dataSourceXid')"
         contains="$ctrl.getParamOption(param, 'contains')" ng-if="!param.options.multiple"></ma-device-name-list>
-    <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+    <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-model-options="{trackBy: '$value'}" ng-change="$ctrl.inputChanged()"
         auto-init="false" show-clear="true" data-source-xid="$ctrl.getParamOption(param, 'dataSourceXid')"
         contains="$ctrl.getParamOption(param, 'contains')" ng-if="param.options.multiple" multiple></ma-device-name-list>
   </md-input-container>

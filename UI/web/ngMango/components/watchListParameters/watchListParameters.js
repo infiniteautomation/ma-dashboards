@@ -3,6 +3,18 @@
  * @author Jared Wiltshire
  */
 
+ /**
+  * @ngdoc directive
+  * @name ngMango.directive:maWatchListParameters
+  * @restrict E
+  * @description Displays a list of inputs to change the parameter values for a watch list. Applies to point query or tag watch list types.
+  *
+  * @param {expression} ng-model Assignable expression to output the parameter values to.
+  * @param {object} watch-list The watch list object to display the parameter inputs for.
+  * @param {object=} parameters Deprecated. Use `ng-model`.
+  * @param {expression=} parameters-changed Deprecated. Use `ng-change`.
+  */
+
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
@@ -41,7 +53,6 @@ WatchListParametersController.prototype.$onInit = function() {
     if (this.ngModelCtrl) {
         this.ngModelCtrl.$render = () => {
             this.parameters = this.ngModelCtrl.$viewValue;
-            this.prevParameters = angular.copy(this.parameters);
             this.paramOptions = {};
         };
     }
@@ -52,28 +63,13 @@ WatchListParametersController.prototype.$onChanges = function(changes) {
         if (!this.parameters) {
             this.parameters = {};
         }
-        
-        const defaultParams = this.watchList.data && this.watchList.data.paramValues;
-    	if (defaultParams) {
-    	    Object.keys(defaultParams).forEach(paramName => {
-    	        if (this.parameters[paramName] === undefined) {
-    	            this.parameters[paramName] = defaultParams[paramName];
-    	        }
-    	    });
-    	}
-    	
-        this.prevParameters = angular.copy(this.parameters);
+        this.watchList.defaultParamValues(this.parameters);
         this.paramOptions = {};
     }
 };
 
 WatchListParametersController.prototype.inputChanged = function inputChanged() {
-    if (angular.equals(this.parameters, this.prevParameters)) {
-        return;
-    }
-
     this.parameters = Object.assign({}, this.parameters);
-    this.prevParameters = angular.copy(this.parameters);
     this.paramOptions = {};
     
 	if (this.watchList && this.parametersChanged) {
