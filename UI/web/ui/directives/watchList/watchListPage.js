@@ -37,7 +37,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     this.selected = [];
     this.selectedStats = [];
 
-    var NO_STATS = '\u2014';
+    const NO_STATS = '\u2014';
 
     this.selectFirstWatchList = false;
     this.$mdMedia = $mdMedia;
@@ -56,6 +56,8 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         {name: 'left-2', translation: 'ui.app.farLeft'},
         {name: 'right-2', translation: 'ui.app.farRight'}
     ];
+    
+    this.watchListParams = {};
 
     this.$onInit = function() {
         var localStorage = localStorageService.get('watchListPage') || {};
@@ -160,9 +162,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             if (!this.watchList.data.chartConfig) {
                 this.watchList.data.chartConfig = {};
             }
-            if (this.watchList.data.paramValues) {
-                this.watchListParams = this.watchList.data.paramValues;
-            }
+            this.watchList.defaultParamValues(this.watchListParams);
             
             this.chartConfig = this.watchList.data.chartConfig;
             if (this.chartConfig.selectedPoints) {
@@ -189,11 +189,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
         });
     };
 
-    this.getPoints = function getPoints(parameters) {
-        if (parameters) {
-            this.watchListParams = parameters;
-        }
-        
+    this.getPoints = function getPoints() {
         if (this.wlPointsPromise) {
             this.wlPointsPromise.cancel();
         }
@@ -308,7 +304,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
     };
     
     this.saveSettings = function saveSettings() {
-        this.watchList.data.paramValues = this.watchListParams;
+        this.watchList.data.paramValues = angular.copy(this.watchListParams);
         
         if (this.watchList.isNew) {
             $state.go('ui.settings.watchListBuilder', {watchList: this.watchList});
