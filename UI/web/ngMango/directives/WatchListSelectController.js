@@ -135,7 +135,7 @@ WatchListSelectController.prototype.doGetPoints = function() {
     }
     
     if (this.autoStateParams) {
-        const encodedParams = this.maUtil.encodeStateParams(this.parameters, true);
+        const encodedParams = this.maUtil.encodeStateParams(this.parameters);
         this.maUtil.updateStateParams(encodedParams);
     }
     

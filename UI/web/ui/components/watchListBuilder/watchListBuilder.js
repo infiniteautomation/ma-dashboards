@@ -110,17 +110,13 @@ class WatchListBuilderController {
             delete param.options.fixedValue;
         }
     }
-    
-    changedTagKey(param) {
-        param.name = 'tag_' + param.options.tagKey;
-        this.tagParamsChanged();
-    }
 
     tagParamsChanged() {
         this.rebuildSelectedTagKeys();
         
         const prevParams = [];
         this.watchlist.params.forEach(param => {
+            param.name = param.options.tagKey;
             param.options.restrictions = {};
             prevParams.forEach(prevParam => {
                 param.options.restrictions[prevParam.options.tagKey] = '{{' + prevParam.name + '}}';

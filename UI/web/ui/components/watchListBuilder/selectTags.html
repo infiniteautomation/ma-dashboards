@@ -10,7 +10,7 @@
                 <label ma-tr="ui.app.label"></label>
                 <input ng-model="param.label">
             </md-input-container>
-            <ma-data-point-tag-key-select flex ng-model="param.options.tagKey" ng-change="$ctrl.changedTagKey(param)" disabled-options="$ctrl.selectedTagKeys"></ma-data-point-tag-key-select>
+            <ma-data-point-tag-key-select flex ng-model="param.options.tagKey" ng-change="$ctrl.tagParamsChanged()" disabled-options="$ctrl.selectedTagKeys"></ma-data-point-tag-key-select>
             <md-button class="md-icon-button" ng-click="showSettings=!showSettings" ng-class="{'md-accent': showSettings}"><md-icon>settings</md-icon></md-button>
             <md-icon class="move-handle">reorder</md-icon>
         </div>

@@ -630,7 +630,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             const watchListParamsByName = watchListParams.reduce((map, p) => (map[p.name] = p, map), {});
             
             Object.keys(stateParams).forEach(stateParamName => {
-                const wlParam = watchListParamsByName[stateParamName] || watchListParamsByName[`tag_${stateParamName}`];
+                const wlParam = watchListParamsByName[stateParamName];
                 if (wlParam) {
                     const multiple = wlParam.options && wlParam.options.multiple;
                     paramValues[wlParam.name] = multiple ? arrayParams[stateParamName] : stateParams[stateParamName];
@@ -638,27 +638,6 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             });
             
             return paramValues;
-        },
-        
-        /**
-         * @ngdoc method
-         * @methodOf ngMangoServices.maUtil
-         * @name findMatchingStateParam
-         * 
-         * @description Finds a matching parameter name in $stateParams, e.g. 'tag_name' => 'tag_name' or 'name'
-         * 
-         * @param {string} paramName Parameter name to find in $stateParams
-         * @returns {string} matching parameter name in $stateParams or undefined if not found
-         */
-        findMatchingStateParam(paramName) {
-            if ($stateParams.hasOwnProperty(paramName)) {
-                return paramName;
-            }
-            
-            const matches = /^tag_(.+)$/.exec(paramName);
-            if (matches && $stateParams.hasOwnProperty(matches[1])) {
-                return matches[1];
-            }
         },
 
         /**
@@ -668,38 +647,35 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
          * 
          * @description Encodes watch list parameters into a format that will work with $state.go().
          * Encodes null into 'null', and empty array into undefined, unwraps single element arrays e.g. [a] => a
+         * Parameter names which are not found in $stateParams will be excluded from the output.
          * 
          * @param {object} inputParameters Watch list parameters to encode
-         * @param {boolean} [findMatchingStateParam=false] Try and match the designer parameter name to a $stateParam name.
-         *     If not found then the parameter will be excluded from the output.
          * @returns {object} Encoded parameters to pass to $state.go()
          */
-        encodeStateParams(inputParameters, findMatchingStateParam) {
+        encodeStateParams(inputParameters) {
             const params = {};
 
             Object.keys(inputParameters).forEach(key => {
                 const paramValue = inputParameters[key];
-                
-                let stateParamKey = key;
-                if (findMatchingStateParam) {
-                    stateParamKey = this.findMatchingStateParam(key);
-                    if (typeof stateParamKey !== 'string') return;
+
+                if (!$stateParams.hasOwnProperty(key)) {
+                    return;
                 }
 
                 if (Array.isArray(paramValue)) {
                     if (!paramValue.length) {
-                        params[stateParamKey] = undefined;
+                        params[key] = undefined;
                     } else if (paramValue.length === 1) {
-                        params[stateParamKey] = paramValue[0] === null ? ENCODED_STATE_PARAM_NULL : paramValue[0];
+                        params[key] = paramValue[0] === null ? ENCODED_STATE_PARAM_NULL : paramValue[0];
                     } else {
-                        params[stateParamKey] = paramValue.map(value => {
+                        params[key] = paramValue.map(value => {
                             return value === null ? ENCODED_STATE_PARAM_NULL : value;
                         });
                     }
                 } else if (paramValue === null) {
-                    params[stateParamKey] = ENCODED_STATE_PARAM_NULL;
+                    params[key] = ENCODED_STATE_PARAM_NULL;
                 } else {
-                    params[stateParamKey] = paramValue;
+                    params[key] = paramValue;
                 }
             });
             
