@@ -4,7 +4,7 @@
 <br><a ui-sref="ui.examples.playAreaBig">Play Area View Only</a>
 </p>
 
-<ma-ui-state-params state-params="stateParams"></ma-ui-state-params>
+<ma-state-params state-params="stateParams"></ma-state-params>
 
 <ma-json-store xid="play-area-{{User.current.username}}" item="playArea" value="paVal"
   ng-init="playArea={readPermission: 'user', editPermission: 'user'}" item-loaded="$item.jsonData.text=stateParams.markup||$item.jsonData.text">
