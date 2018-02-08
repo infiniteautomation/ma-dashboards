@@ -9,13 +9,14 @@ define(['angular', 'require'], function(angular, require) {
 var DEFAULT_SORT = ['name'];
 var UPDATE_TYPES = ['add', 'update', 'delete'];
 
-WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'maWatchList', 'maWatchListEventManager'];
-function WatchListSelectController($scope, $element, $attrs, WatchList, WatchListEventManager) {
+WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'maWatchList', 'maWatchListEventManager', 'maUtil'];
+function WatchListSelectController($scope, $element, $attrs, WatchList, WatchListEventManager, maUtil) {
     this.$scope = $scope;
     this.$element = $element;
     this.$attrs = $attrs;
     this.WatchList = WatchList;
     this.WatchListEventManager = WatchListEventManager;
+    this.maUtil = maUtil;
 }
 
 WatchListSelectController.prototype.$onInit = function() {
@@ -76,13 +77,18 @@ WatchListSelectController.prototype.render = function() {
         if (this.watchList.params && this.watchList.params.length) {
             this.watchListParams = {};
             this.watchList.params.forEach(param => {
-                this.watchListParams[param.name] = true;
+                this.watchListParams[param.name] = param;
             });
         }
 
         if (!this.parameters) {
             this.parameters = {};
         }
+        
+        if (this.autoStateParams) {
+            this.maUtil.updateFromStateParams(this.watchList, this.parameters);
+        }
+        
         this.watchList.defaultParamValues(this.parameters);
     }
 
@@ -126,6 +132,11 @@ WatchListSelectController.prototype.doGetPoints = function() {
     
     if (this.onParametersChange) {
         this.onParametersChange({$parameters: this.parameters});
+    }
+    
+    if (this.autoStateParams) {
+        const encodedParams = this.maUtil.encodeStateParams(this.parameters, true);
+        this.maUtil.updateStateParams(encodedParams);
     }
     
     if (!this.onPointsChange) return;

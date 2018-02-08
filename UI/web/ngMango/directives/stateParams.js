@@ -23,18 +23,18 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-const nullString = 'null';
-
 stateParams.$inject = [];
 function stateParams() {
 
-    const $inject = ['$timeout', '$injector'];
+    const $inject = ['$timeout', 'maUtil', '$injector'];
     class StateParamsController {
         static get $$ngIsClass() { return true; }
         static get $inject() { return $inject; }
         
-        constructor($timeout, $injector) {
+        constructor($timeout, maUtil, $injector) {
             this.$timeout = $timeout;
+            this.maUtil = maUtil;
+            
             if ($injector.has('$state')) {
                 this.$state = $injector.get('$state');
             }
@@ -52,16 +52,8 @@ function stateParams() {
         
         $onChanges(changes) {
             if (changes.updateParams && this.updateParams) {
-                const encodedParams = this.encodeParams(this.updateParams);
-                
-                const changed = Object.keys(encodedParams).some(key => {
-                    const paramValue = encodedParams[key];
-                    return this.$stateParams.hasOwnProperty(key) && !angular.equals(paramValue, this.$stateParams[key]);
-                });
-                
-                if (changed) {
-                    this.$state.go('.', encodedParams, {location: 'replace', notify: false});
-    
+                const encodedParams = this.maUtil.encodeStateParams(this.updateParams);
+                if (this.maUtil.updateStateParams(encodedParams)) {
                     if (this.onChange) {
                         // delay so that $stateParams are updated
                         this.$timeout(() => {
@@ -74,71 +66,15 @@ function stateParams() {
         
         notifyChange(init = false) {
             if (this.onChange) {
-                const params = this.decodeParams(this.$stateParams);
+                const params = this.maUtil.decodeStateParams(this.$stateParams);
                 
                 // generate a separate object which is always an array
                 // if you set this.$state.go('.', {xyz: ['abc']}) then $stateParams will be {xyz: 'abc'}, the array is lost
-                const arrayParams = {};
-                Object.keys(params).forEach(key => {
-                    const paramValue = params[key];
-                    if (paramValue === undefined) {
-                        arrayParams[key] = [];
-                    } else if (!Array.isArray(paramValue)) {
-                        arrayParams[key] = [paramValue];
-                    } else {
-                        arrayParams[key] = paramValue;
-                    }
-                });
-                
+                const arrayParams = this.maUtil.createArrayParams(params);
                 this.onChange({$stateParams: params, $init: init, $state: this.$state, $arrayParams: arrayParams});
             }
         }
-        
-        /**
-         * Encodes null into 'null', and empty array into undefined, unwraps single element arrays e.g. [a] => a
-         */
-        encodeParams(inputParameters) {
-            const params = Object.assign({}, inputParameters);
 
-            Object.keys(params).forEach(key => {
-                const paramValue = params[key];
-                if (Array.isArray(paramValue)) {
-                    if (!paramValue.length) {
-                        params[key] = undefined;
-                    } else if (paramValue.length === 1) {
-                        params[key] = paramValue[0] === null ? nullString : paramValue[0];
-                    } else {
-                        params[key] = paramValue.map(value => {
-                            return value === null ? nullString : value;
-                        });
-                    }
-                } else if (paramValue === null) {
-                    params[key] = nullString;
-                }
-            });
-            
-            return params;
-        }
-        
-        /**
-         * Decodes 'null' into null
-         */
-        decodeParams(inputParameters) {
-            const params = Object.assign({}, inputParameters);
-
-            Object.keys(params).forEach(key => {
-                const paramValue = params[key];
-                if (Array.isArray(paramValue)) {
-                    params[key] = paramValue.map(value => {
-                        return value === nullString ? null : value;
-                    });
-                } else if (paramValue === nullString) {
-                    params[key] = null;
-                }
-            });
-            
-            return params;
-        }
     }
 
     return {

@@ -22,6 +22,8 @@
   * and sorting.
   * @param {expression=} parameters Assignable expression to output the watch list parameters to. If parameters are passed in the defaults for the
   *     selected watch list will be applied to it.
+  * @param {boolean=} [auto-state-params=false] Automatically update $stateParams (url parameters) when watch list parameters change. Also sets watch
+  *     list parameters from the $stateParams when the watch list is loaded.
   * @param {expression=} on-points-change Expression is evaluated when the points change. Available scope parameters are `$points`.
   *     e.g. `on-points-change="$ctrl.pointsChanged($points)"`)
   * @param {expression=} on-parameters-change Expression is evaluated when the parameter values change. Available scope parameters are `$parameters`.
@@ -52,6 +54,7 @@ function watchListSelectFactory($injector) {
             limit: '<?',
             sort: '<?',
             parameters: '=?',
+            autoStateParams: '<?',
             onPointsChange: '&?',
             onParametersChange: '&?',
             ngDisabled: '<?'

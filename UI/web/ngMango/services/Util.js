@@ -20,12 +20,17 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 * </pre>
 */
 
-UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT', 'maRqlBuilder', '$window'];
-function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout, RqlBuilder, $window) {
+UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT', 'maRqlBuilder', '$window', '$injector'];
+function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout, RqlBuilder, $window, $injector) {
+    
+    const $stateParams = $injector.has('$stateParams') ? $injector.get('$stateParams') : null;
+    const $state = $injector.has('$state') ? $injector.get('$state') : null;
     
     const SNAKE_CASE_REGEXP = /[A-Z]/g;
     const PREFIX_REGEXP = /^((?:x|data)[:\-_])/i;
     const SPECIAL_CHARS_REGEXP = /[:\-_]+(.)/g;
+
+    const ENCODED_STATE_PARAM_NULL = 'null';
     
     const util = {
 
@@ -604,6 +609,217 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                     oldObject[key] = newValue;
                 }
             });
+        },
+        
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name updateFromStateParams
+         * 
+         * @description Updates watch list parameter values from $stateParams
+         * 
+         * @param {object} watchList watch list that parameters are defined on
+         * @param {object} [paramValues={}] Parameter values
+         * @returns {object} paramValues Updated parameter values
+         */
+        updateFromStateParams(watchList, paramValues = {}) {
+            const stateParams = this.decodedStateParams();
+            const arrayParams = this.createArrayParams(stateParams);
+            
+            const watchListParams = watchList.params || [];
+            const watchListParamsByName = watchListParams.reduce((map, p) => (map[p.name] = p, map), {});
+            
+            Object.keys(stateParams).forEach(stateParamName => {
+                const wlParam = watchListParamsByName[stateParamName] || watchListParamsByName[`tag_${stateParamName}`];
+                if (wlParam) {
+                    const multiple = wlParam.options && wlParam.options.multiple;
+                    paramValues[wlParam.name] = multiple ? arrayParams[stateParamName] : stateParams[stateParamName];
+                }
+            });
+            
+            return paramValues;
+        },
+        
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name findMatchingStateParam
+         * 
+         * @description Finds a matching parameter name in $stateParams, e.g. 'tag_name' => 'tag_name' or 'name'
+         * 
+         * @param {string} paramName Parameter name to find in $stateParams
+         * @returns {string} matching parameter name in $stateParams or undefined if not found
+         */
+        findMatchingStateParam(paramName) {
+            if ($stateParams.hasOwnProperty(paramName)) {
+                return paramName;
+            }
+            
+            const matches = /^tag_(.+)$/.exec(paramName);
+            if (matches && $stateParams.hasOwnProperty(matches[1])) {
+                return matches[1];
+            }
+        },
+
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name encodeStateParams
+         * 
+         * @description Encodes watch list parameters into a format that will work with $state.go().
+         * Encodes null into 'null', and empty array into undefined, unwraps single element arrays e.g. [a] => a
+         * 
+         * @param {object} inputParameters Watch list parameters to encode
+         * @param {boolean} [findMatchingStateParam=false] Try and match the designer parameter name to a $stateParam name.
+         *     If not found then the parameter will be excluded from the output.
+         * @returns {object} Encoded parameters to pass to $state.go()
+         */
+        encodeStateParams(inputParameters, findMatchingStateParam) {
+            const params = {};
+
+            Object.keys(inputParameters).forEach(key => {
+                const paramValue = inputParameters[key];
+                
+                let stateParamKey = key;
+                if (findMatchingStateParam) {
+                    stateParamKey = this.findMatchingStateParam(key);
+                    if (typeof stateParamKey !== 'string') return;
+                }
+
+                if (Array.isArray(paramValue)) {
+                    if (!paramValue.length) {
+                        params[stateParamKey] = undefined;
+                    } else if (paramValue.length === 1) {
+                        params[stateParamKey] = paramValue[0] === null ? ENCODED_STATE_PARAM_NULL : paramValue[0];
+                    } else {
+                        params[stateParamKey] = paramValue.map(value => {
+                            return value === null ? ENCODED_STATE_PARAM_NULL : value;
+                        });
+                    }
+                } else if (paramValue === null) {
+                    params[stateParamKey] = ENCODED_STATE_PARAM_NULL;
+                } else {
+                    params[stateParamKey] = paramValue;
+                }
+            });
+            
+            return params;
+        },
+
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name decodeStateParams
+         * 
+         * @description Decodes $stateParams into a format that can be used in watch list parameters.
+         * Decodes 'null' into null.
+         * 
+         * @param {object} inputParameters Parameters from $stateParams
+         * @returns {object} Decoded parameters for watch list
+         */
+        decodeStateParams(inputParameters) {
+            const params = Object.assign({}, inputParameters);
+
+            Object.keys(params).forEach(key => {
+                const paramValue = params[key];
+                if (Array.isArray(paramValue)) {
+                    params[key] = paramValue.map(value => {
+                        return value === ENCODED_STATE_PARAM_NULL ? null : value;
+                    });
+                } else if (paramValue === ENCODED_STATE_PARAM_NULL) {
+                    params[key] = null;
+                }
+            });
+            
+            return params;
+        },
+        
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name decodedStateParams
+         * 
+         * @description Returns $stateParams decoded using decodeStateParams()
+         * 
+         * @returns {object} Decoded parameters for watch list
+         */
+        decodedStateParams() {
+            const params = Object.assign({}, $stateParams);
+
+            Object.keys(params).forEach(key => {
+                const paramValue = params[key];
+                if (Array.isArray(paramValue)) {
+                    params[key] = paramValue.map(value => {
+                        return value === ENCODED_STATE_PARAM_NULL ? null : value;
+                    });
+                } else if (paramValue === ENCODED_STATE_PARAM_NULL) {
+                    params[key] = null;
+                }
+            });
+            
+            return params;
+        },
+        
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name createArrayParams
+         * 
+         * @description Creates a parameters object where each value is always an array. Useful for setting
+         *     multi-select watch list parameters from state parameters.
+         * 
+         * @param {object} parameters $stateParams like object
+         * @returns {object} new parameters object where values are always arrays
+         */
+        createArrayParams(parameters) {
+            const arrayParams = {};
+            Object.keys(parameters).forEach(key => {
+                const paramValue = parameters[key];
+                if (paramValue === undefined) {
+                    arrayParams[key] = [];
+                } else if (!Array.isArray(paramValue)) {
+                    arrayParams[key] = [paramValue];
+                } else {
+                    arrayParams[key] = paramValue;
+                }
+            });
+            return arrayParams;
+        },
+        
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name differentToStateParams
+         * 
+         * @description Compares new state params to the current $stateParams
+         * 
+         * @param {object} updateParams New state params
+         * @returns {boolean} true if updateParams are the different to the current $stateParams
+         *
+         */
+        differentToStateParams(updateParams) {
+            return Object.keys(updateParams).some(key => {
+                const paramValue = updateParams[key];
+                return $stateParams.hasOwnProperty(key) && !angular.equals(paramValue, $stateParams[key]);
+            });
+        },
+        
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name updateStateParams
+         * 
+         * @description Updates $stateParams using $state.go() if updateParams are different to the current $stateParams
+         * 
+         * @param {object} updateParams New state params
+         * @returns {boolean} true if updateParams were different and $state.go() was called
+         */
+        updateStateParams(updateParams) {
+            if (this.differentToStateParams(updateParams)) {
+                $state.go('.', updateParams, {location: 'replace', notify: false});
+                return true;
+            }
+            return false;
         }
     };
     
@@ -614,7 +830,6 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
     *
     * @description
     * Generates a v4 (random) UUID
-    *
     */
     if ($window.crypto && typeof $window.crypto.getRandomValues === 'function') {
         util.uuid = function uuid() {
