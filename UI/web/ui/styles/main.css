@@ -1505,3 +1505,13 @@ ma-ui-bulk-data-point-edit-page table .ma-cell-modified {
 ma-ui-bulk-data-point-edit-page table.md-table thead.md-table-progress md-progress-linear {
 	top: -3px;
 }
+
+ma-ui-bulk-data-point-edit-page md-card.ma-bulk-data-point-edit {
+	margin: 0 0 0 16px;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls tr th.ma-points-selected {
+	font-size: 1.2rem;
+	text-align: center;
+	padding: 8px 10px 0;
+}

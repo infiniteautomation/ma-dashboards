@@ -6,23 +6,44 @@
         ng-disabled="$ctrl.bulkTaskPromise">
     </ma-point-browser>
     
-    <div flex="80" class="md-padding">
-        <div>
-            <md-button class="md-raised md-primary" ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody || $ctrl.bulkTaskPromise || $ctrl.pointsPromise">
-                <md-icon>edit</md-icon>
-                <span ma-tr="ui.app.startBulkEdit"></span>
-            </md-button>
-            
-            <md-button class="md-raised md-warn" ng-click="$ctrl.cancel($event)" ng-disabled="!$ctrl.bulkTaskPromise">
-                <md-icon>cancel</md-icon>
-                <span ma-tr="ui.app.cancelBulkEdit"></span>
-            </md-button>
-            
-            <md-button class="md-raised" ng-click="$ctrl.watchListChanged($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
-                <md-icon>refresh</md-icon>
-                <span ma-tr="ui.app.reloadPoints"></span>
-            </md-button>
-        </div>
+    <md-card class="ma-bulk-data-point-edit" flex="80">
+        <md-toolbar class="md-hue-3">
+            <div class="md-toolbar-tools">
+                <md-button class="md-raised md-primary" ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody || $ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                    <md-icon>edit</md-icon>
+                    <span ma-tr="ui.app.startBulkEdit"></span>
+                </md-button>
+                
+                <md-button class="md-raised md-warn" ng-click="$ctrl.cancel($event)" ng-disabled="!$ctrl.bulkTaskPromise">
+                    <md-icon>cancel</md-icon>
+                    <span ma-tr="ui.app.cancelBulkEdit"></span>
+                </md-button>
+                
+                <md-button class="md-raised" ng-click="$ctrl.watchListChanged($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                    <md-icon>refresh</md-icon>
+                    <span ma-tr="ui.app.reloadPoints"></span>
+                </md-button>
+                
+                <div flex></div>
+                
+                <md-input-container md-no-float="true">
+                    <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                        <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
+                    </md-select>
+                </md-input-container>
+                
+                <md-input-container md-no-float="true">
+                    <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags" ng-change="$ctrl.selectedTagsChanged()" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" ng-model-options="{trackBy: '$value.name'}">
+                        <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
+                    </md-select>
+                </md-input-container>
+                
+                <md-button class="md-icon-button" ng-click="$ctrl.addTagColumn($event)">
+                    <md-icon>add</md-icon>
+                    <md-tooltip ma-tr="ui.app.addATag"></md-tooltip>
+                </md-button>
+            </div>
+        </md-toolbar>
         
         <div ng-if="$ctrl.bulkTaskPromise" layout="column">
             <md-progress-linear md-mode="determinate" ng-value="$ctrl.bulkTask.progress"></md-progress-linear>
@@ -30,31 +51,12 @@
                 <span><span ng-bind="$ctrl.bulkTask.progress"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position, $ctrl.bulkTask.maximum]"></span>)</span>
             </div>
         </div>
-        
-        <md-input-container>
-            <label ma-tr="ui.app.selectColumns"></label>
-            <md-select multiple="true" ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
-                <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
-            </md-select>
-        </md-input-container>
-        
-        <md-input-container>
-            <label ma-tr="ui.app.selectTags"></label>
-            <md-select multiple="true" ng-model="$ctrl.selectedTags" ng-change="$ctrl.selectedTagsChanged()" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" ng-model-options="{trackBy: '$value.name'}">
-                <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
-            </md-select>
-        </md-input-container>
-        
-        <md-button class="md-icon-button" ng-click="$ctrl.addTagColumn($event)">
-            <md-icon>add</md-icon>
-            <md-tooltip ma-tr="ui.app.addATag"></md-tooltip>
-        </md-button>
-        
+
         <md-table-container>
             <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.pointsPromise">
                 <thead class="ma-bulk-edit-controls">
                     <tr class="ma-bulk-edit-button-row">
-                        <th ma-tr="ui.app.xPointsSelected" ma-tr-args="[$ctrl.selectedPoints.length]"></th>
+                        <th class="ma-points-selected" ma-tr="ui.app.xPointsSelected" ma-tr-args="[$ctrl.selectedPoints.length]"></th>
                         <th><!-- Spacer for error --></th>
                         <th>
                             <md-button class="md-icon-button" ng-click="$ctrl.sortColumn({name: 'xid'})">
@@ -124,5 +126,5 @@
             </table>
         </md-table-container>
         <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination> 
-    </div>
+    </md-card>
 </div>
