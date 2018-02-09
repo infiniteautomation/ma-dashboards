@@ -224,15 +224,17 @@ class BulkDataPointEditPageController {
             this.selectAll = false;
             this.selectedPoints = [];
         } else {
-            this.selectedPoints = this.selectAll ? this.points.slice() : [];
+            this.selectedPoints = this.selectAll && this.points ? this.points.slice() : [];
         }
         
         this.selectAllIndeterminate = false;
         
-        if (this.selectAll) {
-            this.points.forEach(pt => pt[selectedProperty] = true);
-        } else {
-            this.points.forEach(pt => delete pt[selectedProperty]);
+        if (this.points) {
+            if (this.selectAll) {
+                this.points.forEach(pt => pt[selectedProperty] = true);
+            } else {
+                this.points.forEach(pt => delete pt[selectedProperty]);
+            }
         }
     }
 

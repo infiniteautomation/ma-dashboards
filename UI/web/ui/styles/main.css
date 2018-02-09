@@ -1498,10 +1498,6 @@ ma-ui-bulk-data-point-edit-page table .ma-empty-null {
 	font-style: italic;
 }
 
-ma-ui-bulk-data-point-edit-page table .ma-cell-modified {
-	background-color: rgba(255,255,0,0.3)
-}
-
 ma-ui-bulk-data-point-edit-page table.md-table thead.md-table-progress md-progress-linear {
 	top: -3px;
 }
