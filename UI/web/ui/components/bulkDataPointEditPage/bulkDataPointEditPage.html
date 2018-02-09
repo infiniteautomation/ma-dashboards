@@ -9,21 +9,23 @@
     <md-card class="ma-bulk-data-point-edit" flex="80">
         <md-toolbar class="md-hue-2">
             <div class="md-toolbar-tools">
-                <md-button class="md-raised md-accent" ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody || $ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                <md-button class="md-raised md-accent" ng-click="$ctrl.start($event)" ng-if="!$ctrl.bulkTaskPromise" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody || $ctrl.pointsPromise">
                     <md-icon>edit</md-icon>
                     <span ma-tr="ui.app.startBulkEdit"></span>
                 </md-button>
                 
-                <md-button class="md-raised" ng-click="$ctrl.watchListChanged($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
-                    <md-icon>refresh</md-icon>
-                    <span ma-tr="ui.app.reloadPoints"></span>
-                </md-button>
-                
-                <md-button class="md-raised md-warn" ng-click="$ctrl.cancel($event)" ng-disabled="!$ctrl.bulkTaskPromise">
+                <md-button class="md-raised md-warn" ng-click="$ctrl.cancel($event)" ng-if="$ctrl.bulkTaskPromise">
                     <md-icon>cancel</md-icon>
                     <span ma-tr="ui.app.cancelBulkEdit"></span>
                 </md-button>
                 
+                <!-- 
+                <md-button class="md-raised" ng-click="$ctrl.watchListChanged($event)" ng-if="!($ctrl.bulkTaskPromise || $ctrl.pointsPromise)">
+                    <md-icon>refresh</md-icon>
+                    <span ma-tr="ui.app.reloadPoints"></span>
+                </md-button>
+                -->
+
                 <div flex></div>
                 
                 <span ng-if="$ctrl.bulkTaskPromise">
