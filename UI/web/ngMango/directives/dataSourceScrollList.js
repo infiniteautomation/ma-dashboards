@@ -22,7 +22,8 @@ function dataSourceScrollList($injector) {
             query: '<?',
             start: '<?',
             limit: '<?',
-            sort: '<?'
+            sort: '<?',
+            onQuery: '&?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -79,6 +80,10 @@ function dataSourceScrollList($injector) {
             }).$promise.then(function(items) {
                 return (this.items = items);
             }.bind(this));
+
+            if (this.onQuery) {
+                this.onQuery({$promise: this.queryPromise});
+            }
             
             return this.queryPromise;
         };

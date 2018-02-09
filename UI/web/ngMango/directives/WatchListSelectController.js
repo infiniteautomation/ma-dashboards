@@ -124,6 +124,10 @@ WatchListSelectController.prototype.doQuery = function() {
         return (this.watchLists = items);
     }.bind(this));
     
+    if (this.onQuery) {
+        this.onQuery({$promise: this.queryPromise});
+    }
+    
     return this.queryPromise;
 };
 

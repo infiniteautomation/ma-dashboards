@@ -32,6 +32,7 @@
   * @param {boolean=} [show-edit-buttons=false] Show edit buttons next to each watch list
   * @param {expression=} new-button-clicked Action to take when button is clicked. Available scope parameters are `$event` and `$watchList`.
   * @param {expression=} edit-button-clicked Action to take when button is clicked. Available scope parameters are `$event` and `$watchList`.
+  * @param {expression=} on-query Expression is evaluated when querying for watch lists. Available scope parameters are `$promise`.
   * 
   */
 
@@ -66,7 +67,9 @@ function watchListListFactory($injector) {
             showNewButton: '<?',
             showEditButtons: '<?',
             newButtonClicked: '&',
-            editButtonClicked: '&'
+            editButtonClicked: '&',
+            
+            onQuery: '&?'
         },
         require: {
             'ngModelCtrl': 'ngModel'

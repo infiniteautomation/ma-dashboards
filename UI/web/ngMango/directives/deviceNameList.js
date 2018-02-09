@@ -24,6 +24,7 @@ define(['angular', 'require'], function(angular, require) {
  *     Capitalization sensitive. (eg: `'Meta'`)
  * @param {boolean=} show-clear If set to `true` a clear option will be shown at the top of the the list, allowing you to set
  * the data source to undefined. (Defaults to `false`)
+ * @param {expression=} on-query Expression is evaluated when querying starts. Available scope parameters are `$promise`.
  *
  * @usage
  * <md-input-container>
@@ -53,7 +54,8 @@ function deviceNameList(DeviceName, $injector) {
             dataSourceXid: '<?sourceXid',
             contains: '<?',
             autoInit: '<?',
-            showClear: '<?'
+            showClear: '<?',
+            onQuery: '&?'
         },
         templateUrl: function(element, attrs) {
           if ($injector.has('mdSelectDirective') || $injector.has('mdAutocompleteDirective')) {
@@ -89,6 +91,10 @@ function deviceNameList(DeviceName, $injector) {
                     	ngModelCtrl.$setViewValue(deviceNames[0]);
                     }
                 });
+
+                if (this.onQuery) {
+                    this.onQuery({$promise: promise});
+                }
             });
         }
     };

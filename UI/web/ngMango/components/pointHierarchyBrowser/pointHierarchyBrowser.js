@@ -17,11 +17,16 @@ function PointHierarchyBrowserController(PointHierarchy) {
             var resourceObj = this.path && this.path.length ?
                     PointHierarchy.byPath({path: this.path, subfolders: true, points: true}) :
                     PointHierarchy.getRoot({subfolders: true, points: true});
-            resourceObj.$promise.then(function(hierarchy) {
+            
+            const promise = resourceObj.$promise.then(function(hierarchy) {
                 this.hierarchy = hierarchy;
                 this.calculateTotalPoints();
                 this.render();
             }.bind(this));
+            
+            if (this.onQuery) {
+                this.onQuery({$promise: promise});
+            }
         }
     };
     
@@ -131,7 +136,8 @@ return {
         hideFoldersWithNoPoints: '<?',
         folderIcon: '@?',
         folderStatusPoint: '@?',
-        folderStyle: '<?'
+        folderStyle: '<?',
+        onQuery: '&?'
     },
     designerInfo: {
         translation: 'ui.components.maPointHierarchyBrowser',

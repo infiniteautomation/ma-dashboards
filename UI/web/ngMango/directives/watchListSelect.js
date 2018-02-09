@@ -28,6 +28,7 @@
   *     e.g. `on-points-change="$ctrl.pointsChanged($points)"`)
   * @param {expression=} on-parameters-change Expression is evaluated when the parameter values change. Available scope parameters are `$parameters`.
   *     e.g. `on-parameters-change="$ctrl.paramsChanged($parameters)"`)
+  * @param {expression=} on-query Expression is evaluated when querying for watch lists. Available scope parameters are `$promise`.
   */
 
 define(['angular', 'require', './WatchListSelectController'], function(angular, require, WatchListSelectController) {
@@ -57,7 +58,8 @@ function watchListSelectFactory($injector) {
             autoStateParams: '<?',
             onPointsChange: '&?',
             onParametersChange: '&?',
-            ngDisabled: '<?'
+            ngDisabled: '<?',
+            onQuery: '&?'
         },
         require: {
             ngModelCtrl: 'ngModel'

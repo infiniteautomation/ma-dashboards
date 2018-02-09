@@ -841,6 +841,10 @@ ma-point-browser {
 	flex: 1 0 auto;
 }
 
+ma-point-browser > md-card {
+	margin: 0;
+}
+
 ma-point-browser .ma-scroll-parent {
 	position: relative;
 }
@@ -856,21 +860,16 @@ ma-point-browser .ma-scroll-parent .ma-scroll-child {
   right: 0;
 }
 
-ma-point-browser md-card.select-watch-list md-list {
+ma-point-browser > md-card md-list {
   padding: 0;
   overflow-x: hidden;
 }
 
-ma-point-browser .watch-list-back.md-button {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-ma-point-browser .watch-list-filter md-input-container {
+ma-point-browser .ma-point-browser-filter md-input-container {
   margin: 8px;
 }
 
-ma-point-browser .watch-list-filter .md-button {
+ma-point-browser .ma-point-browser-filter .md-button {
   margin: 0 0 0 -40px;
 }
 
@@ -897,17 +896,23 @@ ma-point-browser md-list-item .md-list-item-inner span {
 	white-space: nowrap;
 }
 
-ma-point-browser md-card md-toolbar.watchlist-picker {
+ma-point-browser md-card md-toolbar.ma-point-browser-type-select {
   max-height: unset;
   height: unset;
   padding: 6px 12px;
 }
 
-ma-point-browser md-card md-toolbar.watchlist-picker md-radio-button {
+ma-point-browser md-card md-toolbar.ma-point-browser-type-select md-radio-button {
 	margin: 3px 0;
 	width: 50%;
 }
 
-ma-point-browser md-card md-toolbar.watchlist-picker md-radio-button .md-label {
+ma-point-browser md-card md-toolbar.ma-point-browser-type-select md-radio-button .md-label {
   font-size: 1.8rem;
+}
+
+ma-point-browser .ma-point-browser-progress,
+ma-point-browser .ma-point-browser-progress > md-progress-linear,
+ma-point-browser .ma-point-browser-progress > md-progress-linear > div.md-container {
+	height: 3px;
 }

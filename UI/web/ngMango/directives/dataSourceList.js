@@ -26,6 +26,7 @@ define(['angular'], function(angular) {
  * and sorting (no limit by default)
  * @param {boolean=} show-clear If set to `true` a clear option will be shown at the top of the the list, allowing you to set
  * the data source to undefined. (Defaults to `false`)
+ * @param {expression=} on-query Expression is evaluated when querying for watch lists. Available scope parameters are `$promise`.
  *
  * @usage
  <md-input-container>
@@ -54,7 +55,8 @@ function dataSourceList(DataSource, $injector) {
             start: '<?',
             limit: '<?',
             sort: '<?',
-            showClear: '<?'
+            showClear: '<?',
+            onQuery: '&?'
         },
         template: function(element, attrs) {
           if ($injector.has('$mdUtil')) {
@@ -88,7 +90,8 @@ function dataSourceList(DataSource, $injector) {
                 $scope.dataSources = [];
                 value.sort = value.sort || DEFAULT_SORT;
                 promise = DataSource.objQuery(value).$promise;
-                promise.then(function(dataSources) {
+                
+                const finishedPromise = promise.then(function(dataSources) {
                     $scope.dataSources = dataSources;
                     
                     if ($scope.autoInit && $scope.dataSources.length) {
@@ -104,6 +107,12 @@ function dataSourceList(DataSource, $injector) {
                     	}
                     }
                 });
+                
+
+                if (this.onQuery) {
+                    this.onQuery({$promise: finishedPromise});
+                }
+                
             }, true);
 
             $scope.dataSourceLabel = function(dataSource) {

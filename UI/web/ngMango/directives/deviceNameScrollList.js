@@ -22,7 +22,8 @@ function deviceNameScrollList($injector) {
             contains: '<?',
             start: '<?',
             limit: '<?',
-            sort: '<?'
+            sort: '<?',
+            onQuery: '&?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -84,6 +85,10 @@ function deviceNameScrollList($injector) {
                 }
                 return (this.items = items);
             }.bind(this));
+            
+            if (this.onQuery) {
+                this.onQuery({$promise: this.queryPromise});
+            }
             
             return this.queryPromise;
         };
