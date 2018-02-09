@@ -790,7 +790,7 @@ return [
     {
         name: 'ui.settings.bulkDataPointEdit',
         url: '/bulk-data-point-edit',
-        template: '<ma-ui-bulk-data-point-edit-page></ma-ui-bulk-data-point-edit-page>',
+        template: '<ma-ui-bulk-data-point-edit-page flex="noshrink" layout="column"></ma-ui-bulk-data-point-edit-page>',
         menuTr: 'ui.app.bulkDataPointEdit',
         menuIcon: 'fitness_center',
         permission: 'superadmin',
