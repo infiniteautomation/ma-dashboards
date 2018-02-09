@@ -12,13 +12,14 @@ const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error
 class BulkDataPointEditPageController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout']; }
-    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate, $timeout) {
+    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout', 'maWatchList']; }
+    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate, $timeout, maWatchList) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
         this.maTranslate = maTranslate;
         this.$timeout = $timeout;
+        this.maWatchList = maWatchList;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
@@ -64,6 +65,16 @@ class BulkDataPointEditPageController {
     
     
     $onInit() {
+        this.maWatchList.objQuery({
+            limit: 1,
+            sort: 'name'
+        }).$promise.then(lists => {
+            if (lists.length) {
+                this.watchList = lists[0];
+                this.watchListChanged();
+            }
+        });
+        
         this.maDataPointTags.keys().then(keys => {
             keys.forEach(tagKey => this.addTagToAvailable(tagKey));
         });
