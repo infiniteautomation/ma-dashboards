@@ -1,0 +1,6 @@
+<ma-data-point-tag-select ng-repeat="tagKey in $ctrl.tagKeys"
+    key="{{tagKey}}"
+    ng-model="$ctrl.selected[tagKey]"
+    ng-change="$ctrl.inputChanged()"
+    select-multiple="true">
+</ma-data-point-tag-select>

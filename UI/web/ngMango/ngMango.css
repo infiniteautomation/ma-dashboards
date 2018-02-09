@@ -418,7 +418,7 @@ ma-bulk-data-point-tasks {
 ma-data-point-tag-select,
 ma-data-point-tag-key-select {
 	display: flex;
-	width: 150px;
+	/* width: 150px; */
 }
 
 ma-gauge-chart .amchart,
@@ -915,4 +915,8 @@ ma-point-browser .ma-point-browser-progress,
 ma-point-browser .ma-point-browser-progress > md-progress-linear,
 ma-point-browser .ma-point-browser-progress > md-progress-linear > div.md-container {
 	height: 3px;
+}
+
+ma-point-browser ma-data-point-tag-group {
+	padding: 0 8px;
 }

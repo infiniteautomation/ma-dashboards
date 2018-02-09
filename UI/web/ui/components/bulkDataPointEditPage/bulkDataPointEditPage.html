@@ -6,7 +6,7 @@
         ng-disabled="$ctrl.bulkTaskPromise">
     </ma-point-browser>
     
-    <div flex class="md-padding">
+    <div flex="80" class="md-padding">
         <div>
             <md-button class="md-raised md-primary" ng-click="$ctrl.start($event)" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody || $ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                 <md-icon>edit</md-icon>

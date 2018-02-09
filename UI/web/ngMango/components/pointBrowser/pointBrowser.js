@@ -17,13 +17,13 @@ class PointBrowserController {
         this.maRqlBuilder = maRqlBuilder;
         this.maWatchList = maWatchList;
         
-        this.listType = 'watchLists';
+        this.listType = 'watchList';
         this.filter = null;
     }
 
     $onInit() {
         this.ngModelCtrl.$render = () => {
-            this.listType = 'watchLists';
+            this.listType = 'watchList';
             this.listTypeChanged();
             this.selected = this.ngModelCtrl.$viewValue;
             this.watchList = this.selected;
@@ -116,7 +116,28 @@ class PointBrowserController {
     }
     
     createTagsWatchList() {
-
+        const params = Object.keys(this.tags).map(tagKey => {
+            const tagValues = this.tags[tagKey];
+            if (Array.isArray(tagValues) && tagValues.length) {
+                return {
+                    name: tagKey,
+                    type: 'tagValue',
+                    options: {
+                        multiple: true,
+                        fixedValue: tagValues,
+                        restrictions: {},
+                        tagKey
+                    }
+                };
+            }
+        }).filter(p => p != null);
+        
+        this.selected = new this.maWatchList({
+            isNew: true,
+            type: 'tags',
+            name: this.maTranslate.trSync('ui.app.newTagWatchList'),
+            params
+        });
     }
 
     queryChanged(promise) {
