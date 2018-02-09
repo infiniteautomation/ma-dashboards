@@ -1,6 +1,6 @@
 <md-input-container flex>
     <label ng-transclude="label"><span ma-tr="ui.components.selectTagKey"></span></label>
-    <md-select ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()">
+    <md-select ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()" md-on-open="$ctrl.queryPromise">
         <md-option ng-repeat="value in $ctrl.values" ng-value="value" ng-disabled="$ctrl.disabledOptionsMap[value]">
             <span ng-bind="value"></span>
         </md-option>

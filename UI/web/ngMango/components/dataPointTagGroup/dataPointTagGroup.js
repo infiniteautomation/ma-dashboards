@@ -28,12 +28,12 @@ class DataPointTagGroupController {
             this.selected = this.ngModelCtrl.$viewValue;
         };
 
-        const promise = this.maDataPointTags.keys().then(tagKeys => {
+        this.queryPromise = this.maDataPointTags.keys().then(tagKeys => {
             this.tagKeys = tagKeys.sort();
         });
         
         if (this.onQuery) {
-            this.onQuery({$promise: promise});
+            this.onQuery({$promise: this.queryPromise});
         }
     }
     

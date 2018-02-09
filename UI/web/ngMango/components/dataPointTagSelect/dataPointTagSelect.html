@@ -1,6 +1,6 @@
 <md-input-container ng-if="!$ctrl.selectMultiple" flex>
     <label ng-transclude="label"><span ma-tr="ui.components.selectTagValue" ma-tr-args="[$ctrl.key]"></span></label>
-    <md-select ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()">
+    <md-select ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()" md-on-open="$ctrl.queryPromise">
         <md-option ng-value="undefined" md-option-empty><em ma-tr="ui.app.any"></em></md-option>
         <md-option ng-repeat="value in $ctrl.values" ng-value="value">
             <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em>
@@ -10,7 +10,7 @@
 </md-input-container>
 <md-input-container ng-if="$ctrl.selectMultiple" flex>
     <label ng-transclude="label"><span ma-tr="ui.components.selectTagValue" ma-tr-args="[$ctrl.key]"></span></label>
-    <md-select multiple="true" ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value'}">
+    <md-select multiple="true" ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value'}" md-on-open="$ctrl.queryPromise">
         <md-option ng-repeat="value in $ctrl.values" ng-value="value">
             <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em>
             <span ng-if="value !== null" ng-bind="value"></span>

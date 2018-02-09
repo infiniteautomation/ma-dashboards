@@ -41,7 +41,7 @@ class DataPointTagSelectController {
         const restrictions = Object.assign({}, this.restrictions);
         delete restrictions[this.key];
         
-        this.maDataPointTags.values(this.key, restrictions).then(values => {
+        this.queryPromise = this.maDataPointTags.values(this.key, restrictions).then(values => {
             this.values = values.sort();
             
             if (this.deselectOnQuery) {
@@ -59,6 +59,10 @@ class DataPointTagSelectController {
                 }
             }
         });
+        
+        if (this.onQuery) {
+            this.onQuery({$promise: this.queryPromise});
+        }
     }
     
     inputChanged() {
@@ -71,7 +75,8 @@ return {
         key: '@',
         restrictions: '<?',
         selectMultiple: '<?',
-        deselectOnQuery: '<?'
+        deselectOnQuery: '<?',
+        onQuery: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'

@@ -34,9 +34,13 @@ class DataPointTagKeySelectController {
             this.selected = this.ngModelCtrl.$viewValue;
         };
         
-        this.maDataPointTags.keys().then(values => {
+        this.queryPromise = this.maDataPointTags.keys().then(values => {
             this.values = values.sort();
         });
+        
+        if (this.onQuery) {
+            this.onQuery({$promise: this.queryPromise});
+        }
     }
     
     $onChanges(changes) {
@@ -62,7 +66,8 @@ class DataPointTagKeySelectController {
 
 return {
     bindings: {
-        disabledOptions: '<?'
+        disabledOptions: '<?',
+        onQuery: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'
