@@ -45,8 +45,8 @@ function stateParams() {
         
         $onInit() {
             this.stateParams = this.$stateParams;
-            if (this.notifyOnInit || this.notifyOnInit == null) {
-                this.notifyChange(true);
+            if (this.onChange && (this.notifyOnInit || this.notifyOnInit == null)) {
+                this.notifyChangeNow(true);
             }
         }
         
@@ -54,27 +54,29 @@ function stateParams() {
             if (changes.updateParams && this.updateParams) {
                 const encodedParams = this.maUtil.encodeStateParams(this.updateParams);
                 if (this.maUtil.updateStateParams(encodedParams)) {
-                    if (this.onChange) {
-                        // delay so that $stateParams are updated
-                        this.$timeout(() => {
-                            this.notifyChange();
-                        }, 0);
-                    }
+                    this.notifyChange();
                 }
             }
         }
         
-        notifyChange(init = false) {
-            if (this.onChange) {
-                const params = this.maUtil.decodeStateParams(this.$stateParams);
-                
-                // generate a separate object which is always an array
-                // if you set this.$state.go('.', {xyz: ['abc']}) then $stateParams will be {xyz: 'abc'}, the array is lost
-                const arrayParams = this.maUtil.createArrayParams(params);
-                this.onChange({$stateParams: params, $init: init, $state: this.$state, $arrayParams: arrayParams});
-            }
+        notifyChange() {
+            if (!this.onChange) return;
+            
+            // delay after update so that $stateParams are updated by the time onChange() is called
+            this.$timeout(() => {
+                this.notifyChangeNow();
+            }, 0);
         }
-
+        
+        notifyChangeNow(init = false) {
+            if (!this.onChange) return;
+            
+            // If you set this.$state.go('.', {xyz: ['abc']}) then $stateParams will be {xyz: 'abc'}, the array is lost.
+            // Supply user with $arrayParams for setting value on multiple select drop downs.
+            const params = this.maUtil.decodedStateParams();
+            const arrayParams = this.maUtil.createArrayParams(params);
+            this.onChange({$stateParams: params, $init: init, $state: this.$state, $arrayParams: arrayParams});
+        }
     }
 
     return {

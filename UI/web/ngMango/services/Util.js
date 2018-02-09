@@ -610,35 +610,6 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                 }
             });
         },
-        
-        /**
-         * @ngdoc method
-         * @methodOf ngMangoServices.maUtil
-         * @name updateFromStateParams
-         * 
-         * @description Updates watch list parameter values from $stateParams
-         * 
-         * @param {object} watchList watch list that parameters are defined on
-         * @param {object} [paramValues={}] Parameter values
-         * @returns {object} paramValues Updated parameter values
-         */
-        updateFromStateParams(watchList, paramValues = {}) {
-            const stateParams = this.decodedStateParams();
-            const arrayParams = this.createArrayParams(stateParams);
-            
-            const watchListParams = watchList.params || [];
-            const watchListParamsByName = watchListParams.reduce((map, p) => (map[p.name] = p, map), {});
-            
-            Object.keys(stateParams).forEach(stateParamName => {
-                const wlParam = watchListParamsByName[stateParamName];
-                if (wlParam) {
-                    const multiple = wlParam.options && wlParam.options.multiple;
-                    paramValues[wlParam.name] = multiple ? arrayParams[stateParamName] : stateParams[stateParamName];
-                }
-            });
-            
-            return paramValues;
-        },
 
         /**
          * @ngdoc method
@@ -685,37 +656,10 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         /**
          * @ngdoc method
          * @methodOf ngMangoServices.maUtil
-         * @name decodeStateParams
-         * 
-         * @description Decodes $stateParams into a format that can be used in watch list parameters.
-         * Decodes 'null' into null.
-         * 
-         * @param {object} inputParameters Parameters from $stateParams
-         * @returns {object} Decoded parameters for watch list
-         */
-        decodeStateParams(inputParameters) {
-            const params = Object.assign({}, inputParameters);
-
-            Object.keys(params).forEach(key => {
-                const paramValue = params[key];
-                if (Array.isArray(paramValue)) {
-                    params[key] = paramValue.map(value => {
-                        return value === ENCODED_STATE_PARAM_NULL ? null : value;
-                    });
-                } else if (paramValue === ENCODED_STATE_PARAM_NULL) {
-                    params[key] = null;
-                }
-            });
-            
-            return params;
-        },
-        
-        /**
-         * @ngdoc method
-         * @methodOf ngMangoServices.maUtil
          * @name decodedStateParams
          * 
-         * @description Returns $stateParams decoded using decodeStateParams()
+         * @description Returns $stateParams decoded into a format that can be used in watch list parameters.
+         * Decodes 'null' into null.
          * 
          * @returns {object} Decoded parameters for watch list
          */

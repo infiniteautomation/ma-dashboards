@@ -86,7 +86,7 @@ WatchListSelectController.prototype.render = function() {
         }
         
         if (this.autoStateParams) {
-            this.maUtil.updateFromStateParams(this.watchList, this.parameters);
+            this.watchList.paramValuesFromState(this.parameters);
         }
         
         this.watchList.defaultParamValues(this.parameters);
