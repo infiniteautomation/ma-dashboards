@@ -21,31 +21,32 @@
     "0.17.2": "0.17.2"
   },
   "https://github.com/angular/bower-angular-animate.git": {
-    "1.6.7": "1.6.7"
+    "1.6.9": "1.6.9"
   },
   "https://github.com/angular/bower-angular-aria.git": {
-    "1.6.7": "1.6.7"
+    "1.6.9": "1.6.9"
   },
   "https://github.com/angular/bower-angular-cookies.git": {
-    "1.6.7": "1.6.7"
+    "1.6.9": "1.6.9"
   },
   "https://github.com/angular/bower-angular-messages.git": {
-    "1.6.7": "1.6.7"
+    "1.6.9": "1.6.9"
   },
   "https://github.com/angular/bower-angular-resource.git": {
-    "1.6.7": "1.6.7"
+    "1.6.9": "1.6.9"
   },
   "https://github.com/angular/bower-angular-sanitize.git": {
-    "1.6.7": "1.6.7"
+    "1.6.9": "1.6.9"
   },
   "https://github.com/angular/bower-angular-touch.git": {
-    "1.6.7": "1.6.7"
+    "1.6.9": "1.6.9"
   },
   "https://github.com/angular/bower-angular.git": {
-    "1.6.7": "1.6.7"
+    "1.6.7": "1.6.7",
+    "1.6.9": "1.6.9"
   },
   "https://github.com/angular/bower-material.git": {
-    "1.1.5": "1.1.5"
+    "1.1.7": "1.1.7"
   },
   "https://github.com/bgrins/TinyColor.git": {
     "1.4.1": "80f7225029c428c0de0757f7d98ac15f497bee57"
@@ -66,13 +67,10 @@
     "1.1.1": "1.1.1"
   },
   "https://github.com/emn178/js-sha512.git": {
-    "0.7.0": "0.7.0"
+    "0.7.1": "d5d905cc73dde0cb2c600a5d6d657cc207c95aaa"
   },
   "https://github.com/furf/jquery-ui-touch-punch.git": {
     "master": "4bc009145202d9c7483ba85f3a236a8f3470354d"
-  },
-  "https://github.com/google/material-design-icons.git": {
-    "3.0.1": "40ef0f297970f0e78bf87569f43ea90ec53d571c"
   },
   "https://github.com/grevory/angular-local-storage.git": {
     "0.3.0": "85a243879f7a91afcce12782fe79018841a9f83b"
@@ -84,7 +82,8 @@
     "1.2.3": "ca1639c6265ea0a4e9d5dc8431efc81a90f4fc42"
   },
   "https://github.com/jquery/jquery-dist.git": {
-    "3.2.1": "77d2a51d0520d2ee44173afdf4e40a9201f5964e"
+    "3.2.1": "77d2a51d0520d2ee44173afdf4e40a9201f5964e",
+    "3.3.1": "9e8ec3d10fad04748176144f108d7355662ae75e"
   },
   "https://github.com/mholt/PapaParse.git": {
     "4.1.4": "35e62c1b7ab640b73386f3ac794d54c2bb70cc3e"
@@ -95,7 +94,7 @@
   "https://github.com/moment/moment.git": {
     "2.11.2": "c9afcbd8c4e0177d03b220a89ab19f62c6cc7bcf",
     "2.18.1": "0af7d4f5f25f911c2eaab2a7ccb534c17e65c536",
-    "2.20.0": "f50f31c276e0b57b69f51bc464b081118669efa0"
+    "2.20.1": "1bef83c699e577b29d5c775647cef3f43309a8f9"
   },
   "https://github.com/ocombe/ocLazyLoad.git": {
     "1.1.0": "c282f8f47736c195a4079024f62f3c9e16420619"
@@ -104,7 +103,7 @@
     "0.3.3": "f3640c368d074ce19b87615f65f0c4c1f5494cff"
   },
   "https://github.com/plotly/plotly.js.git": {
-    "1.31.2": "8ede952f6eb9d7c9e8bcc2c0697840499cdcf908"
+    "1.31.2": "1.31.2"
   },
   "https://github.com/rxaviers/cldrjs.git": {
     "0.4.8": "0098333d0ddb7b28cdeb1cfefb39544712d21645"
