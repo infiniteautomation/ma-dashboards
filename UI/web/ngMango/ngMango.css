@@ -833,3 +833,81 @@ ma-query-predicate .ma-query-predicate-operation {
 ma-query-predicate ma-data-point-tag-key-select {
 	width: 120px;
 }
+
+
+/* Point browser */
+ma-point-browser {
+	display: flex;
+	flex: 1 0 auto;
+}
+
+ma-point-browser .ma-scroll-parent {
+	position: relative;
+}
+
+ma-point-browser .ma-scroll-parent md-list,
+ma-point-browser .ma-scroll-parent .ma-scroll-child {
+  overflow-y: auto;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+ma-point-browser md-card.select-watch-list md-list {
+  padding: 0;
+  overflow-x: hidden;
+}
+
+ma-point-browser .watch-list-back.md-button {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+ma-point-browser .watch-list-filter md-input-container {
+  margin: 8px;
+}
+
+ma-point-browser .watch-list-filter .md-button {
+  margin: 0 0 0 -40px;
+}
+
+ma-point-browser md-list-item.md-2-line,
+ma-point-browser md-list-item.md-2-line > .md-no-style,
+ma-point-browser md-list-item.md-2-line:before,
+ma-point-browser md-list-item.md-2-line > .md-no-style:before {
+  height: 64px;
+  min-height: 64px;
+}
+
+ma-point-browser md-list-item,
+ma-point-browser md-list-item > .md-no-style,
+ma-point-browser md-list-item:before,
+ma-point-browser md-list-item > .md-no-style:before {
+  height: 40px;
+  min-height: 40px;
+}
+
+ma-point-browser md-list-item .md-list-item-inner,
+ma-point-browser md-list-item .md-list-item-inner span {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+ma-point-browser md-card md-toolbar.watchlist-picker {
+  max-height: unset;
+  height: unset;
+  padding: 6px 12px;
+}
+
+ma-point-browser md-card md-toolbar.watchlist-picker md-radio-button {
+	margin: 3px 0;
+	width: 50%;
+}
+
+ma-point-browser md-card md-toolbar.watchlist-picker md-radio-button .md-label {
+  font-size: 1.8rem;
+}

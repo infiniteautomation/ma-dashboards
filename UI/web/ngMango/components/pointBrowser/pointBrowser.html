@@ -1,0 +1,55 @@
+<md-card layout="column" flex="100" class="select-watch-list">
+    <md-toolbar class="md-whiteframe-1dp md-hue-3 watchlist-picker">
+        <md-radio-group ng-model="$ctrl.listType" layout layout-wrap layout-align="start center">
+            <md-radio-button value="watchLists" class="md-primary">
+                <span ma-tr="ui.app.lists"></span>
+                <md-tooltip ma-tr="ui.app.watchLists"></md-tooltip>
+            </md-radio-button>
+            <md-radio-button value="hierarchy" class="md-primary">
+                <span ma-tr="ui.app.hierarchy"></span>
+                <md-tooltip ma-tr="ui.app.pointHierarchy"></md-tooltip>
+            </md-radio-button>
+            <md-radio-button value="deviceNames" class="md-primary">
+                <span ma-tr="ui.app.devices"></span>
+                <md-tooltip ma-tr="ui.app.deviceNames"></md-tooltip>
+            </md-radio-button>
+            <md-radio-button value="dataSources" class="md-primary">
+                <span ma-tr="ui.app.sources"></span>
+                <md-tooltip ma-tr="ui.app.dataSources"></md-tooltip>
+            </md-radio-button>
+            <md-radio-button value="tags" class="md-primary">
+                <span ma-tr="ui.app.tags"></span>
+                <md-tooltip ma-tr="ui.app.tagsLong"></md-tooltip>
+            </md-radio-button>
+        </md-radio-group>
+    </md-toolbar>
+
+    <div layout="row" layout-align="center center" ng-show="$ctrl.listType !== 'hierarchy'" class="watch-list-filter">
+        <md-input-container flex md-no-float>
+            <input ng-model="$ctrl.filter" ng-model-options="{debounce: 1000}" placeholder="{{'ui.app.filter' | maTr}}" ng-change="$ctrl.updateQuery()">
+        </md-input-container>
+        <md-button class="md-icon-button" ng-click="$ctrl.filter = ''; $ctrl.updateQuery()" aria-label="{{'ui.app.clear' | maTr}}">
+            <md-icon>clear</md-icon>
+        </md-button>
+    </div>
+
+    <ma-watch-list-list ng-show="$ctrl.listType === 'watchLists'" flex layout="column" class="ma-scroll-parent" show-new-button="!$ctrl.filter"
+        ng-model="$ctrl.selectWatchList" watch-list-xid="{{$ctrl.watchListXid}}" ng-change="$ctrl.watchListChanged()"
+        query="$ctrl.watchListQuery" select-first="$ctrl.selectFirstWatchList"
+        new-button-clicked="$ctrl.editWatchList()" edit-button-clicked="$ctrl.editWatchList($watchList)">>
+    </ma-watch-list-list>
+
+    <ma-device-name-scroll-list ng-show="$ctrl.listType === 'deviceNames'" flex layout="column" class="ma-scroll-parent" contains="$ctrl.filter"
+        ng-model="$ctrl.deviceName" ng-change="$ctrl.deviceNameChanged()" select-first="false">
+    </ma-device-name-scroll-list>
+
+    <ma-data-source-scroll-list ng-show="$ctrl.listType === 'dataSources'" flex layout="column" class="ma-scroll-parent" query="$ctrl.dataSourceQuery"
+        ng-model="$ctrl.dataSource" select-xid="{{$ctrl.dataSourceXid}}" ng-change="$ctrl.dataSourceChanged()" select-first="false">
+    </ma-data-source-scroll-list>
+
+    <div ng-show="$ctrl.listType === 'hierarchy'" flex layout="column" class="ma-scroll-parent">
+        <ma-point-hierarchy-browser expanded="1" select-subfolders="true" select-one-folder="true" class="md-padding ma-scroll-child"
+            ng-model="$ctrl.hierarchyFolders" ng-change="$ctrl.hierarchyChanged()" hide-folders-with-no-points="true">
+        </ma-point-hierarchy-browser>
+    </div>
+</md-card>

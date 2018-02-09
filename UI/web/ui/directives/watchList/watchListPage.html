@@ -4,11 +4,23 @@
             <div flex layout="row">
                 <md-radio-group ng-model="$ctrl.listType">
                     <div class="row">
-                        <div flex layout='row' layout-padding layout-align="center start" layout-wrap>
-                            <md-radio-button flex="45" value="watchLists" class="md-primary">Lists</md-radio-button>
-                            <md-radio-button flex="45" value="hierarchy" class="md-primary">Hierarchy</md-radio-button>
-                            <md-radio-button flex="45" value="deviceNames" class="md-primary">Devices</md-radio-button>
-                            <md-radio-button flex="45" value="dataSources" class="md-primary">Sources</md-radio-button>
+                        <div flex layout="row" layout-padding layout-align="center start" layout-wrap>
+                            <md-radio-button flex="45" value="watchLists" class="md-primary">
+                                <span ma-tr="ui.app.lists"></span>
+                                <md-tooltip ma-tr="ui.app.watchLists"></md-tooltip>
+                            </md-radio-button>
+                            <md-radio-button flex="45" value="hierarchy" class="md-primary">
+                                <span ma-tr="ui.app.hierarchy"></span>
+                                <md-tooltip ma-tr="ui.app.pointHierarchy"></md-tooltip>
+                            </md-radio-button>
+                            <md-radio-button flex="45" value="deviceNames" class="md-primary">
+                                <span ma-tr="ui.app.devices"></span>
+                                <md-tooltip ma-tr="ui.app.deviceNames"></md-tooltip>
+                            </md-radio-button>
+                            <md-radio-button flex="45" value="dataSources" class="md-primary">
+                                <span ma-tr="ui.app.sources"></span>
+                                <md-tooltip ma-tr="ui.app.dataSources"></md-tooltip>
+                            </md-radio-button>
                         </div>
                     </div>
                 </md-radio-group>
