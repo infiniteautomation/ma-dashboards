@@ -108,10 +108,28 @@ class BulkDataPointEditPageController {
     }
 
     start(event) {
+        if (!this.selectedPoints.length) {
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.bulkEditNoPointsSelected'],
+                hideDelay: 10000,
+                classes: 'md-warn'
+            });
+            return;
+        }
+
         const body = angular.copy(this.updateBody);
         if (!Object.keys(body.tags).length) {
             delete body.tags;
             delete body.mergeTags;
+        }
+        
+        if (!Object.keys(body).length) {
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.bulkEditNoChanges'],
+                hideDelay: 10000,
+                classes: 'md-warn'
+            });
+            return;
         }
 
         let tagsOnly = false;
@@ -131,6 +149,10 @@ class BulkDataPointEditPageController {
                 requests
             });
         }
+        
+        this.selectedPoints.forEach(pt => {
+            delete pt[errorProperty];
+        });
 
         this.bulkTaskPromise = this.bulkTask.start().then(resource => {
             const responses = resource.result.responses;
@@ -157,10 +179,42 @@ class BulkDataPointEditPageController {
                     i++;
                 }
             }
-            
+
+            const toastOptions = {
+                textTr: [null, resource.position, resource.maximum, this.selectedPoints.length],
+                hideDelay: 10000,
+                classes: 'md-warn'
+            };
+
+            switch (resource.status) {
+            case 'CANCELLED':
+                toastOptions.textTr[0] = 'ui.app.bulkEditCancelled';
+                break;
+            case 'TIMED_OUT':
+                toastOptions.textTr[0] = 'ui.app.bulkEditTimedOut';
+                break;
+            case 'ERROR':
+                toastOptions.textTr[0] = 'ui.app.bulkEditError';
+                toastOptions.textTr.push(resource.error.localizedMessage);
+                break;
+            case 'SUCCESS':
+                if (!this.selectedPoints.length) {
+                    toastOptions.textTr = ['ui.app.bulkEditSuccess', resource.position];
+                    delete toastOptions.classes;
+                } else {
+                    toastOptions.textTr[0] = 'ui.app.bulkEditSuccessWithErrors';
+                }
+                break;
+            }
+
+            this.maDialogHelper.toastOptions(toastOptions);
             //resource.delete();
         }, error => {
-            console.error(error);
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.errorStartingBulkEdit', error.mangoStatusText],
+                hideDelay: 10000,
+                classes: 'md-warn'
+            });
         }, resource => {
             // progress
         }).finally(() => {

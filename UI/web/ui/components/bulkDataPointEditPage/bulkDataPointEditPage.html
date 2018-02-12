@@ -9,7 +9,7 @@
     <md-card class="ma-bulk-data-point-edit" flex="80">
         <md-toolbar class="md-hue-2">
             <div class="md-toolbar-tools">
-                <md-button class="md-raised md-accent" ng-click="$ctrl.start($event)" ng-if="!$ctrl.bulkTaskPromise" ng-disabled="!$ctrl.selectedPoints.length || !$ctrl.updateBody || $ctrl.pointsPromise">
+                <md-button class="md-raised md-accent" ng-click="$ctrl.start($event)" ng-if="!$ctrl.bulkTaskPromise" ng-disabled="$ctrl.pointsPromise">
                     <md-icon>edit</md-icon>
                     <span ma-tr="ui.app.startBulkEdit"></span>
                 </md-button>
@@ -64,22 +64,33 @@
                         <th>
                             <md-button class="md-icon-button" ng-click="$ctrl.sortColumn({name: 'xid'})">
                                 <md-icon>{{$ctrl.tableOrder == 'xid' ? 'arrow_downward' : ($ctrl.tableOrder == '-xid' ? 'arrow_upward' : 'sort')}}</md-icon>
+                                <md-tooltip ma-tr="ui.app.sortBy" ma-tr-args="::[('ui.app.xidShort' | maTr)]"></md-tooltip>
                             </md-button>
                         </th>
                         <th ng-repeat="column in $ctrl.selectedColumns track by column.name">
                             <md-button class="md-icon-button" ng-click="$ctrl.sortColumn(column)">
                                 <md-icon>{{$ctrl.tableOrder == column.name ? 'arrow_downward' : ($ctrl.tableOrder == '-' + column.name ? 'arrow_upward' : 'sort')}}</md-icon>
+                                <md-tooltip ma-tr="ui.app.sortBy" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
                             </md-button>
-                            <md-button class="md-icon-button" ng-click="$ctrl.resetColumn(column)" ng-if="$ctrl.updateBody[column.name] !== undefined"><md-icon>undo</md-icon></md-button>
+                            <md-button class="md-icon-button" ng-click="$ctrl.resetColumn(column)" ng-if="$ctrl.updateBody[column.name] !== undefined">
+                                <md-icon>undo</md-icon>
+                                <md-tooltip ma-tr="ui.app.resetColumn" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
+                            </md-button>
                         </th>
                         <th ng-repeat="tag in $ctrl.selectedTags track by tag.name">
-                            <md-button class="md-icon-button" ng-click="$ctrl.removeTag(tag)"><md-icon>delete</md-icon></md-button>
-                            <md-button class="md-icon-button" ng-click="$ctrl.resetTag(tag)" ng-if="$ctrl.updateBody.tags[tag.name] !== undefined"><md-icon>undo</md-icon></md-button>
+                            <md-button class="md-icon-button" ng-click="$ctrl.removeTag(tag)">
+                                <md-icon>delete</md-icon>
+                                <md-tooltip ma-tr="ui.app.removeTag" ma-tr-args="::[tag.label]"></md-tooltip>
+                            </md-button>
+                            <md-button class="md-icon-button" ng-click="$ctrl.resetTag(tag)" ng-if="$ctrl.updateBody.tags[tag.name] !== undefined">
+                                <md-icon>undo</md-icon>
+                                <md-tooltip ma-tr="ui.app.resetColumn" ma-tr-args="::[tag.label]"></md-tooltip>
+                            </md-button>
                         </th>
                     </tr>
                     <tr class="ma-bulk-edit-input-row">
                         <th class="ma-checkbox-column">
-                            <md-checkbox aria-label="Select all" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
+                            <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
                                 ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" md-indeterminate="$ctrl.selectAllIndeterminate">
                             </md-checkbox>
                         </th>
