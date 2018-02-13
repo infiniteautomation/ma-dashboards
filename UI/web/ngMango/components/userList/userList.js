@@ -20,7 +20,7 @@ UserListController.prototype.$onInit = function() {
     this.ngModelCtrl.$render = function() {
         $ctrl.selectedUser = this.$viewValue;
     };
-    this.users = this.User.query();
+    this.users = this.User.query({rqlQuery: 'limit(10000)'});
     
     this.UserEventManager.smartSubscribe(this.$scope, null, UPDATE_TYPES, this.updateHandler.bind(this));
 };
