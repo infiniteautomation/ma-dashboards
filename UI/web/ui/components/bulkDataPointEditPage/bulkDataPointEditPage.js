@@ -44,6 +44,7 @@ class BulkDataPointEditPageController {
         this.numberOfRows = 25;
         this.pageNumber = 1;
         this.tableOrder = 'name';
+        this.browserOpen = true;
 
         this.columns = [
             {name: 'xid', label: 'ui.app.xidShort', disableEdit: true},

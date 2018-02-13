@@ -838,7 +838,6 @@ ma-query-predicate ma-data-point-tag-key-select {
 /* Point browser */
 ma-point-browser {
 	display: flex;
-	flex: 1 0 auto;
 }
 
 ma-point-browser > md-card {

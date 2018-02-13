@@ -1529,8 +1529,13 @@ ma-ui-bulk-data-point-edit-page table.md-table thead.md-table-progress md-progre
 	top: -3px;
 }
 
+ma-ui-bulk-data-point-edit-page ma-point-browser {
+	margin-right: 16px;
+}
+
 ma-ui-bulk-data-point-edit-page md-card.ma-bulk-data-point-edit {
-	margin: 0 0 0 16px;
+	margin: 0;
+	width: 100%;
 }
 
 ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls tr th.ma-points-selected {
@@ -1546,4 +1551,8 @@ ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th ma-permissi
 ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th ma-permissions-menu md-menu button.md-button.md-icon-button {
 	margin: 0 -10px 0 -5px;
 	padding: 0;
+}
+
+ma-ui-bulk-data-point-edit-page .md-toolbar-tools > .md-button:nth-child(2) {
+	margin-left: 0;
 }

@@ -1,14 +1,22 @@
 <div flex="noshrink" layout="row">
-    <ma-point-browser
+    <ma-point-browser ng-show="$ctrl.browserOpen"
         flex="20"
         ng-model="$ctrl.watchList"
         ng-change="$ctrl.watchListChanged()"
         ng-disabled="$ctrl.bulkTaskPromise">
     </ma-point-browser>
     
-    <md-card class="ma-bulk-data-point-edit" flex="80">
+    <md-card class="ma-bulk-data-point-edit" flex>
         <md-toolbar class="md-hue-2">
             <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="$ctrl.browserOpen = !$ctrl.browserOpen">
+                    <md-icon>{{$ctrl.browserOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</md-icon>
+                    <md-tooltip>
+                        <span ng-if="$ctrl.browserOpen" ma-tr="ui.app.hidePointBrowser"></span>
+                        <span ng-if="!$ctrl.browserOpen" ma-tr="ui.app.showPointBrowser"></span>
+                    </md-tooltip>
+                </md-button>
+                
                 <md-button class="md-raised md-accent" ng-click="$ctrl.start($event)" ng-if="!$ctrl.bulkTaskPromise" ng-disabled="$ctrl.pointsPromise">
                     <md-icon>edit</md-icon>
                     <span ma-tr="ui.app.startBulkEdit"></span>
