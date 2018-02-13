@@ -1078,7 +1078,7 @@ md-input-container:not(.has-hints) .md-errors-spacer {
 }
 
 md-select {
-	/*min-width: 200px;*/
+	/* min-width: 200px; */
 }
 
 md-radio-group md-radio-button {
@@ -1555,4 +1555,12 @@ ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th ma-permissi
 
 ma-ui-bulk-data-point-edit-page .md-toolbar-tools > .md-button:nth-child(2) {
 	margin-left: 0;
+}
+
+ma-ui-bulk-data-point-edit-page thead tr th:nth-child(1n+3) {
+	min-width: 120px;
+}
+
+ma-ui-bulk-data-point-edit-page thead tr th > md-input-container {
+	display: block;
 }

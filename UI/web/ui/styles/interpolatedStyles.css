@@ -123,8 +123,9 @@ md-toast._md.md-accent .md-toast-content .md-button.md-highlight {
 	background-color: {{getThemeColor('primary')}};
 }
 
-thead.ma-bulk-edit-controls tr.ma-bulk-edit-input-row th,
-thead.ma-bulk-edit-controls tr.ma-bulk-edit-input-row th md-input-container label {
+ma-ui-bulk-data-point-edit-page thead.ma-bulk-edit-controls tr.ma-bulk-edit-input-row th,
+ma-ui-bulk-data-point-edit-page thead.ma-bulk-edit-controls tr.ma-bulk-edit-input-row th md-input-container label,
+ma-ui-bulk-data-point-edit-page thead.ma-bulk-edit-controls tr.ma-bulk-edit-input-row th md-input-container md-select .md-select-value.md-select-placeholder {
 	color: {{theme.isDark ? getThemeColor('background-A100-0.87') : getThemeColor('background-A200-0.87')}};
 }
 
