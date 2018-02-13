@@ -292,29 +292,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                 $scope.graphItemClicked({$chart: chart, $event: event});
             });
         }
-        
-        chart.addListener('drawn', function(event) {
-            var columnGraphs = event.chart.graphs.filter(function(graph) {
-                return graph.type === 'column' && graph.ownColumns;
-            });
 
-            var redrawNeeded = false;
-            columnGraphs.forEach(function(graph) {
-                var newWidth = Math.floor(graph.width / graph.ownColumns.length * 0.8);
-                if (chart.categoryAxis.equalSpacing) {
-                    newWidth = undefined;
-                }
-                
-                if (newWidth !== graph.fixedColumnWidth) {
-                    graph.fixedColumnWidth = newWidth;
-                    redrawNeeded = true;
-                }
-            });
-
-            if (redrawNeeded)
-                chart.validateNow(false, true);
-        });
-        
         $scope.$watchCollection('trendLines', function(newValue, oldValue) {
             if (newValue === oldValue && newValue === undefined) return;
             $scope.options.trendLines = newValue;
