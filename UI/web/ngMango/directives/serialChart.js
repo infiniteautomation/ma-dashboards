@@ -312,7 +312,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
             });
 
             if (redrawNeeded)
-                chartValidateNow(false, true);
+                chart.validateNow(false, true);
         });
         
         $scope.$watchCollection('trendLines', function(newValue, oldValue) {
@@ -330,7 +330,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
             }
             // must copy the guides as amCharts turns modifies the guide objects causing infinite digest errors
             chart.categoryAxis.guides = angular.copy(guides);
-            chartValidateNow();
+            chart.validateNow();
         }, true);
 
         $scope.$watch('options', function(newValue, oldValue) {
@@ -385,40 +385,13 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                 }
             }
         }
-        
-        /**
-         * Debounces the calling of chart.validateNow().
-         */
-        let validateData;
-        let skipEvents;
-        let timeoutPromise;
-        function chartValidateNow(_validateData, _skipEvents) {
-            if (_validateData) {
-                validateData = true;
-            }
-            if (!_skipEvents) {
-                skipEvents = false;
-            }
-            if (_skipEvents && skipEvents === undefined) {
-                skipEvents = true;
-            }
-
-            if (timeoutPromise) return;
-            timeoutPromise = $timeout(() => {
-                chart.validateNow(validateData, skipEvents);
-                
-                timeoutPromise = null;
-                validateData = undefined;
-                skipEvents = undefined;
-            }, 0, false);
-        }
 
         function watchValues(newValues, oldValues) {
             if (newValues === oldValues && newValues === undefined) return;
             
             chart.dataProvider = newValues;
             checkEqualSpacing();
-            chartValidateNow(true);
+            chart.validateData();
         }
         
         function checkEqualSpacing() {
@@ -462,7 +435,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         	}
 
         	sortGraphs();
-        	chartValidateNow(true);
+        	chart.validateNow(true);
         }
 
         function findGraph(propName, prop, removeGraph) {
@@ -488,7 +461,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         	}
 
         	sortGraphs();
-        	chartValidateNow(true);
+        	chart.validateNow(true);
         }
 
         function valuesChanged(graphNum, newValues, oldValues) {
@@ -713,7 +686,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
 
             chart.dataProvider = output;
             checkEqualSpacing();
-            chartValidateNow(true);
+            chart.validateNow(true);
         }
 
         function isAllUndefined(a) {
