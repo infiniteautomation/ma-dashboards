@@ -1012,7 +1012,14 @@ md-checkbox.checkbox-top-label {
   margin-right: 8px;
 }
 
-md-checkbox.checkbox-top-label.checkbox-centered .md-container {
+md-checkbox.checkbox-bottom-label {
+  margin-bottom: 16px;
+  width: 60px;
+  margin-right: 8px;
+}
+
+md-checkbox.checkbox-top-label.checkbox-centered .md-container,
+md-checkbox.checkbox-bottom-label.checkbox-centered .md-container {
   left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
@@ -1032,7 +1039,22 @@ md-checkbox.checkbox-top-label .md-label {
     white-space: inherit;
 }
 
-md-checkbox.checkbox-top-label.checkbox-centered .md-label {
+md-checkbox.checkbox-bottom-label .md-label {
+    position: absolute;
+    -webkit-transform: scale(.75);
+    transform: scale(.75);
+    -webkit-transform-origin: left top;
+    transform-origin: left top;
+    left: 0;
+    top: 100%;
+    margin: 0;
+    color: rgba(255,255,255,0.7);
+    -webkit-font-smoothing: antialiased;
+    white-space: inherit;
+}
+
+md-checkbox.checkbox-top-label.checkbox-centered .md-label,
+md-checkbox.checkbox-bottom-label.checkbox-centered .md-label {
     -webkit-transform: scale(.75) translateX(-50%);
     transform: scale(.75) translateX(-50%);
     left: 50%;
@@ -1493,6 +1515,11 @@ ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th md-input-co
 	padding: 0;
 }
 
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th md-checkbox {
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
 ma-ui-bulk-data-point-edit-page table .ma-empty-null {
 	opacity: 0.5;
 	font-style: italic;
@@ -1510,4 +1537,13 @@ ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls tr th.ma-point
 	font-size: 1.2rem;
 	text-align: center;
 	padding: 8px 10px 0;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th ma-permissions-menu md-menu {
+	position: unset;
+}
+
+ma-ui-bulk-data-point-edit-page table thead.ma-bulk-edit-controls th ma-permissions-menu md-menu button.md-button.md-icon-button {
+	margin: 0 -10px 0 -5px;
+	padding: 0;
 }

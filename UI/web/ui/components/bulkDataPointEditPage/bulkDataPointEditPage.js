@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'tinycolor'], function(angular, require, tinycolor) {
 'use strict';
 
 const selectedProperty = typeof Symbol === 'function' ? Symbol('selected') : '___selected___';
@@ -12,33 +12,37 @@ const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error
 class BulkDataPointEditPageController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout', 'maWatchList']; }
-    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate, $timeout, maWatchList) {
+    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout', 'maWatchList', '$mdColorPicker']; }
+    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate, $timeout, maWatchList, $mdColorPicker) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
         this.maTranslate = maTranslate;
         this.$timeout = $timeout;
         this.maWatchList = maWatchList;
+        this.$mdColorPicker = $mdColorPicker;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
         this.tableOrder = 'name';
 
         this.columns = [
+            {name: 'xid', label: 'ui.app.xidShort', disableEdit: true},
             {name: 'deviceName', label: 'common.deviceName'},
             {name: 'name', label: 'common.name'},
-            {name: 'readPermission', label: 'pointEdit.props.permission.read'},
-            {name: 'setPermission', label: 'pointEdit.props.permission.set'},
+            {name: 'enabled', label: 'common.enabled', type: 'checkbox'},
+            {name: 'readPermission', label: 'pointEdit.props.permission.read', type: 'permission'},
+            {name: 'setPermission', label: 'pointEdit.props.permission.set', type: 'permission'},
             {name: 'unit', label: 'pointEdit.props.unit'},
-            {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
-            {name: 'chartColour', label: 'pointEdit.props.chartColour'},
+            {name: 'chartColour', label: 'pointEdit.props.chartColour', type: 'color'},
             {name: 'plotType', label: 'pointEdit.plotType'},
             {name: 'rollup', label: 'common.rollup'},
-            {name: 'templateXid', label: 'ui.app.templateXid'}
+            {name: 'templateXid', label: 'ui.app.templateXid'},
+            {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
+            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', type: 'number'}
         ];
 
-        this.selectedColumns = this.columns.slice();
+        this.selectedColumns = this.columns.slice(0, -3);
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
@@ -345,6 +349,28 @@ class BulkDataPointEditPageController {
         } else {
             return point.tags[tag.name];
         }
+    }
+    
+    chooseColor($event, column) {
+        this.$mdColorPicker.show({
+            value: this.updateBody[column.name] || tinycolor.random().toHexString(),
+            defaultValue: '',
+            random: false,
+            clickOutsideToClose: true,
+            hasBackdrop: true,
+            skipHide: false,
+            preserveScope: false,
+            mdColorAlphaChannel: true,
+            mdColorSpectrum: true,
+            mdColorSliders: false,
+            mdColorGenericPalette: true,
+            mdColorMaterialPalette: false,
+            mdColorHistory: false,
+            mdColorDefaultTab: 0,
+            $event: $event
+        }).then((color) => {
+            this.updateBody[column.name] = color;
+        });
     }
 }
 
