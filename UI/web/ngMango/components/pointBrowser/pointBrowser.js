@@ -89,7 +89,7 @@ class PointBrowserController {
         const query = new this.maRqlBuilder()
             .eq('deviceName', this.deviceName)
             .sort('name')
-            .limit(1000)
+            .limit(10000)
             .toString();
 
         this.selected = new this.maWatchList({
@@ -104,7 +104,7 @@ class PointBrowserController {
         const query = new this.maRqlBuilder()
             .eq('dataSourceXid', this.dataSource.xid)
             .sort('name')
-            .limit(1000)
+            .limit(10000)
             .toString();
 
         this.selected = new this.maWatchList({

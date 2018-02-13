@@ -145,6 +145,12 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                     }
                 });
                 
+                if (this.data && this.data.limit != null) {
+                    builder.limit(this.data.limit, this.data.offset);
+                } else {
+                    builder.limit(10000);
+                }
+                
                 if (emptyResult) {
                     return $q.when([]);
                 }
