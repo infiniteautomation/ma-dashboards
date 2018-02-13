@@ -113,8 +113,22 @@
                                 </md-input-container>
                                 <ma-permissions-menu ng-model="$ctrl.updateBody[column.name]"></ma-permissions-menu>
                             </div>
+
+                            <md-input-container ng-if="!column.disableEdit && column.type === 'rollup'">
+                                <label ma-tr="{{column.label}}"></label>
+                                <md-select ng-model="$ctrl.updateBody[column.name]">
+                                    <md-option ng-repeat="rollup in $ctrl.MA_ROLLUP_TYPES track by rollup.type" ng-value="rollup.type" ma-tr="{{rollup.translation}}"></md-option>
+                                </md-select>
+                            </md-input-container>
+
+                            <md-input-container ng-if="!column.disableEdit && column.type === 'plotType'">
+                                <label ma-tr="{{column.label}}"></label>
+                                <md-select ng-model="$ctrl.updateBody[column.name]">
+                                    <md-option ng-repeat="plotType in $ctrl.MA_CHART_TYPES track by plotType.type" ng-value="plotType.apiType" ma-tr="{{plotType.translation}}"></md-option>
+                                </md-select>
+                            </md-input-container>
                             
-                            <md-input-container ng-if="!column.disableEdit && column.type !== 'checkbox' && column.type !== 'color' && column.type !== 'permission'">
+                            <md-input-container ng-if="!column.disableEdit && column.type !== 'checkbox' && column.type !== 'color' && column.type !== 'permission' && column.type !== 'rollup' && column.type !== 'plotType'">
                                 <label ma-tr="{{column.label}}"></label>
                                 <input ng-model="$ctrl.updateBody[column.name]" ng-attr-type="{{column.type || 'text'}}">
                             </md-input-container>

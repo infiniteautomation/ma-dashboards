@@ -12,8 +12,25 @@ const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error
 class BulkDataPointEditPageController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout', 'maWatchList', '$mdColorPicker']; }
-    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate, $timeout, maWatchList, $mdColorPicker) {
+    static get $inject() { return [
+        'maPoint',
+        'maDataPointTags',
+        'maDialogHelper',
+        'maTranslate',
+        '$timeout',
+        'maWatchList',
+        '$mdColorPicker',
+        'MA_ROLLUP_TYPES',
+        'MA_CHART_TYPES']; }
+    constructor(maPoint,
+            maDataPointTags,
+            maDialogHelper,
+            maTranslate,
+            $timeout,
+            maWatchList,
+            $mdColorPicker,
+            MA_ROLLUP_TYPES,
+            MA_CHART_TYPES) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
@@ -21,6 +38,8 @@ class BulkDataPointEditPageController {
         this.$timeout = $timeout;
         this.maWatchList = maWatchList;
         this.$mdColorPicker = $mdColorPicker;
+        this.MA_ROLLUP_TYPES = MA_ROLLUP_TYPES;
+        this.MA_CHART_TYPES = MA_CHART_TYPES;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
@@ -35,8 +54,8 @@ class BulkDataPointEditPageController {
             {name: 'setPermission', label: 'pointEdit.props.permission.set', type: 'permission'},
             {name: 'unit', label: 'pointEdit.props.unit'},
             {name: 'chartColour', label: 'pointEdit.props.chartColour', type: 'color'},
-            {name: 'plotType', label: 'pointEdit.plotType'},
-            {name: 'rollup', label: 'common.rollup'},
+            {name: 'plotType', label: 'pointEdit.plotType', type: 'plotType'},
+            {name: 'rollup', label: 'common.rollup', type: 'rollup'},
             {name: 'templateXid', label: 'ui.app.templateXid'},
             {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
             {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', type: 'number'}
