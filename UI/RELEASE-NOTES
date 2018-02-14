@@ -1,6 +1,18 @@
 *Version 3.3.1*
+* Add tag watch list type
+* Add bulk data point edit page
+* Improvements and fixes for watchlists using parameters
+* Add auto-state-params option for watch list get/select components
+* Fix errors being thrown from ma-serial-chart component
+* Add cursor sync option to ma-serial-chart component
+* Add ma-state-params component (replaces ma-ui-state-params)
+* Add ma-point-browser component that can be used to get a watch list object object
+* Add utility service for temporary resources
+* Fix bug in adminTemplate
 * Remove old ngMango-3.x folders
 * Fix release notes
+* Update amCharts, AngularJS and Angular Material versions
+* Various other small bug fixes and improvements
 
 *Version 3.3.0*
 * Upgraded to work with core version 3.3.x
