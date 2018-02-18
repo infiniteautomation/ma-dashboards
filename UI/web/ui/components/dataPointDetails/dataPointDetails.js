@@ -16,17 +16,14 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     
     this.$onInit = function() {
         if ($stateParams.pointXid) {
-            // console.log($stateParams.pointXid);
             this.pointXid = $stateParams.pointXid;
         } else if ($stateParams.pointId) {
-            // console.log(($stateParams.pointId));
             this.pointId = $stateParams.pointId;
         } else {
             // Attempt load pointXid from local storage
             var storedPoint = localStorageService.get('lastDataPointDetailsItem');
             if (storedPoint) {
                 this.pointXid = storedPoint.xid;
-                //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
             }
         }
         
@@ -50,9 +47,7 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
         
         PointHierarchy.pathByXid({xid: xid}).$promise.then(function(response) {
             this.path = response;
-        }.bind(this), function(response) {
-            console.log('PointHierarchy.pathByXid Error', response);
-        });
+        }.bind(this));
         
         var pointType = $scope.myPoint.pointLocator.dataType;
         this.dateBar.rollupTypesFilter = pointType === 'NUMERIC' ? {} : { nonNumeric: true };

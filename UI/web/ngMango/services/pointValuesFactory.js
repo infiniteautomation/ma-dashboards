@@ -1,14 +1,14 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular', 'moment-timezone', 'simplify-js'], function(require, angular, moment, simplify) {
+define(['require', 'angular', 'moment-timezone'], function(require, angular, moment) {
 'use strict';
 
 pointValuesFactory.$inject = ['$http', '$q', 'maUtil', 'MA_POINT_VALUES_CONFIG', '$injector'];
 function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) {
-    const pointValuesUrl = '/rest/v1/point-values/';
+    const pointValuesUrl = '/rest/v2/point-values';
     let maDialogHelper;
     
     if ($injector.has('maDialogHelper')) {
@@ -23,12 +23,24 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             if (!angular.isString(xid)) throw new Error('Requires xid parameter');
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
             
-            let url = pointValuesUrl + encodeURIComponent(xid);
+            if (options.bookend == null) {
+                options.bookend = true;
+            }
+            
+            let url = pointValuesUrl;
+            url += options.latest ? '/latest' : '/time-period';
+            url += '/' + encodeURIComponent(xid);
+            
+            const rollup = options.rollup;
+            if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
+                url += '/' + encodeURIComponent(rollup);
+            }
+            
             const data = optionsToPostBody(options);
+            delete data.rollup;
             let reverseData = false;
             
             if (options.latest) {
-                url += '/latest';
                 reverseData = true;
             } else {
                 if (data.from === data.to) {
@@ -58,17 +70,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 let values = response.data;
                 if (reverseData)
                     values.reverse();
-                
-                let simplifyLimited = false;
-                if (options.rollup === 'SIMPLIFY' && !options.rendered) {
-                    values = simplifyValues(values, options.simplifyTolerance || 0, options.simplifyHighQuality);
-                    if (values.length > MA_POINT_VALUES_CONFIG.limit) {
-                        values = values.slice(0, MA_POINT_VALUES_CONFIG.limit);
-                        simplifyLimited = true;
-                    }
-                }
-                
-                if ((!options.latest && maDialogHelper && values.length === data.limit) || simplifyLimited) {
+
+                if (!options.latest && maDialogHelper && values.length === data.limit) {
                 	const now = (new Date()).valueOf();
                 	if (!this.lastToast || (now - this.lastToast) > 10000) {
                 		this.lastToast = now;
@@ -214,21 +217,33 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
 
             body.from = from.toISOString();
             body.to = to.toISOString();
-
-            let rollup = options.rollup;
-            if (rollup === 'SIMPLIFY') {
-                rollup = 'NONE';
-            } else if (limit >= 0) {
+            
+            const rollup = options.rollup;
+            
+            if (options.bookend || options.bookend == null) {
+                body.bookend = true;
+            }
+            
+            if (limit >= 0) {
                 body.limit = limit;
             }
             
+            if (rollup === 'SIMPLIFY') {
+                if (isFinite(options.simplifyTolerance) && options.simplifyTolerance > 0) {
+                    body.simplifyTolerance = options.simplifyTolerance;
+                } else {
+                    body.simplifyTarget = isFinite(options.simplifyTarget) && options.simplifyTarget > 0 ? options.simplifyTarget : 1000;
+                }
+            }
+
             const timezone = options.timezone || moment().tz();
             if (timezone) {
                 body.timezone = timezone;
             }
 
-            if (angular.isString(rollup) && rollup !== 'NONE') {
+            if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
                 body.rollup = rollup;
+                delete body.bookend;
                 
                 let timePeriodType = 'DAYS';
                 let timePeriods = 1;
@@ -271,74 +286,14 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         }
 
         if (options.useCache != null) {
-            body.useCache = !!options.useCache;
+            if (typeof options.useCache === 'string') {
+                body.useCache = options.useCache;
+            } else {
+                body.useCache = options.useCache ? 'BOTH' : 'NONE';
+            }
         }
         
         return body;
-    }
-    
-    function simplifyValues(values, tolerance = -1, highQuality = true) {
-        if (tolerance === -1) {
-            return simplifyValuesAuto(values, highQuality);
-        }
-
-        //console.time('Simplify time');
-        const simplified = simplify(values, tolerance, highQuality);
-        const percent = (simplified.length / values.length * 100).toFixed(2);
-        console.log(`Simplify - before: ${values.length}, after: ${simplified.length}, percent: ${percent}% (tolerance ${tolerance.toPrecision(3)})`);
-        //console.timeEnd('Simplify time');
-        
-        return simplified;
-    }
-    
-    function simplifyValuesAuto(values, highQuality = true, target = 1000, plusMinus = 100) {
-        const upperTarget = target + plusMinus;
-        const lowerTarget = target - plusMinus;
-        
-        if (values.length < upperTarget) return values;
-        
-        const min = values.reduce((prevMin, value) => {
-            return value.value < prevMin ? value.value : prevMin;
-        }, Number.POSITIVE_INFINITY);
-        
-        const max = values.reduce((prevMax, value) => {
-            return value.value > prevMax ? value.value : prevMax;
-        }, Number.NEGATIVE_INFINITY);
-
-        const difference = max - min;
-        
-        let iterations = 1;
-        let tolerance = difference / 20;
-        let topBound = difference;
-        let bottomBound = 0;
-        
-        //console.time('Simplify auto time');
-        let simplified = simplify(values, tolerance, highQuality);
-        
-        while(simplified.length < lowerTarget || simplified.length > upperTarget) {
-            //console.log(`length ${simplified.length}, tolerance: ${tolerance}, topBound ${topBound}, bottomBound: ${bottomBound}`);
-            
-            if (simplified.length > target) {
-                bottomBound = tolerance;
-            } else {
-                topBound = tolerance;
-            }
-            
-            tolerance = bottomBound + (topBound - bottomBound) / 2;
-            simplified = simplify(values, tolerance, highQuality);
-            
-            iterations++;
-            if (iterations > 100) {
-                break;
-            }
-        }
-
-        const percent = (simplified.length / values.length * 100).toFixed(2);
-        console.log(`Simplify - before: ${values.length}, after: ${simplified.length}, percent: ${percent}%` +
-            ` (tolerance ${tolerance.toPrecision(3)}, iterations ${iterations})`);
-        //console.timeEnd('Simplify auto time');
-        
-        return simplified;
     }
 
     return new PointValues();

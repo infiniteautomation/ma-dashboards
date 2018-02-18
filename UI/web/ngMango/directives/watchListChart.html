@@ -3,7 +3,7 @@
 </ma-serial-chart>
 
 <ma-point-values points="$ctrl.chartedPoints" values="$ctrl.chartValues" from="$ctrl.from" to="$ctrl.to" rollup="{{$ctrl.rollupType}}"
-  rollup-interval="{{$ctrl.rollupIntervals}} {{$ctrl.rollupIntervalPeriod}}" rendered="false"
+  rollup-interval="{{$ctrl.rollupIntervals}} {{$ctrl.rollupIntervalPeriod}}" rendered="true"
   converted="true" on-values-updated="$ctrl.valuesUpdatedHandler($values)"
   simplify-tolerance="$ctrl.simplifyTolerance">
 </ma-point-values>

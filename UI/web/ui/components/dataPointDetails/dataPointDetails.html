@@ -1,4 +1,6 @@
-<ma-point-values point="myPoint" values="pointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" converted="true"
+<ma-point-values point="myPoint" values="pointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to"
+    converted="true"
+    rendered="true"
     rollup="{{$ctrl.dateBar.rollupType}}"
     rollup-interval="{{$ctrl.dateBar.rollupIntervals}} {{$ctrl.dateBar.rollupIntervalPeriod}}"
     auto-rollup-interval="$ctrl.dateBar.autoRollup"
@@ -98,7 +100,7 @@
                         <tbody md-body ng-class="{'ma-point-values-non-realtime' : !$ctrl.realtimeMode}" ng-if="realtimePointValues">
                             <tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder track by value.timestamp" ng-class="{'ma-point-value-cached': value.cached}">
                                 <td md-cell ng-bind="value.timestamp | maDate:'shortDateTimeSeconds'"></td>
-                                <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell><span ng-bind="value.value"></span> <strong ng-if="value.annotation"><em>(<span ng-bind="value.annotation"></span>)</em></strong></td>
+                                <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell><span ng-bind="value.rendered"></span> <strong ng-if="value.annotation"><em>(<span ng-bind="value.annotation"></span>)</em></strong></td>
                                 <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
                             </tr>
                         </tbody>

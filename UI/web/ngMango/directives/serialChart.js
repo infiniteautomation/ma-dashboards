@@ -626,13 +626,8 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
                     output[timestamp] = {timestamp: timestamp};
                 }
                 
-                if (typeof value.value === 'string') {
-                    output[timestamp][valueField] = Util.parseInternationalFloat(value.value);
-                    output[timestamp][valueField + '_rendered'] = value.value;
-                } else {
-                    output[timestamp][valueField] = value.value;
-                    output[timestamp][valueField + '_rendered'] = value.rendered || Util.pointValueToString(value.value, point);
-                }
+                output[timestamp][valueField] = value.value;
+                output[timestamp][valueField + '_rendered'] = value.rendered || Util.pointValueToString(value.value, point);
             }
         }
 

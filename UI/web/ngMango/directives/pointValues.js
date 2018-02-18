@@ -261,16 +261,6 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         if ($scope.latest) {
                         	limitValues(pointValues);
                         }
-                        
-                        if (!$scope.rendered) {
-                            for (var j = 0; j < pointValues.length; j++) {
-                                var valueObject = pointValues[j];
-                                var value = valueObject.value;
-                                if (typeof value !== 'string') {
-                                    valueObject.rendered = Util.pointValueToString(value, point);
-                                }
-                            }
-                        }
 
                         values[pointXid] = pointValues;
             		}
@@ -388,8 +378,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 $scope.$applyAsync(function() {
                     if (!payload.value) return;
                     
-                    var xid = payload.xid;
-                    var point;
+                    let xid = payload.xid;
+                    let point;
                     if (singlePoint) {
                         if (!$scope.point || $scope.point.xid !== xid) return;
                         point = $scope.point;
@@ -404,23 +394,18 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         if (!point) return;
                     }
 
-                	var value;
+                	let value;
                 	if (point.pointLocator.dataType === 'IMAGE') {
                 	    value = payload.value.value;
-                	} else if ($scope.rendered) {
-                    	value = payload.renderedValue;
-                    } else if ($scope.converted && payload.convertedValue != null) {
+                	} else if ($scope.converted && payload.convertedValue != null) {
                     	value = payload.convertedValue;
                     } else {
                     	value = payload.value.value;
                     }
                 	
-                	var rendered;
-                	if (typeof value !== 'string') {
-                        rendered = Util.pointValueToString(value, point);
-                	}
+                	const rendered = payload.renderedValue;
 
-                    var item = {
+                	const item = {
                         value : value,
                         rendered: rendered,
                         timestamp : payload.value.timestamp,

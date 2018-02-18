@@ -41,7 +41,7 @@
                         <md-tab label="{{'ui.app.latestValueChart' | maTr}}" md-active="$ctrl.tab === 'chart'">
                               <md-content class="md-padding">
                                     <ma-point-values point="myPoint" values="realtimePointValues" realtime="$ctrl.realtimeMode" use-cache="$ctrl.showCachedData"
-                                        converted="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
+                                        converted="true" rendered="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
                                     </ma-point-values>
                                     <ma-serial-chart style="height: 450px; width: 100%" series-1-values="realtimePointValues" series-1-point="myPoint" stack-type="none" legend="false" export="true" balloon="true">
                                     </ma-serial-chart>
@@ -64,7 +64,7 @@
                                                 <tbody md-body ng-class="{'ma-point-values-non-realtime': !$ctrl.realtimeMode}">
                                                 <tr md-row ng-repeat="value in tableTab.renderedRealtimePointValues | orderBy: myOrder" ng-class="{'ma-point-value-cached': value.cached}">
                                                       <td md-cell ng-bind="value.timestamp | maDate:'shortDateTimeSeconds'"></td>
-                                                      <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
+                                                      <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.rendered}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
                                                       <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
                                                 </tr>
                                                 </tbody>
