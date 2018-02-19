@@ -22,11 +22,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         try {
             if (!angular.isString(xid)) throw new Error('Requires xid parameter');
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
-            
-            if (options.bookend == null) {
-                options.bookend = true;
-            }
-            
+
             let url = pointValuesUrl;
             url += options.latest ? '/latest' : '/time-period';
             url += '/' + encodeURIComponent(xid);
@@ -42,10 +38,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             
             if (options.latest) {
                 reverseData = true;
-            } else {
-                if (data.from === data.to) {
-                    return $q.when([]);
-                }
+            } else if (data.from === data.to) {
+                return $q.when([]);
             }
 
             const canceler = $q.defer();
@@ -94,25 +88,19 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         try {
             if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
-            
-            const emptyResponse = {};
-            for (let i = 0; i < xids.length; i++) {
-                emptyResponse[xids[i]] = [];
-            }
-            
-            let url = pointValuesUrl;
+
+            let url = pointValuesUrl + '/multiple-arrays';
+            url += options.latest ? '/latest' : '/time-period';
+
             const data = optionsToPostBody(options);
             data.xids = xids;
             let reverseData = false;
-
+            
             if (options.latest) {
-                url += 'latest-multiple-points-multiple-arrays';
                 reverseData = true;
-            } else {
-                url += 'multiple-points-multiple-arrays';
-                if (data.from === data.to) {
-                    return $q.when(emptyResponse);
-                }
+            } else if (data.from === data.to) {
+                const emptyResponse = xids.reduce((resp, xid) => (resp[xid] = [], resp), {});
+                return $q.when(emptyResponse);
             }
 
             const canceler = $q.defer();
@@ -154,19 +142,17 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
             if (!angular.isObject(options)) throw new Error('Requires options parameter');
 
-            let url = pointValuesUrl;
+            let url = pointValuesUrl + '/single-array';
+            url += options.latest ? '/latest' : '/time-period';
+
             const data = optionsToPostBody(options);
             data.xids = xids;
             let reverseData = false;
-
+            
             if (options.latest) {
-                url += 'latest-multiple-points-single-array';
                 reverseData = true;
-            } else {
-                url += 'multiple-points-single-array';
-                if (data.from === data.to) {
-                    return $q.when([]);
-                }
+            } else if (data.from === data.to) {
+                return $q.when([]);
             }
 
             const canceler = $q.defer();
