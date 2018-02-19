@@ -174,3 +174,7 @@ ma-ui-watch-list-page ma-point-value img {
 	max-width: 200px;
 	max-height: 200px;
 }
+
+ma-ui-watch-list-page ma-point-value > md-fab-speed-dial[md-direction=right] {
+	top: -5px;
+}

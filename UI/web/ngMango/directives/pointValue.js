@@ -68,7 +68,10 @@ function pointValue() {
             onValueUpdated: '&?',
             labelExpression: '&?',
             enablePopup: '@?',
-            hideEventIndicator: '<?'
+            hideEventIndicator: '<?',
+            quickInfo: '<?',
+            dataPointDetails: '<?',
+            disableEventPopup: '<?'
         },
         designerInfo: {
             translation: 'ui.components.pointValue',
@@ -83,19 +86,26 @@ function pointValue() {
                 sameDayDateTimeFormat: {options: dateOptions},
                 label: {options: ['NAME', 'DEVICE_AND_NAME']},
                 enablePopup: {type: 'string', defaultValue: 'hide', options: ['hide', 'right', 'left', 'up', 'down']},
-                hideEventIndicator: {type: 'boolean', default: false}
+                hideEventIndicator: {type: 'boolean', default: false},
+                quickInfo: {type: 'boolean', default: true},
+                dataPointDetails: {type: 'boolean', default: true}
             }
         }
     };
 }
 
-PointValueDirectiveController.$inject = PointValueController.$inject.concat('MA_DATE_FORMATS', 'maEvents');
+PointValueDirectiveController.$inject = PointValueController.$inject.concat('MA_DATE_FORMATS', 'maEvents', '$injector');
 function PointValueDirectiveController() {
     PointValueController.apply(this, arguments);
     var firstArg = PointValueController.$inject.length;
     
     this.mangoDateFormats = arguments[firstArg];
     this.maEvents = arguments[firstArg + 1];
+    
+    const $injector = arguments[firstArg + 2];
+    if ($injector.has('$state')) {
+        this.$state = $injector.get('$state');
+    }
     
     this.valueStyle = {};
 }
