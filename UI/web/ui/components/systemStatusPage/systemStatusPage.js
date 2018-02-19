@@ -214,6 +214,9 @@ SystemStatusPageController.prototype.showTextAreaDialog = function(title, textCo
             this.ok = function() {
                 $this.$mdDialog.hide();
             };
+            this.cancel = function() {
+                $this.$mdDialog.cancel();
+            };
             this.$mdMedia = $this.$mdMedia;
         },
         templateUrl: require.toUrl('./textAreaDialog.html'),

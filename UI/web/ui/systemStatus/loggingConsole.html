@@ -1,12 +1,12 @@
 <div layout="column">
     <div layout layout-align="end">
-        <md-button ng-click="$ctrl.displayLogFile('ma.log')" class="md-raised md-accent md-hue-1">
+        <md-button ng-click="$ctrl.displayLogFile('ma.log')" class="md-raised md-primary">
             <md-icon>
                 remove_red_eye
             </md-icon>
             <span ma-tr="ui.settings.systemStatus.viewCurrentMaLog"></span>
         </md-button>
-        <md-button ng-click="$ctrl.getLogFilesList()" class="md-raised md-accent">
+        <md-button ng-click="$ctrl.getLogFilesList()" class="md-raised">
             <md-icon>
                 refresh
             </md-icon>
@@ -22,14 +22,13 @@
                     ({{logFileMeta.lastModified | maMoment:'format':'l LT'}} - {{logFileMeta.size | maBytes}})
                 </span>
                 <span flex></span>
-                <md-button ng-click="$ctrl.displayLogFile(logFileMeta.filename)" class="md-raised md-accent md-hue-1">
+                <md-button ng-click="$ctrl.displayLogFile(logFileMeta.filename)">
                     <md-icon>
                         remove_red_eye
                     </md-icon>
                     <span ma-tr="ui.settings.systemStatus.view"></span>
                 </md-button>
-                <md-button href="{{$ctrl.getLogDownloadUrl(logFileMeta.filename)}}"
-                           class="md-raised md-accent md-hue-3">
+                <md-button href="{{$ctrl.getLogDownloadUrl(logFileMeta.filename)}}">
                     <md-icon>
                         file_download
                     </md-icon>
