@@ -626,7 +626,7 @@ return [
             dateBar: {
                 rollupControls: false
             }
-        },
+        }
     },
     {
         name: 'ui.settings.systemStatus.loggingConsole',

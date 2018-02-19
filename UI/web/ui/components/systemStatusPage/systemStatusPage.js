@@ -23,15 +23,7 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, $m
     this.logByFileNameUrl = '/rest/v1/logging/view/';
 
     this.boundAuditQuery = (...args) => this.updateAuditQuery(...args);
-}
-
-SystemStatusPageController.prototype.$onInit = function() {
-    this.getInternalMetrics();
-    this.getLogFilesList();
-    this.getWorkItems();
-    this.getThreads();
-    this.getSystemInfo();
-
+    
     this.auditQuery = {
         alarmLevel: '*',
         changeType: '*',
@@ -41,17 +33,36 @@ SystemStatusPageController.prototype.$onInit = function() {
     this.auditTableLimit = 25;
     this.auditTablePage = 1;
     this.auditTableOrder = '-ts';
+}
 
-    this.systemStatus.getAuditEventTypes().then((response) => {
-        this.auditEventTypes = response.data;
-    });
-    this.updateAuditQuery();
+SystemStatusPageController.prototype.$onInit = function() {
+};
 
-    this.dateBar.subscribe((event, changedProperties) => {
-        if (this.auditQuery.dateFilter) {
-            this.updateAuditQuery();
-        }
-    }, this.$scope);
+SystemStatusPageController.prototype.pageChanged = function(name) {
+    if (this.unsubscribe) this.unsubscribe();
+    
+    switch(name) {
+    case 'auditTrail': {
+        this.systemStatus.getAuditEventTypes().then((response) => {
+            this.auditEventTypes = response.data;
+        });
+        this.updateAuditQuery();
+
+        this.unsubscribe = this.dateBar.subscribe((event, changedProperties) => {
+            if (this.auditQuery.dateFilter) {
+                this.updateAuditQuery();
+            }
+        }, this.$scope);
+        
+        break;
+    }
+    case 'internalMetrics': this.getInternalMetrics(); break;
+    case 'loggingConsole': this.getLogFilesList(); break;
+    case 'workItems': this.getWorkItems(); break;
+    case 'threads': this.getThreads(); break;
+    case 'serverInfo': this.getSystemInfo(); break;
+    
+    }
 };
 
 /** Audit Context **/
@@ -151,21 +162,21 @@ SystemStatusPageController.prototype.getThreads = function() {
 SystemStatusPageController.prototype.showBlockedThreadDetails = function($event, thread) {
     this.maDialogHelper.showBasicDialog($event, {
         titleTr: 'ui.settings.systemStatus.blockedThreadDetails',
-        contentTemplate: '<p>lockOwnerName: ' + thread.lockOwnerName + '</p>' +
-        '<p>lockOwnerId: ' + thread.lockOwnerId + '</p>' +
-        '<p>className: ' +thread.lockInfo.className + '</p>' +
-        '<p>identityHashCode: ' +thread.lockInfo.identityHashCode + '</p>'
+        contentTemplate: `<p>lockOwnerName: ${thread.lockOwnerName}</p>
+            '<p>lockOwnerId: ${thread.lockOwnerId}</p>
+            '<p>className: ${thread.lockInfo.className}</p>
+            '<p>identityHashCode: ${thread.lockInfo.identityHashCode}</p>`
     });
 };
 
 SystemStatusPageController.prototype.showStackTrace = function(selectedThread) {
     this.selectedThreadStackTrace = '';
-    selectedThread.location.forEach( (item) => {
-        this.selectedThreadStackTrace += item.className + '.' + item.methodName + ':' + item.lineNumber + '\n';
+    selectedThread.location.forEach((item) => {
+        this.selectedThreadStackTrace += `${item.className}.${item.methodName}:${item.lineNumber}\n`;
     });
 
-    let content = this.selectedThreadStackTrace;
-    let title = this.maTranslate.trSync('ui.settings.systemStatus.displayingStackTraceForThread', selectedThread.name);
+    const content = this.selectedThreadStackTrace;
+    const title = this.maTranslate.trSync('ui.settings.systemStatus.displayingStackTraceForThread', selectedThread.name);
 
     this.showTextAreaDialog(title, content);
 };
@@ -227,7 +238,7 @@ SystemStatusPageController.prototype.showTextAreaDialog = function(title, textCo
     });
 };
 
-    return {
+return {
     controller: SystemStatusPageController,
     templateUrl: require.toUrl('./systemStatusPage.html')
 };
