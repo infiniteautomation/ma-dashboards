@@ -54,7 +54,7 @@
                          md-on-paginate="$ctrl.boundAuditQuery"></md-table-pagination>
 
     <md-table-container>
-        <table md-table md-row-select ng-model="$ctrl.selectedAuditEvent">
+        <table md-table>
             <thead md-head md-order="$ctrl.auditTableOrder" md-on-reorder="$ctrl.boundAuditQuery">
             <tr md-row>
                 <th md-column md-order-by="alarmLevel" ma-tr="ui.settings.systemStatus.alarmLevel"></th>
@@ -67,8 +67,8 @@
             </thead>
             <tbody md-body>
             <tr md-row
-                ng-repeat="auditItem in $ctrl.auditTrail" md-select="auditItem" md-auto-select
-                md-on-select="$ctrl.boundDisplayAuditContext">
+                ng-repeat="auditItem in $ctrl.auditTrail"
+                ng-click="$ctrl.displayAuditContext(auditItem)">
                 <td md-cell ng-bind="auditItem.alarmLevel"></td>
                 <td md-cell ng-bind="auditItem.changeType"></td>
                 <td md-cell ng-bind="auditItem.typeName"></td>

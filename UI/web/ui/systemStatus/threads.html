@@ -1,13 +1,13 @@
 <div layout="column">
     <div layout layout-align="end">
-        <md-button ng-click="$ctrl.getThreads()" class="md-raised md-accent">
+        <md-button ng-click="$ctrl.getThreads()" class="md-raised">
             <md-icon>
                 refresh
             </md-icon>
             <span ma-tr="ui.app.refreshTable"></span>
         </md-button>
         <md-button href="/rest/v1/threads?stackDepth=30&asFile=true"
-                   class="md-raised md-accent md-hue-3">
+                   class="md-raised">
             <md-icon>
                 file_download
             </md-icon>
@@ -16,7 +16,7 @@
     </div>
 
     <md-table-container>
-        <table md-table md-row-select ng-model="$ctrl.selectedThread">
+        <table md-table>
             <thead md-head md-order="sortOrder">
             <tr md-row>
                 <th md-column md-order-by="name" ma-tr="ui.settings.systemStatus.name"></th>
@@ -29,8 +29,8 @@
             </thead>
             <tbody md-body>
             <tr md-row ng-repeat="thread in $ctrl.threads | orderBy: sortOrder"
-                ng-class="{'blocked-thread': thread.state === 'BLOCKED'}" md-select="thread" md-auto-select
-                md-on-select="$ctrl.boundShowStackTrace">
+                    ng-class="{'blocked-thread': thread.state === 'BLOCKED'}"
+                    ng-click="$ctrl.showStackTrace(thread)">
                 <td md-cell ng-bind="thread.name"></td>
                 <td md-cell>{{thread.cpuTime / 1000000 | maDuration:'seconds'}}s</td>
                 <td md-cell>{{thread.userTime / 1000000 | maDuration:'seconds'}}s</td>

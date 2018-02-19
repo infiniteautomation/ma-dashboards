@@ -23,8 +23,6 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, $m
     this.logByFileNameUrl = '/rest/v1/logging/view/';
 
     this.boundAuditQuery = (...args) => this.updateAuditQuery(...args);
-    this.boundDisplayAuditContext = (...args) => this.displayAuditContext(...args);
-    this.boundShowStackTrace = (...args) => this.showStackTrace(...args);
 }
 
 SystemStatusPageController.prototype.$onInit = function() {
@@ -43,8 +41,6 @@ SystemStatusPageController.prototype.$onInit = function() {
     this.auditTableLimit = 25;
     this.auditTablePage = 1;
     this.auditTableOrder = '-ts';
-    this.selectedAuditEvent = [];
-    this.selectedThread = [];
 
     this.systemStatus.getAuditEventTypes().then((response) => {
         this.auditEventTypes = response.data;
@@ -60,9 +56,13 @@ SystemStatusPageController.prototype.$onInit = function() {
 
 /** Audit Context **/
 
-SystemStatusPageController.prototype.displayAuditContext = function() {
-    let content = JSON.stringify(this.selectedAuditEvent[0].context);
-    let title = this.maTranslate.trSync('ui.settings.systemStatus.displayingAuditContext', this.selectedAuditEvent[0].message);
+SystemStatusPageController.prototype.displayAuditContext = function(auditEvent) {
+    const context = angular.copy(auditEvent.context);
+//    if (context.jsonData) {
+//        context.jsonData = JSON.parse(context.jsonData);
+//    }
+    const content = JSON.stringify(context, null, 2);
+    const title = this.maTranslate.trSync('ui.settings.systemStatus.displayingAuditContext', auditEvent.message);
 
     this.showTextAreaDialog(title, content);
 };
@@ -158,14 +158,14 @@ SystemStatusPageController.prototype.showBlockedThreadDetails = function($event,
     });
 };
 
-SystemStatusPageController.prototype.showStackTrace = function() {
+SystemStatusPageController.prototype.showStackTrace = function(selectedThread) {
     this.selectedThreadStackTrace = '';
-    this.selectedThread[0].location.forEach( (item) => {
+    selectedThread.location.forEach( (item) => {
         this.selectedThreadStackTrace += item.className + '.' + item.methodName + ':' + item.lineNumber + '\n';
     });
 
     let content = this.selectedThreadStackTrace;
-    let title = this.maTranslate.trSync('ui.settings.systemStatus.displayingStackTraceForThread', this.selectedThread[0].name);
+    let title = this.maTranslate.trSync('ui.settings.systemStatus.displayingStackTraceForThread', selectedThread.name);
 
     this.showTextAreaDialog(title, content);
 };
