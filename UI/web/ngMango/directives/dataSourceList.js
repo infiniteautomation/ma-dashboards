@@ -109,8 +109,8 @@ function dataSourceList(DataSource, $injector) {
                 });
                 
 
-                if (this.onQuery) {
-                    this.onQuery({$promise: finishedPromise});
+                if ($scope.onQuery) {
+                    $scope.onQuery({$promise: finishedPromise});
                 }
                 
             }, true);

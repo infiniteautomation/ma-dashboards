@@ -92,8 +92,8 @@ function deviceNameList(DeviceName, $injector) {
                     }
                 });
 
-                if (this.onQuery) {
-                    this.onQuery({$promise: promise});
+                if ($scope.onQuery) {
+                    $scope.onQuery({$promise: promise});
                 }
             });
         }
