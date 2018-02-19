@@ -260,6 +260,10 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 
                 body.timePeriodType = timePeriodType;
                 body.timePeriods = timePeriods;
+                
+                if (options.truncate || options.truncate == null) {
+                    body.truncate = true;
+                }
             }
         } else {
             throw new Error('Requires options.to and options.from or options.latest');
