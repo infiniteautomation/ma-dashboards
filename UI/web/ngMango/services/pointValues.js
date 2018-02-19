@@ -15,7 +15,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     	maDialogHelper = $injector.get('maDialogHelper');
     }
     
-    const optionsToPostBody = (options) => {
+    const optionsToPostBody = (options, timePeriodObject = true) => {
         const body = {};
         
         if (options.dateTimeFormat ) {
@@ -57,7 +57,6 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             }
 
             if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
-                body.rollup = rollup;
                 delete body.bookend;
                 
                 let timePeriodType = 'DAYS';
@@ -87,8 +86,15 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     timePeriodType = options.rollupIntervalType;
                 }
                 
-                body.timePeriodType = timePeriodType;
-                body.timePeriods = timePeriods;
+                if (timePeriodObject) {
+                    body.timePeriod = {
+                        periods: timePeriods,
+                        type: timePeriodType
+                    };
+                } else {
+                    body.timePeriodType = timePeriodType;
+                    body.timePeriods = timePeriods;
+                }
                 
                 if (options.truncate || options.truncate == null) {
                     body.truncate = true;
@@ -130,8 +136,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     url += '/' + encodeURIComponent(rollup);
                 }
                 
-                const data = optionsToPostBody(options);
-                delete data.rollup;
+                const data = optionsToPostBody(options, false);
                 let reverseData = false;
                 
                 if (options.latest) {
@@ -189,7 +194,12 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     
                 let url = pointValuesUrl + '/multiple-arrays';
                 url += options.latest ? '/latest' : '/time-period';
-    
+
+                const rollup = options.rollup;
+                if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
+                    url += '/' + encodeURIComponent(rollup);
+                }
+                
                 const data = optionsToPostBody(options);
                 data.xids = xids;
                 let reverseData = false;
@@ -242,7 +252,12 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     
                 let url = pointValuesUrl + '/single-array';
                 url += options.latest ? '/latest' : '/time-period';
-    
+
+                const rollup = options.rollup;
+                if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
+                    url += '/' + encodeURIComponent(rollup);
+                }
+                
                 const data = optionsToPostBody(options);
                 data.xids = xids;
                 let reverseData = false;
