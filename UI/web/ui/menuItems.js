@@ -339,7 +339,12 @@ return [
         controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
             $scope.pageXid = $stateParams.pageXid;
         }],
-        weight: 3000
+        weight: 3000,
+        params: {
+            dateBar: {
+                rollupControls: true
+            }
+        }
     },
     {
         url: '/administration',

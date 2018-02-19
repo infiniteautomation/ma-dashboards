@@ -34,7 +34,12 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                     linkToPage: true,
                     permission: 'user',
                     name: '',
-                    url: ''
+                    url: '',
+                    params: {
+                        dateBar: {
+                            rollupControls: true
+                        }
+                    }
                 };
                 if (defaults) {
                     angular.merge(menuItem, defaults);
