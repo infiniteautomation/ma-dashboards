@@ -173,24 +173,6 @@ return [
         weight: 3000
     },
     {
-        name: 'ui.home',
-        url: '/home',
-        templateUrl: require.toUrl('./views/home.html'),
-        menuTr: 'ui.dox.home',
-        menuIcon: 'home',
-        params: {
-            helpPage: 'ui.help.gettingStarted',
-            helpOpen: null
-        },
-        controller: ['$scope', 'maUiPages', function ($scope, maUiPages) {
-            maUiPages.getPages().then(function(store) {
-                $scope.pageCount = store.jsonData.pages.length;
-            });
-        }],
-        weight: 990,
-        permission: 'superadmin'
-    },
-    {
         name: 'ui.watchList',
         url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId',
         template: '<ma-ui-watch-list-page flex="noshrink" layout="column"></ma-ui-watch-list-page>',
@@ -367,6 +349,25 @@ return [
         template: '<div flex="noshrink" layout="column" ui-view></div>',
         abstract: true,
         weight: 1999
+    },
+    {
+        name: 'ui.settings.home',
+        url: '/home',
+        templateUrl: require.toUrl('./views/home.html'),
+        menuTr: 'ui.dox.home',
+        menuIcon: 'home',
+        params: {
+            helpPage: 'ui.help.gettingStarted',
+            helpOpen: null
+        },
+        controller: ['$scope', 'maUiPages', '$injector', function ($scope, maUiPages, $injector) {
+            maUiPages.getPages().then(function(store) {
+                $scope.pageCount = store.jsonData.pages.length;
+            });
+            $scope.hasDashboardDesigner = !!$injector.modules.maDashboardDesignerMenuItem;
+        }],
+        weight: 990,
+        permission: 'superadmin'
     },
     {
         name: 'ui.settings.dataSources',
