@@ -31,20 +31,34 @@
             md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}" class="watch-list-table">
         <thead md-head md-order="$ctrl.tableOrder">
             <tr md-row>
-                <th md-column ma-tr="ui.app.tools"></th>
                 <th md-column md-order-by="deviceName" ma-tr="ui.app.device"></th>
                 <th md-column md-order-by="name" ma-tr="ui.app.name"></th>
                 <th md-column md-order-by="value" ma-tr="ui.app.value"></th>
                 <th md-column md-order-by="time" ma-tr="ui.app.time"></th>
-                <th md-column></th>
             </tr>
         </thead>
         <tbody md-body>
             <tr ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows"
                 md-select="point" md-row md-select-id="xid"
                 md-on-select="$ctrl.selectedPointsChanged"
-                md-on-deselect="$ctrl.selectedPointsChanged"
-                ma-ui-watch-list-table-row>
+                md-on-deselect="$ctrl.selectedPointsChanged">
+                    <td md-cell ng-bind="point.deviceName"></td>
+                    <td md-cell ng-bind="point.name"></td>
+                    <td md-cell class="point-value">
+                      <ma-point-value
+                          point="point"
+                          flash-on-change="true">
+                      </ma-point-value>
+                    </td>
+                    <td md-cell class="point-time">
+                        <ma-point-value
+                            point="point"
+                            flash-on-change="true"
+                            display-type="dateTime"
+                            same-day-date-time-format="timeSeconds"
+                            hide-event-indicator="true">
+                        </ma-point-value>
+                    </td>      
             </tr>
         </tbody>
     </table>

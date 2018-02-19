@@ -204,12 +204,9 @@ return [
         },
         resolve: {
             loadMyDirectives: ['maRequireQ', '$injector', 'maCssInjector', function(maRequireQ, $injector, cssInjector) {
-                return maRequireQ(['./directives/watchList/watchListPage',
-                            './directives/watchList/watchListTableRow'], 
-                function (watchListPage, watchListTableRow) {
+                return maRequireQ(['./directives/watchList/watchListPage'], function (watchListPage) {
                     angular.module('maUiWatchListState', [])
-                        .directive('maUiWatchListPage', watchListPage)
-                        .directive('maUiWatchListTableRow', watchListTableRow);
+                        .directive('maUiWatchListPage', watchListPage);
                     $injector.loadNewModules(['maUiWatchListState']);
                     cssInjector.injectLink(require.toUrl('./directives/watchList/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });
