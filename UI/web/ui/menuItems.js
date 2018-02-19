@@ -360,11 +360,15 @@ return [
             helpPage: 'ui.help.gettingStarted',
             helpOpen: null
         },
-        controller: ['$scope', 'maUiPages', '$injector', function ($scope, maUiPages, $injector) {
+        controller: ['$scope', 'maUiPages', '$injector', 'maUiMenu', function ($scope, maUiPages, $injector, maUiMenu) {
             maUiPages.getPages().then(function(store) {
                 $scope.pageCount = store.jsonData.pages.length;
             });
             $scope.hasDashboardDesigner = !!$injector.modules.maDashboardDesignerMenuItem;
+            
+            maUiMenu.getMenu().then(menu => {
+                $scope.utilityMenuItems = menu.filter(item => item.showInUtilities);
+            });
         }],
         weight: 990,
         permission: 'superadmin'

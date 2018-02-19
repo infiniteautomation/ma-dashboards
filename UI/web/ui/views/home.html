@@ -1,4 +1,4 @@
-<div class="home-page" flex layout="row" layout-align="start start" layout-wrap>
+<div class="home-page" layout="row" layout-align="start start" layout-wrap>
     <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.dataSources" flex layout="column">
@@ -217,6 +217,24 @@
                     <div class="home-page-count"></div>
                     <md-icon>new_releases</md-icon>
                     <h3 ma-tr="ui.settings.systemStatus"></h3>
+                </md-card-content>
+            </a>
+        </md-card>
+    </div>
+</div>
+
+<h2 ng-if="::utilityMenuItems.length" ma-tr="ui.app.utilities"></h2>
+
+<div class="home-page" layout="row" layout-align="start start" layout-wrap>
+    <div ng-repeat="item in ::utilityMenuItems track by item.name"
+            ng-if="User.current.hasPermission(item.permission)"
+            flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card flex layout="column">
+            <a ui-sref="{{item.name}}" flex layout="column">
+                <md-card-content flex layout="column" layout-align="center stretch">
+                    <div class="home-page-count"></div>
+                    <md-icon>new_releases</md-icon>
+                    <h3 ma-tr="{{item.menuTr}}"></h3>
                 </md-card-content>
             </a>
         </md-card>
