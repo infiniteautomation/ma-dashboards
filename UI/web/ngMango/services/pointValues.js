@@ -15,178 +15,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     	maDialogHelper = $injector.get('maDialogHelper');
     }
     
-    function PointValues() {
-    }
-    
-    PointValues.prototype.getPointValuesForXid = function getPointValuesForXid(xid, options) {
-        try {
-            if (!angular.isString(xid)) throw new Error('Requires xid parameter');
-            if (!angular.isObject(options)) throw new Error('Requires options parameter');
-
-            let url = pointValuesUrl;
-            url += options.latest ? '/latest' : '/time-period';
-            url += '/' + encodeURIComponent(xid);
-            
-            const rollup = options.rollup;
-            if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
-                url += '/' + encodeURIComponent(rollup);
-            }
-            
-            const data = optionsToPostBody(options);
-            delete data.rollup;
-            let reverseData = false;
-            
-            if (options.latest) {
-                reverseData = true;
-            } else if (data.from === data.to) {
-                return $q.when([]);
-            }
-
-            const canceler = $q.defer();
-            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
-
-            return $http.get(url, {
-                timeout: cancelOrTimeout,
-                headers: {
-                    'Accept': options.mimeType || 'application/json'
-                },
-                responseType: options.responseType,
-                cache: !options.latest,
-                params: data
-            }).then(function(response) {
-                if (options.responseType) {
-                    return response.data;
-                }
-                
-                if (!response || !angular.isArray(response.data)) {
-                    throw new Error('Incorrect response from REST end point ' + url);
-                }
-                let values = response.data;
-                if (reverseData)
-                    values.reverse();
-
-                if (!options.latest && maDialogHelper && values.length === data.limit) {
-                	const now = (new Date()).valueOf();
-                	if (!this.lastToast || (now - this.lastToast) > 10000) {
-                		this.lastToast = now;
-                		maDialogHelper.toastOptions({
-                			textTr: ['ui.app.pointValuesLimited', [data.limit || MA_POINT_VALUES_CONFIG.limit]],
-                			hideDelay: 10000,
-                			classes: 'md-warn'
-                		});
-                	}
-                }
-                
-                return values;
-            }.bind(this)).setCancel(canceler.resolve);
-        } catch (error) {
-            return $q.reject(error);
-        }
-    };
-
-    PointValues.prototype.getPointValuesForXids = function getPointValuesForXids(xids, options) {
-        try {
-            if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
-            if (!angular.isObject(options)) throw new Error('Requires options parameter');
-
-            let url = pointValuesUrl + '/multiple-arrays';
-            url += options.latest ? '/latest' : '/time-period';
-
-            const data = optionsToPostBody(options);
-            data.xids = xids;
-            let reverseData = false;
-            
-            if (options.latest) {
-                reverseData = true;
-            } else if (data.from === data.to) {
-                const emptyResponse = xids.reduce((resp, xid) => (resp[xid] = [], resp), {});
-                return $q.when(emptyResponse);
-            }
-
-            const canceler = $q.defer();
-            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
-
-            return $http({
-                method: 'POST',
-                url: url,
-                timeout: cancelOrTimeout,
-                headers: {
-                    'Accept': options.mimeType || 'application/json'
-                },
-                data: data,
-                responseType: options.responseType
-            }).then(function(response) {
-                if (options.responseType) {
-                    return response.data;
-                }
-                
-                if (!response || !angular.isObject(response.data)) {
-                    throw new Error('Incorrect response from REST end point ' + url);
-                }
-                
-                const dataByXid = response.data;
-                if (reverseData) {
-                    for (const xid in dataByXid) {
-                        dataByXid[xid].reverse();
-                    }
-                }
-                return dataByXid;
-            }).setCancel(canceler.resolve);
-        } catch (error) {
-            return $q.reject(error);
-        }
-    };
-    
-    PointValues.prototype.getPointValuesForXidsCombined = function getPointValuesForXidsCombined(xids, options) {
-        try {
-            if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
-            if (!angular.isObject(options)) throw new Error('Requires options parameter');
-
-            let url = pointValuesUrl + '/single-array';
-            url += options.latest ? '/latest' : '/time-period';
-
-            const data = optionsToPostBody(options);
-            data.xids = xids;
-            let reverseData = false;
-            
-            if (options.latest) {
-                reverseData = true;
-            } else if (data.from === data.to) {
-                return $q.when([]);
-            }
-
-            const canceler = $q.defer();
-            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
-
-            return $http({
-                method: 'POST',
-                url: url,
-                timeout: cancelOrTimeout,
-                headers: {
-                    'Accept': options.mimeType || 'application/json'
-                },
-                data: data,
-                responseType: options.responseType
-            }).then(function(response) {
-                if (options.responseType) {
-                    return response.data;
-                }
-                
-                if (!response || !angular.isArray(response.data)) {
-                    throw new Error('Incorrect response from REST end point ' + url);
-                }
-                const values = response.data;
-                if (reverseData) {
-                    values.reverse();
-                }
-                return values;
-            }).setCancel(canceler.resolve);
-        } catch (error) {
-            return $q.reject(error);
-        }
-    };
-
-    function optionsToPostBody(options) {
+    const optionsToPostBody = (options) => {
         const body = {};
         
         if (options.dateTimeFormat ) {
@@ -284,9 +113,179 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         }
         
         return body;
-    }
+    };
+    
+    const pointValues = {
+        getPointValuesForXid(xid, options) {
+            try {
+                if (!angular.isString(xid)) throw new Error('Requires xid parameter');
+                if (!angular.isObject(options)) throw new Error('Requires options parameter');
+    
+                let url = pointValuesUrl;
+                url += options.latest ? '/latest' : '/time-period';
+                url += '/' + encodeURIComponent(xid);
+                
+                const rollup = options.rollup;
+                if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
+                    url += '/' + encodeURIComponent(rollup);
+                }
+                
+                const data = optionsToPostBody(options);
+                delete data.rollup;
+                let reverseData = false;
+                
+                if (options.latest) {
+                    reverseData = true;
+                } else if (data.from === data.to) {
+                    return $q.when([]);
+                }
+    
+                const canceler = $q.defer();
+                const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+    
+                return $http.get(url, {
+                    timeout: cancelOrTimeout,
+                    headers: {
+                        'Accept': options.mimeType || 'application/json'
+                    },
+                    responseType: options.responseType,
+                    cache: !options.latest,
+                    params: data
+                }).then(function(response) {
+                    if (options.responseType) {
+                        return response.data;
+                    }
+                    
+                    if (!response || !angular.isArray(response.data)) {
+                        throw new Error('Incorrect response from REST end point ' + url);
+                    }
+                    let values = response.data;
+                    if (reverseData)
+                        values.reverse();
+    
+                    if (!options.latest && maDialogHelper && values.length === data.limit) {
+                    	const now = (new Date()).valueOf();
+                    	if (!this.lastToast || (now - this.lastToast) > 10000) {
+                    		this.lastToast = now;
+                    		maDialogHelper.toastOptions({
+                    			textTr: ['ui.app.pointValuesLimited', [data.limit || MA_POINT_VALUES_CONFIG.limit]],
+                    			hideDelay: 10000,
+                    			classes: 'md-warn'
+                    		});
+                    	}
+                    }
+                    
+                    return values;
+                }.bind(this)).setCancel(canceler.resolve);
+            } catch (error) {
+                return $q.reject(error);
+            }
+        },
+    
+        getPointValuesForXids(xids, options) {
+            try {
+                if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
+                if (!angular.isObject(options)) throw new Error('Requires options parameter');
+    
+                let url = pointValuesUrl + '/multiple-arrays';
+                url += options.latest ? '/latest' : '/time-period';
+    
+                const data = optionsToPostBody(options);
+                data.xids = xids;
+                let reverseData = false;
+                
+                if (options.latest) {
+                    reverseData = true;
+                } else if (data.from === data.to) {
+                    const emptyResponse = xids.reduce((resp, xid) => (resp[xid] = [], resp), {});
+                    return $q.when(emptyResponse);
+                }
+    
+                const canceler = $q.defer();
+                const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+    
+                return $http({
+                    method: 'POST',
+                    url: url,
+                    timeout: cancelOrTimeout,
+                    headers: {
+                        'Accept': options.mimeType || 'application/json'
+                    },
+                    data: data,
+                    responseType: options.responseType
+                }).then(function(response) {
+                    if (options.responseType) {
+                        return response.data;
+                    }
+                    
+                    if (!response || !angular.isObject(response.data)) {
+                        throw new Error('Incorrect response from REST end point ' + url);
+                    }
+                    
+                    const dataByXid = response.data;
+                    if (reverseData) {
+                        for (const xid in dataByXid) {
+                            dataByXid[xid].reverse();
+                        }
+                    }
+                    return dataByXid;
+                }).setCancel(canceler.resolve);
+            } catch (error) {
+                return $q.reject(error);
+            }
+        },
+        
+        getPointValuesForXidsCombined(xids, options) {
+            try {
+                if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
+                if (!angular.isObject(options)) throw new Error('Requires options parameter');
+    
+                let url = pointValuesUrl + '/single-array';
+                url += options.latest ? '/latest' : '/time-period';
+    
+                const data = optionsToPostBody(options);
+                data.xids = xids;
+                let reverseData = false;
+                
+                if (options.latest) {
+                    reverseData = true;
+                } else if (data.from === data.to) {
+                    return $q.when([]);
+                }
+    
+                const canceler = $q.defer();
+                const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+    
+                return $http({
+                    method: 'POST',
+                    url: url,
+                    timeout: cancelOrTimeout,
+                    headers: {
+                        'Accept': options.mimeType || 'application/json'
+                    },
+                    data: data,
+                    responseType: options.responseType
+                }).then(function(response) {
+                    if (options.responseType) {
+                        return response.data;
+                    }
+                    
+                    if (!response || !angular.isArray(response.data)) {
+                        throw new Error('Incorrect response from REST end point ' + url);
+                    }
+                    const values = response.data;
+                    if (reverseData) {
+                        values.reverse();
+                    }
+                    return values;
+                }).setCancel(canceler.resolve);
+            } catch (error) {
+                return $q.reject(error);
+            }
+        }
+    };
 
-    return new PointValues();
+    return Object.freeze(pointValues);
 }
 
 return pointValuesFactory;
