@@ -116,7 +116,7 @@ WatchListChartController.prototype.filterPoints = function() {
     var selectedPoints = chartConfig.selectedPoints || [];
     
 	// convert old object with point names as keys to array form
-	if (!angular.isArray(selectedPoints)) {
+	if (!Array.isArray(selectedPoints)) {
 		var newSelectedPointArray = [];
 		for (var ptName in selectedPoints) {
 			var config = selectedPoints[ptName];

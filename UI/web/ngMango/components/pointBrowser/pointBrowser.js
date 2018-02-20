@@ -11,40 +11,97 @@ const types = ['watchList', 'deviceName', 'dataSource', 'hierarchy'];
 class PointBrowserController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maTranslate', 'maRqlBuilder', 'maWatchList']; }
-    constructor(maTranslate, maRqlBuilder, maWatchList) {
+    static get $inject() { return ['maTranslate', 'maRqlBuilder', 'maWatchList', 'maDataSource', 'maPointHierarchy', '$timeout']; }
+    constructor(maTranslate, maRqlBuilder, maWatchList, maDataSource, maPointHierarchy, $timeout) {
         this.maTranslate = maTranslate;
         this.maRqlBuilder = maRqlBuilder;
         this.maWatchList = maWatchList;
-        
-        this.listType = 'watchList';
+        this.maDataSource = maDataSource;
+        this.maPointHierarchy = maPointHierarchy;
+        this.$timeout = $timeout;
+
         this.filter = null;
     }
 
     $onInit() {
         this.ngModelCtrl.$render = () => {
-            this.listType = 'watchList';
-            this.listTypeChanged();
-            this.selected = this.ngModelCtrl.$viewValue;
-            this.watchList = this.selected;
+            if (this.ngModelCtrl.$viewValue !== undefined) {
+                this.selected = this.ngModelCtrl.$viewValue;
+                this.watchList = this.selected;
+                this.listType = 'watchList';
+            }
         };
-    }
-    
-    $onChanges(changes) {
-        if (changes.listType) {
-            this.listTypeChanged();
+        
+        if (this.loadItem) {
+            // setting the view value from $onInit doesn't seem to work, only affects the device name
+            // watch list type as its the only type that doesn't do http request before setting view value
+            this.$timeout(() => {
+                this.createWatchListFromItem(this.loadItem);
+            }, 0, false);
+        } else {
+            this.listType = 'watchList';
         }
     }
     
-    listTypeChanged() {
+    $onChanges(changes) {
+        if (changes.loadItem && !changes.loadItem.isFirstChange() && this.loadItem) {
+            this.createWatchListFromItem(this.loadItem);
+        }
     }
-    
+
     filterChanged() {
         this.nameQuery = this.filter ? {name: this.filter} : null;
     }
     
     setViewValue() {
         this.ngModelCtrl.$setViewValue(this.selected);
+    }
+    
+    createWatchListFromItem(item) {
+        if (item.firstWatchList) {
+            this.listType = 'watchList';
+            this.maWatchList.objQuery({
+                limit: 1,
+                sort: 'name'
+            }).$promise.then(lists => {
+                if (lists.length) {
+                    this.watchList = lists[0];
+                    this.itemSelected('watchList');
+                }
+            });
+        } else if (item.watchListXid) {
+            this.listType = 'watchList';
+            this.maWatchList.get({xid: item.watchListXid}).$promise.then(wl => {
+                this.watchList = wl;
+                this.itemSelected('watchList');
+            }, angular.noop);
+        } else if (item.dataSourceXid) {
+            this.listType = 'dataSource';
+            this.maDataSource.get({xid: item.dataSourceXid}).$promise.then(ds => {
+                this.dataSource = ds;
+                this.itemSelected('dataSource');
+            }, angular.noop);
+        } else if (item.deviceName) {
+            this.deviceName = item.deviceName;
+            this.listType = 'deviceName';
+            this.itemSelected('deviceName');
+        } else if (item.tags) {
+            this.tags = item.tags;
+            this.listType = 'tags';
+            this.itemSelected('tags');
+        } else if (item.hierarchyFolderId) {
+            this.listType = 'hierarchy';
+            this.maPointHierarchy.get({id: item.hierarchyFolderId, points: false}).$promise.then(folder => {
+                const folders = [];
+                this.maPointHierarchy.walkHierarchy(folder, function(folder, parent, index) {
+                    folders.push(folder);
+                });
+                this.hierarchy = folders;
+                this.itemSelected('hierarchy');
+            });
+        } else {
+            this.listType = 'watchList';
+        }
     }
     
     itemSelected(type) {
@@ -96,7 +153,8 @@ class PointBrowserController {
             isNew: true,
             type: 'query',
             name: this.maTranslate.trSync('ui.app.deviceNameX', [this.deviceName]),
-            query
+            query,
+            deviceName: this.deviceName
         });
     }
     
@@ -111,7 +169,8 @@ class PointBrowserController {
             isNew: true,
             type: 'query',
             name: this.maTranslate.trSync('ui.app.dataSourceX', [this.dataSource.name]),
-            query
+            query,
+            dataSourceXid: this.dataSource.xid
         });
     }
     
@@ -136,7 +195,8 @@ class PointBrowserController {
             isNew: true,
             type: 'tags',
             name: this.maTranslate.trSync('ui.app.newTagWatchList'),
-            params
+            params,
+            tags: this.tags
         });
     }
 
@@ -150,7 +210,8 @@ return {
     templateUrl: require.toUrl('./pointBrowser.html'),
     controller: PointBrowserController,
     bindings: {
-        listType: '@?'
+        listType: '@?',
+        loadItem: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

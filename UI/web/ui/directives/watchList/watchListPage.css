@@ -37,6 +37,7 @@
 .watchlist-main table.md-table td.md-cell {
     transition: color 0.2s;
 }
+
 .watchlist-main table.md-table td.md-cell.flash-on-change {
     color: rgb(255,133,0);
 }
@@ -45,19 +46,22 @@
   border: 0;
 }
 
-ma-ui-watch-list-page ma-watch-list-parameters.md-padding {
-  padding-bottom: 0;
-}
-
 /* Pagination mobile fixes*/
-.watchlist-main .md-table-pagination, .watch-list-stats-dialog .md-table-pagination {
+.watchlist-main .md-table-pagination,
+.watch-list-stats-dialog .md-table-pagination {
     padding: 0 10px 0 0;
 }
-.watchlist-main .md-table-pagination md-select, .watch-list-stats-dialog .md-table-pagination md-select {
+.watchlist-main .md-table-pagination md-select,
+.watch-list-stats-dialog .md-table-pagination md-select {
     min-width: 40px;
 }
-.watchlist-main .md-table-pagination>.buttons>.label+.md-button.md-icon-button, .watch-list-stats-dialog .md-table-pagination>.buttons>.label+.md-button.md-icon-button {
+.watchlist-main .md-table-pagination > .buttons > .label + .md-button.md-icon-button,
+.watch-list-stats-dialog .md-table-pagination > .buttons > .label + .md-button.md-icon-button {
     margin-left: 10px;
+}
+
+.watchlist-2-pane .watchlist-main {
+ 	margin-left: 10px;
 }
 
 .watchlist-main md-card {
@@ -73,76 +77,9 @@ ma-ui-watch-list-page ma-watch-list-parameters.md-padding {
   margin-bottom: 0;
 }
 
-ma-ui-watch-list-page md-card.select-watch-list {
-  margin: 0;
-}
-
-ma-ui-watch-list-page md-card.select-watch-list md-select {
-  margin: 0;
-}
-
-ma-ui-watch-list-page .watchlist-2-pane md-card.select-watch-list {
-  margin: 0 16px 0 0;
-}
-
-ma-ui-watch-list-page .watchlist-2-pane .ma-scroll-parent {
-  position: relative;
-}
-
-ma-ui-watch-list-page .watchlist-2-pane .ma-scroll-parent md-list,
-ma-ui-watch-list-page .watchlist-2-pane .ma-scroll-parent .ma-scroll-child {
-  overflow-y: auto;
-  display: block;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-ma-ui-watch-list-page md-card.select-watch-list md-list {
-  padding: 0;
-  overflow-x: hidden;
-}
-
 ma-ui-watch-list-page .watch-list-back.md-button {
   margin-left: 0;
   margin-right: 0;
-}
-
-ma-ui-watch-list-page .watch-list-filter md-input-container {
-  margin: 8px;
-}
-
-ma-ui-watch-list-page .watch-list-filter .md-button {
-  margin: 0 0 0 -40px;
-}
-
-ma-ui-watch-list-page md-list-item.md-2-line,
-ma-ui-watch-list-page md-list-item.md-2-line > .md-no-style,
-ma-ui-watch-list-page md-list-item.md-2-line:before,
-ma-ui-watch-list-page md-list-item.md-2-line > .md-no-style:before {
-  height: 64px;
-  min-height: 64px;
-}
-
-ma-ui-watch-list-page md-list-item,
-ma-ui-watch-list-page md-list-item > .md-no-style,
-ma-ui-watch-list-page md-list-item:before,
-ma-ui-watch-list-page md-list-item > .md-no-style:before {
-  height: 40px;
-  min-height: 40px;
-}
-
-ma-ui-watch-list-page md-card md-toolbar.watchlist-picker {
-  max-height: 84px;
-  height: 84px;
-}
-
-ma-ui-watch-list-page md-card md-toolbar.watchlist-picker md-radio-button {
-  margin: 0px;
-  font-size: 18px;
-  padding: 3px;
 }
 
 ma-ui-watch-list-page ma-watch-list-chart {

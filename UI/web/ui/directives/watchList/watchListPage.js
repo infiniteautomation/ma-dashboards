@@ -1,333 +1,245 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
+ * @author Jared Wiltshire
  */
 
 define(['angular', 'require', 'rql/query', 'tinycolor'], function(angular, require, query, tinycolor) {
 'use strict';
 
-function watchListPageDirective() {
-    return {
-        restrict: 'E',
-        templateUrl: require.toUrl('./watchListPage.html'),
-        scope: {},
-        controller: WatchListPageController,
-        controllerAs: '$ctrl',
-        bindToController: {
-            watchList: '<?'
-        }
-    };
-}
+const NO_STATS = '\u2014';
 
-WatchListPageController.$inject = ['$mdMedia', 'maWatchList', 'maTranslate', 'localStorageService', '$state', 'maPointHierarchy',
-    'maUiDateBar', '$mdDialog', 'maStatistics', '$scope', '$mdColorPicker'];
-function WatchListPageController($mdMedia, WatchList, Translate, localStorageService, $state, PointHierarchy,
-        maUiDateBar, $mdDialog, statistics, $scope, $mdColorPicker) {
+class WatchListPageController {
+    static get $$ngIsClass() { return true; }
 
-    this.baseUrl = function(path) {
-    	return require.toUrl('.' + path);
-    };
-    this.watchList = null;
-    this.selectWatchList = null;
-    this.dataSource = null;
-    this.deviceName = null;
-    this.hierarchyFolders = [];
-    this.dateBar = maUiDateBar;
+    static get $inject() {
+        return [
+            '$mdMedia',
+            'localStorageService',
+            '$state',
+            'maUiDateBar',
+            '$mdDialog',
+            'maStatistics',
+            '$scope',
+            '$mdColorPicker'
+            ];
+    }
 
-    this.selected = [];
-    this.selectedStats = [];
+    constructor(
+            $mdMedia,
+            localStorageService,
+            $state,
+            maUiDateBar,
+            $mdDialog,
+            maStatistics,
+            $scope,
+            $mdColorPicker) {
 
-    const NO_STATS = '\u2014';
+        this.$mdMedia = $mdMedia;
+        this.localStorageService = localStorageService;
+        this.$state = $state;
+        this.dateBar = maUiDateBar;
+        this.$mdDialog = $mdDialog;
+        this.maStatistics = maStatistics;
+        this.$scope = $scope;
+        this.$mdColorPicker = $mdColorPicker;
 
-    this.selectFirstWatchList = false;
-    this.$mdMedia = $mdMedia;
-    this.numberOfRows = $mdMedia('gt-sm') ? 100 : 25;
-    this.pageNumber = 1;
-    this.tableOrder = '';
-    
-    this.downloadStatus = {};
-    this.chartOptions = {
-        selectedAxis: 'left',
-        axes: {}
-    };
-    this.axisOptions = [
-        {name: 'left', translation: 'ui.app.left'},
-        {name: 'right', translation: 'ui.app.right'},
-        {name: 'left-2', translation: 'ui.app.farLeft'},
-        {name: 'right-2', translation: 'ui.app.farRight'}
-    ];
-    
-    this.watchListParams = {};
+        this.selected = [];
+        this.selectedStats = [];
+        this.watchListParams = {};
 
-    this.$onInit = function() {
-        var localStorage = localStorageService.get('watchListPage') || {};
-        var params = $state.params;
-        
+        this.selectFirstWatchList = false;
+        this.numberOfRows = $mdMedia('gt-sm') ? 100 : 25;
+        this.pageNumber = 1;
+        this.tableOrder = '';
+
+        this.downloadStatus = {};
+        this.chartOptions = {
+            selectedAxis: 'left',
+            axes: {}
+        };
+
+        this.axisOptions = [
+            {name: 'left', translation: 'ui.app.left'},
+            {name: 'right', translation: 'ui.app.right'},
+            {name: 'left-2', translation: 'ui.app.farLeft'},
+            {name: 'right-2', translation: 'ui.app.farRight'}
+        ];
+
+        this.selectedPointsChangedBound = (...args) => this.selectedPointsChanged(...args);
+    }
+
+    baseUrl(path) {
+        return require.toUrl('.' + path);
+    }
+
+    $onInit() {
+        const localStorage = this.localStorageService.get('watchListPage') || {};
+        const params = this.$state.params;
+
         if (params.watchListXid || !(params.dataSourceXid || params.deviceName || params.hierarchyFolderId) && localStorage.watchListXid) {
-            this.watchListXid = params.watchListXid || localStorage.watchListXid;
-            this.listType = 'watchLists';
+            const watchListXid = params.watchListXid || localStorage.watchListXid;
+            this.pointBrowserLoadItem = {watchListXid};
         } else if (params.dataSourceXid || !(params.deviceName || params.hierarchyFolderId) && localStorage.dataSourceXid) {
-            this.dataSourceXid = params.dataSourceXid || localStorage.dataSourceXid;
-            this.listType = 'dataSources';
+            const dataSourceXid = params.dataSourceXid || localStorage.dataSourceXid;
+            this.pointBrowserLoadItem = {dataSourceXid};
         } else if (params.deviceName || !params.hierarchyFolderId && localStorage.deviceName) {
-            this.deviceName = params.deviceName || localStorage.deviceName;
-            this.listType = 'deviceNames';
-            this.deviceNameChanged();
+            const deviceName = params.deviceName || localStorage.deviceName;
+            this.pointBrowserLoadItem = {deviceName};
         } else if (params.hierarchyFolderId || localStorage.hierarchyFolderId) {
-            this.listType = 'hierarchy';
-            var hierarchyFolderId = params.hierarchyFolderId || localStorage.hierarchyFolderId;
-            
-            PointHierarchy.get({id: hierarchyFolderId, points: false}).$promise.then(function(folder) {
-                var folders = [];
-                PointHierarchy.walkHierarchy(folder, function(folder, parent, index) {
-                    folders.push(folder);
-                });
-                this.hierarchyFolders = folders;
-                this.hierarchyChanged();
-            }.bind(this));
-        } else {
-            this.listType = 'watchLists';
-            this.selectFirstWatchList = $mdMedia('gt-md');
+            const hierarchyFolderId = params.hierarchyFolderId || localStorage.hierarchyFolderId;
+            this.pointBrowserLoadItem = {hierarchyFolderId};
+        } else if (this.$mdMedia('gt-md')) {
+            // select first watch list automatically for large displays
+            this.pointBrowserLoadItem = {firstWatchList: true};
         }
 
         this.dateBar.subscribe((event, changedProperties) => {
             this.updateStats();
-        }, $scope);
-    };
+        }, this.$scope);
+    }
 
-    this.updateState = function(state) {
-        var localStorageParams = {};
-        
-        ['watchListXid', 'dataSourceXid', 'deviceName', 'hierarchyFolderId'].forEach(function(key) {
-            var value = state[key];
+    updateState(state) {
+        const localStorageParams = {};
+
+        ['watchListXid', 'dataSourceXid', 'deviceName', 'hierarchyFolderId'].forEach(key => {
+            const value = state[key];
             if (value) {
                 localStorageParams[key] = value; 
-                $state.params[key] = value; 
+                this.$state.params[key] = value; 
             } else {
-                $state.params[key] = null;
+                this.$state.params[key] = null;
             }
         });
 
-        localStorageService.set('watchListPage', localStorageParams);
-        $state.go('.', $state.params, {location: 'replace', notify: false});
-    };
+        this.localStorageService.set('watchListPage', localStorageParams);
+        this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
+    }
 
-    this.clear = function clear(type) {
+    clearWatchList() {
         this.watchList = null;
-
         // clear checked points from table/chart
         this.clearSelected();
-        
-        // clear selections
-        if (type !== 'watchList')
-            this.selectWatchList = null;
-        if (type !== 'dataSource')
-            this.dataSource = null;
-        if (type !== 'deviceName')
-            this.deviceName = null;
-        if (type !== 'hierarchy')
-            this.hierarchyFolders = [];
-    };
-    
-    this.clearSelected = function () {
+    }
+
+    clearSelected () {
         this.selected = [];
         this.selectedStats = [];
         this.chartConfig = {
-    		selectedPoints: []
+            selectedPoints: []
         };
         if (this.watchList) {
-        	if (!this.watchList.data) this.watchList.data = {};
+            if (!this.watchList.data) this.watchList.data = {};
             this.watchList.data.chartConfig = this.chartConfig;
         }
         this.updateSelectedPointMaps();
-    };
-    
-    this.rebuildChart = function() {
-        // causes the chart to update
-        this.watchList = angular.extend(new WatchList(), this.watchList);
-    };
+    }
 
-    this.watchListChanged = function watchListChanged() {
-        var watchListXid = null;
+    rebuildChart() {
+        // shallow copy causes the chart to update
+        this.watchList = Object.assign(Object.create(this.watchList.constructor.prototype), this.watchList);
+    }
 
-        this.clear('watchList');
-        
-        this.watchList = this.selectWatchList;
-        if (this.watchList) {
-            watchListXid = this.watchList.xid;
+    watchListChanged() {
+        // clear checked points from table/chart
+        this.clearSelected();
 
-            if (!this.watchList.data) {
-                this.watchList.data = {};
+        if (!this.watchList.data) {
+            this.watchList.data = {};
+        }
+        if (!this.watchList.data.chartConfig) {
+            this.watchList.data.chartConfig = {};
+        }
+        this.watchList.defaultParamValues(this.watchListParams);
+
+        this.chartConfig = this.watchList.data.chartConfig;
+        if (this.chartConfig.selectedPoints) {
+            // convert old object with point names as keys to array form
+            if (!Array.isArray(this.chartConfig.selectedPoints)) {
+                const selectedPointConfigs = [];
+                for (let ptName in this.chartConfig.selectedPoints) {
+                    const config = this.chartConfig.selectedPoints[ptName];
+                    config.name = ptName;
+                    selectedPointConfigs.push(config);
+                }
+                this.chartConfig.selectedPoints = selectedPointConfigs;
             }
-            if (!this.watchList.data.chartConfig) {
-                this.watchList.data.chartConfig = {};
-            }
-            this.watchList.defaultParamValues(this.watchListParams);
-            
-            this.chartConfig = this.watchList.data.chartConfig;
-            if (this.chartConfig.selectedPoints) {
-            	// convert old object with point names as keys to array form
-            	if (!angular.isArray(this.chartConfig.selectedPoints)) {
-            		var selectedPointConfigs = [];
-            		for (var ptName in this.chartConfig.selectedPoints) {
-            			var config = this.chartConfig.selectedPoints[ptName];
-            			config.name = ptName;
-            			selectedPointConfigs.push(config);
-            		}
-            		this.chartConfig.selectedPoints = selectedPointConfigs;
-            	}
-            } else {
-            	this.chartConfig.selectedPoints = [];
-            }
-
-            this.updateSelectedPointMaps();
-            this.getPoints();
+        } else {
+            this.chartConfig.selectedPoints = [];
         }
 
-        this.updateState({
-            watchListXid: watchListXid
-        });
-    };
+        this.updateSelectedPointMaps();
+        this.getPoints();
 
-    this.getPoints = function getPoints() {
+        const stateUpdate = {};
+        if (!this.watchList.isNew) {
+            stateUpdate.watchListXid = this.watchList.xid;
+        } else if (this.watchList.type === 'query' && this.watchList.deviceName) {
+            stateUpdate.deviceName = this.watchList.deviceName;
+        } else if (this.watchList.type === 'query' && this.watchList.dataSourceXid) {
+            stateUpdate.dataSourceXid = this.watchList.dataSourceXid;
+        } else if (this.watchList.type === 'hierarchy' && Array.isArray(this.watchList.hierarchyFolders) && this.watchList.hierarchyFolders.length) {
+            stateUpdate.hierarchyFolderId = this.watchList.hierarchyFolders[0].id;
+        }
+        
+        this.updateState(stateUpdate);
+    }
+
+    getPoints() {
         if (this.wlPointsPromise) {
             this.wlPointsPromise.cancel();
         }
-        
+
         this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
-        this.pointsPromise = this.wlPointsPromise.then(null, angular.noop).then(function(points) {
+        this.pointsPromise = this.wlPointsPromise.then(null, angular.noop).then(points => {
             this.points = points || [];
-            
-            var pointNameCounts = this.pointNameCounts = {};
-            this.points.forEach(function(pt) {
-            	var count = pointNameCounts[pt.name];
-            	pointNameCounts[pt.name] = (count || 0) + 1;
+
+            const pointNameCounts = this.pointNameCounts = {};
+            this.points.forEach(pt => {
+                const count = pointNameCounts[pt.name];
+                pointNameCounts[pt.name] = (count || 0) + 1;
             });
 
-            this.selected = this.points.filter(function(point) {
-            	var pointOptions = this.selectedPointConfigsByXid[point.xid];
-            	if (!pointOptions && pointNameCounts[point.name] === 1) {
-            		pointOptions = this.selectedPointConfigsByName[point.name];
-            	}
-            	if (pointOptions) return point;
-            }.bind(this));
+            this.selected = this.points.filter(point => {
+                let pointOptions = this.selectedPointConfigsByXid[point.xid];
+                if (!pointOptions && pointNameCounts[point.name] === 1) {
+                    pointOptions = this.selectedPointConfigsByName[point.name];
+                }
+                if (pointOptions) return point;
+            });
             this.updateStats();
-        }.bind(this));
-    };
-
-    this.dataSourceChanged = function dataSourceChanged() {
-        var dataSourceXid = null;
-
-        this.clear('dataSource');
-        
-        if (this.dataSource) {
-            dataSourceXid = this.dataSource.xid;
-            
-            var dsQuery = new query.Query()
-                .eq('dataSourceXid', this.dataSource.xid)
-                .sort('name')
-                .limit(1000);
-
-            var watchList = new WatchList();
-            watchList.isNew = true;
-            watchList.type = 'query';
-            watchList.name = Translate.trSync('ui.app.dataSourceX', [this.dataSource.name]);
-            watchList.query = dsQuery.toString();
-            this.watchList = watchList;
-            this.clearSelected();
-            this.getPoints();
-        }
-
-        this.updateState({
-            dataSourceXid: dataSourceXid
         });
-    };
-    
-    this.deviceNameChanged = function deviceNameChanged() {
-        this.clear('deviceName');
-        
-        if (this.deviceName) {
-            var dnQuery = new query.Query()
-                .eq('deviceName', this.deviceName)
-                .sort('name')
-                .limit(1000);
+    }
 
-            var watchList = new WatchList();
-            watchList.isNew = true;
-            watchList.type = 'query';
-            watchList.name = Translate.trSync('ui.app.deviceNameX', [this.deviceName]);
-            watchList.query = dnQuery.toString();
-            this.watchList = watchList;
-            this.clearSelected();
-            this.getPoints();
-        }
+    editWatchList(watchList) {
+        this.$state.go('ui.settings.watchListBuilder', {watchListXid: watchList ? watchList.xid : null});
+    }
 
-        this.updateState({
-            deviceName: this.deviceName
-        });
-    };
-    
-    this.hierarchyChanged = function hierarchyChanged() {
-        var hierarchyFolderId = null;
-        
-        this.clear('hierarchy');
-
-        if (this.hierarchyFolders && this.hierarchyFolders.length) {
-            hierarchyFolderId = this.hierarchyFolders[0].id;
-            
-            var watchList = new WatchList();
-            watchList.isNew = true;
-            watchList.type = 'hierarchy';
-            watchList.name = Translate.trSync('ui.app.hierarchyFolderX', [this.hierarchyFolders[0].name]);
-            watchList.hierarchyFolders = this.hierarchyFolders;
-            this.watchList = watchList;
-            this.clearSelected();
-            this.getPoints();
-        }
-
-        this.updateState({
-            hierarchyFolderId: hierarchyFolderId
-        });
-    };
-
-    this.editWatchList = function editWatchList(watchList) {
-        $state.go('ui.settings.watchListBuilder', {watchListXid: watchList ? watchList.xid : null});
-    };
-    
-    this.updateQuery = function updateQuery() {
-        var filterText = '*' + this.filter + '*';
-        var rqlQuery = new query.Query({name: 'or', args: []});
-        rqlQuery.push(new query.Query({name: 'like', args: ['name', filterText]}));
-        this.dataSourceQuery = rqlQuery.toString();
-        rqlQuery.push(new query.Query({name: 'like', args: ['username', filterText]}));
-        this.watchListQuery = rqlQuery.toString();
-    };
-    
-    this.saveSettings = function saveSettings() {
+    saveSettings() {
         this.watchList.data.paramValues = angular.copy(this.watchListParams);
-        
+
         if (this.watchList.isNew) {
-            $state.go('ui.settings.watchListBuilder', {watchList: this.watchList});
+            this.$state.go('ui.settings.watchListBuilder', {watchList: this.watchList});
         } else {
             this.watchList.$update();
         }
-    };
-    
-    this.updateSelectedPointMaps = function() {
+    }
+
+    updateSelectedPointMaps() {
         this.selectedPointConfigsByName = {};
         this.selectedPointConfigsByXid = {};
-        this.chartConfig.selectedPoints.forEach(function(ptConfig) {
-        	this.selectedPointConfigsByName[ptConfig.name] = ptConfig;
-        	if (ptConfig.xid) {
-        		this.selectedPointConfigsByXid[ptConfig.xid] = ptConfig;
-        	}
-        }.bind(this));
-    };
-    
-    this.selectedPointsChanged = function() {
-        var newSelectedPoints = this.chartConfig.selectedPoints = [];
-        
-        var newPointChartOptions = {};
+        this.chartConfig.selectedPoints.forEach(ptConfig => {
+            this.selectedPointConfigsByName[ptConfig.name] = ptConfig;
+            if (ptConfig.xid) {
+                this.selectedPointConfigsByXid[ptConfig.xid] = ptConfig;
+            }
+        });
+    }
+
+    selectedPointsChanged() {
+        const newSelectedPoints = this.chartConfig.selectedPoints = [];
+
+        const newPointChartOptions = {};
         if (this.chartOptions.configNextPoint) {
             if (this.chartOptions.pointColor)
                 newPointChartOptions.lineColor = this.chartOptions.pointColor;
@@ -336,46 +248,46 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             if (this.chartOptions.pointAxis)
                 newPointChartOptions.valueAxis = this.chartOptions.pointAxis;
         }
-        
-        this.selected.forEach(function(point) {
-        	var config = this.selectedPointConfigsByXid[point.xid] ||
-        		(this.pointNameCounts[point.name] === 1 && this.selectedPointConfigsByName[point.name]) ||
-        		newPointChartOptions;
-        	config.name = point.name;
-        	config.xid = point.xid;
-        	newSelectedPoints.push(config);
-        }.bind(this));
-        
+
+        this.selected.forEach(point => {
+            const config = this.selectedPointConfigsByXid[point.xid] ||
+            (this.pointNameCounts[point.name] === 1 && this.selectedPointConfigsByName[point.name]) ||
+            newPointChartOptions;
+            config.name = point.name;
+            config.xid = point.xid;
+            newSelectedPoints.push(config);
+        });
+
         this.updateSelectedPointMaps();
 
         this.rebuildChart();
         this.updateStats();
-    }.bind(this);
+    }
 
-    this.updateStats = function() {
-        var selectedStats = this.selectedStats = [];
-        
+    updateStats() {
+        const selectedStats = this.selectedStats = [];
+
         if (!this.selected) {
             return;
         }
-        
-        var points = this.selected;
-        var from = this.dateBar.from;
-        var to = this.dateBar.to;
-        
-        points.forEach(function(point) {
-            var ptStats = {
-                name: point.name,
-                device: point.deviceName,
-                xid: point.xid
+
+        const points = this.selected;
+        const from = this.dateBar.from;
+        const to = this.dateBar.to;
+
+        points.forEach(point => {
+            const ptStats = {
+                    name: point.name,
+                    device: point.deviceName,
+                    xid: point.xid
             };
             selectedStats.push(ptStats);
-            
-            statistics.getStatisticsForXid(point.xid, {
+
+            this.maStatistics.getStatisticsForXid(point.xid, {
                 from: from,
                 to: to,
                 rendered: true
-            }).then(function(stats) {
+            }).then(stats => {
                 ptStats.average = stats.average ? stats.average.value : NO_STATS;
                 ptStats.minimum = stats.minimum ? stats.minimum.value : NO_STATS;
                 ptStats.maximum = stats.maximum ? stats.maximum.value : NO_STATS;
@@ -383,7 +295,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                 ptStats.first = stats.first ? stats.first.value : NO_STATS;
                 ptStats.last = stats.last ? stats.last.value : NO_STATS;
                 ptStats.count = stats.count;
-                
+
                 ptStats.averageValue = parseFloat(stats.average && stats.average.value);
                 ptStats.minimumValue = parseFloat(stats.minimum && stats.minimum.value);
                 ptStats.maximumValue = parseFloat(stats.maximum && stats.maximum.value);
@@ -392,9 +304,9 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                 ptStats.lastValue = parseFloat(stats.last && stats.last.value);
             });
         });
-    };
-    
-    this.chooseAxisColor = function($event, axisName) {
+    }
+
+    chooseAxisColor($event, axisName) {
         if (!this.chartConfig.valueAxes) {
             this.chartConfig.valueAxes = {};
         }
@@ -402,12 +314,12 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             this.chartConfig.valueAxes[axisName] = {};
         }
         this.showColorPicker($event, this.chartConfig.valueAxes[axisName], 'color', true);
-    };
+    }
 
-    this.showColorPicker = function($event, object, propertyName, rebuild) {
+    showColorPicker($event, object, propertyName, rebuild) {
         if (!object) return;
-        
-        $mdColorPicker.show({
+
+        this.$mdColorPicker.show({
             value: object[propertyName] || tinycolor.random().toHexString(),
             defaultValue: '',
             random: false,
@@ -423,19 +335,19 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             mdColorHistory: false,
             mdColorDefaultTab: 0,
             $event: $event
-        }).then(function(color) {
+        }).then(color => {
             object[propertyName] = color;
             if (rebuild) {
                 this.rebuildChart();
             }
-        }.bind(this));
-    };
+        });
+    }
 
-    this.showDownloadDialog = function showDownloadDialog($event) {
-        $mdDialog.show({
-            controller: ['maUiDateBar', 'maPointValues', 'maUtil', 'MA_ROLLUP_TYPES', 'MA_DATE_TIME_FORMATS', 'maUser',
-                    function(maUiDateBar, pointValues, Util, MA_ROLLUP_TYPES, MA_DATE_TIME_FORMATS, maUser) {
-                
+    showDownloadDialog($event) {
+        this.$mdDialog.show({
+            controller: ['maUiDateBar', 'maPointValues', 'maUtil', 'MA_ROLLUP_TYPES', 'MA_DATE_TIME_FORMATS', 'maUser', '$mdDialog',
+                function(maUiDateBar, pointValues, Util, MA_ROLLUP_TYPES, MA_DATE_TIME_FORMATS, maUser, $mdDialog) {
+
                 this.dateBar = maUiDateBar;
                 this.rollupTypes = MA_ROLLUP_TYPES;
                 this.rollupType = 'NONE';
@@ -456,23 +368,21 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                     value: 'UTC',
                     id: 'utc'
                 }];
-                
+
                 this.timezone = this.timezones[0];
-                
+
                 this.downloadData = function downloadData(downloadType) {
-                    var points = this.allPoints ? this.points : this.selected;
-                    var xids = points.map(function(pt) {
-                        return pt.xid;
-                    });
-                    
-                    var functionName = downloadType.indexOf('COMBINED') > 0 ? 'getPointValuesForXidsCombined' : 'getPointValuesForXids';
-                    var mimeType = downloadType.indexOf('CSV') === 0 ? 'text/csv' : 'application/json';
-                    var extension = downloadType.indexOf('CSV') === 0 ? 'csv' : 'json';
-                    var fileName = this.watchList.name + '_' + maUiDateBar.from.toISOString() + '_' + maUiDateBar.to.toISOString() + '.' + extension;
+                    const points = this.allPoints ? this.points : this.selected;
+                    const xids = points.map(pt => pt.xid);
+
+                    const functionName = downloadType.indexOf('COMBINED') > 0 ? 'getPointValuesForXidsCombined' : 'getPointValuesForXids';
+                    const mimeType = downloadType.indexOf('CSV') === 0 ? 'text/csv' : 'application/json';
+                    const extension = downloadType.indexOf('CSV') === 0 ? 'csv' : 'json';
+                    const fileName = this.watchList.name + '_' + maUiDateBar.from.toISOString() + '_' + maUiDateBar.to.toISOString() + '.' + extension;
 
                     this.downloadStatus.error = null;
                     this.downloadStatus.downloading = true;
-                    
+
                     this.downloadStatus.queryPromise = pointValues[functionName](xids, {
                         mimeType: mimeType,
                         responseType: 'blob',
@@ -485,19 +395,19 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                         timeout: 0,
                         dateTimeFormat: this.timeFormat,
                         timezone: this.timezone.value
-                    }).then(function(response) {
+                    }).then(response => {
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);
-                    }.bind(this), function(response) {
-                        this.downloadStatus.error = response.mangoStatusText;
+                    }, error => {
+                        this.downloadStatus.error = error.mangoStatusText;
                         this.downloadStatus.downloading = false;
-                    }.bind(this));
+                    });
                 };
-                
+
                 this.cancelDownload = function cancelDownload() {
                     this.downloadStatus.queryPromise.cancel();
                 };
-                
+
                 this.cancel = function cancel() {
                     $mdDialog.cancel();
                 };
@@ -506,7 +416,7 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
             parent: angular.element(document.body),
             targetEvent: $event,
             clickOutsideToClose: true,
-            fullscreen: $mdMedia('xs') || $mdMedia('sm'),
+            fullscreen: this.$mdMedia('xs') || this.$mdMedia('sm'),
             bindToController: true,
             controllerAs: '$ctrl',
             locals: {
@@ -516,9 +426,20 @@ function WatchListPageController($mdMedia, WatchList, Translate, localStorageSer
                 points: this.points
             }
         });
-    };
+    }
 }
 
-return watchListPageDirective;
+return function watchListPageDirective() {
+    return {
+        restrict: 'E',
+        templateUrl: require.toUrl('./watchListPage.html'),
+        scope: {},
+        controller: WatchListPageController,
+        controllerAs: '$ctrl',
+        bindToController: {
+            watchList: '<?'
+        }
+    };
+};
 
 }); // define
