@@ -420,6 +420,19 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         default: return type;
         }
     };
+    
+    Object.defineProperty(Point.prototype, 'dataType', {
+        get() {
+            if (this.pointLocator) {
+                return this.pointLocator.dataType;
+            }
+        },
+        set(value) {
+            if (this.pointLocator) {
+                this.pointLocator.dataType = value;
+            }
+        }
+    });
 
     Point.bulk = BulkDataPointTemporaryResource;
     

@@ -49,6 +49,7 @@ class BulkDataPointEditPageController {
         this.columns = [
             {name: 'xid', label: 'ui.app.xidShort', disableEdit: true, selectedByDefault: true},
             {name: 'dataSourceName', label: 'ui.app.dataSource', disableEdit: true, selectedByDefault: false},
+            {name: 'dataType', label: 'dsEdit.pointDataType', disableEdit: true, selectedByDefault: false},
             {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
             {name: 'name', label: 'common.name', selectedByDefault: true},
             {name: 'enabled', label: 'common.enabled', type: 'checkbox', selectedByDefault: true},
@@ -64,7 +65,6 @@ class BulkDataPointEditPageController {
         ];
 
         this.columns.forEach((c, i) => c.order = i);
-        
         this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
         this.availableTagsByKey = {};
         this.availableTags = [];
