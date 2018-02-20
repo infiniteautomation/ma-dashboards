@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-const types = ['watchList', 'deviceName', 'dataSource', 'hierarchy'];
+const types = ['watchList', 'deviceName', 'dataSource', 'hierarchy', 'tags'];
 
 class PointBrowserController {
     static get $$ngIsClass() { return true; }
@@ -27,8 +27,27 @@ class PointBrowserController {
         this.ngModelCtrl.$render = () => {
             if (this.ngModelCtrl.$viewValue !== undefined) {
                 this.selected = this.ngModelCtrl.$viewValue;
-                this.watchList = this.selected;
-                this.listType = 'watchList';
+                
+                types.forEach(name => {
+                    delete this[name];
+                });
+                
+                if (!this.selected.isNew) {
+                    this.listType = 'watchList';
+                    this.watchList = this.selected;
+                } else if (this.selected.type === 'tags' && this.selected.tags) {
+                    this.listType = 'tags';
+                    this.tags = this.selected.tags;
+                } else if (this.selected.type === 'hierarchy' && this.selected.hierarchyFolders) {
+                    this.listType = 'hierarchy';
+                    this.hierarchy = this.selected.hierarchyFolders;
+                } else if (this.selected.type === 'query' && this.selected.deviceName) {
+                    this.listType = 'deviceName';
+                    this.deviceName = this.selected.deviceName;
+                } else if (this.selected.type === 'query' && this.selected.dataSource) {
+                    this.listType = 'dataSource';
+                    this.dataSource = this.selected.dataSource;
+                }
             }
         };
         
@@ -170,7 +189,7 @@ class PointBrowserController {
             type: 'query',
             name: this.maTranslate.trSync('ui.app.dataSourceX', [this.dataSource.name]),
             query,
-            dataSourceXid: this.dataSource.xid
+            dataSource: this.dataSource
         });
     }
     

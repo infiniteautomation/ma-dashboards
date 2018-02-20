@@ -221,8 +221,8 @@ class WatchListPageController {
             stateUpdate.watchListXid = this.watchList.xid;
         } else if (this.watchList.type === 'query' && this.watchList.deviceName) {
             stateUpdate.deviceName = this.watchList.deviceName;
-        } else if (this.watchList.type === 'query' && this.watchList.dataSourceXid) {
-            stateUpdate.dataSourceXid = this.watchList.dataSourceXid;
+        } else if (this.watchList.type === 'query' && this.watchList.dataSource) {
+            stateUpdate.dataSourceXid = this.watchList.dataSource.xid;
         } else if (this.watchList.type === 'hierarchy' && Array.isArray(this.watchList.hierarchyFolders) && this.watchList.hierarchyFolders.length) {
             stateUpdate.hierarchyFolderId = this.watchList.hierarchyFolders[0].id;
         } else if (this.watchList.type === 'tags' && this.watchList.tags) {
