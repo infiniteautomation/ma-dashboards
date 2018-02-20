@@ -77,18 +77,24 @@ class WatchListPageController {
         const localStorage = this.localStorageService.get('watchListPage') || {};
         const params = this.$state.params;
 
-        if (params.watchListXid || !(params.dataSourceXid || params.deviceName || params.hierarchyFolderId) && localStorage.watchListXid) {
+        if (params.watchListXid || !(params.dataSourceXid || params.deviceName || params.hierarchyFolderId || params.tags) && localStorage.watchListXid) {
             const watchListXid = params.watchListXid || localStorage.watchListXid;
             this.pointBrowserLoadItem = {watchListXid};
-        } else if (params.dataSourceXid || !(params.deviceName || params.hierarchyFolderId) && localStorage.dataSourceXid) {
+        } else if (params.dataSourceXid || !(params.deviceName || params.hierarchyFolderId || params.tags) && localStorage.dataSourceXid) {
             const dataSourceXid = params.dataSourceXid || localStorage.dataSourceXid;
             this.pointBrowserLoadItem = {dataSourceXid};
-        } else if (params.deviceName || !params.hierarchyFolderId && localStorage.deviceName) {
+        } else if (params.deviceName || !(params.hierarchyFolderId || params.tags) && localStorage.deviceName) {
             const deviceName = params.deviceName || localStorage.deviceName;
             this.pointBrowserLoadItem = {deviceName};
-        } else if (params.hierarchyFolderId || localStorage.hierarchyFolderId) {
+        } else if (params.hierarchyFolderId || !params.tags && localStorage.hierarchyFolderId) {
             const hierarchyFolderId = params.hierarchyFolderId || localStorage.hierarchyFolderId;
             this.pointBrowserLoadItem = {hierarchyFolderId};
+        } else if (params.tags || localStorage.tags) {
+            if (params.tags) {
+                this.pointBrowserLoadItem = {tags: this.parseTagsParam(params.tags)};
+            } else {
+                this.pointBrowserLoadItem = {tags: localStorage.tags};
+            }
         } else if (this.$mdMedia('gt-md')) {
             // select first watch list automatically for large displays
             this.pointBrowserLoadItem = {firstWatchList: true};
@@ -98,11 +104,45 @@ class WatchListPageController {
             this.updateStats();
         }, this.$scope);
     }
+    
+    parseTagsParam(param) {
+        const tags = {};
+        const paramArray = Array.isArray(param) ? param : [param];
+        
+        paramArray.forEach(p => {
+            const parts = p.split(':');
+            if (parts.length === 2) {
+                const tagKey = parts[0];
+                const values = parts[1].split(',');
+                
+                if (!tags[tagKey]) {
+                    tags[tagKey] = [];
+                }
+                tags[tagKey].push(...values);
+            }
+        });
 
+        return tags;
+    }
+
+    formatTagsParam(tags) {
+        const param = [];
+        
+        Object.keys(tags).forEach(tagKey => {
+            const tagValue = tags[tagKey];
+            const tagValueArray = Array.isArray(tagValue) ? tagValue : [tagValue];
+            
+            const paramValue = tagValueArray.join(',');
+            param.push(`${tagKey}:${paramValue}`);
+        });
+        
+        return param;
+    }
+    
     updateState(state) {
         const localStorageParams = {};
 
-        ['watchListXid', 'dataSourceXid', 'deviceName', 'hierarchyFolderId'].forEach(key => {
+        ['watchListXid', 'dataSourceXid', 'deviceName', 'hierarchyFolderId', 'tags'].forEach(key => {
             const value = state[key];
             if (value) {
                 localStorageParams[key] = value; 
@@ -111,6 +151,10 @@ class WatchListPageController {
                 this.$state.params[key] = null;
             }
         });
+        
+        if (state.tags) {
+            this.$state.params.tags = this.formatTagsParam(state.tags); 
+        }
 
         this.localStorageService.set('watchListPage', localStorageParams);
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
@@ -180,6 +224,8 @@ class WatchListPageController {
             stateUpdate.dataSourceXid = this.watchList.dataSourceXid;
         } else if (this.watchList.type === 'hierarchy' && Array.isArray(this.watchList.hierarchyFolders) && this.watchList.hierarchyFolders.length) {
             stateUpdate.hierarchyFolderId = this.watchList.hierarchyFolders[0].id;
+        } else if (this.watchList.type === 'tags' && this.watchList.tags) {
+            stateUpdate.tags = this.watchList.tags;
         }
         
         this.updateState(stateUpdate);

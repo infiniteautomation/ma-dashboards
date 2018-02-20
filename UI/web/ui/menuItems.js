@@ -174,7 +174,7 @@ return [
     },
     {
         name: 'ui.watchList',
-        url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId',
+        url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId&tags',
         template: '<ma-ui-watch-list-page flex="noshrink" layout="column"></ma-ui-watch-list-page>',
         menuTr: 'ui.app.watchList',
         menuIcon: 'remove_red_eye',
