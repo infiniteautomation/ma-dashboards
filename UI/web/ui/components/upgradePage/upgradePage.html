@@ -36,12 +36,12 @@
 	
 	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
 
-
-
 	<div layout="column" layout-align="start start" class="md-padding">
 		<md-checkbox ng-model="$ctrl.backupBeforeDownload"><span ma-tr="modules.versionCheck.advanced.backup"></span></md-checkbox>
 		<md-checkbox ng-model="$ctrl.restartAfterDownload"><span ma-tr="modules.versionCheck.advanced.restart"></span></md-checkbox>
 	</div>
+
+    <md-progress-linear ng-if="$ctrl.upgradeProgress != null" md-mode="determinate" ng-value="$ctrl.upgradeProgress"></md-progress-linear>
     
     <p ng-if="$ctrl.error" md-colors="{color: 'warn'}" ma-tr="ui.app.errorCheckingForUpgrades" ma-tr-args="[$ctrl.error]"></p>
 

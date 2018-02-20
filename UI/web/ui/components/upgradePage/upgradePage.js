@@ -38,6 +38,9 @@ UpgradePageController.prototype.$onInit = function() {
 		    let isError = false;
 		    
 			if (message.type === 'MODULE_DOWNLOADED') {
+			    this.modulesDownloaded++;
+                this.upgradeProgress = Math.floor(this.modulesDownloaded / this.modulesToDownload * 100);
+			    
 				if (!moduleDownloaded(message.name, this.upgradesSelected)) {
 					moduleDownloaded(message.name, this.installsSelected);
 				}
@@ -175,8 +178,12 @@ UpgradePageController.prototype.doUpgrade = function($event) {
     });
     
     if (missingDep) return;
-    
+
 	this.upgradePromise = this.maDialogHelper.confirm($event, 'ui.app.upgradeConfirm').then(function() {
+	    this.upgradeProgress = 0;
+	    this.modulesDownloaded = 0;
+	    this.modulesToDownload = this.upgradesSelected.length + this.installsSelected.length;
+	    
 		return this.maModules.doUpgrade(this.installsSelected, this.upgradesSelected,
 			this.backupBeforeDownload, this.restartAfterDownload);
 	}.bind(this)).then(function(response) {
@@ -185,6 +192,10 @@ UpgradePageController.prototype.doUpgrade = function($event) {
 	}.bind(this))['finally'](function() {
 		delete this.upgradePromise;
 		delete this.upgradeDeferred;
+		
+        delete this.upgradeProgress;
+        delete this.modulesDownloaded;
+        delete this.modulesToDownload;
 	}.bind(this));
 };
 
