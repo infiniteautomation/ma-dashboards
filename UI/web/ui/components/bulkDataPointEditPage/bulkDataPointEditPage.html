@@ -69,7 +69,7 @@
                     <tr class="ma-bulk-edit-button-row">
                         <th class="ma-points-selected" ma-tr="ui.app.xPointsSelected" ma-tr-args="[$ctrl.selectedPoints.length]"></th>
                         <th><!-- Spacer for error --></th>
-                        <th ng-repeat="column in $ctrl.selectedColumns track by column.name">
+                        <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
                             <md-button class="md-icon-button" ng-click="$ctrl.sortColumn(column)">
                                 <md-icon>{{$ctrl.tableOrder == column.name ? 'arrow_downward' : ($ctrl.tableOrder == '-' + column.name ? 'arrow_upward' : 'sort')}}</md-icon>
                                 <md-tooltip ma-tr="ui.app.sortBy" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
@@ -97,7 +97,7 @@
                             </md-checkbox>
                         </th>
                         <th><!-- Spacer for error --></th>
-                        <th ng-repeat="column in $ctrl.selectedColumns track by column.name" ng-class="{'ma-column-modified': $ctrl.updateBody[column.name] !== undefined}">
+                        <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-class="{'ma-column-modified': $ctrl.updateBody[column.name] !== undefined}">
                             <span ng-if="column.disableEdit" ma-tr="{{column.label}}"></span>
                             
                             <md-checkbox ng-if="!column.disableEdit && column.type === 'checkbox'" ng-model="$ctrl.updateBody[column.name]">
@@ -165,7 +165,7 @@
                             </div>
                         </td>
 
-                        <td ng-repeat="column in $ctrl.selectedColumns track by column.name" md-cell ng-class="{'ma-cell-modified': $ctrl.columnModified(column, point)}">
+                        <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell ng-class="{'ma-cell-modified': $ctrl.columnModified(column, point)}">
                             <span ng-class="{'ma-empty-null': $ctrl.valueForColumn(column, point) == null}" ng-bind="$ctrl.valueForColumn(column, point) | maDisplayNull"></span>
                         </td>
                         

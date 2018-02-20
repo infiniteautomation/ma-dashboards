@@ -47,22 +47,25 @@ class BulkDataPointEditPageController {
         this.browserOpen = true;
 
         this.columns = [
-            {name: 'xid', label: 'ui.app.xidShort', disableEdit: true},
-            {name: 'deviceName', label: 'common.deviceName'},
-            {name: 'name', label: 'common.name'},
-            {name: 'enabled', label: 'common.enabled', type: 'checkbox'},
-            {name: 'readPermission', label: 'pointEdit.props.permission.read', type: 'permission'},
-            {name: 'setPermission', label: 'pointEdit.props.permission.set', type: 'permission'},
-            {name: 'unit', label: 'pointEdit.props.unit'},
-            {name: 'chartColour', label: 'pointEdit.props.chartColour', type: 'color'},
-            {name: 'plotType', label: 'pointEdit.plotType', type: 'plotType'},
-            {name: 'rollup', label: 'common.rollup', type: 'rollup'},
-            {name: 'templateXid', label: 'ui.app.templateXid'},
-            {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
-            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', type: 'number'}
+            {name: 'xid', label: 'ui.app.xidShort', disableEdit: true, selectedByDefault: true},
+            {name: 'dataSourceName', label: 'ui.app.dataSource', disableEdit: true, selectedByDefault: false},
+            {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
+            {name: 'name', label: 'common.name', selectedByDefault: true},
+            {name: 'enabled', label: 'common.enabled', type: 'checkbox', selectedByDefault: true},
+            {name: 'readPermission', label: 'pointEdit.props.permission.read', type: 'permission', selectedByDefault: true},
+            {name: 'setPermission', label: 'pointEdit.props.permission.set', type: 'permission', selectedByDefault: true},
+            {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: true},
+            {name: 'chartColour', label: 'pointEdit.props.chartColour', type: 'color', selectedByDefault: true},
+            {name: 'plotType', label: 'pointEdit.plotType', type: 'plotType', selectedByDefault: true},
+            {name: 'rollup', label: 'common.rollup', type: 'rollup', selectedByDefault: true},
+            {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false},
+            {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
+            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', type: 'number', selectedByDefault: false}
         ];
 
-        this.selectedColumns = this.columns.slice(0, -3);
+        this.columns.forEach((c, i) => c.order = i);
+        
+        this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
