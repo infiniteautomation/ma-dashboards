@@ -166,7 +166,7 @@ class WatchListPageController {
         this.clearSelected();
     }
 
-    clearSelected () {
+    clearSelected() {
         this.selected = [];
         this.selectedStats = [];
         this.chartConfig = {
@@ -186,7 +186,8 @@ class WatchListPageController {
 
     watchListChanged() {
         // clear checked points from table/chart
-        this.clearSelected();
+        this.selected = [];
+        this.selectedStats = [];
 
         if (!this.watchList.data) {
             this.watchList.data = {};
