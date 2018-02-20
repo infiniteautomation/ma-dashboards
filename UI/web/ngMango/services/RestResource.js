@@ -118,6 +118,14 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         getOriginalId() {
             return this[originalIdProperty];
         }
+        
+        copy() {
+            const copy = angular.copy(this);
+            if (!this.isNew()) {
+                copy[originalIdProperty] = this.getOriginalId();
+            }
+            return copy;
+        }
 
         get(opts = {}) {
             const originalId = this[originalIdProperty];
