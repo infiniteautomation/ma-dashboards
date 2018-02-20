@@ -237,6 +237,7 @@ class WatchListPageController {
             this.wlPointsPromise.cancel();
         }
 
+        this.points = [];
         this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
         this.pointsPromise = this.wlPointsPromise.then(null, angular.noop).then(points => {
             this.points = points || [];
