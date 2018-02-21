@@ -444,6 +444,14 @@ class WatchListPageController {
                 }];
 
                 this.timezone = this.timezones[0];
+                
+                this.customTimeFormatChanged = function() {
+                    if (!this.customTimeFormat) {
+                        if (!this.timeFormats.find(f => f.format === this.timeFormat)) {
+                            this.timeFormat = this.timeFormats[0].format;
+                        }
+                    }
+                };
 
                 this.downloadData = function downloadData(downloadType) {
                     const points = this.allPoints ? this.points : this.selected;

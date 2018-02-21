@@ -27,7 +27,16 @@
         </md-select>
     </md-input-container>
     
-    <md-input-container>
+    <md-checkbox ng-model="$ctrl.customTimeFormat" ng-change="$ctrl.customTimeFormatChanged()">
+        <span ma-tr="ui.app.customTimeFormat"></span>
+    </md-checkbox>
+    
+    <md-input-container ng-if="$ctrl.customTimeFormat">
+        <label ma-tr="ui.app.timeFormat"></label>
+        <input name="timeFormat" ng-model="$ctrl.timeFormat">
+    </md-input-container>
+    
+    <md-input-container ng-if="!$ctrl.customTimeFormat">
         <label ma-tr="ui.app.timeFormat"></label>
         <md-select name="timeFormat" ng-model="$ctrl.timeFormat">
           <md-option ng-repeat="format in $ctrl.timeFormats track by format.format" ng-value="format.format">
