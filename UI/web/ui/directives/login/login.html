@@ -8,7 +8,7 @@
 	<md-card-content layout="column">
         <div class="already-logged-in" ng-if="!loggingIn && User.current">
             <span ma-tr="login.aleadyLoggedIn" ma-tr-args="[User.current.username]"></span>
-            <a ui-sref="ui.home" ma-tr="login.goToHome"></a>
+            <a ui-sref="ui.dataPointDetails" ma-tr="login.ui.goToUI"></a>
         </div>
 		<md-input-container class="md-icon-float md-block">
 	      <label for="username" ma-tr="login.userId"></label>
