@@ -87,7 +87,7 @@ class WatchListPageController {
         ];
         
         this.columns.forEach((c, i) => c.order = i);
-        this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
+        this.loadLocalStorageSettings();
 
         this.selectedPointsChangedBound = (...args) => this.selectedPointsChanged(...args);
     }
@@ -128,6 +128,28 @@ class WatchListPageController {
         }, this.$scope);
     }
     
+    
+    loadLocalStorageSettings() {
+        const settings = this.localStorageService.get('watchListPage') || {};
+        
+        this.selectedTags = settings.selectedTags || [];
+        if (Array.isArray(settings.selectedColumns)) {
+            this.selectedColumns = settings.selectedColumns.map(name => this.columns.find(c => c.name === name)).filter(c => !!c);
+        } else {
+            this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
+        }
+        
+    }
+
+    saveLocalStorageSettings() {
+        const settings = this.localStorageService.get('watchListPage') || {};
+        
+        settings.selectedTags = this.selectedTags;
+        settings.selectedColumns = this.selectedColumns.map(c => c.name);
+        
+        this.localStorageService.set('watchListPage', settings);
+    }
+    
     parseTagsParam(param) {
         const tags = {};
         const paramArray = Array.isArray(param) ? param : [param];
@@ -163,7 +185,7 @@ class WatchListPageController {
     }
     
     updateState(state) {
-        const localStorageParams = {};
+        const localStorageParams = this.localStorageService.get('watchListPage') || {};
 
         ['watchListXid', 'dataSourceXid', 'deviceName', 'hierarchyFolderId', 'tags'].forEach(key => {
             const value = state[key];
@@ -171,6 +193,7 @@ class WatchListPageController {
                 localStorageParams[key] = value; 
                 this.$state.params[key] = value; 
             } else {
+                delete localStorageParams[key];
                 this.$state.params[key] = null;
             }
         });
@@ -211,13 +234,14 @@ class WatchListPageController {
         // clear checked points from table/chart
         this.selected = [];
         this.selectedStats = [];
-
+        
         if (!this.watchList.data) {
             this.watchList.data = {};
         }
         if (!this.watchList.data.chartConfig) {
             this.watchList.data.chartConfig = {};
         }
+        
         this.watchList.defaultParamValues(this.watchListParams);
 
         this.chartConfig = this.watchList.data.chartConfig;
@@ -234,6 +258,14 @@ class WatchListPageController {
             }
         } else {
             this.chartConfig.selectedPoints = [];
+        }
+        
+        this.loadLocalStorageSettings();
+        if (Array.isArray(this.watchList.data.selectedColumns)) {
+            this.selectedColumns = this.watchList.data.selectedColumns.map(name => this.columns.find(c => c.name === name)).filter(c => !!c);
+        }
+        if (Array.isArray(this.watchList.data.selectedTags)) {
+            this.selectedTags = this.watchList.data.selectedTags;
         }
 
         this.updateSelectedPointMaps();
@@ -290,7 +322,10 @@ class WatchListPageController {
     }
 
     saveSettings() {
+        // this.chartConfig is already mapped to this.watchList.data.chartConfig and so is saved too 
         this.watchList.data.paramValues = angular.copy(this.watchListParams);
+        this.watchList.data.selectedTags = this.selectedTags;
+        this.watchList.data.selectedColumns = this.selectedColumns.map(c => c.name);
 
         if (this.watchList.isNew) {
             this.$state.go('ui.settings.watchListBuilder', {watchList: this.watchList});

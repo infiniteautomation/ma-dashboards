@@ -18,7 +18,7 @@
             <span ma-tr="common.download"></span>
         </md-button>
         
-        <md-button class="md-icon-button" ng-class="{'md-accent': $ctrl.selectColumnToolbarOpen}" ng-click="$ctrl.selectColumnToolbarOpen = !$ctrl.selectColumnToolbarOpen">
+        <md-button class="md-icon-button" ng-click="$ctrl.selectColumnToolbarOpen = !$ctrl.selectColumnToolbarOpen">
             <md-icon>{{$ctrl.selectColumnToolbarOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
             <md-tooltip>
                 <span ma-tr="ui.app.selectColumns"></span>
@@ -31,12 +31,14 @@
         <div flex></div>
 
         <md-input-container md-no-float="true">
-            <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}">
+            <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true"
+                    ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-change="$ctrl.saveLocalStorageSettings()">
                 <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
             </md-select>
         </md-input-container>
 
-        <ma-data-point-tag-key-select ng-model="$ctrl.selectedTags" select-multiple="true" no-float="true" selected-text="'ui.app.selectTags' | maTr">
+        <ma-data-point-tag-key-select ng-model="$ctrl.selectedTags" ng-change="$ctrl.saveLocalStorageSettings()"
+                select-multiple="true" no-float="true" selected-text="'ui.app.selectTags' | maTr">
         </ma-data-point-tag-key-select>
     </div>
 </md-toolbar>
