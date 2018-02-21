@@ -298,7 +298,16 @@ ngMango.constant('MA_DATE_TIME_FORMATS', [
     {
         translation: 'ui.app.timeFormat.iso',
         format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX'
-    }, {
+    },
+    {
+        translation: 'ui.app.timeFormat.excelCompatible',
+        format: 'yyyy-MM-dd HH:mm:ss'
+    },
+    {
+        translation: 'ui.app.timeFormat.excelCompatibleMs',
+        format: 'yyyy-MM-dd HH:mm:ss.SSS'
+    },
+    {
         translation: 'ui.app.timeFormat.epoch',
         format: ''
     }
