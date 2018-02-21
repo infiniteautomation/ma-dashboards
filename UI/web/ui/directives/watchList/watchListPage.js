@@ -142,12 +142,14 @@ class WatchListPageController {
     }
 
     saveLocalStorageSettings() {
-        const settings = this.localStorageService.get('watchListPage') || {};
-        
-        settings.selectedTags = this.selectedTags;
-        settings.selectedColumns = this.selectedColumns.map(c => c.name);
-        
-        this.localStorageService.set('watchListPage', settings);
+        if (this.watchList && this.watchList.isNew) {
+            const settings = this.localStorageService.get('watchListPage') || {};
+            
+            settings.selectedTags = this.selectedTags;
+            settings.selectedColumns = this.selectedColumns.map(c => c.name);
+            
+            this.localStorageService.set('watchListPage', settings);
+        }
     }
     
     parseTagsParam(param) {
