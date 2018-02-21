@@ -419,15 +419,15 @@ class WatchListPageController {
 
     showDownloadDialog($event) {
         this.$mdDialog.show({
-            controller: ['maUiDateBar', 'maPointValues', 'maUtil', 'MA_ROLLUP_TYPES', 'MA_DATE_TIME_FORMATS', 'maUser', '$mdDialog',
-                function(maUiDateBar, pointValues, Util, MA_ROLLUP_TYPES, MA_DATE_TIME_FORMATS, maUser, $mdDialog) {
+            controller: ['maUiDateBar', 'maPointValues', 'maUtil', 'MA_ROLLUP_TYPES', 'MA_DATE_TIME_FORMATS',
+                    'maUser', '$mdDialog', 'localStorageService',
+                function(maUiDateBar, pointValues, Util, MA_ROLLUP_TYPES, MA_DATE_TIME_FORMATS,
+                        maUser, $mdDialog, localStorageService) {
 
                 this.dateBar = maUiDateBar;
                 this.rollupTypes = MA_ROLLUP_TYPES;
                 this.rollupType = 'NONE';
                 this.timeFormats = MA_DATE_TIME_FORMATS;
-                this.timeFormat = this.timeFormats[0].format;
-                this.allPoints = !this.selected.length;
 
                 this.timezones = [{
                     translation: 'ui.app.timezone.user',
@@ -442,8 +442,28 @@ class WatchListPageController {
                     value: 'UTC',
                     id: 'utc'
                 }];
-
-                this.timezone = this.timezones[0];
+                
+                this.loadSettings = function() {
+                    const settings = localStorageService.get('watchlistDownload') || {};
+                    
+                    this.allPoints = settings.allPoints != null ? settings.allPoints : !this.selected.length;
+                    this.rollupType = settings.rollupType || 'NONE';
+                    this.timeFormat = settings.timeFormat || this.timeFormats[0].format;
+                    this.timezone = settings.timezone && this.timezones.find(t => t.id === settings.timezone) || this.timezones[0];
+                    
+                    this.customTimeFormat = !this.timeFormats.find(f => f.format === this.timeFormat);
+                };
+                
+                this.loadSettings();
+                
+                this.saveSettings = function() {
+                    localStorageService.set('watchlistDownload', {
+                        allPoints: this.allPoints,
+                        rollupType: this.rollupType,
+                        timeFormat: this.timeFormat,
+                        timezone: this.timezone.id
+                    });
+                };
                 
                 this.customTimeFormatChanged = function() {
                     if (!this.customTimeFormat) {
@@ -494,6 +514,7 @@ class WatchListPageController {
                 this.cancel = function cancel() {
                     $mdDialog.cancel();
                 };
+                
             }],
             templateUrl: require.toUrl('./downloadDialog.html'),
             parent: angular.element(document.body),

@@ -13,32 +13,32 @@
     <div layout flex="none"><strong flex="30" ma-tr="common.dateRangeTo"></strong><span flex ng-bind="$ctrl.dateBar.to | maDate"></span></div>
     <div layout flex="none"><strong flex="30" ma-tr="ui.app.duration"></strong><span flex ng-bind="$ctrl.dateBar.to.valueOf() - $ctrl.dateBar.from.valueOf() | maDuration:'humanize'"></span></div>
 
-    <md-radio-group ng-model="$ctrl.allPoints">
+    <md-radio-group ng-model="$ctrl.allPoints" ng-change="$ctrl.saveSettings()">
       <md-radio-button ng-value="false"><span ma-tr="ui.app.downloadDataForCheckedPoints"></span></md-radio-button>
       <md-radio-button ng-value="true"><span ma-tr="ui.app.downloadDataForAllPoints"></span></md-radio-button>
     </md-radio-group>
     
     <md-input-container>
         <label ma-tr="ui.app.rollupType"></label>
-        <md-select name="rollupType" ng-model="$ctrl.rollupType">
+        <md-select name="rollupType" ng-model="$ctrl.rollupType" ng-change="$ctrl.saveSettings()">
           <md-option ng-repeat="t in $ctrl.rollupTypes track by t.type" ng-value="t.type" ng-if="::t.type !== 'POINT_DEFAULT'">
             <span ma-tr="{{::t.translation}}"></span>
           </md-option>
         </md-select>
     </md-input-container>
     
-    <md-checkbox ng-model="$ctrl.customTimeFormat" ng-change="$ctrl.customTimeFormatChanged()">
+    <md-checkbox ng-model="$ctrl.customTimeFormat" ng-change="$ctrl.customTimeFormatChanged(); $ctrl.saveSettings()">
         <span ma-tr="ui.app.customTimeFormat"></span>
     </md-checkbox>
     
     <md-input-container ng-if="$ctrl.customTimeFormat">
         <label ma-tr="ui.app.timeFormat"></label>
-        <input name="timeFormat" ng-model="$ctrl.timeFormat">
+        <input name="timeFormat" ng-model="$ctrl.timeFormat" ng-change="$ctrl.saveSettings()">
     </md-input-container>
     
     <md-input-container ng-if="!$ctrl.customTimeFormat">
         <label ma-tr="ui.app.timeFormat"></label>
-        <md-select name="timeFormat" ng-model="$ctrl.timeFormat">
+        <md-select name="timeFormat" ng-model="$ctrl.timeFormat" ng-change="$ctrl.saveSettings()">
           <md-option ng-repeat="format in $ctrl.timeFormats track by format.format" ng-value="format.format">
           	<span ma-tr="{{::format.translation}}"></span>
           </md-option>
@@ -47,7 +47,7 @@
     
     <md-input-container>
         <label ma-tr="ui.app.timezone"></label>
-        <md-select name="timezone" ng-model="$ctrl.timezone">
+        <md-select name="timezone" ng-model="$ctrl.timezone" ng-change="$ctrl.saveSettings()">
           <md-option ng-repeat="zone in $ctrl.timezones track by zone.id" ng-value="zone">
             <span><span ma-tr="{{::zone.translation}}"></span> (<em ng-bind="zone.value"></em>)</span>
           </md-option>
