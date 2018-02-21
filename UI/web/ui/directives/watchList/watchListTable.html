@@ -51,6 +51,7 @@
             md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}" class="watch-list-table">
         <thead md-head md-order="$ctrl.tableOrder">
             <tr md-row>
+                <th ng-repeat="tagKey in $ctrl.selectedTags" md-column ma-tr="ui.app.tag" ma-tr-args="[tagKey]"></th>
                 <th ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-column md-order-by="{{col.name}}" ma-tr="{{col.label}}"></th>
             </tr>
         </thead>
@@ -59,6 +60,7 @@
                     md-select="point" md-row md-select-id="xid"
                     md-on-select="$ctrl.selectedPointsChangedBound"
                     md-on-deselect="$ctrl.selectedPointsChangedBound">
+                <td ng-repeat="tagKey in $ctrl.selectedTags" md-cell ng-bind="point.tags[tagKey]"></td>
                 <td ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-cell ng-class="{'point-value': col.name === 'value', 'point-time': col.name === 'time'}">
                     
                     <ma-point-value ng-if="col.name === 'value'"

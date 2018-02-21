@@ -36,6 +36,9 @@ class DataPointTagKeySelectController {
         
         this.queryPromise = this.maDataPointTags.keys().then(values => {
             this.values = values.sort();
+            if (Array.isArray(this.excludeTags)) {
+                this.values = this.values.filter(v => !this.excludeTags.includes(v));
+            }
         });
         
         if (this.onQuery) {
@@ -69,6 +72,7 @@ return {
         disabledOptions: '<?',
         selectMultiple: '<?',
         selectedText: '<?',
+        excludeTags: '<?',
         noFloat: '<?',
         onQuery: '&?'
     },
