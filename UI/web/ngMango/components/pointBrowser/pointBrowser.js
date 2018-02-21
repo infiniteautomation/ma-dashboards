@@ -31,6 +31,8 @@ class PointBrowserController {
                 types.forEach(name => {
                     delete this[name];
                 });
+
+                if (!this.selected) return;
                 
                 if (!this.selected.isNew) {
                     this.listType = 'watchList';

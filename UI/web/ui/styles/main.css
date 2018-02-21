@@ -558,14 +558,31 @@ md-card .md-toolbar-tools div:not(.desktop) > .md-button {
     margin: 6px 4px;
 }
 
-md-card md-toolbar .md-toolbar-tools .md-button:not(.md-icon-button) {
+md-card md-toolbar .md-toolbar-tools > .md-button {
+	margin: 0 -4px;
+}
+
+md-card md-toolbar .md-toolbar-tools > .md-button:not(.md-icon-button) {
     height: 30px;
-	min-height: 30px;
-	max-height: 30px;
-	line-height: 30px;
-	min-width: 60px;
-	font-size: 12px;
-	padding: 0 10px;
+    min-height: 30px;
+    max-height: 30px;
+    line-height: 30px;
+    min-width: 60px;
+    font-size: 12px;
+    padding: 0 8px;
+    margin: 4px;
+}
+md-card md-toolbar .md-toolbar-tools > .md-button:first-child {
+	margin-left: -8px;
+}
+md-card md-toolbar .md-toolbar-tools > .md-button:last-child {
+	margin-right: -8px;
+}
+md-card md-toolbar .md-toolbar-tools > .md-button.md-icon-button:first-child {
+	margin-left: -14px;
+}
+md-card md-toolbar .md-toolbar-tools > .md-button.md-icon-button:last-child {
+	margin-right: -14px;
 }
 
 /* Data Tables */

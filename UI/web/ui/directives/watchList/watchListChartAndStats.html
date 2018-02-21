@@ -1,9 +1,12 @@
 <md-toolbar class="md-whiteframe-1dp md-hue-3">
     <div class="md-toolbar-tools">
         <h2 flex>
-            <span><span ma-tr="ui.app.chart"></span> &amp; <span ma-tr="ui.app.compare"></span></span>
+            <span ma-tr="ui.app.chartAndCompare"></span>
         </h2>
-        <md-button class="md-raised" ng-click="$ctrl.clearSelected()" ma-tr="ui.app.clear"></md-button>
+        <md-button class="md-raised" ng-click="$ctrl.clearSelected()">
+            <md-icon>clear</md-icon>
+            <span ma-tr="ui.app.clear"></span>
+        </md-button>
     </div>
 </md-toolbar>
 

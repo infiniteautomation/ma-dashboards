@@ -1,21 +1,46 @@
 <md-toolbar class="md-whiteframe-1dp md-hue-3">
     <div class="md-toolbar-tools">
-      <md-button class="watch-list-back md-icon-button" ng-click="$ctrl.clearWatchList()" ng-if="!$ctrl.$mdMedia('gt-md')"><md-icon>arrow_back</md-icon></md-button>
-      <h2><span ng-bind="$ctrl.watchList.name" ng-if="$ctrl.$mdMedia('gt-md')"></span></h2>
-      <div flex></div>
+        <md-button class="watch-list-back md-icon-button" ng-click="$ctrl.clearWatchList()" ng-if="!$ctrl.$mdMedia('gt-md')"><md-icon>arrow_back</md-icon></md-button>
+        <h2><span ng-bind="$ctrl.watchList.name" ng-if="$ctrl.$mdMedia('gt-md')"></span></h2>
+        
+        <div flex></div>
+        
+        <md-button class="md-primary md-raised" ng-click="$ctrl.saveSettings()">
+            <md-icon>save</md-icon>
+            <span ma-tr="common.save"></span>
+        </md-button>
+        <md-button class="md-raised" ui-sref="ui.settings.watchListBuilder({watchListXid: $ctrl.watchList.xid})" ng-if="!$ctrl.watchList.isNew">
+            <md-icon>edit</md-icon>
+            <span ma-tr="common.edit"></span>
+        </md-button>
+        <md-button class="md-raised" ng-click="$ctrl.showDownloadDialog($event)">
+            <md-icon>file_download</md-icon>
+            <span ma-tr="common.download"></span>
+        </md-button>
+        
+        <md-button class="md-icon-button" ng-class="{'md-accent': $ctrl.selectColumnToolbarOpen}" ng-click="$ctrl.selectColumnToolbarOpen = !$ctrl.selectColumnToolbarOpen">
+            <md-icon>{{$ctrl.selectColumnToolbarOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+            <md-tooltip>
+                <span ma-tr="ui.app.selectColumns"></span>
+            </md-tooltip>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-toolbar class="md-hue-2" ng-show="$ctrl.selectColumnToolbarOpen">
+    <div class="md-toolbar-tools">
+        <div flex></div>
 
-      <md-button class="md-primary md-raised" ui-sref="ui.settings.watchListBuilder({watchListXid: $ctrl.watchList.xid})" ng-if="!$ctrl.watchList.isNew">
-        <md-icon>edit</md-icon>
-        <span ma-tr="common.edit"></span>
-      </md-button>
-      <md-button class="md-primary md-raised" ng-click="$ctrl.saveSettings()">
-        <md-icon>save</md-icon>
-        <span ma-tr="common.save"></span>
-      </md-button>
-      <md-button class="md-primary md-raised" ng-click="$ctrl.showDownloadDialog($event)">
-        <md-icon>file_download</md-icon>
-        <span ma-tr="common.download"></span>
-      </md-button>
+        <md-input-container md-no-float="true">
+            <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}">
+                <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
+            </md-select>
+        </md-input-container>
+        
+        <md-input-container md-no-float="true">
+            <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags" ng-change="$ctrl.selectedTagsChanged()" ng-model-options="{trackBy: '$value.name'}">
+                <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
+            </md-select>
+        </md-input-container>
     </div>
 </md-toolbar>
 
