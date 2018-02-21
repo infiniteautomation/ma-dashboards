@@ -217,13 +217,7 @@ class WatchListPageController {
     clearSelected() {
         this.selected = [];
         this.selectedStats = [];
-        this.chartConfig = {
-            selectedPoints: []
-        };
-        if (this.watchList) {
-            if (!this.watchList.data) this.watchList.data = {};
-            this.watchList.data.chartConfig = this.chartConfig;
-        }
+        this.chartConfig.selectedPoints = [];
         this.updateSelectedPointMaps();
     }
 
