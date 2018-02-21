@@ -67,6 +67,9 @@ class DataPointTagKeySelectController {
 return {
     bindings: {
         disabledOptions: '<?',
+        selectMultiple: '<?',
+        selectedText: '<?',
+        noFloat: '<?',
         onQuery: '&?'
     },
     require: {

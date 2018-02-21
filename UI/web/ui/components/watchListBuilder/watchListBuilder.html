@@ -9,12 +9,10 @@
         </md-select>
       </md-input-container>
       <div flex></div>
-      <div ng-class="{'desktop': $ctrl.$mdMedia('gt-xs')}" layout>
         <md-button class="md-raised" ng-click="$ctrl.newWatchlist()"><md-icon>add</md-icon>&nbsp;<span ma-tr="ui.app.new"></span></md-button>
         <md-button class="md-warn md-raised" ng-click="$ctrl.deleteWatchlist($event)" ng-disabled="$ctrl.watchlist.isNew"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
         <md-button class="md-primary md-raised" type="submit"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
         <md-button class="md-raised" ui-sref="ui.watchList({watchListXid: $ctrl.watchlist.xid})" ng-disabled="$ctrl.watchlist.isNew"><md-icon>visibility</md-icon>&nbsp;<span ma-tr="common.view"></span></md-button>
-    </div>
     </div>
   </md-toolbar>
   <md-card-content class="ma-no-padding">

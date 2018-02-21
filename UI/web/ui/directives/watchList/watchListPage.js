@@ -51,7 +51,7 @@ class WatchListPageController {
         this.selectFirstWatchList = false;
         this.numberOfRows = $mdMedia('gt-sm') ? 100 : 25;
         this.pageNumber = 1;
-        this.tableOrder = '';
+        this.tableOrder = 'name';
 
         this.downloadStatus = {};
         this.chartOptions = {
@@ -65,6 +65,29 @@ class WatchListPageController {
             {name: 'left-2', translation: 'ui.app.farLeft'},
             {name: 'right-2', translation: 'ui.app.farRight'}
         ];
+        
+        this.columns = [
+            {name: 'xid', label: 'ui.app.xidShort'},
+            {name: 'dataSourceName', label: 'ui.app.dataSource'},
+            {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
+            {name: 'name', label: 'common.name', selectedByDefault: true},
+            {name: 'value', label: 'ui.app.value', selectedByDefault: true},
+            {name: 'time', label: 'ui.app.time', selectedByDefault: true},
+            {name: 'enabled', label: 'common.enabled'},
+            {name: 'dataType', label: 'dsEdit.pointDataType'},
+            {name: 'readPermission', label: 'pointEdit.props.permission.read'},
+            {name: 'setPermission', label: 'pointEdit.props.permission.set'},
+            {name: 'unit', label: 'pointEdit.props.unit'},
+            {name: 'chartColour', label: 'pointEdit.props.chartColour'},
+            {name: 'plotType', label: 'pointEdit.plotType'},
+            {name: 'rollup', label: 'common.rollup'},
+            {name: 'templateXid', label: 'ui.app.templateXid'},
+            {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
+            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId'}
+        ];
+        
+        this.columns.forEach((c, i) => c.order = i);
+        this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
 
         this.selectedPointsChangedBound = (...args) => this.selectedPointsChanged(...args);
     }

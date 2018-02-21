@@ -26,7 +26,7 @@
         </md-button>
     </div>
 </md-toolbar>
-<md-toolbar class="md-hue-2" ng-show="$ctrl.selectColumnToolbarOpen">
+<md-toolbar class="md-hue-2" ng-if="$ctrl.selectColumnToolbarOpen">
     <div class="md-toolbar-tools">
         <div flex></div>
 
@@ -35,12 +35,9 @@
                 <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
             </md-select>
         </md-input-container>
-        
-        <md-input-container md-no-float="true">
-            <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags" ng-change="$ctrl.selectedTagsChanged()" ng-model-options="{trackBy: '$value.name'}">
-                <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
-            </md-select>
-        </md-input-container>
+
+        <ma-data-point-tag-key-select ng-model="$ctrl.selectedTags" select-multiple="true" no-float="true" selected-text="'ui.app.selectTags' | maTr">
+        </ma-data-point-tag-key-select>
     </div>
 </md-toolbar>
 
@@ -54,35 +51,32 @@
             md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}" class="watch-list-table">
         <thead md-head md-order="$ctrl.tableOrder">
             <tr md-row>
-                <th md-column md-order-by="deviceName" ma-tr="ui.app.device"></th>
-                <th md-column md-order-by="name" ma-tr="ui.app.name"></th>
-                <th md-column md-order-by="value" ma-tr="ui.app.value"></th>
-                <th md-column md-order-by="time" ma-tr="ui.app.time"></th>
+                <th ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-column md-order-by="{{col.name}}" ma-tr="{{col.label}}"></th>
             </tr>
         </thead>
         <tbody md-body>
             <tr ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows"
-                md-select="point" md-row md-select-id="xid"
-                md-on-select="$ctrl.selectedPointsChangedBound"
-                md-on-deselect="$ctrl.selectedPointsChangedBound">
-                    <td md-cell ng-bind="point.deviceName"></td>
-                    <td md-cell ng-bind="point.name"></td>
-                    <td md-cell class="point-value">
-                      <ma-point-value
-                          point="point"
-                          flash-on-change="true"
-                          enable-popup="right">
-                      </ma-point-value>
-                    </td>
-                    <td md-cell class="point-time">
-                        <ma-point-value
-                            point="point"
-                            flash-on-change="true"
-                            display-type="dateTime"
-                            same-day-date-time-format="timeSeconds"
-                            hide-event-indicator="true">
-                        </ma-point-value>
-                    </td>      
+                    md-select="point" md-row md-select-id="xid"
+                    md-on-select="$ctrl.selectedPointsChangedBound"
+                    md-on-deselect="$ctrl.selectedPointsChangedBound">
+                <td ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-cell ng-class="{'point-value': col.name === 'value', 'point-time': col.name === 'time'}">
+                    
+                    <ma-point-value ng-if="col.name === 'value'"
+                      point="point"
+                      flash-on-change="true"
+                      enable-popup="right">
+                    </ma-point-value>
+                    
+                    <ma-point-value ng-if="col.name === 'time'"
+                        point="point"
+                        flash-on-change="true"
+                        display-type="dateTime"
+                        same-day-date-time-format="timeSeconds"
+                        hide-event-indicator="true">
+                    </ma-point-value>
+                    
+                    <span ng-if="col.name !== 'value' && col.name !== 'time'" ng-bind="point[col.name]"></span>
+                </td>
             </tr>
         </tbody>
     </table>

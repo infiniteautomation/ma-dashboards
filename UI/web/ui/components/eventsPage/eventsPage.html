@@ -10,24 +10,22 @@
                   </h2>
                   <md-switch ng-model="$ctrl.params.dateFilter" aria-label="{{'ui.app.dateFilter' | maTr}}" ng-change="$ctrl.storeState('dateFilter')"></md-switch>
 
-                  <div ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}">
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'any' }"
-                                ng-click="$ctrl.params.eventType='any'; $ctrl.storeState('eventType')" ma-tr="ui.app.any">
-                        </md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'DATA_POINT' }"
-                                ng-click="$ctrl.params.eventType='DATA_POINT'; $ctrl.storeState('eventType')">
-                            <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
-                            <span ma-tr="ui.app.point"></span>
-                        </md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'DATA_SOURCE' }"
-                                ng-click="$ctrl.params.eventType='DATA_SOURCE'; $ctrl.storeState('eventType')">
-                            <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
-                            <span ma-tr="ui.app.source"></span>
-                        </md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'SYSTEM' }"
-                                ng-click="$ctrl.params.eventType='SYSTEM'; $ctrl.storeState('eventType')" ma-tr="ui.app.system">
-                        </md-button>
-                  </div>
+                    <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'any' }"
+                            ng-click="$ctrl.params.eventType='any'; $ctrl.storeState('eventType')" ma-tr="ui.app.any">
+                    </md-button>
+                    <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'DATA_POINT' }"
+                            ng-click="$ctrl.params.eventType='DATA_POINT'; $ctrl.storeState('eventType')">
+                        <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
+                        <span ma-tr="ui.app.point"></span>
+                    </md-button>
+                    <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'DATA_SOURCE' }"
+                            ng-click="$ctrl.params.eventType='DATA_SOURCE'; $ctrl.storeState('eventType')">
+                        <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
+                        <span ma-tr="ui.app.source"></span>
+                    </md-button>
+                    <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'SYSTEM' }"
+                            ng-click="$ctrl.params.eventType='SYSTEM'; $ctrl.storeState('eventType')" ma-tr="ui.app.system">
+                    </md-button>
             </div>
       </md-toolbar>
       <md-card-actions layout="row" layout-align="start center" layout-wrap>

@@ -76,6 +76,8 @@ return {
         restrictions: '<?',
         selectMultiple: '<?',
         deselectOnQuery: '<?',
+        selectedText: '<?',
+        noFloat: '<?',
         onQuery: '&?'
     },
     require: {
