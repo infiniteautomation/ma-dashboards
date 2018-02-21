@@ -332,7 +332,7 @@ class WatchListPageController {
         if (this.watchList.isNew) {
             this.$state.go('ui.settings.watchListBuilder', {watchList: this.watchList});
         } else {
-            this.watchList.$update();
+            this.watchList.$update().then(wl => this.chartConfig = wl.data.chartConfig);
         }
     }
 

@@ -164,16 +164,13 @@ WatchListSelectController.prototype.doGetPoints = function() {
 };
 
 WatchListSelectController.prototype.updateHandler = function updateHandler(event, update) {
-    var item;
-    if (update.object) {
-        item = angular.merge(new this.WatchList(), update.object);
-    }
+    const item = Object.assign(Object.create(this.WatchList.prototype), update.object);
     
     if (update.action === 'add') {
         // TODO filter added points according to the current query somehow
         this.watchLists.push(item);
     } else {
-        for (var i = 0; i < this.watchLists.length; i++) {
+        for (let i = 0; i < this.watchLists.length; i++) {
             if (this.watchLists[i].xid === item.xid) {
                 if (update.action === 'update') {
                     this.watchLists[i] = item;
@@ -186,7 +183,9 @@ WatchListSelectController.prototype.updateHandler = function updateHandler(event
     }
 
     if (this.watchList && this.watchList.xid === item.xid) {
-        this.setViewValue(update.action === 'delete' ? null : item);
+        if (!angular.equals(this.watchList, item)) {
+            this.setViewValue(update.action === 'delete' ? null : item);
+        }
     }
 };
 
