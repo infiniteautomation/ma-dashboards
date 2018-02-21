@@ -468,7 +468,8 @@ class WatchListPageController {
                         limit: -1,
                         timeout: 0,
                         dateTimeFormat: this.timeFormat,
-                        timezone: this.timezone.value
+                        timezone: this.timezone.value,
+                        rendered: true
                     }).then(response => {
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);
