@@ -1135,6 +1135,7 @@ md-icon {
 .amcharts-axis-label, .amcharts-axis-bottom-label, .amcharts-axis-title {
   font-family: inherit;
   stroke-width: 0;
+  fill: currentColor;
 }
 
 .amchart:not(.amcharts-custom-color) .amcharts-axis-tick,
