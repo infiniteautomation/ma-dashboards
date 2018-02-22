@@ -53,9 +53,14 @@
     <table md-table md-row-select multiple ng-model="$ctrl.selected"
             md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}" class="watch-list-table">
         <thead md-head md-order="$ctrl.tableOrder">
-            <tr md-row>
+            <tr md-row ma-fix-sort-icons>
                 <th ng-repeat="tagKey in $ctrl.selectedTags" md-column ma-tr="ui.app.tag" ma-tr-args="[tagKey]"></th>
-                <th ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-column md-order-by="{{col.name}}" ma-tr="{{col.label}}"></th>
+                <th ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-column
+                    md-order-by="{{col.name}}" 
+                    ng-class="{'point-value': col.name === 'value', 'point-time': col.name === 'time'}"
+                    ma-tr="{{col.label}}"
+                    md-numeric="col.name === 'value'">
+                </th>
             </tr>
         </thead>
         <tbody md-body>
@@ -64,7 +69,8 @@
                     md-on-select="$ctrl.selectedPointsChangedBound"
                     md-on-deselect="$ctrl.selectedPointsChangedBound">
                 <td ng-repeat="tagKey in $ctrl.selectedTags" md-cell ng-bind="point.tags[tagKey]"></td>
-                <td ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-cell ng-class="{'point-value': col.name === 'value', 'point-time': col.name === 'time'}">
+                <td ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-cell
+                    ng-class="{'point-value': col.name === 'value', 'point-time': col.name === 'time'}">
                     
                     <ma-point-value ng-if="col.name === 'value'"
                       point="point"

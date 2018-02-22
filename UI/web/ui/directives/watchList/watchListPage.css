@@ -28,18 +28,14 @@
 .watchlist-main table.md-table:not(.desktop)  td.md-cell.icons {
     font-size: 1.5rem;
 }
-.watchlist-main table.md-table td.md-cell i {
-    color: rgb(0,173,239);
-}
-.watchlist-main table.md-table td.md-cell i.alternate {
-    color: rgb(0,173,239);
-}
+
 .watchlist-main table.md-table td.md-cell {
     transition: color 0.2s;
 }
 
-.watchlist-main table.md-table td.md-cell.flash-on-change {
-    color: rgb(255,133,0);
+table.md-table.md-row-select.watch-list-table th.md-column.point-value,
+table.md-table.md-row-select.watch-list-table td.md-cell.point-value {
+	width: 100px;
 }
 
 .watchlist-main .md-table-pagination {
