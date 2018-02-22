@@ -22,7 +22,7 @@ class WatchListPageController {
             'maStatistics',
             '$scope',
             '$mdColorPicker'
-            ];
+        ];
     }
 
     constructor(
@@ -51,7 +51,7 @@ class WatchListPageController {
         this.selectFirstWatchList = false;
         this.numberOfRows = $mdMedia('gt-sm') ? 100 : 25;
         this.pageNumber = 1;
-        this.tableOrder = 'name';
+        this.sortOrder = 'name';
 
         this.downloadStatus = {};
         this.chartOptions = {
@@ -89,7 +89,9 @@ class WatchListPageController {
         this.columns.forEach((c, i) => c.order = i);
         this.loadLocalStorageSettings();
 
+        // bound functions for md-data-table attributes
         this.selectedPointsChangedBound = (...args) => this.selectedPointsChanged(...args);
+        this.filterPointsBound = (...args) => this.saveSettingsFilterPoints(...args);
     }
 
     baseUrl(path) {
@@ -139,6 +141,8 @@ class WatchListPageController {
             this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
         }
         
+        this.numberOfRows = settings.numberOfRows || (this.$mdMedia('gt-sm') ? 100 : 25);
+        this.sortOrder = settings.sortOrder || 'name';
     }
 
     saveLocalStorageSettings() {
@@ -147,6 +151,9 @@ class WatchListPageController {
             
             settings.selectedTags = this.selectedTags;
             settings.selectedColumns = this.selectedColumns.map(c => c.name);
+            
+            settings.numberOfRows = this.numberOfRows;
+            settings.sortOrder = this.sortOrder;
             
             this.localStorageService.set('watchListPage', settings);
         }
@@ -263,6 +270,12 @@ class WatchListPageController {
         if (Array.isArray(this.watchList.data.selectedTags)) {
             this.selectedTags = this.watchList.data.selectedTags;
         }
+        if (this.watchList.data.sortOrder) {
+            this.sortOrder = this.watchList.data.sortOrder;
+        }
+        if (Number.isFinite(this.watchList.data.numberOfRows) && this.watchList.data.numberOfRows >= 0) {
+            this.numberOfRows = this.watchList.data.numberOfRows;
+        }
 
         this.updateSelectedPointMaps();
         this.getPoints();
@@ -301,6 +314,8 @@ class WatchListPageController {
                 pt.tags.name = pt.name;
                 pt.tags.device = pt.deviceName;
             });
+            
+            this.filterPoints();
 
             this.selected = this.points.filter(point => {
                 let pointOptions = this.selectedPointConfigsByXid[point.xid];
@@ -309,8 +324,48 @@ class WatchListPageController {
                 }
                 if (pointOptions) return point;
             });
+            
             this.updateStats();
         });
+    }
+    
+    saveSettingsFilterPoints() {
+        this.saveLocalStorageSettings();
+        this.filterPoints();
+    }
+
+    filterPoints() {
+        const limit = this.numberOfRows;
+        const offset = (this.pageNumber - 1) * limit;
+        const order = this.sortOrder;
+
+        if (order) {
+            let propertyName = order;
+            let desc = false;
+            if ((desc = propertyName.indexOf('-') === 0 || propertyName.indexOf('+') === 0)) {
+                propertyName = propertyName.substring(1);
+            }
+            
+            let tag = false;
+            if (propertyName.indexOf('tags.') === 0) {
+                tag = true;
+                propertyName = propertyName.substring(5);
+            }
+            
+            this.points.sort((a, b) => {
+                const valA = tag ? a.tags[propertyName] : a[propertyName];
+                const valB = tag ? b.tags[propertyName] : b[propertyName];
+                
+                if (valA === valB || Number.isNaN(valA) && Number.isNaN(valB)) return 0;
+
+                if (valA == null || Number.isNaN(valA) || valA > valB) return desc ? -1 : 1;
+                if (valB == null || Number.isNaN(valB) || valA < valB) return desc ? 1 : -1;
+
+                return 0;
+            });
+        }
+
+        this.filteredPoints = this.points.slice(offset, offset + limit);
     }
 
     editWatchList(watchList) {
@@ -322,6 +377,8 @@ class WatchListPageController {
         this.watchList.data.paramValues = angular.copy(this.watchListParams);
         this.watchList.data.selectedTags = this.selectedTags;
         this.watchList.data.selectedColumns = this.selectedColumns.map(c => c.name);
+        this.watchList.data.sortOrder = this.sortOrder;
+        this.watchList.data.numberOfRows = this.numberOfRows;
 
         if (this.watchList.isNew) {
             this.$state.go('ui.settings.watchListBuilder', {watchList: this.watchList});

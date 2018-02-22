@@ -52,9 +52,12 @@
 <md-table-container ng-class="{'lg-screen': $ctrl.$mdMedia('gt-lg')}">
     <table md-table md-row-select multiple ng-model="$ctrl.selected"
             md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}" class="watch-list-table">
-        <thead md-head md-order="$ctrl.tableOrder">
+        <thead md-head md-order="$ctrl.sortOrder" md-on-reorder="$ctrl.filterPointsBound">
             <tr md-row ma-fix-sort-icons>
-                <th ng-repeat="tagKey in $ctrl.selectedTags" md-column ma-tr="ui.app.tag" ma-tr-args="[tagKey]"></th>
+                <th ng-repeat="tagKey in $ctrl.selectedTags" md-column
+                    md-order-by="tags.{{tagKey}}"
+                    ma-tr="ui.app.tag" ma-tr-args="[tagKey]">
+                </th>
                 <th ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-column
                     md-order-by="{{col.name}}" 
                     ng-class="{'point-value': col.name === 'value', 'point-time': col.name === 'time'}"
@@ -64,7 +67,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows"
+            <tr ng-repeat="point in $ctrl.filteredPoints"
                     md-select="point" md-row md-select-id="xid"
                     md-on-select="$ctrl.selectedPointsChangedBound"
                     md-on-deselect="$ctrl.selectedPointsChangedBound">
@@ -93,4 +96,8 @@
     </table>
 </md-table-container>
 
-<md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination>
+<md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]"
+    md-page="$ctrl.pageNumber" md-page-select
+    md-total="{{$ctrl.points.length}}"
+    md-on-paginate="$ctrl.filterPointsBound">
+</md-table-pagination>
