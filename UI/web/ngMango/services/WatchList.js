@@ -265,7 +265,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                     
                     const currentValue = paramValues[param.name];
                     if (param.options && param.options.multiple && !Array.isArray(currentValue)) {
-                        paramValues[param.name] = [currentValue];
+                        paramValues[param.name] = currentValue === undefined ? [] : [currentValue];
                     } else if ((!param.options || !param.options.multiple) && Array.isArray(currentValue)) {
                         paramValues[param.name] = currentValue[0]; // undefined if length 0 which is what we want
                     }
