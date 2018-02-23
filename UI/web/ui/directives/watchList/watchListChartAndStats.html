@@ -155,8 +155,8 @@
             <tbody md-body ng-init="tableOrder='device'">
                 <tr md-row ng-repeat="point in $ctrl.selectedStats | orderBy: tableOrder track by point.xid">
                     <td ng-repeat="tagKey in $ctrl.selectedTags" md-cell ng-bind="point['tags.' + tagKey]"></td>
-                    <td md-cell ng-bind="point.device"></td>
-                    <td md-cell ng-bind="point.name"></td>
+                    <td md-cell ng-bind="point.device" ng-if="$ctrl.columnIsSelected('deviceName')"></td>
+                    <td md-cell ng-bind="point.name" ng-if="$ctrl.columnIsSelected('name')"></td>
                     <td md-cell ng-bind="point.average"></td>
                     <td md-cell ng-bind="point.maximum"></td>
                     <td md-cell ng-bind="point.minimum"></td>
