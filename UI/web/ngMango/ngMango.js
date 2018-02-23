@@ -291,6 +291,7 @@ ngMango.constant('MA_ROLLUP_TYPES', [
  {type: 'MAXIMUM', nonNumeric: false, label: 'Maximum', translation: 'common.rollup.maximum'},
  {type: 'ACCUMULATOR', nonNumeric: false, label: 'Accumulator', translation: 'common.rollup.accumulator'},
  {type: 'SUM', nonNumeric: false, label: 'Sum', translation: 'common.rollup.sum'},
+ {type: 'START', nonNumeric: true, label: 'Start', translation: 'common.rollup.start'},
  {type: 'FIRST', nonNumeric: true, label: 'First', translation: 'common.rollup.first'},
  {type: 'LAST', nonNumeric: true, label: 'Last', translation: 'common.rollup.last'},
  {type: 'COUNT', nonNumeric: true, label: 'Count', translation: 'common.rollup.count'},
