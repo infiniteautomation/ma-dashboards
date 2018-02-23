@@ -57,7 +57,11 @@ class RevisionSelectController {
         }
 
         this.queryPromise = query.query().then(values => {
-            this.values = values;
+            if (this.filterValues) {
+                this.values = values.filter(val => this.filterValues({$value: val}));
+            } else {
+                this.values = values;
+            }
         }).finally(() => {
             delete this.queryPromise;
         });
@@ -69,7 +73,8 @@ return {
         typeName: '@?',
         objectId: '<?',
         limit: '<?',
-        optionText: '&?'
+        optionText: '&?',
+        filterValues: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'

@@ -10,7 +10,7 @@
 	</md-toolbar>
 	
 	<md-dialog-content layout="row" class="md-padding" flex>
-        <ma-revision-select flex ng-model="$ctrl.revision" type-name="{{$ctrl.typeName}}" object-id="$ctrl.objectId"></ma-revision-select>
+        <ma-revision-select flex ng-model="$ctrl.revision" type-name="{{$ctrl.typeName}}" object-id="$ctrl.objectId" filter-values="$ctrl.filterValues($value)"></ma-revision-select>
 	</md-dialog-content>
 
 	<md-dialog-actions layout="row">

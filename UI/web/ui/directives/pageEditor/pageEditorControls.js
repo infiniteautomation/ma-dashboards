@@ -308,7 +308,8 @@ class PageEditorControlsController {
     showRevisionDialog(event) {
         this.maRevisionHistoryDialog.show(event, {
             typeName: 'JSON_DATA',
-            objectId: this.selectedPage.id
+            objectId: this.selectedPage.id,
+            filterValues: val => val.context && !!val.context.jsonData
         }).then(revision => {
             this.selectedPage.jsonData = angular.fromJson(revision.context.jsonData);
             this.selectedPage.$dirty = true;

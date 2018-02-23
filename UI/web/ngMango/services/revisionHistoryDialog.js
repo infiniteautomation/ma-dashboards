@@ -21,6 +21,12 @@ function revisionHistoryDialogFactory($mdDialog, $mdMedia) {
                     this.ok = function($event) {
                         $mdDialog.hide(this.revision);
                     };
+
+                    if (typeof options.filterValues === 'function') {
+                        this.filterValues = options.filterValues;
+                    } else {
+                        this.filterValues = () => true;
+                    }
                 },
                 templateUrl: require.toUrl('./revisionHistoryDialog.html'),
                 parent: angular.element(document.body),
