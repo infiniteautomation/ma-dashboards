@@ -447,6 +447,9 @@ class WatchListPageController {
                     device: point.deviceName,
                     xid: point.xid
             };
+            this.selectedTags.forEach(tagKey => {
+                ptStats[`tags.${tagKey}`] = point.tags[tagKey];
+            });
             selectedStats.push(ptStats);
 
             this.maStatistics.getStatisticsForXid(point.xid, {
@@ -470,6 +473,10 @@ class WatchListPageController {
                 ptStats.lastValue = parseFloat(stats.last && stats.last.value);
             });
         });
+    }
+    
+    columnIsSelected(name) {
+        return !!this.selectedColumns.find(c => c.name === name);
     }
 
     chooseAxisColor($event, axisName) {

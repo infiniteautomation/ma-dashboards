@@ -136,9 +136,13 @@
       <md-table-container>
         <table md-table ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}">
             <thead md-head md-order="tableOrder">
-                <tr md-row>
-                    <th md-column md-order-by="device" ma-tr="ui.app.device"></th>
-                    <th md-column md-order-by="name" ma-tr="ui.app.name"></th>
+                <tr md-row ma-fix-sort-icons>
+                    <th ng-repeat="tagKey in $ctrl.selectedTags" md-column
+                        md-order-by="tags.{{tagKey}}"
+                        ma-tr="ui.app.tag" ma-tr-args="[tagKey]">
+                    </th>
+                    <th md-column md-order-by="device" ma-tr="ui.app.device" ng-if="$ctrl.columnIsSelected('deviceName')"></th>
+                    <th md-column md-order-by="name" ma-tr="ui.app.name" ng-if="$ctrl.columnIsSelected('name')"></th>
                     <th md-column md-numeric md-order-by="averageValue" ma-tr="ui.app.avg"></th>
                     <th md-column md-numeric md-order-by="maximumValue" ma-tr="ui.app.max"></th>
                     <th md-column md-numeric md-order-by="minimumValue" ma-tr="ui.app.min"></th>
@@ -150,6 +154,7 @@
             </thead>
             <tbody md-body ng-init="tableOrder='device'">
                 <tr md-row ng-repeat="point in $ctrl.selectedStats | orderBy: tableOrder track by point.xid">
+                    <td ng-repeat="tagKey in $ctrl.selectedTags" md-cell ng-bind="point['tags.' + tagKey]"></td>
                     <td md-cell ng-bind="point.device"></td>
                     <td md-cell ng-bind="point.name"></td>
                     <td md-cell ng-bind="point.average"></td>
