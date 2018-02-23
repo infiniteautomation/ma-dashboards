@@ -68,6 +68,11 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
                     error.xhrStatus === 'error' && safeTranslate('ui.app.xhrError', 'Connection error');
     	    }
 
+    	    // last ditch fallback
+    	    if (!message) {
+    	        message = `HTTP error ${error.status}`;
+    	    }
+
     	    if (error.status === 422) {
     	        const validationError = safeTranslate('ui.app.validationError', 'Validation error');
     	        error.mangoStatusText = `${validationError} \u2014 ${message}`;

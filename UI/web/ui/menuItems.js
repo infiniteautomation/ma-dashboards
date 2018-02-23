@@ -88,7 +88,7 @@ return [
                 if (!User.current) {
                     throw 'No user';
                 }
-                return Translate.loadNamespaces(['ui', 'common', 'pointEdit']);
+                return Translate.loadNamespaces(['ui', 'common', 'pointEdit', 'rest']);
             }],
             loginTranslations: loadLoginTranslations,
             errorTemplate: ['$templateRequest', function($templateRequest) {
