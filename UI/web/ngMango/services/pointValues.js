@@ -118,6 +118,10 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             }
         }
         
+        if (Array.isArray(options.fields)) {
+            body.fields = options.fields;
+        }
+        
         return body;
     };
     

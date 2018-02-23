@@ -569,6 +569,13 @@ class WatchListPageController {
                     const mimeType = downloadType.indexOf('CSV') === 0 ? 'text/csv' : 'application/json';
                     const extension = downloadType.indexOf('CSV') === 0 ? 'csv' : 'json';
                     const fileName = this.watchList.name + '_' + maUiDateBar.from.toISOString() + '_' + maUiDateBar.to.toISOString() + '.' + extension;
+                    
+                    let fields;
+                    if (downloadType === 'CSV_COMBINED') {
+                        fields = ['TIMESTAMP', 'VALUE'];
+                    } else {
+                        fields = ['XID', 'DATA_SOURCE_NAME', 'DEVICE_NAME', 'NAME', 'TIMESTAMP', 'VALUE', 'RENDERED'];
+                    }
 
                     this.downloadStatus.error = null;
                     this.downloadStatus.downloading = true;
@@ -585,7 +592,8 @@ class WatchListPageController {
                         timeout: 0,
                         dateTimeFormat: this.timeFormat,
                         timezone: this.timezone.value,
-                        rendered: true
+                        rendered: true,
+                        fields: fields
                     }).then(response => {
                         this.downloadStatus.downloading = false;
                         Util.downloadBlob(response, fileName);
