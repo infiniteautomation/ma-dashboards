@@ -416,9 +416,9 @@ ma-bulk-data-point-tasks {
 }
 
 ma-data-point-tag-select,
-ma-data-point-tag-key-select {
+ma-data-point-tag-key-select,
+ma-revision-select {
 	display: flex;
-	/* width: 150px; */
 }
 
 ma-gauge-chart .amchart,

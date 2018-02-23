@@ -47,6 +47,8 @@ define(['./services/Point',
         './services/EventDetector',
         './services/EventHandler',
         './services/dataPointTags',
+        './services/auditTrail',
+        './services/revisionHistoryDialog',
         './filters/dateFilter',
         './filters/trFilter',
         'angular',
@@ -62,7 +64,7 @@ define(['./services/Point',
         PermissionsFactory, systemSettingsProvider, systemStatusFactory,
         ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
         serverFactory, temporaryResourceFactory, restResourceFactory, temporaryRestResourceFactory, rqlBuilderFactory, mathFactory, maEventDetector,
-        maEventHandler, maDataPointTags, dateFilterFactory, trFilterFactory, angular, require, rqlQuery) {
+        maEventHandler, maDataPointTags, maAuditTrail, maRevisionHistoryDialog, dateFilterFactory, trFilterFactory, angular, require, rqlQuery) {
 'use strict';
 
 // rql library doesn't encode null correctly (it encodes as string:null)
@@ -127,6 +129,8 @@ ngMangoServices.factory('maMath', mathFactory);
 ngMangoServices.factory('maEventDetector', maEventDetector);
 ngMangoServices.factory('maEventHandler', maEventHandler);
 ngMangoServices.factory('maDataPointTags', maDataPointTags);
+ngMangoServices.factory('maAuditTrail', maAuditTrail);
+ngMangoServices.factory('maRevisionHistoryDialog', maRevisionHistoryDialog);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 

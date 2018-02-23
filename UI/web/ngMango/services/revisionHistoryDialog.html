@@ -1,0 +1,24 @@
+<md-dialog flex="100" flex-gt-xs="60" flex-gt-sm="50" flex-gt-md="40" flex-gt-lg="25">
+	<md-toolbar>
+	  <div class="md-toolbar-tools">
+	    <h2 ma-tr="ui.components.restorePreviousRevision"></h2>
+	    <span flex></span>
+	    <md-button class="md-icon-button" ng-click="$ctrl.cancel($event)">
+	      <md-icon>close</md-icon>
+	    </md-button>
+	  </div>
+	</md-toolbar>
+	
+	<md-dialog-content layout="row" class="md-padding" flex>
+        <ma-revision-select flex ng-model="$ctrl.revision" type-name="{{$ctrl.typeName}}" object-id="$ctrl.objectId"></ma-revision-select>
+	</md-dialog-content>
+
+	<md-dialog-actions layout="row">
+	  <md-button class="" ng-click="$ctrl.cancel($event)">
+	    <span ma-tr="common.cancel"></span>
+	  </md-button>
+	  <md-button class="md-raised" ng-click="$ctrl.ok($event)" ng-disabled="!$ctrl.revision">
+	    <span ma-tr="ui.components.restore"></span>
+	  </md-button>
+	</md-dialog-actions>
+</md-dialog>

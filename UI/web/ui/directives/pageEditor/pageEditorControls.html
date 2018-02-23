@@ -38,6 +38,12 @@
                     <span ma-tr="ui.app.editNameAndPermissions"></span>
                 </md-tooltip>
             </md-button>
+            <md-button ng-click="$ctrl.showRevisionDialog($event)" class="md-icon-button">
+                <md-icon>history</md-icon>
+                <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
+                    <span ma-tr="ui.app.showRevisionHistory"></span>
+                </md-tooltip>
+            </md-button>
             <md-button ng-click="$ctrl.editMenuItem($event)" class="md-icon-button" ng-disabled="$ctrl.selectedPage.isNew || !$ctrl.User.current.hasPermission($ctrl.MA_UI_EDIT_MENUS_PERMISSION)">
                 <md-icon>menu</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
