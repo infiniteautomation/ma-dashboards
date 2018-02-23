@@ -148,7 +148,28 @@ WatchListChartController.prototype.filterPoints = function() {
         	pointOptions = selectedPointConfigsByName[point.name];
         }
         if (pointOptions) {
-            graphOptions.push(pointOptions);
+            const graphOption = Object.assign({}, pointOptions);
+            const fields = [];
+            
+            let deviceTagAdded;
+            let nameTagAdded;
+
+            if (Array.isArray(watchList.data.selectedTags)) {
+                watchList.data.selectedTags.forEach(tagKey => {
+                    if (tagKey === 'device') deviceTagAdded = true;
+                    if (tagKey === 'name') nameTagAdded = true;
+                    fields.push(point.tags[tagKey]);
+                });
+            }
+            if (!deviceTagAdded) {
+                fields.push(point.deviceName);
+            }
+            if (!nameTagAdded) {
+                fields.push(point.name);
+            }
+            graphOption.title = fields.join(' \u2014 ');
+            
+            graphOptions.push(graphOption);
             return true;
         }
     });

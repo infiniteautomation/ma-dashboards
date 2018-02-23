@@ -66,6 +66,7 @@ define(['angular', 'amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plu
  * @param {object=} options extend AmCharts configuration object for customizing design of the chart
  *     (see [amCharts](https://docs.amcharts.com/3/javascriptcharts/AmSerialChart))
  * @param {string=} cursor-sync-id If you set two or more charts to the same string value then their cursors and zoom will be synced
+ * @param {expression=} point-title The result of evaluating this expression will be used for the point title. Available scope parameters are `$point`.
  * 
  * @usage
  * <ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" default-type="column">
@@ -100,7 +101,8 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         graphItemClicked: '&?',
         trendLines: '<?',
         guides: '<?',
-        cursorSyncId: '@?'
+        cursorSyncId: '@?',
+        pointTitle: '&?'
 	};
 
 	for (var j = 1; j <= MAX_SERIES; j++) {
@@ -506,6 +508,10 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         	        title: point.deviceName + ' - ' + point.name,
         	        lineColor: point.chartColour
             	};
+        	    
+        	    if ($scope.pointTitle) {
+        	        pointDefaults.title = $scope.pointTitle({$point: point});
+        	    }
         	    
         	    if (typeof point.amChartsGraphType === 'function') {
         	        pointDefaults.type = point.amChartsGraphType();
