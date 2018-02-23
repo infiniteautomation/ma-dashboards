@@ -230,7 +230,7 @@ class WatchListPageController {
 
     rebuildChart() {
         // shallow copy causes the chart to update
-        this.watchList = Object.assign(Object.create(this.watchList.constructor.prototype), this.watchList);
+        this.chartWatchList = Object.assign(Object.create(this.watchList.constructor.prototype), this.watchList);
     }
 
     watchListChanged() {
@@ -294,6 +294,7 @@ class WatchListPageController {
         }
         
         this.updateState(stateUpdate);
+        this.rebuildChart();
     }
 
     getPoints() {
@@ -383,7 +384,10 @@ class WatchListPageController {
         if (this.watchList.isNew) {
             this.$state.go('ui.settings.watchListBuilder', {watchList: this.watchList});
         } else {
-            this.watchList.$update().then(wl => this.chartConfig = wl.data.chartConfig);
+            this.watchList.$update().then(wl => {
+                this.chartConfig = wl.data.chartConfig;
+                this.rebuildChart();
+            });
         }
     }
 
