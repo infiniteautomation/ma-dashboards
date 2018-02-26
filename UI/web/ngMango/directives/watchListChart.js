@@ -114,13 +114,15 @@ WatchListChartController.prototype.filterPoints = function() {
         this.chartedPoints = [];
         return;
     }
-
+    
+    // ensure the watch list point configs are up to date
+    this.watchList.updatePointConfigs();
+    
     const graphOptions = this.graphOptions = [];
-    const pointConfigs = this.watchList.pointConfigs().slice();
-    const selectedTags = this.watchList.selectedTagKeys();
+    const selectedTags = this.watchList.nonStaticTags(this.points);
     
     this.chartedPoints = this.points.filter(point => {
-        const pointOptions = this.watchList.findPointConfig(pointConfigs, point, selectedTags);
+        const pointOptions = this.watchList.findPointConfig(point, selectedTags);
         
         if (pointOptions) {
             const graphOption = Object.assign({}, pointOptions);

@@ -328,7 +328,21 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             return selectedTags;
         },
         
-        pointConfigs() {
+        nonStaticTags(points) {
+            return this.selectedTagKeys().filter(tagKey => {
+                let seenVal;
+                return points.some((pt, i) => {
+                    const tagVal = pt.tags[tagKey];
+                    if (i === 0) {
+                        seenVal = tagVal;
+                    } else if (tagVal !== seenVal) {
+                        return true;
+                    }
+                });
+            });
+        },
+        
+        updatePointConfigs() {
             if (!this.data) this.data = {};
             if (!this.data.chartConfig) this.data.chartConfig = {};
             if (!this.data.chartConfig.selectedPoints) this.data.chartConfig.selectedPoints = [];
@@ -352,28 +366,18 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                     delete config.name;
                 }
             });
-            
+        },
+        
+        pointConfigs() {
             return this.data.chartConfig.selectedPoints;
         },
         
-        findPointConfig(pointConfigs, point, tagKeys) {
-            let configIndex = pointConfigs.findIndex(config => {
-                return config.xid === point.xid;
-            });
-            
-            if (configIndex >= 0) {
-                return pointConfigs.splice(configIndex, 1)[0];
-            }
-
-            configIndex = pointConfigs.findIndex(config => {
+        findPointConfig(point, tagKeys) {
+            return this.data.chartConfig.selectedPoints.find(config => {
                 return !Object.keys(config.tags).some(tagKey => {
                     return point.tags[tagKey] !== config.tags[tagKey];
                 });
             });
-            
-            if (configIndex >= 0) {
-                return pointConfigs.splice(configIndex, 1)[0];
-            }
         }
     });
 

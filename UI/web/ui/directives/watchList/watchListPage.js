@@ -252,9 +252,9 @@ class WatchListPageController {
         // clear checked points from table/chart
         this.selected = [];
         this.selectedStats = [];
-        
-        if (!this.watchList.data) this.watchList.data = {};
-        if (!this.watchList.data.chartConfig) this.watchList.data.chartConfig = {};
+
+        // ensure the watch list point configs are up to date, also ensures there is data and chart config
+        this.watchList.updatePointConfigs();
         this.chartConfig = this.watchList.data.chartConfig;
 
         this.watchList.defaultParamValues(this.watchListParams);
@@ -317,10 +317,15 @@ class WatchListPageController {
             // applies sort and limit to this.points and saves as this.filteredPoints
             this.filterPoints();
             
-            const selectedTags = this.watchList.selectedTagKeys();
-            const pointConfigs = this.watchList.pointConfigs().slice();
+            const selectedTags = this.watchList.nonStaticTags(this.points);
             
-            this.selected = this.points.filter(point => !!this.watchList.findPointConfig(pointConfigs, point, selectedTags));
+            this.selected = this.points.filter(point => {
+                const config = this.watchList.findPointConfig(point, selectedTags);
+                if (config) {
+                    point.watchListConfig = config;
+                    return true;
+                }
+            });
             this.updateStats();
         });
     }
@@ -384,20 +389,33 @@ class WatchListPageController {
 
     selectedPointsChanged(point) {
         const removed = !this.selected.includes(point);
-        
-        const selectedTags = this.watchList.selectedTagKeys();
-        const pointConfigs = this.watchList.pointConfigs().slice();
-        
-        this.chartConfig.selectedPoints = this.selected.map(point => {
-            let pointConfig = this.watchList.findPointConfig(pointConfigs, point, selectedTags);
-            if (!pointConfig) {
-                pointConfig = this.newPointConfig(point, selectedTags);
+
+        const tagKeys = this.watchList.nonStaticTags(this.points);
+        const pointConfigs = this.watchList.pointConfigs();
+
+        if (removed) {
+            const pointsToRemove = [point];
+            
+            const configIndex = pointConfigs.indexOf(point.watchListConfig);
+            if (configIndex >= 0) {
+                pointConfigs.splice(configIndex, 1);
             }
-            return pointConfig;
-        });
-        
+            
+            // remove other selected points which were selected using the same config
+            this.selected = this.selected.filter(pt => {
+                if (pt.watchListConfig !== point.watchListConfig) {
+                    return true;
+                }
+                pointsToRemove.push(pt);
+            });
+            
+            this.removeStatsForPoints(pointsToRemove);
+        } else {
+            pointConfigs.push(this.newPointConfig(point, tagKeys));
+            this.updateStats(point);
+        }
+
         this.rebuildChartDebounced();
-        this.updateStats({point, removed});
     }
     
     rebuildChartDebounced() {
@@ -416,6 +434,8 @@ class WatchListPageController {
     
     newPointConfig(point, selectedTags) {
         const pointConfig = {};
+        point.watchListConfig = pointConfig;
+        
         if (this.chartOptions.configNextPoint) {
             if (this.chartOptions.pointColor)
                 pointConfig.lineColor = this.chartOptions.pointColor;
@@ -424,32 +444,35 @@ class WatchListPageController {
             if (this.chartOptions.pointAxis)
                 pointConfig.valueAxis = this.chartOptions.pointAxis;
         }
-        pointConfig.xid = point.xid;
+        
         pointConfig.tags = {};
         selectedTags.forEach(tagKey => pointConfig.tags[tagKey] = point.tags[tagKey]);
+
         return pointConfig;
     }
 
-    updateStats(info) {
+    removeStatsForPoints(points) {
+        points.forEach(point => {
+            const pointIndex = this.selectedStats.findIndex(stat => stat.xid === point.xid);
+            if (pointIndex >= 0) {
+                this.selectedStats.splice(pointIndex, 1);
+            }
+        });
+    }
+    
+    updateStats(point) {
         if (!this.selected) {
             return;
         }
-        
+
         let pointsToUpdate;
-        if (!info) {
+        if (!point) {
             // doing a full rebuild of stats
             this.selectedStats = [];
             pointsToUpdate = this.selected;
         } else {
             // single point added or removed
-            if (info.removed) {
-                const pointIndex = this.selectedStats.findIndex(stat => stat.xid === info.point.xid);
-                if (pointIndex >= 0) {
-                    this.selectedStats.splice(pointIndex, 1);
-                }
-                return;
-            }
-            pointsToUpdate = [info.point];
+            pointsToUpdate = [point];
         }
 
         pointsToUpdate.forEach(point => {
@@ -483,6 +506,12 @@ class WatchListPageController {
                 ptStats.firstValue = parseFloat(stats.first && stats.first.value);
                 ptStats.lastValue = parseFloat(stats.last && stats.last.value);
             });
+        });
+        
+        let seenXids = {};
+        this.selectedStats.forEach(s =>  {
+            if (seenXids[s.xid]) throw new Error();
+            seenXids[s.xid] = true;
         });
     }
     
