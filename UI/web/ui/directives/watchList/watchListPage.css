@@ -111,3 +111,8 @@ ma-ui-watch-list-page ma-point-value img {
 ma-ui-watch-list-page ma-point-value > md-fab-speed-dial[md-direction=right] {
 	top: -5px;
 }
+
+ma-ui-watch-list-page table.md-table.md-row-select.watch-list-table md-checkbox .md-container:after {
+	top: -2px;
+	bottom: -2px;
+}
