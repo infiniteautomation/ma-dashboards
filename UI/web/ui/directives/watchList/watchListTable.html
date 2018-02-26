@@ -30,13 +30,13 @@
     <div class="md-toolbar-tools">
         <div flex></div>
         
-        <ma-data-point-tag-key-select ng-model="$ctrl.selectedTags" ng-change="$ctrl.saveLocalStorageSettings()"
+        <ma-data-point-tag-key-select ng-model="$ctrl.selectedTags" ng-change="$ctrl.watchListSettingChanged()"
                 select-multiple="true" no-float="true" selected-text="'ui.app.selectTags' | maTr">
         </ma-data-point-tag-key-select>
 
         <md-input-container md-no-float="true">
             <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true"
-                    ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-change="$ctrl.saveLocalStorageSettings()">
+                    ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-change="$ctrl.watchListSettingChanged()">
                 <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
             </md-select>
         </md-input-container>
@@ -52,7 +52,7 @@
 <md-table-container ng-class="{'lg-screen': $ctrl.$mdMedia('gt-lg')}">
     <table md-table md-row-select multiple ng-model="$ctrl.selected"
             md-progress="$ctrl.pointsPromise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}" class="watch-list-table">
-        <thead md-head md-order="$ctrl.sortOrder" md-on-reorder="$ctrl.filterPointsBound">
+        <thead md-head md-order="$ctrl.sortOrder" md-on-reorder="$ctrl.sortOrPageChangedBound">
             <tr md-row ma-fix-sort-icons>
                 <th ng-repeat="tagKey in $ctrl.selectedTags" md-column
                     md-order-by="tags.{{tagKey}}"
@@ -99,5 +99,5 @@
 <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]"
     md-page="$ctrl.pageNumber" md-page-select
     md-total="{{$ctrl.points.length}}"
-    md-on-paginate="$ctrl.filterPointsBound">
+    md-on-paginate="$ctrl.sortOrPageChangedBound">
 </md-table-pagination>

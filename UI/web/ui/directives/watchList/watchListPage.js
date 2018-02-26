@@ -21,7 +21,8 @@ class WatchListPageController {
             '$mdDialog',
             'maStatistics',
             '$scope',
-            '$mdColorPicker'
+            '$mdColorPicker',
+            '$timeout'
         ];
     }
 
@@ -33,7 +34,8 @@ class WatchListPageController {
             $mdDialog,
             maStatistics,
             $scope,
-            $mdColorPicker) {
+            $mdColorPicker,
+            $timeout) {
 
         this.$mdMedia = $mdMedia;
         this.localStorageService = localStorageService;
@@ -43,6 +45,7 @@ class WatchListPageController {
         this.maStatistics = maStatistics;
         this.$scope = $scope;
         this.$mdColorPicker = $mdColorPicker;
+        this.$timeout = $timeout;
 
         this.selected = [];
         this.selectedStats = [];
@@ -91,7 +94,7 @@ class WatchListPageController {
 
         // bound functions for md-data-table attributes
         this.selectedPointsChangedBound = (...args) => this.selectedPointsChanged(...args);
-        this.filterPointsBound = (...args) => this.saveSettingsFilterPoints(...args);
+        this.sortOrPageChangedBound = (...args) => this.sortOrPageChanged(...args);
     }
 
     baseUrl(path) {
@@ -129,8 +132,7 @@ class WatchListPageController {
             this.updateStats();
         }, this.$scope);
     }
-    
-    
+
     loadLocalStorageSettings() {
         const settings = this.localStorageService.get('watchListPage') || {};
         
@@ -157,6 +159,20 @@ class WatchListPageController {
             
             this.localStorageService.set('watchListPage', settings);
         }
+    }
+    
+    watchListSettingChanged() {
+        // copy the local settings to the watch list data
+        this.copyLocalSettingsToWatchList();
+        // save the settings to local storage (if its not a saved watch list)
+        this.saveLocalStorageSettings();
+    }
+    
+    copyLocalSettingsToWatchList() {
+        this.watchList.data.selectedTags = this.selectedTags;
+        this.watchList.data.selectedColumns = this.selectedColumns.map(c => c.name);
+        this.watchList.data.sortOrder = this.sortOrder;
+        this.watchList.data.numberOfRows = this.numberOfRows;
     }
     
     parseTagsParam(param) {
@@ -225,7 +241,6 @@ class WatchListPageController {
         this.selected = [];
         this.selectedStats = [];
         this.chartConfig.selectedPoints = [];
-        this.updateSelectedPointMaps();
     }
 
     rebuildChart() {
@@ -238,31 +253,12 @@ class WatchListPageController {
         this.selected = [];
         this.selectedStats = [];
         
-        if (!this.watchList.data) {
-            this.watchList.data = {};
-        }
-        if (!this.watchList.data.chartConfig) {
-            this.watchList.data.chartConfig = {};
-        }
-        
+        if (!this.watchList.data) this.watchList.data = {};
+        if (!this.watchList.data.chartConfig) this.watchList.data.chartConfig = {};
+        this.chartConfig = this.watchList.data.chartConfig;
+
         this.watchList.defaultParamValues(this.watchListParams);
 
-        this.chartConfig = this.watchList.data.chartConfig;
-        if (this.chartConfig.selectedPoints) {
-            // convert old object with point names as keys to array form
-            if (!Array.isArray(this.chartConfig.selectedPoints)) {
-                const selectedPointConfigs = [];
-                for (let ptName in this.chartConfig.selectedPoints) {
-                    const config = this.chartConfig.selectedPoints[ptName];
-                    config.name = ptName;
-                    selectedPointConfigs.push(config);
-                }
-                this.chartConfig.selectedPoints = selectedPointConfigs;
-            }
-        } else {
-            this.chartConfig.selectedPoints = [];
-        }
-        
         this.loadLocalStorageSettings();
         if (Array.isArray(this.watchList.data.selectedColumns)) {
             this.selectedColumns = this.watchList.data.selectedColumns.map(name => this.columns.find(c => c.name === name)).filter(c => !!c);
@@ -276,8 +272,10 @@ class WatchListPageController {
         if (Number.isFinite(this.watchList.data.numberOfRows) && this.watchList.data.numberOfRows >= 0) {
             this.numberOfRows = this.watchList.data.numberOfRows;
         }
+        
+        // we might have just copied settings from watch list to local but some watch list settings might not be there, populate them
+        this.copyLocalSettingsToWatchList();
 
-        this.updateSelectedPointMaps();
         this.getPoints();
 
         const stateUpdate = {};
@@ -316,22 +314,19 @@ class WatchListPageController {
                 pt.tags.device = pt.deviceName;
             });
             
+            // applies sort and limit to this.points and saves as this.filteredPoints
             this.filterPoints();
-
-            this.selected = this.points.filter(point => {
-                let pointOptions = this.selectedPointConfigsByXid[point.xid];
-                if (!pointOptions && pointNameCounts[point.name] === 1) {
-                    pointOptions = this.selectedPointConfigsByName[point.name];
-                }
-                if (pointOptions) return point;
-            });
             
+            const selectedTags = this.watchList.selectedTagKeys();
+            const pointConfigs = this.watchList.pointConfigs().slice();
+            
+            this.selected = this.points.filter(point => !!this.watchList.findPointConfig(pointConfigs, point, selectedTags));
             this.updateStats();
         });
     }
-    
-    saveSettingsFilterPoints() {
-        this.saveLocalStorageSettings();
+
+    sortOrPageChanged() {
+        this.watchListSettingChanged();
         this.filterPoints();
     }
 
@@ -376,10 +371,6 @@ class WatchListPageController {
     saveSettings() {
         // this.chartConfig is already mapped to this.watchList.data.chartConfig and so is saved too 
         this.watchList.data.paramValues = angular.copy(this.watchListParams);
-        this.watchList.data.selectedTags = this.selectedTags;
-        this.watchList.data.selectedColumns = this.selectedColumns.map(c => c.name);
-        this.watchList.data.sortOrder = this.sortOrder;
-        this.watchList.data.numberOfRows = this.numberOfRows;
 
         if (this.watchList.isNew) {
             this.$state.go('ui.settings.watchListBuilder', {watchList: this.watchList});
@@ -391,57 +382,77 @@ class WatchListPageController {
         }
     }
 
-    updateSelectedPointMaps() {
-        this.selectedPointConfigsByName = {};
-        this.selectedPointConfigsByXid = {};
-        this.chartConfig.selectedPoints.forEach(ptConfig => {
-            this.selectedPointConfigsByName[ptConfig.name] = ptConfig;
-            if (ptConfig.xid) {
-                this.selectedPointConfigsByXid[ptConfig.xid] = ptConfig;
+    selectedPointsChanged(point) {
+        const removed = !this.selected.includes(point);
+        
+        const selectedTags = this.watchList.selectedTagKeys();
+        const pointConfigs = this.watchList.pointConfigs().slice();
+        
+        this.chartConfig.selectedPoints = this.selected.map(point => {
+            let pointConfig = this.watchList.findPointConfig(pointConfigs, point, selectedTags);
+            if (!pointConfig) {
+                pointConfig = this.newPointConfig(point, selectedTags);
             }
+            return pointConfig;
         });
+        
+        this.rebuildChartDebounced();
+        this.updateStats({point, removed});
     }
-
-    selectedPointsChanged() {
-        const newSelectedPoints = this.chartConfig.selectedPoints = [];
-
-        const newPointChartOptions = {};
+    
+    rebuildChartDebounced() {
+        if (this.rebuildChartPromise) {
+            this.$timeout.cancel(this.rebuildChartPromise);
+            delete this.rebuildChartPromise;
+        }
+        
+        this.rebuildChartPromise = this.$timeout(() => {
+            delete this.rebuildChartPromise;
+            this.$scope.$applyAsync(() => {
+                this.rebuildChart();
+            });
+        }, 1000, false);
+    }
+    
+    newPointConfig(point, selectedTags) {
+        const pointConfig = {};
         if (this.chartOptions.configNextPoint) {
             if (this.chartOptions.pointColor)
-                newPointChartOptions.lineColor = this.chartOptions.pointColor;
+                pointConfig.lineColor = this.chartOptions.pointColor;
             if (this.chartOptions.pointChartType)
-                newPointChartOptions.type = this.chartOptions.pointChartType;
+                pointConfig.type = this.chartOptions.pointChartType;
             if (this.chartOptions.pointAxis)
-                newPointChartOptions.valueAxis = this.chartOptions.pointAxis;
+                pointConfig.valueAxis = this.chartOptions.pointAxis;
         }
-
-        this.selected.forEach(point => {
-            const config = this.selectedPointConfigsByXid[point.xid] ||
-            (this.pointNameCounts[point.name] === 1 && this.selectedPointConfigsByName[point.name]) ||
-            newPointChartOptions;
-            config.name = point.name;
-            config.xid = point.xid;
-            newSelectedPoints.push(config);
-        });
-
-        this.updateSelectedPointMaps();
-
-        this.rebuildChart();
-        this.updateStats();
+        pointConfig.xid = point.xid;
+        pointConfig.tags = {};
+        selectedTags.forEach(tagKey => pointConfig.tags[tagKey] = point.tags[tagKey]);
+        return pointConfig;
     }
 
-    updateStats() {
-        const selectedStats = this.selectedStats = [];
-
+    updateStats(info) {
         if (!this.selected) {
             return;
         }
+        
+        let pointsToUpdate;
+        if (!info) {
+            // doing a full rebuild of stats
+            this.selectedStats = [];
+            pointsToUpdate = this.selected;
+        } else {
+            // single point added or removed
+            if (info.removed) {
+                const pointIndex = this.selectedStats.findIndex(stat => stat.xid === info.point.xid);
+                if (pointIndex >= 0) {
+                    this.selectedStats.splice(pointIndex, 1);
+                }
+                return;
+            }
+            pointsToUpdate = [info.point];
+        }
 
-        const points = this.selected;
-        const from = this.dateBar.from;
-        const to = this.dateBar.to;
-
-        points.forEach(point => {
+        pointsToUpdate.forEach(point => {
             const ptStats = {
                     name: point.name,
                     device: point.deviceName,
@@ -450,11 +461,11 @@ class WatchListPageController {
             this.selectedTags.forEach(tagKey => {
                 ptStats[`tags.${tagKey}`] = point.tags[tagKey];
             });
-            selectedStats.push(ptStats);
+            this.selectedStats.push(ptStats);
 
             this.maStatistics.getStatisticsForXid(point.xid, {
-                from: from,
-                to: to,
+                from: this.dateBar.from,
+                to: this.dateBar.to,
                 rendered: true
             }).then(stats => {
                 ptStats.average = stats.average ? stats.average.value : NO_STATS;

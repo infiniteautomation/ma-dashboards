@@ -313,6 +313,67 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             });
             
             return paramValues;
+        },
+        
+        selectedTagKeys() {
+            const selectedTags = this.data && Array.isArray(this.data.selectedTags) && this.data.selectedTags.slice() || [];
+            const selectedColumns = this.data && Array.isArray(this.data.selectedColumns) && this.data.selectedColumns || [];
+
+            if (selectedColumns.includes('deviceName')) {
+                selectedTags.push('device');
+            }
+            if (selectedColumns.includes('name')) {
+                selectedTags.push('name');
+            }
+            return selectedTags;
+        },
+        
+        pointConfigs() {
+            if (!this.data) this.data = {};
+            if (!this.data.chartConfig) this.data.chartConfig = {};
+            if (!this.data.chartConfig.selectedPoints) this.data.chartConfig.selectedPoints = [];
+
+            // convert old object with point names as keys to array form
+            if (!Array.isArray(this.data.chartConfig.selectedPoints)) {
+                this.data.chartConfig.selectedPoints = Object.keys(this.data.chartConfig.selectedPoints).map(ptName => {
+                    const config = this.data.chartConfig.selectedPoints[ptName];
+                    config.name = ptName;
+                    return config;
+                });
+            }
+            
+            // convert point config so it has tags property and add name to tags
+            this.data.chartConfig.selectedPoints.forEach(config => {
+                if (!config.tags) {
+                    config.tags = {};
+                    if (config.name) {
+                        config.tags.name = config.name;
+                    }
+                    delete config.name;
+                }
+            });
+            
+            return this.data.chartConfig.selectedPoints;
+        },
+        
+        findPointConfig(pointConfigs, point, tagKeys) {
+            let configIndex = pointConfigs.findIndex(config => {
+                return config.xid === point.xid;
+            });
+            
+            if (configIndex >= 0) {
+                return pointConfigs.splice(configIndex, 1)[0];
+            }
+
+            configIndex = pointConfigs.findIndex(config => {
+                return !Object.keys(config.tags).some(tagKey => {
+                    return point.tags[tagKey] !== config.tags[tagKey];
+                });
+            });
+            
+            if (configIndex >= 0) {
+                return pointConfigs.splice(configIndex, 1)[0];
+            }
         }
     });
 

@@ -110,63 +110,26 @@ WatchListChartController.prototype.$onChanges = function(changes) {
 };
 
 WatchListChartController.prototype.filterPoints = function() {
-    var watchList = this.watchList || {data:{}};
-    var allPoints = this.points || [];
-    var chartConfig = watchList.data.chartConfig || {};
-    var selectedPoints = chartConfig.selectedPoints || [];
+    if (!this.watchList || !Array.isArray(this.points)) {
+        this.chartedPoints = [];
+        return;
+    }
+
+    const graphOptions = this.graphOptions = [];
+    const pointConfigs = this.watchList.pointConfigs().slice();
+    const selectedTags = this.watchList.selectedTagKeys();
     
-	// convert old object with point names as keys to array form
-	if (!Array.isArray(selectedPoints)) {
-		var newSelectedPointArray = [];
-		for (var ptName in selectedPoints) {
-			var config = selectedPoints[ptName];
-			config.name = ptName;
-			newSelectedPointArray.push(config);
-		}
-		selectedPoints = chartConfig.selectedPoints = newSelectedPointArray;
-	}
-	
-	var selectedPointConfigsByName = {};
-    var selectedPointConfigsByXid = {};
-    selectedPoints.forEach(function(ptConfig) {
-    	selectedPointConfigsByName[ptConfig.name] = ptConfig;
-    	if (ptConfig.xid) {
-    		selectedPointConfigsByXid[ptConfig.xid] = ptConfig;
-    	}
-    });
-    
-    var pointNameCounts = {};
-    allPoints.forEach(function(pt) {
-    	var count = pointNameCounts[pt.name];
-    	pointNameCounts[pt.name] = (count || 0) + 1;
-    });
-    
-    var graphOptions = this.graphOptions = [];
-    this.chartedPoints = allPoints.filter(function(point) {
-        var pointOptions = selectedPointConfigsByXid[point.xid];
-        if (!pointOptions && pointNameCounts[point.name] === 1) {
-        	pointOptions = selectedPointConfigsByName[point.name];
-        }
+    this.chartedPoints = this.points.filter(point => {
+        const pointOptions = this.watchList.findPointConfig(pointConfigs, point, selectedTags);
+        
         if (pointOptions) {
             const graphOption = Object.assign({}, pointOptions);
-            const fields = [];
+            const selectedTags = this.watchList.selectedTagKeys();
             
-            let deviceTagAdded;
-            let nameTagAdded;
+            const fields = selectedTags.map(tagKey => {
+                return point.tags[tagKey];
+            });
 
-            if (Array.isArray(watchList.data.selectedTags)) {
-                watchList.data.selectedTags.forEach(tagKey => {
-                    if (tagKey === 'device') deviceTagAdded = true;
-                    if (tagKey === 'name') nameTagAdded = true;
-                    fields.push(point.tags[tagKey]);
-                });
-            }
-            if (!deviceTagAdded) {
-                fields.push(point.deviceName);
-            }
-            if (!nameTagAdded) {
-                fields.push(point.name);
-            }
             graphOption.title = fields.join(' \u2014 ');
             
             graphOptions.push(graphOption);
