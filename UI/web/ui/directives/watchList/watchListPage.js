@@ -317,15 +317,9 @@ class WatchListPageController {
             // applies sort and limit to this.points and saves as this.filteredPoints
             this.filterPoints();
             
-            const selectedTags = this.watchList.nonStaticTags(this.points);
-            
-            this.selected = this.points.filter(point => {
-                const config = this.watchList.findPointConfig(point, selectedTags);
-                if (config) {
-                    point.watchListConfig = config;
-                    return true;
-                }
-            });
+            // select points based on the watch list data chart config
+            this.selected = this.watchList.findSelectedPoints(this.points);
+
             this.updateStats();
         });
     }
@@ -395,18 +389,21 @@ class WatchListPageController {
 
         if (removed) {
             const pointsToRemove = [point];
+            const watchListConfig = point.watchListConfig;
+            delete point.watchListConfig;
             
-            const configIndex = pointConfigs.indexOf(point.watchListConfig);
+            const configIndex = pointConfigs.indexOf(watchListConfig);
             if (configIndex >= 0) {
                 pointConfigs.splice(configIndex, 1);
             }
             
             // remove other selected points which were selected using the same config
             this.selected = this.selected.filter(pt => {
-                if (pt.watchListConfig !== point.watchListConfig) {
+                if (pt.watchListConfig !== watchListConfig) {
                     return true;
                 }
                 pointsToRemove.push(pt);
+                delete pt.watchListConfig;
             });
             
             this.removeStatsForPoints(pointsToRemove);
@@ -445,6 +442,7 @@ class WatchListPageController {
                 pointConfig.valueAxis = this.chartOptions.pointAxis;
         }
         
+        pointConfig.xid = point.xid;
         pointConfig.tags = {};
         selectedTags.forEach(tagKey => pointConfig.tags[tagKey] = point.tags[tagKey]);
 

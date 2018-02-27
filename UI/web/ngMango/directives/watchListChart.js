@@ -117,26 +117,23 @@ WatchListChartController.prototype.filterPoints = function() {
     
     // ensure the watch list point configs are up to date
     this.watchList.updatePointConfigs();
-    
-    const graphOptions = this.graphOptions = [];
-    const selectedTags = this.watchList.nonStaticTags(this.points);
-    
-    this.chartedPoints = this.points.filter(point => {
-        const pointOptions = this.watchList.findPointConfig(point, selectedTags);
-        
-        if (pointOptions) {
-            const graphOption = Object.assign({}, pointOptions);
-            const selectedTags = this.watchList.selectedTagKeys();
-            
-            const fields = selectedTags.map(tagKey => {
-                return point.tags[tagKey];
-            });
 
-            graphOption.title = fields.join(' \u2014 ');
-            
-            graphOptions.push(graphOption);
-            return true;
-        }
+    // select points based on the watch list data chart config
+    this.chartedPoints = this.watchList.findSelectedPoints(this.points);
+    
+    const selectedTags = this.watchList.selectedTagKeys();
+    
+    this.graphOptions = this.chartedPoints.map(point => {
+        const pointOptions = point.watchListConfig;
+
+        const fields = selectedTags.map(tagKey => {
+            return point.tags[tagKey];
+        });
+        
+        const graphOption = Object.assign({}, pointOptions);
+        graphOption.title = fields.join(' \u2014 ');
+        
+        return graphOption;
     });
 };
 

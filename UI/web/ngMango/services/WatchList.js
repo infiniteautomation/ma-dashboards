@@ -315,6 +315,16 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             return paramValues;
         },
         
+        /**
+         * @ngdoc method
+         * @name selectedTagKeys
+         * @methodOf ngMangoServices.maWatchList
+         * 
+         * @description Returns an array of tag keys which have been selected for viewing on the watch list table.
+         * Will contain 'device' and/or 'name' if the device name or point name columns were selected.
+         * 
+         * @returns {string[]} Selected tag keys
+         */
         selectedTagKeys() {
             const selectedTags = this.data && Array.isArray(this.data.selectedTags) && this.data.selectedTags.slice() || [];
             const selectedColumns = this.data && Array.isArray(this.data.selectedColumns) && this.data.selectedColumns || [];
@@ -328,6 +338,17 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             return selectedTags;
         },
         
+        /**
+         * @ngdoc method
+         * @name nonStaticTags
+         * @methodOf ngMangoServices.maWatchList
+         * 
+         * @description Returns an array of tag keys which have been selected for viewing on the watch list table and also
+         * have differing values for the set of provided points.
+         * 
+         * @param {object[]} points Array of points to search for static tag values
+         * @returns {string[]} Selected tag keys
+         */
         nonStaticTags(points) {
             return this.selectedTagKeys().filter(tagKey => {
                 let seenVal;
@@ -342,6 +363,13 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             });
         },
         
+        /**
+         * @ngdoc method
+         * @name updatePointConfigs
+         * @methodOf ngMangoServices.maWatchList
+         * 
+         * @description Ensures that the data, chartConfig and selectedPoints exist and are in the latest format.
+         */
         updatePointConfigs() {
             if (!this.data) this.data = {};
             if (!this.data.chartConfig) this.data.chartConfig = {};
@@ -367,17 +395,79 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                 }
             });
         },
-        
+
         pointConfigs() {
             return this.data.chartConfig.selectedPoints;
         },
         
-        findPointConfig(point, tagKeys) {
-            return this.data.chartConfig.selectedPoints.find(config => {
+        /**
+         * @ngdoc method
+         * @name findPointConfig
+         * @methodOf ngMangoServices.maWatchList
+         * 
+         * @description Finds a matching config for a point based on a set of tag keys. The config will be removed
+         * from the pointConfigs array if found.
+         * 
+         * @param {object} point Point to find config for
+         * @param {string[]} Tag keys to match on
+         * @param {object[]} Array of point configs to search in
+         * @returns {object} Point config
+         * 
+         */
+        findPointConfig(point, tagKeys, pointConfigs) {
+            const configIndex = pointConfigs.findIndex(config => {
                 return !Object.keys(config.tags).some(tagKey => {
                     return point.tags[tagKey] !== config.tags[tagKey];
                 });
             });
+            
+            if (configIndex >= 0) {
+                return pointConfigs.splice(configIndex, 1)[0];
+            }
+        },
+        
+        /**
+         * @ngdoc method
+         * @name findSelectedPoints
+         * @methodOf ngMangoServices.maWatchList
+         * 
+         * @description Searches through an array of points and returns a new array of the points which
+         * are selected based on this watchlist's chart configuration. Each point will have a watchListConfig
+         * property added to it to indicate which config was used.
+         * 
+         * @param {object[]} Array of points to search through
+         * @returns {object[]} Array of points which match the watchlist's selected points config
+         * 
+         */
+        findSelectedPoints(allPoints) {
+            const points = allPoints.slice();
+            const selectedPoints = [];
+            const nonStaticTags = this.nonStaticTags(points);
+
+            // first select all points with an explicit matching xid, remove the configs from the pool
+            const pointConfigs = this.pointConfigs().filter(config => {
+                if (config.xid) {
+                    const pointIndex = points.findIndex(pt => pt.xid === config.xid);
+                    if (pointIndex >= 0) {
+                        const point = points.splice(pointIndex, 1)[0];
+                        point.watchListConfig = config;
+                        selectedPoints.push(point);
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            // now loop over the points and select the first matching point (by its tags) for each config
+            points.forEach(point => {
+                const config = this.findPointConfig(point, nonStaticTags, pointConfigs);
+                if (config) {
+                    point.watchListConfig = config;
+                    selectedPoints.push(point);
+                }
+            });
+            
+            return selectedPoints;
         }
     });
 
