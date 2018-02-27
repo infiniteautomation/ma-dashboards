@@ -9,7 +9,7 @@ define(['require', 'angular', 'moment-timezone'], function(require, angular, mom
 pointValuesFactory.$inject = ['$http', '$q', 'maUtil', 'MA_POINT_VALUES_CONFIG', '$injector'];
 function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) {
     const pointValuesUrl = '/rest/v2/point-values';
-    let maDialogHelper;
+    let maDialogHelper, lastToast;
     
     if ($injector.has('maDialogHelper')) {
     	maDialogHelper = $injector.get('maDialogHelper');
@@ -172,10 +172,10 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     if (reverseData)
                         values.reverse();
     
-                    if (!options.latest && maDialogHelper && values.length === data.limit) {
+                    if (!options.latest && maDialogHelper && values.length >= data.limit) {
                     	const now = (new Date()).valueOf();
-                    	if (!this.lastToast || (now - this.lastToast) > 10000) {
-                    		this.lastToast = now;
+                    	if (!lastToast || (now - lastToast) > 10000) {
+                    		lastToast = now;
                     		maDialogHelper.toastOptions({
                     			textTr: ['ui.app.pointValuesLimited', [data.limit || MA_POINT_VALUES_CONFIG.limit]],
                     			hideDelay: 10000,
