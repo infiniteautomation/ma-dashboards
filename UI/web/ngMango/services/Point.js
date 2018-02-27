@@ -373,13 +373,21 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     	return this._rendererMap;
     };
 
-    Point.prototype.valueRenderer = function(value) {
+    Point.prototype.valueRenderer = function(value, renderedValue) {
     	var rendererMap = this.rendererMap();
     	if (rendererMap) {
     	    var obj = rendererMap[value];
     	    if (obj) return obj;
+    	} else if (this.textRenderer && this.textRenderer.type === 'textRendererRange' && Array.isArray(this.textRenderer.rangeValues)) {
+    	    const range = this.textRenderer.rangeValues.find(range => value >= range.from && value < range.to);
+    	    if (range) {
+    	        return {
+    	            text: renderedValue,
+    	            color: range.colour
+    	        };
+    	    }
     	}
-    	return {text: value};
+    	return {text: renderedValue};
     };
     
     Point.prototype.websocketHandler = function(payload) {

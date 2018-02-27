@@ -212,7 +212,7 @@ PointValueDirectiveController.prototype.updateText = function() {
         return;
     }
     
-    var valueRenderer = this.point.valueRenderer(this.point.value);
+    var valueRenderer = this.point.valueRenderer(this.point.value, this.point.renderedValue);
     var color = valueRenderer ? valueRenderer.color : null;
 
     this.resolvedDisplayType = this.displayType || (this.point.pointLocator && this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered');
