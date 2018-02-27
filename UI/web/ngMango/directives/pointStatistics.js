@@ -216,7 +216,7 @@ function pointValues(Point, Util, $q, statistics) {
                                 var valueRenderer = point.valueRenderer(statsObj.value);
                                 if (!valueRenderer) continue;
                                 statsObj.renderedValue = valueRenderer.text;
-                                statsObj.renderedColor = valueRenderer.colour;
+                                statsObj.renderedColor = valueRenderer.color;
                             }
                         }
                         return data;
