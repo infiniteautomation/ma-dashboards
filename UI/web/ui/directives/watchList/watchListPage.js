@@ -643,7 +643,6 @@ class WatchListPageController {
                         timeout: 0,
                         dateTimeFormat: this.timeFormat,
                         timezone: this.timezone.value,
-                        rendered: true,
                         fields: fields
                     }).then(response => {
                         this.downloadStatus.downloading = false;

@@ -105,7 +105,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         }
         
         if (options.rendered) {
-            body.useRendered = true;
+            body.fields = ['TIMESTAMP', 'VALUE', 'RENDERED'];
         } else if (options.converted) {
             body.unitConversion = true;
         }
