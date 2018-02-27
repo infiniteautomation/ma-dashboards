@@ -21,6 +21,11 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
             const promise = resourceObj.$promise.then(function(hierarchy) {
                 this.hierarchy = hierarchy;
                 this.calculateTotalPoints();
+                
+                if (Number.isFinite(this.limitRootPoints) && this.limitRootPoints >= 0) {
+                    this.hierarchy.points = this.hierarchy.points.slice(0, this.limitRootPoints);
+                }
+                
                 this.render();
             }.bind(this));
 
@@ -180,7 +185,8 @@ return {
         folderIcon: '@?',
         folderStatusPoint: '@?',
         folderStyle: '<?',
-        onQuery: '&?'
+        onQuery: '&?',
+        limitRootPoints: '<?'
     },
     designerInfo: {
         translation: 'ui.components.maPointHierarchySelector',

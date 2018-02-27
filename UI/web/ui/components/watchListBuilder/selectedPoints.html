@@ -1,7 +1,7 @@
 <div class="watchlist-selected-points">
   <md-table-container>
     <table md-table md-row-select="true" multiple ng-model="$ctrl.staticSelected">
-      <thead md-head md-order="$ctrl.staticTableQuery.order" md-on-reorder="$ctrl.sortAndLimit">
+      <thead md-head md-order="$ctrl.staticTableQuery.order" md-on-reorder="$ctrl.sortAndLimitBound">
         <tr md-row>
             <th md-column md-order-by="dataSourceName" ma-tr="ui.app.dataSource"></th>
             <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
@@ -22,7 +22,7 @@
     </table>
   </md-table-container>
   <div class="watchlist-selected-tools">
-    <md-table-pagination md-limit="$ctrl.staticTableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.staticTableQuery.page" md-total="{{$ctrl.watchlist.points.length}}" md-page-select md-on-paginate="$ctrl.sortAndLimit"></md-table-pagination>
+    <md-table-pagination md-limit="$ctrl.staticTableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.staticTableQuery.page" md-total="{{$ctrl.watchlist.points.length}}" md-page-select md-on-paginate="$ctrl.sortAndLimitBound"></md-table-pagination>
     <md-button class="watchlist-selected-delete md-accent" ng-disabled="!$ctrl.staticSelected.length" ng-click="$ctrl.removeFromWatchlist()"><md-icon>clear</md-icon>&nbsp;<span ma-tr="ui.app.removeSelected"></span></md-button>
   </div>
 </div>

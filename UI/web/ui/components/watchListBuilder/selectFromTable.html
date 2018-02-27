@@ -10,7 +10,7 @@
 
   <md-table-container>
     <table md-table md-row-select="true" multiple ng-model="$ctrl.tableSelection" md-progress="$ctrl.queryPromise">
-      <thead md-head md-order="$ctrl.tableQuery.order" md-on-reorder="$ctrl.onPaginateOrSort">
+      <thead md-head md-order="$ctrl.tableQuery.order" md-on-reorder="$ctrl.onPaginateOrSortBound">
         <tr md-row>
             <th md-column md-order-by="dataSourceName" ma-tr="ui.app.dataSource"></th>
             <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
@@ -19,7 +19,7 @@
           </tr>
       </thead>
       <tbody md-body>
-        <tr md-row md-select="point" md-select-id="xid" md-auto-select ng-repeat="point in $ctrl.allPoints track by $ctrl.pointTrack(point)" md-on-select="$ctrl.tableSelectionChanged" md-on-deselect="$ctrl.tableSelectionChanged">
+        <tr md-row md-select="point" md-select-id="xid" md-auto-select ng-repeat="point in $ctrl.allPoints track by $ctrl.pointTrack(point)" md-on-select="$ctrl.tableSelectionChangedBound" md-on-deselect="$ctrl.tableSelectionChangedBound">
             <td md-cell ng-bind="point.dataSourceName"></td>
             <td md-cell ng-bind="point.deviceName"></td>
             <td md-cell ng-bind="point.name"></td>
@@ -28,5 +28,5 @@
       </tbody>
     </table>
   </md-table-container>
-  <md-table-pagination md-limit="$ctrl.tableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.tableQuery.page" md-total="{{$ctrl.total}}" md-page-select md-on-paginate="$ctrl.onPaginateOrSort"></md-table-pagination>
+  <md-table-pagination md-limit="$ctrl.tableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.tableQuery.page" md-total="{{$ctrl.total}}" md-page-select md-on-paginate="$ctrl.onPaginateOrSortBound"></md-table-pagination>
 </div>

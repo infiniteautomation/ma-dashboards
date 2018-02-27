@@ -44,6 +44,10 @@ class WatchListBuilderController {
         };
         this.selectedTab = 0;
         this.tableUpdateCount = 0;
+        
+        this.sortAndLimitBound = (...args) => this.sortAndLimit(...args);
+        this.onPaginateOrSortBound = (...args) => this.onPaginateOrSort(...args);
+        this.tableSelectionChangedBound = (...args) => this.tableSelectionChanged(...args);
     }
 
     baseUrl(path) {
