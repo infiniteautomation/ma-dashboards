@@ -93,6 +93,7 @@ requirejs.config({
         'simplify-js': vendor + '/simplify-js/simplify',
         'jszip': vendor + '/jszip/jszip',
         'plotly': vendor + '/plotly.js/plotly',
+        'stacktrace': vendor + '/stacktrace-js/stacktrace'
     },
     shim : {
         'angular': {

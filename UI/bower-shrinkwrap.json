@@ -67,7 +67,7 @@
     "1.1.1": "1.1.1"
   },
   "https://github.com/emn178/js-sha512.git": {
-    "0.7.1": "d5d905cc73dde0cb2c600a5d6d657cc207c95aaa"
+    "0.7.1": "0.7.1"
   },
   "https://github.com/furf/jquery-ui-touch-punch.git": {
     "master": "4bc009145202d9c7483ba85f3a236a8f3470354d"
@@ -107,6 +107,9 @@
   },
   "https://github.com/rxaviers/cldrjs.git": {
     "0.4.8": "0098333d0ddb7b28cdeb1cfefb39544712d21645"
+  },
+  "https://github.com/stacktracejs/stacktrace.js.git": {
+    "2.0.0": "2.0.0"
   },
   "https://github.com/whitequark/ipaddr.js.git": {
     "1.4.0": "1.4.0"

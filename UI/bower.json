@@ -34,7 +34,8 @@
     "ipaddr": "~1.4.0",
     "mathjs": "~3.16.3",
     "jszip": "~3.1.5",
-    "plotly.js": "~1.31.2"
+    "plotly.js": "~1.31.2",
+    "stacktrace-js": "~2.0.0"
   },
   "overrides": {
     "ace-builds": {
@@ -68,6 +69,9 @@
     },
     "cldrjs": {
       "main": ["dist/cldr.js", "dist/cldr/*.js"]
+    },
+    "stacktrace-js": {
+      "main": "dist/stacktrace.min.js"
     }
   },
   "resolutions": {

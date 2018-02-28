@@ -49,6 +49,7 @@ define(['./services/Point',
         './services/dataPointTags',
         './services/auditTrail',
         './services/revisionHistoryDialog',
+        './services/exceptionHandler',
         './filters/dateFilter',
         './filters/trFilter',
         'angular',
@@ -56,7 +57,8 @@ define(['./services/Point',
         'rql/query',
         'angular-resource',
         'angular-sanitize',
-        'angular-local-storage'
+        'angular-local-storage',
+        'angular-cookies'
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, httpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, watchdog, EventManager, NotificationManagerFactory, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, events,
@@ -64,7 +66,8 @@ define(['./services/Point',
         PermissionsFactory, systemSettingsProvider, systemStatusFactory,
         ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
         serverFactory, temporaryResourceFactory, restResourceFactory, temporaryRestResourceFactory, rqlBuilderFactory, mathFactory, maEventDetector,
-        maEventHandler, maDataPointTags, maAuditTrail, maRevisionHistoryDialog, dateFilterFactory, trFilterFactory, angular, require, rqlQuery) {
+        maEventHandler, maDataPointTags, maAuditTrail, maRevisionHistoryDialog, maExceptionHandler, dateFilterFactory, trFilterFactory,
+        angular, require, rqlQuery) {
 'use strict';
 
 // rql library doesn't encode null correctly (it encodes as string:null)
@@ -84,7 +87,7 @@ rqlQuery.encodeValue = function(val) {
  *
  *
 **/
-var ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'ngSanitize', 'LocalStorageModule', 'ngLocale']);
+var ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'ngSanitize', 'LocalStorageModule', 'ngLocale', 'ngCookies']);
 
 ngMangoServices.factory('maPoint', Point);
 ngMangoServices.factory('maPointHierarchy', PointHierarchy);
@@ -131,6 +134,7 @@ ngMangoServices.factory('maEventHandler', maEventHandler);
 ngMangoServices.factory('maDataPointTags', maDataPointTags);
 ngMangoServices.factory('maAuditTrail', maAuditTrail);
 ngMangoServices.factory('maRevisionHistoryDialog', maRevisionHistoryDialog);
+ngMangoServices.provider('$exceptionHandler', maExceptionHandler);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 
