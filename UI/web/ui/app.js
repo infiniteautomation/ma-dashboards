@@ -192,7 +192,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
             if (homeUrl && homeUrl.indexOf(basePath) === 0) {
                 return '/' + homeUrl.substring(basePath.length); // strip basePath from start of URL
             }
-            return user.admin ? '/home' : '/data-point-details/';
+            return user.admin ? '/administration/home' : '/data-point-details/';
         }
 
         return '/not-found?path=' + encodeURIComponent(path);
