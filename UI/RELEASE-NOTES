@@ -1,3 +1,24 @@
+*Version 3.3.2*
+* Point values v2 REST controller used across the board
+* Better chart display when data is missing from period by using point value bookends
+* Improved CSV format for downloading point values via watch list page
+* Remove tools column from watch list table and use popover instead
+* Point values component popover menu is condensed by default
+* Home page renamed to admin home and moved under administration
+* Utilities section added to admin home page
+* Improvements and bug fixes to system status pages
+* Add data type column option for bulk data point editor
+* Allow choosing which columns and tags you want displayed on the watch list table
+* Save sort order/rows per page with the watch list
+* Progress bar on upgrade page
+* Allow browsing by tags on the watch list page
+* Add Excel date format and custom date format to watch list point value download
+* Selected data points on the watchlist are associated based on the tags/columns shown on the table
+* Button for restoring a previous revision of dashboard designer / custom page
+* Add start rollup type to the menu
+* Point values service now returns both the plain number value and rendered value when using 'rendered' option
+* Display rendered color on history table on data point details page
+
 *Version 3.3.1*
 * Add tag watch list type
 * Add bulk data point edit page
