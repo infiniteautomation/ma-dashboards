@@ -310,6 +310,7 @@ class WatchListPageController {
                 const count = pointNameCounts[pt.name];
                 pointNameCounts[pt.name] = (count || 0) + 1;
                 
+                if (!pt.tags) pt.tags = {};
                 pt.tags.name = pt.name;
                 pt.tags.device = pt.deviceName;
             });
