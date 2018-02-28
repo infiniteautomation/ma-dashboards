@@ -53,7 +53,9 @@ ConfigExportController.prototype.doExport = function(download) {
         }
     }
     
-    var options = {};
+    var options = {
+        timeout: 0
+    };
     if (download) {
         options.responseType = 'blob';
     }

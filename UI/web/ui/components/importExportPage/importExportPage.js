@@ -55,7 +55,9 @@ ImportExportPageController.prototype.doExport = function(download) {
         }
     }
     
-    var options = {};
+    var options = {
+        timeout: 0
+    };
     if (download) {
         options.responseType = 'blob';
     }
@@ -108,7 +110,7 @@ ImportExportPageController.prototype.fileSelected = function($event) {
 ImportExportPageController.prototype.importFile = function(file) {
     delete this.importStatus;
 
-    this.ImportExport.importData(file).then(function(importStatus) {
+    this.ImportExport.importData(file, {timeout: 0}).then(function(importStatus) {
         this.importStatus = importStatus;
         this.getImportStatus();
     }.bind(this));
