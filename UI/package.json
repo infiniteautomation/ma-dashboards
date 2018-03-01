@@ -1,6 +1,6 @@
 {
   "name": "mango_automation_ui",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "Mango UI",
   "main": "index.js",
   "dependencies": {},
@@ -22,9 +22,7 @@
     "merge-stream": "^1.0.0",
     "path-exists": "^3.0.0"
   },
-  "scripts": {
-    "test": "mocha web/ngMango/**/*.spec.js"
-  },
+  "scripts": {},
   "author": "Jared Wiltshire <jared@infiniteautomation.com>",
   "license": "UNLICENSED",
   "repository": {
