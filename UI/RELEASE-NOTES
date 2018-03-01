@@ -1,3 +1,6 @@
+*Version 3.3.3*
+* Fix bug matching selected watch list points on watch list charts
+
 *Version 3.3.2*
 * Point values v2 REST controller used across the board
 * Better chart display when data is missing from period by using point value bookends
