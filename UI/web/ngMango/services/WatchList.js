@@ -327,14 +327,15 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
          */
         selectedTagKeys() {
             const selectedTags = this.data && Array.isArray(this.data.selectedTags) && this.data.selectedTags.slice() || [];
-            const selectedColumns = this.data && Array.isArray(this.data.selectedColumns) && this.data.selectedColumns || [];
+            const selectedColumns = this.data && Array.isArray(this.data.selectedColumns) && this.data.selectedColumns || ['deviceName', 'name'];
 
-            if (selectedColumns.includes('deviceName')) {
+            if (!selectedTags.includes('device') && selectedColumns.includes('deviceName')) {
                 selectedTags.push('device');
             }
-            if (selectedColumns.includes('name')) {
+            if (!selectedTags.includes('name') && selectedColumns.includes('name')) {
                 selectedTags.push('name');
             }
+            
             return selectedTags;
         },
         
@@ -353,7 +354,15 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             return this.selectedTagKeys().filter(tagKey => {
                 let seenVal;
                 return points.some((pt, i) => {
-                    const tagVal = pt.tags[tagKey];
+                    let tagVal;
+                    if (tagKey === 'device') {
+                        tagVal = pt.deviceName;
+                    } else if (tagKey === 'name') {
+                        tagVal = pt.name;
+                    } else {
+                        tagVal = pt.tags[tagKey];
+                    }
+
                     if (i === 0) {
                         seenVal = tagVal;
                     } else if (tagVal !== seenVal) {
@@ -417,7 +426,16 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
         findPointConfig(point, tagKeys, pointConfigs) {
             const configIndex = pointConfigs.findIndex(config => {
                 return !Object.keys(config.tags).some(tagKey => {
-                    return point.tags[tagKey] !== config.tags[tagKey];
+                    let tagVal;
+                    if (tagKey === 'device') {
+                        tagVal = point.deviceName;
+                    } else if (tagKey === 'name') {
+                        tagVal = point.name;
+                    } else {
+                        tagVal = point.tags[tagKey];
+                    }
+
+                    return tagVal !== config.tags[tagKey];
                 });
             });
             
