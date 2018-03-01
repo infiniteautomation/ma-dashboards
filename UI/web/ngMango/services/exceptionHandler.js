@@ -12,16 +12,25 @@ function ExceptionHandlerProvider($httpProvider) {
 
     const xsrfHeaderName = $httpProvider.defaults.xsrfHeaderName;
     const xsrfCookieName = $httpProvider.defaults.xsrfCookieName;
+    const messageTimeout = 10 * 60 * 1000; // 10 minutes
 
     exceptionHandlerFactory.$inject = ['MA_BASE_URL', 'MA_TIMEOUT', '$log', '$cookies', '$window'];
     function exceptionHandlerFactory(MA_BASE_URL, MA_TIMEOUT, $log, $cookies, $window) {
 
+        const seenMessages = {};
+        
         return function maExceptionHandler(exception, cause) {
             $log.error(exception, cause);
+            
+            const message = '' + exception;
+            if (seenMessages[message]) return;
+            
+            seenMessages[message] = true;
+            setTimeout(() => delete seenMessages[message], messageTimeout);
     
             StackTrace.fromError(exception, {offline: true}).then(frames => {
                 const body = JSON.stringify({
-                    message: '' + exception,
+                    message: message,
                     stackTrace: frames,
                     cause: cause || '',
                     location: '' + $window.location,
@@ -48,7 +57,6 @@ function ExceptionHandlerProvider($httpProvider) {
             }).catch(error => {
                 $log.error('Failed to generate/send stack trace', error);
             });
-    
         };
     }
 }
