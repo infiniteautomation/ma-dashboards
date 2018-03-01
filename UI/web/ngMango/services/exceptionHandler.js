@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'stacktrace'], function(angular, StackTrace) {
+define(['angular', 'stacktrace', 'moment-timezone'], function(angular, StackTrace, moment) {
 'use strict';
 
 ExceptionHandlerProvider.$inject = ['$httpProvider'];
@@ -26,7 +26,9 @@ function ExceptionHandlerProvider($httpProvider) {
                     cause: cause || '',
                     location: '' + $window.location,
                     userAgent: $window.navigator.userAgent,
-                    language: $window.navigator.language
+                    language: $window.navigator.language,
+                    date: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSZ'),
+                    timezone: moment.tz.guess()
                 });
 
                 const xsrfValue = $cookies.get(xsrfCookieName);
