@@ -1,5 +1,9 @@
+*Version 3.3.4*
+* Fix labels not displaying on watch list chart
+
 *Version 3.3.3*
 * Fix bug matching selected watch list points on watch list charts
+* Send client error and stack trace to /rest/v2/server/client-error for logging
 
 *Version 3.3.2*
 * Point values v2 REST controller used across the board
