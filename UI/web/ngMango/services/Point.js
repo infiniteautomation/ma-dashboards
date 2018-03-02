@@ -442,6 +442,29 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         }
     });
 
+    Point.prototype.getTags = function getTags() {
+        const tags = Object.assign({}, this.tags);
+        if (!tags.hasOwnProperty('device') && this.deviceName) {
+            tags.device = this.deviceName;
+        }
+        if (!tags.hasOwnProperty('name') && this.name) {
+            tags.name = this.name;
+        }
+        return tags;
+    };
+    
+    Point.prototype.getTag = function getTag(tagKey) {
+        if (tagKey === 'device') {
+            return this.deviceName;
+        }
+        if (tagKey === 'name') {
+            return this.name;
+        }
+        if (this.tags && this.tags.hasOwnProperty(tagKey)) {
+            return this.tags[tagKey];
+        }
+    };
+
     Point.bulk = BulkDataPointTemporaryResource;
     
     return Point;

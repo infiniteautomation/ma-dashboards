@@ -127,7 +127,7 @@ WatchListChartController.prototype.filterPoints = function() {
         const pointOptions = point.watchListConfig;
 
         const fields = selectedTags.map(tagKey => {
-            return point.tags[tagKey];
+            return point.getTag(tagKey);
         });
         
         const graphOption = Object.assign({}, pointOptions);

@@ -354,14 +354,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             return this.selectedTagKeys().filter(tagKey => {
                 let seenVal;
                 return points.some((pt, i) => {
-                    let tagVal;
-                    if (tagKey === 'device') {
-                        tagVal = pt.deviceName;
-                    } else if (tagKey === 'name') {
-                        tagVal = pt.name;
-                    } else {
-                        tagVal = pt.tags[tagKey];
-                    }
+                    const tagVal = pt.getTag(tagKey);
 
                     if (i === 0) {
                         seenVal = tagVal;
@@ -426,16 +419,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
         findPointConfig(point, tagKeys, pointConfigs) {
             const configIndex = pointConfigs.findIndex(config => {
                 return !Object.keys(config.tags).some(tagKey => {
-                    let tagVal;
-                    if (tagKey === 'device') {
-                        tagVal = point.deviceName;
-                    } else if (tagKey === 'name') {
-                        tagVal = point.name;
-                    } else {
-                        tagVal = point.tags[tagKey];
-                    }
-
-                    return tagVal !== config.tags[tagKey];
+                    return point.getTag(tagKey) !== config.tags[tagKey];
                 });
             });
             
