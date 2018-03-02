@@ -1,5 +1,7 @@
 *Version 3.3.4*
 * Fix labels not displaying on watch list chart
+* Fix incorrect queries from ma-point-query using $and
+* Fix trying to get stack trace when its not an Error
 
 *Version 3.3.3*
 * Fix bug matching selected watch list points on watch list charts
