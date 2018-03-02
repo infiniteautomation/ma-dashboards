@@ -408,30 +408,30 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             } else if (options.query && typeof options.query.walk === 'function') { // RQL query object
                 params.push(options.query.toString());
             } else if (options.query) {
-                let and = !!options.query.$and;
-                let exact = !!options.query.$exact;
-                delete options.query.$exact;
-                delete options.query.$and;
+                const or = !options.query.$and;
+                const exact = !!options.query.$exact;
     
-                if (!and) {
+                if (or) {
                     rqlBuilder.or();
                 }
                 
-                for (let key in options.query) {
-                    let val = options.query[key];
-                    if (val === undefined) continue;
-                    
-                    if (angular.isArray(val)) {
-                        if (val.length === 0) continue;
-                        rqlBuilder.in(key, ...val);
-                    } else if (typeof val === 'string' && val.indexOf('=') < 0 && !exact) {
-                        rqlBuilder.like(key, '*' + val + '*');
-                    } else {
-                        rqlBuilder.eq(key, val);
-                    }
-                }
-                
-                if (!and) {
+                Object.keys(options.query)
+                    .filter(k => k.indexOf('$') !== 0)
+                    .map(k => ({key: k, value: options.query[k]}))
+                    .filter(entry => entry.value !== undefined)
+                    .forEach(({key, value}) => {
+                        if (Array.isArray(value)) {
+                            if (value.length) {
+                                rqlBuilder.in(key, ...value);
+                            }
+                        } else if (typeof value === 'string' && value.indexOf('=') < 0 && !exact) {
+                            rqlBuilder.like(key, '*' + value + '*');
+                        } else {
+                            rqlBuilder.eq(key, value);
+                        }
+                    });
+
+                if (or) {
                     rqlBuilder.up();
                 }
             }
