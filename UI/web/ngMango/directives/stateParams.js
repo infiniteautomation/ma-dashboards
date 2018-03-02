@@ -20,8 +20,9 @@
   * @param {boolean=} [notify-on-init=true] If false the `on-change` expression will not be called on directive initialization.
   */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 stateParams.$inject = [];
 function stateParams() {
@@ -92,6 +93,6 @@ function stateParams() {
     };
 }
 
-return stateParams;
+export default stateParams;
 
-}); // define
+

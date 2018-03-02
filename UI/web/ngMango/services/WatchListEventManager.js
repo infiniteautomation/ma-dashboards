@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define([], function() {
-'use strict';
+
+
 /**
 * @ngdoc service
 * @name ngMangoServices.maWatchListEventManager
@@ -27,6 +27,6 @@ function WatchListEventManagerFactory(EventManager) {
 }
 
 WatchListEventManagerFactory.$inject = ['maEventManager'];
-return WatchListEventManagerFactory;
+export default WatchListEventManagerFactory;
 
-}); // define
+

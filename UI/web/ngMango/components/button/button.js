@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maButton
@@ -36,7 +36,7 @@ define(['angular', 'require'], function(angular, require) {
  **/
 var button = {
     controller: ButtonController,
-    templateUrl: require.toUrl('./button.html'),
+    templateUrl: requirejs.toUrl('./button.html'),
     bindings: {
     	icon: '@?',
     	label: '@?',
@@ -84,6 +84,4 @@ ButtonController.prototype.$onChanges = function(changes) {
 	};
 };
 
-return button;
-
-}); // define
+export default button;

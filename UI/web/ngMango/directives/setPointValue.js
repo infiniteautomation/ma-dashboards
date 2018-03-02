@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular', './PointValueController'], function(require, angular, PointValueController) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+import PointValueController from './PointValueController';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maSetPointValue
@@ -36,9 +38,9 @@ function setPointValue($injector) {
         restrict: 'E',
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./setPointValue-md.html');
+                return requirejs.toUrl('./setPointValue-md.html');
             }
-            return require.toUrl('./setPointValue.html');
+            return requirejs.toUrl('./setPointValue.html');
         },
         scope: {},
         controller: SetPointValueController,
@@ -243,6 +245,6 @@ SetPointValueController.prototype.pointChanged = function() {
     }
 };
 
-return setPointValue;
+export default setPointValue;
 
-}); // define
+

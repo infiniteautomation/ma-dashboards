@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 //you can't use this directive as is, you must bind eventName and directiveName to the function
 eventHandler.$inject = ['$parse', '$rootScope'];
@@ -24,6 +24,6 @@ function eventHandler(eventName, directiveName, $parse, $rootScope) {
     };
 }
 
-return eventHandler;
+export default eventHandler;
 
-}); // define
+

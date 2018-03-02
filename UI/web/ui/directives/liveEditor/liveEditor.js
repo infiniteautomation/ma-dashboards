@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular-ui-ace'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+import 'angular-ui-ace';
+
 
 LiveEditorController.$inject = ['$element', 'maUiSettings', '$templateRequest', '$sce', '$scope', '$timeout'];
 function LiveEditorController($element, uiSettings, $templateRequest, $sce, $scope, $timeout) {
@@ -128,6 +129,6 @@ function LiveEditor() {
     };
 }
 
-return LiveEditor;
+export default LiveEditor;
 
-}); // define
+

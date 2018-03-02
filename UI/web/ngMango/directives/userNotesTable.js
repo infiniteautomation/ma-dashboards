@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'moment-timezone'], function(require, moment) {
-'use strict';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maUserNotesTable
@@ -40,7 +41,7 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
             translation: 'ui.components.maUserNotesTable',
             icon: 'people'
         },
-        templateUrl: require.toUrl('./userNotesTable.html'),
+        templateUrl: requirejs.toUrl('./userNotesTable.html'),
         link: function ($scope, $element, attrs) {
             
             $scope.addNote = (event) => {
@@ -76,6 +77,5 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
     };
 }
 
-return userNotesTable;
+export default userNotesTable;
 
-}); // define

@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'ace'], function(require, ace) {
-'use strict';
+import requirejs from 'requirejs/require';
+import ace from 'ace';
+
 
 var prettyprint = function(uiSettings) {
     return {
@@ -32,6 +33,6 @@ var prettyprint = function(uiSettings) {
 
 prettyprint.$inject = ['maUiSettings'];
 
-return prettyprint;
+export default prettyprint;
 
-}); // define
+

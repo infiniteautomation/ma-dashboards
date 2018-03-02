@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 UsersPageController.$inject = ['maUser', '$state', '$mdMedia'];
 function UsersPageController(User, $state, $mdMedia) {
@@ -63,9 +64,8 @@ UsersPageController.prototype.addUser = function($event) {
     this.updateUrl();
 };
 
-return {
+export default {
     controller: UsersPageController,
-    templateUrl: require.toUrl('./usersPage.html')
+    templateUrl: requirejs.toUrl('./usersPage.html')
 };
 
-}); // define

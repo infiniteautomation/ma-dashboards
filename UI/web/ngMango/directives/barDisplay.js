@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', './PointValueController'], function(angular, PointValueController) {
-'use strict';
+import angular from 'angular';
+import PointValueController from './PointValueController';
+
 
 function barDisplay() {
     return {
@@ -96,6 +97,6 @@ BarDisplayController.prototype.updateBar = function() {
     }
 };
 
-return barDisplay;
+export default barDisplay;
 
-}); // define
+

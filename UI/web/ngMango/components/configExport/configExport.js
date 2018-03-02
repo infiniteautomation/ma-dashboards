@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 ConfigExportController.$inject = ['maImportExport', 'maUtil', 'maTranslate'];
 function ConfigExportController(ImportExport, Util, Translate) {
@@ -94,9 +95,9 @@ ConfigExportController.prototype.writeIndentedJson = function() {
     }
 };
 
-return {
+export default {
     controller: ConfigExportController,
-    templateUrl: require.toUrl('./configExport.html'),
+    templateUrl: requirejs.toUrl('./configExport.html'),
     bindings: {
         onExport: '&?'
     },
@@ -107,4 +108,4 @@ return {
     }
 };
 
-}); // define
+

@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 statisticsFactory.$inject = ['$http', '$q', 'maUtil'];
 function statisticsFactory($http, $q, Util) {
@@ -65,5 +66,5 @@ function statisticsFactory($http, $q, Util) {
     return new Statistics();
 }
 
-return statisticsFactory;
-});
+export default statisticsFactory;
+

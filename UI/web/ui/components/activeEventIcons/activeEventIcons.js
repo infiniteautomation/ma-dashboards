@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 ActiveEventIconsController.$inject = ['maEvents', '$scope'];
 function ActiveEventIconsController(Events, $scope) {
@@ -39,9 +40,9 @@ ActiveEventIconsController.prototype.counter = function counter(payloadEvent, pa
     }
 };
 
-return {
+export default {
     controller: ActiveEventIconsController,
-    templateUrl: require.toUrl('./activeEventIcons.html')
+    templateUrl: requirejs.toUrl('./activeEventIcons.html')
 };
 
-}); // define
+

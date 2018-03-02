@@ -3,8 +3,10 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import query from 'rql/query';
+
 
 const defaultTotal = '\u2026';
 const $inject = ['maPoint', '$mdMedia', 'maWatchList','$state', '$mdDialog', 'maTranslate', '$mdToast', 'maUser', '$q'];
@@ -51,7 +53,7 @@ class WatchListBuilderController {
     }
 
     baseUrl(path) {
-    	return require.toUrl('.' + path);
+    	return requirejs.toUrl('.' + path);
     }
 
     newWatchlist(name) {
@@ -568,9 +570,9 @@ class WatchListBuilderController {
     }
 }
 
-return {
+export default {
     controller: WatchListBuilderController,
-    templateUrl: require.toUrl('./watchListBuilder.html')
+    templateUrl: requirejs.toUrl('./watchListBuilder.html')
 };
 
-}); // define
+

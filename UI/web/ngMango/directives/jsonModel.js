@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 class JsonModelController {
     static get $$ngIsClass() { return true; }
@@ -42,6 +42,6 @@ const jsonModel = function jsonModel() {
     };
 };
 
-return jsonModel;
+export default jsonModel;
 
-}); // define
+

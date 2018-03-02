@@ -1,10 +1,9 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
 
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
     findMangoConnections();
@@ -53,7 +52,7 @@ function findMangoConnections() {
 
     // creates config function to white-list remote host so angular can fetch templates from it
     var scriptSourceServer;
-	var match = /^(http|https):\/\/.*?(?=\/)/.exec(require.toUrl('./ngMango'));
+	var match = /^(http|https):\/\/.*?(?=\/)/.exec(requirejs.toUrl('./ngMango'));
     if (match) scriptSourceServer = match[0];
 
     resourceWhitelistConfig.$inject = ['$sceDelegateProvider'];
@@ -69,7 +68,7 @@ function findMangoConnections() {
         $compileProvider.debugInfoEnabled(false);
     }
 
-	require(dependencies, function(angular, ngMango) {
+	requirejs(dependencies, function(angular, ngMango) {
 		if (!connectionElements.length) {
             var defaultApp = angular.module('ngMangoBootstrapApp', [defaultModule]);
             if (scriptSourceServer) {
@@ -119,7 +118,5 @@ function findMangoConnections() {
 		function doBootstrap(element, appName) {
 			angular.bootstrap(element, [appName], {strictDi: true});
 		}
-	}); // define
+	});
 }
-
-}); // define

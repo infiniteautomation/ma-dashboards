@@ -1,10 +1,10 @@
     /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 /**
 * @ngdoc service
 * @name ngMangoServices.maWatchdog
@@ -204,6 +204,6 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
 	return new MangoWatchdog({timeout: mangoWatchdogTimeout, reconnectDelay: mangoReconnectDelay});
 }
 
-return mangoWatchdog;
+export default mangoWatchdog;
 
-}); // define
+

@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 /**
  * Replaces the old maTemporaryResource service. This is used for bulk data point and tag operations. 
@@ -146,6 +146,6 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
     return TemporaryRestResource;
 }
 
-return temporaryRestResourceFactory;
+export default temporaryRestResourceFactory;
 
-}); // define
+

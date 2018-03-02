@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 ChangeController.$inject = ['$scope', '$element'];
 function ChangeController($scope, $element) {
@@ -38,6 +38,6 @@ function change($compile, $timeout) {
     };
 }
 
-return change;
+export default change;
 
-}); // define
+

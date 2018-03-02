@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'rql/query'], function(angular, query) {
-'use strict';
+import angular from 'angular';
+import query from 'rql/query';
+
 
 WatchListFactory.$inject = ['$resource', 'maUtil', '$http', 'maPoint', 'maPointHierarchy', '$q',
     '$interpolate', '$sce', '$parse', 'maRqlBuilder'];
@@ -476,6 +477,6 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
     return WatchList;
 }
 
-return WatchListFactory;
+export default WatchListFactory;
 
-}); // define
+

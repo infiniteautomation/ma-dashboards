@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 function chooseFile() {
     return {
@@ -40,6 +40,6 @@ ChooseFileController.prototype.$onInit = function() {
 	}.bind(this));
 };
 
-return chooseFile;
+export default chooseFile;
 
-}); // define
+

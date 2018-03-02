@@ -1,10 +1,12 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+
 
 UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales'];
 function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLocales) {
@@ -174,9 +176,9 @@ UserEditorController.prototype.regExpEscape = function(s) {
     return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
 };
 
-return {
+export default {
     controller: UserEditorController,
-    templateUrl: require.toUrl('./userEditor.html'),
+    templateUrl: requirejs.toUrl('./userEditor.html'),
     bindings: {
         originalUser: '<?user',
         onSave: '&?',
@@ -187,4 +189,4 @@ return {
     }
 };
 
-}); // define
+

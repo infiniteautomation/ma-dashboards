@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'moment-timezone'], function(require, moment) {
-'use strict';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maStatisticsTable
@@ -55,9 +56,9 @@ function statisticsTable($injector, mangoDateFormats) {
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./statisticsTable-md.html');
+                return requirejs.toUrl('./statisticsTable-md.html');
             }
-            return require.toUrl('./statisticsTable.html');
+            return requirejs.toUrl('./statisticsTable.html');
         },
         link: function($scope, $element, $attrs) {
             $scope.formatTimestamp = function(ts) {
@@ -71,6 +72,6 @@ function statisticsTable($injector, mangoDateFormats) {
     };
 }
 
-return statisticsTable;
+export default statisticsTable;
 
-}); // define
+

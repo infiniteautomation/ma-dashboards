@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 DialogHelperFactory.$inject = ['$injector', 'maTranslate', 'maSystemActions', '$q', 'maUtil'];
 function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil) {
@@ -46,7 +47,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                         this.$mdDialog.hide(this.result);
                     };
                 },
-                templateUrl: require.toUrl('./basicDialog.html'),
+                templateUrl: requirejs.toUrl('./basicDialog.html'),
                 targetEvent: $event,
                 clickOutsideToClose: true,
                 escapeToClose: true,
@@ -151,7 +152,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
 
         showConfigImportDialog(importData, $event) {
             var locals = {importData: importData};
-            var templateUrl = require.toUrl('../components/configImportDialog/configImportDialogContainer.html');
+            var templateUrl = requirejs.toUrl('../components/configImportDialog/configImportDialogContainer.html');
             return this.showDialog(templateUrl, locals, $event);
         }
         
@@ -192,6 +193,6 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
     return new DialogHelper();
 }
 
-return DialogHelperFactory;
+export default DialogHelperFactory;
 
-});
+

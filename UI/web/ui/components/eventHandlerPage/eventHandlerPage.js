@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 const $inject = Object.freeze(['maEventHandler', '$state']);
 class EventHandlerPageController {
@@ -42,8 +43,8 @@ class EventHandlerPageController {
     }
 }
 
-return {
-    templateUrl: require.toUrl('./eventHandlerPage.html'),
+export default {
+    templateUrl: requirejs.toUrl('./eventHandlerPage.html'),
     controller: EventHandlerPageController,
     bindings: {
     },
@@ -51,4 +52,4 @@ return {
     }
 };
 
-}); // define
+

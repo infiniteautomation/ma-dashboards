@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maStartsAndRuntimesTable
@@ -34,9 +34,9 @@ function startsAndRuntimesTable($injector) {
         replace: true,
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./startsAndRuntimesTable-md.html');
+                return requirejs.toUrl('./startsAndRuntimesTable-md.html');
             }
-            return require.toUrl('./startsAndRuntimesTable.html');
+            return requirejs.toUrl('./startsAndRuntimesTable.html');
         },
         designerInfo: {
             translation: 'ui.components.maStartAndRuntimesTable',
@@ -47,6 +47,6 @@ function startsAndRuntimesTable($injector) {
 
 startsAndRuntimesTable.$inject = ['$injector'];
 
-return startsAndRuntimesTable;
+export default startsAndRuntimesTable;
 
-}); // define
+

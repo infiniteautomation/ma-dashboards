@@ -1,5 +1,5 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -36,8 +36,10 @@
   * 
   */
 
-define(['angular', 'require', './WatchListSelectController'], function(angular, require, WatchListSelectController) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import WatchListSelectController from './WatchListSelectController';
+
 
 watchListListFactory.$inject = ['$injector'];
 function watchListListFactory($injector) {
@@ -45,9 +47,9 @@ function watchListListFactory($injector) {
         restrict: 'E',
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./watchListList-md.html');
+                return requirejs.toUrl('./watchListList-md.html');
             }
-            return require.toUrl('./watchListList.html');
+            return requirejs.toUrl('./watchListList.html');
         },
         scope: {},
         controller: WatchListListController,
@@ -91,6 +93,6 @@ function WatchListListController(User) {
 WatchListListController.prototype = Object.create(WatchListSelectController.prototype);
 WatchListListController.prototype.constructor = WatchListListController;
 
-return watchListListFactory;
+export default watchListListFactory;
 
-}); // define
+

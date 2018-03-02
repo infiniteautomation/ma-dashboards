@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 /**
  * @ngdoc directive
@@ -74,7 +74,7 @@ class PointEventDetectorController {
     }
 }
 
-return {
+export default {
     bindings: {
         point: '<',
         detectorType: '@',
@@ -94,4 +94,4 @@ return {
     }
 };
 
-}); // define
+

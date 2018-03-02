@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 AceEditorController.$inject = ['$element', '$injector', '$templateRequest', '$sce', '$scope', '$timeout'];
 function AceEditorController($element, $injector, $templateRequest, $sce, $scope, $timeout) {
@@ -153,6 +154,6 @@ function AceEditor() {
     };
 }
 
-return AceEditor;
+export default AceEditor;
 
-}); // define
+

@@ -1,10 +1,13 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular, require, query, moment) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import query from 'rql/query';
+import moment from 'moment-timezone';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maEventsTable
@@ -350,7 +353,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
     
     return {
         restrict: 'E',
-        templateUrl: require.toUrl('./eventsTable.html'),
+        templateUrl: requirejs.toUrl('./eventsTable.html'),
         scope: {},
         controller: EventsTableController,
         controllerAs: '$ctrl',
@@ -379,6 +382,6 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
     };
 }
 
-return eventsTable;
+export default eventsTable;
 
-}); // define
+

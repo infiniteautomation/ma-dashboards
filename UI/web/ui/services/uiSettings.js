@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'maCssInjector', '$templateRequest', '$interpolate',
     'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION', 'MA_POINT_VALUES_CONFIG'];
@@ -121,7 +122,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
             if (MD_THEME_CSS) {
                 angular.element('head > style[tracking-name="interpolatedStyles"]').remove();
                 
-                $templateRequest(require.toUrl('../styles/interpolatedStyles.css')).then(function(text) {
+                $templateRequest(requirejs.toUrl('../styles/interpolatedStyles.css')).then(function(text) {
                     var result = $interpolate(text)({
                         getThemeColor: function(colorString) {
                             return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
@@ -156,6 +157,6 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
     
     return new UiSettings();
 }
-return uiSettingsFactory;
+export default uiSettingsFactory;
 
-}); // define
+

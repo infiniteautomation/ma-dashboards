@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import query from 'rql/query';
+
 
 var queryGroup = function queryGroup() {
     this.$onInit = function() {
@@ -54,9 +56,9 @@ var queryGroup = function queryGroup() {
 
 queryGroup.$inject = [];
 
-return {
+export default {
     controller: queryGroup,
-    templateUrl: require.toUrl('./queryGroup.html'),
+    templateUrl: requirejs.toUrl('./queryGroup.html'),
     require: {
         'builderCtrl': '^^maQueryBuilder'
     },
@@ -71,4 +73,4 @@ return {
     }
 };
 
-}); // define
+

@@ -1,10 +1,13 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['amcharts/gantt', 'angular', 'moment-timezone', 'jquery'], function(AmCharts, angular, moment, $) {
-'use strict';
+import AmCharts from 'amcharts/gantt';
+import angular from 'angular';
+import moment from 'moment-timezone';
+import $ from 'jquery';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maStateChart
@@ -59,7 +62,7 @@ function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector, MA_AMCHARTS_
         template: '<div class="amchart"></div>',
         compile: function() {
             if (MA_INSERT_CSS) {
-                maCssInjector.injectLink(require.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
+                maCssInjector.injectLink(requirejs.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
             }
             return postLink;
         }
@@ -237,6 +240,6 @@ function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector, MA_AMCHARTS_
 
 }
 
-return stateChart;
+export default stateChart;
 
-}); // define
+

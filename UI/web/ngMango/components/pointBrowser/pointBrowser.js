@@ -3,8 +3,9 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 const types = ['watchList', 'deviceName', 'dataSource', 'hierarchy', 'tags'];
 
@@ -227,8 +228,8 @@ class PointBrowserController {
     }
 }
 
-return {
-    templateUrl: require.toUrl('./pointBrowser.html'),
+export default {
+    templateUrl: requirejs.toUrl('./pointBrowser.html'),
     controller: PointBrowserController,
     bindings: {
         listType: '@?',
@@ -239,4 +240,4 @@ return {
     }
 };
 
-}); // define
+

@@ -1,10 +1,13 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['amcharts/gauge', 'require', 'angular', './PointValueController'], function(AmCharts, require, angular, PointValueController) {
-'use strict';
+import AmCharts from 'amcharts/gauge';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+import PointValueController from './PointValueController';
+
 
 /**
  * @ngdoc directive
@@ -291,6 +294,6 @@ function defaultOptions() {
     };
 }
 
-return gaugeChart;
+export default gaugeChart;
 
-}); // define
+

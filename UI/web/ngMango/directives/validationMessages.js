@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 ValidationMessagesController.$inject = [];
 function ValidationMessagesController() {
@@ -51,6 +52,6 @@ function ValidationMessages() {
     };
 }
 
-return ValidationMessages;
+export default ValidationMessages;
 
-}); // define
+

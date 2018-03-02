@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 
 var dualPaneEditor = function() {
     return {
@@ -13,7 +13,7 @@ var dualPaneEditor = function() {
             $element.empty();
             if (htmlContent)
                 $element.data('htmlContent', htmlContent);
-            return require.toUrl('./dualPaneEditor.html');
+            return requirejs.toUrl('./dualPaneEditor.html');
         },
         link: function($scope, $element, $attrs) {
             var content = $element.data('htmlContent');
@@ -26,6 +26,6 @@ var dualPaneEditor = function() {
 
 dualPaneEditor.$inject = [];
 
-return dualPaneEditor;
+export default dualPaneEditor;
 
-}); // define
+

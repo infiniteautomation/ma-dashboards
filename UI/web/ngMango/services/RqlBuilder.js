@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'rql/query'], function(angular, rqlQueryLib) {
-'use strict';
+import angular from 'angular';
+import rqlQueryLib from 'rql/query';
+
 
 const Query = rqlQueryLib.Query;
 
@@ -156,6 +157,6 @@ function rqlBuilderFactory() {
     return RqlBuilder;
 }
 
-return rqlBuilderFactory;
+export default rqlBuilderFactory;
 
-}); // define
+

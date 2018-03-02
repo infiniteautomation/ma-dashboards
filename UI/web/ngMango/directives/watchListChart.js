@@ -1,5 +1,5 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */
 
@@ -39,14 +39,15 @@
   *
   */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 watchListChart.$inject = [];
 function watchListChart() {
     return {
         restrict: 'E',
-        templateUrl: require.toUrl('./watchListChart.html'),
+        templateUrl: requirejs.toUrl('./watchListChart.html'),
         scope: {},
         controller: WatchListChartController,
         controllerAs: '$ctrl',
@@ -163,6 +164,5 @@ WatchListChartController.prototype.valuesUpdatedHandler = function(values) {
         this.onValuesUpdated({$values: values});
 };
 
-return watchListChart;
+export default watchListChart;
 
-}); // define

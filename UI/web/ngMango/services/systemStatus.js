@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 
 SystemStatusFactory.$inject = ['$http'];
@@ -121,6 +122,6 @@ function SystemStatusFactory($http) {
     return SystemStatus;
 }
 
-return SystemStatusFactory;
+export default SystemStatusFactory;
 
-});
+

@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'moment-timezone', 'require'], function(angular, moment, require) {
-'use strict';
+import angular from 'angular';
+import moment from 'moment-timezone';
+import requirejs from 'requirejs/require';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maPointValues
@@ -476,7 +478,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     
                     return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
                         if (dataType === 'IMAGE') {
-                            var imgUrl = require.toUrl('../img/noDataForPeriod.svg');
+                            var imgUrl = requirejs.toUrl('../img/noDataForPeriod.svg');
                             for (var i = 0; i < values.length; i++) {
                                 if (values[i].annotation === 'No data for period') {
                                     values[i].value = imgUrl;
@@ -493,6 +495,6 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
     };
 }
 
-return pointValues;
+export default pointValues;
 
-}); // define
+

@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 PageFactory.$inject = ['maJsonStore', 'MA_UI_PAGES_XID', 'maUtil', '$q', 'MA_UI_EDIT_PAGES_PERMISSION'];
 function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERMISSION) {
@@ -72,6 +72,6 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERM
     return new Page();
 }
 
-return PageFactory;
+export default PageFactory;
 
-}); // define
+

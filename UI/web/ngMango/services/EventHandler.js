@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 eventHandlerFactory.$inject = ['maRestResource', 'MA_EVENT_HANDLER_TYPES'];
 function eventHandlerFactory(RestResource, MA_EVENT_HANDLER_TYPES) {
@@ -88,6 +88,6 @@ function eventHandlerFactory(RestResource, MA_EVENT_HANDLER_TYPES) {
     return EventHandler;
 }
 
-return eventHandlerFactory;
+export default eventHandlerFactory;
 
-}); // define
+

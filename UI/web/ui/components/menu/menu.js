@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 MenuController.$inject = [];
 function MenuController() {
@@ -72,13 +73,13 @@ function MenuController() {
     };
 }
 
-return {
+export default {
     controller: MenuController,
-    templateUrl: require.toUrl('./menu.html'),
+    templateUrl: requirejs.toUrl('./menu.html'),
     bindings: {
         origMenuItems: '<menuItems',
         user: '<user'
     }
 };
 
-}); // define
+

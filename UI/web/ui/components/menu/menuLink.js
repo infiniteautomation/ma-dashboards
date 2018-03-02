@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 
 MenuLinkController.$inject = ['$state', 'maTranslate'];
 function MenuLinkController($state, Translate) {
@@ -45,9 +45,9 @@ function MenuLinkController($state, Translate) {
     };
 }
 
-return {
+export default {
     controller: MenuLinkController,
-    templateUrl: require.toUrl('./menuLink.html'),
+    templateUrl: requirejs.toUrl('./menuLink.html'),
     bindings: {
         item: '<menuItem'
     },
@@ -56,4 +56,4 @@ return {
     }
 };
 
-}); // define
+

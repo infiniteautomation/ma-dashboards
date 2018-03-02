@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 dropzone.$inject = [];
 function dropzone() {
@@ -109,6 +109,6 @@ DragInfo.prototype.getCoordinates = function getCoordinates() {
     };
 };
 
-return dropzone;
+export default dropzone;
 
-}); // define
+

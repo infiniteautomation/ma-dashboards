@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 
 function addParams(url) {
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'showHeader=false&showFooter=false&showToolbar=false';
@@ -76,6 +76,6 @@ var iframeView = function() {
 
 iframeView.$inject = [];
 
-return iframeView;
+export default iframeView;
 
-}); // define
+

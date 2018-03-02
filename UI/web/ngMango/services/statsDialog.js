@@ -1,10 +1,12 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */
 
-define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+
 
 statsDialog.$inject = ['$mdDialog', '$mdMedia', 'maUiDateBar', 'localStorageService'];
 function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
@@ -44,7 +46,7 @@ function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
                     $mdDialog.cancel();
                 };
             },
-            templateUrl: require.toUrl('./statsDialog.html'),
+            templateUrl: requirejs.toUrl('./statsDialog.html'),
             parent: angular.element(document.body),
             targetEvent: ev,
             fullscreen: true,
@@ -61,6 +63,6 @@ function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
     return StatsDialog;
 }
 
-return statsDialog;
+export default statsDialog;
 
-}); // define
+

@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 PermissionsMenuController.$inject = ['maPermissions'];
 function PermissionsMenuController(Permissions) {
@@ -75,9 +76,9 @@ PermissionsMenuController.prototype.checkboxChanged = function checkboxChanged()
     this.ngModelCtrl.$setViewValue(permissionNames.join(', '));
 };
 
-return {
+export default {
     controller: PermissionsMenuController,
-    templateUrl: require.toUrl('./permissionsMenu.html'),
+    templateUrl: requirejs.toUrl('./permissionsMenu.html'),
     require: {
         'ngModelCtrl': 'ngModel'
     },
@@ -88,4 +89,4 @@ return {
     }
 };
 
-}); // define
+

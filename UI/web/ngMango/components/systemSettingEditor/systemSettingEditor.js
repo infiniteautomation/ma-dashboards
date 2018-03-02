@@ -1,14 +1,15 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'tinycolor'], function(angular, require, tinycolor) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import tinycolor from 'tinycolor2';
 
 var systemSettingEditor = {
     controller: SystemSettingEditorController,
-    templateUrl: require.toUrl('./systemSettingEditor.html'),
+    templateUrl: requirejs.toUrl('./systemSettingEditor.html'),
     bindings: {
         key: '@',
         labelTr: '@',
@@ -150,6 +151,4 @@ SystemSettingEditorController.prototype.chooseColor = function($event) {
     }.bind(this));
 };
 
-return systemSettingEditor;
-
-}); // define
+export default systemSettingEditor;

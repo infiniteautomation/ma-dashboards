@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicItems) {
     return {
@@ -16,7 +17,7 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
             limit: '=?',
             autoInit: '=?'
         },
-        templateUrl: require.toUrl('./pagingPointList.html'),
+        templateUrl: requirejs.toUrl('./pagingPointList.html'),
         link: function ($scope, $element, attrs) {
 
             $scope.dynamicItems = new DynamicItems({service: Point});
@@ -61,6 +62,6 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
 }
 
 pagingPointList.$inject = ['maPoint', '$filter', '$injector', '$parse', '$timeout', 'maDynamicItems'];
-return pagingPointList;
+export default pagingPointList;
 
-}); // define
+

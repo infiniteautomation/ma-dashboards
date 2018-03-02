@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope', '$q', '$mdToast', 'maTranslate', '$timeout'];
 function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, maTranslate, $timeout) {
@@ -213,9 +214,9 @@ UpgradePageController.prototype.restart = function($event) {
 	}.bind(this));
 };
 
-return {
+export default {
     controller: UpgradePageController,
-    templateUrl: require.toUrl('./upgradePage.html')
+    templateUrl: requirejs.toUrl('./upgradePage.html')
 };
 
-}); // define
+

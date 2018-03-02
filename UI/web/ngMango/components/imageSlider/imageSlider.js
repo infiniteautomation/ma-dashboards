@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 class ImageSliderController {
     static get $$ngIsClass() { return true; }
@@ -69,16 +70,16 @@ class ImageSliderController {
     }
 }
 
-return {
+export default {
     bindings: {
         pointValues: '<'
     },
     controller: ImageSliderController,
-    templateUrl: require.toUrl('./imageSlider.html'),
+    templateUrl: requirejs.toUrl('./imageSlider.html'),
     designerInfo: {
         translation: 'ui.components.imageSlider',
         icon: 'photo_library'
     }
 };
 
-}); // define
+

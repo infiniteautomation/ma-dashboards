@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maIntervalTypePicker
@@ -78,6 +78,6 @@ function intervalTypePicker($injector) {
 
 intervalTypePicker.$inject = ['$injector'];
 
-return intervalTypePicker;
+export default intervalTypePicker;
 
-}); // define
+

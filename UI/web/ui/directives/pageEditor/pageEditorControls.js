@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 const pageToSummary = (input) => {
     const result = {};
@@ -328,7 +329,7 @@ function pageEditorControlsFactory() {
     return {
         restrict: 'E',
         scope: {},
-        templateUrl: require.toUrl('./pageEditorControls.html'),
+        templateUrl: requirejs.toUrl('./pageEditorControls.html'),
         controller: PageEditorControlsController,
         controllerAs: '$ctrl',
         bindToController: {
@@ -341,6 +342,6 @@ function pageEditorControlsFactory() {
     };
 }
 
-return pageEditorControlsFactory;
+export default pageEditorControlsFactory;
 
-}); // define
+

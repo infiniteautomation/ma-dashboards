@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'moment-timezone', './PointValueController'], function(require, moment, PointValueController) {
-'use strict';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+import PointValueController from './PointValueController';
+
 /**
  * @ngdoc directive 
  * @name ngMango.directive:maPointValue
@@ -51,7 +53,7 @@ function pointValue() {
     
     return {
         restrict: 'E',
-        templateUrl: require.toUrl('./pointValue.html'),
+        templateUrl: requirejs.toUrl('./pointValue.html'),
         scope: {},
         controller: PointValueDirectiveController,
         controllerAs: '$ctrl',
@@ -241,6 +243,5 @@ PointValueDirectiveController.prototype.updateText = function() {
     }
 };
 
-return pointValue;
+export default pointValue;
 
-}); // define

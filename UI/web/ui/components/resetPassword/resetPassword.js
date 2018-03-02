@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 
 class ResetPasswordController {
     static get $$ngIsClass() { return true; }
@@ -110,9 +110,9 @@ class ResetPasswordController {
     }
 }
 
-return {
+export default {
     controller: ResetPasswordController,
-    templateUrl: require.toUrl('./resetPassword.html')
+    templateUrl: requirejs.toUrl('./resetPassword.html')
 };
 
-}); // define
+

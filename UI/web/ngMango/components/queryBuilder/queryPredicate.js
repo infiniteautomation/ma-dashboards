@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 var queryPredicate = function queryPredicate() {
     this.operations = [
@@ -56,9 +57,9 @@ var queryPredicate = function queryPredicate() {
 
 queryPredicate.$inject = [];
 
-return {
+export default {
     controller: queryPredicate,
-    templateUrl: require.toUrl('./queryPredicate.html'),
+    templateUrl: requirejs.toUrl('./queryPredicate.html'),
     require: {
         'builderCtrl': '^^maQueryBuilder'
     },
@@ -72,4 +73,4 @@ return {
     }
 };
 
-}); // define
+

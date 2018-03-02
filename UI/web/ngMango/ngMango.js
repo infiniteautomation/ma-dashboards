@@ -1,134 +1,119 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['./ngMangoServices',
-        './ngMangoFilters',
-        './directives/pointList',
-        './directives/filteringPointList',
-        './directives/pointValue',
-        './directives/pointValues',
-        './directives/pointStatistics',
-        './directives/tankLevel',
-        './directives/gaugeChart',
-        './directives/serialChart',
-        './directives/pieChart',
-        './directives/clock',
-        './directives/stateChart',
-        './directives/copyBlurred',
-        './directives/tr',
-        './directives/trAriaLabel',
-        './directives/datePicker',
-        './directives/dateRangePicker',
-        './directives/statisticsTable',
-        './directives/startsAndRuntimesTable',
-        './directives/setPointValue',
-        './directives/switchImg',
-        './directives/calc',
-        './directives/intervalPicker',
-        './directives/intervalTypePicker',
-        './directives/pointQuery',
-        './directives/getPointValue',
-        './directives/jsonStore',
-        './directives/focusOn',
-        './directives/enter',
-        './directives/now',
-        './directives/fn',
-        './directives/pointHierarchy',
-        './directives/pagingPointList',
-        './directives/dataSourceList',
-        './directives/dataSourceScrollList',
-        './directives/deviceNameList',
-        './directives/deviceNameScrollList',
-        './directives/dataSourceQuery',
-        './directives/deviceNameQuery',
-        './directives/userNotesTable',
-        './directives/eventsTable',
-        './directives/watchListGet',
-        './directives/watchListSelect',
-        './directives/arrayInput',
-        './directives/emptyInput',
-        './directives/watchListList',
-        './directives/watchListChart',
-        './directives/pointHierarchySelect',
-        './directives/filteringDeviceNameList',
-        './directives/filteringDataSourceList',
-        './directives/filteringPointHierarchySelect',
-        './directives/accordion',
-        './directives/accordionSection',
-        './directives/draggable',
-        './directives/dropzone',
-        './directives/barDisplay',
-        './directives/indicator',
-        './directives/validationMessages',
-        './directives/scaleTo',
-        './directives/change',
-        './directives/switch',
-        './directives/svg',
-        './directives/chooseFile',
-        './directives/aceEditor',
-        './directives/dateInput',
-        './directives/eventHandler',
-        './directives/jsonModel',
-        './directives/jwtInput',
-        './directives/plotly',
-        './directives/stateParams',
-        './directives/fixSortIcons',
-        './components/queryBuilder/queryBuilder',
-        './components/queryBuilder/queryGroup',
-        './components/queryBuilder/queryPredicate',
-        './components/pointHierarchyBrowser/pointHierarchyBrowser',
-        './components/pointHierarchyBrowser/pointHierarchyPointSelector',
-        './components/pointHierarchyBrowser/pointHierarchyFolder',
-        './components/watchListParameters/watchListParameters',
-        './components/imageSlider/imageSlider',
-        './components/userEditor/userEditor',
-        './components/userSelect/userSelect',
-        './components/userList/userList',
-        './components/systemSettingEditor/systemSettingEditor',
-        './components/permissionsMenu/permissionsMenu',
-        './components/configExport/configExport',
-        './components/configImport/configImport',
-        './components/configImportDialog/configImportDialog',
-        './components/maMap/maMap',
-        './components/button/button',
-        './components/fileStoreBrowser/fileStoreBrowser',
-        './components/maSlider/maSlider',
-        './components/jsonStoreTable/jsonStoreTable',
-        './components/jsonStoreEditor/jsonStoreEditor',
-        './components/eventHandlerEditor/eventHandlerEditor',
-        './components/eventAudio/eventAudio',
-        './components/dataPointTagSelect/dataPointTagSelect',
-        './components/dataPointTagKeySelect/dataPointTagKeySelect',
-        './components/getService/getService',
-        './components/pointEventDetector/pointEventDetector',
-        './components/userAuthTokens/userAuthTokens',
-        './components/bulkDataPointTasks/bulkDataPointTasks',
-        './components/pointBrowser/pointBrowser',
-        './components/dataPointTagGroup/dataPointTagGroup',
-        './components/revisionSelect/revisionSelect',
-        'ng-map',
-        './animations/slideUp',
-        'angular',
-        'require',
-        'moment-timezone'
-], function(ngMangoServices, ngMangoFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
-        tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, trAriaLabel,
-        datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
-        intervalPicker, intervalTypePicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
-        dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
-        eventsTable, watchListGet, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect,
-        filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
-        dropzone, barDisplay, indicator, validationMessages, scaleTo, change, switchDirective, svgDirective, chooseFile, aceEditor, dateInput,
-        eventHandler, jsonModel, jwtInput, plotly, stateParams, fixSortIcons,
-        queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
-        imageSlider, userEditor, userSelect, userList, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
-        maMap, button, fileStoreBrowser, maSlider, jsonStoreTable, jsonStoreEditor, eventHandlerEditor, eventAudio, dataPointTagSelect, dataPointTagKeySelect,
-        getService, pointEventDetector, userAuthTokens, bulkDataPointTasks, pointBrowser, dataPointTagGroup, revisionSelect,
-        ngMap, slideUp, angular, require, moment) {
-'use strict';
+import './ngMangoServices';
+import './ngMangoFilters';
+import pointList from './directives/pointList';
+import filteringPointList from './directives/filteringPointList';
+import pointValue from './directives/pointValue';
+import pointValues from './directives/pointValues';
+import pointStatistics from './directives/pointStatistics';
+import tankLevel from './directives/tankLevel';
+import gaugeChart from './directives/gaugeChart';
+import serialChart from './directives/serialChart';
+import pieChart from './directives/pieChart';
+import clock from './directives/clock';
+import stateChart from './directives/stateChart';
+import copyBlurred from './directives/copyBlurred';
+import tr from './directives/tr';
+import trAriaLabel from './directives/trAriaLabel';
+import datePicker from './directives/datePicker';
+import dateRangePicker from './directives/dateRangePicker';
+import statisticsTable from './directives/statisticsTable';
+import startsAndRuntimesTable from './directives/startsAndRuntimesTable';
+import setPointValue from './directives/setPointValue';
+import switchImg from './directives/switchImg';
+import calc from './directives/calc';
+import intervalPicker from './directives/intervalPicker';
+import intervalTypePicker from './directives/intervalTypePicker';
+import pointQuery from './directives/pointQuery';
+import getPointValue from './directives/getPointValue';
+import jsonStore from './directives/jsonStore';
+import focusOn from './directives/focusOn';
+import enter from './directives/enter';
+import now from './directives/now';
+import fn from './directives/fn';
+import pointHierarchy from './directives/pointHierarchy';
+import pagingPointList from './directives/pagingPointList';
+import dataSourceList from './directives/dataSourceList';
+import dataSourceScrollList from './directives/dataSourceScrollList';
+import deviceNameList from './directives/deviceNameList';
+import deviceNameScrollList from './directives/deviceNameScrollList';
+import dataSourceQuery from './directives/dataSourceQuery';
+import deviceNameQuery from './directives/deviceNameQuery';
+import userNotesTable from './directives/userNotesTable';
+import eventsTable from './directives/eventsTable';
+import watchListGet from './directives/watchListGet';
+import watchListSelect from './directives/watchListSelect';
+import arrayInput from './directives/arrayInput';
+import emptyInput from './directives/emptyInput';
+import watchListList from './directives/watchListList';
+import watchListChart from './directives/watchListChart';
+import pointHierarchySelect from './directives/pointHierarchySelect';
+import filteringDeviceNameList from './directives/filteringDeviceNameList';
+import filteringDataSourceList from './directives/filteringDataSourceList';
+import filteringPointHierarchySelect from './directives/filteringPointHierarchySelect';
+import accordion from './directives/accordion';
+import accordionSection from './directives/accordionSection';
+import draggable from './directives/draggable';
+import dropzone from './directives/dropzone';
+import barDisplay from './directives/barDisplay';
+import indicator from './directives/indicator';
+import validationMessages from './directives/validationMessages';
+import scaleTo from './directives/scaleTo';
+import change from './directives/change';
+import switchDirective from './directives/switch';
+import svgDirective from './directives/svg';
+import chooseFile from './directives/chooseFile';
+import aceEditor from './directives/aceEditor';
+import dateInput from './directives/dateInput';
+import eventHandler from './directives/eventHandler';
+import jsonModel from './directives/jsonModel';
+import jwtInput from './directives/jwtInput';
+import plotly from './directives/plotly';
+import stateParams from './directives/stateParams';
+import fixSortIcons from './directives/fixSortIcons';
+import queryBuilder from './components/queryBuilder/queryBuilder';
+import queryGroup from './components/queryBuilder/queryGroup';
+import queryPredicate from './components/queryBuilder/queryPredicate';
+import pointHierarchyBrowser from './components/pointHierarchyBrowser/pointHierarchyBrowser';
+import pointHierarchyPointSelector from './components/pointHierarchyBrowser/pointHierarchyPointSelector';
+import pointHierarchyFolder from './components/pointHierarchyBrowser/pointHierarchyFolder';
+import watchListParameters from './components/watchListParameters/watchListParameters';
+import imageSlider from './components/imageSlider/imageSlider';
+import userEditor from './components/userEditor/userEditor';
+import userSelect from './components/userSelect/userSelect';
+import userList from './components/userList/userList';
+import systemSettingEditor from './components/systemSettingEditor/systemSettingEditor';
+import permissionsMenu from './components/permissionsMenu/permissionsMenu';
+import configExport from './components/configExport/configExport';
+import configImport from './components/configImport/configImport';
+import configImportDialog from './components/configImportDialog/configImportDialog';
+import maMap from './components/maMap/maMap';
+import button from './components/button/button';
+import fileStoreBrowser from './components/fileStoreBrowser/fileStoreBrowser';
+import maSlider from './components/maSlider/maSlider';
+import jsonStoreTable from './components/jsonStoreTable/jsonStoreTable';
+import jsonStoreEditor from './components/jsonStoreEditor/jsonStoreEditor';
+import eventHandlerEditor from './components/eventHandlerEditor/eventHandlerEditor';
+import eventAudio from './components/eventAudio/eventAudio';
+import dataPointTagSelect from './components/dataPointTagSelect/dataPointTagSelect';
+import dataPointTagKeySelect from './components/dataPointTagKeySelect/dataPointTagKeySelect';
+import getService from './components/getService/getService';
+import pointEventDetector from './components/pointEventDetector/pointEventDetector';
+import userAuthTokens from './components/userAuthTokens/userAuthTokens';
+import bulkDataPointTasks from './components/bulkDataPointTasks/bulkDataPointTasks';
+import pointBrowser from './components/pointBrowser/pointBrowser';
+import dataPointTagGroup from './components/dataPointTagGroup/dataPointTagGroup';
+import revisionSelect from './components/revisionSelect/revisionSelect';
+import 'ngmap';
+import slideUp from './animations/slideUp';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+
 /**
  * @ngdoc overview
  * @name ngMango
@@ -414,7 +399,7 @@ function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYP
     });
 
 	if (ngMangoInsertCss) {
-	    cssInjector.injectLink(require.toUrl('./ngMango.css'));
+	    cssInjector.injectLink(requirejs.toUrl('./ngMango.css'));
 	}
 
 	$rootScope.range = function(start, end) {
@@ -430,7 +415,7 @@ function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYP
     $rootScope.relativeDateTypes = MA_RELATIVE_DATE_TYPES;
     $rootScope.dateRangePresets = MA_DATE_RANGE_PRESETS;
 
-    require(['amcharts/amcharts'], function(AmCharts) {
+    requirejs(['amcharts/amcharts'], function(AmCharts) {
         AmCharts._formatDate = AmCharts.formatDate;
         AmCharts.formatDate = function(date, format, chart) {
             return moment(date).format(format);
@@ -481,6 +466,4 @@ function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYP
     });
 }]);
 
-return ngMango;
-
-}); // require
+export default ngMango;

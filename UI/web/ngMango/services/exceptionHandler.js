@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'stacktrace', 'moment-timezone'], function(angular, StackTrace, moment) {
-'use strict';
+import StackTrace from 'stacktrace-js';
+import moment from 'moment-timezone';
 
 ExceptionHandlerProvider.$inject = ['$httpProvider'];
 function ExceptionHandlerProvider($httpProvider) {
@@ -77,6 +77,6 @@ function ExceptionHandlerProvider($httpProvider) {
     }
 }
 
-return ExceptionHandlerProvider;
+export default ExceptionHandlerProvider;
 
-});
+

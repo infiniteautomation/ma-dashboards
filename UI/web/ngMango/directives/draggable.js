@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 draggable.$inject = [];
 function draggable() {
@@ -56,6 +56,6 @@ DraggableController.prototype.setDraggableAttr = function() {
     this.$element.attr('draggable', this.draggable == null || this.draggable);
 };
 
-return draggable;
+export default draggable;
 
-}); // define
+

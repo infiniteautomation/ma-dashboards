@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 
 var autoLoginSettings = function autoLoginSettings(User, $scope) {
     this.$onInit = function() {
@@ -37,9 +37,9 @@ var autoLoginSettings = function autoLoginSettings(User, $scope) {
 
 autoLoginSettings.$inject = ['maUser', '$scope'];
 
-return {
+export default {
     controller: autoLoginSettings,
-    templateUrl: require.toUrl('./autoLoginSettings.html')
+    templateUrl: requirejs.toUrl('./autoLoginSettings.html')
 };
 
-}); // define
+

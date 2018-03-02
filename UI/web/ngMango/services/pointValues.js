@@ -3,8 +3,10 @@
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular', 'moment-timezone'], function(require, angular, moment) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+import moment from 'moment-timezone';
+
 
 pointValuesFactory.$inject = ['$http', '$q', 'maUtil', 'MA_POINT_VALUES_CONFIG', '$injector'];
 function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) {
@@ -307,5 +309,5 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     return Object.freeze(pointValues);
 }
 
-return pointValuesFactory;
-});
+export default pointValuesFactory;
+

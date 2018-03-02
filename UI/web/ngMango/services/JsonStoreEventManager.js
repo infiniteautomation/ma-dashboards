@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define([], function() {
-'use strict';
+
+
 /**
 * @ngdoc service
 * @name ngMangoServices.maJsonStoreEventManager
@@ -29,6 +29,6 @@ function JsonStoreEventManagerFactory(EventManager) {
 }
 
 JsonStoreEventManagerFactory.$inject = ['maEventManager'];
-return JsonStoreEventManagerFactory;
+export default JsonStoreEventManagerFactory;
 
-}); // define
+

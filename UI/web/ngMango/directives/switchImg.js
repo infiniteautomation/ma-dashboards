@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', './PointValueController'], function(angular, PointValueController) {
-'use strict';
+import angular from 'angular';
+import PointValueController from './PointValueController';
+
 
 /**
  * @ngdoc directive
@@ -150,6 +151,6 @@ function replaceAll(target, search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 }
 
-return switchImg;
+export default switchImg;
 
-}); // define
+

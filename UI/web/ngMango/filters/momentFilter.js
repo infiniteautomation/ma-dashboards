@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['moment-timezone'], function(moment) {
-'use strict';
+import moment from 'moment-timezone';
+
 /**
  * @ngdoc filter
  * @name ngMangoFilters.filter:maMoment
@@ -42,6 +42,6 @@ function momentFilter(Util) {
 }
 
 momentFilter.$inject = ['maUtil'];
-return momentFilter;
+export default momentFilter;
 
-}); // define
+

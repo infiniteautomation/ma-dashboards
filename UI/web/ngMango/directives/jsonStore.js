@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maJsonStore
@@ -128,6 +128,6 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
 }
 
 jsonStore.$inject = ['maJsonStore', 'maJsonStoreEventManager', '$q'];
-return jsonStore;
+export default jsonStore;
 
-}); // define
+

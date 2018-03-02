@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */ 
 
-define(['angular', 'require'], function(angular, require) {
-    'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+    
  /**
   * @ngdoc directive
   * @name ngMango.directive:maMap
@@ -60,7 +61,7 @@ define(['angular', 'require'], function(angular, require) {
 
         if (uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
-            require(['https://maps.google.com/maps/api/js?v=3&key=' + uiSettings.googleMapsApiKey], function() {
+            requirejs(['https://maps.google.com/maps/api/js?v=3&key=' + uiSettings.googleMapsApiKey], function() {
                 $scope.$applyAsync(function() {
                     $ctrl.render = true;
                 });
@@ -143,7 +144,7 @@ define(['angular', 'require'], function(angular, require) {
         });
     }
 
-    return {
+    export default {
         bindings: {
             zoom: '<',
             lat: '<',
@@ -158,11 +159,11 @@ define(['angular', 'require'], function(angular, require) {
             onInit: '&?'
         },
         controller: MaMapController,
-        templateUrl: require.toUrl('./maMap.html'),
+        templateUrl: requirejs.toUrl('./maMap.html'),
         transclude: true,
         designerInfo: {
             translation: 'ui.components.maMap',
             icon: 'map'
         }
     };
-}); // define
+

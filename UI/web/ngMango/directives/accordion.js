@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 accordion.$inject = [];
 function accordion() {
@@ -48,6 +48,6 @@ AccordionController.prototype.toggle = function toggle(id) {
     }
 };
 
-return accordion;
+export default accordion;
 
-}); // define
+

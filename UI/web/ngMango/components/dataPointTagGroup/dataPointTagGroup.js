@@ -3,8 +3,9 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 /**
  * @ngdoc directive
@@ -46,15 +47,15 @@ class DataPointTagGroupController {
     }
 }
 
-return {
+export default {
     bindings: {
         onQuery: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'
     },
-    templateUrl: require.toUrl('./dataPointTagGroup.html'),
+    templateUrl: requirejs.toUrl('./dataPointTagGroup.html'),
     controller: DataPointTagGroupController
 };
 
-}); // define
+

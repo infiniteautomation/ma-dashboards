@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define([], function() {
-'use strict';
+
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maFn
@@ -57,6 +57,6 @@ function maFnDirective($parse) {
     };
 }
 
-return maFnDirective;
+export default maFnDirective;
 
-}); // define
+

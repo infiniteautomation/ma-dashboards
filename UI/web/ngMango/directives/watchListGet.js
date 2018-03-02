@@ -1,5 +1,5 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -21,8 +21,10 @@
   *     e.g. `on-parameters-change="$ctrl.paramsChanged($parameters)"`)
   */
 
-define(['angular', 'require', './WatchListSelectController'], function(angular, require, WatchListSelectController) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import WatchListSelectController from './WatchListSelectController';
+
 
 watchListGetFactory.$inject = [];
 function watchListGetFactory() {
@@ -84,6 +86,6 @@ WatchListGetController.prototype.updateHandler = function updateHandler(event, u
     }
 };
 
-return watchListGetFactory;
+export default watchListGetFactory;
 
-}); // define
+

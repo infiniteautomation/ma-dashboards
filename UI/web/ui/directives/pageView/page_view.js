@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire / Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 PageViewController.$inject = ['$scope', 'maUiPages', 'maUser', 'maJsonStoreEventManager'];
 function PageViewController($scope, maUiPages, User, jsonStoreEventManager) {
@@ -37,7 +38,7 @@ function PageViewController($scope, maUiPages, User, jsonStoreEventManager) {
     };
 }
 
-return function pageView() {
+export default function pageView() {
     return {
         scope: true, // child scope
         controller: PageViewController,
@@ -45,8 +46,7 @@ return function pageView() {
         bindToController: {
             xid: '@'
         },
-        templateUrl: require.toUrl('./pageView.html')
+        templateUrl: requirejs.toUrl('./pageView.html')
     };
 };
 
-}); // define

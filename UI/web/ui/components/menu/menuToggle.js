@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 
 MenuToggleController.$inject = ['$state', '$timeout', '$element', '$scope', 'maTranslate'];
 function MenuToggleController($state, $timeout, $element, $scope, Translate) {
@@ -155,17 +155,17 @@ function MenuToggleController($state, $timeout, $element, $scope, Translate) {
     };
 }
 
-return {
+export default {
     controller: MenuToggleController,
     require: {
         menu: '^^maUiMenu',
         parentToggle: '?^^maUiMenuToggle'
     },
-    templateUrl: require.toUrl('./menuToggle.html'),
+    templateUrl: requirejs.toUrl('./menuToggle.html'),
     bindings: {
         item: '<menuItem',
         openMenu: '<'
     }
 };
 
-}); // define
+

@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 class GetServiceController {
     static get $$ngIsClass() { return true; }
@@ -27,7 +27,7 @@ class GetServiceController {
     }
 }
 
-return {
+export default {
     bindings: {
         serviceName: '@',
         service: '&'
@@ -35,4 +35,4 @@ return {
     controller: GetServiceController
 };
 
-}); // define
+

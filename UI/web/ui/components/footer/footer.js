@@ -1,10 +1,12 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+
 
 FooterController.$inject = ['maModules'];
 function FooterController(Modules) {
@@ -22,9 +24,8 @@ FooterController.prototype.$onInit = function() {
     }.bind(this));
 };
 
-return {
+export default {
     controller: FooterController,
-    templateUrl: require.toUrl('./footer.html')
+    templateUrl: requirejs.toUrl('./footer.html')
 };
 
-}); // define

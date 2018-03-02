@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import query from 'rql/query';
+
 
 const queryProperties = [
     {
@@ -152,9 +154,9 @@ var queryBuilder = function queryBuilder(cssInjector) {
 
 queryBuilder.$inject = ['maCssInjector'];
 
-return {
+export default {
     controller: queryBuilder,
-    templateUrl: require.toUrl('./queryBuilder.html'),
+    templateUrl: requirejs.toUrl('./queryBuilder.html'),
     require: {
         'ngModelCtrl': 'ngModel'
     },
@@ -166,4 +168,4 @@ return {
     }
 };
 
-}); // define
+

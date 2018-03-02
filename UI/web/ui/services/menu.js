@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', '../util/loadLoginTranslations'], function(angular, loadLoginTranslations) {
-'use strict';
+import angular from 'angular';
+import loadLoginTranslations from '../util/loadLoginTranslations';
+
 
 MenuProvider.$inject = ['$stateProvider', 'MA_UI_MENU_ITEMS', 'MA_UI_CUSTOM_MENU_ITEMS'];
 function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS) {
@@ -438,6 +439,6 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
 
 }
 
-return MenuProvider;
+export default MenuProvider;
 
-}); // define
+

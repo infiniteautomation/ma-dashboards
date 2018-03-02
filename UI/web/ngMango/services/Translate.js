@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular', 'globalize', 'globalize/message', 'cldr/unresolved'], function(require, angular, Globalize) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+import Globalize from 'globalize';
+
 /**
 * @ngdoc service
 * @name ngMangoServices.maTranslate
@@ -57,7 +59,7 @@ translateFactory.$inject = ['$http', '$q', 'maUser'];
 function translateFactory($http, $q, maUser) {
 	var Translate = function() {};
 
-	var likelySubtagsUrl = require.toUrl('cldr-data/supplemental/likelySubtags.json');
+	var likelySubtagsUrl = requirejs.toUrl('cldr-data/supplemental/likelySubtags.json');
 	Translate.likelySubtags = $http.get(likelySubtagsUrl).then(function(likelySubtags) {
 		Globalize.load(likelySubtags.data);
 	});
@@ -172,6 +174,6 @@ function translateFactory($http, $q, maUser) {
 	return Translate;
 }
 
-return translateFactory;
+export default translateFactory;
 
-}); // define
+

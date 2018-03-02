@@ -1,11 +1,14 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export/export'],
-        function(angular, AmCharts, $, moment) {
-'use strict';
+import angular from 'angular';
+import AmCharts from 'amcharts/serial';
+import $ from 'jquery';
+import moment from 'moment-timezone';
+import 'amcharts/plugins/export/export';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maSerialChart
@@ -202,7 +205,7 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         scope: scope,
         compile: function() {
             if (ngMangoInsertCss) {
-                cssInjector.injectLink(require.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
+                cssInjector.injectLink(requirejs.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
             }
             return postLink;
         }
@@ -751,6 +754,6 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
     }
 }
 
-return serialChart;
+export default serialChart;
 
-}); // define
+

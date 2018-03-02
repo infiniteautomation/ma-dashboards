@@ -3,10 +3,10 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
 
-return function() {
+
+export default function() {
     class FixSortIconsController {
         static get $inject() { return ['$element', '$timeout']; }
         static get $$ngIsClass() { return true; }
@@ -34,4 +34,4 @@ return function() {
     };
 };
 
-}); // define
+

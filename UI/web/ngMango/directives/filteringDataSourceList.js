@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import query from 'rql/query';
+
 
 filteringDataSourceList.$inject = ['$injector', 'maDataSource'];
 function filteringDataSourceList($injector, DataSource) {
@@ -21,7 +23,7 @@ function filteringDataSourceList($injector, DataSource) {
             sort: '<?',
             labelText: '<'
         },
-        templateUrl: require.toUrl('./filteringDataSourceList.html'),
+        templateUrl: requirejs.toUrl('./filteringDataSourceList.html'),
         replace: false,
         link: function($scope, $element, $attrs, ngModelCtrl) {
             ngModelCtrl.render = () => {
@@ -61,6 +63,6 @@ function filteringDataSourceList($injector, DataSource) {
         }
     };
 }
-return filteringDataSourceList;
+export default filteringDataSourceList;
 
-}); // define
+

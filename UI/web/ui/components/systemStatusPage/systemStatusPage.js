@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights relockved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights relockved.
  * @author Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', '$mdDialog', 'maTranslate', 'maDialogHelper', 
     'maUiDateBar', '$scope', 'maRqlBuilder'];
@@ -230,7 +231,7 @@ SystemStatusPageController.prototype.showTextAreaDialog = function(title, textCo
             };
             this.$mdMedia = $this.$mdMedia;
         },
-        templateUrl: require.toUrl('./textAreaDialog.html'),
+        templateUrl: requirejs.toUrl('./textAreaDialog.html'),
         clickOutsideToClose: true,
         escapeToClose: true,
         controllerAs: '$ctrl',
@@ -238,9 +239,8 @@ SystemStatusPageController.prototype.showTextAreaDialog = function(title, textCo
     });
 };
 
-return {
+export default {
     controller: SystemStatusPageController,
-    templateUrl: require.toUrl('./systemStatusPage.html')
+    templateUrl: requirejs.toUrl('./systemStatusPage.html')
 };
 
-}); // define

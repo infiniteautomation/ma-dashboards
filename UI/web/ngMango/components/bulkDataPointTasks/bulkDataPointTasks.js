@@ -3,8 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import requirejs from 'requirejs/require';
 
 class BulkDataPointTasksController {
     static get $$ngIsClass() { return true; }
@@ -50,8 +49,8 @@ class BulkDataPointTasksController {
     }
 }
 
-return {
-    templateUrl: require.toUrl('./bulkDataPointTasks.html'),
+export default {
+    templateUrl: requirejs.toUrl('./bulkDataPointTasks.html'),
     controller: BulkDataPointTasksController,
     bindings: {
         allUsers: '<?'
@@ -59,5 +58,3 @@ return {
     require: {
     }
 };
-
-}); // define

@@ -1,30 +1,26 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define([
-    'angular',
-    'ngMango/ngMangoMaterial',
-    'require',
-    './services/menu',
-    './services/pages',
-    './services/dateBar',
-    './services/uiSettings',
-    './directives/pageView/page_view',
-    './directives/liveEditor/livePreview',
-    './directives/stateParams/stateParams',
-    './directives/iframeView/iframeView',
-    './menuItems',
-    'moment-timezone',
-    'angular-ui-router',
-    'angular-ui-sortable',
-    'angular-loading-bar',
-    './views/docs/docs-setup',
-    'md-color-picker/mdColorPicker'
-], function(angular, ngMangoMaterial, require, menuProvider, pagesFactory, dateBarFactory, uiSettingsFactory, pageView, livePreview,
-        stateParams, iframeView, menuItems, moment) {
-'use strict';
+import angular from 'angular';
+import '../ngMango/ngMangoMaterial';
+import requirejs from 'requirejs/require';
+import menuProvider from './services/menu';
+import pagesFactory from './services/pages';
+import dateBarFactory from './services/dateBar';
+import uiSettingsFactory from './services/uiSettings';
+import pageView from './directives/pageView/page_view';
+import livePreview from './directives/liveEditor/livePreview';
+import stateParams from './directives/stateParams/stateParams';
+import iframeView from './directives/iframeView/iframeView';
+import menuItems from './menuItems';
+import 'moment-timezone';
+import 'angular-ui-router';
+import 'angular-ui-sortable';
+import 'angular-loading-bar';
+import './views/docs/docs-setup';
+import 'md-color-picker';
 
 // must match variables defined in UIInstallUpgrade.java
 var MA_UI_MENU_XID = 'mangoUI-menu';
@@ -116,7 +112,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     //$compileProvider.cssClassDirectivesEnabled(false);
     
     $mdAriaProvider.disableWarnings();
-    maRequireQProvider.setRequireJs(require);
+    maRequireQProvider.setRequireJs(requirejs);
 
     if (MA_UI_SETTINGS.palettes) {
         for (var paletteName in MA_UI_SETTINGS.palettes) {
@@ -282,7 +278,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
             
             var menuItem = {
                 name: 'ui.docs.' + moduleName + '.' + name,
-                templateUrl: require.toUrl('./views/docs/' + templateUrl + '.html'),
+                templateUrl: requirejs.toUrl('./views/docs/' + templateUrl + '.html'),
                 url: '/' + dashCaseUrl,
                 menuText: name
             };
@@ -649,7 +645,7 @@ User.getCredentialsFromUrl();
 
 var defaultUiSettingsPromise = $http({
     method: 'GET',
-    url: require.toUrl('./uiSettings.json')
+    url: requirejs.toUrl('./uiSettings.json')
 }).then(function(data) {
     return data.data;
 }, angular.noop);
@@ -678,7 +674,7 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     var userAgent = navigator.userAgent;
     if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
     		userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
-    	maCssInjector.injectLink(require.toUrl('./styles/safari.css'), 'safariCss', '[tracking-name="uiMain"]');
+    	maCssInjector.injectLink(requirejs.toUrl('./styles/safari.css'), 'safariCss', '[tracking-name="uiMain"]');
     }
     
     return MA_UI_SETTINGS;
@@ -715,7 +711,7 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
         
         var modulePromises = urls.map(function(url) {
             var deferred = $q.defer();
-            require([url], function(module) {
+            requirejs([url], function(module) {
                 deferred.resolve(module);
             }, function() {
                 console.log('Failed to load AngularJS module', arguments);
@@ -791,5 +787,3 @@ $q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(func
         }
     });
 });
-
-}); // define

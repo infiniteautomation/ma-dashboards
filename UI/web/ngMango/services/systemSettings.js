@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 SystemSettingsProvider.$inject = [];
 function SystemSettingsProvider() {
@@ -136,6 +137,6 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
     return SystemSettings;
 }
 
-return SystemSettingsProvider;
+export default SystemSettingsProvider;
 
-});
+

@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 const paramNames = ['eventType', 'alarmLevel', 'activeStatus', 'acknowledged', 'dateFilter'];
 
@@ -62,9 +63,8 @@ function EventsPageController($mdMedia, $state, localStorageService, maUiDateBar
     };
 }
 
-return {
+export default {
     controller: EventsPageController,
-    templateUrl: require.toUrl('./eventsPage.html')
+    templateUrl: requirejs.toUrl('./eventsPage.html')
 };
 
-}); // define

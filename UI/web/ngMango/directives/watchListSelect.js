@@ -1,5 +1,5 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -31,8 +31,10 @@
   * @param {expression=} on-query Expression is evaluated when querying for watch lists. Available scope parameters are `$promise`.
   */
 
-define(['angular', 'require', './WatchListSelectController'], function(angular, require, WatchListSelectController) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import WatchListSelectController from './WatchListSelectController';
+
 
 watchListSelectFactory.$inject = ['$injector'];
 function watchListSelectFactory($injector) {
@@ -40,9 +42,9 @@ function watchListSelectFactory($injector) {
         restrict: 'E',
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./watchListSelect-md.html');
+                return requirejs.toUrl('./watchListSelect-md.html');
             }
-            return require.toUrl('./watchListSelect.html');
+            return requirejs.toUrl('./watchListSelect.html');
         },
         scope: {},
         controller: WatchListSelectDirectiveController,
@@ -88,6 +90,6 @@ WatchListSelectDirectiveController.prototype.onOpen = function() {
     return this.queryPromise;
 };
 
-return watchListSelectFactory;
+export default watchListSelectFactory;
 
-}); // define
+

@@ -1,74 +1,65 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['./services/Point',
-        './services/PointHierarchy',
-        './services/User',
-        './services/PointEventManager',
-        './services/Translate',
-        './services/httpInterceptor',
-        './services/JsonStore',
-        './services/JsonStoreEventManager',
-        './services/Util',
-        './services/watchdog',
-        './services/EventManager',
-        './services/NotificationManager',
-        './services/cssInjector',
-        './services/DataSource',
-        './services/DeviceName',
-        './services/WatchList',
-        './services/WatchListEventManager',
-        './services/rqlParamSerializer',
-        './services/UserNotes',
-        './services/events',
-        './services/DynamicItems',
-        './services/pointValues',
-        './services/statistics',
-        './services/qDecorator',
-        './services/UserEventManager',
-        './services/Modules',
-        './services/Permissions',
-        './services/systemSettings',
-        './services/systemStatus',
-        './services/ImportExport',
-        './services/analytics',
-        './services/requireQ',
-        './services/locales',
-        './services/fileStore',
-        './services/systemActions',
-        './services/server',
-        './services/TemporaryResource',
-        './services/RestResource',
-        './services/TemporaryRestResource',
-        './services/RqlBuilder',
-        './services/math',
-        './services/EventDetector',
-        './services/EventHandler',
-        './services/dataPointTags',
-        './services/auditTrail',
-        './services/revisionHistoryDialog',
-        './services/exceptionHandler',
-        './filters/dateFilter',
-        './filters/trFilter',
-        'angular',
-        'require',
-        'rql/query',
-        'angular-resource',
-        'angular-sanitize',
-        'angular-local-storage',
-        'angular-cookies'
-], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, httpInterceptor, JsonStore,
-        JsonStoreEventManagerFactory, Util, watchdog, EventManager, NotificationManagerFactory, cssInjector, DataSourceFactory, DeviceNameFactory,
-        WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, events,
-        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory,
-        PermissionsFactory, systemSettingsProvider, systemStatusFactory,
-        ImportExportFactory, webAnalyticsFactory, requireQProvider, localesFactory, fileStoreFactory, systemActionsFactory,
-        serverFactory, temporaryResourceFactory, restResourceFactory, temporaryRestResourceFactory, rqlBuilderFactory, mathFactory, maEventDetector,
-        maEventHandler, maDataPointTags, maAuditTrail, maRevisionHistoryDialog, maExceptionHandler, dateFilterFactory, trFilterFactory,
-        angular, require, rqlQuery) {
-'use strict';
+import Point from './services/Point';
+import PointHierarchy from './services/PointHierarchy';
+import UserProvider from './services/User';
+import PointEventManagerFactory from './services/PointEventManager';
+import Translate from './services/Translate';
+import httpInterceptor from './services/httpInterceptor';
+import JsonStore from './services/JsonStore';
+import JsonStoreEventManagerFactory from './services/JsonStoreEventManager';
+import Util from './services/Util';
+import watchdog from './services/watchdog';
+import EventManager from './services/EventManager';
+import NotificationManagerFactory from './services/NotificationManager';
+import cssInjector from './services/cssInjector';
+import DataSourceFactory from './services/DataSource';
+import DeviceNameFactory from './services/DeviceName';
+import WatchListFactory from './services/WatchList';
+import WatchListEventManagerFactory from './services/WatchListEventManager';
+import rqlParamSerializer from './services/rqlParamSerializer';
+import UserNotes from './services/UserNotes';
+import events from './services/events';
+import DynamicItems from './services/DynamicItems';
+import pointValuesFactory from './services/pointValues';
+import statisticsFactory from './services/statistics';
+import qDecorator from './services/qDecorator';
+import UserEventManager from './services/UserEventManager';
+import ModulesFactory from './services/Modules';
+import PermissionsFactory from './services/Permissions';
+import systemSettingsProvider from './services/systemSettings';
+import systemStatusFactory from './services/systemStatus';
+import ImportExportFactory from './services/ImportExport';
+import webAnalyticsFactory from './services/analytics';
+import requireQProvider from './services/requireQ';
+import localesFactory from './services/locales';
+import fileStoreFactory from './services/fileStore';
+import systemActionsFactory from './services/systemActions';
+import serverFactory from './services/server';
+import temporaryResourceFactory from './services/TemporaryResource';
+import restResourceFactory from './services/RestResource';
+import temporaryRestResourceFactory from './services/TemporaryRestResource';
+import rqlBuilderFactory from './services/RqlBuilder';
+import mathFactory from './services/math';
+import maEventDetector from './services/EventDetector';
+import maEventHandler from './services/EventHandler';
+import maDataPointTags from './services/dataPointTags';
+import maAuditTrail from './services/auditTrail';
+import maRevisionHistoryDialog from './services/revisionHistoryDialog';
+import maExceptionHandler from './services/exceptionHandler';
+import dateFilterFactory from './filters/dateFilter';
+import trFilterFactory from './filters/trFilter';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import rqlQuery from 'rql/query';
+import 'angular-resource';
+import 'angular-sanitize';
+import 'angular-local-storage';
+import 'angular-cookies';
+
 
 // rql library doesn't encode null correctly (it encodes as string:null)
 const oldEncodeValue = rqlQuery.encodeValue;
@@ -168,17 +159,17 @@ ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
     {
         type: 'EMAIL',
         description: 'eventHandlers.type.email',
-        editorTemplateUrl: require.toUrl('./components/eventHandlerEditor/email.html')
+        editorTemplateUrl: requirejs.toUrl('./components/eventHandlerEditor/email.html')
     },
     {
         type: 'PROCESS',
         description: 'eventHandlers.type.process',
-        editorTemplateUrl: require.toUrl('./components/eventHandlerEditor/process.html')
+        editorTemplateUrl: requirejs.toUrl('./components/eventHandlerEditor/process.html')
     },
     {
         type: 'SET_POINT',
         description: 'eventHandlers.type.setPoint',
-        editorTemplateUrl: require.toUrl('./components/eventHandlerEditor/setPoint.html')
+        editorTemplateUrl: requirejs.toUrl('./components/eventHandlerEditor/setPoint.html')
     }
 ]);
 
@@ -213,6 +204,6 @@ ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provid
     }]);
 }]);
 
-return ngMangoServices;
+export default ngMangoServices;
 
-}); // require
+

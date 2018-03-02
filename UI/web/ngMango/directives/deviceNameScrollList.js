@@ -1,13 +1,14 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 deviceNameScrollList.$inject = ['$injector'];
-return deviceNameScrollList;
+export default deviceNameScrollList;
 
 function deviceNameScrollList($injector) {
     return {
@@ -27,9 +28,9 @@ function deviceNameScrollList($injector) {
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./deviceNameScrollList-md.html');
+                return requirejs.toUrl('./deviceNameScrollList-md.html');
             }
-            return require.toUrl('./deviceNameScrollList.html');
+            return requirejs.toUrl('./deviceNameScrollList.html');
         },
         require: {
             'ngModelCtrl': 'ngModel'
@@ -104,4 +105,4 @@ function deviceNameScrollList($injector) {
     }
 }
 
-}); // define
+

@@ -1,5 +1,5 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -15,12 +15,14 @@
   * @param {expression=} parameters-changed Deprecated. Use `ng-change`.
   */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import query from 'rql/query';
+
 
 var watchListParameters = {
     controller: WatchListParametersController,
-    templateUrl: require.toUrl('./watchListParameters.html'),
+    templateUrl: requirejs.toUrl('./watchListParameters.html'),
     bindings: {
         watchList: '<',
         parametersChanged: '&?',
@@ -174,6 +176,6 @@ WatchListParametersController.prototype.interpolateOption = function interpolate
     return option;
 };
 
-return watchListParameters;
+export default watchListParameters;
 
-}); // define
+

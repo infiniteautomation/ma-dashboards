@@ -3,8 +3,9 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'moment-timezone'], function(angular, moment) {
-'use strict';
+import angular from 'angular';
+import moment from 'moment-timezone';
+
 
 /**
 * @ngdoc service
@@ -775,6 +776,6 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
     return Object.freeze(util);
 }
 
-return UtilFactory;
+export default UtilFactory;
 
-}); // define
+

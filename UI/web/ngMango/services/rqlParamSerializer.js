@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define([], function() {
-'use strict';
+
+
 
 function rqlParamSerializerFactory($httpParamSerializer) {
     return function(params) {
@@ -25,6 +25,6 @@ function rqlParamSerializerFactory($httpParamSerializer) {
 
 rqlParamSerializerFactory.$inject = ['$httpParamSerializer'];
 
-return rqlParamSerializerFactory;
+export default rqlParamSerializerFactory;
 
-}); // define
+

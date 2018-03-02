@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$scope', '$sce', '$window'];
 function ModulesPageController(maModules, maTranslate, maDialogHelper, $scope, $sce, $window) {
@@ -95,7 +96,7 @@ ModulesPageController.prototype.restart = function($event) {
 ModulesPageController.prototype.downloadLicense = function($event) {
 	this.maDialogHelper.showBasicDialog($event, {
 		titleTr: 'ui.app.enterStoreCredentials',
-		contentTemplateUrl: require.toUrl('./usernamePasswordPrompt.html'),
+		contentTemplateUrl: requirejs.toUrl('./usernamePasswordPrompt.html'),
 		showCancel: true,
 		smallDialog: true
 	}).then(function(result) {
@@ -110,9 +111,9 @@ ModulesPageController.prototype.downloadLicense = function($event) {
 	}.bind(this));
 };
 
-return {
+export default {
     controller: ModulesPageController,
-    templateUrl: require.toUrl('./modulesPage.html')
+    templateUrl: requirejs.toUrl('./modulesPage.html')
 };
 
-}); // define
+

@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 /**
  * @ngdoc directive
@@ -70,7 +71,7 @@ class DataPointTagSelectController {
     }
 }
 
-return {
+export default {
     bindings: {
         key: '@',
         restrictions: '<?',
@@ -86,7 +87,7 @@ return {
     transclude: {
         label: '?maLabel'
     },
-    templateUrl: require.toUrl('./dataPointTagSelect.html'),
+    templateUrl: requirejs.toUrl('./dataPointTagSelect.html'),
     controller: DataPointTagSelectController,
     designerInfo: {
         translation: 'ui.components.maDataPointTagSelect',
@@ -97,4 +98,4 @@ return {
     }
 };
 
-}); // define
+

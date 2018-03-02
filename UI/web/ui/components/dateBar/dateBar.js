@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 DateBarController.$inject = ['$mdMedia', '$stateParams', 'maUtil', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'maUiDateBar'];
 function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, maUiDateBar) {
@@ -62,12 +63,12 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
     };
 }
 
-return {
-    templateUrl: require.toUrl('./dateBar.html'),
+export default {
+    templateUrl: requirejs.toUrl('./dateBar.html'),
     controller: DateBarController,
     bindings: {
         onRefresh: '&'
     }
 };
 
-}); // define
+

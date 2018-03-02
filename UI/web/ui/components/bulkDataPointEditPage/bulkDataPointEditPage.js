@@ -3,8 +3,10 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'tinycolor'], function(angular, require, tinycolor) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import tinycolor from 'tinycolor';
+
 
 const selectedProperty = typeof Symbol === 'function' ? Symbol('selected') : '___selected___';
 const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error___';
@@ -397,8 +399,8 @@ class BulkDataPointEditPageController {
     }
 }
 
-return {
-    templateUrl: require.toUrl('./bulkDataPointEditPage.html'),
+export default {
+    templateUrl: requirejs.toUrl('./bulkDataPointEditPage.html'),
     controller: BulkDataPointEditPageController,
     bindings: {
     },
@@ -406,4 +408,4 @@ return {
     }
 };
 
-}); // define
+

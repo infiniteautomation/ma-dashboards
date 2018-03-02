@@ -1,13 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['./filters/momentFilter',
-        './filters/durationFilter',
-        'angular'
-], function(momentFilter, durationFilter, angular) {
-'use strict';
+import momentFilter from './filters/momentFilter';
+import durationFilter from './filters/durationFilter';
+import angular from 'angular';
+
 
 /**
  * @ngdoc overview
@@ -238,6 +237,6 @@ ngMangoFilters.filter('maDisplayNull', ['maTranslate', function (maTranslate) {
     };
 }]);
 
-return ngMangoFilters;
+export default ngMangoFilters;
 
-}); // require
+

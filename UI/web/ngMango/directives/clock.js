@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['amcharts/gauge', 'jquery', 'moment-timezone'], function(AmCharts, $, moment) {
-'use strict';
+import AmCharts from 'amcharts/gauge';
+import $ from 'jquery';
+import moment from 'moment-timezone';
+
  /**
   * @ngdoc directive
   * @name ngMango.directive:maClock
@@ -122,6 +124,6 @@ function defaultOptions() {
 }
 
 clock.$inject = [];
-return clock;
+export default clock;
 
-}); // define
+

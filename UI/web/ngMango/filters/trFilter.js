@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 /**
  * @ngdoc filter
  * @name ngMangoFilters.filter:maTr
@@ -44,6 +44,6 @@ function trFilterFactory(Translate) {
 }
 
 trFilterFactory.$inject = ['maTranslate'];
-return trFilterFactory;
+export default trFilterFactory;
 
-}); // define
+

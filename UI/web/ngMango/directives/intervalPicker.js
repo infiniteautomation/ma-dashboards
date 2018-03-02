@@ -1,10 +1,10 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 
 function intervalPicker() {
     return {
@@ -13,7 +13,7 @@ function intervalPicker() {
             interval: '='
         },
         replace: true,
-        templateUrl: require.toUrl('./intervalPicker.html'),
+        templateUrl: requirejs.toUrl('./intervalPicker.html'),
         link: function ($scope, $element, attr) {
         	$scope.intervals = 1;
         	$scope.type = 'MINUTES';
@@ -31,6 +31,6 @@ function intervalPicker() {
 
 intervalPicker.$inject = [];
 
-return intervalPicker;
+export default intervalPicker;
 
-}); // define
+

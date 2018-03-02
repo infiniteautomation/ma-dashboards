@@ -1,10 +1,13 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'moment-timezone', 'cldr'], function(angular, moment, Cldr) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+import Cldr from 'cldrjs';
+
 
 // Stores the locales which have been loaded using require, must be cached as we can't call
 // require twice and fetch the locale again.
@@ -297,7 +300,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         angularLocaleDeferred = localDeferred;
                         
                         // load the locale using require and resolve the deferred
-                        require([url], () => {
+                        requirejs([url], () => {
                             // get the newly loaded locale from a new injector for ngLocale
                             var ngLocaleInjector = angular.injector(['ngLocale'], true);
                             const newLocale = ngLocaleInjector.get('$locale');
@@ -552,6 +555,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     }
 }
 
-return UserProvider;
+export default UserProvider;
 
-}); // define
+

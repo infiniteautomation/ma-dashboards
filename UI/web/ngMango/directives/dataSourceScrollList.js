@@ -1,13 +1,14 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 dataSourceScrollList.$inject = ['$injector'];
-return dataSourceScrollList;
+export default dataSourceScrollList;
 
 function dataSourceScrollList($injector) {
     var DEFAULT_SORT = ['name'];
@@ -27,9 +28,9 @@ function dataSourceScrollList($injector) {
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./dataSourceScrollList-md.html');
+                return requirejs.toUrl('./dataSourceScrollList-md.html');
             }
-            return require.toUrl('./dataSourceScrollList.html');
+            return requirejs.toUrl('./dataSourceScrollList.html');
         },
         require: {
             'ngModelCtrl': 'ngModel'
@@ -99,4 +100,4 @@ function dataSourceScrollList($injector) {
     }
 }
 
-}); // define
+

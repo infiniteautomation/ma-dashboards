@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['amcharts/pie', 'angular', 'require'], function(AmCharts, angular, require) {
-'use strict';
+import AmCharts from 'amcharts/pie';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maPieChart
@@ -54,7 +56,7 @@ function pieChart($http, MA_INSERT_CSS, maCssInjector) {
         template: '<div class="amchart"></div>',
         compile: function() {
             if (MA_INSERT_CSS) {
-                maCssInjector.injectLink(require.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
+                maCssInjector.injectLink(requirejs.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
             }
             return postLink;
         }
@@ -116,6 +118,6 @@ function defaultOptions() {
     };
 }
 
-return pieChart;
+export default pieChart;
 
-}); // define
+

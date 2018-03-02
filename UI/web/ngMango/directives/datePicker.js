@@ -1,10 +1,12 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'moment'], function(angular, moment) {
-'use strict';
+import angular from 'angular';
+import moment from 'moment';
+import requirejs from 'requirejs/require';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maDatePicker
@@ -59,9 +61,9 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
         compile: function($element, attributes) {
             if (!$injector.has('$mdpDatePicker')) {
                 if (ngMangoInsertCss) {
-                    cssInjector.injectLink(require.toUrl('jquery-ui/jquery.datetimepicker.css'), this.name);
+                    cssInjector.injectLink(requirejs.toUrl('jquery-ui/jquery.datetimepicker.css'), this.name);
                 }
-                require(['jquery', 'jquery-ui/jquery.datetimepicker'], function($) {
+                requirejs(['jquery', 'jquery-ui/jquery.datetimepicker'], function($) {
                     $element.datetimepicker();
                 });
             }
@@ -177,6 +179,6 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
 
 datePicker.$inject = ['$injector', 'MA_DATE_FORMATS', 'MA_INSERT_CSS', 'maCssInjector', '$q'];
 
-return datePicker;
+export default datePicker;
 
-}); // define
+

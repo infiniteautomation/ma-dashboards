@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 DataPointDetailsController.$inject = ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser'];
 function DataPointDetailsController($scope, $element, $stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User) {
@@ -76,9 +77,8 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     };
 }
 
-return {
+export default {
     controller: DataPointDetailsController,
-    templateUrl: require.toUrl('./dataPointDetails.html')
+    templateUrl: requirejs.toUrl('./dataPointDetails.html')
 };
 
-}); // define

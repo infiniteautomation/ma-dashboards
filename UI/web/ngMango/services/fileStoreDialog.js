@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 fileStoreDialog.$inject = ['$mdDialog', '$mdMedia'];
 function fileStoreDialog($mdDialog, $mdMedia) {
@@ -22,7 +23,7 @@ function fileStoreDialog($mdDialog, $mdMedia) {
             		$mdDialog.hide(this.path);
             	};
             },
-            templateUrl: require.toUrl('./fileStoreDialog.html'),
+            templateUrl: requirejs.toUrl('./fileStoreDialog.html'),
             targetEvent: $event,
             clickOutsideToClose: true,
             escapeToClose: true,
@@ -39,6 +40,6 @@ function fileStoreDialog($mdDialog, $mdMedia) {
     return new FileStoreDialog();
 }
 
-return fileStoreDialog;
+export default fileStoreDialog;
 
-}); // define
+

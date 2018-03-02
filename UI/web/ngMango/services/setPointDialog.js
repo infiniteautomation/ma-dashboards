@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 setPointDialog.$inject = ['$mdDialog', '$mdMedia'];
 function setPointDialog($mdDialog, $mdMedia) {
@@ -18,7 +19,7 @@ function setPointDialog($mdDialog, $mdMedia) {
                     $mdDialog.cancel();
                 };
             },
-            templateUrl: require.toUrl('./setPointDialog.html'),
+            templateUrl: requirejs.toUrl('./setPointDialog.html'),
             parent: angular.element(document.body),
             targetEvent: ev,
             fullscreen: false,
@@ -35,6 +36,6 @@ function setPointDialog($mdDialog, $mdMedia) {
     return SetPointDialog;
 }
 
-return setPointDialog;
+export default setPointDialog;
 
-}); // define
+

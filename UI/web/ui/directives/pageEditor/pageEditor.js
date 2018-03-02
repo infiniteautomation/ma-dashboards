@@ -1,16 +1,17 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 pageEditor.$inject = [];
 function pageEditor() {
     return {
         scope: true,
-        templateUrl: require.toUrl('./pageEditor.html'),
+        templateUrl: requirejs.toUrl('./pageEditor.html'),
         controller: PageEditorController,
         controllerAs: '$ctrl',
         bindToController: {}
@@ -30,6 +31,6 @@ PageEditorController.prototype.markupChanged = function markupChanged(text) {
     this.page.$dirty = true;
 };
 
-return pageEditor;
+export default pageEditor;
 
-}); // define
+

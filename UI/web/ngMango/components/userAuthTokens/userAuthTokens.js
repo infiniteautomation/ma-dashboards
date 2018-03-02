@@ -3,8 +3,10 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+
 
 /**
  * @ngdoc directive
@@ -122,8 +124,8 @@ class UserAuthTokensController {
     }
 }
 
-return {
-    templateUrl: require.toUrl('./userAuthTokens.html'),
+export default {
+    templateUrl: requirejs.toUrl('./userAuthTokens.html'),
     controller: UserAuthTokensController,
     bindings: {
         user: '<'
@@ -134,4 +136,4 @@ return {
     }
 };
 
-}); // define
+

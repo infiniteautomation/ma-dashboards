@@ -1,16 +1,17 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 menuEditor.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', '$mdMedia', 'maUiMenuEditor'];
 function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
     return {
         scope: {},
-        templateUrl: require.toUrl('./menuEditor.html'),
+        templateUrl: requirejs.toUrl('./menuEditor.html'),
         link: function($scope, $element) {
             $scope.menuEditor = {};
             $scope.$mdMedia = $mdMedia;
@@ -189,6 +190,6 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
     };
 }
 
-return menuEditor;
+export default menuEditor;
 
-}); // define
+

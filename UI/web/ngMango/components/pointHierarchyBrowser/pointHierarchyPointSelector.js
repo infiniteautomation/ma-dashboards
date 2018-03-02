@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 PointHierarchyPointSelectorController.$inject = ['maPointHierarchy'];
 function PointHierarchyPointSelectorController(PointHierarchy) {
@@ -170,9 +171,9 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
     }.bind(this);
 }
 
-return {
+export default {
     controller: PointHierarchyPointSelectorController,
-    templateUrl: require.toUrl('./pointHierarchyPointSelector.html'),
+    templateUrl: requirejs.toUrl('./pointHierarchyPointSelector.html'),
     require: {
         'ngModelCtrl': 'ngModel'
     },
@@ -194,4 +195,4 @@ return {
     }
 };
 
-}); // define
+

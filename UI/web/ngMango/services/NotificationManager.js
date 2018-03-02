@@ -4,8 +4,8 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', '$q', '$timeout'];
 function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $timeout) {
@@ -290,6 +290,6 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
 	return NotificationManager;
 }
 
-return NotificationManagerFactory;
+export default NotificationManagerFactory;
 
-}); // define
+

@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 dataPointTagsFactory.$inject = ['$http', 'maRqlBuilder', 'maTemporaryRestResource'];
 function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
@@ -66,6 +67,6 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
     return DataPointTags;
 }
 
-return dataPointTagsFactory;
+export default dataPointTagsFactory;
 
-}); // define
+

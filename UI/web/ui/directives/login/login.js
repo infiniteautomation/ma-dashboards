@@ -1,15 +1,15 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
-'use strict';
+import requirejs from 'requirejs/require';
+
 
 loginFactory.$inject = ['$state', 'maUser', '$rootScope', '$window'];
 function loginFactory($state, User, $rootScope, $window) {
     return {
-        templateUrl: require.toUrl('./login.html'),
+        templateUrl: requirejs.toUrl('./login.html'),
         scope: {},
         link: function($scope, $element, attrs) {
             $scope.User = User;
@@ -53,6 +53,6 @@ function loginFactory($state, User, $rootScope, $window) {
     };
 }
 
-return loginFactory;
+export default loginFactory;
 
-}); // define
+

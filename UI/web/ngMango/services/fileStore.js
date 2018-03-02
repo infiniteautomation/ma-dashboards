@@ -1,10 +1,13 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'moment-timezone', 'jszip'], function(angular, require, moment, JSZip) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import moment from 'moment-timezone';
+import JSZip from 'jszip';
+
 
 fileStore.$inject = ['$http', 'maUtil', '$q'];
 function fileStore($http, maUtil, $q) {
@@ -285,6 +288,6 @@ function fileStore($http, maUtil, $q) {
     return new FileStore();
 }
 
-return fileStore;
+export default fileStore;
 
-}); // define
+

@@ -3,8 +3,9 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 revisionHistoryDialogFactory.$inject = ['$mdDialog', '$mdMedia'];
 function revisionHistoryDialogFactory($mdDialog, $mdMedia) {
@@ -28,7 +29,7 @@ function revisionHistoryDialogFactory($mdDialog, $mdMedia) {
                         this.filterValues = () => true;
                     }
                 },
-                templateUrl: require.toUrl('./revisionHistoryDialog.html'),
+                templateUrl: requirejs.toUrl('./revisionHistoryDialog.html'),
                 parent: angular.element(document.body),
                 targetEvent: event,
                 fullscreen: false,
@@ -43,6 +44,6 @@ function revisionHistoryDialogFactory($mdDialog, $mdMedia) {
     return Object.freeze(revisionHistoryDialog);
 }
 
-return revisionHistoryDialogFactory;
+export default revisionHistoryDialogFactory;
 
-}); // define
+

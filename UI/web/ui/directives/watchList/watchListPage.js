@@ -4,8 +4,11 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'rql/query', 'tinycolor'], function(angular, require, query, tinycolor) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import query from 'rql/query';
+import tinycolor from 'tinycolor';
+
 
 const NO_STATS = '\u2014';
 
@@ -98,7 +101,7 @@ class WatchListPageController {
     }
 
     baseUrl(path) {
-        return require.toUrl('.' + path);
+        return requirejs.toUrl('.' + path);
     }
 
     $onInit() {
@@ -661,7 +664,7 @@ class WatchListPageController {
                 };
                 
             }],
-            templateUrl: require.toUrl('./downloadDialog.html'),
+            templateUrl: requirejs.toUrl('./downloadDialog.html'),
             parent: angular.element(document.body),
             targetEvent: $event,
             clickOutsideToClose: true,
@@ -678,10 +681,10 @@ class WatchListPageController {
     }
 }
 
-return function watchListPageDirective() {
+export default function watchListPageDirective() {
     return {
         restrict: 'E',
-        templateUrl: require.toUrl('./watchListPage.html'),
+        templateUrl: requirejs.toUrl('./watchListPage.html'),
         scope: {},
         controller: WatchListPageController,
         controllerAs: '$ctrl',
@@ -691,4 +694,3 @@ return function watchListPageDirective() {
     };
 };
 
-}); // define

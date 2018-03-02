@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 WebAnalyticsFactory.$inject = ['$rootScope', '$window', '$state'];
 function WebAnalyticsFactory($rootScope, $window, $state) {
@@ -22,7 +23,7 @@ function WebAnalyticsFactory($rootScope, $window, $state) {
         ga.l=Date.now();
         ga('create', this.propertyId, 'auto');
         
-        require(['https://www.google-analytics.com/analytics.js']);
+        requirejs(['https://www.google-analytics.com/analytics.js']);
 
         if (!this.deregister) {
             this.deregister = $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -50,6 +51,6 @@ function WebAnalyticsFactory($rootScope, $window, $state) {
     return new WebAnalytics();
 }
 
-return WebAnalyticsFactory;
+export default WebAnalyticsFactory;
 
-});
+

@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 var DEFAULT_SORT = ['name'];
 var UPDATE_TYPES = ['add', 'update', 'delete'];
@@ -189,6 +190,6 @@ WatchListSelectController.prototype.updateHandler = function updateHandler(event
     }
 };
 
-return WatchListSelectController;
+export default WatchListSelectController;
 
-}); // define
+

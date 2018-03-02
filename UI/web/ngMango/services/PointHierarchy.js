@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'rql/query'], function(angular, query) {
-'use strict';
+import angular from 'angular';
+import query from 'rql/query';
+
 /**
 * @ngdoc service
 * @name ngMangoServices.maPointHierarchy
@@ -185,6 +186,6 @@ function PointHierarchyFactory($resource, Point) {
     return PointHierarchy;
 }
 
-return PointHierarchyFactory;
+export default PointHierarchyFactory;
 
-}); // define
+

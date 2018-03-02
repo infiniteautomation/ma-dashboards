@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 ConfigImportController.$inject = ['maDialogHelper', '$mdColors'];
 function ConfigImportController(maDialogHelper, $mdColors) {
@@ -47,9 +48,9 @@ ConfigImportController.prototype.doImport = function($event) {
     this.maDialogHelper.showConfigImportDialog(data, $event);
 };
 
-return {
+export default {
     controller: ConfigImportController,
-    templateUrl: require.toUrl('./configImport.html'),
+    templateUrl: requirejs.toUrl('./configImport.html'),
     bindings: {
         jsonString: '<?'
     },
@@ -60,4 +61,4 @@ return {
     }
 };
 
-}); // define
+

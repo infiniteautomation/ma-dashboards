@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 const uiModulePermissions = Object.freeze(['edit-ui-menus', 'edit-ui-pages', 'edit-ui-settings']);
 
@@ -33,6 +34,6 @@ function PermissionsFactory($http) {
     return Permissions;
 }
 
-return PermissionsFactory;
+export default PermissionsFactory;
 
-});
+

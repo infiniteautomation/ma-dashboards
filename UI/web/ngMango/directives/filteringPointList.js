@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'rql/query'], function(require, query) {
-'use strict';
+import requirejs from 'requirejs/require';
+import query from 'rql/query';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maFilteringPointList
@@ -35,7 +36,7 @@ filteringPointList.$inject = [];
 function filteringPointList() {
     return {
         restrict: 'E',
-        templateUrl: require.toUrl('./filteringPointList.html'),
+        templateUrl: requirejs.toUrl('./filteringPointList.html'),
         scope: {},
         controller: FilteringPointListController,
         controllerAs: '$ctrl',
@@ -214,6 +215,6 @@ FilteringPointListController.prototype.setById = function() {
     }
 };
 
-return filteringPointList;
+export default filteringPointList;
 
-}); // define
+

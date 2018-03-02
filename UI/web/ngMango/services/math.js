@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['mathjs/math'], function(math) {
-'use strict';
+import math from 'mathjs';
+
 
 MathFactory.$inject = [];
 function MathFactory() {
@@ -22,6 +22,6 @@ function MathFactory() {
     return restricted;
 }
 
-return MathFactory;
+export default MathFactory;
 
-});
+

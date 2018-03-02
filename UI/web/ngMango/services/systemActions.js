@@ -1,10 +1,10 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
-'use strict';
+import angular from 'angular';
+
 
 SystemActionsFactory.$inject = ['$http', '$q', '$timeout'];
 function SystemActionsFactory($http, $q, $timeout) {
@@ -48,6 +48,6 @@ function SystemActionsFactory($http, $q, $timeout) {
     return SystemActions;
 }
 
-return SystemActionsFactory;
+export default SystemActionsFactory;
 
-});
+

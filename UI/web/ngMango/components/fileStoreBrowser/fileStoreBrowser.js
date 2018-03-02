@@ -1,14 +1,15 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 var fileStoreBrowser = {
     controller: FileStoreBrowserController,
-    templateUrl: require.toUrl('./fileStoreBrowser.html'),
+    templateUrl: requirejs.toUrl('./fileStoreBrowser.html'),
     require: {
         'ngModelCtrl': 'ngModel'
     },
@@ -562,6 +563,6 @@ FileStoreBrowserController.prototype.copyFile = function(event, file) {
 	}.bind(this));
 };
 
-return fileStoreBrowser;
+export default fileStoreBrowser;
 
-}); // define
+

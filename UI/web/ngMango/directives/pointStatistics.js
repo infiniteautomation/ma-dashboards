@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'moment-timezone'], function(angular, moment) {
-'use strict';
+import angular from 'angular';
+import moment from 'moment-timezone';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maPointStatistics
@@ -229,6 +230,6 @@ function pointValues(Point, Util, $q, statistics) {
     };
 }
 
-return pointValues;
+export default pointValues;
 
-}); // define
+

@@ -1,10 +1,11 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+
 
 var UPDATE_TYPES = ['add', 'update', 'delete'];
 
@@ -46,9 +47,9 @@ UserSelectController.prototype.updateHandler = function(event, update) {
     });
 };
 
-return {
+export default {
     controller: UserSelectController,
-    templateUrl: require.toUrl('./userSelect.html'),
+    templateUrl: requirejs.toUrl('./userSelect.html'),
     require: {
         'ngModelCtrl': 'ngModel'
     },
@@ -67,4 +68,4 @@ return {
     }
 };
 
-}); // define
+

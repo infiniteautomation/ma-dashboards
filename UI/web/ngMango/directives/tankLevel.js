@@ -1,10 +1,13 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['amcharts/serial', 'require', 'angular', './PointValueController'], function(AmCharts, require, angular, PointValueController) {
-'use strict';
+import AmCharts from 'amcharts/serial';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+import PointValueController from './PointValueController';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maTankLevel
@@ -186,6 +189,6 @@ function defaultOptions() {
     };
 }
 
-return tankLevel;
+export default tankLevel;
 
-}); // define
+

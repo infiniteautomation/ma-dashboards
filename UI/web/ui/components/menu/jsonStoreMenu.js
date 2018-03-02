@@ -1,10 +1,11 @@
 /**
- * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
-'use strict';
+import requirejs from 'requirejs/require';
+import angular from 'angular';
+
 
 JsonStoreMenuController.$inject = ['$scope', 'maUiMenu'];
 function JsonStoreMenuController($scope, Menu) {
@@ -39,7 +40,7 @@ function JsonStoreMenuController($scope, Menu) {
     };
 }
 
-return {
+export default {
     controller: JsonStoreMenuController,
     template: '<ma-ui-menu menu-items="$ctrl.menuItems" user="$ctrl.user"></ma-ui-menu>',
     bindings: {
@@ -47,4 +48,4 @@ return {
     }
 };
 
-}); // define
+

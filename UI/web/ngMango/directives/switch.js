@@ -1,5 +1,5 @@
 /**
- * @copyright 2017 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -19,13 +19,15 @@
  *
  */
 
-define(['angular', 'require', './PointValueController'], function(angular, require, PointValueController) {
-'use strict';
+import angular from 'angular';
+import requirejs from 'requirejs/require';
+import PointValueController from './PointValueController';
+
 
 function switchDirective() {
     return {
         restrict: 'E',
-        templateUrl: require.toUrl('./switch.html'),
+        templateUrl: requirejs.toUrl('./switch.html'),
         scope: {},
         controller: SwitchController,
         controllerAs: '$ctrl',
@@ -99,6 +101,6 @@ SwitchController.prototype.inputValue = function(setValue) {
     }
 };
 
-return switchDirective;
+export default switchDirective;
 
-}); // define
+
