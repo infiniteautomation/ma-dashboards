@@ -27,11 +27,19 @@ function ExceptionHandlerProvider($httpProvider) {
             
             seenMessages[message] = true;
             setTimeout(() => delete seenMessages[message], messageTimeout);
-    
-            StackTrace.fromError(exception, {offline: true}).then(frames => {
+
+            Promise.resolve().then(() => {
+                if (exception instanceof Error) {
+                    try {
+                        return StackTrace.fromError(exception, {offline: true});
+                    } catch (e) {
+                        $log.error('Failed to generate stack trace', e);
+                    }
+                }
+            }).then(frames => {
                 const body = JSON.stringify({
                     message: message,
-                    stackTrace: frames,
+                    stackTrace: frames || [],
                     cause: cause || '',
                     location: '' + $window.location,
                     userAgent: $window.navigator.userAgent,
@@ -55,7 +63,7 @@ function ExceptionHandlerProvider($httpProvider) {
                 
                 xhr.send(body);
             }).catch(error => {
-                $log.error('Failed to generate/send stack trace', error);
+                $log.error('Failed to send stack trace', error);
             });
         };
     }
