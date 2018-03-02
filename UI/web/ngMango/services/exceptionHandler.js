@@ -19,8 +19,8 @@ function ExceptionHandlerProvider($httpProvider) {
 
         const seenMessages = {};
         
-        return function maExceptionHandler(exception, cause) {
-            $log.error(exception, cause);
+        const logAndSendStackTrace = (exception, cause) => {
+            $log.error(exception);
             
             const message = '' + exception;
             if (seenMessages[message]) return;
@@ -65,6 +65,14 @@ function ExceptionHandlerProvider($httpProvider) {
             }).catch(error => {
                 $log.error('Failed to send stack trace', error);
             });
+        };
+        
+        return function maExceptionHandler(exception, cause) {
+            if (Array.isArray(exception)) {
+                exception.forEach(e => logAndSendStackTrace(e, cause));
+            } else {
+                logAndSendStackTrace(exception, cause);
+            }
         };
     }
 }
