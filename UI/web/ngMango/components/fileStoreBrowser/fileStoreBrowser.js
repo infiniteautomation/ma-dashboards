@@ -4,12 +4,11 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import fileStoreBrowserTemplate from './fileStoreBrowser.html';
 
 var fileStoreBrowser = {
     controller: FileStoreBrowserController,
-    templateUrl: requirejs.toUrl('./fileStoreBrowser.html'),
+    template: fileStoreBrowserTemplate,
     require: {
         'ngModelCtrl': 'ngModel'
     },

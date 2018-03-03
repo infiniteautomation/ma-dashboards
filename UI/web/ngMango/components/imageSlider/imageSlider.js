@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import imageSliderTemplate from './imageSlider.html';
 
 class ImageSliderController {
     static get $$ngIsClass() { return true; }
@@ -75,7 +74,7 @@ export default {
         pointValues: '<'
     },
     controller: ImageSliderController,
-    templateUrl: requirejs.toUrl('./imageSlider.html'),
+    template: imageSliderTemplate,
     designerInfo: {
         translation: 'ui.components.imageSlider',
         icon: 'photo_library'

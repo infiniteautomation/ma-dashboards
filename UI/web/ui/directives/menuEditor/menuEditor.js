@@ -3,15 +3,14 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import menuEditorTemplate from './menuEditor.html';
 import angular from 'angular';
-
 
 menuEditor.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', '$mdMedia', 'maUiMenuEditor'];
 function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
     return {
         scope: {},
-        templateUrl: requirejs.toUrl('./menuEditor.html'),
+        template: menuEditorTemplate,
         link: function($scope, $element) {
             $scope.menuEditor = {};
             $scope.$mdMedia = $mdMedia;

@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import userListTemplate from './userList.html';
 
 var UPDATE_TYPES = ['add', 'update', 'delete'];
 
@@ -50,7 +49,7 @@ UserListController.prototype.updateHandler = function(event, update) {
 
 export default {
     controller: UserListController,
-    templateUrl: requirejs.toUrl('./userList.html'),
+    template: userListTemplate,
     require: {
         'ngModelCtrl': 'ngModel'
     },

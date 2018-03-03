@@ -4,9 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import queryBuilderTemplate from './queryBuilder.html';
 import query from 'rql/query';
-
 
 const queryProperties = [
     {
@@ -156,7 +155,7 @@ queryBuilder.$inject = ['maCssInjector'];
 
 export default {
     controller: queryBuilder,
-    templateUrl: requirejs.toUrl('./queryBuilder.html'),
+    template: queryBuilderTemplate,
     require: {
         'ngModelCtrl': 'ngModel'
     },

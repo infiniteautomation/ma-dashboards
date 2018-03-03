@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
     findMangoConnections();
 } else {

@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import buttonTemplate from './button.html';
 
 /**
  * @ngdoc directive
@@ -36,7 +36,7 @@ import requirejs from 'requirejs/require';
  **/
 var button = {
     controller: ButtonController,
-    templateUrl: requirejs.toUrl('./button.html'),
+    template: buttonTemplate,
     bindings: {
     	icon: '@?',
     	label: '@?',

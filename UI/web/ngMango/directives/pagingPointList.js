@@ -3,9 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import pagingPointListTemplate from './pagingPointList.html';
 import angular from 'angular';
-
 
 function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicItems) {
     return {
@@ -17,7 +16,7 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
             limit: '=?',
             autoInit: '=?'
         },
-        templateUrl: requirejs.toUrl('./pagingPointList.html'),
+        template: pagingPointListTemplate,
         link: function ($scope, $element, attrs) {
 
             $scope.dynamicItems = new DynamicItems({service: Point});

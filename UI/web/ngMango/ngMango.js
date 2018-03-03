@@ -110,9 +110,8 @@ import dataPointTagGroup from './components/dataPointTagGroup/dataPointTagGroup'
 import revisionSelect from './components/revisionSelect/revisionSelect';
 import 'ngmap';
 import slideUp from './animations/slideUp';
-import angular from 'angular';
-import requirejs from 'requirejs/require';
-import moment from 'moment-timezone';
+import angular from 'angular';import moment from 'moment-timezone';
+import AmCharts from 'amcharts/amcharts';
 
 /**
  * @ngdoc overview
@@ -415,55 +414,53 @@ function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYP
     $rootScope.relativeDateTypes = MA_RELATIVE_DATE_TYPES;
     $rootScope.dateRangePresets = MA_DATE_RANGE_PRESETS;
 
-    requirejs(['amcharts/amcharts'], function(AmCharts) {
-        AmCharts._formatDate = AmCharts.formatDate;
-        AmCharts.formatDate = function(date, format, chart) {
-            return moment(date).format(format);
-        };
-    
-        AmCharts._resetDateToMin = AmCharts.resetDateToMin;
-        AmCharts.resetDateToMin = function(date, period, count, firstDateOfWeek) {
-            var m = moment(date);
-            switch(period) {
-            case 'YYYY':
-                m.year(roundDownToNearestX(m.year(), count));
-                m.startOf('year');
-                break;
-            case 'MM':
-                m.month(roundDownToNearestX(m.month(), count));
-                m.startOf('month');
-                break;
-            case 'WW':
-                m.week(roundDownToNearestX(m.week(), count));
-                m.startOf('week');
-                break;
-            case 'DD':
-                //m.date(roundDownToNearestX(m.date(), count));
-                m.startOf('day');
-                break;
-            case 'hh':
-                m.hour(roundDownToNearestX(m.hour(), count));
-                m.startOf('hour');
-                break;
-            case 'mm':
-                m.minute(roundDownToNearestX(m.minute(), count));
-                m.startOf('minute');
-                break;
-            case 'ss':
-                m.second(roundDownToNearestX(m.second(), count));
-                m.startOf('second');
-                break;
-            case 'fff':
-                m.millisecond(roundDownToNearestX(m.millisecond(), count));
-                break;
-            }
-            return m.toDate();
-    
-            function roundDownToNearestX(a,x) {
-                return a - a % x;
-            }
-        };
-    });
+    AmCharts._formatDate = AmCharts.formatDate;
+    AmCharts.formatDate = function(date, format, chart) {
+        return moment(date).format(format);
+    };
+
+    AmCharts._resetDateToMin = AmCharts.resetDateToMin;
+    AmCharts.resetDateToMin = function(date, period, count, firstDateOfWeek) {
+        var m = moment(date);
+        switch(period) {
+        case 'YYYY':
+            m.year(roundDownToNearestX(m.year(), count));
+            m.startOf('year');
+            break;
+        case 'MM':
+            m.month(roundDownToNearestX(m.month(), count));
+            m.startOf('month');
+            break;
+        case 'WW':
+            m.week(roundDownToNearestX(m.week(), count));
+            m.startOf('week');
+            break;
+        case 'DD':
+            //m.date(roundDownToNearestX(m.date(), count));
+            m.startOf('day');
+            break;
+        case 'hh':
+            m.hour(roundDownToNearestX(m.hour(), count));
+            m.startOf('hour');
+            break;
+        case 'mm':
+            m.minute(roundDownToNearestX(m.minute(), count));
+            m.startOf('minute');
+            break;
+        case 'ss':
+            m.second(roundDownToNearestX(m.second(), count));
+            m.startOf('second');
+            break;
+        case 'fff':
+            m.millisecond(roundDownToNearestX(m.millisecond(), count));
+            break;
+        }
+        return m.toDate();
+
+        function roundDownToNearestX(a,x) {
+            return a - a % x;
+        }
+    };
 }]);
 
 export default ngMango;

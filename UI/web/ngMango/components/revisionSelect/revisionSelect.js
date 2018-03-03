@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import revisionSelectTemplate from './revisionSelect.html';
 
 /**
  * @ngdoc directive
@@ -83,7 +82,7 @@ export default {
     transclude: {
         label: '?maLabel'
     },
-    templateUrl: requirejs.toUrl('./revisionSelect.html'),
+    template: revisionSelectTemplate,
     controller: RevisionSelectController,
     designerInfo: {
         translation: 'ui.components.maRevisionSelect',

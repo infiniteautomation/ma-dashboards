@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import fileStoreDialogTemplate from './fileStoreDialog.html';
 
 fileStoreDialog.$inject = ['$mdDialog', '$mdMedia'];
 function fileStoreDialog($mdDialog, $mdMedia) {
@@ -23,7 +22,7 @@ function fileStoreDialog($mdDialog, $mdMedia) {
             		$mdDialog.hide(this.path);
             	};
             },
-            templateUrl: requirejs.toUrl('./fileStoreDialog.html'),
+            template: fileStoreDialogTemplate,
             targetEvent: $event,
             clickOutsideToClose: true,
             escapeToClose: true,

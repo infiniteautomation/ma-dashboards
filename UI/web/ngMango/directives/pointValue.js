@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import pointValueTemplate from './pointValue.html';
 import moment from 'moment-timezone';
 import PointValueController from './PointValueController';
 
@@ -53,7 +53,7 @@ function pointValue() {
     
     return {
         restrict: 'E',
-        templateUrl: requirejs.toUrl('./pointValue.html'),
+        template: pointValueTemplate,
         scope: {},
         controller: PointValueDirectiveController,
         controllerAs: '$ctrl',

@@ -3,9 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import angular from 'angular';import dataSourceScrollListMdTemplate from './dataSourceScrollList-md.html';
+import dataSourceScrollListTemplate from './dataSourceScrollList.html';
 
 dataSourceScrollList.$inject = ['$injector'];
 export default dataSourceScrollList;
@@ -26,11 +25,11 @@ function dataSourceScrollList($injector) {
             sort: '<?',
             onQuery: '&?'
         },
-        templateUrl: function() {
+        template: function() {
             if ($injector.has('$mdUtil')) {
-                return requirejs.toUrl('./dataSourceScrollList-md.html');
+                return dataSourceScrollListMdTemplate;
             }
-            return requirejs.toUrl('./dataSourceScrollList.html');
+            return dataSourceScrollListTemplate;
         },
         require: {
             'ngModelCtrl': 'ngModel'

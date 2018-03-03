@@ -3,8 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
+import forgotPasswordTemplate from './forgotPassword.html';
 
 class ForgotPasswordController {
     static get $$ngIsClass() { return true; }
@@ -59,7 +58,7 @@ class ForgotPasswordController {
 
 export default {
     controller: ForgotPasswordController,
-    templateUrl: requirejs.toUrl('./forgotPassword.html')
+    template: forgotPasswordTemplate
 };
 
 

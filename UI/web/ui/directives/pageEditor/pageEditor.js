@@ -3,15 +3,14 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import pageEditorTemplate from './pageEditor.html';
 import angular from 'angular';
-
 
 pageEditor.$inject = [];
 function pageEditor() {
     return {
         scope: true,
-        templateUrl: requirejs.toUrl('./pageEditor.html'),
+        template: pageEditorTemplate,
         controller: PageEditorController,
         controllerAs: '$ctrl',
         bindToController: {}

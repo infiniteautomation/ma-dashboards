@@ -3,9 +3,8 @@
  * @author Jared Wiltshire
  */
 
+import configExportTemplate from './configExport.html';
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
 
 ConfigExportController.$inject = ['maImportExport', 'maUtil', 'maTranslate'];
 function ConfigExportController(ImportExport, Util, Translate) {
@@ -97,7 +96,7 @@ ConfigExportController.prototype.writeIndentedJson = function() {
 
 export default {
     controller: ConfigExportController,
-    templateUrl: requirejs.toUrl('./configExport.html'),
+    template: configExportTemplate,
     bindings: {
         onExport: '&?'
     },

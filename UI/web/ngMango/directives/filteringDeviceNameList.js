@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import filteringDeviceNameListTemplate from './filteringDeviceNameList.html';
 
 filteringDeviceNameList.$inject = ['$injector', 'maDeviceName'];
 function filteringDeviceNameList($injector, DeviceName) {
@@ -19,7 +18,7 @@ function filteringDeviceNameList($injector, DeviceName) {
             autoInit: '<?',
             labelText: '<'
         },
-        templateUrl: requirejs.toUrl('./filteringDeviceNameList.html'),
+        template: filteringDeviceNameListTemplate,
         replace: false,
         link: function($scope, $element, $attrs, ngModelCtrl) {
             ngModelCtrl.render = () => {

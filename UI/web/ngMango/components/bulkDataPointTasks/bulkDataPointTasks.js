@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import bulkDataPointTasksTemplate from './bulkDataPointTasks.html';
 
 class BulkDataPointTasksController {
     static get $$ngIsClass() { return true; }
@@ -50,7 +50,7 @@ class BulkDataPointTasksController {
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./bulkDataPointTasks.html'),
+    template: bulkDataPointTasksTemplate,
     controller: BulkDataPointTasksController,
     bindings: {
         allUsers: '<?'

@@ -4,9 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import statsDialogTemplate from './statsDialog.html';
 import moment from 'moment-timezone';
-
 
 statsDialog.$inject = ['$mdDialog', '$mdMedia', 'maUiDateBar', 'localStorageService'];
 function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
@@ -46,7 +45,7 @@ function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
                     $mdDialog.cancel();
                 };
             },
-            templateUrl: requirejs.toUrl('./statsDialog.html'),
+            template: statsDialogTemplate,
             parent: angular.element(document.body),
             targetEvent: ev,
             fullscreen: true,

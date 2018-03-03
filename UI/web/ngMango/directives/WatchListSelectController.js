@@ -4,8 +4,6 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
 
 var DEFAULT_SORT = ['name'];
 var UPDATE_TYPES = ['add', 'update', 'delete'];

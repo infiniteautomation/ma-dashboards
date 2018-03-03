@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import eventHandlerPageTemplate from './eventHandlerPage.html';
 
 const $inject = Object.freeze(['maEventHandler', '$state']);
 class EventHandlerPageController {
@@ -44,7 +43,7 @@ class EventHandlerPageController {
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./eventHandlerPage.html'),
+    template: eventHandlerPageTemplate,
     controller: EventHandlerPageController,
     bindings: {
     },

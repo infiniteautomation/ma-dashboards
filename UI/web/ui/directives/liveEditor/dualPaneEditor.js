@@ -3,17 +3,16 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
+import dualPaneEditorTemplate from './dualPaneEditor.html';
 
 var dualPaneEditor = function() {
     return {
-        templateUrl: function($element, attrs) {
+        template: function($element, attrs) {
             var htmlContent = $element.html().trim();
             $element.empty();
             if (htmlContent)
                 $element.data('htmlContent', htmlContent);
-            return requirejs.toUrl('./dualPaneEditor.html');
+            return dualPaneEditorTemplate;
         },
         link: function($scope, $element, $attrs) {
             var content = $element.data('htmlContent');

@@ -3,8 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
+import intervalPickerTemplate from './intervalPicker.html';
 
 function intervalPicker() {
     return {
@@ -13,7 +12,7 @@ function intervalPicker() {
             interval: '='
         },
         replace: true,
-        templateUrl: requirejs.toUrl('./intervalPicker.html'),
+        template: intervalPickerTemplate,
         link: function ($scope, $element, attr) {
         	$scope.intervals = 1;
         	$scope.type = 'MINUTES';

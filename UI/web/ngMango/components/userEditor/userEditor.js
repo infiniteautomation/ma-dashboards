@@ -4,9 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import userEditorTemplate from './userEditor.html';
 import moment from 'moment-timezone';
-
 
 UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales'];
 function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLocales) {
@@ -178,7 +177,7 @@ UserEditorController.prototype.regExpEscape = function(s) {
 
 export default {
     controller: UserEditorController,
-    templateUrl: requirejs.toUrl('./userEditor.html'),
+    template: userEditorTemplate,
     bindings: {
         originalUser: '<?user',
         onSave: '&?',

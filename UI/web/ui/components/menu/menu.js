@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import menuTemplate from './menu.html';
 import angular from 'angular';
 
 
@@ -75,7 +75,7 @@ function MenuController() {
 
 export default {
     controller: MenuController,
-    templateUrl: requirejs.toUrl('./menu.html'),
+    template: menuTemplate,
     bindings: {
         origMenuItems: '<menuItems',
         user: '<user'

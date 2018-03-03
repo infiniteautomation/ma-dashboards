@@ -4,7 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import bulkDataPointEditPageTemplate from './bulkDataPointEditPage.html';
 import tinycolor from 'tinycolor';
 
 
@@ -400,7 +400,7 @@ class BulkDataPointEditPageController {
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./bulkDataPointEditPage.html'),
+    template: bulkDataPointEditPageTemplate,
     controller: BulkDataPointEditPageController,
     bindings: {
     },

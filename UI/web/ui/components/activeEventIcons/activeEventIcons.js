@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import activeEventIconsTemplate from './activeEventIcons.html';
 
 ActiveEventIconsController.$inject = ['maEvents', '$scope'];
 function ActiveEventIconsController(Events, $scope) {
@@ -42,7 +41,7 @@ ActiveEventIconsController.prototype.counter = function counter(payloadEvent, pa
 
 export default {
     controller: ActiveEventIconsController,
-    templateUrl: requirejs.toUrl('./activeEventIcons.html')
+    template: activeEventIconsTemplate
 };
 
 

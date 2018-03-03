@@ -4,9 +4,7 @@
  */
 
 import angular from 'angular';
-import '../ngMango/ngMangoMaterial';
-import requirejs from 'requirejs/require';
-import menuProvider from './services/menu';
+import '../ngMango/ngMangoMaterial';import menuProvider from './services/menu';
 import pagesFactory from './services/pages';
 import dateBarFactory from './services/dateBar';
 import uiSettingsFactory from './services/uiSettings';

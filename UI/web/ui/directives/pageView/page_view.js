@@ -4,7 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import pageViewTemplate from './pageView.html';
 
 
 PageViewController.$inject = ['$scope', 'maUiPages', 'maUser', 'maJsonStoreEventManager'];
@@ -46,7 +46,7 @@ export default function pageView() {
         bindToController: {
             xid: '@'
         },
-        templateUrl: requirejs.toUrl('./pageView.html')
+        template: pageViewTemplate
     };
 };
 

@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
 
 LivePreviewController.$inject = ['$scope', '$compile', '$element'];
 function LivePreviewController($scope, $compile, $element) {

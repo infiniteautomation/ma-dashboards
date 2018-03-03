@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maIntervalTypePicker

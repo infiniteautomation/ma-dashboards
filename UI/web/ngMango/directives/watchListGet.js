@@ -21,9 +21,7 @@
   *     e.g. `on-parameters-change="$ctrl.paramsChanged($parameters)"`)
   */
 
-import angular from 'angular';
-import requirejs from 'requirejs/require';
-import WatchListSelectController from './WatchListSelectController';
+import angular from 'angular';import WatchListSelectController from './WatchListSelectController';
 
 
 watchListGetFactory.$inject = [];

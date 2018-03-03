@@ -2,10 +2,7 @@
  * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
-
-import requirejs from 'requirejs/require';
 import angular from 'angular';
-
 
 AceEditorController.$inject = ['$element', '$injector', '$templateRequest', '$sce', '$scope', '$timeout'];
 function AceEditorController($element, $injector, $templateRequest, $sce, $scope, $timeout) {

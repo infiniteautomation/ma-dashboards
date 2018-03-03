@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import pointHierarchyFolderTemplate from './pointHierarchyFolder.html';
 
 var pointHierarchyFolder = function pointHierarchyFolder() {
     this.$onInit = function() {
@@ -78,7 +77,7 @@ pointHierarchyFolder.$inject = [];
 
 export default {
     controller: pointHierarchyFolder,
-    templateUrl: requirejs.toUrl('./pointHierarchyFolder.html'),
+    template: pointHierarchyFolderTemplate,
     bindings: {
         folder: '<',
         parent: '<',

@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
 
 function addParams(url) {
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'showHeader=false&showFooter=false&showToolbar=false';

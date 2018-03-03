@@ -3,10 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
 import angular from 'angular';
 import loadLoginTranslations from './util/loadLoginTranslations';
-
 
 export default [
     {

@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import menuToggleTemplate from './menuToggle.html';
 
 
 MenuToggleController.$inject = ['$state', '$timeout', '$element', '$scope', 'maTranslate'];
@@ -161,7 +161,7 @@ export default {
         menu: '^^maUiMenu',
         parentToggle: '?^^maUiMenuToggle'
     },
-    templateUrl: requirejs.toUrl('./menuToggle.html'),
+    template: menuToggleTemplate,
     bindings: {
         item: '<menuItem',
         openMenu: '<'

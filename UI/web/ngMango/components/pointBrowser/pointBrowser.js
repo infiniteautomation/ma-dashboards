@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import pointBrowserTemplate from './pointBrowser.html';
 
 const types = ['watchList', 'deviceName', 'dataSource', 'hierarchy', 'tags'];
 
@@ -229,7 +228,7 @@ class PointBrowserController {
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./pointBrowser.html'),
+    template: pointBrowserTemplate,
     controller: PointBrowserController,
     bindings: {
         listType: '@?',

@@ -2,8 +2,6 @@
  * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
-
-import requirejs from 'requirejs/require';
 import angular from 'angular';
 import Globalize from 'globalize';
 

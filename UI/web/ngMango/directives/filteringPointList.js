@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import filteringPointListTemplate from './filteringPointList.html';
 import query from 'rql/query';
 
 /**
@@ -36,7 +36,7 @@ filteringPointList.$inject = [];
 function filteringPointList() {
     return {
         restrict: 'E',
-        templateUrl: requirejs.toUrl('./filteringPointList.html'),
+        template: filteringPointListTemplate,
         scope: {},
         controller: FilteringPointListController,
         controllerAs: '$ctrl',

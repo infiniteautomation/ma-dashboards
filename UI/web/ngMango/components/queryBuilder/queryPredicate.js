@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import queryPredicateTemplate from './queryPredicate.html';
 
 var queryPredicate = function queryPredicate() {
     this.operations = [
@@ -59,7 +58,7 @@ queryPredicate.$inject = [];
 
 export default {
     controller: queryPredicate,
-    templateUrl: requirejs.toUrl('./queryPredicate.html'),
+    template: queryPredicateTemplate,
     require: {
         'builderCtrl': '^^maQueryBuilder'
     },

@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import pageEditorControlsTemplate from './pageEditorControls.html';
 import angular from 'angular';
 
 
@@ -329,7 +329,7 @@ function pageEditorControlsFactory() {
     return {
         restrict: 'E',
         scope: {},
-        templateUrl: requirejs.toUrl('./pageEditorControls.html'),
+        template: pageEditorControlsTemplate,
         controller: PageEditorControlsController,
         controllerAs: '$ctrl',
         bindToController: {

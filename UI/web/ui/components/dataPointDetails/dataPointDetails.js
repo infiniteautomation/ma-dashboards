@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import dataPointDetailsTemplate from './dataPointDetails.html';
 
 DataPointDetailsController.$inject = ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser'];
 function DataPointDetailsController($scope, $element, $stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User) {
@@ -79,6 +78,6 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
 
 export default {
     controller: DataPointDetailsController,
-    templateUrl: requirejs.toUrl('./dataPointDetails.html')
+    template: dataPointDetailsTemplate
 };
 

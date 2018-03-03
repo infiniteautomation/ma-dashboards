@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import eventsPageTemplate from './eventsPage.html';
 
 const paramNames = ['eventType', 'alarmLevel', 'activeStatus', 'acknowledged', 'dateFilter'];
 
@@ -65,6 +64,6 @@ function EventsPageController($mdMedia, $state, localStorageService, maUiDateBar
 
 export default {
     controller: EventsPageController,
-    templateUrl: requirejs.toUrl('./eventsPage.html')
+    template: eventsPageTemplate
 };
 

@@ -3,7 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import setPointValueMdTemplate from './setPointValue-md.html';
+import setPointValueTemplate from './setPointValue.html';
 import angular from 'angular';
 import PointValueController from './PointValueController';
 
@@ -36,11 +37,11 @@ setPointValue.$inject = ['$injector'];
 function setPointValue($injector) {
     return {
         restrict: 'E',
-        templateUrl: function() {
+        template: function() {
             if ($injector.has('$mdUtil')) {
-                return requirejs.toUrl('./setPointValue-md.html');
+                return setPointValueMdTemplate;
             }
-            return requirejs.toUrl('./setPointValue.html');
+            return setPointValueTemplate;
         },
         scope: {},
         controller: SetPointValueController,

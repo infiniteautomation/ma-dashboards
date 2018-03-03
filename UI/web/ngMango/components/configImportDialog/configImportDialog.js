@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import configImportDialogTemplate from './configImportDialog.html';
 
 ConfigImportDialogController.$inject = ['$mdDialog', 'maImportExport', '$timeout', '$element', '$q'];
 function ConfigImportDialogController($mdDialog, ImportExport, $timeout, $element, $q) {
@@ -121,7 +120,7 @@ ConfigImportDialogController.prototype.doCancel = function(retryCount = 0) {
 
 export default {
     controller: ConfigImportDialogController,
-    templateUrl: requirejs.toUrl('./configImportDialog.html'),
+    template: configImportDialogTemplate,
     bindings: {
         importData: '<'
     },

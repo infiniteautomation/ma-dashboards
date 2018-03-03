@@ -21,8 +21,6 @@
   */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
 
 stateParams.$inject = [];
 function stateParams() {

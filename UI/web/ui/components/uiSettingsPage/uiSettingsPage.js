@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import uiSettingsPageTemplate from './uiSettingsPage.html';
 
 class UiSettingsPageController {
     static get $$ngIsClass() { return true; }
@@ -76,7 +75,7 @@ class UiSettingsPageController {
 
 export default {
     controller: UiSettingsPageController,
-    templateUrl: requirejs.toUrl('./uiSettingsPage.html')
+    template: uiSettingsPageTemplate
 };
 
 

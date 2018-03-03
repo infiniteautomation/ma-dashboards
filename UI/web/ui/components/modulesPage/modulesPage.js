@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import modulesPageTemplate from './modulesPage.html';
 
 ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$scope', '$sce', '$window'];
 function ModulesPageController(maModules, maTranslate, maDialogHelper, $scope, $sce, $window) {
@@ -113,7 +112,7 @@ ModulesPageController.prototype.downloadLicense = function($event) {
 
 export default {
     controller: ModulesPageController,
-    templateUrl: requirejs.toUrl('./modulesPage.html')
+    template: modulesPageTemplate
 };
 
 

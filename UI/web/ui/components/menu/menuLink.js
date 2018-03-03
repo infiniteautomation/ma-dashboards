@@ -3,8 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
+import menuLinkTemplate from './menuLink.html';
 
 MenuLinkController.$inject = ['$state', 'maTranslate'];
 function MenuLinkController($state, Translate) {
@@ -47,7 +46,7 @@ function MenuLinkController($state, Translate) {
 
 export default {
     controller: MenuLinkController,
-    templateUrl: requirejs.toUrl('./menuLink.html'),
+    template: menuLinkTemplate,
     bindings: {
         item: '<menuItem'
     },

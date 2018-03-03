@@ -4,9 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import footerTemplate from './footer.html';
 import moment from 'moment-timezone';
-
 
 FooterController.$inject = ['maModules'];
 function FooterController(Modules) {
@@ -26,6 +25,6 @@ FooterController.prototype.$onInit = function() {
 
 export default {
     controller: FooterController,
-    templateUrl: requirejs.toUrl('./footer.html')
+    template: footerTemplate
 };
 

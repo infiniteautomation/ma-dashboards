@@ -4,8 +4,6 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
 
 uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'maCssInjector', '$templateRequest', '$interpolate',
     'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION', 'MA_POINT_VALUES_CONFIG'];

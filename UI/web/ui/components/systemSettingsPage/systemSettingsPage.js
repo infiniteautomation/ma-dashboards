@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import systemSettingsPageTemplate from './systemSettingsPage.html';
 
 SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$state', 'maUiMenu', '$mdMedia',
 	'$scope', '$timeout', 'maSystemActions', 'maDialogHelper', 'maServer'];
@@ -160,6 +159,6 @@ SystemSettingsPageController.prototype.getBackupFiles = function() {
 
 export default {
     controller: SystemSettingsPageController,
-    templateUrl: requirejs.toUrl('./systemSettingsPage.html')
+    template: systemSettingsPageTemplate
 };
 

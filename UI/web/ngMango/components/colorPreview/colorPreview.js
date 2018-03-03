@@ -4,7 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import colorPreviewTemplate from './colorPreview.html';
 
 var hues = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
 var namedHues = ['default', 'hue-1', 'hue-2', 'hue-3'];
@@ -57,5 +57,5 @@ export default {
         allHues: '<'
     },
     controller: ColorPreviewController,
-    templateUrl: requirejs.toUrl('./colorPreview.html')
+    template: colorPreviewTemplate
 };

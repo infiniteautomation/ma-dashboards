@@ -4,7 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import eventsTableTemplate from './eventsTable.html';
 import query from 'rql/query';
 import moment from 'moment-timezone';
 
@@ -353,7 +353,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
     
     return {
         restrict: 'E',
-        templateUrl: requirejs.toUrl('./eventsTable.html'),
+        template: eventsTableTemplate,
         scope: {},
         controller: EventsTableController,
         controllerAs: '$ctrl',

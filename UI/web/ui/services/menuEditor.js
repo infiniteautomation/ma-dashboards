@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import menuEditorDialogTemplate from './menuEditorDialog.html';
 
 MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', 'maUiPages', '$q', 'maUtil'];
 function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
@@ -120,7 +119,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
             if (!item.target) item.target = '_blank';
 
             return $mdDialog.show({
-                templateUrl: requirejs.toUrl('./menuEditorDialog.html'),
+                template: menuEditorDialogTemplate,
                 parent: angular.element(document.body),
                 targetEvent: event,
                 clickOutsideToClose: true,

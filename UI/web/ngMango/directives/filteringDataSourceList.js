@@ -4,9 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import filteringDataSourceListTemplate from './filteringDataSourceList.html';
 import query from 'rql/query';
-
 
 filteringDataSourceList.$inject = ['$injector', 'maDataSource'];
 function filteringDataSourceList($injector, DataSource) {
@@ -23,7 +22,7 @@ function filteringDataSourceList($injector, DataSource) {
             sort: '<?',
             labelText: '<'
         },
-        templateUrl: requirejs.toUrl('./filteringDataSourceList.html'),
+        template: filteringDataSourceListTemplate,
         replace: false,
         link: function($scope, $element, $attrs, ngModelCtrl) {
             ngModelCtrl.render = () => {

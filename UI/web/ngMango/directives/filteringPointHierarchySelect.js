@@ -4,15 +4,14 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import filteringPointHierarchySelectTemplate from './filteringPointHierarchySelect.html';
 
 filteringPointHierarchySelect.$inject = ['$injector'];
 function filteringPointHierarchySelect($injector) {
     return {
         restrict: 'E',
         scope: {},
-        templateUrl: requirejs.toUrl('./filteringPointHierarchySelect.html'),
+        template: filteringPointHierarchySelectTemplate,
         controllerAs: '$ctrl',
         bindToController: {
             path: '<?',

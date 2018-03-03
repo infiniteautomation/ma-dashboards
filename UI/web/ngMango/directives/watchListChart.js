@@ -3,6 +3,8 @@
  * @author Will Geller
  */
 
+import watchListChartTemplate from './watchListChart.html';
+import angular from 'angular';
 
  /**
   * @ngdoc directive
@@ -39,15 +41,11 @@
   *
   */
 
-import requirejs from 'requirejs/require';
-import angular from 'angular';
-
-
 watchListChart.$inject = [];
 function watchListChart() {
     return {
         restrict: 'E',
-        templateUrl: requirejs.toUrl('./watchListChart.html'),
+        template: watchListChartTemplate,
         scope: {},
         controller: WatchListChartController,
         controllerAs: '$ctrl',
@@ -165,4 +163,3 @@ WatchListChartController.prototype.valuesUpdatedHandler = function(values) {
 };
 
 export default watchListChart;
-

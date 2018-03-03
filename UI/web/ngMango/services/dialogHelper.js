@@ -3,9 +3,9 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import basicDialogTemplate from './basicDialog.html';
+import configImportDialogContainerTemplate from '../components/configImportDialog/configImportDialogContainer.html';
 import angular from 'angular';
-
 
 DialogHelperFactory.$inject = ['$injector', 'maTranslate', 'maSystemActions', '$q', 'maUtil'];
 function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil) {
@@ -19,10 +19,10 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
     
     class DialogHelper {
 
-        showDialog(templateUrl, locals, $event) {
+        showDialog(template, locals, $event) {
             return $mdDialog.show({
                 controller: function() {},
-                templateUrl: templateUrl,
+                template: template,
                 targetEvent: $event,
                 clickOutsideToClose: false,
                 escapeToClose: false,
@@ -47,7 +47,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                         this.$mdDialog.hide(this.result);
                     };
                 },
-                templateUrl: requirejs.toUrl('./basicDialog.html'),
+                template: basicDialogTemplate,
                 targetEvent: $event,
                 clickOutsideToClose: true,
                 escapeToClose: true,
@@ -152,8 +152,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
 
         showConfigImportDialog(importData, $event) {
             var locals = {importData: importData};
-            var templateUrl = requirejs.toUrl('../components/configImportDialog/configImportDialogContainer.html');
-            return this.showDialog(templateUrl, locals, $event);
+            return this.showDialog(configImportDialogContainerTemplate, locals, $event);
         }
         
 //        options = {

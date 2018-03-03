@@ -4,8 +4,6 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
 
 /**
  * Old temporary resource service, use maTemporaryRestResource instead.

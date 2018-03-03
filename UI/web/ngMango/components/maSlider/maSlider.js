@@ -4,8 +4,8 @@
  */ 
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-    
+import maSliderTemplate from './maSlider.html';
+
  /**
   * @ngdoc directive
   * @name ngMango.directive:maSlider
@@ -79,7 +79,7 @@ import requirejs from 'requirejs/require';
             }
         },
         controller: MaSliderController,
-        templateUrl: requirejs.toUrl('./maSlider.html'),
+        template: maSliderTemplate,
         transclude: true
     };
 

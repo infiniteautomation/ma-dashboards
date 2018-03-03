@@ -5,10 +5,10 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
 import query from 'rql/query';
 import tinycolor from 'tinycolor';
-
+import downloadDialogTemplate from './downloadDialog.html';
+import watchListPageTemplate from './watchListPage.html';
 
 const NO_STATS = '\u2014';
 
@@ -664,7 +664,7 @@ class WatchListPageController {
                 };
                 
             }],
-            templateUrl: requirejs.toUrl('./downloadDialog.html'),
+            template: downloadDialogTemplate,
             parent: angular.element(document.body),
             targetEvent: $event,
             clickOutsideToClose: true,
@@ -684,7 +684,7 @@ class WatchListPageController {
 export default function watchListPageDirective() {
     return {
         restrict: 'E',
-        templateUrl: requirejs.toUrl('./watchListPage.html'),
+        template: watchListPageTemplate,
         scope: {},
         controller: WatchListPageController,
         controllerAs: '$ctrl',

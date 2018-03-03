@@ -3,7 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import statisticsTableMdTemplate from './statisticsTable-md.html';
+import statisticsTableTemplate from './statisticsTable.html';
 import moment from 'moment-timezone';
 
 /**
@@ -54,11 +55,11 @@ function statisticsTable($injector, mangoDateFormats) {
             to: '<?',
             hideStartsAndRuntimes: '<?'
         },
-        templateUrl: function() {
+        template: function() {
             if ($injector.has('$mdUtil')) {
-                return requirejs.toUrl('./statisticsTable-md.html');
+                return statisticsTableMdTemplate;
             }
-            return requirejs.toUrl('./statisticsTable.html');
+            return statisticsTableTemplate;
         },
         link: function($scope, $element, $attrs) {
             $scope.formatTimestamp = function(ts) {

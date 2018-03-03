@@ -4,8 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import textAreaDialogTemplate from './textAreaDialog.html';
+import systemStatusPageTemplate from './systemStatusPage.html';
 
 SystemStatusPageController.$inject = ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', '$mdDialog', 'maTranslate', 'maDialogHelper', 
     'maUiDateBar', '$scope', 'maRqlBuilder'];
@@ -231,7 +231,7 @@ SystemStatusPageController.prototype.showTextAreaDialog = function(title, textCo
             };
             this.$mdMedia = $this.$mdMedia;
         },
-        templateUrl: requirejs.toUrl('./textAreaDialog.html'),
+        template: textAreaDialogTemplate,
         clickOutsideToClose: true,
         escapeToClose: true,
         controllerAs: '$ctrl',
@@ -241,6 +241,6 @@ SystemStatusPageController.prototype.showTextAreaDialog = function(title, textCo
 
 export default {
     controller: SystemStatusPageController,
-    templateUrl: requirejs.toUrl('./systemStatusPage.html')
+    template: systemStatusPageTemplate
 };
 

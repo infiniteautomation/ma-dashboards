@@ -16,13 +16,12 @@
   */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import watchListParametersTemplate from './watchListParameters.html';
 import query from 'rql/query';
-
 
 var watchListParameters = {
     controller: WatchListParametersController,
-    templateUrl: requirejs.toUrl('./watchListParameters.html'),
+    template: watchListParametersTemplate,
     bindings: {
         watchList: '<',
         parametersChanged: '&?',

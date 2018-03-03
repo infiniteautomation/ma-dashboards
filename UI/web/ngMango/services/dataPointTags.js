@@ -4,8 +4,6 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
 
 dataPointTagsFactory.$inject = ['$http', 'maRqlBuilder', 'maTemporaryRestResource'];
 function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {

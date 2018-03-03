@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import dataPointTagGroupTemplate from './dataPointTagGroup.html';
 
 /**
  * @ngdoc directive
@@ -54,7 +53,7 @@ export default {
     require: {
         ngModelCtrl: 'ngModel'
     },
-    templateUrl: requirejs.toUrl('./dataPointTagGroup.html'),
+    template: dataPointTagGroupTemplate,
     controller: DataPointTagGroupController
 };
 

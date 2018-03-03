@@ -4,9 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import userAuthTokensTemplate from './userAuthTokens.html';
 import moment from 'moment-timezone';
-
 
 /**
  * @ngdoc directive
@@ -125,7 +124,7 @@ class UserAuthTokensController {
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./userAuthTokens.html'),
+    template: userAuthTokensTemplate,
     controller: UserAuthTokensController,
     bindings: {
         user: '<'

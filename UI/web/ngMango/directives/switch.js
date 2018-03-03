@@ -3,6 +3,10 @@
  * @author Jared Wiltshire
  */
 
+import angular from 'angular';
+import switchTemplate from './switch.html';
+import PointValueController from './PointValueController';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maSwitch
@@ -19,15 +23,10 @@
  *
  */
 
-import angular from 'angular';
-import requirejs from 'requirejs/require';
-import PointValueController from './PointValueController';
-
-
 function switchDirective() {
     return {
         restrict: 'E',
-        templateUrl: requirejs.toUrl('./switch.html'),
+        template: switchTemplate,
         scope: {},
         controller: SwitchController,
         controllerAs: '$ctrl',
@@ -102,5 +101,3 @@ SwitchController.prototype.inputValue = function(setValue) {
 };
 
 export default switchDirective;
-
-

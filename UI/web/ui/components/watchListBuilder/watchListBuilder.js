@@ -4,9 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import watchListBuilderTemplate from './watchListBuilder.html';
 import query from 'rql/query';
-
 
 const defaultTotal = '\u2026';
 const $inject = ['maPoint', '$mdMedia', 'maWatchList','$state', '$mdDialog', 'maTranslate', '$mdToast', 'maUser', '$q'];
@@ -572,7 +571,7 @@ class WatchListBuilderController {
 
 export default {
     controller: WatchListBuilderController,
-    templateUrl: requirejs.toUrl('./watchListBuilder.html')
+    template: watchListBuilderTemplate
 };
 
 

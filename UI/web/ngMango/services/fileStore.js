@@ -3,9 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-import requirejs from 'requirejs/require';
-import moment from 'moment-timezone';
+import angular from 'angular';import moment from 'moment-timezone';
 import JSZip from 'jszip';
 
 

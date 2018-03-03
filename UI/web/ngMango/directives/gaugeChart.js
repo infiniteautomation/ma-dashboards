@@ -3,9 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import AmCharts from 'amcharts/gauge';
-import requirejs from 'requirejs/require';
-import angular from 'angular';
+import AmCharts from 'amcharts/gauge';import angular from 'angular';
 import PointValueController from './PointValueController';
 
 

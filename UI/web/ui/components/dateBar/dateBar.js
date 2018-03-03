@@ -3,9 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import dateBarTemplate from './dateBar.html';
 import angular from 'angular';
-
 
 DateBarController.$inject = ['$mdMedia', '$stateParams', 'maUtil', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'maUiDateBar'];
 function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, maUiDateBar) {
@@ -64,7 +63,7 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./dateBar.html'),
+    template: dateBarTemplate,
     controller: DateBarController,
     bindings: {
         onRefresh: '&'

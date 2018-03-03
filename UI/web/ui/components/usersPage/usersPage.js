@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import usersPageTemplate from './usersPage.html';
 
 UsersPageController.$inject = ['maUser', '$state', '$mdMedia'];
 function UsersPageController(User, $state, $mdMedia) {
@@ -66,6 +65,6 @@ UsersPageController.prototype.addUser = function($event) {
 
 export default {
     controller: UsersPageController,
-    templateUrl: requirejs.toUrl('./usersPage.html')
+    template: usersPageTemplate
 };
 

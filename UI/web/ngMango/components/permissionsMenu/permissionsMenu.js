@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import permissionsMenuTemplate from './permissionsMenu.html';
 
 PermissionsMenuController.$inject = ['maPermissions'];
 function PermissionsMenuController(Permissions) {
@@ -78,7 +77,7 @@ PermissionsMenuController.prototype.checkboxChanged = function checkboxChanged()
 
 export default {
     controller: PermissionsMenuController,
-    templateUrl: requirejs.toUrl('./permissionsMenu.html'),
+    template: permissionsMenuTemplate,
     require: {
         'ngModelCtrl': 'ngModel'
     },

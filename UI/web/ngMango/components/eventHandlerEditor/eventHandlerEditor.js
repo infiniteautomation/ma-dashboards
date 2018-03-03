@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import eventHandlerEditorTemplate from './eventHandlerEditor.html';
 
 /**
  * @ngdoc directive
@@ -116,7 +115,7 @@ class EventHandlerEditorController {
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./eventHandlerEditor.html'),
+    template: eventHandlerEditorTemplate,
     controller: EventHandlerEditorController,
     bindings: {
     },

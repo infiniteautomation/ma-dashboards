@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import setPointDialogTemplate from './setPointDialog.html';
 
 setPointDialog.$inject = ['$mdDialog', '$mdMedia'];
 function setPointDialog($mdDialog, $mdMedia) {
@@ -19,7 +18,7 @@ function setPointDialog($mdDialog, $mdMedia) {
                     $mdDialog.cancel();
                 };
             },
-            templateUrl: requirejs.toUrl('./setPointDialog.html'),
+            template: setPointDialogTemplate,
             parent: angular.element(document.body),
             targetEvent: ev,
             fullscreen: false,

@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import dataPointTagSelectTemplate from './dataPointTagSelect.html';
 
 /**
  * @ngdoc directive
@@ -87,7 +86,7 @@ export default {
     transclude: {
         label: '?maLabel'
     },
-    templateUrl: requirejs.toUrl('./dataPointTagSelect.html'),
+    template: dataPointTagSelectTemplate,
     controller: DataPointTagSelectController,
     designerInfo: {
         translation: 'ui.components.maDataPointTagSelect',

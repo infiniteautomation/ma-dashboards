@@ -4,8 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import deviceNameScrollListMdTemplate from './deviceNameScrollList-md.html';
+import deviceNameScrollListTemplate from './deviceNameScrollList.html';
 
 deviceNameScrollList.$inject = ['$injector'];
 export default deviceNameScrollList;
@@ -26,11 +26,11 @@ function deviceNameScrollList($injector) {
             sort: '<?',
             onQuery: '&?'
         },
-        templateUrl: function() {
+        template: function() {
             if ($injector.has('$mdUtil')) {
-                return requirejs.toUrl('./deviceNameScrollList-md.html');
+                return deviceNameScrollListMdTemplate;
             }
-            return requirejs.toUrl('./deviceNameScrollList.html');
+            return deviceNameScrollListTemplate;
         },
         require: {
             'ngModelCtrl': 'ngModel'

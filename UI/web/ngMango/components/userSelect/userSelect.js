@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import userSelectTemplate from './userSelect.html';
 
 var UPDATE_TYPES = ['add', 'update', 'delete'];
 
@@ -49,7 +48,7 @@ UserSelectController.prototype.updateHandler = function(event, update) {
 
 export default {
     controller: UserSelectController,
-    templateUrl: requirejs.toUrl('./userSelect.html'),
+    template: userSelectTemplate,
     require: {
         'ngModelCtrl': 'ngModel'
     },

@@ -3,8 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
+import autoLoginSettingsTemplate from './autoLoginSettings.html';
 
 var autoLoginSettings = function autoLoginSettings(User, $scope) {
     this.$onInit = function() {
@@ -39,7 +38,7 @@ autoLoginSettings.$inject = ['maUser', '$scope'];
 
 export default {
     controller: autoLoginSettings,
-    templateUrl: requirejs.toUrl('./autoLoginSettings.html')
+    template: autoLoginSettingsTemplate
 };
 
 

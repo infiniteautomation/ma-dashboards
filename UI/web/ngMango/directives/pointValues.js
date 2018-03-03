@@ -5,8 +5,6 @@
 
 import angular from 'angular';
 import moment from 'moment-timezone';
-import requirejs from 'requirejs/require';
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maPointValues

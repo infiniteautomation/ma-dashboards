@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import jsonStoreTableTemplate from './jsonStoreTable.html';
 
 /**
  * @ngdoc directive
@@ -96,7 +95,7 @@ class JsonStoreTableController {
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./jsonStoreTable.html'),
+    template: jsonStoreTableTemplate,
     controller: JsonStoreTableController,
     bindings: {
         editClicked: '&?'

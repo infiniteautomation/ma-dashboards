@@ -4,7 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import deviceNameListMdTemplate from './deviceNameList-md.html';
+import deviceNameListTemplate from './deviceNameList.html';
 
 /**
  * @ngdoc directive
@@ -58,11 +59,11 @@ function deviceNameList(DeviceName, $injector) {
             showClear: '<?',
             onQuery: '&?'
         },
-        templateUrl: function(element, attrs) {
+        template: function(element, attrs) {
           if ($injector.has('mdSelectDirective') || $injector.has('mdAutocompleteDirective')) {
-            return requirejs.toUrl('./deviceNameList-md.html');
+              return deviceNameListMdTemplate;
           }
-          return requirejs.toUrl('./deviceNameList.html');
+          return deviceNameListTemplate;
         },
         replace: true,
         link: function ($scope, $element, attrs, ngModelCtrl) {

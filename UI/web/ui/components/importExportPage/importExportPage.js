@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import importExportPageTemplate from './importExportPage.html';
 
 ImportExportPageController.$inject = ['maImportExport', '$timeout', 'maUtil', 'maTranslate', '$mdColors'];
 function ImportExportPageController(ImportExport, $timeout, Util, Translate, $mdColors) {
@@ -157,7 +156,7 @@ ImportExportPageController.prototype.copyToClipboard = function() {
 
 export default {
     controller: ImportExportPageController,
-    templateUrl: requirejs.toUrl('./importExportPage.html')
+    template: importExportPageTemplate
 };
 
 

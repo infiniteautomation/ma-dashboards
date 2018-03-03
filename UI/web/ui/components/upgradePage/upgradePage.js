@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import upgradePageTemplate from './upgradePage.html';
 
 UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope', '$q', '$mdToast', 'maTranslate', '$timeout'];
 function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, maTranslate, $timeout) {
@@ -216,7 +215,7 @@ UpgradePageController.prototype.restart = function($event) {
 
 export default {
     controller: UpgradePageController,
-    templateUrl: requirejs.toUrl('./upgradePage.html')
+    template: upgradePageTemplate
 };
 
 

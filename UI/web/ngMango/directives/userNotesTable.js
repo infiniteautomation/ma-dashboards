@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import userNotesTableTemplate from './userNotesTable.html';
 import moment from 'moment-timezone';
 
 /**
@@ -41,7 +41,7 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
             translation: 'ui.components.maUserNotesTable',
             icon: 'people'
         },
-        templateUrl: requirejs.toUrl('./userNotesTable.html'),
+        template: userNotesTableTemplate,
         link: function ($scope, $element, attrs) {
             
             $scope.addNote = (event) => {

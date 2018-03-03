@@ -4,8 +4,8 @@
  */ 
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-    
+import maMapTemplate from './maMap.html';
+
  /**
   * @ngdoc directive
   * @name ngMango.directive:maMap
@@ -159,7 +159,7 @@ import requirejs from 'requirejs/require';
             onInit: '&?'
         },
         controller: MaMapController,
-        templateUrl: requirejs.toUrl('./maMap.html'),
+        template: maMapTemplate,
         transclude: true,
         designerInfo: {
             translation: 'ui.components.maMap',

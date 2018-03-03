@@ -5,8 +5,6 @@
 
 import AmCharts from 'amcharts/pie';
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maPieChart

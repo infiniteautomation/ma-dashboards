@@ -3,13 +3,12 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
+import loginTemplate from './login.html';
 
 loginFactory.$inject = ['$state', 'maUser', '$rootScope', '$window'];
 function loginFactory($state, User, $rootScope, $window) {
     return {
-        templateUrl: requirejs.toUrl('./login.html'),
+        template: loginTemplate,
         scope: {},
         link: function($scope, $element, attrs) {
             $scope.User = User;

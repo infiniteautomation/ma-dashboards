@@ -4,8 +4,6 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
 
 LocalesFactory.$inject = ['$http'];
 function LocalesFactory($http) {

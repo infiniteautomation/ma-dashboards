@@ -3,7 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import startsAndRuntimesTableMdTemplate from './startsAndRuntimesTable-md.html';
+import startsAndRuntimesTableTemplate from './startsAndRuntimesTable.html';
 
 /**
  * @ngdoc directive
@@ -32,11 +33,11 @@ function startsAndRuntimesTable($injector) {
         	startsAndRuntimes: '='
         },
         replace: true,
-        templateUrl: function() {
+        template: function() {
             if ($injector.has('$mdUtil')) {
-                return requirejs.toUrl('./startsAndRuntimesTable-md.html');
+                return startsAndRuntimesTableMdTemplate;
             }
-            return requirejs.toUrl('./startsAndRuntimesTable.html');
+            return startsAndRuntimesTableTemplate;
         },
         designerInfo: {
             translation: 'ui.components.maStartAndRuntimesTable',
@@ -48,5 +49,3 @@ function startsAndRuntimesTable($injector) {
 startsAndRuntimesTable.$inject = ['$injector'];
 
 export default startsAndRuntimesTable;
-
-

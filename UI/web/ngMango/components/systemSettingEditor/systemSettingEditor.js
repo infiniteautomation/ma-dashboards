@@ -4,12 +4,12 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import systemSettingEditorTemplate from './systemSettingEditor.html';
 import tinycolor from 'tinycolor2';
 
 var systemSettingEditor = {
     controller: SystemSettingEditorController,
-    templateUrl: requirejs.toUrl('./systemSettingEditor.html'),
+    template: systemSettingEditorTemplate,
     bindings: {
         key: '@',
         labelTr: '@',

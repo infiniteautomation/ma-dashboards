@@ -4,9 +4,8 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
+import queryGroupTemplate from './queryGroup.html';
 import query from 'rql/query';
-
 
 var queryGroup = function queryGroup() {
     this.$onInit = function() {
@@ -58,7 +57,7 @@ queryGroup.$inject = [];
 
 export default {
     controller: queryGroup,
-    templateUrl: requirejs.toUrl('./queryGroup.html'),
+    template: queryGroupTemplate,
     require: {
         'builderCtrl': '^^maQueryBuilder'
     },

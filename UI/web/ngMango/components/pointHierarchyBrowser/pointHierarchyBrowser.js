@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import pointHierarchyBrowserTemplate from './pointHierarchyBrowser.html';
 
 PointHierarchyBrowserController.$inject = ['maPointHierarchy'];
 function PointHierarchyBrowserController(PointHierarchy) {
@@ -125,7 +124,7 @@ function PointHierarchyBrowserController(PointHierarchy) {
 
 export default {
     controller: PointHierarchyBrowserController,
-    templateUrl: requirejs.toUrl('./pointHierarchyBrowser.html'),
+    template: pointHierarchyBrowserTemplate,
     require: {
         'ngModelCtrl': 'ngModel'
     },

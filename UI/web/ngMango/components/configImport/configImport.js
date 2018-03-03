@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import configImportTemplate from './configImport.html';
 
 ConfigImportController.$inject = ['maDialogHelper', '$mdColors'];
 function ConfigImportController(maDialogHelper, $mdColors) {
@@ -50,7 +49,7 @@ ConfigImportController.prototype.doImport = function($event) {
 
 export default {
     controller: ConfigImportController,
-    templateUrl: requirejs.toUrl('./configImport.html'),
+    template: configImportTemplate,
     bindings: {
         jsonString: '<?'
     },

@@ -3,8 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
-
+import resetPasswordTemplate from './resetPassword.html';
 
 class ResetPasswordController {
     static get $$ngIsClass() { return true; }
@@ -112,7 +111,7 @@ class ResetPasswordController {
 
 export default {
     controller: ResetPasswordController,
-    templateUrl: requirejs.toUrl('./resetPassword.html')
+    template: resetPasswordTemplate
 };
 
 

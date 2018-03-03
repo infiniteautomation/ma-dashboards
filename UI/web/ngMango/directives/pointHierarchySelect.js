@@ -4,18 +4,18 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import pointHierarchySelectMdTemplate from './pointHierarchySelect-md.html';
+import pointHierarchySelectTemplate from './pointHierarchySelect.html';
 
 pointHierarchySelect.$inject = ['$injector'];
 function pointHierarchySelect($injector) {
     return {
         restrict: 'E',
-        templateUrl: function() {
+        template: function() {
             if ($injector.has('$mdUtil')) {
-                return requirejs.toUrl('./pointHierarchySelect-md.html');
+                return pointHierarchySelectMdTemplate;
             }
-            return requirejs.toUrl('./pointHierarchySelect.html');
+            return pointHierarchySelectTemplate;
         },
         controllerAs: '$ctrl',
         bindToController: true,

@@ -3,6 +3,11 @@
  * @author Jared Wiltshire
  */
 
+import angular from 'angular';
+import WatchListSelectController from './WatchListSelectController';
+import watchListListTemplate from './watchListList.html';
+import watchListListMdTemplate from './watchListList-md.html';
+
  /**
   * @ngdoc directive
   * @name ngMango.directive:maWatchListList
@@ -36,20 +41,15 @@
   * 
   */
 
-import angular from 'angular';
-import requirejs from 'requirejs/require';
-import WatchListSelectController from './WatchListSelectController';
-
-
 watchListListFactory.$inject = ['$injector'];
 function watchListListFactory($injector) {
     return {
         restrict: 'E',
-        templateUrl: function() {
+        template: function() {
             if ($injector.has('$mdUtil')) {
-                return requirejs.toUrl('./watchListList-md.html');
+                return watchListListMdTemplate;
             }
-            return requirejs.toUrl('./watchListList.html');
+            return watchListListTemplate;
         },
         scope: {},
         controller: WatchListListController,

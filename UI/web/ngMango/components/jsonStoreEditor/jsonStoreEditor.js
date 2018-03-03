@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import jsonStoreEditorTemplate from './jsonStoreEditor.html';
 
 /**
  * @ngdoc directive
@@ -125,7 +124,7 @@ class JsonStoreEditorController {
 }
 
 export default {
-    templateUrl: requirejs.toUrl('./jsonStoreEditor.html'),
+    template: jsonStoreEditorTemplate,
     controller: JsonStoreEditorController,
     bindings: {
     },

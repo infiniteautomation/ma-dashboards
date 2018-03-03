@@ -32,19 +32,19 @@
   */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
 import WatchListSelectController from './WatchListSelectController';
-
+import watchListSelectTemplate from './watchListSelect.html';
+import watchListSelectMdTemplate from './watchListSelect-md.html';
 
 watchListSelectFactory.$inject = ['$injector'];
 function watchListSelectFactory($injector) {
     return {
         restrict: 'E',
-        templateUrl: function() {
+        template: function() {
             if ($injector.has('$mdUtil')) {
-                return requirejs.toUrl('./watchListSelect-md.html');
+                return watchListSelectMdTemplate;
             }
-            return requirejs.toUrl('./watchListSelect.html');
+            return watchListSelectTemplate;
         },
         scope: {},
         controller: WatchListSelectDirectiveController,

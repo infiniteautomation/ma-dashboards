@@ -4,8 +4,7 @@
  */
 
 import angular from 'angular';
-import requirejs from 'requirejs/require';
-
+import pointHierarchyPointSelectorTemplate from './pointHierarchyPointSelector.html';
 
 PointHierarchyPointSelectorController.$inject = ['maPointHierarchy'];
 function PointHierarchyPointSelectorController(PointHierarchy) {
@@ -173,7 +172,7 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
 
 export default {
     controller: PointHierarchyPointSelectorController,
-    templateUrl: requirejs.toUrl('./pointHierarchyPointSelector.html'),
+    template: pointHierarchyPointSelectorTemplate,
     require: {
         'ngModelCtrl': 'ngModel'
     },
