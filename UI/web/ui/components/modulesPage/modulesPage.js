@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import modulesPageTemplate from './modulesPage.html';
+import usernamePasswordPromptTemplate from './usernamePasswordPrompt.html';
 
 ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$scope', '$sce', '$window'];
 function ModulesPageController(maModules, maTranslate, maDialogHelper, $scope, $sce, $window) {
@@ -95,7 +96,7 @@ ModulesPageController.prototype.restart = function($event) {
 ModulesPageController.prototype.downloadLicense = function($event) {
 	this.maDialogHelper.showBasicDialog($event, {
 		titleTr: 'ui.app.enterStoreCredentials',
-		contentTemplateUrl: requirejs.toUrl('./usernamePasswordPrompt.html'),
+		contentTemplate: usernamePasswordPromptTemplate,
 		showCancel: true,
 		smallDialog: true
 	}).then(function(result) {

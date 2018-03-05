@@ -5,20 +5,23 @@
 
 import angular from 'angular';
 import loadLoginTranslations from './util/loadLoginTranslations';
+import requirejs from 'requirejs/require';
 
 export default [
     {
         name: 'login',
         url: '/login',
-        templateUrl: requirejs.toUrl('./views/login.html'),
         menuHidden: true,
         menuIcon: 'exit_to_app',
         menuTr: 'header.login',
         resolve: {
-            deps: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./directives/login/login'], function(login) {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/login" */ './views/login.html');
+            },
+            deps: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/login" */ './directives/login/login').then(login => {
                     angular.module('maUiLoginState', [])
-                        .directive('maUiLogin', login);
+                        .directive('maUiLogin', login.default);
                     $injector.loadNewModules(['maUiLoginState']);
                 });
             }],
@@ -1223,5 +1226,3 @@ export default [
         menuTr: 'ui.dox.interactiveSvg'
     }
 ];
-
-

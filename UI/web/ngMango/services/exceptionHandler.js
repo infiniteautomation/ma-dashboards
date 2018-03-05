@@ -78,5 +78,3 @@ function ExceptionHandlerProvider($httpProvider) {
 }
 
 export default ExceptionHandlerProvider;
-
-

@@ -3,8 +3,7 @@
  * @author Jared Wiltshire
  */
 
-
-
+import requirejs from 'requirejs/require';
 
 /**
 * @ngdoc service

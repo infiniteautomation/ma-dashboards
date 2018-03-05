@@ -52,12 +52,16 @@ import maRevisionHistoryDialog from './services/revisionHistoryDialog';
 import maExceptionHandler from './services/exceptionHandler';
 import dateFilterFactory from './filters/dateFilter';
 import trFilterFactory from './filters/trFilter';
-import angular from 'angular';import rqlQuery from 'rql/query';
+import angular from 'angular';
+import rqlQuery from 'rql/query';
 import 'angular-resource';
 import 'angular-sanitize';
 import 'angular-local-storage';
 import 'angular-cookies';
 
+import eventHandlerEditorEmailTemplate from './components/eventHandlerEditor/email.html';
+//import eventHandlerEditorProcessTemplate from './components/eventHandlerEditor/process.html';
+//import eventHandlerEditorSetPointTemplate from './components/eventHandlerEditor/setPoint.html';
 
 // rql library doesn't encode null correctly (it encodes as string:null)
 const oldEncodeValue = rqlQuery.encodeValue;
@@ -157,18 +161,18 @@ ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
     {
         type: 'EMAIL',
         description: 'eventHandlers.type.email',
-        editorTemplateUrl: requirejs.toUrl('./components/eventHandlerEditor/email.html')
-    },
-    {
-        type: 'PROCESS',
-        description: 'eventHandlers.type.process',
-        editorTemplateUrl: requirejs.toUrl('./components/eventHandlerEditor/process.html')
-    },
-    {
-        type: 'SET_POINT',
-        description: 'eventHandlers.type.setPoint',
-        editorTemplateUrl: requirejs.toUrl('./components/eventHandlerEditor/setPoint.html')
+        editorTemplate: eventHandlerEditorEmailTemplate
     }
+//    {
+//        type: 'PROCESS',
+//        description: 'eventHandlers.type.process',
+//        editorTemplate: eventHandlerEditorProcessTemplate
+//    },
+//    {
+//        type: 'SET_POINT',
+//        description: 'eventHandlers.type.setPoint',
+//        editorTemplate: eventHandlerEditorSetPointTemplate
+//    }
 ]);
 
 ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide',

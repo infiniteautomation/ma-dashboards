@@ -4,6 +4,8 @@
  */
 import angular from 'angular';
 import Globalize from 'globalize';
+import likelySubtags from 'cldr-data/supplemental/likelySubtags.json'
+import plurals from 'cldr-data/supplemental/plurals.json'
 
 /**
 * @ngdoc service
@@ -57,10 +59,8 @@ translateFactory.$inject = ['$http', '$q', 'maUser'];
 function translateFactory($http, $q, maUser) {
 	var Translate = function() {};
 
-	var likelySubtagsUrl = requirejs.toUrl('cldr-data/supplemental/likelySubtags.json');
-	Translate.likelySubtags = $http.get(likelySubtagsUrl).then(function(likelySubtags) {
-		Globalize.load(likelySubtags.data);
-	});
+    Globalize.load(likelySubtags);
+    Globalize.load(plurals);
 
 	Translate.tr = function(key) {
 		var functionArgs = arguments;
@@ -92,7 +92,7 @@ function translateFactory($http, $q, maUser) {
 			namespaces = Array.prototype.slice.call(arguments);
         }
 
-		return this.likelySubtags.then(() => {
+		return $q.resolve().then(() => {
 			let namespacePromises = namespaces.map(namespace => {
 			    let loadedNamespace = this.loadedNamespaces[namespace];
 			    if (loadedNamespace) {

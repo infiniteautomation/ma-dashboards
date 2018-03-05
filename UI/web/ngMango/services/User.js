@@ -3,8 +3,10 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';import moment from 'moment-timezone';
+import angular from 'angular';
+import moment from 'moment-timezone';
 import Cldr from 'cldrjs';
+import requirejs from 'requirejs/require';
 
 
 // Stores the locales which have been loaded using require, must be cached as we can't call
@@ -292,7 +294,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         // use cached locale when available
                         newLocalePromise = $q.when(localeCache[localeId]);
                     } else {
-                        const url = `angular-i18n/angular-locale_${localeId}`;
+                        const url = `https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/${angular.version.full}/angular-locale_${localeId}.js`;
                         
                         let localDeferred = $q.defer();
                         angularLocaleDeferred = localDeferred;

@@ -7,6 +7,7 @@ import AmCharts from 'amcharts/gantt';
 import angular from 'angular';
 import moment from 'moment-timezone';
 import $ from 'jquery';
+import 'amcharts/plugins/export/export.css';
 
 /**
  * @ngdoc directive
@@ -33,8 +34,8 @@ import $ from 'jquery';
  *
  */
  
-stateChart.$inject = ['MA_DATE_FORMATS', 'MA_INSERT_CSS', 'maCssInjector', 'MA_AMCHARTS_DATE_FORMATS'];
-function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector, MA_AMCHARTS_DATE_FORMATS) {
+stateChart.$inject = ['MA_DATE_FORMATS', 'MA_AMCHARTS_DATE_FORMATS'];
+function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
 	var MAX_SERIES = 10;
 	var scope = {
 		options: '=?',
@@ -61,9 +62,6 @@ function stateChart(mangoDateFormats, MA_INSERT_CSS, maCssInjector, MA_AMCHARTS_
         scope: scope,
         template: '<div class="amchart"></div>',
         compile: function() {
-            if (MA_INSERT_CSS) {
-                maCssInjector.injectLink(requirejs.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
-            }
             return postLink;
         }
     };

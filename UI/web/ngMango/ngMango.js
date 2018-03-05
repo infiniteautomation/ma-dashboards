@@ -113,6 +113,8 @@ import slideUp from './animations/slideUp';
 import angular from 'angular';import moment from 'moment-timezone';
 import AmCharts from 'amcharts/amcharts';
 
+import './ngMango.css';
+
 /**
  * @ngdoc overview
  * @name ngMango
@@ -396,10 +398,6 @@ function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYP
             wasLogout: true
         });
     });
-
-	if (ngMangoInsertCss) {
-	    cssInjector.injectLink(requirejs.toUrl('./ngMango.css'));
-	}
 
 	$rootScope.range = function(start, end) {
 		var result = [];

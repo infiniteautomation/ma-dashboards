@@ -49,8 +49,6 @@
     <div ng-cloak ng-if="noApi" class="missing-module">mangoApi module is required.</div>
     <div ui-view ng-cloak layout="column" flex class="main-application" ng-class="stateNameClass"></div>
 
-    <script src="/modules/mangoUI/web/vendor/requirejs/require.js?v=${lastUpgrade?c}"></script>
-    <script src="/modules/mangoUI/web/loaderConfig.js?v=${lastUpgrade?c}"></script>
-    <script>require(['maUi/app']);</script>
+    <script src="/modules/mangoUI/web/dist/ui.js?v=${lastUpgrade?c}"></script>
 </body>
 </html>

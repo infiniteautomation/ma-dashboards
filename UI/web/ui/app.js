@@ -19,6 +19,8 @@ import 'angular-ui-sortable';
 import 'angular-loading-bar';
 import './views/docs/docs-setup';
 import 'md-color-picker';
+import defaultUiSettings from './uiSettings.json';
+import requirejs from 'requirejs/require';
 
 // must match variables defined in UIInstallUpgrade.java
 var MA_UI_MENU_XID = 'mangoUI-menu';
@@ -274,9 +276,13 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
             var templateUrl = moduleName + '.' + serviceName;
             if (directiveName) templateUrl += '.' + directiveName;
             
+//            import('file-loader!./views/docs/' + templateUrl + '.html').then(url => {
+//                console.log(url);
+//            });
+            
             var menuItem = {
                 name: 'ui.docs.' + moduleName + '.' + name,
-                templateUrl: requirejs.toUrl('./views/docs/' + templateUrl + '.html'),
+                templateUrl: './views/docs/' + templateUrl + '.html',
                 url: '/' + dashCaseUrl,
                 menuText: name
             };
@@ -641,13 +647,7 @@ var maCssInjector = servicesInjector.get('maCssInjector');
 // ensures credentials are saved/deleted on first page load if params are set
 User.getCredentialsFromUrl();
 
-var defaultUiSettingsPromise = $http({
-    method: 'GET',
-    url: requirejs.toUrl('./uiSettings.json')
-}).then(function(data) {
-    return data.data;
-}, angular.noop);
-
+var defaultUiSettingsPromise = $q.resolve(defaultUiSettings);
 var customUiSettingsPromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
 
 var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromise]).then(function(results) {
@@ -672,7 +672,8 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     var userAgent = navigator.userAgent;
     if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
     		userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
-    	maCssInjector.injectLink(requirejs.toUrl('./styles/safari.css'), 'safariCss', '[tracking-name="uiMain"]');
+        
+        import(/* webpackChunkName: "safari" */ './styles/safari.css');
     }
     
     return MA_UI_SETTINGS;
@@ -707,18 +708,20 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
             urls.push(MA_UI_SETTINGS.userModule);
         }
         
-        var modulePromises = urls.map(function(url) {
-            var deferred = $q.defer();
-            requirejs([url], function(module) {
-                deferred.resolve(module);
-            }, function() {
-                console.log('Failed to load AngularJS module', arguments);
-                deferred.resolve();
-            });
-            return deferred.promise;
-        });
-
-        return $q.all(modulePromises);
+        // import(/* webpackChunkName: "i18n" */ '');
+//        var modulePromises = urls.map(function(url) {
+//            var deferred = $q.defer();
+//            requirejs([url], function(module) {
+//                deferred.resolve(module);
+//            }, function() {
+//                console.log('Failed to load AngularJS module', arguments);
+//                deferred.resolve();
+//            });
+//            return deferred.promise;
+//        });
+//
+//        return $q.all(modulePromises);
+          return $q.all([]);
     }, function() {
         console.log('Error loading AngularJS modules from Mango modules', arguments);
     });

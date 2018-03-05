@@ -47,10 +47,18 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
 
             if (menuItem.templateUrl) {
                 delete menuItem.template;
+                delete menuItem.templateProvider;
             }
-            if (!menuItem.templateUrl && !menuItem.template && !menuItem.views && !menuItem.href) {
-                menuItem.template = '<div ui-view></div>';
-                menuItem.abstract = true;
+
+            if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href) {
+                if (menuItem.resolve && menuItem.resolve.viewTemplate) {
+                    menuItem.templateProvider = ['viewTemplate', function(viewTemplate) {
+                        return viewTemplate.default;
+                    }];
+                } else {
+                    menuItem.template = '<div ui-view></div>';
+                    menuItem.abstract = true;
+                }
             }
 
             if (menuItem.name.indexOf('ui.') !== 0) {

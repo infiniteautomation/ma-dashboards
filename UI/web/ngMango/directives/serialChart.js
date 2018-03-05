@@ -8,6 +8,7 @@ import AmCharts from 'amcharts/serial';
 import $ from 'jquery';
 import moment from 'moment-timezone';
 import 'amcharts/plugins/export/export';
+import 'amcharts/plugins/export/export.css';
 
 /**
  * @ngdoc directive
@@ -76,8 +77,8 @@ import 'amcharts/plugins/export/export';
 </ma-serial-chart>`
  *
  */
-serialChart.$inject = ['MA_INSERT_CSS', 'maCssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'maUtil', 'MA_DATE_FORMATS', '$timeout'];
-function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout) {
+serialChart.$inject = ['MA_AMCHARTS_DATE_FORMATS', 'maUtil', 'MA_DATE_FORMATS', '$timeout'];
+function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -204,9 +205,6 @@ function serialChart(ngMangoInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Ut
         },
         scope: scope,
         compile: function() {
-            if (ngMangoInsertCss) {
-                cssInjector.injectLink(requirejs.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
-            }
             return postLink;
         }
     };

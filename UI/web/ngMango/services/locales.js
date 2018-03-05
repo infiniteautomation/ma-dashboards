@@ -4,25 +4,24 @@
  */
 
 import angular from 'angular';
+import localeList from 'localeList';
 
-LocalesFactory.$inject = ['$http'];
-function LocalesFactory($http) {
+LocalesFactory.$inject = ['$q'];
+function LocalesFactory($q) {
     function Locales() {
     }
 
     Locales.prototype.get = function() {
-        return $http.get(requirejs.toUrl('mangoUIModule/vendor/localeList.json')).then(function(response) {
-            return response.data.sort((a, b) => {
-                if (a.name < b.name) return -1;
-                if (a.name > b.name) return 1;
-                return 0;
-            });
-        }.bind(this));
+        const sortedLocales = localeList.splice().sort((a, b) => {
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
+            return 0;
+        });
+        
+        return $q.resolve(sortedLocales);
     };
 
     return new Locales();
 }
 
 export default LocalesFactory;
-
-

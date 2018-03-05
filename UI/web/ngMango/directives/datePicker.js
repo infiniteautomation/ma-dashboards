@@ -5,6 +5,8 @@
 
 import angular from 'angular';
 import moment from 'moment';
+import requirejs from 'requirejs/require';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maDatePicker
@@ -57,14 +59,6 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
             return '<input type="text">';
         },
         compile: function($element, attributes) {
-            if (!$injector.has('$mdpDatePicker')) {
-                if (ngMangoInsertCss) {
-                    cssInjector.injectLink(requirejs.toUrl('jquery-ui/jquery.datetimepicker.css'), this.name);
-                }
-                requirejs(['jquery', 'jquery-ui/jquery.datetimepicker'], function($) {
-                    $element.datetimepicker();
-                });
-            }
             return link;
         }
     };

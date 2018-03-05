@@ -9,6 +9,7 @@ import query from 'rql/query';
 import tinycolor from 'tinycolor';
 import downloadDialogTemplate from './downloadDialog.html';
 import watchListPageTemplate from './watchListPage.html';
+import requirejs from 'requirejs/require';
 
 const NO_STATS = '\u2014';
 

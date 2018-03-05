@@ -5,6 +5,8 @@
 
 import AmCharts from 'amcharts/pie';
 import angular from 'angular';
+import 'amcharts/plugins/export/export.css';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maPieChart
@@ -32,8 +34,8 @@ import angular from 'angular';
  options="{depth3D:15,angle:30}"></ma-pie-chart>
  *
  */
-pieChart.$inject = ['$http', 'MA_INSERT_CSS', 'maCssInjector'];
-function pieChart($http, MA_INSERT_CSS, maCssInjector) {
+pieChart.$inject = ['$http', 'maCssInjector'];
+function pieChart($http, maCssInjector) {
     return {
         restrict: 'E',
         replace: true,
@@ -53,9 +55,6 @@ function pieChart($http, MA_INSERT_CSS, maCssInjector) {
         },
         template: '<div class="amchart"></div>',
         compile: function() {
-            if (MA_INSERT_CSS) {
-                maCssInjector.injectLink(requirejs.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
-            }
             return postLink;
         }
     };

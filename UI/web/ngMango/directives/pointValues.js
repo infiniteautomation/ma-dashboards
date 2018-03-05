@@ -5,6 +5,8 @@
 
 import angular from 'angular';
 import moment from 'moment-timezone';
+import noDataForPeriod from '../img/noDataForPeriod.svg';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maPointValues
@@ -476,10 +478,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     
                     return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
                         if (dataType === 'IMAGE') {
-                            var imgUrl = requirejs.toUrl('../img/noDataForPeriod.svg');
                             for (var i = 0; i < values.length; i++) {
                                 if (values[i].annotation === 'No data for period') {
-                                    values[i].value = imgUrl;
+                                    values[i].value = noDataForPeriod;
                                 }
                             }
                         }

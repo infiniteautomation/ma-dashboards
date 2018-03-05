@@ -4,11 +4,12 @@
  */
 
 import angular from 'angular';
+import interpolatedStyles from 'raw-loader!../styles/interpolatedStyles.css';
 
 uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'maCssInjector', '$templateRequest', '$interpolate',
-    'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION', 'MA_POINT_VALUES_CONFIG'];
+    'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION', 'MA_POINT_VALUES_CONFIG', '$window'];
 function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
-        MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION, MA_POINT_VALUES_CONFIG) {
+        MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION, MA_POINT_VALUES_CONFIG, $window) {
     
     var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'userModuleName', 'mangoModuleNames'];
     var themeId = 0;
@@ -118,18 +119,19 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
         generateCustomStyles: function generateCustomStyles() {
             // inserts a style tag to style <a> tags with accent color
             if (MD_THEME_CSS) {
-                angular.element('head > style[tracking-name="interpolatedStyles"]').remove();
+                const oldStyles = $window.document.querySelector('head > style[tracking-name="interpolatedStyles"]');
+                if (oldStyles) {
+                    oldStyles.parentNode.removeChild(oldStyles);
+                }
                 
-                $templateRequest(requirejs.toUrl('../styles/interpolatedStyles.css')).then(function(text) {
-                    var result = $interpolate(text)({
-                        getThemeColor: function(colorString) {
-                            return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
-                        }.bind(this),
-                        uiSettings: this,
-                        theme: this.activeThemeObj
-                    });
-                    cssInjector.injectStyle(result, 'interpolatedStyles', '[tracking-name="uiMain"]', false, true);
-                }.bind(this));
+                var result = $interpolate(interpolatedStyles)({
+                    getThemeColor: function(colorString) {
+                        return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
+                    }.bind(this),
+                    uiSettings: this,
+                    theme: this.activeThemeObj
+                });
+                cssInjector.injectStyle(result, 'interpolatedStyles', '[tracking-name="uiMain"]', false, true);
             }
         }
     };
@@ -155,6 +157,5 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
     
     return new UiSettings();
 }
+
 export default uiSettingsFactory;
-
-
