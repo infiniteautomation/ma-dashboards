@@ -161,18 +161,18 @@ ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
     {
         type: 'EMAIL',
         description: 'eventHandlers.type.email',
-        editorTemplate: eventHandlerEditorEmailTemplate
+        editorTemplateUrl: 'eventHandlers.email.html'
+    },
+    {
+        type: 'PROCESS',
+        description: 'eventHandlers.type.process',
+        editorTemplateUrl: 'eventHandlers.process.html'
+    },
+    {
+        type: 'SET_POINT',
+        description: 'eventHandlers.type.setPoint',
+        editorTemplateUrl: 'eventHandlers.setPoint.html'
     }
-//    {
-//        type: 'PROCESS',
-//        description: 'eventHandlers.type.process',
-//        editorTemplate: eventHandlerEditorProcessTemplate
-//    },
-//    {
-//        type: 'SET_POINT',
-//        description: 'eventHandlers.type.setPoint',
-//        editorTemplate: eventHandlerEditorSetPointTemplate
-//    }
 ]);
 
 ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide',
@@ -204,6 +204,13 @@ ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provid
             return resource;
         };
     }]);
+}]);
+
+
+ngMangoServices.run(['$templateCache', function($templateCache) {
+    $templateCache.put('eventHandlers.email.html', eventHandlerEditorEmailTemplate);
+//    $templateCache.put('eventHandlers.process.html', eventHandlerEditorProcessTemplate);
+//    $templateCache.put('eventHandlers.setPoint.html', eventHandlerEditorSetPointTemplate);
 }]);
 
 export default ngMangoServices;

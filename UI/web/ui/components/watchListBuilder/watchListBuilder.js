@@ -6,17 +6,25 @@
 import angular from 'angular';
 import watchListBuilderTemplate from './watchListBuilder.html';
 import query from 'rql/query';
-import requirejs from 'requirejs/require';
+
+import settingsTemplate from './settings.html';
+import parametersTemplate from './parameters.html';
+import queryTemplate from './query.html';
+import selectTagsTemplate from './selectTags.html';
+import queryPreviewTemplate from './queryPreview.html';
+import pointHierarchyTemplate from './pointHierarchy.html';
+import selectFromTableTemplate from './selectFromTable.html';
+import selectFromHierarchyTemplate from './selectFromHierarchy.html';
+import selectedPointsTemplate from './selectedPoints.html';
 
 import './watchListBuilder.css';
 
 const defaultTotal = '\u2026';
-const $inject = ['maPoint', '$mdMedia', 'maWatchList','$state', '$mdDialog', 'maTranslate', '$mdToast', 'maUser', '$q'];
 
 class WatchListBuilderController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return $inject; }
-    
+    static get $inject() { return ['maPoint', '$mdMedia', 'maWatchList','$state', '$mdDialog', 'maTranslate', '$mdToast', 'maUser', '$q']; }
+
     constructor(Point, $mdMedia, WatchList, $state, $mdDialog, Translate, $mdToast, User, $q) {
         this.Point = Point;
         this.$mdMedia = $mdMedia;
@@ -52,10 +60,6 @@ class WatchListBuilderController {
         this.sortAndLimitBound = (...args) => this.sortAndLimit(...args);
         this.onPaginateOrSortBound = (...args) => this.onPaginateOrSort(...args);
         this.tableSelectionChangedBound = (...args) => this.tableSelectionChanged(...args);
-    }
-
-    baseUrl(path) {
-    	return requirejs.toUrl('.' + path);
     }
 
     newWatchlist(name) {
@@ -572,9 +576,26 @@ class WatchListBuilderController {
     }
 }
 
-export default {
-    controller: WatchListBuilderController,
-    template: watchListBuilderTemplate
-};
+watchListBuilderFactory.$inject = ['$templateCache'];
+function watchListBuilderFactory($templateCache) {
+    $templateCache.put('watchListBuilder.settings.html', settingsTemplate);
+    $templateCache.put('watchListBuilder.parameters.html', parametersTemplate);
+    $templateCache.put('watchListBuilder.query.html', queryTemplate);
+    $templateCache.put('watchListBuilder.selectTags.html', selectTagsTemplate);
+    $templateCache.put('watchListBuilder.queryPreview.html', queryPreviewTemplate);
+    $templateCache.put('watchListBuilder.pointHierarchy.html', pointHierarchyTemplate);
+    $templateCache.put('watchListBuilder.selectFromTable.html', selectFromTableTemplate);
+    $templateCache.put('watchListBuilder.selectFromHierarchy.html', selectFromHierarchyTemplate);
+    $templateCache.put('watchListBuilder.selectedPoints.html', selectedPointsTemplate);
 
+    return {
+        restrict: 'E',
+        scope: {},
+        bindToController: true,
+        controllerAs: '$ctrl',
+        controller: WatchListBuilderController,
+        template: watchListBuilderTemplate
+    };
+}
 
+export default watchListBuilderFactory;

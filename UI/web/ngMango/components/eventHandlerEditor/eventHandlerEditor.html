@@ -32,7 +32,7 @@
         </md-input-container>
     </div>
     
-    <div layout="column" ng-bind-html="$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].editorTemplate"></div>
+    <div layout="column" ng-include="$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].editorTemplateUrl"></div>
 
     <div layout>
         <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.saveItem($event)" ng-disabled="$ctrl.eventHandler.originalXid && $ctrl.form.$pristine">

@@ -851,7 +851,7 @@ export default [
                 return Promise.all([p1, p2]).then(([watchListBuilder, bracketEscape]) => {
                     angular.module('maUiWatchListBuilderState', [])
                         .directive('maUiBracketEscape', bracketEscape.default)
-                        .component('maUiWatchListBuilder', watchListBuilder.default);
+                        .directive('maUiWatchListBuilder', watchListBuilder.default);
                     $injector.loadNewModules(['maUiWatchListBuilderState']);
                 });
             }]
@@ -893,7 +893,7 @@ export default [
                 return import(/* webpackChunkName: "uiStates/ui.settings.modules" */
                         './components/modulesPage/modulesPage').then(modulesPage => {
                     angular.module('maUiModulesState', [])
-                        .component('maUiModulesPage', modulesPage.default);
+                        .directive('maUiModulesPage', modulesPage.default);
                     $injector.loadNewModules(['maUiModulesState']);
                 });
             }]

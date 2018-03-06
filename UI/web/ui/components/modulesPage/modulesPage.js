@@ -96,7 +96,7 @@ ModulesPageController.prototype.restart = function($event) {
 ModulesPageController.prototype.downloadLicense = function($event) {
 	this.maDialogHelper.showBasicDialog($event, {
 		titleTr: 'ui.app.enterStoreCredentials',
-		contentTemplate: usernamePasswordPromptTemplate,
+		contentTemplateUrl: 'modulesPage.usernamePasswordPrompt.html',
 		showCancel: true,
 		smallDialog: true
 	}).then(function(result) {
@@ -111,9 +111,18 @@ ModulesPageController.prototype.downloadLicense = function($event) {
 	}.bind(this));
 };
 
-export default {
-    controller: ModulesPageController,
-    template: modulesPageTemplate
-};
+modulesPageFactory.$inject = ['$templateCache'];
+function modulesPageFactory($templateCache) {
+    $templateCache.put('modulesPage.usernamePasswordPrompt.html', usernamePasswordPromptTemplate);
 
+    return {
+        restrict: 'E',
+        scope: {},
+        bindToController: true,
+        controllerAs: '$ctrl',
+        controller: ModulesPageController,
+        template: modulesPageTemplate
+    };
+}
 
+export default modulesPageFactory;

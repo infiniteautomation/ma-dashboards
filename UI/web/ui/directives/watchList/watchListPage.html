@@ -7,9 +7,9 @@
     </ma-point-browser>
 
     <div flex layout="column" class="watchlist-main" ng-show="$ctrl.watchList">
-        <md-card class="watchlist-table" ng-include="$ctrl.baseUrl('/watchListTable.html')">
+        <md-card class="watchlist-table" ng-include="'watchList.table.html'">
         </md-card>
-        <md-card class="watchlist-chart" ng-if="$ctrl.selected.length" ng-include="$ctrl.baseUrl('/watchListChartAndStats.html')">
+        <md-card class="watchlist-chart" ng-if="$ctrl.selected.length" ng-include="'watchList.chartAndStats.html'">
         </md-card>
     </div>
 </div>

@@ -8,7 +8,8 @@ import angular from 'angular';
 import tinycolor from 'tinycolor2';
 import downloadDialogTemplate from './downloadDialog.html';
 import watchListPageTemplate from './watchListPage.html';
-import requirejs from 'requirejs/require';
+import watchListChartAndStatsTemplate from './watchListChartAndStats.html';
+import watchListTableTemplate from './watchListTable.html';
 
 import './watchListPage.css';
 
@@ -100,10 +101,6 @@ class WatchListPageController {
         // bound functions for md-data-table attributes
         this.selectedPointsChangedBound = (...args) => this.selectedPointsChanged(...args);
         this.sortOrPageChangedBound = (...args) => this.sortOrPageChanged(...args);
-    }
-
-    baseUrl(path) {
-        return requirejs.toUrl('.' + path);
     }
 
     $onInit() {
@@ -683,7 +680,11 @@ class WatchListPageController {
     }
 }
 
-export default function watchListPageDirective() {
+watchListPageFactory.$inject = ['$templateCache'];
+function watchListPageFactory($templateCache) {
+    $templateCache.put('watchList.chartAndStats.html', watchListChartAndStatsTemplate);
+    $templateCache.put('watchList.table.html', watchListTableTemplate);
+
     return {
         restrict: 'E',
         template: watchListPageTemplate,
@@ -695,3 +696,5 @@ export default function watchListPageDirective() {
         }
     };
 }
+
+export default watchListPageFactory;
