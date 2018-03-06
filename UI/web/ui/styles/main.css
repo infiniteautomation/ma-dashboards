@@ -7,53 +7,10 @@ body {
   font-size: 1.6rem;
 }
 
-/* Default styles to match the default theme, used pre-bootstrap, before angular-material is loaded */
-
-body {
-	background-color: #303030;
-	color: rgba(255, 255, 255, 0.87);
-}
-
-a:hover, a:focus {
-    color: rgba(194, 101, 0, 1.0);
-    border-bottom-color: rgba(194, 101, 0, 1.0);
-}
-a {
-    color: rgba(255, 133, 0, 1.0);
-    border-bottom-color: rgba(255, 133, 0, 0.2);
-}
-
-#pre-bootstrap-error {
-  margin-top: 20px;
-  color: #FF5722;
-  max-width: 1024px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#pre-bootstrap-error pre {
-  margin-top: 10px;
-  text-align: left;
-}
-
-#pre-bootstrap-error code {
-  display: block;
-}
-
 /* Login page and page template */
 
 #loading-bar .bar {
 	background-color: currentcolor;
-}
-
-.app-loading {
-	text-align: center;
-	width: 100%;
-	margin-top: 50px;
-}
-
-.app-loading i {
-	font-size: 48px;
 }
 
 .login-logo {
@@ -1195,13 +1152,6 @@ div.help-doc-container li {
   list-style-type: disc;
 }
 
-.missing-module {
-  width: 100%;
-  text-align: center;
-  margin-top: 100px;
-  font-size: 1.5em;
-}
-
 md-autocomplete md-autocomplete-wrap md-progress-linear.md-inline {
   bottom: 16px;
 }
@@ -1369,42 +1319,6 @@ ma-ui-upgrade-page .notes-column {
 
 .ma-ui-progress-button div > span {
 	margin-left: 6px;
-}
-
-/* Loading spinner */
-
-svg.ma-ui-spinner {
-  animation: spinner-rotator 1.6s linear infinite;
-}
-
-@keyframes spinner-rotator {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(270deg);
-  }
-}
-
-svg.ma-ui-spinner circle {
-  stroke-dasharray: 187;
-  stroke-dashoffset: 0;
-  transform-origin: center;
-  animation: spinner-dash 1.6s ease-in-out infinite;
-}
-
-@keyframes spinner-dash {
-  0% {
-    stroke-dashoffset: 187;
-  }
-  50% {
-    stroke-dashoffset: 46.75;
-    transform: rotate(135deg);
-  }
-  100% {
-    stroke-dashoffset: 187;
-    transform: rotate(450deg);
-  }
 }
 
 /* events page */

@@ -399,8 +399,6 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
             $state.loginRedirectUrl = $state.href(toState, toParams);
             $state.go('login');
-        } else if (error && error.status === 404 && error.config && error.config.url.indexOf('/rest/v1/translations/public/login') >= 0) {
-            $rootScope.noApi = true;
         } else {
             console.log(error);
             if (toState.name !== 'ui.error') {
@@ -633,6 +631,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $document.on('dragover drop', function($event) {
         return false;
     });
+    
+    $rootScope.appLoading = false;
 }]);
 
 /**
@@ -777,7 +777,7 @@ $q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(func
         try {
             angular.bootstrap(document.documentElement, ['maUiBootstrap'], {strictDi: true});
         } catch (e) {
-            var errorDiv = document.getElementById('pre-bootstrap-error');
+            var errorDiv = document.querySelector('.pre-bootstrap-error');
             var msgDiv = errorDiv.querySelector('div');
             var pre = errorDiv.querySelector('pre');
             var code = errorDiv.querySelector('code');

@@ -383,6 +383,7 @@ ngMango.run([
     'maUser',
 function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
         MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, User) {
+
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
     

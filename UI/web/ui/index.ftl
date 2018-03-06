@@ -17,27 +17,27 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/modules/mangoUI/web/img/icon16.png?v=${lastUpgrade?c}">
     <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${lastUpgrade?c}">
     <link rel="manifest" href="/modules/mangoUI/web/ui/manifest.json?v=${lastUpgrade?c}">
-
-    <script>this.mangoLastUpgrade=${lastUpgrade?c};</script>
+    
+    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/preBoot.css?v=${lastUpgrade?c}">
 </head>
 
 <body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn, 'ma-mobile': !$mdMedia('gt-sm'), 'ma-phone': $mdMedia('xs')}"
       md-theme="{{uiSettings.activeTheme}}" md-colors="{background: 'background'}">
     <div id="loading-bar-container" md-colors="{color: 'accent-hue-2'}"></div>
     
-	<div ng-if="appLoading" class="app-loading">
+	<div ng-if="::appLoading" class="app-loading">
 		<svg class="ma-ui-spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
 		   <circle fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30" stroke="#FF8500"></circle>
 		</svg>
 		
-        <div id="pre-bootstrap-error" style="display:none">
+        <div class="pre-bootstrap-error" style="display:none">
             <div></div>
             <a href="#">Show stack trace</a>
             <pre style="display:none"><code></code></pre>
         </div>
 	</div>
-    <div ng-cloak ng-if="noApi" class="missing-module">mangoApi module is required.</div>
-    <div ui-view ng-cloak layout="column" flex class="main-application" ng-class="stateNameClass"></div>
+    <div ng-cloak ng-if="::noApi" class="missing-module">mangoApi module is required.</div>
+    <div ng-cloak ui-view ng-cloak layout="column" flex class="main-application" ng-class="stateNameClass"></div>
 
     <script src="/modules/mangoUI/web/dist/ui.js?v=${lastUpgrade?c}"></script>
 </body>

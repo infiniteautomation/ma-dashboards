@@ -3,9 +3,17 @@
  * @author Jared Wiltshire
  */
 
-loadLoginTranslations.$inject = ['maTranslate'];
-function loadLoginTranslations(Translate) {
-    return Translate.loadNamespaces('login');
+loadLoginTranslations.$inject = ['maTranslate', '$rootScope', '$q'];
+function loadLoginTranslations(Translate, $rootScope, $q) {
+    return Translate.loadNamespaces('login').then(result => {
+        $rootScope.noApi = false;
+        return result;
+    }, error => {
+        if (error.status === 404) {
+            $rootScope.noApi = true;
+        }
+        return $q.reject(error);
+    });
 }
 
 export default loadLoginTranslations;
