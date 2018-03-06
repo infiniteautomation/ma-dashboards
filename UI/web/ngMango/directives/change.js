@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 ChangeController.$inject = ['$scope', '$element'];
 function ChangeController($scope, $element) {
     this.$scope = $scope;
@@ -39,5 +36,3 @@ function change($compile, $timeout) {
 }
 
 export default change;
-
-

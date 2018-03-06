@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import colorPreviewTemplate from './colorPreview.html';
 
 var hues = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];

@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import deviceNameScrollListMdTemplate from './deviceNameScrollList-md.html';
 import deviceNameScrollListTemplate from './deviceNameScrollList.html';
 
@@ -47,7 +46,7 @@ function deviceNameScrollList($injector) {
             this.ngModelCtrl.$render = this.render.bind(this);
 
             this.doQuery().then(function(items) {
-                if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && items.length) {
+                if ((this.selectFirst === undefined || this.selectFirst) && items.length) {
                     this.setViewValue(items[0]);
                 }
             }.bind(this));
@@ -66,7 +65,7 @@ function deviceNameScrollList($injector) {
         
         this.doQuery = function() {
             var query;
-            if (!angular.isUndefined(this.dataSourceId)) {
+            if (this.dataSourceId !== undefined) {
                 query = DeviceName.byDataSourceId({id: this.dataSourceId, contains: this.contains});
             } else if (this.dataSourceXid) {
                 query = DeviceName.byDataSourceXid({xid: this.dataSourceXid, contains: this.contains});

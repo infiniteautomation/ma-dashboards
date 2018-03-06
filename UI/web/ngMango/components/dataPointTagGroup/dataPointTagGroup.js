@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import dataPointTagGroupTemplate from './dataPointTagGroup.html';
 
 /**
@@ -56,5 +55,3 @@ export default {
     template: dataPointTagGroupTemplate,
     controller: DataPointTagGroupController
 };
-
-

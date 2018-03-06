@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 PageFactory.$inject = ['maJsonStore', 'MA_UI_PAGES_XID', 'maUtil', '$q', 'MA_UI_EDIT_PAGES_PERMISSION'];
 function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERMISSION) {
 

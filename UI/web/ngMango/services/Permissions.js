@@ -2,8 +2,6 @@
  * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
-import angular from 'angular';
-
 
 const uiModulePermissions = Object.freeze(['edit-ui-menus', 'edit-ui-pages', 'edit-ui-settings']);
 

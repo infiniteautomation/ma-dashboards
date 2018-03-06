@@ -4,8 +4,6 @@
  */
 
 import menuTemplate from './menu.html';
-import angular from 'angular';
-
 
 MenuController.$inject = [];
 function MenuController() {

@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 ServerFactory.$inject = ['$http', '$q'];
 function ServerFactory($http, $q) {
     var serverUrl = '/rest/v2/server';

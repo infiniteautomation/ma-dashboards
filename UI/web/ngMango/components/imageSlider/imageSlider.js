@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import imageSliderTemplate from './imageSlider.html';
 
 class ImageSliderController {

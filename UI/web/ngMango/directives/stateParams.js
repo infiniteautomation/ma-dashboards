@@ -20,8 +20,6 @@
   * @param {boolean=} [notify-on-init=true] If false the `on-change` expression will not be called on directive initialization.
   */
 
-import angular from 'angular';
-
 stateParams.$inject = [];
 function stateParams() {
 

@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 jwtInput.$inject = ['$parse'];
 function jwtInput($parse) {
     return {

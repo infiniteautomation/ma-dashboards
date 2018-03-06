@@ -17,17 +17,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/modules/mangoUI/web/img/icon16.png?v=${lastUpgrade?c}">
     <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="/modules/mangoUI/web/img/icon128.png?v=${lastUpgrade?c}">
     <link rel="manifest" href="/modules/mangoUI/web/ui/manifest.json?v=${lastUpgrade?c}">
-    
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular/angular-csp.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-material/angular-material.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-loading-bar/loading-bar.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/material-design-icons/iconfont/material-icons.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/font-awesome/css/font-awesome.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/md-pickers/mdPickers.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/angular-material-data-table/md-data-table.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/vendor/md-color-picker/mdColorPicker.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/fonts.css?v=${lastUpgrade?c}">
-    <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/main.css?v=${lastUpgrade?c}" tracking-name="uiMain">
+
     <script>this.mangoLastUpgrade=${lastUpgrade?c};</script>
 </head>
 

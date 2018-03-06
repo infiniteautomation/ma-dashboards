@@ -145,7 +145,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
             var fieldValue = data[key];
             var defaultValue = defaults && defaults[key];
             if (typeof fieldValue !== 'function' && !angular.equals(fieldValue, defaultValue)) {
-                if (angular.isObject(fieldValue) && !angular.isArray(fieldValue)) {
+                if (fieldValue && typeof fieldValue === 'object' && !Array.isArray(fieldValue)) {
                     differences[key] = deepDiff(fieldValue, defaultValue);
                 } else {
                     differences[key] = fieldValue;

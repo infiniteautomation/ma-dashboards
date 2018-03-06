@@ -185,14 +185,14 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                     const matches = /{{(.*?)}}/.exec(arg);
                     if (matches && matches[0] === matches.input) {
                         const evaluated = $parse(matches[1])(params);
-                        args[i] = angular.isUndefined(evaluated) ? '' : evaluated;
+                        args[i] = evaluated === undefined ? '' : evaluated;
                     } else {
                         args[i] = $interpolate(arg)(params, false, $sce.URL, false);
                     }
                 }
                 
                 if (name === 'in' && args.length > 1) {
-                    if (angular.isArray(args[1])) {
+                    if (Array.isArray(args[1])) {
                         Array.prototype.splice.apply(args, [1, 1].concat(args[1]));
                     } else if (typeof args[1] === 'string') {
                         Array.prototype.splice.apply(args, [1, 1].concat(args[1].split(',')));

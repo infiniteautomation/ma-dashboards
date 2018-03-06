@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import pointHierarchyPointSelectorTemplate from './pointHierarchyPointSelector.html';
 
 PointHierarchyPointSelectorController.$inject = ['maPointHierarchy'];
@@ -68,7 +67,7 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
         
         // $viewValue is an array of points
         var selectedPoints = this.ngModelCtrl.$viewValue;
-        if (angular.isUndefined(selectedPoints)) {
+        if (selectedPoints === undefined) {
             selectedPoints = [];
         }
         

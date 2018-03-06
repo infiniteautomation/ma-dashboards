@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import usersPageTemplate from './usersPage.html';
 
 UsersPageController.$inject = ['maUser', '$state', '$mdMedia'];

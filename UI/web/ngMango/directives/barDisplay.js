@@ -3,9 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-import PointValueController from './PointValueController';
 
+import PointValueController from './PointValueController';
 
 function barDisplay() {
     return {
@@ -98,5 +97,3 @@ BarDisplayController.prototype.updateBar = function() {
 };
 
 export default barDisplay;
-
-

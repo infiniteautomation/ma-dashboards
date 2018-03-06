@@ -4,7 +4,6 @@
  */
 
 import pagingPointListTemplate from './pagingPointList.html';
-import angular from 'angular';
 
 function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicItems) {
     return {

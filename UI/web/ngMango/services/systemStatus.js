@@ -2,9 +2,6 @@
  * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
  */
-import angular from 'angular';
-
-
 
 SystemStatusFactory.$inject = ['$http'];
 

@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import localeList from 'localeList';
 
 LocalesFactory.$inject = ['$q'];

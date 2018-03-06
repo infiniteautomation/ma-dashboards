@@ -3,7 +3,6 @@
  * @author Will Geller
  */ 
 
-import angular from 'angular';
 import maSliderTemplate from './maSlider.html';
 
  /**

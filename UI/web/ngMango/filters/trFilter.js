@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
  * @ngdoc filter
  * @name ngMangoFilters.filter:maTr
@@ -27,7 +25,7 @@ import angular from 'angular';
 function trFilterFactory(Translate) {
     return function trFilter(key) {
         var args;
-        if (angular.isArray(key)) {
+        if (Array.isArray(key)) {
             args = Array.prototype.slice.call(key, 1);
             key = key[0];
         } else {

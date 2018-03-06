@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import WatchListSelectController from './WatchListSelectController';
 import watchListListTemplate from './watchListList.html';
 import watchListListMdTemplate from './watchListList-md.html';

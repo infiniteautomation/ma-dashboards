@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 accordionSection.$inject = [];
 function accordionSection() {
     return {

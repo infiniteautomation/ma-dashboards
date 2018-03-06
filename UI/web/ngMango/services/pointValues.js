@@ -2,9 +2,8 @@
  * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
-import angular from 'angular';
-import moment from 'moment-timezone';
 
+import moment from 'moment-timezone';
 
 pointValuesFactory.$inject = ['$http', '$q', 'maUtil', 'MA_POINT_VALUES_CONFIG', '$injector'];
 function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) {
@@ -24,7 +23,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         
         if (options.latest) {
             body.limit = options.latest;
-        } else if (!angular.isUndefined(options.from) && !angular.isUndefined(options.to)) {
+        } else if (options.from !== undefined && options.to !== undefined) {
             const now = new Date();
             const from = Util.toMoment(options.from, now, options.dateFormat);
             const to = Util.toMoment(options.to, now, options.dateFormat);
@@ -62,9 +61,9 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 let timePeriodType = 'DAYS';
                 let timePeriods = 1;
 
-                if (angular.isString(options.rollupInterval)) {
+                if (typeof options.rollupInterval === 'string') {
                     const parts = options.rollupInterval.split(' ');
-                    if (parts.length === 2 && angular.isString(parts[0]) && angular.isString(parts[1])) {
+                    if (parts.length === 2 && typeof parts[0] === 'string' && typeof parts[1] === 'string') {
                         timePeriods = parseInt(parts[0], 10);
                         if (!isFinite(timePeriods) || timePeriods <= 0) {
                             throw new Error('options.rollupInterval must be a finite number > 0');
@@ -79,8 +78,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     throw new Error('options.rollupInterval must be a string or finite number > 0');
                 }
                 
-                if (!angular.isUndefined(options.rollupIntervalType)) {
-                    if (!angular.isString(options.rollupIntervalType) || Util.isEmpty(options.rollupIntervalType)) {
+                if (options.rollupIntervalType !== undefined) {
+                    if (typeof options.rollupIntervalType !== 'string' || Util.isEmpty(options.rollupIntervalType)) {
                         throw new Error('Invalid options.rollupIntervalType');
                     }
                     timePeriodType = options.rollupIntervalType;
@@ -128,8 +127,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     const pointValues = {
         getPointValuesForXid(xid, options) {
             try {
-                if (!angular.isString(xid)) throw new Error('Requires xid parameter');
-                if (!angular.isObject(options)) throw new Error('Requires options parameter');
+                if (typeof xid !== 'string') throw new Error('Requires xid parameter');
+                if (!options || typeof options !== 'object') throw new Error('Requires options parameter');
     
                 let url = pointValuesUrl;
                 url += options.latest ? '/latest' : '/time-period';
@@ -165,7 +164,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                         return response.data;
                     }
                     
-                    if (!response || !angular.isArray(response.data)) {
+                    if (!response || !Array.isArray(response.data)) {
                         throw new Error('Incorrect response from REST end point ' + url);
                     }
                     let values = response.data;
@@ -193,8 +192,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
     
         getPointValuesForXids(xids, options) {
             try {
-                if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
-                if (!angular.isObject(options)) throw new Error('Requires options parameter');
+                if (!Array.isArray(xids)) throw new Error('Requires xids parameter');
+                if (!options || typeof options !== 'object') throw new Error('Requires options parameter');
     
                 let url = pointValuesUrl + '/multiple-arrays';
                 url += options.latest ? '/latest' : '/time-period';
@@ -232,7 +231,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                         return response.data;
                     }
                     
-                    if (!response || !angular.isObject(response.data)) {
+                    if (!response || !response.data || typeof response.data !== 'object') {
                         throw new Error('Incorrect response from REST end point ' + url);
                     }
                     
@@ -251,8 +250,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
         
         getPointValuesForXidsCombined(xids, options) {
             try {
-                if (!angular.isArray(xids)) throw new Error('Requires xids parameter');
-                if (!angular.isObject(options)) throw new Error('Requires options parameter');
+                if (!Array.isArray(xids)) throw new Error('Requires xids parameter');
+                if (!options || typeof options !== 'object') throw new Error('Requires options parameter');
     
                 let url = pointValuesUrl + '/single-array';
                 url += options.latest ? '/latest' : '/time-period';
@@ -289,7 +288,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                         return response.data;
                     }
                     
-                    if (!response || !angular.isArray(response.data)) {
+                    if (!response || !Array.isArray(response.data)) {
                         throw new Error('Incorrect response from REST end point ' + url);
                     }
                     const values = response.data;

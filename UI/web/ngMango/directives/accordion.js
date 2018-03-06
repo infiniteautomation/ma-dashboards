@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 accordion.$inject = [];
 function accordion() {
     return {
@@ -49,5 +46,3 @@ AccordionController.prototype.toggle = function toggle(id) {
 };
 
 export default accordion;
-
-

@@ -88,7 +88,7 @@ FileStoreBrowserController.prototype.$onChanges = function(changes) {
 // ng-model value changed outside of this directive
 FileStoreBrowserController.prototype.render = function() {
 	var urls = this.ngModelCtrl.$viewValue;
-	if (!angular.isArray(urls)) {
+	if (!Array.isArray(urls)) {
 		urls = urls ? [urls] : [];
 	}
 

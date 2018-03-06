@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import eventHandlerPageTemplate from './eventHandlerPage.html';
 
 const $inject = Object.freeze(['maEventHandler', '$state']);

@@ -178,7 +178,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
     };
     
     MangoWatchdog.prototype.setInterval = function(interval) {
-        if (angular.isUndefined(interval)) {
+        if (interval === undefined) {
             interval = this.timeout;
         }
         if (this.timer) {

@@ -3,7 +3,6 @@
  * @author Will Geller
  */ 
 
-import angular from 'angular';
 import maMapTemplate from './maMap.html';
 import requirejs from 'requirejs/require';
 

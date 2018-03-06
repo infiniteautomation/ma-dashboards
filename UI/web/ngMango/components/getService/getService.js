@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 class GetServiceController {
     static get $$ngIsClass() { return true; }
     static get $inject () {
@@ -34,5 +31,3 @@ export default {
     },
     controller: GetServiceController
 };
-
-

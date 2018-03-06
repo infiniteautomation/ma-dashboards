@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
 * @ngdoc service
 * @name ngMangoServices.maPoint

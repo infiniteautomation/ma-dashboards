@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 slideUp.$inject = ['$animateCss'];
 function slideUp($animateCss) {
     return {

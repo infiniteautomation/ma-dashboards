@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import filteringDeviceNameListTemplate from './filteringDeviceNameList.html';
 
 filteringDeviceNameList.$inject = ['$injector', 'maDeviceName'];
@@ -31,9 +30,9 @@ function filteringDeviceNameList($injector, DeviceName) {
             
             $scope.queryDeviceNames = function() {
                 var queryResult;
-                if (!angular.isUndefined($scope.dataSourceId)) {
+                if ($scope.dataSourceId !== undefined) {
                     queryResult = DeviceName.byDataSourceId({id: $scope.dataSourceId, contains: $scope.searchText});
-                } else if (!angular.isUndefined($scope.dataSourceXid)) {
+                } else if ($scope.dataSourceXid !== undefined) {
                     queryResult = DeviceName.byDataSourceXid({xid: $scope.dataSourceXid, contains: $scope.searchText});
                 } else {
                     queryResult = DeviceName.query({contains: $scope.searchText});

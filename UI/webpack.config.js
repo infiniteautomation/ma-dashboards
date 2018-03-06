@@ -48,7 +48,7 @@ module.exports = {
                 use: ['imports-loader?AmCharts=amcharts/amcharts']
             },
             {
-                test: /md-color-picker/,
+                test: /md-color-picker.*?\.js/,
                 use: ['imports-loader?tinycolor=tinycolor2']
             },
             {
@@ -56,7 +56,7 @@ module.exports = {
                 use: ['imports-loader?define=>undefined']
             },
             {
-                test: /angular-material/,
+                test: /angular-material.*?\.js/,
                 use: ['imports-loader?angular,angularAnimate=angular-animate,angularAria=angular-aria,angularMessages=angular-messages']
             },
             {

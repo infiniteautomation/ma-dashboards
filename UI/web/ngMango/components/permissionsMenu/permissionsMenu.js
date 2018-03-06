@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import permissionsMenuTemplate from './permissionsMenu.html';
 
 PermissionsMenuController.$inject = ['maPermissions'];

@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 
 /**
  * @ngdoc directive
@@ -41,9 +40,9 @@ function deviceNameQuery(DeviceName) {
                 var queryResult;
                 if (!($element.attr('data-source-id') || $element.attr('data-source-xid') )) {
                     queryResult = DeviceName.query({contains: $scope.contains});
-                } else if (!angular.isUndefined($scope.dataSourceId)) {
+                } else if ($scope.dataSourceId !== undefined) {
                     queryResult = DeviceName.byDataSourceId({id: $scope.dataSourceId, contains: $scope.contains});
-                } else if (!angular.isUndefined($scope.dataSourceXid)) {
+                } else if ($scope.dataSourceXid !== undefined) {
                     queryResult = DeviceName.byDataSourceXid({xid: $scope.dataSourceXid, contains: $scope.contains});
                 } else {
                     return;

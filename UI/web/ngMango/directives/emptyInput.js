@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 function emptyInput($parse) {
     return {
         require: 'ngModel',
@@ -18,7 +15,7 @@ function emptyInput($parse) {
             ngModel.$parsers.unshift(function (viewValue) {
                 if (viewValue === '') {
                     var newValue = emptyValueGetter($scope);
-                    if (angular.isUndefined(newValue)) {
+                    if (newValue === undefined) {
                         wasUndefined = true;
                     }
                     return newValue;

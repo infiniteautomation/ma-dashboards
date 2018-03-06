@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import queryPredicateTemplate from './queryPredicate.html';
 
 var queryPredicate = function queryPredicate() {

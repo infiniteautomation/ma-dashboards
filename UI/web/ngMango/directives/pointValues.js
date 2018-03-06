@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import moment from 'moment-timezone';
 import noDataForPeriod from '../img/noDataForPeriod.svg';
 

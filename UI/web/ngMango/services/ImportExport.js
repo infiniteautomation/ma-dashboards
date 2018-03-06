@@ -61,7 +61,7 @@ function ImportExportFactory($http, $q, $timeout, Util) {
     ImportExport.exportSections = function(sections, options) {
         try {
             if (!options) options = {};
-            if (!angular.isArray(sections)) throw new Error('Requires sections parameter');
+            if (!Array.isArray(sections)) throw new Error('Requires sections parameter');
 
             var canceler = $q.defer();
             var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);

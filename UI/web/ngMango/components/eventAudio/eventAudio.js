@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maEventAudio

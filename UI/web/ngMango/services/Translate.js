@@ -4,8 +4,8 @@
  */
 import angular from 'angular';
 import Globalize from 'globalize';
-import likelySubtags from 'cldr-data/supplemental/likelySubtags.json'
-import plurals from 'cldr-data/supplemental/plurals.json'
+import likelySubtags from 'cldr-data/supplemental/likelySubtags.json';
+import plurals from 'cldr-data/supplemental/plurals.json';
 
 /**
 * @ngdoc service
@@ -64,7 +64,7 @@ function translateFactory($http, $q, maUser) {
 
 	Translate.tr = function(key) {
 		var functionArgs = arguments;
-		if (angular.isArray(key)) {
+		if (Array.isArray(key)) {
 			key = key[0];
 		}
 
@@ -75,10 +75,10 @@ function translateFactory($http, $q, maUser) {
 	};
 
 	Translate.trSync = function(key, args) {
-		if (angular.isArray(key)) {
+		if (Array.isArray(key)) {
 			args = key;
 			key = key.shift();
-		} else if (!angular.isArray(args)) {
+		} else if (!Array.isArray(args)) {
             args = Array.prototype.slice.call(arguments, 1);
         }
 		return Globalize.messageFormatter(key).apply(Globalize, args);
@@ -88,7 +88,7 @@ function translateFactory($http, $q, maUser) {
     Translate.pendingRequests = {};
 
 	Translate.loadNamespaces = function(namespaces) {
-		if (!angular.isArray(namespaces)) {
+		if (!Array.isArray(namespaces)) {
 			namespaces = Array.prototype.slice.call(arguments);
         }
 

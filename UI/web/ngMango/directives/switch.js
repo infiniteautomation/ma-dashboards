@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import switchTemplate from './switch.html';
 import PointValueController from './PointValueController';
 

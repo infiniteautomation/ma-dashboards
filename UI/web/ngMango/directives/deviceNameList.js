@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import deviceNameListMdTemplate from './deviceNameList-md.html';
 import deviceNameListTemplate from './deviceNameList.html';
 
@@ -67,7 +66,7 @@ function deviceNameList(DeviceName, $injector) {
         },
         replace: true,
         link: function ($scope, $element, attrs, ngModelCtrl) {
-            if (angular.isUndefined($scope.autoInit)) {
+            if ($scope.autoInit === undefined) {
                 $scope.autoInit = true;
             }
 
@@ -78,9 +77,9 @@ function deviceNameList(DeviceName, $injector) {
 
             $scope.$watchGroup(['dataSourceId', 'dataSourceXid', 'contains'], function(value) {
                 var queryResult;
-                if (!angular.isUndefined($scope.dataSourceId)) {
+                if ($scope.dataSourceId !== undefined) {
                     queryResult = DeviceName.byDataSourceId({id: $scope.dataSourceId, contains: $scope.contains});
-                } else if (!angular.isUndefined($scope.dataSourceXid)) {
+                } else if ($scope.dataSourceXid !== undefined) {
                     queryResult = DeviceName.byDataSourceXid({xid: $scope.dataSourceXid, contains: $scope.contains});
                 } else {
                     queryResult = DeviceName.query({contains: $scope.contains});

@@ -3,9 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import moment from 'moment';
-import requirejs from 'requirejs/require';
 
 /**
  * @ngdoc directive
@@ -86,7 +84,7 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
         ngModel.$formatters.push(modelToView);
 
         function modelToView(value) {
-            if (angular.isDate(value) || moment.isMoment(value)) {
+            if (Object.prototype.toString.call(value) === '[object Date]' || moment.isMoment(value)) {
                 var m = moment(value);
                 if ($scope.timezone) {
                     m.tz($scope.timezone);
@@ -130,7 +128,7 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
             $scope.showPicker = function showPicker(ev) {
             	if (ev.altKey) return;
             	
-                var autoSwitchTime = angular.isUndefined($scope.autoSwitchTime) ? true : $scope.autoSwitchTime;
+                var autoSwitchTime = $scope.autoSwitchTime === undefined ? true : $scope.autoSwitchTime;
                 var initialDate;
                 
                 if ($scope.timezone) {

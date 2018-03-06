@@ -3,7 +3,6 @@
  * @author Will Geller
  */
 
-import angular from 'angular';
 import activeEventIconsTemplate from './activeEventIcons.html';
 
 ActiveEventIconsController.$inject = ['maEvents', '$scope'];

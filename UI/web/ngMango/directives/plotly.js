@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 /**
  * @disabledngdoc directive
  * @name ngMango.directive:maPlotly

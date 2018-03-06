@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import dataPointTagSelectTemplate from './dataPointTagSelect.html';
 
 /**

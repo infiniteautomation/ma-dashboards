@@ -56,7 +56,7 @@ function dataSourceScrollList($injector) {
             
             this.doQuery().then(function(items) {
                 this.items = items;
-                if (!xid && (angular.isUndefined(this.selectFirst) || this.selectFirst) && items.length) {
+                if (!xid && (this.selectFirst === undefined || this.selectFirst) && items.length) {
                     this.setViewValue(items[0]);
                 }
             }.bind(this));

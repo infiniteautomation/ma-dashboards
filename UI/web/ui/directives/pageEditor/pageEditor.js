@@ -4,7 +4,6 @@
  */
 
 import pageEditorTemplate from './pageEditor.html';
-import angular from 'angular';
 
 pageEditor.$inject = [];
 function pageEditor() {

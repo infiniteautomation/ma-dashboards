@@ -5,7 +5,6 @@
  */
 
 import angular from 'angular';
-import query from 'rql/query';
 import tinycolor from 'tinycolor';
 import downloadDialogTemplate from './downloadDialog.html';
 import watchListPageTemplate from './watchListPage.html';
@@ -693,5 +692,4 @@ export default function watchListPageDirective() {
             watchList: '<?'
         }
     };
-};
-
+}

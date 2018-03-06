@@ -195,7 +195,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         *
         */
         arrayResponseInterceptor(data) {
-            if (angular.isUndefined(data.data))
+            if (data.data === undefined)
                 return $q.reject(data);
             
             try {
@@ -438,7 +438,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             }
     
             if (options.sort) {
-                if (angular.isArray(options.sort)) {
+                if (Array.isArray(options.sort)) {
                     rqlBuilder.sort(...options.sort);
                 } else {
                     rqlBuilder.sort(options.sort);

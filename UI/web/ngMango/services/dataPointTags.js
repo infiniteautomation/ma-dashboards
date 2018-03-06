@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 dataPointTagsFactory.$inject = ['$http', 'maRqlBuilder', 'maTemporaryRestResource'];
 function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
 
@@ -27,7 +25,7 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
             Object.keys(restrictions).forEach(key => {
                 let value = restrictions[key];
                 if (value !== undefined) {
-                    if (angular.isArray(value)) {
+                    if (Array.isArray(value)) {
                         let orNull = false;
                         value = value.filter(val => {
                             if (val === null) {

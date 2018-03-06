@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 eventHandlerFactory.$inject = ['maRestResource', 'MA_EVENT_HANDLER_TYPES'];
 function eventHandlerFactory(RestResource, MA_EVENT_HANDLER_TYPES) {
 

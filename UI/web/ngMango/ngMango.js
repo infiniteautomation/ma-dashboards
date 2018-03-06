@@ -113,6 +113,7 @@ import slideUp from './animations/slideUp';
 import angular from 'angular';import moment from 'moment-timezone';
 import AmCharts from 'amcharts/amcharts';
 
+import 'angular/angular-csp.css';
 import './ngMango.css';
 
 /**

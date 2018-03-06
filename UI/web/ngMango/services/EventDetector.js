@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 eventDetectorFactory.$inject = ['maRestResource', '$injector', '$q'];
 function eventDetectorFactory(RestResource, $injector, $q) {
 

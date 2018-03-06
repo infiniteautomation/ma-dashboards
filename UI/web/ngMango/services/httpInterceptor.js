@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
 * @ngdoc service
 * @name ngMangoServices.maHttpInterceptor
@@ -49,7 +47,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     		return config;
     	},
     	responseError: function(error) {
-    	    let message = error.data && angular.isObject(error.data) && (error.data.message || error.data.localizedMessage);
+    	    let message = error.data && typeof error.data === 'object' && (error.data.message || error.data.localizedMessage);
     	    
     	    // try the 'errors' header
     	    if (!message) {

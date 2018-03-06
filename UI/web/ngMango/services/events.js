@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
 * @ngdoc service
 * @name ngMangoServices.maEvents
@@ -250,7 +248,7 @@ function eventsFactory($resource, Util, NotificationManager) {
 
         if (options.sort) {
             let sort = options.sort;
-            if (angular.isArray(sort)) {
+            if (Array.isArray(sort)) {
                 sort = sort.join(',');
             }
             params.push(`sort(${sort})`);

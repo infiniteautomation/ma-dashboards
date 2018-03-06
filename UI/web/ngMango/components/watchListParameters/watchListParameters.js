@@ -15,7 +15,6 @@
   * @param {expression=} parameters-changed Deprecated. Use `ng-change`.
   */
 
-import angular from 'angular';
 import watchListParametersTemplate from './watchListParameters.html';
 import query from 'rql/query';
 

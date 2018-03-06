@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 function arrayInput() {
     return {
         require: 'ngModel',
@@ -16,7 +13,7 @@ function arrayInput() {
             });
             
             ngModel.$formatters.push(function fromArray(modelValue) {
-                return angular.isArray(modelValue) ? modelValue.join($attrs.arrayDelimiter || ',') : modelValue;
+                return Array.isArray(modelValue) ? modelValue.join($attrs.arrayDelimiter || ',') : modelValue;
             });
         }
     };

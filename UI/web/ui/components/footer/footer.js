@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import footerTemplate from './footer.html';
 import moment from 'moment-timezone';
 

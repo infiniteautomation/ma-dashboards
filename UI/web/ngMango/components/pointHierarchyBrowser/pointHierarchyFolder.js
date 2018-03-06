@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import pointHierarchyFolderTemplate from './pointHierarchyFolder.html';
 
 var pointHierarchyFolder = function pointHierarchyFolder() {

@@ -4,7 +4,6 @@
  */
 
 import watchListChartTemplate from './watchListChart.html';
-import angular from 'angular';
 
  /**
   * @ngdoc directive

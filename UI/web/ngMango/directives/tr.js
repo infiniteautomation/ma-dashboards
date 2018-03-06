@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maTr
@@ -42,7 +40,7 @@ function maTr(Translate, $q) {
                 // or any element in trArgs is undefined, prevents flicking from an error message to the real
                 // translation once the arguments load
                 if (typeof $attrs.maTrArgs !== 'undefined') {
-                	if (!angular.isArray(trArgs)) return;
+                	if (!Array.isArray(trArgs)) return;
                 	var containsUndefined = trArgs.some(function(arg) {
                 		return typeof arg === 'undefined';
                 	});

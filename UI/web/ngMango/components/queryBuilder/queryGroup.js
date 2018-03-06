@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import queryGroupTemplate from './queryGroup.html';
 import query from 'rql/query';
 

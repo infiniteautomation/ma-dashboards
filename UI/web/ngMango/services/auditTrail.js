@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 auditTrailFactory.$inject = ['$http', 'maRqlBuilder'];
 function auditTrailFactory($http, RqlBuilder) {
     

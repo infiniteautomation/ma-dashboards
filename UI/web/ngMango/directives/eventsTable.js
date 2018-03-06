@@ -3,9 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import eventsTableTemplate from './eventsTable.html';
-import query from 'rql/query';
 import moment from 'moment-timezone';
 
 /**

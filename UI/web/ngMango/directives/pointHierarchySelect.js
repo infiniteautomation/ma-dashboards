@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import pointHierarchySelectMdTemplate from './pointHierarchySelect-md.html';
 import pointHierarchySelectTemplate from './pointHierarchySelect.html';
 
@@ -46,9 +45,9 @@ function PointHierarchyController($attrs, PointHierarchy) {
     };
     
     this.doQuery = function doQuery() {
-        var subfoldersOnly = angular.isUndefined($attrs.subfoldersOnly) ? true : !!this.subfoldersOnly;
-        var subfolders = angular.isUndefined($attrs.subfolders) ? this.maxDepth == null || this.maxDepth > 0 : !!this.subfolders;
-        var getPoints = angular.isUndefined($attrs.points) ? true : !!this.points;
+        var subfoldersOnly = $attrs.subfoldersOnly === undefined ? true : !!this.subfoldersOnly;
+        var subfolders = $attrs.subfolders === undefined ? this.maxDepth == null || this.maxDepth > 0 : !!this.subfolders;
+        var getPoints = $attrs.points === undefined ? true : !!this.points;
         
         var path;
         if (!this.path) {

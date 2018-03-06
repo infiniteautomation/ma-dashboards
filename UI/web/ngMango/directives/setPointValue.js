@@ -5,7 +5,6 @@
 
 import setPointValueMdTemplate from './setPointValue-md.html';
 import setPointValueTemplate from './setPointValue.html';
-import angular from 'angular';
 import PointValueController from './PointValueController';
 
 /**
@@ -99,7 +98,7 @@ SetPointValueController.prototype = Object.create(PointValueController.prototype
 SetPointValueController.prototype.constructor = SetPointValueController;
 
 SetPointValueController.prototype.$onInit = function() {
-    if (angular.isUndefined(this.showButton)) {
+    if (this.showButton === undefined) {
         this.showButton = true;
     }
     this.pointChanged();

@@ -353,7 +353,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             
             var hasSeries = false;
             for (var j = 0; j < seriesAttributes.length; j++) {
-                if (!angular.isUndefined(attrs[seriesAttributes[j]])) {
+                if (attrs[seriesAttributes[j]] !== undefined) {
                     hasSeries = true;
                     break;
                 }
@@ -571,7 +571,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             
             if (opts.balloonText)
                 delete opts.balloonFunction;
-            if (angular.isUndefined(opts.fillAlphas)) {
+            if (opts.fillAlphas === undefined) {
                 var isStacked = graphAxis && graphAxis.stackType && graphAxis.stackType !== 'none';
                 if (isStacked || opts.type === 'column') {
                     opts.fillAlphas = 0.7;
@@ -579,7 +579,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                     opts.fillAlphas = 0;
                 }
             }
-            if (angular.isUndefined(opts.lineThickness)) {
+            if (opts.lineThickness === undefined) {
                 opts.lineThickness = opts.type === 'column' ? 1.0 : 2.0;
             }
 

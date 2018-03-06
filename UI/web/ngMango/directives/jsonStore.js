@@ -57,7 +57,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
                 const newPath = newValue.path || null;
                 
             	if (!newXid) return;
-            	if (angular.isArray(newPath)) {
+            	if (Array.isArray(newPath)) {
             	    const invalidPath = newPath.some(component => component == null);
             	    if (invalidPath) return;
             	}
@@ -100,7 +100,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
                     let newData = payload.object.jsonData;
                     const path = $scope.path || null;
 
-                    if (angular.isArray(path)) {
+                    if (Array.isArray(path)) {
                         path.some((prop) => {
                             if (newData == null) {
                                 return true;

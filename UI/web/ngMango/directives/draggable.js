@@ -35,7 +35,7 @@ DraggableController.prototype.$onInit = function() {
     $element.on('dragstart', function($event) {
         var event = $event.originalEvent || $event;
         if ($element.attr('draggable') == null) return true;
-        if (!angular.isString($ctrl.data)) {
+        if (typeof $ctrl.data !== 'string') {
             var json = angular.toJson($ctrl.data);
             event.dataTransfer.setData('application/json', json);
         } else {

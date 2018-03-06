@@ -31,7 +31,6 @@
   * @param {expression=} on-query Expression is evaluated when querying for watch lists. Available scope parameters are `$promise`.
   */
 
-import angular from 'angular';
 import WatchListSelectController from './WatchListSelectController';
 import watchListSelectTemplate from './watchListSelect.html';
 import watchListSelectMdTemplate from './watchListSelect-md.html';

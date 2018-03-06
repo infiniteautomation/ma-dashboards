@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 export default function() {
     class FixSortIconsController {
         static get $inject() { return ['$element', '$timeout']; }
@@ -32,6 +29,4 @@ export default function() {
         scope: false,
         controller: FixSortIconsController
     };
-};
-
-
+}

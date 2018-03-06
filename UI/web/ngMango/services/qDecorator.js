@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 qDecorator.$inject = ['$delegate'];
 function qDecorator($delegate) {
 

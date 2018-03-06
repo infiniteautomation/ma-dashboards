@@ -138,7 +138,7 @@ ngMangoFilters.filter('maProperty', ['maUtil', function(Util) {
     });
     
     return function(input, propertyName) {
-        if (!input || !angular.isArray(input)) return input;
+        if (!input || !Array.isArray(input)) return input;
         return propertyFilter.apply(null, arguments);
     };
 }]);
@@ -222,7 +222,7 @@ ngMangoFilters.filter('maExtractBits', function () {
 
 ngMangoFilters.filter('maFindBy', function () {
     return function(input, property, value) {
-        if (!angular.isArray(input)) return input;
+        if (!Array.isArray(input)) return input;
         return input.find((item) => item[property] === value);
     };
 });

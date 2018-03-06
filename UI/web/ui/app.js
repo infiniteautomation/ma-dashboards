@@ -22,6 +22,11 @@ import 'md-color-picker';
 import defaultUiSettings from './uiSettings.json';
 import requirejs from 'requirejs/require';
 
+import 'angular-loading-bar/build/loading-bar.css';
+import 'md-color-picker/dist/mdColorPicker.css';
+import './styles/fonts.css';
+import './styles/main.css';
+
 // must match variables defined in UIInstallUpgrade.java
 var MA_UI_MENU_XID = 'mangoUI-menu';
 var MA_UI_PAGES_XID = 'mangoUI-pages';
@@ -698,7 +703,7 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
         method: 'GET',
         url: '/rest/v1/modules/angularjs-modules/public'
     }).then(function (response) {
-        if (!response.data.urls || !angular.isArray(response.data.urls)) return;
+        if (!response.data.urls || !Array.isArray(response.data.urls)) return;
 
         var urls = response.data.urls.map(function(url) {
             return url.replace(/^\/modules\/(.*?).js$/, 'modules/$1');

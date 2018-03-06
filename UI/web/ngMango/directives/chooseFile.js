@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 function chooseFile() {
     return {
         restrict: 'A',
@@ -30,7 +27,7 @@ ChooseFileController.prototype.$onInit = function() {
 	this.$element.on('click', function(event) {
 		this.fileStoreDialog.show(event, this.selected || this.path, this.options).then(function(urls) {
 			if (this.onChoose) {
-				if (angular.isArray(urls)) {
+				if (Array.isArray(urls)) {
 					this.onChoose({$urls: urls, $path: urls});
 				} else {
 					this.onChoose({$url: urls, $path: urls});

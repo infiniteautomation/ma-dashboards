@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maDataSourceList
@@ -70,7 +68,7 @@ function dataSourceList(DataSource, $injector) {
         },
         replace: true,
         link: function ($scope, $element, attrs, ngModelCtrl) {
-            if (angular.isUndefined($scope.autoInit)) {
+            if ($scope.autoInit === undefined) {
                 $scope.autoInit = true;
             }
 

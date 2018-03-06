@@ -14,6 +14,12 @@ import 'angular-material';
 import 'md-pickers';
 import 'angular-material-data-table';
 
+import 'font-awesome/css/font-awesome.css';
+import 'material-design-icons-iconfont/dist/fonts/material-icons.css';
+import 'angular-material/angular-material.css';
+import 'angular-material-data-table/dist/md-data-table.css';
+import 'md-pickers/dist/mdPickers.css';
+
 const ngMangoMaterial = angular.module('ngMangoMaterial', ['ngMango', 'ngMaterial', 'mdPickers', 'md.data.table']);
 ngMangoMaterial.component('maColorPreview', colorPreview);
 ngMangoMaterial.factory('maDialogHelper', dialogHelperFactory);

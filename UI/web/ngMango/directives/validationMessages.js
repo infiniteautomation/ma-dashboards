@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 ValidationMessagesController.$inject = [];
 function ValidationMessagesController() {
 }

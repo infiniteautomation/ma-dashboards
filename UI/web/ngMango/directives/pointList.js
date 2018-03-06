@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
  * @ngdoc directive 
  * @name ngMango.directive:maPointList
@@ -66,7 +64,7 @@ function pointList(Point, $injector) {
         },
         replace: true,
         link: function ($scope, $element, attrs) {
-            if (angular.isUndefined($scope.initPoint)) {
+            if ($scope.initPoint === undefined) {
                 $scope.initPoint = true;
             }
 

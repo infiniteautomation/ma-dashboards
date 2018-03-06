@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import fileStoreDialogTemplate from './fileStoreDialog.html';
 
 fileStoreDialog.$inject = ['$mdDialog', '$mdMedia'];

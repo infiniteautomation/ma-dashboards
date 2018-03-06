@@ -3,9 +3,7 @@
  * @author Jared Wiltshire / Will Geller
  */
 
-import angular from 'angular';
 import pageViewTemplate from './pageView.html';
-
 
 PageViewController.$inject = ['$scope', 'maUiPages', 'maUser', 'maJsonStoreEventManager'];
 function PageViewController($scope, maUiPages, User, jsonStoreEventManager) {
@@ -48,5 +46,4 @@ export default function pageView() {
         },
         template: pageViewTemplate
     };
-};
-
+}

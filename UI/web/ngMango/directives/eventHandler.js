@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 //you can't use this directive as is, you must bind eventName and directiveName to the function
 eventHandler.$inject = ['$parse', '$rootScope'];
 function eventHandler(eventName, directiveName, $parse, $rootScope) {
@@ -25,5 +22,3 @@ function eventHandler(eventName, directiveName, $parse, $rootScope) {
 }
 
 export default eventHandler;
-
-

@@ -3,7 +3,6 @@
  * @author Will Geller
  */
 
-import angular from 'angular';
 import eventsPageTemplate from './eventsPage.html';
 
 const paramNames = ['eventType', 'alarmLevel', 'activeStatus', 'acknowledged', 'dateFilter'];

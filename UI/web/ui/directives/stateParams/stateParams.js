@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 stateParams.$inject = ['$stateParams', '$state', '$timeout'];
 function stateParams($stateParams, $state, $timeout) {
 

@@ -3,14 +3,9 @@
  * @author Jared Wiltshire
  */
 
-import moment from 'moment-timezone';
-
-
 loadLoginTranslations.$inject = ['maTranslate'];
 function loadLoginTranslations(Translate) {
     return Translate.loadNamespaces('login');
 }
 
 export default loadLoginTranslations;
-
-

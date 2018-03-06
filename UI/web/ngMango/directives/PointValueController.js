@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
-
 var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE', 'ATTRIBUTE_CHANGE'];
 
 PointValueController.$inject = ['$scope', '$element', '$attrs', 'maPointEventManager', 'maPoint', '$injector'];

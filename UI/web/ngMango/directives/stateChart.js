@@ -4,7 +4,6 @@
  */
 
 import AmCharts from 'amcharts/gantt';
-import angular from 'angular';
 import moment from 'moment-timezone';
 import $ from 'jquery';
 import 'amcharts/plugins/export/export.css';

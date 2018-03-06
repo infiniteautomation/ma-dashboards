@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import moment from 'moment-timezone';
 
 
@@ -30,7 +29,7 @@ function dateInput() {
         		}
         		
                 this.ngModel.$formatters.push(function fromDate(value) {
-                	if (angular.isDate(value)) {
+                	if (Object.prototype.toString.call(value) === '[object Date]') {
                 		if (!this.modelTypeFixed) this.modelType = 'date';
                 	} else if (moment.isMoment(value)) {
                 		if (!this.modelTypeFixed) this.modelType = 'moment';

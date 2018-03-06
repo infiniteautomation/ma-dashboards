@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import pointHierarchyBrowserTemplate from './pointHierarchyBrowser.html';
 
 PointHierarchyBrowserController.$inject = ['maPointHierarchy'];
@@ -63,7 +62,7 @@ function PointHierarchyBrowserController(PointHierarchy) {
         
         // $viewValue is an array of folders
         var selectedFolders = this.ngModelCtrl.$viewValue;
-        if (angular.isUndefined(selectedFolders)) {
+        if (selectedFolders === undefined) {
             selectedFolders = [];
         }
         
