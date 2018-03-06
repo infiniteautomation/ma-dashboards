@@ -18,14 +18,16 @@
 
 class PlotlyController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element', 'maRequireQ']; }
+    static get $inject() { return ['$scope', '$element']; }
     
-    constructor($scope, $element, maRequireQ) {
+    constructor($scope, $element) {
         this.$scope = $scope;
         this.$element = $element;
         this.element = $element[0];
         
-        this.plotlyPromise = maRequireQ(['plotly'], (plotly) => plotly);
+//        this.plotlyPromise = import(/* webpackChunkName: "plotly" */ 'plotly.js').then(plotlyModule => {
+//            return plotlyModule.default;
+//        });
     }
     
     $onInit() {

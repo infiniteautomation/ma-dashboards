@@ -15,10 +15,12 @@ export default [
         menuTr: 'header.login',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/login" */ './views/login.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                        './views/login.html');
             },
             deps: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/login" */ './directives/login/login').then(login => {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                        './directives/login/login').then(login => {
                     angular.module('maUiLoginState', [])
                         .directive('maUiLogin', login.default);
                     $injector.loadNewModules(['maUiLoginState']);
@@ -35,10 +37,11 @@ export default [
         menuTr: 'header.resetPassword',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/resetPassword" */ './views/resetPassword.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                        './views/resetPassword.html');
             },
             deps: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/resetPassword" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
                         './components/resetPassword/resetPassword').then(resetPassword => {
                     angular.module('maUiResetPasswordState', [])
                         .component('maUiResetPassword', resetPassword.default);
@@ -56,10 +59,11 @@ export default [
         menuTr: 'header.forgotPassword',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/forgotPassword" */ './views/forgotPassword.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                        './views/forgotPassword.html');
             },
             deps: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/forgotPassword" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
                         './components/forgotPassword/forgotPassword').then(forgotPassword => {
                     angular.module('maUiForgotPasswordState', [])
                         .component('maUiForgotPassword', forgotPassword.default);
@@ -82,7 +86,8 @@ export default [
         url: '/agree-to-license',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/agreeToLicense" */ './views/agreeToLicense.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "agreeToLicense" */
+                        './views/agreeToLicense.html');
             }
         },
         menuTr: 'ui.app.agreeToLicense',
@@ -96,7 +101,8 @@ export default [
         menuTr: 'ui.app.ui',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/main" */ './views/main.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                        './views/main.html');
             },
             auth: ['maTranslate', 'maUser', function(Translate, User) {
                 if (!User.current) {
@@ -106,7 +112,8 @@ export default [
             }],
             loginTranslations: loadLoginTranslations,
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/main" */ './mainModule').then(() => {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                        './mainModule').then(() => {
                     $injector.loadNewModules(['maUiRootState']);
                 });
             }],
@@ -125,7 +132,8 @@ export default [
         name: 'ui.notFound',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.notFound" */ './views/notFound.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                        './views/notFound.html');
             }
         },
         url: '/not-found?path',
@@ -137,7 +145,8 @@ export default [
         name: 'ui.unauthorized',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.unauthorized" */ './views/unauthorized.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                        './views/unauthorized.html');
             }
         },
         url: '/unauthorized?path',
@@ -149,7 +158,8 @@ export default [
         name: 'ui.error',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.error" */ './views/error.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                        './views/error.html');
             }
         },
         url: '/error',
@@ -161,7 +171,8 @@ export default [
         name: 'ui.serverError',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.serverError" */ './views/serverError.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                        './views/serverError.html');
             }
         },
         url: '/server-error',
@@ -183,7 +194,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.watchList" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.watchList" */
                         './directives/watchList/watchListPage').then(watchListPage => {
                     angular.module('maUiWatchListState', [])
                         .directive('maUiWatchListPage', watchListPage.default);
@@ -206,7 +217,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.dataPointDetails" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.dataPointDetails" */
                         './components/dataPointDetails/dataPointDetails').then(dataPointDetails => {
                     angular.module('maUiDataPointDetailsState', [])
                         .component('maUiDataPointDetails', dataPointDetails.default);
@@ -229,7 +240,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.events" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.events" */
                         './components/eventsPage/eventsPage').then(eventsPage => {
                     angular.module('maUiEventsState', [])
                         .component('maUiEventsPage', eventsPage.default);
@@ -254,7 +265,8 @@ export default [
         name: 'ui.help.gettingStarted',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.gettingStarted" */ './views/help/gettingStarted.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/gettingStarted.html');
             }
         },
         menuTr: 'ui.dox.gettingStarted',
@@ -264,7 +276,8 @@ export default [
         name: 'ui.help.legacy',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.legacy" */ './views/help/legacy.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/legacy.html');
             }
         },
         url: '/legacy',
@@ -276,7 +289,8 @@ export default [
         name: 'ui.help.watchList',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.watchList" */ './views/help/watchList.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/watchList.html');
             }
         },
         menuTr: 'ui.dox.watchList'
@@ -286,7 +300,8 @@ export default [
         name: 'ui.help.dataPointDetails',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.dataPointDetails" */ './views/help/dataPointDetails.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/dataPointDetails.html');
             }
         },
         menuTr: 'ui.dox.dataPointDetails'
@@ -296,7 +311,8 @@ export default [
         name: 'ui.help.events',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.events" */ './views/help/events.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/events.html');
             }
         },
         menuTr: 'ui.dox.events'
@@ -306,7 +322,8 @@ export default [
         name: 'ui.help.dateBar',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.dateBar" */ './views/help/dateBar.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/dateBar.html');
             }
         },
         menuTr: 'ui.dox.dateBar'
@@ -316,7 +333,8 @@ export default [
         name: 'ui.help.uiSettings',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.uiSettings" */ './views/help/uiSettings.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/uiSettings.html');
             }
         },
         menuTr: 'ui.app.uiSettings'
@@ -326,7 +344,8 @@ export default [
         name: 'ui.help.watchListBuilder',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.watchListBuilder" */ './views/help/watchListBuilder.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/watchListBuilder.html');
             }
         },
         menuTr: 'ui.app.watchListBuilder'
@@ -336,7 +355,8 @@ export default [
         name: 'ui.help.customPages',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.customPages" */ './views/help/customPages.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/customPages.html');
             }
         },
         menuTr: 'ui.dox.customPages'
@@ -346,7 +366,8 @@ export default [
         name: 'ui.help.menuEditor',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.menuEditor" */ './views/help/menuEditor.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/menuEditor.html');
             }
         },
         menuTr: 'ui.dox.menuEditor'
@@ -356,7 +377,8 @@ export default [
         name: 'ui.help.users',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.users" */ './views/help/users.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/users.html');
             }
         },
         menuTr: 'header.users'
@@ -366,7 +388,8 @@ export default [
         name: 'ui.help.customDashboards',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.customDashboards" */ './views/help/customDashboards.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/customDashboards.html');
             }
         },
         menuTr: 'ui.dox.customDashboards'
@@ -376,7 +399,8 @@ export default [
         name: 'ui.help.systemStatus',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.help.systemStatus" */ './views/help/systemStatus.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/systemStatus.html');
             }
         },
         menuTr: 'ui.settings.systemStatus'
@@ -410,7 +434,8 @@ export default [
         name: 'ui.settings.home',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.home" */ './views/home.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './views/home.html');
             }
         },
         url: '/home',
@@ -446,7 +471,8 @@ export default [
         name: 'ui.settings.editPages',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.editPages" */ './views/editPages.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './views/editPages.html');
             }
         },
         menuTr: 'ui.app.editPages',
@@ -466,7 +492,8 @@ export default [
         name: 'ui.settings.editMenu',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.editMenu" */ './views/editMenu.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './views/editMenu.html');
             }
         },
         menuTr: 'ui.app.editMenu',
@@ -481,7 +508,8 @@ export default [
         name: 'ui.settings.autoLoginSettings',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.autoLoginSettings" */ './views/autoLoginSettings.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './views/autoLoginSettings.html');
             }
         },
         menuTr: 'ui.app.autoLoginSettings',
@@ -500,7 +528,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.settings.uiSettings" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/uiSettingsPage/uiSettingsPage').then(uiSettingsPage => {
                     angular.module('maUiSettingsPage', [])
                         .component('maUiSettingsPage', uiSettingsPage.default);
@@ -521,7 +549,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.settings.users" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/usersPage/usersPage').then(usersPage => {
                     angular.module('maUiUsersState', [])
                         .component('maUiUsersPage', usersPage.default);
@@ -542,7 +570,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/systemSettingsPage/systemSettingsPage').then(systemSettingsPage => {
                     angular.module('maUiSystemSettingsState', [])
                         .component('maUiSystemSettingsPage', systemSettingsPage.default);
@@ -555,7 +583,8 @@ export default [
         name: 'ui.settings.system.systemInformation',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.systemInformation" */ './systemSettings/systemInformation.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/systemInformation.html');
             }
         },
         url: '/information',
@@ -566,7 +595,8 @@ export default [
         name: 'ui.settings.system.siteAnalytics',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.siteAnalytics" */ './systemSettings/analytics.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/analytics.html');
             }
         },
         url: '/site-analytics',
@@ -577,7 +607,8 @@ export default [
         name: 'ui.settings.system.language',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.language" */ './systemSettings/language.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/language.html');
             }
         },
         url: '/language',
@@ -588,7 +619,8 @@ export default [
         name: 'ui.settings.system.systemAlarmLevels',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.systemAlarmLevels" */ './systemSettings/systemAlarmLevels.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/systemAlarmLevels.html');
             }
         },
         url: '/system-alarm-levels',
@@ -599,7 +631,8 @@ export default [
         name: 'ui.settings.system.auditAlarmLevels',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.auditAlarmLevels" */ './systemSettings/auditAlarmLevels.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/auditAlarmLevels.html');
             }
         },
         url: '/audit-alarm-levels',
@@ -610,7 +643,8 @@ export default [
         name: 'ui.settings.system.email',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.email" */ './systemSettings/email.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/email.html');
             }
         },
         url: '/email',
@@ -621,7 +655,8 @@ export default [
         name: 'ui.settings.system.http',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.http" */ './systemSettings/httpSettings.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/httpSettings.html');
             }
         },
         url: '/http',
@@ -632,7 +667,8 @@ export default [
         name: 'ui.settings.system.threadPools',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.threadPools" */ './systemSettings/threadPools.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/threadPools.html');
             }
         },
         url: '/thread-pools',
@@ -643,7 +679,8 @@ export default [
         name: 'ui.settings.system.uiPerformance',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.uiPerformance" */ './systemSettings/uiPerformance.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/uiPerformance.html');
             }
         },
         url: '/ui-performance',
@@ -654,7 +691,8 @@ export default [
         name: 'ui.settings.system.purge',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.purge" */ './systemSettings/purgeSettings.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/purgeSettings.html');
             }
         },
         url: '/purge',
@@ -665,7 +703,8 @@ export default [
         name: 'ui.settings.system.ui',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.ui" */ './systemSettings/uiModule.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/uiModule.html');
             }
         },
         url: '/ui',
@@ -676,7 +715,8 @@ export default [
         name: 'ui.settings.system.color',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.color" */ './systemSettings/color.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/color.html');
             }
         },
         url: '/color',
@@ -687,7 +727,8 @@ export default [
         name: 'ui.settings.system.configBackup',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.configBackup" */ './systemSettings/configBackup.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/configBackup.html');
             }
         },
         url: '/config-backup',
@@ -698,7 +739,8 @@ export default [
         name: 'ui.settings.system.sqlBackup',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.sqlBackup" */ './systemSettings/sqlBackup.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/sqlBackup.html');
             }
         },
         url: '/sql-backup',
@@ -709,7 +751,8 @@ export default [
         name: 'ui.settings.system.chart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.chart" */ './systemSettings/chart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/chart.html');
             }
         },
         url: '/chart',
@@ -720,7 +763,8 @@ export default [
         name: 'ui.settings.system.permissions',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.permissions" */ './systemSettings/permissions.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/permissions.html');
             }
         },
         url: '/permissions',
@@ -731,7 +775,8 @@ export default [
         name: 'ui.settings.system.pointHierarchy',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.system.pointHierarchy" */ './systemSettings/pointHierarchySettings.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/pointHierarchySettings.html');
             }
         },
         url: '/point-hierarchy',
@@ -750,7 +795,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/systemStatusPage/systemStatusPage').then(systemStatusPage => {
                     angular.module('maUiSystemStatusState', [])
                         .component('maUiSystemStatusPage', systemStatusPage.default);
@@ -763,7 +808,8 @@ export default [
         name: 'ui.settings.systemStatus.auditTrail',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.auditTrail" */ './systemStatus/auditTrail.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemStatus/auditTrail.html');
             }
         },
         url: '/audit-trail',
@@ -779,7 +825,8 @@ export default [
         name: 'ui.settings.systemStatus.loggingConsole',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.loggingConsole" */ './systemStatus/loggingConsole.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemStatus/loggingConsole.html');
             }
         },
         url: '/logging-console',
@@ -790,7 +837,8 @@ export default [
         name: 'ui.settings.systemStatus.internalMetrics',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.internalMetrics" */ './systemStatus/internalMetrics.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemStatus/internalMetrics.html');
             }
         },
         url: '/internal-metrics',
@@ -801,7 +849,8 @@ export default [
         name: 'ui.settings.systemStatus.workItems',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.workItems" */ './systemStatus/workItems.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemStatus/workItems.html');
             }
         },
         url: '/work-items',
@@ -812,7 +861,8 @@ export default [
         name: 'ui.settings.systemStatus.threads',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.threads" */ './systemStatus/threads.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemStatus/threads.html');
             }
         },
         url: '/threads',
@@ -823,7 +873,8 @@ export default [
         name: 'ui.settings.systemStatus.serverInfo',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.serverInfo" */ './systemStatus/serverInfo.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemStatus/serverInfo.html');
             }
         },
         url: '/server-info',
@@ -842,10 +893,10 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                const p1 = import(/* webpackChunkName: "uiStates/ui.settings.watchListBuilder" */
+                const p1 = import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/watchListBuilder/watchListBuilder');
 
-                const p2 = import(/* webpackChunkName: "uiStates/ui.settings.watchListBuilder" */
+                const p2 = import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './directives/bracketEscape/bracketEscape');
                 
                 return Promise.all([p1, p2]).then(([watchListBuilder, bracketEscape]) => {
@@ -869,7 +920,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.settings.importExport" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/importExportPage/importExportPage').then(importExportPage => {
                     angular.module('maUiImportExportState', [])
                         .component('maUiImportExportPage', importExportPage.default);
@@ -890,7 +941,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.settings.modules" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/modulesPage/modulesPage').then(modulesPage => {
                     angular.module('maUiModulesState', [])
                         .directive('maUiModulesPage', modulesPage.default);
@@ -913,7 +964,7 @@ export default [
         menuHidden: true,
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.settings.modules.upgrade" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/upgradePage/upgradePage').then(upgradePage => {
                     angular.module('maUiUpgradeState', [])
                         .component('maUiUpgradePage', upgradePage.default);
@@ -971,7 +1022,7 @@ export default [
         permission: 'superadmin',
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "uiStates/ui.settings.bulkDataPointEdit" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/bulkDataPointEditPage/bulkDataPointEditPage').then(bulkDataPointEditPage => {
                     angular.module('maUiBulkDataPointEditState', [])
                         .component('maUiBulkDataPointEditPage', bulkDataPointEditPage.default);
@@ -989,7 +1040,7 @@ export default [
 //        permission: 'superadmin',
 //        resolve: {
 //            loadMyDirectives: ['$injector', function($injector) {
-//                return import(/* webpackChunkName: "uiStates/ui.settings.eventHandlers" */
+//                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
 //                        './components/eventHandlerPage/eventHandlerPage').then(eventHandlerPage => {
 //                    angular.module('eventHandlerPage', [])
 //                        .component('maUiEventHandlerPage', eventHandlerPage.default);
@@ -1013,7 +1064,8 @@ export default [
         name: 'ui.examples.playArea',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.playArea" */ './views/examples/playArea.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/playArea.html');
             }
         },
         menuTr: 'ui.dox.playArea',
@@ -1027,7 +1079,8 @@ export default [
         name: 'ui.examples.playAreaBig',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.playAreaBig" */ './views/examples/playAreaBig.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/playAreaBig.html');
             }
         },
         url: '/play-area-big',
@@ -1047,7 +1100,8 @@ export default [
         name: 'ui.examples.basics.angular',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.angular" */ './views/examples/angular.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/angular.html');
             }
         },
         url: '/angular',
@@ -1057,7 +1111,8 @@ export default [
         name: 'ui.examples.basics.pointList',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.pointList" */ './views/examples/pointList.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/pointList.html');
             }
         },
         url: '/point-list',
@@ -1067,7 +1122,8 @@ export default [
         name: 'ui.examples.basics.getPointByXid',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.getPointByXid" */ './views/examples/getPointByXid.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/getPointByXid.html');
             }
         },
         url: '/get-point-by-xid',
@@ -1077,7 +1133,7 @@ export default [
         name: 'ui.examples.basics.dataSourceAndDeviceList',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.dataSourceAndDeviceList" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
                         './views/examples/dataSourceAndDeviceList.html');
             }
         },
@@ -1088,7 +1144,8 @@ export default [
         name: 'ui.examples.basics.liveValues',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.liveValues" */ './views/examples/liveValues.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/liveValues.html');
             }
         },
         url: '/live-values',
@@ -1098,7 +1155,8 @@ export default [
         name: 'ui.examples.basics.filters',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.filters" */ './views/examples/filters.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/filters.html');
             }
         },
         url: '/filters',
@@ -1108,7 +1166,8 @@ export default [
         name: 'ui.examples.basics.datePresets',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.datePresets" */ './views/examples/datePresets.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/datePresets.html');
             }
         },
         url: '/date-presets',
@@ -1118,7 +1177,8 @@ export default [
         name: 'ui.examples.basics.styleViaValue',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.styleViaValue" */ './views/examples/styleViaValue.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/styleViaValue.html');
             }
         },
         url: '/style-via-value',
@@ -1128,7 +1188,8 @@ export default [
         name: 'ui.examples.basics.pointValues',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.pointValues" */ './views/examples/pointValues.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/pointValues.html');
             }
         },
         url: '/point-values',
@@ -1138,7 +1199,8 @@ export default [
         name: 'ui.examples.basics.latestPointValues',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.latestPointValues" */ './views/examples/latestPointValues.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/latestPointValues.html');
             }
         },
         url: '/latest-point-values',
@@ -1148,7 +1210,8 @@ export default [
         name: 'ui.examples.basics.clocksAndTimezones',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.basics.clocksAndTimezones" */ './views/examples/clocksAndTimezones.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/clocksAndTimezones.html');
             }
         },
         url: '/clocks-and-timezones',
@@ -1165,7 +1228,8 @@ export default [
         name: 'ui.examples.singleValueDisplays.gauges',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.singleValueDisplays.gauges" */ './views/examples/gauges.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/gauges.html');
             }
         },
         url: '/gauges',
@@ -1175,7 +1239,8 @@ export default [
         name: 'ui.examples.singleValueDisplays.switchImage',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.singleValueDisplays.switchImage" */ './views/examples/switchImage.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/switchImage.html');
             }
         },
         url: '/switch-image',
@@ -1185,7 +1250,8 @@ export default [
         name: 'ui.examples.singleValueDisplays.bars',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.singleValueDisplays.bars" */ './views/examples/bars.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/bars.html');
             }
         },
         url: '/bars',
@@ -1195,7 +1261,8 @@ export default [
         name: 'ui.examples.singleValueDisplays.tanks',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.singleValueDisplays.tanks" */ './views/examples/tanks.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/tanks.html');
             }
         },
         url: '/tanks',
@@ -1212,7 +1279,8 @@ export default [
         name: 'ui.examples.charts.lineChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.charts.lineChart" */ './views/examples/lineChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/lineChart.html');
             }
         },
         url: '/line-chart',
@@ -1222,7 +1290,8 @@ export default [
         name: 'ui.examples.charts.barChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.charts.barChart" */ './views/examples/barChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/barChart.html');
             }
         },
         url: '/bar-chart',
@@ -1232,7 +1301,8 @@ export default [
         name: 'ui.examples.charts.advancedChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.charts.advancedChart" */ './views/examples/advancedChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/advancedChart.html');
             }
         },
         url: '/advanced-chart',
@@ -1242,7 +1312,8 @@ export default [
         name: 'ui.examples.charts.stateChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.charts.stateChart" */ './views/examples/stateChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/stateChart.html');
             }
         },
         url: '/state-chart',
@@ -1252,7 +1323,8 @@ export default [
         name: 'ui.examples.charts.liveUpdatingChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.charts.liveUpdatingChart" */ './views/examples/liveUpdatingChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/liveUpdatingChart.html');
             }
         },
         url: '/live-updating-chart',
@@ -1262,7 +1334,8 @@ export default [
         name: 'ui.examples.charts.pieChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.charts.pieChart" */ './views/examples/pieChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/pieChart.html');
             }
         },
         url: '/pie-chart',
@@ -1272,7 +1345,8 @@ export default [
         name: 'ui.examples.charts.dailyComparison',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.charts.dailyComparison" */ './views/examples/dailyComparisonChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/dailyComparisonChart.html');
             }
         },
         url: '/daily-comparison',
@@ -1289,7 +1363,8 @@ export default [
         name: 'ui.examples.settingPointValues.setPoint',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.settingPointValues.setPoint" */ './views/examples/setPoint.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/setPoint.html');
             }
         },
         url: '/set-point',
@@ -1299,7 +1374,8 @@ export default [
         name: 'ui.examples.settingPointValues.toggle',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.settingPointValues.toggle" */ './views/examples/toggle.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/toggle.html');
             }
         },
         url: '/toggle',
@@ -1309,7 +1385,8 @@ export default [
         name: 'ui.examples.settingPointValues.sliders',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.settingPointValues.sliders" */ './views/examples/sliders.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/sliders.html');
             }
         },
         url: '/sliders',
@@ -1319,7 +1396,8 @@ export default [
         name: 'ui.examples.settingPointValues.multistateRadio',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.settingPointValues.multistateRadio" */ './views/examples/multistateRadio.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/multistateRadio.html');
             }
         },
         url: '/multistate-radio-buttons',
@@ -1335,7 +1413,8 @@ export default [
         name: 'ui.examples.statistics.getStatistics',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.statistics.getStatistics" */ './views/examples/getStatistics.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/getStatistics.html');
             }
         },
         url: '/get-statistics',
@@ -1345,7 +1424,8 @@ export default [
         name: 'ui.examples.statistics.statisticsTable',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.statistics.statisticsTable" */ './views/examples/statisticsTable.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/statisticsTable.html');
             }
         },
         url: '/statistics-table',
@@ -1355,7 +1435,8 @@ export default [
         name: 'ui.examples.statistics.statePieChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.statistics.statePieChart" */ './views/examples/statePieChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/statePieChart.html');
             }
         },
         url: '/state-pie-chart',
@@ -1371,7 +1452,8 @@ export default [
         name: 'ui.examples.pointArrays.buildPointArray',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.buildPointArray" */ './views/examples/buildPointArray.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/buildPointArray.html');
             }
         },
         url: '/build-point-array',
@@ -1381,7 +1463,8 @@ export default [
         name: 'ui.examples.pointArrays.pointArrayTable',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.pointArrayTable" */ './views/examples/pointArrayTable.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/pointArrayTable.html');
             }
         },
         url: '/point-array-table',
@@ -1391,7 +1474,8 @@ export default [
         name: 'ui.examples.pointArrays.pointArrayLineChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.pointArrayLineChart" */ './views/examples/pointArrayLineChart.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/pointArrayLineChart.html');
             }
         },
         url: '/point-array-line-chart',
@@ -1401,7 +1485,8 @@ export default [
         name: 'ui.examples.pointArrays.templating',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.templating" */ './views/examples/templating.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/templating.html');
             }
         },
         url: '/templating',
@@ -1411,7 +1496,8 @@ export default [
         name: 'ui.examples.pointArrays.dataPointTable',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.dataPointTable" */ './views/examples/dataPointTable.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/dataPointTable.html');
             }
         },
         url: '/data-point-table',
@@ -1427,7 +1513,8 @@ export default [
         name: 'ui.examples.pointHierarchy.displayTree',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.pointHierarchy.displayTree" */ './views/examples/displayTree.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/displayTree.html');
             }
         },
         url: '/display-tree',
@@ -1437,7 +1524,7 @@ export default [
         name: 'ui.examples.pointHierarchy.pointHierarchyLineChart',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.pointHierarchy.pointHierarchyLineChart" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
                         './views/examples/pointHierarchyLineChart.html');
             }
         },
@@ -1454,7 +1541,8 @@ export default [
         name: 'ui.examples.templates.angularMaterial',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.templates.angularMaterial" */ './views/examples/angularMaterial.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/angularMaterial.html');
             }
         },
         url: '/angular-material',
@@ -1464,7 +1552,8 @@ export default [
         name: 'ui.examples.templates.bootstrap',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.templates.bootstrap" */ './views/examples/bootstrap.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/bootstrap.html');
             }
         },
         url: '/bootstrap',
@@ -1474,7 +1563,8 @@ export default [
         name: 'ui.examples.templates.autoLogin',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.templates.autoLogin" */ './views/examples/autoLogin.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/autoLogin.html');
             }
         },
         url: '/auto-login',
@@ -1484,7 +1574,8 @@ export default [
         name: 'ui.examples.templates.extendApp',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.templates.extendApp" */ './views/examples/extendApp.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/extendApp.html');
             }
         },
         url: '/extend-app',
@@ -1494,7 +1585,8 @@ export default [
         name: 'ui.examples.templates.loginPage',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.templates.loginPage" */ './views/examples/loginPageTemplate.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/loginPageTemplate.html');
             }
         },
         url: '/login-page',
@@ -1504,7 +1596,8 @@ export default [
         name: 'ui.examples.templates.adminTemplate',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.templates.adminTemplate" */ './views/examples/adminTemplate.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/adminTemplate.html');
             }
         },
         url: '/admin-template',
@@ -1514,7 +1607,8 @@ export default [
         name: 'ui.examples.templates.adaptiveLayouts',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.templates.adaptiveLayouts" */ './views/examples/adaptiveLayouts.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/adaptiveLayouts.html');
             }
         },
         url: '/adaptive-layouts',
@@ -1530,7 +1624,8 @@ export default [
         name: 'ui.examples.utilities.translation',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.translation" */ './views/examples/translation.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/translation.html');
             }
         },
         url: '/translation',
@@ -1540,7 +1635,8 @@ export default [
         name: 'ui.examples.utilities.jsonStore',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.jsonStore" */ './views/examples/jsonStore.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/jsonStore.html');
             }
         },
         url: '/json-store',
@@ -1550,7 +1646,8 @@ export default [
         name: 'ui.examples.utilities.watchdog',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.watchdog" */ './views/examples/watchdog.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/watchdog.html');
             }
         },
         url: '/watchdog',
@@ -1560,7 +1657,8 @@ export default [
         name: 'ui.examples.utilities.eventsTable',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.eventsTable" */ './views/examples/eventsTable.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/eventsTable.html');
             }
         },
         url: '/events-table',
@@ -1570,7 +1668,8 @@ export default [
         name: 'ui.examples.utilities.googleMaps',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.googleMaps" */ './views/examples/googleMaps.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/googleMaps.html');
             }
         },
         url: '/google-maps',
@@ -1586,7 +1685,8 @@ export default [
         name: 'ui.examples.svg.basicUsage',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.svg.basicUsage" */ './views/examples/svgBasic.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/svgBasic.html');
             }
         },
         url: '/basic-usage',
@@ -1596,7 +1696,8 @@ export default [
         name: 'ui.examples.svg.interactiveSvg',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackChunkName: "uiStates/ui.examples.svg.interactiveSvg" */ './views/examples/svgAdvanced.html');
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/svgAdvanced.html');
             }
         },
         url: '/interactive-svg',

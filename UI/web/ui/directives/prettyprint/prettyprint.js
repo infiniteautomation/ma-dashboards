@@ -2,8 +2,8 @@
  * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
-import ace from 'ace';
 
+import ace from 'ace';
 
 var prettyprint = function(uiSettings) {
     return {
@@ -32,5 +32,3 @@ var prettyprint = function(uiSettings) {
 prettyprint.$inject = ['maUiSettings'];
 
 export default prettyprint;
-
-

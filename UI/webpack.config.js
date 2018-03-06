@@ -33,11 +33,21 @@ module.exports = {
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/,
-                use: ['file-loader']
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: 'images/[name].[ext]?v=[hash]'
+                    }
+                }]
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: ['file-loader']
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: 'fonts/[name].[ext]?v=[hash]'
+                    }
+                }]
             },
             {
                 test: /amcharts.*\.js/,
@@ -72,6 +82,7 @@ module.exports = {
     resolve: {
         alias: {
             amcharts: path.join(__dirname, 'vendor/amcharts'),
+            ace: 'ace-builds',
             localeList: path.join(__dirname, 'vendor/localeList.json')
         }
     },
@@ -84,7 +95,7 @@ module.exports = {
         new CleanWebpackPlugin(['web/dist'])
     ],
     output: {
-        filename: '[name].js',
+        filename: '[name].js?v=[chunkhash]',
         path: path.resolve(__dirname, 'web', 'dist'),
         publicPath: '/modules/mangoUI/web/dist/'
     }

@@ -294,13 +294,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         // use cached locale when available
                         newLocalePromise = $q.when(localeCache[localeId]);
                     } else {
-                        const url = `https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/${angular.version.full}/angular-locale_${localeId}.js`;
-                        
                         let localDeferred = $q.defer();
                         angularLocaleDeferred = localDeferred;
                         
                         // load the locale using require and resolve the deferred
-                        requirejs([url], () => {
+                        requirejs([`https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/${angular.version.full}/angular-locale_${localeId}.js`], () => {
                             // get the newly loaded locale from a new injector for ngLocale
                             var ngLocaleInjector = angular.injector(['ngLocale'], true);
                             const newLocale = ngLocaleInjector.get('$locale');

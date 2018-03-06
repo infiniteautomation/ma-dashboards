@@ -209,13 +209,14 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
         submenu: true,
         weight: 2002,
         resolve: {
-            prettyprint: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./directives/prettyprint/prettyprint'], function(prettyprint) {
-                    angular.module('maUiDocsState', [])
-                        .directive('prettyprint', prettyprint); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
-                    $injector.loadNewModules(['maUiDocsState']);
-                });
-            }]
+//            prettyprint: ['$injector', function($injector) {
+//                return import(/* webpackMode: "lazy-once", webpackChunkName: "ui.docs" */
+//                        './directives/prettyprint/prettyprint').then(prettyprint => {
+//                    angular.module('maUiDocsState', [])
+//                        .directive('prettyprint', prettyprint.default); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
+//                    $injector.loadNewModules(['maUiDocsState']);
+//                });
+//            }]
         },
         params: {
             sidebar: null
@@ -280,16 +281,17 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
 
             var templateUrl = moduleName + '.' + serviceName;
             if (directiveName) templateUrl += '.' + directiveName;
-            
-//            import('file-loader!./views/docs/' + templateUrl + '.html').then(url => {
-//                console.log(url);
-//            });
-            
+
             var menuItem = {
                 name: 'ui.docs.' + moduleName + '.' + name,
-                templateUrl: './views/docs/' + templateUrl + '.html',
                 url: '/' + dashCaseUrl,
-                menuText: name
+                menuText: name,
+                resolve: {
+                    viewTemplate: function() {
+                        return import(/* webpackMode: "lazy-once", webpackChunkName: "ui.docs" */
+                                './views/docs/' + templateUrl + '.html');
+                    }
+                }
             };
             apiDocsMenuItems.push(menuItem);
         }
@@ -679,7 +681,7 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     		userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
         // assign to variable to stop other warnings
         // jshint unused:false
-        const safariCss = import(/* webpackChunkName: "safari" */ './styles/safari.css');
+        const safariCss = import(/* webpackChunkName: "ui.safari" */ './styles/safari.css');
     }
     
     return MA_UI_SETTINGS;
@@ -713,8 +715,7 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
         if (MA_UI_SETTINGS.userModule) {
             urls.push(MA_UI_SETTINGS.userModule);
         }
-        
-        // import(/* webpackChunkName: "i18n" */ '');
+
 //        var modulePromises = urls.map(function(url) {
 //            var deferred = $q.defer();
 //            requirejs([url], function(module) {
@@ -727,7 +728,7 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
 //        });
 //
 //        return $q.all(modulePromises);
-          return $q.all([]);
+        return $q.all([]);
     }, function() {
         console.log('Error loading AngularJS modules from Mango modules', arguments);
     });
