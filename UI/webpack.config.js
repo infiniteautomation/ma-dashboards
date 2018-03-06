@@ -62,6 +62,14 @@ module.exports = {
             {
                 test: /require\.js/,
                 use: ['exports-loader?require']
+            },
+//            {
+//                test: /jquery\.js/,
+//                use: ['expose-loader?jQuery!jquery', 'imports-loader?this=>window']
+//            },
+            {
+                test: /angular\.js/,
+                use: ['imports-loader?jQuery=jquery']
             }
         ]
     },

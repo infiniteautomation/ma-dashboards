@@ -5,8 +5,7 @@
 
 import angular from 'angular';
 import bulkDataPointEditPageTemplate from './bulkDataPointEditPage.html';
-import tinycolor from 'tinycolor';
-
+import tinycolor from 'tinycolor2';
 
 const selectedProperty = typeof Symbol === 'function' ? Symbol('selected') : '___selected___';
 const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error___';

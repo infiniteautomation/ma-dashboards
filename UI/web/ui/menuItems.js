@@ -5,7 +5,6 @@
 
 import angular from 'angular';
 import loadLoginTranslations from './util/loadLoginTranslations';
-import requirejs from 'requirejs/require';
 
 export default [
     {
@@ -31,15 +30,18 @@ export default [
     {
         name: 'resetPassword',
         url: '/reset-password?resetToken',
-        templateUrl: requirejs.toUrl('./views/resetPassword.html'),
         menuHidden: true,
         menuIcon: 'code',
         menuTr: 'header.resetPassword',
         resolve: {
-            deps: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/resetPassword/resetPassword'], function(resetPassword) {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/resetPassword" */ './views/resetPassword.html');
+            },
+            deps: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/resetPassword" */
+                        './components/resetPassword/resetPassword').then(resetPassword => {
                     angular.module('maUiResetPasswordState', [])
-                        .component('maUiResetPassword', resetPassword);
+                        .component('maUiResetPassword', resetPassword.default);
                     $injector.loadNewModules(['maUiResetPasswordState']);
                 });
             }],
@@ -49,15 +51,18 @@ export default [
     {
         name: 'forgotPassword',
         url: '/forgot-password?username',
-        templateUrl: requirejs.toUrl('./views/forgotPassword.html'),
         menuHidden: true,
         menuIcon: 'live_help',
         menuTr: 'header.forgotPassword',
         resolve: {
-            deps: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/forgotPassword/forgotPassword'], function(forgotPassword) {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/forgotPassword" */ './views/forgotPassword.html');
+            },
+            deps: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/forgotPassword" */
+                        './components/forgotPassword/forgotPassword').then(forgotPassword => {
                     angular.module('maUiForgotPasswordState', [])
-                        .component('maUiForgotPassword', forgotPassword);
+                        .component('maUiForgotPassword', forgotPassword.default);
                     $injector.loadNewModules(['maUiForgotPasswordState']);
                 });
             }],
@@ -75,18 +80,24 @@ export default [
     {
         name: 'agreeToLicense',
         url: '/agree-to-license',
-        templateUrl: requirejs.toUrl('./views/agreeToLicense.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/agreeToLicense" */ './views/agreeToLicense.html');
+            }
+        },
         menuTr: 'ui.app.agreeToLicense',
         menuIcon: 'done',
         menuHidden: true
     },
     {
         name: 'ui',
-        templateUrl: requirejs.toUrl('./views/main.html'),
         'abstract': true,
         menuHidden: true,
         menuTr: 'ui.app.ui',
         resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/main" */ './views/main.html');
+            },
             auth: ['maTranslate', 'maUser', function(Translate, User) {
                 if (!User.current) {
                     throw 'No user';
@@ -94,41 +105,8 @@ export default [
                 return Translate.loadNamespaces(['ui', 'common', 'pointEdit', 'rest']);
             }],
             loginTranslations: loadLoginTranslations,
-            errorTemplate: ['$templateRequest', function($templateRequest) {
-                // preloads the error page so if the server goes down we can still display the page
-                return $templateRequest('views/error.html');
-            }],
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./services/menuEditor',
-                           './components/menu/jsonStoreMenu',
-                           './components/menu/menu',
-                           './components/menu/menuLink',
-                           './components/menu/menuToggle',
-                           './directives/menuEditor/menuEditor',
-                           './directives/pageEditor/pageEditor',
-                           './directives/pageEditor/pageEditorControls',
-                           './directives/liveEditor/dualPaneEditor',
-                           './components/autoLoginSettings/autoLoginSettings',
-                           './components/activeEventIcons/activeEventIcons',
-                           './components/dateBar/dateBar',
-                           './components/footer/footer',
-                           'angular-ui-ace'
-                ], function(menuEditorFactory, jsonStoreMenu, menu, menuLink, menuToggle,
-                        menuEditor, pageEditor, pageEditorControls, dualPaneEditor, autoLoginSettings, activeEventIcons, dateBar, footer) {
-                    angular.module('maUiRootState', ['ui.ace'])
-                        .factory('maUiMenuEditor', menuEditorFactory)
-                        .directive('maUiMenuEditor', menuEditor)
-                        .directive('maUiPageEditor', pageEditor)
-                        .directive('maUiPageEditorControls', pageEditorControls)
-                        .directive('maUiDualPaneEditor', dualPaneEditor)
-                        .component('maUiJsonStoreMenu', jsonStoreMenu)
-                        .component('maUiMenu', menu)
-                        .component('maUiMenuLink', menuLink)
-                        .component('maUiMenuToggle', menuToggle)
-                        .component('maUiAutoLoginSettings', autoLoginSettings)
-                        .component('maUiActiveEventIcons', activeEventIcons)
-                        .component('maUiDateBar', dateBar)
-                        .component('maUiFooter', footer);
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/main" */ './mainModule').then(() => {
                     $injector.loadNewModules(['maUiRootState']);
                 });
             }],
@@ -145,32 +123,48 @@ export default [
     },
     {
         name: 'ui.notFound',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.notFound" */ './views/notFound.html');
+            }
+        },
         url: '/not-found?path',
-        templateUrl: requirejs.toUrl('./views/notFound.html'),
         menuHidden: true,
         menuTr: 'ui.app.pageNotFound',
         weight: 3000
     },
     {
         name: 'ui.unauthorized',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.unauthorized" */ './views/unauthorized.html');
+            }
+        },
         url: '/unauthorized?path',
-        templateUrl: requirejs.toUrl('./views/unauthorized.html'),
         menuHidden: true,
         menuTr: 'ui.app.unauthorized',
         weight: 3000
     },
     {
         name: 'ui.error',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.error" */ './views/error.html');
+            }
+        },
         url: '/error',
-        templateUrl: requirejs.toUrl('./views/error.html'),
         menuHidden: true,
         menuTr: 'ui.app.error',
         weight: 3000
     },
     {
         name: 'ui.serverError',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.serverError" */ './views/serverError.html');
+            }
+        },
         url: '/server-error',
-        templateUrl: requirejs.toUrl('./views/serverError.html'),
         menuHidden: true,
         menuTr: 'ui.app.serverError',
         weight: 3000
@@ -188,12 +182,12 @@ export default [
             helpPage: 'ui.help.watchList'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', 'maCssInjector', function(maRequireQ, $injector, cssInjector) {
-                return maRequireQ(['./directives/watchList/watchListPage'], function (watchListPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.watchList" */
+                        './directives/watchList/watchListPage').then(watchListPage => {
                     angular.module('maUiWatchListState', [])
-                        .directive('maUiWatchListPage', watchListPage);
+                        .directive('maUiWatchListPage', watchListPage.default);
                     $injector.loadNewModules(['maUiWatchListState']);
-                    cssInjector.injectLink(requirejs.toUrl('./directives/watchList/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });
             }]
         }
@@ -211,10 +205,11 @@ export default [
             helpPage: 'ui.help.dataPointDetails'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.dataPointDetails" */
+                        './components/dataPointDetails/dataPointDetails').then(dataPointDetails => {
                     angular.module('maUiDataPointDetailsState', [])
-                        .component('maUiDataPointDetails', dataPointDetails);
+                        .component('maUiDataPointDetails', dataPointDetails.default);
                     $injector.loadNewModules(['maUiDataPointDetailsState']);
                 });
             }]
@@ -233,10 +228,11 @@ export default [
             helpPage: 'ui.help.events'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.events" */
+                        './components/eventsPage/eventsPage').then(eventsPage => {
                     angular.module('maUiEventsState', [])
-                        .component('maUiEventsPage', eventsPage);
+                        .component('maUiEventsPage', eventsPage.default);
                     $injector.loadNewModules(['maUiEventsState']);
                 });
             }]
@@ -256,81 +252,133 @@ export default [
     {
         url: '/getting-started',
         name: 'ui.help.gettingStarted',
-        templateUrl: requirejs.toUrl('./views/help/gettingStarted.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.gettingStarted" */ './views/help/gettingStarted.html');
+            }
+        },
         menuTr: 'ui.dox.gettingStarted',
         weight: 900
     },
     {
         name: 'ui.help.legacy',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.legacy" */ './views/help/legacy.html');
+            }
+        },
         url: '/legacy',
-        templateUrl: requirejs.toUrl('./views/help/legacy.html'),
         menuHidden: true,
         menuTr: 'ui.dox.legacyHelp'
     },
     {
         url: '/watch-list',
         name: 'ui.help.watchList',
-        templateUrl: requirejs.toUrl('./views/help/watchList.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.watchList" */ './views/help/watchList.html');
+            }
+        },
         menuTr: 'ui.dox.watchList'
     },
     {
         url: '/data-point-details',
         name: 'ui.help.dataPointDetails',
-        templateUrl: requirejs.toUrl('./views/help/dataPointDetails.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.dataPointDetails" */ './views/help/dataPointDetails.html');
+            }
+        },
         menuTr: 'ui.dox.dataPointDetails'
     },
     {
         url: '/events',
         name: 'ui.help.events',
-        templateUrl: requirejs.toUrl('./views/help/events.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.events" */ './views/help/events.html');
+            }
+        },
         menuTr: 'ui.dox.events'
     },
     {
         url: '/date-bar',
         name: 'ui.help.dateBar',
-        templateUrl: requirejs.toUrl('./views/help/dateBar.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.dateBar" */ './views/help/dateBar.html');
+            }
+        },
         menuTr: 'ui.dox.dateBar'
     },
     {
         url: '/ui-settings',
         name: 'ui.help.uiSettings',
-        templateUrl: requirejs.toUrl('./views/help/uiSettings.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.uiSettings" */ './views/help/uiSettings.html');
+            }
+        },
         menuTr: 'ui.app.uiSettings'
     },
     {
         url: '/watch-list-builder',
         name: 'ui.help.watchListBuilder',
-        templateUrl: requirejs.toUrl('./views/help/watchListBuilder.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.watchListBuilder" */ './views/help/watchListBuilder.html');
+            }
+        },
         menuTr: 'ui.app.watchListBuilder'
     },
     {
         url: '/custom-pages',
         name: 'ui.help.customPages',
-        templateUrl: requirejs.toUrl('./views/help/customPages.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.customPages" */ './views/help/customPages.html');
+            }
+        },
         menuTr: 'ui.dox.customPages'
     },
     {
         url: '/menu-editor',
         name: 'ui.help.menuEditor',
-        templateUrl: requirejs.toUrl('./views/help/menuEditor.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.menuEditor" */ './views/help/menuEditor.html');
+            }
+        },
         menuTr: 'ui.dox.menuEditor'
     },
     {
         url: '/users',
         name: 'ui.help.users',
-        templateUrl: requirejs.toUrl('./views/help/users.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.users" */ './views/help/users.html');
+            }
+        },
         menuTr: 'header.users'
     },
     {
         url: '/custom-dashboards',
         name: 'ui.help.customDashboards',
-        templateUrl: requirejs.toUrl('./views/help/customDashboards.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.customDashboards" */ './views/help/customDashboards.html');
+            }
+        },
         menuTr: 'ui.dox.customDashboards'
     },
     {
         url: '/system-status',
         name: 'ui.help.systemStatus',
-        templateUrl: requirejs.toUrl('./views/help/systemStatus.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.help.systemStatus" */ './views/help/systemStatus.html');
+            }
+        },
         menuTr: 'ui.settings.systemStatus'
     },
     {
@@ -360,8 +408,12 @@ export default [
     },
     {
         name: 'ui.settings.home',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.home" */ './views/home.html');
+            }
+        },
         url: '/home',
-        templateUrl: requirejs.toUrl('./views/home.html'),
         menuTr: 'ui.dox.home',
         menuIcon: 'home',
         params: {
@@ -392,7 +444,11 @@ export default [
     {
         url: '/edit-pages/{pageXid}',
         name: 'ui.settings.editPages',
-        templateUrl: requirejs.toUrl('./views/editPages.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.editPages" */ './views/editPages.html');
+            }
+        },
         menuTr: 'ui.app.editPages',
         menuIcon: 'dashboard',
         permission: 'edit-ui-pages',
@@ -408,7 +464,11 @@ export default [
     {
         url: '/edit-menu',
         name: 'ui.settings.editMenu',
-        templateUrl: requirejs.toUrl('./views/editMenu.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.editMenu" */ './views/editMenu.html');
+            }
+        },
         menuTr: 'ui.app.editMenu',
         menuIcon: 'toc',
         permission: 'edit-ui-menus',
@@ -419,7 +479,11 @@ export default [
     {
         url: '/auto-login-settings',
         name: 'ui.settings.autoLoginSettings',
-        templateUrl: requirejs.toUrl('./views/autoLoginSettings.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.autoLoginSettings" */ './views/autoLoginSettings.html');
+            }
+        },
         menuTr: 'ui.app.autoLoginSettings',
         menuIcon: 'face',
         permission: 'superadmin'
@@ -435,11 +499,11 @@ export default [
             helpPage: 'ui.help.uiSettings'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/uiSettingsPage/uiSettingsPage'],
-                function (uiSettingsPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.settings.uiSettings" */
+                        './components/uiSettingsPage/uiSettingsPage').then(uiSettingsPage => {
                     angular.module('maUiSettingsPage', [])
-                        .component('maUiSettingsPage', uiSettingsPage);
+                        .component('maUiSettingsPage', uiSettingsPage.default);
                     $injector.loadNewModules(['maUiSettingsPage']);
                 });
             }]
@@ -456,10 +520,11 @@ export default [
             helpPage: 'ui.help.users'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/usersPage/usersPage'], function (usersPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.settings.users" */
+                        './components/usersPage/usersPage').then(usersPage => {
                     angular.module('maUiUsersState', [])
-                        .component('maUiUsersPage', usersPage);
+                        .component('maUiUsersPage', usersPage.default);
                     $injector.loadNewModules(['maUiUsersState']);
                 });
             }]
@@ -476,10 +541,11 @@ export default [
             helpPage: 'ui.help.systemSettings'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/systemSettingsPage/systemSettingsPage'], function (systemSettingsPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system" */
+                        './components/systemSettingsPage/systemSettingsPage').then(systemSettingsPage => {
                     angular.module('maUiSystemSettingsState', [])
-                        .component('maUiSystemSettingsPage', systemSettingsPage);
+                        .component('maUiSystemSettingsPage', systemSettingsPage.default);
                     $injector.loadNewModules(['maUiSystemSettingsState']);
                 });
             }]
@@ -487,121 +553,189 @@ export default [
     },
     {
         name: 'ui.settings.system.systemInformation',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.systemInformation" */ './systemSettings/systemInformation.html');
+            }
+        },
         url: '/information',
         menuTr: 'systemSettings.systemInformation',
-        templateUrl: requirejs.toUrl('./systemSettings/systemInformation.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.siteAnalytics',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.siteAnalytics" */ './systemSettings/analytics.html');
+            }
+        },
         url: '/site-analytics',
         menuTr: 'systemSettings.siteAnalytics',
-        templateUrl: requirejs.toUrl('./systemSettings/analytics.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.language',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.language" */ './systemSettings/language.html');
+            }
+        },
         url: '/language',
         menuTr: 'systemSettings.languageSettings',
-        templateUrl: requirejs.toUrl('./systemSettings/language.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.systemAlarmLevels',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.systemAlarmLevels" */ './systemSettings/systemAlarmLevels.html');
+            }
+        },
         url: '/system-alarm-levels',
         menuTr: 'systemSettings.systemAlarmLevels',
-        templateUrl: requirejs.toUrl('./systemSettings/systemAlarmLevels.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.auditAlarmLevels',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.auditAlarmLevels" */ './systemSettings/auditAlarmLevels.html');
+            }
+        },
         url: '/audit-alarm-levels',
         menuTr: 'systemSettings.auditAlarmLevels',
-        templateUrl: requirejs.toUrl('./systemSettings/auditAlarmLevels.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.email',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.email" */ './systemSettings/email.html');
+            }
+        },
         url: '/email',
         menuTr: 'systemSettings.emailSettings',
-        templateUrl: requirejs.toUrl('./systemSettings/email.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.http',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.http" */ './systemSettings/httpSettings.html');
+            }
+        },
         url: '/http',
         menuTr: 'systemSettings.httpSettings',
-        templateUrl: requirejs.toUrl('./systemSettings/httpSettings.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.threadPools',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.threadPools" */ './systemSettings/threadPools.html');
+            }
+        },
         url: '/thread-pools',
         menuTr: 'systemSettings.threadPools',
-        templateUrl: requirejs.toUrl('./systemSettings/threadPools.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.uiPerformance',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.uiPerformance" */ './systemSettings/uiPerformance.html');
+            }
+        },
         url: '/ui-performance',
         menuTr: 'systemSettings.uiPerformance',
-        templateUrl: requirejs.toUrl('./systemSettings/uiPerformance.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.purge',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.purge" */ './systemSettings/purgeSettings.html');
+            }
+        },
         url: '/purge',
         menuTr: 'systemSettings.purgeSettings',
-        templateUrl: requirejs.toUrl('./systemSettings/purgeSettings.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.ui',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.ui" */ './systemSettings/uiModule.html');
+            }
+        },
         url: '/ui',
         menuTr: 'ui.settings',
-        templateUrl: requirejs.toUrl('./systemSettings/uiModule.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.color',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.color" */ './systemSettings/color.html');
+            }
+        },
         url: '/color',
         menuTr: 'systemSettings.colourSettings',
-        templateUrl: requirejs.toUrl('./systemSettings/color.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.configBackup',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.configBackup" */ './systemSettings/configBackup.html');
+            }
+        },
         url: '/config-backup',
         menuTr: 'systemSettings.backupSettings',
-        templateUrl: requirejs.toUrl('./systemSettings/configBackup.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.sqlBackup',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.sqlBackup" */ './systemSettings/sqlBackup.html');
+            }
+        },
         url: '/sql-backup',
         menuTr: 'systemSettings.H2DatabaseBackupSettings',
-        templateUrl: requirejs.toUrl('./systemSettings/sqlBackup.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.chart',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.chart" */ './systemSettings/chart.html');
+            }
+        },
         url: '/chart',
         menuTr: 'systemSettings.chartSettings',
-        templateUrl: requirejs.toUrl('./systemSettings/chart.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.permissions',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.permissions" */ './systemSettings/permissions.html');
+            }
+        },
         url: '/permissions',
         menuTr: 'systemSettings.systemPermissions',
-        templateUrl: requirejs.toUrl('./systemSettings/permissions.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.system.pointHierarchy',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.system.pointHierarchy" */ './systemSettings/pointHierarchySettings.html');
+            }
+        },
         url: '/point-hierarchy',
         menuTr: 'systemSettings.pointHierarchySettings',
-        templateUrl: requirejs.toUrl('./systemSettings/pointHierarchySettings.html'),
         menuHidden: true
     },
     {
@@ -615,10 +749,11 @@ export default [
             helpPage: 'ui.help.systemStatus'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/systemStatusPage/systemStatusPage'], function (systemStatusPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus" */
+                        './components/systemStatusPage/systemStatusPage').then(systemStatusPage => {
                     angular.module('maUiSystemStatusState', [])
-                        .component('maUiSystemStatusPage', systemStatusPage);
+                        .component('maUiSystemStatusPage', systemStatusPage.default);
                     $injector.loadNewModules(['maUiSystemStatusState']);
                 });
             }]
@@ -626,9 +761,13 @@ export default [
     },
     {
         name: 'ui.settings.systemStatus.auditTrail',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.auditTrail" */ './systemStatus/auditTrail.html');
+            }
+        },
         url: '/audit-trail',
         menuTr: 'ui.settings.systemStatus.auditTrail',
-        templateUrl: requirejs.toUrl('./systemStatus/auditTrail.html'),
         menuHidden: true,
         params: {
             dateBar: {
@@ -638,37 +777,57 @@ export default [
     },
     {
         name: 'ui.settings.systemStatus.loggingConsole',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.loggingConsole" */ './systemStatus/loggingConsole.html');
+            }
+        },
         url: '/logging-console',
         menuTr: 'ui.settings.systemStatus.loggingConsole',
-        templateUrl: requirejs.toUrl('./systemStatus/loggingConsole.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.systemStatus.internalMetrics',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.internalMetrics" */ './systemStatus/internalMetrics.html');
+            }
+        },
         url: '/internal-metrics',
         menuTr: 'ui.settings.systemStatus.internalMetrics',
-        templateUrl: requirejs.toUrl('./systemStatus/internalMetrics.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.systemStatus.workItems',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.workItems" */ './systemStatus/workItems.html');
+            }
+        },
         url: '/work-items',
         menuTr: 'ui.settings.systemStatus.workItems',
-        templateUrl: requirejs.toUrl('./systemStatus/workItems.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.systemStatus.threads',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.threads" */ './systemStatus/threads.html');
+            }
+        },
         url: '/threads',
         menuTr: 'ui.settings.systemStatus.threads',
-        templateUrl: requirejs.toUrl('./systemStatus/threads.html'),
         menuHidden: true
     },
     {
         name: 'ui.settings.systemStatus.serverInfo',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.settings.systemStatus.serverInfo" */ './systemStatus/serverInfo.html');
+            }
+        },
         url: '/server-info',
         menuTr: 'ui.settings.systemStatus.serverInfo',
-        templateUrl: requirejs.toUrl('./systemStatus/serverInfo.html'),
         menuHidden: true
     },
     {
@@ -682,15 +841,18 @@ export default [
             helpPage: 'ui.help.watchListBuilder'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', 'maCssInjector', function(maRequireQ, $injector, cssInjector) {
-                return maRequireQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'],
-                        function (watchListBuilder, bracketEscape) {
+            loadMyDirectives: ['$injector', function($injector) {
+                const p1 = import(/* webpackChunkName: "uiStates/ui.settings.watchListBuilder" */
+                        './components/watchListBuilder/watchListBuilder');
+
+                const p2 = import(/* webpackChunkName: "uiStates/ui.settings.watchListBuilder" */
+                        './directives/bracketEscape/bracketEscape');
+                
+                return Promise.all([p1, p2]).then(([watchListBuilder, bracketEscape]) => {
                     angular.module('maUiWatchListBuilderState', [])
-                        .directive('maUiBracketEscape', bracketEscape)
-                        .component('maUiWatchListBuilder', watchListBuilder);
+                        .directive('maUiBracketEscape', bracketEscape.default)
+                        .component('maUiWatchListBuilder', watchListBuilder.default);
                     $injector.loadNewModules(['maUiWatchListBuilderState']);
-                    cssInjector.injectLink(requirejs.toUrl('./components/watchListBuilder/watchListBuilder.css'),
-                            'watchListBuilder' ,'link[href="styles/main.css"]');
                 });
             }]
         }
@@ -706,10 +868,11 @@ export default [
             helpPage: 'ui.help.importExport'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/importExportPage/importExportPage'], function (importExportPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.settings.importExport" */
+                        './components/importExportPage/importExportPage').then(importExportPage => {
                     angular.module('maUiImportExportState', [])
-                        .component('maUiImportExportPage', importExportPage);
+                        .component('maUiImportExportPage', importExportPage.default);
                     $injector.loadNewModules(['maUiImportExportState']);
                 });
             }]
@@ -726,10 +889,11 @@ export default [
             helpPage: 'ui.help.modules'
         },
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/modulesPage/modulesPage'], function (modulesPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.settings.modules" */
+                        './components/modulesPage/modulesPage').then(modulesPage => {
                     angular.module('maUiModulesState', [])
-                        .component('maUiModulesPage', modulesPage);
+                        .component('maUiModulesPage', modulesPage.default);
                     $injector.loadNewModules(['maUiModulesState']);
                 });
             }]
@@ -739,19 +903,20 @@ export default [
         name: 'ui.settings.modules.upgrade',
         url: '/upgrade',
         views: {
-        	'@ui.settings': {
+            '@ui.settings': {
                 template: '<ma-ui-upgrade-page flex layout="column"><ma-ui-upgrade-page>'
-        	}
+            }
         },
         menuTr: 'ui.app.moduleUpgrades',
         menuIcon: 'update',
         permission: 'superadmin',
         menuHidden: true,
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/upgradePage/upgradePage'], function (upgradePage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.settings.modules.upgrade" */
+                        './components/upgradePage/upgradePage').then(upgradePage => {
                     angular.module('maUiUpgradeState', [])
-                        .component('maUiUpgradePage', upgradePage);
+                        .component('maUiUpgradePage', upgradePage.default);
                     $injector.loadNewModules(['maUiUpgradeState']);
                 });
             }]
@@ -805,10 +970,11 @@ export default [
         menuIcon: 'fitness_center',
         permission: 'superadmin',
         resolve: {
-            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-                return maRequireQ(['./components/bulkDataPointEditPage/bulkDataPointEditPage'], function (bulkDataPointEditPage) {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "uiStates/ui.settings.bulkDataPointEdit" */
+                        './components/bulkDataPointEditPage/bulkDataPointEditPage').then(bulkDataPointEditPage => {
                     angular.module('maUiBulkDataPointEditState', [])
-                        .component('maUiBulkDataPointEditPage', bulkDataPointEditPage);
+                        .component('maUiBulkDataPointEditPage', bulkDataPointEditPage.default);
                     $injector.loadNewModules(['maUiBulkDataPointEditState']);
                 });
             }]
@@ -822,10 +988,11 @@ export default [
 //        menuIcon: 'link',
 //        permission: 'superadmin',
 //        resolve: {
-//            loadMyDirectives: ['maRequireQ', '$injector', function(maRequireQ, $injector) {
-//                return maRequireQ(['./components/eventHandlerPage/eventHandlerPage'], function (eventHandlerPage) {
+//            loadMyDirectives: ['$injector', function($injector) {
+//                return import(/* webpackChunkName: "uiStates/ui.settings.eventHandlers" */
+//                        './components/eventHandlerPage/eventHandlerPage').then(eventHandlerPage => {
 //                    angular.module('eventHandlerPage', [])
-//                        .component('maUiEventHandlerPage', eventHandlerPage);
+//                        .component('maUiEventHandlerPage', eventHandlerPage.default);
 //                    $injector.loadNewModules(['eventHandlerPage']);
 //                });
 //            }]
@@ -844,7 +1011,11 @@ export default [
     {
         url: '/play-area',
         name: 'ui.examples.playArea',
-        templateUrl: requirejs.toUrl('./views/examples/playArea.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.playArea" */ './views/examples/playArea.html');
+            }
+        },
         menuTr: 'ui.dox.playArea',
         menuIcon: 'fa-magic',
         params: {
@@ -854,7 +1025,11 @@ export default [
     },
     {
         name: 'ui.examples.playAreaBig',
-        templateUrl: requirejs.toUrl('./views/examples/playAreaBig.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.playAreaBig" */ './views/examples/playAreaBig.html');
+            }
+        },
         url: '/play-area-big',
         menuTr: 'ui.dox.playAreaBig',
         menuHidden: true,
@@ -870,67 +1045,112 @@ export default [
     },
     {
         name: 'ui.examples.basics.angular',
-        templateUrl: requirejs.toUrl('./views/examples/angular.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.angular" */ './views/examples/angular.html');
+            }
+        },
         url: '/angular',
         menuTr: 'ui.dox.angular'
     },
     {
         name: 'ui.examples.basics.pointList',
-        templateUrl: requirejs.toUrl('./views/examples/pointList.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.pointList" */ './views/examples/pointList.html');
+            }
+        },
         url: '/point-list',
         menuTr: 'ui.dox.pointList'
     },
     {
         name: 'ui.examples.basics.getPointByXid',
-        templateUrl: requirejs.toUrl('./views/examples/getPointByXid.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.getPointByXid" */ './views/examples/getPointByXid.html');
+            }
+        },
         url: '/get-point-by-xid',
         menuTr: 'ui.dox.getPointByXid'
     },
     {
         name: 'ui.examples.basics.dataSourceAndDeviceList',
-        templateUrl: requirejs.toUrl('./views/examples/dataSourceAndDeviceList.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.dataSourceAndDeviceList" */
+                        './views/examples/dataSourceAndDeviceList.html');
+            }
+        },
         url: '/data-source-and-device-list',
         menuTr: 'ui.dox.dataSourceAndDeviceList'
     },
     {
         name: 'ui.examples.basics.liveValues',
-        templateUrl: requirejs.toUrl('./views/examples/liveValues.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.liveValues" */ './views/examples/liveValues.html');
+            }
+        },
         url: '/live-values',
         menuTr: 'ui.dox.liveValues'
     },
     {
         name: 'ui.examples.basics.filters',
-        templateUrl: requirejs.toUrl('./views/examples/filters.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.filters" */ './views/examples/filters.html');
+            }
+        },
         url: '/filters',
         menuTr: 'ui.dox.filters'
     },
     {
         name: 'ui.examples.basics.datePresets',
-        templateUrl: requirejs.toUrl('./views/examples/datePresets.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.datePresets" */ './views/examples/datePresets.html');
+            }
+        },
         url: '/date-presets',
         menuTr: 'ui.dox.datePresets'
     },
     {
         name: 'ui.examples.basics.styleViaValue',
-        templateUrl: requirejs.toUrl('./views/examples/styleViaValue.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.styleViaValue" */ './views/examples/styleViaValue.html');
+            }
+        },
         url: '/style-via-value',
         menuTr: 'ui.dox.styleViaValue'
     },
     {
         name: 'ui.examples.basics.pointValues',
-        templateUrl: requirejs.toUrl('./views/examples/pointValues.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.pointValues" */ './views/examples/pointValues.html');
+            }
+        },
         url: '/point-values',
         menuTr: 'ui.dox.pointValues'
     },
     {
         name: 'ui.examples.basics.latestPointValues',
-        templateUrl: requirejs.toUrl('./views/examples/latestPointValues.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.latestPointValues" */ './views/examples/latestPointValues.html');
+            }
+        },
         url: '/latest-point-values',
         menuTr: 'ui.dox.latestPointValues'
     },
     {
         name: 'ui.examples.basics.clocksAndTimezones',
-        templateUrl: requirejs.toUrl('./views/examples/clocksAndTimezones.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.basics.clocksAndTimezones" */ './views/examples/clocksAndTimezones.html');
+            }
+        },
         url: '/clocks-and-timezones',
         menuTr: 'ui.dox.clocksAndTimezones'
     },
@@ -943,25 +1163,41 @@ export default [
     },
     {
         name: 'ui.examples.singleValueDisplays.gauges',
-        templateUrl: requirejs.toUrl('./views/examples/gauges.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.singleValueDisplays.gauges" */ './views/examples/gauges.html');
+            }
+        },
         url: '/gauges',
         menuTr: 'ui.dox.gauges'
     },
     {
         name: 'ui.examples.singleValueDisplays.switchImage',
-        templateUrl: requirejs.toUrl('./views/examples/switchImage.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.singleValueDisplays.switchImage" */ './views/examples/switchImage.html');
+            }
+        },
         url: '/switch-image',
         menuTr: 'ui.dox.switchImage'
     },
     {
         name: 'ui.examples.singleValueDisplays.bars',
-        templateUrl: requirejs.toUrl('./views/examples/bars.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.singleValueDisplays.bars" */ './views/examples/bars.html');
+            }
+        },
         url: '/bars',
         menuTr: 'ui.dox.bars'
     },
     {
         name: 'ui.examples.singleValueDisplays.tanks',
-        templateUrl: requirejs.toUrl('./views/examples/tanks.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.singleValueDisplays.tanks" */ './views/examples/tanks.html');
+            }
+        },
         url: '/tanks',
         menuTr: 'ui.dox.tanks'
     },
@@ -974,43 +1210,71 @@ export default [
     },
     {
         name: 'ui.examples.charts.lineChart',
-        templateUrl: requirejs.toUrl('./views/examples/lineChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.charts.lineChart" */ './views/examples/lineChart.html');
+            }
+        },
         url: '/line-chart',
         menuTr: 'ui.dox.lineChart'
     },
     {
         name: 'ui.examples.charts.barChart',
-        templateUrl: requirejs.toUrl('./views/examples/barChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.charts.barChart" */ './views/examples/barChart.html');
+            }
+        },
         url: '/bar-chart',
         menuTr: 'ui.dox.barChart'
     },
     {
         name: 'ui.examples.charts.advancedChart',
-        templateUrl: requirejs.toUrl('./views/examples/advancedChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.charts.advancedChart" */ './views/examples/advancedChart.html');
+            }
+        },
         url: '/advanced-chart',
         menuTr: 'ui.dox.advancedChart'
     },
     {
         name: 'ui.examples.charts.stateChart',
-        templateUrl: requirejs.toUrl('./views/examples/stateChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.charts.stateChart" */ './views/examples/stateChart.html');
+            }
+        },
         url: '/state-chart',
         menuTr: 'ui.dox.stateChart'
     },
     {
         name: 'ui.examples.charts.liveUpdatingChart',
-        templateUrl: requirejs.toUrl('./views/examples/liveUpdatingChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.charts.liveUpdatingChart" */ './views/examples/liveUpdatingChart.html');
+            }
+        },
         url: '/live-updating-chart',
         menuTr: 'ui.dox.liveUpdatingChart'
     },
     {
         name: 'ui.examples.charts.pieChart',
-        templateUrl: requirejs.toUrl('./views/examples/pieChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.charts.pieChart" */ './views/examples/pieChart.html');
+            }
+        },
         url: '/pie-chart',
         menuTr: 'ui.dox.pieChart'
     },
     {
         name: 'ui.examples.charts.dailyComparison',
-        templateUrl: requirejs.toUrl('./views/examples/dailyComparisonChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.charts.dailyComparison" */ './views/examples/dailyComparisonChart.html');
+            }
+        },
         url: '/daily-comparison',
         menuTr: 'ui.dox.dailyComparisonChart'
     },
@@ -1023,25 +1287,41 @@ export default [
     },
     {
         name: 'ui.examples.settingPointValues.setPoint',
-        templateUrl: requirejs.toUrl('./views/examples/setPoint.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.settingPointValues.setPoint" */ './views/examples/setPoint.html');
+            }
+        },
         url: '/set-point',
         menuTr: 'ui.dox.settingPoint'
     },
     {
         name: 'ui.examples.settingPointValues.toggle',
-        templateUrl: requirejs.toUrl('./views/examples/toggle.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.settingPointValues.toggle" */ './views/examples/toggle.html');
+            }
+        },
         url: '/toggle',
         menuTr: 'ui.dox.toggle'
     },
     {
         name: 'ui.examples.settingPointValues.sliders',
-        templateUrl: requirejs.toUrl('./views/examples/sliders.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.settingPointValues.sliders" */ './views/examples/sliders.html');
+            }
+        },
         url: '/sliders',
         menuTr: 'ui.dox.sliders'
     },
     {
         name: 'ui.examples.settingPointValues.multistateRadio',
-        templateUrl: requirejs.toUrl('./views/examples/multistateRadio.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.settingPointValues.multistateRadio" */ './views/examples/multistateRadio.html');
+            }
+        },
         url: '/multistate-radio-buttons',
         menuTr: 'ui.dox.multistateRadio'
     },
@@ -1053,19 +1333,31 @@ export default [
     },
     {
         name: 'ui.examples.statistics.getStatistics',
-        templateUrl: requirejs.toUrl('./views/examples/getStatistics.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.statistics.getStatistics" */ './views/examples/getStatistics.html');
+            }
+        },
         url: '/get-statistics',
         menuTr: 'ui.dox.getStatistics'
     },
     {
         name: 'ui.examples.statistics.statisticsTable',
-        templateUrl: requirejs.toUrl('./views/examples/statisticsTable.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.statistics.statisticsTable" */ './views/examples/statisticsTable.html');
+            }
+        },
         url: '/statistics-table',
         menuTr: 'ui.dox.statisticsTable'
     },
     {
         name: 'ui.examples.statistics.statePieChart',
-        templateUrl: requirejs.toUrl('./views/examples/statePieChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.statistics.statePieChart" */ './views/examples/statePieChart.html');
+            }
+        },
         url: '/state-pie-chart',
         menuTr: 'ui.dox.statePieChart'
     },
@@ -1077,31 +1369,51 @@ export default [
     },
     {
         name: 'ui.examples.pointArrays.buildPointArray',
-        templateUrl: requirejs.toUrl('./views/examples/buildPointArray.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.buildPointArray" */ './views/examples/buildPointArray.html');
+            }
+        },
         url: '/build-point-array',
         menuTr: 'ui.dox.buildPointArray'
     },
     {
         name: 'ui.examples.pointArrays.pointArrayTable',
-        templateUrl: requirejs.toUrl('./views/examples/pointArrayTable.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.pointArrayTable" */ './views/examples/pointArrayTable.html');
+            }
+        },
         url: '/point-array-table',
         menuTr: 'ui.dox.pointArrayTable'
     },
     {
         name: 'ui.examples.pointArrays.pointArrayLineChart',
-        templateUrl: requirejs.toUrl('./views/examples/pointArrayLineChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.pointArrayLineChart" */ './views/examples/pointArrayLineChart.html');
+            }
+        },
         url: '/point-array-line-chart',
         menuTr: 'ui.dox.pointArrayLineChart'
     },
     {
         name: 'ui.examples.pointArrays.templating',
-        templateUrl: requirejs.toUrl('./views/examples/templating.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.templating" */ './views/examples/templating.html');
+            }
+        },
         url: '/templating',
         menuTr: 'ui.dox.templating'
     },
     {
         name: 'ui.examples.pointArrays.dataPointTable',
-        templateUrl: requirejs.toUrl('./views/examples/dataPointTable.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.pointArrays.dataPointTable" */ './views/examples/dataPointTable.html');
+            }
+        },
         url: '/data-point-table',
         menuTr: 'ui.dox.dataPointTable'
     },
@@ -1113,13 +1425,22 @@ export default [
     },
     {
         name: 'ui.examples.pointHierarchy.displayTree',
-        templateUrl: requirejs.toUrl('./views/examples/displayTree.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.pointHierarchy.displayTree" */ './views/examples/displayTree.html');
+            }
+        },
         url: '/display-tree',
         menuTr: 'ui.dox.displayTree'
     },
     {
         name: 'ui.examples.pointHierarchy.pointHierarchyLineChart',
-        templateUrl: requirejs.toUrl('./views/examples/pointHierarchyLineChart.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.pointHierarchy.pointHierarchyLineChart" */
+                        './views/examples/pointHierarchyLineChart.html');
+            }
+        },
         url: '/line-chart',
         menuTr: 'ui.dox.pointHierarchyLineChart'
     },
@@ -1131,43 +1452,71 @@ export default [
     },
     {
         name: 'ui.examples.templates.angularMaterial',
-        templateUrl: requirejs.toUrl('./views/examples/angularMaterial.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.templates.angularMaterial" */ './views/examples/angularMaterial.html');
+            }
+        },
         url: '/angular-material',
         menuText: 'Angular Material'
     },
     {
         name: 'ui.examples.templates.bootstrap',
-        templateUrl: requirejs.toUrl('./views/examples/bootstrap.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.templates.bootstrap" */ './views/examples/bootstrap.html');
+            }
+        },
         url: '/bootstrap',
         menuText: 'Bootstrap 3'
     },
     {
         name: 'ui.examples.templates.autoLogin',
-        templateUrl: requirejs.toUrl('./views/examples/autoLogin.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.templates.autoLogin" */ './views/examples/autoLogin.html');
+            }
+        },
         url: '/auto-login',
         menuTr: 'ui.dox.autoLogin'
     },
     {
         name: 'ui.examples.templates.extendApp',
-        templateUrl: requirejs.toUrl('./views/examples/extendApp.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.templates.extendApp" */ './views/examples/extendApp.html');
+            }
+        },
         url: '/extend-app',
         menuTr: 'ui.dox.extendApp'
     },
     {
         name: 'ui.examples.templates.loginPage',
-        templateUrl: requirejs.toUrl('./views/examples/loginPageTemplate.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.templates.loginPage" */ './views/examples/loginPageTemplate.html');
+            }
+        },
         url: '/login-page',
         menuTr: 'ui.dox.loginPageTemplate'
     },
     {
         name: 'ui.examples.templates.adminTemplate',
-        templateUrl: requirejs.toUrl('./views/examples/adminTemplate.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.templates.adminTemplate" */ './views/examples/adminTemplate.html');
+            }
+        },
         url: '/admin-template',
         menuTr: 'ui.dox.adminTemplate'
     },
     {
         name: 'ui.examples.templates.adaptiveLayouts',
-        templateUrl: requirejs.toUrl('./views/examples/adaptiveLayouts.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.templates.adaptiveLayouts" */ './views/examples/adaptiveLayouts.html');
+            }
+        },
         url: '/adaptive-layouts',
         menuText: 'Adaptive Layouts'
     },
@@ -1179,31 +1528,51 @@ export default [
     },
     {
         name: 'ui.examples.utilities.translation',
-        templateUrl: requirejs.toUrl('./views/examples/translation.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.translation" */ './views/examples/translation.html');
+            }
+        },
         url: '/translation',
         menuTr: 'ui.dox.translation'
     },
     {
         name: 'ui.examples.utilities.jsonStore',
-        templateUrl: requirejs.toUrl('./views/examples/jsonStore.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.jsonStore" */ './views/examples/jsonStore.html');
+            }
+        },
         url: '/json-store',
         menuTr: 'ui.dox.jsonStore'
     },
     {
         name: 'ui.examples.utilities.watchdog',
-        templateUrl: requirejs.toUrl('./views/examples/watchdog.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.watchdog" */ './views/examples/watchdog.html');
+            }
+        },
         url: '/watchdog',
         menuTr: 'ui.dox.watchdog'
     },
     {
         name: 'ui.examples.utilities.eventsTable',
-        templateUrl: requirejs.toUrl('./views/examples/eventsTable.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.eventsTable" */ './views/examples/eventsTable.html');
+            }
+        },
         url: '/events-table',
         menuTr: 'ui.app.eventsTable'
     },
     {
         name: 'ui.examples.utilities.googleMaps',
-        templateUrl: requirejs.toUrl('./views/examples/googleMaps.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.utilities.googleMaps" */ './views/examples/googleMaps.html');
+            }
+        },
         url: '/google-maps',
         menuText: 'Google Maps'
     },
@@ -1215,13 +1584,21 @@ export default [
     },
     {
         name: 'ui.examples.svg.basicUsage',
-        templateUrl: requirejs.toUrl('./views/examples/svgBasic.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.svg.basicUsage" */ './views/examples/svgBasic.html');
+            }
+        },
         url: '/basic-usage',
         menuTr: 'ui.dox.basicSvg'
     },
     {
         name: 'ui.examples.svg.interactiveSvg',
-        templateUrl: requirejs.toUrl('./views/examples/svgAdvanced.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackChunkName: "uiStates/ui.examples.svg.interactiveSvg" */ './views/examples/svgAdvanced.html');
+            }
+        },
         url: '/interactive-svg',
         menuTr: 'ui.dox.interactiveSvg'
     }

@@ -8,6 +8,8 @@ import watchListBuilderTemplate from './watchListBuilder.html';
 import query from 'rql/query';
 import requirejs from 'requirejs/require';
 
+import './watchListBuilder.css';
+
 const defaultTotal = '\u2026';
 const $inject = ['maPoint', '$mdMedia', 'maWatchList','$state', '$mdDialog', 'maTranslate', '$mdToast', 'maUser', '$q'];
 

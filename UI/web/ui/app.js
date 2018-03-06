@@ -677,8 +677,9 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     var userAgent = navigator.userAgent;
     if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
     		userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
-        
-        import(/* webpackChunkName: "safari" */ './styles/safari.css');
+        // assign to variable to stop other warnings
+        // jshint unused:false
+        const safariCss = import(/* webpackChunkName: "safari" */ './styles/safari.css');
     }
     
     return MA_UI_SETTINGS;

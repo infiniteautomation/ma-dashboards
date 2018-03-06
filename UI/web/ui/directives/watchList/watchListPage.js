@@ -5,10 +5,12 @@
  */
 
 import angular from 'angular';
-import tinycolor from 'tinycolor';
+import tinycolor from 'tinycolor2';
 import downloadDialogTemplate from './downloadDialog.html';
 import watchListPageTemplate from './watchListPage.html';
 import requirejs from 'requirejs/require';
+
+import './watchListPage.css';
 
 const NO_STATS = '\u2014';
 
