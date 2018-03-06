@@ -13,7 +13,7 @@ function MenuLinkController($state, Translate) {
     };
     
     this.$onChanges = function(changes) {
-        if (changes.item) {
+        if (changes.item && this.item) {
             if (this.item.href) {
                 this.href = this.item.href;
                 this.target = this.item.target || '_self';
@@ -22,11 +22,14 @@ function MenuLinkController($state, Translate) {
                 this.target = '_self';
             }
             
-            this.menuText = this.item.menuText;
-            if (!this.menuText) {
-                Translate.tr(this.item.menuTr).then(function(text) {
+            if (this.item.menuText) {
+                this.menuText = this.item.menuText;
+            } else if (this.item.menuTr) {
+                Translate.tr(this.item.menuTr).then(text => {
                     this.menuText = text;
-                }.bind(this));
+                });
+            } else {
+                this.menuText = this.item.name || '';
             }
         }
     };
