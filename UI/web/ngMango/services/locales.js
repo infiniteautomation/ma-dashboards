@@ -11,7 +11,7 @@ function LocalesFactory($q) {
     }
 
     Locales.prototype.get = function() {
-        const sortedLocales = localeList.splice().sort((a, b) => {
+        const sortedLocales = localeList.slice().sort((a, b) => {
             if (a.name < b.name) return -1;
             if (a.name > b.name) return 1;
             return 0;
