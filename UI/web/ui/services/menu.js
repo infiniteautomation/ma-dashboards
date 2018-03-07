@@ -52,8 +52,13 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
 
             if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href) {
                 if (menuItem.resolve && menuItem.resolve.viewTemplate) {
-                    menuItem.templateProvider = ['viewTemplate', function(viewTemplate) {
-                        return viewTemplate.default;
+                    menuItem.templateProvider = ['viewTemplate', '$templateCache', function(viewTemplate, $templateCache) {
+                        const templateUrl = menuItem.name + '.tmpl.html';
+                        const template = viewTemplate.default;
+                        
+                        $templateCache.put(templateUrl, template);
+                        
+                        return template;
                     }];
                 } else {
                     menuItem.template = '<div ui-view></div>';

@@ -325,9 +325,10 @@ uiApp.run([
     'maModules',
     'maMath',
     '$log',
+    '$templateCache',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
-        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, maModules, mathjs, $log) {
+        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, maModules, mathjs, $log, $templateCache) {
 
     if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
         webAnalytics.enableGoogleAnalytics(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
@@ -345,11 +346,35 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.pageOpts = {};
     $rootScope.$log = $log;
 
-    $rootScope.openHelp = function() {
-        if ($state.params.helpPage) {
-            var state = $state.get($state.params.helpPage);
-            if (state && state.templateUrl) {
-                this.pageOpts.helpUrl = state.templateUrl;
+    $rootScope.openHelp = function(helpPageState) {
+        if (!helpPageState && $state.params.helpPage) {
+            helpPageState = $state.get($state.params.helpPage);
+        }
+        
+        if (!helpPageState) {
+            $rootScope.closeHelp();
+            return;
+        }
+        
+        if (helpPageState.templateUrl) {
+            this.pageOpts.helpUrl = helpPageState.templateUrl;
+        } else if (helpPageState.resolve && helpPageState.resolve.viewTemplate) {
+            const templateUrl = helpPageState.name + '.tmpl.html';
+
+            if ($templateCache.get(templateUrl)) {
+                // already in the cache just load the template URL
+                $rootScope.pageOpts.helpUrl = templateUrl;
+            } else {
+                // load the view template via the resolve promise
+                helpPageState.resolve.viewTemplate().then((viewTemplate) => {
+                    // put the template in the cache and then set the help url
+                    $templateCache.put(templateUrl, viewTemplate.default);
+                    
+                    // resolve promise is a ES6 promise not AngularJS $q promise, call $apply
+                    $rootScope.$apply(() => {
+                        $rootScope.pageOpts.helpUrl = templateUrl;
+                    });
+                });
             }
         }
     };
@@ -447,7 +472,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             if (openInSidebar) {
                 // stay on current page and load help page into sidebar
                 event.preventDefault();
-                $rootScope.pageOpts.helpUrl = toState.templateUrl;
+                $rootScope.openHelp(toState);
             } else {
                 $rootScope.closeHelp();
             }
