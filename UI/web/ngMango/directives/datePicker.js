@@ -31,7 +31,9 @@ import moment from 'moment';
        <ma-date-picker ng-model="to" format="MMM-Do-YY" mode="date"></ma-date-picker>
   </md-input-container>
  */
-function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, $q) {
+
+datePicker.$inject = ['$injector', 'MA_DATE_FORMATS', '$q'];
+function datePicker($injector, mangoDateFormats, $q) {
     return {
         restrict: 'E',
         designerInfo: {
@@ -167,8 +169,4 @@ function datePicker($injector, mangoDateFormats, ngMangoInsertCss, cssInjector, 
     }
 }
 
-datePicker.$inject = ['$injector', 'MA_DATE_FORMATS', 'MA_INSERT_CSS', 'maCssInjector', '$q'];
-
 export default datePicker;
-
-

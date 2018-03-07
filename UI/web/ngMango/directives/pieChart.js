@@ -34,8 +34,8 @@ import 'amcharts/plugins/export/export.css';
  options="{depth3D:15,angle:30}"></ma-pie-chart>
  *
  */
-pieChart.$inject = ['$http', 'maCssInjector'];
-function pieChart($http, maCssInjector) {
+pieChart.$inject = ['$http'];
+function pieChart($http) {
     return {
         restrict: 'E',
         replace: true,

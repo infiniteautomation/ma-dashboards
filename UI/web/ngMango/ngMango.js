@@ -372,15 +372,13 @@ ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDa
 ngMango.run([
     '$rootScope',
     'maWatchdog',
-    'MA_INSERT_CSS',
-    'maCssInjector',
     'MA_ROLLUP_TYPES',
     'MA_TIME_PERIOD_TYPES',
     'MA_CHART_TYPES',
     'MA_RELATIVE_DATE_TYPES',
     'MA_DATE_RANGE_PRESETS',
     'maUser',
-function($rootScope, mangoWatchdog, ngMangoInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
+function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
         MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, User) {
 
 	$rootScope.Math = Math;

@@ -50,7 +50,8 @@ const queryProperties = [
     }
 ];
 
-var queryBuilder = function queryBuilder(cssInjector) {
+QueryBuilderController.$inject = [];
+function QueryBuilderController() {
     this.properties = queryProperties;
     this.rootQueryNode = new query.Query();
     this.sort = [{desc: false}];
@@ -149,12 +150,10 @@ var queryBuilder = function queryBuilder(cssInjector) {
 
         this.ngModelCtrl.$setViewValue(node);
     };
-};
-
-queryBuilder.$inject = ['maCssInjector'];
+}
 
 export default {
-    controller: queryBuilder,
+    controller: QueryBuilderController,
     template: queryBuilderTemplate,
     require: {
         'ngModelCtrl': 'ngModel'
@@ -166,5 +165,3 @@ export default {
         hideFromMenu: true
     }
 };
-
-
