@@ -1725,5 +1725,12 @@ export default [
         },
         url: '/interactive-svg',
         menuTr: 'ui.dox.interactiveSvg'
-    }
+    },
+    {
+        name: 'ui.settings.systemStatus.dataSourcesPerformance',
+        url: '/ds-performance',
+        menuTr: 'ui.settings.systemStatus.dataSourcesPerformance',
+        templateUrl: require.toUrl('./systemStatus/dataSourcesPerformance.html'),
+        menuHidden: true,
+    },
 ];
