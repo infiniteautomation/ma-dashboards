@@ -55,8 +55,12 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                     menuItem.templateProvider = ['viewTemplate', '$templateCache', function(viewTemplate, $templateCache) {
                         const templateUrl = menuItem.name + '.tmpl.html';
                         const template = viewTemplate.default;
-                        
+                                                
                         $templateCache.put(templateUrl, template);
+                        
+                        menuItem.templateUrl = templateUrl;
+                        delete menuItem.templateProvider;
+                        delete menuItem.resolve.viewTemplate;
                         
                         return template;
                     }];

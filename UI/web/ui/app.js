@@ -367,11 +367,17 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             } else {
                 // load the view template via the resolve promise
                 helpPageState.resolve.viewTemplate().then((viewTemplate) => {
-                    // put the template in the cache and then set the help url
-                    $templateCache.put(templateUrl, viewTemplate.default);
-                    
                     // resolve promise is a ES6 promise not AngularJS $q promise, call $apply
                     $rootScope.$apply(() => {
+                        const template = viewTemplate.default;
+    
+                        // put the template in the cache and then set the help url
+                        $templateCache.put(templateUrl, template);
+                        
+                        helpPageState.templateUrl = templateUrl;
+                        delete helpPageState.templateProvider;
+                        delete helpPageState.resolve.viewTemplate;
+
                         $rootScope.pageOpts.helpUrl = templateUrl;
                     });
                 });
