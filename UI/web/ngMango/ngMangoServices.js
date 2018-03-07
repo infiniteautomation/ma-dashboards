@@ -176,7 +176,7 @@ ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
 ]);
 
 ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide',
-        function(localStorageServiceProvider, $httpProvider, $provide, maRequireQProvider) {
+        function(localStorageServiceProvider, $httpProvider, $provide) {
     localStorageServiceProvider
         .setPrefix('ngMangoServices')
         .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
