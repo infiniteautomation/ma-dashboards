@@ -4,7 +4,7 @@
  */
 
 import angular from 'angular';
-import interpolatedStyles from 'raw-loader!../styles/interpolatedStyles.css';
+import interpolatedStyles from '../styles/interpolatedStyles.css';
 
 uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'maCssInjector', '$templateRequest', '$interpolate',
     'MA_UI_SETTINGS_XID', 'MA_UI_EDIT_SETTINGS_PERMISSION', 'MA_POINT_VALUES_CONFIG', '$window'];
@@ -131,7 +131,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
                     uiSettings: this,
                     theme: this.activeThemeObj
                 });
-                cssInjector.injectStyle(result, 'interpolatedStyles', '[tracking-name="uiMain"]', false, true);
+                cssInjector.injectStyle(result, 'interpolatedStyles', 'style, link[type="text/css"]', false, true);
             }
         }
     };

@@ -28,7 +28,12 @@ module.exports = {
                 }]
             },
             {
+                test: /\interpolatedStyles\.css$/,
+                use: ['raw-loader']
+            },
+            {
                 test: /\.css$/,
+                exclude: /interpolatedStyles\.css/,
                 use: ['style-loader', 'css-loader']
             },
             {

@@ -672,7 +672,7 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     }
 
     if (MA_UI_SETTINGS.userCss) {
-    	maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', '[tracking-name="uiMain"]');
+    	maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', 'style, link[type="text/css"]');
     }
     
     // contains fix for https://github.com/angular/material/issues/10516
