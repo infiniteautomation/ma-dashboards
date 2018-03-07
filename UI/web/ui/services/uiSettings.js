@@ -131,7 +131,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
                     uiSettings: this,
                     theme: this.activeThemeObj
                 });
-                cssInjector.injectStyle(result, 'interpolatedStyles', 'style, link[type="text/css"]', false, true);
+                cssInjector.injectStyle(result, 'interpolatedStyles', 'meta[name="user-styles-after-here"]', true, true);
             }
         }
     };

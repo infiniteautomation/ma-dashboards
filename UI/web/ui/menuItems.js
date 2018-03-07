@@ -86,7 +86,7 @@ export default [
         url: '/agree-to-license',
         resolve: {
             viewTemplate: function() {
-                return import(/* webpackMode: "lazy", webpackChunkName: "agreeToLicense" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './views/agreeToLicense.html');
             }
         },

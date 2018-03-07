@@ -19,6 +19,8 @@
     <link rel="manifest" href="/modules/mangoUI/web/ui/manifest.json?v=${lastUpgrade?c}">
     
     <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/preBoot.css?v=${lastUpgrade?c}">
+
+    <meta name="user-styles-after-here" content="">
 </head>
 
 <body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn, 'ma-mobile': !$mdMedia('gt-sm'), 'ma-phone': $mdMedia('xs')}"

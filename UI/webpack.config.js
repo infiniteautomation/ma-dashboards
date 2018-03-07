@@ -34,7 +34,19 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: /interpolatedStyles\.css/,
-                use: ['style-loader', 'css-loader']
+                use: [
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            insertAt: {
+                                before: 'meta[name="user-styles-after-here"]'
+                            }
+                        }
+                    },
+                    {
+                        loader: 'css-loader'
+                    }
+                ]
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/,
