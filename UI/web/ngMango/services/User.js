@@ -6,7 +6,7 @@
 import angular from 'angular';
 import moment from 'moment-timezone';
 import Cldr from 'cldrjs';
-import requirejs from 'requirejs/require';
+import {require as requirejs} from 'requirejs';
 
 
 // Stores the locales which have been loaded using require, must be cached as we can't call

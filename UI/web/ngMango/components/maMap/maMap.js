@@ -4,7 +4,7 @@
  */ 
 
 import maMapTemplate from './maMap.html';
-import requirejs from 'requirejs/require';
+import {require} from 'requirejs';
 
  /**
   * @ngdoc directive
@@ -61,7 +61,7 @@ import requirejs from 'requirejs/require';
 
         if (uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
-            requirejs(['https://maps.google.com/maps/api/js?v=3&key=' + uiSettings.googleMapsApiKey], function() {
+            require(['https://maps.google.com/maps/api/js?v=3&key=' + uiSettings.googleMapsApiKey], function() {
                 $scope.$applyAsync(function() {
                     $ctrl.render = true;
                 });

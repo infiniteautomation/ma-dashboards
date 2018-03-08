@@ -4,7 +4,8 @@
  */
 
 import angular from 'angular';
-import '../ngMango/ngMangoMaterial';import menuProvider from './services/menu';
+import '../ngMango/ngMangoMaterial';
+import menuProvider from './services/menu';
 import pagesFactory from './services/pages';
 import dateBarFactory from './services/dateBar';
 import uiSettingsFactory from './services/uiSettings';
@@ -20,7 +21,8 @@ import 'angular-loading-bar';
 import './views/docs/docs-setup';
 import 'md-color-picker';
 import defaultUiSettings from './uiSettings.json';
-import requirejs from 'requirejs/require';
+import {require as requirejs} from 'requirejs';
+import './exportRequireJs.js';
 
 import 'angular-loading-bar/build/loading-bar.css';
 import 'md-color-picker/dist/mdColorPicker.css';
@@ -742,24 +744,24 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
         var urls = response.data.urls.map(function(url) {
             return url.replace(/^\/modules\/(.*?).js$/, 'modules/$1');
         });
-        
+
         if (MA_UI_SETTINGS.userModule) {
             urls.push(MA_UI_SETTINGS.userModule);
         }
 
-//        var modulePromises = urls.map(function(url) {
-//            var deferred = $q.defer();
-//            requirejs([url], function(module) {
-//                deferred.resolve(module);
-//            }, function() {
-//                console.log('Failed to load AngularJS module', arguments);
-//                deferred.resolve();
-//            });
-//            return deferred.promise;
-//        });
-//
-//        return $q.all(modulePromises);
-        return $q.all([]);
+        var modulePromises = urls.map(function(url) {
+            var deferred = $q.defer();
+            requirejs([url], function(module) {
+                console.log(module, url);
+                deferred.resolve(module);
+            }, function() {
+                console.log('Failed to load AngularJS module', arguments);
+                deferred.resolve();
+            });
+            return deferred.promise;
+        });
+
+        return $q.all(modulePromises);
     }, function() {
         console.log('Error loading AngularJS modules from Mango modules', arguments);
     });

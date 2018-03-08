@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import requirejs from 'requirejs/require';
+import {require} from 'requirejs';
 
 WebAnalyticsFactory.$inject = ['$rootScope', '$window', '$state'];
 function WebAnalyticsFactory($rootScope, $window, $state) {
@@ -21,7 +21,7 @@ function WebAnalyticsFactory($rootScope, $window, $state) {
         ga.l=Date.now();
         ga('create', this.propertyId, 'auto');
         
-        requirejs(['https://www.google-analytics.com/analytics.js']);
+        require(['https://www.google-analytics.com/analytics.js']);
 
         if (!this.deregister) {
             this.deregister = $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {

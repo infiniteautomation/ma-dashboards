@@ -88,7 +88,7 @@ module.exports = {
             },
             {
                 test: /require\.js/,
-                use: ['exports-loader?require']
+                use: ['exports-loader?require,define']
             },
             {
                 test: /angular\.js/,
@@ -100,14 +100,18 @@ module.exports = {
         alias: {
             amcharts: path.join(__dirname, 'vendor/amcharts'),
             ace: 'ace-builds',
-            localeList: path.join(__dirname, 'vendor/localeList.json')
+            localeList: path.join(__dirname, 'vendor/localeList.json'),
+            requirejs: 'requirejs/require'
         }
     },
-//    optimization: {
+    optimization: {
 //        splitChunks: {
 //            chunks: 'all'
+//        },
+//        runtimeChunk: {
+//            name: 'manifest'
 //        }
-//    },
+    },
     plugins: [
         new CleanWebpackPlugin(['web/dist'])
     ],
