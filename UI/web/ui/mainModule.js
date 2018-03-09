@@ -21,17 +21,27 @@ import {require as requirejs} from 'requirejs';
 import 'ace';
 import 'angular-ui-ace';
 
-const aceFiles = require.context('ace/src', false, /^\.\/(?:theme|mode|ext|keybinding)-.*\.js$/);
+//const aceFiles = require.context('ace/src', false, /^\.\/(?:theme|mode|ext|keybinding)-.*\.js$/);
 //import 'ace/src/theme-monokai';
 //import 'ace/src/mode-html';
 
 requirejs(['ace/lib/net', 'ace/edit_session'], (net, editSession) => {
     net.loadScript = function(path, callback) {
-        aceFiles('./' + path);
-        callback();
-//        return import(/* webpackMode: "lazy-once", webpackChunkName: "ace" */ 'ace/src/' + path).then(() => {
-//            callback();
-//        });
+//        aceFiles('./' + path);
+//        callback();
+
+        let promise;
+        if (path.indexOf('theme-') === 0) {
+            promise = import(/* webpackMode: "eager" */ 'ace/src/theme-' + path.slice('theme-'.length));
+        } else if (path.indexOf('mode-') === 0) {
+            promise = import(/* webpackMode: "eager" */ 'ace/src/mode-' + path.slice('mode-'.length));
+        } else if (path.indexOf('ext-') === 0) {
+            promise = import(/* webpackMode: "eager" */ 'ace/src/ext-' + path.slice('ext-'.length));
+        } else if (path.indexOf('keybinding-') === 0) {
+            promise = import(/* webpackMode: "eager" */ 'ace/src/keybinding-' + path.slice('keybinding-'.length));
+        }
+        
+        return promise.then(callback);
     };
     
     editSession.EditSession.prototype.$useWorker = false;
