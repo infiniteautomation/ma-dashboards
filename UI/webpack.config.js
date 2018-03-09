@@ -6,6 +6,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -88,11 +89,11 @@ module.exports = {
                 use: ['imports-loader?angular,angularAnimate=angular-animate,angularAria=angular-aria,angularMessages=angular-messages']
             },
             {
-                test: /require\.js/,
+                test: /require\.js$/,
                 use: ['exports-loader?require,define']
             },
             {
-                test: /angular\.js/,
+                test: /angular\.js$/,
                 use: ['imports-loader?windowTemp=>window&windowTemp.jQuery=jquery']
             },
             {
@@ -112,9 +113,10 @@ module.exports = {
             amcharts: path.join(__dirname, 'vendor/amcharts'),
             localeList: path.join(__dirname, 'vendor/localeList.json'),
             requirejs: 'requirejs/require',
-            ace: 'ace-builds'
+            ace: path.join(__dirname, 'web/shims/ace')
         }
     },
+//    devtool: 'source-map',
     optimization: {
         splitChunks: {
             chunks: 'all',
@@ -129,7 +131,22 @@ module.exports = {
         },
         runtimeChunk: {
             name: 'manifest'
-        }
+        },
+        minimizer: [
+            new UglifyJsPlugin({
+                test: /\.js($|\?)/,
+                cache: true,
+                parallel: true,
+//                sourceMap: true,
+                uglifyOptions: {
+                    ecma: 6,
+//                    beautify: false,
+//                    compress: true,
+//                    comments: false,
+//                    mangle: true
+                }
+            })
+        ]
     },
     plugins: [
         new CleanWebpackPlugin(['web/dist'])

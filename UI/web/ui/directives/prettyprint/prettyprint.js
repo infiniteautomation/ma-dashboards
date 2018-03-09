@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import ace from 'ace';
+import {ace} from 'ace';
 
 var prettyprint = function(uiSettings) {
     return {

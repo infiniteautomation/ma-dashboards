@@ -22,7 +22,7 @@ import './views/docs/docs-setup';
 import 'md-color-picker';
 import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
-import './exportRequireJs.js';
+import '../shims/exportAMD.js';
 
 import 'angular-loading-bar/build/loading-bar.css';
 import 'md-color-picker/dist/mdColorPicker.css';
