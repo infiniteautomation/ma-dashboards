@@ -211,14 +211,14 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
         submenu: true,
         weight: 2002,
         resolve: {
-//            prettyprint: ['$injector', function($injector) {
-//                return import(/* webpackMode: "lazy-once", webpackChunkName: "ui.docs" */
-//                        './directives/prettyprint/prettyprint').then(prettyprint => {
-//                    angular.module('maUiDocsState', [])
-//                        .directive('prettyprint', prettyprint.default); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
-//                    $injector.loadNewModules(['maUiDocsState']);
-//                });
-//            }]
+            prettyprint: ['$injector', function($injector) {
+                return import(/* webpackChunkName: "ui.docs" */
+                        './directives/prettyprint/prettyprint').then(prettyprint => {
+                    angular.module('maUiDocsState', [])
+                        .directive('prettyprint', prettyprint.default); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
+                    $injector.loadNewModules(['maUiDocsState']);
+                });
+            }]
         },
         params: {
             sidebar: null
@@ -752,7 +752,6 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
         var modulePromises = urls.map(function(url) {
             var deferred = $q.defer();
             requirejs([url], function(module) {
-                console.log(module, url);
                 deferred.resolve(module);
             }, function() {
                 console.log('Failed to load AngularJS module', arguments);

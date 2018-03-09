@@ -19,7 +19,7 @@
     <link rel="manifest" href="/modules/mangoUI/web/ui/manifest.json?v=${lastUpgrade?c}">
     
     <link rel="stylesheet" href="/modules/mangoUI/web/ui/styles/preBoot.css?v=${lastUpgrade?c}">
-
+	<script>this.mangoLastUpgrade=${lastUpgrade?c};</script>
     <meta name="user-styles-after-here" content="">
 </head>
 

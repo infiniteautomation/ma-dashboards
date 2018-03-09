@@ -16,10 +16,6 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /globalize/,
-                loader: 'imports-loader?define=>false'
-            },
-            {
                 test: /\.html$/,
                 use: [{
                     loader: 'html-loader',
@@ -33,7 +29,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                exclude: /interpolatedStyles\.css/,
+                exclude: /interpolatedStyles\.css$/,
                 use: [
                     {
                         loader: 'style-loader',
@@ -67,23 +63,28 @@ module.exports = {
                 }]
             },
             {
-                test: /amcharts.*\.js/,
-                use: ['exports-loader?window.AmCharts']
+                test: /globalize/,
+                include: /\.js$/,
+                loader: 'imports-loader?define=>false'
             },
             {
-                test: /amcharts.*\.js/,
-                use: ['imports-loader?AmCharts=amcharts/amcharts']
+                test: /amcharts/,
+                include: /\.js$/,
+                use: ['exports-loader?window.AmCharts', 'imports-loader?AmCharts=amcharts/amcharts']
             },
             {
-                test: /md-color-picker.*?\.js/,
+                test: /md-color-picker/,
+                include: /\.js$/,
                 use: ['imports-loader?tinycolor=tinycolor2']
             },
             {
                 test: /rql/,
+                include: /\.js$/,
                 use: ['imports-loader?define=>undefined']
             },
             {
-                test: /angular-material.*?\.js/,
+                test: /angular-material/,
+                include: /\.js$/,
                 use: ['imports-loader?angular,angularAnimate=angular-animate,angularAria=angular-aria,angularMessages=angular-messages']
             },
             {
@@ -93,15 +94,25 @@ module.exports = {
             {
                 test: /angular\.js/,
                 use: ['imports-loader?windowTemp=>window&windowTemp.jQuery=jquery']
+            },
+            {
+                test: /angular-ui-ace/,
+                include: /\.js$/,
+                use: ['imports-loader?ace']
+            },
+            {
+                test: /ace-builds/,
+                include: /\.js$/,
+                use: ['imports-loader?requirejs=>window.requirejs,require=>window.require,define=>window.define']
             }
         ]
     },
     resolve: {
         alias: {
             amcharts: path.join(__dirname, 'vendor/amcharts'),
-            ace: 'ace-builds',
             localeList: path.join(__dirname, 'vendor/localeList.json'),
-            requirejs: 'requirejs/require'
+            requirejs: 'requirejs/require',
+            ace: 'ace-builds'
         }
     },
     optimization: {
@@ -118,6 +129,8 @@ module.exports = {
     output: {
         filename: '[name].js?v=[chunkhash]',
         path: path.resolve(__dirname, 'web', 'dist'),
-        publicPath: '/modules/mangoUI/web/dist/'
+        publicPath: '/modules/mangoUI/web/dist/',
+        libraryTarget: 'umd',
+        library: 'mango-ui'
     }
 };

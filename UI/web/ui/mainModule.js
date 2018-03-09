@@ -17,7 +17,25 @@ import autoLoginSettings from './components/autoLoginSettings/autoLoginSettings'
 import activeEventIcons from './components/activeEventIcons/activeEventIcons';
 import dateBar from './components/dateBar/dateBar';
 import footer from './components/footer/footer';
+import {require as requirejs} from 'requirejs';
+import 'ace';
 import 'angular-ui-ace';
+
+const aceFiles = require.context('ace/src', false, /^\.\/(?:theme|mode|ext|keybinding)-.*\.js$/);
+//import 'ace/src/theme-monokai';
+//import 'ace/src/mode-html';
+
+requirejs(['ace/lib/net', 'ace/edit_session'], (net, editSession) => {
+    net.loadScript = function(path, callback) {
+        aceFiles('./' + path);
+        callback();
+//        return import(/* webpackMode: "lazy-once", webpackChunkName: "ace" */ 'ace/src/' + path).then(() => {
+//            callback();
+//        });
+    };
+    
+    editSession.EditSession.prototype.$useWorker = false;
+});
 
 angular.module('maUiRootState', ['ui.ace'])
     .factory('maUiMenuEditor', menuEditorFactory)
