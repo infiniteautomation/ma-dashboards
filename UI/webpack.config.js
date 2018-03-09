@@ -116,12 +116,20 @@ module.exports = {
         }
     },
     optimization: {
-//        splitChunks: {
-//            chunks: 'all'
-//        },
-//        runtimeChunk: {
-//            name: 'manifest'
-//        }
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                vendor: {
+                    test: /node_modules/,
+                    name: 'vendor',
+                    chunks: 'initial',
+                    enforce: true
+                }
+            }
+        },
+        runtimeChunk: {
+            name: 'manifest'
+        }
     },
     plugins: [
         new CleanWebpackPlugin(['web/dist'])
