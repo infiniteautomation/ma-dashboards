@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "mango-automation-ui",
-  "version": "3.3.4",
-  "description": "Mango UI",
+  "name": "mangoUI",
+  "version": "3.3.4-SNAPSHOT",
+  "description": "Provides an AngularJS user interface, including the ability to create custom pages",
   "main": "index.js",
   "dependencies": {
     "ace-builds": "^1.3.1",
