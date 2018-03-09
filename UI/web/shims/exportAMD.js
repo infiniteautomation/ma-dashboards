@@ -4,12 +4,13 @@
  */
 
 import {require, define} from 'requirejs';
+import packageJson from '../../package.json';
 
 window.require = require;
 window.requirejs = require;
 window.define = define;
 
-const modulePath = '/modules/mangoUI/web';
+const modulePath = `/modules/${packageJson.name}/web`;
 
 const exposedVendorModules = {
     'angular': () => import('angular'),
@@ -72,7 +73,7 @@ require.config({
         if (url.indexOf('?v=') > 0 || url.indexOf('&v=') > 0 || url.match(/^(https?:)?\/\//i)) {
             return '';
         }
-        return (url.indexOf('?') > 0 ? '&' : '?') + 'v=' + (window.mangoLastUpgrade || '3.3.0');
+        return (url.indexOf('?') > 0 ? '&' : '?') + 'v=' + (window.mangoLastUpgrade || packageJson.version);
     },
     paths : {
         'modules': '/modules',
