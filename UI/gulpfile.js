@@ -1,149 +1,33 @@
-var gulp = require('gulp');
-var exists = require('path-exists').sync;
-var gulpIgnore = require('gulp-ignore');
-var concat = require('gulp-concat');
-var merge = require('merge-stream');
-var watch = require('gulp-watch');
-var del = require('del');
-var MA_HOME = process.env.MA_HOME;
+/**
+ * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @author Jared Wiltshire
+ */
 
-var plugins = require("gulp-load-plugins")({
-    pattern: ['gulp-*', 'gulp.*', 'main-bower-files'],
-    replaceString: /\bgulp[\-.]/
-});
+const gulp = require('gulp');
+const del = require('del');
+const MA_HOME = process.env.MA_HOME;
 
-var paths = {
-    dest: 'web/vendor'
-};
+gulp.task('default', ['build-docs']);
 
-gulp.task('default', ['copy-docs', 'copy-vendor']);
-
-gulp.task('copy-vendor', ['copy-bower'], function() {
-    console.log('Copying JS files from vendor into web/vendor');
-    return gulp.src('vendor/**')
-        .pipe(gulp.dest(paths.dest));
-});
-
-gulp.task('copy-bower', ['clean:vendor'], function() {
-    console.log('Copying main JS files from bower_components into web/vendor');
-	
-    var mainFiles = plugins.mainBowerFiles().map(function(path, index, arr) {
-        var newPath = path.replace(/.([^.]+)$/g, '.min.$1');
-        return exists(newPath) ? newPath : path;
-    });
-
-    return gulp.src(mainFiles, {
-            base: 'bower_components'
-        })
-        .pipe(plugins.rename(function(path) {
-            path.dirname = path.dirname.replace(/dist(?:\\|\/)globalize$/g, 'globalize');
-            path.dirname = path.dirname.replace(/dist(?:\\|\/)cldr$/g, 'cldr');
-            path.dirname = path.dirname.replace(/^ace-builds(\\|\/)src-min-noconflict/g, 'ace');
-            path.dirname = path.dirname.replace(/(\\|\/)(min|dist|build|builds|lib|release|build(\\|\/)scripts)$/g, '');
-            path.basename = path.basename.replace(/\.min$/g, '');
-        }))
-        //.pipe(plugins.filter('**/*.js'))
-        //.pipe(plugins.uglify())
-        .pipe(gulp.dest(paths.dest));
-});
-
-gulp.task('clean', function() {
-    return gulp.src(paths.dest, {
-            read: false
-        })
-        .pipe(plugins.clean());
-});
-
-gulp.task('build-ngdocs', [], function() {
-    var gulpDocs = require('gulp-ngdocs');
+gulp.task('build-docs', ['clean-docs'], function() {
+    const gulpDocs = require('gulp-ngdocs');
 
     console.log('Compiling docs into docs/ngMango');
 
-    var options = {
+    const options = {
         title: "Mango UI 3.x Documentation",
         html5Mode: false
     };
-    
+
     return gulp.src('web/ngMango/**/*.js')
         .pipe(gulpDocs.process(options))
         .pipe(gulp.dest('docs/ngMango'));
 });
 
-gulp.task('clean:docs', function() {
-	console.log('Cleaning web/ui/views/docs');
-	return del([
-		'web/ui/views/docs/**'
-	]);
-});
-
-gulp.task('clean:vendor', function() {
-	console.log('Cleaning web/vendor');
-	return del([
-		paths.dest + '/**'
-	]);
-});
-
-gulp.task('copy-docs', ['build-ngdocs', 'clean:docs'], function() {
-    console.log('Copying docs from docs/ngMango to web/ui/views/docs');
-
-    return gulp.src(['docs/ngMango/partials/api/*.html','docs/ngMango/js/docs-setup.js'])
-        .pipe(gulp.dest('web/ui/views/docs'));
-});
-
-gulp.task('watchDocs', function() {
-    // Watch .js files
-    gulp.watch('web/ngMango/**/*.js', ['copy-docs']);
-});
-
-gulp.task('watch-web', function() {
-    return gulp.src('web/**')
-        .pipe(watch('web/**', {ignoreInitial: false, verbose: true}))
-        .pipe(gulp.dest(MA_HOME + '/web/modules/mangoUI/web'));
-});
-
-gulp.task('watch-properties', function() {
-    return gulp.src('classes/**')
-        .pipe(watch('classes/**', {ignoreInitial: false, verbose: true}))
-        .pipe(gulp.dest(MA_HOME + '/web/modules/mangoUI/classes'));
-});
-
-gulp.task('build-amcharts', function() {
-    var amchart = gulp.src([
-        'utils/Class.js',
-        'utils/Utils.js',
-        'axes/AxisBase.js',
-        'axes/ValueAxis.js',
-        'axes/RecAxis.js',
-        'axes/RecItem.js',
-        'axes/RecFill.js',
-        'chartClasses/AmChart.js',
-        'chartClasses/AmGraph.js',
-        'chartClasses/ChartCursor.js',
-        'chartClasses/SimpleChartScrollbar.js',
-        'chartClasses/ChartScrollbar.js',
-        'chartClasses/AmBalloon.js',
-        'chartClasses/AmCoordinateChart.js',
-        'chartClasses/TrendLine.js',
-        'chartClasses/Image.js',
-        'geom/Geom.js',
-        'geom/Bezier.js',
-        'drawingEngine/AmDraw.js',
-        'drawingEngine/AmDObject.js',
-        'drawingEngine/VMLRenderer.js',
-        'drawingEngine/SVGRenderer.js',
-        'AmLegend.js',
-        'utils/DateUtils.js'],
-        {cwd: 'bower_components/amcharts'})
-    .pipe(concat('amcharts.js'));
+gulp.task('clean-docs', function() {
+    console.log('Cleaning docs');
     
-    var serial = gulp.src([
-        'chartClasses/AmRectangularChart.js',
-        'AmSerialChart.js',
-        'geom/Cuboid.js',
-        'axes/CategoryAxis.js'],
-        {cwd: 'bower_components/amcharts'})
-    .pipe(concat('serial.js'));
-    
-    return merge(amchart, serial)
-        .pipe(gulp.dest('web/vendor/amcharts'));
+    return del([
+        'docs/**'
+    ]);
 });

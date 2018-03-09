@@ -18,7 +18,7 @@ import 'moment-timezone';
 import 'angular-ui-router';
 import 'angular-ui-sortable';
 import 'angular-loading-bar';
-import './views/docs/docs-setup';
+import '../../docs/ngMango/js/docs-setup';
 import 'md-color-picker';
 import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
@@ -291,7 +291,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
                 resolve: {
                     viewTemplate: function() {
                         return import(/* webpackMode: "lazy-once", webpackChunkName: "ui.docs" */
-                                './views/docs/' + templateUrl + '.html');
+                                '../../docs/ngMango/partials/api/' + templateUrl + '.html');
                     }
                 }
             };

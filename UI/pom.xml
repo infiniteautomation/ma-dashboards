@@ -9,6 +9,7 @@
     <artifactId>ui</artifactId>
     <name>mangoUI</name>
     <version>3.4.0-SNAPSHOT</version>
+    <description>Provides an AngularJS user interface, including the ability to create custom pages</description>
     <build>
       <plugins>
           <plugin>
@@ -27,7 +28,7 @@
           <plugin>
               <groupId>com.github.eirslett</groupId>
               <artifactId>frontend-maven-plugin</artifactId>
-              <version>1.4</version>
+              <version>1.6</version>
               <executions>
                   <execution>
                       <id>Install node and npm</id>
@@ -48,32 +49,27 @@
                       </configuration>
                   </execution>
                   <execution>
-                      <id>Run gulp copy-vendor</id>
+                      <id>Run gulp build-docs</id>
                       <goals>
                           <goal>gulp</goal>
                       </goals>
                       <configuration>
-                          <arguments>copy-vendor</arguments>
-                          <!-- srcdir and outputdir only affect Eclipse -->
-                          <srcdir>${project.basedir}/bower_components</srcdir>
-                          <outputdir>${project.basedir}/web/vendor</outputdir>
+                          <arguments>build-docs</arguments>
+                          <!-- Eclipse only properties, Eclipse monitors these directories for changes -->
+                          <srcdir>${project.basedir}/web/ngMango</srcdir>
                       </configuration>
                   </execution>
                   <execution>
-                      <id>Run gulp copy-docs</id>
+                      <id>Run webpack</id>
                       <goals>
-                          <goal>gulp</goal>
+                          <goal>webpack</goal>
                       </goals>
                       <configuration>
-                          <arguments>copy-docs</arguments>
-                          <!-- srcdir and outputdir only affect Eclipse -->
-                          <srcdir>${project.basedir}/web/ngMango</srcdir>
-                          <outputdir>${project.basedir}/web/ui/views/docs</outputdir>
+                          <arguments>--mode production --config webpack.config.js</arguments>
                       </configuration>
                   </execution>
               </executions>
           </plugin>
       </plugins>
     </build>
-    <description>Provides an AngularJS user interface, including the ability to create custom pages</description>
 </project>
