@@ -106,7 +106,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
                 delete this.storeObject.$promise;
                 delete this.storeObject.$resolved;
             } else {
-                this.storeObject = this.defaultStoreObject();
+                this.storeObject = this.defaultMenuStore();
             }
             jsonStoreEventManager.subscribe(MA_UI_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler.bind(this));
         }
@@ -165,7 +165,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             } else {
                 this.storePromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(null, error => {
                     if (error.status === 404) {
-                        return this.defaultStoreObject();
+                        return this.defaultMenuStore();
                     }
                     delete this.storePromise;
                     return $q.reject(error);
