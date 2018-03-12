@@ -57,6 +57,7 @@
                           <arguments>build-docs</arguments>
                           <!-- Eclipse only properties, Eclipse monitors these directories for changes -->
                           <srcdir>${project.basedir}/web/ngMango</srcdir>
+                          <outputdir>${project.basedir}/docs</outputdir>
                       </configuration>
                   </execution>
                   <execution>
