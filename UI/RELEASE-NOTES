@@ -1,3 +1,6 @@
+*Version 3.3.5*
+* Fix call to incorrect method to create default menu
+
 *Version 3.3.4*
 * Fix labels not displaying on watch list chart
 * Fix incorrect queries from ma-point-query using $and
