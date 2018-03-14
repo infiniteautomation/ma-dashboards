@@ -1,3 +1,6 @@
+*Version 3.3.6*
+* Show relinquish button in ma-set-point-value component
+
 *Version 3.3.5*
 * Fix call to incorrect method to create default menu
 
