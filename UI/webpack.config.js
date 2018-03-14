@@ -138,7 +138,11 @@ module.exports = readPom(__dirname).then(pom => {
                 {
                     test: /angular-ui-sortable/,
                     include: /\.js$/,
-                    use: ['imports-loader?jqueryUiTouchPunch=jquery-ui-touch-punch-c']
+                    use: [{loader:'imports-loader', options: {
+                        jqueryUiTouchPunch: 'jquery-ui-touch-punch-c',
+                        jqueryUiSortable: 'jquery-ui/ui/widgets/sortable',
+                        jqueryUiDraggable: 'jquery-ui/ui/widgets/draggable'
+                    }}]
                 },
                 {
                     test: /angular-ui-ace/,
@@ -158,7 +162,7 @@ module.exports = readPom(__dirname).then(pom => {
                 {
                     test: /jquery-ui-touch-punch/,
                     include: /\.js$/,
-                    use: ['imports-loader?jqueryUi=jquery-ui']
+                    use: [{loader:'imports-loader', options: {jqueryUi: 'jquery-ui/ui/widgets/mouse'}}]
                 },
                 {
                     test: /mdPickers/,
