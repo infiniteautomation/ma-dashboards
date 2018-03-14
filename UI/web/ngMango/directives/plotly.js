@@ -25,7 +25,7 @@ class PlotlyController {
         this.$element = $element;
         this.element = $element[0];
         
-        this.plotlyPromise = import(/* webpackChunkName: "plotly" */ 'plotly.js').then(plotlyModule => {
+        this.plotlyPromise = import(/* webpackMode: "lazy", webpackChunkName: "plotly" */ 'plotly.js').then(plotlyModule => {
             return plotlyModule.default;
         });
     }

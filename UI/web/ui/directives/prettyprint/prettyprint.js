@@ -3,16 +3,20 @@
  * @author Jared Wiltshire
  */
 
-import {ace} from 'ace';
-
-var prettyprint = function(uiSettings) {
+prettyprint.$inject = ['maUiSettings', '$window', '$log'];
+function prettyprint(uiSettings, $window, $log) {
     return {
         restrict: 'C',
         scope: {
             prettyprintMode: '@'
         },
         link: function($scope, $element) {
-            $scope.editor = ace.edit($element[0]);
+            if (!$window.ace) {
+                $log.warn('Ace editor not found in window, pretty print not running');
+                return;
+            }
+            
+            $scope.editor = $window.ace.edit($element[0]);
             $scope.editor.setTheme('ace/theme/' + uiSettings.codeTheme);
             $scope.editor.getSession().setMode('ace/mode/' + ($scope.prettyprintMode || 'html'));
             $scope.editor.setShowPrintMargin(false);
@@ -27,8 +31,6 @@ var prettyprint = function(uiSettings) {
             $element[0].style.lineHeight = 1.7;
         }
     };
-};
-
-prettyprint.$inject = ['maUiSettings'];
+}
 
 export default prettyprint;

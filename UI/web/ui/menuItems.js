@@ -111,7 +111,7 @@ export default [
                 return Translate.loadNamespaces(['ui', 'common', 'pointEdit', 'rest']);
             }],
             loginTranslations: loadLoginTranslations,
-            ace: () => import('ace').then(aceModule => aceModule.promise),
+            ace: () => import(/* webpackMode: "lazy", webpackChunkName: "ace" */ 'ace').then(aceModule => aceModule.promise),
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './mainModule').then(() => {
@@ -195,7 +195,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.watchList" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './directives/watchList/watchListPage').then(watchListPage => {
                     angular.module('maUiWatchListState', [])
                         .directive('maUiWatchListPage', watchListPage.default);
@@ -218,7 +218,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.dataPointDetails" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './components/dataPointDetails/dataPointDetails').then(dataPointDetails => {
                     angular.module('maUiDataPointDetailsState', [])
                         .component('maUiDataPointDetails', dataPointDetails.default);
@@ -241,7 +241,7 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.events" */
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './components/eventsPage/eventsPage').then(eventsPage => {
                     angular.module('maUiEventsState', [])
                         .component('maUiEventsPage', eventsPage.default);

@@ -145,11 +145,6 @@ module.exports = readPom(__dirname).then(pom => {
                     }}]
                 },
                 {
-                    test: /angular-ui-ace/,
-                    include: /\.js$/,
-                    use: ['imports-loader?ace']
-                },
-                {
                     test: /ace-builds/,
                     include: /\.js$/,
                     use: ['imports-loader?requirejs=>window.requirejs,require=>window.require,define=>window.define']
@@ -198,18 +193,18 @@ module.exports = readPom(__dirname).then(pom => {
         optimization: {
             splitChunks: {
                 chunks: 'all',
-                cacheGroups: {
-                    vendor: {
-                        test: /node_modules/,
-                        name: 'vendor',
-                        chunks: 'initial',
-                        enforce: true
-                    }
-                }
+//                cacheGroups: {
+//                    vendor: {
+//                        test: /node_modules/,
+//                        name: 'vendor',
+//                        chunks: 'initial',
+//                        enforce: true
+//                    }
+//                }
             },
-            runtimeChunk: {
-                name: 'manifest'
-            },
+//            runtimeChunk: {
+//                name: 'manifest'
+//            },
             minimizer: [
                 new UglifyJsPlugin({
                     test: /\.js($|\?)/,

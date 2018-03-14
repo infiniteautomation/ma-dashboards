@@ -13,15 +13,15 @@ const promise = new Promise((resolve, reject) => {
         ace = _ace;
         
         net.loadScript = function(path, callback) {
-            let promise;
-            if (path.indexOf('theme-') === 0) {
-                promise = import(/* webpackMode: "eager" */ 'ace-builds/src/theme-' + path.slice('theme-'.length));
-            } else if (path.indexOf('mode-') === 0) {
-                promise = import(/* webpackMode: "eager" */ 'ace-builds/src/mode-' + path.slice('mode-'.length));
-            } else if (path.indexOf('ext-') === 0) {
-                promise = import(/* webpackMode: "eager" */ 'ace-builds/src/ext-' + path.slice('ext-'.length));
-            } else if (path.indexOf('keybinding-') === 0) {
-                promise = import(/* webpackMode: "eager" */ 'ace-builds/src/keybinding-' + path.slice('keybinding-'.length));
+            let promise, index;
+            if ((index = path.indexOf('theme-')) >= 0) {
+                promise = import(/* webpackMode: "eager" */ 'ace-builds/src/theme-' + path.slice(index + 'theme-'.length));
+            } else if ((index = path.indexOf('mode-')) >= 0) {
+                promise = import(/* webpackMode: "eager" */ 'ace-builds/src/mode-' + path.slice(index + 'mode-'.length));
+            } else if ((index = path.indexOf('ext-')) >= 0) {
+                promise = import(/* webpackMode: "eager" */ 'ace-builds/src/ext-' + path.slice(index + 'ext-'.length));
+            } else if ((index = path.indexOf('keybinding-')) >= 0) {
+                promise = import(/* webpackMode: "eager" */ 'ace-builds/src/keybinding-' + path.slice(index + 'keybinding-'.length));
             }
             
             promise.then(callback);
