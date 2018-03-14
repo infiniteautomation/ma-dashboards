@@ -304,24 +304,46 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     	});
     };
 
-    Point.prototype.setValueResult = function(value, holdTimeout) {
-        holdTimeout = holdTimeout || 3000;
-        var result = {
+    Point.prototype.setValueResult = function(value, holdTimeout = 3000) {
+        return this.promiseResult(() => this.setValue(value), holdTimeout);
+    };
+
+    Point.prototype.relinquish = function() {
+        const xid = encodeURIComponent(this.xid);
+        return $http({
+            url: `/rest/v1/runtime-manager/relinquish/${xid}`,
+            method: 'POST',
+            
+        });
+    };
+    
+    Point.prototype.relinquishResult = function(holdTimeout = 3000) {
+        return this.promiseResult(() => this.relinquish(), holdTimeout);
+    };
+    
+    Point.prototype.promiseResult = function(action, holdTimeout) {
+        const result = {
             pending: true
         };
-        this.setValue(value).then(function() {
+        
+        action().then(data => {
             delete result.pending;
             result.success = true;
-            $timeout(function() {
+            result.data = data;
+            
+            $timeout(() => {
                 delete result.success;
             }, holdTimeout);
-        }, function(data) {
+        }, data => {
             delete result.pending;
             result.error = data;
-            $timeout(function() {
+            result.data = data;
+            
+            $timeout(() => {
                 delete result.error;
             }, holdTimeout);
         });
+        
         return result;
     };
 

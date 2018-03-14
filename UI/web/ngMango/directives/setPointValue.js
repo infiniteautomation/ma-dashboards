@@ -50,8 +50,8 @@ function setPointValue($injector) {
             labelExpression: '&?',
             showButton: '<?',
             setOnChange: '<?',
-            enablePopup: '@?'
-
+            enablePopup: '@?',
+            showRelinquish: '<?'
         },
         designerInfo: {
             translation: 'ui.components.setPointValue',
@@ -88,6 +88,8 @@ function SetPointValueController() {
             label: trs[1]
         });
     }.bind (this));
+    
+    this.showRelinquish = true;
 }
 
 SetPointValueController.prototype = Object.create(PointValueController.prototype);

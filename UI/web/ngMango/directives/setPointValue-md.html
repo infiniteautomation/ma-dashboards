@@ -27,6 +27,18 @@
                     <md-icon ng-if="$ctrl.result.error" class="md-primary">error</md-icon>
                 </div>
             </md-button>
+            
+            <md-button class="md-raised" ng-show="$ctrl.showRelinquish && ($ctrl.point.pointLocator.modelType === 'PL.BACNET_MSTP' || $ctrl.point.pointLocator.modelType === 'PL.BACNET_IP')"
+                       ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.relinqushResult.pending" ng-click="$ctrl.relinqushResult=$ctrl.point.relinquishResult()"
+                       ng-class="{'set-pending': $ctrl.relinqushResult.pending, 'set-success': $ctrl.relinqushResult.success, 'set-error': $ctrl.relinqushResult.error, 'md-warn': $ctrl.relinqushResult.error}"
+                       aria-label="{{'common.relinquish' | maTr}}">
+                <div layout="row" layout-align="center center">
+                    <span ma-tr="common.relinquish"></span>
+                    <md-progress-circular md-diameter="18px" md-mode="indeterminate" ng-if="$ctrl.relinqushResult.pending"></md-progress-circular>
+                    <md-icon ng-if="$ctrl.relinqushResult.success" class="md-primary">check</md-icon>
+                    <md-icon ng-if="$ctrl.relinqushResult.error" class="md-primary">error</md-icon>
+                </div>
+            </md-button>
         </div>
 
         <md-fab-speed-dial ng-if="$ctrl.enablePopup && $ctrl.enablePopup!== 'hide' && $ctrl.showStatsDialog" md-direction="{{$ctrl.enablePopup}}" md-open="$ctrl.isOpen"
