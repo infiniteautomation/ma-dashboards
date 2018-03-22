@@ -1,3 +1,6 @@
+*Version 3.4.0*
+* Upgraded to work with core version 3.4.x
+
 *Version 3.3.6*
 * Show relinquish button in ma-set-point-value component
 
@@ -56,7 +59,7 @@
 * Use data points v2 REST controller
 * Ability to choose date/time format and timezone when downloading point values from watchlist page
 * Update to AngularJS 1.6.7 and remove use of ocLazyLoad
-* Load the correct AngularJS locale file from a CDN according to the user's locale 
+* Load the correct AngularJS locale file from a CDN according to the user's locale
 * Ability to use refence ids in event table
 * Add zip upload and download to the file browser
 * Remove timeout for upload and download of files from file browser
