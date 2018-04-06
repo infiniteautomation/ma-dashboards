@@ -7,7 +7,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const readPom = require('./readPom');
 const updatePackage = require('./updatePackage');
 
@@ -24,9 +24,21 @@ module.exports = readPom(__dirname).then(pom => {
             rules: [
                 {
                     test: /\.html$/,
+                    exclude: /\.tmpl\.html$/,
                     use: [{
                         loader: 'html-loader',
                         options: {
+                            attrs: ['img:src', 'link:href']
+                        }
+                    }]
+                },
+                {
+                    test: /\.tmpl\.html$/,
+                    use: [{
+                        loader: 'html-loader',
+                        options: {
+                            attrs: ['img:src', 'link:href'],
+                            interpolate: true
                         }
                     }]
                 },
@@ -36,7 +48,7 @@ module.exports = readPom(__dirname).then(pom => {
                 },
                 {
                     test: /\.css$/,
-                    exclude: /interpolatedStyles\.css$/,
+                    exclude: [/[\\/]preBoot\.css$/, /interpolatedStyles\.css$/],
                     use: [
                         {
                             loader: 'style-loader',
@@ -57,6 +69,25 @@ module.exports = readPom(__dirname).then(pom => {
                         loader: 'file-loader',
                         options: {
                             name: 'images/[name].[ext]?v=[hash]'
+                        }
+                    }]
+                },
+                {
+                    test: /[\\/]manifest\.json$/,
+                    type: 'javascript/auto',
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]?v=[hash]'
+                        }
+                    }]
+                },
+                {
+                    test: /[\\/]preBoot\.css$/,
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]?v=[hash]'
                         }
                     }]
                 },
@@ -206,6 +237,11 @@ module.exports = readPom(__dirname).then(pom => {
         },
         plugins: [
             new CleanWebpackPlugin(['web/dist']),
+            new HtmlWebpackPlugin({
+                template: 'web/ui/index.tmpl.html',
+                filename: '../ui/index.html',
+                chunks: ['vendors~mangoUi~ngMango~ngMangoServices', 'vendors~mangoUi~ngMango', 'mangoUi']
+            }),
             new CopyWebpackPlugin([{from: 'vendor/amcharts/+(images|patterns)/**/*', to: ''}])
         ],
         output: {
