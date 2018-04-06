@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import 'ace-builds';
+import 'ace-builds/src/ace';
 import {require as requirejs} from 'requirejs';
 
 let ace;

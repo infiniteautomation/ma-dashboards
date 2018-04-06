@@ -41,8 +41,8 @@
     <div ng-cloak ng-if="::noApi" class="missing-module">mangoApi module is required.</div>
     <div ng-cloak ui-view ng-cloak layout="column" flex class="main-application" ng-class="stateNameClass"></div>
 
-    <script src="/modules/mangoUI/web/dist/vendors~ngMango~ngMangoServices~ui.js?v=${lastUpgrade?c}"></script>
-    <script src="/modules/mangoUI/web/dist/vendors~ngMango~ui.js?v=${lastUpgrade?c}"></script>
-    <script src="/modules/mangoUI/web/dist/ui.js?v=${lastUpgrade?c}"></script>
+    <script src="/modules/mangoUI/web/dist/vendors~mangoUi~ngMango~ngMangoServices.js?v=${lastUpgrade?c}"></script>
+    <script src="/modules/mangoUI/web/dist/vendors~mangoUi~ngMango.js?v=${lastUpgrade?c}"></script>
+    <script src="/modules/mangoUI/web/dist/mangoUi.js?v=${lastUpgrade?c}"></script>
 </body>
 </html>

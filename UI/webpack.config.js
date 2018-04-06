@@ -17,7 +17,7 @@ module.exports = readPom(__dirname).then(pom => {
         entry: {
             ngMangoServices: './web/ngMango/ngMangoServices.js',
             ngMango: './web/ngMango/ngMangoMaterial.js',
-            ui: './web/ui/app.js'
+            mangoUi: './web/ui/app.js'
         },
         module: {
             rules: [
@@ -189,37 +189,10 @@ module.exports = readPom(__dirname).then(pom => {
                 ace: path.join(__dirname, 'web/shims/ace')
             }
         },
-//        devtool: 'source-map',
         optimization: {
             splitChunks: {
-                chunks: 'all',
-//                cacheGroups: {
-//                    vendor: {
-//                        test: /node_modules/,
-//                        name: 'vendor',
-//                        chunks: 'initial',
-//                        enforce: true
-//                    }
-//                }
-            },
-//            runtimeChunk: {
-//                name: 'manifest'
-//            },
-            minimizer: [
-                new UglifyJsPlugin({
-                    test: /\.js($|\?)/,
-                    cache: true,
-                    parallel: true,
-//                    sourceMap: true,
-                    uglifyOptions: {
-                        ecma: 6,
-//                        beautify: false,
-//                        compress: true,
-//                        comments: false,
-//                        mangle: true
-                    }
-                })
-            ]
+                chunks: 'all'
+            }
         },
         plugins: [
             new CleanWebpackPlugin(['web/dist'])
@@ -229,6 +202,7 @@ module.exports = readPom(__dirname).then(pom => {
             path: path.resolve(__dirname, 'web', 'dist'),
             publicPath: `/modules/${packageJson.name}/web/dist/`,
             libraryTarget: 'umd',
+            //library: '[name]'
             library: packageJson.name
         }
     };
