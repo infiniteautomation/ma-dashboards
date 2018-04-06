@@ -110,7 +110,8 @@ import dataPointTagGroup from './components/dataPointTagGroup/dataPointTagGroup'
 import revisionSelect from './components/revisionSelect/revisionSelect';
 import 'ngmap';
 import slideUp from './animations/slideUp';
-import angular from 'angular';import moment from 'moment-timezone';
+import angular from 'angular';
+import moment from 'moment-timezone';
 import AmCharts from 'amcharts/amcharts';
 
 import './ngMango.css';

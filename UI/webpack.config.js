@@ -6,6 +6,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const readPom = require('./readPom');
 const updatePackage = require('./updatePackage');
@@ -75,7 +76,16 @@ module.exports = readPom(__dirname).then(pom => {
                 },
                 {
                     include: path.resolve(__dirname, 'vendor/amcharts/amcharts.js'),
-                    use: ['exports-loader?window.AmCharts']
+                    use: [
+                        {
+                            loader: 'imports-loader',
+                            options: {
+                                'windowTemp': '>window',
+                                'windowTemp.AmCharts_path': `>'/modules/${packageJson.name}/web/dist/vendor/amcharts'`,
+                            }
+                        },
+                        'exports-loader?window.AmCharts'
+                    ]
                 },
                 {
                     test: /\.js$/,
@@ -195,7 +205,8 @@ module.exports = readPom(__dirname).then(pom => {
             }
         },
         plugins: [
-            new CleanWebpackPlugin(['web/dist'])
+            new CleanWebpackPlugin(['web/dist']),
+            new CopyWebpackPlugin([{from: 'vendor/amcharts/+(images|patterns)/**/*', to: ''}])
         ],
         output: {
             filename: '[name].js?v=[chunkhash]',
