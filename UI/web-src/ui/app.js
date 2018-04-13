@@ -22,7 +22,7 @@ import '../docs/ngMango/js/docs-setup';
 import 'md-color-picker';
 import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
-import '../shims/exportAMD.js';
+import {moduleVersions} from '../shims/exportAMD.js';
 
 import 'angular-loading-bar/build/loading-bar.css';
 import 'md-color-picker/dist/mdColorPicker.css';
@@ -742,8 +742,10 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
         if (!response.data.urls || !Array.isArray(response.data.urls)) return;
 
         var urls = response.data.urls.map(function(url) {
-            // strip the version off for now
-            return url.replace(/^\/modules\/(.*?).js(?:\?v=.*)?$/, 'modules/$1');
+            return url.replace(/^\/modules\/(.*?)\/web\/(.*?).js(?:\?v=(.*))?$/, function(match, module, filename, version) {
+                moduleVersions[module] = version;
+                return `modules/${module}/web/${filename}`;
+            });
         });
 
         if (MA_UI_SETTINGS.userModule) {

@@ -11,6 +11,7 @@ window.requirejs = require;
 window.define = define;
 
 const modulePath = `/modules/${packageJson.name}/web`;
+const moduleVersions = {};
 
 const exposedVendorModules = {
     'angular': () => import(/* webpackMode: "eager" */ 'angular'),
@@ -73,7 +74,18 @@ require.config({
         if (url.indexOf('?v=') > 0 || url.indexOf('&v=') > 0 || url.match(/^(https?:)?\/\//i)) {
             return '';
         }
-        return (url.indexOf('?') > 0 ? '&' : '?') + 'v=' + (window.mangoLastUpgrade || packageJson.version);
+        
+        let version = window.mangoLastUpgrade || packageJson.version;
+        
+        const moduleMatches = id.match(/^modules\/(.+?)\//);
+        if (moduleMatches) {
+            const moduleVersion = moduleVersions[moduleMatches[1]];
+            if (moduleVersion) {
+                version = moduleVersion;
+            }
+        }
+        
+        return (url.indexOf('?') > 0 ? '&' : '?') + 'v=' + version;
     },
     paths : {
         'modules': '/modules',
@@ -106,3 +118,5 @@ define('import', [], () => {
         }
     };
 });
+
+export {moduleVersions};
