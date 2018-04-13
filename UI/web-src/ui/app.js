@@ -742,7 +742,8 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
         if (!response.data.urls || !Array.isArray(response.data.urls)) return;
 
         var urls = response.data.urls.map(function(url) {
-            return url.replace(/^\/modules\/(.*?).js$/, 'modules/$1');
+            // strip the version off for now
+            return url.replace(/^\/modules\/(.*?).js(?:\?v=.*)?$/, 'modules/$1');
         });
 
         if (MA_UI_SETTINGS.userModule) {
