@@ -16,15 +16,15 @@ module.exports = readPom(__dirname).then(pom => {
 }).then(packageJson => {
     return {
         entry: {
-            ngMangoServices: './web/ngMango/ngMangoServices.js',
-            ngMango: './web/ngMango/ngMangoMaterial.js',
-            mangoUi: './web/ui/app.js'
+            ngMangoServices: './web-src/ngMango/ngMangoServices.js',
+            ngMango: './web-src/ngMango/ngMangoMaterial.js',
+            mangoUi: './web-src/ui/app.js'
         },
         module: {
             rules: [
                 {
                     test: /\.html$/,
-                    exclude: /\.tmpl\.html$/,
+                    exclude: /[\\/]index\.html$/,
                     use: [{
                         loader: 'html-loader',
                         options: {
@@ -33,7 +33,7 @@ module.exports = readPom(__dirname).then(pom => {
                     }]
                 },
                 {
-                    test: /\.tmpl\.html$/,
+                    test: /[\\/]index\.html$/,
                     use: [{
                         loader: 'html-loader',
                         options: {
@@ -106,13 +106,13 @@ module.exports = readPom(__dirname).then(pom => {
                     loader: 'imports-loader?define=>false'
                 },
                 {
-                    include: path.resolve(__dirname, 'vendor/amcharts/amcharts.js'),
+                    include: path.resolve(__dirname, 'web-src/vendor/amcharts/amcharts.js'),
                     use: [
                         {
                             loader: 'imports-loader',
                             options: {
                                 'windowTemp': '>window',
-                                'windowTemp.AmCharts_path': `>'/modules/${packageJson.name}/web/dist/vendor/amcharts'`,
+                                'windowTemp.AmCharts_path': `>'/modules/${packageJson.name}/web/vendor/amcharts'`,
                             }
                         },
                         'exports-loader?window.AmCharts'
@@ -120,15 +120,15 @@ module.exports = readPom(__dirname).then(pom => {
                 },
                 {
                     test: /\.js$/,
-                    include: path.resolve(__dirname, 'vendor/amcharts'),
+                    include: path.resolve(__dirname, 'web-src/vendor/amcharts'),
                     exclude: [
-                        path.resolve(__dirname, 'vendor/amcharts/amcharts.js'),
-                        path.resolve(__dirname, 'vendor/amcharts/plugins/export/libs')
+                        path.resolve(__dirname, 'web-src/vendor/amcharts/amcharts.js'),
+                        path.resolve(__dirname, 'web-src/vendor/amcharts/plugins/export/libs')
                     ],
                     use: ['imports-loader?AmCharts=amcharts/amcharts', 'exports-loader?window.AmCharts']
                 },
                 {
-                    include: path.resolve(__dirname, 'vendor/amcharts/plugins/export/export.js'),
+                    include: path.resolve(__dirname, 'web-src/vendor/amcharts/plugins/export/export.js'),
                     use: [
                         {
                             loader: 'imports-loader',
@@ -151,7 +151,7 @@ module.exports = readPom(__dirname).then(pom => {
                     use: [{loader:'imports-loader', options: {JSZipSync: 'xlsx/dist/jszip'}}]
                 },
                 {
-                    include: path.resolve(__dirname, 'vendor/amcharts/plugins/export/libs/fabric.js/fabric.js'),
+                    include: path.resolve(__dirname, 'web-src/vendor/amcharts/plugins/export/libs/fabric.js/fabric.js'),
                     use: [{loader:'imports-loader', options: {require: '>undefined'}}]
                 },
                 {
@@ -224,10 +224,10 @@ module.exports = readPom(__dirname).then(pom => {
         },
         resolve: {
             alias: {
-                amcharts: path.join(__dirname, 'vendor/amcharts'),
-                localeList: path.join(__dirname, 'vendor/localeList.json'),
+                amcharts: path.join(__dirname, 'web-src/vendor/amcharts'),
+                localeList: path.join(__dirname, 'web-src/vendor/localeList.json'),
                 requirejs: 'requirejs/require',
-                ace: path.join(__dirname, 'web/shims/ace')
+                ace: path.join(__dirname, 'web-src/shims/ace')
             }
         },
         optimization: {
@@ -236,18 +236,18 @@ module.exports = readPom(__dirname).then(pom => {
             }
         },
         plugins: [
-            new CleanWebpackPlugin(['web/dist']),
+            new CleanWebpackPlugin(['web']),
             new HtmlWebpackPlugin({
-                template: 'web/ui/index.tmpl.html',
-                filename: '../ui/index.html',
+                template: 'web-src/ui/index.html',
+                filename: 'ui/index.html',
                 chunks: ['vendors~mangoUi~ngMango~ngMangoServices', 'vendors~mangoUi~ngMango', 'mangoUi']
             }),
-            new CopyWebpackPlugin([{from: 'vendor/amcharts/+(images|patterns)/**/*', to: ''}])
+            new CopyWebpackPlugin([{from: 'web-src/vendor/amcharts/+(images|patterns)/**/*', to: ''}])
         ],
         output: {
             filename: '[name].js?v=[chunkhash]',
-            path: path.resolve(__dirname, 'web', 'dist'),
-            publicPath: `/modules/${packageJson.name}/web/dist/`,
+            path: path.resolve(__dirname, 'web'),
+            publicPath: `/modules/${packageJson.name}/web/`,
             libraryTarget: 'umd',
             //library: '[name]'
             library: packageJson.name

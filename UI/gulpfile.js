@@ -12,22 +12,22 @@ gulp.task('default', ['build-docs']);
 gulp.task('build-docs', ['clean-docs'], function() {
     const gulpDocs = require('gulp-ngdocs');
 
-    console.log('Compiling docs into docs/ngMango');
+    console.log('Compiling docs into web-src/docs/ngMango');
 
     const options = {
         title: "Mango UI 3.x Documentation",
         html5Mode: false
     };
 
-    return gulp.src('web/ngMango/**/*.js')
+    return gulp.src('web-src/ngMango/**/*.js')
         .pipe(gulpDocs.process(options))
-        .pipe(gulp.dest('docs/ngMango'));
+        .pipe(gulp.dest('web-src/docs/ngMango'));
 });
 
 gulp.task('clean-docs', function() {
     console.log('Cleaning docs');
     
     return del([
-        'docs/**'
+        'web-src/docs/**'
     ]);
 });

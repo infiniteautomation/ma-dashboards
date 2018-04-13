@@ -2,7 +2,6 @@
 /maven-target
 /target
 /node_modules/
-/bower_components/
-/docs
 /node/
-/dist/
+/bower_components/
+/web/
