@@ -22,7 +22,7 @@
  *     or a comma separated list of folder names.
  * @param {expression} points Assignable expression to output the points in the hierarchy for the given path.
  *     Note, the points attribute must be present in order for points to be added to the hierarchy object.
- *     This point array can be used with a chart ([View Demo](/modules/mangoUI/web/ui/#/dashboard/examples/point-hierarchy/line-chart))
+ *     This point array can be used with a chart ([View Demo](examples/point-hierarchy/line-chart))
  * @param {boolean=} subfolders If set to `false`, `points` will only return points that are contained directly as children in the target folders.
  *     By default this is set to `true` and all descendant points are given, even those within subfolders. 
  *

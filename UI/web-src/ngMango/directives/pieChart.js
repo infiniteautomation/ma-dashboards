@@ -27,7 +27,7 @@ import 'amcharts/plugins/export/export.css';
  * @param {object=} options extend AmCharts configuration object for customizing design of the chart
  *     (see [amCharts](https://www.amcharts.com/demos/simple-pie-chart/))
  * @param {object=} value-labels For use with the multi state data point render map.
- *     (see [multi-state pie chart demo](/modules/mangoUI/web/ui/#/dashboard/examples/statistics/state-pie-chart))
+ *     (see [multi-state pie chart demo](examples/statistics/state-pie-chart))
  *
  * @usage
  * <ma-pie-chart style="height: 300px; width: 600px" values="[ { value: 30, text: 'hot', color: '#ff9300' }, { value: 70, text: 'cold', color: '#942192' } ]"
