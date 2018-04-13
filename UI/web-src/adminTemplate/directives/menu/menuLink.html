@@ -1,8 +1,0 @@
-<md-button class="menu-link" ng-click="$ctrl.followLink($event)" ng-class="{'menu-active': $ctrl.menuActive, 'md-accent': $ctrl.menuActive}" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | maTr)}}">
-  <a ng-href="{{$ctrl.href}}" class="menu-indent">
-    <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') === 0" class="menu-icon fa fa-fw {{$ctrl.item.menuIcon}}"></md-icon>
-    <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') !== 0" class="menu-icon">{{$ctrl.item.menuIcon}}</md-icon>
-    <span ng-if="$ctrl.item.menuText" class="menu-text">{{$ctrl.item.menuText}}</span>
-    <span ng-if="!$ctrl.item.menuText" class="menu-text" ma-tr="{{$ctrl.item.menuTr}}"></span>
-  </a>
-</md-button>

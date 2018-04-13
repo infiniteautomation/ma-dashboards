@@ -253,6 +253,14 @@ module.exports = readPom(__dirname).then(pom => {
             new CopyWebpackPlugin([{
                 context: 'web-src',
                 from: 'img/**/**'
+            }]),
+            new CopyWebpackPlugin([{
+                context: 'web-src',
+                from: 'ui/views/examples/layouts/*.html'
+            }]),
+            new CopyWebpackPlugin([{
+                context: 'web-src',
+                from: 'configs/**/*'
             }])
         ],
         output: {
