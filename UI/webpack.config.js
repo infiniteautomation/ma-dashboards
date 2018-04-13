@@ -68,7 +68,7 @@ module.exports = readPom(__dirname).then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: 'images/[name].[ext]?v=[hash]'
+                            name: 'img/[name].[ext]?v=[hash]'
                         }
                     }]
                 },
@@ -78,7 +78,7 @@ module.exports = readPom(__dirname).then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: '[name].[ext]?v=[hash]'
+                            name: 'ui/[name].[ext]?v=[hash]'
                         }
                     }]
                 },
@@ -87,7 +87,7 @@ module.exports = readPom(__dirname).then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: '[name].[ext]?v=[hash]'
+                            name: 'ui/styles/[name].[ext]?v=[hash]'
                         }
                     }]
                 },
@@ -242,7 +242,18 @@ module.exports = readPom(__dirname).then(pom => {
                 filename: 'ui/index.html',
                 chunks: ['vendors~mangoUi~ngMango~ngMangoServices', 'vendors~mangoUi~ngMango', 'mangoUi']
             }),
-            new CopyWebpackPlugin([{from: 'web-src/vendor/amcharts/+(images|patterns)/**/*', to: ''}])
+            new CopyWebpackPlugin([{
+                context: 'web-src',
+                from: 'vendor/amcharts/+(images|patterns)/**/*'
+            }]),
+            new CopyWebpackPlugin([{
+                context: 'web-src',
+                from: 'ui/img/**/*'
+            }]),
+            new CopyWebpackPlugin([{
+                context: 'web-src',
+                from: 'img/**/**'
+            }])
         ],
         output: {
             filename: '[name].js?v=[chunkhash]',
