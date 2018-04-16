@@ -7,7 +7,7 @@ const path = require('path');
 const xml2js = require('xml2js');
 const fs = require('fs');
 
-module.exports = function readPom(directory) {
+module.exports = function readPom(directory = path.resolve('.')) {
     return new Promise((resolve, reject) => {
         const parser = new xml2js.Parser();
         fs.readFile(path.join(directory, 'pom.xml'), function(err, data) {

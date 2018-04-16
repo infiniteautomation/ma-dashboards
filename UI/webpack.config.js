@@ -8,10 +8,10 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const readPom = require('./readPom');
-const updatePackage = require('./updatePackage');
+const readPom = require('./webpack/readPom');
+const updatePackage = require('./webpack/updatePackage');
 
-module.exports = readPom(__dirname).then(pom => {
+module.exports = readPom().then(pom => {
     return updatePackage(pom);
 }).then(packageJson => {
     return {
