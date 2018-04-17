@@ -69,10 +69,8 @@
     "xml2js": "^0.4.19"
   },
   "scripts": {
-    "build-docs": "gulp build-docs",
-    "build": "webpack --mode production --config webpack.config.js",
-    "build-dev": "webpack --mode development --config webpack.config.js",
-    "watch": "webpack --watch --mode development --config webpack.config.js"
+    "prewebpack": "gulp build-docs",
+    "webpack": "webpack --config webpack.config.js"
   },
   "author": "Jared Wiltshire <jared@infiniteautomation.com>",
   "license": "UNLICENSED",

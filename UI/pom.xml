@@ -11,17 +11,6 @@
 	<name>mangoUI</name>
 	<version>3.4.0-SNAPSHOT</version>
 	<description>Provides an AngularJS user interface, including the ability to create custom pages</description>
-	<properties>
-		<webpack.mode>production</webpack.mode>
-	</properties>
-	<profiles>
-		<profile>
-			<id>webpack-development</id>
-			<properties>
-				<webpack.mode>development</webpack.mode>
-			</properties>
-		</profile>
-	</profiles>
 	<build>
 		<plugins>
 			<plugin>
@@ -40,80 +29,7 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.6</version>
-				<executions>
-					<execution>
-						<id>Install node and npm</id>
-						<goals>
-							<goal>install-node-and-npm</goal>
-						</goals>
-						<configuration>
-							<nodeVersion>v8.9.4</nodeVersion>
-						</configuration>
-					</execution>
-					<execution>
-						<id>Run npm install</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<configuration>
-							<arguments>install</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>Run gulp build-docs</id>
-						<goals>
-							<goal>gulp</goal>
-						</goals>
-						<configuration>
-							<arguments>build-docs</arguments>
-							<!-- Eclipse only properties, Eclipse monitors these directories for 
-								changes -->
-							<srcdir>${project.basedir}/web/ngMango</srcdir>
-							<outputdir>${project.basedir}/docs</outputdir>
-						</configuration>
-					</execution>
-					<execution>
-						<id>Run webpack</id>
-						<goals>
-							<goal>webpack</goal>
-						</goals>
-						<configuration>
-							<arguments>--mode ${webpack.mode} --config webpack.config.js</arguments>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.github.eirslett</groupId>
-										<artifactId>frontend-maven-plugin</artifactId>
-										<versionRange>[1.6,)</versionRange>
-										<goals>
-											<goal>npm</goal>
-											<goal>gulp</goal>
-											<goal>webpack</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 </project>
