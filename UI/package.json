@@ -50,6 +50,7 @@
     "xlsx": "^0.12.5"
   },
   "devDependencies": {
+    "@infinite-automation/mango-module-tools": "^1.0.0",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.10",

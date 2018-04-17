@@ -8,8 +8,8 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const readPom = require('./webpack/readPom');
-const updatePackage = require('./webpack/updatePackage');
+const readPom = require('@infinite-automation/mango-module-tools/readPom');
+const updatePackage = require('@infinite-automation/mango-module-tools/updatePackage');
 
 module.exports = readPom().then(pom => {
     return updatePackage(pom);
