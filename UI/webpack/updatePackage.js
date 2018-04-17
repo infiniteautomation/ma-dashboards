@@ -20,11 +20,11 @@ module.exports = function updatePackage(pom, directory = path.resolve('.')) {
     }).then(packageJsonString => {
         const packageJson = JSON.parse(packageJsonString);
         
-        if (packageJson['com_infiniteautomation'] == null) {
-            packageJson['com_infiniteautomation'] = {};
+        if (packageJson.com_infiniteautomation == null) {
+            packageJson.com_infiniteautomation = {};
         }
         
-        packageJson['com_infiniteautomation'].moduleName = pom.project.name[0];
+        packageJson.com_infiniteautomation.moduleName = pom.project.name[0];
         packageJson.name = '@infinite-automation/' + pom.project.name[0];
         packageJson.version = pom.project.version[0];
         packageJson.description = pom.project.description[0];

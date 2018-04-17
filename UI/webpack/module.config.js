@@ -12,7 +12,7 @@ const updatePackage = require('./updatePackage');
 module.exports = readPom().then(pom => {
     return updatePackage(pom);
 }).then(packageJson => {
-    const moduleName = packageJson['com_infiniteautomation'].moduleName;
+    const moduleName = packageJson.com_infiniteautomation.moduleName;
     return {
         entry: {
             [moduleName]: `./web-src/${moduleName}.js`

@@ -14,6 +14,7 @@ const updatePackage = require('./webpack/updatePackage');
 module.exports = readPom().then(pom => {
     return updatePackage(pom);
 }).then(packageJson => {
+    const moduleName = packageJson.com_infiniteautomation.moduleName;
     return {
         entry: {
             ngMangoServices: './web-src/ngMango/ngMangoServices.js',
@@ -112,7 +113,7 @@ module.exports = readPom().then(pom => {
                             loader: 'imports-loader',
                             options: {
                                 'windowTemp': '>window',
-                                'windowTemp.AmCharts_path': `>'/modules/${packageJson.name}/web/vendor/amcharts'`,
+                                'windowTemp.AmCharts_path': `>'/modules/${moduleName}/web/vendor/amcharts'`,
                             }
                         },
                         'exports-loader?window.AmCharts'
@@ -266,10 +267,10 @@ module.exports = readPom().then(pom => {
         output: {
             filename: '[name].js?v=[chunkhash]',
             path: path.resolve(__dirname, 'web'),
-            publicPath: `/modules/${packageJson.name}/web/`,
+            publicPath: `/modules/${moduleName}/web/`,
             libraryTarget: 'umd',
             //library: '[name]'
-            library: packageJson.name
+            library: moduleName
         }
     };
 });

@@ -79,5 +79,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/infiniteautomation/ma-dashboards.git"
+  },
+  "com_infiniteautomation": {
+    "moduleName": "mangoUI"
   }
 }
