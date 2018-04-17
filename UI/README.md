@@ -14,7 +14,7 @@ You will need [Node.js](https://nodejs.org/) and npm.
 
 Then run:
 1. `npm install`
-2. `npm run-script build-docs`
-3. `npm run-script build-dev`
+2. `npm run-script webpack -- --mode development`
 
-The `build-dev` will run Webpack using the development mode.
+This will run Webpack using the development mode. You may also want to try Webpack's `watch` option:
+1. `npm run-script webpack -- --mode development --watch`
