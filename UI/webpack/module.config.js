@@ -12,9 +12,10 @@ const updatePackage = require('./updatePackage');
 module.exports = readPom().then(pom => {
     return updatePackage(pom);
 }).then(packageJson => {
+    const moduleName = packageJson['com_infiniteautomation'].moduleName;
     return {
         entry: {
-            [packageJson.name]: `./web-src/${packageJson.name}.js`
+            [moduleName]: `./web-src/${moduleName}.js`
         },
         module: {
             rules: [
@@ -77,10 +78,10 @@ module.exports = readPom().then(pom => {
         output: {
             filename: '[name].js?v=[chunkhash]',
             path: path.resolve('web'),
-            publicPath: `/modules/${packageJson.name}/web/`,
+            publicPath: `/modules/${moduleName}/web/`,
             libraryTarget: 'umd',
             libraryExport: 'default',
-            library: packageJson.name
+            library: moduleName
         },
         externals: {
             'angular': 'angular',

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "mangoUI",
+  "name": "@infinite-automation/mangoUI",
   "version": "3.4.0-SNAPSHOT",
   "description": "Provides an AngularJS user interface, including the ability to create custom pages",
   "main": "index.js",
