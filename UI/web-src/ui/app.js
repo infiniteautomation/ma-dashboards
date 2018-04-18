@@ -205,7 +205,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     var docsParent = {
         name: 'ui.docs',
         url: '/docs',
-        menuText: 'API Docs',
+        menuTr: 'ui.dox.apiDocs',
         menuIcon: 'book',
         menuHidden: true,
         submenu: true,
@@ -237,20 +237,27 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
 
     // Create module menu items & states
     modules.forEach(function(item, index, array) {
-        var dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
+        const dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
 
-        var menuText = item;
-        if (item==='ngMango') { menuText = 'Components'; }
-        else if (item==='ngMangoFilters') { menuText = 'Filters'; }
-        else if (item==='ngMangoServices') { menuText = 'Services'; }
+        let menuProperty = 'menuTr';
+        let menuValue;
+        
+        if (item === 'ngMango') {
+            menuValue = 'ui.dox.components';
+        } else if (item === 'ngMangoFilters') {
+            menuValue = 'ui.dox.filters';
+        } else if (item === 'ngMangoServices') {
+            menuValue = 'ui.dox.services';
+        } else {
+            menuValue = item;
+            menuProperty = 'menuText';
+        }
 
-        var menuItem = {
+        apiDocsMenuItems.push({
             name: 'ui.docs.' + item,
             url: '/' + dashCaseUrl,
-            menuText: menuText
-        };
-
-        apiDocsMenuItems.push(menuItem);
+            [menuProperty]: menuValue
+        });
     });
 
     // Create 3rd level directives/services/filters docs pages

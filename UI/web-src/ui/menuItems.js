@@ -1547,7 +1547,7 @@ export default [
             }
         },
         url: '/adaptive-layouts',
-        menuText: 'Adaptive Layouts'
+        menuTr: 'ui.dox.adaptiveLayouts'
     },
     {
         name: 'ui.examples.utilities',
@@ -1608,7 +1608,7 @@ export default [
             }
         },
         url: '/google-maps',
-        menuText: 'Google Maps'
+        menuTr: 'ui.dox.googleMaps'
     },
     {
         name: 'ui.examples.svg',
