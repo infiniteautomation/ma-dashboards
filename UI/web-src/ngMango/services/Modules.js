@@ -99,7 +99,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
     
     Modules.zipMimeTypes = ['application/zip', 'application/x-zip-compressed'];
 
-    Modules.uploadZipFiles = function(files) {
+    Modules.uploadZipFiles = function(files, restart = false) {
         return $q.resolve().then(() => {
             const formData = new FormData();
             
@@ -115,6 +115,9 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
                 headers: {
                     'Content-Type': undefined
                 },
+                params: {
+                    restart
+                }
             }).then(response => response.data);
         });
     };
