@@ -919,3 +919,8 @@ ma-point-browser .ma-point-browser-progress > md-progress-linear > div.md-contai
 ma-point-browser ma-data-point-tag-group {
 	padding: 0 8px;
 }
+
+.ma-drag-over {
+	border: 2px dashed lightgrey;
+	opacity: 0.5;
+}

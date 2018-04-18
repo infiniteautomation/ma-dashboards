@@ -333,10 +333,24 @@ FileStoreBrowserController.prototype.uploadFiles = function(event) {
 	this.$element.find('input[type=file]').trigger('click');
 };
 
-FileStoreBrowserController.prototype.uploadFilesChanged = function(event, allowZip = true) {
-	const files = event.target.files;
-	if (!files.length) return;
 
+FileStoreBrowserController.prototype.uploadFilesChanged = function(event, allowZip = true) {
+    const files = event.target.files;
+    if (!files.length) return;
+    this.uploadFiles(files, allowZip);
+};
+
+FileStoreBrowserController.prototype.fileDropped = function(data) {
+    const types = data.getDataTransferTypes();
+    if (types && types.length && types[0] === 'Files') {
+        const files = data.getDataTransfer();
+        if (files && files.length) {
+            this.uploadFiles(files);
+        }
+    }
+};
+
+FileStoreBrowserController.prototype.uploadFiles = function(files, allowZip = true) {
 	this.uploadPromise = this.$q.when().then(() => {
 	    if (allowZip && files.length === 1) {
 	        const file = files[0];
