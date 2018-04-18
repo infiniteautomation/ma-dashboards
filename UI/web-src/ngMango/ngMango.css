@@ -504,6 +504,18 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
 
 /* Popup Icons / Event Icon */
 
+ma-point-value .ma-point-value-status-icon {
+
+}
+
+ma-point-value .ma-point-value-status-icon md-icon {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	min-width: 18px;
+	min-height: 18px;
+}
+
 ma-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item,
 ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item {
   -webkit-transition: all .1s cubic-bezier(.55,0,.55,.2);

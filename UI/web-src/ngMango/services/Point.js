@@ -418,16 +418,17 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         this.lastPayload = payload;
         
         this.enabled = !!payload.enabled;
-        if (payload.value) {
+        if (payload.value != null) {
             var valueRenderer = this.valueRenderer(payload.value.value);
             var color = valueRenderer ? valueRenderer.color : null;
 
             this.value = payload.value.value;
             this.time = payload.value.timestamp;
             this.renderedColor = color;
+            
+            this.convertedValue = payload.convertedValue;
+            this.renderedValue = payload.renderedValue;
         }
-        this.convertedValue = payload.convertedValue;
-        this.renderedValue = payload.renderedValue;
         
         if (payload.attributes) {
             this.unreliable = !!payload.attributes.UNRELIABLE;

@@ -3,13 +3,19 @@
 <img ng-if="$ctrl.resolvedDisplayType === 'image'" ng-style="$ctrl.valueStyle" ng-class="classes" class="value" ng-src="{{$ctrl.point.value}}" alt="Image point value">
 <span ng-if="$ctrl.point && !$ctrl.point.enabled" class="disabled-text" ma-tr="common.disabled"></span>
 
-<md-button class="md-warn md-icon-button event-indicator"
-            md-no-ink="true" ng-if="$ctrl.disableEventPopup && !$ctrl.hideEventIndicator && $ctrl.activeEvents > 0">
+<span ng-if="$ctrl.point.unreliable" class="ma-point-value-status-icon">
+    <md-icon class="md-warn">build</md-icon>
+    <md-tooltip md-direction="top">
+        <span ma-tr="ui.components.pointUnreliable"></span>
+    </md-tooltip>
+</span>
+
+<span ng-if="$ctrl.disableEventPopup && !$ctrl.hideEventIndicator && $ctrl.activeEvents > 0" class="ma-point-value-status-icon">
+    <md-icon class="md-warn">warning</md-icon>
     <md-tooltip md-direction="top">
         <span ma-tr="ui.components.hasActiveEvent"></span>
     </md-tooltip>
-    <md-icon>warning</md-icon>
-</md-button>
+</span>
 
 <md-button class="md-warn md-icon-button event-indicator" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'events')"
            md-no-ink="true" ng-if="!$ctrl.disableEventPopup && !$ctrl.hideEventIndicator && $ctrl.activeEvents > 0">
