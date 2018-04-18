@@ -505,7 +505,7 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
 /* Popup Icons / Event Icon */
 
 ma-point-value .ma-point-value-status-icon {
-
+	cursor: default;
 }
 
 ma-point-value .ma-point-value-status-icon md-icon {
