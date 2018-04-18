@@ -37,17 +37,15 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             if (options.bookend || options.bookend == null) {
                 body.bookend = true;
             }
-            
-            if (limit >= 0) {
-                body.limit = limit;
-            }
-            
+
             if (rollup === 'SIMPLIFY') {
                 if (isFinite(options.simplifyTolerance) && options.simplifyTolerance > 0) {
                     body.simplifyTolerance = options.simplifyTolerance;
                 } else {
                     body.simplifyTarget = isFinite(options.simplifyTarget) && options.simplifyTarget > 0 ? options.simplifyTarget : 1000;
                 }
+            } else if (limit >= 0) {
+                body.limit = limit;
             }
 
             const timezone = options.timezone || moment().tz();
