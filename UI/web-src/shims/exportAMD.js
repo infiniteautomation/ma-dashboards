@@ -10,6 +10,7 @@ window.require = require;
 window.requirejs = require;
 window.define = define;
 
+/* jshint camelcase: false */
 const moduleName = packageJson.com_infiniteautomation.moduleName;
 const modulePath = `/modules/${moduleName}/web`;
 const moduleVersions = {};
