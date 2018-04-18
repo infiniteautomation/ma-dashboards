@@ -113,6 +113,12 @@ PointValueController.prototype.valueChangeHandler = function(isPointChange) {
     } else {
         this.$element.addClass('point-disabled');
     }
+    
+    if (!this.point || !this.point.unreliable) {
+        this.$element.removeClass('point-unreliable');
+    } else {
+        this.$element.addClass('point-unreliable');
+    }
 
     var $element = this.$element;
     
