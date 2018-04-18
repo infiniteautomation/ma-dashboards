@@ -329,10 +329,9 @@ FileStoreBrowserController.prototype.deleteFile = function(event, file) {
 	}.bind(this));
 };
 
-FileStoreBrowserController.prototype.uploadFiles = function(event) {
+FileStoreBrowserController.prototype.uploadFilesButtonClicked = function(event) {
 	this.$element.find('input[type=file]').trigger('click');
 };
-
 
 FileStoreBrowserController.prototype.uploadFilesChanged = function(event, allowZip = true) {
     const files = event.target.files;

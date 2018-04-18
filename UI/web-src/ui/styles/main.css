@@ -1289,9 +1289,16 @@ ma-ui-modules-page md-card md-card-title md-card-title-text:only-child .md-subhe
 	padding-top: 0;
 }
 
-ma-ui-modules-page .ma-guid-and-release-channel,
-ma-ui-upgrade-page .ma-guid-and-release-channel {
+.ma-guid-and-release-channel {
 	padding: 8px 8px 8px 32px;
+}
+
+ma-ui-offline-upgrade-page md-progress-linear {
+}
+
+ma-ui-offline-upgrade-page div[ma-dropzone] {
+	border: 2px dashed lightgrey;
+	border-radius: 10px;
 }
 
 ma-ui-upgrade-page .description-column,

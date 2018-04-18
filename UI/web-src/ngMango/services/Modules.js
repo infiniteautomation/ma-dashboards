@@ -30,8 +30,8 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
             headers: {
                 'Accept': 'application/json'
             }
-        }).then(function(response) {
-            return response.data.map(function(module) {
+        }).then(response => {
+            return response.data.map(module => {
             	return new Module(module);
             });
         });
@@ -44,7 +44,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
             headers: {
                 'Accept': 'application/json'
             }
-        }).then(function(response) {
+        }).then(response => {
             return new Module(response.data);
         });
     };
@@ -53,9 +53,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
     	return $http({
             method: 'GET',
             url: modulesUrl + '/update-license-payload'
-        }).then(function(response) {
-            return response.data;
-        });
+        }).then(response => response.data);
     };
     
     Modules.downloadLicense = function(username, password) {
@@ -75,9 +73,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
             method: 'GET',
             url: modulesUrl + '/upgrades-available',
             timeout: storeTimeout
-        }).then(function(response) {
-            return response.data;
-        });
+        }).then(response => response.data);
     };
     
     Modules.doUpgrade = function(selectedInstalls, selectedUpgrades, backupBeforeDownload, restartAfterDownload) {
@@ -94,13 +90,33 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
             	backup: backupBeforeDownload,
             	restart: restartAfterDownload
             }
-        }).then(function(response) {
-            return response.data;
-        });
+        }).then(response => response.data);
     };
     
     Modules.restart = function() {
     	return maServer.restart();
+    };
+    
+    Modules.zipMimeTypes = ['application/zip', 'application/x-zip-compressed'];
+
+    Modules.uploadZipFiles = function(files) {
+        return $q.resolve().then(() => {
+            const formData = new FormData();
+            
+            Array.from(files)
+                .filter(file => this.zipMimeTypes.includes(file.type) || file.name.endsWith('.zip'))
+                .forEach(file => formData.append('files[]', file));
+
+            return $http({
+                method: 'POST',
+                url: modulesUrl + '/upload-upgrades',
+                data: formData,
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                },
+            }).then(response => response.data);
+        });
     };
     
     function Module(options) {
@@ -114,10 +130,10 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
             params: {
             	'delete': setDeleted == null ? true : !!setDeleted
             }
-        }).then(function(response) {
+        }).then(response => {
         	angular.extend(this, response.data);
             return this;
-        }.bind(this));
+        });
     };
 
     return Modules;

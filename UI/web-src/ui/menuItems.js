@@ -975,6 +975,29 @@ export default [
         }
     },
     {
+        name: 'ui.settings.modules.offlineUpgrade',
+        url: '/offline-upgrade',
+        views: {
+            '@ui.settings': {
+                template: '<ma-ui-offline-upgrade-page flex layout="column"><ma-ui-offline-upgrade-page>'
+            }
+        },
+        menuTr: 'ui.app.offlineUpgrades',
+        menuIcon: 'update',
+        permission: 'superadmin',
+        menuHidden: true,
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/offlineUpgradePage/offlineUpgradePage').then(offlineUpgradePage => {
+                    angular.module('maUiOfflineUpgradeState', [])
+                        .directive('maUiOfflineUpgradePage', offlineUpgradePage.default);
+                    $injector.loadNewModules(['maUiOfflineUpgradeState']);
+                });
+            }]
+        }
+    },
+    {
         name: 'ui.settings.fileStores',
         url: '/file-stores',
         template: '<ma-file-store-browser flex preview="true" ng-model="tmp"><ma-file-store-browser>',
