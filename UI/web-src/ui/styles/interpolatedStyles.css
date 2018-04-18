@@ -132,3 +132,7 @@ ma-ui-bulk-data-point-edit-page thead.ma-bulk-edit-controls tr.ma-bulk-edit-inpu
 ma-ui-bulk-data-point-edit-page table.md-table td.md-cell.ma-cell-modified {
 	background-color: {{getThemeColor('accent-hue-2-0.6')}};
 }
+
+.ma-drag-over {
+	border-color: {{getThemeColor('accent')}};
+}

@@ -1297,8 +1297,14 @@ ma-ui-offline-upgrade-page md-progress-linear {
 }
 
 ma-ui-offline-upgrade-page div[ma-dropzone] {
-	border: 2px dashed lightgrey;
+	border-style: dashed;
+	border-width: 2px;
 	border-radius: 10px;
+	opacity: 1;
+}
+
+ma-ui-offline-upgrade-page div[ma-dropzone]:not(.ma-drag-over) {
+	border-color: lightgrey;
 }
 
 ma-ui-upgrade-page .description-column,

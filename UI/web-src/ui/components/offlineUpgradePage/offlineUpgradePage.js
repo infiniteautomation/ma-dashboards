@@ -31,6 +31,7 @@ class OfflineUpgradePageController {
         
         this.$scope.$on('maWatchdog', (event, current, previous) => {
             if (current.status !== previous.status && current.status === 'LOGGED_IN') {
+                delete this.restarting;
                 this.$state.go('^');
             }
         });
@@ -67,6 +68,8 @@ class OfflineUpgradePageController {
     }
 
     fileDropped(data) {
+        if (this.uploading || this.restarting) return;
+        
         const types = data.getDataTransferTypes();
         if (types && types.length && types[0] === 'Files') {
             const files = data.getDataTransfer();
@@ -77,9 +80,11 @@ class OfflineUpgradePageController {
     uploadFiles(files) {
         this.uploading = true;
         
-        this.maModules.uploadZipFiles(files, this.restart).then(result => {
-            this.uploading = false;
-            if (this.restart) {
+        const restart = this.restart;
+        this.maModules.uploadZipFiles(files, restart).then(result => {
+            delete this.uploading;
+            if (restart) {
+                this.restarting = true;
                 this.maDialogHelper.toastOptions({
                     textTr: 'modules.restartScheduled',
                     hideDelay: 20000
@@ -90,7 +95,7 @@ class OfflineUpgradePageController {
                 });
             }
         }, error => {
-            this.uploading = false;
+            delete this.uploading;
             this.maDialogHelper.toastOptions({
                 textTr: ['ui.app.moduleZipFilesUploadError', error.mangoStatusText || '' + error],
                 hideDelay: 10000,

@@ -19,12 +19,12 @@
         <span ma-tr="ui.app.backToModules"></span>
     </md-button>
 
-    <md-button class="md-raised md-primary" href="/rest/v1/modules/update-license-payload?download=true" download="modules-manifest.json">
+    <md-button class="md-raised md-primary" href="/rest/v1/modules/update-license-payload?download=true" download="modules-manifest.json" target="_blank">
         <md-icon>file_download</md-icon>
         <span ma-tr="ui.app.downloadManifest"></span>
     </md-button>
     
-    <md-button class="md-raised md-primary" ng-click="$ctrl.uploadFilesButtonClicked($event)" ng-disabled="$ctrl.uploading">
+    <md-button class="md-raised md-primary" ng-click="$ctrl.uploadFilesButtonClicked($event)" ng-disabled="$ctrl.uploading || $ctrl.restarting">
         <md-icon>file_upload</md-icon>
         <span ma-tr="ui.app.uploadModuleZipFiles"></span>
     </md-button>
@@ -34,7 +34,7 @@
 
 <div layout="column" layout-align="start start" class="md-padding">
     <!-- <md-checkbox ng-model="$ctrl.backup"><span ma-tr="modules.versionCheck.advanced.backup"></span></md-checkbox> -->
-    <md-checkbox ng-model="$ctrl.restart" ng-disabled="$ctrl.uploading"><span ma-tr="ui.app.restartAfterUpload"></span></md-checkbox>
+    <md-checkbox ng-model="$ctrl.restart" ng-disabled="$ctrl.uploading || $ctrl.restarting"><span ma-tr="ui.app.restartAfterUpload"></span></md-checkbox>
 </div>
 
 <div ng-if="$ctrl.uploading">
