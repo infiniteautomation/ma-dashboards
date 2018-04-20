@@ -5,8 +5,8 @@
 
 import loginTemplate from './login.html';
 
-loginFactory.$inject = ['$state', 'maUser', '$rootScope', '$window'];
-function loginFactory($state, User, $rootScope, $window) {
+loginFactory.$inject = ['$state', 'maUser', '$rootScope', '$window', 'maUtil', '$cookies', '$http'];
+function loginFactory($state, User, $rootScope, $window, maUtil, $cookies, $http) {
     return {
         template: loginTemplate,
         scope: {},
@@ -20,13 +20,17 @@ function loginFactory($state, User, $rootScope, $window) {
             
             $scope.doLogin = function() {
                 $scope.loggingIn = true;
+
+                const xsrfCookie = $cookies.get($http.defaults.xsrfCookieName);
+                if (!xsrfCookie) {
+                    $cookies.put($http.defaults.xsrfCookieName, maUtil.uuid(), {path: '/'});
+                }
                 
-                var user = User.login({
+                User.login({
                     username: $scope.username,
                     password: $scope.password
-                });
-                user.$promise.then(function(user) {
-                    var redirectUrl = '/ui/';
+                }).$promise.then(function(user) {
+                    let redirectUrl = '/ui/';
                     if ($state.loginRedirectUrl) {
                         redirectUrl = $state.loginRedirectUrl;
                     } else if (user.mangoDefaultUri) {
