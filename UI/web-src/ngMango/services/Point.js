@@ -496,6 +496,14 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
             return `${key}=${tags[key]}`;
         }).join(', ');
     };
+    
+    Point.prototype.formatLabel = function formatLabel(includeTags = true, includeDeviceAndName = false) {
+        let label = `${this.deviceName} \u2014 ${this.name}`;
+        if (includeTags && this.hasTags()) {
+            label += ` [${this.formatTags(includeDeviceAndName)}]`;
+        }
+        return label;
+    };
 
     Point.bulk = BulkDataPointTemporaryResource;
     

@@ -96,7 +96,7 @@ function pointList(Point, $injector) {
             }, true);
 
             $scope.pointLabel = function(point) {
-                return point.deviceName + ' - ' + point.name;
+                return point && point.formatLabel();
             };
         }
     };

@@ -110,7 +110,7 @@ FilteringPointListController.prototype.$onInit = function() {
     }
     
     function defaultText(opts) {
-        return opts.$point.deviceName + ' \u2014 ' + opts.$point.name;
+        return opts.$point.formatLabel();
     }
 };
 
