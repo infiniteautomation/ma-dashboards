@@ -4,20 +4,20 @@
             <label ng-if="$ctrl.label" ng-bind="$ctrl.label"></label>
             <md-input-container flex ng-if="$ctrl.inputType === 'numeric'">
                 <input type="number" step="{{$ctrl.step}}" ng-model="$ctrl.inputValue"  aria-label="{{'common.value' | maTr}}"
-                       ng-disabled="!$ctrl.point.pointLocator.settable" md-select-on-focus>
+                       ng-disabled="!$ctrl.point.pointLocator.settable || !$ctrl.point.enabled" md-select-on-focus>
             </md-input-container>
             <md-input-container flex ng-if="$ctrl.inputType === 'text'">
                 <input type="text" ng-model="$ctrl.inputValue" aria-label="{{'common.value' | maTr}}"
-                       ng-disabled="!$ctrl.point.pointLocator.settable" md-select-on-focus>
+                       ng-disabled="!$ctrl.point.pointLocator.settable || !$ctrl.point.enabled" md-select-on-focus>
             </md-input-container>
             <md-select flex ng-if="$ctrl.inputType === 'select'"
                        ng-model="$ctrl.inputValue" ng-change="$ctrl.selectChanged()"
-                       ng-disabled="!$ctrl.point.pointLocator.settable" aria-label="{{'common.value' | maTr}}">
+                       ng-disabled="!$ctrl.point.pointLocator.settable || !$ctrl.point.enabled" aria-label="{{'common.value' | maTr}}">
                 <md-option ng-repeat="option in $ctrl.options track by option.id" ng-style="option.style" ng-value="option.id" ng-bind="option.label"></md-option>
             </md-select>
 
             <md-button type="submit" class="md-raised md-accent" ng-show="$ctrl.showButton"
-                       ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.result.pending" ng-click="$ctrl.result=$ctrl.point.setValueResult($ctrl.inputValue)"
+                       ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.result.pending || !$ctrl.point.enabled" ng-click="$ctrl.result=$ctrl.point.setValueResult($ctrl.inputValue)"
                        ng-class="{'set-pending': $ctrl.result.pending, 'set-success': $ctrl.result.success, 'set-error': $ctrl.result.error, 'md-warn': $ctrl.result.error}"
                        aria-label="{{'common.set' | maTr}}">
                 <div layout="row" layout-align="center center">
@@ -29,7 +29,7 @@
             </md-button>
             
             <md-button class="md-raised" ng-show="$ctrl.showRelinquish && ($ctrl.point.pointLocator.modelType === 'PL.BACNET_MSTP' || $ctrl.point.pointLocator.modelType === 'PL.BACNET_IP')"
-                       ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.relinqushResult.pending" ng-click="$ctrl.relinqushResult=$ctrl.point.relinquishResult()"
+                       ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.relinqushResult.pending || !$ctrl.point.enabled" ng-click="$ctrl.relinqushResult=$ctrl.point.relinquishResult()"
                        ng-class="{'set-pending': $ctrl.relinqushResult.pending, 'set-success': $ctrl.relinqushResult.success, 'set-error': $ctrl.relinqushResult.error, 'md-warn': $ctrl.relinqushResult.error}"
                        aria-label="{{'common.relinquish' | maTr}}">
                 <div layout="row" layout-align="center center">
