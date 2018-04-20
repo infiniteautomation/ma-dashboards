@@ -486,6 +486,17 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         }
     };
 
+    Point.prototype.hasTags = function hasTags() {
+        return !!Object.keys(this.tags || {}).length;
+    };
+    
+    Point.prototype.formatTags = function formatTags(includeDeviceAndName = false) {
+        const tags = includeDeviceAndName ? this.getTags() : (this.tags || {});
+        return Object.keys(tags).map(key => {
+            return `${key}=${tags[key]}`;
+        }).join(', ');
+    };
+
     Point.bulk = BulkDataPointTemporaryResource;
     
     return Point;
