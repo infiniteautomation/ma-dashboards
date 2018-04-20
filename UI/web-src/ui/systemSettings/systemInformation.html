@@ -7,6 +7,7 @@
     <md-option ng-value="3"><span ma-tr="systemSettings.upgradeState.releaseCandidate"></span></md-option>
     <md-option ng-value="4"><span ma-tr="systemSettings.upgradeState.production"></span></md-option>
   </ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="ui.settings.publiclyResolvableBaseUrl" key="publiclyResolvableBaseUrl"></ma-system-setting-editor>
   <div flex="100" flex-gt-md="50" layout layout-align="start center">
 	  <ma-system-setting-editor flex label-tr="systemSettings.lastUpgrade" key="lastUpgrade" type="INTEGER" input-type="date" ng-disabled="true"
 	  		on-init="lastUpgradeSetting = $ctrl">
@@ -16,5 +17,4 @@
 	  	<md-tooltip auto-hide="true" ma-tr="ui.app.setLastUpgradeToNow"></md-tooltip>
 	  </md-button>
   </div>
-  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="ui.settings.publiclyResolvableBaseUrl" key="publiclyResolvableBaseUrl"></ma-system-setting-editor>
 </div>
