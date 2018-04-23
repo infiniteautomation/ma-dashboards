@@ -18,9 +18,6 @@
 				<artifactId>gmavenplus-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 			</plugin>
 			<plugin>
