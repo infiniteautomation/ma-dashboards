@@ -371,12 +371,12 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             if (newValues === oldValues && newValues === undefined) return;
             
             chart.dataProvider = newValues;
-            checkEqualSpacing(true);
+            checkEqualSpacing();
             chart.validateData();
         }
         
         let dataEquallySpaced = true;
-        function checkEqualSpacing(dataChanged = false) {
+        function checkEqualSpacing(dataChanged = true) {
             // dont change anything if the user manually specified equalSpacing
             if ($scope.options && $scope.options.categoryAxis && $scope.options.categoryAxis.equalSpacing != null) return;
 
@@ -420,7 +420,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         	}
 
         	sortGraphs();
-        	checkEqualSpacing();
+        	checkEqualSpacing(false);
         	chart.validateNow(true);
         }
 
