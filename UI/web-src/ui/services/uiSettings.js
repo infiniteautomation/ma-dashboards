@@ -11,7 +11,8 @@ uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD
 function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
         MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION, MA_POINT_VALUES_CONFIG, $window) {
     
-    var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'userModuleName', 'mangoModuleNames'];
+    var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'userModuleName', 'mangoModuleNames',
+        'activeThemeObj'];
     var themeId = 0;
     var userThemeGenerated = false;
     
@@ -96,8 +97,8 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
             this.theming.setBrowserColor({
                 theme: this.activeTheme
             });
-            this.generateCustomStyles();
             this.activeThemeObj = this.theming.THEMES[this.activeTheme];
+            this.generateCustomStyles();
         },
         themeFromSettings: function themeFromSettings(themeName, themeSettings) {
             var theme = this.themingProvider.theme(themeName);
