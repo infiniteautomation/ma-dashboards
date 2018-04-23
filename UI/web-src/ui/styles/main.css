@@ -483,6 +483,19 @@ code:not(.highlight) {
 
 /* md-toolbar inside of md-card */
 
+.md-toolbar-tools {
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.md-toolbar-tools h1,
+.md-toolbar-tools h2,
+.md-toolbar-tools h3 {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 md-card md-toolbar,
 md-card md-toolbar .md-toolbar-tools,
 md-toolbar.small-toolbar,
