@@ -371,24 +371,28 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             if (newValues === oldValues && newValues === undefined) return;
             
             chart.dataProvider = newValues;
-            checkEqualSpacing();
+            checkEqualSpacing(true);
             chart.validateData();
         }
         
-        function checkEqualSpacing() {
-            if (options.categoryAxis.equalSpacing) return;
+        let dataEquallySpaced = true;
+        function checkEqualSpacing(dataChanged = false) {
+            // dont change anything if the user manually specified equalSpacing
+            if ($scope.options && $scope.options.categoryAxis && $scope.options.categoryAxis.equalSpacing != null) return;
 
-            if (chart.dataProvider) {
-                chart.categoryAxis.equalSpacing = !chart.dataProvider.map(function(dataItem, index, array) {
+            const onlyBarCharts = chart.graphs.every(g => g.type === 'column');
+            
+            if (dataChanged) {
+                dataEquallySpaced = !chart.dataProvider.map((dataItem, index, array) => {
                     if (index === 0) return null;
                     return dataItem.timestamp - array[index - 1].timestamp;
-                }).some(function(diff, index, array) {
+                }).some((diff, index, array) => {
                     if (index <= 1) return;
                     return diff !== array[index - 1];
                 });
-            } else {
-                chart.categoryAxis.equalSpacing = true;
             }
+            
+            chart.categoryAxis.equalSpacing = (onlyBarCharts || !chart.dataProvider) ? true : dataEquallySpaced;
         }
 
         function watchPointsAndGraphs(newValues, oldValues) {
@@ -416,6 +420,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         	}
 
         	sortGraphs();
+        	checkEqualSpacing();
         	chart.validateNow(true);
         }
 
