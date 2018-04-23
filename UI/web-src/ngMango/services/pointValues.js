@@ -31,20 +31,17 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
 
             body.from = from.toISOString();
             body.to = to.toISOString();
-            
-            const rollup = options.rollup;
-            
+
+            // bookend defaults to true
             if (options.bookend || options.bookend == null) {
                 body.bookend = true;
             }
 
-            if (rollup === 'SIMPLIFY') {
-                if (isFinite(options.simplifyTolerance) && options.simplifyTolerance > 0) {
-                    body.simplifyTolerance = options.simplifyTolerance;
-                } else {
-                    body.simplifyTarget = isFinite(options.simplifyTarget) && options.simplifyTarget > 0 ? options.simplifyTarget : 1000;
-                }
-            } else if (limit >= 0) {
+            if (isFinite(options.simplifyTolerance) && options.simplifyTolerance > 0) {
+                body.simplifyTolerance = options.simplifyTolerance;
+            } else if (isFinite(options.simplifyTarget) && options.simplifyTarget > 0) {
+                body.simplifyTarget =  options.simplifyTarget;
+            } else {
                 body.limit = limit;
             }
 
@@ -53,7 +50,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 body.timezone = timezone;
             }
 
-            if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
+            if (typeof options.rollup === 'string' && options.rollup !== 'NONE') {
+                // no bookend when using rollups
                 delete body.bookend;
                 
                 let timePeriodType = 'DAYS';
@@ -131,10 +129,9 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 let url = pointValuesUrl;
                 url += options.latest ? '/latest' : '/time-period';
                 url += '/' + encodeURIComponent(xid);
-                
-                const rollup = options.rollup;
-                if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
-                    url += '/' + encodeURIComponent(rollup);
+
+                if (typeof options.rollup === 'string' && options.rollup !== 'NONE') {
+                    url += '/' + encodeURIComponent(options.rollup);
                 }
                 
                 const data = optionsToPostBody(options, false);
@@ -196,9 +193,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 let url = pointValuesUrl + '/multiple-arrays';
                 url += options.latest ? '/latest' : '/time-period';
 
-                const rollup = options.rollup;
-                if (typeof rollup === 'string' && rollup !== 'NONE' && rollup !== 'SIMPLIFY') {
-                    url += '/' + encodeURIComponent(rollup);
+                if (typeof options.rollup === 'string' && options.rollup !== 'NONE') {
+                    url += '/' + encodeURIComponent(options.rollup);
                 }
                 
                 const data = optionsToPostBody(options);

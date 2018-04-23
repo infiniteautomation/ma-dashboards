@@ -43,6 +43,7 @@ import noDataForPeriod from '../img/noDataForPeriod.svg';
     <li>LAST</li>
     <li>COUNT</li>
     <li>INTEGRAL</li>
+    <li>SIMPLIFY</li>
 </ul>
  * @param {string=} rollup-interval The interval used with the rollup. Format the interval duration as a string starting
  *     with a number followed by one of these units:
@@ -66,9 +67,12 @@ import noDataForPeriod from '../img/noDataForPeriod.svg';
  *     parsing the values.
  * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of point values.
  *     If not supplied the Mango system default timeout will be used.
- * @param {boolean=} auto-rollup-interval If set to `true` the rollup interval will automatically be set based on the
+ * @param {boolean=} [auto-rollup-interval=false] If set to `true` the rollup interval will automatically be set based on the
  *     to-from duration and rollup type.  `DELTA` rollup type will have a more chunked rollup interval.
- *     If turned on the manually set `rollup-interval` value will be ignored (defaults to `false`).
+ *     If turned on the manually set `rollup-interval` value will be ignored.
+ * @param {number=} simplifyTolerance Only used if rollup is set to SIMPLIFY. Sets the tolerance for the simplify algorithm.
+ * @param {number=} [simplifyTarget=1000] Only used if rollup is set to SIMPLIFY and simplifyTolerance is not set.
+ *     Sets the target number of values for the simplify algorithm.
  * @usage
  *
 <ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
@@ -88,7 +92,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 rollup: {
                     defaultValue: '{{dateBar.rollupType}}',
                     options: ['NONE', 'AVERAGE', 'DELTA', 'MINIMUM', 'MAXIMUM', 'ACCUMULATOR',
-                        'SUM', 'FIRST', 'LAST', 'COUNT', 'INTEGRAL']
+                        'SUM', 'FIRST', 'LAST', 'COUNT', 'INTEGRAL', 'SIMPLIFY']
                 },
                 rollupInterval: {defaultValue: '{{dateBar.rollupIntervals + \' \' + dateBar.rollupIntervalPeriod}}'},
                 points: {defaultValue: 'designer.points'}
@@ -113,7 +117,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             autoRollupInterval: '<?',
             timezone: '@',
             onValuesUpdated: '&?',
-            simplifyTolerance: '<?'
+            simplifyTolerance: '<?',
+            simplifyTarget: '<?'
         },
         bindToController: {
             refresh: '<?'
@@ -467,12 +472,27 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         converted: dataType === 'NUMERIC' && $scope.converted,
                         rollupInterval: $scope.actualRollupInterval,
                         timeout: $scope.timeout,
-                        timezone: $scope.timezone,
-                        simplifyTolerance: $scope.simplifyTolerance
+                        timezone: $scope.timezone
                     };
-                    
+
                     if (options.rollup === 'POINT_DEFAULT') {
                         options.rollup = point.rollup;
+                        
+                        if (point.simplifyType === 'TARGET') {
+                            options.simplifyTarget = point.simplifyTarget;
+                        } else if (point.simplifyType === 'TOLERANCE') {
+                            options.simplifyTolerance = point.simplifyTolerance;
+                        }
+                    } else if (options.rollup === 'SIMPLIFY') {
+                        delete options.rollup;
+                        
+                        if (isFinite($scope.simplifyTolerance) && $scope.simplifyTolerance > 0) {
+                            options.simplifyTolerance = $scope.simplifyTolerance;
+                        } else if (isFinite($scope.simplifyTarget) && $scope.simplifyTarget > 0) {
+                            options.simplifyTarget =  $scope.simplifyTarget;
+                        } else {
+                            options.simplifyTarget = 1000;
+                        }
                     }
                     
                     return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
@@ -489,7 +509,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     return $q.reject(error);
                 }
             }
-        } // End link funciton
+        } // End link function
     };
 }
 
