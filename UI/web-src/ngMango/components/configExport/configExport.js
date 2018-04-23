@@ -16,6 +16,7 @@ function ConfigExportController(ImportExport, Util, Translate) {
     this.sectionsForExport = {};
     this.selectAllIndeterminate = false;
     this.indent = 2;
+    this.noSectionsSelected = true;
 }
 
 ConfigExportController.prototype.$onInit = function() {
@@ -30,6 +31,7 @@ ConfigExportController.prototype.selectAllChanged = function() {
         this.sectionsForExport[sectionName] = this.selectAll;
     }
     this.selectAllIndeterminate = false;
+    this.noSectionsSelected = !this.selectAll;
 };
 
 ConfigExportController.prototype.checkIndeterminate = function() {
@@ -43,6 +45,7 @@ ConfigExportController.prototype.checkIndeterminate = function() {
     }
     this.selectAllIndeterminate = anyChecked && !allChecked;
     this.selectAll = anyChecked;
+    this.noSectionsSelected = !anyChecked;
 };
 
 ConfigExportController.prototype.doExport = function(download) {

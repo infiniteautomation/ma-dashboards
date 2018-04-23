@@ -17,14 +17,14 @@
     <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="ui.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
   </md-card-content>
   <md-card-actions layout="row" layout-align="start center">
-    <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport()" ng-disabled="$ctrl.downloadStatus.downloading">
+    <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport()" ng-disabled="$ctrl.downloadStatus.downloading || $ctrl.noSectionsSelected">
       <div layout layout-align="start center">
         <md-icon ng-hide="$ctrl.downloadStatus.downloading === 'export'">file_download</md-icon>
         <md-progress-circular ng-show="$ctrl.downloadStatus.downloading === 'export'" md-mode="indeterminate" md-diameter="20"></md-progress-circular>
         <span ma-tr="emport.export"></span>
       </div>
     </md-button>
-    <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport(true)" ng-disabled="$ctrl.downloadStatus.downloading">
+    <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport(true)" ng-disabled="$ctrl.downloadStatus.downloading || $ctrl.noSectionsSelected">
       <div layout layout-align="start center">
         <md-icon ng-hide="$ctrl.downloadStatus.downloading === 'download'">file_download</md-icon>
         <md-progress-circular ng-show="$ctrl.downloadStatus.downloading === 'download'" md-mode="indeterminate" md-diameter="20"></md-progress-circular>
