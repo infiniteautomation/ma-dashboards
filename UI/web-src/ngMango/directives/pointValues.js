@@ -133,19 +133,19 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             };
         }],
         link: function ($scope, $element, attrs) {
-            var pendingRequest = null;
-            var values = {};
-            var tempValues = {};
-            var subscriptions = {};
+            let pendingRequest = null;
+            const values = {};
+            const tempValues = {};
+            const subscriptions = {};
 
-            var singlePoint = !attrs.points;
+            const singlePoint = !attrs.points;
             if ($scope.realtime === undefined) $scope.realtime = true;
 
-            $scope.$on('$destroy', function() {
+            $scope.$on('$destroy', () => {
             	unsubscribe();
             });
 
-            $scope.$watch('realtime', function(newValue, oldValue) {
+            $scope.$watch('realtime', (newValue, oldValue) => {
             	if (newValue !== oldValue) {
             		if (newValue) {
             			subscribe();
@@ -155,10 +155,10 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             	}
             });
 
-            $scope.$watch(function() {
-            	var xids = [];
+            $scope.$watch(() => {
+            	const xids = [];
             	if ($scope.points) {
-	            	for (var i = 0; i < $scope.points.length; i++) {
+	            	for (let i = 0; i < $scope.points.length; i++) {
 	            		if (!$scope.points[i]) continue;
 	            		xids.push($scope.points[i].xid);
 	            	}
@@ -179,8 +179,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     autoRollupInterval: $scope.autoRollupInterval,
                     simplifyTolerance: $scope.simplifyTolerance
             	};
-            }, function(newValue, oldValue) {
-            	var changedXids, i;
+            }, (newValue, oldValue) => {
+                let changedXids;
             	
             	// check initialization scenario
             	if (newValue === oldValue) {
@@ -192,8 +192,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
             	}
 
-            	for (i = 0; i < changedXids.removed.length; i++) {
-            		var removedXid = changedXids.removed[i];
+            	for (let i = 0; i < changedXids.removed.length; i++) {
+            		const removedXid = changedXids.removed[i];
                 	unsubscribe(removedXid);
 
                 	// delete values and temp values if they exist
@@ -205,8 +205,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 		delete $scope.values;
                 	} else if ($scope.values) {
                 		// remove values for xid from combined values
-                		for (var j = 0; j < $scope.values.length; j++) {
-                			var item = $scope.values[j];
+                		for (let j = 0; j < $scope.values.length; j++) {
+                			const item = $scope.values[j];
                 			delete item['value_' + removedXid];
                             delete item['value_' + removedXid + '_rendered'];
                 			// if this was the last value for this timestamp remove
@@ -218,14 +218,14 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 	}
             	}
 
-            	for (i = 0; i < changedXids.added.length; i++) {
+            	for (let i = 0; i < changedXids.added.length; i++) {
             		if ($scope.realtime && $scope.latest) {
             			subscribe(changedXids.added[i]);
             		}
             	}
 
             	if (!$scope.points || !$scope.points.length) return;
-            	var points = $scope.points.slice(0);
+            	const points = $scope.points.slice(0);
 
                 // Calculate rollups automatically based on to/from/type (if turned on)
                 if ($scope.autoRollupInterval) {
@@ -234,7 +234,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     $scope.actualRollupInterval = $scope.rollupInterval;
                 }
                 
-            	var promises = [];
+            	const promises = [];
 
             	// cancel existing requests if there are any
             	if (pendingRequest) {
@@ -242,9 +242,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             	    pendingRequest = null;
             	}
                 
-            	for (i = 0; i < points.length; i++) {
+            	for (let i = 0; i < points.length; i++) {
             		if (!points[i] || !points[i].xid) continue;
-            		var queryPromise;
+            		let queryPromise;
             		if (!points[i].pointLocator) {
             		    queryPromise = Point.get({xid: points[i].xid}).$promise.then(doQuery);
             		} else {
@@ -253,13 +253,13 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     promises.push(queryPromise);
             	}
             	
-            	pendingRequest = $q.all(promises).then(function(results) {
+            	pendingRequest = $q.all(promises).then(results => {
                 	if (!results.length) return;
 
-            		for (var i = 0; i < results.length; i++) {
-            		    var point = points[i];
-            			var pointXid = point.xid;
-            			var pointValues = results[i];
+            		for (let i = 0; i < results.length; i++) {
+            		    const point = points[i];
+            			const pointXid = point.xid;
+            			const pointValues = results[i];
 
             			pointValues.concat(tempValues[pointXid]);
                         delete tempValues[pointXid];
@@ -276,17 +276,17 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             		} else {
             			combineValues();
             		}
-            	}, function(error) {
+            	}, error => {
                     // consume error, most likely a cancel, timeouts will be captured by error interceptor
-            	}).then(function() {
+            	}).then(() => {
             	    pendingRequest = null;
             	});
             	
             }, true);
 
             if (singlePoint) {
-                var pointPromise;
-                $scope.$watch('pointXid', function(newXid, oldXid) {
+                let pointPromise;
+                $scope.$watch('pointXid', (newXid, oldXid) => {
                     if (newXid === oldXid && newXid === undefined) return;
                     
                     delete $scope.point;
@@ -297,13 +297,13 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
 
                     if (!newXid) return;
                     pointPromise = Point.get({xid: newXid}).$promise;
-                    pointPromise.then(function(point) {
+                    pointPromise.then(point => {
                         pointPromise = null;
                         $scope.point = point;
                     });
                 });
 
-                $scope.$watch('point.xid', function(newValue, oldValue) {
+                $scope.$watch('point.xid', (newValue, oldValue) => {
                     if (newValue === oldValue && newValue === undefined) return;
                     
                     if (newValue) {
@@ -315,23 +315,21 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             }
 
             function combineValues() {
-            	var combined = {};
+            	const combined = {};
             	
-            	for (var xid in values) {
-            		var seriesValues = values[xid];
+            	for (const xid in values) {
+            		const seriesValues = values[xid];
             		combineInto(combined, seriesValues, 'value_' + xid);
             	}
 
                 // convert object into array
-                var output = [];
-                for (var timestamp in combined) {
+                const output = [];
+                for (const timestamp in combined) {
                     output.push(combined[timestamp]);
                 }
 
                 // sort array by timestamp
-                output.sort(function(a,b) {
-                    return a.timestamp - b.timestamp;
-                });
+                output.sort((a, b) => a.timestamp - b.timestamp);
 
                 $scope.values = output;
                 if ($scope.onValuesUpdated)
@@ -341,9 +339,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             function combineInto(output, newValues, valueField) {
                 if (!newValues) return;
 
-                for (var i = 0; i < newValues.length; i++) {
-                    var value = newValues[i];
-                    var timestamp = value.timestamp;
+                for (let i = 0; i < newValues.length; i++) {
+                    const value = newValues[i];
+                    const timestamp = value.timestamp;
 
                     if (!output[timestamp]) {
                         output[timestamp] = {timestamp: timestamp};
@@ -358,7 +356,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
 
             function subscribe(xid) {
             	if (!xid) {
-            		for (var i = 0; i < $scope.points.length; i++) {
+            		for (let i = 0; i < $scope.points.length; i++) {
                 		if (!$scope.points[i]) continue;
             			subscribe($scope.points[i].xid);
             		}
@@ -371,7 +369,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
 
             function unsubscribe(xid) {
             	if (!xid) {
-            		for (var key in subscriptions) {
+            		for (const key in subscriptions) {
             			unsubscribe(key);
             		}
             	} else if (subscriptions[xid]) {
@@ -381,7 +379,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             }
 
             function websocketHandler(event, payload) {
-                $scope.$applyAsync(function() {
+                $scope.$applyAsync(() => {
                     if (!payload.value) return;
                     
                     let xid = payload.xid;
@@ -391,7 +389,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         point = $scope.point;
                     } else {
                         if (!$scope.points) return;
-                        $scope.points.some(function(pt) {
+                        $scope.points.some(pt => {
                             if (pt.xid === xid) {
                                 point = pt;
                                 return true;
@@ -430,14 +428,14 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     	    if ($scope.latest) {
                                 combineValues();
                     	    } else {
-                        		var last = $scope.values.slice(-1)[0];
+                        		const last = $scope.values.slice(-1)[0];
                         		if (last && last.time === item.timestamp) {
                         			last['value_' + xid] = item.value;
                         			if (item.rendered) {
                                         last['value_' + xid + '_rendered'] = item.rendered;
                         			}
                         		} else {
-                        			var newVal = {time: item.timestamp};
+                        			const newVal = {time: item.timestamp};
                         			newVal['value_' + xid] = item.value;
                                     if (item.rendered) {
                                         newVal['value_' + xid + '_rendered'] = item.rendered;
@@ -460,8 +458,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
 
             function doQuery(point) {
                 try {
-                    var dataType = point.pointLocator.dataType;
-                    var options = {
+                    const dataType = point.pointLocator.dataType;
+                    const options = {
                         latest: $scope.latest,
                         useCache: $scope.useCache,
                         dateFormat: $scope.dateFormat,
@@ -495,13 +493,13 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         }
                     }
                     
-                    return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
+                    return pointValues.getPointValuesForXid(point.xid, options).then(values => {
                         if (dataType === 'IMAGE') {
-                            for (var i = 0; i < values.length; i++) {
-                                if (values[i].annotation === 'No data for period') {
-                                    values[i].value = noDataForPeriod;
+                            values.forEach(value => {
+                                if (value.value == null) {
+                                    value.value = noDataForPeriod;
                                 }
-                            }
+                            });
                         }
                         return values;
                     });
