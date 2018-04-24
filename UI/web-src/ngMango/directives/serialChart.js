@@ -79,9 +79,9 @@ import 'amcharts/plugins/export/export.css';
  */
 serialChart.$inject = ['MA_AMCHARTS_DATE_FORMATS', 'maUtil', 'MA_DATE_FORMATS', '$timeout'];
 function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout) {
-	var MAX_SERIES = 10;
+	const MAX_SERIES = 10;
 
-	var scope = {
+	const scope = {
 		options: '<?',
 	    timeFormat: '@',
         timezone: '@',
@@ -109,7 +109,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         pointTitle: '&?'
 	};
 
-	for (var j = 1; j <= MAX_SERIES; j++) {
+	for (let j = 1; j <= MAX_SERIES; j++) {
 		scope['series' + j + 'Values'] = '<?';
 		scope['series' + j + 'Type'] = '@';
 		scope['series' + j + 'Title'] = '@';
@@ -212,7 +212,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
     function postLink($scope, $element, attrs) {
         $element.addClass('amchart');
         
-        var options = defaultOptions();
+        const options = defaultOptions();
 
         if ($scope.timeFormat) {
             options.categoryAxis.parseDates = false;
@@ -251,11 +251,11 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             };
         }
 
-        var valueArray = !!attrs.values;
+        const valueArray = !!attrs.values;
 
         $.extend(true, options, $scope.options);
 
-        var chart = AmCharts.makeChart($element[0], angular.copy(options));
+        const chart = AmCharts.makeChart($element[0], angular.copy(options));
         
         if ($scope.onChartInit) {
             $scope.onChartInit({$chart: chart});
@@ -286,17 +286,17 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             });
         }
 
-        chart.addListener('changed', function(event) {
+        chart.addListener('changed', event => {
             chart.lastCursorPosition = event.index;
         });
         
         if ($scope.graphItemClicked) {
-            chart.addListener('clickGraphItem', function(event) {
+            chart.addListener('clickGraphItem', event => {
                 $scope.graphItemClicked({$chart: chart, $event: event});
             });
         }
 
-        $scope.$watchCollection('trendLines', function(newValue, oldValue) {
+        $scope.$watchCollection('trendLines', (newValue, oldValue) => {
             if (newValue === oldValue && newValue === undefined) return;
             $scope.options.trendLines = newValue;
         });
@@ -314,7 +314,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             chart.validateNow();
         }, true);
 
-        $scope.$watch('options', function(newValue, oldValue) {
+        $scope.$watch('options', (newValue, oldValue) => {
             if (!newValue) return;
             
         	$.extend(true, chart, newValue);
@@ -336,8 +336,8 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             $scope.$watch('graphOptions', watchPointsAndGraphs, true);
         }
         
-        for (var i = 1; i <= MAX_SERIES; i++) {
-            var seriesAttributes = [
+        for (let i = 1; i <= MAX_SERIES; i++) {
+            const seriesAttributes = [
                 'series' + i + 'Type',
                 'series' + i + 'Title',
                 'series' + i + 'Color',
@@ -351,8 +351,8 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 seriesAttributes.push('series' + i + 'Point');
             }
             
-            var hasSeries = false;
-            for (var j = 0; j < seriesAttributes.length; j++) {
+            let hasSeries = false;
+            for (let j = 0; j < seriesAttributes.length; j++) {
                 if (attrs[seriesAttributes[j]] !== undefined) {
                     hasSeries = true;
                     break;
@@ -403,8 +403,8 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             }
 
         	if (newValues) {
-        	    var numGraphs = $scope.points && $scope.points.length || 0;
-        	    var graphOptionsLength = $scope.graphOptions && $scope.graphOptions.length || 0;
+        	    let numGraphs = $scope.points && $scope.points.length || 0;
+        	    const graphOptionsLength = $scope.graphOptions && $scope.graphOptions.length || 0;
         	    if (graphOptionsLength > numGraphs) {
         	        numGraphs = graphOptionsLength;
         	    }
@@ -412,8 +412,8 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         	        chart.graphs.pop();
         	    }
         	    
-            	for (var i = 0; i < newValues.length; i++) {
-            		var val = newValues[i];
+            	for (let i = 0; i < newValues.length; i++) {
+            		const val = newValues[i];
             		if (!val) continue;
             		setupGraph(i + 1);
             	}
@@ -425,9 +425,9 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         }
 
         function findGraph(propName, prop, removeGraph) {
-            for (var i = 0; i < chart.graphs.length; i++) {
+            for (let i = 0; i < chart.graphs.length; i++) {
                 if (chart.graphs[i][propName] === prop) {
-                	var graph = chart.graphs[i];
+                	const graph = chart.graphs[i];
                 	if (removeGraph) chart.graphs.splice(i, 1);
                 	return graph;
                 }
@@ -439,7 +439,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
 
         	if (graphNum === null) {
         	    // update all graphs
-        	    for (var i = 0; i < chart.graphs.length; i++) {
+        	    for (let i = 0; i < chart.graphs.length; i++) {
         	        setupGraph(chart.graphs[i]);
         	    }
         	} else {
@@ -463,7 +463,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         }
         
         function getPointForGraph(graphNum) {
-            var point = $scope['series' + graphNum + 'Point'];
+            let point = $scope['series' + graphNum + 'Point'];
             if (!point && $scope.points) {
                 point = $scope.points[graphNum - 1];
             }
@@ -471,7 +471,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         }
 
         function setupGraph(graphNum, point) {
-            var graph;
+            let graph;
             
             // first arg can be the graph itself
             if (typeof graphNum === 'object') {
@@ -485,7 +485,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 chart.graphs.push(graph);
             }
             
-        	var hardDefaults = {
+        	const hardDefaults = {
         	    graphNum: graphNum,
     	        id: 'series-' + graphNum,
                 valueField: 'value_' + graphNum,
@@ -494,7 +494,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 valueAxis: 'left',
                 clustered: false,
                 balloonFunction: function(dataItem, graph) {
-                    var valueForBalloon = dataItemToText(dataItem);
+                    const valueForBalloon = dataItemToText(dataItem);
                     if ($scope.annotateMode) {
                         return dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] ?
                                 dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] :
@@ -505,7 +505,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 }
         	};
 
-        	var pointDefaults;
+        	let pointDefaults;
             point = point || getPointForGraph(graphNum);
         	if (point) {
         	    pointDefaults = {
@@ -524,7 +524,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         	    }
         	}
 
-            var defaultAttributes = {
+            const defaultAttributes = {
                 type: $scope.defaultType,
                 lineColor: $scope.defaultColor,
                 lineThickness: $scope.lineThickness,
@@ -533,7 +533,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 customBullet: $scope.customBullet
             };
             
-        	var attributeOptions = {
+        	const attributeOptions = {
     	        title: $scope['series' + graphNum + 'Title'],
     	        type: $scope['series' + graphNum + 'Type'],
     	        lineColor: $scope['series' + graphNum + 'Color'],
@@ -541,10 +541,10 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 balloonText: $scope['series' + graphNum + 'BalloonText']
         	};
         	
-        	var graphOptions = $scope['series' + graphNum + 'GraphOptions'] ||
+        	const graphOptions = $scope['series' + graphNum + 'GraphOptions'] ||
         	    ($scope.graphOptions && $scope.graphOptions[graphNum - 1]);
 
-            var annotateOptions = {};
+        	let annotateOptions = {};
 
             if ($scope.annotateMode) {
                 annotateOptions = {
@@ -563,11 +563,11 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 };
             }
 
-            var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions,
+            const opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions,
                     defaultAttributes, attributeOptions, graphOptions, annotateOptions);
 
-            var graphAxis;
-            chart.valueAxes.some(function(axis) {
+            let graphAxis;
+            chart.valueAxes.some(axis => {
                 if (axis.id === opts.valueAxis) {
                     graphAxis = axis;
                     return true;
@@ -577,7 +577,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             if (opts.balloonText)
                 delete opts.balloonFunction;
             if (opts.fillAlphas === undefined) {
-                var isStacked = graphAxis && graphAxis.stackType && graphAxis.stackType !== 'none';
+                const isStacked = graphAxis && graphAxis.stackType && graphAxis.stackType !== 'none';
                 if (isStacked || opts.type === 'column') {
                     opts.fillAlphas = 0.7;
                 } else {
@@ -599,8 +599,8 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         
         function checkForAxisColors() {
               if ($scope.options && $scope.options.valueAxes) {
-                  var customAxisColors = false;
-                  $scope.options.valueAxes.some(function(axis, index, array) {
+                  let customAxisColors = false;
+                  $scope.options.valueAxes.some((axis, index, array) => {
                       if (axis.color) {
                             // Turn on custom color mode
                             customAxisColors = true;
@@ -616,19 +616,17 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         }
 
         function sortGraphs() {
-        	chart.graphs.sort(function(a, b) {
-                return a.graphNum - b.graphNum;
-            });
+        	chart.graphs.sort((a, b) => a.graphNum - b.graphNum);
         }
 
         function combine(output, newValues, valueField, point) {
             if (!newValues) return;
 
-            for (var i = 0; i < newValues.length; i++) {
-                var value = newValues[i];
-                var timestamp;
+            for (let i = 0; i < newValues.length; i++) {
+                const value = newValues[i];
+                let timestamp;
                 if ($scope.timeFormat) {
-                    var m = $scope.timezone ? moment.tz(value.timestamp, $scope.timezone) : moment(value.timestamp);
+                    const m = $scope.timezone ? moment.tz(value.timestamp, $scope.timezone) : moment(value.timestamp);
                     timestamp = m.format($scope.timeFormat);
                 } else {
                     timestamp = value.timestamp;
@@ -644,29 +642,26 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         }
 
         function updateValues() {
-        	var values = $scope.timeFormat ? {} : [];
+        	const values = {};
 
-        	for (var i = 1; i <= MAX_SERIES; i++) {
-        		var seriesValues = $scope['series' + i + 'Values'];
+        	for (let i = 1; i <= MAX_SERIES; i++) {
+        		const seriesValues = $scope['series' + i + 'Values'];
 
-        		var point = getPointForGraph(i);
-        		var valueField = 'value_' + (point ? point.xid : i);
+        		const point = getPointForGraph(i);
+        		const valueField = 'value_' + (point ? point.xid : i);
         		
         		combine(values, seriesValues, valueField, point);
         	}
 
-            // normalize sparse array or object into dense array
-            var output = [];
-            for (var timestamp in values) {
+            // copy from object into array
+            const output = [];
+            for (const timestamp in values) {
                 output.push(values[timestamp]);
             }
 
-            // XXX sparse array to dense array doesnt result in sorted array
-            // manually sort here
+            // sort array of values by timestamp
             if (output.length && typeof output[0].timestamp === 'number') {
-                output.sort(function(a,b) {
-                    return a.timestamp - b.timestamp;
-                });
+                output.sort((a, b) => a.timestamp - b.timestamp);
             }
 
             chart.dataProvider = output;
@@ -675,7 +670,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         }
 
         function isAllUndefined(a) {
-        	for (var i = 0; i < a.length; i++) {
+        	for (let i = 0; i < a.length; i++) {
         		if (a[i] !== undefined) return false;
         	}
         	return true;
@@ -683,12 +678,12 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         
         function dataItemToText(dataItem) {
             if (dataItem.dataContext) {
-                var graph = dataItem.graph;
+                const graph = dataItem.graph;
 
-                var value = extractField(dataItem.dataContext, graph.valueField);
+                const value = extractField(dataItem.dataContext, graph.valueField);
                 if (value) return value;
                 
-//                for (var i = dataItem.index - 1; i >= 0; i--) {
+//                for (const i = dataItem.index - 1; i >= 0; i--) {
 //                    value = extractField(chart.dataProvider[i], graph.valueField);
 //                    if (value) return value;
 //                }
@@ -697,10 +692,10 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         }
         
         function extractField(data, fieldName) {
-            var rendered = data[fieldName + '_rendered'];
+            const rendered = data[fieldName + '_rendered'];
             if (rendered) return rendered;
             
-            var value = data[fieldName];
+            const value = data[fieldName];
             if (value != null) {
                 return Util.pointValueToString(value);
             }

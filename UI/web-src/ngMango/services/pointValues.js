@@ -154,7 +154,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     responseType: options.responseType,
                     cache: !options.latest,
                     params: data
-                }).then(function(response) {
+                }).then(response => {
                     if (options.responseType) {
                         return response.data;
                     }
@@ -179,7 +179,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     }
                     
                     return values;
-                }.bind(this)).setCancel(canceler.resolve);
+                }).setCancel(canceler.resolve);
             } catch (error) {
                 return $q.reject(error);
             }
@@ -220,7 +220,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     },
                     data: data,
                     responseType: options.responseType
-                }).then(function(response) {
+                }).then(response => {
                     if (options.responseType) {
                         return response.data;
                     }
@@ -277,7 +277,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                     },
                     data: data,
                     responseType: options.responseType
-                }).then(function(response) {
+                }).then(response => {
                     if (options.responseType) {
                         return response.data;
                     }
