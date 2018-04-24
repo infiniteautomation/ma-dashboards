@@ -48,21 +48,20 @@
         <md-input-container>
             <md-icon>vpn_key</md-icon>
             <label ma-tr="users.newPassword"></label>
-            <input type="password" name="password" ng-model="$ctrl.user.password" minlength="8" ng-required="$ctrl.user.isNew" ma-validation-messages="$ctrl.validationMessages">
+            <input type="password" name="password" ng-model="$ctrl.password" minlength="8" ng-required="$ctrl.user.isNew" ma-validation-messages="$ctrl.validationMessages">
             <div ng-messages="$ctrl.userForm.password.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="minlength" ma-tr="ui.app.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.password.validationMessage"></div>
             </div>
         </md-input-container>
-        <md-input-container ng-show="$ctrl.user.password">
+        <md-input-container ng-show="!!$ctrl.password">
             <md-icon>vpn_key</md-icon>
             <label ma-tr="users.confirmNewPassword"></label>
-            <input type="password" name="confirmPassword" ng-model="$ctrl.user.confirmPassword" ng-pattern="$ctrl.regExpEscape($ctrl.user.password)" ng-required="!!$ctrl.user.password">
+            <input type="password" name="confirmPassword" ng-model="$ctrl.confirmPassword" ng-pattern="$ctrl.regExpEscape($ctrl.password)" ng-required="!!$ctrl.password">
             <div ng-messages="$ctrl.userForm.confirmPassword.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="pattern" ma-tr="ui.app.passwordsDoNotMatch"></div>
-                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.username.validationMessage"></div>
             </div>
         </md-input-container>
     </div>

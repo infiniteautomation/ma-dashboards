@@ -24,19 +24,16 @@ function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLoc
 UserEditorController.prototype.$onChanges = function(changes) {
     if (changes.originalUser && this.originalUser) {
         this.user = angular.copy(this.originalUser);
-        this.prepareUser(this.user);
         this.resetForm();
     }
 };
 
 UserEditorController.prototype.hashRegExp = /^\{(.*?)\}(.*)$/;
 
-UserEditorController.prototype.prepareUser = function(user) {
-    user.password = '';
-    user.confirmPassword = '';
-};
-
 UserEditorController.prototype.resetForm = function() {
+    this.password = '';
+    this.confirmPassword = '';
+    
     if (this.userForm) {
         this.userForm.$setPristine();
         this.userForm.$setUntouched();
@@ -45,6 +42,11 @@ UserEditorController.prototype.resetForm = function() {
 
 UserEditorController.prototype.save = function() {
     if (this.userForm.$valid) {
+        if (this.password) {
+            // always send algorithm prefix
+            this.user.password = '{PLAINTEXT}' + this.password;
+        }
+        
         this.user.saveOrUpdate({username: this.originalUser.username}).then(function(user) {
             var previous = angular.copy(this.originalUser);
             delete this.originalUser.isNew;
@@ -64,7 +66,6 @@ UserEditorController.prototype.save = function() {
             this.$mdToast.show(toast);
             
             this.onSave({$user: this.originalUser, $previous: previous});
-            this.prepareUser(user);
             this.resetForm();
         }.bind(this), function(response) {
             this.validationMessages = response.data.validationMessages;
@@ -83,7 +84,6 @@ UserEditorController.prototype.save = function() {
 
 UserEditorController.prototype.revert = function() {
     this.user = angular.copy(this.originalUser);
-    this.prepareUser(this.user);
     this.resetForm();
 };
 
