@@ -72,7 +72,8 @@ module.exports = readPom().then(pom => {
         plugins: [
             new CleanWebpackPlugin(['web']),
             new CopyWebpackPlugin([{
-                from: 'web-src/static/**/*'
+                context: 'web-src/static',
+                from: '**/*'
             }])
         ],
         output: {
