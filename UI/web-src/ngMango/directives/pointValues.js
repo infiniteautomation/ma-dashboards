@@ -58,7 +58,6 @@ import noDataForPeriod from '../img/noDataForPeriod.svg';
     <li>milliseconds</li>
 </ul>
  * @param {boolean=} rendered If set to `true` the values will be outputted in the points text rendered value format.
- * @param {boolean=} converted If set to `true` the values will be outputted in the points converted format.
  * @param {boolean=} timezone The output date will have the given timezone.
  * @param {boolean=} use-cache Set to true to use cached values.
  * @param {function=} on-values-updated Pass in a function or expression to be evaluated when the values update. (eg.
@@ -111,7 +110,6 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             rollup: '@',
             rollupInterval: '@',
             rendered: '<?',
-            converted: '<?',
             dateFormat: '@',
             timeout: '<?',
             autoRollupInterval: '<?',
@@ -175,7 +173,6 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             		rollup: $scope.rollup,
             		rollupInterval: $scope.rollupInterval,
             		rendered: $scope.rendered,
-                    converted: $scope.converted,
                     autoRollupInterval: $scope.autoRollupInterval,
                     simplifyTolerance: $scope.simplifyTolerance
             	};
@@ -401,7 +398,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 	let value;
                 	if (point.pointLocator.dataType === 'IMAGE') {
                 	    value = payload.value.value;
-                	} else if ($scope.converted && payload.convertedValue != null) {
+                	} else if (payload.convertedValue != null) {
                     	value = payload.convertedValue;
                     } else {
                     	value = payload.value.value;
@@ -467,7 +464,6 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         to: $scope.to,
                         rollup: $scope.rollup,
                         rendered: $scope.rendered,
-                        converted: dataType === 'NUMERIC' && $scope.converted,
                         rollupInterval: $scope.actualRollupInterval,
                         timeout: $scope.timeout,
                         timezone: $scope.timezone

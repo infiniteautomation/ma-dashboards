@@ -99,10 +99,16 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             throw new Error('Requires options.to and options.from or options.latest');
         }
         
-        if (options.rendered) {
-            body.fields = ['TIMESTAMP', 'VALUE', 'RENDERED'];
-        } else if (options.converted) {
-            body.unitConversion = true;
+        if (Array.isArray(options.fields)) {
+            body.fields = options.fields;
+        } else {
+            body.fields = ['TIMESTAMP', 'VALUE'];
+            if (options.rendered) {
+                body.fields.push('RENDERED');
+            }
+            if (options.annotation || options.annotation == null) {
+                body.fields.push('ANNOTATION');
+            }
         }
 
         if (options.useCache != null) {
@@ -112,11 +118,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 body.useCache = options.useCache ? 'BOTH' : 'NONE';
             }
         }
-        
-        if (Array.isArray(options.fields)) {
-            body.fields = options.fields;
-        }
-        
+
         return body;
     };
     

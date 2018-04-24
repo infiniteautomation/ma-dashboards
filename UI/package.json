@@ -69,7 +69,9 @@
   },
   "scripts": {
     "prewebpack": "gulp build-docs",
-    "webpack": "webpack --config webpack.config.js"
+    "webpack": "webpack --config webpack.config.js",
+    "webpack-dev": "webpack --config webpack.config.js --mode development",
+    "webpack-watch": "webpack --config webpack.config.js --mode development --watch"
   },
   "author": "Jared Wiltshire <jared@infiniteautomation.com>",
   "license": "UNLICENSED",
