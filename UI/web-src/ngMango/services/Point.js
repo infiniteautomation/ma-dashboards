@@ -199,8 +199,8 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="ui.
 /*
  * Provides service for getting list of points and create, update, delete
  */
-PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource'];
-function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource) {
+PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource', 'maRqlBuilder'];
+function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource, RqlBuilder) {
     
     class BulkDataPointTemporaryResource extends TemporaryRestResource {
         static get baseUrl() {
@@ -503,6 +503,16 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
             label += ` [${this.formatTags(includeDeviceAndName)}]`;
         }
         return label;
+    };
+    
+    Point.prototype.buildQuery = function buildQuery() {
+        const builder = new RqlBuilder();
+        builder.queryFunction = (queryObj, opts) => {
+            return this.query({
+                rqlQuery: queryObj.toString()
+            }, opts);
+        };
+        return builder;
     };
 
     Point.bulk = BulkDataPointTemporaryResource;
