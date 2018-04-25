@@ -47,7 +47,8 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
         	xid: '@',
             item: '=?',
             value: '=?',
-            itemLoaded: '&',
+            itemLoaded: '&?',
+            itemUpdated: '&?',
             path: '<?'
         },
         link: function ($scope, $element, attr) {
@@ -72,7 +73,12 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             	    }
             		return $q.reject();
             	}).then(function(item) {
-            	    $scope.itemLoaded({'$item': item});
+            	    if ($scope.itemLoaded) {
+            	        $scope.itemLoaded({$item: item});
+            	    }
+                    if ($scope.itemUpdated) {
+                        $scope.itemUpdated({$item: item, $firstLoad: true});
+                    }
             		return ($scope.item = item);
             	});
 
@@ -116,6 +122,10 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
                     // stops updates because of new objects etc
                     if (angular.equals(newData, oldData)) {
                         $scope.item.jsonData = oldData;
+                    }
+
+                    if ($scope.itemUpdated) {
+                        $scope.itemUpdated({$item: $scope.item, $firstLoad: false});
                     }
                 });
             }
