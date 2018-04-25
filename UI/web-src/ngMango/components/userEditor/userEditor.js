@@ -34,6 +34,8 @@ UserEditorController.prototype.resetForm = function() {
     this.password = '';
     this.confirmPassword = '';
     
+    delete this.validationMessages;
+    
     if (this.userForm) {
         this.userForm.$setPristine();
         this.userForm.$setUntouched();
@@ -43,8 +45,7 @@ UserEditorController.prototype.resetForm = function() {
 UserEditorController.prototype.save = function() {
     if (this.userForm.$valid) {
         if (this.password) {
-            // always send algorithm prefix
-            this.user.password = '{PLAINTEXT}' + this.password;
+            this.user.password = this.password;
         }
         
         this.user.saveOrUpdate({username: this.originalUser.username}).then(function(user) {
@@ -68,13 +69,20 @@ UserEditorController.prototype.save = function() {
             this.onSave({$user: this.originalUser, $previous: previous});
             this.resetForm();
         }.bind(this), function(response) {
-            this.validationMessages = response.data.validationMessages;
+            if (response.data && response.data.validationMessages) {
+                this.validationMessages = response.data.validationMessages;
+            }
+            
+            let errorText = this.Translate.trSync('ui.components.errorSavingUser', this.user.username);
+            if (response.mangoStatusText) {
+                errorText += ', ' + response.mangoStatusText;
+            }
             
             var toast = this.$mdToast.simple()
-                .textContent(this.Translate.trSync('ui.components.errorSavingUser', this.user.username))
+                .textContent(errorText)
                 .action(this.Translate.trSync('common.ok'))
                 .highlightAction(true)
-                .highlightClass('md-warn')
+                .toastClass('md-warn')
                 .position('bottom center')
                 .hideDelay(10000);
             this.$mdToast.show(toast);
