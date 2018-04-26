@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import query from 'rql/query';
-
 /**
 * @ngdoc service
 * @name ngMangoServices.maPointHierarchy
@@ -166,8 +164,10 @@ function PointHierarchyFactory($resource, Point) {
     };
     
     PointHierarchy.getPointsForFolderIds = function getPointsForFolderIds(folderIds) {
-        var ptQuery = new query.Query({name: 'in', args: ['pointFolderId'].concat(folderIds)});
-        return Point.query({rqlQuery: ptQuery.toString()}).$promise;
+        return Point.buildQuery()
+            .in('pointFolderId', folderIds)
+            .limit(10000)
+            .query();
     };
 
     PointHierarchy.walkHierarchy = function walkHierarchy(folder, fn, parent, index, depth = 0) {
