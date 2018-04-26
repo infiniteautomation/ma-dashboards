@@ -506,39 +506,52 @@ ma-point-value.ma-flash-on-change.ma-point-value-changed {
 
 ma-point-value .ma-point-value-status-icon {
 	cursor: default;
+  	padding: 2px;
+  	margin: 2px;
+  	width: 24px;
+  	height: 24px;
+  	min-width: 24px;
+  	min-height: 24px;
 }
 
 ma-point-value .ma-point-value-status-icon md-icon {
-	font-size: 18px;
-	width: 18px;
-	height: 18px;
-	min-width: 18px;
-	min-height: 18px;
+   	padding: 0;
+	margin: 0;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	min-width: 20px;
+	min-height: 20px;
 }
 
 ma-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item,
 ma-set-point-value md-fab-speed-dial.md-right md-fab-actions .md-fab-action-item {
-  -webkit-transition: all .1s cubic-bezier(.55,0,.55,.2);
-  transition: all .1s cubic-bezier(.55,0,.55,.2);
+  -webkit-transition-duration: 0.2s;
+  transition-duration: 0.2s;
 }
+
 ma-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-item .md-button,
 ma-set-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-item .md-button,
 ma-point-value .md-button.event-indicator {
-  padding: 3px 0 0;
-  margin: 1px 3px;
+  border-radius: 0;
+  padding: 2px;
+  margin: 2px;
   width: 24px;
   height: 24px;
   min-width: 24px;
   min-height: 24px;
-  border-radius: 0;
 }
 
 ma-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-item md-icon,
 ma-set-point-value md-fab-speed-dial md-fab-actions#popup-btns .md-fab-action-item md-icon,
 ma-point-value .md-button.event-indicator md-icon {
-  font-size: 18px;
   padding: 0;
   margin: 0;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
 }
 
 ma-watch-list-parameters {
