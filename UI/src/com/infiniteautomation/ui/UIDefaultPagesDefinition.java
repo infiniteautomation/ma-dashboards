@@ -22,7 +22,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	@Override
     public String getLoginPageUri(HttpServletRequest request, HttpServletResponse response) {
     	
-		String loginPage = SystemSettingsDao.getValue(UICommon.UI_LOGIN_PAGE, UICommon.DEFAULT_UI_LOGIN_PAGE);
+		String loginPage = SystemSettingsDao.instance.getValue(UICommon.UI_LOGIN_PAGE);
 		
 		if(!StringUtils.isEmpty(loginPage)){
 			return loginPage;
@@ -33,7 +33,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	
 	@Override
 	public String getPasswordResetPageUri() {
-	    String passwordResetPage = SystemSettingsDao.getValue(UICommon.UI_PASSWORD_RESET_PAGE, UICommon.DEFAULT_UI_PASSWORD_RESET_PAGE);
+	    String passwordResetPage = SystemSettingsDao.instance.getValue(UICommon.UI_PASSWORD_RESET_PAGE);
         
         if(!StringUtils.isEmpty(passwordResetPage)){
             return passwordResetPage;
@@ -55,7 +55,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getLoggedInPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(UICommon.UI_LOGGED_IN_PAGE, UICommon.DEFAULT_UI_LOGGED_IN_PAGE);
+		String page = SystemSettingsDao.instance.getValue(UICommon.UI_LOGGED_IN_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
@@ -69,7 +69,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getFirstUserLoginPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(UICommon.UI_FIRST_USER_LOGIN_PAGE, UICommon.DEFAULT_UI_FIRST_USER_LOGIN_PAGE);
+		String page = SystemSettingsDao.instance.getValue(UICommon.UI_FIRST_USER_LOGIN_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
@@ -83,7 +83,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getLoggedInPageUriPreHome(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(UICommon.UI_LOGGED_IN_PAGE_PRE_HOME, UICommon.DEFAULT_UI_LOGGED_IN_PAGE_PRE_HOME);
+		String page = SystemSettingsDao.instance.getValue(UICommon.UI_LOGGED_IN_PAGE_PRE_HOME);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
@@ -97,7 +97,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getUnauthorizedPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(UICommon.UI_UNAUTHORIZED_PAGE, UICommon.DEFAULT_UI_UNAUTHORIZED_PAGE);
+		String page = SystemSettingsDao.instance.getValue(UICommon.UI_UNAUTHORIZED_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
@@ -111,7 +111,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getNotFoundPageUri(HttpServletRequest request, HttpServletResponse response) {
-		String page = SystemSettingsDao.getValue(UICommon.UI_NOT_FOUND_PAGE, UICommon.DEFAULT_UI_NOT_FOUND_PAGE);
+		String page = SystemSettingsDao.instance.getValue(UICommon.UI_NOT_FOUND_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			String requested = request.getRequestURI();
@@ -127,7 +127,7 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getErrorPageUri(HttpServletRequest request, HttpServletResponse response) {
-		String page = SystemSettingsDao.getValue(UICommon.UI_ERROR_PAGE, UICommon.DEFAULT_UI_ERROR_PAGE);
+		String page = SystemSettingsDao.instance.getValue(UICommon.UI_ERROR_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
