@@ -382,7 +382,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
 
             const onlyBarCharts = chart.graphs.every(g => g.type === 'column');
             
-            if (dataChanged) {
+            if (dataChanged && Array.isArray(chart.dataProvider)) {
                 dataEquallySpaced = !chart.dataProvider.map((dataItem, index, array) => {
                     if (index === 0) return null;
                     return dataItem.timestamp - array[index - 1].timestamp;
