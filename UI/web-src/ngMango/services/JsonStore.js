@@ -153,6 +153,15 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
             	return angular.toJson(data.jsonData);
             }
         },
+        update: {
+            method: 'PUT',
+            interceptor: {
+                response: setDataPathInterceptor
+            },
+            transformRequest: function(data, headersGetter) {
+                return angular.toJson(data.jsonData);
+            }
+        },
         'delete': {
         	method: 'DELETE',
             interceptor: {
