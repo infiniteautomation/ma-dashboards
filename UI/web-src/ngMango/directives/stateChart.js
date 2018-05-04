@@ -230,7 +230,10 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
                 categoryBalloonEnabled: false,
             },
             'export': {
-                enabled: false
+                enabled: false,
+                libs: {autoLoad: false},
+                dateFormat: mangoDateFormats.iso,
+                fileName: 'mangoChart'
             }
         };
     }

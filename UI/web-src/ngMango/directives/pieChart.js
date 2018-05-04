@@ -4,7 +4,6 @@
  */
 
 import AmCharts from 'amcharts/pie';
-import angular from 'angular';
 import $ from 'jquery';
 import 'amcharts/plugins/export/export.css';
 
@@ -35,8 +34,8 @@ import 'amcharts/plugins/export/export.css';
  options="{depth3D:15,angle:30}"></ma-pie-chart>
  *
  */
-pieChart.$inject = ['$http'];
-function pieChart($http) {
+pieChart.$inject = ['$http', 'MA_DATE_FORMATS'];
+function pieChart($http, MA_DATE_FORMATS) {
     return {
         restrict: 'E',
         replace: true,
@@ -61,7 +60,7 @@ function pieChart($http) {
     };
 
     function postLink($scope, $element, attributes) {
-        var options = angular.extend(defaultOptions(), $scope.options);
+        const options = $.extend(true, defaultOptions(), $scope.options);
         var chart = AmCharts.makeChart($element[0], options);
 
         var labelFn = createLabelFn();
@@ -97,25 +96,26 @@ function pieChart($http) {
             };
         }
     }
-}
 
-function defaultOptions() {
-    return {
-        type: 'pie',
-        theme: 'light',
-        dataProvider: [],
-        valueField: 'value',
-        titleField: 'text',
-        colorField: 'color',
-        balloon:{
-            fixedPosition:true
-        },
-        'export': {
-          enabled: true
-        }
-    };
+    function defaultOptions() {
+        return {
+            type: 'pie',
+            theme: 'light',
+            dataProvider: [],
+            valueField: 'value',
+            titleField: 'text',
+            colorField: 'color',
+            balloon:{
+                fixedPosition:true
+            },
+            'export': {
+                enabled: false,
+                libs: {autoLoad: false},
+                dateFormat: MA_DATE_FORMATS.iso,
+                fileName: 'mangoChart'
+            }
+        };
+    }
 }
 
 export default pieChart;
-
-

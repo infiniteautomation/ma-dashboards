@@ -34,7 +34,8 @@ import moment from 'moment-timezone';
   * <span>{{time|maMoment:'format':'ll LTS Z'}}</span>
   *
   */
-function clock() {
+clock.$inject = ['MA_DATE_FORMATS'];
+function clock(MA_DATE_FORMATS) {
     return {
         restrict: 'E',
         replace: true,
@@ -52,7 +53,7 @@ function clock() {
         },
         template: '<div class="amchart"></div>',
         link: function ($scope, $element, attributes) {
-            var options = $.extend(defaultOptions(), $scope.options);
+            var options = $.extend(true, defaultOptions(), $scope.options);
             var showSeconds = $scope.showSeconds !== 'false';
             if (!showSeconds) {
                 options.arrows.pop();
@@ -80,50 +81,55 @@ function clock() {
             });
         }
     };
+
+    function defaultOptions() {
+        return {
+            type: 'gauge',
+            theme: 'light',
+            addClassNames: true,
+            startDuration: 0.3,
+            marginTop: 0,
+            marginBottom: 0,
+            axes: [{
+                axisAlpha: 0.3,
+                endAngle: 360,
+                startAngle: 0,
+                endValue: 12,
+                minorTickInterval: 0.2,
+                showFirstLabel: false,
+                axisThickness: 1,
+                valueInterval: 1
+            }],
+            arrows: [{
+                radius: '50%',
+                innerRadius: 0,
+                clockWiseOnly: true,
+                nailRadius: 10,
+                nailAlpha: 1
+            }, {
+                nailRadius: 0,
+                radius: '80%',
+                startWidth: 6,
+                innerRadius: 0,
+                clockWiseOnly: true
+            }, {
+                color: '#CC0000',
+                nailRadius: 4,
+                startWidth: 3,
+                innerRadius: 0,
+                clockWiseOnly: true,
+                nailAlpha: 1
+            }],
+            'export': {
+                enabled: false,
+                libs: {autoLoad: false},
+                dateFormat: MA_DATE_FORMATS.iso,
+                fileName: 'mangoChart'
+            }
+        };
+    }
 }
 
-function defaultOptions() {
-    return {
-        type: 'gauge',
-        theme: 'light',
-        addClassNames: true,
-        startDuration: 0.3,
-        marginTop: 0,
-        marginBottom: 0,
-        axes: [{
-            axisAlpha: 0.3,
-            endAngle: 360,
-            startAngle: 0,
-            endValue: 12,
-            minorTickInterval: 0.2,
-            showFirstLabel: false,
-            axisThickness: 1,
-            valueInterval: 1
-        }],
-        arrows: [{
-            radius: '50%',
-            innerRadius: 0,
-            clockWiseOnly: true,
-            nailRadius: 10,
-            nailAlpha: 1
-        }, {
-            nailRadius: 0,
-            radius: '80%',
-            startWidth: 6,
-            innerRadius: 0,
-            clockWiseOnly: true
-        }, {
-            color: '#CC0000',
-            nailRadius: 4,
-            startWidth: 3,
-            innerRadius: 0,
-            clockWiseOnly: true,
-            nailAlpha: 1
-        }]
-    };
-}
-
-clock.$inject = [];
 export default clock;
 
 
