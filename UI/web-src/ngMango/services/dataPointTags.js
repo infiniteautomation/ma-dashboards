@@ -20,6 +20,16 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
             return $http.get('/rest/v2/data-point-tags/keys').then(response => response.data);
         }
         
+        static queryValues(key, query) {
+            const encodedKey = encodeURIComponent(key);
+            return $http({
+                url: `/rest/v2/data-point-tags/values/${encodedKey}`,
+                params: {
+                    rqlQuery: query.toString()
+                }
+            }).then(response => response.data);
+        }
+        
         static values(key, restrictions = {}) {
             const rqlBuilder = new RqlBuilder();
             Object.keys(restrictions).forEach(key => {
@@ -48,13 +58,16 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
                     }
                 }
             });
-            const encodedKey = encodeURIComponent(key);
-            return $http({
-                url: `/rest/v2/data-point-tags/values/${encodedKey}`,
-                params: {
-                    rqlQuery: rqlBuilder.toString()
-                }
-            }).then(response => response.data);
+            
+            return this.queryValues(key, rqlBuilder);
+        }
+        
+        static buildQuery(key) {
+            const builder = new RqlBuilder();
+            builder.queryFunction = (queryObj) => {
+                return this.queryValues(key, queryObj);
+            };
+            return builder;
         }
     }
     
