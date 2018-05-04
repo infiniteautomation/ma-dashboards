@@ -193,7 +193,7 @@ PointValueDirectiveController.prototype.getActiveEvents = function() {
     
     if (!this.deregisterWebsocket) {
         this.deregisterWebsocket = this.maEvents.notificationManager.subscribe((event, mangoEvent) => {
-            if (mangoEvent.eventType.dataPointId !== this.point.id) return;
+            if (!this.point || mangoEvent.eventType.dataPointId !== this.point.id) return;
             
             if (event.name === 'RAISED' && mangoEvent.active) {
                 this.activeEvents += 1;
