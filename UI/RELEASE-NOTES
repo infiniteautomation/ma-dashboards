@@ -1,3 +1,6 @@
+*Version 3.4.1*
+* Bug fixes
+
 *Version 3.4.0*
 * Upgraded to work with core version 3.4.x
 * Use webpack v4 to combine frontend code into bundles, faster more reliable loading
