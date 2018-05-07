@@ -135,8 +135,17 @@
                                     <md-option ng-repeat="plotType in $ctrl.MA_CHART_TYPES track by plotType.type" ng-value="plotType.apiType" ma-tr="{{plotType.translation}}"></md-option>
                                 </md-select>
                             </md-input-container>
+
+                            <md-input-container ng-if="!column.disableEdit && column.type === 'simplifyType'">
+                                <label ma-tr="{{column.label}}"></label>
+                                <md-select ng-model="$ctrl.updateBody[column.name]">
+                                    <md-option value="NONE" ma-tr="pointEdit.simplify.none"></md-option>
+                                    <md-option value="TARGET" ma-tr="pointEdit.simplify.target"></md-option>
+                                    <md-option value="TOLERANCE" ma-tr="pointEdit.simplify.tolerance"></md-option>
+                                </md-select>
+                            </md-input-container>
                             
-                            <md-input-container ng-if="!column.disableEdit && column.type !== 'checkbox' && column.type !== 'color' && column.type !== 'permission' && column.type !== 'rollup' && column.type !== 'plotType'">
+                            <md-input-container ng-if="!column.disableEdit && column.type !== 'checkbox' && column.type !== 'color' && column.type !== 'permission' && column.type !== 'rollup' && column.type !== 'plotType' && column.type !== 'simplifyType'">
                                 <label ma-tr="{{column.label}}"></label>
                                 <input ng-model="$ctrl.updateBody[column.name]" ng-attr-type="{{column.type || 'text'}}">
                             </md-input-container>

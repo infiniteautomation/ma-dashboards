@@ -62,7 +62,10 @@ class BulkDataPointEditPageController {
             {name: 'rollup', label: 'common.rollup', type: 'rollup', selectedByDefault: true},
             {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false},
             {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
-            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', type: 'number', selectedByDefault: false}
+            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', type: 'number', selectedByDefault: false},
+            {name: 'simplifyType', label: 'pointEdit.props.simplifyType', type: 'simplifyType', selectedByDefault: false},
+            {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', type: 'number', selectedByDefault: false},
+            {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', type: 'number', selectedByDefault: false}
         ];
 
         this.columns.forEach((c, i) => c.order = i);
