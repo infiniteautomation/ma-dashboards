@@ -6,185 +6,194 @@
         ng-disabled="$ctrl.bulkTaskPromise">
     </ma-point-browser>
     
-    <md-card class="ma-bulk-data-point-edit" flex>
-        <md-toolbar class="md-hue-2">
-            <div class="md-toolbar-tools">
-                <md-button class="md-icon-button" ng-click="$ctrl.browserOpen = !$ctrl.browserOpen">
-                    <md-icon>{{$ctrl.browserOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</md-icon>
-                    <md-tooltip>
-                        <span ng-if="$ctrl.browserOpen" ma-tr="ui.app.hidePointBrowser"></span>
-                        <span ng-if="!$ctrl.browserOpen" ma-tr="ui.app.showPointBrowser"></span>
-                    </md-tooltip>
-                </md-button>
-                
-                <md-button class="md-raised md-accent" ng-click="$ctrl.start($event)" ng-if="!$ctrl.bulkTaskPromise" ng-disabled="$ctrl.pointsPromise">
-                    <md-icon>edit</md-icon>
-                    <span ma-tr="ui.app.startBulkEdit"></span>
-                </md-button>
-                
-                <md-button class="md-raised md-warn" ng-click="$ctrl.cancel($event)" ng-if="$ctrl.bulkTaskPromise">
-                    <md-icon>cancel</md-icon>
-                    <span ma-tr="ui.app.cancelBulkEdit"></span>
-                </md-button>
-                
-                <!-- 
-                <md-button class="md-raised" ng-click="$ctrl.watchListChanged($event)" ng-if="!($ctrl.bulkTaskPromise || $ctrl.pointsPromise)">
-                    <md-icon>refresh</md-icon>
-                    <span ma-tr="ui.app.reloadPoints"></span>
-                </md-button>
-                -->
-
-                <div flex></div>
-                
-                <span ng-if="$ctrl.bulkTaskPromise">
-                    <span ng-bind="$ctrl.bulkTask.progress"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position, $ctrl.bulkTask.maximum]"></span>)
-                </span>
-                
-                <div flex></div>
-                
-                <md-input-container md-no-float="true">
-                    <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
-                        <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
-                    </md-select>
-                </md-input-container>
-                
-                <md-input-container md-no-float="true">
-                    <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags" ng-change="$ctrl.selectedTagsChanged()" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" ng-model-options="{trackBy: '$value.name'}">
-                        <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
-                    </md-select>
-                </md-input-container>
-                
-                <md-button class="md-icon-button" ng-click="$ctrl.addTagColumn($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
-                    <md-icon>add</md-icon>
-                    <md-tooltip ma-tr="ui.app.addATag"></md-tooltip>
-                </md-button>
-            </div>
-        </md-toolbar>
+    <div flex layout="column">
+        <md-card ng-if="$ctrl.watchList.hasParamOptions()" class="ma-watch-list-parameters">
+            <ma-watch-list-parameters watch-list="$ctrl.watchList"
+                ng-model="$ctrl.watchListParams" ng-change="$ctrl.getPoints()"
+                class="md-padding" layout layout-wrap>
+            </ma-watch-list-parameters>
+        </md-card>
         
-        <md-progress-linear ng-if="$ctrl.bulkTaskPromise" class="md-accent" md-mode="determinate" ng-value="$ctrl.bulkTask.progress"></md-progress-linear>
-
-        <md-table-container>
-            <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.pointsPromise">
-                <thead class="ma-bulk-edit-controls">
-                    <tr class="ma-bulk-edit-button-row">
-                        <th class="ma-points-selected" ma-tr="ui.app.xPointsSelected" ma-tr-args="[$ctrl.selectedPoints.length]"></th>
-                        <th><!-- Spacer for error --></th>
-                        <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
-                            <md-button class="md-icon-button" ng-click="$ctrl.sortColumn(column)">
-                                <md-icon>{{$ctrl.tableOrder == column.name ? 'arrow_downward' : ($ctrl.tableOrder == '-' + column.name ? 'arrow_upward' : 'sort')}}</md-icon>
-                                <md-tooltip ma-tr="ui.app.sortBy" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
-                            </md-button>
-                            <md-button class="md-icon-button" ng-click="$ctrl.resetColumn(column)" ng-if="$ctrl.updateBody[column.name] !== undefined">
-                                <md-icon>undo</md-icon>
-                                <md-tooltip ma-tr="ui.app.resetColumn" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
-                            </md-button>
-                        </th>
-                        <th ng-repeat="tag in $ctrl.selectedTags track by tag.name">
-                            <md-button class="md-icon-button" ng-click="$ctrl.removeTag(tag)">
-                                <md-icon>delete</md-icon>
-                                <md-tooltip ma-tr="ui.app.removeTag" ma-tr-args="::[tag.label]"></md-tooltip>
-                            </md-button>
-                            <md-button class="md-icon-button" ng-click="$ctrl.resetTag(tag)" ng-if="$ctrl.updateBody.tags[tag.name] !== undefined">
-                                <md-icon>undo</md-icon>
-                                <md-tooltip ma-tr="ui.app.resetColumn" ma-tr-args="::[tag.label]"></md-tooltip>
-                            </md-button>
-                        </th>
-                    </tr>
-                    <tr class="ma-bulk-edit-input-row">
-                        <th class="ma-checkbox-column">
-                            <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
-                                ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" md-indeterminate="$ctrl.selectAllIndeterminate">
-                            </md-checkbox>
-                        </th>
-                        <th><!-- Spacer for error --></th>
-                        <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-class="{'ma-column-modified': $ctrl.updateBody[column.name] !== undefined}">
-                            <span ng-if="column.disableEdit" ma-tr="{{column.label}}"></span>
-                            
-                            <md-checkbox ng-if="!column.disableEdit && column.type === 'checkbox'" ng-model="$ctrl.updateBody[column.name]">
-                                <span ma-tr="{{column.label}}"></span>
-                            </md-checkbox>
-
-                            <div layout layout-align="start center"  ng-if="!column.disableEdit && column.type === 'color'">
-                                <div class="ma-color-picker-preview" ng-click="$ctrl.chooseColor($event, column)" role="button" tabindex="-1">
-                                    <div class="ma-color-picker-result" ng-style="{'background-color': $ctrl.updateBody[column.name]}"></div>
+        <md-card class="ma-bulk-data-point-edit" flex="noshrink">
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <md-button class="md-icon-button" ng-click="$ctrl.browserOpen = !$ctrl.browserOpen">
+                        <md-icon>{{$ctrl.browserOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</md-icon>
+                        <md-tooltip>
+                            <span ng-if="$ctrl.browserOpen" ma-tr="ui.app.hidePointBrowser"></span>
+                            <span ng-if="!$ctrl.browserOpen" ma-tr="ui.app.showPointBrowser"></span>
+                        </md-tooltip>
+                    </md-button>
+                    
+                    <md-button class="md-raised md-accent" ng-click="$ctrl.start($event)" ng-if="!$ctrl.bulkTaskPromise" ng-disabled="$ctrl.pointsPromise">
+                        <md-icon>edit</md-icon>
+                        <span ma-tr="ui.app.startBulkEdit"></span>
+                    </md-button>
+                    
+                    <md-button class="md-raised md-warn" ng-click="$ctrl.cancel($event)" ng-if="$ctrl.bulkTaskPromise">
+                        <md-icon>cancel</md-icon>
+                        <span ma-tr="ui.app.cancelBulkEdit"></span>
+                    </md-button>
+                    
+                    <!-- 
+                    <md-button class="md-raised" ng-click="$ctrl.watchListChanged($event)" ng-if="!($ctrl.bulkTaskPromise || $ctrl.pointsPromise)">
+                        <md-icon>refresh</md-icon>
+                        <span ma-tr="ui.app.reloadPoints"></span>
+                    </md-button>
+                    -->
+    
+                    <div flex></div>
+                    
+                    <span ng-if="$ctrl.bulkTaskPromise">
+                        <span ng-bind="$ctrl.bulkTask.progress"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position, $ctrl.bulkTask.maximum]"></span>)
+                    </span>
+                    
+                    <div flex></div>
+                    
+                    <md-input-container md-no-float="true">
+                        <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                            <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <md-input-container md-no-float="true">
+                        <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags" ng-change="$ctrl.selectedTagsChanged()" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" ng-model-options="{trackBy: '$value.name'}">
+                            <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <md-button class="md-icon-button" ng-click="$ctrl.addTagColumn($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                        <md-icon>add</md-icon>
+                        <md-tooltip ma-tr="ui.app.addATag"></md-tooltip>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            
+            <md-progress-linear ng-if="$ctrl.bulkTaskPromise" class="md-accent" md-mode="determinate" ng-value="$ctrl.bulkTask.progress"></md-progress-linear>
+    
+            <md-table-container>
+                <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.pointsPromise">
+                    <thead class="ma-bulk-edit-controls">
+                        <tr class="ma-bulk-edit-button-row">
+                            <th class="ma-points-selected" ma-tr="ui.app.xPointsSelected" ma-tr-args="[$ctrl.selectedPoints.length]"></th>
+                            <th><!-- Spacer for error --></th>
+                            <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
+                                <md-button class="md-icon-button" ng-click="$ctrl.sortColumn(column)">
+                                    <md-icon>{{$ctrl.tableOrder == column.name ? 'arrow_downward' : ($ctrl.tableOrder == '-' + column.name ? 'arrow_upward' : 'sort')}}</md-icon>
+                                    <md-tooltip ma-tr="ui.app.sortBy" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
+                                </md-button>
+                                <md-button class="md-icon-button" ng-click="$ctrl.resetColumn(column)" ng-if="$ctrl.updateBody[column.name] !== undefined">
+                                    <md-icon>undo</md-icon>
+                                    <md-tooltip ma-tr="ui.app.resetColumn" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
+                                </md-button>
+                            </th>
+                            <th ng-repeat="tag in $ctrl.selectedTags track by tag.name">
+                                <md-button class="md-icon-button" ng-click="$ctrl.removeTag(tag)">
+                                    <md-icon>delete</md-icon>
+                                    <md-tooltip ma-tr="ui.app.removeTag" ma-tr-args="::[tag.label]"></md-tooltip>
+                                </md-button>
+                                <md-button class="md-icon-button" ng-click="$ctrl.resetTag(tag)" ng-if="$ctrl.updateBody.tags[tag.name] !== undefined">
+                                    <md-icon>undo</md-icon>
+                                    <md-tooltip ma-tr="ui.app.resetColumn" ma-tr-args="::[tag.label]"></md-tooltip>
+                                </md-button>
+                            </th>
+                        </tr>
+                        <tr class="ma-bulk-edit-input-row">
+                            <th class="ma-checkbox-column">
+                                <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
+                                    ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" md-indeterminate="$ctrl.selectAllIndeterminate">
+                                </md-checkbox>
+                            </th>
+                            <th><!-- Spacer for error --></th>
+                            <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-class="{'ma-column-modified': $ctrl.updateBody[column.name] !== undefined}">
+                                <span ng-if="column.disableEdit" ma-tr="{{column.label}}"></span>
+                                
+                                <md-checkbox ng-if="!column.disableEdit && column.type === 'checkbox'" ng-model="$ctrl.updateBody[column.name]">
+                                    <span ma-tr="{{column.label}}"></span>
+                                </md-checkbox>
+    
+                                <div layout layout-align="start center"  ng-if="!column.disableEdit && column.type === 'color'">
+                                    <div class="ma-color-picker-preview" ng-click="$ctrl.chooseColor($event, column)" role="button" tabindex="-1">
+                                        <div class="ma-color-picker-result" ng-style="{'background-color': $ctrl.updateBody[column.name]}"></div>
+                                    </div>
+                                    <md-input-container flex>
+                                        <label ma-tr="{{column.label}}"></label>
+                                        <input ng-model="$ctrl.updateBody[column.name]">
+                                    </md-input-container>
                                 </div>
-                                <md-input-container flex>
+    
+                                <div layout layout-align="start center" ng-if="!column.disableEdit && column.type === 'permission'">
+                                    <md-input-container flex>
+                                        <label ma-tr="{{column.label}}"></label>
+                                        <input ng-model="$ctrl.updateBody[column.name]">
+                                    </md-input-container>
+                                    <ma-permissions-menu ng-model="$ctrl.updateBody[column.name]"></ma-permissions-menu>
+                                </div>
+    
+                                <md-input-container ng-if="!column.disableEdit && column.type === 'rollup'">
                                     <label ma-tr="{{column.label}}"></label>
-                                    <input ng-model="$ctrl.updateBody[column.name]">
+                                    <md-select ng-model="$ctrl.updateBody[column.name]">
+                                        <md-option ng-repeat="rollup in $ctrl.MA_ROLLUP_TYPES track by rollup.type" ng-value="rollup.type" ma-tr="{{rollup.translation}}"></md-option>
+                                    </md-select>
                                 </md-input-container>
-                            </div>
-
-                            <div layout layout-align="start center" ng-if="!column.disableEdit && column.type === 'permission'">
-                                <md-input-container flex>
+    
+                                <md-input-container ng-if="!column.disableEdit && column.type === 'plotType'">
                                     <label ma-tr="{{column.label}}"></label>
-                                    <input ng-model="$ctrl.updateBody[column.name]">
+                                    <md-select ng-model="$ctrl.updateBody[column.name]">
+                                        <md-option ng-repeat="plotType in $ctrl.MA_CHART_TYPES track by plotType.type" ng-value="plotType.apiType" ma-tr="{{plotType.translation}}"></md-option>
+                                    </md-select>
                                 </md-input-container>
-                                <ma-permissions-menu ng-model="$ctrl.updateBody[column.name]"></ma-permissions-menu>
-                            </div>
-
-                            <md-input-container ng-if="!column.disableEdit && column.type === 'rollup'">
-                                <label ma-tr="{{column.label}}"></label>
-                                <md-select ng-model="$ctrl.updateBody[column.name]">
-                                    <md-option ng-repeat="rollup in $ctrl.MA_ROLLUP_TYPES track by rollup.type" ng-value="rollup.type" ma-tr="{{rollup.translation}}"></md-option>
-                                </md-select>
-                            </md-input-container>
-
-                            <md-input-container ng-if="!column.disableEdit && column.type === 'plotType'">
-                                <label ma-tr="{{column.label}}"></label>
-                                <md-select ng-model="$ctrl.updateBody[column.name]">
-                                    <md-option ng-repeat="plotType in $ctrl.MA_CHART_TYPES track by plotType.type" ng-value="plotType.apiType" ma-tr="{{plotType.translation}}"></md-option>
-                                </md-select>
-                            </md-input-container>
-
-                            <md-input-container ng-if="!column.disableEdit && column.type === 'simplifyType'">
-                                <label ma-tr="{{column.label}}"></label>
-                                <md-select ng-model="$ctrl.updateBody[column.name]">
-                                    <md-option value="NONE" ma-tr="pointEdit.simplify.none"></md-option>
-                                    <md-option value="TARGET" ma-tr="pointEdit.simplify.target"></md-option>
-                                    <md-option value="TOLERANCE" ma-tr="pointEdit.simplify.tolerance"></md-option>
-                                </md-select>
-                            </md-input-container>
+    
+                                <md-input-container ng-if="!column.disableEdit && column.type === 'simplifyType'">
+                                    <label ma-tr="{{column.label}}"></label>
+                                    <md-select ng-model="$ctrl.updateBody[column.name]">
+                                        <md-option value="NONE" ma-tr="pointEdit.simplify.none"></md-option>
+                                        <md-option value="TARGET" ma-tr="pointEdit.simplify.target"></md-option>
+                                        <md-option value="TOLERANCE" ma-tr="pointEdit.simplify.tolerance"></md-option>
+                                    </md-select>
+                                </md-input-container>
+                                
+                                <md-input-container ng-if="!column.disableEdit && column.type !== 'checkbox' && column.type !== 'color' && column.type !== 'permission' && column.type !== 'rollup' && column.type !== 'plotType' && column.type !== 'simplifyType'">
+                                    <label ma-tr="{{column.label}}"></label>
+                                    <input ng-model="$ctrl.updateBody[column.name]" ng-attr-type="{{column.type || 'text'}}">
+                                </md-input-container>
+                            </th>
+                            <th ng-repeat="tag in $ctrl.selectedTags track by tag.name" ng-class="{'ma-column-modified': $ctrl.updateBody.tags[tag.name] !== undefined}">
+                                <md-input-container>
+                                    <label ng-bind="tag.label"></label>
+                                    <input ng-model="$ctrl.updateBody.tags[tag.name]">
+                                </md-input-container>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows track by point.xid"
+                                ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise"
+                                md-select="point"
+                                md-select-id="xid"
+                                md-on-select="$ctrl.pointSelectedBound"
+                                md-on-deselect="$ctrl.pointDeselectedBound"
+                                ng-class="{'ma-row-error': point.error}">
+            
+                            <td md-cell>
+                                <div ng-if="$ctrl.getPointError(point)">
+                                    <md-icon class="md-warn">warning</md-icon>
+                                    <md-tooltip ng-bind="$ctrl.getPointError(point).localizedMessage"></md-tooltip>
+                                </div>
+                            </td>
+    
+                            <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell ng-class="{'ma-cell-modified': $ctrl.columnModified(column, point)}">
+                                <span ng-class="{'ma-empty-null': $ctrl.valueForColumn(column, point) == null}" ng-bind="$ctrl.valueForColumn(column, point) | maDisplayNull"></span>
+                            </td>
                             
-                            <md-input-container ng-if="!column.disableEdit && column.type !== 'checkbox' && column.type !== 'color' && column.type !== 'permission' && column.type !== 'rollup' && column.type !== 'plotType' && column.type !== 'simplifyType'">
-                                <label ma-tr="{{column.label}}"></label>
-                                <input ng-model="$ctrl.updateBody[column.name]" ng-attr-type="{{column.type || 'text'}}">
-                            </md-input-container>
-                        </th>
-                        <th ng-repeat="tag in $ctrl.selectedTags track by tag.name" ng-class="{'ma-column-modified': $ctrl.updateBody.tags[tag.name] !== undefined}">
-                            <md-input-container>
-                                <label ng-bind="tag.label"></label>
-                                <input ng-model="$ctrl.updateBody.tags[tag.name]">
-                            </md-input-container>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody md-body>
-                    <tr md-row ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows track by point.xid"
-                            ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise"
-                            md-select="point"
-                            md-select-id="xid"
-                            md-on-select="$ctrl.pointSelectedBound"
-                            md-on-deselect="$ctrl.pointDeselectedBound"
-                            ng-class="{'ma-row-error': point.error}">
-        
-                        <td md-cell>
-                            <div ng-if="$ctrl.getPointError(point)">
-                                <md-icon class="md-warn">warning</md-icon>
-                                <md-tooltip ng-bind="$ctrl.getPointError(point).localizedMessage"></md-tooltip>
-                            </div>
-                        </td>
-
-                        <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell ng-class="{'ma-cell-modified': $ctrl.columnModified(column, point)}">
-                            <span ng-class="{'ma-empty-null': $ctrl.valueForColumn(column, point) == null}" ng-bind="$ctrl.valueForColumn(column, point) | maDisplayNull"></span>
-                        </td>
-                        
-                        <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell ng-class="{'ma-cell-modified': $ctrl.tagModified(tag, point)}">
-                            <span ng-class="{'ma-empty-null': $ctrl.valueForTag(tag, point) == null}" ng-bind="$ctrl.valueForTag(tag, point) | maDisplayNull"></span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </md-table-container>
-        <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination> 
-    </md-card>
+                            <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell ng-class="{'ma-cell-modified': $ctrl.tagModified(tag, point)}">
+                                <span ng-class="{'ma-empty-null': $ctrl.valueForTag(tag, point) == null}" ng-bind="$ctrl.valueForTag(tag, point) | maDisplayNull"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination> 
+        </md-card>
+    </div>
 </div>

@@ -80,7 +80,8 @@ class BulkDataPointEditPageController {
         this.pointDeselectedBound = (...args) => {
             this.pointDeselected(...args);
         };
-        
+
+        this.watchListParams = {};
         this.reset();
     }
     
@@ -259,12 +260,18 @@ class BulkDataPointEditPageController {
 
     watchListChanged() {
         if (!this.watchList) return;
+        
+        this.watchList.defaultParamValues(this.watchListParams);
+        this.getPoints();
+    }
+    
+    getPoints() {
         this.reset();
         
         if (this.wlPointsPromise) {
             this.wlPointsPromise.cancel();
         }
-        this.wlPointsPromise = this.watchList.getPoints();
+        this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
         
         this.pointsPromise = this.wlPointsPromise.then(points => {
             this.points = points;

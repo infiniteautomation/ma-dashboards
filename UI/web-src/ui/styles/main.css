@@ -1491,6 +1491,11 @@ ma-ui-bulk-data-point-edit-page ma-point-browser {
 	margin-right: 16px;
 }
 
+ma-ui-bulk-data-point-edit-page md-card.ma-watch-list-parameters {
+	margin: 0 0 16px 0;
+	width: 100%;
+}
+
 ma-ui-bulk-data-point-edit-page md-card.ma-bulk-data-point-edit {
 	margin: 0;
 	width: 100%;
