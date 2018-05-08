@@ -138,30 +138,102 @@ class BulkDataPointEditPageController {
             this.selectedTags.push(newOption);
         }, angular.noop);
     }
-
-    start(event) {
+    
+    hasEdits() {
+        return Object.keys(this.updateBody).length > 2 || Object.keys(this.updateBody.tags).length > 0;
+    }
+    
+    confirmDeleteSelected(event) {
         if (!this.selectedPoints.length) {
             this.maDialogHelper.toastOptions({
                 textTr: ['ui.app.bulkEditNoPointsSelected'],
-                hideDelay: 10000,
-                classes: 'md-warn'
+                hideDelay: 10000
+            });
+            return;
+        }
+        
+        this.maDialogHelper.confirm(event, ['ui.app.bulkEditConfirmDelete', this.selectedPoints.length]).then(() => {
+            this.deleteSelected();
+        }, () => null);
+    }
+    
+    deleteSelected() {
+        const requests = this.selectedPoints.map(pt => ({xid: pt.xid}));
+        
+        this.bulkTask = new this.maPoint.bulk({
+            action: 'DELETE',
+            requests
+        });
+        
+        this.selectedPoints.forEach(pt => {
+            delete pt[errorProperty];
+        });
+
+        this.bulkTaskPromise = this.bulkTask.start().then(resource => {
+            const responses = resource.result.responses;
+            const deletedPoints = [];
+            
+            responses.forEach((response, i) => {
+                const point = this.selectedPoints[i];
+                if (response.error) {
+                    point[errorProperty] = response.error;
+                } else {
+                    deletedPoints.push(point);
+                }
+            });
+            
+            deletedPoints.forEach(point => {
+                const pointsIndex = this.points.indexOf(point);
+                if (pointsIndex >= 0) {
+                    this.points.splice(pointsIndex, 1);
+                }
+                
+                const selectedPointsIndex = this.selectedPoints.indexOf(point);
+                if (selectedPointsIndex >= 0) {
+                    this.selectedPoints.splice(selectedPointsIndex, 1);
+                }
+            });
+
+            this.selectedPointsChanged();
+
+            this.notifyBulkEditComplete(resource);
+            //resource.delete();
+        }, error => {
+            this.notifyBulkEditError(error);
+        }, resource => {
+            // progress
+        }).finally(() => {
+            delete this.bulkTaskPromise;
+        });
+    }
+    
+    confirmStart(event) {
+        if (!this.selectedPoints.length) {
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.bulkEditNoPointsSelected'],
+                hideDelay: 10000
+            });
+            return;
+        }
+        
+        if (!this.hasEdits()) {
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.bulkEditNoChanges'],
+                hideDelay: 10000
             });
             return;
         }
 
+        this.maDialogHelper.confirm(event, ['ui.app.bulkEditConfirmEdit', this.selectedPoints.length]).then(() => {
+            this.start();
+        }, () => null);
+    }
+
+    start() {
         const body = angular.copy(this.updateBody);
         if (!Object.keys(body.tags).length) {
             delete body.tags;
             delete body.mergeTags;
-        }
-        
-        if (!Object.keys(body).length) {
-            this.maDialogHelper.toastOptions({
-                textTr: ['ui.app.bulkEditNoChanges'],
-                hideDelay: 10000,
-                classes: 'md-warn'
-            });
-            return;
         }
 
         let tagsOnly = false;
@@ -212,46 +284,54 @@ class BulkDataPointEditPageController {
                 }
             }
 
-            const toastOptions = {
-                textTr: [null, resource.position, resource.maximum, this.selectedPoints.length],
-                hideDelay: 10000,
-                classes: 'md-warn'
-            };
-
-            switch (resource.status) {
-            case 'CANCELLED':
-                toastOptions.textTr[0] = 'ui.app.bulkEditCancelled';
-                break;
-            case 'TIMED_OUT':
-                toastOptions.textTr[0] = 'ui.app.bulkEditTimedOut';
-                break;
-            case 'ERROR':
-                toastOptions.textTr[0] = 'ui.app.bulkEditError';
-                toastOptions.textTr.push(resource.error.localizedMessage);
-                break;
-            case 'SUCCESS':
-                if (!this.selectedPoints.length) {
-                    toastOptions.textTr = ['ui.app.bulkEditSuccess', resource.position];
-                    delete toastOptions.classes;
-                } else {
-                    toastOptions.textTr[0] = 'ui.app.bulkEditSuccessWithErrors';
-                }
-                break;
-            }
-
-            this.maDialogHelper.toastOptions(toastOptions);
+            this.notifyBulkEditComplete(resource);
             //resource.delete();
         }, error => {
-            this.maDialogHelper.toastOptions({
-                textTr: ['ui.app.errorStartingBulkEdit', error.mangoStatusText],
-                hideDelay: 10000,
-                classes: 'md-warn'
-            });
+            this.notifyBulkEditError(error);
         }, resource => {
             // progress
         }).finally(() => {
             delete this.bulkTaskPromise;
         });
+    }
+
+    notifyBulkEditError(error) {
+        this.maDialogHelper.toastOptions({
+            textTr: ['ui.app.errorStartingBulkEdit', error.mangoStatusText],
+            hideDelay: 10000,
+            classes: 'md-warn'
+        });
+    }
+    
+    notifyBulkEditComplete(resource) {
+        const toastOptions = {
+                textTr: [null, resource.position, resource.maximum, this.selectedPoints.length],
+                hideDelay: 10000,
+                classes: 'md-warn'
+            };
+
+        switch (resource.status) {
+        case 'CANCELLED':
+            toastOptions.textTr[0] = 'ui.app.bulkEditCancelled';
+            break;
+        case 'TIMED_OUT':
+            toastOptions.textTr[0] = 'ui.app.bulkEditTimedOut';
+            break;
+        case 'ERROR':
+            toastOptions.textTr[0] = 'ui.app.bulkEditError';
+            toastOptions.textTr.push(resource.error.localizedMessage);
+            break;
+        case 'SUCCESS':
+            if (!this.selectedPoints.length) {
+                toastOptions.textTr = ['ui.app.bulkEditSuccess', resource.position];
+                delete toastOptions.classes;
+            } else {
+                toastOptions.textTr[0] = 'ui.app.bulkEditSuccessWithErrors';
+            }
+            break;
+        }
+
+        this.maDialogHelper.toastOptions(toastOptions);
     }
     
     cancel(event) {
@@ -313,12 +393,13 @@ class BulkDataPointEditPageController {
         if (this.selectedPoints.length === this.points.length) {
             this.selectAllIndeterminate = false;
             // seems to be a bug changing md-checkbox indeterminate and checked at same time
+            const selectAll = this.selectedPoints.length > 0;
             this.$timeout(() => {
-                this.selectAll = true;
+                this.selectAll = selectAll;
             }, 0);
         } else {
             this.selectAll = false;
-            this.selectAllIndeterminate = !!this.selectedPoints.length;
+            this.selectAllIndeterminate = this.selectedPoints.length > 0;
         }
     }
     
