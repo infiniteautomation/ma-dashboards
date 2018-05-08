@@ -277,12 +277,13 @@ class BulkDataPointEditPageController {
             for (let i = 0, j = 0; i < this.selectedPoints.length && j < responses.length; j++) {
                 const point = this.selectedPoints[i];
                 if (!point[errorProperty]) {
+                    delete point[selectedProperty];
                     this.selectedPoints.splice(i, 1);
-                    this.pointDeselected(point);
                 } else {
                     i++;
                 }
             }
+            this.selectedPointsChanged();
 
             this.notifyBulkEditComplete(resource);
             //resource.delete();
