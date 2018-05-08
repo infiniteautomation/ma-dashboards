@@ -3,6 +3,22 @@
  * @author Jared Wiltshire
  */
 
+/**
+ * @ngdoc directive
+ * @name ngMango.directive:maBarDisplay
+ * @restrict E
+ * @description Displays a bar chart/graph for a data point value. You can use CSS to style the outline and fill.
+ * 
+ * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
+ * @param {string=} [direction=left-to-right] The direction in which the fill extends. Options are
+ * left-to-right, bottom-to-top, right-to-left, or top-to-bottom.
+ * @param {number=} [maximum=100] The maximum value for the bar
+ * @param {number=} [minimum=0] The minimum value for the bar
+ * @param {number=} value Instead of displaying a point value you can pass any number to this attribute for display
+ * on a bar graph.
+ *
+ */
 
 import PointValueController from './PointValueController';
 

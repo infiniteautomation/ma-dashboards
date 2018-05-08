@@ -14,8 +14,8 @@ import PointValueController from './PointValueController';
  * `<ma-switch></ma-switch>`
  * - This component will display a switch that can be used to toggle a binary data point's value.
  * - It can be set to display either radio buttons, checkbox or toggle switch.
- * @param {point} point Select the point to use with the switch by passing in a point object.
- * @param {string} point-xid Select the point to use with the switch by passing in a point's xid as a string.
+ * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
  * @param {string} display-type Sets the display type of the binary switch. Options are `radio`, `checkbox` or `switch`.
  * @usage
  * <ma-switch point="myPoint" display-type="switch"></ma-switch>

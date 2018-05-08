@@ -20,7 +20,8 @@ import PointValueController from './PointValueController';
  This function can be called from within an `ng-click` expression for example. (using this method does not require `<ma-set-point-value>`)
  * - <a ui-sref="ui.examples.settingPointValues.setPoint">View Demo</a> 
  *
- * @param {object} point Input the point object of a settable data point.
+ * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
  * @param {boolean} [show-button=true] Specifies if the button is shown (shouldn't be used with numeric data points).
  * @param {boolean} [set-on-change=false] Specifies if the point value is set when an option is selected from the dropdown
  * (always true if show-button is false and doesn't apply to numeric data points).

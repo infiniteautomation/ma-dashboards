@@ -17,7 +17,8 @@ import PointValueController from './PointValueController';
  * - Note: you must set a width and height on the element.
  * - <a ui-sref="ui.examples.singleValueDisplays.tanks">View Demo</a>
 
- * @param {object} point The point object with the live value provided by `<ma-get-point-value>`.
+ * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
  * @param {number=} max Sets the max value for a 100% filled tank.
  * @param {string=} color Sets the fill color for the tank visualization.
  * @param {object=} options Extend [amCharts](https://www.amcharts.com/) configuration object for customizing the design of the tank.

@@ -14,14 +14,15 @@ import PointValueController from './PointValueController';
  * @description
  * `<ma-gauge-chart point="myPoint" style="width:100%; height:200px"></ma-gauge-chart>`
  * - This directive will display a gauge that can be tied to a data point's live value.
- * - You must use `<ma-get-point-value>` to provide a point value to `<ma-gauge-chart>`
  * - Note, you will need to set a width and height on the element.
  * - Options have been exposed via attributes, allowing you to set colors and ranges of multiple bands.
  * - <a ui-sref="ui.examples.singleValueDisplays.gauges">View Demo</a>
  *
 
- * @param {object} point The point object with the live value provided by `<ma-get-point-value>`.
- * @param {number=} value Allows you to set the gauge to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
+ * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
+ * @param {number=} value Allows you to set the gauge to a value that is not provided by the `point` attribute.
+ * Only use without the `point` or `point-xid` attribute.
  * @param {number=} start Sets the starting value for the gauge.
  * @param {number=} end Sets the ending value for the gauge.
  * @param {boolean=} auto-start Set to `true` to enable auto selecting a `start` value for the gauge based on minimum value

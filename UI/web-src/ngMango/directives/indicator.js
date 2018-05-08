@@ -5,6 +5,30 @@
 
 import PointValueController from './PointValueController';
 
+
+/**
+ * @ngdoc directive
+ * @name ngMango.directive:maIndicator
+ * @restrict E
+ * @description A simple component which changes its background color based on the point value. The color
+ * is taken from either an attribute or from the data point's text renderer.
+ * Only for use with binary and multistate points. You can use CSS to style the outline and border radius.
+ * 
+ * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
+ * @param {string=} default-color The default color when none is provided via attribute or text renderer.
+ * @param {string=} color-true The color to use when the point value is `true`.
+ * @param {string=} color-false The color to use when the point value is `false`.
+ * @param {string=} color-0 The color to use when the point value is `0`.
+ * @param {string=} color-1 The color to use when the point value is `1`.
+ * @param {string=} color-2 The color to use when the point value is `2`.
+ * @param {string=} color-3 The color to use when the point value is `3`.
+ * @param {string=} color-4 The color to use when the point value is `4`.
+ * @param {string=} color-5 The color to use when the point value is `5`.
+ * @param {boolean=} [toggle-on-click=false] For binary data points only. When you click the component it will set the point
+ * value to the opposite of what it is currently. e.g. if the point value is currently false it will set the point value to true.
+ */
+
 function indicator() {
     return {
         restrict: 'E',
@@ -29,6 +53,21 @@ function indicator() {
                     type: 'color'
                 },
                 colorFalse: {
+                    type: 'color'
+                },
+                color0: {
+                    type: 'color'
+                },
+                color1: {
+                    type: 'color'
+                },
+                color2: {
+                    type: 'color'
+                },
+                color3: {
+                    type: 'color'
+                },
+                color4: {
                     type: 'color'
                 },
                 defaultColor: {
