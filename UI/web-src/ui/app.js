@@ -335,9 +335,10 @@ uiApp.run([
     'maMath',
     '$log',
     '$templateCache',
+    '$exceptionHandler',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
-        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, maModules, mathjs, $log, $templateCache) {
+        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler) {
 
     if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
         webAnalytics.enableGoogleAnalytics(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
@@ -440,11 +441,10 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $state.loginRedirectUrl = $state.href(toState, toParams);
             $state.go('login');
         } else {
-            console.log(error);
+            $exceptionHandler(error, 'Error transitioning to state ' + (toState && toState.name));
+
             if (toState.name !== 'ui.error') {
-                $state.go('ui.error');
-            } else {
-                // should we call alert() or something?
+                $state.go('ui.error', {toState, toParams, fromState, fromParams, error});
             }
         }
     });

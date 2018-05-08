@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import loadLoginTranslations from './util/loadLoginTranslations';
+import StackTrace from 'stacktrace-js';
 
 export default [
     {
@@ -161,12 +162,38 @@ export default [
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './views/error.html');
-            }
+            },
+            errorFrames: ['$stateParams', function($stateParams) {
+                if ($stateParams.error && $stateParams.error instanceof Error) {
+                    try {
+                        return StackTrace.fromError($stateParams.error, {offline: true});
+                    } catch (e) {
+                    }
+                }
+            }]
         },
         url: '/error',
         menuHidden: true,
         menuTr: 'ui.app.error',
-        weight: 3000
+        weight: 3000,
+        params: {
+            toState: null,
+            toParams: null,
+            fromState: null,
+            fromParams: null,
+            error: null
+        },
+        controller: ['$scope', 'errorFrames', '$stateParams', function($scope, errorFrames, $stateParams) {
+            $scope.frames = errorFrames;
+            if (Array.isArray(errorFrames)) {
+                const stackTraceLines = errorFrames.map(frame => {
+                    return `\tat ${frame.functionName} (${frame.fileName}:${frame.lineNumber}:${frame.columnNumber})`;
+                });
+                
+                stackTraceLines.unshift('' + $stateParams.error);
+                $scope.stackTrace = stackTraceLines.join('\n');
+            }
+        }]
     },
     {
         name: 'ui.serverError',

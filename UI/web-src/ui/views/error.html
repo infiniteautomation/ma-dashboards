@@ -1,3 +1,8 @@
 <h1 ma-tr="ui.app.error"></h1>
 
-<p ma-tr="ui.app.clientErrorOccurred"></p>
+<ma-state-params state-params="stateParams"></ma-state-params>
+
+<p ng-if="!stateParams.toState" ma-tr="ui.app.clientErrorOccurred"></p>
+<p ng-if="stateParams.toState" ma-tr="ui.app.clientErrorOccurredTransitioning" ma-tr-args="[stateParams.toState.url]"></p>
+
+<pre ng-if="stackTrace" ng-bind="stackTrace"></pre>
