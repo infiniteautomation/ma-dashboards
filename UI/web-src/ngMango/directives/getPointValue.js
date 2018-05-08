@@ -7,16 +7,11 @@
  * @ngdoc directive
  * @name ngMango.directive:maGetPointValue
  *
- * @description
- * `<ma-get-point-value point="myPoint"></ma-get-point-value>`
- * - This directive pulls the live value of a data point and outputs it onto the `point` object.
- *   [Example](examples/basics/live-values)
- * - You can use the `point-xid` property or pass in a point from `<ma-point-list>`.
- *   [Example](examples/basics/get-point-by-xid)
- * - Live values can be displayed as text within your HTML by using <code ng-non-bindable="">{{myPoint.value}}</code>
- *   or <code ng-non-bindable="">{{myPoint.renderedValue}}</code> expressions.
- * - Additionally, you can use the outputted value to make custom meters.
- *   [Example](examples/single-value-displays/bars)
+ * @description Gets a point value for a data point. Can also retrieve a data point by it's XID.
+ * The point value will be available as a property of the data point object, as `.value` or `.renderedValue`.
+ *
+ * - Example 1, [get point value for a data point](examples/basics/live-values)
+ * - Example 2, [get a data point by it's XID](examples/basics/get-point-by-xid)
  *
  * @param {object=} point A data point object from a watch list, point query, point drop-down, or `maPoint` service. If a `point-xid` attribute
  * is provided, this attribute will be used to output the retrieved data point.
