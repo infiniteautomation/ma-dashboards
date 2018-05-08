@@ -68,7 +68,7 @@
     "webpack-cli": "^2.0.12"
   },
   "scripts": {
-    "prewebpack": "gulp build-docs",
+    "prewebpack": "gulp clean-and-build-docs",
     "webpack": "webpack --config webpack.config.js",
     "webpack-dev": "webpack --config webpack.config.js --mode development",
     "webpack-watch": "webpack --config webpack.config.js --mode development --watch"

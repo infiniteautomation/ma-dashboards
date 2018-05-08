@@ -18,7 +18,7 @@ import PointValueController from './PointValueController';
  * - You can use the `point-xid` property or pass in a point from `<ma-point-list>`.
  * - <a ui-sref="ui.examples.basics.liveValues">View Demo</a> / <a ui-sref="ui.examples.basics.getPointByXid">View point-xid Demo</a>
  *
- * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {object=} point A data point object from a watch list, point query, point drop-down, `maPoint` service, or `<ma-get-point-value>` component.
  * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
  * @param {string=} display-type Changes how the data point value is rendered on the page. Options are:
  <ul>

@@ -16,7 +16,7 @@ import PointValueController from './PointValueController';
  * - Use default-src to set the default image that will display if no match is found or the point is disabled.
  * - <a ui-sref="ui.examples.singleValueDisplays.switchImage">View Demo</a> 
  *
- * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {object=} point A data point object from a watch list, point query, point drop-down, `maPoint` service, or `<ma-get-point-value>` component.
  * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
  * @param {string=} default-src Set the default image path that will display if no match is found or the point is disabled.
  * @param {object=} src-map Use an object to map any data point value to an image path: (`{'value1': 'img/image1.png',

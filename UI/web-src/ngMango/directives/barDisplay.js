@@ -9,7 +9,7 @@
  * @restrict E
  * @description Displays a bar chart/graph for a data point value. You can use CSS to style the outline and fill.
  * 
- * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {object=} point A data point object from a watch list, point query, point drop-down, `maPoint` service, or `<ma-get-point-value>` component.
  * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
  * @param {string=} [direction=left-to-right] The direction in which the fill extends. Options are
  * left-to-right, bottom-to-top, right-to-left, or top-to-bottom.

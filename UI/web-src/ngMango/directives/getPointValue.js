@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maGetPointValue
@@ -20,12 +18,11 @@
  * - Additionally, you can use the outputted value to make custom meters.
  *   [Example](examples/single-value-displays/bars)
  *
- * @param {object} point The point object that the live value will be outputted to.
- If `point-xid` is used this will be a new variable for the point object.
- If the point object is passed into this attribute from `<ma-point-list>`
- then the point object will be extended with the live updating value.
- * @param {string=} point-xid If used you can hard code in a data point's `xid` to get its live values.
- * @param {object[]=} points Rather then passing in a single `point` object to `point` you can pass in an
+ * @param {object=} point A data point object from a watch list, point query, point drop-down, or `maPoint` service. If a `point-xid` attribute
+ * is provided, this attribute will be used to output the retrieved data point.
+ * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID. If the expression in the `point` attribute is assignable
+ * then the retrieved data point will be assigned to that expression.
+ * @param {object[]=} points Rather then passing in a single data point object to `point` you can pass in an
  array of point objects (from `<ma-point-query>` for example) and have the live values added to each point object in the array.
  * @param {function=} on-value-updated Pass in a function or expression to be evaluated when the value updates. (eg.
  * `on-value-updated="$ctrl.valueUpdated(point)"`)
@@ -36,9 +33,11 @@
      <label>Choose a point</label>
      <ma-point-list ng-model="myPoint1"></ma-point-list>
  </md-input-container>
+ 
 <ma-get-point-value point="myPoint1"></ma-get-point-value>
 <p>Point name is "{{myPoint1.name}}" and its value is {{myPoint1.renderedValue}}.</p>
 
+<!-- Retrieve a data point by its XID and assign to variable myPoint2 -->
 <ma-get-point-value point-xid="DP_698831" point="myPoint2"></ma-get-point-value>
 <p>Point name is "{{myPoint2.name}}" and its value is {{myPoint2.renderedValue}}.</p>
  *

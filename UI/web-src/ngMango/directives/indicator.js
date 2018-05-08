@@ -14,7 +14,7 @@ import PointValueController from './PointValueController';
  * is taken from either an attribute or from the data point's text renderer.
  * Only for use with binary and multistate points. You can use CSS to style the outline and border radius.
  * 
- * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {object=} point A data point object from a watch list, point query, point drop-down, `maPoint` service, or `<ma-get-point-value>` component.
  * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
  * @param {string=} default-color The default color when none is provided via attribute or text renderer.
  * @param {string=} color-true The color to use when the point value is `true`.

@@ -7,9 +7,11 @@ const gulp = require('gulp');
 const del = require('del');
 const MA_HOME = process.env.MA_HOME;
 
-gulp.task('default', ['build-docs']);
+gulp.task('default', ['clean-and-build-docs']);
 
-gulp.task('build-docs', ['clean-docs'], function() {
+gulp.task('clean-and-build-docs', ['clean-docs', 'build-docs']);
+
+gulp.task('build-docs', [], function() {
     const gulpDocs = require('gulp-ngdocs');
 
     console.log('Compiling docs into web-src/docs/ngMango');

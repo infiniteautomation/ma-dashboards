@@ -19,7 +19,7 @@ import PointValueController from './PointValueController';
  * - <a ui-sref="ui.examples.singleValueDisplays.gauges">View Demo</a>
  *
 
- * @param {object=} point A data point object from a watch list, the `maPoint` service, or `<ma-get-point-value>` component.
+ * @param {object=} point A data point object from a watch list, point query, point drop-down, `maPoint` service, or `<ma-get-point-value>` component.
  * @param {string=} point-xid Instead of supplying a data point object, you can supply it's XID.
  * @param {number=} value Allows you to set the gauge to a value that is not provided by the `point` attribute.
  * Only use without the `point` or `point-xid` attribute.
