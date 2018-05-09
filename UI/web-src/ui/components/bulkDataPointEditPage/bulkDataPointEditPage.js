@@ -84,6 +84,8 @@ class BulkDataPointEditPageController {
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
+        this.prevSelectedTags = [];
+        this.manuallySelectedTags = [];
 
         this.pointSelectedBound = (...args) => {
             this.pointSelected(...args);
@@ -127,7 +129,14 @@ class BulkDataPointEditPageController {
     }
     
     addTagToAvailable(tagKey) {
-        if (tagKey === 'device' || tagKey === 'name' || this.availableTagsByKey[tagKey]) return;
+        if (tagKey === 'device' || tagKey === 'name') {
+            return;
+        }
+        
+        const existingOption = this.availableTagsByKey[tagKey];
+        if (existingOption) {
+            return existingOption;
+        }
         
         const option = {
             name: tagKey,
@@ -136,18 +145,25 @@ class BulkDataPointEditPageController {
         
         this.availableTags.push(option);
         this.availableTagsByKey[tagKey] = option;
-        
+
         return option;
     }
 
     addTagColumn(event) {
         this.maDialogHelper.prompt(event, 'ui.app.tagName').then(tagKey => {
-            const newOption = this.addTagToAvailable(tagKey);
-            if (!newOption) {
-                return;
+            const option = this.addTagToAvailable(tagKey);
+            if (option) {
+                this.selectTag(option);
+                this.manuallySelectedTags.push(option);
+                this.prevSelectedTags = this.selectedTags.slice();
             }
-            this.selectedTags.push(newOption);
         }, angular.noop);
+    }
+    
+    selectTag(option) {
+        if (option && !this.selectedTags.includes(option)) {
+            this.selectedTags.push(option);
+        }
     }
     
     hasEdits() {
@@ -375,9 +391,12 @@ class BulkDataPointEditPageController {
                 });
             });
             
-            this.selectedTags = Object.keys(seenTagKeys).map(tagKey => {
-                return this.availableTagsByKey[tagKey];
+            this.selectedTags = this.manuallySelectedTags.slice();
+            Object.keys(seenTagKeys).forEach(tagKey => {
+                const option = this.addTagToAvailable(tagKey);
+                this.selectTag(option);
             });
+            this.prevSelectedTags = this.selectedTags.slice();
             
         }, () => {
             // TODO toast error
@@ -504,6 +523,26 @@ class BulkDataPointEditPageController {
         const settings = this.localStorageService.get(localStorageKey) || {};
         settings.selectedColumns = this.selectedColumns.map(c => c.name);
         this.localStorageService.set(localStorageKey, settings);
+    }
+    
+    selectedTagsChanged() {
+        const removed = this.prevSelectedTags.filter(t => !this.selectedTags.includes(t));
+        const added = this.selectedTags.filter(t => !this.prevSelectedTags.includes(t));
+        
+        removed.forEach(option => {
+            const index = this.manuallySelectedTags.indexOf(option);
+            if (index >= 0) {
+                this.manuallySelectedTags.splice(index, 1);
+            }
+        });
+        
+        added.forEach(option => {
+            if (!this.manuallySelectedTags.includes(option)) {
+                this.manuallySelectedTags.push(option);
+            }
+        });
+        
+        this.prevSelectedTags = this.selectedTags.slice();
     }
 }
 

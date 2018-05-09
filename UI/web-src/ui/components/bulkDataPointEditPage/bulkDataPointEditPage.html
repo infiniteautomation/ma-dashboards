@@ -64,7 +64,9 @@
                     </md-input-container>
                     
                     <md-input-container md-no-float="true">
-                        <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags" ng-change="$ctrl.selectedTagsChanged()" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" ng-model-options="{trackBy: '$value.name'}">
+                        <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags"
+                                ng-change="$ctrl.selectedTagsChanged()"
+                                ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                             <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
                         </md-select>
                     </md-input-container>
