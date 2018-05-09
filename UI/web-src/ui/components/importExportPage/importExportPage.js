@@ -88,7 +88,7 @@ ImportExportPageController.prototype.cancelExport = function() {
 
 ImportExportPageController.prototype.fileDropped = function(data) {
     var types = data.getDataTransferTypes();
-    if (types.length && types[0] === 'Files') {
+    if (types.includes('Files')) {
         var transfer = data.getDataTransfer();
         if (transfer.length) {
             var file = transfer[0];

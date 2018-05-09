@@ -367,7 +367,7 @@ class FileStoreBrowserController {
     
     fileDropped(data) {
         const types = data.getDataTransferTypes();
-        if (types && types.length && types[0] === 'Files') {
+        if (types.includes('Files')) {
             const files = data.getDataTransfer();
             if (files && files.length) {
                 this.uploadFiles(files);

@@ -71,7 +71,7 @@ class OfflineUpgradePageController {
         if (this.uploading || this.restarting) return;
         
         const types = data.getDataTransferTypes();
-        if (types && types.length && types[0] === 'Files') {
+        if (types.includes('Files')) {
             const files = data.getDataTransfer();
             this.uploadFiles(files);
         }
