@@ -9,6 +9,7 @@ import tinycolor from 'tinycolor2';
 
 const selectedProperty = typeof Symbol === 'function' ? Symbol('selected') : '___selected___';
 const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error___';
+const localStorageKey = 'bulkDataPointEditPage';
 
 class BulkDataPointEditPageController {
     static get $$ngIsClass() { return true; }
@@ -22,7 +23,8 @@ class BulkDataPointEditPageController {
         'maWatchList',
         '$mdColorPicker',
         'MA_ROLLUP_TYPES',
-        'MA_CHART_TYPES']; }
+        'MA_CHART_TYPES',
+        'localStorageService']; }
     constructor(maPoint,
             maDataPointTags,
             maDialogHelper,
@@ -31,7 +33,8 @@ class BulkDataPointEditPageController {
             maWatchList,
             $mdColorPicker,
             MA_ROLLUP_TYPES,
-            MA_CHART_TYPES) {
+            MA_CHART_TYPES,
+            localStorageService) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
@@ -41,6 +44,7 @@ class BulkDataPointEditPageController {
         this.$mdColorPicker = $mdColorPicker;
         this.MA_ROLLUP_TYPES = MA_ROLLUP_TYPES;
         this.MA_CHART_TYPES = MA_CHART_TYPES;
+        this.localStorageService = localStorageService;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
@@ -69,7 +73,14 @@ class BulkDataPointEditPageController {
         ];
 
         this.columns.forEach((c, i) => c.order = i);
-        this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
+        
+        const settings = this.localStorageService.get(localStorageKey);
+        if (settings && Array.isArray(settings.selectedColumns)) {
+            this.selectedColumns = this.columns.filter(c => settings.selectedColumns.includes(c.name));
+        } else {
+            this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
+        }
+        
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
@@ -487,6 +498,12 @@ class BulkDataPointEditPageController {
         }).then((color) => {
             this.updateBody[column.name] = color;
         });
+    }
+    
+    selectedColumnsChanged() {
+        const settings = this.localStorageService.get(localStorageKey) || {};
+        settings.selectedColumns = this.selectedColumns.map(c => c.name);
+        this.localStorageService.set(localStorageKey, settings);
     }
 }
 

@@ -56,7 +56,9 @@
                     <div flex></div>
                     
                     <md-input-container md-no-float="true">
-                        <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                        <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns"
+                                ng-change="$ctrl.selectedColumnsChanged()"
+                                ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                             <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
                         </md-select>
                     </md-input-container>
