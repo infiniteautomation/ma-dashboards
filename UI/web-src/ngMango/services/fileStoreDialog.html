@@ -3,7 +3,7 @@
 	  <div class="md-toolbar-tools">
 	    <h2 ma-tr="common.chooseFile"></h2>
 	    <span flex></span>
-	    <md-button class="md-icon-button" ng-click="$ctrl.close()">
+	    <md-button class="md-icon-button" ng-click="$ctrl.close($event)">
 	      <md-icon>close</md-icon>
 	    </md-button>
 	  </div>
@@ -17,15 +17,16 @@
 			extensions="{{$ctrl.options.extensions}}"
 			preview="$ctrl.options.preview"
 			disable-edit="$ctrl.options.disableEdit"
-			editing-file="$ctrl.editingFile = $file"
+			editing-file="$ctrl.editingFile = $file; $ctrl.saveEditFile = $save"
+            save-edit-file="$ctrl.saveEditFile"
 			multiple="$ctrl.options.multiple">
 		</ma-file-store-browser>
 	</md-dialog-content>
 	<md-dialog-actions layout="row">
-	  <md-button ng-click="$ctrl.close()">
+	  <md-button ng-click="$ctrl.close($event)">
 	    <md-icon>close</md-icon>&nbsp;<span ma-tr="common.cancel"></span>
 	  </md-button>
-	  <md-button class="md-raised md-primary" ng-click="$ctrl.done($ctrl.test)" ng-disabled="!$ctrl.path || $ctrl.editingFile">
+	  <md-button class="md-raised md-primary" ng-click="$ctrl.done($event)" ng-disabled="!$ctrl.path">
 	    <md-icon>done</md-icon>&nbsp;<span ma-tr="common.ok"></span>
 	  </md-button>
 	</md-dialog-actions>

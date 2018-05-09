@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import fileStoreBrowserTemplate from './fileStoreBrowser.html';
+import sha512 from 'js-sha512';
 
 const localStorageKey = 'fileStoreBrowser';
 
@@ -510,8 +511,15 @@ class FileStoreBrowserController {
     	this.maFileStore.downloadFile(file).then(textContent => {
     		this.editFile = file;
     		this.editText = textContent;
+    		this.editHash = sha512.sha512(textContent);
+    		
     		if (this.editingFile) {
-    			this.editingFile({$file: this.editFile});
+    			this.editingFile({
+    			    $file: this.editFile,
+    			    $save: (...args) => {
+        			    return this.saveEditFile(...args);
+    			    }
+    			});
     		}
     	}, error => {
     		const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
@@ -520,29 +528,31 @@ class FileStoreBrowserController {
     }
     
     saveEditFile(event) {
+        if (this.editHash === sha512.sha512(this.editText)) {
+            this.maDialogHelper.toast(['ui.fileBrowser.fileNotChanged', this.editFile.filename], null);
+            return this.$q.resolve();
+        }
+        
     	const files = [this.editFile.createFile(this.editText)];
-    	this.maFileStore.uploadFiles(this.path, files, true).then(uploaded => {
+    	return this.maFileStore.uploadFiles(this.path, files, true).then(uploaded => {
     		const index = this.files.indexOf(this.editFile);
     		this.files.splice(index, 1, uploaded[0]);
             this.filterAndReorderFiles();
     		
-    		this.maDialogHelper.toast('ui.fileBrowser.savedSuccessfully', null, this.editFile.filename);
-    //		this.editFile = null;
-    //		this.editText = null;
-    //		if (this.editingFile) {
-    //			this.editingFile({$file: null});
-    //		}
+    		this.maDialogHelper.toast(['ui.fileBrowser.savedSuccessfully', this.editFile.filename]);
     	}, error => {
     		const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-    		this.maDialogHelper.toast('ui.fileBrowser.errorUploading', 'md-warn', this.editFile.filename, msg);
+    		this.maDialogHelper.toast(['ui.fileBrowser.errorUploading', this.editFile.filename, msg], 'md-warn');
     	});
     }
     
     cancelEditFile(event) {
     	this.editFile = null;
     	this.editText = null;
+        this.editHash = null;
+        
     	if (this.editingFile) {
-    		this.editingFile({$file: null});
+    		this.editingFile({$file: null, $save: null});
     	}
     }
     
