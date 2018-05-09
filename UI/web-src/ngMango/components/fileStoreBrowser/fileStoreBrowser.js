@@ -84,7 +84,9 @@ class FileStoreBrowserController {
     	this.path = [this.restrictToStore || 'default'];
     	
     	const settings = this.localStorageService.get(localStorageKey) || {};
-    	if (settings.fileStore) {
+    	if (settings.fileStore === null) {
+    	    this.path = [];
+    	} else if (settings.fileStore) {
     	    if (!this.restrictToStore || this.restrictToStore === settings.fileStore) {
                 this.path = Array.isArray(settings.folderPath) ? settings.folderPath : [];
                 this.path.unshift(settings.fileStore);
@@ -190,7 +192,7 @@ class FileStoreBrowserController {
         });
     	
     	const folderPath = this.path.slice();
-    	const fileStore = folderPath.shift();
+    	const fileStore = folderPath.shift() || null;
     	
     	if (this.$state && this.$stateParams) {
     	    const params = {
