@@ -607,6 +607,31 @@ class FileStoreBrowserController {
     		}
     	});
     }
+    
+    keyDown(event) {
+        if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey || ![38, 40].includes(event.keyCode)) return;
+        if (this.selectedFiles.length > 1) return;
+
+        const selectedFile = this.selectedFiles.length && this.selectedFiles[0];
+        const selectedFileIndex = this.filteredFiles.indexOf(selectedFile);
+
+        let nextIndex = 0;
+        if (event.keyCode === 38) {
+            // up
+            nextIndex = selectedFileIndex - 1;
+        } else if (event.keyCode === 40) {
+            // down
+            nextIndex = selectedFileIndex + 1;
+        }
+        
+        event.preventDefault();
+        
+        const newSelectedFile = this.filteredFiles[nextIndex];
+        if (newSelectedFile) {
+            this.setSelection([newSelectedFile]);
+            this.setViewValueToSelection();
+        }
+    }
 }
 
 const fileStoreBrowser = {
