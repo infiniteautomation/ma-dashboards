@@ -48,7 +48,7 @@ class BulkDataPointEditPageController {
         this.browserOpen = true;
 
         this.columns = [
-            {name: 'xid', label: 'ui.app.xidShort', disableEdit: true, selectedByDefault: true},
+            {name: 'xid', label: 'ui.app.xidShort', disableEdit: true, selectedByDefault: false},
             {name: 'dataSourceName', label: 'ui.app.dataSource', disableEdit: true, selectedByDefault: false},
             {name: 'dataType', label: 'dsEdit.pointDataType', disableEdit: true, selectedByDefault: false},
             {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
@@ -57,8 +57,8 @@ class BulkDataPointEditPageController {
             {name: 'readPermission', label: 'pointEdit.props.permission.read', type: 'permission', selectedByDefault: true},
             {name: 'setPermission', label: 'pointEdit.props.permission.set', type: 'permission', selectedByDefault: true},
             {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: true},
-            {name: 'chartColour', label: 'pointEdit.props.chartColour', type: 'color', selectedByDefault: true},
-            {name: 'plotType', label: 'pointEdit.plotType', type: 'plotType', selectedByDefault: true},
+            {name: 'chartColour', label: 'pointEdit.props.chartColour', type: 'color', selectedByDefault: false},
+            {name: 'plotType', label: 'pointEdit.plotType', type: 'plotType', selectedByDefault: false},
             {name: 'rollup', label: 'common.rollup', type: 'rollup', selectedByDefault: true},
             {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false},
             {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
