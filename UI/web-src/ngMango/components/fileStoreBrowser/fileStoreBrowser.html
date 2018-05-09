@@ -53,7 +53,7 @@
 	<md-content flex class="ma-file-store-browser-files">
 		<md-table-container>
 		  <table md-table md-row-select="false">
-		    <thead md-head md-order="$ctrl.tableOrder" md-on-reorder="$ctrl.filterAndReorderFiles">
+		    <thead md-head md-order="$ctrl.tableOrder" md-on-reorder="$ctrl.filterAndReorderFilesBound">
 		      <tr md-row>
 		        <th md-column md-order-by="directory"></th>
 		        <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>

@@ -23,7 +23,7 @@ class FileStoreBrowserController {
         }
         
         this.tableOrder = ['-directory', 'filename'];
-        this.filterAndReorderFiles = (...args) => {
+        this.filterAndReorderFilesBound = (...args) => {
             return this.filterAndReorderFiles(...args);
         };
     }
