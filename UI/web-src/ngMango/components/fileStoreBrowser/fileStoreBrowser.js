@@ -418,6 +418,10 @@ class FileStoreBrowserController {
     createNewFolder(event) {
         let folderName;
     	this.maDialogHelper.prompt(event, 'ui.app.createNewFolder', null, 'ui.app.folderName').then(_folderName => {
+            if (!_folderName) {
+                return this.$q.reject();
+            }
+    	    
     		folderName = _folderName;
     		return this.maFileStore.createNewFolder(this.path, folderName);
     	}).then(folder => {
@@ -438,6 +442,10 @@ class FileStoreBrowserController {
     createNewFile(event) {
         let fileName;
     	this.maDialogHelper.prompt(event, 'ui.app.createNewFile', null, 'ui.app.fileName').then(_fileName => {
+    	    if (!_fileName) {
+    	        return this.$q.reject();
+    	    }
+    	    
     		fileName = _fileName;
     		return this.maFileStore.createNewFile(this.path, fileName);
     	}).then(file => {
