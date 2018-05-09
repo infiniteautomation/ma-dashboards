@@ -11,7 +11,7 @@
 		<span ng-bind="$ctrl.editFile.filename"></span>
 	</span>
 	<span flex></span>
-    <div>
+    <div ng-if="!$ctrl.editFile">
         <md-checkbox ng-model="$ctrl.overwrite" class="checkbox-top-label checkbox-centered">
             <span ma-tr="ui.fileBrowser.overwrite"></span>
         </md-checkbox>
