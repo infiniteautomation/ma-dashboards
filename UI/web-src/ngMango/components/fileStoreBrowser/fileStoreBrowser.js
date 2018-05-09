@@ -6,16 +6,19 @@
 import angular from 'angular';
 import fileStoreBrowserTemplate from './fileStoreBrowser.html';
 
+const localStorageKey = 'fileStoreBrowser';
+
 class FileStoreBrowserController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector']; }
-    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector) {
+    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector', 'localStorageService']; }
+    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService) {
         this.maFileStore = maFileStore;
         this.$element = $element;
         this.maDialogHelper = maDialogHelper;
         this.$q = $q;
         this.$filter = $filter;
+        this.localStorageService = localStorageService;
         
         if ($injector.has('$state')) {
             this.$state = $injector.get('$state');
@@ -79,6 +82,24 @@ class FileStoreBrowserController {
     	}
     
     	this.path = [this.restrictToStore || 'default'];
+    	
+    	const settings = this.localStorageService.get(localStorageKey) || {};
+    	if (settings.fileStore) {
+    	    if (!this.restrictToStore || this.restrictToStore === settings.fileStore) {
+                this.path = Array.isArray(settings.folderPath) ? settings.folderPath : [];
+                this.path.unshift(settings.fileStore);
+            }
+    	}
+    	
+        if (this.$stateParams) {
+            const fileStore = this.$stateParams.fileStore;
+            const folderPath = this.$stateParams.folderPath ? this.$stateParams.folderPath.split('/') : [];
+            
+            if (fileStore && (!this.restrictToStore || this.restrictToStore === fileStore)) {
+                folderPath.unshift(fileStore);
+                this.path = folderPath;
+            }
+        }
     	
     	const filenames = {};
     	urls.forEach((url, index) => {
@@ -168,6 +189,22 @@ class FileStoreBrowserController {
         	delete this.listPromise;
         });
     	
+    	const folderPath = this.path.slice();
+    	const fileStore = folderPath.shift();
+    	
+    	if (this.$state && this.$stateParams) {
+    	    const params = {
+	            fileStore,
+	            folderPath: folderPath.join('/')
+    	    };
+    	    this.$state.go('.', params, {location: 'replace', notify: false});
+    	}
+    	
+        const settings = this.localStorageService.get(localStorageKey) || {};
+        settings.fileStore = fileStore;
+        settings.folderPath = folderPath;
+        this.localStorageService.set(localStorageKey, settings);
+
     	return this.listPromise;
     }
     
