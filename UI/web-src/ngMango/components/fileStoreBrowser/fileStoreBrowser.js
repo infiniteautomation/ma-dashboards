@@ -347,11 +347,11 @@ class FileStoreBrowserController {
     		if (this.previewFile === file) {
     			this.previewFile = this.selectedFiles.length ? this.selectedFiles[0] : null;
     		}
-    		this.maDialogHelper.toast('ui.fileBrowser.deletedSuccessfully', null, file.filename);
+    		this.maDialogHelper.toast(['ui.fileBrowser.deletedSuccessfully', file.filename]);
     	}, error => {
     		if (!error) return; // dialog cancelled
     		const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-    		this.maDialogHelper.toast('ui.fileBrowser.errorDeleting', 'md-warn', file.filename, msg);
+    		this.maDialogHelper.toast(['ui.fileBrowser.errorDeleting', file.filename, msg], 'md-warn');
     	});
     }
     
@@ -433,7 +433,7 @@ class FileStoreBrowserController {
     			this.setViewValueToSelection();
     			this.previewFile = this.selectedFiles.length ? this.selectedFiles[0] : null;
     			
-    			this.maDialogHelper.toast('ui.fileBrowser.filesUploaded', null, uploaded.length);
+    			this.maDialogHelper.toast(['ui.fileBrowser.filesUploaded', uploaded.length]);
     		}
     	}, (error) => {
     	    let msg;
@@ -442,7 +442,7 @@ class FileStoreBrowserController {
     	    } else {
     	        msg = '' + error;
     	    }
-    		this.maDialogHelper.toast('ui.fileBrowser.uploadFailed', 'md-warn', msg);
+    		this.maDialogHelper.toast(['ui.fileBrowser.uploadFailed', msg], 'md-warn');
     	}).finally(() => {
     	    delete this.uploadPromise;
             this.$element.find('input[type=file]').val('');
@@ -467,14 +467,14 @@ class FileStoreBrowserController {
     	}).then(folder => {
     		this.files.push(folder);
             this.filterAndReorderFiles();
-    		this.maDialogHelper.toast('ui.fileBrowser.folderCreated', null, folder.filename);
+    		this.maDialogHelper.toast(['ui.fileBrowser.folderCreated', folder.filename]);
     	}, error => {
     		if (!error) return; // dialog cancelled
     		if (error.status === 409) {
-    			this.maDialogHelper.toast('ui.fileBrowser.folderExists', 'md-warn', folderName);
+    			this.maDialogHelper.toast(['ui.fileBrowser.folderExists', folderName], 'md-warn');
     		} else {
     			const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-    			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFolder', 'md-warn', folderName, msg);
+    			this.maDialogHelper.toast(['ui.fileBrowser.errorCreatingFolder', folderName, msg], 'md-warn');
     		}
     	});
     }
@@ -491,16 +491,16 @@ class FileStoreBrowserController {
     	}).then(file => {
     		this.files.push(file);
             this.filterAndReorderFiles();
-    		this.maDialogHelper.toast('ui.fileBrowser.fileCreated', null, file.filename);
+    		this.maDialogHelper.toast(['ui.fileBrowser.fileCreated', file.filename]);
     		if (file.editMode)
     			this.doEditFile(event, file);
     	}, error => {
     		if (!error) return; // dialog cancelled
     		if (error.status === 409) {
-    			this.maDialogHelper.toast('ui.fileBrowser.fileExists', 'md-warn', fileName);
+    			this.maDialogHelper.toast(['ui.fileBrowser.fileExists', fileName], 'md-warn');
     		} else {
     			const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-    			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFile', 'md-warn', fileName, msg);
+    			this.maDialogHelper.toast(['ui.fileBrowser.errorCreatingFile', fileName, msg], 'md-warn');
     		}
     	});
     }
@@ -523,13 +523,13 @@ class FileStoreBrowserController {
     		}
     	}, error => {
     		const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-    		this.maDialogHelper.toast('ui.fileBrowser.errorDownloading', 'md-warn', file.filename, msg);
+    		this.maDialogHelper.toast(['ui.fileBrowser.errorDownloading', file.filename, msg], 'md-warn');
     	});
     }
     
     saveEditFile(event) {
         if (this.editHash === sha512.sha512(this.editText)) {
-            this.maDialogHelper.toast(['ui.fileBrowser.fileNotChanged', this.editFile.filename], null);
+            this.maDialogHelper.toast(['ui.fileBrowser.fileNotChanged', this.editFile.filename]);
             return this.$q.resolve();
         }
         
@@ -577,17 +577,17 @@ class FileStoreBrowserController {
             this.filterAndReorderFiles();
             
     		if (renamedFile.filename === file.filename) {
-    			this.maDialogHelper.toast('ui.fileBrowser.fileMoved', null, renamedFile.filename, renamedFile.fileStore + '/' + renamedFile.folderPath);
+    			this.maDialogHelper.toast(['ui.fileBrowser.fileMoved', renamedFile.filename, renamedFile.fileStore + '/' + renamedFile.folderPath]);
     		} else {
-    			this.maDialogHelper.toast('ui.fileBrowser.fileRenamed', null, renamedFile.filename);
+    			this.maDialogHelper.toast(['ui.fileBrowser.fileRenamed', renamedFile.filename]);
     		}
     	}, error => {
     		if (!error) return; // dialog cancelled or filename the same
     		if (error.status === 409) {
-    			this.maDialogHelper.toast('ui.fileBrowser.fileExists', 'md-warn', newName);
+    			this.maDialogHelper.toast(['ui.fileBrowser.fileExists', newName], 'md-warn');
     		} else {
     			const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-    			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFile', 'md-warn', newName, msg);
+    			this.maDialogHelper.toast(['ui.fileBrowser.errorCreatingFile', newName, msg], 'md-warn');
     		}
     	});
     }
@@ -606,14 +606,14 @@ class FileStoreBrowserController {
     			this.files.push(copiedFile);
     	        this.filterAndReorderFiles();
     		}
-    		this.maDialogHelper.toast('ui.fileBrowser.fileCopied', null, copiedFile.filename, copiedFile.fileStore + '/' + copiedFile.folderPath);
+    		this.maDialogHelper.toast(['ui.fileBrowser.fileCopied', copiedFile.filename, copiedFile.fileStore + '/' + copiedFile.folderPath]);
     	}, error => {
     		if (!error) return; // dialog cancelled or filename the same
     		if (error.status === 409) {
-    			this.maDialogHelper.toast('ui.fileBrowser.fileExists', 'md-warn', newName);
+    			this.maDialogHelper.toast(['ui.fileBrowser.fileExists', newName], 'md-warn');
     		} else {
     			const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-    			this.maDialogHelper.toast('ui.fileBrowser.errorCreatingFile', 'md-warn', newName, msg);
+    			this.maDialogHelper.toast(['ui.fileBrowser.errorCreatingFile', newName, msg], 'md-warn');
     		}
     	});
     }
