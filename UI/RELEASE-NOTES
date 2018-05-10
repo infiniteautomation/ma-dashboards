@@ -1,3 +1,15 @@
+*Version 3.4.2*
+* Add simplify settings to bulk data point editor
+* Allow deleting data points using bulk editor
+* Remember selected columns and tags on bulk data point editor
+* Update component documentation for point value components
+* Display error message and stack trace on client error page
+* Remember last used folder on file stores page and add url parameters
+* Allow up/down arrows on file stores page
+* Clicking OK on file store dialog will save open file
+* Fix drag and drop of files using Firefox
+* Fix limit of -1 being sent to API when retrieving point values using watch list download
+
 *Version 3.4.1*
 * Bug fixes
 
