@@ -21,8 +21,8 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
             body.dateTimeFormat = options.dateTimeFormat ;
         }
         
-        if (options.latest) {
-            body.limit = options.latest;
+        if (options.latest != null) {
+            body.limit = isFinite(options.latest) && options.latest >= 0 && options.latest || 100;
         } else if (options.from !== undefined && options.to !== undefined) {
             const now = new Date();
             const from = Util.toMoment(options.from, now, options.dateFormat);
@@ -41,7 +41,7 @@ function pointValuesFactory($http, $q, Util, MA_POINT_VALUES_CONFIG, $injector) 
                 body.simplifyTolerance = options.simplifyTolerance;
             } else if (isFinite(options.simplifyTarget) && options.simplifyTarget > 0) {
                 body.simplifyTarget =  options.simplifyTarget;
-            } else {
+            } else if (limit >= 0) {
                 body.limit = limit;
             }
 
