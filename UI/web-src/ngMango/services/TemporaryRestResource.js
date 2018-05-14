@@ -5,7 +5,6 @@
 
 import angular from 'angular';
 
-
 /**
  * Replaces the old maTemporaryResource service. This is used for bulk data point and tag operations. 
  */
@@ -37,7 +36,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             return !(this.status === 'VIRGIN' || this.status === 'SCHEDULED' || this.status === 'RUNNING');
         }
 
-        start($scope) {
+        start($scope, opts) {
             const tmpResourceDeferred = $q.defer();
             let lastSeenVersion = -1;
             let timeoutPromise;
@@ -84,7 +83,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                 // set the poll period faster if the websocket cant be opened
                 pollPeriod = this.constructor.pollPeriod || 1000;
             }).then(() => {
-                return this.save();
+                return this.save(opts);
             }).then(item => {
                 if (!this.isComplete()) {
                     startTimeout();
