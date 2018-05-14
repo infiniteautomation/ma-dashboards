@@ -75,6 +75,19 @@
                         <md-icon>add</md-icon>
                         <md-tooltip ma-tr="ui.app.addATag"></md-tooltip>
                     </md-button>
+                    
+                    <md-button class="md-icon-button" ng-click="$ctrl.downloadCSV($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                        <md-icon>file_download</md-icon>
+                        <md-tooltip ma-tr="ui.app.downloadCSV"></md-tooltip>
+                    </md-button>
+                    
+                    <md-button class="md-icon-button" ng-click="$ctrl.uploadCSV($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                        <md-icon>file_upload</md-icon>
+                        <md-tooltip ma-tr="ui.app.uploadCSV"></md-tooltip>
+                    </md-button>
+                    
+                    <input style="display:none" type="file" ng-model="dummyFileModel"
+                        ma-change="$ctrl.csvFileInputChanged($event)" ng-attr-accept="text/csv,.csv">
                 </div>
             </md-toolbar>
             

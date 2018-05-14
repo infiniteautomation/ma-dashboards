@@ -24,7 +24,11 @@ class BulkDataPointEditPageController {
         '$mdColorPicker',
         'MA_ROLLUP_TYPES',
         'MA_CHART_TYPES',
-        'localStorageService']; }
+        'localStorageService',
+        'maUtil',
+        '$q',
+        '$scope',
+        '$element']; }
     constructor(maPoint,
             maDataPointTags,
             maDialogHelper,
@@ -34,7 +38,11 @@ class BulkDataPointEditPageController {
             $mdColorPicker,
             MA_ROLLUP_TYPES,
             MA_CHART_TYPES,
-            localStorageService) {
+            localStorageService,
+            maUtil,
+            $q,
+            $scope,
+            $element) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
@@ -45,6 +53,10 @@ class BulkDataPointEditPageController {
         this.MA_ROLLUP_TYPES = MA_ROLLUP_TYPES;
         this.MA_CHART_TYPES = MA_CHART_TYPES;
         this.localStorageService = localStorageService;
+        this.maUtil = maUtil;
+        this.$q = $q;
+        this.$scope = $scope;
+        this.$element = $element;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
@@ -196,7 +208,7 @@ class BulkDataPointEditPageController {
             delete pt[errorProperty];
         });
 
-        this.bulkTaskPromise = this.bulkTask.start().then(resource => {
+        this.bulkTaskPromise = this.bulkTask.start(this.$scope).then(resource => {
             const responses = resource.result.responses;
             const deletedPoints = [];
             
@@ -285,7 +297,7 @@ class BulkDataPointEditPageController {
             delete pt[errorProperty];
         });
 
-        this.bulkTaskPromise = this.bulkTask.start().then(resource => {
+        this.bulkTaskPromise = this.bulkTask.start(this.$scope).then(resource => {
             const responses = resource.result.responses;
             responses.forEach((response, i) => {
                 const point = this.selectedPoints[i];
@@ -543,6 +555,86 @@ class BulkDataPointEditPageController {
         });
         
         this.prevSelectedTags = this.selectedTags.slice();
+    }
+    
+    downloadCSV(event) {
+        if (this.csvCancel) {
+            this.csvCancel.resolve();
+        }
+        
+        if (!Array.isArray(this.points)) return;
+        
+        this.csvCancel = this.$q.defer();
+
+        const promise = this.maPoint.restResource.buildQuery()
+            .or()
+                .eq('xid', this.points[0].xid)
+                .eq('xid', this.points[1].xid)
+                .eq('xid', this.points[2].xid)
+            .up()
+            .query({
+                cancel: this.csvCancel.promise,
+                headers: {
+                    Accept: 'text/csv'
+                },
+                responseType: 'blob',
+                timeout: 120000
+            });
+
+        return promise.then(result => {
+            // TODO use watch list name
+            this.maUtil.downloadBlob(result, 'dataPoints.csv');
+        });
+    }
+
+    uploadCSV(event) {
+        const fileInput = this.$element.find('input[type=file]');
+        fileInput.val(null);
+        fileInput.trigger('click');
+    }
+
+    csvFileInputChanged(event) {
+        const csvFiles = event.target.files;
+        if (!csvFiles.length) return;
+        
+        this.points = [];
+        this.selectedPoints = [];
+        this.selectedPointsChanged();
+        this.watchList = null;
+
+        this.bulkTask = new this.maPoint.bulk();
+        this.bulkTask.setHttpBody(csvFiles[0]);
+
+        // TODO parse the CSV?
+        // TODO prompt to update tags only
+        this.bulkTaskPromise = this.bulkTask.start(this.$scope, {
+            headers: {
+                'Content-Type': 'text/csv'
+            }
+        }).then(resource => {
+            const responses = resource.result.responses;
+            responses.forEach((response, i) => {
+                const point = new this.maPoint(response.body || {});
+                this.points.push(point);
+                
+                if (response.error) {
+                    // TODO how do we get the rest of the body?
+                    point[errorProperty] = response.error;
+                    this.selectedPoints.push(point);
+                }
+            });
+
+            this.selectedPointsChanged();
+
+            this.notifyBulkEditComplete(resource);
+            //resource.delete();
+        }, error => {
+            this.notifyBulkEditError(error);
+        }, resource => {
+            // progress
+        }).finally(() => {
+            delete this.bulkTaskPromise;
+        });
     }
 }
 
