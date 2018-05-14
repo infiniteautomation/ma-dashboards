@@ -9,9 +9,11 @@ import angular from 'angular';
 restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUT'];
 function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUT) {
     
+    const hasSymbol = typeof Symbol === 'function';
     const idProperty = 'xid';
-    const originalIdProperty = typeof Symbol === 'function' ? Symbol('originalId') : 'originalId';
-    const notificationManagerProperty = typeof Symbol === 'function' ? Symbol('notificationManager') : '_notificationManager';
+    const originalIdProperty = hasSymbol ? Symbol('originalId') : 'originalId';
+    const notificationManagerProperty = hasSymbol ? Symbol('notificationManager') : '_notificationManager';
+    const httpBodyProperty = hasSymbol ? Symbol('httpBody') : '_httpBody';
 
     class RestResource {
         constructor(properties) {
@@ -76,6 +78,10 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 method: 'GET',
                 params: params
             }, opts).then(response => {
+                if (opts.responseType != null) {
+                    return response.data;
+                }
+                
                 const items = response.data.items.map(item => {
                     return new this(item);
                 });
@@ -119,10 +125,25 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return this[originalIdProperty];
         }
         
+        setHttpBody(httpBody) {
+            if (httpBody === undefined) {
+                delete this[httpBodyProperty];
+            } else {
+                this[httpBodyProperty] = httpBody;
+            }
+        }
+        
+        getHttpBody() {
+            return this[httpBodyProperty];
+        }
+        
         copy() {
             const copy = angular.copy(this);
             if (!this.isNew()) {
                 copy[originalIdProperty] = this.getOriginalId();
+            }
+            if (this.hasOwnProperty(httpBodyProperty)) {
+                copy[httpBodyProperty] = this[httpBodyProperty];
             }
             return copy;
         }
@@ -134,7 +155,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 method: 'GET',
                 params: opts.params
             }, opts).then(response => {
-                this.itemUpdated(response.data);
+                this.itemUpdated(response.data, opts.responseType);
                 this.initialize('get');
                 if (this.constructor.notifyUpdateOnGet) {
                     this.constructor.notify('update', this, originalId);
@@ -158,21 +179,25 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return this.constructor.http({
                 url,
                 method,
-                data: this,
+                data: this[httpBodyProperty] || this,
                 params: opts.params
             }, opts).then(response => {
                 const saveType = originalId ? 'update' : 'create';
 
-                this.itemUpdated(response.data);
+                this.itemUpdated(response.data, opts.responseType);
                 this.initialize(saveType);
                 this.constructor.notify(saveType, this, originalId);
                 return this;
             });
         }
         
-        itemUpdated(item) {
-            angular.copy(item, this);
-            this[originalIdProperty] = this[this.constructor.idProperty];
+        itemUpdated(item, responseType) {
+            if (responseType == null) {
+                angular.copy(item, this);
+                this[originalIdProperty] = this[this.constructor.idProperty];
+            } else {
+                this[httpBodyProperty] = item;
+            }
         }
         
         delete(opts = {}) {
@@ -183,7 +208,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 method: 'DELETE',
                 params: opts.params
             }, opts).then(response => {
-                this.itemUpdated(response.data);
+                this.itemUpdated(response.data, opts.responseType);
                 this.initialize('delete');
                 this.constructor.notify('delete', this, originalId);
                 return this;
@@ -194,7 +219,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         }
         
         static http(httpConfig, opts = {}) {
-            if (!httpConfig.timeout) {
+            if (httpConfig.timeout == null) {
                 const timeout = isFinite(opts.timeout) ? opts.timeout : this.timeout;
                 
                 if (!opts.cancel && timeout > 0) {
@@ -209,6 +234,15 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                     httpConfig.timeout = $q.race([userCancelledPromise, timeoutPromise.catch(angular.noop)]);
                 }
             }
+
+            if (opts.responseType != null) {
+                httpConfig.responseType = opts.responseType;
+            }
+            
+            if (opts.headers != null) {
+                httpConfig.headers = Object.assign({}, httpConfig.headers, opts.headers);
+            }
+            
             return $http(httpConfig);
         }
         
