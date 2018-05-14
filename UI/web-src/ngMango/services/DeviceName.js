@@ -139,20 +139,17 @@ function DeviceNameFactory($resource) {
     var DeviceName = $resource('/rest/v1/device-names', {}, {
         query: {
             method: 'GET',
-            isArray: true,
-            cache: true
+            isArray: true
         },
         byDataSourceId: {
         	url: '/rest/v1/device-names/by-data-source-id/:id',
             method: 'GET',
-            isArray: true,
-            cache: true
+            isArray: true
         },
         byDataSourceXid: {
             url: '/rest/v1/device-names/by-data-source-xid/:xid',
             method: 'GET',
-            isArray: true,
-            cache: true
+            isArray: true
         }
     });
 
