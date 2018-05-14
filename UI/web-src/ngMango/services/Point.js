@@ -199,8 +199,8 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="ui.
 /*
  * Provides service for getting list of points and create, update, delete
  */
-PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource'];
-function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource) {
+PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource', 'maRqlBuilder', 'maRestResource'];
+function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource, RqlBuilder, RestResource) {
     
     class BulkDataPointTemporaryResource extends TemporaryRestResource {
         static get baseUrl() {
@@ -208,6 +208,12 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         }
         static get resourceType() {
             return 'BULK_DATA_POINT';
+        }
+    }
+    
+    class DataPointRestResource extends RestResource {
+        static get baseUrl() {
+            return '/rest/v2/data-points';
         }
     }
     
@@ -506,6 +512,7 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     };
 
     Point.bulk = BulkDataPointTemporaryResource;
+    Point.restResource = DataPointRestResource;
     
     return Point;
 }
