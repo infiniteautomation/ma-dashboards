@@ -28,7 +28,8 @@ class BulkDataPointEditPageController {
         'maUtil',
         '$q',
         '$scope',
-        '$element']; }
+        '$element',
+        'maCsvConverter']; }
     constructor(maPoint,
             maDataPointTags,
             maDialogHelper,
@@ -42,7 +43,8 @@ class BulkDataPointEditPageController {
             maUtil,
             $q,
             $scope,
-            $element) {
+            $element,
+            maCsvConverter) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
@@ -57,6 +59,7 @@ class BulkDataPointEditPageController {
         this.$q = $q;
         this.$scope = $scope;
         this.$element = $element;
+        this.maCsvConverter = maCsvConverter;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
@@ -395,27 +398,31 @@ class BulkDataPointEditPageController {
         
         this.pointsPromise = this.wlPointsPromise.then(points => {
             this.points = points;
-            
-            const seenTagKeys = {};
-            this.points.forEach(pt => {
-                Object.keys(pt.tags).forEach(key => {
-                    seenTagKeys[key] = true;
-                });
-            });
-            
-            this.selectedTags = this.manuallySelectedTags.slice();
-            Object.keys(seenTagKeys).forEach(tagKey => {
-                const option = this.addTagToAvailable(tagKey);
-                this.selectTag(option);
-            });
-            this.prevSelectedTags = this.selectedTags.slice();
-            
+            this.checkAvailableTags();
         }, () => {
             // TODO toast error
             this.points = [];
         }).finally(() => {
             delete this.pointsPromise;
         });
+    }
+    
+    checkAvailableTags() {
+        const seenTagKeys = {};
+        this.points.forEach(pt => {
+            if (pt.tags) {
+                Object.keys(pt.tags).forEach(key => {
+                    seenTagKeys[key] = true;
+                });
+            }
+        });
+        
+        this.selectedTags = this.manuallySelectedTags.slice();
+        Object.keys(seenTagKeys).forEach(tagKey => {
+            const option = this.addTagToAvailable(tagKey);
+            this.selectTag(option);
+        });
+        this.prevSelectedTags = this.selectedTags.slice();
     }
     
     getPointError(point) {
@@ -505,7 +512,7 @@ class BulkDataPointEditPageController {
         if (this.tagModified(tag, point)) {
             return this.updateBody.tags[tag.name];
         } else {
-            return point.tags[tag.name];
+            return point.tags && point.tags[tag.name];
         }
     }
     
@@ -578,7 +585,7 @@ class BulkDataPointEditPageController {
                     Accept: 'text/csv'
                 },
                 responseType: 'blob',
-                timeout: 120000
+                timeout: 120000 // TODO change
             });
 
         return promise.then(result => {
@@ -594,18 +601,27 @@ class BulkDataPointEditPageController {
     }
 
     csvFileInputChanged(event) {
-        const csvFiles = event.target.files;
-        if (!csvFiles.length) return;
+        if (!event.target.files.length) return;
+        const csvFile = event.target.files[0];
         
         this.points = [];
         this.selectedPoints = [];
         this.selectedPointsChanged();
         this.watchList = null;
 
+        this.maCsvConverter.read(csvFile).then(points => {
+            this.points = points;
+            this.selectedPoints = points.slice();
+            this.checkAvailableTags();
+            
+            this.startFromCsv(csvFile);
+        });
+    }
+    
+    startFromCsv(csvFile) {
         this.bulkTask = new this.maPoint.bulk();
-        this.bulkTask.setHttpBody(csvFiles[0]);
+        this.bulkTask.setHttpBody(csvFile);
 
-        // TODO parse the CSV?
         // TODO prompt to update tags only
         this.bulkTaskPromise = this.bulkTask.start(this.$scope, {
             headers: {
@@ -614,16 +630,24 @@ class BulkDataPointEditPageController {
         }).then(resource => {
             const responses = resource.result.responses;
             responses.forEach((response, i) => {
-                const point = new this.maPoint(response.body || {});
-                this.points.push(point);
-                
-                if (response.error) {
-                    // TODO how do we get the rest of the body?
+                const point = this.selectedPoints[i];
+                if (response.body) {
+                    angular.copy(response.body, point);
+                } else if (response.error) {
                     point[errorProperty] = response.error;
-                    this.selectedPoints.push(point);
                 }
             });
 
+            // deselect the points without errors
+            for (let i = 0, j = 0; i < this.selectedPoints.length && j < responses.length; j++) {
+                const point = this.selectedPoints[i];
+                if (!point[errorProperty]) {
+                    delete point[selectedProperty];
+                    this.selectedPoints.splice(i, 1);
+                } else {
+                    i++;
+                }
+            }
             this.selectedPointsChanged();
 
             this.notifyBulkEditComplete(resource);
