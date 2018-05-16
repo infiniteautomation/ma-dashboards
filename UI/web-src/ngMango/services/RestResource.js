@@ -59,11 +59,11 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return notificationManager;
         }
 
-        static list(opts) {
+        static list(opts = {}) {
             return this.query(null, opts);
         }
 
-        static query(queryObject, opts) {
+        static query(queryObject, opts = {}) {
             const params = {};
             
             if (queryObject) {
