@@ -17,7 +17,7 @@ module.exports = readPom().then(pom => {
     const moduleName = packageJson.com_infiniteautomation.moduleName;
     return {
         entry: {
-            //ngMangoServices: './web-src/ngMango/ngMangoServices.js',
+            ngMangoServices: './web-src/ngMango/ngMangoServices.js',
             ngMango: './web-src/ngMango/ngMangoMaterial.js',
             mangoUi: './web-src/ui/app.js'
         },
@@ -237,7 +237,7 @@ module.exports = readPom().then(pom => {
                 minSize: 30000,
                 minChunks: 2,
                 maxAsyncRequests: 5,
-                maxInitialRequests: 2,
+                maxInitialRequests: 3,
                 automaticNameDelimiter: '~',
                 name: true,
                 cacheGroups: {
@@ -254,7 +254,7 @@ module.exports = readPom().then(pom => {
             new HtmlWebpackPlugin({
                 template: 'web-src/ui/index.html',
                 filename: 'ui/index.html',
-                chunks: ['mangoUi~ngMango', 'mangoUi']
+                chunks: ['mangoUi~ngMango~ngMangoServices', 'mangoUi~ngMango', 'mangoUi']
             }),
             new CopyWebpackPlugin([{
                 context: 'web-src',
