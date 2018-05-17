@@ -67,9 +67,13 @@ function rqlBuilderFactory() {
         static parse(rqlString) {
             return new this.constructor(new Query(rqlString));
         }
-        
+
+        build() {
+            return prune(angular.copy(this.root));
+        }
+
         toString() {
-            const prunedCopy = prune(angular.copy(this.root));
+            const prunedCopy = this.build();
             if (!prunedCopy) {
                 return '';
             }

@@ -90,6 +90,24 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             });
         }
         
+        static queryPost(queryObject, opts = {}) {
+            return this.http({
+                url: this.baseUrl + '/query',
+                method: 'POST',
+                data: queryObject
+            }, opts).then(response => {
+                if (opts.responseType != null) {
+                    return response.data;
+                }
+                
+                const items = response.data.items.map(item => {
+                    return new this(item);
+                });
+                items.$total = response.data.total;
+                return items;
+            });
+        }
+        
         static buildQuery() {
             const builder = new RqlBuilder();
             builder.queryFunction = (queryObj, opts) => {

@@ -67,6 +67,84 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             return updateWithRenameMethod.apply(this, arguments);
         },
         
+        getQuery(paramValues) {
+            if (paramValues == null) {
+                paramValues = this.defaultParamValues();
+            }
+            
+            if (this.type === 'static') {
+                // must have points pre-populated!
+                // call getPoints() or .$get() first
+                
+                const builder = new RqlBuilder();
+                builder.in('xid', this.points.map(p => p.xid));
+                return builder.build();
+            } else if (this.type === 'query') {
+                const ptQuery = this.interpolateQuery(paramValues);
+                return RqlBuilder.parse(ptQuery).build();
+            } else if (this.type === 'hierarchy') {
+                let folderIds = this.folderIds || [];
+                
+                if (this.hierarchyFolders) {
+                    folderIds = this.hierarchyFolders.map(function(folder) {
+                        return folder.id;
+                    });
+                }
+                
+                const builder = new RqlBuilder();
+                builder.in('pointFolderId', folderIds);
+                return builder.build();
+                
+            } else if (this.type === 'tags') {
+                const builder = new RqlBuilder();
+                
+                this.params.filter(p => p.type === 'tagValue')
+                .forEach(param => {
+                    const paramValue = paramValues[param.name];
+                    const rqlProperty = `tags.${param.options.tagKey}`;
+                    
+                    if (param.options.multiple) {
+                        if (!Array.isArray(paramValue) || !paramValue.length) {
+                            if (param.options.required) {
+                                builder.emptyResult = true;
+                            }
+                            return;
+                        }
+                        // remove the null from the in query and add a separate eq==null query
+                        if (paramValue.includes(null)) {
+                            const filteredParamValue = paramValue.filter(v => v != null);
+                            builder.or()
+                                .in(rqlProperty, filteredParamValue)
+                                .eq(rqlProperty, null)
+                                .up();
+                        } else {
+                            builder.in(rqlProperty, paramValue);
+                        }
+                        
+                    } else {
+                        if (paramValue === undefined) {
+                            if (param.options.required) {
+                                builder.emptyResult = true;
+                            }
+                            return;
+                        }
+                        
+                        builder.eq(rqlProperty, paramValue);
+                    }
+                });
+                
+                if (this.data && this.data.limit != null) {
+                    builder.limit(this.data.limit, this.data.offset);
+                } else {
+                    builder.limit(10000);
+                }
+
+                return builder.build();
+            } else {
+                throw new Error('unknown watchlist type');
+            }
+        },
+        
         getPoints(paramValues) {
             if (paramValues == null) {
                 paramValues = this.defaultParamValues();
@@ -108,54 +186,12 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                     return transformToPointObjects(points);
                 });
             } else if (this.type === 'tags') {
-                const builder = new RqlBuilder();
-                let emptyResult = false;
+                const builder = this.getQuery(paramValues);
                 
-                this.params.filter(p => p.type === 'tagValue')
-                .forEach(param => {
-                    const paramValue = paramValues[param.name];
-                    const rqlProperty = `tags.${param.options.tagKey}`;
-                    
-                    if (param.options.multiple) {
-                        if (!Array.isArray(paramValue) || !paramValue.length) {
-                            if (param.options.required) {
-                                emptyResult = true;
-                            }
-                            return;
-                        }
-                        // remove the null from the in query and add a separate eq==null query
-                        if (paramValue.includes(null)) {
-                            const filteredParamValue = paramValue.filter(v => v != null);
-                            builder.or()
-                                .in(rqlProperty, filteredParamValue)
-                                .eq(rqlProperty, null)
-                                .up();
-                        } else {
-                            builder.in(rqlProperty, paramValue);
-                        }
-                        
-                    } else {
-                        if (paramValue === undefined) {
-                            if (param.options.required) {
-                                emptyResult = true;
-                            }
-                            return;
-                        }
-                        
-                        builder.eq(rqlProperty, paramValue);
-                    }
-                });
-                
-                if (this.data && this.data.limit != null) {
-                    builder.limit(this.data.limit, this.data.offset);
-                } else {
-                    builder.limit(10000);
-                }
-                
-                if (emptyResult) {
+                if (builder.emptyResult) {
                     return $q.when([]);
                 }
-                
+
                 const resource = Point.query({rqlQuery: builder.toString()});
                 resource.$promise.setCancel(resource.$cancelRequest);
                 return resource.$promise;

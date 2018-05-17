@@ -568,25 +568,18 @@ class BulkDataPointEditPageController {
         if (this.csvCancel) {
             this.csvCancel.resolve();
         }
-        
-        if (!Array.isArray(this.points)) return;
-        
-        this.csvCancel = this.$q.defer();
 
-        const promise = this.maPoint.restResource.buildQuery()
-            .or()
-                .eq('xid', this.points[0].xid)
-                .eq('xid', this.points[1].xid)
-                .eq('xid', this.points[2].xid)
-            .up()
-            .query({
-                cancel: this.csvCancel.promise,
-                headers: {
-                    Accept: 'text/csv'
-                },
-                responseType: 'blob',
-                timeout: 120000 // TODO change
-            });
+        this.csvCancel = this.$q.defer();
+        
+        const queryObj = this.watchList.getQuery(this.watchListParams);
+        const promise = this.maPoint.restResource.queryPost(queryObj, {
+            cancel: this.csvCancel.promise,
+            headers: {
+                Accept: 'text/csv'
+            },
+            responseType: 'blob',
+            timeout: 120000 // TODO change
+        });
 
         return promise.then(result => {
             // TODO use watch list name
