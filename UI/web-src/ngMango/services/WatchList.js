@@ -6,7 +6,6 @@
 import angular from 'angular';
 import query from 'rql/query';
 
-
 WatchListFactory.$inject = ['$resource', 'maUtil', '$http', 'maPoint', 'maPointHierarchy', '$q',
     '$interpolate', '$sce', '$parse', 'maRqlBuilder'];
 function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
@@ -67,48 +66,33 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             return updateWithRenameMethod.apply(this, arguments);
         },
         
-        getQuery(paramValues) {
-            if (paramValues == null) {
-                paramValues = this.defaultParamValues();
-            }
+        getQuery(paramValues = this.defaultParamValues()) {
+            const builder = new RqlBuilder();
             
             if (this.type === 'static') {
                 // must have points pre-populated!
                 // call getPoints() or .$get() first
-                
-                const builder = new RqlBuilder();
+                // shouldn't really use this method for static watch lists
                 builder.in('xid', this.points.map(p => p.xid));
-                return builder.build();
             } else if (this.type === 'query') {
-                const ptQuery = this.interpolateQuery(paramValues);
-                return RqlBuilder.parse(ptQuery).build();
+                return this.interpolateQuery(paramValues);
             } else if (this.type === 'hierarchy') {
                 let folderIds = this.folderIds || [];
                 
                 if (this.hierarchyFolders) {
-                    folderIds = this.hierarchyFolders.map(function(folder) {
-                        return folder.id;
-                    });
+                    folderIds = this.hierarchyFolders.map(folder => folder.id);
                 }
-                
-                const builder = new RqlBuilder();
+
                 builder.in('pointFolderId', folderIds);
-                return builder.build();
                 
             } else if (this.type === 'tags') {
-                const builder = new RqlBuilder();
-                
-                this.params.filter(p => p.type === 'tagValue')
-                .forEach(param => {
+                this.params.filter(p => p.type === 'tagValue').forEach(param => {
                     const paramValue = paramValues[param.name];
                     const rqlProperty = `tags.${param.options.tagKey}`;
                     
                     if (param.options.multiple) {
-                        if (!Array.isArray(paramValue) || !paramValue.length) {
-                            if (param.options.required) {
-                                builder.emptyResult = true;
-                            }
-                            return;
+                        if (!(Array.isArray(paramValue) && paramValue.length) && param.options.required) {
+                            return null;
                         }
                         // remove the null from the in query and add a separate eq==null query
                         if (paramValue.includes(null)) {
@@ -120,100 +104,62 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                         } else {
                             builder.in(rqlProperty, paramValue);
                         }
-                        
                     } else {
-                        if (paramValue === undefined) {
-                            if (param.options.required) {
-                                builder.emptyResult = true;
-                            }
-                            return;
+                        if (paramValue === undefined && param.options.required) {
+                            return null;
                         }
                         
                         builder.eq(rqlProperty, paramValue);
                     }
                 });
-                
+            } else {
+                throw new Error('unknown watchlist type');
+            }
+            
+            if (this.type !== 'static' && this.type !== 'query') {
                 if (this.data && this.data.limit != null) {
                     builder.limit(this.data.limit, this.data.offset);
                 } else {
                     builder.limit(10000);
                 }
-
-                return builder.build();
-            } else {
-                throw new Error('unknown watchlist type');
-            }
-        },
-        
-        getPoints(paramValues) {
-            if (paramValues == null) {
-                paramValues = this.defaultParamValues();
             }
             
+            return builder.build();
+        },
+        
+        getPoints(paramValues = this.defaultParamValues()) {
             if (this.type === 'static') {
                 return $http({
                     method: 'GET',
-                    url: '/rest/v1/watch-lists/' + encodeURIComponent(this.xid) +'/data-points',
+                    url: `/rest/v1/watch-lists/${encodeURIComponent(this.xid)}/data-points`,
                     cache: false,
                     transformResponse: maUtil.transformArrayResponse
-                }).then(function(response) {
-                    this.points = transformToPointObjects(response.data);
+                }).then(response => {
+                    this.points = response.data.map(pt => angular.merge(new Point(), pt));
                     return this.points;
-                }.bind(this));
-            } else if (this.type === 'query') {
-                const ptQuery = this.interpolateQuery(paramValues);
-                const resource = Point.query({rqlQuery: ptQuery});
-                resource.$promise.setCancel(resource.$cancelRequest);
-                return resource.$promise.then(function(points) {
-                    const result = transformToPointObjects(points);
-                    result.$rqlQuery = ptQuery;
-                    return result;
                 });
-            } else if (this.type === 'hierarchy') {
-                let folderIds = this.folderIds;
-                
-                if (this.hierarchyFolders) {
-                    folderIds = this.hierarchyFolders.map(function(folder) {
-                        return folder.id;
-                    });
+            } else {
+                let query;
+                try {
+                    query = this.getQuery(paramValues);
+                } catch (e) {
+                    return $q.reject(e);
                 }
                 
-                if (!folderIds || !folderIds.length) {
-                    return $q.when([]);
-                }
-                
-                return PointHierarchy.getPointsForFolderIds(folderIds).then(function(points) {
-                    return transformToPointObjects(points);
-                });
-            } else if (this.type === 'tags') {
-                const builder = this.getQuery(paramValues);
-                
-                if (builder.emptyResult) {
+                if (query == null) {
                     return $q.when([]);
                 }
 
-                const resource = Point.query({rqlQuery: builder.toString()});
+                const resource = Point.query({rqlQuery: query.toString()});
                 resource.$promise.setCancel(resource.$cancelRequest);
                 return resource.$promise;
-            } else {
-                return $q.reject('unknown watchlist type');
-            }
-            
-            function transformToPointObjects(points) {
-                for (let i = 0; i < points.length; i++) {
-                    const pt = points[i];
-                    if (!(pt instanceof Point)) {
-                        points[i] = angular.merge(new Point(), pt);
-                    }
-                }
-                return points;
             }
         },
         
         interpolateQuery(params) {
             params = params || {};
             const parsed = new query.Query(this.query);
-            parsed.walk(function(name, args) {
+            parsed.walk((name, args) => {
                 for (let i = 0; i < args.length; i++) {
                     const arg = args[i];
                     if (typeof arg !== 'string' || arg.indexOf('{{') < 0) continue;
@@ -234,8 +180,9 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                         Array.prototype.splice.apply(args, [1, 1].concat(args[1].split(',')));
                     }
                 }
-            }.bind(this));
-            return parsed.toString();
+            });
+            
+            return parsed;
         },
         
         sanitizeParamValues() {
