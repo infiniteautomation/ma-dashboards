@@ -629,20 +629,36 @@ class BulkDataPointEditPageController {
     }
     
     startFromCsv(csvFile) {
-        this.bulkTask = new this.maPoint.bulk();
-        this.bulkTask.setHttpBody(csvFile);
-
-        // TODO prompt to update tags only
-        this.bulkTaskPromise = this.bulkTask.start(this.$scope, {
-            headers: {
-                'Content-Type': 'text/csv'
+        let tagsOnly;
+        
+        this.bulkTaskPromise = this.maDialogHelper.confirm(null, ['ui.app.onlyTags']).then(() => {
+            tagsOnly = true;
+        }, () => {
+            tagsOnly = false;
+        }).then(() => {
+            if (tagsOnly) {
+                this.bulkTask = new this.maDataPointTags.bulk();
+            } else {
+                this.bulkTask = new this.maPoint.bulk();
             }
+            
+            this.bulkTask.setHttpBody(csvFile);
+            
+            return this.bulkTask.start(this.$scope, {
+                headers: {
+                    'Content-Type': 'text/csv'
+                }
+            });
         }).then(resource => {
             const responses = resource.result.responses;
             responses.forEach((response, i) => {
                 const point = this.selectedPoints[i];
                 if (response.body) {
-                    angular.copy(response.body, point);
+                    if (tagsOnly) {
+                        point.tags = response.body;
+                    } else {
+                        angular.copy(response.body, point);
+                    }
                 } else if (response.error) {
                     point[errorProperty] = response.error;
                 }
