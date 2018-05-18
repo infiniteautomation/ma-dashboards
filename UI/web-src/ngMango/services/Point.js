@@ -215,6 +215,23 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         static get baseUrl() {
             return '/rest/v2/data-points';
         }
+        
+        static pointsForWatchList(xid, opts = {}) {
+            return this.http({
+                url: `/rest/v1/watch-lists/${encodeURIComponent(xid)}/data-points`,
+                method: 'GET'
+            }, opts).then(response => {
+                if (opts.responseType != null) {
+                    return response.data;
+                }
+                
+                const items = response.data.items.map(item => {
+                    return new this(item);
+                });
+                items.$total = response.data.total;
+                return items;
+            });
+        }
     }
     
     var Point = $resource('/rest/v2/data-points/:xid', {
