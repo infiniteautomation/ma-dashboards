@@ -399,8 +399,11 @@ class BulkDataPointEditPageController {
         this.pointsPromise = this.wlPointsPromise.then(points => {
             this.points = points;
             this.checkAvailableTags();
-        }, () => {
-            // TODO toast error
+        }, error => {
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.errorGettingPoints', error.mangoStatusText || '' + error],
+                hideDelay: 10000
+            });
             this.points = [];
         }).finally(() => {
             delete this.pointsPromise;
@@ -571,19 +574,33 @@ class BulkDataPointEditPageController {
 
         this.csvCancel = this.$q.defer();
         
-        const queryObj = this.watchList.getQuery(this.watchListParams);
-        const promise = this.maPoint.restResource.queryPost(queryObj, {
+        const httpOptions = {
             cancel: this.csvCancel.promise,
             headers: {
                 Accept: 'text/csv'
             },
             responseType: 'blob',
-            timeout: 120000 // TODO change
-        });
+            timeout: 0
+        };
+        
+        let downloadPromise;
+        if (this.watchList.type === 'static') {
+            downloadPromise = this.maPoint.restResource.pointsForWatchList(this.watchList.xid, httpOptions);
+        } else {
+            const queryObj = this.watchList.getQuery(this.watchListParams);
+            if (queryObj == null) {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['ui.app.requiredParameter'],
+                    hideDelay: 10000
+                });
+                return;
+            }
+            downloadPromise = this.maPoint.restResource.query(queryObj, httpOptions);
+        }
 
-        return promise.then(result => {
-            // TODO use watch list name
-            this.maUtil.downloadBlob(result, 'dataPoints.csv');
+        return downloadPromise.then(result => {
+            delete this.csvCancel;
+            this.maUtil.downloadBlob(result, `${this.watchList.name} points.csv`);
         });
     }
 
