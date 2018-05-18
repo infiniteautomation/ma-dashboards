@@ -6,7 +6,6 @@
 import angular from 'angular';
 import rqlQueryLib from 'rql/query';
 
-
 const Query = rqlQueryLib.Query;
 
 rqlBuilderFactory.$inject = [];
@@ -65,7 +64,7 @@ function rqlBuilderFactory() {
         }
 
         static parse(rqlString) {
-            return new this.constructor(new Query(rqlString));
+            return new this(new Query(rqlString));
         }
 
         build() {
@@ -162,5 +161,3 @@ function rqlBuilderFactory() {
 }
 
 export default rqlBuilderFactory;
-
-
