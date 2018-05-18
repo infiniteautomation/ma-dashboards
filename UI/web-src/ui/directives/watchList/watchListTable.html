@@ -8,6 +8,10 @@
         <md-button class="md-primary md-raised" ng-click="$ctrl.saveSettings()">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
+            <md-tooltip>
+                <span ng-if="!$ctrl.watchList.isNew" ma-tr="ui.app.saveSettings"></span>
+                <span ng-if="$ctrl.watchList.isNew" ma-tr="ui.app.saveAsNewWatchList"></span>
+            </md-tooltip>
         </md-button>
         <md-button class="md-raised" ui-sref="ui.settings.watchListBuilder({watchListXid: $ctrl.watchList.xid})" ng-if="!$ctrl.watchList.isNew">
             <md-icon>edit</md-icon>
@@ -16,6 +20,9 @@
         <md-button class="md-raised" ng-click="$ctrl.showDownloadDialog($event)">
             <md-icon>file_download</md-icon>
             <span ma-tr="common.download"></span>
+            <md-tooltip>
+                <span ma-tr="ui.app.downloadPointValues"></span>
+            </md-tooltip>
         </md-button>
         
         <md-button class="md-icon-button" ng-click="$ctrl.selectColumnToolbarOpen = !$ctrl.selectColumnToolbarOpen">
