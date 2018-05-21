@@ -6,7 +6,7 @@ package com.infiniteautomation.ui;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
