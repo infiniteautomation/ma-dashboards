@@ -1,4 +1,6 @@
-<div flex="noshrink" layout="row">
+<div flex="noshrink" layout="row"
+        ma-dropzone ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)"
+        ng-class="{'ma-drag-over': dragOver}">
     <ma-point-browser ng-show="$ctrl.browserOpen"
         flex="20"
         ng-model="$ctrl.watchList"
@@ -81,7 +83,7 @@
                         <md-tooltip ma-tr="ui.app.downloadCSV"></md-tooltip>
                     </md-button>
                     
-                    <md-button class="md-icon-button" ng-click="$ctrl.uploadCSV($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                    <md-button class="md-icon-button" ng-click="$ctrl.uploadCSVButtonClicked($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                         <md-icon>file_upload</md-icon>
                         <md-tooltip ma-tr="ui.app.uploadCSV"></md-tooltip>
                     </md-button>

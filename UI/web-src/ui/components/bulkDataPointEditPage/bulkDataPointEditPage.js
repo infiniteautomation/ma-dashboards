@@ -604,7 +604,7 @@ class BulkDataPointEditPageController {
         });
     }
 
-    uploadCSV(event) {
+    uploadCSVButtonClicked(event) {
         const fileInput = this.$element.find('input[type=file]');
         fileInput.val(null);
         fileInput.trigger('click');
@@ -612,8 +612,22 @@ class BulkDataPointEditPageController {
 
     csvFileInputChanged(event) {
         if (!event.target.files.length) return;
-        const csvFile = event.target.files[0];
+        this.uploadCSVFile(event.target.files[0]);
+    }
+    
+    fileDropped(data) {
+        if (this.bulkTaskPromise || this.pointsPromise) return;
         
+        const types = data.getDataTransferTypes();
+        if (types.includes('Files')) {
+            const files = Array.from(data.getDataTransfer()).filter(f => f.name.endsWith('.csv') || f.type === 'text/csv');
+            if (files.length) {
+                this.uploadCSVFile(files[0]);
+            }
+        }
+    }
+    
+    uploadCSVFile(csvFile) {
         this.points = [];
         this.selectedPoints = [];
         this.selectedPointsChanged();
