@@ -78,7 +78,7 @@
                         <md-tooltip ma-tr="ui.app.addATag"></md-tooltip>
                     </md-button>
                     
-                    <md-button class="md-icon-button" ng-click="$ctrl.downloadCSV($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                    <md-button class="md-icon-button" ng-click="$ctrl.downloadCSV($event)" ng-disabled="!$ctrl.watchList || $ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                         <md-icon>file_download</md-icon>
                         <md-tooltip ma-tr="ui.app.downloadCSV"></md-tooltip>
                     </md-button>
