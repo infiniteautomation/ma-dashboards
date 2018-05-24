@@ -36,13 +36,20 @@ function jogDirective($interval) {
         jogStart(event) {
             this.cancelInterval(); // cancel existing interval just in case
 
-            this.intervalPromise = $interval(() => {
-                this.$scope.$apply(() => {
-                    this.intervalFired();
-                });
-            }, this.maJogInterval || 500, 0, false);
+            if (this.maJogActive) {
+                this.intervalPromise = $interval(() => {
+                    this.$scope.$apply(() => {
+                        this.intervalFired();
+                    });
+                }, this.maJogInterval || 500, 0, false);
+            }
             
-            this.maJog({$start: true});
+            if (this.maJogStart) {
+                this.maJogStart();
+            }
+            if (this.maJogActive) {
+                this.maJog({$start: true});
+            }
         }
         
         jogEnd(event) {
@@ -60,7 +67,7 @@ function jogDirective($interval) {
         }
         
         intervalFired() {
-            this.maJog({$start: false});
+            this.maJogActive({$start: false});
         }
     }
     
@@ -70,7 +77,8 @@ function jogDirective($interval) {
         scope: false,
         bindToController: {
             maJogInterval: '<?',
-            maJog: '&',
+            maJogStart: '&?',
+            maJogActive: '&?',
             maJogEnd: '&?'
         },
         controller: JogController
