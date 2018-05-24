@@ -88,6 +88,8 @@ function IndicatorController() {
     var firstArg = PointValueController.$inject.length;
 
     this.Util = arguments[firstArg];
+
+    this.$element.css('background-color', this.$attrs.defaultColor || '');
 }
 
 IndicatorController.prototype = Object.create(PointValueController.prototype);
