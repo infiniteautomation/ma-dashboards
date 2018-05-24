@@ -51,8 +51,8 @@ import moment from 'moment-timezone';
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
 
-eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sce', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO'];
-function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats, MA_EVENT_LINK_INFO) {
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO'];
+function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO) {
 
     class Equals {
         constructor(value, filter) {
@@ -257,7 +257,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sce, mangoDateForm
         }
         
         parseHTML(text) {
-            return $sce.trustAsHtml(text);
+            return $sanitize(text);
         }
         
         formatDate(date) {

@@ -161,12 +161,15 @@ SystemStatusPageController.prototype.getThreads = function() {
 };
 
 SystemStatusPageController.prototype.showBlockedThreadDetails = function($event, thread) {
+    // stops the click handler for the row running and closing this dialog
+    $event.stopPropagation();
+    
     this.maDialogHelper.showBasicDialog($event, {
         titleTr: 'ui.settings.systemStatus.blockedThreadDetails',
         contentTemplate: `<p>lockOwnerName: ${thread.lockOwnerName}</p>
-            '<p>lockOwnerId: ${thread.lockOwnerId}</p>
-            '<p>className: ${thread.lockInfo.className}</p>
-            '<p>identityHashCode: ${thread.lockInfo.identityHashCode}</p>`
+            <p>lockOwnerId: ${thread.lockOwnerId}</p>
+            <p>className: ${thread.lockInfo && thread.lockInfo.className}</p>
+            <p>identityHashCode: ${thread.lockInfo && thread.lockInfo.identityHashCode}</p>`
     });
 };
 
