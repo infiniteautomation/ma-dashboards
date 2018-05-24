@@ -197,7 +197,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 this.queryResource.$cancelRequest();
             }
             
-            this.queryResource = Events.rql({query: this.RQL.RQLforDisplay});
+            const rqlQuery = this.RQL.RQLforDisplay;
+            const separator = rqlQuery.length ? '&' : '';
+            this.csvUrl = `/rest/v1/events?${rqlQuery}${separator}format=csv2`;
+            
+            this.queryResource = Events.rql({rqlQuery});
             this.tableQueryPromise = this.queryResource.$promise.then((data) => {
                 // Set Events For Table
                 this.events = data;
