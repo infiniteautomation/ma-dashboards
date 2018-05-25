@@ -38,8 +38,7 @@ module.exports = readPom().then(pom => {
                     use: [{
                         loader: 'html-loader',
                         options: {
-                            attrs: ['img:src', 'link:href'],
-                            interpolate: true
+                            attrs: ['img:src', 'link:href']
                         }
                     }]
                 },

@@ -77,7 +77,7 @@ require.config({
             return '';
         }
         
-        let version = window.mangoLastUpgrade || packageJson.version;
+        let version = packageJson.version;
         
         const moduleMatches = id.match(/^modules\/(.+?)\//);
         if (moduleMatches) {
