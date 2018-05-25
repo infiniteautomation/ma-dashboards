@@ -30,7 +30,7 @@ import moment from 'moment-timezone';
 </ul>
  * @param {string} time-zone The output date will have the given timezone.
  * @param {expression=} on-change Expression which is evaluated when the time updates.
- *     Available scope parameters are `$value` (contains the current time as a moment object).
+ *     Available scope parameters are `$value` (contains the current time as a moment object) and `$firstTick` (true on the first run).
  *
  * @usage
  * <ma-now update-interval="1 SECONDS" output="time"></ma-now>
@@ -65,7 +65,7 @@ function now() {
 
             this.startUpdateTimer = function startUpdateTimer() {
                 this.cancelUpdateTimer();
-                this.doUpdate();
+                this.doUpdate(true);
 
                 var millis = parseUpdateInterval(this.updateInterval);
 
@@ -82,14 +82,14 @@ function now() {
                 }
             };
             
-            this.doUpdate = function doUpdate() {
+            this.doUpdate = function doUpdate(firstTick = false) {
                 var m = moment();
                 if (this.timeZone) {
                     m.tz(this.timeZone);
                 }
                 this.output = m;
                 if (this.onChange) {
-                    this.onChange({$value: m});
+                    this.onChange({$value: m, $firstTick: firstTick});
                 }
             }.bind(this);
 
