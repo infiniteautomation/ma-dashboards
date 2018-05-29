@@ -47,11 +47,15 @@ function momentaryDirective($interval) {
             $element.on('mousedown', boundStart);
             $element.on('mouseup', boundEnd);
             $element.on('mouseleave', boundEnd);
+            
+            this.active = false;
         }
         
         momentaryStart(event) {
             this.cancelInterval(); // cancel existing interval just in case
 
+            this.active = true;
+            
             if (isFinite(this.maMomentaryInterval) && this.maMomentaryInterval > 0) {
                 this.intervalPromise = $interval(() => {
                     this.$scope.$apply(() => {
@@ -70,7 +74,11 @@ function momentaryDirective($interval) {
         
         momentaryEnd(event) {
             this.cancelInterval();
-            if (this.maMomentaryEnd) {
+            
+            const wasActive = this.active;
+            this.active = false;
+            
+            if (wasActive && this.maMomentaryEnd) {
                 this.maMomentaryEnd();
             }
         }
