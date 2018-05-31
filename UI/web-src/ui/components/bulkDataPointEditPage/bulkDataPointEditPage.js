@@ -7,6 +7,8 @@ import angular from 'angular';
 import bulkDataPointEditPageTemplate from './bulkDataPointEditPage.html';
 import tinycolor from 'tinycolor2';
 
+import './bulkDataPointEditPage.css';
+
 const selectedProperty = typeof Symbol === 'function' ? Symbol('selected') : '___selected___';
 const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error___';
 const localStorageKey = 'bulkDataPointEditPage';
@@ -28,8 +30,7 @@ class BulkDataPointEditPageController {
         'maUtil',
         '$q',
         '$scope',
-        '$element',
-        'maCsvConverter']; }
+        '$element']; }
     constructor(maPoint,
             maDataPointTags,
             maDialogHelper,
@@ -43,8 +44,7 @@ class BulkDataPointEditPageController {
             maUtil,
             $q,
             $scope,
-            $element,
-            maCsvConverter) {
+            $element) {
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
@@ -59,7 +59,6 @@ class BulkDataPointEditPageController {
         this.$q = $q;
         this.$scope = $scope;
         this.$element = $element;
-        this.maCsvConverter = maCsvConverter;
         
         this.numberOfRows = 25;
         this.pageNumber = 1;
@@ -246,6 +245,7 @@ class BulkDataPointEditPageController {
             // progress
         }).finally(() => {
             delete this.bulkTaskPromise;
+            delete this.bulkTask;
         });
     }
     
@@ -335,6 +335,7 @@ class BulkDataPointEditPageController {
             // progress
         }).finally(() => {
             delete this.bulkTaskPromise;
+            delete this.bulkTask;
         });
     }
 
@@ -382,9 +383,9 @@ class BulkDataPointEditPageController {
     }
 
     watchListChanged() {
-        if (!this.watchList) return;
-        
-        this.watchList.defaultParamValues(this.watchListParams);
+        if (this.watchList) {
+            this.watchList.defaultParamValues(this.watchListParams);
+        }
         this.getPoints();
     }
     
@@ -394,8 +395,13 @@ class BulkDataPointEditPageController {
         if (this.wlPointsPromise) {
             this.wlPointsPromise.cancel();
         }
-        this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
         
+        if (this.watchList) {
+            this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
+        } else {
+            this.wlPointsPromise = this.$q.resolve([]);
+        }
+
         this.pointsPromise = this.wlPointsPromise.then(points => {
             this.points = points;
             this.checkAvailableTags();
@@ -628,18 +634,10 @@ class BulkDataPointEditPageController {
     }
     
     uploadCSVFile(csvFile) {
-        this.points = [];
-        this.selectedPoints = [];
-        this.selectedPointsChanged();
         this.watchList = null;
-
-        this.maCsvConverter.read(csvFile).then(points => {
-            this.points = points;
-            this.selectedPoints = points.slice();
-            this.checkAvailableTags();
-            
-            this.startFromCsv(csvFile);
-        });
+        this.watchListChanged();
+        
+        this.startFromCsv(csvFile);
     }
     
     startFromCsv(csvFile) {
@@ -666,7 +664,8 @@ class BulkDataPointEditPageController {
         }).then(resource => {
             const responses = resource.result.responses;
             responses.forEach((response, i) => {
-                const point = this.selectedPoints[i];
+                const point = new this.maPoint();
+                
                 if (response.body) {
                     if (tagsOnly) {
                         point.tags = response.body;
@@ -676,19 +675,9 @@ class BulkDataPointEditPageController {
                 } else if (response.error) {
                     point[errorProperty] = response.error;
                 }
+                
+                this.points.push(point);
             });
-
-            // deselect the points without errors
-            for (let i = 0, j = 0; i < this.selectedPoints.length && j < responses.length; j++) {
-                const point = this.selectedPoints[i];
-                if (!point[errorProperty]) {
-                    delete point[selectedProperty];
-                    this.selectedPoints.splice(i, 1);
-                } else {
-                    i++;
-                }
-            }
-            this.selectedPointsChanged();
 
             this.notifyBulkEditComplete(resource);
             //resource.delete();
@@ -698,6 +687,7 @@ class BulkDataPointEditPageController {
             // progress
         }).finally(() => {
             delete this.bulkTaskPromise;
+            delete this.bulkTask;
         });
     }
 }
