@@ -1,3 +1,11 @@
+*Version 3.4.3*
+* Add CSV upload/download to the bulk data point editor (ensure core and API are up to date)
+* Add ma-momentary directive for momentary push buttons
+* Provide PointValueController as a service
+* Add download link for CSV events
+* Fix possible script injection attack vector
+* Ensure default color set on ma-indicator
+
 *Version 3.4.2*
 * Add simplify settings to bulk data point editor
 * Allow deleting data points using bulk editor
