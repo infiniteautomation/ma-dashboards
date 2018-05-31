@@ -354,11 +354,13 @@ class BulkDataPointEditPageController {
     }
     
     notifyBulkEditComplete(resource) {
+        const numErrors = resource.result.responses.reduce((accum, response) => response.error ? accum + 1 : accum, 0);
+        
         const toastOptions = {
-                textTr: [null, resource.position, resource.maximum, this.selectedPoints.length],
-                hideDelay: 10000,
-                classes: 'md-warn'
-            };
+            textTr: [null, resource.position, resource.maximum, numErrors],
+            hideDelay: 10000,
+            classes: 'md-warn'
+        };
 
         switch (resource.status) {
         case 'CANCELLED':
@@ -372,7 +374,7 @@ class BulkDataPointEditPageController {
             toastOptions.textTr.push(resource.error.localizedMessage);
             break;
         case 'SUCCESS':
-            if (!this.selectedPoints.length) {
+            if (!numErrors) {
                 toastOptions.textTr = ['ui.app.bulkEditSuccess', resource.position];
                 delete toastOptions.classes;
             } else {
