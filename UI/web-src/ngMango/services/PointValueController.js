@@ -16,7 +16,7 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
             this.$scope = $scope;
             this.$element = $element;
             this.$attrs = $attrs;
-        
+
             // stats dialog depends on ui date bar, check that too
             if ($injector.has('maStatsDialog') && $injector.has('maUiDateBar')) {
                 const maStatsDialog = $injector.get('maStatsDialog');

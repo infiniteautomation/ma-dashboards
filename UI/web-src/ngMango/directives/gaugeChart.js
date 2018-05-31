@@ -70,7 +70,7 @@ band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:100%; height
 
  *
  */
-gaugeChart.$inject = ['PointValueController'];
+gaugeChart.$inject = ['maPointValueController'];
 function gaugeChart(PointValueController) {
 
     const asNumber = function asNumber(value, defaultValue) {
