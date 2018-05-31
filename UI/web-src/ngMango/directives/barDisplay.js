@@ -20,9 +20,62 @@
  *
  */
 
-import PointValueController from './PointValueController';
+barDisplay.$inject = ['maPointValueController'];
+function barDisplay(PointValueController) {
 
-function barDisplay() {
+    class BarDisplayController extends PointValueController {
+        constructor() {
+            super(...arguments); 
+            
+            this.style = {};
+        }
+        
+        $onChanges(changes) {
+            super.$onChanges(...arguments);
+            
+            if (changes.maximum || changes.minimum || changes.direction) {
+                this.updateBar();
+            }
+        }
+
+        valueChangeHandler() {
+            super.valueChangeHandler(...arguments);
+            
+            this.updateBar();
+        }
+
+        updateBar() {
+            const value = this.getValue() || 0;
+            
+            const maximum = this.maximum || 100;
+            const minimum = this.minimum || 0;
+            const range = maximum - minimum;
+            const percent = ((value - minimum) / range * 100) + '%';
+            
+            delete this.style.top;
+            delete this.style.bottom;
+            delete this.style.left;
+            delete this.style.right;
+
+            if (this.direction === 'bottom-to-top') {
+                this.style.height = percent;
+                this.style.width = '100%';
+                this.style.bottom = 0;
+            } else if (this.direction === 'top-to-bottom') {
+                this.style.height = percent;
+                this.style.width = '100%';
+                this.style.top = 0;
+            } else if (this.direction === 'right-to-left') {
+                this.style.width = percent;
+                this.style.height = '100%';
+                this.style.right = 0;
+            } else {
+                this.style.width = percent;
+                this.style.height = '100%';
+            }
+        }
+    }
+    
     return {
         restrict: 'E',
         template: '<div class="bar-display-fill" ng-style="$ctrl.style"></div>',
@@ -56,60 +109,5 @@ function barDisplay() {
         }
     };
 }
-
-BarDisplayController.$inject = PointValueController.$inject;
-function BarDisplayController() {
-    PointValueController.apply(this, arguments);
-    
-    this.style = {};
-}
-
-BarDisplayController.prototype = Object.create(PointValueController.prototype);
-BarDisplayController.prototype.constructor = BarDisplayController;
-
-BarDisplayController.prototype.$onChanges = function(changes) {
-    PointValueController.prototype.$onChanges.apply(this, arguments);
-    
-    if (changes.maximum || changes.minimum || changes.direction) {
-        this.updateBar();
-    }
-};
-
-BarDisplayController.prototype.valueChangeHandler = function() {
-    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-    
-    this.updateBar();
-};
-
-BarDisplayController.prototype.updateBar = function() {
-    var value = this.getValue() || 0;
-    
-    var maximum = this.maximum || 100;
-    var minimum = this.minimum || 0;
-    var range = maximum - minimum;
-    var percent = ((value - minimum) / range * 100) + '%';
-    
-    delete this.style.top;
-    delete this.style.bottom;
-    delete this.style.left;
-    delete this.style.right;
-
-    if (this.direction === 'bottom-to-top') {
-        this.style.height = percent;
-        this.style.width = '100%';
-        this.style.bottom = 0;
-    } else if (this.direction === 'top-to-bottom') {
-        this.style.height = percent;
-        this.style.width = '100%';
-        this.style.top = 0;
-    } else if (this.direction === 'right-to-left') {
-        this.style.width = percent;
-        this.style.height = '100%';
-        this.style.right = 0;
-    } else {
-        this.style.width = percent;
-        this.style.height = '100%';
-    }
-};
 
 export default barDisplay;

@@ -4,8 +4,6 @@
  */
 
 import AmCharts from 'amcharts/gauge';import angular from 'angular';
-import PointValueController from './PointValueController';
-
 
 /**
  * @ngdoc directive
@@ -72,7 +70,166 @@ band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:100%; height
 
  *
  */
-function gaugeChart() {
+gaugeChart.$inject = ['PointValueController'];
+function gaugeChart(PointValueController) {
+
+    const asNumber = function asNumber(value, defaultValue) {
+        if (typeof value === 'number' && isFinite(value)) {
+            return value;
+        } else if (typeof value === 'string') {
+            try {
+                return parseFloat(value);
+            } catch (e) {}
+        }
+        return defaultValue || 0;
+    };
+
+    const defaultOptions = function defaultOptions() {
+        return {
+            type: 'gauge',
+            theme: 'light',
+            addClassNames: true,
+            axes: [{
+                startValue: 0,
+                endValue: 100,
+                bands: [],
+                bottomText: ''
+            }],
+            arrows: [{
+                nailAlpha: 0,
+                borderAlpha: 0,
+                nailBorderThickness: 6
+            }]
+        };
+    };
+
+    class GaugeChartController extends PointValueController {
+        constructor() {
+            super(...arguments);
+            
+            this.chartOptions = defaultOptions();
+        }
+
+        $onInit() {
+            this.updateChart();
+            this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
+            this.updateChartValue();
+
+            if(this.autoStart || this.autoEnd) {
+                this.$scope.$watch('$ctrl.pointStats', (newValue, oldValue) => {
+                    if (newValue === undefined) return;
+    
+                    if (this.autoStart) {
+                        this.start = Math.floor(newValue.minimum.value / 10) * 10;
+                    }
+                    if (this.autoEnd) {
+                        this.end =  Math.ceil(newValue.maximum.value / 10) * 10;
+                    }
+                    this.updateChart();
+                });
+            }
+        }
+    
+        $onChanges(changes) {
+            super.$onChanges(...arguments);
+            
+            let optionsChanged = false;
+            for (const key in changes) {
+                if (key !== 'point' && key !== 'pointXid' && key !== 'value' && !changes[key].isFirstChange()) {
+                    optionsChanged = true;
+                    break;
+                }
+            }
+            
+            if (optionsChanged) {
+                this.updateChart();
+            }
+        }
+    
+        valueChangeHandler() {
+            super.valueChangeHandler(...arguments);
+            this.updateChartValue();
+        }
+    
+        updateChartValue() {
+            if (!this.chart) return;
+            
+            const value = this.getValue();
+            const textValue = this.getTextValue();
+            
+            this.chart.arrows[0].setValue(value || 0);
+            this.chart.axes[0].setBottomText(textValue);
+        }
+    
+        updateChart() {
+            const options = angular.merge(this.chartOptions, this.options);
+            const axis = options.axes[0];
+            const arrow = options.arrows[0];
+            
+            axis.bands = [];
+            axis.startValue = asNumber(this.start);
+            axis.endValue = asNumber(this.end, 100);
+    
+            if (this.band1End != null) {
+                const stop1 = asNumber(this.band1End);
+                axis.bands.push({
+                    id: 'band1',
+                    color: this.band1Color || '#84b761',
+                    startValue: axis.startValue,
+                    endValue: stop1
+                });
+                if (!this.end)
+                    axis.endValue = stop1;
+            }
+            if (this.band1End != null && this.band2End != null) {
+                const stop2 = asNumber(this.band2End);
+                axis.bands.push({
+                    id: 'band2',
+                    color: this.band2Color || '#fdd400',
+                    startValue: axis.bands[0].endValue,
+                    endValue: stop2
+                });
+                if (!this.end)
+                    axis.endValue = stop2;
+            }
+            if (this.band1End != null && this.band2End != null && this.band3End != null) {
+                const stop3 = asNumber(this.band3End);
+                axis.bands.push({
+                    id: 'band3',
+                    color: this.band3Color || '#cc4748',
+                    startValue: axis.bands[1].endValue,
+                    endValue: stop3
+                });
+                if (!this.end)
+                    axis.endValue = stop3;
+            }
+            axis.valueInterval = asNumber(this.interval, (axis.endValue - axis.startValue) / 5);
+            
+            axis.radius = this.radius || '100%';
+            axis.bottomTextYOffset =  asNumber(this.valueOffset, -20);
+            axis.bottomTextFontSize =  asNumber(this.valueFontSize, 12);
+            axis.axisThickness =  asNumber(this.axisThickness, 1);
+            axis.axisAlpha =  asNumber(this.axisAlpha, 0.5);
+            axis.tickAlpha =  asNumber(this.axisAlpha, 0.5);
+            
+            if (this.axisLabelFontSize != null) {
+                axis.fontSize = asNumber(this.axisLabelFontSize);
+            }
+            if (this.tickInterval != null) {
+                axis.minorTickInterval = asNumber(this.tickInterval);
+            }
+            
+            arrow.nailRadius = asNumber(this.arrowInnerRadius, 8);
+            arrow.innerRadius = arrow.nailRadius + 3;
+            arrow.alpha = asNumber(this.arrowAlpha, 1);
+            arrow.nailBorderAlpha = arrow.alpha;
+    
+            if (this.chart) {
+                this.chart.validateNow();
+            }
+        }
+    }
+    
     return {
         restrict: 'E',
         template: '<div ng-class="classes" class="amchart"></div>' +
@@ -128,168 +285,6 @@ function gaugeChart() {
                 autoEnd: {type: 'boolean'}
             }
         }
-    };
-}
-
-GaugeChartController.$inject = PointValueController.$inject;
-
-function GaugeChartController() {
-    PointValueController.apply(this, arguments);
-    
-    this.chartOptions = defaultOptions();
-}
-
-GaugeChartController.prototype = Object.create(PointValueController.prototype);
-GaugeChartController.prototype.constructor = GaugeChartController;
-
-GaugeChartController.prototype.$onInit = function() {
-    this.updateChart();
-    this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
-    this.updateChartValue();
-
-
-
-    if(this.autoStart || this.autoEnd) {
-        this.$scope.$watch('$ctrl.pointStats', function(newValue, oldValue) {
-            if (newValue === undefined) return;
-
-            if (this.autoStart) {
-                this.start = Math.floor(newValue.minimum.value / 10) * 10;
-            }
-            if (this.autoEnd) {
-                this.end =  Math.ceil(newValue.maximum.value / 10) * 10;
-            }
-            this.updateChart();
-        }.bind(this));
-    }
-};
-
-GaugeChartController.prototype.$onChanges = function(changes) {
-    PointValueController.prototype.$onChanges.apply(this, arguments);
-    
-    var optionsChanged = false;
-    for (var key in changes) {
-        if (key !== 'point' && key !== 'pointXid' && key !== 'value' && !changes[key].isFirstChange()) {
-            optionsChanged = true;
-            break;
-        }
-    }
-    
-    if (optionsChanged) {
-        this.updateChart();
-    }
-};
-
-GaugeChartController.prototype.valueChangeHandler = function() {
-    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-    this.updateChartValue();
-};
-
-GaugeChartController.prototype.updateChartValue = function() {
-    if (!this.chart) return;
-    
-    var value = this.getValue();
-    var textValue = this.getTextValue();
-    
-    this.chart.arrows[0].setValue(value || 0);
-    this.chart.axes[0].setBottomText(textValue);
-};
-
-GaugeChartController.prototype.updateChart = function() {
-    var options = angular.merge(this.chartOptions, this.options);
-    var axis = options.axes[0];
-    var arrow = options.arrows[0];
-    
-    axis.bands = [];
-    axis.startValue = asNumber(this.start);
-    axis.endValue = asNumber(this.end, 100);
-
-    if (this.band1End != null) {
-        var stop1 = asNumber(this.band1End);
-        axis.bands.push({
-            id: 'band1',
-            color: this.band1Color || '#84b761',
-            startValue: axis.startValue,
-            endValue: stop1
-        });
-        if (!this.end)
-            axis.endValue = stop1;
-    }
-    if (this.band1End != null && this.band2End != null) {
-        var stop2 = asNumber(this.band2End);
-        axis.bands.push({
-            id: 'band2',
-            color: this.band2Color || '#fdd400',
-            startValue: axis.bands[0].endValue,
-            endValue: stop2
-        });
-        if (!this.end)
-            axis.endValue = stop2;
-    }
-    if (this.band1End != null && this.band2End != null && this.band3End != null) {
-        var stop3 = asNumber(this.band3End);
-        axis.bands.push({
-            id: 'band3',
-            color: this.band3Color || '#cc4748',
-            startValue: axis.bands[1].endValue,
-            endValue: stop3
-        });
-        if (!this.end)
-            axis.endValue = stop3;
-    }
-    axis.valueInterval = asNumber(this.interval, (axis.endValue - axis.startValue) / 5);
-    
-    axis.radius = this.radius || '100%';
-    axis.bottomTextYOffset =  asNumber(this.valueOffset, -20);
-    axis.bottomTextFontSize =  asNumber(this.valueFontSize, 12);
-    axis.axisThickness =  asNumber(this.axisThickness, 1);
-    axis.axisAlpha =  asNumber(this.axisAlpha, 0.5);
-    axis.tickAlpha =  asNumber(this.axisAlpha, 0.5);
-    
-    if (this.axisLabelFontSize != null) {
-        axis.fontSize = asNumber(this.axisLabelFontSize);
-    }
-    if (this.tickInterval != null) {
-        axis.minorTickInterval = asNumber(this.tickInterval);
-    }
-    
-    arrow.nailRadius = asNumber(this.arrowInnerRadius, 8);
-    arrow.innerRadius = arrow.nailRadius + 3;
-    arrow.alpha = asNumber(this.arrowAlpha, 1);
-    arrow.nailBorderAlpha = arrow.alpha;
-
-    if (this.chart) {
-        this.chart.validateNow();
-    }
-};
-
-function asNumber(value, defaultValue) {
-    if (typeof value === 'number' && isFinite(value)) {
-        return value;
-    } else if (typeof value === 'string') {
-        try {
-            return parseFloat(value);
-        } catch (e) {}
-    }
-    return defaultValue || 0;
-}
-
-function defaultOptions() {
-    return {
-        type: 'gauge',
-        theme: 'light',
-        addClassNames: true,
-        axes: [{
-            startValue: 0,
-            endValue: 100,
-            bands: [],
-            bottomText: ''
-        }],
-        arrows: [{
-            nailAlpha: 0,
-            borderAlpha: 0,
-            nailBorderThickness: 6
-        }]
     };
 }
 

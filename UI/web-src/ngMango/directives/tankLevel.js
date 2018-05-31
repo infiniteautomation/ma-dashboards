@@ -4,7 +4,6 @@
  */
 
 import AmCharts from 'amcharts/serial';import angular from 'angular';
-import PointValueController from './PointValueController';
 
 /**
  * @ngdoc directive
@@ -30,7 +29,133 @@ import PointValueController from './PointValueController';
 </ma-tank-level>
  *
  */
-function tankLevel() {
+tankLevel.$inject = ['maPointValueController'];
+function tankLevel(PointValueController) {
+
+    const defaultOptions = function defaultOptions() {
+        return {
+            type: 'serial',
+            theme: 'light',
+            addClassNames: true,
+            dataProvider: [{
+                tank: 'tank1',
+                remainder: 100.0,
+                tankLevel: 0.0
+            }],
+            valueAxes: [{
+                axisAlpha: 0.0,
+                gridAlpha: 0.0,
+                labelsEnabled: false,
+                stackType: '100%'
+            }],
+            categoryAxis: {
+                gridPosition: 'start',
+                axisAlpha: 0.0,
+                gridAlpha: 0.0,
+                labelsEnabled: false
+            },
+            depth3D: 100,
+            angle: 30,
+            startDuration: 0,
+            graphs: [{
+                id: 'tank-level',
+                type: 'column',
+                valueField: 'tankLevel',
+                balloonText: '',
+                fillAlphas: 0.8,
+                lineAlpha: 0.5,
+                lineThickness: 2,
+                columnWidth: 1,
+                topRadius: 1,
+                lineColor: '#cdcdcd',
+                fillColors: '#67b7dc'
+                //showOnAxis: true,
+                //clustered: false,
+                //labelText: '[[percents]] %',
+                //labelPosition: 'top'
+            },{
+                id: 'tank-remainder',
+                type: 'column',
+                valueField: 'remainder',
+                balloonText: '',
+                fillAlphas: 0.3,
+                lineAlpha: 0.5,
+                lineThickness: 2,
+                columnWidth: 1,
+                topRadius: 1,
+                lineColor: '#cdcdcd'
+                //showOnAxis: true
+            }],
+            plotAreaFillAlphas: 0.0,
+            categoryField: 'tank',
+            'export': {
+                enabled: false
+            }
+        };
+    };
+
+    class TankLevelController extends PointValueController {
+        constructor() {
+            super(...arguments);
+            
+            this.chartOptions = defaultOptions();
+        }
+
+        $onInit() {
+            this.updateChart();
+            this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
+            this.updateChartValue();
+        }
+    
+        $onChanges(changes) {
+            super.$onChanges(...arguments);
+            
+            if (changes.max && !changes.max.isFirstChange() || changes.min && !changes.min.isFirstChange()) {
+                this.updateChartValue();
+            }
+            if (changes.color && !changes.color.isFirstChange() || changes.options && !changes.options.isFirstChange()) {
+                this.updateChart();
+            }
+        }
+    
+        valueChangeHandler() {
+            super.valueChangeHandler(...arguments);
+            
+            this.updateChartValue();
+        }
+    
+        updateChartValue() {
+            if (!this.chart) return;
+            
+            const value = this.getValue() || 0;
+            const textValue = this.getTextValue();
+    
+            const max = this.max != null ? this.max : 100;
+            const min = this.min != null ? this.min : 0;
+            const range = max - min;
+            
+            const tankLevel = (value - min) / range * 100;
+            const remainder = 100 - tankLevel;
+            
+            this.chart.dataProvider[0].tankLevel = tankLevel;
+            this.chart.dataProvider[0].remainder = remainder;
+            this.chart.dataProvider[0].renderedValue = textValue;
+            this.chart.validateData();
+        }
+    
+        updateChart() {
+            const options = angular.merge(this.chartOptions, this.options);
+    
+            if (this.color) {
+                options.graphs[0].fillColors = this.color;
+            }
+            
+            if (this.chart) {
+                this.chart.validateNow();
+            }
+        }
+    }
+    
     return {
         restrict: 'E',
         template: '<div class="amchart"></div>',
@@ -59,131 +184,6 @@ function tankLevel() {
                 width: '200px',
                 height: '200px'
             }
-        }
-    };
-}
-
-TankLevelController.$inject = PointValueController.$inject;
-function TankLevelController() {
-    PointValueController.apply(this, arguments);
-    
-    this.chartOptions = defaultOptions();
-}
-
-TankLevelController.prototype = Object.create(PointValueController.prototype);
-TankLevelController.prototype.constructor = TankLevelController;
-
-TankLevelController.prototype.$onInit = function() {
-    this.updateChart();
-    this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
-    this.updateChartValue();
-};
-
-TankLevelController.prototype.$onChanges = function(changes) {
-    PointValueController.prototype.$onChanges.apply(this, arguments);
-    
-    if (changes.max && !changes.max.isFirstChange() || changes.min && !changes.min.isFirstChange()) {
-        this.updateChartValue();
-    }
-    if (changes.color && !changes.color.isFirstChange() || changes.options && !changes.options.isFirstChange()) {
-        this.updateChart();
-    }
-};
-
-TankLevelController.prototype.valueChangeHandler = function() {
-    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-    this.updateChartValue();
-};
-
-TankLevelController.prototype.updateChartValue = function() {
-    if (!this.chart) return;
-    
-    var value = this.getValue() || 0;
-    var textValue = this.getTextValue();
-
-    var max = this.max != null ? this.max : 100;
-    var min = this.min != null ? this.min : 0;
-    var range = max - min;
-    
-    var tankLevel = (value - min) / range * 100;
-    var remainder = 100 - tankLevel;
-    
-    this.chart.dataProvider[0].tankLevel = tankLevel;
-    this.chart.dataProvider[0].remainder = remainder;
-    this.chart.dataProvider[0].renderedValue = textValue;
-    this.chart.validateData();
-};
-
-TankLevelController.prototype.updateChart = function() {
-    var options = angular.merge(this.chartOptions, this.options);
-
-    if (this.color) {
-        options.graphs[0].fillColors = this.color;
-    }
-    
-    if (this.chart) {
-        this.chart.validateNow();
-    }
-};
-
-function defaultOptions() {
-    return {
-        type: 'serial',
-        theme: 'light',
-        addClassNames: true,
-        dataProvider: [{
-            tank: 'tank1',
-            remainder: 100.0,
-            tankLevel: 0.0
-        }],
-        valueAxes: [{
-            axisAlpha: 0.0,
-            gridAlpha: 0.0,
-            labelsEnabled: false,
-            stackType: '100%'
-        }],
-        categoryAxis: {
-            gridPosition: 'start',
-            axisAlpha: 0.0,
-            gridAlpha: 0.0,
-            labelsEnabled: false
-        },
-        depth3D: 100,
-        angle: 30,
-        startDuration: 0,
-        graphs: [{
-            id: 'tank-level',
-            type: 'column',
-            valueField: 'tankLevel',
-            balloonText: '',
-            fillAlphas: 0.8,
-            lineAlpha: 0.5,
-            lineThickness: 2,
-            columnWidth: 1,
-            topRadius: 1,
-            lineColor: '#cdcdcd',
-            fillColors: '#67b7dc'
-            //showOnAxis: true,
-            //clustered: false,
-            //labelText: '[[percents]] %',
-            //labelPosition: 'top'
-        },{
-            id: 'tank-remainder',
-            type: 'column',
-            valueField: 'remainder',
-            balloonText: '',
-            fillAlphas: 0.3,
-            lineAlpha: 0.5,
-            lineThickness: 2,
-            columnWidth: 1,
-            topRadius: 1,
-            lineColor: '#cdcdcd'
-            //showOnAxis: true
-        }],
-        plotAreaFillAlphas: 0.0,
-        categoryField: 'tank',
-        'export': {
-            enabled: false
         }
     };
 }

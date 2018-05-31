@@ -5,7 +5,6 @@
 
 import pointValueTemplate from './pointValue.html';
 import moment from 'moment-timezone';
-import PointValueController from './PointValueController';
 
 /**
  * @ngdoc directive 
@@ -44,8 +43,146 @@ Time: <ma-point-value point="myPoint1" display-type="dateTime" date-time-format=
 </ma-point-value>
  *
  */
-function pointValue() {
-    var dateOptions = ['dateTime', 'shortDateTime', 'dateTimeSeconds', 'shortDateTimeSeconds', 'date', 'shortDate', 'time',
+pointValue.$inject = ['maPointValueController', 'MA_DATE_FORMATS', 'maEvents', '$injector'];
+function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) {
+
+    class PointValueDirectiveController extends PointValueController {
+        constructor() {
+            super(...arguments);
+
+            if ($injector.has('$state')) {
+                this.$state = $injector.get('$state');
+            }
+            
+            this.valueStyle = {};
+        }
+
+        $onInit() {
+            this.$element.on('mouseenter', event => {
+                this.$scope.$apply(() => {
+                    this.isOpen = true;
+                });
+            });
+            
+            this.$element.on('mouseleave', event => {
+                this.$scope.$apply(() => {
+                    this.isOpen = false;
+                });
+            });
+        }
+    
+        $onChanges(changes) {
+            super.$onChanges(...arguments);
+            
+            if (changes.displayType && !changes.displayType.isFirstChange() || changes.dateTimeFormat && !changes.dateTimeFormat.isFirstChange() ||
+                    changes.timezone && !changes.timezone.isFirstChange()) {
+                this.updateText();
+            }
+            
+            if (changes.labelAttr || changes.labelExpression) {
+                if (this.labelExpression) {
+                    this.label = this.labelExpression({$point: this.point});
+                } else {
+                    this.updateLabel();
+                }
+            }
+        }
+    
+        updateLabel() {
+            if (this.labelAttr === 'NAME') {
+                this.label = this.point && (this.point.name + ':');
+            } else if (this.labelAttr === 'DEVICE_AND_NAME') {
+                this.label = this.point && (this.point.deviceName + ' \u2014 ' + this.point.name + ':');
+            } else {
+                this.label = this.labelAttr;
+            }
+        }
+    
+        valueChangeHandler(isPointChange) {
+            super.valueChangeHandler(...arguments);
+            
+            if (isPointChange) {
+                this.updateLabel();
+                if (this.labelExpression) {
+                    this.label = this.labelExpression({$point: this.point});
+                } else {
+                    this.updateLabel();
+                }
+            }
+            
+            this.updateText();
+            
+            if (isPointChange) {
+                this.activeEvents = 0;
+                if (!this.hideEventIndicator && this.point) {
+                    this.getActiveEvents();
+                }
+            }
+        }
+    
+        getActiveEvents() {
+            maEvents.buildQuery()
+                .eq('dataPointId', this.point.id)
+                .eq('active', true)
+                .limit(0)
+                .query().then(result => {
+                    this.activeEvents += result.$total;
+                });
+            
+            if (!this.deregisterWebsocket) {
+                this.deregisterWebsocket = maEvents.notificationManager.subscribe((event, mangoEvent) => {
+                    if (!this.point || mangoEvent.eventType.dataPointId !== this.point.id) return;
+                    
+                    if (event.name === 'RAISED' && mangoEvent.active) {
+                        this.activeEvents += 1;
+                    } else if (event.name === 'RETURN_TO_NORMAL') { // what does DEACTIVATED mean?
+                        this.activeEvents -= 1;
+                    }
+                    
+                }, this.$scope, ['RAISED', 'RETURN_TO_NORMAL']);
+            }
+        }
+    
+        updateText() {
+            delete this.valueStyle.color;
+            
+            if (!this.point || this.point.time == null) {
+                this.displayValue = '';
+                this.resolvedDisplayType = this.displayType || 'rendered';
+                return;
+            }
+            
+            const valueRenderer = this.point.valueRenderer(this.point.value, this.point.renderedValue);
+            const color = valueRenderer ? valueRenderer.color : null;
+    
+            this.resolvedDisplayType = this.displayType || (this.point.pointLocator && this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered');
+            delete this.valueStyle.color;
+    
+            switch(this.resolvedDisplayType) {
+            case 'converted':
+                this.displayValue = this.point.convertedValue;
+                break;
+            case 'rendered':
+                this.displayValue = this.point.renderedValue;
+                this.valueStyle.color = color;
+                break;
+            case 'dateTime':
+                let dateTimeFormat = MA_DATE_FORMATS.shortDateTimeSeconds;
+                if (this.sameDayDateTimeFormat && (Date.now() - this.point.time < 86400)) {
+                    dateTimeFormat = MA_DATE_FORMATS[this.sameDayDateTimeFormat] || this.sameDayDateTimeFormat;
+                } else if (this.dateTimeFormat) {
+                    dateTimeFormat = MA_DATE_FORMATS[this.dateTimeFormat] || this.dateTimeFormat;
+                }
+                const m = this.timezone ? moment.tz(this.point.time, this.timezone) : moment(this.point.time);
+                this.displayValue = m.format(dateTimeFormat);
+                break;
+            default:
+                this.displayValue = this.point.value;
+            }
+        }
+    }
+
+    const dateOptions = ['dateTime', 'shortDateTime', 'dateTimeSeconds', 'shortDateTimeSeconds', 'date', 'shortDate', 'time',
         'timeSeconds', 'monthDay', 'month', 'year', 'iso'];
     
     return {
@@ -92,153 +229,6 @@ function pointValue() {
         }
     };
 }
-
-PointValueDirectiveController.$inject = PointValueController.$inject.concat('MA_DATE_FORMATS', 'maEvents', '$injector');
-function PointValueDirectiveController() {
-    PointValueController.apply(this, arguments);
-    var firstArg = PointValueController.$inject.length;
-    
-    this.mangoDateFormats = arguments[firstArg];
-    this.maEvents = arguments[firstArg + 1];
-    
-    const $injector = arguments[firstArg + 2];
-    if ($injector.has('$state')) {
-        this.$state = $injector.get('$state');
-    }
-    
-    this.valueStyle = {};
-}
-
-PointValueDirectiveController.prototype = Object.create(PointValueController.prototype);
-PointValueDirectiveController.prototype.constructor = PointValueDirectiveController;
-
-PointValueDirectiveController.prototype.$onInit = function() {
-    this.$element.on('mouseenter', (event) => {
-        this.$scope.$apply(() => {
-            this.isOpen = true;
-        });
-    });
-    
-    this.$element.on('mouseleave', (event) => {
-        this.$scope.$apply(() => {
-            this.isOpen = false;
-        });
-    });
-    
-//    this.$scope.$on('$destroy', () => {
-//        
-//    });
-};
-
-PointValueDirectiveController.prototype.$onChanges = function(changes) {
-    PointValueController.prototype.$onChanges.apply(this, arguments);
-    
-    if (changes.displayType && !changes.displayType.isFirstChange() || changes.dateTimeFormat && !changes.dateTimeFormat.isFirstChange() ||
-            changes.timezone && !changes.timezone.isFirstChange()) {
-        this.updateText();
-    }
-    
-    if (changes.labelAttr || changes.labelExpression) {
-		if (this.labelExpression) {
-			this.label = this.labelExpression({$point: this.point});
-		} else {
-			this.updateLabel();
-		}
-    }
-};
-
-PointValueDirectiveController.prototype.updateLabel = function() {
-	if (this.labelAttr === 'NAME') {
-		this.label = this.point && (this.point.name + ':');
-	} else if (this.labelAttr === 'DEVICE_AND_NAME') {
-		this.label = this.point && (this.point.deviceName + ' \u2014 ' + this.point.name + ':');
-	} else {
-		this.label = this.labelAttr;
-	}
-};
-
-PointValueDirectiveController.prototype.valueChangeHandler = function(isPointChange) {
-    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-	
-    if (isPointChange) {
-    	this.updateLabel();
-		if (this.labelExpression) {
-			this.label = this.labelExpression({$point: this.point});
-		} else {
-			this.updateLabel();
-		}
-	}
-	
-    this.updateText();
-    
-    if (isPointChange) {
-        this.activeEvents = 0;
-        if (!this.hideEventIndicator && this.point) {
-            this.getActiveEvents();
-        }
-    }
-};
-
-PointValueDirectiveController.prototype.getActiveEvents = function() {
-    this.maEvents.buildQuery()
-        .eq('dataPointId', this.point.id)
-        .eq('active', true)
-        .limit(0)
-        .query().then(result => {
-            this.activeEvents += result.$total;
-        });
-    
-    if (!this.deregisterWebsocket) {
-        this.deregisterWebsocket = this.maEvents.notificationManager.subscribe((event, mangoEvent) => {
-            if (!this.point || mangoEvent.eventType.dataPointId !== this.point.id) return;
-            
-            if (event.name === 'RAISED' && mangoEvent.active) {
-                this.activeEvents += 1;
-            } else if (event.name === 'RETURN_TO_NORMAL') { // what does DEACTIVATED mean?
-                this.activeEvents -= 1;
-            }
-            
-        }, this.$scope, ['RAISED', 'RETURN_TO_NORMAL']);
-    }
-};
-
-PointValueDirectiveController.prototype.updateText = function() {
-    delete this.valueStyle.color;
-    
-    if (!this.point || this.point.time == null) {
-        this.displayValue = '';
-        this.resolvedDisplayType = this.displayType || 'rendered';
-        return;
-    }
-    
-    var valueRenderer = this.point.valueRenderer(this.point.value, this.point.renderedValue);
-    var color = valueRenderer ? valueRenderer.color : null;
-
-    this.resolvedDisplayType = this.displayType || (this.point.pointLocator && this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered');
-    delete this.valueStyle.color;
-
-    switch(this.resolvedDisplayType) {
-    case 'converted':
-        this.displayValue = this.point.convertedValue;
-        break;
-    case 'rendered':
-        this.displayValue = this.point.renderedValue;
-        this.valueStyle.color = color;
-        break;
-    case 'dateTime':
-        var dateTimeFormat = this.mangoDateFormats.shortDateTimeSeconds;
-        if (this.sameDayDateTimeFormat && (Date.now() - this.point.time < 86400)) {
-            dateTimeFormat = this.mangoDateFormats[this.sameDayDateTimeFormat] || this.sameDayDateTimeFormat;
-        } else if (this.dateTimeFormat) {
-            dateTimeFormat = this.mangoDateFormats[this.dateTimeFormat] || this.dateTimeFormat;
-        }
-        var m = this.timezone ? moment.tz(this.point.time, this.timezone) : moment(this.point.time);
-        this.displayValue = m.format(dateTimeFormat);
-        break;
-    default:
-        this.displayValue = this.point.value;
-    }
-};
 
 export default pointValue;
 

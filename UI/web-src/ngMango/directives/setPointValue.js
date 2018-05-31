@@ -5,7 +5,6 @@
 
 import setPointValueMdTemplate from './setPointValue-md.html';
 import setPointValueTemplate from './setPointValue.html';
-import PointValueController from './PointValueController';
 
 /**
  * @ngdoc directive
@@ -33,8 +32,176 @@ import PointValueController from './PointValueController';
  <ma-set-point-value point="myPoint"></ma-set-point-value>
  *
  */
-setPointValue.$inject = ['$injector'];
-function setPointValue($injector) {
+setPointValue.$inject = ['maPointValueController', 'maTranslate', '$q', '$injector'];
+function setPointValue(PointValueController, maTranslate, $q, $injector) {
+    
+    class SetPointValueController extends PointValueController {
+        constructor() {
+            super(...arguments); 
+
+            this.defaultBinaryOptions = [];
+            $q.all([maTranslate.tr('common.false'), maTranslate.tr('common.true')]).then(trs => {
+                this.defaultBinaryOptions.push({
+                    id: false,
+                    label: trs[0]
+                });
+                this.defaultBinaryOptions.push({
+                    id: true,
+                    label: trs[1]
+                });
+            });
+            
+            this.showRelinquish = true;
+        }
+
+        $onInit() {
+            if (this.showButton === undefined) {
+                this.showButton = true;
+            }
+            this.pointChanged();
+        }
+    
+        $onChanges(changes) {
+            super.$onChanges(...arguments);
+    
+            if (changes.labelAttr || changes.labelExpression) {
+                if (this.labelExpression) {
+                    this.label = this.labelExpression({$point: this.point});
+                } else {
+                    this.updateLabel();
+                }
+            }
+        }
+    
+        updateLabel() {
+            if (this.labelAttr === 'NAME') {
+                this.label = this.point && (this.point.name + ':');
+            } else if (this.labelAttr === 'DEVICE_AND_NAME') {
+                this.label = this.point && (this.point.deviceName + ' \u2014 ' + this.point.name + ':');
+            } else {
+                this.label = this.labelAttr;
+            }
+        }
+    
+        valueChangeHandler(pointChanged) {
+            super.valueChangeHandler(...arguments);
+    
+            if (pointChanged) {
+                this.pointChanged();
+    
+                if (this.labelExpression) {
+                    this.label = this.labelExpression({$point: this.point});
+                } else {
+                    this.updateLabel();
+                }
+            }
+    
+            this.updateValue();
+        }
+    
+        updateValue() {
+            const focus = this.$element.find('input, select, md-select').is(':focus');
+            if (!focus) {
+                if (this.inputType === 'numeric') {
+                    this.inputValue = this.convertRendered();
+                } else {
+                    this.inputValue = this.getValue();
+                }
+            }
+        }
+    
+        selectChanged() {
+            if (this.setOnChange || !this.showButton)
+                this.result = this.point.setValueResult(this.inputValue);
+        }
+
+        convertRendered() {
+            if (!this.point) return;
+            
+            let result;
+            if (this.point.renderedValue != null) {
+                result = parseFloat(this.point.renderedValue.trim());
+                if (isFinite(result))
+                    return result;
+            }
+            if (this.point.convertedValue != null) {
+                return round(this.point.convertedValue, 2);
+            }
+            if (this.point.value != null) {
+                return round(this.point.value, 2);
+            }
+            
+            function round(num, places) {
+                places = places || 1;
+                const multiplier = Math.pow(10, places);
+                return Math.round(num * multiplier) / multiplier;
+            }
+        }
+    
+        pointChanged() {
+            delete this.inputValue;
+            delete this.result;
+            delete this.options;
+            this.inputType = 'text';
+            this.step = 'any';
+            
+            if (!this.point) return;
+            
+            const locator = this.point.pointLocator;
+            const type = locator.dataType;
+            const textRenderer = this.point.textRenderer;
+    
+            if (type === 'NUMERIC') {
+                this.inputType = 'numeric';
+            } else if (type === 'MULTISTATE') {
+                if (textRenderer.type === 'textRendererMultistate') {
+                    this.inputType = 'select';
+                } else if (textRenderer.type === 'textRendererPlain') {
+                    this.inputType = 'numeric';
+                    this.step = 1;
+                }
+                
+                const values = textRenderer.multistateValues;
+                if (values) {
+                    this.options = [];
+                    for (let i = 0; i < values.length; i++) {
+                        const label = values[i].text;
+                        const option = {
+                            id: values[i].key,
+                            label: label,
+                            style: {
+                                color: values[i].colour || values[i].color
+                            }
+                        };
+                        this.options.push(option);
+                    }
+                }
+            } else if (type === 'BINARY') {
+                this.inputType = 'select';
+                
+                if (this.point.rendererMap()) {
+                    const falseRenderer = this.point.valueRenderer(false);
+                    const trueRenderer = this.point.valueRenderer(true);
+                    this.options = [{
+                        id: false,
+                        label: falseRenderer.text,
+                        style: {
+                            color: falseRenderer.colour || falseRenderer.color
+                        }
+                    }, {
+                        id: true,
+                        label: trueRenderer.text,
+                        style: {
+                            color: trueRenderer.colour || trueRenderer.color
+                        }
+                    }];
+                } else {
+                    this.options = this.defaultBinaryOptions;
+                }
+            }
+        }
+    }
+    
     return {
         restrict: 'E',
         template: function() {
@@ -72,180 +239,4 @@ function setPointValue($injector) {
     };
 }
 
-SetPointValueController.$inject = PointValueController.$inject.concat('maTranslate', '$q');
-function SetPointValueController() {
-    PointValueController.apply(this, arguments);
-    var firstArg = PointValueController.$inject.length;
-    
-    var Translate = arguments[firstArg];
-    var $q = arguments[firstArg + 1];
-
-    this.defaultBinaryOptions = [];
-    $q.all([Translate.tr('common.false'), Translate.tr('common.true')]).then(function(trs) {
-        this.defaultBinaryOptions.push({
-            id: false,
-            label: trs[0]
-        });
-        this.defaultBinaryOptions.push({
-            id: true,
-            label: trs[1]
-        });
-    }.bind (this));
-    
-    this.showRelinquish = true;
-}
-
-SetPointValueController.prototype = Object.create(PointValueController.prototype);
-SetPointValueController.prototype.constructor = SetPointValueController;
-
-SetPointValueController.prototype.$onInit = function() {
-    if (this.showButton === undefined) {
-        this.showButton = true;
-    }
-    this.pointChanged();
-};
-
-SetPointValueController.prototype.$onChanges = function(changes) {
-    PointValueController.prototype.$onChanges.apply(this, arguments);
-
-    if (changes.labelAttr || changes.labelExpression) {
-		if (this.labelExpression) {
-			this.label = this.labelExpression({$point: this.point});
-		} else {
-			this.updateLabel();
-		}
-    }
-};
-
-SetPointValueController.prototype.updateLabel = function() {
-	if (this.labelAttr === 'NAME') {
-		this.label = this.point && (this.point.name + ':');
-	} else if (this.labelAttr === 'DEVICE_AND_NAME') {
-		this.label = this.point && (this.point.deviceName + ' \u2014 ' + this.point.name + ':');
-	} else {
-		this.label = this.labelAttr;
-	}
-};
-
-SetPointValueController.prototype.valueChangeHandler = function(pointChanged) {
-    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-
-    if (pointChanged) {
-        this.pointChanged();
-
-		if (this.labelExpression) {
-			this.label = this.labelExpression({$point: this.point});
-		} else {
-			this.updateLabel();
-		}
-    }
-
-    this.updateValue();
-};
-
-SetPointValueController.prototype.updateValue = function() {
-    var focus = this.$element.find('input, select, md-select').is(':focus');
-    if (!focus) {
-        if (this.inputType === 'numeric') {
-            this.inputValue = this.convertRendered();
-        } else {
-            this.inputValue = this.getValue();
-        }
-    }
-};
-
-SetPointValueController.prototype.selectChanged = function() {
-    if (this.setOnChange || !this.showButton)
-        this.result = this.point.setValueResult(this.inputValue);
-};
-
-
-SetPointValueController.prototype.convertRendered = function() {
-    if (!this.point) return;
-    
-    var result;
-    if (this.point.renderedValue != null) {
-        result = parseFloat(this.point.renderedValue.trim());
-        if (isFinite(result))
-            return result;
-    }
-    if (this.point.convertedValue != null) {
-        return round(this.point.convertedValue, 2);
-    }
-    if (this.point.value != null) {
-        return round(this.point.value, 2);
-    }
-    
-    function round(num, places) {
-        places = places || 1;
-        var multiplier = Math.pow(10, places);
-        return Math.round(num * multiplier) / multiplier;
-    }
-};
-
-SetPointValueController.prototype.pointChanged = function() {
-    delete this.inputValue;
-    delete this.result;
-    delete this.options;
-    this.inputType = 'text';
-    this.step = 'any';
-    
-    if (!this.point) return;
-    
-    var locator = this.point.pointLocator;
-    var type = locator.dataType;
-    var textRenderer = this.point.textRenderer;
-
-    if (type === 'NUMERIC') {
-        this.inputType = 'numeric';
-    } else if (type === 'MULTISTATE') {
-        if (textRenderer.type === 'textRendererMultistate') {
-            this.inputType = 'select';
-        } else if (textRenderer.type === 'textRendererPlain') {
-            this.inputType = 'numeric';
-            this.step = 1;
-        }
-        
-        var values = textRenderer.multistateValues;
-        if (values) {
-            this.options = [];
-            for (var i = 0; i < values.length; i++) {
-                var label = values[i].text;
-                var option = {
-                    id: values[i].key,
-                    label: label,
-                    style: {
-                        color: values[i].colour || values[i].color
-                    }
-                };
-                this.options.push(option);
-            }
-        }
-    } else if (type === 'BINARY') {
-        this.inputType = 'select';
-        
-        if (this.point.rendererMap()) {
-            var falseRenderer = this.point.valueRenderer(false);
-            var trueRenderer = this.point.valueRenderer(true);
-            this.options = [{
-                id: false,
-                label: falseRenderer.text,
-                style: {
-                    color: falseRenderer.colour || falseRenderer.color
-                }
-            }, {
-                id: true,
-                label: trueRenderer.text,
-                style: {
-                    color: trueRenderer.colour || trueRenderer.color
-                }
-            }];
-        } else {
-            this.options = this.defaultBinaryOptions;
-        }
-    }
-};
-
 export default setPointValue;
-
-

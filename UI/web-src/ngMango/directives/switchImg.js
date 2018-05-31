@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import PointValueController from './PointValueController';
-
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maSwitchImg
@@ -34,7 +31,73 @@ import PointValueController from './PointValueController';
  default-src="img/close.png" toggle-on-click="true"></ma-switch-img>
  *
  */
-function switchImg() {
+switchImg.$inject = ['maPointValueController', 'maUtil'];
+function switchImg(PointValueController, maUtil) {
+    
+    const replaceAll = function replaceAll(target, search, replacement) {
+        return target.replace(new RegExp(search, 'g'), replacement);
+    };
+    
+    class SwitchImgController extends PointValueController {
+
+        $onChanges(changes) {
+            super.$onChanges(...arguments);
+            
+            if (changes.srcMap && !changes.srcMap.isFirstChange() || changes.defaultSrc && !changes.defaultSrc.isFirstChange()) {
+                this.updateImage();
+            }
+            
+            if (changes.toggleOnClick) {
+                if (this.toggleOnClick) {
+                    this.$element.on('click.maIndicator', this.clickHandler.bind(this));
+                    this.$element.attr('role', 'button');
+                } else {
+                    this.$element.off('click.maIndicator');
+                    this.$element.removeAttr('role');
+                }
+            }
+        }
+    
+        valueChangeHandler() {
+            super.valueChangeHandler(...arguments);
+            
+            this.updateImage();
+    
+            if (this.point && this.point.pointLocator && !this.point.pointLocator.settable) {
+                this.$element.attr('disabled', 'disabled');
+            } else {
+                this.$element.removeAttr('disabled');
+            }
+        }
+    
+        updateImage() {
+            const value = this.getValue();
+    
+            if (value == null) {
+                delete this.src;
+            } else {
+                // TODO better conversion to attr name for symbols etc
+                const valueString = typeof value === 'string' ? replaceAll(value, ' ', '-').toLowerCase() : value.toString();
+                
+                const attrName = maUtil.camelCase('src-' + valueString);
+                this.src = this.$attrs[attrName];
+    
+                if (!this.src && this.srcMap) {
+                    this.src = this.srcMap[value];
+                }
+            }
+            if (!this.src) {
+                this.src = this.defaultSrc || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+            }
+        }
+    
+        clickHandler() {
+            if (this.point && !this.$element.attr('disabled')) {
+                this.point.toggleValue();
+            }
+        }
+    }
+
     return {
         restrict: 'E',
         template: '<img ng-src="{{$ctrl.src}}">',
@@ -77,78 +140,4 @@ function switchImg() {
     };
 }
 
-SwitchImgController.$inject = PointValueController.$inject.concat('maUtil');
-function SwitchImgController() {
-    PointValueController.apply(this, arguments);
-    var firstArg = PointValueController.$inject.length;
-    
-    this.Util = arguments[firstArg];
-}
-
-SwitchImgController.prototype = Object.create(PointValueController.prototype);
-SwitchImgController.prototype.constructor = SwitchImgController;
-
-SwitchImgController.prototype.$onChanges = function(changes) {
-    PointValueController.prototype.$onChanges.apply(this, arguments);
-    
-    if (changes.srcMap && !changes.srcMap.isFirstChange() || changes.defaultSrc && !changes.defaultSrc.isFirstChange()) {
-        this.updateImage();
-    }
-    
-    if (changes.toggleOnClick) {
-        if (this.toggleOnClick) {
-            this.$element.on('click.maIndicator', this.clickHandler.bind(this));
-            this.$element.attr('role', 'button');
-        } else {
-            this.$element.off('click.maIndicator');
-            this.$element.removeAttr('role');
-        }
-    }
-};
-
-SwitchImgController.prototype.valueChangeHandler = function() {
-    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-    
-    this.updateImage();
-
-    if (this.point && this.point.pointLocator && !this.point.pointLocator.settable) {
-        this.$element.attr('disabled', 'disabled');
-    } else {
-        this.$element.removeAttr('disabled');
-    }
-};
-
-SwitchImgController.prototype.updateImage = function() {
-    var value = this.getValue();
-
-    if (value == null) {
-        delete this.src;
-    } else {
-        // TODO better conversion to attr name for symbols etc
-        var valueString = typeof value === 'string' ? replaceAll(value, ' ', '-').toLowerCase() : value.toString();
-        
-        var attrName = this.Util.camelCase('src-' + valueString);
-        this.src = this.$attrs[attrName];
-
-        if (!this.src && this.srcMap) {
-            this.src = this.srcMap[value];
-        }
-    }
-    if (!this.src) {
-        this.src = this.defaultSrc || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-    }
-};
-
-SwitchImgController.prototype.clickHandler = function() {
-    if (this.point && !this.$element.attr('disabled')) {
-        this.point.toggleValue();
-    }
-};
-
-function replaceAll(target, search, replacement) {
-    return target.replace(new RegExp(search, 'g'), replacement);
-}
-
 export default switchImg;
-
-

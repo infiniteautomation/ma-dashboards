@@ -4,7 +4,6 @@
  */
 
 import switchTemplate from './switch.html';
-import PointValueController from './PointValueController';
 
 /**
  * @ngdoc directive
@@ -22,7 +21,53 @@ import PointValueController from './PointValueController';
  *
  */
 
-function switchDirective() {
+switchDirective.$inject = ['maPointValueController'];
+function switchDirective(PointValueController) {
+
+    class SwitchController extends PointValueController {
+
+        $onInit() {
+            if (!this.displayType) {
+                this.displayType = 'switch';
+            }
+        }
+    
+        valueChangeHandler() {
+            super.valueChangeHandler(...arguments);
+    
+            this.currentValue = this.getValue();
+            
+            if (this.point) {
+                const falseRenderer = this.point.valueRenderer(false);
+                const trueRenderer = this.point.valueRenderer(true);
+                
+                if (falseRenderer) {
+                    this.falseText = falseRenderer.text;
+                    this.falseStyle = {color: falseRenderer.colour || falseRenderer.color};
+                }
+                if (trueRenderer) {
+                    this.trueText = trueRenderer.text;
+                    this.trueStyle = {color: trueRenderer.colour || trueRenderer.color};
+                }
+            } else {
+                delete this.falseText;
+                delete this.falseStyle;
+                delete this.trueText;
+                delete this.trueStyle;
+            }
+        }
+    
+        inputValue(setValue) {
+            if (setValue != null) {
+                if (this.point) {
+                    this.point.setValue(setValue);
+                }
+            } else {
+                return this.currentValue;
+            }
+        }
+    }
+    
     return {
         restrict: 'E',
         template: switchTemplate,
@@ -46,57 +91,5 @@ function switchDirective() {
         }
     };
 }
-
-SwitchController.$inject = PointValueController.$inject.concat('maUtil');
-function SwitchController() {
-    PointValueController.apply(this, arguments);
-    var firstArg = PointValueController.$inject.length;
-
-    this.Util = arguments[firstArg];
-}
-
-SwitchController.prototype = Object.create(PointValueController.prototype);
-SwitchController.prototype.constructor = SwitchController;
-
-SwitchController.prototype.$onInit = function() {
-    if (!this.displayType) {
-        this.displayType = 'switch';
-    }
-};
-
-SwitchController.prototype.valueChangeHandler = function() {
-    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-
-    this.currentValue = this.getValue();
-    
-    if (this.point) {
-        var falseRenderer = this.point.valueRenderer(false);
-        var trueRenderer = this.point.valueRenderer(true);
-        
-        if (falseRenderer) {
-            this.falseText = falseRenderer.text;
-            this.falseStyle = {color: falseRenderer.colour || falseRenderer.color};
-        }
-        if (trueRenderer) {
-            this.trueText = trueRenderer.text;
-            this.trueStyle = {color: trueRenderer.colour || trueRenderer.color};
-        }
-    } else {
-        delete this.falseText;
-        delete this.falseStyle;
-        delete this.trueText;
-        delete this.trueStyle;
-    }
-};
-
-SwitchController.prototype.inputValue = function(setValue) {
-    if (setValue != null) {
-        if (this.point) {
-            this.point.setValue(setValue);
-        }
-    } else {
-        return this.currentValue;
-    }
-};
 
 export default switchDirective;

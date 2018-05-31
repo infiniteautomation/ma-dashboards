@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import PointValueController from './PointValueController';
-
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maIndicator
@@ -28,8 +25,65 @@ import PointValueController from './PointValueController';
  * @param {boolean=} [toggle-on-click=false] For binary data points only. When you click the component it will set the point
  * value to the opposite of what it is currently. e.g. if the point value is currently false it will set the point value to true.
  */
+indicator.$inject = ['maPointValueController', 'maUtil'];
+function indicator(PointValueController, maUtil) {
+    
+    class IndicatorController extends PointValueController {
+        constructor() {
+            super(...arguments);
 
-function indicator() {
+            this.$element.css('background-color', this.$attrs.defaultColor || '');
+        }
+
+        $onChanges(changes) {
+            super.$onChanges(...arguments);
+            
+            if (changes.toggleOnClick) {
+                if (this.toggleOnClick) {
+                    this.$element.on('click.maIndicator', this.clickHandler.bind(this));
+                    this.$element.attr('role', 'button');
+                } else {
+                    this.$element.off('click.maIndicator');
+                    this.$element.removeAttr('role');
+                }
+            }
+        }
+    
+        valueChangeHandler() {
+            super.valueChangeHandler(...arguments);
+    
+            const value = this.getValue();
+            let color;
+    
+            if (value != null) {
+                const attrName = maUtil.camelCase('color-' + value);
+                color = this.$attrs[attrName];
+                
+                if (!color && this.point) {
+                    const renderer = this.point.valueRenderer(value);
+                    color = renderer.colour || renderer.color;
+                }
+                
+                if (!color) {
+                    color = this.$attrs.defaultColor;
+                }
+            }
+            this.$element.css('background-color', color || '');
+    
+            if (this.point && this.point.pointLocator && !this.point.pointLocator.settable) {
+                this.$element.attr('disabled', 'disabled');
+            } else {
+                this.$element.removeAttr('disabled');
+            }
+        }
+    
+        clickHandler() {
+            if (this.point && !this.$element.attr('disabled')) {
+                this.point.toggleValue();
+            }
+        }
+    }
+    
     return {
         restrict: 'E',
         scope: {},
@@ -81,66 +135,5 @@ function indicator() {
         }
     };
 }
-
-IndicatorController.$inject = PointValueController.$inject.concat('maUtil');
-function IndicatorController() {
-    PointValueController.apply(this, arguments);
-    var firstArg = PointValueController.$inject.length;
-
-    this.Util = arguments[firstArg];
-
-    this.$element.css('background-color', this.$attrs.defaultColor || '');
-}
-
-IndicatorController.prototype = Object.create(PointValueController.prototype);
-IndicatorController.prototype.constructor = IndicatorController;
-
-IndicatorController.prototype.$onChanges = function(changes) {
-    PointValueController.prototype.$onChanges.apply(this, arguments);
-    
-    if (changes.toggleOnClick) {
-        if (this.toggleOnClick) {
-            this.$element.on('click.maIndicator', this.clickHandler.bind(this));
-            this.$element.attr('role', 'button');
-        } else {
-            this.$element.off('click.maIndicator');
-            this.$element.removeAttr('role');
-        }
-    }
-};
-
-IndicatorController.prototype.valueChangeHandler = function() {
-    PointValueController.prototype.valueChangeHandler.apply(this, arguments);
-
-    var value = this.getValue();
-    var color;
-
-    if (value != null) {
-        var attrName = this.Util.camelCase('color-' + value);
-        color = this.$attrs[attrName];
-        
-        if (!color && this.point) {
-            var renderer = this.point.valueRenderer(value);
-            color = renderer.colour || renderer.color;
-        }
-        
-        if (!color) {
-            color = this.$attrs.defaultColor;
-        }
-    }
-    this.$element.css('background-color', color || '');
-
-    if (this.point && this.point.pointLocator && !this.point.pointLocator.settable) {
-        this.$element.attr('disabled', 'disabled');
-    } else {
-        this.$element.removeAttr('disabled');
-    }
-};
-
-IndicatorController.prototype.clickHandler = function() {
-    if (this.point && !this.$element.attr('disabled')) {
-        this.point.toggleValue();
-    }
-};
 
 export default indicator;
