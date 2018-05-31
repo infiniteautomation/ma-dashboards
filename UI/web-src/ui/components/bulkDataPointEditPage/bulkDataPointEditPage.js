@@ -66,6 +66,7 @@ class BulkDataPointEditPageController {
         this.browserOpen = true;
 
         this.columns = [
+            {name: 'rowNumber', label: 'ui.app.rowNumber', disableEdit: true, selectedByDefault: false},
             {name: 'xid', label: 'ui.app.xidShort', disableEdit: true, selectedByDefault: false},
             {name: 'dataSourceName', label: 'ui.app.dataSource', disableEdit: true, selectedByDefault: false},
             {name: 'dataType', label: 'dsEdit.pointDataType', disableEdit: true, selectedByDefault: false},
@@ -385,7 +386,18 @@ class BulkDataPointEditPageController {
     watchListChanged() {
         if (this.watchList) {
             this.watchList.defaultParamValues(this.watchListParams);
+            
+            const rowNumberIndex = this.selectedColumns.findIndex(col => col.name === 'rowNumber');
+            if (rowNumberIndex >= 0) {
+                this.selectedColumns.splice(rowNumberIndex, 1);
+            }
+        } else {
+            this.tableOrder = ['rowNumber'];
+            if (!this.selectedColumns.find(col => col.name === 'rowNumber')) {
+                this.selectedColumns.unshift(this.columns.find(col => col.name === 'rowNumber'));
+            }
         }
+
         this.getPoints();
     }
     
@@ -636,24 +648,13 @@ class BulkDataPointEditPageController {
     uploadCSVFile(csvFile) {
         this.watchList = null;
         this.watchListChanged();
-        
+
         this.startFromCsv(csvFile);
     }
     
     startFromCsv(csvFile) {
-        let tagsOnly;
-        
-        this.bulkTaskPromise = this.maDialogHelper.confirm(null, ['ui.app.onlyTags']).then(() => {
-            tagsOnly = true;
-        }, () => {
-            tagsOnly = false;
-        }).then(() => {
-            if (tagsOnly) {
-                this.bulkTask = new this.maDataPointTags.bulk();
-            } else {
-                this.bulkTask = new this.maPoint.bulk();
-            }
-            
+        this.bulkTaskPromise = this.$q.resolve().then(() => {
+            this.bulkTask = new this.maPoint.bulk();
             this.bulkTask.setHttpBody(csvFile);
             
             return this.bulkTask.start(this.$scope, {
@@ -667,14 +668,12 @@ class BulkDataPointEditPageController {
                 const point = new this.maPoint();
                 
                 if (response.body) {
-                    if (tagsOnly) {
-                        point.tags = response.body;
-                    } else {
-                        angular.copy(response.body, point);
-                    }
+                    angular.copy(response.body, point);
                 } else if (response.error) {
                     point[errorProperty] = response.error;
+                    point.xid = response.xid;
                 }
+                point.rowNumber = i + 2;
                 
                 this.points.push(point);
             });
