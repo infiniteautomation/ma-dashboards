@@ -11,6 +11,7 @@ import './bulkDataPointEditPage.css';
 
 const selectedProperty = typeof Symbol === 'function' ? Symbol('selected') : '___selected___';
 const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error___';
+const actionProperty = typeof Symbol === 'function' ? Symbol('action') : '___action___';
 const localStorageKey = 'bulkDataPointEditPage';
 
 class BulkDataPointEditPageController {
@@ -219,6 +220,8 @@ class BulkDataPointEditPageController {
                 const point = this.selectedPoints[i];
                 if (response.error) {
                     point[errorProperty] = response.error;
+                    point[actionProperty] = response.action;
+                    this.makePropertyErrorsMap(response.error);
                 } else {
                     deletedPoints.push(point);
                 }
@@ -313,6 +316,8 @@ class BulkDataPointEditPageController {
                     }
                 } else if (response.error) {
                     point[errorProperty] = response.error;
+                    point[actionProperty] = response.action;
+                    this.makePropertyErrorsMap(response.error);
                 }
             });
             
@@ -448,6 +453,10 @@ class BulkDataPointEditPageController {
     
     getPointError(point) {
         return point && point[errorProperty];
+    }
+    
+    getPointAction(point) {
+        return point && point[actionProperty];
     }
 
     pointSelected(point) {
@@ -671,6 +680,8 @@ class BulkDataPointEditPageController {
                     angular.copy(response.body, point);
                 } else if (response.error) {
                     point[errorProperty] = response.error;
+                    point[actionProperty] = response.action;
+                    this.makePropertyErrorsMap(response.error);
                     point.xid = response.xid;
                 }
                 point.rowNumber = i + 2;
@@ -688,6 +699,17 @@ class BulkDataPointEditPageController {
             delete this.bulkTaskPromise;
             delete this.bulkTask;
         });
+    }
+    
+    makePropertyErrorsMap(error) {
+        if (error.result && Array.isArray(error.result.messages)) {
+            error.propertyErrors = {};
+            error.result.messages.forEach(msg => {
+                if (msg.property) {
+                    error.propertyErrors[msg.property] = msg.message;
+                }
+            });
+        }
     }
 }
 

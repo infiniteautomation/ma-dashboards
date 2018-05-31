@@ -199,15 +199,22 @@
                                 md-on-deselect="$ctrl.pointDeselectedBound"
                                 ng-class="{'ma-row-error': point.error}">
             
-                            <td md-cell>
-                                <div ng-if="$ctrl.getPointError(point)">
-                                    <md-icon class="md-warn">warning</md-icon>
-                                    <md-tooltip ng-bind="$ctrl.getPointError(point).localizedMessage"></md-tooltip>
+                            <td md-cell ng-init="ptError = $ctrl.getPointError(point)">
+                                <md-button class="md-warn md-icon-button" ng-if="ptError" ng-click="ptError.showError = !ptError.showError">
+                                    <md-icon>warning</md-icon>
+                                    <md-tooltip ma-tr="ui.app.errorDoingX" ma-tr-args="[$ctrl.getPointAction(point), ptError.localizedMessage]"></md-tooltip>
+                                </md-button>
+                                <div ng-if="ptError.showError">
+                                    <div ng-repeat="msg in ptError.result.messages">
+                                        <span ng-if="msg.property"><span ng-bind="msg.property"></span>: </span>
+                                        <span ng-bind="msg.message"></span>
+                                    </div>
                                 </div>
                             </td>
     
-                            <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell ng-class="{'ma-cell-modified': $ctrl.columnModified(column, point)}">
+                            <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell ng-class="{'ma-cell-modified': $ctrl.columnModified(column, point), 'ma-cell-error': ptError && ptError.propertyErrors[column.name]}">
                                 <span ng-class="{'ma-empty-null': $ctrl.valueForColumn(column, point) == null}" ng-bind="$ctrl.valueForColumn(column, point) | maDisplayNull"></span>
+                                <md-tooltip ng-if="ptError && ptError.propertyErrors[column.name]" ng-bind="ptError.propertyErrors[column.name]"></md-tooltip>
                             </td>
                             
                             <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell ng-class="{'ma-cell-modified': $ctrl.tagModified(tag, point)}">

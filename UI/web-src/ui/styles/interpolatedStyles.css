@@ -133,6 +133,10 @@ ma-ui-bulk-data-point-edit-page table.md-table td.md-cell.ma-cell-modified {
 	background-color: {{getThemeColor('accent-hue-2-0.6')}};
 }
 
+ma-ui-bulk-data-point-edit-page table.md-table td.md-cell.ma-cell-error {
+	color: {{getThemeColor('warn')}};
+}
+
 .ma-drag-over {
 	border-color: {{getThemeColor('accent')}};
 }
