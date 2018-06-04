@@ -7,14 +7,15 @@ import angular from 'angular';
 import userEditorTemplate from './userEditor.html';
 import moment from 'moment-timezone';
 
-UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales'];
-function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLocales) {
+UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales', '$window'];
+function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLocales, $window) {
     this.User = User;
     this.$http = $http;
     this.timezones = moment.tz.names();
     this.$mdDialog = $mdDialog;
     this.Translate = Translate;
     this.$mdToast = $mdToast;
+    this.$window = $window;
     
     maLocales.get().then(function(locales) {
         this.locales = locales;
@@ -49,7 +50,7 @@ UserEditorController.prototype.save = function() {
         }
         
         this.user.saveOrUpdate({username: this.originalUser.username}).then(function(user) {
-            var previous = angular.copy(this.originalUser);
+            const previous = angular.copy(this.originalUser);
             delete this.originalUser.isNew;
             angular.merge(this.originalUser, user);
             
@@ -58,7 +59,7 @@ UserEditorController.prototype.save = function() {
                 this.User.current = this.originalUser;
             }
             
-            var toast = this.$mdToast.simple()
+            const toast = this.$mdToast.simple()
                 .textContent(this.Translate.trSync('ui.components.userSaved', user.username))
                 .action(this.Translate.trSync('common.ok'))
                 .highlightAction(true)
@@ -78,7 +79,7 @@ UserEditorController.prototype.save = function() {
                 errorText += ', ' + response.mangoStatusText;
             }
             
-            var toast = this.$mdToast.simple()
+            const toast = this.$mdToast.simple()
                 .textContent(errorText)
                 .action(this.Translate.trSync('common.ok'))
                 .highlightAction(true)
@@ -96,9 +97,9 @@ UserEditorController.prototype.revert = function() {
 };
 
 UserEditorController.prototype.remove = function(event) {
-    var $ctrl = this;
+    const $ctrl = this;
     
-    var confirm = this.$mdDialog.confirm()
+    const confirm = this.$mdDialog.confirm()
         .title(this.Translate.trSync('ui.app.areYouSure'))
         .textContent(this.Translate.trSync('ui.components.confirmDeleteUser'))
         .ariaLabel(this.Translate.trSync('ui.app.areYouSure'))
@@ -107,14 +108,14 @@ UserEditorController.prototype.remove = function(event) {
         .cancel(this.Translate.trSync('common.cancel'));
 
     this.$mdDialog.show(confirm).then(function() {
-        var username = $ctrl.originalUser.username;
+        const username = $ctrl.originalUser.username;
         $ctrl.originalUser.$delete().then(function(user) {
             $ctrl.user = null;
             $ctrl.originalUser = null;
             $ctrl.resetForm();
             $ctrl.onDelete({$user: user});
             
-            var toast = $ctrl.$mdToast.simple()
+            const toast = $ctrl.$mdToast.simple()
                 .textContent($ctrl.Translate.trSync('ui.components.userDeleted', username))
                 .action($ctrl.Translate.trSync('common.ok'))
                 .highlightAction(true)
@@ -122,7 +123,7 @@ UserEditorController.prototype.remove = function(event) {
                 .hideDelay(10000);
             $ctrl.$mdToast.show(toast);
         }, function(response) {
-            var toast = $ctrl.$mdToast.simple()
+            const toast = $ctrl.$mdToast.simple()
                 .textContent($ctrl.Translate.trSync('ui.components.errorDeletingUser', username))
                 .action($ctrl.Translate.trSync('common.ok'))
                 .highlightAction(true)
@@ -135,9 +136,9 @@ UserEditorController.prototype.remove = function(event) {
 };
 
 UserEditorController.prototype.sendTestEmail = function() {
-    var $ctrl = this;
+    const $ctrl = this;
     this.User.current.sendTestEmail().then(function(response) {
-        var toast = $ctrl.$mdToast.simple()
+        const toast = $ctrl.$mdToast.simple()
             .textContent(response.data)
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
@@ -145,7 +146,7 @@ UserEditorController.prototype.sendTestEmail = function() {
             .hideDelay(10000);
         $ctrl.$mdToast.show(toast);
     }, function(response) {
-        var toast = $ctrl.$mdToast.simple()
+        const toast = $ctrl.$mdToast.simple()
             .textContent($ctrl.Translate.trSync('ui.components.errorSendingEmail', this.User.current.email))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
@@ -157,18 +158,20 @@ UserEditorController.prototype.sendTestEmail = function() {
 };
 
 UserEditorController.prototype.switchUser = function(event) {
-    var $ctrl = this;
-    var username = this.user.username;
-    this.User.switchUser({username: username}).$promise.then(function(response) {
-        var toast = $ctrl.$mdToast.simple()
+    const $ctrl = this;
+    const username = this.originalUser.username;
+    this.User.switchUser({username: username}).$promise.then(response => {
+        const toast = $ctrl.$mdToast.simple()
             .textContent($ctrl.Translate.trSync('ui.components.switchedUser', username))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
             .position('bottom center')
             .hideDelay(10000);
         $ctrl.$mdToast.show(toast);
-    }, function(response) {
-        var toast = $ctrl.$mdToast.simple()
+        
+        this.$window.location.reload();
+    }, response => {
+        const toast = $ctrl.$mdToast.simple()
             .textContent($ctrl.Translate.trSync('ui.components.errorSwitchingUser', username))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
@@ -195,5 +198,3 @@ export default {
         hideFromMenu: true
     }
 };
-
-
