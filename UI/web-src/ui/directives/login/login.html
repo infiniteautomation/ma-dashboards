@@ -27,7 +27,7 @@
 	      </div>
 	    </md-input-container>
         <div ng-messages="errors" md-colors="{color: 'warn'}">
-          <div ng-message="invalidLogin" ma-tr="login.validation.invalidLogin"></div>
+          <div ng-message="invalidLogin" ma-tr="login.ui.loginFailed" ma-tr-args="[invalidLoginMessage]"></div>
           <div ng-message="otherError" ma-tr="login.error" ma-tr-args="[errors.otherError]"></div>
         </div>
 	</md-card-content>

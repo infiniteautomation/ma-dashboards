@@ -58,18 +58,23 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     	    if (!message) {
     	        message = safeTranslate(`rest.httpStatus.${error.status}`, error.statusText);
     	    }
-    	    
+            
+    	    // try the status text
+            if (!message) {
+                message = error.statusText;
+            }
+            
     	    // error.statusText is empty if its an XHR error
-    	    if (!message) {
+    	    if (!message && error.xhrStatus !== 'complete') {
     	        message = error.xhrStatus === 'abort' && safeTranslate('ui.app.xhrAborted', 'Request aborted') ||
                     error.xhrStatus === 'timeout' && safeTranslate('ui.app.xhrTimeout', 'Request timed out') ||
                     error.xhrStatus === 'error' && safeTranslate('ui.app.xhrError', 'Connection error');
     	    }
 
-    	    // last ditch fallback
-    	    if (!message) {
-    	        message = `HTTP error ${error.status}`;
-    	    }
+            // fallback to generic description of HTTP error code
+            if (!message) {
+                message = safeTranslate(`rest.httpStatus.${error.status}`, `HTTP error ${error.status}`);
+            }
 
     	    if (error.status === 422) {
     	        const validationError = safeTranslate('ui.app.validationError', 'Validation error');

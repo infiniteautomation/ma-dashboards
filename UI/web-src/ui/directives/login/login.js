@@ -47,8 +47,10 @@ function loginFactory($state, User, $rootScope, $window, maUtil, $cookies, $http
                     if (error.status === 401) {
                         $scope.errors.invalidLogin = true;
                         $scope.errors.otherError = false;
+                        $scope.invalidLoginMessage = error.mangoStatusText;
                     } else {
                         $scope.errors.otherError = error.mangoStatusText;
+                        delete $scope.invalidLoginMessage;
                     }
                 });
             };
