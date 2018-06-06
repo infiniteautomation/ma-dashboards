@@ -101,6 +101,7 @@ function pieChart($http, MA_DATE_FORMATS) {
         return {
             type: 'pie',
             theme: 'light',
+            addClassNames: true,
             dataProvider: [],
             valueField: 'value',
             titleField: 'text',
