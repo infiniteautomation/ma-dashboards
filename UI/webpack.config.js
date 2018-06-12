@@ -203,7 +203,7 @@ module.exports = readPom().then(pom => {
                 {
                     test: /mdPickers/,
                     include: /\.js$/,
-                    use: ['imports-loader?moment=moment-timezone,angular,angularMaterial=angular-material']
+                    use: ['imports-loader?moment=moment-timezone,angular']
                 },
                 {
                     test: /angular-material-data-table/,
