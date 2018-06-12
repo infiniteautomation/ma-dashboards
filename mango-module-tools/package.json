@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@infinite-automation/mango-module-tools",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Tools used for building Mango Automation modules",
   "main": "module.config.js",
   "dependencies": {
