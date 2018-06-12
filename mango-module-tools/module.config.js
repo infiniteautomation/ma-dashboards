@@ -86,8 +86,23 @@ module.exports = readPom().then(pom => {
         },
         externals: {
             'angular': 'angular',
+            'cldrjs': 'cldrjs',
+            'cldr-data': 'cldr-data',
+            'file-saver': 'file-saver',
+            'globalize': 'globalize',
+            'ipaddr.js': 'ipaddr.js',
             'jquery': 'jquery',
-            'js-sha512': 'sha512'
+            'js-sha512': 'sha512',
+            'jszip': 'jszip',
+            'mathjs': 'mathjs',
+            'moment': 'moment',
+            'moment-timezone': 'moment-timezone',
+            'papaparse': 'papaparse',
+            'pdfmake': 'pdfmake',
+            'plotly.js': 'plotly.js',
+            'stacktrace-js': 'stacktrace-js',
+            'tinycolor2': 'tinycolor2',
+            'xlsx': 'xlsx'
         }
     };
 });
