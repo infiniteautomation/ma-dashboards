@@ -59,10 +59,10 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
         }
 
         confirm(event, translation) {
-            var areYouSure = maTranslate.trSync('ui.app.areYouSure');
-            var textContent = translation ? maTranslate.trSync(translation) : areYouSure;
+            const areYouSure = maTranslate.trSync('ui.app.areYouSure');
+            const textContent = translation ? maTranslate.trSync(translation) : areYouSure;
 
-            var confirm = $mdDialog.confirm()
+            const confirm = $mdDialog.confirm()
                 .title(areYouSure)
                 .ariaLabel(areYouSure)
                 .textContent(textContent)
@@ -75,11 +75,11 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
         }
 
         prompt(event, shortTr, longTr, placeHolderTr, initialValue) {
-            var shortText = maTranslate.trSync(shortTr);
-            var longText = longTr && maTranslate.trSync(longTr);
-            var placeHolderText = placeHolderTr && maTranslate.trSync(placeHolderTr);
+            const shortText = maTranslate.trSync(shortTr);
+            const longText = longTr && maTranslate.trSync(longTr);
+            const placeHolderText = placeHolderTr && maTranslate.trSync(placeHolderTr);
 
-            var prompt = $mdDialog.prompt()
+            const prompt = $mdDialog.prompt()
                 .title(shortText)
                 .ariaLabel(shortText)
                 .targetEvent(event)
@@ -103,9 +103,9 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
         }
         
         toast(translation, classes) {
-            var text = maTranslate.trSync(translation, Array.prototype.slice.call(arguments, 2));
+            const text = maTranslate.trSync(translation, Array.prototype.slice.call(arguments, 2));
             
-            var toast = $mdToast.simple()
+            const toast = $mdToast.simple()
                 .textContent(text)
                 .action(maTranslate.trSync('login.ok'))
                 .highlightAction(true)
@@ -134,9 +134,9 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
         }
         
         toastOptions(options) {
-            var text = options.textTr ? maTranslate.trSync(options.textTr) : options.text;
+            const text = options.textTr ? maTranslate.trSync(options.textTr) : options.text;
             
-            var toast = $mdToast.simple()
+            const toast = $mdToast.simple()
                 .textContent(text)
                 .action(maTranslate.trSync('login.ok'))
                 .highlightAction(true)
@@ -149,9 +149,25 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
             
             return $mdToast.show(toast);
         }
+        
+        httpErrorToast(error, allowedCodes = []) {
+            if (allowedCodes.includes(error.status)) {
+                return;
+            }
+
+            const toast = $mdToast.simple()
+                .textContent(maTranslate.trSync(['ui.app.genericRestError', error.mangoStatusText]))
+                .action(maTranslate.trSync('login.ok'))
+                .highlightAction(true)
+                .position('bottom center')
+                .toastClass('md-warn')
+                .hideDelay(10000);
+
+            return $mdToast.show(toast);
+        }
 
         showConfigImportDialog(importData, $event) {
-            var locals = {importData: importData};
+            const locals = {importData: importData};
             return this.showDialog(configImportDialogContainerTemplate, locals, $event);
         }
         
@@ -164,8 +180,8 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
 //          resultsTr
 //        }
         confirmSystemAction(options) {
-            var maDialogHelper = this;
-            var description = maTranslate.trSync(options.descriptionTr);
+            const maDialogHelper = this;
+            const description = maTranslate.trSync(options.descriptionTr);
             
             return maDialogHelper.confirm(options.event, options.confirmTr).then(function() {
                 return maSystemActions.trigger(options.actionName, options.actionData).then(function(triggerResult) {
@@ -177,12 +193,12 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                     return $q.reject();
                 });
             }).then(function(finishedResult) {
-                var results = finishedResult.results;
+                const results = finishedResult.results;
                 if (results.failed) {
-                    var msg = results.exception ? results.exception.message : '';
+                    const msg = results.exception ? results.exception.message : '';
                     maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.failed', description, msg], hideDelay: 10000, classes: 'md-warn'});
                 } else {
-                    var resultTxt = maTranslate.trSync(options.resultsTr, results);
+                    const resultTxt = maTranslate.trSync(options.resultsTr, results);
                     maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.succeeded', description, resultTxt]});
                 }
             }, angular.noop);

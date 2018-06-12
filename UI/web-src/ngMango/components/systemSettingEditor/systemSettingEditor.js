@@ -37,11 +37,12 @@ var systemSettingEditor = {
     }
 };
 
-SystemSettingEditorController.$inject = ['maSystemSettings', '$timeout', '$q', '$injector'];
-function SystemSettingEditorController(SystemSettings, $timeout, $q, $injector) {
+SystemSettingEditorController.$inject = ['maSystemSettings', '$timeout', '$q', '$injector', 'maDialogHelper'];
+function SystemSettingEditorController(SystemSettings, $timeout, $q, $injector, maDialogHelper) {
     this.SystemSettings = SystemSettings;
     this.$timeout = $timeout;
     this.$q = $q;
+    this.maDialogHelper = maDialogHelper;
 
     if ($injector.has('$mdColorPicker')) {
         this.$mdColorPicker = $injector.get('$mdColorPicker');
@@ -63,11 +64,11 @@ SystemSettingEditorController.prototype.$onInit = function() {
 SystemSettingEditorController.prototype.$onChanges = function(changes) {
     if (changes.key || changes.type) {
         this.systemSetting = new this.SystemSettings(this.key, this.type);
-        this.systemSetting.getValue().then(function(value) {
+        this.systemSetting.getValue().then(value => {
             if (this.onValueChanged) {
                 this.onValueChanged({$value: value, $initial: true});
             }
-        }.bind(this));
+        }, error => this.maDialogHelper.httpErrorToast(error, [404]));
     }
     if (changes.saveOnChange) {
         this.debounceTime = this.saveOnChange ? 1000 : 0;

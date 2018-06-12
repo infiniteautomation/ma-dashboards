@@ -22,6 +22,11 @@ function ExceptionHandlerProvider($httpProvider) {
         const logAndSendStackTrace = (exception, cause) => {
             $log.error(exception);
             
+            // don't send these to the backend, Angular generates these messages whenever there is no error callback
+            if (typeof exception === 'string' && exception.startsWith('Possibly unhandled rejection:')) {
+                return;
+            }
+            
             const message = '' + exception;
             if (seenMessages[message]) return;
             
