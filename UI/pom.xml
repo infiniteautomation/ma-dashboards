@@ -28,6 +28,18 @@
                 <executions>
                     <execution>
                         <id>Install node and npm</id>
+                        <phase/>
+                    </execution>
+                    <execution>
+                        <id>Run npm install</id>
+                        <phase/>
+                    </execution>
+                    <execution>
+                        <id>Run webpack</id>
+                        <phase/>
+                    </execution>
+                    <execution>
+                        <id>Install node and yarn</id>
                         <goals>
                             <goal>install-node-and-yarn</goal>
                         </goals>
@@ -37,7 +49,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>Run npm install</id>
+                        <id>Run yarn install</id>
                         <goals>
                             <goal>yarn</goal>
                         </goals>
@@ -46,7 +58,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>Run webpack</id>
+                        <id>Run yarn webpack</id>
                         <goals>
                             <goal>yarn</goal>
                         </goals>
