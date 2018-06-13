@@ -3,12 +3,12 @@
 	<parent>
 		<artifactId>ma-dashboards-parent</artifactId>
 		<groupId>com.infiniteautomation.mango</groupId>
-		<version>3.4.5-SNAPSHOT</version>
+		<version>3.4.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>ui</artifactId>
 	<name>mangoUI</name>
-	<version>3.4.4-SNAPSHOT</version>
+	<version>3.4.4</version>
 	<description>Provides an AngularJS user interface, including the ability to create custom pages</description>
 	<build>
 		<plugins>
@@ -28,15 +28,15 @@
                 <executions>
                     <execution>
                         <id>Install node and npm</id>
-                        <phase/>
+                        <phase />
                     </execution>
                     <execution>
                         <id>Run npm install</id>
-                        <phase/>
+                        <phase />
                     </execution>
                     <execution>
                         <id>Run webpack</id>
-                        <phase/>
+                        <phase />
                     </execution>
                     <execution>
                         <id>Install node and yarn</id>
@@ -70,4 +70,8 @@
 			</plugin>
 		</plugins>
 	</build>
+
+  <scm>
+    <tag>mangoUI-v3.4.4</tag>
+  </scm>
 </project>
