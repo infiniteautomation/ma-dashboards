@@ -638,6 +638,7 @@ class FileStoreBrowserController {
         
         const newSelectedFile = this.filteredFiles[nextIndex];
         if (newSelectedFile) {
+            this.previewFile = newSelectedFile;
             this.setSelection([newSelectedFile]);
             this.setViewValueToSelection();
         }
