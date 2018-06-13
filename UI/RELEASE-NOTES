@@ -1,3 +1,9 @@
+*Version 3.4.4*
+* Stop sending some errors (unhandled rejection) to the backend
+* Ability to configure an arbitrary number of bands on gauge chart
+* Fix preview file not changing when using up/down keys on file store
+* Allow configuration of min/max/grid count for watch list chart axes
+
 *Version 3.4.3*
 * Add CSV upload/download to the bulk data point editor (ensure core and API are up to date)
 * Add ma-momentary directive for momentary push buttons
