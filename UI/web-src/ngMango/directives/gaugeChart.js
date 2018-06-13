@@ -33,6 +33,7 @@ import AmCharts from 'amcharts/gauge';import angular from 'angular';
  * @param {string=} band-2-color Sets the color for the second band.
  * @param {number=} band-3-end Sets the ending value for the third band.
  * @param {string=} band-3-color Sets the color for the third band.
+ * @param {object[]=} bands Array of band configurations. Takes precedence over the `band-x-end` and `band-x-color` attributes.
  * @param {number=} radius Sets the radius of the axis circled around the gauge. (default: 95%)
  * @param {number=} value-offset Sets the vertical offset of the value text. Negative moves the value up. (default: -20)
  * @param {number=} value-font-size Sets the fontsize of the value text. (default: 12)
@@ -141,7 +142,12 @@ function gaugeChart(PointValueController) {
                 }
             }
             
-            if (optionsChanged) {
+            let bandsChanged = false;
+            if (changes.bands && !changes.bands.isFirstChange()) {
+                bandsChanged = true;
+            }
+            
+            if (optionsChanged || bandsChanged) {
                 this.updateChart();
             }
         }
@@ -203,6 +209,41 @@ function gaugeChart(PointValueController) {
                 if (!this.end)
                     axis.endValue = stop3;
             }
+            
+            if (Array.isArray(this.bands)) {
+                axis.bands = this.bands;
+                this.bands.forEach((band, i, array) => {
+                    if (!band.id) {
+                        band.id = `band${i}`;
+                    }
+                    if (!isFinite(band.startValue)) {
+                        const prevBand = i > 0 && array[i - 1];
+                        if (prevBand && isFinite(prevBand.endValue)) {
+                            band.startValue = prevBand.endValue;
+                        } else {
+                            band.startValue = 0;
+                        }
+                    }
+                    if (!isFinite(band.endValue)) {
+                        const nextBand = array.length > i + 1 && array[i + 1];
+                        if (nextBand && isFinite(nextBand.startValue)) {
+                            band.endValue = nextBand.startValue;
+                        } else {
+                            band.endValue = 100;
+                        }
+                    }
+                });
+                
+                if (axis.bands.length) {
+                    if (this.start == null) {
+                        axis.startValue = axis.bands[0].startValue;
+                    }
+                    if (this.end == null) {
+                        axis.endValue = axis.bands[axis.bands.length - 1].endValue;
+                    }
+                }
+            }
+            
             axis.valueInterval = asNumber(this.interval, (axis.endValue - axis.startValue) / 5);
             
             axis.radius = this.radius || '100%';
@@ -254,6 +295,7 @@ function gaugeChart(PointValueController) {
           band2Color: '@',
           band3End: '<?',
           band3Color: '@',
+          bands: '<?',
           radius: '@',
           valueOffset: '<?',
           valueFontSize: '<?',
