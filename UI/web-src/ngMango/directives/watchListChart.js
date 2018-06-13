@@ -42,6 +42,111 @@ import watchListChartTemplate from './watchListChart.html';
 
 watchListChart.$inject = [];
 function watchListChart() {
+
+    class WatchListChartController {
+        static get $$ngIsClass() { return true; }
+        
+        constructor() {
+            this.chartOptions = {};
+        }
+    
+        $onInit() {
+            //if (this['export'] === undefined) this['export'] = true;
+            if (this.legend === undefined) this.legend = true;
+            if (this.balloon === undefined) this.balloon = true;
+        }
+    
+        $onChanges(changes) {
+            if (changes.watchList || changes.points) {
+                this.filterPoints();
+                this.buildOptions();
+            }
+    //        if (changes.parameters && this.watchList) {
+    //            this.watchList.getPoints(this.parameters).then(function(points) {
+    //                this.points = points;
+    //            }.bind(this));
+    //        }
+        }
+    
+        filterPoints() {
+            if (!this.watchList || !Array.isArray(this.points)) {
+                this.chartedPoints = [];
+                return;
+            }
+            
+            // ensure the watch list point configs are up to date
+            this.watchList.updatePointConfigs();
+    
+            // select points based on the watch list data chart config
+            this.chartedPoints = this.watchList.findSelectedPoints(this.points);
+            
+            const selectedTags = this.watchList.selectedTagKeys();
+            
+            this.graphOptions = this.chartedPoints.map(point => {
+                const pointOptions = point.watchListConfig;
+    
+                const fields = selectedTags.map(tagKey => {
+                    return point.getTag(tagKey);
+                });
+                
+                const graphOption = Object.assign({}, pointOptions);
+                graphOption.title = fields.join(' \u2014 ');
+                
+                return graphOption;
+            });
+        }
+    
+        buildOptions() {
+            this.chartOptions = {};
+            if (!this.watchList) {
+                return;
+            }
+    
+            const chartConfig = this.watchList.data.chartConfig || {};
+            const valueAxes = chartConfig.valueAxes || {};
+            
+            let anyMinOrMaxSet = false;
+            
+            this.chartOptions.valueAxes = [];
+            ['left', 'right', 'left-2', 'right-2'].forEach(axisName => {
+                const axis = valueAxes[axisName] || {};
+    
+                const valueAxis = {
+                    axisColor: axis.color || '',
+                    color: axis.color || '',
+                    stackType: axis.stackType || 'none',
+                    title: axis.title || ''
+                };
+    
+                if (isFinite(axis.minimum)) {
+                    valueAxis.minimum = axis.minimum;
+                    valueAxis.strictMinMax = true;
+                    anyMinOrMaxSet = true;
+                }
+                if (isFinite(axis.maximum)) {
+                    valueAxis.maximum = axis.maximum;
+                    valueAxis.strictMinMax = true;
+                    anyMinOrMaxSet = true;
+                }
+                if (isFinite(axis.gridCount)) {
+                    valueAxis.gridCount = axis.gridCount;
+                    valueAxis.autoGridCount = false;
+                }
+                
+                this.chartOptions.valueAxes.push(valueAxis);
+            });
+            
+            if (anyMinOrMaxSet) {
+                this.chartOptions.synchronizeGrid = false;
+            }
+        }
+    
+        valuesUpdatedHandler(values) {
+            if (this.onValuesUpdated)
+                this.onValuesUpdated({$values: values});
+        }
+    }
+    
     return {
         restrict: 'E',
         template: watchListChartTemplate,
@@ -83,82 +188,5 @@ function watchListChart() {
         }
     };
 }
-
-WatchListChartController.$inject = [];
-function WatchListChartController() {
-    this.chartOptions = {};
-}
-
-WatchListChartController.prototype.$onInit = function() {
-    //if (this['export'] === undefined) this['export'] = true;
-    if (this.legend === undefined) this.legend = true;
-    if (this.balloon === undefined) this.balloon = true;
-};
-
-WatchListChartController.prototype.$onChanges = function(changes) {
-    if (changes.watchList || changes.points) {
-        this.filterPoints();
-        this.buildOptions();
-    }
-//    if (changes.parameters && this.watchList) {
-//        this.watchList.getPoints(this.parameters).then(function(points) {
-//            this.points = points;
-//        }.bind(this));
-//    }
-};
-
-WatchListChartController.prototype.filterPoints = function() {
-    if (!this.watchList || !Array.isArray(this.points)) {
-        this.chartedPoints = [];
-        return;
-    }
-    
-    // ensure the watch list point configs are up to date
-    this.watchList.updatePointConfigs();
-
-    // select points based on the watch list data chart config
-    this.chartedPoints = this.watchList.findSelectedPoints(this.points);
-    
-    const selectedTags = this.watchList.selectedTagKeys();
-    
-    this.graphOptions = this.chartedPoints.map(point => {
-        const pointOptions = point.watchListConfig;
-
-        const fields = selectedTags.map(tagKey => {
-            return point.getTag(tagKey);
-        });
-        
-        const graphOption = Object.assign({}, pointOptions);
-        graphOption.title = fields.join(' \u2014 ');
-        
-        return graphOption;
-    });
-};
-
-WatchListChartController.prototype.buildOptions = function() {
-    this.chartOptions = {};
-    if (!this.watchList) {
-        return;
-    }
-
-    var chartConfig = this.watchList.data.chartConfig || {};
-    var valueAxes = chartConfig.valueAxes || {};
-    
-    this.chartOptions.valueAxes = [];
-    ['left', 'right', 'left-2', 'right-2'].forEach(function(axisName) {
-        var axis = valueAxes[axisName] || {};
-        this.chartOptions.valueAxes.push({
-            axisColor: axis.color || '',
-            color: axis.color || '',
-            stackType: axis.stackType || 'none',
-            title: axis.title || ''
-        });
-    }.bind(this));
-};
-
-WatchListChartController.prototype.valuesUpdatedHandler = function(values) {
-    if (this.onValuesUpdated)
-        this.onValuesUpdated({$values: values});
-};
 
 export default watchListChart;
