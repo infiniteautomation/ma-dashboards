@@ -65,13 +65,14 @@ const exposedVendorModules = {
     'stacktrace': () => import(/* webpackMode: "eager" */ 'stacktrace-js')
 };
 
+// maps a defined AMD name to the import plugin which loads the resource using ES6/webpack async import()
 const mapToImportPlugin = Object.keys(exposedVendorModules).reduce((map, name) => {
-    map[name] = 'import!' + name;
+    map[name] = 'webpackImport!' + name;
     return map;
 }, {});
 
 require.config({
-    baseUrl: modulePath + '/vendors',
+    //baseUrl: modulePath + '/vendors',
     urlArgs: function(id, url) {
         if (url.indexOf('?v=') > 0 || url.indexOf('&v=') > 0 || url.match(/^(https?:)?\/\//i)) {
             return '';
@@ -98,7 +99,8 @@ require.config({
     }
 });
 
-define('import', [], () => {
+// defines an RequireJS plugin that uses ES6/webpack async import() to load a resource
+define('webpackImport', [], () => {
     return {
         load(name, req, onload, config) {
             const importFn = exposedVendorModules[name];

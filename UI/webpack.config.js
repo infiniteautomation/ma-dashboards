@@ -16,9 +16,11 @@ module.exports = readPom().then(pom => {
 }).then(packageJson => {
     const moduleName = packageJson.com_infiniteautomation.moduleName;
     return {
+        // Shim files are a workaround for a bug in webpack (Cannot read property 'call' of undefined - https://github.com/webpack/webpack/issues/959)
+        // The bug manifests itself only in production mode when an entry point has no unique code.
         entry: {
-            ngMangoServices: './web-src/ngMango/ngMangoServices.js',
-            ngMango: './web-src/ngMango/ngMangoMaterial.js',
+            ngMangoServices: './web-src/shims/ngMangoServices.js',
+            ngMango: './web-src/shims/ngMango.js',
             mangoUi: './web-src/ui/app.js'
         },
         module: {
@@ -230,7 +232,9 @@ module.exports = readPom().then(pom => {
                 ace: path.join(__dirname, 'web-src/shims/ace')
             }
         },
+        //devtool: 'eval',
         optimization: {
+            //minimize: false,
             splitChunks: {
                 chunks: 'all',
                 minSize: 30000,
@@ -249,6 +253,7 @@ module.exports = readPom().then(pom => {
             }
         },
         plugins: [
+            //new webpack.NamedModulesPlugin(),
             new CleanWebpackPlugin(['web']),
             new HtmlWebpackPlugin({
                 template: 'web-src/ui/index.html',
@@ -281,8 +286,12 @@ module.exports = readPom().then(pom => {
             path: path.resolve(__dirname, 'web'),
             publicPath: `/modules/${moduleName}/web/`,
             libraryTarget: 'umd',
-            //library: '[name]'
-            library: moduleName
+            // the library name is used when exporting the library using UMD, it also is appended to the
+            // jsonp callback name (unless overridden as below), and is used in source map sourceURL
+            // e.g. sourceURL=webpack://%5Bname%5D/./node_modules/xxx
+            // shows up in chrome as %5Bname%5D
+            library: '[name]',
+            jsonpFunction: `webpack_jsonp_${moduleName}`
         }
     };
 });

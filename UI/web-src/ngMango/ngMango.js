@@ -115,6 +115,8 @@ import angular from 'angular';
 import moment from 'moment-timezone';
 import AmCharts from 'amcharts/amcharts';
 
+import '../shims/exportAMD.js';
+
 import './ngMango.css';
 
 /**
@@ -123,7 +125,7 @@ import './ngMango.css';
  *
  *
  * @description
- * The ngMango module handles loading of the custom directives used for creating a Mango 3.0 dashboard.
+ * The ngMango module handles loading of the custom directives used for creating a Mango 3.x dashboard.
  *
  *
 **/
