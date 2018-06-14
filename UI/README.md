@@ -1,5 +1,5 @@
 ## Building
-This module uses [webpack](https://webpack.js.org/) to bundle the front end files before the module
+This module uses [Webpack](https://webpack.js.org/) to bundle the front end files before the module
 is compiled and packaged using [Maven](https://maven.apache.org/).
 
 # Production build
@@ -10,11 +10,11 @@ This works by the by using the [frontend-maven-plugin](https://github.com/eirsle
 of Node.js and run the commands below.
 
 # Developer build - webpack development mode build
-You will need [Node.js](https://nodejs.org/) and npm.
+You will need [Node.js](https://nodejs.org/) and yarn.
 
 Then run:
-1. `npm install`
-2. `npm run-script webpack -- --mode development`
+1. `yarn install`
+2. `yarn run webpack --mode development`
 
 This will run Webpack using the development mode. You may also want to try Webpack's `watch` option:
-1. `npm run-script webpack -- --mode development --watch`
+1. `yarn run webpack --mode development --watch`

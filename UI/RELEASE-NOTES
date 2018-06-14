@@ -1,3 +1,7 @@
+*Version 3.4.5*
+* Work around bug in webpack causing an error if trying to use ngMango by itself
+* Expose RequireJS and libraries if loading ngMango
+
 *Version 3.4.4*
 * Stop sending some errors (unhandled rejection) to the backend
 * Ability to configure an arbitrary number of bands on gauge chart
