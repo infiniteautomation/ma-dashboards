@@ -10,7 +10,7 @@ This works by the by using the [frontend-maven-plugin](https://github.com/eirsle
 of Node.js and run the commands below.
 
 # Developer build - webpack development mode build
-You will need [Node.js](https://nodejs.org/) and yarn.
+You will need [Node.js](https://nodejs.org/) and [Yarn](https://yarnpkg.com/).
 
 Then run:
 1. `yarn install`
