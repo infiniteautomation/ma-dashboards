@@ -157,7 +157,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                     if (!isNew) {
                         // update child state names
                         if (item.name !== origItem.name) {
-                            Menu.forEach(origItem.children, function(child) {
+                            Menu.forEach(item.children, function(child) {
                                 const search = origItem.name + '.';
                                 if (child.name.indexOf(search) === 0) {
                                     child.name = item.name + '.' + child.name.substring(search.length);
