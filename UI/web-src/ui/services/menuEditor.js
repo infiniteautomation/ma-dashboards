@@ -112,8 +112,10 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                 item.templateType = 'templateUrl';
             } else if (item.href) {
                 item.templateType = 'href';
-            } else if (item.abstract) {
-                item.templateType = 'folder';
+            } else if (item.template) {
+                item.templateType = 'template';
+            } else {
+                item.templateType = 'none';
             }
             if (!item.target) item.target = '_blank';
 
@@ -196,6 +198,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                         urlPathMap[item.url] = true;
                     });
 
+                    // list of "folder" menu items, for chosing a parent
                     this.menuItems = this.allMenuItems.filter((item) => {
                         return item.abstract && item.name !== this.item.name;
                     });
@@ -236,17 +239,17 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                 delete item.dateBarOptions;
 
                 switch (item.templateType) {
-                case 'folder':
+                case 'none':
+                    delete item.templateUrl;
+                    delete item.template;
                     delete item.linkToPage;
                     delete item.pageXid;
                     delete item.href;
                     delete item.target;
-                    item.abstract = true;
                     break;
                 case 'linkToPage':
                     delete item.templateUrl;
                     delete item.template;
-                    delete item.abstract;
                     delete item.href;
                     delete item.target;
                     item.linkToPage = true;
@@ -255,7 +258,6 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                     delete item.template;
                     delete item.linkToPage;
                     delete item.pageXid;
-                    delete item.abstract;
                     delete item.href;
                     delete item.target;
                     break;
@@ -264,7 +266,6 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                     delete item.template;
                     delete item.linkToPage;
                     delete item.pageXid;
-                    delete item.abstract;
                     delete item.url;
                     break;
                 }

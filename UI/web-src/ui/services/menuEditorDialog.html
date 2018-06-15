@@ -11,6 +11,7 @@
   </md-toolbar>
   <md-dialog-content>
     <div class="md-padding" layout="column">
+      <h3 ma-tr="ui.app.menuTextAndIcon"></h3>
       <div layout>
         <md-input-container class="has-hints" flex>
             <label ma-tr="ui.app.menuText"></label>
@@ -59,8 +60,8 @@
       </div>
 
       <div layout="column" ng-show="!$ctrl.item.builtIn">
-        <p layout layout-align="center" md-colors="{color: 'warn'}"><small ma-tr="ui.app.editMenuNote"></small></p>
-        
+      <h3 ma-tr="ui.app.stateNameAndUrl"></h3>
+      
         <md-input-container flex>
             <label ma-tr="ui.app.parentItem"></label>
             <md-select name="parent" ng-model="$ctrl.item.parent" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.parentChanged()" ng-model-options="{trackBy: '$value.name'}">
@@ -100,10 +101,17 @@
                 </div>
             </md-input-container>
           </div>
+          <p layout layout-align="center" md-colors="{color: 'warn'}"><small ma-tr="ui.app.editMenuNote"></small></p>
+
+          <h3 ma-tr="ui.app.linkToContent"></h3>
+          
+          <md-checkbox ng-model="$ctrl.item.abstract" ng-disabled="$ctrl.item.abstract && $ctrl.item.templateType === 'none'">
+            <span ma-tr="ui.app.showItemAsFolder"></span>
+          </md-checkbox>
           
           <md-radio-group ng-model="$ctrl.item.templateType" ng-change="$ctrl.templateTypeChanged()" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
             <div layout="row" layout-wrap>
-              <md-radio-button value="folder"><span ma-tr="ui.app.folder"></span></md-radio-button>
+              <md-radio-button value="none" ng-disabled="!$ctrl.item.abstract"><span ma-tr="ui.app.noContent"></span></md-radio-button>
               <md-radio-button value="linkToPage"><span ma-tr="ui.app.linkCustomPage"></span></md-radio-button>
               <md-radio-button value="href"><span ma-tr="ui.app.externalLink"></span></md-radio-button>
               <md-radio-button value="templateUrl"><span ma-tr="ui.app.templateUrl"></span></md-radio-button>
@@ -153,7 +161,9 @@
             </md-input-container>
           </div>
 
-          <md-radio-group ng-model="$ctrl.item.dateBarOptions" ng-show="$ctrl.item.templateType !== 'folder'" ng-disabled="$ctrl.item.builtIn">
+          <h3 ma-tr="ui.app.dateBarSettings"></h3>
+          
+          <md-radio-group ng-model="$ctrl.item.dateBarOptions" ng-disabled="$ctrl.item.builtIn">
             <div layout="row">
               <md-radio-button value="none"><span ma-tr="ui.app.dateBarDisabled"></span></md-radio-button>
               <md-radio-button value="date"><span ma-tr="ui.app.dateBarEnabled"></span></md-radio-button>
