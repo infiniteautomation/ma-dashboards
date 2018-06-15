@@ -9,77 +9,76 @@ import menuEditorDialogTemplate from './menuEditorDialog.html';
 MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', 'maUiPages', '$q', 'maUtil'];
 function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
 
-    function MenuEditor() {
-    }
+    class MenuEditor {
     
-    MenuEditor.prototype.getMenuItemForPageXid = function getMenuItemForPageXid(pageXid) {
-        return Menu.getMenu().then(function(menuItems) {
-            let menuItem = null;
-            menuItems.some(function(item) {
-                if (item.linkToPage && item.pageXid === pageXid) {
-                    menuItem = item;
-                    return true;
-                }
-            });
-            return menuItem;
-        });
-    };
-    
-    MenuEditor.prototype.editMenuItemForPageXid = function editMenuItemForPageXid(event, pageXid, defaults) {
-        return this.getMenuItemForPageXid(pageXid).then(function(menuItem) {
-            if (!menuItem) {
-                menuItem = {
-                    isNew: true,
-                    pageXid: pageXid,
-                    linkToPage: true,
-                    permission: 'user',
-                    name: '',
-                    url: '',
-                    params: {
-                        dateBar: {
-                            rollupControls: true
-                        }
-                    }
-                };
-                if (defaults) {
-                    angular.merge(menuItem, defaults);
-                }
-            }
-            
-            if (!menuItem.parent) {
-                Menu.menuHierarchy.children.some(function(item) {
-                    if (item.name === 'ui') {
-                        return (menuItem.parent = item);
+        getMenuItemForPageXid(pageXid) {
+            return Menu.getMenu().then((menuItems) => {
+                let menuItem = null;
+                menuItems.some((item) => {
+                    if (item.linkToPage && item.pageXid === pageXid) {
+                        menuItem = item;
+                        return true;
                     }
                 });
-                // just in case
-                if (!menuItem.parent) {
-                    menuItem.parent = Menu.menuHierarchy;
-                }
-            }
-
-            menuItem.disableTemplateControls = true;
-            
-            return this.editMenuItem(event, Menu.menuHierarchy, menuItem).then(function(newItem) {
-                if (newItem.deleted) {
-                    return Menu.removeMenuItem(menuItem.name).then(function() {
-                        return null;
-                    });
-                } else {
-                    return Menu.saveMenuItem(newItem, !menuItem.isNew && menuItem.name).then(function() {
-                        return newItem;
-                    });
-                }
+                return menuItem;
             });
-        }.bind(this));
-    };
+        }
+        
+        editMenuItemForPageXid(event, pageXid, defaults) {
+            return this.getMenuItemForPageXid(pageXid).then((menuItem) => {
+                if (!menuItem) {
+                    menuItem = {
+                        isNew: true,
+                        pageXid: pageXid,
+                        linkToPage: true,
+                        permission: 'user',
+                        name: '',
+                        url: '',
+                        params: {
+                            dateBar: {
+                                rollupControls: true
+                            }
+                        }
+                    };
+                    if (defaults) {
+                        angular.merge(menuItem, defaults);
+                    }
+                }
+                
+                if (!menuItem.parent) {
+                    Menu.menuHierarchy.children.some((item) => {
+                        if (item.name === 'ui') {
+                            return (menuItem.parent = item);
+                        }
+                    });
+                    // just in case
+                    if (!menuItem.parent) {
+                        menuItem.parent = Menu.menuHierarchy;
+                    }
+                }
     
-    MenuEditor.prototype.editMenuItem = function editMenuItem(event, menuHierarchy, origItem) {
+                menuItem.disableTemplateControls = true;
+                
+                return this.editMenuItem(event, Menu.menuHierarchy, menuItem).then((newItem) => {
+                    if (newItem.deleted) {
+                        return Menu.removeMenuItem(menuItem.name).then(() => {
+                            return null;
+                        });
+                    } else {
+                        return Menu.saveMenuItem(newItem, !menuItem.isNew && menuItem.name).then(() => {
+                            return newItem;
+                        });
+                    }
+                });
+            });
+        }
+        
+        editMenuItem(event, menuHierarchy, origItem) {
             // build flat menu item array so we can choose any item in dropdown
             const menuItems = [];
             const menuItemNameMap = {};
             
-            Menu.forEach(menuHierarchy.children, function(menuItem) {
+            Menu.forEach(menuHierarchy.children, (menuItem) => {
                 menuItems.push(menuItem);
                 menuItemNameMap[menuItem.name] = true;
             });
@@ -94,7 +93,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                 const splitName = item.name.trim().split('.');
                 item.shortStateName = splitName[splitName.length-1];
             }
-            
+
             if (!item.menuHidden) {
                 item.showOnMenu = true;
             }
@@ -133,24 +132,13 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                 },
                 controller: ['$mdDialog', function editItemController($mdDialog) {
                     const urlPathMap = {};
-                    this.item.parent.children.forEach(function(item) {
-                        urlPathMap[item.url] = true;
-                    });
 
-                    this.menuItems = this.allMenuItems.filter(function(item) {
-                        return item.abstract && item.name !== this.item.name;
-                    }.bind(this));
-
-                    maUiPages.getPages().then(function(store) {
-                        this.pages = store.jsonData.pages;
-                    }.bind(this));
-                    
-                    this.stateNameChanged = function() {
+                    this.stateNameChanged = () => {
                         this.calculateStateName();
                         this.menuItemEditForm.stateName.$setValidity('stateExists', this.item.name === origItem.name || !menuItemNameMap[this.item.name]);
                     };
 
-                    this.urlChanged = function() {
+                    this.urlChanged = () => {
                         this.menuItemEditForm.url.$setValidity('urlExists', this.item.url === origItem.url || !urlPathMap[this.item.url]);
                     };
                     
@@ -171,25 +159,24 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                         }
                     };
                     
-                    this.deleteItem = function() {
+                    this.deleteItem = () => {
                         this.item.deleted = true;
                         $mdDialog.hide();
                     };
                     
-                    this.parentChanged = function() {
+                    this.parentChanged = () => {
                         this.calculateStateName();
                     };
                     
-                    this.calculateStateName = function() {
+                    this.calculateStateName = () => {
                         if (this.item.parent.name) {
                             this.item.name = this.item.parent.name + '.' + this.item.shortStateName;
                         } else {
                             this.item.name = this.item.shortStateName;
                         }
                     };
-                    this.calculateStateName();
                     
-                    this.menuTextChanged = function() {
+                    this.menuTextChanged = () => {
                         if (this.item.menuText && this.item.isNew) {
                             if (!this.menuItemEditForm || !this.menuItemEditForm.url || this.menuItemEditForm.url.$pristine) {
                                 this.item.url = '/' + Util.snakeCase(Util.titleCase(this.item.menuText).replace(/\s/g, ''));
@@ -204,9 +191,23 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                             }
                         }
                     };
+                    
+                    this.item.parent.children.forEach((item) => {
+                        urlPathMap[item.url] = true;
+                    });
+
+                    this.menuItems = this.allMenuItems.filter((item) => {
+                        return item.abstract && item.name !== this.item.name;
+                    });
+
+                    maUiPages.getPages().then((store) => {
+                        this.pages = store.jsonData.pages;
+                    });
+
+                    this.calculateStateName();
                     this.menuTextChanged();
                 }]
-            }).then(function() {
+            }).then(() => {
                 delete item.isNew;
                 delete item.shortStateName;
                 delete item.disableTemplateControls;
@@ -279,7 +280,8 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
 
                 return item;
             });
-    };
+        }
+    }
 
     return new MenuEditor();
 }

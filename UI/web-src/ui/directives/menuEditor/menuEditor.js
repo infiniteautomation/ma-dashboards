@@ -179,7 +179,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                     
                     // sorts array in case of new item added
                     $scope.getChildren();
-                });
+                }, () => null);
             };
             
             $scope.saveMenu = function saveMenu() {
