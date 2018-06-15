@@ -155,9 +155,11 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
 
                     // copy item properties back onto original item
                     if (!isNew) {
+                        const children = origItem.children;
+                        
                         // update child state names
                         if (item.name !== origItem.name) {
-                            Menu.forEach(item.children, function(child) {
+                            Menu.forEach(children, function(child) {
                                 const search = origItem.name + '.';
                                 if (child.name.indexOf(search) === 0) {
                                     child.name = item.name + '.' + child.name.substring(search.length);
@@ -166,8 +168,16 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                                 }
                             });
                         }
-
-                        item = angular.extend(origItem, item);
+                        
+                        // prevent stack overflow from cyclic copy of children/parent
+                        delete item.children;
+                        delete item.parent;
+                        
+                        item = angular.copy(item, origItem);
+                        
+                        // set the original children/parent back on the item
+                        item.children = children;
+                        item.parent = newParent;
                     }
 
                     // add item back into new parent's children
