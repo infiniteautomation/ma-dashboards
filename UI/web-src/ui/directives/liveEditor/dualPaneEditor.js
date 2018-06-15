@@ -5,17 +5,17 @@
 
 import dualPaneEditorTemplate from './dualPaneEditor.html';
 
-var dualPaneEditor = function() {
+const dualPaneEditor = function() {
     return {
         template: function($element, attrs) {
-            var htmlContent = $element.html().trim();
+            const htmlContent = $element.html().trim();
             $element.empty();
             if (htmlContent)
                 $element.data('htmlContent', htmlContent);
             return dualPaneEditorTemplate;
         },
         link: function($scope, $element, $attrs) {
-            var content = $element.data('htmlContent');
+            let content = $element.data('htmlContent');
             $element.removeData('htmlContent');
             content = content.replace(new RegExp('=""', 'g'),'');
             $scope.text = content;

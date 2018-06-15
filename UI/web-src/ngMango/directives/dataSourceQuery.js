@@ -28,7 +28,7 @@
  *
  */
 function dataSourceQuery(DataSource) {
-    var DEFAULT_SORT = ['name'];
+    const DEFAULT_SORT = ['name'];
 
     return {
         scope: {

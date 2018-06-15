@@ -16,12 +16,12 @@ PermissionsMenuController.prototype.$onInit = function() {
     this.ngModelCtrl.$render = this.render.bind(this);
     
     this.Permissions.getAll().then(function(permissions) {
-        for (var i = 0; i < permissions.length; i++) {
-            var permName = permissions[i];
+        for (let i = 0; i < permissions.length; i++) {
+            const permName = permissions[i];
             if (this.permissionsByName[permName]) {
                 this.permissionsByName[permName].fromRest = true;
             } else {
-                var permission = {name: permName, value: false, fromRest: true};
+                const permission = {name: permName, value: false, fromRest: true};
                 this.permissions.push(permission);
                 this.permissionsByName[permName] = permission;
             }
@@ -31,10 +31,10 @@ PermissionsMenuController.prototype.$onInit = function() {
 
 // ng-model value changed outside of this directive
 PermissionsMenuController.prototype.render = function render() {
-    var permission;
+    let permission;
     
     // remove all permissions not retrieved from REST
-    for (var i = 0; i < this.permissions.length;) {
+    for (let i = 0; i < this.permissions.length;) {
         permission = this.permissions[i];
         if (!permission.fromRest) {
             this.permissions.splice(i, 1);
@@ -47,9 +47,9 @@ PermissionsMenuController.prototype.render = function render() {
     
     // undefined if invalid
     if (this.ngModelCtrl.$viewValue) {
-        var array = this.ngModelCtrl.$viewValue.split(',');
-        for (i = 0; i < array.length; i++) {
-            var permName = array[i].trim();
+        const array = this.ngModelCtrl.$viewValue.split(',');
+        for (let i = 0; i < array.length; i++) {
+            const permName = array[i].trim();
             if (!permName) continue;
             
             if (this.permissionsByName[permName]) {
@@ -64,9 +64,9 @@ PermissionsMenuController.prototype.render = function render() {
 };
 
 PermissionsMenuController.prototype.checkboxChanged = function checkboxChanged() {
-    var permissionNames = [];
-    for (var i = 0; i < this.permissions.length; i++) {
-        var permission = this.permissions[i];
+    const permissionNames = [];
+    for (let i = 0; i < this.permissions.length; i++) {
+        const permission = this.permissions[i];
         if (permission.value) {
             permissionNames.push(permission.name);
         }

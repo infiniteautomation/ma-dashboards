@@ -35,12 +35,12 @@ import 'amcharts/plugins/export/export.css';
  
 stateChart.$inject = ['MA_DATE_FORMATS', 'MA_AMCHARTS_DATE_FORMATS'];
 function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
-	var MAX_SERIES = 10;
-	var scope = {
+	const MAX_SERIES = 10;
+	const scope = {
 		options: '=?',
 		endDate: '<?'
 	};
-	for (var j = 1; j <= MAX_SERIES; j++) {
+	for (let j = 1; j <= MAX_SERIES; j++) {
 		scope['series' + j + 'Values'] = '=';
 		scope['series' + j + 'Title'] = '@';
 		scope['series' + j + 'Labels'] = '=';
@@ -66,11 +66,11 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
     };
     
     function postLink($scope, $element, attributes) {
-        var options = defaultOptions();
+        let options = defaultOptions();
         options = $.extend(true, options, $scope.options);
-        var chart = AmCharts.makeChart($element[0], options);
+        const chart = AmCharts.makeChart($element[0], options);
         
-        for (var i = 1; i <= MAX_SERIES; i++) {
+        for (let i = 1; i <= MAX_SERIES; i++) {
             $scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
         }
         
@@ -82,7 +82,7 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
         
         function createLabelFn(labels) {
             return function(value) {
-                var label = labels && labels[value] || {};
+                let label = labels && labels[value] || {};
                 
                 if (typeof label === 'string') {
                     label = {
@@ -99,7 +99,7 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
         }
         
         function removeProvider(graphNum) {
-            for (var i = 0; i < chart.dataProvider.length; i++) {
+            for (let i = 0; i < chart.dataProvider.length; i++) {
                 if (chart.dataProvider[i].id === 'series-' + graphNum) {
                     chart.dataProvider.splice(i, 1);
                     break;
@@ -108,8 +108,8 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
         }
         
         function findProvider(graphNum) {
-            var graph;
-            for (var i = 0; i < chart.dataProvider.length; i++) {
+            let graph;
+            for (let i = 0; i < chart.dataProvider.length; i++) {
                 if (chart.dataProvider[i].id === 'series-' + graphNum) {
                     graph = chart.dataProvider[i];
                     break;
@@ -119,7 +119,7 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
         }
         
         function setupProvider(graphNum) {
-            var graph = findProvider(graphNum);
+            let graph = findProvider(graphNum);
             
             if (!graph) {
                 graph = {
@@ -140,30 +140,30 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
         }
 
         function updateValues() {
-            var endDate = moment($scope.endDate);
+            const endDate = moment($scope.endDate);
             
-            for (var i = 1; i <= MAX_SERIES; i++) {
-                var graph = findProvider(i);
-                var values = $scope['series' + i + 'Values'];
-                var labels = $scope['series' + i + 'Labels'];
-                var labelFn = createLabelFn(labels);
+            for (let i = 1; i <= MAX_SERIES; i++) {
+                const graph = findProvider(i);
+                const values = $scope['series' + i + 'Values'];
+                const labels = $scope['series' + i + 'Labels'];
+                const labelFn = createLabelFn(labels);
                 
                 if (graph && values) {
-                    var provider = [];
+                    const provider = [];
 
-                    for (var j = 0; j < values.length; j++) {
-                        var val = values[j];
-                        var label = labelFn(val.value);
+                    for (let j = 0; j < values.length; j++) {
+                        const val = values[j];
+                        const label = labelFn(val.value);
                         
                         // remove duplicates
                         while ((j+1) < values.length && values[j+1].value === val.value) {
                             values.splice(j+1, 1);
                         }
                         
-                        var endTime = (j+1) < values.length ? values[j+1].timestamp : endDate.valueOf();
-                        var duration = endTime - val.timestamp;
-                        var startMoment = moment(val.timestamp);
-                        var startFormatted = startMoment.format(MA_AMCHARTS_DATE_FORMATS.categoryBalloon);
+                        const endTime = (j+1) < values.length ? values[j+1].timestamp : endDate.valueOf();
+                        const duration = endTime - val.timestamp;
+                        const startMoment = moment(val.timestamp);
+                        const startFormatted = startMoment.format(MA_AMCHARTS_DATE_FORMATS.categoryBalloon);
                         
                         provider.push({
                             startDate: new Date(val.timestamp),
@@ -181,13 +181,13 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
             chart.validateData();
         }
         
-        var colourMap = {};
-        var colourIndex = 0;
+        const colourMap = {};
+        let colourIndex = 0;
         function getColour(value) {
             if (colourMap[value]) {
                 return colourMap[value];
             }
-            var colour = chart.colors[colourIndex++ % chart.colors.length];
+            const colour = chart.colors[colourIndex++ % chart.colors.length];
             colourMap[value] = colour;
             return colour;
         }

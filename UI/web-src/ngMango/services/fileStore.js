@@ -9,17 +9,17 @@ import JSZip from 'jszip';
 
 fileStore.$inject = ['$http', 'maUtil', '$q'];
 function fileStore($http, maUtil, $q) {
-	var fileStoreUrl = '/rest/v2/file-stores';
-	var fileStoreUrlSplit = fileStoreUrl.split('/');
+	const fileStoreUrl = '/rest/v2/file-stores';
+	const fileStoreUrlSplit = fileStoreUrl.split('/');
 	
     function FileStore() {
     }
 
     FileStore.prototype.toUrl = function(pathArray, isDirectory) {
-    	var parts = pathArray.map(function(part) {
+    	const parts = pathArray.map(function(part) {
     		return encodeURIComponent(part);
     	});
-    	var url = fileStoreUrl + '/' + parts.join('/');
+    	let url = fileStoreUrl + '/' + parts.join('/');
     	if (isDirectory) {
     		url += '/';
     	}
@@ -27,7 +27,7 @@ function fileStore($http, maUtil, $q) {
     };
 
     FileStore.prototype.fromUrl = function(url) {
-    	var path = [];
+    	const path = [];
     	url.split('/').forEach(function(part, i) {
     		if (i < fileStoreUrlSplit.length) {
     			if (part !== fileStoreUrlSplit[i]) {
@@ -65,7 +65,7 @@ function fileStore($http, maUtil, $q) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
-    	var folderUrl = this.toUrl(path, true);
+    	const folderUrl = this.toUrl(path, true);
     	return $http({
     		method: 'GET',
     		url: folderUrl
@@ -80,7 +80,7 @@ function fileStore($http, maUtil, $q) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
-    	var folderUrl = this.toUrl(path);
+    	const folderUrl = this.toUrl(path);
     	return $http({
     		method: 'DELETE',
     		url: folderUrl,
@@ -98,7 +98,7 @@ function fileStore($http, maUtil, $q) {
     	}
     	
     	const formData = new FormData();
-    	for (var i = 0; i < files.length; i++) {
+    	for (let i = 0; i < files.length; i++) {
         	formData.append('files[]', files[i]);
     	}
 
@@ -149,7 +149,7 @@ function fileStore($http, maUtil, $q) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
-    	var folderUrl = this.toUrl(path.concat(name), true);
+    	const folderUrl = this.toUrl(path.concat(name), true);
 
     	return $http({
     		method: 'POST',
@@ -169,7 +169,7 @@ function fileStore($http, maUtil, $q) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
-    	var fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
+    	const fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
 
     	return $http({
     		method: 'POST',
@@ -186,7 +186,7 @@ function fileStore($http, maUtil, $q) {
     	if (path.length < 1) {
     		throw new Error('Must specify the file store name');
     	}
-    	var fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
+    	const fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
 
     	return $http({
     		method: 'POST',
@@ -257,7 +257,7 @@ function fileStore($http, maUtil, $q) {
     	angular.extend(this, file);
     	this.fileStore = fileStore;
     	
-    	var urlArray = [fileStoreUrl, fileStore];
+    	const urlArray = [fileStoreUrl, fileStore];
     	if (this.folderPath) {
     		urlArray.push(this.folderPath);
     	}

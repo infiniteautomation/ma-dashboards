@@ -21,7 +21,7 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
             this.pointId = $stateParams.pointId;
         } else {
             // Attempt load pointXid from local storage
-            var storedPoint = localStorageService.get('lastDataPointDetailsItem');
+            const storedPoint = localStorageService.get('lastDataPointDetailsItem');
             if (storedPoint) {
                 this.pointXid = storedPoint.xid;
             }
@@ -37,7 +37,7 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
         delete $scope.realtimePointValues;
         
         $scope.myPoint = point;
-        var xid = point.xid;
+        const xid = point.xid;
 
         $state.go('.', {pointXid: xid}, {location: 'replace', notify: false});
         
@@ -49,14 +49,14 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
             this.path = response;
         }.bind(this));
         
-        var pointType = $scope.myPoint.pointLocator.dataType;
+        const pointType = $scope.myPoint.pointLocator.dataType;
         this.dateBar.rollupTypesFilter = pointType === 'NUMERIC' ? {} : { nonNumeric: true };
 
         this.chartType = $scope.myPoint.amChartsGraphType();
     };
 
     this.updatePreferences = function() {
-        var preferences = localStorageService.get('uiPreferences');
+        const preferences = localStorageService.get('uiPreferences');
         preferences.numberOfPointValues = this.numValues;
         preferences.realtimeMode = this.realtimeMode;
         preferences.showCachedData = this.showCachedData;
@@ -64,12 +64,12 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     };
     
     this.retrievePreferences = function() {
-        var defaults = {
+        const defaults = {
             numberOfPointValues: 100,
             realtimeMode: true,
             showCachedData: false
         };
-        var preferences = angular.merge(defaults, localStorageService.get('uiPreferences'));
+        const preferences = angular.merge(defaults, localStorageService.get('uiPreferences'));
         this.numValues = preferences.numberOfPointValues;
         this.realtimeMode = preferences.realtimeMode;
         this.showCachedData = preferences.showCachedData;

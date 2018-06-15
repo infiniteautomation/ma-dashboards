@@ -11,10 +11,10 @@ uiSettingsFactory.$inject = ['MA_UI_SETTINGS', 'maJsonStore', '$mdTheming', '$MD
 function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate,
         MA_UI_SETTINGS_XID, MA_UI_EDIT_SETTINGS_PERMISSION, MA_POINT_VALUES_CONFIG, $window) {
     
-    var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'userModuleName', 'mangoModuleNames',
+    const NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'userModuleName', 'mangoModuleNames',
         'activeThemeObj'];
-    var themeId = 0;
-    var userThemeGenerated = false;
+    let themeId = 0;
+    let userThemeGenerated = false;
     
     function UiSettings() {
         angular.extend(this, MA_UI_SETTINGS);
@@ -33,7 +33,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
 
     UiSettings.prototype = {
         save: function save() {
-            var differences = deepDiff(this, this.defaultSettings, NOT_SETTINGS_PROPERTIES);
+            const differences = deepDiff(this, this.defaultSettings, NOT_SETTINGS_PROPERTIES);
             this.userSettingsStore.jsonData = differences;
             return this.userSettingsStore.$save().then(function(store) {
                 angular.merge(this, this.defaultSettings);
@@ -62,29 +62,29 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
             });
         },
         generateTheme: function generateTheme() {
-            var themeName = this.defaultTheme;
-            var themeSettings = this.themes[themeName];
+            const themeName = this.defaultTheme;
+            const themeSettings = this.themes[themeName];
 
             // we want to dynamically update the userTheme, $mdTheming.generateTheme() will not re-generate
             // the style tags if it thinks it has already generated them though so work around it
             // by creating a new theme everytime
-            var dynamicThemeName;
+            let dynamicThemeName;
             if (themeName === 'userTheme') {
                 if (userThemeGenerated) {
                     if (themeId > 0) {
-                        var prevThemeName = 'dynamicTheme' + themeId;
+                        const prevThemeName = 'dynamicTheme' + themeId;
                         delete this.theming.THEMES[prevThemeName];
                         angular.element('head > style[nonce="' + prevThemeName + '"]').remove();
                     }
                     dynamicThemeName = 'dynamicTheme' + (++themeId);
                     
-                    var dynamicTheme = this.themeFromSettings(dynamicThemeName, themeSettings);
+                    const dynamicTheme = this.themeFromSettings(dynamicThemeName, themeSettings);
                     this.theming.THEMES[dynamicThemeName] = dynamicTheme;
                     
                     this.themingProvider.setNonce(dynamicThemeName);
                     $mdTheming.generateTheme(dynamicThemeName);
 
-                    var theme = this.themeFromSettings('userTheme', themeSettings);
+                    const theme = this.themeFromSettings('userTheme', themeSettings);
                     this.theming.THEMES.userTheme = theme;
                 }
                 userThemeGenerated = true;
@@ -101,7 +101,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
             this.generateCustomStyles();
         },
         themeFromSettings: function themeFromSettings(themeName, themeSettings) {
-            var theme = this.themingProvider.theme(themeName);
+            const theme = this.themingProvider.theme(themeName);
             if (themeSettings.primaryPalette) {
                 theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
             }
@@ -125,7 +125,7 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
                     oldStyles.parentNode.removeChild(oldStyles);
                 }
                 
-                var result = $interpolate(interpolatedStyles)({
+                const result = $interpolate(interpolatedStyles)({
                     getThemeColor: function(colorString) {
                         return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
                     }.bind(this),
@@ -138,13 +138,13 @@ function uiSettingsFactory(MA_UI_SETTINGS, JsonStore, $mdTheming, MD_THEME_CSS, 
     };
     
     function deepDiff(data, defaults, excludeFields) {
-        var differences = {};
-        for (var key in data) {
+        const differences = {};
+        for (const key in data) {
             if (excludeFields && excludeFields.indexOf(key) >= 0)
                 continue;
             
-            var fieldValue = data[key];
-            var defaultValue = defaults && defaults[key];
+            const fieldValue = data[key];
+            const defaultValue = defaults && defaults[key];
             if (typeof fieldValue !== 'function' && !angular.equals(fieldValue, defaultValue)) {
                 if (fieldValue && typeof fieldValue === 'object' && !Array.isArray(fieldValue)) {
                     differences[key] = deepDiff(fieldValue, defaultValue);

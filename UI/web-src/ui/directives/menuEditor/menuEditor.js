@@ -16,7 +16,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
             $scope.$mdMedia = $mdMedia;
 
             function scrollToTopOfMdContent() {
-                var elem = $element[0];
+                let elem = $element[0];
                 while ((elem = elem.parentElement)) {
                     if (elem.tagName === 'MD-CONTENT') {
                         elem.scrollTop = 0;
@@ -35,7 +35,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                 $scope.path = [];
                 $scope.enterSubmenu(null, $scope.menuHierarchy);
                 
-                var uiItem;
+                let uiItem;
                 $scope.menuHierarchy.children.some(function(item) {
                     return (uiItem = item.name === 'ui' && item);
                 });
@@ -77,7 +77,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
 
             // updates the weights, attempting to keep them as close as possible to the original array
             $scope.updateWeights = function(event, ui) {
-                var weight = -Infinity;
+                let weight = -Infinity;
                 $scope.currentItem.children.forEach(function(item, index, array) {
                     if (item.weight > weight) {
                         weight = item.weight;
@@ -98,7 +98,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
             };
             
             $scope.deleteCustomMenu = function deleteCustomMenu(event) {
-                var confirm = $mdDialog.confirm()
+                const confirm = $mdDialog.confirm()
                     .title(Translate.trSync('ui.app.areYouSure'))
                     .textContent(Translate.trSync('ui.app.confirmRestoreDefaultMenu'))
                     .ariaLabel(Translate.trSync('ui.app.areYouSure'))
@@ -132,11 +132,11 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                     };
                 }
 
-                var parent = origItem.parent;
-                var isNew = origItem.isNew;
+                const parent = origItem.parent;
+                const isNew = origItem.isNew;
                 
                 maUiMenuEditor.editMenuItem($event, $scope.menuHierarchy, origItem).then(function(item) {
-                    var newParent = item.parent;
+                    const newParent = item.parent;
                     
                     // remove item from the original parent's children if it was deleted or moved
                     if (!isNew && (item.deleted || parent !== newParent)) {
@@ -158,7 +158,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                         // update child state names
                         if (item.name !== origItem.name) {
                             Menu.forEach(origItem.children, function(child) {
-                                var search = origItem.name + '.';
+                                const search = origItem.name + '.';
                                 if (child.name.indexOf(search) === 0) {
                                     child.name = item.name + '.' + child.name.substring(search.length);
                                 } else {

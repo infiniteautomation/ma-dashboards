@@ -5,7 +5,7 @@
 
 import queryPredicateTemplate from './queryPredicate.html';
 
-var queryPredicate = function queryPredicate() {
+const queryPredicate = function queryPredicate() {
     this.operations = [
         { labelTr: 'ui.components.queryPredicate.eq', label: '==', value: 'eq' },
         { labelTr: 'ui.components.queryPredicate.like', label: '~=', value: 'like' },

@@ -19,18 +19,18 @@ import angular from 'angular';
  *
  *
  **/
-var ngMangoFilters = angular.module('ngMangoFilters', []);
+const ngMangoFilters = angular.module('ngMangoFilters', []);
 
 ngMangoFilters.filter('maMoment', momentFilter);
 ngMangoFilters.filter('maDuration', durationFilter);
 
 ngMangoFilters.filter('maSum', function() {
 	return function(arrayData, propName) {
-		var sum = 0;
-		var val;
+	    let sum = 0;
+		let val;
 		if (!arrayData) return null;
 		if (arrayData.length !== undefined) {
-			for (var i = 0; i < arrayData.length; i++) {
+			for (let i = 0; i < arrayData.length; i++) {
 				if (arrayData[i] !== undefined) {
 					val = arrayData[i];
 					if (!propName) {
@@ -41,7 +41,7 @@ ngMangoFilters.filter('maSum', function() {
 				}
 			}
 		} else {
-			for (var key in arrayData) {
+			for (const key in arrayData) {
 				if (arrayData[key] !== undefined) {
 					val = arrayData[key];
 					if (!propName) {
@@ -58,17 +58,17 @@ ngMangoFilters.filter('maSum', function() {
 
 ngMangoFilters.filter('maSumColumn', function() {
 	return function(tableData, colNum) {
-		var sum = 0;
+	    let sum = 0;
 		if (!tableData) {
 			return sum;
 		}
 		if (tableData.length !== undefined) {
-			for (var i = 0; i < tableData.length; i++) {
+			for (let i = 0; i < tableData.length; i++) {
 				if (tableData[i] && tableData[i][colNum] !== undefined)
 					sum += tableData[i][colNum];
 			}
 		} else {
-			for (var key in tableData) {
+			for (const key in tableData) {
 				if (tableData[key] && tableData[key][colNum] !== undefined)
 					sum += tableData[key][colNum];
 			}
@@ -78,7 +78,7 @@ ngMangoFilters.filter('maSumColumn', function() {
 });
 
 ngMangoFilters.filter('maPad', function() {
-	  var zeros = '0000000000';
+	  const zeros = '0000000000';
 	  return function(a, b) {
 		  return (zeros + a).slice(-b);
 	  };
@@ -93,22 +93,22 @@ ngMangoFilters.filter('maFirst', function() {
 });
 
 ngMangoFilters.filter('maUnique', ['maUtil', function(Util) {
-	var uniqueFilter = Util.memoize(function uniqueFilter(collection, propName) {
+	const uniqueFilter = Util.memoize(function uniqueFilter(collection, propName) {
 	    
-	    var result = [];
+	    const result = [];
 	    
         if (collection.length !== undefined) {
-            for (var i = 0; i < collection.length; i++)
+            for (let i = 0; i < collection.length; i++)
                 addUnique(collection[i]);
         } else {
-            for (var key in collection)
+            for (const key in collection)
                 addUnique(collection[key]);
         }
         
         return result;
 
         function addUnique(item) {
-            var propValue = item[propName];
+            const propValue = item[propName];
             if (result.indexOf(propValue) >= 0) return;
             result.push(propValue);
         }
@@ -123,16 +123,16 @@ ngMangoFilters.filter('maUnique', ['maUtil', function(Util) {
 ngMangoFilters.filter('maRange', function() {
     return function(input, start, end, step) {
         input.splice(0, input.length);
-        for (var i = start || 0; i <= (end || 100); i = i + (step || 1))
+        for (let i = start || 0; i <= (end || 100); i = i + (step || 1))
             input.push(i);
         return input;
     };
 });
 
 ngMangoFilters.filter('maProperty', ['maUtil', function(Util) {
-    var propertyFilter = Util.memoize(function propertyFilter(input, propertyName) {
-        var result = [];
-        for (var i = 0; i < input.length; i++)
+    const propertyFilter = Util.memoize(function propertyFilter(input, propertyName) {
+        const result = [];
+        for (let i = 0; i < input.length; i++)
             result.push(input[i][propertyName]);
         return result;
     });
@@ -159,7 +159,7 @@ ngMangoFilters.filter('maBytes', function() {
 		if (bytes === 0) return '0 B';
 		if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
 		if (typeof precision === 'undefined') precision = 1;
-		var units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'],
+		const units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'],
 			number = Math.floor(Math.log(bytes) / Math.log(1024));
 		if (number === 0) precision = 0;
 		return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];

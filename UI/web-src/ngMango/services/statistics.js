@@ -5,7 +5,7 @@
 
 statisticsFactory.$inject = ['$http', '$q', 'maUtil'];
 function statisticsFactory($http, $q, Util) {
-    var pointValuesUrl = '/rest/v1/point-values/';
+    const pointValuesUrl = '/rest/v1/point-values/';
 
     function Statistics() {
     }
@@ -15,13 +15,13 @@ function statisticsFactory($http, $q, Util) {
             if (typeof xid !== 'string') throw new Error('Requires xid parameter');
             if (!options || typeof options !== 'object') throw new Error('Requires options parameter');
             
-            var url = pointValuesUrl + encodeURIComponent(xid) + (options.firstLast ? '/first-last' : '/statistics');
-            var params = [];
+            let url = pointValuesUrl + encodeURIComponent(xid) + (options.firstLast ? '/first-last' : '/statistics');
+            const params = [];
             
             if (options.from !== undefined && options.to !== undefined) {
-                var now = new Date();
-                var from = Util.toMoment(options.from, now, options.dateFormat);
-                var to = Util.toMoment(options.to, now, options.dateFormat);
+                const now = new Date();
+                const from = Util.toMoment(options.from, now, options.dateFormat);
+                const to = Util.toMoment(options.to, now, options.dateFormat);
                 
                 if (from.valueOf() === to.valueOf()) {
                     return $q.when({});
@@ -39,8 +39,8 @@ function statisticsFactory($http, $q, Util) {
             
             url += '?' + params.join('&');
             
-            var canceler = $q.defer();
-            var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+            const canceler = $q.defer();
+            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
             return $http.get(url, {
                 timeout: cancelOrTimeout,

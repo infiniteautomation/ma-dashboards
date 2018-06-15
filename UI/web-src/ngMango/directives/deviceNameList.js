@@ -70,13 +70,13 @@ function deviceNameList(DeviceName, $injector) {
                 $scope.autoInit = true;
             }
 
-            var promise;
+            let promise;
             $scope.onOpen = function onOpen() {
                 return promise;
             };
 
             $scope.$watchGroup(['dataSourceId', 'dataSourceXid', 'contains'], function(value) {
-                var queryResult;
+                let queryResult;
                 if ($scope.dataSourceId !== undefined) {
                     queryResult = DeviceName.byDataSourceId({id: $scope.dataSourceId, contains: $scope.contains});
                 } else if ($scope.dataSourceXid !== undefined) {

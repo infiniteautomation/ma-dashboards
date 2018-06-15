@@ -37,7 +37,7 @@ function deviceNameQuery(DeviceName) {
         },
         link: function ($scope, $element, attrs) {
             $scope.$watchGroup(['dataSourceId', 'dataSourceXid', 'contains'], function(value) {
-                var queryResult;
+                let queryResult;
                 if (!($element.attr('data-source-id') || $element.attr('data-source-xid') )) {
                     queryResult = DeviceName.query({contains: $scope.contains});
                 } else if ($scope.dataSourceId !== undefined) {

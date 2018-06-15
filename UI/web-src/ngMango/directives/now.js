@@ -67,7 +67,7 @@ function now() {
                 this.cancelUpdateTimer();
                 this.doUpdate(true);
 
-                var millis = parseUpdateInterval(this.updateInterval);
+                const millis = parseUpdateInterval(this.updateInterval);
 
                 // dont allow continuous loops
                 if (!millis) return;
@@ -83,7 +83,7 @@ function now() {
             };
             
             this.doUpdate = function doUpdate(firstTick = false) {
-                var m = moment();
+                const m = moment();
                 if (this.timeZone) {
                     m.tz(this.timeZone);
                 }
@@ -95,11 +95,11 @@ function now() {
 
             function parseUpdateInterval(updateInterval) {
                 if (Util.isEmpty(updateInterval)) return;
-                var parts = updateInterval.split(' ');
+                const parts = updateInterval.split(' ');
                 if (parts.length < 2) return;
                 if (Util.isEmpty(parts[0]) || Util.isEmpty(parts[1])) return;
 
-                var duration = moment.duration(parseFloat(parts[0]), parts[1]);
+                const duration = moment.duration(parseFloat(parts[0]), parts[1]);
                 return duration.asMilliseconds();
             }
         }],

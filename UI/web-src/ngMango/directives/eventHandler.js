@@ -9,7 +9,7 @@ function eventHandler(eventName, directiveName, $parse, $rootScope) {
     return {
         restrict: 'A',
         compile: function($element, attr) {
-            var fn = $parse(attr[directiveName]);
+            const fn = $parse(attr[directiveName]);
             return function(scope, element) {
                 element.on(eventName, (event) => {
                     scope.$apply(() => {

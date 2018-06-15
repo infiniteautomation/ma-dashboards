@@ -37,7 +37,7 @@
  
  */
 function dataSourceList(DataSource, $injector) {
-    var DEFAULT_SORT = ['name'];
+    const DEFAULT_SORT = ['name'];
 
     return {
         restrict: 'E',
@@ -72,7 +72,7 @@ function dataSourceList(DataSource, $injector) {
                 $scope.autoInit = true;
             }
 
-            var promise;
+            let promise;
             $scope.onOpen = function onOpen() {
                 return promise;
             };
@@ -93,7 +93,7 @@ function dataSourceList(DataSource, $injector) {
                     $scope.dataSources = dataSources;
                     
                     if ($scope.autoInit && $scope.dataSources.length) {
-                    	var doSet = true;
+                        let doSet = true;
                     	if (ngModelCtrl.$viewValue && ngModelCtrl.$viewValue.xid) {
                     		doSet = !dataSources.some(function(ds) {
                         		return ds.xid === ngModelCtrl.$viewValue.xid;

@@ -8,9 +8,9 @@ import angular from 'angular';
 
 svg.$inject = ['$document', '$templateCache'];
 function svg($document, $templateCache) {
-    var SELECTOR_ATTRIBUTE = 'ma-selector';
-    var EMPTY_TEMPLATE_URL = '/ngMango/circle.svg';
-    var EMPTY_TEMPLATE = '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
+    const SELECTOR_ATTRIBUTE = 'ma-selector';
+    const EMPTY_TEMPLATE_URL = '/ngMango/circle.svg';
+    const EMPTY_TEMPLATE = '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
         '<circle cx="100" cy="100" r="100"/>' +
         '</svg>';
 
@@ -38,13 +38,13 @@ function svg($document, $templateCache) {
             icon: 'widgets'
         },
         compile: function(tElement, tAtts) {
-            var attributesBySelector = {};
+            const attributesBySelector = {};
 
             // find all child elements and create a map of selectors to attributes
             tElement[0].querySelectorAll('[' + SELECTOR_ATTRIBUTE + ']').forEach(function(selectorElement) {
-                var selector = selectorElement.getAttribute(SELECTOR_ATTRIBUTE);
+                const selector = selectorElement.getAttribute(SELECTOR_ATTRIBUTE);
                 if (!selector) return;
-                var attributes = attributesBySelector[selector] = {};
+                const attributes = attributesBySelector[selector] = {};
                 
                 Array.prototype.forEach.call(selectorElement.attributes, function(attribute) {
                     if (attribute.name !== SELECTOR_ATTRIBUTE) {
@@ -57,8 +57,8 @@ function svg($document, $templateCache) {
             tElement.empty();
             
             return function ($scope, $element, $attrs, controllers) {
-                var maSvgCtrl = controllers[0];
-                var ngIncludeCtrl = controllers[1];
+                const maSvgCtrl = controllers[0];
+                const ngIncludeCtrl = controllers[1];
 
                 // merge the attributes from the bindings into our object
                 angular.merge(attributesBySelector, maSvgCtrl.attributes);
@@ -68,16 +68,16 @@ function svg($document, $templateCache) {
                 ngIncludeCtrl.template = angular.element(ngIncludeCtrl.template);
                 
                 // create a parent node for querying
-                var rootElement = $document[0].createElement('div');
+                const rootElement = $document[0].createElement('div');
                 Array.prototype.forEach.call(ngIncludeCtrl.template, function(node) {
                     rootElement.appendChild(node);
                 });
 
                 // iterate over our selectors, find matching elements in the dom tree and add attribtues to them
                 Object.keys(attributesBySelector).forEach(function(selector) {
-                    var matchingElements = angular.element(rootElement.querySelectorAll(selector));
+                    const matchingElements = angular.element(rootElement.querySelectorAll(selector));
                     if (matchingElements.length) {
-                        var attributes = attributesBySelector[selector];
+                        const attributes = attributesBySelector[selector];
                         Object.keys(attributes).forEach(function(attrName) {
                             matchingElements.attr(attrName, attributes[attrName]);
                         });

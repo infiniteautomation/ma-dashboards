@@ -94,7 +94,7 @@ SystemSettingsPageController.prototype.doAction = function(event, name, data) {
 };
 
 SystemSettingsPageController.prototype.sendTestEmail = function() {
-    var $ctrl = this;
+    const $ctrl = this;
     this.User.current.sendTestEmail().then(function(response) {
         $ctrl.maDialogHelper.toastOptions({
     		text: response.data,

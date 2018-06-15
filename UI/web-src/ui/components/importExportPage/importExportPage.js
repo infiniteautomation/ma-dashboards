@@ -27,19 +27,19 @@ ImportExportPageController.prototype.$onInit = function() {
 };
 
 ImportExportPageController.prototype.selectAllChanged = function() {
-    for (var i = 0; i < this.sectionList.length; i++) {
-        var sectionName = this.sectionList[i];
+    for (let i = 0; i < this.sectionList.length; i++) {
+        const sectionName = this.sectionList[i];
         this.sectionsForExport[sectionName] = this.selectAll;
     }
     this.selectAllIndeterminate = false;
 };
 
 ImportExportPageController.prototype.checkIndeterminate = function() {
-    var allChecked = true;
-    var anyChecked = false;
-    for (var i = 0; i < this.sectionList.length; i++) {
-        var sectionName = this.sectionList[i];
-        var sectionSelected = !!this.sectionsForExport[sectionName];
+    let allChecked = true;
+    let anyChecked = false;
+    for (let i = 0; i < this.sectionList.length; i++) {
+        const sectionName = this.sectionList[i];
+        const sectionSelected = !!this.sectionsForExport[sectionName];
         allChecked = allChecked && sectionSelected;
         anyChecked = anyChecked || sectionSelected;
     }
@@ -48,14 +48,14 @@ ImportExportPageController.prototype.checkIndeterminate = function() {
 };
 
 ImportExportPageController.prototype.doExport = function(download) {
-    var sectionNames = [];
-    for (var sectionName in this.sectionsForExport) {
+    const sectionNames = [];
+    for (const sectionName in this.sectionsForExport) {
         if (this.sectionsForExport[sectionName]) {
             sectionNames.push(sectionName);
         }
     }
     
-    var options = {
+    const options = {
         timeout: 0
     };
     if (download) {
@@ -87,11 +87,11 @@ ImportExportPageController.prototype.cancelExport = function() {
 };
 
 ImportExportPageController.prototype.fileDropped = function(data) {
-    var types = data.getDataTransferTypes();
+    const types = data.getDataTransferTypes();
     if (types.includes('Files')) {
-        var transfer = data.getDataTransfer();
+        const transfer = data.getDataTransfer();
         if (transfer.length) {
-            var file = transfer[0];
+            const file = transfer[0];
             if (!file.type || file.type === 'application/json' || file.type.indexOf('text/') === 0) {
                 this.importFile(file);
             }
@@ -100,7 +100,7 @@ ImportExportPageController.prototype.fileDropped = function(data) {
 };
 
 ImportExportPageController.prototype.fileSelected = function($event) {
-    var fileInput = $event.target;
+    const fileInput = $event.target;
     if (fileInput.files && fileInput.files.length) {
         this.importFile(fileInput.files[0]);
         fileInput.value = null;
@@ -117,7 +117,7 @@ ImportExportPageController.prototype.importFile = function(file) {
 };
 
 ImportExportPageController.prototype.getImportStatus = function() {
-    var $ctrl = this;
+    const $ctrl = this;
     if (this.importStatus) {
         this.importStatus.getStatus().then(function(status) {
             if ((status.state !== 'COMPLETED' || status.state !== 'CANCELLED') && status.progress !== 100) {

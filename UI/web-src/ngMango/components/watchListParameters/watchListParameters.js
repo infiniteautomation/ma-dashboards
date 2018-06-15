@@ -18,7 +18,7 @@
 import watchListParametersTemplate from './watchListParameters.html';
 import query from 'rql/query';
 
-var watchListParameters = {
+const watchListParameters = {
     controller: WatchListParametersController,
     template: watchListParametersTemplate,
     bindings: {
@@ -165,7 +165,7 @@ WatchListParametersController.prototype.interpolateOption = function interpolate
 
     // if the whole string is contained within {{}} extract the expression and parse it into a
     // number etc instead of interpolating it into a string
-    var matches = /{{(.*?)}}/.exec(option);
+    const matches = /{{(.*?)}}/.exec(option);
     if (matches && matches[0] === matches.input) {
         option = this.$parse(matches[1])(this.parameters);
     } else {

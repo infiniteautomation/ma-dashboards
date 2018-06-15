@@ -25,7 +25,7 @@ function AccordionController() {
 
 AccordionController.prototype.open = function open(id) {
     if (this.single) {
-        for (var sectionId in this.section) {
+        for (const sectionId in this.section) {
             this.section[sectionId] = false;
         }
     }

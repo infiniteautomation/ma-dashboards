@@ -64,7 +64,7 @@ function deviceNameScrollList($injector) {
         };
         
         this.doQuery = function() {
-            var query;
+            let query;
             if (this.dataSourceId !== undefined) {
                 query = DeviceName.byDataSourceId({id: this.dataSourceId, contains: this.contains});
             } else if (this.dataSourceXid) {
@@ -79,8 +79,8 @@ function deviceNameScrollList($injector) {
                     items.reverse();
                 }
                 if (this.start || this.limit) {
-                    var start = this.start || 0;
-                    var end = this.limit ? start + this.limit : items.length - start + 1;
+                    const start = this.start || 0;
+                    const end = this.limit ? start + this.limit : items.length - start + 1;
                     items = items.slice(start, end);
                 }
                 return (this.items = items);

@@ -6,7 +6,7 @@
 import angular from 'angular';
 import userSelectTemplate from './userSelect.html';
 
-var UPDATE_TYPES = ['add', 'update', 'delete'];
+const UPDATE_TYPES = ['add', 'update', 'delete'];
 
 UserSelectController.$inject = ['maUser', 'maUserEventManager', '$scope'];
 function UserSelectController(User, UserEventManager, $scope) {
@@ -16,7 +16,7 @@ function UserSelectController(User, UserEventManager, $scope) {
 }
 
 UserSelectController.prototype.$onInit = function() {
-    var $ctrl = this;
+    const $ctrl = this;
     this.ngModelCtrl.$render = function() {
         $ctrl.selectedUser = this.$viewValue;
     };

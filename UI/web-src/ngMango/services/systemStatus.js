@@ -7,16 +7,16 @@ SystemStatusFactory.$inject = ['$http'];
 
 function SystemStatusFactory($http) {
 
-    var auditTrailUrl = '/rest/v1/audit';
-    var internalMetricsUrl = '/rest/v1/system-metrics';
-    var logFilesListUrl = '/rest/v1/logging/files';
-    var logByFileNameUrl = '/rest/v1/logging/view/';
-    var workItemsUrl = '/rest/v1/work-items/';
-    var threadsUrl = '/rest/v1/threads';
-    var systemInfoUrl = '/rest/v2/server/system-info';
-    var pointHistoryCountsUrl = '/rest/v2/server/point-history-counts';
+    const auditTrailUrl = '/rest/v1/audit';
+    const internalMetricsUrl = '/rest/v1/system-metrics';
+    const logFilesListUrl = '/rest/v1/logging/files';
+    const logByFileNameUrl = '/rest/v1/logging/view/';
+    const workItemsUrl = '/rest/v1/work-items/';
+    const threadsUrl = '/rest/v1/threads';
+    const systemInfoUrl = '/rest/v2/server/system-info';
+    const pointHistoryCountsUrl = '/rest/v2/server/point-history-counts';
 
-    var SystemStatus = {};
+    const SystemStatus = {};
 
     /**
      * param {string} rql A query.Query object or an encoded RQL string

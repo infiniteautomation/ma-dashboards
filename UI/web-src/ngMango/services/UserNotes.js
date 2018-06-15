@@ -77,7 +77,7 @@
 
 
 function UserNotesFactory($resource, Util, $mdDialog) {
-    var UserNotes = $resource('/rest/v1/comments', {}, {
+    const UserNotes = $resource('/rest/v1/comments', {}, {
         query: {
             method: 'GET',
             isArray: true,
@@ -100,7 +100,7 @@ function UserNotesFactory($resource, Util, $mdDialog) {
     
     UserNotes.addNotePromise = function(ev, commentType, referenceId) {
         // Appending dialog to document.body to cover sidenav in docs app
-        var confirm = $mdDialog.prompt()
+        const confirm = $mdDialog.prompt()
             .title('Add Comment:')
             .ariaLabel('Add Note')
             .targetEvent(ev)

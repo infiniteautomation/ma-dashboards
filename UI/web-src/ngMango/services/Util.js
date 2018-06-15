@@ -17,7 +17,7 @@ import moment from 'moment-timezone';
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-    var changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
+    const changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
 * </pre>
 */
 
@@ -54,8 +54,8 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             if (newArray === undefined) newArray = [];
             if (oldArray === undefined) oldArray = [];
     
-            var added = angular.element(newArray).not(oldArray);
-            var removed = angular.element(oldArray).not(newArray);
+            const added = angular.element(newArray).not(oldArray);
+            const removed = angular.element(oldArray).not(newArray);
     
             return {
                 added: added,
@@ -114,8 +114,8 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         *
         */
         numKeys(obj, start) {
-            var count = 0;
-            for (var key in obj) {
+            let count = 0;
+            for (const key in obj) {
                 if (key.indexOf(start) === 0) count++;
             }
             return count;
@@ -137,11 +137,11 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                 throw new Error('WebSocket not supported');
             }
     
-            var host = document.location.host;
-            var protocol = document.location.protocol;
+            let host = document.location.host;
+            let protocol = document.location.protocol;
     
             if (mangoBaseUrl) {
-                var i = mangoBaseUrl.indexOf('//');
+                const i = mangoBaseUrl.indexOf('//');
                 if (i >= 0) {
                     protocol = mangoBaseUrl.substring(0, i);
                     host = mangoBaseUrl.substring(i+2);
@@ -173,7 +173,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         transformArrayResponse(data, headers, code) {
             try {
                 if (!data) return data;
-                var parsed = angular.fromJson(data);
+                const parsed = angular.fromJson(data);
                 if (code < 300) {
                     parsed.items.$total = parsed.total || parsed.items.length;
                     return parsed.items;
@@ -199,11 +199,11 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                 return $q.reject(data);
             
             try {
-                var start = 0;
-                var limit = data.resource.length;
-                var total = data.data.$total;
+                let start = 0;
+                let limit = data.resource.length;
+                const total = data.data.$total;
         
-                var matches = /(?:&|\?)limit\((\d+)(?:,(\d+))?\)/i.exec(data.config.url);
+                const matches = /(?:&|\?)limit\((\d+)(?:,(\d+))?\)/i.exec(data.config.url);
                 if (matches) {
                     limit = parseInt(matches[1], 10);
                     if (matches[2]) {
@@ -235,30 +235,30 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         *
         */
         memoize(fn, cacheSize) {
-            var cache = [];
+            const cache = [];
             cacheSize = cacheSize || 10;
             do {
                 cache.push(undefined);
             } while (--cacheSize > 0);
     
             return function() {
-                var args = Array.prototype.slice.call(arguments, 0);
+                const args = Array.prototype.slice.call(arguments, 0);
     
-                searchCache: for (var i = 0; i < cache.length; i++) {
-                    var cacheItem = cache[i];
+                searchCache: for (let i = 0; i < cache.length; i++) {
+                    const cacheItem = cache[i];
                     if (!cacheItem) break;
     
-                    var cachedArgs = cacheItem.input;
+                    const cachedArgs = cacheItem.input;
                     if (cachedArgs.length !== args.length) continue;
     
-                    for (var j = 0; j < cachedArgs.length; j++) {
+                    for (let j = 0; j < cachedArgs.length; j++) {
                         if (cachedArgs[j] !== args[j]) continue searchCache;
                     }
     
                     return cacheItem.output;
                 }
     
-                var result = fn.apply(this, args);
+                const result = fn.apply(this, args);
     
                 cache.unshift({input: args, output: result});
                 cache.pop();
@@ -282,8 +282,8 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         */
         rollupIntervalCalculator(from, to, rollupType, asObject) {
     
-            var duration = moment(to).diff(moment(from));
-            var result = {intervals: 1, units: 'SECONDS'};
+            const duration = moment(to).diff(moment(from));
+            let result = {intervals: 1, units: 'SECONDS'};
             
             // console.log(duration,moment.duration(duration).humanize(),rollupType);
             
@@ -462,7 +462,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             return parseFloat(strValue);
             
             function standardizeFloat(strValue) {
-                var matches;
+                let matches;
     
                 // has obvious space or full stop thousands separator and a comma as radix point
                 // i.e. converts 1 234 567,89 to 1234567.89
@@ -489,7 +489,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         
         pointValueToString(pointValue, point) {
             if (point && typeof point.valueRenderer === 'function') {
-                var rendered = point.valueRenderer(pointValue);
+                const rendered = point.valueRenderer(pointValue);
                 if (rendered && rendered.text && typeof rendered.text === 'string') {
                     return rendered.text;
                 }
@@ -497,7 +497,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             
             if (typeof pointValue === 'number') {
                 // convert to 3 fixed decimal places
-                var numberString = pointValue.toFixed(3);
+                const numberString = pointValue.toFixed(3);
                 
                 // dont display trailing zeros
                 if (numberString.substr(-4) === '.000') {
@@ -528,7 +528,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         cancelOrTimeout(cancelPromise, timeout) {
             timeout = isFinite(timeout) ? timeout : mangoTimeout;
             if (timeout > 0) {
-                var timeoutPromise = $timeout(angular.noop, timeout, false);
+                const timeoutPromise = $timeout(angular.noop, timeout, false);
                 return $q.race([cancelPromise, timeoutPromise]);
             }
             return cancelPromise;
@@ -561,9 +561,9 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             if (typeof window.navigator.msSaveBlob === 'function') {
                 window.navigator.msSaveBlob(blob, filename);
             } else {
-                var url = URL.createObjectURL(blob);
+                const url = URL.createObjectURL(blob);
                 try {
-                    var a = document.createElement('a');
+                    const a = document.createElement('a');
                     a.style.display = 'none';
                     a.href = url;
                     a.download = filename;
@@ -760,7 +760,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         };
     } else {
         util.uuid = function uuid() {
-            var uuid = '', i, random;
+            let uuid = '', i, random;
             for (i = 0; i < 32; i++) {
                 random = Math.random() * 16 | 0;
     

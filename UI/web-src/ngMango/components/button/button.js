@@ -34,7 +34,7 @@ import buttonTemplate from './button.html';
  * ma-choose-file="fileUrl = $url"></ma-button>
  *
  **/
-var button = {
+const button = {
     controller: ButtonController,
     template: buttonTemplate,
     bindings: {

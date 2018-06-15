@@ -10,7 +10,7 @@ dataSourceScrollList.$inject = ['$injector'];
 export default dataSourceScrollList;
 
 function dataSourceScrollList($injector) {
-    var DEFAULT_SORT = ['name'];
+    const DEFAULT_SORT = ['name'];
 
     return {
         restrict: 'E',
@@ -45,7 +45,7 @@ function dataSourceScrollList($injector) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
 
-            var xid = this.selectXid;
+            const xid = this.selectXid;
             if (xid) {
                 this.fetchingInitial = true;
                 DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {

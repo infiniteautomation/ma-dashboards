@@ -27,16 +27,16 @@ function DraggableController($scope, $element) {
 }
 
 DraggableController.prototype.$onInit = function() {
-    var $ctrl = this;
-    var $element = this.$element;
+    const $ctrl = this;
+    const $element = this.$element;
 
     this.setDraggableAttr();
     
     $element.on('dragstart', function($event) {
-        var event = $event.originalEvent || $event;
+        const event = $event.originalEvent || $event;
         if ($element.attr('draggable') == null) return true;
         if (typeof $ctrl.data !== 'string') {
-            var json = angular.toJson($ctrl.data);
+            const json = angular.toJson($ctrl.data);
             event.dataTransfer.setData('application/json', json);
         } else {
             event.dataTransfer.setData('text/plain', $ctrl.data);

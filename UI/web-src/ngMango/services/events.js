@@ -123,7 +123,7 @@
 
 eventsFactory.$inject = ['$resource', 'maUtil', 'maNotificationManager'];
 function eventsFactory($resource, Util, NotificationManager) {
-    var Events = $resource('/rest/v1/events', {
+    const Events = $resource('/rest/v1/events', {
         id: '@id'
     }, {
         query: {

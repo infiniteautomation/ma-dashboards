@@ -8,11 +8,11 @@ import menuTemplate from './menu.html';
 MenuController.$inject = [];
 function MenuController() {
     this.childVisible = function childVisible(menuItems) {
-        var visibleCount = 0;
-        for (var i = 0; i < menuItems.length; i++) {
-            var menuItem = menuItems[i];
+        let visibleCount = 0;
+        for (let i = 0; i < menuItems.length; i++) {
+            const menuItem = menuItems[i];
             
-            var info = this.visibleMap[menuItem.name] = {};
+            const info = this.visibleMap[menuItem.name] = {};
             
             if (menuItem.children && menuItem.abstract) {
                 info.visibleChildren = this.childVisible(menuItem.children);
@@ -34,7 +34,7 @@ function MenuController() {
     };
     
     this.copyMenu = function() {
-        var items = this.origMenuItems;
+        const items = this.origMenuItems;
         this.visibleMap = {};
         this.childVisible(items);
         this.menuItems = items;
@@ -45,8 +45,8 @@ function MenuController() {
     };
     
     this.menuOpened = function menuOpened(toggleCtrl) {
-        var submenu = null;
-        var ctrl = toggleCtrl;
+        let submenu = null;
+        let ctrl = toggleCtrl;
         while(ctrl) {
             if (ctrl.item.submenu) {
                 submenu = ctrl.item;

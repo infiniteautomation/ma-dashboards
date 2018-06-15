@@ -21,7 +21,7 @@
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-*  var DS = DataSource.getById(xid)
+*  const DS = DataSource.getById(xid)
 *  DS.name = 'New Name';
 *  DS.$save();
 * </pre>
@@ -146,7 +146,7 @@
 
 
 function DataSourceFactory($resource, Util) {
-    var DataSource = $resource('/rest/v1/data-sources/:xid', {
+    const DataSource = $resource('/rest/v1/data-sources/:xid', {
     		xid: '@xid'
     	}, {
         query: {

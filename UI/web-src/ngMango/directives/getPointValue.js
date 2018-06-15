@@ -59,9 +59,9 @@ function getPointValue(pointEventManager, Point, Util) {
 
             function websocketHandler(event, payload) {
                 $scope.$applyAsync(function() {
-                	var points = $scope.points || [$scope.point];
-                	for (var i = 0; i < points.length; i++) {
-                        var point = points[i];
+                	const points = $scope.points || [$scope.point];
+                	for (let i = 0; i < points.length; i++) {
+                        const point = points[i];
                         if (payload.xid === point.xid) {
                             point.websocketHandler(payload);
                             if ($scope.onValueUpdated) {
@@ -73,7 +73,7 @@ function getPointValue(pointEventManager, Point, Util) {
                 });
             }
 
-            var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
+            const SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
 
             $scope.$watch('pointXid', function(newXid, oldXid) {
                 if (newXid === undefined && newXid === oldXid) return;
@@ -106,7 +106,7 @@ function getPointValue(pointEventManager, Point, Util) {
             });
 
             $scope.$watchCollection('points', function(newPoints, oldPoints) {
-                var changedPoints;
+                let changedPoints;
                 
                 // check initialization scenario
                 if (newPoints === oldPoints) {
@@ -118,15 +118,15 @@ function getPointValue(pointEventManager, Point, Util) {
                     changedPoints = Util.arrayDiff(newPoints, oldPoints);
                 }
 
-            	var i;
+            	let i;
 
             	for (i = 0; i < changedPoints.removed.length; i++) {
-            		var removed = changedPoints.removed[i];
+            		const removed = changedPoints.removed[i];
             		pointEventManager.unsubscribe(removed.xid, SUBSCRIPTION_TYPES, websocketHandler);
             	}
 
             	for (i = 0; i < changedPoints.added.length; i++) {
-            		var added = changedPoints.added[i];
+            		const added = changedPoints.added[i];
             		pointEventManager.subscribe(added.xid, SUBSCRIPTION_TYPES, websocketHandler);
             	}
             });
@@ -136,7 +136,7 @@ function getPointValue(pointEventManager, Point, Util) {
                     pointEventManager.unsubscribe($scope.point.xid, SUBSCRIPTION_TYPES, websocketHandler);
                 }
                 if ($scope.points) {
-                	for (var i = 0; i < $scope.points.length; i++) {
+                	for (let i = 0; i < $scope.points.length; i++) {
                 		pointEventManager.unsubscribe($scope.points[i].xid, SUBSCRIPTION_TYPES, websocketHandler);
                 	}
                 }

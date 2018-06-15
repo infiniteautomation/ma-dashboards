@@ -6,9 +6,9 @@
 qDecorator.$inject = ['$delegate'];
 function qDecorator($delegate) {
 
-    var originalThen = $delegate.prototype.then;
+    const originalThen = $delegate.prototype.then;
     $delegate.prototype.then = function() {
-        var newPromise = originalThen.apply(this, arguments);
+        const newPromise = originalThen.apply(this, arguments);
         if (typeof this.doCancel === 'function') {
             newPromise.doCancel = this.doCancel;
         }
@@ -31,24 +31,24 @@ function qDecorator($delegate) {
         return this;
     };
 
-    var all = $delegate.all;
-    var race = $delegate.race;
+    const all = $delegate.all;
+    const race = $delegate.race;
 
     $delegate.all = function(promises) {
-        var p = all.apply(this, arguments);
-        var doCancel = getCancelAll(promises);
+        const p = all.apply(this, arguments);
+        const doCancel = getCancelAll(promises);
         return p.setCancel(doCancel);
     };
     
     $delegate.race = function(promises) {
-        var p = race.apply(this, arguments);
-        var doCancel = getCancelAll(promises);
+        const p = race.apply(this, arguments);
+        const doCancel = getCancelAll(promises);
         return p.setCancel(doCancel);
     };
     
     function getCancelAll(promises) {
         return function() {
-            var cancelArgs = arguments;
+            const cancelArgs = arguments;
             promises.forEach(function(promise) {
                 promise.cancel.apply(promise, cancelArgs);
             });

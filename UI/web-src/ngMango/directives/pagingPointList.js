@@ -26,7 +26,7 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
                 });
             }
             
-            var change = $parse(attrs.ngChange);
+            const change = $parse(attrs.ngChange);
             $scope.changed = function() {
                 $timeout(function() {
                     change($scope.$parent);
@@ -35,7 +35,7 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
             
             $scope.querySearch = function(queryStr) {
                 queryStr = queryStr || '';
-                var query = 'or(name=like=*' + queryStr +'*,deviceName=like=*' + queryStr + '*)';
+                let query = 'or(name=like=*' + queryStr +'*,deviceName=like=*' + queryStr + '*)';
                 if (attrs.query) {
                     query += '&' + attrs.query;
                 } else {

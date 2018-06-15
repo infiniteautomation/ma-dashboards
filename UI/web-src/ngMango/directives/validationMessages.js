@@ -23,7 +23,7 @@ ValidationMessagesController.prototype.$onChanges = function(changes) {
 ValidationMessagesController.prototype.checkMessages = function() {
     if (!this.ngModelCtrl) return;
     if (this.messages) {
-        for (var i = 0; i < this.messages.length; i++) {
+        for (let i = 0; i < this.messages.length; i++) {
             if (this.messages[i].property === this.ngModelCtrl.$name) {
                 this.ngModelCtrl.validationMessage = this.messages[i].message;
                 this.ngModelCtrl.$setValidity('validationMessage', false);

@@ -61,18 +61,18 @@ function pieChart($http, MA_DATE_FORMATS) {
 
     function postLink($scope, $element, attributes) {
         const options = $.extend(true, defaultOptions(), $scope.options);
-        var chart = AmCharts.makeChart($element[0], options);
+        const chart = AmCharts.makeChart($element[0], options);
 
-        var labelFn = createLabelFn();
+        let labelFn = createLabelFn();
         $scope.$watchCollection('valueLabels', function(value) {
             labelFn = createLabelFn(value);
         });
 
         $scope.$watchCollection('values', function(newValue, oldValue) {
-            var values = $.extend(true, [], newValue);
+            const values = $.extend(true, [], newValue);
 
-            for (var i = 0; i < values.length; i++) {
-                var item = values[i];
+            for (let i = 0; i < values.length; i++) {
+                const item = values[i];
 
                 if (item.runtime) {
                     item.id = item.value;
@@ -89,7 +89,7 @@ function pieChart($http, MA_DATE_FORMATS) {
 
         function createLabelFn(labels) {
             return function(item) {
-                var label = labels && labels[item.id] || {};
+                const label = labels && labels[item.id] || {};
 
                 item.text = typeof label === 'string' ? label : label.text || item.text || item.id;
                 item.color = label.color || label.colour || item.color || item.colour;

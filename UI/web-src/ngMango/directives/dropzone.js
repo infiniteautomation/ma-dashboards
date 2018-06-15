@@ -28,9 +28,9 @@ function DropzoneController($scope, $element) {
 }
 
 DropzoneController.prototype.$onInit = function() {
-    var $ctrl = this;
-    var $element = this.$element;
-    var $scope = this.$scope;
+    const $ctrl = this;
+    const $element = this.$element;
+    const $scope = this.$scope;
     
     $element.on('dragenter', function($event) {
         $event.preventDefault();
@@ -81,18 +81,18 @@ function DragInfo($event, $element) {
 }
 
 DragInfo.prototype.getDataTransferTypes = function() {
-    var event = this.$event.originalEvent || this.$event;
-    var dataTransfer = event.dataTransfer;
+    const event = this.$event.originalEvent || this.$event;
+    const dataTransfer = event.dataTransfer;
     return dataTransfer.types;
 };
 
 DragInfo.prototype.getDataTransfer = function() {
-    var event = this.$event.originalEvent || this.$event;
-    var dataTransfer = event.dataTransfer;
+    const event = this.$event.originalEvent || this.$event;
+    const dataTransfer = event.dataTransfer;
     if (dataTransfer.files && dataTransfer.files.length) {
         return dataTransfer.files;
     }
-    var json = dataTransfer.getData('application/json');
+    const json = dataTransfer.getData('application/json');
     if (json) {
         try {
             return angular.fromJson(json);

@@ -24,14 +24,14 @@
  */
 function trFilterFactory(Translate) {
     return function trFilter(key) {
-        var args;
+        let args;
         if (Array.isArray(key)) {
             args = Array.prototype.slice.call(key, 1);
             key = key[0];
         } else {
             args = Array.prototype.slice.call(arguments, 1);
         }
-    	var text;
+    	let text;
     	try {
         	text = Translate.trSync(key, args);
     	} catch (e) {

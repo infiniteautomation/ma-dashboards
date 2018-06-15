@@ -9,7 +9,7 @@ import query from 'rql/query';
 
 filteringDataSourceList.$inject = ['$injector', 'maDataSource'];
 function filteringDataSourceList($injector, DataSource) {
-    var DEFAULT_SORT = ['name'];
+    const DEFAULT_SORT = ['name'];
     
     return {
         restrict: 'E',
@@ -34,7 +34,7 @@ function filteringDataSourceList($injector, DataSource) {
             };
 
             $scope.queryDataSources = function() {
-                var q = $scope.query ? angular.copy($scope.query) : new query.Query();
+                const q = $scope.query ? angular.copy($scope.query) : new query.Query();
                 if ($scope.searchText)
                     q.push(new query.Query({name: 'like', args: ['name', '*' + $scope.searchText + '*']}));
                 

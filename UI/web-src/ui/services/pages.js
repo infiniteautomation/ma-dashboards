@@ -21,7 +21,7 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERM
     };
     
     Page.prototype.getDefaultPages = function getDefaultPages() {
-        var storeObject = new JsonStore();
+        const storeObject = new JsonStore();
         storeObject.xid = MA_UI_PAGES_XID;
         storeObject.name = MA_UI_PAGES_XID;
         storeObject.jsonData = {
@@ -39,8 +39,8 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERM
             xid: xid
         }).$promise.then(null, function(error) {
             this.getPages().then(function(pagesStore) {
-                var pages = pagesStore.jsonData.pages;
-                for (var i = 0; i < pages.length;) {
+                const pages = pagesStore.jsonData.pages;
+                for (let i = 0; i < pages.length;) {
                     if (pages[i].xid === xid) {
                         pages.splice(i, 1);
                         continue;
@@ -54,7 +54,7 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERM
     };
     
     Page.prototype.newPageContent = function newPageContent() {
-        var storeObject = new JsonStore();
+        const storeObject = new JsonStore();
         storeObject.xid = Util.uuid();
         storeObject.jsonData = {
             markup: ''

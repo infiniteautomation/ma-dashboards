@@ -8,12 +8,12 @@
 
 function rqlParamSerializerFactory($httpParamSerializer) {
     return function(params) {
-        var rqlPart;
+        let rqlPart;
         if (params && params.hasOwnProperty('rqlQuery')) {
             rqlPart = params.rqlQuery;
             delete params.rqlQuery;
         }
-        var serialized = $httpParamSerializer(params);
+        let serialized = $httpParamSerializer(params);
         if (rqlPart) {
             if (serialized)
                 serialized += '&';

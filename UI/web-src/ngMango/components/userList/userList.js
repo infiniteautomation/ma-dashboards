@@ -6,7 +6,7 @@
 import angular from 'angular';
 import userListTemplate from './userList.html';
 
-var UPDATE_TYPES = ['add', 'update', 'delete'];
+const UPDATE_TYPES = ['add', 'update', 'delete'];
 
 UserListController.$inject = ['maUser', 'maUserEventManager', '$scope'];
 function UserListController(User, UserEventManager, $scope) {
@@ -16,7 +16,7 @@ function UserListController(User, UserEventManager, $scope) {
 }
 
 UserListController.prototype.$onInit = function() {
-    var $ctrl = this;
+    const $ctrl = this;
     this.ngModelCtrl.$render = function() {
         $ctrl.selectedUser = this.$viewValue;
     };

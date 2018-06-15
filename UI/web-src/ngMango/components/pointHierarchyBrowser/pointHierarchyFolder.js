@@ -5,7 +5,7 @@
 
 import pointHierarchyFolderTemplate from './pointHierarchyFolder.html';
 
-var pointHierarchyFolder = function pointHierarchyFolder() {
+const pointHierarchyFolder = function pointHierarchyFolder() {
     this.$onInit = function() {
         this.parentController = this.browserCtrl || this.pointSelectorCtrl;
         this.hideFoldersWithNoPoints = this.parentController.hideFoldersWithNoPoints;

@@ -8,7 +8,7 @@ import angular from 'angular';
 
 SystemActionsFactory.$inject = ['$http', '$q', '$timeout'];
 function SystemActionsFactory($http, $q, $timeout) {
-    var systemActionsUrl = '/rest/v2/actions';
+    const systemActionsUrl = '/rest/v2/actions';
     
     function SystemActionResource(data) {
     	angular.extend(this, data);

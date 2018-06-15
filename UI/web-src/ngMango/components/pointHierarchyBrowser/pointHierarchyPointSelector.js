@@ -13,7 +13,7 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
 
     this.$onChanges = function(changes) {
         if (changes.path) {
-            var resourceObj = this.path && this.path.length ?
+            const resourceObj = this.path && this.path.length ?
                     PointHierarchy.byPath({path: this.path, subfolders: true, points: true}) :
                     PointHierarchy.getRoot({subfolders: true, points: true});
             
@@ -66,14 +66,14 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
         if (!this.hierarchy) return;
         
         // $viewValue is an array of points
-        var selectedPoints = this.ngModelCtrl.$viewValue;
+        let selectedPoints = this.ngModelCtrl.$viewValue;
         if (selectedPoints === undefined) {
             selectedPoints = [];
         }
         
-        var selectedPointsByXid = {};
-        for (var i = 0; i < selectedPoints.length; i++) {
-            var point = selectedPoints[i];
+        const selectedPointsByXid = {};
+        for (let i = 0; i < selectedPoints.length; i++) {
+            const point = selectedPoints[i];
             selectedPointsByXid[point.xid] = point;
         }
         
@@ -89,8 +89,8 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
         function checkFolder(folder, checked) {
             folder.checked = checked;
             folder.partial = false;
-            for (var i = 0; i < folder.points.length; i++) {
-                var point = folder.points[i];
+            for (let i = 0; i < folder.points.length; i++) {
+                const point = folder.points[i];
                 point.checked = checked;
             }
         }
@@ -122,19 +122,19 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
     };
     
     this.updateCheckboxes = function updateCheckboxes(folder, selectedPointsByXid) {
-        var anySelected = false;
-        var allSelected = true;
+        let anySelected = false;
+        let allSelected = true;
         
-        for (var i = 0; i < folder.points.length; i++) {
-            var point = folder.points[i];
+        for (let i = 0; i < folder.points.length; i++) {
+            const point = folder.points[i];
             if (selectedPointsByXid)
                 point.checked = !!selectedPointsByXid[point.xid];
             anySelected = anySelected || point.checked;
             allSelected = allSelected && point.checked;
         }
         
-        for (i = 0; i < folder.subfolders.length; i++) {
-            var subfolder = folder.subfolders[i];
+        for (let i = 0; i < folder.subfolders.length; i++) {
+            const subfolder = folder.subfolders[i];
             anySelected = anySelected || subfolder.checked;
             allSelected = allSelected && subfolder.checked && !subfolder.partial;
         }
@@ -144,11 +144,11 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
     };
     
     this.updateViewValue = function updateViewValue() {
-        var selectedPoints = [];
+        const selectedPoints = [];
         
         this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
-            for (var i = 0; i < folder.points.length; i++) {
-                var point = folder.points[i];
+            for (let i = 0; i < folder.points.length; i++) {
+                const point = folder.points[i];
                 if (point.checked) {
                     selectedPoints.push(point);
                 }
@@ -159,10 +159,10 @@ function PointHierarchyPointSelectorController(PointHierarchy) {
     };
 
     this.walkHierarchy = function walkHierarchy(folder, fn, parent, index) {
-        var result = fn(folder, parent, index);
+        let result = fn(folder, parent, index);
         if (result) return result;
         
-        for (var i = 0; i < folder.subfolders.length; i++) {
+        for (let i = 0; i < folder.subfolders.length; i++) {
             result = this.walkHierarchy(folder.subfolders[i], fn, folder, i);
             if (result) return result;
         }

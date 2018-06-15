@@ -57,18 +57,18 @@ import plurals from 'cldr-data/supplemental/plurals.json';
 */
 translateFactory.$inject = ['$http', '$q', 'maUser'];
 function translateFactory($http, $q, maUser) {
-	var Translate = function() {};
+	const Translate = function() {};
 
     Globalize.load(likelySubtags);
     Globalize.load(plurals);
 
 	Translate.tr = function(key) {
-		var functionArgs = arguments;
+		const functionArgs = arguments;
 		if (Array.isArray(key)) {
 			key = key[0];
 		}
 
-        var namespace = key.split('.')[0];
+        const namespace = key.split('.')[0];
         return Translate.loadNamespaces(namespace).then(function() {
         	return Translate.trSync.apply(null, functionArgs);
         });

@@ -33,7 +33,7 @@ function calc() {
             onChange: '&?'
         },
         link: function($scope, $element, attr) {
-        	var deregister = $scope.$parent.$watch(attr.input, function(newValue) {
+        	const deregister = $scope.$parent.$watch(attr.input, function(newValue) {
             	$scope.output = newValue;
             	if ($scope.onChange) {
             	    $scope.onChange({$value: newValue});

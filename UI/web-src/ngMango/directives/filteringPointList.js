@@ -126,7 +126,7 @@ FilteringPointListController.prototype.setViewValue = function(point) {
 };
 
 FilteringPointListController.prototype.querySearch = function(inputText) {
-    var rqlQuery, queryString = '';
+    let rqlQuery, queryString = '';
     
     this.highlight = '';
     
@@ -134,10 +134,10 @@ FilteringPointListController.prototype.querySearch = function(inputText) {
         inputText = inputText.trim();
     
     if (inputText) {
-        var nameLike, deviceNameLike;
-        var searchByDeviceAndName = false;
+        let nameLike, deviceNameLike;
+        let searchByDeviceAndName = false;
         
-        var split = inputText.split(/\s*[-\u2014]\s*/);
+        const split = inputText.split(/\s*[-\u2014]\s*/);
         if (split.length === 2) {
             searchByDeviceAndName = true;
             deviceNameLike = split[0];
@@ -148,8 +148,8 @@ FilteringPointListController.prototype.querySearch = function(inputText) {
             this.highlight = inputText;
         }
         
-        var nameQuery = new query.Query({name: 'like', args: ['name', '*' + nameLike + '*']});
-        var deviceNameQuery = new query.Query({name: 'like', args: ['deviceName', '*' + deviceNameLike + '*']});
+        const nameQuery = new query.Query({name: 'like', args: ['name', '*' + nameLike + '*']});
+        const deviceNameQuery = new query.Query({name: 'like', args: ['deviceName', '*' + deviceNameLike + '*']});
 
         rqlQuery = new query.Query();
         
@@ -160,7 +160,7 @@ FilteringPointListController.prototype.querySearch = function(inputText) {
             rqlQuery.push(deviceNameQuery);
         }
         if (!searchByDeviceAndName && this.getByXid) {
-            var xidEquals = new query.Query({name: 'eq', args: ['xid', inputText]});
+            const xidEquals = new query.Query({name: 'eq', args: ['xid', inputText]});
             rqlQuery.push(xidEquals);
         }
         
@@ -173,7 +173,7 @@ FilteringPointListController.prototype.querySearch = function(inputText) {
         }
         queryString = queryString + this.query;
     } else {
-        var q = new query.Query();
+        const q = new query.Query();
         if (rqlQuery)
             q.push(rqlQuery);
 

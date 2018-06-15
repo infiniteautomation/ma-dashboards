@@ -14,7 +14,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
     
     MenuEditor.prototype.getMenuItemForPageXid = function getMenuItemForPageXid(pageXid) {
         return Menu.getMenu().then(function(menuItems) {
-            var menuItem = null;
+            let menuItem = null;
             menuItems.some(function(item) {
                 if (item.linkToPage && item.pageXid === pageXid) {
                     menuItem = item;
@@ -76,8 +76,8 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
     
     MenuEditor.prototype.editMenuItem = function editMenuItem(event, menuHierarchy, origItem) {
             // build flat menu item array so we can choose any item in dropdown
-            var menuItems = [];
-            var menuItemNameMap = {};
+            const menuItems = [];
+            const menuItemNameMap = {};
             
             Menu.forEach(menuHierarchy.children, function(menuItem) {
                 menuItems.push(menuItem);
@@ -85,13 +85,13 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
             });
 
             // copy the item so we can discard changes
-            var item = angular.copy(origItem);
+            const item = angular.copy(origItem);
             item.parent = origItem.parent;
             
             if (!item.name) {
                 item.shortStateName = '';
             } else {
-                var splitName = item.name.trim().split('.');
+                const splitName = item.name.trim().split('.');
                 item.shortStateName = splitName[splitName.length-1];
             }
             
@@ -132,7 +132,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                     root: menuHierarchy
                 },
                 controller: ['$mdDialog', function editItemController($mdDialog) {
-                    var urlPathMap = {};
+                    const urlPathMap = {};
                     this.item.parent.children.forEach(function(item) {
                         urlPathMap[item.url] = true;
                     });
@@ -195,7 +195,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                                 this.item.url = '/' + Util.snakeCase(Util.titleCase(this.item.menuText).replace(/\s/g, ''));
                             }
                             if (!this.menuItemEditForm || !this.menuItemEditForm.stateName || this.menuItemEditForm.stateName.$pristine) {
-                                var titleCase = Util.titleCase(this.item.menuText).replace(/\s/g, '');
+                                let titleCase = Util.titleCase(this.item.menuText).replace(/\s/g, '');
                                 if (titleCase) {
                                     titleCase = titleCase.charAt(0).toLowerCase() + titleCase.substr(1);
                                     this.item.shortStateName = Util.camelCase(titleCase);

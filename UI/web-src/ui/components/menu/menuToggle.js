@@ -32,7 +32,7 @@ function MenuToggleController($state, $timeout, $element, $scope, Translate) {
         }
         if (changes.item) {
             if (!changes.item.isFirstChange()) {
-                var info = this.menu.visibleMap[changes.item.currentValue.name];
+                const info = this.menu.visibleMap[changes.item.currentValue.name];
                 if (info.visibleChildren !== this.prevVisibleChildren) {
                     this.prevVisibleChildren = info.visibleChildren;
                     // do on next cycle as elements have not been added/removed yet

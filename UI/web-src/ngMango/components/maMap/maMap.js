@@ -48,12 +48,12 @@ import {require} from 'requirejs';
   
     MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'maUiSettings', '$injector', '$window'];
     function MaMapController($scope, $mdMedia, NgMap, uiSettings, $injector, $window) {
-        var $state;
+        let $state;
         if ($injector.has('$state')) {
             $state = $injector.get('$state');
         }
         
-        var $ctrl = this;
+        const $ctrl = this;
         $ctrl.render = false;
         $ctrl.apiKeySet = false;
         $ctrl.infoWindowCache = {};

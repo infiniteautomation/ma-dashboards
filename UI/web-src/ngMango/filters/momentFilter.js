@@ -25,7 +25,7 @@ import moment from 'moment-timezone';
  */
 function momentFilter(Util) {
     return Util.memoize(function(input, fnName) {
-        var m;
+        let m;
         if (!input || (typeof input === 'string' && input.toLowerCase().trim() === 'now')) {
             m = moment().milliseconds(0);
         } else {
@@ -34,8 +34,8 @@ function momentFilter(Util) {
         if (!m.isValid()) {
             return input;
         }
-        var fnArgs = Array.prototype.slice.call(arguments, 2);
-        var fn = m[fnName];
+        const fnArgs = Array.prototype.slice.call(arguments, 2);
+        const fn = m[fnName];
         if (typeof fn !== 'function') return input;
         return fn.apply(m, fnArgs);
     });

@@ -44,7 +44,7 @@ function pointHierarchy(PointHierarchy) {
         },
         link: function ($scope, $element, attrs) {
             $scope.$watch('[path, subfolders, folderId]', function() {
-                var path = $scope.path;
+                let path = $scope.path;
                 if (!path && $scope.folderId == null) {
                     delete $scope.hierarchy;
                     delete $scope.points;
@@ -56,8 +56,8 @@ function pointHierarchy(PointHierarchy) {
                     path = path.split(',');
                 }
 
-                var subfolders = typeof attrs.subfolders === 'undefined' ? true : !!$scope.subfolders;
-                var shouldGetPoints = attrs.points !== undefined;
+                const subfolders = typeof attrs.subfolders === 'undefined' ? true : !!$scope.subfolders;
+                const shouldGetPoints = attrs.points !== undefined;
                 
                 if ($scope.folderId != null) {
                     $scope.hierarchy = PointHierarchy.get({id: $scope.folderId});

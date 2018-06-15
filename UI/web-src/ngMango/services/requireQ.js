@@ -40,7 +40,7 @@ import {require as requirejs} from 'requirejs';
 
 RequireQProvider.$inject = [];
 function RequireQProvider() {
-    var providerRequire = requirejs;
+    let providerRequire = requirejs;
     
     this.setRequireJs = function(requireJs) {
         providerRequire = requireJs;
@@ -51,7 +51,7 @@ function RequireQProvider() {
     requireQFactory.$inject = ['$q'];
     function requireQFactory($q) {
         function requireQ(deps, success, fail, fail2) {
-            var localRequire = providerRequire;
+            let localRequire = providerRequire;
             if (typeof deps === 'function') {
                 localRequire = deps;
                 deps = success;
@@ -59,12 +59,12 @@ function RequireQProvider() {
                 fail = fail2;
             }
             
-            var defer = $q.defer();
+            const defer = $q.defer();
             localRequire(deps, function() {
-                var result = typeof success === 'function' ? success.apply(null, arguments) : success;
+                const result = typeof success === 'function' ? success.apply(null, arguments) : success;
                 defer.resolve(result);
             }, function() {
-                var result = typeof fail === 'function' ? fail.apply(null, arguments) : fail;
+                const result = typeof fail === 'function' ? fail.apply(null, arguments) : fail;
                 defer.reject(result);
             });
             return defer.promise;

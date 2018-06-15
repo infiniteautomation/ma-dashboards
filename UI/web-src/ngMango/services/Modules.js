@@ -77,7 +77,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
     };
     
     Modules.doUpgrade = function(selectedInstalls, selectedUpgrades, backupBeforeDownload, restartAfterDownload) {
-    	var data = {
+    	const data = {
 			newInstalls: selectedInstalls,
 			upgrades: selectedUpgrades
     	};

@@ -30,14 +30,14 @@ import './styles/fonts.css';
 import './styles/main.css';
 
 // must match variables defined in UIInstallUpgrade.java
-var MA_UI_MENU_XID = 'mangoUI-menu';
-var MA_UI_PAGES_XID = 'mangoUI-pages';
-var MA_UI_SETTINGS_XID = 'mangoUI-settings';
-var MA_UI_EDIT_MENUS_PERMISSION = 'edit-ui-menus';
-var MA_UI_EDIT_PAGES_PERMISSION = 'edit-ui-pages';
-var MA_UI_EDIT_SETTINGS_PERMISSION = 'edit-ui-settings';
+const MA_UI_MENU_XID = 'mangoUI-menu';
+const MA_UI_PAGES_XID = 'mangoUI-pages';
+const MA_UI_SETTINGS_XID = 'mangoUI-settings';
+const MA_UI_EDIT_MENUS_PERMISSION = 'edit-ui-menus';
+const MA_UI_EDIT_PAGES_PERMISSION = 'edit-ui-pages';
+const MA_UI_EDIT_SETTINGS_PERMISSION = 'edit-ui-settings';
 
-var uiApp = angular.module('maUiApp', [
+const uiApp = angular.module('maUiApp', [
     'ui.router',
     'ui.sortable',
     'angular-loading-bar',
@@ -122,15 +122,15 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     maRequireQProvider.setRequireJs(requirejs);
 
     if (MA_UI_SETTINGS.palettes) {
-        for (var paletteName in MA_UI_SETTINGS.palettes) {
+        for (const paletteName in MA_UI_SETTINGS.palettes) {
             $mdThemingProvider.definePalette(paletteName, angular.copy(MA_UI_SETTINGS.palettes[paletteName]));
         }
     }
 
     if (MA_UI_SETTINGS.themes) {
-        for (var name in MA_UI_SETTINGS.themes) {
-            var themeSettings = MA_UI_SETTINGS.themes[name];
-            var theme = $mdThemingProvider.theme(name);
+        for (const name in MA_UI_SETTINGS.themes) {
+            const themeSettings = MA_UI_SETTINGS.themes[name];
+            const theme = $mdThemingProvider.theme(name);
             if (themeSettings.primaryPalette) {
                 theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
             }
@@ -152,7 +152,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     // need to store a reference to the theming provider in order to generate themes at runtime
     MA_UI_SETTINGS.themingProvider = $mdThemingProvider;
 
-    var defaultTheme = MA_UI_SETTINGS.defaultTheme || 'mangoDark';
+    const defaultTheme = MA_UI_SETTINGS.defaultTheme || 'mangoDark';
     $mdThemingProvider.setDefaultTheme(defaultTheme);
     $mdThemingProvider.alwaysWatchTheme(true);
     $mdThemingProvider.generateThemesOnDemand(true);
@@ -164,7 +164,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
 
     if ($injector.has('$mdpTimePickerProvider')) {
         /*
-        var $mdpTimePickerProvider = $injector.get('$mdpTimePickerProvider');
+        const $mdpTimePickerProvider = $injector.get('$mdpTimePickerProvider');
         $mdpTimePickerProvider.setOKButtonLabel();
         $mdpTimePickerProvider.setCancelButtonLabel();
         */
@@ -173,12 +173,12 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     $locationProvider.html5Mode(true);
 
     $urlRouterProvider.otherwise(function($injector, $location) {
-        var basePath = '/ui/';
-        var User = $injector.get('maUser');
-        var $state = $injector.get('$state');
-        var user = User.current;
+        const basePath = '/ui/';
+        const User = $injector.get('maUser');
+        const $state = $injector.get('$state');
+        const user = User.current;
         
-        var path = basePath;
+        let path = basePath;
         if ($location.path()) {
             path += $location.path().substring(1);
         }
@@ -191,7 +191,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
         if (path === basePath) {
             // mango default URI will contain the homeUrl if it exists, or the mango start page if it doesn't
             // so prefer using it if it exists (only exists when doing login)
-            var homeUrl = user.mangoDefaultUri || user.homeUrl;
+            const homeUrl = user.mangoDefaultUri || user.homeUrl;
             if (homeUrl && homeUrl.indexOf(basePath) === 0) {
                 return '/' + homeUrl.substring(basePath.length); // strip basePath from start of URL
             }
@@ -201,8 +201,8 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
         return '/not-found?path=' + encodeURIComponent(path);
     });
 
-    var apiDocsMenuItems = [];
-    var docsParent = {
+    const apiDocsMenuItems = [];
+    const docsParent = {
         name: 'ui.docs',
         url: '/docs',
         menuTr: 'ui.dox.apiDocs',
@@ -226,10 +226,10 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     };
     apiDocsMenuItems.push(docsParent);
 
-    var DOCS_PAGES = MA_UI_NG_DOCS.pages;
+    const DOCS_PAGES = MA_UI_NG_DOCS.pages;
 
     // Loop through and create array of children based on moduleName
-    var modules = DOCS_PAGES.map(function(page) {
+    const modules = DOCS_PAGES.map(function(page) {
         return page.moduleName;
     }).filter(function(item, index, array) {
         return index === array.indexOf(item);
@@ -262,7 +262,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
 
     // Create 3rd level directives/services/filters docs pages
     // First remove module items
-    var components = DOCS_PAGES.map(function(page) {
+    const components = DOCS_PAGES.map(function(page) {
         return page.id;
     }).filter(function(item, index, array) {
         return item.indexOf('.') !== -1;
@@ -270,17 +270,17 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
 
     // Add each component item
     components.forEach(function(item, index, array) {
-        var matches = /^(.+?)\.(.+?)(?::(.+?))?$/.exec(item);
+        const matches = /^(.+?)\.(.+?)(?::(.+?))?$/.exec(item);
         if (matches) {
-            var moduleName = matches[1];
-            var serviceName = matches[2];
-            var directiveName;
+            const moduleName = matches[1];
+            const serviceName = matches[2];
+            let directiveName;
             if (matches.length > 3)
                 directiveName = matches[3];
             
-            var name = directiveName || serviceName;
+            const name = directiveName || serviceName;
             
-            var dashCaseUrl = name.replace(/[A-Z]/g, function(c) {
+            let dashCaseUrl = name.replace(/[A-Z]/g, function(c) {
                 return '-' + c.toLowerCase();
             });
             
@@ -288,10 +288,10 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
                 dashCaseUrl = dashCaseUrl.slice(1);
             }
 
-            var templateUrl = moduleName + '.' + serviceName;
+            let templateUrl = moduleName + '.' + serviceName;
             if (directiveName) templateUrl += '.' + directiveName;
 
-            var menuItem = {
+            const menuItem = {
                 name: 'ui.docs.' + moduleName + '.' + name,
                 url: '/' + dashCaseUrl,
                 menuText: name,
@@ -400,12 +400,12 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     };
     
     $rootScope.scrollHelp = function() {
-        var helpMdContent = document.querySelector('.ma-help-sidebar md-content');
+        const helpMdContent = document.querySelector('.ma-help-sidebar md-content');
         if (helpMdContent) {
             helpMdContent.scrollTop = 0;
             
             // if help pane contains the hash element scroll to it
-            var hash = $location.hash();
+            const hash = $location.hash();
             if (hash && helpMdContent.querySelector('#' + hash)) {
 //                $anchorScroll();
             }
@@ -480,10 +480,10 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
 
         if (toState.name.indexOf('ui.help.') === 0 || toState.name.indexOf('ui.docs.') === 0) {
-            var linkBetweenPages = toState.name.indexOf('ui.help.') === 0 && $state.includes('ui.help') ||
+            const linkBetweenPages = toState.name.indexOf('ui.help.') === 0 && $state.includes('ui.help') ||
                 toState.name.indexOf('ui.docs.') === 0 && $state.includes('ui.docs');
 
-            var openInSidebar = $state.includes('ui') && (toParams.sidebar != null ? toParams.sidebar : !linkBetweenPages);
+            const openInSidebar = $state.includes('ui') && (toParams.sidebar != null ? toParams.sidebar : !linkBetweenPages);
             if (openInSidebar) {
                 // stay on current page and load help page into sidebar
                 event.preventDefault();
@@ -495,8 +495,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     });
     
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        var crumbs = [];
-        var state = $state.$current;
+        const crumbs = [];
+        let state = $state.$current;
         do {
             if (state.name === 'ui') continue;
             
@@ -525,7 +525,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.$on('$viewContentLoaded', function(event, view) {
         if (view === '@ui') {
             if ($mdMedia('gt-sm')) {
-                var uiPrefs = localStorageService.get('uiPreferences');
+                const uiPrefs = localStorageService.get('uiPreferences');
                 if (!uiPrefs || !uiPrefs.menuClosed) {
                     $rootScope.openMenu();
                 }
@@ -538,12 +538,12 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             });
         }
         
-        var mainContent = document.querySelector('md-content.main-content');
+        const mainContent = document.querySelector('md-content.main-content');
         if (mainContent) {
             mainContent.scrollTop = 0;
             
             // if main content contains the hash element scroll to it
-            var hash = $location.hash();
+            const hash = $location.hash();
             if (hash && mainContent.querySelector('#' + hash)) {
                 //$anchorScroll();
             }
@@ -555,8 +555,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         if (gtSm === prev) return; // ignore first "change"
         if (!$state.includes('ui')) return; // nothing to do if menu not visible
         
-        var sideNav = $mdSidenav('left');
-        var uiPrefs = localStorageService.get('uiPreferences') || {};
+        const sideNav = $mdSidenav('left');
+        const uiPrefs = localStorageService.get('uiPreferences') || {};
         
         // window expanded
         if (gtSm && !uiPrefs.menuClosed && !sideNav.isOpen()) {
@@ -569,8 +569,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     });
     
     $rootScope.toggleMenu = function() {
-        var sideNav = $mdSidenav('left');
-        var uiPrefs = localStorageService.get('uiPreferences') || {};
+        const sideNav = $mdSidenav('left');
+        const uiPrefs = localStorageService.get('uiPreferences') || {};
         
         if (sideNav.isOpen()) {
             uiPrefs.menuClosed = true;
@@ -608,8 +608,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
      */
 
     $rootScope.$on('maWatchdog', function(event, current, previous) {
-        var message;
-        var hideDelay = 0; // dont auto hide message
+        let message;
+        let hideDelay = 0; // dont auto hide message
 
         if (current.status !== 'STARTING_UP' && current.status === previous.status)
             return;
@@ -657,7 +657,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
 
         if (message) {
-            var toast = $mdToast.simple()
+            const toast = $mdToast.simple()
                 .textContent(message)
                 .action(Translate.trSync('login.ui.app.ok'))
                 .highlightAction(true)
@@ -684,24 +684,24 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 // This is so the states can be added to the stateProvider in the config block for the
 // main application. If the states are added after the main app runs then the user may
 // not navigate directly to one of their custom states on startup
-var servicesInjector = angular.injector(['ngMangoServices'], true);
-var User = servicesInjector.get('maUser');
-var JsonStore = servicesInjector.get('maJsonStore');
-var $q = servicesInjector.get('$q');
-var $http = servicesInjector.get('$http');
-var maCssInjector = servicesInjector.get('maCssInjector');
+const servicesInjector = angular.injector(['ngMangoServices'], true);
+const User = servicesInjector.get('maUser');
+const JsonStore = servicesInjector.get('maJsonStore');
+const $q = servicesInjector.get('$q');
+const $http = servicesInjector.get('$http');
+const maCssInjector = servicesInjector.get('maCssInjector');
 
 // ensures credentials are saved/deleted on first page load if params are set
 User.getCredentialsFromUrl();
 
-var defaultUiSettingsPromise = $q.resolve(defaultUiSettings);
-var customUiSettingsPromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
+const defaultUiSettingsPromise = $q.resolve(defaultUiSettings);
+const customUiSettingsPromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
 
-var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromise]).then(function(results) {
-    var defaultUiSettings = results[0];
-    var customUiSettings = results[1];
+const uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromise]).then(function(results) {
+    const defaultUiSettings = results[0];
+    const customUiSettings = results[1];
     
-    var MA_UI_SETTINGS = {};
+    const MA_UI_SETTINGS = {};
     if (defaultUiSettings) {
         MA_UI_SETTINGS.defaultSettings = defaultUiSettings;
         angular.merge(MA_UI_SETTINGS, defaultUiSettings);
@@ -716,7 +716,7 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     }
     
     // contains fix for https://github.com/angular/material/issues/10516
-    var userAgent = navigator.userAgent;
+    const userAgent = navigator.userAgent;
     if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
     		userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
         // assign to variable to stop other warnings
@@ -727,12 +727,12 @@ var uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromis
     return MA_UI_SETTINGS;
 });
 
-var userAndMenuPromise = User.getCurrent().$promise.then(null, function() {
+const userAndMenuPromise = User.getCurrent().$promise.then(null, function() {
 	return uiSettingsPromise.then(function(MA_UI_SETTINGS) {
 		return User.autoLogin(MA_UI_SETTINGS);
 	});
 }).then(function(user) {
-    var userMenuPromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(null, angular.noop);
+    const userMenuPromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(null, angular.noop);
     return $q.all([user, userMenuPromise]);
 }, angular.noop).then(function(data) {
     return {
@@ -741,14 +741,14 @@ var userAndMenuPromise = User.getCurrent().$promise.then(null, function() {
     };
 });
 
-var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
+const angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
     return $http({
         method: 'GET',
         url: '/rest/v1/modules/angularjs-modules/public'
     }).then(function (response) {
         if (!response.data.urls || !Array.isArray(response.data.urls)) return;
 
-        var urls = response.data.urls.map(function(url) {
+        const urls = response.data.urls.map(function(url) {
             return url.replace(/^\/modules\/(.*?)\/web\/(.*?).js(?:\?v=(.*))?$/, function(match, module, filename, version) {
                 moduleVersions[module] = version;
                 return `modules/${module}/web/${filename}`;
@@ -759,8 +759,8 @@ var angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
             urls.push(MA_UI_SETTINGS.userModule);
         }
 
-        var modulePromises = urls.map(function(url) {
-            var deferred = $q.defer();
+        const modulePromises = urls.map(function(url) {
+            const deferred = $q.defer();
             requirejs([url], function(module) {
                 deferred.resolve(module);
             }, function() {
@@ -782,10 +782,10 @@ $q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(func
 	// This caused the "send test email" button not to work on first load
     //servicesInjector.get('$rootScope').$destroy();
 
-    var user = data[0].user || null;
-    var userMenuStore = data[0].userMenuStore;
-    var MA_UI_SETTINGS = data[1];
-    var angularModules = data[2] || [];
+    const user = data[0].user || null;
+    const userMenuStore = data[0].userMenuStore;
+    const MA_UI_SETTINGS = data[1];
+    const angularModules = data[2] || [];
 
     uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', userMenuStore ? userMenuStore.jsonData.menuItems : null);
     uiApp.constant('MA_UI_CUSTOM_MENU_STORE', userMenuStore ? userMenuStore : null);
@@ -795,7 +795,7 @@ $q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(func
     uiApp.constant('MA_POINT_VALUES_CONFIG', {limit: MA_UI_SETTINGS.pointValuesLimit});
 
     MA_UI_SETTINGS.mangoModuleNames = [];
-    var angularJsModuleNames = ['maUiApp'];
+    const angularJsModuleNames = ['maUiApp'];
     angularModules.forEach(function(angularModule, index, array) {
         if (angularModule && angularModule.name) {
             angularJsModuleNames.push(angularModule.name);
@@ -819,11 +819,11 @@ $q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(func
         try {
             angular.bootstrap(document.documentElement, ['maUiBootstrap'], {strictDi: true});
         } catch (e) {
-            var errorDiv = document.querySelector('.pre-bootstrap-error');
-            var msgDiv = errorDiv.querySelector('div');
-            var pre = errorDiv.querySelector('pre');
-            var code = errorDiv.querySelector('code');
-            var link = errorDiv.querySelector('a');
+            const errorDiv = document.querySelector('.pre-bootstrap-error');
+            const msgDiv = errorDiv.querySelector('div');
+            const pre = errorDiv.querySelector('pre');
+            const code = errorDiv.querySelector('code');
+            const link = errorDiv.querySelector('a');
 
             msgDiv.textContent = 'Error bootstrapping Mango app: ' + e.message;
             code.textContent = e.stack;

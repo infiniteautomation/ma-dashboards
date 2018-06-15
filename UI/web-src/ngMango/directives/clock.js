@@ -53,13 +53,13 @@ function clock(MA_DATE_FORMATS) {
         },
         template: '<div class="amchart"></div>',
         link: function ($scope, $element, attributes) {
-            var options = $.extend(true, defaultOptions(), $scope.options);
-            var showSeconds = $scope.showSeconds !== 'false';
+            const options = $.extend(true, defaultOptions(), $scope.options);
+            const showSeconds = $scope.showSeconds !== 'false';
             if (!showSeconds) {
                 options.arrows.pop();
             }
 
-            var chart = AmCharts.makeChart($element[0], options);
+            const chart = AmCharts.makeChart($element[0], options);
 
             $scope.$watch('text', function(newText) {
             	chart.axes[0].setBottomText(newText || '');
@@ -67,11 +67,11 @@ function clock(MA_DATE_FORMATS) {
 
             $scope.$watch('time', function(newTime) {
             	if (newTime === undefined) return;
-            	var date = $scope.timezone ? moment.tz(newTime, $scope.timezone) : newTime;
+            	const date = $scope.timezone ? moment.tz(newTime, $scope.timezone) : newTime;
 
-                var hours = date.hours();
-                var minutes = date.minutes();
-                var seconds = date.seconds();
+                const hours = date.hours();
+                const minutes = date.minutes();
+                const seconds = date.seconds();
 
                 chart.arrows[0].setValue(hours + minutes / 60);
                 chart.arrows[1].setValue( 12 * (minutes + seconds / 60 ) / 60);

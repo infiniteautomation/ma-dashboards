@@ -32,7 +32,7 @@ import maSliderTemplate from './maSlider.html';
   
     MaSliderController.$inject = ['$element'];
     function MaSliderController($element) {
-        var sliderContainerElement = $element.find('md-slider-container');
+        const sliderContainerElement = $element.find('md-slider-container');
 
         this.$onChanges = function(changes) {
             if (changes.vertical) {

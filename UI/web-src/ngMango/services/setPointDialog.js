@@ -8,7 +8,7 @@ import setPointDialogTemplate from './setPointDialog.html';
 
 setPointDialog.$inject = ['$mdDialog', '$mdMedia'];
 function setPointDialog($mdDialog, $mdMedia) {
-    var SetPointDialog = {};
+    const SetPointDialog = {};
 
     SetPointDialog.show = function(ev, point) {
     	return $mdDialog.show({

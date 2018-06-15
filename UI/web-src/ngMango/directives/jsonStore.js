@@ -40,7 +40,7 @@ The 'user' permissions group is added to created Mango users by default.
  *
  */
 function jsonStore(JsonStore, jsonStoreEventManager, $q) {
-	var SUBSCRIPTION_TYPES = ['update'];
+	const SUBSCRIPTION_TYPES = ['update'];
 
     return {
         scope: {

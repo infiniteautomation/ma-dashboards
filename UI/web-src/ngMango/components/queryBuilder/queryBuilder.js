@@ -74,15 +74,15 @@ function QueryBuilderController() {
     }.bind(this);
     
     this.render = function render() {
-        var node = angular.copy(this.ngModelCtrl.$viewValue);
-        var sort = [];
-        var limit = [];
-        for (var i = 0; i < node.args.length; i++) {
-            var childNode = node.args[i];
+        const node = angular.copy(this.ngModelCtrl.$viewValue);
+        const sort = [];
+        let limit = [];
+        for (let i = 0; i < node.args.length; i++) {
+            const childNode = node.args[i];
             if (childNode.name === 'sort') {
-                for (var j = 0; j < childNode.args.length; j++) {
-                    var sortProp = childNode.args[j];
-                    var desc = false;
+                for (let j = 0; j < childNode.args.length; j++) {
+                    let sortProp = childNode.args[j];
+                    let desc = false;
                     if (sortProp.indexOf('-') === 0) {
                         desc = true;
                         sortProp = sortProp.substring(1);

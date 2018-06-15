@@ -8,9 +8,9 @@ function AceEditorController($element, $injector, $templateRequest, $sce, $scope
     this.initialText = $element.data('htmlContent');
     $element.removeData('htmlContent');
     
-    var $ctrl = this;
+    const $ctrl = this;
     if (MutationObserver) {
-        var observer = new MutationObserver(function() {
+        const observer = new MutationObserver(function() {
             if ($ctrl.editor) {
                 $ctrl.editor.resize();
             }
@@ -33,7 +33,7 @@ function AceEditorController($element, $injector, $templateRequest, $sce, $scope
 }
 
 AceEditorController.prototype.$onInit = function() {
-    var $ctrl = this;
+    const $ctrl = this;
     
     this.ngModelCtrl.$render = function() {
         $ctrl.setEditorText(this.$viewValue || '');
@@ -80,7 +80,7 @@ AceEditorController.prototype.aceLoaded = function aceLoaded(editor) {
 };
 
 AceEditorController.prototype.aceChanged = function aceChanged() {
-    var text = this.editor.getValue();
+    const text = this.editor.getValue();
     this.ngModelCtrl.$setViewValue(text);
 };
 
@@ -94,9 +94,9 @@ AceEditorController.prototype.setEditorText = function(text) {
 
 AceEditorController.prototype.loadFromSrc = function loadFromSrc() {
     if (!this.src) return;
-    var $ctrl = this;
+    const $ctrl = this;
 
-    var url = this.$sce.getTrustedResourceUrl(this.src);
+    const url = this.$sce.getTrustedResourceUrl(this.src);
     this.$templateRequest(url).then(function(text) {
         $ctrl.setEditorText(text);
     });
@@ -125,7 +125,7 @@ function AceEditor() {
     return {
         restrict: 'E',
         template: function($element, attrs) {
-            var htmlContent = $element.html().trim();
+            const htmlContent = $element.html().trim();
             $element.empty();
             if (htmlContent)
                 $element.data('htmlContent', htmlContent);

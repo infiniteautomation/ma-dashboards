@@ -5,8 +5,8 @@
 
 import angular from 'angular';
 
-var DEFAULT_SORT = ['name'];
-var UPDATE_TYPES = ['add', 'update', 'delete'];
+const DEFAULT_SORT = ['name'];
+const UPDATE_TYPES = ['add', 'update', 'delete'];
 
 WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'maWatchList', 'maWatchListEventManager', 'maUtil'];
 function WatchListSelectController($scope, $element, $attrs, WatchList, WatchListEventManager, maUtil) {

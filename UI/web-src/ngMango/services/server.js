@@ -5,7 +5,7 @@
 
 ServerFactory.$inject = ['$http', '$q'];
 function ServerFactory($http, $q) {
-    var serverUrl = '/rest/v2/server';
+    const serverUrl = '/rest/v2/server';
     
     function Server() {
     }
@@ -31,7 +31,7 @@ function ServerFactory($http, $q) {
     };
     
     Server.prototype.getSystemInfo = function(key) {
-    	var url = serverUrl + '/system-info/';
+        let url = serverUrl + '/system-info/';
     	if (key) {
     		url += encodeURIComponent(key);
     	}

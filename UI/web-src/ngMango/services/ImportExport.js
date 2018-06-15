@@ -7,7 +7,7 @@ import angular from 'angular';
 
 ImportExportFactory.$inject = ['$http', '$q', '$timeout', 'maUtil'];
 function ImportExportFactory($http, $q, $timeout, Util) {
-    var importExportUrl = '/rest/v2/json-emport';
+    const importExportUrl = '/rest/v2/json-emport';
     
     function ImportStatus(location) {
         this.location = location;
@@ -63,8 +63,8 @@ function ImportExportFactory($http, $q, $timeout, Util) {
             if (!options) options = {};
             if (!Array.isArray(sections)) throw new Error('Requires sections parameter');
 
-            var canceler = $q.defer();
-            var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+            const canceler = $q.defer();
+            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
             return $http.get(importExportUrl, {
                 timeout: cancelOrTimeout,
@@ -88,8 +88,8 @@ function ImportExportFactory($http, $q, $timeout, Util) {
         try {
             if (!options) options = {};
             
-            var canceler = $q.defer();
-            var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+            const canceler = $q.defer();
+            const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
         
             return $http({
                 method: 'POST',

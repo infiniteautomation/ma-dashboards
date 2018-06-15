@@ -8,7 +8,7 @@ function addParams(url) {
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'showHeader=false&showFooter=false&showToolbar=false';
 }
 
-var iframeView = function() {
+const iframeView = function() {
     return {
         scope: {
             src: '@',
@@ -17,25 +17,25 @@ var iframeView = function() {
         },
         template: '<iframe flex sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" scrolling="no"></iframe>',
         link: function($scope, $element) {
-            var $iframe = $element.find('iframe');
+            const $iframe = $element.find('iframe');
             $iframe.attr('src', addParams($scope.src));
             
-            var timer;
-            var lastHeight;
+            let timer;
+            let lastHeight;
             
             $iframe.on('load', function() {
-                var iFrame = this;
-                var iFrameDocument = this.contentWindow.document;
+                const iFrame = this;
+                const iFrameDocument = this.contentWindow.document;
                 
                 // J.W. no other way of doing this I believe
                 if (!$scope.disableResize) {
                     timer = setInterval(setIFrameHeight, $scope.pollInterval || 50);
                 }
                 
-                var links = iFrameDocument.querySelectorAll('a');
-                for (var i = 0; i < links.length; i++) {
-                    var link = links[i];
-                    var href = link.getAttribute('href');
+                const links = iFrameDocument.querySelectorAll('a');
+                for (let i = 0; i < links.length; i++) {
+                    const link = links[i];
+                    const href = link.getAttribute('href');
                     
                     if (link.host === window.location.host) {
                         link.removeAttribute('target');
@@ -50,7 +50,7 @@ var iframeView = function() {
                 lastHeight = undefined;
                 
                 function setIFrameHeight() {
-                    var height = iFrameDocument.body.offsetHeight;
+                    let height = iFrameDocument.body.offsetHeight;
                     // offsetHeight sometimes returns 0 for some reason, cache the last known
                     // height and use that instead
                     if (height === 0) {

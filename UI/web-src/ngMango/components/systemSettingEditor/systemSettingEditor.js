@@ -7,7 +7,7 @@ import angular from 'angular';
 import systemSettingEditorTemplate from './systemSettingEditor.html';
 import tinycolor from 'tinycolor2';
 
-var systemSettingEditor = {
+const systemSettingEditor = {
     controller: SystemSettingEditorController,
     template: systemSettingEditorTemplate,
     bindings: {
@@ -97,13 +97,13 @@ SystemSettingEditorController.prototype.valueChanged = function valueChanged() {
 };
 
 SystemSettingEditorController.prototype.saveSetting = function saveSetting() {
-    var $ctrl = this;
+    const $ctrl = this;
     this.done = false;
     this.error = false;
     delete $ctrl.messages.errorSaving;
     
     // dont show the sync icon for saves of less than 200ms, stops icon flashing
-    var delay = this.$timeout(function() {
+    const delay = this.$timeout(function() {
         this.saving = true;
     }, 200);
     

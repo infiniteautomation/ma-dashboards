@@ -7,9 +7,9 @@ import angular from 'angular';
 
 SystemSettingsProvider.$inject = [];
 function SystemSettingsProvider() {
-    var sections = [];
-    var systemAlarmLevelSettings = [];
-    var auditAlarmLevelSettings = [];
+    const sections = [];
+    const systemAlarmLevelSettings = [];
+    const auditAlarmLevelSettings = [];
 
     this.addSection = function(section) {
         sections.push(section);
@@ -41,8 +41,8 @@ function SystemSettingsProvider() {
 
 SystemSettingsFactory.$inject = ['$http'];
 function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLevelSettings, $http) {
-    var systemSettingsUrl = '/rest/v1/system-settings';
-    var permissionsUrl = '/rest/v2/permissions';
+    const systemSettingsUrl = '/rest/v1/system-settings';
+    const permissionsUrl = '/rest/v2/permissions';
     
     function SystemSettings(key, type) {
         this.key = key;
@@ -87,7 +87,7 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
     };
 
     SystemSettings.prototype.getValue = function getSystemSetting(type) {
-        var $this = this;
+        const $this = this;
 
         return $http({
             method: 'GET',
@@ -105,7 +105,7 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
     };
     
     SystemSettings.prototype.setValue = function setSystemSetting(value, type) {
-        var $this = this;
+        const $this = this;
         value = angular.toJson(value || this.value);
         return $http({
             method: 'PUT',

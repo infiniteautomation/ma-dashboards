@@ -17,11 +17,11 @@ ConfigImportController.prototype.$onInit = function() {
 };
 
 ConfigImportController.prototype.fileDropped = function(data) {
-    var types = data.getDataTransferTypes();
+    const types = data.getDataTransferTypes();
     if (types.includes('Files')) {
-        var transfer = data.getDataTransfer();
+        const transfer = data.getDataTransfer();
         if (transfer.length) {
-            var file = transfer[0];
+            const file = transfer[0];
             if (!file.type || file.type === 'application/json' || file.type.indexOf('text/') === 0) {
                 this.maDialogHelper.showConfigImportDialog(file);
             }
@@ -30,7 +30,7 @@ ConfigImportController.prototype.fileDropped = function(data) {
 };
 
 ConfigImportController.prototype.fileSelected = function($event) {
-    var fileInput = $event.target;
+    const fileInput = $event.target;
     if (fileInput.files && fileInput.files.length) {
         this.maDialogHelper.showConfigImportDialog(fileInput.files[0], $event);
         fileInput.value = '';
@@ -38,7 +38,7 @@ ConfigImportController.prototype.fileSelected = function($event) {
 };
 
 ConfigImportController.prototype.doImport = function($event) {
-    var data;
+    let data;
     try {
         data = angular.fromJson(this.jsonString);
     } catch (e) {

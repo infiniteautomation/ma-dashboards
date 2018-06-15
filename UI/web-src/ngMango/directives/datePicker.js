@@ -87,7 +87,7 @@ function datePicker($injector, mangoDateFormats, $q) {
 
         function modelToView(value) {
             if (Object.prototype.toString.call(value) === '[object Date]' || moment.isMoment(value)) {
-                var m = moment(value);
+                const m = moment(value);
                 if ($scope.timezone) {
                     m.tz($scope.timezone);
                 }
@@ -98,8 +98,8 @@ function datePicker($injector, mangoDateFormats, $q) {
         // parser converts from String ($viewValue) into Date ($modelValue)
         ngModel.$parsers.push(function(value) {
             if (typeof value === 'string') {
-                var initialDate = moment(ngModel.$modelValue);
-                var m;
+                const initialDate = moment(ngModel.$modelValue);
+                let m;
                 if ($scope.timezone) {
                     initialDate.tz($scope.timezone);
                     m = moment.tz(value, $scope.getFormat(), true, $scope.timezone);
@@ -124,24 +124,24 @@ function datePicker($injector, mangoDateFormats, $q) {
         });
 
         if ($injector.has('$mdpDatePicker')) {
-            var $mdpDatePicker = $injector.get('$mdpDatePicker');
-            var $mdpTimePicker = $injector.get('$mdpTimePicker');
+            const $mdpDatePicker = $injector.get('$mdpDatePicker');
+            const $mdpTimePicker = $injector.get('$mdpTimePicker');
 
             $scope.showPicker = function showPicker(ev) {
             	if (ev.altKey) return;
             	
-                var autoSwitchTime = $scope.autoSwitchTime === undefined ? true : $scope.autoSwitchTime;
-                var initialDate;
+                const autoSwitchTime = $scope.autoSwitchTime === undefined ? true : $scope.autoSwitchTime;
+                let initialDate;
                 
                 if ($scope.timezone) {
-                    var m = moment(ngModel.$modelValue);
-                    var defaultMomentOffset = m.utcOffset();
+                    const m = moment(ngModel.$modelValue);
+                    const defaultMomentOffset = m.utcOffset();
                     initialDate = m.tz($scope.timezone).utcOffset(defaultMomentOffset, true).toDate();
                 } else {
                     initialDate = ngModel.$modelValue;
                 }
 
-                var promise;
+                let promise;
                 if (!$scope.mode || $scope.mode === 'both' || $scope.mode === 'date') {
                     promise = $mdpDatePicker(initialDate, {
                         targetEvent: ev
@@ -160,7 +160,7 @@ function datePicker($injector, mangoDateFormats, $q) {
                 }
                 
                 promise.then(function(date) {
-                    var stringValue = moment(date).format($scope.getFormat());
+                    const stringValue = moment(date).format($scope.getFormat());
                     ngModel.$setViewValue(stringValue, ev);
                     ngModel.$render();
                 });

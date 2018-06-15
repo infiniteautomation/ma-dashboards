@@ -7,13 +7,13 @@ slideUp.$inject = ['$animateCss'];
 function slideUp($animateCss) {
     return {
         enter: function($element, onDone) {
-            var boundingRect = $element[0].getBoundingClientRect();
-            var height = boundingRect.height;
-            var $parent = $element.parent();
+            const boundingRect = $element[0].getBoundingClientRect();
+            const height = boundingRect.height;
+            const $parent = $element.parent();
 
             $parent.css('max-height', 0);
             
-            var animation = $animateCss($element, {
+            const animation = $animateCss($element, {
                 event: 'enter',
                 structural: true,
                 from: { transform: 'translateY(-100%)' },
@@ -30,13 +30,13 @@ function slideUp($animateCss) {
             });
         },
         leave: function($element, onDone) {
-            var boundingRect = $element[0].getBoundingClientRect();
-            var height = boundingRect.height;
-            var $parent = $element.parent();
+            const boundingRect = $element[0].getBoundingClientRect();
+            const height = boundingRect.height;
+            const $parent = $element.parent();
 
             $parent.css('max-height', height + 'px');
             
-            var animation = $animateCss($element, {
+            const animation = $animateCss($element, {
                 event: 'leave',
                 structural: true,
                 from: { transform: 'translateY(0)' },

@@ -5,7 +5,7 @@
 
 import autoLoginSettingsTemplate from './autoLoginSettings.html';
 
-var autoLoginSettings = function autoLoginSettings(User, $scope) {
+const autoLoginSettings = function autoLoginSettings(User, $scope) {
     this.$onInit = function() {
         this.storedUsername = User.storedUsername();
     };

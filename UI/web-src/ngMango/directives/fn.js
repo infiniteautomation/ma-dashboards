@@ -33,7 +33,7 @@ function maFnDirective($parse) {
             argNames: '=?'
         },
     	compile: function($element, attrs) {
-    		var parsed = $parse(attrs.expression);
+    		const parsed = $parse(attrs.expression);
 
     		return function($scope, $element, attrs) {
     			$scope.fn = argMatch.bind(null, parsed, $scope.$parent, $scope.argNames);
@@ -41,10 +41,10 @@ function maFnDirective($parse) {
             };
 
             function argMatch(parsedFn, context, argNames) {
-                var overrides = {};
-                for (var i = 3; i < arguments.length; i++) {
-                    var argNumber = i - 3;
-                    var argName = argNames && argNames.length > argNumber && argNames[argNumber] || 'arg' + argNumber;
+                const overrides = {};
+                for (let i = 3; i < arguments.length; i++) {
+                    const argNumber = i - 3;
+                    const argName = argNames && argNames.length > argNumber && argNames[argNumber] || 'arg' + argNumber;
                     overrides[argName] = arguments[i];
                 }
                 return parsedFn(context, overrides);

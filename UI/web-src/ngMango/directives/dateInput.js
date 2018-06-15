@@ -48,7 +48,7 @@ function dateInput() {
                 		return;
                 	}
                 	
-                	var m = moment(value);
+                	const m = moment(value);
                     if (this.timezone) {
                         m.tz(this.timezone);
                     }
@@ -57,14 +57,14 @@ function dateInput() {
 
                 this.ngModel.$parsers.push(function toDate(value) {
                     if (typeof value === 'string') {
-                        var m = moment.tz(value, this.getFormat(), true, this.timezone);
+                        const m = moment.tz(value, this.getFormat(), true, this.timezone);
                         if (m.isValid()) {
                             if (this.modelType === 'date') {
                                 return m.toDate();
                         	} else if (this.modelType === 'moment') {
                                 return m;
                         	} else if (this.modelType === 'number') {
-                        		var numberVal = m.valueOf();
+                        	    let numberVal = m.valueOf();
                         		if (this.scaleNumber) {
                         			numberVal /= this.scaleNumber;
                         		}

@@ -26,7 +26,7 @@ import angular from 'angular';
 *  JsonStore.get({xid: newXid}).$promise.then(function(item) {
 *		return item;
 *  }, function() {
-*		var item = new JsonStore();
+*		const item = new JsonStore();
 *		item.xid = newXid;
 *		item.name = newXid;
 *		item.jsonData = $scope.value || {};
@@ -120,7 +120,7 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
         return data.resource;
     }
 
-    var JsonStore = $resource(jsonStoreUrl + ':xid/:dataPathStr', {
+    const JsonStore = $resource(jsonStoreUrl + ':xid/:dataPathStr', {
     	xid: '@xid',
     	dataPathStr: '@dataPathStr',
         name: '@name',
@@ -169,7 +169,7 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
             },
         	transformResponse: function(data, headersGetter, status) {
         	    if (data && status < 400) {
-        	        var item = angular.fromJson(data);
+        	        const item = angular.fromJson(data);
                     item.jsonData = null;
                     return item;
         	    }

@@ -18,10 +18,10 @@ The CSS will only be injected if the directive using this service is used on a p
 * <pre prettyprint-mode="javascript">
 *  // inserts a style tag to style <a> tags with accent color
 *  if ($MD_THEME_CSS) {
-    var acc = $mdColors.getThemeColor('accent-500-1.0');
-    var accT = $mdColors.getThemeColor('accent-500-0.2');
-    var accD = $mdColors.getThemeColor('accent-700-1.0');
-    var styleContent =
+    const acc = $mdColors.getThemeColor('accent-500-1.0');
+    const accT = $mdColors.getThemeColor('accent-500-0.2');
+    const accD = $mdColors.getThemeColor('accent-700-1.0');
+    const styleContent =
         'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
         'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
 
@@ -99,7 +99,7 @@ function cssInjectorFactory() {
     CssInjector.prototype.injectLink = function(href, trackingName, selector, insertBefore, alwaysInject) {
         if (!alwaysInject && this.isInjected(trackingName, true)) return;
 
-        var linkElement = document.createElement('link');
+        const linkElement = document.createElement('link');
         linkElement.setAttribute('rel', 'stylesheet');
         linkElement.setAttribute('href', href);
         if (trackingName)
@@ -110,7 +110,7 @@ function cssInjectorFactory() {
     CssInjector.prototype.injectStyle = function(content, trackingName, selector, insertBefore, alwaysInject) {
         if (!alwaysInject && this.isInjected(trackingName, true)) return;
 
-        var styleElement = document.createElement('style');
+        const styleElement = document.createElement('style');
         if (trackingName)
             styleElement.setAttribute('tracking-name', trackingName);
         styleElement.appendChild(document.createTextNode(content));
@@ -119,9 +119,9 @@ function cssInjectorFactory() {
 
     function insert(element, selector, insertBefore) {
         if (selector) {
-            var matches = document.head.querySelectorAll(selector);
+            const matches = document.head.querySelectorAll(selector);
             if (matches.length) {
-                var last = angular.element(matches[matches.length - 1]);
+                const last = angular.element(matches[matches.length - 1]);
                 if (insertBefore) {
                     last.before(element);
                 } else {

@@ -120,7 +120,7 @@
  */
 PointHierarchyFactory.$inject = ['$resource', 'maPoint'];
 function PointHierarchyFactory($resource, Point) {
-    var PointHierarchy = $resource('/rest/v1/hierarchy/by-id/:id', {
+    const PointHierarchy = $resource('/rest/v1/hierarchy/by-id/:id', {
     		id: '@id'
     	}, {
     	getRoot: {
@@ -151,7 +151,7 @@ function PointHierarchyFactory($resource, Point) {
     };
     
     PointHierarchy.prototype.getPoints = function getPoints(subFolders) {
-        var folderIds = [];
+        const folderIds = [];
         if (subFolders) {
             this.walkHierarchy(function(folder) {
                 folderIds.push(folder.id);
@@ -176,7 +176,7 @@ function PointHierarchyFactory($resource, Point) {
         
         if (!folder.subfolders) return;
         
-        for (var i = 0; i < folder.subfolders.length; i++) {
+        for (let i = 0; i < folder.subfolders.length; i++) {
             result = walkHierarchy(folder.subfolders[i], fn, folder, i, depth + 1);
             if (result) return result;
         }

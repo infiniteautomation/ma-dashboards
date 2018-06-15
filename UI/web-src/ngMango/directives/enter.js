@@ -24,7 +24,7 @@ function enter() {
     return {
     	restrict: 'A',
     	compile: function() {
-    		var name = this.name;
+    		const name = this.name;
 
     		return function($scope, $element, attr) {
     			$element.bind('keypress', function(event) {

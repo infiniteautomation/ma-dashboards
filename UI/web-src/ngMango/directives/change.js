@@ -12,7 +12,7 @@ function ChangeController($scope, $element) {
 }
 
 ChangeController.prototype.$onInit = function() {
-    var $ctrl = this;
+    const $ctrl = this;
     this.$element.on('change', this.boundChangeHandler);
     this.$scope.$on('$destroy', function() {
         $ctrl.$element.off('change', $ctrl.boundChangeHandler);

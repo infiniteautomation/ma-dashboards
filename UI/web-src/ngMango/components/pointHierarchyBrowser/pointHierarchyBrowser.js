@@ -13,7 +13,7 @@ function PointHierarchyBrowserController(PointHierarchy) {
 
     this.$onChanges = function(changes) {
         if (changes.path) {
-            var resourceObj = this.path && this.path.length ?
+            const resourceObj = this.path && this.path.length ?
                     PointHierarchy.byPath({path: this.path, subfolders: true, points: true}) :
                     PointHierarchy.getRoot({subfolders: true, points: true});
             
@@ -61,14 +61,14 @@ function PointHierarchyBrowserController(PointHierarchy) {
         if (!this.hierarchy) return;
         
         // $viewValue is an array of folders
-        var selectedFolders = this.ngModelCtrl.$viewValue;
+        let selectedFolders = this.ngModelCtrl.$viewValue;
         if (selectedFolders === undefined) {
             selectedFolders = [];
         }
         
-        var selectedFoldersById = {};
-        for (var i = 0; i < selectedFolders.length; i++) {
-            var folder = selectedFolders[i];
+        const selectedFoldersById = {};
+        for (let i = 0; i < selectedFolders.length; i++) {
+            const folder = selectedFolders[i];
             selectedFoldersById[folder.id] = folder;
         }
         
@@ -82,9 +82,9 @@ function PointHierarchyBrowserController(PointHierarchy) {
      * Triggered when a checkbox changes and the $viewValue should be updated, and hence the $modelValue
      */
     this.folderCheckChanged = function folderCheckChanged(changedFolder) {
-        var selectedFolders = [];
+        const selectedFolders = [];
 
-        var changedFolders = {};
+        const changedFolders = {};
         this.walkHierarchy(changedFolder, function(folder, parent, index) {
             folder.checked = changedFolder.checked;
             changedFolders[folder.id] = folder;
@@ -111,10 +111,10 @@ function PointHierarchyBrowserController(PointHierarchy) {
     };
 
     this.walkHierarchy = function walkHierarchy(folder, fn, parent, index) {
-        var result = fn(folder, parent, index);
+        let result = fn(folder, parent, index);
         if (result) return result;
         
-        for (var i = 0; i < folder.subfolders.length; i++) {
+        for (let i = 0; i < folder.subfolders.length; i++) {
             result = this.walkHierarchy(folder.subfolders[i], fn, folder, i);
             if (result) return result;
         }

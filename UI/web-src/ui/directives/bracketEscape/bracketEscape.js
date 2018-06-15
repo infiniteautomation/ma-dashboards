@@ -8,8 +8,8 @@
 
 bracketEscape.$inject = [];
 function bracketEscape() {
-    var escapeRegExp = /{{(.*?)}}/g;
-    var unescapeRegExp = /%7B%7B(.*?)%7D%7D/gi;
+    const escapeRegExp = /{{(.*?)}}/g;
+    const unescapeRegExp = /%7B%7B(.*?)%7D%7D/gi;
     
     return {
         restrict: 'A',

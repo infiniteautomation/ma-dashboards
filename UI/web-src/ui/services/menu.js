@@ -21,12 +21,12 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
     this.registerCustomMenuItems = function registerCustomMenuItems() {
         if (!MA_UI_CUSTOM_MENU_ITEMS) return;
         
-        var menuItemsByName = {};
+        const menuItemsByName = {};
         MA_UI_MENU_ITEMS.forEach(function(item) {
             menuItemsByName[item.name] = item;
         }.bind(this));
 
-        var onlyCustomMenuItems = MA_UI_CUSTOM_MENU_ITEMS.filter(function(item, index, array) {
+        const onlyCustomMenuItems = MA_UI_CUSTOM_MENU_ITEMS.filter(function(item, index, array) {
             if (!menuItemsByName[item.name]) {
                 return item;
             }
@@ -87,7 +87,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             try {
                 $stateProvider.state(menuItem);
             } catch (error) {
-                var endsWith = 'is already defined';
+                const endsWith = 'is already defined';
                 if (error.message && error.message.substr(-endsWith.length) === endsWith) {
                     // state already exists, this happens during normal operation
                     //console.log(error);
@@ -105,7 +105,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
     function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION,
             MA_UI_CUSTOM_MENU_STORE) {
 
-        var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
+        const SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
 
         function Menu() {
             this.defaultMenuItems = MA_UI_MENU_ITEMS;
@@ -145,7 +145,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         };
 
         Menu.prototype.updateHandler = function updateHandler(event, payload) {
-            var changed = false;
+            let changed = false;
             if (payload.action === 'delete') {
                 this.storeObject.jsonData = {
                     menuItems: []
@@ -198,7 +198,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         };
 
         Menu.prototype.combineMenuItems = function combineMenuItems() {
-            var jsonMenuItems = angular.copy(this.storeObject.jsonData.menuItems);
+            const jsonMenuItems = angular.copy(this.storeObject.jsonData.menuItems);
             this.menuItems = angular.copy(this.defaultMenuItems);
             this.menuItemsByName = {};
             
@@ -256,20 +256,20 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         };
         
         Menu.prototype.saveMenu = function saveMenu(menuHierarchy) {
-            var newMenuItems = flattenMenu(menuHierarchy.children);
+            const newMenuItems = flattenMenu(menuHierarchy.children);
             
-            var different = [];
+            const different = [];
             newMenuItems.forEach(function(item, index, array) {
                 // all states are cleaned (remove parents and children, non-circular structure) so that
                 // a) If they are pushed to the different[] array and saved into menuItems they can be JSON serialized
                 // a) registerStates() works, $stateProvider.state(menuItem) fails if item has parent property set
                 cleanMenuItemForSave(item);
                 
-                var originalItem = this.defaultMenuItemsByName[item.name];
+                const originalItem = this.defaultMenuItemsByName[item.name];
                 if (!originalItem) {
                     different.push(item);
                 } else if (!angular.equals(item, originalItem)) {
-                    var difference = calculateDifference(item, originalItem);
+                    const difference = calculateDifference(item, originalItem);
                     if (Object.keys(difference).length === 1) {
                         // only has the name property
                         console.warn('cant detect difference', item, originalItem);
@@ -302,11 +302,11 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
     
                 cleanMenuItemForSave(menuItem);
                 
-                var originalItem = this.defaultMenuItemsByName[menuItem.name];
+                const originalItem = this.defaultMenuItemsByName[menuItem.name];
                 if (!originalItem) {
                     this.storeObject.jsonData.menuItems.push(menuItem);
                 } else if (!angular.equals(menuItem, originalItem)) {
-                    var difference = calculateDifference(menuItem, originalItem);
+                    const difference = calculateDifference(menuItem, originalItem);
                     this.storeObject.jsonData.menuItems.push(difference);
                 }
     
@@ -321,7 +321,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         
         Menu.prototype.removeMenuItem = function removeMenuItem(stateName) {
             return this.refresh().then(function() {
-                var found = this.storeObject.jsonData.menuItems.some(function(item, i, array) {
+                const found = this.storeObject.jsonData.menuItems.some(function(item, i, array) {
                     if (item.name === stateName) {
                         array.splice(i, 1);
                         return true;
@@ -342,9 +342,9 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         
         Menu.prototype.forEach = function forEach(menuItems, fn) {
             if (!menuItems) return;
-            for (var i = 0; i < menuItems.length; i++) {
-                var menuItem = menuItems[i];
-                var result = fn(menuItem, i, menuItems);
+            for (let i = 0; i < menuItems.length; i++) {
+                const menuItem = menuItems[i];
+                let result = fn(menuItem, i, menuItems);
                 if (result) return result;
                 result = this.forEach(menuItem.children, fn);
                 if (result) return result;
@@ -365,7 +365,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         }
         
         function unflattenMenu(flatMenuItems) {
-            var hierarchyRoot = {
+            const hierarchyRoot = {
                 children: {},
                 item: {
                     menuTr: 'ui.app.root'
@@ -376,7 +376,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
             // according to the state names
             flatMenuItems.forEach(function(item) {
                 if (!item.name) return;
-                var path = item.name.split('.');
+                const path = item.name.split('.');
                 buildMenuHierarchy(hierarchyRoot, item, path);
             });
     
@@ -385,8 +385,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         }
     
         function buildMenuHierarchy(item, toAdd, path) {
-            var segmentName = path.shift();
-            var child = item.children[segmentName];
+            const segmentName = path.shift();
+            let child = item.children[segmentName];
             if (!child) {
                 child = item.children[segmentName] = {
                     children: {}
@@ -400,9 +400,9 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         }
         
         function createMenuItem(item) {
-            var childArray = [];
-            for (var key in item.children) {
-                var transformedChild = createMenuItem(item.children[key]);
+            const childArray = [];
+            for (const key in item.children) {
+                const transformedChild = createMenuItem(item.children[key]);
                 transformedChild.parent = item.item;
                 childArray.push(transformedChild);
             }
@@ -413,7 +413,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, MA_UI_CUSTOM_MENU_ITEMS)
         }
         
         function calculateDifference(newItem, originalItem) {
-            var difference = {
+            const difference = {
                 name: originalItem.name
             };
             

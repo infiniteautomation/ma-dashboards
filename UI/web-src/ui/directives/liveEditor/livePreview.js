@@ -26,8 +26,8 @@ LivePreviewController.prototype.updatePreview = function updatePreview() {
     
     if (this.livePreview) {
         this.childScope = this.$scope.$new();
-        var compileText = '<div>' + this.livePreview + '</div>';
-        var $div = this.$compile(compileText)(this.childScope);
+        const compileText = '<div>' + this.livePreview + '</div>';
+        const $div = this.$compile(compileText)(this.childScope);
         this.$element.html($div.contents());
     } else {
         this.$element.empty();

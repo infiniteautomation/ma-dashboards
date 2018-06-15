@@ -29,7 +29,7 @@ function filteringDeviceNameList($injector, DeviceName) {
             };
             
             $scope.queryDeviceNames = function() {
-                var queryResult;
+                let queryResult;
                 if ($scope.dataSourceId !== undefined) {
                     queryResult = DeviceName.byDataSourceId({id: $scope.dataSourceId, contains: $scope.searchText});
                 } else if ($scope.dataSourceXid !== undefined) {

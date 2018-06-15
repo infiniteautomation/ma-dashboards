@@ -71,7 +71,7 @@ UpgradePageController.prototype.$onInit = function() {
 		}
 		
 		function moduleDownloaded(moduleName, searchArray) {
-			for (var i = searchArray.length - 1; i >= 0; i--) {
+			for (let i = searchArray.length - 1; i >= 0; i--) {
 				if (searchArray[i].name === moduleName) {
 					searchArray[i].downloaded = true;
 					searchArray.splice(i, 1);
@@ -202,7 +202,7 @@ UpgradePageController.prototype.restart = function($event) {
 	this.maDialogHelper.confirm($event, 'modules.restartConfirm').then(function() {
 		this.maModules.restart();
 	}.bind(this)).then(function() {
-		var toast = this.$mdToast.simple()
+		const toast = this.$mdToast.simple()
 	        .textContent(this.maTranslate.trSync('modules.restartScheduled'))
 	        .action(this.maTranslate.trSync('common.ok'))
 	        .highlightAction(true)

@@ -21,7 +21,7 @@
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-* var queryResult = DeviceName.byDataSourceXid({xid: $scope.dataSourceXid, contains: $scope.contains});
+* const queryResult = DeviceName.byDataSourceXid({xid: $scope.dataSourceXid, contains: $scope.contains});
 * </pre>
 *
 * You can also access the raw `$http` promise via the `$promise` property on the object returned:
@@ -136,7 +136,7 @@
 
 
 function DeviceNameFactory($resource) {
-    var DeviceName = $resource('/rest/v1/device-names', {}, {
+    const DeviceName = $resource('/rest/v1/device-names', {}, {
         query: {
             method: 'GET',
             isArray: true

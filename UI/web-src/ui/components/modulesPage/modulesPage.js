@@ -37,7 +37,7 @@ ModulesPageController.prototype.$onInit = function() {
 
 ModulesPageController.prototype.getModules = function() {
 	this.maModules.getAll().then(function(modules) {
-		var coreModule;
+	    let coreModule;
         this.modules = modules.filter(function(module) {
         	if (module.name === 'core') {
         		coreModule = module;
@@ -45,8 +45,8 @@ ModulesPageController.prototype.getModules = function() {
         	}
         	return true;
         }).sort(function(a, b) {
-        	var aName = a.name.toLowerCase();
-        	var bName = b.name.toLowerCase();
+        	const aName = a.name.toLowerCase();
+        	const bName = b.name.toLowerCase();
             if (aName < bName) return -1;
             if (aName > bName) return 1;
             return 0;
@@ -106,7 +106,7 @@ ModulesPageController.prototype.downloadLicense = function($event) {
 		this.getModules();
 	}.bind(this), function(error) {
 		if (!error) return; // prompt cancelled
-		var msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+		const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
 		this.maDialogHelper.toast('ui.app.failedToDownloadLicense', 'md-warn', msg);
 	}.bind(this));
 };

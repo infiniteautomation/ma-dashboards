@@ -130,7 +130,7 @@ import './ngMango.css';
  *
  *
 **/
-var ngMango = angular.module('ngMango', ['ngMangoServices', 'ngMangoFilters', 'ngMap']);
+const ngMango = angular.module('ngMango', ['ngMangoServices', 'ngMangoFilters', 'ngMap']);
 
 ngMango.directive('maFilteringPointList', filteringPointList);
 ngMango.directive('maPointList', pointList);
@@ -406,8 +406,8 @@ function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
     });
 
 	$rootScope.range = function(start, end) {
-		var result = [];
-		for (var i = start; i <= end; i++)
+		const result = [];
+		for (let i = start; i <= end; i++)
 			result.push(i);
 		return result;
 	};
@@ -425,7 +425,7 @@ function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
 
     AmCharts._resetDateToMin = AmCharts.resetDateToMin;
     AmCharts.resetDateToMin = function(date, period, count, firstDateOfWeek) {
-        var m = moment(date);
+        const m = moment(date);
         switch(period) {
         case 'YYYY':
             m.year(roundDownToNearestX(m.year(), count));

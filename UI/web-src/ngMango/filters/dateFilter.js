@@ -32,7 +32,7 @@ iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 dateFilterFactory.$inject = ['MA_DATE_FORMATS'];
 function dateFilterFactory(mangoDateFormats) {
     return function formatDate(date, format) {
-        var momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
+        const momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
         return moment(date).format(momentFormat);
     };
 }

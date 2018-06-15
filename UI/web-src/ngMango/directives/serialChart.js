@@ -683,7 +683,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 const value = extractField(dataItem.dataContext, graph.valueField);
                 if (value) return value;
                 
-//                for (const i = dataItem.index - 1; i >= 0; i--) {
+//                for (let i = dataItem.index - 1; i >= 0; i--) {
 //                    value = extractField(chart.dataProvider[i], graph.valueField);
 //                    if (value) return value;
 //                }

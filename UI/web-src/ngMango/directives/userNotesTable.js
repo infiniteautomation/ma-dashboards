@@ -51,7 +51,7 @@ function userNotesTable(UserNotes, $injector, mangoDateFormats) {
             };
 
             $scope.formatDate = function(date) {
-                var m = moment(date);
+                const m = moment(date);
                 if ($scope.timezone) {
                     m.tz($scope.timezone);
                 }

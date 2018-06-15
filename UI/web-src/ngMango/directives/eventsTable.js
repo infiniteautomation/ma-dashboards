@@ -265,7 +265,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
         
         formatDate(date) {
-            var m = moment(date);
+            const m = moment(date);
             if (this.timezone) {
                 m.tz(this.timezone);
             }

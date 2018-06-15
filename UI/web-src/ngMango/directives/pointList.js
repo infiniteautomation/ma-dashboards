@@ -28,7 +28,7 @@
  * <ma-point-list limit="200" ng-model="myPoint2" query="{name: 'meta'}"></ma-point-list>
  */
 function pointList(Point, $injector) {
-    var DEFAULT_SORT = ['deviceName', 'name'];
+    const DEFAULT_SORT = ['deviceName', 'name'];
 
     return {
         restrict: 'E',
@@ -47,7 +47,7 @@ function pointList(Point, $injector) {
             sort: '='
         },
         template: function(element, attrs) {
-          var optionsExpr = 'pointLabel(point) for point in points';
+          let optionsExpr = 'pointLabel(point) for point in points';
           if (attrs.xidAsModel === 'true') {
             optionsExpr = 'point.xid as ' + optionsExpr;
           } else {
@@ -68,7 +68,7 @@ function pointList(Point, $injector) {
                 $scope.initPoint = true;
             }
 
-            var promise;
+            let promise;
             $scope.onOpen = function onOpen() {
                 return promise;
             };

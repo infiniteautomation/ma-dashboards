@@ -9,12 +9,12 @@ function emptyInput($parse) {
         restrict: 'A',
         scope: false,
         link: function($scope, $element, $attrs, ngModel) {
-            var emptyValueGetter = $parse($attrs.maEmptyInput);
-            var wasUndefined = false;
+            const emptyValueGetter = $parse($attrs.maEmptyInput);
+            let wasUndefined = false;
             
             ngModel.$parsers.unshift(function (viewValue) {
                 if (viewValue === '') {
-                    var newValue = emptyValueGetter($scope);
+                    const newValue = emptyValueGetter($scope);
                     if (newValue === undefined) {
                         wasUndefined = true;
                     }

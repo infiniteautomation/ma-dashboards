@@ -15,7 +15,7 @@ function WebAnalyticsFactory($rootScope, $window, $state) {
         if (!this.propertyId) throw new Error('No property ID is set');
 
         // minified snippet from Google modified to remove jshint warnings and replace window with $window
-        var ga = $window.ga = $window.ga || function() {
+        const ga = $window.ga = $window.ga || function() {
             (ga.q=ga.q||[]).push(arguments);
         };
         ga.l=Date.now();

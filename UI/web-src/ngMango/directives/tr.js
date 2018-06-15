@@ -21,7 +21,7 @@ function maTr(Translate, $q) {
         restrict: 'A',
         scope: false,
         link: function ($scope, $elem, $attrs) {
-            var trKey, trArgs, trPromise;
+            let trKey, trArgs, trPromise;
 
             $scope.$watch(function() {
                 return {
@@ -41,7 +41,7 @@ function maTr(Translate, $q) {
                 // translation once the arguments load
                 if (typeof $attrs.maTrArgs !== 'undefined') {
                 	if (!Array.isArray(trArgs)) return;
-                	var containsUndefined = trArgs.some(function(arg) {
+                	const containsUndefined = trArgs.some(function(arg) {
                 		return typeof arg === 'undefined';
                 	});
                 	if (containsUndefined) return;
@@ -58,8 +58,8 @@ function maTr(Translate, $q) {
             			text: '!!' + $attrs.maTr + '!!'
             		});
 	            }).then(function(result) {
-	            	var text = result.text;
-	            	var tagName = $elem.prop('tagName');
+	            	const text = result.text;
+	            	const tagName = $elem.prop('tagName');
 	            	if (tagName === 'IMG') {
                         $attrs.$set('alt', text);
 	            		return;
@@ -80,7 +80,7 @@ function maTr(Translate, $q) {
 	            	    return;
 	            	}
 
-	            	var firstChild = $elem.contents().length && $elem.contents().get(0);
+	            	const firstChild = $elem.contents().length && $elem.contents().get(0);
 	            	// if first child is a text node set the text value
 	                if (firstChild && firstChild.nodeType === 3) {
 	                	firstChild.nodeValue = text;

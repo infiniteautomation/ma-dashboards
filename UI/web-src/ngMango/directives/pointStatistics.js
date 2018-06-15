@@ -102,9 +102,9 @@ function pointValues(Point, Util, $q, statistics) {
         '<span ng-if="displayMode && displayMode === \'delta\'" ng-bind="(statistics[1].value - statistics[0].value) +' +
         ' \' \' + point.unit"></span>',
         link: function ($scope, $element, attrs) {
-            var pendingRequest = null;
-        	var stats = {};
-            var singlePoint = !attrs.points;
+            let pendingRequest = null;
+        	const stats = {};
+            const singlePoint = !attrs.points;
 
             $scope.$watch('pointXid', function() {
                 if (!$scope.pointXid || $scope.point) return;
@@ -117,9 +117,9 @@ function pointValues(Point, Util, $q, statistics) {
             });
 
             $scope.$watch(function() {
-            	var xids = [];
+            	const xids = [];
             	if ($scope.points && $scope.points.length > 0) {
-	            	for (var i = 0; i < $scope.points.length; i++) {
+	            	for (let i = 0; i < $scope.points.length; i++) {
 	            		if (!$scope.points[i]) continue;
 	            		xids.push($scope.points[i].xid);
 	            	}
@@ -131,7 +131,7 @@ function pointValues(Point, Util, $q, statistics) {
                     to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to
             	};
             }, function(newValue, oldValue) {
-                var changedXids, i;
+                let changedXids, i;
                 
                 // check initialization scenario
                 if (newValue === oldValue) {
@@ -144,7 +144,7 @@ function pointValues(Point, Util, $q, statistics) {
                 }
 
             	for (i = 0; i < changedXids.removed.length; i++) {
-            		var removedXid = changedXids.removed[i];
+            		const removedXid = changedXids.removed[i];
 
                 	// delete stats for removed xid from stats object
                 	delete stats[removedXid];
@@ -156,9 +156,9 @@ function pointValues(Point, Util, $q, statistics) {
             	}
 
             	if (!$scope.points || !$scope.points.length) return;
-            	var points = $scope.points.slice(0);
+            	const points = $scope.points.slice(0);
 
-            	var promises = [];
+            	const promises = [];
             	
             	// cancel existing requests if there are any
                 if (pendingRequest) {
@@ -168,24 +168,24 @@ function pointValues(Point, Util, $q, statistics) {
 
             	for (i = 0; i < points.length; i++) {
             		if (!points[i] || !points[i].xid) continue;
-            		var queryPromise = doQuery(points[i]);
+            		const queryPromise = doQuery(points[i]);
             		promises.push(queryPromise);
             	}
 
             	pendingRequest = $q.all(promises).then(function(results) {
                 	if (!results.length) return;
-            		var i;
+            		let i;
 
             		for (i = 0; i < results.length; i++) {
-            			var point = points[i];
-            			var pointStats = results[i];
+            			const point = points[i];
+            			const pointStats = results[i];
                         stats[point.xid] = pointStats;
             		}
 
             		if (singlePoint) {
             			$scope.statistics = stats[points[0].xid];
             		} else {
-            			var outputStats = [];
+            			const outputStats = [];
             			for (i = 0; i < points.length; i++) {
             				outputStats.push(stats[points[i].xid]);
             			}
@@ -200,7 +200,7 @@ function pointValues(Point, Util, $q, statistics) {
 
             function doQuery(point) {
                 try {
-                    var options = {
+                    const options = {
                         firstLast: $scope.firstLast,
                         dateFormat: $scope.dateFormat,
                         from: $scope.from,
@@ -211,9 +211,9 @@ function pointValues(Point, Util, $q, statistics) {
                     
                     return statistics.getStatisticsForXid(point.xid, options).then(function(data) {
                         if (data.startsAndRuntimes) {
-                            for (var i = 0; i < data.startsAndRuntimes.length; i++) {
-                                var statsObj = data.startsAndRuntimes[i];
-                                var valueRenderer = point.valueRenderer(statsObj.value);
+                            for (let i = 0; i < data.startsAndRuntimes.length; i++) {
+                                const statsObj = data.startsAndRuntimes[i];
+                                const valueRenderer = point.valueRenderer(statsObj.value);
                                 if (!valueRenderer) continue;
                                 statsObj.renderedValue = valueRenderer.text;
                                 statsObj.renderedColor = valueRenderer.color;

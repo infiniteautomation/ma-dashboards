@@ -90,7 +90,7 @@ class ScaleToController {
     }
 
     removeScaling() {
-        var originalCss = this.originalCss;
+        const originalCss = this.originalCss;
         this.$element.css('transform', originalCss.transform);
         this.$element.css('transform-origin', originalCss['transform-origin']);
         this.$element.css('position', originalCss.position);
@@ -101,14 +101,14 @@ class ScaleToController {
     scaleElement($event) {
         if (!this.$scaleToElement.length) return;
         
-        var elementWidth = parseInt(this.$element[0].style.width, 10);
-        var elementHeight = parseInt(this.$element[0].style.height, 10);
-        var scaleToBoundingClientRect = this.$scaleToElement[0].getBoundingClientRect();
-        var windowWidth = scaleToBoundingClientRect.width;
-        var windowHeight = scaleToBoundingClientRect.height;
+        const elementWidth = parseInt(this.$element[0].style.width, 10);
+        const elementHeight = parseInt(this.$element[0].style.height, 10);
+        const scaleToBoundingClientRect = this.$scaleToElement[0].getBoundingClientRect();
+        const windowWidth = scaleToBoundingClientRect.width;
+        const windowHeight = scaleToBoundingClientRect.height;
 
-        var widthRatio = windowWidth / elementWidth;
-        var heightRatio = windowHeight / elementHeight;
+        let widthRatio = windowWidth / elementWidth;
+        let heightRatio = windowHeight / elementHeight;
 
         //console.log('element('+elementWidth+','+elementHeight+') window('+windowWidth+','+windowHeight+')');
         //console.log('heightRatio:' + heightRatio + ' widthRatio:'+widthRatio);
@@ -131,8 +131,8 @@ class ScaleToController {
             heightRatio = widthRatio;
         }
 
-        var widthRemainder = windowWidth - elementWidth * widthRatio;
-        var heightRemainder = windowHeight - elementHeight * heightRatio;
+        const widthRemainder = windowWidth - elementWidth * widthRatio;
+        const heightRemainder = windowHeight - elementHeight * heightRatio;
         
         this.$element.css('transform', 'scale(' + widthRatio + ',' + heightRatio + ')');
         this.$element.css('transform-origin', '0 0');

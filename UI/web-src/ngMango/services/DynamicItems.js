@@ -7,7 +7,7 @@ import angular from 'angular';
 
 
 function DynamicItemsFactory() {
-    var DEFAULT_PAGE_SIZE = 20;
+    const DEFAULT_PAGE_SIZE = 20;
     
     function DynamicItems(config) {
         this.loadedPages = {};
@@ -18,8 +18,8 @@ function DynamicItemsFactory() {
     }
 
     DynamicItems.prototype.getItemAtIndex = function getItemAtIndex(index) {
-        var pageNumber = Math.floor(index / this.pageSize);
-        var page = this.loadedPages[pageNumber];
+        const pageNumber = Math.floor(index / this.pageSize);
+        const page = this.loadedPages[pageNumber];
         if (page) {
             return page[index % this.pageSize];
         } else if (page !== null) {

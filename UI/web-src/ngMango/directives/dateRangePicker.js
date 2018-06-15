@@ -124,10 +124,10 @@ function dateRangePicker($injector) {
         controller: ['$attrs', '$parse', '$scope', '$interval', 'maUtil', 'MA_DATE_RANGE_PRESETS', 'MA_DATE_FORMATS',
                      function($attrs, $parse, $scope, $interval, Util, MA_DATE_RANGE_PRESETS, mangoDateFormats) {
             
-        	var fromExpression = $parse($attrs.from);
-        	var toExpression = $parse($attrs.to);
-            var fromAssign = fromExpression.assign && fromExpression.assign.bind(null, $scope.$parent);
-            var toAssign = toExpression.assign && toExpression.assign.bind(null, $scope.$parent);
+        	const fromExpression = $parse($attrs.from);
+        	const toExpression = $parse($attrs.to);
+            const fromAssign = fromExpression.assign && fromExpression.assign.bind(null, $scope.$parent);
+            const toAssign = toExpression.assign && toExpression.assign.bind(null, $scope.$parent);
             
             this.$onChanges = function(changes) {
                 if (changes.preset) {
@@ -155,7 +155,7 @@ function dateRangePicker($injector) {
                 $interval.cancel(this.timerPromise);
             };
             
-            var mdPickers = $injector.has('$mdpDatePicker');
+            const mdPickers = $injector.has('$mdpDatePicker');
             this.presets = MA_DATE_RANGE_PRESETS;
 
             this.isSame = function isSame(m, check) {
@@ -173,8 +173,8 @@ function dateRangePicker($injector) {
             
             this.doUpdate = function doUpdate() {
                 if (!this.preset) return;
-                var from = moment();
-                var to = moment();
+                const from = moment();
+                const to = moment();
                 if (this.timezone) {
                     from.tz(this.timezone);
                     to.tz(this.timezone);
@@ -227,7 +227,7 @@ function dateRangePicker($injector) {
                     if (toAssign)
                     	toAssign(to.toDate());
                 } else {
-                    var format = this.format || mangoDateFormats.dateTimeSeconds;
+                    const format = this.format || mangoDateFormats.dateTimeSeconds;
                     if (fromAssign)
                     	fromAssign(from.format(format));
                     if (toAssign)
@@ -239,12 +239,12 @@ function dateRangePicker($injector) {
                 $interval.cancel(this.timerPromise);
 
                 if (Util.isEmpty(this.updateInterval)) return;
-                var parts = this.updateInterval.split(' ');
+                const parts = this.updateInterval.split(' ');
                 if (parts.length < 2) return;
                 if (Util.isEmpty(parts[0]) || Util.isEmpty(parts[1])) return;
 
-                var duration = moment.duration(parseFloat(parts[0]), parts[1]);
-                var millis = duration.asMilliseconds();
+                const duration = moment.duration(parseFloat(parts[0]), parts[1]);
+                const millis = duration.asMilliseconds();
 
                 // dont allow continuous loops
                 if (millis === 0) return;

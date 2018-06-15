@@ -98,10 +98,10 @@ import $ from 'jquery';
 
 function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
-	//var READY_STATE_CONNECTING = 0;
-	var READY_STATE_OPEN = 1;
-	//var READY_STATE_CLOSING = 2;
-	//var READY_STATE_CLOSED = 3;
+	//const READY_STATE_CONNECTING = 0;
+	const READY_STATE_OPEN = 1;
+	//const READY_STATE_CLOSING = 2;
+	//const READY_STATE_CLOSED = 3;
 
 	function EventManager(options) {
 		 // keys are xid, value is object where key is event type and value is the number of subscriptions
@@ -135,12 +135,12 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	        throw new Error('WebSocket not supported');
 	    }
 
-	    var host = document.location.host;
-	    var protocol = document.location.protocol;
+	    let host = document.location.host;
+	    let protocol = document.location.protocol;
 
-	    var baseUrl = mangoBaseUrl;
+	    const baseUrl = mangoBaseUrl;
 	    if (baseUrl) {
-	        var i = baseUrl.indexOf('//');
+	        const i = baseUrl.indexOf('//');
 	        if (i >= 0) {
 	            protocol = baseUrl.substring(0, i);
 	            host = baseUrl.substring(i+2);
@@ -152,7 +152,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
 	    protocol = protocol === 'https:' ? 'wss:' : 'ws:';
 
-	    var socket = this.socket = new WebSocket(protocol + '//' + host + this.url);
+	    const socket = this.socket = new WebSocket(protocol + '//' + host + this.url);
 
 	    this.connectTimer = setTimeout(function() {
 	    	this.closeSocket();
@@ -171,7 +171,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	    	delete this.connectTimer;
 	    	
 	    	// update subscriptions for individual xids
-	    	for (var xidKey in this.subscriptionsByXid) {
+	    	for (const xidKey in this.subscriptionsByXid) {
                 this.updateSubscriptions(xidKey);
             }
 	    	// update subscriptions to all xids
@@ -180,7 +180,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	    }.bind(this);
 	    
 	    socket.onmessage = function(event) {
-	        var message = JSON.parse(event.data);
+	        const message = JSON.parse(event.data);
 	        this.messageReceived(message);
 	    }.bind(this);
 
@@ -207,11 +207,11 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
 	EventManager.prototype.messageReceived = function(message) {
 	    if (message.status === 'OK') {
-	        var payload = message.payload;
-	        var eventType = payload.event || payload.action;
-	        var xid = payload.xid || payload.object.xid;
+	        const payload = message.payload;
+	        const eventType = payload.event || payload.action;
+	        const xid = payload.xid || payload.object.xid;
 
-	        var xidSubscriptions = this.subscriptionsByXid[xid];
+	        const xidSubscriptions = this.subscriptionsByXid[xid];
 	        if (xidSubscriptions) {
 	            xidSubscriptions.lastPayload = payload;
 	            $(xidSubscriptions.eventEmitter).trigger(eventType, payload);
@@ -221,7 +221,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	};
 
 	EventManager.prototype.subscribe = function(xid, eventTypes, eventHandler) {
-	    var xidSubscriptions;
+	    let xidSubscriptions;
 	    if (xid) {
     	    if (!this.subscriptionsByXid[xid])
     	        this.subscriptionsByXid[xid] = {eventEmitter: {}};
@@ -234,8 +234,8 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	        eventHandler(null, xidSubscriptions.lastPayload);
 	    }
 
-	    for (var i = 0; i < eventTypes.length; i++) {
-	    	var eventType = eventTypes[i];
+	    for (let i = 0; i < eventTypes.length; i++) {
+	    	const eventType = eventTypes[i];
 	        
 	    	if (xidSubscriptions) {
     	    	if (typeof eventHandler === 'function') {
@@ -266,15 +266,15 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	};
 
 	EventManager.prototype.unsubscribe = function(xid, eventTypes, eventHandler) {
-	    var xidSubscriptions;
+	    let xidSubscriptions;
 	    if (xid) {
 	        xidSubscriptions = this.subscriptionsByXid[xid];
 	    }
 
 	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
 
-	    for (var i = 0; i < eventTypes.length; i++) {
-	    	var eventType = eventTypes[i];
+	    for (let i = 0; i < eventTypes.length; i++) {
+	    	const eventType = eventTypes[i];
 	    	
 	    	if (xidSubscriptions) {
     	    	if (typeof eventHandler === 'function') {
@@ -303,23 +303,23 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	 * is destroyed and does scope apply for the eventHandler function
 	 */
 	EventManager.prototype.smartSubscribe = function($scope, xid, eventTypes, eventHandler) {
-	    var appliedHandler = scopeApply.bind(null, $scope, eventHandler);
+	    const appliedHandler = scopeApply.bind(null, $scope, eventHandler);
 	    this.subscribe(xid, eventTypes, appliedHandler);
 	    
-	    var $this = this;
-	    var unsubscribe = function() {
+	    const $this = this;
+	    const unsubscribe = function() {
 	        $this.unsubscribe(xid, eventTypes, appliedHandler);
         };
-        var deregister = $scope.$on('$destroy', unsubscribe);
-        var manualUnsubscribe = function() {
+        const deregister = $scope.$on('$destroy', unsubscribe);
+        const manualUnsubscribe = function() {
             deregister();
             unsubscribe();
         };
         return manualUnsubscribe;
 
         function scopeApply($scope, fn) {
-            var args = Array.prototype.slice.call(arguments, 2);
-            var boundFn = fn.bind.apply(fn, [null].concat(args));
+            const args = Array.prototype.slice.call(arguments, 2);
+            const boundFn = fn.bind.apply(fn, [null].concat(args));
             $scope.$applyAsync(boundFn);
         }
 	};
@@ -327,10 +327,10 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	EventManager.prototype.updateSubscriptions = function(xid) {
 		if (!this.socket || this.socket.readyState !== READY_STATE_OPEN) return;
 
-		var subscriptions = xid ? this.subscriptionsByXid[xid] : this.allSubscriptions;
+		const subscriptions = xid ? this.subscriptionsByXid[xid] : this.allSubscriptions;
 
-	    var eventTypes = [];
-	    for (var key in subscriptions) {
+	    const eventTypes = [];
+	    for (const key in subscriptions) {
 	        if (key === 'eventEmitter' || key === 'lastPayload')
 	            continue;
 
@@ -342,7 +342,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	    }
 	    eventTypes.sort();
 
-	    var activeSubs = xid ? this.activeEventTypesByXid[xid] : this.activeAllEventTypes;
+	    const activeSubs = xid ? this.activeEventTypesByXid[xid] : this.activeAllEventTypes;
 
 	    // there are no subscriptions for any event types for this xid
 	    if (xid && eventTypes.length === 0) {
@@ -359,7 +359,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	    	    }
 	    	}
 
-	        var message = {};
+	        const message = {};
 	        if (xid)
 	            message.xid = xid;
 	        message.eventTypes = eventTypes;
@@ -374,7 +374,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
 	function arraysEqual(a, b) {
 		if (a.length !== b.length) return false;
-		for (var i = 0; i < a.length; i++) {
+		for (let i = 0; i < a.length; i++) {
 			if (a[i] !== b[i]) return false;
 		}
 		return true;

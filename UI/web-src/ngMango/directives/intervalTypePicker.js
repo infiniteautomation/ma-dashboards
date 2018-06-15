@@ -42,7 +42,7 @@
  *
  */
 function intervalTypePicker($injector) {
-    var types = [
+    const types = [
 	  {type: 'SECONDS', label: 'Seconds'},
 	  {type: 'MINUTES', label: 'Minutes'},
 	  {type: 'HOURS', label: 'Hours'},

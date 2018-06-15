@@ -7,7 +7,7 @@ const uiModulePermissions = Object.freeze(['edit-ui-menus', 'edit-ui-pages', 'ed
 
 PermissionsFactory.$inject = ['$http'];
 function PermissionsFactory($http) {
-    var allPermissionsUrl = '/rest/v1/users/permissions-groups';
+    const allPermissionsUrl = '/rest/v1/users/permissions-groups';
     
     function Permissions() {
     }

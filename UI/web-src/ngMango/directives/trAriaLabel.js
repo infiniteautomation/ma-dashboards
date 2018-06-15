@@ -23,7 +23,7 @@ function maTrAriaLabel(Translate, $q) {
         restrict: 'A',
         scope: false,
         link: function ($scope, $elem, $attrs) {
-            var trKey, trArgs;
+            let trKey, trArgs;
 
             $attrs.$observe('maTrAriaLabel', function(newValue) {
         	    doTranslate(newValue, trArgs);
@@ -44,7 +44,7 @@ function maTrAriaLabel(Translate, $q) {
                 // translation once the arguments load
                 if (typeof $attrs.maTrAriaLabelArgs !== 'undefined') {
                 	if (!Array.isArray(trArgs)) return;
-                	var containsUndefined = trArgs.some(function(arg) {
+                	const containsUndefined = trArgs.some(function(arg) {
                 		return typeof arg === 'undefined';
                 	});
                 	if (containsUndefined) return;
@@ -56,7 +56,7 @@ function maTrAriaLabel(Translate, $q) {
 	            		text: translation
 	            	};
 	            }, function(error) {
-	            	var result = {
+	            	const result = {
 	            		failed: true,
 	            		text: '!!' + $attrs.maTrAriaLabel + '!!'
 	            	};

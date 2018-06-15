@@ -59,11 +59,11 @@ import angular from 'angular';
 mangoWatchdog.$inject = ['MA_WATCHDOG_TIMEOUT', 'MA_RECONNECT_DELAY', '$rootScope', '$http', '$interval', 'maUser'];
 function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $http, $interval, User) {
 
-    var API_DOWN = 'API_DOWN';
-    var STARTING_UP = 'STARTING_UP';
-    var API_UP = 'API_UP';
-    var API_ERROR = 'API_ERROR';
-    var LOGGED_IN = 'LOGGED_IN';
+    const API_DOWN = 'API_DOWN';
+    const STARTING_UP = 'STARTING_UP';
+    const API_UP = 'API_UP';
+    const API_ERROR = 'API_ERROR';
+    const LOGGED_IN = 'LOGGED_IN';
 
 	function MangoWatchdog(options) {
 		this.enabled = true;
@@ -91,8 +91,8 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
                 user: response.data
             };
         }, function(response) {
-            var startupState = response.headers('Mango-Startup-State');
-            var startupProgress = response.headers('Mango-Startup-Progress');
+            const startupState = response.headers('Mango-Startup-State');
+            const startupProgress = response.headers('Mango-Startup-Progress');
             
             if (response.status < 0) {
                 return {status: API_DOWN};
@@ -113,7 +113,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
     };
     
     MangoWatchdog.prototype.setStatus = function setStatus(pingResult) {
-        var previous = {
+        const previous = {
             status: this.status || (User.current ? 'LOGGED_IN' : 'API_UP'),
             apiUp: this.apiUp,
             loggedIn: this.loggedIn,
@@ -146,7 +146,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             break;
         case LOGGED_IN:
             if (pingResult.user && !angular.equals(User.current, pingResult.user)) {
-                var user = pingResult.user;
+                let user = pingResult.user;
                 if (!(user instanceof User)) {
                     user = angular.extend(new User(), pingResult.user);
                 }
@@ -165,7 +165,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
         this.status = pingResult.status;
         this.info = pingResult.info;
         
-        var current = {
+        const current = {
             status: this.status,
             apiUp: this.apiUp,
             loggedIn: this.loggedIn,

@@ -33,7 +33,7 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
     };
     
     this.updateIntervalFromRollupInterval = function updateIntervalFromRollupInterval() {
-        var intervalControlsPristine = !this.form ||
+        const intervalControlsPristine = !this.form ||
             ((!this.form.updateIntervals || this.form.updateIntervals.$pristine) &&
                 (!this.form.updateIntervalPeriod || this.form.updateIntervalPeriod.$pristine));
         
@@ -50,7 +50,7 @@ function DateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIM
     
     this.calcAutoRollup = function calcAutoRollup() {
         if (this.params.autoRollup) {
-            var calc = Util.rollupIntervalCalculator(this.params.from, this.params.to, this.params.rollupType, true);
+            const calc = Util.rollupIntervalCalculator(this.params.from, this.params.to, this.params.rollupType, true);
             this.params.rollupIntervals = calc.intervals;
             this.params.rollupIntervalPeriod = calc.units;
             this.updateIntervalFromRollupInterval();

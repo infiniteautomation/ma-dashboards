@@ -34,7 +34,7 @@
  *
  */
 function pointQuery(Point) {
-    var DEFAULT_SORT = ['deviceName', 'name'];
+    const DEFAULT_SORT = ['deviceName', 'name'];
 
     return {
         scope: {
@@ -61,7 +61,7 @@ function pointQuery(Point) {
                 };
             }, function(value) {
                 value.sort = value.sort || DEFAULT_SORT;
-                var newPoints = Point.objQuery(value);
+                const newPoints = Point.objQuery(value);
                 $scope.promise = newPoints.$promise;
 
                 if ($scope.clearOnQuery) {

@@ -7,11 +7,11 @@ import pageViewTemplate from './pageView.html';
 
 PageViewController.$inject = ['$scope', 'maUiPages', 'maUser', 'maJsonStoreEventManager'];
 function PageViewController($scope, maUiPages, User, jsonStoreEventManager) {
-    var SUBSCRIPTION_TYPES = ['add', 'update'];
+    const SUBSCRIPTION_TYPES = ['add', 'update'];
     
-    var $ctrl = this;
+    const $ctrl = this;
     $ctrl.user = User;
-    var unsubscribe;
+    let unsubscribe;
 
     this.$onChanges = function(changes) {
         if (changes.xid) {

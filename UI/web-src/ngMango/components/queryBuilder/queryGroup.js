@@ -6,7 +6,7 @@
 import queryGroupTemplate from './queryGroup.html';
 import query from 'rql/query';
 
-var queryGroup = function queryGroup() {
+const queryGroup = function queryGroup() {
     this.$onInit = function() {
     };
     
@@ -40,13 +40,13 @@ var queryGroup = function queryGroup() {
     };
     
     function newGroup(name) {
-        var node = new query.Query();
+        const node = new query.Query();
         node.name = name;
         return node;
     }
     
     function newPredicate() {
-        var node = new query.Query();
+        const node = new query.Query();
         node.name = 'eq';
         return node;
     }

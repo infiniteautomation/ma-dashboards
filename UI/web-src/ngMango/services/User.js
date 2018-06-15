@@ -29,7 +29,7 @@ const localeCache = {};
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-*  var user = User.login({
+*  const user = User.login({
     username: $scope.username,
     password: $scope.password
 });
@@ -169,7 +169,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         let systemLocale;
         let systemTimezone;
 
-        var User = $resource('/rest/v1/users/:username', {
+        const User = $resource('/rest/v1/users/:username', {
                 username: '@username'
             }, {
             query: {
@@ -300,7 +300,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         // load the locale using require and resolve the deferred
                         requirejs([`https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/${angular.version.full}/angular-locale_${localeId}.js`], () => {
                             // get the newly loaded locale from a new injector for ngLocale
-                            var ngLocaleInjector = angular.injector(['ngLocale'], true);
+                            const ngLocaleInjector = angular.injector(['ngLocale'], true);
                             const newLocale = ngLocaleInjector.get('$locale');
                             
                             // cache the result, we can't ever retrieve this locale again using require
@@ -385,7 +385,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         };
         
         User.storedUsername = function autoLogin() {
-            var credentials = localStorageService.get('storedCredentials');
+            const credentials = localStorageService.get('storedCredentials');
             return credentials ? credentials.username : null;
         };
         
@@ -408,7 +408,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         };
         
         User.autoLogin = function autoLogin(maUiSettings) {
-        	var credentials = User.getCredentialsFromUrl() || localStorageService.get('storedCredentials');
+            let credentials = User.getCredentialsFromUrl() || localStorageService.get('storedCredentials');
         	if (!credentials && (maUiSettings || $injector.has('maUiSettings'))) {
         		maUiSettings = maUiSettings || $injector.get('maUiSettings');
         		if (maUiSettings.autoLoginUsername) {
@@ -461,7 +461,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 desiredPerms = desiredPerms.split(/\s*\,\s*/);
             }
 
-            var userPerms = this.permissions.split(/\s*\,\s*/).filter(function(userPerm) {
+            const userPerms = this.permissions.split(/\s*\,\s*/).filter(function(userPerm) {
                 return !!userPerm;
             });
             
@@ -475,14 +475,14 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         };
 
         User.prototype.saveOrUpdate = function() {
-            var method = '$save';
-            var args = Array.prototype.slice.apply(arguments);
+            let method = '$save';
+            const args = Array.prototype.slice.apply(arguments);
             if (!this.isNew) {
                 method = '$update';
                 if (!args.length) {
                     args.push({});
                 }
-                var params = args[0];
+                const params = args[0];
                 if (!params.username) {
                     params.username = this.originalUsername || this.username;
                 }

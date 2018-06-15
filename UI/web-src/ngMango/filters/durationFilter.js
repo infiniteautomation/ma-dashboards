@@ -25,9 +25,9 @@ import moment from 'moment-timezone';
  */
 function durationFilter(Util) {
     return Util.memoize(function(input, fnName) {
-        var d = moment.duration(input);
-        var fnArgs = Array.prototype.slice.call(arguments, 2);
-        var fn = d[fnName];
+        const d = moment.duration(input);
+        const fnArgs = Array.prototype.slice.call(arguments, 2);
+        const fn = d[fnName];
         if (typeof fn !== 'function') return input;
         return fn.apply(d, fnArgs);
     });

@@ -26,8 +26,8 @@ ConfigExportController.prototype.$onInit = function() {
 };
 
 ConfigExportController.prototype.selectAllChanged = function() {
-    for (var i = 0; i < this.sectionList.length; i++) {
-        var sectionName = this.sectionList[i].value;
+    for (let i = 0; i < this.sectionList.length; i++) {
+        const sectionName = this.sectionList[i].value;
         this.sectionsForExport[sectionName] = this.selectAll;
     }
     this.selectAllIndeterminate = false;
@@ -35,11 +35,11 @@ ConfigExportController.prototype.selectAllChanged = function() {
 };
 
 ConfigExportController.prototype.checkIndeterminate = function() {
-    var allChecked = true;
-    var anyChecked = false;
-    for (var i = 0; i < this.sectionList.length; i++) {
-        var sectionName = this.sectionList[i].value;
-        var sectionSelected = !!this.sectionsForExport[sectionName];
+    let allChecked = true;
+    let anyChecked = false;
+    for (let i = 0; i < this.sectionList.length; i++) {
+        const sectionName = this.sectionList[i].value;
+        const sectionSelected = !!this.sectionsForExport[sectionName];
         allChecked = allChecked && sectionSelected;
         anyChecked = anyChecked || sectionSelected;
     }
@@ -49,14 +49,14 @@ ConfigExportController.prototype.checkIndeterminate = function() {
 };
 
 ConfigExportController.prototype.doExport = function(download) {
-    var sectionNames = [];
-    for (var sectionName in this.sectionsForExport) {
+    const sectionNames = [];
+    for (const sectionName in this.sectionsForExport) {
         if (this.sectionsForExport[sectionName]) {
             sectionNames.push(sectionName);
         }
     }
     
-    var options = {
+    const options = {
         timeout: 0
     };
     if (download) {

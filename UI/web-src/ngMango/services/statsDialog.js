@@ -16,19 +16,19 @@ function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
                     this.dateBar = maUiDateBar;
 
                     this.retrievePreferences = function() {
-                        var defaults = {
+                        const defaults = {
                             numberOfPointValues: 100,
                             realtimeMode: true,
                             showCachedData: false
                         };
-                        var preferences = angular.merge(defaults, localStorageService.get('uiPreferences'));
+                        const preferences = angular.merge(defaults, localStorageService.get('uiPreferences'));
                         this.numValues = preferences.numberOfPointValues;
                         this.realtimeMode = preferences.realtimeMode;
                         this.showCachedData = preferences.showCachedData;
                     };
 
                     this.updatePreferences = function() {
-                        var preferences = localStorageService.get('uiPreferences');
+                        const preferences = localStorageService.get('uiPreferences');
                         preferences.numberOfPointValues = this.numValues;
                         preferences.realtimeMode = this.realtimeMode;
                         preferences.showCachedData = this.showCachedData;

@@ -5,8 +5,8 @@
 
 import colorPreviewTemplate from './colorPreview.html';
 
-var hues = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
-var namedHues = ['default', 'hue-1', 'hue-2', 'hue-3'];
+const hues = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
+const namedHues = ['default', 'hue-1', 'hue-2', 'hue-3'];
 
 ColorPreviewController.$inject = ['$mdColors'];
 function ColorPreviewController($mdColors) {
@@ -19,12 +19,12 @@ function ColorPreviewController($mdColors) {
     };
     
     this.huesToColorStrings = function(hues) {
-        var colors = [];
-        var prefix = this.theme ? this.theme + '-' : '';
-        for (var i = 0; i < hues.length; i++) {
-            var hue = hues[i];
-            var suffix = hue === 'default' ? '' : '-' + hue;
-            var colorExpression = prefix + this.palette + suffix;
+        const colors = [];
+        const prefix = this.theme ? this.theme + '-' : '';
+        for (let i = 0; i < hues.length; i++) {
+            const hue = hues[i];
+            const suffix = hue === 'default' ? '' : '-' + hue;
+            const colorExpression = prefix + this.palette + suffix;
             colors.push({
                 name: hue,
                 cssColor: this.toHex($mdColors.getThemeColor(colorExpression)),
@@ -35,12 +35,12 @@ function ColorPreviewController($mdColors) {
     };
     
     this.toHex = function toHex(rgbaString) {
-        var matches = /^rgba\((.+?)\)$/.exec(rgbaString);
+        const matches = /^rgba\((.+?)\)$/.exec(rgbaString);
         if (matches && matches.length === 2) {
-            var split = matches[1].split(/\s*,\s*/);
+            const split = matches[1].split(/\s*,\s*/);
             if (split.length < 3) return rgbaString;
-            var result = '#';
-            for (var i = 0; i < 3; i++) {
+            let result = '#';
+            for (let i = 0; i < 3; i++) {
                 result += ('0' + parseInt(split[i], 10).toString(16)).slice(-2);
             }
             return result.toUpperCase();

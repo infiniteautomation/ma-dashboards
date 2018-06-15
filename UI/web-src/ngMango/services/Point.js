@@ -234,7 +234,7 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         }
     }
     
-    var Point = $resource('/rest/v2/data-points/:xid', {
+    const Point = $resource('/rest/v2/data-points/:xid', {
     		xid: '@xid'
     	}, {
         query: {
@@ -273,12 +273,12 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     Point.objQuery = Util.objQuery;
     
     Point.prototype.forceRead = function forceRead() {
-        var url = '/rest/v1/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
+        const url = '/rest/v1/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
         return $http.put(url, null);
     };
 
     Point.prototype.enable = function enable(enabled = true, restart = false) {
-        var url = '/rest/v1/data-points/enable-disable/' + encodeURIComponent(this.xid);
+        const url = '/rest/v1/data-points/enable-disable/' + encodeURIComponent(this.xid);
         return $http({
             url,
             method: 'PUT',
@@ -298,8 +298,8 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     Point.prototype.setValue = function setValue(value, options) {
     	options = options || {};
     	
-    	var dataType = this.pointLocator.dataType;
-    	var unitConversion = false;
+    	const dataType = this.pointLocator.dataType;
+    	let unitConversion = false;
     	
     	if (!value.value) {
     		if (dataType === 'NUMERIC') {
@@ -317,7 +317,7 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     		};
     	}
 
-    	var url = '/rest/v1/point-values/' + encodeURIComponent(this.xid) + '?unitConversion=' + !!unitConversion;
+    	const url = '/rest/v1/point-values/' + encodeURIComponent(this.xid) + '?unitConversion=' + !!unitConversion;
     	return $http.put(url, value, {
     		params: {
     			'unitConversion': options.converted
@@ -369,7 +369,7 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     };
 
     Point.prototype.toggleValue = function toggleValue() {
-    	var dataType = this.pointLocator.dataType;
+    	const dataType = this.pointLocator.dataType;
     	if (dataType === 'BINARY' && this.value !== undefined) {
     		this.setValue(!this.value);
 		}
@@ -387,14 +387,14 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
 
     Point.prototype.rendererMap = function() {
     	if (this._rendererMap) return this._rendererMap;
-    	var textRenderer = this.textRenderer;
+    	const textRenderer = this.textRenderer;
     	if (!textRenderer) return;
 
     	if (textRenderer.multistateValues) {
     		this._rendererMap = {};
-    		var multistateValues = textRenderer.multistateValues;
-    		for (var i = 0; i < multistateValues.length; i++) {
-    			var item = multistateValues[i];
+    		const multistateValues = textRenderer.multistateValues;
+    		for (let i = 0; i < multistateValues.length; i++) {
+    			const item = multistateValues[i];
     			item.color = item.colour;
     			this._rendererMap[item.key] = item;
     		}
@@ -417,9 +417,9 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     };
 
     Point.prototype.valueRenderer = function(value, renderedValue) {
-    	var rendererMap = this.rendererMap();
+    	const rendererMap = this.rendererMap();
     	if (rendererMap) {
-    	    var obj = rendererMap[value];
+    	    const obj = rendererMap[value];
     	    if (obj) return obj;
     	} else if (this.textRenderer && this.textRenderer.type === 'textRendererRange' && Array.isArray(this.textRenderer.rangeValues)) {
     	    const range = this.textRenderer.rangeValues.find(range => value >= range.from && value < range.to);
@@ -442,8 +442,8 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         
         this.enabled = !!payload.enabled;
         if (payload.value != null) {
-            var valueRenderer = this.valueRenderer(payload.value.value);
-            var color = valueRenderer ? valueRenderer.color : null;
+            const valueRenderer = this.valueRenderer(payload.value.value);
+            const color = valueRenderer ? valueRenderer.color : null;
 
             this.value = payload.value.value;
             this.time = payload.value.timestamp;
@@ -463,7 +463,7 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
     Point.prototype.amChartsGraphType = function() {
         if (!this.plotType) return null;
         
-        var type = this.plotType.toLowerCase();
+        const type = this.plotType.toLowerCase();
         // change mango plotType to amCharts graphType
         // step and line are equivalent
         switch(type) {
