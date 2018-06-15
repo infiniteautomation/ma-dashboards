@@ -109,6 +109,7 @@ import bulkDataPointTasks from './components/bulkDataPointTasks/bulkDataPointTas
 import pointBrowser from './components/pointBrowser/pointBrowser';
 import dataPointTagGroup from './components/dataPointTagGroup/dataPointTagGroup';
 import revisionSelect from './components/revisionSelect/revisionSelect';
+import cronPattern from './components/cronPattern/cronPattern';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -234,6 +235,7 @@ ngMango.component('maBulkDataPointTasks', bulkDataPointTasks);
 ngMango.component('maPointBrowser', pointBrowser);
 ngMango.component('maDataPointTagGroup', dataPointTagGroup);
 ngMango.component('maRevisionSelect', revisionSelect);
+ngMango.component('maCronPattern', cronPattern);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default
