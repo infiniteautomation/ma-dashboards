@@ -287,10 +287,9 @@ module.exports = readPom().then(pom => {
             publicPath: `/modules/${moduleName}/web/`,
             libraryTarget: 'umd',
             // the library name is used when exporting the library using UMD, it also is appended to the
-            // jsonp callback name (unless overridden as below), and is used in source map sourceURL
-            // e.g. sourceURL=webpack://%5Bname%5D/./node_modules/xxx
-            // shows up in chrome as %5Bname%5D
+            // jsonp callback name (unless overridden as below)
             library: '[name]',
+            devtoolNamespace: `${moduleName}`, // sets the source map sourceURL
             jsonpFunction: `webpack_jsonp_${moduleName}`
         }
     };
