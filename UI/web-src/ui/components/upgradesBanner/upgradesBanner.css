@@ -1,0 +1,19 @@
+ma-ui-upgrades-banner {
+	display: block;
+}
+
+ma-ui-upgrades-banner .ma-upgrades-banner-info {
+	margin-right: 10px;
+}
+
+ma-ui-upgrades-banner > div {
+	padding: 4px 16px;
+}
+
+div.main-application.ui_settings_modules_upgrade ma-ui-upgrades-banner {
+	display: none;
+}
+
+ma-ui-upgrades-banner .md-button.md-icon-button {
+	margin: 0;
+}

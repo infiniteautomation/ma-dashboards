@@ -57,6 +57,13 @@ function SystemStatusFactory($http) {
             url: internalMetricsUrl
         });
     };
+    
+    SystemStatus.getInternalMetric = function(id) {
+        return $http({
+            method: 'GET',
+            url: `${internalMetricsUrl}/${encodeURIComponent(id)}`
+        });
+    };
 
     SystemStatus.getLogFilesList = function() {
         return $http({

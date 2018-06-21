@@ -1,0 +1,12 @@
+<div ng-if="$ctrl.availableUpgrades > 0 && !$ctrl.settings.dismissed"
+        layout layout-align="space-between center" md-colors="{background: 'background-hue-1'}">
+    <div layout layout-align="start center">
+        <md-icon class="ma-upgrades-banner-info">info</md-icon>
+        <span ma-tr="ui.app.upgradesAvailable" ma-tr-args="[$ctrl.availableUpgrades]"></span>
+        &nbsp;<a ma-tr="ui.app.goToUpgradesPage" ui-sref="ui.settings.modules.upgrade"></a>
+    </div>
+    <div><md-button class="md-icon-button" ng-click="$ctrl.dismiss()">
+        <md-icon>close</md-icon>
+        <md-tooltip ma-tr="ui.app.dismiss"></md-tooltip>
+    </md-button></div>
+</div>

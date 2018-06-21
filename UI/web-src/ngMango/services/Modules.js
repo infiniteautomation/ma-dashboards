@@ -4,17 +4,48 @@
  */
 import angular from 'angular';
 
-
-ModulesFactory.$inject = ['$http', '$q', 'maServer', 'maNotificationManager'];
-function ModulesFactory($http, $q, maServer, NotificationManager) {
+ModulesFactory.$inject = ['$http', '$q', 'maServer', 'maNotificationManager', 'maSystemStatus', '$rootScope', '$interval', '$timeout'];
+function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus, $rootScope, $interval, $timeout) {
     const modulesUrl = '/rest/v1/modules';
+    const availableUpgradesMonitorId = 'com.serotonin.m2m2.rt.maint.UpgradeCheck.COUNT';
+    let availableUpgrades = null;
+    let availableUpgradesIntervalPromise = null;
     
+    const setAvailableUpgrades = function (upgrades) {
+        if (upgrades !== availableUpgrades) {
+            $rootScope.$broadcast('maAvailableUpgrades', {
+                current: upgrades,
+                previous: availableUpgrades
+            });
+        }
+        
+        availableUpgrades = upgrades;
+    };
+
+    class Module {
+        constructor(options) {
+            angular.extend(this, options);
+        }
+        
+        $delete(setDeleted) {
+            return $http({
+                method: 'PUT',
+                url: modulesUrl + '/deletion-state/' + encodeURIComponent(this.name),
+                params: {
+                    'delete': setDeleted == null ? true : !!setDeleted
+                }
+            }).then(response => {
+                angular.extend(this, response.data);
+                return this;
+            });
+        }
+    }
+
     // Mango API should return in less than 60s
     // Mango HTTP client that talks to the store has a timeout of 30s and retries once 
     const storeTimeout = 30000 * 2 + 10000;
     
-    function Modules() {
-    }
+    const Modules = {};
     
     Modules.notificationManager = new NotificationManager({
         webSocketUrl: '/rest/v1/websocket/modules',
@@ -73,7 +104,10 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
             method: 'GET',
             url: modulesUrl + '/upgrades-available',
             timeout: storeTimeout
-        }).then(response => response.data);
+        }).then(response => {
+            setAvailableUpgrades(response.data.upgrades.length);
+            return response.data;
+        });
     };
     
     Modules.doUpgrade = function(selectedInstalls, selectedUpgrades, backupBeforeDownload, restartAfterDownload) {
@@ -122,26 +156,37 @@ function ModulesFactory($http, $q, maServer, NotificationManager) {
         });
     };
     
-    function Module(options) {
-    	angular.extend(this, options);
-    }
+    Modules.availableUpgrades = function() {
+        return availableUpgrades;
+    };
     
-    Module.prototype.$delete = function(setDeleted) {
-    	return $http({
-            method: 'PUT',
-            url: modulesUrl + '/deletion-state/' + encodeURIComponent(this.name),
-            params: {
-            	'delete': setDeleted == null ? true : !!setDeleted
-            }
-        }).then(response => {
-        	angular.extend(this, response.data);
-            return this;
+    Modules.checkAvailableUpgrades = function() {
+        return maSystemStatus.getInternalMetric(availableUpgradesMonitorId).then(response => {
+            setAvailableUpgrades(response.data.value);
+            return response.data.value;
         });
     };
+    
+    Modules.startAvailableUpgradeCheck = function(checkInterval = 60 * 60 * 1000, initialCheckDelay = 5000) {
+        this.cancelAvailableUpgradeCheck();
+        
+        $timeout(() => {
+            this.checkAvailableUpgrades();
+        }, initialCheckDelay, false);
+        
+        availableUpgradesIntervalPromise = $interval(() => {
+            this.checkAvailableUpgrades();
+        }, checkInterval, 0, false);
+    };
+    
+    Modules.cancelAvailableUpgradeCheck = function() {
+        if (availableUpgradesIntervalPromise != null) {
+            $interval.cancel(availableUpgradesIntervalPromise);
+            availableUpgradesIntervalPromise = null;
+        }
+    };
 
-    return Modules;
+    return Object.freeze(Modules);
 }
 
 export default ModulesFactory;
-
-

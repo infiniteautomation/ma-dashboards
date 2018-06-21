@@ -94,6 +94,8 @@
     </md-toolbar>
     
     <ma-ui-date-bar on-refresh="dateBar.refresh = $event" ng-if="stateParams.dateBar" ng-show="dateBar.expanded" class="ng-hide"></ma-ui-date-bar>
+    
+    <ma-ui-upgrades-banner></ma-ui-upgrades-banner>
 
     <md-content layout="column" flex class="main-content">
       <div flex="noshrink" ui-view layout="column" class="ma-ui-main-view" ng-class="{'ma-no-padding': $state.params.noPadding}" role="main"></div>

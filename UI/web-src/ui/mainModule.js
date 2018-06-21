@@ -17,6 +17,7 @@ import autoLoginSettings from './components/autoLoginSettings/autoLoginSettings'
 import activeEventIcons from './components/activeEventIcons/activeEventIcons';
 import dateBar from './components/dateBar/dateBar';
 import footer from './components/footer/footer';
+import upgradesBanner from './components/upgradesBanner/upgradesBanner';
 import 'angular-ui-ace';
 
 angular.module('maUiRootState', ['ui.ace'])
@@ -32,4 +33,5 @@ angular.module('maUiRootState', ['ui.ace'])
     .component('maUiAutoLoginSettings', autoLoginSettings)
     .component('maUiActiveEventIcons', activeEventIcons)
     .component('maUiDateBar', dateBar)
-    .component('maUiFooter', footer);
+    .component('maUiFooter', footer)
+    .component('maUiUpgradesBanner', upgradesBanner);

@@ -672,6 +672,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         return false;
     });
     
+    maModules.startAvailableUpgradeCheck();
+    
     $rootScope.appLoading = false;
 }]);
 
