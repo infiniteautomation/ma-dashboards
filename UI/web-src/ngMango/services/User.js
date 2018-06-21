@@ -6,8 +6,6 @@
 import angular from 'angular';
 import moment from 'moment-timezone';
 import Cldr from 'cldrjs';
-import {require as requirejs} from 'requirejs';
-
 
 // Stores the locales which have been loaded using require, must be cached as we can't call
 // require twice and fetch the locale again.
@@ -297,8 +295,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         let localDeferred = $q.defer();
                         angularLocaleDeferred = localDeferred;
                         
-                        // load the locale using require and resolve the deferred
-                        requirejs([`https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/${angular.version.full}/angular-locale_${localeId}.js`], () => {
+                        // load the locale using dynamic import and resolve the deferred
+                        const importPromise = import(/* webpackMode: "lazy-once", webpackChunkName: "angular-i18n" */
+                                'angular-i18n/angular-locale_' + localeId);
+                        
+                        importPromise.then(() => {
                             // get the newly loaded locale from a new injector for ngLocale
                             const ngLocaleInjector = angular.injector(['ngLocale'], true);
                             const newLocale = ngLocaleInjector.get('$locale');
@@ -307,7 +308,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                             localeCache[newLocale.id] = newLocale;
                             localDeferred.resolve(newLocale);
                         }, error => localDeferred.reject(error));
-                        
+
                         newLocalePromise = localDeferred.promise;
                     }
                     
