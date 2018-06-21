@@ -45,7 +45,7 @@
 
     <div ng-if="$ctrl.upgradeState" ng-switch="$ctrl.upgradeState">
         <md-progress-linear ng-switch-when="DOWNLOAD" md-mode="determinate" ng-value="$ctrl.upgradeProgress"></md-progress-linear>
-        <md-progress-linear ng-switch-when="RESTART|DONE" ng-switch-when-separator="|" md-mode="determinate" ng-value="100"></md-progress-linear>
+        <md-progress-linear ng-switch-when="DONE" md-mode="determinate" ng-value="100"></md-progress-linear>
         <md-progress-linear ng-switch-default md-mode="indeterminate"></md-progress-linear>
     </div>
     
