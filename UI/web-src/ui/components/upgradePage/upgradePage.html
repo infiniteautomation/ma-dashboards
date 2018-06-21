@@ -24,26 +24,36 @@
 		<span ma-tr="ui.app.backToModules"></span>
 	</md-button>
 	
-	<md-button class="md-raised md-primary" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise" ng-click="$ctrl.checkForUpgrades()">
+	<md-button class="md-raised md-primary" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'" ng-click="$ctrl.checkForUpgrades()">
 		<md-icon>update</md-icon>
 		<span ma-tr="modules.versionCheck"></span>
 	</md-button>
 	
-	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length || $ctrl.upgradePromise" ng-click="$ctrl.doUpgrade($event)">
+	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'" ng-click="$ctrl.doUpgrade($event)">
 		<md-icon>check</md-icon>
 		<span ma-tr="ui.app.installUpgradeX" ma-tr-args="[$ctrl.upgradesSelected.length + $ctrl.installsSelected.length]"></span>
 	</md-button>
 	
-	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
+	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'">
+        <md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span>
+    </md-button>
 
 	<div layout="column" layout-align="start start" class="md-padding">
 		<md-checkbox ng-model="$ctrl.backupBeforeDownload"><span ma-tr="modules.versionCheck.advanced.backup"></span></md-checkbox>
 		<md-checkbox ng-model="$ctrl.restartAfterDownload"><span ma-tr="modules.versionCheck.advanced.restart"></span></md-checkbox>
 	</div>
 
-    <md-progress-linear ng-if="$ctrl.upgradeProgress != null" md-mode="determinate" ng-value="$ctrl.upgradeProgress"></md-progress-linear>
+    <div ng-if="$ctrl.upgradeState" ng-switch="$ctrl.upgradeState">
+        <md-progress-linear ng-switch-when="DOWNLOAD" md-mode="determinate" ng-value="$ctrl.upgradeProgress"></md-progress-linear>
+        <md-progress-linear ng-switch-when="RESTART|DONE" ng-switch-when-separator="|" md-mode="determinate" ng-value="100"></md-progress-linear>
+        <md-progress-linear ng-switch-default md-mode="indeterminate"></md-progress-linear>
+    </div>
     
-    <p ng-if="$ctrl.error" md-colors="{color: 'warn'}" ma-tr="ui.app.errorCheckingForUpgrades" ma-tr-args="[$ctrl.error]"></p>
+    <p class="ma-text-center" ng-if="$ctrl.upgradeState && $ctrl.upgradeState === 'DOWNLOAD'"><span ng-bind="$ctrl.upgradeStateDescription"></span>
+        (<span ng-bind="$ctrl.modulesDownloaded"></span>/<span ng-bind="$ctrl.modulesToDownload"></span>)</p>
+    <p class="ma-text-center" ng-if="$ctrl.upgradeState && $ctrl.upgradeState !== 'DOWNLOAD'" ng-bind="$ctrl.upgradeStateDescription"></p>
+    
+    <p class="ma-text-center" ng-if="$ctrl.error" md-colors="{color: 'warn'}" ma-tr="ui.app.errorCheckingForUpgrades" ma-tr-args="[$ctrl.error]"></p>
 
 	<md-card>
 		<md-card-content>

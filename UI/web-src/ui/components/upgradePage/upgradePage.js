@@ -33,41 +33,27 @@ UpgradePageController.prototype.$onInit = function() {
 
     this.maModules.notificationManager.subscribe((event, message) => {
 		if (event.name === 'webSocketMessage') {
-		    let toastMessage;
-		    let isError = false;
-		    
-			if (message.type === 'MODULE_DOWNLOADED') {
-			    this.modulesDownloaded++;
+			if (message.type === 'UPGRADE_STATE_CHANGE') {
+                this.upgradeState = message.upgradeProcessState;
+                this.upgradeStateDescription = message.stateDescription;
+			} else if (message.type === 'MODULE_DOWNLOADED') {
+                this.modulesDownloaded++;
                 this.upgradeProgress = Math.floor(this.modulesDownloaded / this.modulesToDownload * 100);
-			    
-				if (!moduleDownloaded(message.name, this.upgradesSelected)) {
-					moduleDownloaded(message.name, this.installsSelected);
-				}
-			} else if (message.type === 'UPGRADE_STATE_CHANGE') {
-			    toastMessage = this.maTranslate.trSync('ui.app.upgradeProgress', message.stateDescription);
-			} else if (message.type === 'UPGRADE_FINISHED') {
+                
+                if (!moduleDownloaded(message.name, this.upgradesSelected)) {
+                    moduleDownloaded(message.name, this.installsSelected);
+                }
+            } else if (message.type === 'UPGRADE_FINISHED') {
 			    if (this.upgradeDeferred) {
 			        this.upgradeDeferred.resolve();
                 }
 			} else if (message.type === 'UPGRADE_ERROR') {
-			    isError = true;
-                toastMessage = this.maTranslate.trSync('ui.app.upgradeError', message.error);
+                this.error = this.maTranslate.trSync('ui.app.upgradeError', message.error);
                 
                 if (this.upgradeDeferred) {
                     this.upgradeDeferred.reject(message.error);
                 }
             }
-			
-			if (toastMessage) {
-                const toast = this.$mdToast.simple()
-                    .textContent(toastMessage)
-                    .action(this.maTranslate.trSync('common.ok'))
-                    .highlightAction(true)
-                    .position('bottom center')
-                    .toastClass(isError ? 'md-warn' : '')
-                    .hideDelay(10000);
-                this.$mdToast.show(toast);
-			}
 		}
 		
 		function moduleDownloaded(moduleName, searchArray) {
@@ -88,6 +74,9 @@ UpgradePageController.prototype.checkForUpgrades = function() {
     this.backupBeforeDownload = true;
     this.restartAfterDownload = true;
 	delete this.error;
+	// these are still set after a restart
+    delete this.upgradeState;
+    delete this.upgradeStateDescription;
 	
 	this.checkPromise = this.maModules.checkForUpgrades().then(function(available) {
 		this.installs = available.newInstalls;
@@ -191,7 +180,7 @@ UpgradePageController.prototype.doUpgrade = function($event) {
 	}.bind(this))['finally'](function() {
 		delete this.upgradePromise;
 		delete this.upgradeDeferred;
-		
+
         delete this.upgradeProgress;
         delete this.modulesDownloaded;
         delete this.modulesToDownload;
