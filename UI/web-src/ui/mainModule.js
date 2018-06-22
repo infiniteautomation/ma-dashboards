@@ -18,9 +18,8 @@ import activeEventIcons from './components/activeEventIcons/activeEventIcons';
 import dateBar from './components/dateBar/dateBar';
 import footer from './components/footer/footer';
 import upgradesBanner from './components/upgradesBanner/upgradesBanner';
-import 'angular-ui-ace';
 
-angular.module('maUiRootState', ['ui.ace'])
+angular.module('maUiRootState', [])
     .factory('maUiMenuEditor', menuEditorFactory)
     .directive('maUiMenuEditor', menuEditor)
     .directive('maUiPageEditor', pageEditor)

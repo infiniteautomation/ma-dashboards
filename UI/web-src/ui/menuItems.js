@@ -112,7 +112,6 @@ export default [
                 return Translate.loadNamespaces(['ui', 'common', 'pointEdit', 'rest']);
             }],
             loginTranslations: loadLoginTranslations,
-            ace: () => import(/* webpackMode: "lazy", webpackChunkName: "ace" */ 'ace').then(aceModule => aceModule.promise),
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './mainModule').then(() => {
