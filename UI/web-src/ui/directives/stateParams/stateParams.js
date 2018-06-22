@@ -3,6 +3,8 @@
  * @author Jared Wiltshire
  */
 
+// TODO Mango 3.5 remove this directive (Replaced by stateParams.js in ngMango)
+
 stateParams.$inject = ['$stateParams', '$state', '$timeout'];
 function stateParams($stateParams, $state, $timeout) {
 

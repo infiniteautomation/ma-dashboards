@@ -3,6 +3,8 @@
  * @author Jared Wiltshire
  */
 
+// TODO Mango 3.5 remove this directive (Replaced by aceEditor.js in ngMango)
+
 LiveEditorController.$inject = ['$element', 'maUiSettings', '$templateRequest', '$sce', '$scope', '$timeout'];
 function LiveEditorController($element, uiSettings, $templateRequest, $sce, $scope, $timeout) {
     this.initialText = $element.data('htmlContent');
