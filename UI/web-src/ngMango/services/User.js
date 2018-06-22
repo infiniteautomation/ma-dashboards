@@ -6,10 +6,28 @@
 import angular from 'angular';
 import moment from 'moment-timezone';
 import Cldr from 'cldrjs';
+import angularLocaleCache from 'angularLocaleCache';
 
-// Stores the locales which have been loaded using require, must be cached as we can't call
-// require twice and fetch the locale again.
-const localeCache = {};
+// preload popular locales
+import 'angular-i18n/angular-locale_en';
+import 'angular-i18n/angular-locale_en-001';
+import 'angular-i18n/angular-locale_en-150';
+import 'angular-i18n/angular-locale_en-us';
+import 'angular-i18n/angular-locale_en-gb';
+import 'angular-i18n/angular-locale_en-ca';
+import 'angular-i18n/angular-locale_en-au';
+import 'angular-i18n/angular-locale_en-za';
+import 'angular-i18n/angular-locale_en-nz';
+import 'angular-i18n/angular-locale_en-ie';
+import 'angular-i18n/angular-locale_zh-cn';
+import 'angular-i18n/angular-locale_ru-ru';
+import 'angular-i18n/angular-locale_fr-fr';
+import 'angular-i18n/angular-locale_es-es';
+import 'angular-i18n/angular-locale_es-mx';
+import 'angular-i18n/angular-locale_de-de';
+import 'angular-i18n/angular-locale_pt-br';
+import 'angular-i18n/angular-locale_it-it';
+import 'angular-i18n/angular-locale_ja-jp';
 
 /**
 * @ngdoc service
@@ -287,38 +305,19 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         angularLocaleDeferred.reject('cancel');
                     }
                     
-                    let newLocalePromise;
-                    if (localeCache[localeId]) {
-                        // use cached locale when available
-                        newLocalePromise = $q.when(localeCache[localeId]);
-                    } else {
-                        let localDeferred = $q.defer();
-                        angularLocaleDeferred = localDeferred;
-                        
-                        // load the locale using dynamic import and resolve the deferred
-                        const importPromise = import(/* webpackMode: "lazy-once", webpackChunkName: "angular-i18n" */
-                                'angular-i18n/angular-locale_' + localeId);
-                        
-                        importPromise.then(() => {
-                            // get the newly loaded locale from a new injector for ngLocale
-                            const ngLocaleInjector = angular.injector(['ngLocale'], true);
-                            const newLocale = ngLocaleInjector.get('$locale');
-                            
-                            // cache the result, we can't ever retrieve this locale again using require
-                            localeCache[newLocale.id] = newLocale;
-                            localDeferred.resolve(newLocale);
-                        }, error => localDeferred.reject(error));
-
-                        newLocalePromise = localDeferred.promise;
-                    }
+                    angularLocaleDeferred = $q.defer();
                     
-                    newLocalePromise.then(newLocale => {
+                    // localeCache.getLocale() returns ES6 promise, convert to AngularJS $q promise
+                    angularLocaleCache.getLocale(localeId).then(angularLocaleDeferred.resolve, angularLocaleDeferred.reject);
+                    
+                    angularLocaleDeferred.promise.then(newLocaleData => {
                         // deep replace all properties of existing locale with the keys from the new locale
                         // this is necessary as the filters cache $locale.NUMBER_FORMATS for example
-                        Util.deepReplace($locale, newLocale);
+                        Util.deepReplace($locale, newLocaleData);
                     }, error => {
-                        if (error === 'cancel') return;
-                        throw error;
+                        if (error !== 'cancel') {
+                            return $q.reject(error);
+                        }
                     });
                 }
 

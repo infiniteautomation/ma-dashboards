@@ -176,7 +176,12 @@ module.exports = readPom().then(pom => {
                 },
                 {
                     test: /angular-.+?\.js$/,
+                    exclude: /angular-locale.+?\.js$/,
                     use: ['imports-loader?angular']
+                },
+                {
+                    test: /angular-locale.+?\.js$/,
+                    use: ['imports-loader?angular=angularLocaleCache']
                 },
                 {
                     test: /angular-ui-sortable/,
@@ -229,7 +234,8 @@ module.exports = readPom().then(pom => {
                 amcharts: path.join(__dirname, 'web-src/vendor/amcharts'),
                 localeList: path.join(__dirname, 'web-src/vendor/localeList.json'),
                 requirejs: 'requirejs/require',
-                ace: path.join(__dirname, 'web-src/shims/ace')
+                ace: path.join(__dirname, 'web-src/shims/ace'),
+                angularLocaleCache: path.join(__dirname, 'web-src/shims/angularLocaleCache')
             }
         },
         //devtool: 'eval',
