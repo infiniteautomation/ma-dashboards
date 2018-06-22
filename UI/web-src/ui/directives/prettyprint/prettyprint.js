@@ -3,6 +3,8 @@
  * @author Jared Wiltshire
  */
 
+// TODO Mango 3.5 remove this
+
 prettyprint.$inject = ['maUiSettings', '$window', '$log'];
 function prettyprint(uiSettings, $window, $log) {
     return {

@@ -115,8 +115,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
 
     $compileProvider.debugInfoEnabled(false);
     $compileProvider.commentDirectivesEnabled(false);
-    // we use the a class directive to transform ngDoc divs with class="prettyprint"
-    //$compileProvider.cssClassDirectivesEnabled(false);
+    $compileProvider.cssClassDirectivesEnabled(false);
     
     $mdAriaProvider.disableWarnings();
     maRequireQProvider.setRequireJs(requirejs);
@@ -210,16 +209,6 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
         menuHidden: true,
         submenu: true,
         weight: 2002,
-        resolve: {
-            prettyprint: ['$injector', function($injector) {
-                return import(/* webpackChunkName: "ui.docs" */
-                        './directives/prettyprint/prettyprint').then(prettyprint => {
-                    angular.module('maUiDocsState', [])
-                        .directive('prettyprint', prettyprint.default); // cant name this directive maUiPrettyPrint as its a class added by ngDoc
-                    $injector.loadNewModules(['maUiDocsState']);
-                });
-            }]
-        },
         params: {
             sidebar: null
         }
