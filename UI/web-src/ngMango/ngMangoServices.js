@@ -24,7 +24,7 @@ import rqlParamSerializer from './services/rqlParamSerializer';
 import UserNotes from './services/UserNotes';
 import events from './services/events';
 import DynamicItems from './services/DynamicItems';
-import pointValuesFactory from './services/pointValues';
+import pointValuesProvider from './services/pointValues';
 import statisticsFactory from './services/statistics';
 import qDecorator from './services/qDecorator';
 import UserEventManager from './services/UserEventManager';
@@ -105,7 +105,7 @@ ngMangoServices.factory('maRqlParamSerializer', rqlParamSerializer);
 ngMangoServices.factory('maUserNotes', UserNotes);
 ngMangoServices.factory('maEvents', events);
 ngMangoServices.factory('maDynamicItems', DynamicItems);
-ngMangoServices.factory('maPointValues', pointValuesFactory);
+ngMangoServices.provider('maPointValues', pointValuesProvider);
 ngMangoServices.factory('maStatistics', statisticsFactory);
 ngMangoServices.factory('maUserEventManager', UserEventManager);
 ngMangoServices.factory('maModules', ModulesFactory);
@@ -135,13 +135,10 @@ ngMangoServices.provider('$exceptionHandler', maExceptionHandler);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 
-ngMangoServices.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', '');
-
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUT', 30000);
 ngMangoServices.constant('MA_WATCHDOG_TIMEOUT', 10000);
 ngMangoServices.constant('MA_RECONNECT_DELAY', 5000);
-ngMangoServices.constant('MA_POINT_VALUES_CONFIG', {limit: 5000});
 
 ngMangoServices.constant('MA_DATE_FORMATS', {
     dateTime: 'lll',

@@ -8,7 +8,7 @@ import '../ngMango/ngMangoMaterial';
 import menuProvider from './services/menu';
 import pagesFactory from './services/pages';
 import dateBarFactory from './services/dateBar';
-import uiSettingsFactory from './services/uiSettings';
+import uiSettingsProvider from './services/uiSettings';
 import pageView from './directives/pageView/page_view';
 import livePreview from './directives/liveEditor/livePreview';
 import stateParams from './directives/stateParams/stateParams';
@@ -20,22 +20,13 @@ import 'angular-ui-sortable';
 import 'angular-loading-bar';
 import '../docs/ngMango/js/docs-setup';
 import 'md-color-picker';
-import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
-import {moduleVersions} from '../shims/exportAMD.js';
+import * as constants from './constants.js';
 
 import 'angular-loading-bar/build/loading-bar.css';
 import 'md-color-picker/dist/mdColorPicker.css';
 import './styles/fonts.css';
 import './styles/main.css';
-
-// must match variables defined in UIInstallUpgrade.java
-const MA_UI_MENU_XID = 'mangoUI-menu';
-const MA_UI_PAGES_XID = 'mangoUI-pages';
-const MA_UI_SETTINGS_XID = 'mangoUI-settings';
-const MA_UI_EDIT_MENUS_PERMISSION = 'edit-ui-menus';
-const MA_UI_EDIT_PAGES_PERMISSION = 'edit-ui-pages';
-const MA_UI_EDIT_SETTINGS_PERMISSION = 'edit-ui-settings';
 
 const uiApp = angular.module('maUiApp', [
     'ui.router',
@@ -47,22 +38,20 @@ const uiApp = angular.module('maUiApp', [
 ]);
 
 uiApp.provider('maUiMenu', menuProvider)
+    .provider('maUiSettings', uiSettingsProvider)
     .factory('maUiPages', pagesFactory)
     .factory('maUiDateBar', dateBarFactory)
-    .factory('maUiSettings', uiSettingsFactory)
     .directive('maUiPageView', pageView)
     .directive('maUiLivePreview', livePreview)
     .directive('maUiStateParams', stateParams)
     .directive('maUiIframeView', iframeView)
-    .constant('MA_UI_MENU_XID', MA_UI_MENU_XID)
-    .constant('MA_UI_PAGES_XID', MA_UI_PAGES_XID)
-    .constant('MA_UI_SETTINGS_XID', MA_UI_SETTINGS_XID)
-    .constant('MA_UI_EDIT_MENUS_PERMISSION', MA_UI_EDIT_MENUS_PERMISSION)
-    .constant('MA_UI_EDIT_PAGES_PERMISSION', MA_UI_EDIT_PAGES_PERMISSION)
-    .constant('MA_UI_EDIT_SETTINGS_PERMISSION', MA_UI_EDIT_SETTINGS_PERMISSION)
     .constant('MA_UI_NG_DOCS', window.NG_DOCS)
-    .constant('MA_UI_MENU_ITEMS', menuItems);
+    .constant('MA_UI_MENU_ITEMS', menuItems)
+    .constant('MA_UI_SETTINGS', {});
 
+Object.keys(constants).forEach(name => {
+    uiApp.constant(name, constants[name]);
+});
 
 // override constant from ngMango module
 uiApp.constant('MA_EVENT_LINK_INFO', {
@@ -93,12 +82,10 @@ uiApp.constant('MA_EVENT_LINK_INFO', {
 });
 
 uiApp.config([
-    'MA_UI_SETTINGS',
     'MA_UI_NG_DOCS',
     '$stateProvider',
     '$urlRouterProvider',
     '$httpProvider',
-    '$mdThemingProvider',
     '$injector',
     '$compileProvider',
     'maUiMenuProvider',
@@ -109,9 +96,11 @@ uiApp.config([
     'MA_UI_MENU_XID',
     'MA_UI_PAGES_XID',
     'maRequireQProvider',
-function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
-        $httpProvider, $mdThemingProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
-        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider) {
+    'maUserProvider',
+    'maUiMenuProvider',
+function(MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
+        $httpProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
+        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider, maUserProvider, maUiMenuProvider) {
 
     $compileProvider.debugInfoEnabled(false);
     $compileProvider.commentDirectivesEnabled(false);
@@ -119,45 +108,6 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     
     $mdAriaProvider.disableWarnings();
     maRequireQProvider.setRequireJs(requirejs);
-
-    if (MA_UI_SETTINGS.palettes) {
-        for (const paletteName in MA_UI_SETTINGS.palettes) {
-            $mdThemingProvider.definePalette(paletteName, angular.copy(MA_UI_SETTINGS.palettes[paletteName]));
-        }
-    }
-
-    if (MA_UI_SETTINGS.themes) {
-        for (const name in MA_UI_SETTINGS.themes) {
-            const themeSettings = MA_UI_SETTINGS.themes[name];
-            const theme = $mdThemingProvider.theme(name);
-            if (themeSettings.primaryPalette) {
-                theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
-            }
-            if (themeSettings.accentPalette) {
-                theme.accentPalette(themeSettings.accentPalette, themeSettings.accentPaletteHues);
-            }
-            if (themeSettings.warnPalette) {
-                theme.warnPalette(themeSettings.warnPalette, themeSettings.warnPaletteHues);
-            }
-            if (themeSettings.backgroundPalette) {
-                theme.backgroundPalette(themeSettings.backgroundPalette, themeSettings.backgroundPaletteHues);
-            }
-            if (themeSettings.dark) {
-                theme.dark();
-            }
-        }
-    }
-
-    // need to store a reference to the theming provider in order to generate themes at runtime
-    MA_UI_SETTINGS.themingProvider = $mdThemingProvider;
-
-    const defaultTheme = MA_UI_SETTINGS.defaultTheme || 'mangoDark';
-    $mdThemingProvider.setDefaultTheme(defaultTheme);
-    $mdThemingProvider.alwaysWatchTheme(true);
-    $mdThemingProvider.generateThemesOnDemand(true);
-    $mdThemingProvider.enableBrowserColor({
-        theme: defaultTheme
-    });
 
     $httpProvider.useApplyAsync(true);
 
@@ -171,7 +121,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
 
     $locationProvider.html5Mode(true);
 
-    $urlRouterProvider.otherwise(function($injector, $location) {
+    $urlRouterProvider.otherwise(($injector, $location) => {
         const basePath = '/ui/';
         const User = $injector.get('maUser');
         const $state = $injector.get('$state');
@@ -218,15 +168,11 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     const DOCS_PAGES = MA_UI_NG_DOCS.pages;
 
     // Loop through and create array of children based on moduleName
-    const modules = DOCS_PAGES.map(function(page) {
-        return page.moduleName;
-    }).filter(function(item, index, array) {
-        return index === array.indexOf(item);
-    });
+    const modules = DOCS_PAGES.map(page => page.moduleName);
 
     // Create module menu items & states
-    modules.forEach(function(item, index, array) {
-        const dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
+    modules.forEach(item => {
+        const dashCaseUrl = item.replace(/[A-Z]/g, c => '-' + c.toLowerCase());
 
         let menuProperty = 'menuTr';
         let menuValue;
@@ -251,14 +197,11 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
 
     // Create 3rd level directives/services/filters docs pages
     // First remove module items
-    const components = DOCS_PAGES.map(function(page) {
-        return page.id;
-    }).filter(function(item, index, array) {
-        return item.indexOf('.') !== -1;
-    });
+    const components = DOCS_PAGES.map(page => page.id)
+    .filter(id => id.indexOf('.') >= 0);
 
     // Add each component item
-    components.forEach(function(item, index, array) {
+    components.forEach(item => {
         const matches = /^(.+?)\.(.+?)(?::(.+?))?$/.exec(item);
         if (matches) {
             const moduleName = matches[1];
@@ -269,10 +212,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
             
             const name = directiveName || serviceName;
             
-            let dashCaseUrl = name.replace(/[A-Z]/g, function(c) {
-                return '-' + c.toLowerCase();
-            });
-            
+            let dashCaseUrl = name.replace(/[A-Z]/g, c => '-' + c.toLowerCase());
             while (dashCaseUrl.charAt(0) === '-') {
                 dashCaseUrl = dashCaseUrl.slice(1);
             }
@@ -285,7 +225,7 @@ function(MA_UI_SETTINGS, MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
                 url: '/' + dashCaseUrl,
                 menuText: name,
                 resolve: {
-                    viewTemplate: function() {
+                    viewTemplate: () => {
                         return import(/* webpackMode: "lazy-once", webpackChunkName: "ui.docs" */
                                 '../docs/ngMango/partials/api/' + templateUrl + '.html');
                     }
@@ -318,7 +258,6 @@ uiApp.run([
     '$document',
     '$mdDialog',
     'maWebAnalytics',
-    'MA_GOOGLE_ANALYTICS_PROPERTY_ID',
     '$window',
     'maModules',
     'maMath',
@@ -327,10 +266,10 @@ uiApp.run([
     '$exceptionHandler',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
-        webAnalytics, MA_GOOGLE_ANALYTICS_PROPERTY_ID, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler) {
+        webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler) {
 
-    if (MA_GOOGLE_ANALYTICS_PROPERTY_ID) {
-        webAnalytics.enableGoogleAnalytics(MA_GOOGLE_ANALYTICS_PROPERTY_ID);
+    if (uiSettings.googleAnalyticsPropertyId) {
+        webAnalytics.enableGoogleAnalytics(uiSettings.googleAnalyticsPropertyId);
     }
 
     uiSettings.generateTheme();
@@ -406,11 +345,11 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         if ($state.$current.menuText) {
             this.titleText = $state.$current.menuText + ' - ' + this.titleSuffix;
         } else if ($state.$current.menuTr) {
-            Translate.tr($state.$current.menuTr).then(function(text) {
+            Translate.tr($state.$current.menuTr).then(text => {
                 this.titleText = text + ' - ' + this.titleSuffix;
-            }.bind(this), function() {
+            }, () => {
                 this.titleText = this.titleSuffix;
-            }.bind(this));
+            });
         } else {
             this.titleText = this.titleSuffix;
         }
@@ -424,7 +363,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     };
 
-    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+    $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
         event.preventDefault();
         if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
             $state.loginRedirectUrl = $state.href(toState, toParams);
@@ -438,7 +377,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
         if (toState.href) {
             event.preventDefault();
             $window.open(toState.href, toState.target || '_self');
@@ -451,9 +390,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         
         if (toState.name === 'logout') {
             event.preventDefault();
-            User.logout().$promise.then(null, function() {
-                // consume error
-            }).then(function() {
+            // consume error
+            User.logout().$promise.then(null, error => null).then(() => {
                 $state.go('login');
             });
         }
@@ -483,7 +421,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
     
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
         const crumbs = [];
         let state = $state.$current;
         do {
@@ -511,7 +449,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     // wait for the dashboard view to be loaded then set it to open if the
     // screen is a large one. By default the internal state of the sidenav thinks
     // it is closed even if it is locked open
-    $rootScope.$on('$viewContentLoaded', function(event, view) {
+    $rootScope.$on('$viewContentLoaded', (event, view) => {
         if (view === '@ui') {
             if ($mdMedia('gt-sm')) {
                 const uiPrefs = localStorageService.get('uiPreferences');
@@ -522,7 +460,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             
             // the closeMenu() function already does this but we need this for when the ESC key is pressed
             // which just calls $mdSidenav(..).close();
-            $mdSidenav('left').onClose(function () {
+            $mdSidenav('left').onClose(() => {
                 $rootScope.navLockedOpen = false;
             });
         }
@@ -540,7 +478,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     });
 
     // automatically open or close the menu when the screen size is changed
-    $rootScope.$watch($mdMedia.bind($mdMedia, 'gt-sm'), function(gtSm, prev) {
+    $rootScope.$watch($mdMedia.bind($mdMedia, 'gt-sm'), (gtSm, prev) => {
         if (gtSm === prev) return; // ignore first "change"
         if (!$state.includes('ui')) return; // nothing to do if menu not visible
         
@@ -596,7 +534,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
      * Watchdog timer alert and re-connect/re-login code
      */
 
-    $rootScope.$on('maWatchdog', function(event, current, previous) {
+    $rootScope.$on('maWatchdog', (event, current, previous) => {
         let message;
         let hideDelay = 0; // dont auto hide message
 
@@ -625,7 +563,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 
             // do automatic re-login if we are not on the login page
             if (!$state.includes('login') && !current.wasLogout) {
-                User.autoLogin().then(null, function() {
+                User.autoLogin().then(null, error => {
                     // close dialogs
                     $mdDialog.cancel();
                     
@@ -657,174 +595,11 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     });
     
     // stops window to navigating to a file when dropped on root document
-    $document.on('dragover drop', function($event) {
-        return false;
-    });
+    $document.on('dragover drop', $event => false);
     
     maModules.startAvailableUpgradeCheck();
     
     $rootScope.appLoading = false;
 }]);
 
-/**
- * From here down is the bootstrap code, all actual angular app code is above
- */
-
-// Get an injector for the ngMangoServices app and use the JsonStore service to retrieve the
-// custom user menu items from the REST api prior to bootstrapping the main application.
-// This is so the states can be added to the stateProvider in the config block for the
-// main application. If the states are added after the main app runs then the user may
-// not navigate directly to one of their custom states on startup
-const servicesInjector = angular.injector(['ngMangoServices'], true);
-const User = servicesInjector.get('maUser');
-const JsonStore = servicesInjector.get('maJsonStore');
-const $q = servicesInjector.get('$q');
-const $http = servicesInjector.get('$http');
-const maCssInjector = servicesInjector.get('maCssInjector');
-
-// ensures credentials are saved/deleted on first page load if params are set
-User.getCredentialsFromUrl();
-
-const defaultUiSettingsPromise = $q.resolve(defaultUiSettings);
-const customUiSettingsPromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
-
-const uiSettingsPromise = $q.all([defaultUiSettingsPromise, customUiSettingsPromise]).then(function(results) {
-    const defaultUiSettings = results[0];
-    const customUiSettings = results[1];
-    
-    const MA_UI_SETTINGS = {};
-    if (defaultUiSettings) {
-        MA_UI_SETTINGS.defaultSettings = defaultUiSettings;
-        angular.merge(MA_UI_SETTINGS, defaultUiSettings);
-    }
-    if (customUiSettings) {
-        MA_UI_SETTINGS.initialSettings = customUiSettings.jsonData;
-        angular.merge(MA_UI_SETTINGS, customUiSettings.jsonData);
-    }
-
-    if (MA_UI_SETTINGS.userCss) {
-    	maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', 'meta[name="user-styles-after-here"]');
-    }
-    
-    // contains fix for https://github.com/angular/material/issues/10516
-    const userAgent = navigator.userAgent;
-    if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
-    		userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
-        // assign to variable to stop other warnings
-        // jshint unused:false
-        const safariCss = import(/* webpackChunkName: "ui.safari" */ './styles/safari.css');
-    }
-    
-    return MA_UI_SETTINGS;
-});
-
-const userAndMenuPromise = User.getCurrent().$promise.then(null, function() {
-	return uiSettingsPromise.then(function(MA_UI_SETTINGS) {
-		return User.autoLogin(MA_UI_SETTINGS);
-	});
-}).then(function(user) {
-    const userMenuPromise = JsonStore.get({xid: MA_UI_MENU_XID}).$promise.then(null, angular.noop);
-    return $q.all([user, userMenuPromise]);
-}, angular.noop).then(function(data) {
-    return {
-        user: data && data[0],
-        userMenuStore: data && data[1]
-    };
-});
-
-const angularModulesPromise = uiSettingsPromise.then(function(MA_UI_SETTINGS) {
-    return $http({
-        method: 'GET',
-        url: '/rest/v1/modules/angularjs-modules/public'
-    }).then(function (response) {
-        if (!response.data.urls || !Array.isArray(response.data.urls)) return;
-
-        const urls = response.data.urls.map(function(url) {
-            return url.replace(/^\/modules\/(.*?)\/web\/(.*?).js(?:\?v=(.*))?$/, function(match, module, filename, version) {
-                moduleVersions[module] = version;
-                return `modules/${module}/web/${filename}`;
-            });
-        });
-
-        if (MA_UI_SETTINGS.userModule) {
-            urls.push(MA_UI_SETTINGS.userModule);
-        }
-
-        const modulePromises = urls.map(function(url) {
-            const deferred = $q.defer();
-            requirejs([url], function(module) {
-                deferred.resolve(module);
-            }, function() {
-                console.log('Failed to load AngularJS module', arguments);
-                deferred.resolve();
-            });
-            return deferred.promise;
-        });
-
-        return $q.all(modulePromises);
-    }, function() {
-        console.log('Error loading AngularJS modules from Mango modules', arguments);
-    });
-});
-
-$q.all([userAndMenuPromise, uiSettingsPromise, angularModulesPromise]).then(function(data) {
-    // *dont* destroy the services injector
-	// If you do, you end up with two $rootScopes once the app bootstraps, the first with id 1, the second with id 2
-	// This caused the "send test email" button not to work on first load
-    //servicesInjector.get('$rootScope').$destroy();
-
-    const user = data[0].user || null;
-    const userMenuStore = data[0].userMenuStore;
-    const MA_UI_SETTINGS = data[1];
-    const angularModules = data[2] || [];
-
-    uiApp.constant('MA_UI_CUSTOM_MENU_ITEMS', userMenuStore ? userMenuStore.jsonData.menuItems : null);
-    uiApp.constant('MA_UI_CUSTOM_MENU_STORE', userMenuStore ? userMenuStore : null);
-
-    uiApp.constant('MA_UI_SETTINGS', MA_UI_SETTINGS);
-    uiApp.constant('MA_GOOGLE_ANALYTICS_PROPERTY_ID', MA_UI_SETTINGS.googleAnalyticsPropertyId);
-    uiApp.constant('MA_POINT_VALUES_CONFIG', {limit: MA_UI_SETTINGS.pointValuesLimit});
-
-    MA_UI_SETTINGS.mangoModuleNames = [];
-    const angularJsModuleNames = ['maUiApp'];
-    angularModules.forEach(function(angularModule, index, array) {
-        if (angularModule && angularModule.name) {
-            angularJsModuleNames.push(angularModule.name);
-            
-            if (MA_UI_SETTINGS.userModule && index === (array.length - 1)) {
-            	MA_UI_SETTINGS.userModuleName = angularModule.name;
-            } else {
-            	MA_UI_SETTINGS.mangoModuleNames.push(angularModule.name);
-            }
-        }
-    });
-    
-    angular.module('maUiBootstrap', angularJsModuleNames)
-    .config(['maUserProvider', 'maUiMenuProvider', function(UserProvider, maUiMenuProvider) {
-        // store pre-bootstrap user into the User service
-        UserProvider.setUser(user);
-        maUiMenuProvider.registerCustomMenuItems();
-    }]);
-
-    angular.element(function() {
-        try {
-            angular.bootstrap(document.documentElement, ['maUiBootstrap'], {strictDi: true});
-        } catch (e) {
-            const errorDiv = document.querySelector('.pre-bootstrap-error');
-            const msgDiv = errorDiv.querySelector('div');
-            const pre = errorDiv.querySelector('pre');
-            const code = errorDiv.querySelector('code');
-            const link = errorDiv.querySelector('a');
-
-            msgDiv.textContent = 'Error bootstrapping Mango app: ' + e.message;
-            code.textContent = e.stack;
-            errorDiv.style.display = 'block';
-            
-            link.onclick = function() {
-                pre.style.display = pre.style.display === 'none' ? 'block' : 'none';
-            };
-            
-            throw e;
-        }
-    });
-});
+export default uiApp;

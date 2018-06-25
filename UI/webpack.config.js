@@ -21,7 +21,7 @@ module.exports = readPom().then(pom => {
         entry: {
             ngMangoServices: './web-src/shims/ngMangoServices.js',
             ngMango: './web-src/shims/ngMango.js',
-            mangoUi: './web-src/ui/app.js'
+            mangoUi: './web-src/ui/bootstrap.js'
         },
         module: {
             rules: [

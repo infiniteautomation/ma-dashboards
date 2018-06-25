@@ -384,7 +384,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             });
         };
         
-        User.storedUsername = function autoLogin() {
+        User.storedUsername = function storedUsername() {
             const credentials = localStorageService.get('storedCredentials');
             return credentials ? credentials.username : null;
         };

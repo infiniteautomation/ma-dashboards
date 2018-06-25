@@ -38,6 +38,7 @@ import {require as requirejs} from 'requirejs';
 * </pre>
 */
 
+// TODO Mango 3.5 remove this, no longer used
 RequireQProvider.$inject = [];
 function RequireQProvider() {
     let providerRequire = requirejs;
