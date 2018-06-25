@@ -20,12 +20,11 @@ const User = servicesInjector.get('maUser');
 const JsonStore = servicesInjector.get('maJsonStore');
 const $q = servicesInjector.get('$q');
 const $http = servicesInjector.get('$http');
-const maCssInjector = servicesInjector.get('maCssInjector');
 
 // ensures credentials are saved/deleted on first page load if params are set
 User.getCredentialsFromUrl();
 
-const settingsStorePromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, angular.noop);
+const settingsStorePromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, error => null);
 const uiSettingsPromise = settingsStorePromise.then(settingsStore => {
     const uiSettings = angular.copy(defaultUiSettings);
     
@@ -33,23 +32,10 @@ const uiSettingsPromise = settingsStorePromise.then(settingsStore => {
         angular.merge(uiSettings, settingsStore.jsonData);
     }
 
-    if (uiSettings.userCss) {
-    	maCssInjector.injectLink(uiSettings.userCss, 'userCss', 'meta[name="user-styles-after-here"]');
-    }
-    
-    // contains fix for https://github.com/angular/material/issues/10516
-    const userAgent = navigator.userAgent;
-    if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
-    		userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
-        // assign to variable to stop other warnings
-        // jshint unused:false
-        const safariCss = import(/* webpackChunkName: "ui.safari" */ './styles/safari.css');
-    }
-    
     return uiSettings;
 });
 
-const userPromise = User.getCurrent().$promise.then(null, () => {
+const userPromise = User.getCurrent().$promise.then(null, error => {
     return uiSettingsPromise.then(uiSettings => {
         return User.autoLogin(uiSettings);
     });

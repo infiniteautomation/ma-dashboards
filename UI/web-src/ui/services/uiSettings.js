@@ -78,14 +78,27 @@ function uiSettingsProvider(MA_UI_SETTINGS, $mdThemingProvider, pointValuesProvi
             $mdTheming,
             MD_THEME_CSS,
             $mdColors,
-            cssInjector,
+            maCssInjector,
             $templateRequest,
             $interpolate,
             MA_UI_SETTINGS_XID,
             MA_UI_EDIT_SETTINGS_PERMISSION,
             $window,
             maPointValues) {
+
+        if (MA_UI_SETTINGS.userCss) {
+            maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', 'meta[name="user-styles-after-here"]');
+        }
         
+        // contains fix for https://github.com/angular/material/issues/10516
+        const userAgent = $window.navigator.userAgent;
+        if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
+                userAgent.indexOf('Chrome/') < 0 && userAgent.indexOf('Chromium/') < 0) {
+            // assign to variable to stop other warnings
+            // jshint unused:false
+            const safariCss = import(/* webpackChunkName: "ui.safari" */ '../styles/safari.css');
+        }
+
         const excludeProperties = ['userSettingsStore', 'theming', 'activeTheme', 'userModuleName', 'mangoModuleNames',
             'activeThemeObj'];
         let themeId = 0;
@@ -220,7 +233,7 @@ function uiSettingsProvider(MA_UI_SETTINGS, $mdThemingProvider, pointValuesProvi
                         uiSettings: this,
                         theme: this.activeThemeObj
                     });
-                    cssInjector.injectStyle(result, 'interpolatedStyles', 'meta[name="user-styles-after-here"]', true, true);
+                    maCssInjector.injectStyle(result, 'interpolatedStyles', 'meta[name="user-styles-after-here"]', true, true);
                 }
             }
         }
