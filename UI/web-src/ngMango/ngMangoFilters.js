@@ -227,6 +227,30 @@ ngMangoFilters.filter('maFindBy', function () {
     };
 });
 
+ngMangoFilters.filter('maFindByTags', function () {
+    return function(input, tags = {}) {
+        if (!Array.isArray(input)) return input;
+
+        return input.find(item => {
+            return Object.keys(tags).every(tagKey => {
+                return item.tags && item.tags[tagKey] === tags[tagKey];
+            });
+        });
+    };
+});
+
+ngMangoFilters.filter('maFilterByTags', function () {
+    return function(input, tags = {}) {
+        if (!Array.isArray(input)) return input;
+        
+        return input.filter(item => {
+            return Object.keys(tags).every(tagKey => {
+                return item.tags && item.tags[tagKey] === tags[tagKey];
+            });
+        });
+    };
+});
+
 ngMangoFilters.filter('maDisplayNull', ['maTranslate', function (maTranslate) {
     const nullStr = maTranslate.trSync('ui.app.null');
     return function(input, strict) {
