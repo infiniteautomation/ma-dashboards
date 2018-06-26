@@ -39,21 +39,21 @@ const userPromise = User.getCurrent().$promise.then(null, error => {
     return uiSettingsPromise.then(uiSettings => {
         return User.autoLogin(uiSettings);
     });
-});
+}).then(null, error => null);
 
 const userMenuStorePromise = userPromise.then(user => {
-    return JsonStore.get({xid: MA_UI_MENU_XID}).$promise;
+    if (user) {
+        return JsonStore.get({xid: MA_UI_MENU_XID}).$promise;
+    }
+    return null;
 }, error => null);
 
-// only going to load the user modules if we are logged in
-const angularModulesPromise = userPromise.then(user => {
-    const moduleUrlsPromise = $http({
-        method: 'GET',
-        url: '/rest/v1/modules/angularjs-modules/public'
-    }).then(response => response.data && response.data.urls || [], error => []);
-    
-    return $q.all([moduleUrlsPromise, uiSettingsPromise]);
-}).then(([moduleUrls, uiSettings]) => {
+const moduleUrlsPromise = $http({
+    method: 'GET',
+    url: '/rest/v1/modules/angularjs-modules/public'
+}).then(response => response.data && response.data.urls || [], error => []);
+
+const angularModulesPromise = $q.all([moduleUrlsPromise, uiSettingsPromise]).then(([moduleUrls, uiSettings]) => {
     const urls = moduleUrls.map(url => {
         return url.replace(/^\/modules\/(.*?)\/web\/(.*?).js(?:\?v=(.*))?$/, (match, module, filename, version) => {
             moduleVersions[module] = version;
