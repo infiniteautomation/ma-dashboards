@@ -50,4 +50,5 @@ class LocaleCache {
     }
 }
 
-module.exports = new LocaleCache();
+const localeCache = new LocaleCache();
+export default localeCache;

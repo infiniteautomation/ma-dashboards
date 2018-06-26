@@ -19,7 +19,7 @@ import dateBar from './components/dateBar/dateBar';
 import footer from './components/footer/footer';
 import upgradesBanner from './components/upgradesBanner/upgradesBanner';
 
-angular.module('maUiRootState', [])
+const maUiRootState = angular.module('maUiRootState', [])
     .factory('maUiMenuEditor', menuEditorFactory)
     .directive('maUiMenuEditor', menuEditor)
     .directive('maUiPageEditor', pageEditor)
@@ -34,3 +34,5 @@ angular.module('maUiRootState', [])
     .component('maUiDateBar', dateBar)
     .component('maUiFooter', footer)
     .component('maUiUpgradesBanner', upgradesBanner);
+
+export default maUiRootState;

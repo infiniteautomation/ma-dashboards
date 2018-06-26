@@ -3,7 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import AmCharts from 'amcharts/gauge';import angular from 'angular';
+import AmCharts from 'amcharts/gauge';
+import angular from 'angular';
 
 /**
  * @ngdoc directive

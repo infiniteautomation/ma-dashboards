@@ -127,7 +127,7 @@ module.exports = readPom().then(pom => {
                         path.resolve(__dirname, 'web-src/vendor/amcharts/amcharts.js'),
                         path.resolve(__dirname, 'web-src/vendor/amcharts/plugins/export/libs')
                     ],
-                    use: ['imports-loader?AmCharts=amcharts/amcharts', 'exports-loader?window.AmCharts']
+                    use: ['imports-loader?AmChartsModule=shims/amcharts,AmCharts=>AmChartsModule.default', 'exports-loader?AmCharts']
                 },
                 {
                     include: path.resolve(__dirname, 'web-src/vendor/amcharts/plugins/export/export.js'),
@@ -181,7 +181,7 @@ module.exports = readPom().then(pom => {
                 },
                 {
                     test: /angular-locale.+?\.js$/,
-                    use: ['imports-loader?angular=angularLocaleCache']
+                    use: ['imports-loader?localeCacheModule=angularLocaleCache,angular=>localeCacheModule.default']
                 },
                 {
                     test: /angular-ui-sortable/,
@@ -231,6 +231,7 @@ module.exports = readPom().then(pom => {
         },
         resolve: {
             alias: {
+                shims: path.join(__dirname, 'web-src/shims'),
                 amcharts: path.join(__dirname, 'web-src/vendor/amcharts'),
                 localeList: path.join(__dirname, 'web-src/vendor/localeList.json'),
                 requirejs: 'requirejs/require',
