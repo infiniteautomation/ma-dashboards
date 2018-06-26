@@ -741,6 +741,21 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                 return true;
             }
             return false;
+        },
+        
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maUtil
+         * @name toAngularPromise
+         * 
+         * @description Converts an ES6 promise to an AngularJS $q promise
+         * @param {object} es6Promise New state params
+         * @returns {object} AngularJS promise
+         */
+        toAngularPromise(es6Promise) {
+            const deferred = $q.defer();
+            es6Promise.then(deferred.resolve, deferred.reject);
+            return deferred.promise;
         }
     };
     
