@@ -10,6 +10,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
     const availableUpgradesMonitorId = 'com.serotonin.m2m2.rt.maint.UpgradeCheck.COUNT';
     let availableUpgrades = null;
     let availableUpgradesIntervalPromise = null;
+    let availableUpgradesTimeoutPromise = null;
     
     const setAvailableUpgrades = function (upgrades) {
         if (upgrades !== availableUpgrades) {
@@ -167,19 +168,23 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
         });
     };
     
-    Modules.startAvailableUpgradeCheck = function(checkInterval = 60 * 60 * 1000, initialCheckDelay = 5000) {
+    Modules.startAvailableUpgradeCheck = function(checkInterval = 60 * 60 * 1000, initialCheckDelay = 10000) {
         this.cancelAvailableUpgradeCheck();
         
-        $timeout(() => {
-            this.checkAvailableUpgrades();
+        availableUpgradesTimeoutPromise = $timeout(() => {
+            this.checkAvailableUpgrades().then(null, error => null);
         }, initialCheckDelay, false);
         
         availableUpgradesIntervalPromise = $interval(() => {
-            this.checkAvailableUpgrades();
+            this.checkAvailableUpgrades().then(null, error => null);
         }, checkInterval, 0, false);
     };
     
     Modules.cancelAvailableUpgradeCheck = function() {
+        if (availableUpgradesTimeoutPromise != null) {
+            $timeout.cancel(availableUpgradesTimeoutPromise);
+            availableUpgradesTimeoutPromise = null;
+        }
         if (availableUpgradesIntervalPromise != null) {
             $interval.cancel(availableUpgradesIntervalPromise);
             availableUpgradesIntervalPromise = null;

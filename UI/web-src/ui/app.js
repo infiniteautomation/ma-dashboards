@@ -542,6 +542,12 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         if (current.status !== 'STARTING_UP' && current.status === previous.status)
             return;
 
+        if (current.status === 'LOGGED_IN' && User.current && User.current.hasPermission('superadmin')) {
+            maModules.startAvailableUpgradeCheck();
+        } else {
+            maModules.cancelAvailableUpgradeCheck();
+        }
+
         switch(current.status) {
         case 'API_DOWN':
             message = Translate.trSync('login.ui.app.apiDown');
@@ -598,7 +604,9 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     // stops window to navigating to a file when dropped on root document
     $document.on('dragover drop', $event => false);
     
-    maModules.startAvailableUpgradeCheck();
+    if (User.current && User.current.admin) {
+        maModules.startAvailableUpgradeCheck();
+    }
     
     $rootScope.appLoading = false;
 }]);
