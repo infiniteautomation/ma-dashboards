@@ -38,7 +38,68 @@ import moment from 'moment-timezone';
 </ma-clock>
  *
  */
-function now() {
+now.$inject = ['maUtil', '$interval'];
+function now(maUtil, $interval) {
+    
+    const parseUpdateInterval = function parseUpdateInterval(updateInterval) {
+        if (maUtil.isEmpty(updateInterval)) return;
+        const parts = updateInterval.split(' ');
+        if (parts.length < 2) return;
+        if (maUtil.isEmpty(parts[0]) || maUtil.isEmpty(parts[1])) return;
+
+        const duration = moment.duration(parseFloat(parts[0]), parts[1]);
+        return duration.asMilliseconds();
+    };
+    
+    class NowController {
+        static get $$ngIsClass() { return true; }
+        
+        $onInit() {
+            this.browserTimezone = moment.tz.guess();
+            
+        }
+
+        $onChanges(changes) {
+            if (changes.updateInterval) {
+                this.startUpdateTimer();
+            }
+        }
+
+        $onDestroy() {
+            this.cancelUpdateTimer();
+        }
+
+        startUpdateTimer() {
+            this.cancelUpdateTimer();
+            this.doUpdate(true);
+
+            const millis = parseUpdateInterval(this.updateInterval);
+
+            // dont allow continuous loops
+            if (!millis) return;
+
+            this.intervalPromise = $interval(() => this.doUpdate(), millis);
+        }
+
+        cancelUpdateTimer() {
+            if (this.intervalPromise) {
+                $interval.cancel(this.intervalPromise);
+                this.intervalPromise = null;
+            }
+        }
+        
+        doUpdate(firstTick = false) {
+            const m = moment();
+            if (this.timeZone) {
+                m.tz(this.timeZone);
+            }
+            this.output = m;
+            if (this.onChange) {
+                this.onChange({$value: m, $firstTick: firstTick});
+            }
+        }
+    }
+    
     return {
         scope: {
             output: '=?',
@@ -50,59 +111,7 @@ function now() {
         restrict: 'E',
         controllerAs: '$ctrl',
         bindToController: true,
-        controller: ['maUtil', '$interval', function nowController(Util, $interval) {
-            this.browserTimezone = moment.tz.guess();
-            
-            this.$onChanges = function(changes) {
-                if (changes.updateInterval) {
-                    this.startUpdateTimer();
-                }
-            };
-
-            this.$onDestroy = function() {
-                this.cancelUpdateTimer();
-            };
-
-            this.startUpdateTimer = function startUpdateTimer() {
-                this.cancelUpdateTimer();
-                this.doUpdate(true);
-
-                const millis = parseUpdateInterval(this.updateInterval);
-
-                // dont allow continuous loops
-                if (!millis) return;
-
-                this.intervalPromise = $interval(this.doUpdate, millis);
-            };
-
-            this.cancelUpdateTimer = function cancelUpdateTimer() {
-                if (this.intervalPromise) {
-                    $interval.cancel(this.intervalPromise);
-                    this.intervalPromise = null;
-                }
-            };
-            
-            this.doUpdate = function doUpdate(firstTick = false) {
-                const m = moment();
-                if (this.timeZone) {
-                    m.tz(this.timeZone);
-                }
-                this.output = m;
-                if (this.onChange) {
-                    this.onChange({$value: m, $firstTick: firstTick});
-                }
-            }.bind(this);
-
-            function parseUpdateInterval(updateInterval) {
-                if (Util.isEmpty(updateInterval)) return;
-                const parts = updateInterval.split(' ');
-                if (parts.length < 2) return;
-                if (Util.isEmpty(parts[0]) || Util.isEmpty(parts[1])) return;
-
-                const duration = moment.duration(parseFloat(parts[0]), parts[1]);
-                return duration.asMilliseconds();
-            }
-        }],
+        controller: NowController,
         designerInfo: {
             translation: 'ui.components.maNow',
             icon: 'av_timer'
@@ -110,7 +119,4 @@ function now() {
     };
 }
 
-now.$inject = [];
 export default now;
-
-
