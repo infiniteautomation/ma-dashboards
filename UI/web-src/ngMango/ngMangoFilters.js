@@ -227,27 +227,28 @@ ngMangoFilters.filter('maFindBy', function () {
     };
 });
 
+const matchesTags = function matchesTags(tags, item) {
+    return Object.keys(tags).every(tagKey => {
+        if (tagKey === 'name') {
+            return item.name === tags[tagKey];
+        } else if (tagKey === 'device') {
+            return item.device === tags[tagKey];
+        }
+        return item.tags && item.tags[tagKey] === tags[tagKey];
+    });
+};
+
 ngMangoFilters.filter('maFindByTags', function () {
     return function(input, tags = {}) {
         if (!Array.isArray(input)) return input;
-
-        return input.find(item => {
-            return Object.keys(tags).every(tagKey => {
-                return item.tags && item.tags[tagKey] === tags[tagKey];
-            });
-        });
+        return input.find(matchesTags.bind(null, tags));
     };
 });
 
 ngMangoFilters.filter('maFilterByTags', function () {
     return function(input, tags = {}) {
         if (!Array.isArray(input)) return input;
-        
-        return input.filter(item => {
-            return Object.keys(tags).every(tagKey => {
-                return item.tags && item.tags[tagKey] === tags[tagKey];
-            });
-        });
+        return input.filter(matchesTags.bind(null, tags));
     };
 });
 
