@@ -509,7 +509,22 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $mdSidenav('left').open();
         }
     };
-
+    
+    if (User.current && User.current.admin) {
+        maModules.startAvailableUpgradeCheck();
+    }
+    
+    // TODO fix this firing first watchdog event occurs, mangoDefaultUri property is different
+    User.notificationManager.subscribe((event, user, first) => {
+        if (user && user.admin) {
+            if (!maModules.availableUpgradeCheckRunning()) {
+                maModules.startAvailableUpgradeCheck();
+            }
+        } else {
+            maModules.cancelAvailableUpgradeCheck();
+        }
+    }, $rootScope, ['userChanged']);
+    
     /**
      * Watchdog timer alert and re-connect/re-login code
      */
@@ -518,13 +533,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         let message;
         let hideDelay = 0; // dont auto hide message
 
-        if (current.status !== 'STARTING_UP' && current.status === previous.status)
+        if (current.status !== 'STARTING_UP' && current.status === previous.status) {
             return;
-
-        if (current.status === 'LOGGED_IN' && User.current && User.current.hasPermission('superadmin')) {
-            maModules.startAvailableUpgradeCheck();
-        } else {
-            maModules.cancelAvailableUpgradeCheck();
         }
 
         switch(current.status) {
@@ -554,9 +564,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                     $mdDialog.cancel();
                     
                     // redirect to the login page if auto-login fails
-                    $state.loginRedirectUrl = '/ui' + $location.url();
+                    maUiLoginRedirector.saveCurrentState();
                     $state.go('login');
-                    //window.location = $state.href('login');
                 });
             }
             break;
@@ -582,11 +591,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     
     // stops window to navigating to a file when dropped on root document
     $document.on('dragover drop', $event => false);
-    
-    if (User.current && User.current.admin) {
-        maModules.startAvailableUpgradeCheck();
-    }
-    
+
     $rootScope.appLoading = false;
 }]);
 

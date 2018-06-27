@@ -7,8 +7,8 @@ import angular from 'angular';
 import userEditorTemplate from './userEditor.html';
 import moment from 'moment-timezone';
 
-UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales', '$window'];
-function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLocales, $window) {
+UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales', '$window', '$injector'];
+function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLocales, $window, $injector) {
     this.User = User;
     this.$http = $http;
     this.timezones = moment.tz.names();
@@ -16,6 +16,7 @@ function UserEditorController(User, $http, $mdDialog, Translate, $mdToast, maLoc
     this.Translate = Translate;
     this.$mdToast = $mdToast;
     this.$window = $window;
+    this.$state = $injector.has('$state') && $injector.get('$state');
     
     maLocales.get().then(function(locales) {
         this.locales = locales;
@@ -169,7 +170,12 @@ UserEditorController.prototype.switchUser = function(event) {
             .hideDelay(10000);
         $ctrl.$mdToast.show(toast);
         
-        this.$window.location.reload();
+        if (this.$state) {
+            // reload the resolves and views of this state and its parents
+            this.$state.go('.', null, {reload: true});
+        } else {
+            this.$window.location.reload();
+        }
     }, response => {
         const toast = $ctrl.$mdToast.simple()
             .textContent($ctrl.Translate.trSync('ui.components.errorSwitchingUser', username))

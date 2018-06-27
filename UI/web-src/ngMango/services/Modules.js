@@ -168,6 +168,10 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
         });
     };
     
+    Modules.availableUpgradeCheckRunning = function() {
+        return !!availableUpgradesIntervalPromise;
+    };
+    
     Modules.startAvailableUpgradeCheck = function(checkInterval = 60 * 60 * 1000, initialCheckDelay = 10000) {
         this.cancelAvailableUpgradeCheck();
         
