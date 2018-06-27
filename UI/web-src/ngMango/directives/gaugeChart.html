@@ -1,0 +1,9 @@
+<div ng-class="classes" class="amchart amchart-loading"></div>
+
+<ma-point-statistics ng-if="$ctrl.autoStart || $ctrl.autoEnd" point="$ctrl.point" point-xid="{{$ctrl.pointXid}}"
+    from="from" to="to" statistics="$ctrl.pointStats" rendered="false">
+</ma-point-statistics>
+
+<ma-date-range-picker ng-if="$ctrl.autoStart || $ctrl.autoEnd" from="from" to="to" preset="LAST_1_MONTHS" update-interval="1 minutes"
+    style="display: none;">
+</ma-date-range-picker>

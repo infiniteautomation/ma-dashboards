@@ -3,9 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import AmCharts from 'amcharts/pie';
 import $ from 'jquery';
-import 'amcharts/plugins/export/export.css';
 
 /**
  * @ngdoc directive
@@ -34,32 +32,31 @@ import 'amcharts/plugins/export/export.css';
  options="{depth3D:15,angle:30}"></ma-pie-chart>
  *
  */
-pieChart.$inject = ['$http', 'MA_DATE_FORMATS'];
-function pieChart($http, MA_DATE_FORMATS) {
-    return {
-        restrict: 'E',
-        replace: true,
-        designerInfo: {
-            translation: 'ui.components.pieChart',
-            icon: 'pie_chart',
-            category: 'pointValuesAndCharts',
-            size: {
-                width: '200px',
-                height: '200px'
-            }
-        },
-        scope: {
-          values: '=',
-          valueLabels: '=?',
-          options: '=?'
-        },
-        template: '<div class="amchart"></div>',
-        compile: function() {
-            return postLink;
-        }
-    };
+pieChart.$inject = ['$http', 'MA_DATE_FORMATS', 'maUtil'];
+function pieChart($http, MA_DATE_FORMATS, maUtil) {
 
-    function postLink($scope, $element, attributes) {
+    const defaultOptions = function defaultOptions() {
+        return {
+            type: 'pie',
+            theme: 'light',
+            addClassNames: true,
+            dataProvider: [],
+            valueField: 'value',
+            titleField: 'text',
+            colorField: 'color',
+            balloon:{
+                fixedPosition:true
+            },
+            'export': {
+                enabled: false,
+                libs: {autoLoad: false},
+                dateFormat: MA_DATE_FORMATS.iso,
+                fileName: 'mangoChart'
+            }
+        };
+    };
+    
+    const postLinkImpl = function postLinkImpl($scope, $element, attributes, AmCharts) {
         const options = $.extend(true, defaultOptions(), $scope.options);
         const chart = AmCharts.makeChart($element[0], options);
 
@@ -95,28 +92,40 @@ function pieChart($http, MA_DATE_FORMATS) {
                 item.color = label.color || label.colour || item.color || item.colour;
             };
         }
-    }
+    };
 
-    function defaultOptions() {
-        return {
-            type: 'pie',
-            theme: 'light',
-            addClassNames: true,
-            dataProvider: [],
-            valueField: 'value',
-            titleField: 'text',
-            colorField: 'color',
-            balloon:{
-                fixedPosition:true
-            },
-            'export': {
-                enabled: false,
-                libs: {autoLoad: false},
-                dateFormat: MA_DATE_FORMATS.iso,
-                fileName: 'mangoChart'
+    return {
+        restrict: 'E',
+        designerInfo: {
+            translation: 'ui.components.pieChart',
+            icon: 'pie_chart',
+            category: 'pointValuesAndCharts',
+            size: {
+                width: '200px',
+                height: '200px'
             }
-        };
-    }
+        },
+        scope: {
+          values: '=',
+          valueLabels: '=?',
+          options: '=?'
+        },
+        link: function postLink($scope, $element, $attrs) {
+            $element.addClass('amchart');
+            $element.addClass('amchart-loading');
+            
+            const promise = Promise.all([
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/pie'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export.css')
+            ]);
+            
+            maUtil.toAngularPromise(promise).then(([AmCharts]) => {
+                $element.removeClass('amchart-loading');
+                postLinkImpl($scope, $element, $attrs, AmCharts);
+            });
+        }
+    };
 }
 
 export default pieChart;

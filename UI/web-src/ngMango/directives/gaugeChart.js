@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import AmCharts from 'amcharts/gauge';
 import angular from 'angular';
+import gaugeChartTemplate from './gaugeChart.html';
 
 /**
  * @ngdoc directive
@@ -72,8 +72,8 @@ band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:100%; height
 
  *
  */
-gaugeChart.$inject = ['maPointValueController'];
-function gaugeChart(PointValueController) {
+gaugeChart.$inject = ['maPointValueController', 'maUtil'];
+function gaugeChart(PointValueController, maUtil) {
 
     const asNumber = function asNumber(value, defaultValue) {
         if (typeof value === 'number' && isFinite(value)) {
@@ -108,16 +108,15 @@ function gaugeChart(PointValueController) {
     class GaugeChartController extends PointValueController {
         constructor() {
             super(...arguments);
-            
+
             this.chartOptions = defaultOptions();
         }
 
         $onInit() {
             this.updateChart();
-            this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
-            this.updateChartValue();
+            this.loadAmCharts();
 
-            if(this.autoStart || this.autoEnd) {
+            if (this.autoStart || this.autoEnd) {
                 this.$scope.$watch('$ctrl.pointStats', (newValue, oldValue) => {
                     if (newValue === undefined) return;
     
@@ -151,6 +150,30 @@ function gaugeChart(PointValueController) {
             if (optionsChanged || bandsChanged) {
                 this.updateChart();
             }
+        }
+        
+        loadAmCharts() {
+            const promise = Promise.all([
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/gauge'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export.css')
+            ]);
+            
+            maUtil.toAngularPromise(promise).then(([AmCharts]) => {
+                const $chartElement = this.$element.find('.amchart');
+                $chartElement.removeClass('amchart-loading');
+
+                const options = this.chartOptions;
+                if (!Array.isArray(options.listeners)) {
+                    options.listeners = [];
+                }
+                options.listeners.push({
+                    event: 'init',
+                    method: this.chartInitialized.bind(this)
+                });
+                
+                AmCharts.makeChart($chartElement[0], options);
+            });
         }
     
         valueChangeHandler() {
@@ -265,20 +288,21 @@ function gaugeChart(PointValueController) {
             arrow.innerRadius = arrow.nailRadius + 3;
             arrow.alpha = asNumber(this.arrowAlpha, 1);
             arrow.nailBorderAlpha = arrow.alpha;
-    
+
             if (this.chart) {
                 this.chart.validateNow();
             }
+        }
+        
+        chartInitialized(event) {
+            this.chart = event.chart;
+            this.updateChartValue();
         }
     }
     
     return {
         restrict: 'E',
-        template: '<div ng-class="classes" class="amchart"></div>' +
-        '<ma-point-statistics point="$ctrl.point" point-xid="{{$ctrl.pointXid}}"' +
-        ' from="from" to="to" statistics="$ctrl.pointStats" rendered="false"></ma-point-statistics>' +
-        '<ma-date-range-picker from="from" to="to" preset="LAST_1_MONTHS" update-interval="1 minutes"' +
-        ' style="display: none;"></ma-date-range-picker>',
+        template: gaugeChartTemplate,
         scope: {},
         controller: GaugeChartController,
         controllerAs: '$ctrl',

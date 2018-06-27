@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import AmCharts from 'amcharts/gauge';
 import $ from 'jquery';
 import moment from 'moment-timezone';
 
@@ -34,55 +33,10 @@ import moment from 'moment-timezone';
   * <span>{{time|maMoment:'format':'ll LTS Z'}}</span>
   *
   */
-clock.$inject = ['MA_DATE_FORMATS'];
-function clock(MA_DATE_FORMATS) {
-    return {
-        restrict: 'E',
-        replace: true,
-        designerInfo: {
-            translation: 'ui.components.clock',
-            icon: 'access_time',
-            category: 'timeAndDate'
-        },
-        scope: {
-          options: '=?',
-          text: '@',
-          timezone: '@',
-          showSeconds: '@',
-          time: '='
-        },
-        template: '<div class="amchart"></div>',
-        link: function ($scope, $element, attributes) {
-            const options = $.extend(true, defaultOptions(), $scope.options);
-            const showSeconds = $scope.showSeconds !== 'false';
-            if (!showSeconds) {
-                options.arrows.pop();
-            }
+clock.$inject = ['MA_DATE_FORMATS', 'maUtil'];
+function clock(MA_DATE_FORMATS, maUtil) {
 
-            const chart = AmCharts.makeChart($element[0], options);
-
-            $scope.$watch('text', function(newText) {
-            	chart.axes[0].setBottomText(newText || '');
-            });
-
-            $scope.$watch('time', function(newTime) {
-            	if (newTime === undefined) return;
-            	const date = $scope.timezone ? moment.tz(newTime, $scope.timezone) : newTime;
-
-                const hours = date.hours();
-                const minutes = date.minutes();
-                const seconds = date.seconds();
-
-                chart.arrows[0].setValue(hours + minutes / 60);
-                chart.arrows[1].setValue( 12 * (minutes + seconds / 60 ) / 60);
-                if (chart.arrows.length > 2) {
-                    chart.arrows[2].setValue(12 * seconds / 60);
-                }
-            });
-        }
-    };
-
-    function defaultOptions() {
+    const defaultOptions = function defaultOptions() {
         return {
             type: 'gauge',
             theme: 'light',
@@ -127,7 +81,81 @@ function clock(MA_DATE_FORMATS) {
                 fileName: 'mangoChart'
             }
         };
-    }
+    };
+    
+    const postLinkImpl = function postLinkImpl($scope, $element, attributes, AmCharts) {
+        const options = $.extend(true, defaultOptions(), $scope.options);
+        const showSeconds = $scope.showSeconds !== 'false';
+        if (!showSeconds) {
+            options.arrows.pop();
+        }
+        
+        // chart.addListener() does not work reliably for init
+        const initListener = event => {
+            const chart = event.chart;
+            
+            $scope.$watch('text', function(newText) {
+                chart.axes[0].setBottomText(newText || '');
+            });
+
+            $scope.$watch('time', function(newTime) {
+                if (newTime === undefined) return;
+                const date = $scope.timezone ? moment.tz(newTime, $scope.timezone) : newTime;
+
+                const hours = date.hours();
+                const minutes = date.minutes();
+                const seconds = date.seconds();
+
+                chart.arrows[0].setValue(hours + minutes / 60);
+                chart.arrows[1].setValue( 12 * (minutes + seconds / 60 ) / 60);
+                if (chart.arrows.length > 2) {
+                    chart.arrows[2].setValue(12 * seconds / 60);
+                }
+            });
+        };
+
+        if (!Array.isArray(options.listeners)) {
+            options.listeners = [];
+        }
+        options.listeners.push({
+            event: 'init',
+            method: initListener
+        });
+
+        AmCharts.makeChart($element[0], options);
+    };
+    
+    return {
+        restrict: 'E',
+        designerInfo: {
+            translation: 'ui.components.clock',
+            icon: 'access_time',
+            category: 'timeAndDate'
+        },
+        scope: {
+          options: '=?',
+          text: '@',
+          timezone: '@',
+          showSeconds: '@',
+          time: '='
+        },
+        link: function postLink($scope, $element, $attrs) {
+            $element.addClass('amchart');
+            $element.addClass('amchart-loading');
+            
+            const promise = Promise.all([
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/gauge'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export.css')
+            ]);
+            
+            maUtil.toAngularPromise(promise).then(([AmCharts]) => {
+                $element.removeClass('amchart-loading');
+                postLinkImpl($scope, $element, $attrs, AmCharts);
+            });
+        }
+    };
+
 }
 
 export default clock;

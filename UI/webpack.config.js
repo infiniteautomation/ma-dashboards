@@ -130,6 +130,10 @@ module.exports = readPom().then(pom => {
                     use: ['imports-loader?AmChartsModule=shims/amcharts,AmCharts=>AmChartsModule.default', 'exports-loader?AmCharts']
                 },
                 {
+                    include: path.resolve(__dirname, 'web-src/vendor/amcharts/gantt.js'),
+                    loader: 'imports-loader?AmChartsSerial=amcharts/serial'
+                },
+                {
                     include: path.resolve(__dirname, 'web-src/vendor/amcharts/plugins/export/export.js'),
                     use: [
                         {

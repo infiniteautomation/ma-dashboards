@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import AmCharts from 'amcharts/serial';
 import angular from 'angular';
 
 /**
@@ -30,8 +29,8 @@ import angular from 'angular';
 </ma-tank-level>
  *
  */
-tankLevel.$inject = ['maPointValueController'];
-function tankLevel(PointValueController) {
+tankLevel.$inject = ['maPointValueController', 'maUtil'];
+function tankLevel(PointValueController, maUtil) {
 
     const defaultOptions = function defaultOptions() {
         return {
@@ -99,13 +98,15 @@ function tankLevel(PointValueController) {
         constructor() {
             super(...arguments);
             
+            this.$element.addClass('amchart');
+            this.$element.addClass('amchart-loading');
+            
             this.chartOptions = defaultOptions();
         }
 
         $onInit() {
             this.updateChart();
-            this.chart = AmCharts.makeChart(this.$element.find('.amchart')[0], this.chartOptions);
-            this.updateChartValue();
+            this.loadAmCharts();
         }
     
         $onChanges(changes) {
@@ -155,11 +156,25 @@ function tankLevel(PointValueController) {
                 this.chart.validateNow();
             }
         }
+        
+        loadAmCharts() {
+            const promise = Promise.all([
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/serial'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export.css')
+            ]);
+            
+            maUtil.toAngularPromise(promise).then(([AmCharts]) => {
+                this.$element.removeClass('amchart-loading');
+
+                this.chart = AmCharts.makeChart(this.$element[0], this.chartOptions);
+                this.updateChartValue();
+            });
+        }
     }
     
     return {
         restrict: 'E',
-        template: '<div class="amchart"></div>',
         scope: {},
         controller: TankLevelController,
         bindToController: {

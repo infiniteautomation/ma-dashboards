@@ -404,6 +404,9 @@ ma-user-select, ma-system-setting-editor {
   flex-direction: column;
 }
 
+ma-state-chart,
+ma-clock,
+ma-pie-chart,
 ma-gauge-chart,
 ma-tank-level,
 ma-indicator,

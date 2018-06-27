@@ -3,10 +3,8 @@
  * @author Jared Wiltshire
  */
 
-import AmCharts from 'amcharts/gantt';
 import moment from 'moment-timezone';
 import $ from 'jquery';
-import 'amcharts/plugins/export/export.css';
 
 /**
  * @ngdoc directive
@@ -33,39 +31,56 @@ import 'amcharts/plugins/export/export.css';
  *
  */
  
-stateChart.$inject = ['MA_DATE_FORMATS', 'MA_AMCHARTS_DATE_FORMATS'];
-function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
+stateChart.$inject = ['MA_DATE_FORMATS', 'MA_AMCHARTS_DATE_FORMATS', 'maUtil'];
+function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS, maUtil) {
 	const MAX_SERIES = 10;
-	const scope = {
-		options: '=?',
-		endDate: '<?'
-	};
-	for (let j = 1; j <= MAX_SERIES; j++) {
-		scope['series' + j + 'Values'] = '=';
-		scope['series' + j + 'Title'] = '@';
-		scope['series' + j + 'Labels'] = '=';
-	}
-	
-    return {
-        restrict: 'E',
-        replace: true,
-        designerInfo: {
-            translation: 'ui.components.stateChart',
-            icon: 'insert_chart',
-            category: 'pointValuesAndCharts',
-            size: {
-                width: '400px',
-                height: '200px'
+
+    const defaultOptions = function defaultOptions() {
+        return {
+            type: 'gantt',
+            theme: 'light',
+            addClassNames: true,
+            columnWidth: 0.8,
+            balloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon,
+            valueAxis: {
+                type: 'date',
+                minPeriod: 'fff',
+                dateFormats: MA_AMCHARTS_DATE_FORMATS.categoryAxis,
+                firstDayOfWeek: moment.localeData(moment.locale()).firstDayOfWeek()
+            },
+            graph: {
+                fillAlphas: 0.85,
+                balloonText: '<b>[[task]]</b>:<br>[[startFormatted]]<br>[[duration]]',
+                labelText: '[[task]]',
+                labelPosition: 'middle',
+                showBalloonAt: 'open'
+            },
+            rotate: true,
+            categoryField: 'category',
+            segmentsField: 'segments',
+            colorField: 'colour',
+            startDateField: 'startDate',
+            endDateField: 'endDate',
+            //durationField: 'duration',
+            dataProvider: [],
+            chartCursor: {
+                valueBalloonsEnabled: false,
+                cursorAlpha: 0.2,
+                valueLineBalloonEnabled: true,
+                valueLineEnabled: true,
+                fullWidth: true,
+                categoryBalloonEnabled: false,
+            },
+            'export': {
+                enabled: false,
+                libs: {autoLoad: false},
+                dateFormat: mangoDateFormats.iso,
+                fileName: 'mangoChart'
             }
-        },
-        scope: scope,
-        template: '<div class="amchart"></div>',
-        compile: function() {
-            return postLink;
-        }
+        };
     };
     
-    function postLink($scope, $element, attributes) {
+    const postLinkImpl = function postLinkImpl($scope, $element, attributes, AmCharts) {
         let options = defaultOptions();
         options = $.extend(true, options, $scope.options);
         const chart = AmCharts.makeChart($element[0], options);
@@ -191,53 +206,47 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS) {
             colourMap[value] = colour;
             return colour;
         }
+    };
+    
+    const bindings = {
+        options: '=?',
+        endDate: '<?'
+    };
+    
+    for (let j = 1; j <= MAX_SERIES; j++) {
+        bindings['series' + j + 'Values'] = '=';
+        bindings['series' + j + 'Title'] = '@';
+        bindings['series' + j + 'Labels'] = '=';
     }
 
-    function defaultOptions() {
-        return {
-            type: 'gantt',
-            theme: 'light',
-            addClassNames: true,
-            columnWidth: 0.8,
-            balloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon,
-            valueAxis: {
-                type: 'date',
-                minPeriod: 'fff',
-                dateFormats: MA_AMCHARTS_DATE_FORMATS.categoryAxis,
-                firstDayOfWeek: moment.localeData(moment.locale()).firstDayOfWeek()
-            },
-            graph: {
-                fillAlphas: 0.85,
-                balloonText: '<b>[[task]]</b>:<br>[[startFormatted]]<br>[[duration]]',
-                labelText: '[[task]]',
-                labelPosition: 'middle',
-                showBalloonAt: 'open'
-            },
-            rotate: true,
-            categoryField: 'category',
-            segmentsField: 'segments',
-            colorField: 'colour',
-            startDateField: 'startDate',
-            endDateField: 'endDate',
-            //durationField: 'duration',
-            dataProvider: [],
-            chartCursor: {
-                valueBalloonsEnabled: false,
-                cursorAlpha: 0.2,
-                valueLineBalloonEnabled: true,
-                valueLineEnabled: true,
-                fullWidth: true,
-                categoryBalloonEnabled: false,
-            },
-            'export': {
-                enabled: false,
-                libs: {autoLoad: false},
-                dateFormat: mangoDateFormats.iso,
-                fileName: 'mangoChart'
+    return {
+        restrict: 'E',
+        designerInfo: {
+            translation: 'ui.components.stateChart',
+            icon: 'insert_chart',
+            category: 'pointValuesAndCharts',
+            size: {
+                width: '400px',
+                height: '200px'
             }
-        };
-    }
-
+        },
+        scope: bindings,
+        link: function postLink($scope, $element, $attrs) {
+            $element.addClass('amchart');
+            $element.addClass('amchart-loading');
+            
+            const promise = Promise.all([
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/gantt'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export'),
+                import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/plugins/export/export.css')
+            ]);
+            
+            maUtil.toAngularPromise(promise).then(([AmCharts]) => {
+                $element.removeClass('amchart-loading');
+                postLinkImpl($scope, $element, $attrs, AmCharts);
+            });
+        }
+    };
 }
 
 export default stateChart;
