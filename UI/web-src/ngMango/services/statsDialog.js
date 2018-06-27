@@ -28,7 +28,7 @@ function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
                     };
 
                     this.updatePreferences = function() {
-                        const preferences = localStorageService.get('uiPreferences');
+                        const preferences = localStorageService.get('uiPreferences') || {};
                         preferences.numberOfPointValues = this.numValues;
                         preferences.realtimeMode = this.realtimeMode;
                         preferences.showCachedData = this.showCachedData;

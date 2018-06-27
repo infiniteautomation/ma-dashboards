@@ -56,7 +56,7 @@ function DataPointDetailsController($scope, $element, $stateParams, $state, loca
     };
 
     this.updatePreferences = function() {
-        const preferences = localStorageService.get('uiPreferences');
+        const preferences = localStorageService.get('uiPreferences') || {};
         preferences.numberOfPointValues = this.numValues;
         preferences.realtimeMode = this.realtimeMode;
         preferences.showCachedData = this.showCachedData;
