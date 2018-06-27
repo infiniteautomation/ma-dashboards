@@ -107,7 +107,7 @@ export default [
             },
             auth: ['maTranslate', 'maUser', function(Translate, User) {
                 if (!User.current) {
-                    throw 'No user';
+                    throw new User.NoUserError('No user logged in');
                 }
                 return Translate.loadNamespaces(['ui', 'common', 'pointEdit', 'rest']);
             }],

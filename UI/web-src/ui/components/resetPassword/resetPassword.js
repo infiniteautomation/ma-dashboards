@@ -7,12 +7,11 @@ import resetPasswordTemplate from './resetPassword.html';
 
 class ResetPasswordController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$state', '$window', '$stateParams', '$timeout', 'maDialogHelper']; }
+    static get $inject() { return ['maUser', 'maUiLoginRedirector', '$stateParams', '$timeout', 'maDialogHelper']; }
     
-    constructor(maUser, $state, $window, $stateParams, $timeout, maDialogHelper) {
+    constructor(maUser, maUiLoginRedirector, $stateParams, $timeout, maDialogHelper) {
         this.maUser = maUser;
-        this.$state = $state;
-        this.$window = $window;
+        this.maUiLoginRedirector = maUiLoginRedirector;
         this.$stateParams = $stateParams;
         this.$timeout = $timeout;
         this.maDialogHelper = maDialogHelper;
@@ -56,17 +55,7 @@ class ResetPasswordController {
             username: this.username,
             password: this.newPassword
         }).$promise.then(user => {
-            let redirectUrl = '/ui/';
-            if (this.$state.loginRedirectUrl) {
-                redirectUrl = this.$state.loginRedirectUrl;
-            } else if (user.mangoDefaultUri) {
-                redirectUrl = user.mangoDefaultUri;
-            } else if (user.homeUrl) {
-                // user.mangoDefaultUri should be user.homeUrl if it is set
-                // just in case mangoDefaultUri is empty
-                redirectUrl = user.homeUrl;
-            }
-            this.$window.location = redirectUrl;
+            this.maUiLoginRedirector.redirect(user);
         }, error => {
             this.disableButton = false;
             this.showTokenInput = true;

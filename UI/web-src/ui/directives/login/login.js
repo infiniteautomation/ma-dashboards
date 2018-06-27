@@ -5,8 +5,8 @@
 
 import loginTemplate from './login.html';
 
-loginFactory.$inject = ['$state', 'maUser', '$rootScope', '$window', 'maUtil', '$cookies', '$http'];
-function loginFactory($state, User, $rootScope, $window, maUtil, $cookies, $http) {
+loginFactory.$inject = ['maUser', 'maUtil', '$cookies', '$http', 'maUiLoginRedirector'];
+function loginFactory(User, maUtil, $cookies, $http, maUiLoginRedirector) {
     return {
         template: loginTemplate,
         scope: {},
@@ -14,43 +14,34 @@ function loginFactory($state, User, $rootScope, $window, maUtil, $cookies, $http
             $scope.User = User;
             $scope.errors = {};
             
-            $scope.$watchGroup(['username', 'password'], function() {
+            $scope.$watchGroup(['username', 'password'], () => {
                 delete $scope.errors.invalidLogin;
             });
             
             $scope.doLogin = function() {
-                $scope.loggingIn = true;
+                this.loggingIn = true;
 
+                // ensures there is a CSRF protection cookie set before logging in
                 const xsrfCookie = $cookies.get($http.defaults.xsrfCookieName);
                 if (!xsrfCookie) {
                     $cookies.put($http.defaults.xsrfCookieName, maUtil.uuid(), {path: '/'});
                 }
                 
                 User.login({
-                    username: $scope.username,
-                    password: $scope.password
-                }).$promise.then(function(user) {
-                    let redirectUrl = '/ui/';
-                    if ($state.loginRedirectUrl) {
-                        redirectUrl = $state.loginRedirectUrl;
-                    } else if (user.mangoDefaultUri) {
-                        redirectUrl = user.mangoDefaultUri;
-                    } else if (user.homeUrl) {
-                        // user.mangoDefaultUri should be user.homeUrl if it is set
-                        // just in case mangoDefaultUri is empty
-                        redirectUrl = user.homeUrl;
-                    }
-                    $window.location = redirectUrl;
-                }, function(error) {
-                    $scope.loggingIn = false;
-                    $scope.errors.invalidLogin = false;
+                    username: this.username,
+                    password: this.password
+                }).$promise.then(user => {
+                    maUiLoginRedirector.redirect(user);
+                }, error => {
+                    this.loggingIn = false;
+                    this.errors.invalidLogin = false;
                     if (error.status === 401) {
-                        $scope.errors.invalidLogin = true;
-                        $scope.errors.otherError = false;
-                        $scope.invalidLoginMessage = error.mangoStatusText;
+                        this.errors.invalidLogin = true;
+                        this.errors.otherError = false;
+                        this.invalidLoginMessage = error.mangoStatusText;
                     } else {
-                        $scope.errors.otherError = error.mangoStatusText;
-                        delete $scope.invalidLoginMessage;
+                        this.errors.otherError = error.mangoStatusText;
+                        delete this.invalidLoginMessage;
                     }
                 });
             };
@@ -59,5 +50,3 @@ function loginFactory($state, User, $rootScope, $window, maUtil, $cookies, $http
 }
 
 export default loginFactory;
-
-

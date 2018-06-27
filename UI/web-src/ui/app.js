@@ -9,6 +9,7 @@ import menuProvider from './services/menu';
 import pagesFactory from './services/pages';
 import dateBarFactory from './services/dateBar';
 import uiSettingsProvider from './services/uiSettings';
+import loginRedirectorFactory from './services/loginRedirector';
 import pageView from './directives/pageView/page_view';
 import livePreview from './directives/liveEditor/livePreview';
 import stateParams from './directives/stateParams/stateParams';
@@ -42,6 +43,7 @@ uiApp.provider('maUiMenu', menuProvider)
     .provider('maUiSettings', uiSettingsProvider)
     .factory('maUiPages', pagesFactory)
     .factory('maUiDateBar', dateBarFactory)
+    .factory('maUiLoginRedirector', loginRedirectorFactory)
     .directive('maUiPageView', pageView)
     .directive('maUiLivePreview', livePreview)
     .directive('maUiStateParams', stateParams)
@@ -123,32 +125,8 @@ function(MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     $locationProvider.html5Mode(true);
 
     $urlRouterProvider.otherwise(($injector, $location) => {
-        const basePath = '/ui/';
-        const User = $injector.get('maUser');
-        const $state = $injector.get('$state');
-        const user = User.current;
-        
-        let path = basePath;
-        if ($location.path()) {
-            path += $location.path().substring(1);
-        }
-        
-        if (!user) {
-            $state.loginRedirectUrl = path;
-            return '/login';
-        }
-        
-        if (path === basePath) {
-            // mango default URI will contain the homeUrl if it exists, or the mango start page if it doesn't
-            // so prefer using it if it exists (only exists when doing login)
-            const homeUrl = user.mangoDefaultUri || user.homeUrl;
-            if (homeUrl && homeUrl.indexOf(basePath) === 0) {
-                return '/' + homeUrl.substring(basePath.length); // strip basePath from start of URL
-            }
-            return user.admin ? '/administration/home' : '/data-point-details/';
-        }
-
-        return '/not-found?path=' + encodeURIComponent(path);
+        const maUiLoginRedirector = $injector.get('maUiLoginRedirector');
+        return maUiLoginRedirector.handleUnknownPath($location.path());
     });
 
     const apiDocsMenuItems = [];
@@ -265,9 +243,10 @@ uiApp.run([
     '$log',
     '$templateCache',
     '$exceptionHandler',
+    'maUiLoginRedirector',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
-        webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler) {
+        webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector) {
 
     if (uiSettings.googleAnalyticsPropertyId) {
         webAnalytics.enableGoogleAnalytics(uiSettings.googleAnalyticsPropertyId);
@@ -366,8 +345,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 
     $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
         event.preventDefault();
-        if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
-            $state.loginRedirectUrl = $state.href(toState, toParams);
+        if (error && (error instanceof User.NoUserError || error.status === 401 || error.status === 403)) {
+            maUiLoginRedirector.saveState(toState, toParams);
             $state.go('login');
         } else {
             $exceptionHandler(error, 'Error transitioning to state ' + (toState && toState.name));
