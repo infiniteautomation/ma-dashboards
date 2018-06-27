@@ -71,11 +71,15 @@ function loginRedirectorFactory($state, $window, $location, maUser) {
                 $window.location = url;
             }
         }
+        
+        saveCurrentState() {
+            this.saveState($state.current.name, $state.params);
+        }
 
         saveState(state, params) {
             this.savedState = {
                 state,
-                params
+                params: Object.assign({}, params)
             };
         }
         
