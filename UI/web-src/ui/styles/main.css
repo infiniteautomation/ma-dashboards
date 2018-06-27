@@ -229,6 +229,12 @@ md-sidenav.site-sidenav.md-closed {
   visibility: hidden;
 }
 
+/* stops a horizontal scrollbar appearing momentarily when opening/closing the menu */
+md-sidenav.site-sidenav,
+md-sidenav.site-sidenav > md-content {
+	overflow-x: hidden;
+}
+
 /* Override visibility of main container that is getting cut off when printing with sideNav open */
 @media print {
     div.main-application > div {
