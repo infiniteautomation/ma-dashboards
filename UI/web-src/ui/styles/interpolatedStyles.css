@@ -21,10 +21,6 @@ table.md-table tbody.md-body>tr.md-row.blocked-thread {
   background-color: {{getThemeColor('background-400-0.6')}} !important;
 }
 
-md-menu-content md-menu-item {
-  color: {{getThemeColor('background-900-1.0')}} !important;
-}
-
 mdp-calendar .md-button.md-raised:not(.md-accent) {
     background-color: {{getThemeColor('background-100-0.8')}} !important;
 }
