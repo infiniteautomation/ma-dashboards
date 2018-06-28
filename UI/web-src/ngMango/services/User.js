@@ -360,8 +360,15 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.loginInterceptors = [];
         User.logoutInterceptors = [];
 
+        // TODO Mango 3.5 clean up these interceptors and the maWatchdog service, User.current being set both places
+        // The "loginInterceptors" are actually "fetched current user" interceptors
+        // watch dog broadcasting every time it gets the user instead of only on change
         function loginInterceptor(data) {
-            data.resource.mangoDefaultUri = data.headers('X-Mango-Default-URI');
+            const loginRedirectUrl = data.headers('X-Mango-Default-URI');
+            if (loginRedirectUrl) {
+                data.resource.loginRedirectUrl = loginRedirectUrl;
+            }
+            
             User.loginInterceptors.forEach(function(interceptor) {
                 interceptor(data);
             });

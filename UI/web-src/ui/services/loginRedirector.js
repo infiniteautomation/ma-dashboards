@@ -15,7 +15,9 @@ function loginRedirectorFactory($state, $window, $location, maUser) {
             } else if (!user) {
                 $state.go('login');
             } else {
-                const redirectUrl = user.mangoDefaultUri || user.homeUrl;
+                // loginRedirectUrl will contain the homeUrl if set, or the UI module configured start page if not
+                const redirectUrl = user.loginRedirectUrl || user.homeUrl;
+                delete user.loginRedirectUrl;
                 
                 if (redirectUrl) {
                     this.goToUrl(redirectUrl);
@@ -41,11 +43,10 @@ function loginRedirectorFactory($state, $window, $location, maUser) {
             if (path === basePath) {
                 // tried to navigate to /ui/
                 
-                // mango default URI will contain the homeUrl if it exists, or the mango start page if it doesn't
-                // so prefer using it if it exists (only exists when doing login)
-                const redirectUrl = user.mangoDefaultUri || user.homeUrl;
+                // can't use loginRedirectUrl, only available at login
+                const redirectUrl = user.homeUrl;
                 if (redirectUrl && redirectUrl.startsWith(basePath)) {
-                    return '/' + redirectUrl.substr(basePath.length); // strip basePath from start of URL
+                    return redirectUrl.substr(basePath.length - 1); // strip basePath from start of URL
                 }
                 return user.admin ? '/administration/home' : '/data-point-details/';
             }
@@ -66,7 +67,7 @@ function loginRedirectorFactory($state, $window, $location, maUser) {
         
         goToUrl(url) {
             if (url.startsWith(basePath)) {
-                $location.replace().url(url.substr(basePath.length));
+                $location.replace().url(url.substr(basePath.length - 1));
             } else if (url) {
                 $window.location = url;
             }
