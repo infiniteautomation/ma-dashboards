@@ -168,6 +168,11 @@ function tankLevel(PointValueController, maUtil) {
                 this.$element.removeClass('amchart-loading');
 
                 this.chart = AmCharts.makeChart(this.$element[0], this.chartOptions);
+                
+                this.$scope.$on('$destroy', () => {
+                    this.chart.clear();
+                });
+                
                 this.updateChartValue();
             });
         }

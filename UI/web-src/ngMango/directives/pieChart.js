@@ -59,6 +59,9 @@ function pieChart($http, MA_DATE_FORMATS, maUtil) {
     const postLinkImpl = function postLinkImpl($scope, $element, attributes, AmCharts) {
         const options = $.extend(true, defaultOptions(), $scope.options);
         const chart = AmCharts.makeChart($element[0], options);
+        $scope.$on('$destroy', () => {
+            chart.clear();
+        });
 
         let labelFn = createLabelFn();
         $scope.$watchCollection('valueLabels', function(value) {

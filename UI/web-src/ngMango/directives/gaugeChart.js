@@ -172,7 +172,10 @@ function gaugeChart(PointValueController, maUtil) {
                     method: this.chartInitialized.bind(this)
                 });
                 
-                AmCharts.makeChart($chartElement[0], options);
+                const chart = AmCharts.makeChart($chartElement[0], options);
+                this.$scope.$on('$destroy', () => {
+                    chart.clear();
+                });
             });
         }
     

@@ -232,6 +232,10 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
 
         const chart = AmCharts.makeChart($element[0], angular.copy(options));
         
+        $scope.$on('$destroy', () => {
+            chart.clear();
+        });
+        
         if ($scope.onChartInit) {
             $scope.onChartInit({$chart: chart});
         }
@@ -341,7 +345,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
                 }
             }
         }
-
+        
         function watchValues(newValues, oldValues) {
             if (newValues === oldValues && newValues === undefined) return;
             

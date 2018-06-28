@@ -84,6 +84,10 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS, maUtil) {
         let options = defaultOptions();
         options = $.extend(true, options, $scope.options);
         const chart = AmCharts.makeChart($element[0], options);
+
+        $scope.$on('$destroy', () => {
+            chart.clear();
+        });
         
         for (let i = 1; i <= MAX_SERIES; i++) {
             $scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));

@@ -84,6 +84,7 @@ function clock(MA_DATE_FORMATS, maUtil) {
     };
     
     const postLinkImpl = function postLinkImpl($scope, $element, attributes, AmCharts) {
+        let chart;
         const options = $.extend(true, defaultOptions(), $scope.options);
         const showSeconds = $scope.showSeconds !== 'false';
         if (!showSeconds) {
@@ -92,8 +93,6 @@ function clock(MA_DATE_FORMATS, maUtil) {
         
         // chart.addListener() does not work reliably for init
         const initListener = event => {
-            const chart = event.chart;
-            
             $scope.$watch('text', function(newText) {
                 chart.axes[0].setBottomText(newText || '');
             });
@@ -122,7 +121,11 @@ function clock(MA_DATE_FORMATS, maUtil) {
             method: initListener
         });
 
-        AmCharts.makeChart($element[0], options);
+        chart = AmCharts.makeChart($element[0], options);
+        
+        $scope.$on('$destroy', () => {
+            chart.clear();
+        });
     };
     
     return {
