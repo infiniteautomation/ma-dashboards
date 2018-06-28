@@ -9,9 +9,6 @@ function autofocus($timeout) {
         restrict: 'A',
         scope: false,
         link: function($scope, $element, $attrs) {
-
-            console.log($element[0]);
-
             // element is linked and added to dom but parent element is set
             // to display:none still (due to ui router) so focus will not work.
             // have to wait until its visible
