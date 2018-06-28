@@ -1,5 +1,5 @@
 <md-card>
-	<form name="loginForm">
+	<form name="loginForm" novalidate>
 	<md-card-title>
 	  <md-card-title-text>
 	    <span class="md-headline" ma-tr="login.pleaseSignIn"></span>
@@ -10,10 +10,11 @@
             <span ma-tr="login.aleadyLoggedIn" ma-tr-args="[User.current.username]"></span>
             <a ui-sref="ui.dataPointDetails" ma-tr="login.ui.goToUI"></a>
         </div>
+
 		<md-input-container class="md-icon-float md-block">
 	      <label for="username" ma-tr="login.userId"></label>
           <md-icon>person</md-icon>
-	      <input id="username" name="username" ng-model="username" type="text" autofocus required md-no-asterisk aria-label="{{'login.userId'|maTr}}">
+	      <input id="username" name="username" ng-model="username" type="text" autofocus ma-autofocus tabindex="1" required md-no-asterisk aria-label="{{'login.userId'|maTr}}">
 	      <div ng-messages="loginForm.username.$error">
 	        <div ng-message="required" ma-tr="login.validation.noUsername"></div>
 	      </div>
@@ -21,7 +22,7 @@
 	    <md-input-container class="md-icon-float md-block">
           <label for="password" ma-tr="login.password"></label>
           <md-icon>vpn_key</md-icon>
-	      <input id="password" name="password" ng-model="password" type="password" required md-no-asterisk aria-label="{{'login.password'|maTr}}">
+	      <input id="password" name="password" ng-model="password" type="password" tabindex="2" required md-no-asterisk aria-label="{{'login.password'|maTr}}">
 	      <div ng-messages="loginForm.password.$error">
 	        <div ng-message="required" ma-tr="login.validation.noPassword"></div>
 	      </div>
@@ -32,9 +33,9 @@
         </div>
 	</md-card-content>
 	<md-card-actions layout="row" layout-align="start center">
-      <a ui-sref="forgotPassword({username: username})" ma-tr="login.forgotYourPassword"></a>
+      <a ui-sref="forgotPassword({username: username})" tabindex="4" ma-tr="login.forgotYourPassword"></a>
       <div flex></div>
-      <md-button type="submit" ng-click="doLogin()" ma-tr="login.loginButton" class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}"></md-button>
+      <md-button type="submit" ng-click="doLogin()" tabindex="3" ma-tr="login.loginButton" class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}"></md-button>
     </md-card-actions>
     </form>
 </md-card>
