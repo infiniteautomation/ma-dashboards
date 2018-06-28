@@ -20,7 +20,7 @@
                 <th md-column md-order-by="message" ma-tr="ui.app.msg" class="msg-column"></th>
                 <th md-column md-order-by="activeRtn" ma-tr="ui.app.status" class="medium-column"></th>
                 <th md-column ma-tr="ui.app.duration" class="medium-column"></th>
-                <th md-column md-order-by="acknowledged" ma-tr="ui.app.acknowledge" class="narrow-column"></th>
+                <th md-column md-order-by="ackTs" ma-tr="ui.app.acknowledge" class="narrow-column"></th>
             </tr>
         </thead>
         <tbody md-body ng-hide="$ctrl.total">
@@ -74,7 +74,9 @@
                 
                 <td md-cell class="narrow-column">
                     <i class="fa fa-circle-o fa-lg acknowledged-checkbox" ng-click="$ctrl.acknowledgeEvent(event);" ng-if="!$ctrl.hideAckButton && !event.acknowledged"></i>
-                    <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>
+                    <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox" ng-if="event.acknowledged">
+                        <md-tooltip ma-tr="ui.app.acknowledgedByAt" ma-tr-args="[event.acknowledgedByUsername, (event.acknowledgedTimestamp | maMoment:'format':'l LT')]"></md-tooltip>
+                    </i>
                 </td>
             </tr>
         </tbody>
