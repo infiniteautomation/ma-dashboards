@@ -118,14 +118,12 @@ export default [
                     $injector.loadNewModules(['maUiRootState']);
                 });
             }],
-            rootScopeData: ['$rootScope', 'maSystemSettings', 'maModules', function($rootScope, SystemSettings, maModules) {
-                maModules.getCore().then((coreModule) => {
-                    $rootScope.coreModule = coreModule;
-                }, angular.noop);
-
-                new SystemSettings('instanceDescription').getValue().then((result) => {
-                    $rootScope.instanceDescription = result;
-                }, angular.noop);
+            rootScopeData: ['$rootScope', 'maSystemSettings', 'maModules', 'maUser', function($rootScope, SystemSettings, maModules, maUser) {
+				if (maUser.current.admin) {
+	                return new SystemSettings('instanceDescription').getValue().then((result) => {
+	                    $rootScope.instanceDescription = result;
+	                }, angular.noop);
+                }
             }]
         }
     },
