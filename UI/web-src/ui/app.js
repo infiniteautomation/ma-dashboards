@@ -426,10 +426,18 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
 
-    // wait for the dashboard view to be loaded then set it to open if the
-    // screen is a large one. By default the internal state of the sidenav thinks
-    // it is closed even if it is locked open
+    // when this event is fired the elements appear to be in the DOM but there can be two ui-view components
+    // (when reloading) the old one is still being removed and the new one is not compiled yet
     $rootScope.$on('$viewContentLoaded', (event, view) => {
+        // store the view name so we can get it below
+        event.targetScope.$viewName = view;
+    });
+
+    // this event is fired after all the elements are compiled and in the DOM
+    $rootScope.$on('$viewContentAnimationEnded', event => {
+        // we dont get the view name for this event, get it from where we stored it in $viewName
+        const view = event.targetScope.$viewName;
+
         if (view === '@ui') {
             if ($mdMedia('gt-sm')) {
                 const uiPrefs = localStorageService.get('uiPreferences');
@@ -438,22 +446,27 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                 }
             }
             
-            // the closeMenu() function already does this but we need this for when the ESC key is pressed
-            // which just calls $mdSidenav(..).close();
-            $mdSidenav('left').onClose(() => {
-                $rootScope.navLockedOpen = false;
-            });
-        }
-        
-        const mainContent = document.querySelector('md-content.main-content');
-        if (mainContent) {
-            mainContent.scrollTop = 0;
-            
-            // if main content contains the hash element scroll to it
-            const hash = $location.hash();
-            if (hash && mainContent.querySelector('#' + hash)) {
-                //$anchorScroll();
+            // ensure the sidenav is in in the DOM (it should be)
+            if (document.querySelector('[md-component-id=left]')) {
+                // the closeMenu() function already does this but we need this for when the ESC key is pressed
+                // which just calls $mdSidenav(..).close();
+                $mdSidenav('left').onClose(() => {
+                    $rootScope.navLockedOpen = false;
+                });
             }
+            
+            /*
+            const mainContent = document.querySelector('md-content.main-content');
+            if (mainContent) {
+                mainContent.scrollTop = 0;
+                
+                // if main content contains the hash element scroll to it
+                const hash = $location.hash();
+                if (hash && mainContent.querySelector('#' + hash)) {
+                    //$anchorScroll();
+                }
+            }
+            */
         }
     });
 
