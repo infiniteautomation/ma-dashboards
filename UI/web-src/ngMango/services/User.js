@@ -551,6 +551,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.prototype.revokeAuthTokens = function revokeAuthTokens() {
             return this.constructor.revokeAuthTokens();
         };
+        
+        class NoUserError extends Error {}
+        User.NoUserError = NoUserError;
 
         // set the initial user and configure initial locale and timezone
         User.setUser(bootstrapUser || null);
