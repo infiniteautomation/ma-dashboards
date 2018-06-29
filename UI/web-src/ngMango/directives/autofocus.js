@@ -3,18 +3,25 @@
  * @author Jared Wiltshire
  */
 
-autofocus.$inject = ['$timeout'];
-function autofocus($timeout) {
+autofocus.$inject = ['$timeout', '$parse'];
+function autofocus($timeout, $parse) {
     return {
         restrict: 'A',
         scope: false,
         link: function($scope, $element, $attrs) {
-            // element is linked and added to dom but parent element is set
-            // to display:none still (due to ui router) so focus will not work.
-            // have to wait until its visible
-            $timeout(() => {
-                $element[0].focus();
-            }, 100, false);
+            let autoFocusEnabled = true;
+            if ($attrs.maAutofocus) {
+                autoFocusEnabled = $parse($attrs.maAutofocus)($scope);
+            }
+            
+            if (autoFocusEnabled) {
+                // element is linked and added to dom but parent element is set
+                // to display:none still (due to ui router) so focus will not work.
+                // have to wait until its visible
+                $timeout(() => {
+                    $element[0].focus();
+                }, 100, false);
+            }
         }
     };
 }
