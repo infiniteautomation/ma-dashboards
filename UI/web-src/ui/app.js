@@ -101,9 +101,11 @@ uiApp.config([
     'maRequireQProvider',
     'maUserProvider',
     'maUiMenuProvider',
+    '$anchorScrollProvider',
 function(MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
         $httpProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
-        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider, maUserProvider, maUiMenuProvider) {
+        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider, maUserProvider,
+        maUiMenuProvider, $anchorScrollProvider) {
 
     $compileProvider.debugInfoEnabled(false);
     $compileProvider.commentDirectivesEnabled(false);
@@ -113,6 +115,8 @@ function(MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     maRequireQProvider.setRequireJs(requirejs);
 
     $httpProvider.useApplyAsync(true);
+    
+    $anchorScrollProvider.disableAutoScrolling();
 
     if ($injector.has('$mdpTimePickerProvider')) {
         /*
@@ -244,9 +248,11 @@ uiApp.run([
     '$templateCache',
     '$exceptionHandler',
     'maUiLoginRedirector',
+    '$anchorScroll',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
-        webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector) {
+        webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
+        $anchorScroll) {
 
     if (uiSettings.googleAnalyticsPropertyId) {
         webAnalytics.enableGoogleAnalytics(uiSettings.googleAnalyticsPropertyId);
@@ -315,7 +321,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             // if help pane contains the hash element scroll to it
             const hash = $location.hash();
             if (hash && helpMdContent.querySelector('#' + hash)) {
-//                $anchorScroll();
+                $anchorScroll();
             }
         }
     };
@@ -454,19 +460,22 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                     $rootScope.navLockedOpen = false;
                 });
             }
-            
-            /*
-            const mainContent = document.querySelector('md-content.main-content');
-            if (mainContent) {
-                mainContent.scrollTop = 0;
-                
-                // if main content contains the hash element scroll to it
-                const hash = $location.hash();
-                if (hash && mainContent.querySelector('#' + hash)) {
-                    //$anchorScroll();
-                }
+
+        }
+        
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.scrollTop = 0;
+        }
+
+        const hash = $location.hash();
+        if (hash) {
+            const anchorElement = document.getElementById(hash);
+            if (anchorElement) {
+                $timeout(() => {
+                    $anchorScroll(hash);
+                }, 0);
             }
-            */
         }
     });
 
