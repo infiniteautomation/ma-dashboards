@@ -186,52 +186,9 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
         });
     };
 
-    const postLinkImpl = function postLinkImpl($scope, $element, attrs, AmCharts) {
-        const options = defaultOptions();
-
-        if ($scope.timeFormat) {
-            options.categoryAxis.parseDates = false;
-        }
-
-        if ($scope.stackType) {
-            options.valueAxes[0].stackType = $scope.stackType;
-        }
-        
-        if ($scope.legend) {
-            options.legend = {
-                valueWidth: 100,
-                valueFunction: dataItemToText
-            };
-        }
-        
-        if ($scope['export']) {
-            options['export'].enabled = true;
-        }
-        
-        if ($scope.oneBalloon) {
-            options.chartCursor = {
-                oneBalloonOnly: true
-            };
-        }
-
-        if ($scope.annotateMode) {
-            options.chartCursor = {
-                oneBalloonOnly: true,
-                graphBulletSize: 2,
-                zoomable: false,
-                categoryBalloonDateFormat: 'h:mm:ss A - MMM DD, YYYY'
-            };
-            options.balloon = {
-                fillAlpha: 1
-            };
-        }
-
+    const afterInit = function afterInit($scope, $element, attrs, chart) {
         const valueArray = !!attrs.values;
 
-        $.extend(true, options, $scope.options);
-
-        const chart = AmCharts.makeChart($element[0], angular.copy(options));
-        
         $scope.$on('$destroy', () => {
             chart.clear();
         });
@@ -647,39 +604,96 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout)
             checkEqualSpacing();
             chart.validateNow(true);
         }
-
-        function isAllUndefined(a) {
-            for (let i = 0; i < a.length; i++) {
-                if (a[i] !== undefined) return false;
-            }
-            return true;
-        }
-        
-        function dataItemToText(dataItem) {
-            if (dataItem.dataContext) {
-                const graph = dataItem.graph;
-
-                const value = extractField(dataItem.dataContext, graph.valueField);
-                if (value) return value;
-                
-//                for (let i = dataItem.index - 1; i >= 0; i--) {
-//                    value = extractField(chart.dataProvider[i], graph.valueField);
-//                    if (value) return value;
-//                }
-            }
-            return '';
-        }
-        
-        function extractField(data, fieldName) {
-            const rendered = data[fieldName + '_rendered'];
-            if (rendered) return rendered;
-            
-            const value = data[fieldName];
-            if (value != null) {
-                return Util.pointValueToString(value);
-            }
-        }
     };
+
+    const postLinkImpl = function postLinkImpl($scope, $element, attrs, AmCharts) {
+        let options = defaultOptions();
+
+        if ($scope.timeFormat) {
+            options.categoryAxis.parseDates = false;
+        }
+
+        if ($scope.stackType) {
+            options.valueAxes[0].stackType = $scope.stackType;
+        }
+        
+        if ($scope.legend) {
+            options.legend = {
+                valueWidth: 100,
+                valueFunction: dataItemToText
+            };
+        }
+        
+        if ($scope['export']) {
+            options['export'].enabled = true;
+        }
+        
+        if ($scope.oneBalloon) {
+            options.chartCursor = {
+                oneBalloonOnly: true
+            };
+        }
+
+        if ($scope.annotateMode) {
+            options.chartCursor = {
+                oneBalloonOnly: true,
+                graphBulletSize: 2,
+                zoomable: false,
+                categoryBalloonDateFormat: 'h:mm:ss A - MMM DD, YYYY'
+            };
+            options.balloon = {
+                fillAlpha: 1
+            };
+        }
+
+        $.extend(true, options, $scope.options);
+        
+        options = angular.copy(options);
+
+        if (!Array.isArray(options.listeners)) {
+            options.listeners = [];
+        }
+        options.listeners.push({
+            event: 'init',
+            method: data => {
+                afterInit($scope, $element, attrs, data.chart);
+            }
+        });
+        
+        AmCharts.makeChart($element[0], options);
+    };
+
+    function isAllUndefined(a) {
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] !== undefined) return false;
+        }
+        return true;
+    }
+    
+    function dataItemToText(dataItem) {
+        if (dataItem.dataContext) {
+            const graph = dataItem.graph;
+
+            const value = extractField(dataItem.dataContext, graph.valueField);
+            if (value) return value;
+            
+//            for (let i = dataItem.index - 1; i >= 0; i--) {
+//                value = extractField(chart.dataProvider[i], graph.valueField);
+//                if (value) return value;
+//            }
+        }
+        return '';
+    }
+    
+    function extractField(data, fieldName) {
+        const rendered = data[fieldName + '_rendered'];
+        if (rendered) return rendered;
+        
+        const value = data[fieldName];
+        if (value != null) {
+            return Util.pointValueToString(value);
+        }
+    }
 
     const bindings = {
         options: '<?',
