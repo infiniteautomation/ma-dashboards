@@ -86,25 +86,18 @@ uiApp.constant('MA_EVENT_LINK_INFO', {
 
 uiApp.config([
     'MA_UI_NG_DOCS',
-    '$stateProvider',
     '$urlRouterProvider',
     '$httpProvider',
-    '$injector',
     '$compileProvider',
-    'maUiMenuProvider',
     '$locationProvider',
     '$mdAriaProvider',
     'cfpLoadingBarProvider',
-    'maSystemSettingsProvider',
-    'MA_UI_MENU_XID',
-    'MA_UI_PAGES_XID',
     'maRequireQProvider',
-    'maUserProvider',
     'maUiMenuProvider',
     '$anchorScrollProvider',
-function(MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
-        $httpProvider, $injector, $compileProvider, MenuProvider, $locationProvider, $mdAriaProvider,
-        cfpLoadingBarProvider, SystemSettingsProvider, MA_UI_MENU_XID, MA_UI_PAGES_XID, maRequireQProvider, maUserProvider,
+function(MA_UI_NG_DOCS, $urlRouterProvider,
+        $httpProvider, $compileProvider, $locationProvider, $mdAriaProvider,
+        cfpLoadingBarProvider, maRequireQProvider,
         maUiMenuProvider, $anchorScrollProvider) {
 
     $compileProvider.debugInfoEnabled(false);
@@ -118,13 +111,13 @@ function(MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
     
     $anchorScrollProvider.disableAutoScrolling();
 
+    /*
     if ($injector.has('$mdpTimePickerProvider')) {
-        /*
         const $mdpTimePickerProvider = $injector.get('$mdpTimePickerProvider');
         $mdpTimePickerProvider.setOKButtonLabel();
         $mdpTimePickerProvider.setCancelButtonLabel();
-        */
     }
+    */
 
     $locationProvider.html5Mode(true);
 
@@ -218,7 +211,7 @@ function(MA_UI_NG_DOCS, $stateProvider, $urlRouterProvider,
         }
     });
     
-    MenuProvider.registerMenuItems(apiDocsMenuItems);
+    maUiMenuProvider.registerMenuItems(apiDocsMenuItems);
 
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
