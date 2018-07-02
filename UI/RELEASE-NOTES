@@ -1,3 +1,20 @@
+*Version 3.4.6*
+* Fix bug when editing menu folder containing children
+* Separate setting in menu editor that controls if the menu item is a folder
+* Better progress feedback while upgrading modules
+* Display a banner that shows the number of available upgrades
+* Load AngularJS locales from the module rather than from CDN
+* Lazily load some vendor libraries (Ace editor and amCharts) for faster load times
+* Add maFindByTags and maFilterByTags filters to make it easier to find/filter points by tags
+* Fix ma-now directive not outputting timezone
+* Ensure amCharts are destroyed correctly
+* Correctly focus inputs on login screen
+* Show username and the time that an event was acknowledged on events table
+* Fix text color of active event dropdown menu
+* Enable anchor scrolling using the hash component of the URL
+* Use AngularJS material v1.1.1
+* Various other small improvements and bugfixes
+
 *Version 3.4.5*
 * Work around bug in webpack causing an error if trying to use ngMango by itself
 * Expose RequireJS and libraries if loading ngMango
