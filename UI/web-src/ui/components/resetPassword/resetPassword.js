@@ -55,7 +55,7 @@ class ResetPasswordController {
             username: this.username,
             password: this.newPassword
         }).$promise.then(user => {
-            this.maUiLoginRedirector.redirect(user);
+            return this.maUiLoginRedirector.redirect(user);
         }, error => {
             this.disableButton = false;
             this.showTokenInput = true;

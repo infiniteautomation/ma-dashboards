@@ -169,7 +169,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
                 }
             }
     
-            refresh(forceRefresh) {
+            refresh(forceRefresh, registerItems) {
                 // if the websocket is connected then we can assume we always have the latest menu items
                 // just return our current store item
                 if (!forceRefresh && this.storePromise && jsonStoreEventManager.isConnected()) {
@@ -194,7 +194,14 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
                 }
                 
                 this.firstRefresh = false;
-                return this.storePromise;
+                
+                return this.storePromise.then(store => {
+                    if (registerItems) {
+                        registerStates(store.jsonData.menuItems);
+                    }
+                    
+                    return store;
+                });
             }
     
             combineMenuItems() {

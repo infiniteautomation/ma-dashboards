@@ -31,7 +31,7 @@ function loginFactory(User, maUtil, $cookies, $http, maUiLoginRedirector) {
                     username: this.username,
                     password: this.password
                 }).$promise.then(user => {
-                    maUiLoginRedirector.redirect(user);
+                    return maUiLoginRedirector.redirect(user);
                 }, error => {
                     this.loggingIn = false;
                     this.errors.invalidLogin = false;

@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-
-
 /**
 * @ngdoc service
 * @name ngMangoServices.maJsonStoreEventManager
@@ -30,5 +28,3 @@ function JsonStoreEventManagerFactory(EventManager) {
 
 JsonStoreEventManagerFactory.$inject = ['maEventManager'];
 export default JsonStoreEventManagerFactory;
-
-

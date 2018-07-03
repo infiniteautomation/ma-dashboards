@@ -96,7 +96,8 @@ import $ from 'jquery';
 *
 */
 
-function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
+EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', 'maUser'];
+function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 
 	//const READY_STATE_CONNECTING = 0;
 	const READY_STATE_OPEN = 1;
@@ -127,7 +128,8 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	}
 
 	EventManager.prototype.openSocket = function() {
-		if (this.socket) {
+	    // return if socket is already open or there is no authenticated user
+		if (this.socket || (!this.noAuthenticationRequired && !maUser.current)) {
 			return;
 		}
 
@@ -383,7 +385,4 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	return EventManager;
 }
 
-EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT'];
 export default EventManagerFactory;
-
-

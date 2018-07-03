@@ -3,30 +3,37 @@
  * @author Jared Wiltshire
  */
 
-loginRedirectorFactory.$inject = ['$state', '$window', '$location', 'maUser'];
-function loginRedirectorFactory($state, $window, $location, maUser) {
+loginRedirectorFactory.$inject = ['$state', '$window', '$location', 'maUser', 'maUiMenu'];
+function loginRedirectorFactory($state, $window, $location, maUser, maUiMenu) {
 
     const basePath = '/ui/';
     
     class LoginRedirector {
         redirect(user = maUser.current) {
-            if (this.savedState) {
-                this.goToSavedState();
-            } else if (!user) {
-                $state.go('login');
-            } else {
-                // loginRedirectUrl will contain the homeUrl if set, or the UI module configured start page if not
-                const redirectUrl = user.loginRedirectUrl || user.homeUrl;
-                delete user.loginRedirectUrl;
-                
-                if (redirectUrl) {
-                    this.goToUrl(redirectUrl);
-                } else if (user.admin) {
-                    $state.go('ui.settings.home');
+            // load the user menu after logging in and register the UI router states
+            return maUiMenu.refresh(false, true)
+            .then(null, error => null)
+            .then(() => {
+                if (this.savedState) {
+                    this.goToSavedState();
+                } else if (!user) {
+                    $state.go('login');
                 } else {
-                    $state.go('ui.dataPointDetails');
+                    // loginRedirectUrl will contain the homeUrl if set, or the UI module configured start page if not
+                    const redirectUrl = user.loginRedirectUrl || user.homeUrl;
+                    delete user.loginRedirectUrl;
+                    
+                    if (redirectUrl) {
+                        this.goToUrl(redirectUrl);
+                    } else if (user.admin) {
+                        $state.go('ui.settings.home');
+                    } else {
+                        $state.go('ui.dataPointDetails');
+                    }
                 }
-            }
+                
+                return user;
+            });
         }
 
         handleUnknownPath(path) {
