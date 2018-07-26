@@ -146,7 +146,7 @@ class WatchListPageController {
         }
         
         this.numberOfRows = settings.numberOfRows || (this.$mdMedia('gt-sm') ? 100 : 25);
-        this.sortOrder = settings.sortOrder || 'name';
+        this.sortOrder = settings.sortOrder != null ? settings.sortOrder : 'name';
     }
 
     saveLocalStorageSettings() {
@@ -268,7 +268,7 @@ class WatchListPageController {
         if (Array.isArray(this.watchList.data.selectedTags)) {
             this.selectedTags = this.watchList.data.selectedTags;
         }
-        if (this.watchList.data.sortOrder) {
+        if (this.watchList.data.sortOrder != null) {
             this.sortOrder = this.watchList.data.sortOrder;
         }
         if (Number.isFinite(this.watchList.data.numberOfRows) && this.watchList.data.numberOfRows >= 0) {
@@ -336,7 +336,8 @@ class WatchListPageController {
         const limit = this.numberOfRows;
         const offset = (this.pageNumber - 1) * limit;
         const order = this.sortOrder;
-
+        const points = this.points.slice();
+        
         if (order) {
             let propertyName = order;
             let desc = false;
@@ -350,7 +351,7 @@ class WatchListPageController {
                 propertyName = propertyName.substring(5);
             }
             
-            this.points.sort((a, b) => {
+            points.sort((a, b) => {
                 const valA = tag ? a.tags[propertyName] : a[propertyName];
                 const valB = tag ? b.tags[propertyName] : b[propertyName];
                 
@@ -363,7 +364,7 @@ class WatchListPageController {
             });
         }
 
-        this.filteredPoints = this.points.slice(offset, offset + limit);
+        this.filteredPoints = points.slice(offset, offset + limit);
     }
 
     editWatchList(watchList) {

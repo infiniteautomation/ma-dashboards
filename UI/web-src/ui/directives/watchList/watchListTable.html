@@ -35,6 +35,11 @@
 </md-toolbar>
 <md-toolbar class="md-hue-2" ng-if="$ctrl.selectColumnToolbarOpen">
     <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" ng-click="$ctrl.sortOrder = ''; $ctrl.sortOrPageChangedBound()">
+            <md-icon>format_list_numbered</md-icon>
+            <md-tooltip ma-tr="ui.app.resetSort"></md-tooltip>
+        </md-button>
+        
         <div flex></div>
         
         <ma-data-point-tag-key-select ng-model="$ctrl.selectedTags" ng-change="$ctrl.watchListSettingChanged()"
