@@ -5,7 +5,7 @@ package com.infiniteautomation.ui;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.serotonin.m2m2.db.dao.JsonDataDao;
+import com.infiniteautomation.mango.spring.dao.JsonDataDao;
 import com.serotonin.m2m2.module.ModuleElementDefinition;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
 
