@@ -5,7 +5,7 @@ package com.infiniteautomation.ui;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.infiniteautomation.mango.spring.dao.JsonDataDao;
+import com.serotonin.m2m2.db.dao.JsonDataDao;
 import com.serotonin.m2m2.module.ModuleElementDefinition;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
 
@@ -37,7 +37,7 @@ public class UILifecycle extends ModuleElementDefinition {
     }
     
     public void installMenuData() {
-        JsonDataVO menu = JsonDataDao.instance.getByXid(MA_UI_MENU_XID);
+        JsonDataVO menu = JsonDataDao.getInstance().getByXid(MA_UI_MENU_XID);
         if (menu == null) {
             menu = new JsonDataVO();
             menu.setXid(MA_UI_MENU_XID);
@@ -53,11 +53,11 @@ public class UILifecycle extends ModuleElementDefinition {
             menu.setJsonData(object);
         }
         
-        JsonDataDao.instance.save(menu);
+        JsonDataDao.getInstance().save(menu);
     }
     
     public void installPageData() {
-        JsonDataVO menu = JsonDataDao.instance.getByXid(MA_UI_PAGES_XID);
+        JsonDataVO menu = JsonDataDao.getInstance().getByXid(MA_UI_PAGES_XID);
         if (menu == null) {
             menu = new JsonDataVO();
             menu.setXid(MA_UI_PAGES_XID);
@@ -73,11 +73,11 @@ public class UILifecycle extends ModuleElementDefinition {
             menu.setJsonData(object);
         }
         
-        JsonDataDao.instance.save(menu);
+        JsonDataDao.getInstance().save(menu);
     }
     
     public void installSettingsData() {
-        JsonDataVO menu = JsonDataDao.instance.getByXid(MA_UI_SETTINGS_XID);
+        JsonDataVO menu = JsonDataDao.getInstance().getByXid(MA_UI_SETTINGS_XID);
         if (menu == null) {
             menu = new JsonDataVO();
             menu.setXid(MA_UI_SETTINGS_XID);
@@ -92,6 +92,6 @@ public class UILifecycle extends ModuleElementDefinition {
             menu.setJsonData(object);
         }
         
-        JsonDataDao.instance.save(menu);
+        JsonDataDao.getInstance().save(menu);
     }
 }
