@@ -18,3 +18,6 @@ Then run:
 
 This will run Webpack using the development mode. You may also want to try Webpack's `watch` option:
 1. `yarn run webpack --mode development --watch`
+
+Alternatively you build the whole .zip file for the module with development mode turned on by running
+`mvn install -Dwebpack.mode=development`
