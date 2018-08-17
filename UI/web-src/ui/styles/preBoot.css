@@ -15,6 +15,12 @@ a:hover, a:focus {
     border-bottom-color: rgba(194, 101, 0, 1.0);
 }
 
+a.md-button,
+a.md-button:hover,
+a.md-button:focus {
+	color: currentColor;
+}
+
 .pre-bootstrap-error {
   margin-top: 20px;
   color: #FF5722;
