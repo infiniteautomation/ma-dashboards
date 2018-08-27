@@ -23,7 +23,8 @@ const systemSettingEditor = {
         name: '@?',
         disabled: '<?ngDisabled',
         saveOnChange: '<?',
-        onInit: '&?'
+        onInit: '&?',
+        availableOptions: '<?'
     },
     transclude: {
         options: '?mdOption'

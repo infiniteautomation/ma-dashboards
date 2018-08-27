@@ -18,11 +18,16 @@
     <md-option ng-value="-2"><md-icon class="fa fa-times-circle alarm-flag ma-alarm-level-do-not-log"></md-icon><span ma-tr="common.alarmLevel.doNotLog"></span></md-option>
     <md-option ng-value="-3"><md-icon class="fa fa-times alarm-flag IGNORE"></md-icon><span ma-tr="common.alarmLevel.ignore"></span></md-option>
   </md-select>
-  <md-select ng-if="$ctrl.inputType === 'timeperiodtype'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
-    <md-option value="DAYS"><span ma-tr="common.tp.days"></span></md-option>
-    <md-option value="WEEKS"><span ma-tr="common.tp.weeks"></span></md-option>
-    <md-option value="MONTHS"><span ma-tr="common.tp.months"></span></md-option>
-    <md-option value="YEARS"><span ma-tr="common.tp.years"></span></md-option>
+  <md-select ng-if="$ctrl.inputType === 'timeperiodtype'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()"
+      ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
+    <md-option ng-if="$ctrl.availableOptions && $ctrl.availableOptions.includes('MILLISECONDS')" value="MILLISECONDS"><span ma-tr="common.tp.milliseconds"></span></md-option>
+    <md-option ng-if="$ctrl.availableOptions && $ctrl.availableOptions.includes('SECONDS')" value="SECONDS"><span ma-tr="common.tp.seconds"></span></md-option>
+    <md-option ng-if="$ctrl.availableOptions && $ctrl.availableOptions.includes('MINUTES')" value="MINUTES"><span ma-tr="common.tp.minutes"></span></md-option>
+    <md-option ng-if="$ctrl.availableOptions && $ctrl.availableOptions.includes('HOURS')" value="HOURS"><span ma-tr="common.tp.hours"></span></md-option>
+    <md-option ng-if="!$ctrl.availableOptions || $ctrl.availableOptions.includes('DAYS')" value="DAYS"><span ma-tr="common.tp.days"></span></md-option>
+    <md-option ng-if="!$ctrl.availableOptions || $ctrl.availableOptions.includes('WEEKS')" value="WEEKS"><span ma-tr="common.tp.weeks"></span></md-option>
+    <md-option ng-if="!$ctrl.availableOptions || $ctrl.availableOptions.includes('MONTHS')" value="MONTHS"><span ma-tr="common.tp.months"></span></md-option>
+    <md-option ng-if="!$ctrl.availableOptions || $ctrl.availableOptions.includes('YEARS')" value="YEARS"><span ma-tr="common.tp.years"></span></md-option>
   </md-select>
   <ma-permissions-menu ng-if="$ctrl.inputType === 'permission' && !$ctrl.disabled" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()"></ma-permissions-menu>
   <textarea ng-if="$ctrl.inputType === 'textarea'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}"  ng-disabled="$ctrl.disabled"></textarea>
