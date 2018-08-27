@@ -76,10 +76,7 @@
   <div layout flex="100" flex-gt-md="50" layout-align="start center">
     <label for="futureDateLimitPeriods" ma-tr="systemSettings.futureDateLimit"></label>
     <ma-system-setting-editor name="futureDateLimitPeriods" key="futureDateLimitPeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
-    <ma-system-setting-editor key="futureDateLimitPeriodType" type="INTEGER" input-type="select">
-        <md-option value="2"><span ma-tr="common.tp.minutes"></span></md-option>
-        <md-option value="3"><span ma-tr="common.tp.hours"></span></md-option>
-    </ma-system-setting-editor>
+    <ma-system-setting-editor key="futureDateLimitPeriodType" available-options="['MINUTES','HOURS']" input-type="timeperiodtype"></ma-system-setting-editor>
   </div>
 </div>
 

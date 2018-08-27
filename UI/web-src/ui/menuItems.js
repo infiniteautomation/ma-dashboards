@@ -689,6 +689,30 @@ export default [
         menuHidden: true
     },
     {
+        name: 'ui.settings.system.httpServer',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/httpServerSettings.html');
+            }
+        },
+        url: '/http-server',
+        menuTr: 'systemSettings.httpServerSettings',
+        menuHidden: true
+    },
+    {
+        name: 'ui.settings.system.password',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './systemSettings/passwordSettings.html');
+            }
+        },
+        url: '/password',
+        menuTr: 'systemSettings.passwordSettings',
+        menuHidden: true
+    },
+    {
         name: 'ui.settings.system.threadPools',
         resolve: {
             viewTemplate: function() {
