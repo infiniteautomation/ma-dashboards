@@ -47,9 +47,9 @@ public class BootstrapController {
     private final SystemSettingsDao systemSettingsDao;
 
     @Autowired
-    public BootstrapController(JsonDataDao jsonDataDao, SystemSettingsDao systemSettingsDao) {
+    public BootstrapController(JsonDataDao jsonDataDao) {
         this.jsonDataDao = jsonDataDao;
-        this.systemSettingsDao = systemSettingsDao;
+        this.systemSettingsDao = SystemSettingsDao.instance;
     }
 
     @ApiOperation(value = "Get the data needed before logging in")
