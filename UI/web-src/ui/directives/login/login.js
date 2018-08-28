@@ -5,8 +5,8 @@
 
 import loginTemplate from './login.html';
 
-loginFactory.$inject = ['maUser', 'maUtil', '$cookies', '$http', 'maUiLoginRedirector'];
-function loginFactory(User, maUtil, $cookies, $http, maUiLoginRedirector) {
+loginFactory.$inject = ['maUser', 'maUtil', '$cookies', '$http', 'maUiLoginRedirector', '$state'];
+function loginFactory(User, maUtil, $cookies, $http, maUiLoginRedirector, $state) {
     return {
         template: loginTemplate,
         scope: {},
@@ -27,18 +27,24 @@ function loginFactory(User, maUtil, $cookies, $http, maUiLoginRedirector) {
                     $cookies.put($http.defaults.xsrfCookieName, maUtil.uuid(), {path: '/'});
                 }
                 
-                User.login({
+                const credentials = {
                     username: this.username,
                     password: this.password
-                }).$promise.then(user => {
+                };
+                
+                User.login(credentials).$promise.then(user => {
                     return maUiLoginRedirector.redirect(user);
                 }, error => {
                     this.loggingIn = false;
                     this.errors.invalidLogin = false;
                     if (error.status === 401) {
-                        this.errors.invalidLogin = true;
-                        this.errors.otherError = false;
-                        this.invalidLoginMessage = error.mangoStatusText;
+                        if (error.data && error.data.mangoStatusName === 'CREDENTIALS_EXPIRED') {
+                            $state.go('changePassword', Object.assign({credentialsExpired: true}, credentials));
+                        } else {
+                            this.errors.invalidLogin = true;
+                            this.errors.otherError = false;
+                            this.invalidLoginMessage = error.mangoStatusText;
+                        }
                     } else {
                         this.errors.otherError = error.mangoStatusText;
                         delete this.invalidLoginMessage;

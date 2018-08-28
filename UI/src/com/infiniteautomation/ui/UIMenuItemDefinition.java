@@ -12,7 +12,7 @@ import com.serotonin.m2m2.module.MenuItemDefinition;
  * @author Jared Wiltshire
  *
  */
-public class UIMenuUtemDefinition extends MenuItemDefinition {
+public class UIMenuItemDefinition extends MenuItemDefinition {
     @Override
     public Visibility getVisibility() {
         return MenuItemDefinition.Visibility.ANONYMOUS;

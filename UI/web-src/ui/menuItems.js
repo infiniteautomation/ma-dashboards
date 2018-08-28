@@ -75,6 +75,32 @@ export default [
         }
     },
     {
+        name: 'changePassword',
+        url: '/change-password?username',
+        menuHidden: true,
+        menuIcon: 'vpn_key',
+        menuTr: 'header.changePasword',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                        './views/changePassword.html');
+            },
+            deps: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                        './components/changePassword/changePassword').then(changePassword => {
+                    angular.module('maUiChangePasswordState', [])
+                        .component('maUiChangePassword', changePassword.default);
+                    $injector.loadNewModules(['maUiChangePasswordState']);
+                });
+            }],
+            loginTranslations: loadLoginTranslations
+        },
+        params: {
+            credentialsExpired: null,
+            password: null
+        }
+    },
+    {
         name: 'logout',
         url: '/logout',
         menuHidden: true,

@@ -756,6 +756,10 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             const deferred = $q.defer();
             es6Promise.then(deferred.resolve, deferred.reject);
             return deferred.promise;
+        },
+        
+        regExpEscape(s) {
+            return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
         }
     };
     
