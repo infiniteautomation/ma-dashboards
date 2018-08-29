@@ -55,123 +55,142 @@ import plurals from 'cldr-data/supplemental/plurals.json';
 * @param {object} namespaces REPLACE
 *
 */
-translateFactory.$inject = ['$http', '$q', 'maUser'];
-function translateFactory($http, $q, maUser) {
-	const Translate = function() {};
+
+function translateProvider() {
 
     Globalize.load(likelySubtags);
     Globalize.load(plurals);
+    
+    const loadedNamespaces = {};
+    const pendingRequests = {};
 
-	Translate.tr = function(key) {
-		const functionArgs = arguments;
-		if (Array.isArray(key)) {
-			key = key[0];
-		}
-
-        const namespace = key.split('.')[0];
-        return Translate.loadNamespaces(namespace).then(function() {
-        	return Translate.trSync.apply(null, functionArgs);
-        });
-	};
-
-	Translate.trSync = function(key, args) {
-		if (Array.isArray(key)) {
-			args = key;
-			key = key.shift();
-		} else if (!Array.isArray(args)) {
-            args = Array.prototype.slice.call(arguments, 1);
-        }
-		return Globalize.messageFormatter(key).apply(Globalize, args);
-	};
-
-	Translate.loadedNamespaces = {};
-    Translate.pendingRequests = {};
-
-	Translate.loadNamespaces = function(namespaces) {
-		if (!Array.isArray(namespaces)) {
-			namespaces = Array.prototype.slice.call(arguments);
-        }
-
-		return $q.resolve().then(() => {
-			let namespacePromises = namespaces.map(namespace => {
-			    let loadedNamespace = this.loadedNamespaces[namespace];
-			    if (loadedNamespace) {
-			        return $q.when(loadedNamespace);
-			    }
-			    
-                let request = this.pendingRequests[namespace];
-                if (!request) {
-                    let translationsUrl = '/rest/v1/translations/';
-                    if (namespace === 'public' || namespace === 'login' || namespace === 'header') {
-                        translationsUrl += 'public/';
-                    }
-
-                    request = $http.get(translationsUrl + encodeURIComponent(namespace), {
-                        params: {
-                            //language: 'en-US',
-                            //server: true,
-                            //browser: true
-                        }
-                    }).then(response => {
-                        // we know if the user isn't logged in then the locale in the response is the system locale
-                        if (!maUser.current) {
-                            maUser.setSystemLocale(response.data.locale);
-                        }
-                        
-                        const translations = response.data.translations;
-                        
-                        // translations will never contain the an entry for language tags with a script
-                        // eg zn-Hans-HK or pt-Latn-BR
-                        if (!translations[response.data.locale]) {
-                            translations[response.data.locale] = {};
-                        }
-
-                        Globalize.loadMessages(translations);
-                        // locale must be set after messages are loaded
-                        this.setLocale(response.data.locale);
-                        
-                        this.loadedNamespaces[namespace] = response.data;
-                        return response.data;
-                    }).finally(() => {
-                        delete this.pendingRequests[namespace];
-                    });
-
-                    this.pendingRequests[namespace] = request;
-                }
-                return request;
-			});
-			return $q.all(namespacePromises);
-		}).then(function(result) {
-		    const allData = {};
-		    
-		    result.forEach(data => {
-		        angular.merge(allData, data);
-		    });
-
-			return allData;
-		});
-	};
-
-	// Must wait on likelySubtags before calling this
-	Translate.setLocale = function(locale) {
-	    let globalizeLocale = Globalize.locale();
+    this.loadTranslations = loadTranslations;
+    this.setLocale = setLocale;
+    this.$get = translateFactory;
+    
+    function setLocale(locale) {
+        let globalizeLocale = Globalize.locale();
         if (!globalizeLocale || globalizeLocale.locale !== locale) {
             globalizeLocale = Globalize.locale(locale);
             
             // remove all currently loaded namespaces
-            Translate.loadedNamespaces = {};
+            clearLoadedNamespaces();
         }
         return globalizeLocale;
-	};
-	
-	maUser.notificationManager.subscribe((event, newLocale, first) => {
-	    // remove all currently loaded namespaces
-        Translate.loadedNamespaces = {};
-	}, null, ['localeChanged']);
+    }
+    
+    function clearLoadedNamespaces() {
+        Object.keys(loadedNamespaces).forEach(key => delete loadedNamespaces[key]);
+    }
+    
+    function loadTranslations(data) {
+        const namespaces = data.namespaces;
+        const translations = data.translations;
+        const locale = data.locale;
+        
+        // translations will never contain the an entry for language tags with a script
+        // eg zn-Hans-HK or pt-Latn-BR
+        if (!translations[locale]) {
+            translations[locale] = {};
+        }
 
-	return Translate;
+        Globalize.loadMessages(translations);
+        
+        // locale must be set after messages are loaded
+        setLocale(locale);
+        
+        namespaces.forEach(namespace => loadedNamespaces[namespace] = translations);
+    }
+
+    translateFactory.$inject = ['$http', '$q', 'maUser'];
+    function translateFactory($http, $q, maUser) {
+        const Translate = function() {};
+
+        Translate.tr = function(key) {
+            const functionArgs = arguments;
+            if (Array.isArray(key)) {
+                key = key[0];
+            }
+
+            const namespace = key.split('.')[0];
+            return Translate.loadNamespaces(namespace).then(function() {
+                return Translate.trSync.apply(null, functionArgs);
+            });
+        };
+
+        Translate.trSync = function(key, args) {
+            if (Array.isArray(key)) {
+                args = key;
+                key = key.shift();
+            } else if (!Array.isArray(args)) {
+                args = Array.prototype.slice.call(arguments, 1);
+            }
+            return Globalize.messageFormatter(key).apply(Globalize, args);
+        };
+
+
+        Translate.loadNamespaces = function(namespaces) {
+            if (!Array.isArray(namespaces)) {
+                namespaces = Array.prototype.slice.call(arguments);
+            }
+
+            return $q.resolve().then(() => {
+                let namespacePromises = namespaces.map(namespace => {
+                    let loadedNamespace = loadedNamespaces[namespace];
+                    if (loadedNamespace) {
+                        return $q.when(loadedNamespace);
+                    }
+                    
+                    let request = pendingRequests[namespace];
+                    if (!request) {
+                        let translationsUrl = '/rest/v1/translations/';
+                        if (namespace === 'public' || namespace === 'login' || namespace === 'header') {
+                            translationsUrl += 'public/';
+                        }
+
+                        request = $http.get(translationsUrl + encodeURIComponent(namespace), {
+                            params: {
+                                //language: 'en-US',
+                                //server: true,
+                                //browser: true
+                            }
+                        }).then(response => {
+                            // we know if the user isn't logged in then the locale in the response is the system locale
+                            if (!maUser.current) {
+                                maUser.setSystemLocale(response.data.locale);
+                            }
+                            
+                            loadTranslations(response.data);
+                            return response.data;
+                        }).finally(() => {
+                            delete pendingRequests[namespace];
+                        });
+
+                        pendingRequests[namespace] = request;
+                    }
+                    return request;
+                });
+                return $q.all(namespacePromises);
+            }).then(function(result) {
+                const allData = {};
+                
+                result.forEach(data => {
+                    angular.merge(allData, data);
+                });
+
+                return allData;
+            });
+        };
+
+        Translate.setLocale = setLocale;
+        
+        maUser.notificationManager.subscribe((event, newLocale, first) => {
+            // remove all currently loaded namespaces
+            clearLoadedNamespaces();
+        }, null, ['localeChanged']);
+
+        return Translate;
+    }
 }
 
-export default translateFactory;
-
-
+export default translateProvider;

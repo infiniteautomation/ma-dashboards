@@ -3,8 +3,6 @@
  */
 package com.infiniteautomation.ui.rest;
 
-import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,7 @@ import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.web.mvc.rest.v1.ModulesRestController;
 import com.serotonin.m2m2.web.mvc.rest.v1.TranslationsController;
+import com.serotonin.m2m2.web.mvc.rest.v1.TranslationsController.TranslationsModel;
 import com.serotonin.m2m2.web.mvc.rest.v1.model.jsondata.JsonDataModel;
 import com.serotonin.m2m2.web.mvc.rest.v1.model.modules.AngularJSModuleDefinitionGroupModel;
 import com.serotonin.m2m2.web.mvc.rest.v1.model.user.UserModel;
@@ -59,14 +58,15 @@ public class BootstrapController {
 
         data.setAngularJsModules(ModulesRestController.getAngularJSModules());
         data.setUiSettings(new JsonDataModel(this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID)));
-        data.setTimezone(TimeZone.getDefault());
-        data.setLocale(Common.getLocale());
-        data.setLoadedTranslations(PUBLIC_TRANSLATIONS);
-        data.setTranslations(TranslationsController.getTranslationMap(PUBLIC_TRANSLATIONS, Common.getLocale()));
+        data.setServerTimezone(TimeZone.getDefault().getID());
+        data.setServerLocale(Common.getLocale().toLanguageTag());
         data.setLastUpgradeTime(Common.getLastUpgradeTime());
 
         if (user != null) {
             data.setUser(new UserModel(user));
+            data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, user.getLocaleObject()));
+        } else {
+            data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, Common.getLocale()));
         }
 
         return data;
@@ -75,7 +75,7 @@ public class BootstrapController {
     @ApiOperation(value = "Get the data needed after logging in")
     @RequestMapping(method = RequestMethod.GET, path = "/post-login")
     @PreAuthorize("isAuthenticated()")
-    public PostLoginData postLogin() {
+    public PostLoginData postLogin(@AuthenticationPrincipal User user) {
         PostLoginData data = new PostLoginData();
 
         data.setInstanceDescription(systemSettingsDao.getValue(SystemSettingsDao.INSTANCE_DESCRIPTION));
@@ -83,8 +83,7 @@ public class BootstrapController {
         data.setCoreVersion(Common.getVersion().toString());
         data.setMenu(new JsonDataModel(this.jsonDataDao.getByXid(UILifecycle.MA_UI_MENU_XID)));
         data.setPages(new JsonDataModel(this.jsonDataDao.getByXid(UILifecycle.MA_UI_PAGES_XID)));
-        data.setLoadedTranslations(PRIVATE_TRANSLATIONS);
-        data.setTranslations(TranslationsController.getTranslationMap(PRIVATE_TRANSLATIONS, Common.getLocale()));
+        data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, user.getLocaleObject()));
 
         return data;
     }
@@ -92,17 +91,16 @@ public class BootstrapController {
     public static class PreLoginData {
         private AngularJSModuleDefinitionGroupModel angularJsModules;
         private JsonDataModel uiSettings;
-        private TimeZone timezone;
-        private Locale locale;
-        private String[] loadedTranslations;
-        private Map<String, ?> translations;
+        private String serverTimezone;
+        private String serverLocale;
+        private TranslationsModel translations;
         private int lastUpgradeTime;
         private UserModel user;
 
-        public Map<String, ?> getTranslations() {
+        public TranslationsModel getTranslations() {
             return translations;
         }
-        public void setTranslations(Map<String, ?> translations) {
+        public void setTranslations(TranslationsModel translations) {
             this.translations = translations;
         }
         public AngularJSModuleDefinitionGroupModel getAngularJsModules() {
@@ -111,17 +109,17 @@ public class BootstrapController {
         public void setAngularJsModules(AngularJSModuleDefinitionGroupModel angularJsModules) {
             this.angularJsModules = angularJsModules;
         }
-        public TimeZone getTimezone() {
-            return timezone;
+        public String getServerTimezone() {
+            return serverTimezone;
         }
-        public void setTimezone(TimeZone timezone) {
-            this.timezone = timezone;
+        public void setServerTimezone(String serverTimezone) {
+            this.serverTimezone = serverTimezone;
         }
-        public Locale getLocale() {
-            return locale;
+        public String getServerLocale() {
+            return serverLocale;
         }
-        public void setLocale(Locale locale) {
-            this.locale = locale;
+        public void setServerLocale(String serverLocale) {
+            this.serverLocale = serverLocale;
         }
         public int getLastUpgradeTime() {
             return lastUpgradeTime;
@@ -134,12 +132,6 @@ public class BootstrapController {
         }
         public void setUser(UserModel user) {
             this.user = user;
-        }
-        public String[] getLoadedTranslations() {
-            return loadedTranslations;
-        }
-        public void setLoadedTranslations(String[] loadedTranslations) {
-            this.loadedTranslations = loadedTranslations;
         }
         public JsonDataModel getUiSettings() {
             return uiSettings;
@@ -155,8 +147,7 @@ public class BootstrapController {
         private String coreVersion;
         private JsonDataModel menu;
         private JsonDataModel pages;
-        private String[] loadedTranslations;
-        private Map<String, ?> translations;
+        private TranslationsModel translations;
 
         public String getInstanceDescription() {
             return instanceDescription;
@@ -182,16 +173,10 @@ public class BootstrapController {
         public void setPages(JsonDataModel pages) {
             this.pages = pages;
         }
-        public String[] getLoadedTranslations() {
-            return loadedTranslations;
-        }
-        public void setLoadedTranslations(String[] loadedTranslations) {
-            this.loadedTranslations = loadedTranslations;
-        }
-        public Map<String, ?> getTranslations() {
+        public TranslationsModel getTranslations() {
             return translations;
         }
-        public void setTranslations(Map<String, ?> translations) {
+        public void setTranslations(TranslationsModel translations) {
             this.translations = translations;
         }
         public String getCoreVersion() {
