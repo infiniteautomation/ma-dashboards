@@ -111,6 +111,8 @@ Promise.resolve().then(() => {
 
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
+        UserProvider.setSystemLocale(preLoginData.serverLocale);
+        UserProvider.setSystemTimezone(preLoginData.serverTimezone);
         
         if (postLoginData) {
             // also registers the custom menu items

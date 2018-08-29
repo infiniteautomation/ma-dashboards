@@ -155,11 +155,6 @@ function translateProvider() {
                                 //browser: true
                             }
                         }).then(response => {
-                            // we know if the user isn't logged in then the locale in the response is the system locale
-                            if (!maUser.current) {
-                                maUser.setSystemLocale(response.data.locale);
-                            }
-                            
                             loadTranslations(response.data);
                             return response.data;
                         }).finally(() => {

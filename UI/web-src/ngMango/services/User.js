@@ -166,9 +166,17 @@ User.logout();
 UserProvider.$inject = ['MA_DEFAULT_TIMEZONE', 'MA_DEFAULT_LOCALE'];
 function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     let bootstrapUser = null;
+    let systemLocale;
+    let systemTimezone;
 
     this.setUser = function(user) {
         bootstrapUser = user;
+    };
+    this.setSystemLocale = function(locale) {
+        systemLocale = locale;
+    };
+    this.setSystemTimezone = function(timezone) {
+        systemTimezone = timezone;
     };
     
     moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
@@ -182,8 +190,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector', 'maNotificationManager'];
     function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector, NotificationManager) {
         let cachedUser;
-        let systemLocale;
-        let systemTimezone;
 
         const User = $resource('/rest/v1/users/:username', {
                 username: '@username'
@@ -275,15 +281,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 this.configureTimezone();
                 
                 this.notificationManager.notify('userChanged', user, firstChange);
-            }
-        };
-
-        User.setSystemLocale = function(locale) {
-            if (systemLocale !== locale) {
-                systemLocale = locale;
-                
-                // the system locale might be the new locale if there is no cachedUser (aka not logged in)
-                this.configureLocale();
             }
         };
 
@@ -558,6 +555,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         // set the initial user and configure initial locale and timezone
         User.setUser(bootstrapUser ? new User(bootstrapUser) : null);
         bootstrapUser = undefined;
+        
+        User.configureLocale();
+        User.configureTimezone();
 
         return User;
     }
