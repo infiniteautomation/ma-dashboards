@@ -7,7 +7,7 @@ import angular from 'angular';
 import './app';
 import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
-import {moduleVersions} from '../shims/exportAMD.js';
+import amdConfiguration from '../shims/exportAMD.js';
 import util from './bootstrapUtil.js';
 
 Promise.resolve().then(() => {
@@ -34,7 +34,7 @@ Promise.resolve().then(() => {
         const moduleUrls = preLoginData.angularJsModules && preLoginData.angularJsModules.urls;
         const moduleNames = moduleUrls.map(url => {
             return url.replace(/^\/modules\/(.*?)\/web\/(.*?).js(?:\?v=(.*))?$/, (match, module, filename, version) => {
-                moduleVersions[module] = version;
+                amdConfiguration.moduleVersions[module] = version;
                 return `modules/${module}/web/${filename}`;
             });
         });
@@ -81,8 +81,11 @@ Promise.resolve().then(() => {
         });
     });
 
-    return Promise.all([uiSettingsPromise, modulesPromise, userPromise, postLoginDataPromise]);
-}).then(([uiSettings, angularModules, user, postLoginData]) => {
+    return Promise.all([uiSettingsPromise, modulesPromise, userPromise, preLoginDataPromise, postLoginDataPromise]);
+}).then(([uiSettings, angularModules, user, preLoginData, postLoginData]) => {
+    
+    amdConfiguration.defaultVersion = preLoginData.lastUpgradeTime;
+    
     uiSettings.mangoModuleNames = [];
     const angularJsModuleNames = ['maUiApp'];
     angularModules.forEach((angularModule, index, array) => {

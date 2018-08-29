@@ -13,7 +13,11 @@ window.define = define;
 /* jshint camelcase: false */
 const moduleName = packageJson.com_infiniteautomation.moduleName;
 const modulePath = `/modules/${moduleName}/web`;
-const moduleVersions = {};
+
+const configuration = {
+    moduleVersions: {},
+    defaultVersion: packageJson.version
+};
 
 const exposedVendorModules = {
     'angular': () => import(/* webpackMode: "eager" */ 'angular'),
@@ -78,11 +82,11 @@ require.config({
             return '';
         }
         
-        let version = packageJson.version;
+        let version = configuration.defaultVersion;
         
         const moduleMatches = id.match(/^modules\/(.+?)\//);
         if (moduleMatches) {
-            const moduleVersion = moduleVersions[moduleMatches[1]];
+            const moduleVersion = configuration.moduleVersions[moduleMatches[1]];
             if (moduleVersion) {
                 version = moduleVersion;
             }
@@ -123,4 +127,4 @@ define('webpackImport', [], () => {
     };
 });
 
-export {moduleVersions};
+export default configuration;
