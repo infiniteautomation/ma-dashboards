@@ -9,7 +9,7 @@ import menuProvider from './services/menu';
 import pagesFactory from './services/pages';
 import dateBarFactory from './services/dateBar';
 import uiSettingsProvider from './services/uiSettings';
-import loginRedirectorFactory from './services/loginRedirector';
+import loginRedirectorProvider from './services/loginRedirector';
 import pageView from './directives/pageView/page_view';
 import livePreview from './directives/liveEditor/livePreview';
 import stateParams from './directives/stateParams/stateParams';
@@ -43,7 +43,7 @@ uiApp.provider('maUiMenu', menuProvider)
     .provider('maUiSettings', uiSettingsProvider)
     .factory('maUiPages', pagesFactory)
     .factory('maUiDateBar', dateBarFactory)
-    .factory('maUiLoginRedirector', loginRedirectorFactory)
+    .provider('maUiLoginRedirector', loginRedirectorProvider)
     .directive('maUiPageView', pageView)
     .directive('maUiLivePreview', livePreview)
     .directive('maUiStateParams', stateParams)

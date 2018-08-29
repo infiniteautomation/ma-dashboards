@@ -366,6 +366,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 data.resource.loginRedirectUrl = loginRedirectUrl;
             }
             
+            const lastUpgrade = data.headers('X-Mango-Last-Upgrade');
+            if (lastUpgrade) {
+                data.resource.lastUpgradeTime = parseInt(lastUpgrade, 10);
+            }
+            
             User.loginInterceptors.forEach(function(interceptor) {
                 interceptor(data);
             });

@@ -104,9 +104,10 @@ Promise.resolve().then(() => {
     const maUiBootstrap = angular.module('maUiBootstrap', angularJsModuleNames);
 
     // configure the the providers using data retrieved before bootstrap
-    maUiBootstrap.config(['maUserProvider', 'maUiMenuProvider', 'maUiSettingsProvider', 'maTranslateProvider',
-            (UserProvider, maUiMenuProvider, maUiSettingsProvider, maTranslateProvider) => {
+    maUiBootstrap.config(['maUserProvider', 'maUiMenuProvider', 'maUiSettingsProvider', 'maTranslateProvider', 'maUiLoginRedirectorProvider',
+            (UserProvider, maUiMenuProvider, maUiSettingsProvider, maTranslateProvider, maUiLoginRedirectorProvider) => {
 
+        maUiLoginRedirectorProvider.setLastUpgradeTime(preLoginData.lastUpgradeTime);
         maTranslateProvider.loadTranslations(preLoginData.translations);
 
         // store pre-bootstrap user into the User service
