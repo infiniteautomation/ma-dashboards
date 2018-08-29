@@ -8,87 +8,81 @@ import './app';
 import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
 import {moduleVersions} from '../shims/exportAMD.js';
-import {MA_UI_SETTINGS_XID, MA_UI_MENU_XID} from './constants.js';
+import util from './bootstrapUtil.js';
 
-// Get an injector for the ngMangoServices app and use the JsonStore service to retrieve the
-// custom user menu items from the REST api prior to bootstrapping the main application.
-// This is so the states can be added to the stateProvider in the config block for the
-// main application. If the states are added after the main app runs then the user may
-// not navigate directly to one of their custom states on startup
-const servicesInjector = angular.injector(['ngMangoServices'], true);
-const User = servicesInjector.get('maUser');
-const JsonStore = servicesInjector.get('maJsonStore');
-const $q = servicesInjector.get('$q');
-const $http = servicesInjector.get('$http');
-
-// ensures credentials are saved/deleted on first page load if params are set
-User.getCredentialsFromUrl();
-
-const settingsStorePromise = JsonStore.getPublic({xid: MA_UI_SETTINGS_XID}).$promise.then(null, error => null);
-const uiSettingsPromise = settingsStorePromise.then(settingsStore => {
-    const uiSettings = angular.copy(defaultUiSettings);
+Promise.resolve().then(() => {
+    // clear the autologin credentials if the url parameter is set
+    util.checkClearAutoLogin();
     
-    if (settingsStore) {
-        angular.merge(uiSettings, settingsStore.jsonData);
-    }
-
-    return uiSettings;
-});
-
-const userPromise = User.getCurrent().$promise.then(null, error => {
-    return uiSettingsPromise.then(uiSettings => {
-        return User.autoLogin(uiSettings);
+    const preLoginDataPromise = util.xhrRequest({
+        method: 'GET',
+        url: '/rest/v2/ui-bootstrap/pre-login'
+    }).then(response => {
+        if (response.status !== 200) {
+            throw new Error('Failed to fetch pre-login bootstrap data');
+        }
+        return response.data;
     });
-}).then(null, error => null);
-
-const userMenuStorePromise = userPromise.then(user => {
-    if (user) {
-        return JsonStore.get({xid: MA_UI_MENU_XID}).$promise;
-    }
-    return null;
-}, error => null);
-
-const moduleUrlsPromise = $http({
-    method: 'GET',
-    url: '/rest/v1/modules/angularjs-modules/public'
-}).then(response => response.data && response.data.urls || [], error => []);
-
-const angularModulesPromise = $q.all([moduleUrlsPromise, uiSettingsPromise]).then(([moduleUrls, uiSettings]) => {
-    const urls = moduleUrls.map(url => {
-        return url.replace(/^\/modules\/(.*?)\/web\/(.*?).js(?:\?v=(.*))?$/, (match, module, filename, version) => {
-            moduleVersions[module] = version;
-            return `modules/${module}/web/${filename}`;
+    
+    const uiSettingsPromise = preLoginDataPromise.then(preLoginData => {
+        const uiSettings = angular.copy(defaultUiSettings);
+        const customSettings = preLoginData.uiSettings && preLoginData.uiSettings.jsonData;
+        return angular.merge(uiSettings, customSettings);
+    });
+    
+    const modulesPromise = Promise.all([preLoginDataPromise, uiSettingsPromise]).then(([preLoginData, uiSettings]) => {
+        const moduleUrls = preLoginData.angularJsModules && preLoginData.angularJsModules.urls;
+        const moduleNames = moduleUrls.map(url => {
+            return url.replace(/^\/modules\/(.*?)\/web\/(.*?).js(?:\?v=(.*))?$/, (match, module, filename, version) => {
+                moduleVersions[module] = version;
+                return `modules/${module}/web/${filename}`;
+            });
+        });
+    
+        if (uiSettings.userModule) {
+            moduleNames.push(uiSettings.userModule);
+        }
+    
+        const modulePromises = moduleNames.map(moduleName => {
+            return new Promise((resolve, reject) => {
+                requirejs([moduleName], module => {
+                    resolve(module);
+                }, () => {
+                    console.log('Failed to load AngularJS module', arguments);
+                    resolve();
+                });
+            });
+        });
+    
+        return Promise.all(modulePromises);
+    });
+    
+    const userPromise = preLoginDataPromise.then(preLoginData => {
+        if (preLoginData.user) {
+            return preLoginData.user;
+        }
+        
+        return uiSettingsPromise.then(uiSettings => {
+            return util.autoLogin(uiSettings);
+        });
+    });
+    
+    const postLoginDataPromise = userPromise.then(user => {
+        if (!user) return;
+        
+        return util.xhrRequest({
+            method: 'GET',
+            url: '/rest/v2/ui-bootstrap/post-login'
+        }).then(response => {
+            if (response.status !== 200) {
+                throw new Error('Failed to fetch post-login bootstrap data');
+            }
+            return response.data;
         });
     });
 
-    if (uiSettings.userModule) {
-        urls.push(uiSettings.userModule);
-    }
-
-    const modulePromises = urls.map(url => {
-        const deferred = $q.defer();
-        requirejs([url], module => {
-            deferred.resolve(module);
-        }, () => {
-            console.log('Failed to load AngularJS module', arguments);
-            deferred.resolve();
-        });
-        return deferred.promise;
-    });
-
-    return $q.all(modulePromises);
-}, error => {
-    console.log('Error loading AngularJS modules from Mango modules', error);
-    return [];
-});
-
-$q.all([userPromise.then(null, error => null), userMenuStorePromise, uiSettingsPromise, angularModulesPromise])
-.then(([user, userMenuStore, uiSettings, angularModules]) => {
-    // *dont* destroy the services injector
-	// If you do, you end up with two $rootScopes once the app bootstraps, the first with id 1, the second with id 2
-	// This caused the "send test email" button not to work on first load
-    //servicesInjector.get('$rootScope').$destroy();
-
+    return Promise.all([uiSettingsPromise, modulesPromise, userPromise, postLoginDataPromise]);
+}).then(([uiSettings, angularModules, user, postLoginData]) => {
     uiSettings.mangoModuleNames = [];
     const angularJsModuleNames = ['maUiApp'];
     angularModules.forEach((angularModule, index, array) => {
@@ -113,33 +107,32 @@ $q.all([userPromise.then(null, error => null), userMenuStorePromise, uiSettingsP
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
         
-        if (userMenuStore) {
+        if (postLoginData && postLoginData.menu) {
             // also registers the custom menu items
-            maUiMenuProvider.setCustomMenuStore(userMenuStore);
+            maUiMenuProvider.setCustomMenuStore(postLoginData.menu);
         }
 
         maUiSettingsProvider.setUiSettings(uiSettings);
     }]);
-    
-    angular.element(() => {
-        try {
-            angular.bootstrap(document.documentElement, ['maUiBootstrap'], {strictDi: true});
-        } catch (e) {
-            const errorDiv = document.querySelector('.pre-bootstrap-error');
-            const msgDiv = errorDiv.querySelector('div');
-            const pre = errorDiv.querySelector('pre');
-            const code = errorDiv.querySelector('code');
-            const link = errorDiv.querySelector('a');
 
-            msgDiv.textContent = 'Error bootstrapping Mango app: ' + e.message;
-            code.textContent = e.stack;
-            errorDiv.style.display = 'block';
-            
-            link.onclick = () => {
-                pre.style.display = pre.style.display === 'none' ? 'block' : 'none';
-            };
-            
-            throw e;
-        }
-    });
+    // promise resolves when DOM loaded
+    return new Promise(resolve => angular.element(resolve));
+}).then(() => {
+    angular.bootstrap(document.documentElement, ['maUiBootstrap'], {strictDi: true});
+}).then(null, error => {
+    const errorDiv = document.querySelector('.pre-bootstrap-error');
+    const msgDiv = errorDiv.querySelector('div');
+    const pre = errorDiv.querySelector('pre');
+    const code = errorDiv.querySelector('code');
+    const link = errorDiv.querySelector('a');
+
+    msgDiv.textContent = 'Error bootstrapping Mango UI app: ' + error.message;
+    code.textContent = error.stack;
+    errorDiv.style.display = 'block';
+    
+    link.onclick = () => {
+        pre.style.display = pre.style.display === 'none' ? 'block' : 'none';
+    };
+    
+    console.error(error);
 });

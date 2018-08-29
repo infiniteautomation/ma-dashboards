@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.infiniteautomation.mango.rest.v2.model.user.UserModel;
 import com.infiniteautomation.ui.UILifecycle;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
@@ -25,6 +24,7 @@ import com.serotonin.m2m2.web.mvc.rest.v1.ModulesRestController;
 import com.serotonin.m2m2.web.mvc.rest.v1.TranslationsController;
 import com.serotonin.m2m2.web.mvc.rest.v1.model.jsondata.JsonDataModel;
 import com.serotonin.m2m2.web.mvc.rest.v1.model.modules.AngularJSModuleDefinitionGroupModel;
+import com.serotonin.m2m2.web.mvc.rest.v1.model.user.UserModel;
 import com.serotonin.provider.Providers;
 
 import io.swagger.annotations.Api;
@@ -58,7 +58,7 @@ public class BootstrapController {
         PreLoginData data = new PreLoginData();
 
         data.setAngularJsModules(ModulesRestController.getAngularJSModules());
-        data.setSettings(new JsonDataModel(this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID)));
+        data.setUiSettings(new JsonDataModel(this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID)));
         data.setTimezone(TimeZone.getDefault());
         data.setLocale(Common.getLocale());
         data.setLoadedTranslations(PUBLIC_TRANSLATIONS);
@@ -66,7 +66,7 @@ public class BootstrapController {
         data.setLastUpgradeTime(Common.getLastUpgradeTime());
 
         if (user != null) {
-            data.setCurrentUser(new UserModel(user));
+            data.setUser(new UserModel(user));
         }
 
         return data;
@@ -91,13 +91,13 @@ public class BootstrapController {
 
     public static class PreLoginData {
         private AngularJSModuleDefinitionGroupModel angularJsModules;
-        private JsonDataModel settings;
+        private JsonDataModel uiSettings;
         private TimeZone timezone;
         private Locale locale;
         private String[] loadedTranslations;
         private Map<String, ?> translations;
         private int lastUpgradeTime;
-        private UserModel currentUser;
+        private UserModel user;
 
         public Map<String, ?> getTranslations() {
             return translations;
@@ -129,11 +129,11 @@ public class BootstrapController {
         public void setLastUpgradeTime(int lastUpgradeTime) {
             this.lastUpgradeTime = lastUpgradeTime;
         }
-        public UserModel getCurrentUser() {
-            return currentUser;
+        public UserModel getUser() {
+            return user;
         }
-        public void setCurrentUser(UserModel currentUser) {
-            this.currentUser = currentUser;
+        public void setUser(UserModel user) {
+            this.user = user;
         }
         public String[] getLoadedTranslations() {
             return loadedTranslations;
@@ -141,11 +141,11 @@ public class BootstrapController {
         public void setLoadedTranslations(String[] loadedTranslations) {
             this.loadedTranslations = loadedTranslations;
         }
-        public JsonDataModel getSettings() {
-            return settings;
+        public JsonDataModel getUiSettings() {
+            return uiSettings;
         }
-        public void setSettings(JsonDataModel settings) {
-            this.settings = settings;
+        public void setUiSettings(JsonDataModel uiSettings) {
+            this.uiSettings = uiSettings;
         }
     }
 

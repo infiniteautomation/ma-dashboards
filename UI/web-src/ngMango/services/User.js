@@ -556,7 +556,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.NoUserError = NoUserError;
 
         // set the initial user and configure initial locale and timezone
-        User.setUser(bootstrapUser || null);
+        User.setUser(bootstrapUser ? new User(bootstrapUser) : null);
         bootstrapUser = undefined;
 
         return User;
@@ -564,5 +564,3 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 }
 
 export default UserProvider;
-
-
