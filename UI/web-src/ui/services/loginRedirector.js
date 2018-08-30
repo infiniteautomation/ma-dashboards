@@ -115,6 +115,11 @@ function loginRedirectorProvider () {
             }
 
             saveState(state, params) {
+                // dont want to save these states
+                if (state === 'ui.error' || state === 'ui.serverError') {
+                    return;
+                }
+                
                 this.savedState = {
                     state,
                     params: Object.assign({}, params)
