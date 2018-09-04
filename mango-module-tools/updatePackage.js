@@ -5,6 +5,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const _ = require('lodash');
 
 module.exports = function updatePackage(pom, directory = path.resolve('.')) {
     const packageJsonPath = path.join(directory, 'package.json');
@@ -19,6 +20,7 @@ module.exports = function updatePackage(pom, directory = path.resolve('.')) {
         });
     }).then(packageJsonString => {
         const packageJson = JSON.parse(packageJsonString);
+        const originalPackageJson = _.cloneDeep(packageJson);
         
         if (packageJson.com_infiniteautomation == null) {
             packageJson.com_infiniteautomation = {};
@@ -29,12 +31,12 @@ module.exports = function updatePackage(pom, directory = path.resolve('.')) {
         packageJson.version = pom.project.version[0];
         packageJson.description = pom.project.description[0];
 
-        const newContents = JSON.stringify(packageJson, null, 2);
-        if (newContents === packageJsonString) {
+        if (_.isEqual(packageJson, originalPackageJson)) {
             return Promise.resolve(packageJson);
         }
-
+        
         return new Promise((resolve, reject) => {
+            const newContents = JSON.stringify(packageJson, null, 2);
             fs.writeFile(packageJsonPath, newContents, error => {
                 if (error) {
                     reject(error);
