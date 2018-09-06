@@ -16,4 +16,12 @@ function loadLoginTranslations(Translate, $rootScope, $q) {
     });
 }
 
-export default loadLoginTranslations;
+function loadTranslations(...args) {
+    const resolveTranslations = function(maTranslate) {
+        return maTranslate.loadNamespaces(...args);
+    };
+    resolveTranslations.$inject = ['maTranslate'];
+    return resolveTranslations;
+}
+
+export {loadLoginTranslations as default, loadLoginTranslations, loadTranslations};
