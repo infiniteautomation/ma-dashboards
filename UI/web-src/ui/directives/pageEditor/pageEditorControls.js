@@ -191,18 +191,18 @@ class PageEditorControlsController {
         this.$state.go('.', this.$state.params, { location: 'replace', notify: false });
     }
     
-    editMenuItem($event) {
+    editMenuItem(event) {
         const defaults = {
             menuText: this.selectedPage.name,
             permission: this.selectedPage.readPermission
         };
-        return this.MenuEditor.editMenuItemForPageXid($event, this.selectedPage.xid, defaults).then(menuItem => {
+        return this.MenuEditor.editMenuItemForPageXid(event, this.selectedPage.xid, defaults).then(menuItem => {
             this.menuItem = menuItem;
             this.updateViewLink();
         });
     }
     
-    confirmDeletePage() {
+    confirmDeletePage(event) {
         const Translate = this.Translate;
         
         const confirm = this.$mdDialog.confirm()
