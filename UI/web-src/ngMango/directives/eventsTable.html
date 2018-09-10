@@ -6,7 +6,7 @@
     <md-button ng-if="!$ctrl.hideAckButton" flex-order="2" class="md-raised md-primary md-hue-2" ng-click="$ctrl.acknowledgeAll()" ng-disabled="!$ctrl.totalUnAcknowledged">
         <span ma-tr="ui.app.acknowledgeXEvents" ma-tr-args="[$ctrl.totalUnAcknowledged]"></span>
     </md-button>
-    <md-button class="md-icon-button" ng-href="{{$ctrl.csvUrl}}" download="events.csv">
+    <md-button ng-if="!$ctrl.hideCsvButton" class="md-icon-button" ng-href="{{$ctrl.csvUrl}}" download="events.csv">
         <md-icon>file_download</md-icon>
         <md-tooltip><span ma-tr="ui.app.downloadCSV"></span></md-tooltip>
     </md-button>

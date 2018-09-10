@@ -375,7 +375,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             hideLink: '@?',
             hideAckButton: '<?',
             referenceId1: '<?',
-            referenceId2: '<?'
+            referenceId2: '<?',
+            hideCsvButton: '<?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',
