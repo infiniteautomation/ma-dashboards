@@ -142,6 +142,10 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return this[originalIdProperty];
         }
         
+        getEncodedId() {
+            return angular.$$encodeUriSegment(this.getOriginalId());
+        }
+        
         setHttpBody(httpBody) {
             if (httpBody === undefined) {
                 delete this[httpBodyProperty];
