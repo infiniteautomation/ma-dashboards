@@ -67,6 +67,21 @@ function eventDetectorFactory(RestResource, $injector, $q) {
             });
         }
         
+        static findAndUpdate(detector = {}, notify = false) {
+            return this.findPointDetector(detector).then(detector => {
+                if (detector.hasOwnProperty('limit') && detector.limit == null) {
+                    if (detector.isNew()) return;
+                    return detector.delete();
+                }
+                
+                if (notify) {
+                    return detector.saveAndNotify();
+                } else {
+                    return detector.save();
+                }
+            });
+        }
+        
         saveAndNotify() {
             return this.constructor.saveAndNotify(this);
         }
