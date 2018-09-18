@@ -35,6 +35,15 @@ function eventDetectorFactory(RestResource, $injector, $q) {
             return eventDetectorXidPrefix;
         }
         
+        static deleteAllForPoint(xid, opts = {}) {
+            return this.http({
+                url: this.baseUrl + '/data-point/' + encodeURIComponent(xid),
+                method: 'DELETE'
+            }, opts).then(response => {
+                return response.data;
+            });
+        }
+        
         static findPointDetector(options = {}) {
             if (!(isFinite(options.sourceId) && options.sourceId > 0)) {
                 return $q.reject(new Error('Invalid data point ID'));
