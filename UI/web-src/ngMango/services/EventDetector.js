@@ -69,7 +69,9 @@ function eventDetectorFactory(RestResource, $injector, $q) {
         
         static findAndUpdate(detector = {}, notify = false) {
             return this.findPointDetector(detector).then(detector => {
-                if (detector.hasOwnProperty('limit') && detector.limit == null) {
+                const type = detector.detectorType;
+                if ((type === 'LOW_LIMIT' || type === 'HIGH_LIMIT') && detector.hasOwnProperty('limit') && detector.limit == null ||
+                        type === 'BINARY_STATE' && detector.hasOwnProperty('state') && detector.state == null) {
                     if (detector.isNew()) return;
                     return detector.delete();
                 }
