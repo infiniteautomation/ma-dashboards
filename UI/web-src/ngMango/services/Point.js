@@ -234,6 +234,8 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         }
     }
     
+    const realtimeUrl = '/rest/v2/realtime';
+    
     const Point = $resource('/rest/v2/data-points/:xid', {
     		xid: '@xid'
     	}, {
@@ -527,6 +529,40 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         }
         return label;
     };
+    
+    //realtimePointValueUrl
+    Object.assign(Point, {
+        buildRealtimeQuery() {
+            const builder = new RqlBuilder();
+            builder.queryFunction = (queryObj, opts) => {
+                return this.realtimeQuery(queryObj, opts);
+            };
+            return builder;
+        },
+
+        realtimeQuery(queryObject, opts = {}) {
+            const params = {};
+            
+            if (queryObject) {
+                const rqlQuery = queryObject.toString();
+                if (rqlQuery) {
+                    params.rqlQuery = rqlQuery;
+                }
+            }
+            
+            return $http({
+                url: realtimeUrl,
+                method: 'GET',
+                params: params
+            }).then(response => {
+                const items = response.data.items.map(item => {
+                    return new this(item);
+                });
+                items.$total = response.data.total;
+                return items;
+            });
+        }
+    });
 
     Point.bulk = BulkDataPointTemporaryResource;
     Point.restResource = DataPointRestResource;
