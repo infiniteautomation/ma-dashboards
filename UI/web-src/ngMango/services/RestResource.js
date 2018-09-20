@@ -185,6 +185,24 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             });
         }
         
+        getAndSubscribe($scope, opts = {}) {
+            return this.get(opts).catch(error => {
+                if (error.status === 404) {
+                    return this;
+                }
+                return $q.reject(error);
+            }).then(item => {
+                const id = this[this.constructor.idProperty];
+                
+                this.constructor.notificationManager.subscribeToXids([id], (event, updatedItem) => {
+                    this.itemUpdated(updatedItem);
+                    this.initialize('webSocket.' + event.name);
+                }, $scope);
+                
+                return this;
+            });
+        }
+        
         save(opts = {}) {
             const originalId = this[originalIdProperty];
             
