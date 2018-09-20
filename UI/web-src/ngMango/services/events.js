@@ -121,8 +121,8 @@
 *
 */
 
-eventsFactory.$inject = ['$resource', 'maUtil', 'maNotificationManager'];
-function eventsFactory($resource, Util, NotificationManager) {
+eventsFactory.$inject = ['$resource', 'maUtil'];
+function eventsFactory($resource, Util) {
     const Events = $resource('/rest/v1/events', {
         id: '@id'
     }, {
@@ -182,7 +182,7 @@ function eventsFactory($resource, Util, NotificationManager) {
         levels: ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE']
     };
     
-    Events.notificationManager = new NotificationManager({
+    Object.assign(Events.notificationManager, {
         webSocketUrl: '/rest/v1/websocket/events',
         onOpen() {
             this.sendMessage(subscriptionMessage);

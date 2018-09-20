@@ -187,8 +187,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector', 'maNotificationManager'];
-    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector, NotificationManager) {
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector'];
+    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector) {
         let cachedUser;
 
         const User = $resource('/rest/v1/users/:username', {
@@ -265,8 +265,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             }
         });
 
-        User.notificationManager = new NotificationManager();
-
+        Object.assign(User.notificationManager, {
+            webSocketUrl: '/rest/v1/websocket/users'
+        });
+        
         User.setUser = function(user) {
             if (!angular.equals(user, cachedUser)) {
                 const firstChange = cachedUser === undefined;

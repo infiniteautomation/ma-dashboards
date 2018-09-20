@@ -103,8 +103,8 @@ import angular from 'angular';
 * @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions available to them.
 *
 */
-JsonStoreFactory.$inject = ['$resource', 'maUtil', 'maNotificationManager'];
-function JsonStoreFactory($resource, Util, NotificationManager) {
+JsonStoreFactory.$inject = ['$resource', 'maUtil', 'maNotificationManager', '$q'];
+function JsonStoreFactory($resource, Util, NotificationManager, $q) {
     const jsonStoreUrl = '/rest/v1/json-data/';
     
     function setDataPathInterceptor(data) {
@@ -190,28 +190,25 @@ function JsonStoreFactory($resource, Util, NotificationManager) {
             return this.dataPath.join('.');
         }
     });
-
-    JsonStore.notificationManager = new NotificationManager({
-        webSocketUrl: '/rest/v1/websocket/json-data',
-        transformObject: (...args) => {
-            return new JsonStore(...args);
+    
+    Object.assign(JsonStore, {
+        newItem(xid = Util.uuid(), dataPath = []) {
+            const item = new this();
+            item.xid = xid;
+            item.name = xid;
+            item.readPermission = 'user';
+            item.editPermission = '';
+            item.publicData = false;
+            item.jsonData = {};
+            item.isNew = true;
+            item.dataPath = dataPath;
+            return item;
         }
     });
 
-    JsonStore.newItem = function(xid = Util.uuid(), dataPath = []) {
-        const item = new this();
-        item.xid = xid;
-        item.name = xid;
-        item.readPermission = 'user';
-        item.editPermission = '';
-        item.publicData = false;
-        item.jsonData = {};
-        item.isNew = true;
-        item.dataPath = dataPath;
-        return item;
-    };
-    
-    JsonStore.objQuery = Util.objQuery;
+    Object.assign(JsonStore.notificationManager, {
+        webSocketUrl: '/rest/v1/websocket/json-data'
+    });
 
     return JsonStore;
 }

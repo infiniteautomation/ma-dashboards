@@ -180,8 +180,6 @@ function DataSourceFactory($resource, Util) {
         }
     });
 
-    DataSource.objQuery = Util.objQuery;
-
     return DataSource;
 }
 

@@ -42,9 +42,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             url: '/rest/v1/watch-lists/:originalXid'
         }
     });
-    
-    WatchList.objQuery = maUtil.objQuery;
-    
+
     const saveMethod = WatchList.prototype.$save;
     const updateMethod = WatchList.prototype.$update;
     const updateWithRenameMethod = WatchList.prototype.$updateWithRename;

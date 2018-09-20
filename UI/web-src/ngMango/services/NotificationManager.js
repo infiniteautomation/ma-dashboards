@@ -26,6 +26,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             angular.extend(this, options);
             
             this.listeners = 0;
+            this.subscribedXids = {};
             this.eventScope = $rootScope.$new(true);
             this.eventScope.notificationManager = this;
             this.pendingRequests = {};
@@ -95,6 +96,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                 
                 $q.resolve(this.onOpen()).then(() => {
                     this.notify('webSocketOpen', this);
+                    this.sendAllXidSubscriptions();
                     socketDeferred.resolve(this.socket);
                 }).then(null, error => {
                     this.closeSocket();
@@ -190,6 +192,19 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
         socketConnected() {
             return this.socket && this.socket.readyState === READY_STATE_OPEN;
         }
+        
+        sendAllXidSubscriptions(eventTypes = ['create', 'update', 'delete']) {
+            Object.keys(this.subscribedXids).forEach(xid => {
+                this.sendXidSubscription(xid, eventTypes);
+            });
+        }
+        
+        sendXidSubscription(xid, eventTypes = ['create', 'update', 'delete']) {
+            this.sendMessage({
+                xid,
+                eventTypes
+            });
+        }
 
         sendMessage(message) {
             if (this.socketConnected()) {
@@ -218,11 +233,29 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             }
         }
 
-        subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete']) {
-            if (this.listeners === 0) {
+        subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete'], xids = null) {
+            const firstListener = this.listeners === 0;
+            this.listeners++;
+
+            if (Array.isArray(xids)) {
+                xids.forEach(xid => {
+                    if (!this.subscribedXids.hasOwnProperty(xid)) {
+                        this.subscribedXids[xid] = 1;
+                        
+                        // only send the subscription request if the socket is already open, i.e. other people are listening
+                        if (!firstListener) {
+                            this.sendXidSubscription(xid);
+                        }
+                    } else {
+                        // someone else is already subscribed to this xid, don't need to send anything
+                        this.subscribedXids[xid]++;
+                    }
+                });
+            }
+
+            if (firstListener) {
                 this.openSocket().catch(angular.noop);
             }
-            this.listeners++;
 
             const applyThenHandle = (...args) => {
                 if ($scope) {
@@ -241,14 +274,35 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             });
             
             let deregistered = false;
-
             const deregisterEvents = () => {
                 if (!deregistered) {
                     eventDeregisters.forEach(eventDeregister => eventDeregister());
-
                     deregistered = true;
+                    
+                    // decrement the count for xid subscriptions
+                    if (Array.isArray(xids)) {
+                        xids.forEach(xid => {
+                            this.subscribedXids[xid]--;
+                        });
+                    }
+                    
                     this.listeners--;
-                    if (this.listeners === 0) {
+                    const lastListener = this.listeners === 0;
+                    
+                    // cleanup subscribedXids and send unsubscription messages if necessary
+                    Object.keys(this.subscribedXids).forEach(xid => {
+                        // unsubscribe any xids with no more listeners
+                        if (this.subscribedXids[xid] === 0) {
+                            delete this.subscribedXids[xid];
+                            
+                            // only send unsubscription messages if we aren't going to close the socket
+                            if (!lastListener) {
+                                this.sendXidSubscription(xid, []);
+                            }
+                        }
+                    });
+                    
+                    if (lastListener) {
                         this.closeSocket();
                     }
                 }
@@ -264,6 +318,15 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             };
             
             return manualDeregister;
+        }
+        
+        subscribeToXids(xids, handler, $scope, eventTypes = ['create', 'update', 'delete']) {
+            return this.subscribe((...args) => {
+                const item = args[1];
+                if (xids.includes(item.xid)) {
+                    handler(...args);
+                }
+            }, $scope, eventTypes, xids);
         }
         
         /**
