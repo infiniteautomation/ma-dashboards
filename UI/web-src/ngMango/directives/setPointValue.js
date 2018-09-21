@@ -153,12 +153,13 @@ function setPointValue(PointValueController, maTranslate, $q, $injector) {
     
             if (type === 'NUMERIC') {
                 this.inputType = 'numeric';
+                this.step = this.customStep != null ? this.customStep : 'any';
             } else if (type === 'MULTISTATE') {
                 if (textRenderer.type === 'textRendererMultistate') {
                     this.inputType = 'select';
                 } else if (textRenderer.type === 'textRendererPlain') {
                     this.inputType = 'numeric';
-                    this.step = 1;
+                    this.step = this.customStep != null ? this.customStep : 1;
                 }
                 
                 const values = textRenderer.multistateValues;
@@ -221,7 +222,8 @@ function setPointValue(PointValueController, maTranslate, $q, $injector) {
             showButton: '<?',
             setOnChange: '<?',
             enablePopup: '@?',
-            showRelinquish: '<?'
+            showRelinquish: '<?',
+            customStep: '<?step'
         },
         designerInfo: {
             translation: 'ui.components.setPointValue',
