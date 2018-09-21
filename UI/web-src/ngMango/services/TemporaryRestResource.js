@@ -117,7 +117,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
         
         static getSubscription() {
             const subscription = {
-                messageType: 'SUBSCRIPTION',
+                requestType: 'SUBSCRIPTION',
                 ownResourcesOnly: true,
                 showResultWhenIncomplete: false,
                 showResultWhenComplete: true,
