@@ -530,7 +530,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     }
     
     // TODO fix this firing first watchdog event occurs, mangoDefaultUri property is different
-    User.notificationManager.subscribe((event, user, first) => {
+    User.notificationManager.subscribeLocal((event, user, first) => {
         if (user && user.admin) {
             if (!maModules.availableUpgradeCheckRunning()) {
                 maModules.startAvailableUpgradeCheck();

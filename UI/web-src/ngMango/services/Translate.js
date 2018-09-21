@@ -179,7 +179,7 @@ function translateProvider() {
 
         Translate.setLocale = setLocale;
         
-        maUser.notificationManager.subscribe((event, newLocale, first) => {
+        maUser.notificationManager.subscribeLocal((event, newLocale, first) => {
             // remove all currently loaded namespaces
             clearLoadedNamespaces();
         }, null, ['localeChanged']);
