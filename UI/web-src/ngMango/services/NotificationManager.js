@@ -25,6 +25,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             
             this.listeners = 0;
             this.subscribedXids = {};
+            this.subscribedToAllXidsCount = 0;
             this.eventScope = $rootScope.$new(true);
             this.eventScope.notificationManager = this;
             this.pendingRequests = {};
@@ -93,7 +94,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                 this.sequenceNumber = 0;
                 
                 $q.resolve(this.onOpen()).then(() => {
-                    this.notify('webSocketOpen', this);
+                    this.notify('webSocketOpen');
                     this.sendSubscription();
                     socketDeferred.resolve(this.socket);
                 }).then(null, error => {
@@ -111,13 +112,13 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                         throw error;
                     } else if (message.status === 'OK') {
                         const payload = message.payload;
-                        this.notify('webSocketMessage', payload, this);
+                        this.notify('webSocketMessage', payload);
                         this.notifyFromPayload(payload);
                     } else if (typeof message.messageType === 'string') {
                         this.messageReceived(message);
                     }
                 } catch (e) {
-                    this.notify('webSocketError', e, this);
+                    this.notify('webSocketError', e);
                 }
             };
 
@@ -137,7 +138,13 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                 const eventType = mapEventType[payload.action] || payload.action;
                 if (eventType) {
                     const item = this.transformObject(payload.object);
-                    this.notify(eventType, item, this);
+                    
+                    const attributes = {
+                        initiatorId: payload.initiatorId,
+                        originalXid: payload.originalXid
+                    };
+                    
+                    this.notify(eventType, item, attributes);
                 }
             }
         }
@@ -158,7 +165,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             } else if (message.messageType === 'NOTIFICATION') {
                 const item = this.transformObject(message.payload);
                 const notificationType = mapEventType[message.notificationType] || message.notificationType;
-                this.notify(notificationType, item, this);
+                this.notify(notificationType, item, message.attributes);
             }
         }
 
@@ -194,10 +201,12 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
         }
 
         sendSubscription(eventTypes = ['create', 'update', 'delete']) {
+            const xids = this.subscribedToAllXidsCount > 0 ? null : Object.keys(this.subscribedXids);
+            
             return this.sendRequest({
                 requestType: 'SUBSCRIPTION',
-                xids: Object.keys(this.subscribedXids),
-                notificationTypes: eventTypes
+                notificationTypes: eventTypes,
+                xids
             });
         }
 
@@ -249,6 +258,8 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                             this.subscribedXids[xid]++;
                         }
                     });
+                } else {
+                    subscriptionChanged = this.subscribedToAllXidsCount++ === 0;
                 }
     
                 if (firstListener) {
@@ -295,6 +306,8 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                                     subscriptionChanged = true;
                                 }
                             });
+                        } else {
+                            subscriptionChanged = --this.subscribedToAllXidsCount === 0;
                         }
 
                         if (lastListener) {

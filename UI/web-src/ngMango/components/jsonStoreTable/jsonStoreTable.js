@@ -58,7 +58,7 @@ class JsonStoreTableController {
     $onChanges(changes) {
     }
     
-    updateHandler(event, item, originalXid) {
+    updateHandler(event, item, attributes) {
         const index = this.items.findIndex(listItem => listItem.id === item.id);
         if (index >= 0) {
             if (event.name === 'update' || event.name === 'create') {
