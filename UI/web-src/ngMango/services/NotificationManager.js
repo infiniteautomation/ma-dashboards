@@ -201,6 +201,8 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
         }
 
         sendSubscription(eventTypes = ['create', 'update', 'delete']) {
+            if (!this.supportsSubscribe) return;
+            
             const xids = this.subscribedToAllXidsCount > 0 ? null : Object.keys(this.subscribedXids);
             
             return this.sendRequest({

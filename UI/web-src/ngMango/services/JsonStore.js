@@ -207,7 +207,8 @@ function JsonStoreFactory($resource, Util, NotificationManager, $q) {
     });
 
     Object.assign(JsonStore.notificationManager, {
-        webSocketUrl: '/rest/v1/websocket/json-data'
+        webSocketUrl: '/rest/v2/websocket/json-data',
+        supportsSubscribe: true
     });
 
     return JsonStore;
