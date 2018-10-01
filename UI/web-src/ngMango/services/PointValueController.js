@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-pointValueControllerFactory.$inject = ['maPointEventManager', 'maPoint', '$injector'];
+pointValueControllerFactory.$inject = ['maPointEventManager', 'maPoint', '$injector', 'maWatchdog'];
 function pointValueControllerFactory(pointEventManager, Point, $injector) {
 
     const SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE', 'ATTRIBUTE_CHANGE'];
@@ -30,7 +30,15 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
             if (this.changeDuration == null)
                 this.changeDuration = 400;
             
-            $element.addClass('live-value');
+            $element.addClass('ma-live-value');
+            
+            $scope.$on('maWatchdog', (event, current, previous) => {
+                if (current.status === 'LOGGED_IN' || current.status === 'API_UP') {
+                    $element.removeClass('ma-api-down');
+                } else {
+                    $element.addClass('ma-api-down');
+                }
+            });
         }
         
         $onChanges(changes) {

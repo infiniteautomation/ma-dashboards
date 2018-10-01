@@ -25,12 +25,24 @@
  *	Point disabled styles
  */
 
-.point-disabled {
-	opacity: 0.5;
-	position: relative;
+.ma-disabled-text {
+	color: #aaa;
 }
 
-.point-disabled:before {
+ma-switch .ma-disabled-text {
+  display: none;
+}
+
+/* API down / not logged in styles for live displays */
+
+.ma-live-value.ma-api-down,
+.ma-live-value.ma-point-disabled {
+    opacity: 0.5;
+    position: relative;
+}
+
+.ma-live-value.ma-api-down:before,
+.ma-live-value.ma-point-disabled:before {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -44,16 +56,9 @@
   	background-position: 8px 8px;
 }
 
-img.point-disabled {
+img.ma-live-value.ma-api-down,
+img.ma-live-value.ma-point-disabled {
 	background-color: rgba(255, 0, 0, 0.2);
-}
-
-.disabled-text {
-	color: #aaa;
-}
-
-ma-switch .disabled-text {
-  display: none;
 }
 
 /*
