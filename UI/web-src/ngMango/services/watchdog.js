@@ -65,145 +65,145 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
     const API_ERROR = 'API_ERROR';
     const LOGGED_IN = 'LOGGED_IN';
 
-	function MangoWatchdog(options) {
-		this.enabled = true;
-		angular.extend(this, options);
-		
-		// assume good state until proved otherwise
-		this.loggedIn = true;
-		this.apiUp = true;
-		
-		if (this.timeout <= 0)
-			this.enabled = false;
-		
-		if (this.enabled)
-		    this.setInterval(this.timeout);
-	}
-
-	MangoWatchdog.prototype.doPing = function() {
-	    $http({
-            method: 'GET',
-            url: '/rest/v1/users/current',
-            timeout: this.interval / 2
-        }).then(function(response) {
-            return {
-                status: LOGGED_IN,
-                user: response.data
-            };
-        }, function(response) {
-            const startupState = response.headers('Mango-Startup-State');
-            const startupProgress = response.headers('Mango-Startup-Progress');
-            
-            if (response.status < 0) {
-                return {status: API_DOWN};
-            } else if (response.status === 401) {
-                return {status: API_UP};
-            } else if (response.status === 503 && startupState) {
+    class MangoWatchdog {
+    	constructor(options) {
+    		this.enabled = true;
+    		angular.extend(this, options);
+    		
+    		// assume good state until proved otherwise
+    		this.loggedIn = true;
+    		this.apiUp = true;
+    		
+    		if (this.timeout <= 0)
+    			this.enabled = false;
+    		
+    		if (this.enabled)
+    		    this.setInterval(this.timeout);
+    	}
+    
+    	doPing() {
+    	    $http({
+                method: 'GET',
+                url: '/rest/v1/users/current',
+                timeout: this.interval / 2
+            }).then(response => {
                 return {
-                    status: STARTING_UP,
-                    info: {
-                        startupState: startupState,
-                        startupProgress: startupProgress
-                    }
+                    status: LOGGED_IN,
+                    user: response.data
                 };
-            } else {
-                return {status: API_ERROR, info:{responseStatus: response.status}};
-            }
-        }).then(this.setStatus.bind(this));
-    };
-    
-    MangoWatchdog.prototype.setStatus = function setStatus(pingResult) {
-        const previous = {
-            status: this.status || (User.current ? 'LOGGED_IN' : 'API_UP'),
-            apiUp: this.apiUp,
-            loggedIn: this.loggedIn,
-            info: this.info,
-            user: User.current
-        };
-        switch(pingResult.status) {
-        case STARTING_UP:
-        case API_ERROR:
-        case API_DOWN:
-            User.current = null;
-            
-            // we may still be logged in (aka session valid) but cannot prove it
-            this.loggedIn = false;
-            this.apiUp = false;
-            // setup a faster check while API is down
-            if (this.enabled && this.interval !== this.reconnectDelay) {
-                this.setInterval(this.reconnectDelay);
-            }
-            break;
-        case API_UP:
-            User.current = null;
-            
-            this.loggedIn = false;
-            this.apiUp = true;
-            // consider API up but not logged in as a failure but stop the faster retry
-            if (this.enabled && this.interval !== this.timeout) {
-                this.setInterval(this.timeout);
-            }
-            break;
-        case LOGGED_IN:
-            if (pingResult.user && !angular.equals(User.current, pingResult.user)) {
-                let user = pingResult.user;
-                if (!(user instanceof User)) {
-                    user = angular.extend(new User(), pingResult.user);
+            }, response => {
+                const startupState = response.headers('Mango-Startup-State');
+                const startupProgress = response.headers('Mango-Startup-Progress');
+                
+                if (response.status < 0) {
+                    return {status: API_DOWN};
+                } else if (response.status === 401) {
+                    return {status: API_UP};
+                } else if (response.status === 503 && startupState) {
+                    return {
+                        status: STARTING_UP,
+                        info: {
+                            startupState: startupState,
+                            startupProgress: startupProgress
+                        }
+                    };
+                } else {
+                    return {status: API_ERROR, info:{responseStatus: response.status}};
                 }
-                User.current = user;
-            }
-            
-            this.loggedIn = true;
-            this.apiUp = true;
-            // stop the faster retry
-            if (this.enabled && this.interval !== this.timeout) {
-                this.setInterval(this.timeout);
-            }
-            break;
+            }).then(this.setStatus.bind(this));
         }
-
-        this.status = pingResult.status;
-        this.info = pingResult.info;
         
-        const current = {
-            status: this.status,
-            apiUp: this.apiUp,
-            loggedIn: this.loggedIn,
-            info: this.info,
-            user: User.current,
-            wasLogout: pingResult.wasLogout
-        };
-        
-        $rootScope.$broadcast('maWatchdog', current, previous);
-    };
+        setStatus(pingResult) {
+            const previous = {
+                status: this.status || (User.current ? 'LOGGED_IN' : 'API_UP'),
+                apiUp: this.apiUp,
+                loggedIn: this.loggedIn,
+                info: this.info,
+                user: User.current
+            };
+            switch(pingResult.status) {
+            case STARTING_UP:
+            case API_ERROR:
+            case API_DOWN:
+                User.current = null;
+                
+                // we may still be logged in (aka session valid) but cannot prove it
+                this.loggedIn = false;
+                this.apiUp = false;
+                // setup a faster check while API is down
+                if (this.enabled && this.interval !== this.reconnectDelay) {
+                    this.setInterval(this.reconnectDelay);
+                }
+                break;
+            case API_UP:
+                User.current = null;
+                
+                this.loggedIn = false;
+                this.apiUp = true;
+                // consider API up but not logged in as a failure but stop the faster retry
+                if (this.enabled && this.interval !== this.timeout) {
+                    this.setInterval(this.timeout);
+                }
+                break;
+            case LOGGED_IN:
+                if (pingResult.user && !angular.equals(User.current, pingResult.user)) {
+                    let user = pingResult.user;
+                    if (!(user instanceof User)) {
+                        user = angular.extend(new User(), pingResult.user);
+                    }
+                    User.current = user;
+                }
+                
+                this.loggedIn = true;
+                this.apiUp = true;
+                // stop the faster retry
+                if (this.enabled && this.interval !== this.timeout) {
+                    this.setInterval(this.timeout);
+                }
+                break;
+            }
     
-    MangoWatchdog.prototype.setInterval = function(interval) {
-        if (interval === undefined) {
-            interval = this.timeout;
+            this.status = pingResult.status;
+            this.info = pingResult.info;
+            
+            const current = {
+                status: this.status,
+                apiUp: this.apiUp,
+                loggedIn: this.loggedIn,
+                info: this.info,
+                user: User.current,
+                wasLogout: pingResult.wasLogout
+            };
+            
+            $rootScope.$broadcast('maWatchdog', current, previous);
         }
-        if (this.timer) {
-            $interval.cancel(this.timer);
+        
+        setInterval(interval) {
+            if (interval === undefined) {
+                interval = this.timeout;
+            }
+            if (this.timer) {
+                $interval.cancel(this.timer);
+            }
+            this.interval = interval;
+            this.timer = $interval(this.doPing.bind(this), interval);
         }
-        this.interval = interval;
-        this.timer = $interval(this.doPing.bind(this), interval);
-    };
-	
-	MangoWatchdog.prototype.enable = function() {
-	    if (this.enabled) return;
-	    this.setInterval(this.timeout);
-		this.enabled = true;
-	};
-
-	MangoWatchdog.prototype.disable = function() {
-	    if (this.timer) {
-	        $interval.cancel(this.timer);
-	    }
-		this.enabled = false;
-	};
+    	
+    	enable() {
+    	    if (this.enabled) return;
+    	    this.setInterval(this.timeout);
+    		this.enabled = true;
+    	}
+    
+    	disable() {
+    	    if (this.timer) {
+    	        $interval.cancel(this.timer);
+    	    }
+    		this.enabled = false;
+    	}
+    }
 
 	return new MangoWatchdog({timeout: mangoWatchdogTimeout, reconnectDelay: mangoReconnectDelay});
 }
 
 export default mangoWatchdog;
-
-
