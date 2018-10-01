@@ -28,11 +28,11 @@ ModulesPageController.prototype.$onInit = function() {
     	this.updateLicenseStr = angular.toJson(payload, false);
     }.bind(this));
     
-    this.$scope.$on('maWatchdog', function(event, current, previous) {
-    	if (current.status !== previous.status && current.status === 'LOGGED_IN') {
+    this.$scope.$on('maWatchdog', (event, current, previous) => {
+    	if (current.status === 'LOGGED_IN') {
     	    this.getModules();
     	}
-    }.bind(this));
+    });
 };
 
 ModulesPageController.prototype.getModules = function() {

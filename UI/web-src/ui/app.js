@@ -548,19 +548,11 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         let message;
         let hideDelay = 0; // dont auto hide message
 
-        if (current.status !== 'STARTING_UP' && current.status === previous.status) {
-            return;
-        }
-
         switch(current.status) {
         case 'API_DOWN':
             message = Translate.trSync('login.ui.app.apiDown');
             break;
         case 'STARTING_UP':
-            if (current.status === previous.status && current.info.startupProgress === previous.info.startupProgress &&
-                    current.info.startupState === previous.info.startupState) {
-                return;
-            }
             message = Translate.trSync('login.ui.app.startingUp', [current.info.startupProgress, current.info.startupState]);
             break;
         case 'API_ERROR':

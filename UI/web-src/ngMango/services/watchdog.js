@@ -121,14 +121,28 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
                 info: this.info,
                 user: User.current
             };
+            
+            this.status = pingResult.status;
+            this.info = pingResult.info;
+            let broadcastEvent = this.status !== previous.status;
+
             switch(pingResult.status) {
             case STARTING_UP:
+                if (previous.status === 'STARTING_UP' && previous.info) {
+                    const progressChanged = this.info.startupProgress !== previous.info.startupProgress;
+                    const stateChanged = this.info.startupState !== previous.info.startupState;
+                    if (progressChanged || stateChanged) {
+                        broadcastEvent = true;
+                    }
+                }
+                /* falls through */
             case API_ERROR:
             case API_DOWN:
-                User.current = null;
-                
+                // dont clear the current user, until confirmed we are no longer logged in
                 // we may still be logged in (aka session valid) but cannot prove it
-                this.loggedIn = false;
+                //User.current = null;
+                //this.loggedIn = false;
+                
                 this.apiUp = false;
                 // setup a faster check while API is down
                 if (this.enabled && this.interval !== this.reconnectDelay) {
@@ -146,13 +160,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
                 }
                 break;
             case LOGGED_IN:
-                if (pingResult.user && !angular.equals(User.current, pingResult.user)) {
-                    let user = pingResult.user;
-                    if (!(user instanceof User)) {
-                        user = angular.extend(new User(), pingResult.user);
-                    }
-                    User.current = user;
-                }
+                User.current = pingResult.user;
                 
                 this.loggedIn = true;
                 this.apiUp = true;
@@ -163,19 +171,17 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
                 break;
             }
     
-            this.status = pingResult.status;
-            this.info = pingResult.info;
-            
-            const current = {
-                status: this.status,
-                apiUp: this.apiUp,
-                loggedIn: this.loggedIn,
-                info: this.info,
-                user: User.current,
-                wasLogout: pingResult.wasLogout
-            };
-            
-            $rootScope.$broadcast('maWatchdog', current, previous);
+
+            if (broadcastEvent) {
+                $rootScope.$broadcast('maWatchdog', {
+                    status: this.status,
+                    apiUp: this.apiUp,
+                    loggedIn: this.loggedIn,
+                    info: this.info,
+                    user: User.current,
+                    wasLogout: pingResult.wasLogout
+                }, previous);
+            }
         }
         
         setInterval(interval) {

@@ -30,7 +30,7 @@ class OfflineUpgradePageController {
         });
         
         this.$scope.$on('maWatchdog', (event, current, previous) => {
-            if (current.status !== previous.status && current.status === 'LOGGED_IN') {
+            if (current.status === 'LOGGED_IN') {
                 delete this.restarting;
                 this.$state.go('^');
             }

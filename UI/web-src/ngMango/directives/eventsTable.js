@@ -142,7 +142,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             }, this.$scope, ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
 
             this.$scope.$on('maWatchdog', (event, current, previous) => {
-                if (current.status !== previous.status && current.status === 'LOGGED_IN') {
+                if (current.status === 'LOGGED_IN') {
                     this.doQuery();
                 }
             });

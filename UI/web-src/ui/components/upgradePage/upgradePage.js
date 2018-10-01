@@ -25,11 +25,11 @@ UpgradePageController.prototype.$onInit = function() {
         this.coreModule = coreModule;
     }.bind(this));
 
-    this.$scope.$on('maWatchdog', function(event, current, previous) {
-    	if (current.status !== previous.status && current.status === 'LOGGED_IN') {
+    this.$scope.$on('maWatchdog', (event, current, previous) => {
+    	if (current.status === 'LOGGED_IN') {
     	    this.checkForUpgrades();
     	}
-    }.bind(this));
+    });
 
     this.maModules.notificationManager.subscribe((event, message) => {
 		if (event.name === 'webSocketMessage') {

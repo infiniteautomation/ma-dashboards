@@ -272,11 +272,13 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.setUser = function(user) {
             if (!angular.equals(user, cachedUser)) {
                 const firstChange = cachedUser === undefined;
-                cachedUser = user;
                 
                 if (user) {
                     systemLocale = user.systemLocale;
                     systemTimezone = user.systemTimezone;
+                    cachedUser = user instanceof User ? user : new User(user);
+                } else {
+                    cachedUser = null;
                 }
                 
                 this.configureLocale();
@@ -359,32 +361,29 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.loginInterceptors = [];
         User.logoutInterceptors = [];
 
-        // TODO Mango 3.5 clean up these interceptors and the maWatchdog service, User.current being set both places
-        // The "loginInterceptors" are actually "fetched current user" interceptors
-        // watch dog broadcasting every time it gets the user instead of only on change
+        // This would be more accurately named "fetched current user" interceptor
+        // User.current is set in maWatchdog.setStatus() via one of these interceptors which is registered in ngMango.js
         function loginInterceptor(data) {
+            
+            // set some properties on the user from headers that will only be available when logging in
             const loginRedirectUrl = data.headers('X-Mango-Default-URI');
+            const lastUpgrade = data.headers('X-Mango-Last-Upgrade');
+            
             if (loginRedirectUrl) {
                 data.resource.loginRedirectUrl = loginRedirectUrl;
             }
-            
-            const lastUpgrade = data.headers('X-Mango-Last-Upgrade');
             if (lastUpgrade) {
                 data.resource.lastUpgradeTime = parseInt(lastUpgrade, 10);
             }
             
-            User.loginInterceptors.forEach(function(interceptor) {
-                interceptor(data);
-            });
-            User.current = data.resource;
+            User.loginInterceptors.forEach(interceptor => interceptor(data));
+
             return data.resource;
         }
         
         function logoutInterceptor(data) {
-            User.logoutInterceptors.forEach(function(interceptor) {
-                interceptor(data);
-            });
-            User.current = null;
+            User.logoutInterceptors.forEach(interceptor => interceptor(data));
+
             return data.resource;
         }
 
@@ -560,11 +559,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.NoUserError = NoUserError;
 
         // set the initial user and configure initial locale and timezone
-        User.setUser(bootstrapUser ? new User(bootstrapUser) : null);
+        User.setUser(bootstrapUser);
         bootstrapUser = undefined;
-        
-        User.configureLocale();
-        User.configureTimezone();
 
         return User;
     }

@@ -116,13 +116,16 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 
 	    angular.extend(this, options);
 
-	    $rootScope.$on('maWatchdog', function(event, current, previous) {
-	        if (current.loggedIn) {
+	    $rootScope.$on('maWatchdog', (event, current, previous) => {
+	        if (current.status === 'LOGGED_IN') {
+                // API is up and we are logged in
                 this.openSocket();
-	        } else {
+	        } else if (current.status === 'API_UP') {
+	            // API is up but we aren't logged in
                 this.closeSocket();
 	        }
-	    }.bind(this));
+	        // all other states we dont do anything
+	    });
 
 	    this.openSocket();
 	}

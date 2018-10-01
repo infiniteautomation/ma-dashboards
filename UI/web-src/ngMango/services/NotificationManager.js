@@ -33,10 +33,13 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
 
             $rootScope.$on('maWatchdog', (event, current, previous) => {
                 if (current.status === 'LOGGED_IN' && this.listeners > 0) {
+                    // API is up and we are logged in
                     this.openSocket().catch(angular.noop);
-                } else {
+                } else if (current.status === 'API_UP') {
+                    // API is up but we aren't logged in
                     this.closeSocket();
                 }
+                // all other states we dont do anything
             });
         }
 
