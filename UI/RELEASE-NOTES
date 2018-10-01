@@ -16,6 +16,7 @@
 * Add realtimeQuery() and buildRealtimeQuery() methods to maPoint service
 * Add getAndSubscribe() to all RestResource and $resource based services
 * Add XID subscription capability to NotificatonManager
+* Dont clear maUser.current when connectivity lost
 
 *Version 3.4.7*
 * Fix regression in v3.4.6 that caused custom menu items to not be registered when logging in
