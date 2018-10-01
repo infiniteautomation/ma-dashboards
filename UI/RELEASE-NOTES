@@ -1,5 +1,21 @@
 *Version 3.5.0*
 * Upgraded to work with core version 3.5.x
+* Option to reset sort order to none on Watchlist
+* Add system setting for session timeout
+* Add system setting for JFree chart font
+* Add system settings for HTTP server
+* Add system settings for passwords
+* Fix hover color of md-button links
+* Faster loading via single bootstrap REST API call
+* Add a password change page for expired passwords
+* Fix so web application is reloaded upon logging in when modules have been updated
+* Fix error deleting custom page in Firefox
+* Display import errors in red on configuration import/export page
+* Option to hide CSV download button on ma-events-table
+* Method for finding and updating event detectors in maEventDetector service
+* Add realtimeQuery() and buildRealtimeQuery() methods to maPoint service
+* Add getAndSubscribe() to all RestResource and $resource based services
+* Add XID subscription capability to NotificatonManager
 
 *Version 3.4.7*
 * Fix regression in v3.4.6 that caused custom menu items to not be registered when logging in
