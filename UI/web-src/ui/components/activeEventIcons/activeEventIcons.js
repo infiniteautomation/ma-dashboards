@@ -5,42 +5,57 @@
 
 import activeEventIconsTemplate from './activeEventIcons.html';
 
-ActiveEventIconsController.$inject = ['maEvents', '$scope'];
-function ActiveEventIconsController(Events, $scope) {
-    this.events = {totalCount: 0};
-    
-    Events.getActiveSummary().$promise.then((data) => {
-        data.forEach((item, index, array) => {
-            this.events[item.level] = item;
-            this.events.totalCount += item.unsilencedCount;
+class ActiveEventIconsController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['maEvents', '$scope']; }
+
+    constructor(maEvents, $scope) {
+        this.maEvents = maEvents;
+        
+        this.refreshCount().then(() => {
+            maEvents.notificationManager.subscribe((event, mangoEvent) => {
+                this.counter(mangoEvent, event.name);
+            }, $scope, ['RAISED', 'ACKNOWLEDGED']);
+            
+            // ensure the count is up to date if we are auto-logged back in after a restart
+            // probably should implement a way to get this from the websocket when it connects
+            $scope.$on('maWatchdog', (event, current, previous) => {
+                if (current.status === 'LOGGED_IN') {
+                    this.refreshCount();
+                }
+            });
         });
-
-        Events.notificationManager.subscribe((event, mangoEvent) => {
-            this.counter(mangoEvent, event.name);
-        }, $scope, ['RAISED', 'ACKNOWLEDGED']);
-
-    }, (error) => {
-        console.log('error', error);
-    });
-}
-
-ActiveEventIconsController.prototype.renderCount = function renderCount(count) {
-    return count < 1000 ? count : '> 999';
-};
-
-ActiveEventIconsController.prototype.counter = function counter(payloadEvent, payloadType) {
-    if (payloadType === 'RAISED') {
-        this.events[payloadEvent.alarmLevel].unsilencedCount++;
-        this.events.totalCount++;
-    } else if (payloadType === 'ACKNOWLEDGED') {
-        this.events[payloadEvent.alarmLevel].unsilencedCount--;
-        this.events.totalCount--;
     }
-};
+    
+    refreshCount() {
+        return this.maEvents.getActiveSummary().$promise.then((data) => {
+            this.events = {totalCount: 0};
+            
+            data.forEach((item, index, array) => {
+                this.events[item.level] = item;
+                this.events.totalCount += item.unsilencedCount;
+            });
+            
+            return this.events;
+        });
+    }
+    
+    renderCount(count) {
+        return count < 1000 ? count : '> 999';
+    }
+    
+    counter(payloadEvent, payloadType) {
+        if (payloadType === 'RAISED') {
+            this.events[payloadEvent.alarmLevel].unsilencedCount++;
+            this.events.totalCount++;
+        } else if (payloadType === 'ACKNOWLEDGED') {
+            this.events[payloadEvent.alarmLevel].unsilencedCount--;
+            this.events.totalCount--;
+        }
+    }
+}
 
 export default {
     controller: ActiveEventIconsController,
     template: activeEventIconsTemplate
 };
-
-
