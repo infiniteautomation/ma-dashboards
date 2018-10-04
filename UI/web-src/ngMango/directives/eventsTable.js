@@ -178,12 +178,19 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 }
             };
             queryBuilder.addToRql('alarmLevel', 'eq', this.alarmLevel);
-            queryBuilder.addToRql('eventType', 'eq', this.eventType);
-            queryBuilder.addToRql('dataPointId', 'eq', this.pointId);
-            queryBuilder.addToRql('dataPointId', 'in', this.pointIds);
             queryBuilder.addToRql('id', 'eq', this.eventId);
-            queryBuilder.addToRql('referenceId1', 'eq', this.referenceId1);
-            queryBuilder.addToRql('referenceId2', 'eq', this.referenceId2);
+            
+            if (this.pointId != null && this.pointId !== ANY_KEYWORD) {
+                queryBuilder.addToRql('eventType', 'eq', 'DATA_POINT');
+                queryBuilder.addToRql('referenceId1', 'eq', this.pointId);
+            } else if (Array.isArray(this.pointIds)) {
+                queryBuilder.addToRql('eventType', 'eq', 'DATA_POINT');
+                queryBuilder.addToRql('referenceId1', 'in', this.pointIds);
+            } else {
+                queryBuilder.addToRql('eventType', 'eq', this.eventType);
+                queryBuilder.addToRql('referenceId1', 'eq', this.referenceId1);
+                queryBuilder.addToRql('referenceId2', 'eq', this.referenceId2);
+            }
             
             if (this.activeStatus === 'active') {
                 queryBuilder.addToRql('active', 'eq', true);
