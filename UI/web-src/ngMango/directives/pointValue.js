@@ -133,13 +133,14 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
                 this.deregisterWebsocket = maEvents.notificationManager.subscribe((event, mangoEvent) => {
                     if (!this.point || mangoEvent.eventType.dataPointId !== this.point.id) return;
                     
+                    // DEACTIVATED occurs when the data point/data source is disabled etc
                     if (event.name === 'RAISED' && mangoEvent.active) {
                         this.activeEvents += 1;
-                    } else if (event.name === 'RETURN_TO_NORMAL') { // what does DEACTIVATED mean?
+                    } else if (event.name === 'RETURN_TO_NORMAL' || event.name === 'DEACTIVATED') {
                         this.activeEvents -= 1;
                     }
                     
-                }, this.$scope, ['RAISED', 'RETURN_TO_NORMAL']);
+                }, this.$scope, ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
             }
         }
     
