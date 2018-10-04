@@ -135,16 +135,6 @@ function eventsFactory($resource, Util) {
             },
             cancellable: true
         },
-        rql: {
-        	url: '/rest/v1/events?:query',
-            method: 'GET',
-            isArray: true,
-            transformResponse: Util.transformArrayResponse,
-            interceptor: {
-                response: Util.arrayResponseInterceptor
-            },
-            cancellable: true
-        },
         acknowledge: {
             method: 'PUT',
             url: '/rest/v1/events/acknowledge/:id',
@@ -154,7 +144,7 @@ function eventsFactory($resource, Util) {
         },
         acknowledgeViaRql: {
             method: 'POST',
-            url: '/rest/v1/events/acknowledge/?:rql'
+            url: '/rest/v1/events/acknowledge'
         },
         getActiveSummary: {
         	url: '/rest/v1/events/active-summary',
@@ -194,76 +184,6 @@ function eventsFactory($resource, Util) {
             }
         }
     });
-
-    Events.getRQL = function(options) {
-        const params = [];
-
-        if (options.alarmLevel && options.alarmLevel !== 'any') {
-            params.push(`alarmLevel=${options.alarmLevel}`);
-        }
-        if (options.eventType && options.eventType !== 'any') {
-            params.push(`eventType=${options.eventType}`);
-        }
-        if (options.pointId != null) {
-            params.push(`dataPointId=${options.pointId}`);
-        }
-        if (options.referenceId1 != null) {
-            params.push(`referenceId1=${options.referenceId1}`);
-        }
-        if (options.referenceId2 != null) {
-            params.push(`referenceId2=${options.referenceId2}`);
-        }
-        if (options.eventId != null) {
-            params.push(`id=${options.eventId}`);
-        }
-        if (options.activeStatus && options.activeStatus !== 'any') {
-            if (options.activeStatus==='active') {
-                params.push('active=true');
-            }
-            else if (options.activeStatus==='noRtn') {
-                params.push('rtnApplicable=false');
-            }
-            else if (options.activeStatus==='normal') {
-                params.push('active=false');
-            }
-        }
-        if (options.from != null && options.dateFilter) {
-            const from = options.from.valueOf();
-            params.push(`activeTimestamp=ge=${from}`);
-        }
-        if (options.to != null && options.dateFilter) {
-            const to = options.to.valueOf();
-            params.push(`activeTimestamp=lt=${to}`);
-        }
-
-        const ackAllParams = params.slice();
-        ackAllParams.push('acknowledged=false');
-        
-        const countUnAckParams = params.slice();
-        countUnAckParams.push('acknowledged=false', 'limit(0)');
-
-        if (options.acknowledged != null && options.acknowledged !== 'any') {
-            params.push(`acknowledged=${options.acknowledged}`);
-        }
-
-        if (options.sort) {
-            let sort = options.sort;
-            if (Array.isArray(sort)) {
-                sort = sort.join(',');
-            }
-            params.push(`sort(${sort})`);
-        }
-        if (options.limit) {
-            const start = options.start || 0;
-            params.push(`limit(${options.limit},${start})`);
-        }
-
-        return {
-            RQLforAcknowldege: ackAllParams.join('&'),
-            RQLforCountUnacknowledged: countUnAckParams.join('&'),
-            RQLforDisplay: params.join('&')
-        };
-    };
 
     return Events;
 }

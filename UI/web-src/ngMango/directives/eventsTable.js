@@ -54,6 +54,8 @@ import moment from 'moment-timezone';
 eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO'];
 function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO) {
 
+    const ANY_KEYWORD = 'any';
+    
     class Equals {
         constructor(value, filter) {
             this.value = value;
@@ -61,7 +63,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
 
         test() {
-            if (this.filter == null || this.filter === 'any')
+            if (this.filter == null || this.filter === ANY_KEYWORD)
                 return true;
             return this.testOp();
         }
@@ -80,6 +82,12 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
     class LessThan extends Equals {
         testOp() {
             return this.value < this.filter;
+        }
+    }
+    
+    class InArray extends Equals {
+        testOp() {
+            return Array.isArray(this.filter) && this.filter.includes(this.value);
         }
     }
 
@@ -109,7 +117,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
         $onInit() {
             Events.notificationManager.subscribe((event, mangoEvent) => {
-                if (event.name === 'ACKNOWLEDGED' && (!this.acknowledged || this.acknowledged === 'any') &&
+                if (event.name === 'ACKNOWLEDGED' && (!this.acknowledged || this.acknowledged === ANY_KEYWORD) &&
                         this.totalUnAcknowledged > 0 && this.eventMatchesFilters(mangoEvent, true)) {
                     this.totalUnAcknowledged--;
                 }
@@ -161,6 +169,61 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             
             this.doQuery();
         }
+        
+        baseQuery() {
+            const queryBuilder = Events.buildQuery();
+            queryBuilder.addToRql = function(propertyName, op, propertyValue) {
+                if (propertyValue != null && propertyValue !== ANY_KEYWORD) {
+                    this[op](propertyName, propertyValue);
+                }
+            };
+            queryBuilder.addToRql('alarmLevel', 'eq', this.alarmLevel);
+            queryBuilder.addToRql('eventType', 'eq', this.eventType);
+            queryBuilder.addToRql('dataPointId', 'eq', this.pointId);
+            queryBuilder.addToRql('dataPointId', 'in', this.pointIds);
+            queryBuilder.addToRql('id', 'eq', this.eventId);
+            queryBuilder.addToRql('referenceId1', 'eq', this.referenceId1);
+            queryBuilder.addToRql('referenceId2', 'eq', this.referenceId2);
+            
+            if (this.activeStatus === 'active') {
+                queryBuilder.addToRql('active', 'eq', true);
+            } else if (this.activeStatus === 'noRtn') {
+                queryBuilder.addToRql('rtnApplicable', 'eq', false);
+            } else if (this.activeStatus === 'normal') {
+                queryBuilder.addToRql('active', 'eq', false);
+            }
+            
+            if (this.dateFilter) {
+                queryBuilder.addToRql('activeTimestamp', 'ge', this.from != null && this.from.valueOf());
+                queryBuilder.addToRql('activeTimestamp', 'lt', this.to != null && this.to.valueOf());
+            }
+            
+            return queryBuilder;
+        }
+        
+        displayQuery() {
+            const queryBuilder = this.baseQuery();
+
+            queryBuilder.addToRql('acknowledged', 'eq', this.acknowledged);
+            
+            if (this.sort === 'activeRtn') {
+                queryBuilder.sort('rtnTs', 'rtnApplicable');
+            } else if (this.sort === '-activeRtn') {
+                queryBuilder.sort('-rtnTs', '-rtnApplicable');
+            } else if (this.sort != null) {
+                if (Array.isArray(this.sort)) {
+                    queryBuilder.sort(...this.sort);
+                } else {
+                    queryBuilder.sort(this.sort);
+                }
+            }
+            
+            if (this.limit != null) {
+                queryBuilder.limit(this.limit, this.start || 0);
+            }
+            
+            return queryBuilder;
+        }
 
         doQuery() {
             // dont query if element has a pointId attribute but its not defined
@@ -168,41 +231,18 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 return;
             }
 
-            let sort = this.sort;
-            if (sort === 'activeRtn') {
-                sort = ['rtnTs', 'rtnApplicable'];
-            } else if (sort === '-activeRtn') {
-                sort = ['-rtnTs', '-rtnApplicable'];
-            }
-
-            this.RQL = Events.getRQL({
-                eventType: this.eventType,
-                start: this.start,
-                limit: this.limit,
-                sort: sort,
-                alarmLevel: this.alarmLevel,
-                acknowledged: this.acknowledged,
-                activeStatus: this.activeStatus,
-                pointId: this.pointId,
-                eventId: this.eventId,
-                from: this.from,
-                to: this.to,
-                dateFilter: this.dateFilter,
-                referenceId1: this.referenceId1,
-                referenceId2: this.referenceId2
-            });
-            
             // cancel the previous request if its ongoing
             if (this.queryResource) {
                 this.queryResource.$cancelRequest();
             }
-            
-            const rqlQuery = this.RQL.RQLforDisplay;
+
+            const rqlQuery = this.displayQuery().toString();
             const separator = rqlQuery.length ? '&' : '';
             this.csvUrl = `/rest/v1/events?${rqlQuery}${separator}format=csv2`;
             
-            this.queryResource = Events.rql({rqlQuery});
-            this.tableQueryPromise = this.queryResource.$promise.then((data) => {
+            this.queryResource = Events.query({rqlQuery});
+
+            this.tableQueryPromise = this.queryResource.$promise.then(data => {
                 // Set Events For Table
                 this.events = data;
                 this.total = this.events.$total;
@@ -210,7 +250,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                     this.countUnacknowledged();
                 }
 
-                this.events.forEach((event) => {
+                this.events.forEach(event => {
                     event.hasNotes = event.comments && !!event.comments.length;
                     if (event.hasNotes) {
                         event.comments.forEach((note, index) => {
@@ -231,9 +271,14 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 this.countUnacknowledgedResource.$cancelRequest();
             }
             
-            if (!this.acknowledged || this.acknowledged === 'any') {
-                this.countUnacknowledgedResource = Events.rql({query: this.RQL.RQLforCountUnacknowledged}, null);
-                this.countUnacknowledgedResource.$promise.then((data) => {
+            if (!this.acknowledged || this.acknowledged === ANY_KEYWORD) {
+                const rqlQuery = this.baseQuery()
+                    .eq('acknowledged', false)
+                    .limit(0)
+                    .toString();
+                
+                this.countUnacknowledgedResource = Events.query({rqlQuery}, null);
+                this.countUnacknowledgedResource.$promise.then(data => {
                     this.totalUnAcknowledged = data.$total;
                 });
             } else {
@@ -313,7 +358,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         
         // Acknowledge all matching RQL with button
         acknowledgeAll() {
-            Events.acknowledgeViaRql({rql: this.RQL.RQLforAcknowldege}, null).$promise.then((data) => {
+            const rqlQuery = this.baseQuery()
+                .eq('acknowledged', false)
+                .toString();
+            
+            Events.acknowledgeViaRql({rqlQuery}, null).$promise.then((data) => {
                 if (data.count) {
                     // re-query
                     this.doQuery();
@@ -331,6 +380,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 new Equals(event.alarmLevel, this.alarmLevel),
                 new Equals(event.active, this.active),
                 new Equals(event.eventType.dataPointId, this.pointId),
+                new InArray(event.eventType.dataPointId, this.pointIds),
                 new Equals(event.id, this.eventId),
                 new Equals(event.eventType.referenceId1, this.referenceId1),
                 new Equals(event.eventType.referenceId2, this.referenceId2)
@@ -342,8 +392,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             
             if (this.dateFilter) {
                 tests.push(
-                    new GreaterThanEquals(event.activeTimestamp, this.from.valueOf()),
-                    new LessThan(event.activeTimestamp, this.to.valueOf())
+                    new GreaterThanEquals(event.activeTimestamp, this.from != null && this.from.valueOf()),
+                    new LessThan(event.activeTimestamp, this.to != null && this.to.valueOf())
                 );
             }
             
@@ -361,6 +411,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         controllerAs: '$ctrl',
         bindToController: {
             pointId: '<?',
+            pointIds: '<?',
             eventId: '<?',
             alarmLevel: '<?',
             eventType:'<?',
