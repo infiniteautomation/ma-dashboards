@@ -36,6 +36,7 @@ function AceEditor(maModuleLoader) {
             this.$templateRequest = $templateRequest;
             this.$sce = $sce;
             this.$timeout = $timeout;
+            this.$scope = $scope;
         }
     
         $onInit() {
@@ -82,7 +83,15 @@ function AceEditor(maModuleLoader) {
             this.$timeout(() => {
                 this.editor.resize();
             }, 0);
-    
+            
+            if (typeof this.selectionChanged === 'function') {
+                const selection = this.editor.getSelection();
+                selection.on('changeSelection', event => {
+                    this.$scope.$apply(() => {
+                        this.selectionChanged({$text: this.editor.getSelectedText()});
+                    });
+                });
+            }
         }
     
         aceChanged() {
@@ -146,7 +155,8 @@ function AceEditor(maModuleLoader) {
             src: '@?',
             mode: '@?',
             theme: '@?',
-            showGutter: '<?'
+            showGutter: '<?',
+            selectionChanged: '&?'
         },
         controller: AceEditorController,
         designerInfo: {
