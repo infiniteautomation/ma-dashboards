@@ -78,7 +78,7 @@ const bootstrapUtil = Object.freeze({
         });
     },
     
-    autoLoginKey: 'ngMangoServices.autoLogin',
+    autoLoginKey: 'ngMangoServices.storedCredentials',
 
     checkClearAutoLogin() {
         const searchParams = new URL(window.location.href).searchParams;
