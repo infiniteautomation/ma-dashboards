@@ -128,7 +128,7 @@ UserEditorController.prototype.remove = function(event) {
                 .textContent($ctrl.Translate.trSync('ui.components.errorDeletingUser', username))
                 .action($ctrl.Translate.trSync('common.ok'))
                 .highlightAction(true)
-                .highlightClass('md-warn')
+                .toastClass('md-warn')
                 .position('bottom center')
                 .hideDelay(10000);
             $ctrl.$mdToast.show(toast);
@@ -151,7 +151,7 @@ UserEditorController.prototype.sendTestEmail = function() {
             .textContent($ctrl.Translate.trSync('ui.components.errorSendingEmail', this.User.current.email))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
-            .highlightClass('md-warn')
+            .toastClass('md-warn')
             .position('bottom center')
             .hideDelay(10000);
         $ctrl.$mdToast.show(toast);
@@ -181,7 +181,7 @@ UserEditorController.prototype.switchUser = function(event) {
             .textContent($ctrl.Translate.trSync('ui.components.errorSwitchingUser', username))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
-            .highlightClass('md-warn')
+            .toastClass('md-warn')
             .position('bottom center')
             .hideDelay(10000);
         $ctrl.$mdToast.show(toast);

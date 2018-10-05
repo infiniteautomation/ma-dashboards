@@ -287,6 +287,7 @@ class PageEditorControlsController {
                     .action(this.Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .position('bottom center')
+                    .toastClass('md-warn')
                     .hideDelay(10000);
 
                 this.$mdToast.show(errorToast);
