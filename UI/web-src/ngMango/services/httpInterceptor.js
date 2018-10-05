@@ -53,11 +53,6 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     	    if (!message) {
                 message = error.headers('errors');
             }
-    	    
-    	    // if no message in the response body use the HTTP status text
-    	    if (!message) {
-    	        message = safeTranslate(`rest.httpStatus.${error.status}`, error.statusText);
-    	    }
             
     	    // try the status text
             if (!message) {
