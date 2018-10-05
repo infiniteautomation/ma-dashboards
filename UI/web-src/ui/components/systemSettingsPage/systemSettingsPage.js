@@ -102,7 +102,7 @@ SystemSettingsPageController.prototype.sendTestEmail = function() {
     	});
     }, function(error) {
     	$ctrl.maDialogHelper.toastOptions({
-    		textTr: ['ui.components.errorSendingEmail', this.User.current.email],
+    		textTr: ['ui.components.errorSendingEmail', this.User.current.email, error.mangoStatusText],
     		hideDelay: 10000,
     		classes: 'md-warn'
     	});

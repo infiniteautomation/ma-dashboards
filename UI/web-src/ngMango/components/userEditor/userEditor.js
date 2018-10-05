@@ -75,7 +75,7 @@ UserEditorController.prototype.save = function() {
                 this.validationMessages = response.data.validationMessages;
             }
             
-            let errorText = this.Translate.trSync('ui.components.errorSavingUser', this.user.username);
+            let errorText = this.Translate.trSync('ui.components.errorSavingUser', this.user.username, response.mangoStatusText);
             if (response.mangoStatusText) {
                 errorText += ', ' + response.mangoStatusText;
             }
@@ -125,7 +125,7 @@ UserEditorController.prototype.remove = function(event) {
             $ctrl.$mdToast.show(toast);
         }, function(response) {
             const toast = $ctrl.$mdToast.simple()
-                .textContent($ctrl.Translate.trSync('ui.components.errorDeletingUser', username))
+                .textContent($ctrl.Translate.trSync('ui.components.errorDeletingUser', username), response.mangoStatusText)
                 .action($ctrl.Translate.trSync('common.ok'))
                 .highlightAction(true)
                 .toastClass('md-warn')
@@ -148,7 +148,7 @@ UserEditorController.prototype.sendTestEmail = function() {
         $ctrl.$mdToast.show(toast);
     }, function(response) {
         const toast = $ctrl.$mdToast.simple()
-            .textContent($ctrl.Translate.trSync('ui.components.errorSendingEmail', this.User.current.email))
+            .textContent($ctrl.Translate.trSync('ui.components.errorSendingEmail', this.User.current.email, response.mangoStatusText))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
             .toastClass('md-warn')
@@ -178,7 +178,7 @@ UserEditorController.prototype.switchUser = function(event) {
         }
     }, response => {
         const toast = $ctrl.$mdToast.simple()
-            .textContent($ctrl.Translate.trSync('ui.components.errorSwitchingUser', username))
+            .textContent($ctrl.Translate.trSync('ui.components.errorSwitchingUser', username, response.mangoStatusText))
             .action($ctrl.Translate.trSync('common.ok'))
             .highlightAction(true)
             .toastClass('md-warn')
