@@ -297,7 +297,7 @@ class PageEditorControlsController {
                 this.$mdToast.show(toast);
             }, error => {
                 const errorToast = this.$mdToast.simple()
-                    .textContent(this.Translate.trSync('ui.app.errorSavingPage', [this.selectedPageSummary.name, error.status, error.mangoStatusText]))
+                    .textContent(this.Translate.trSync('ui.app.errorSavingPage', [this.selectedPage.name, error.mangoStatusText]))
                     .action(this.Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .position('bottom center')
