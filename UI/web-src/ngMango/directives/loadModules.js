@@ -18,6 +18,8 @@
 loadModules.$inject = ['maModuleLoader', '$timeout'];
 function loadModules(maModuleLoader, $timeout) {
     class ModuleLoaderController {
+        static get $$ngIsClass() { return true; }
+        
         $onChanges(changes) {
             if (changes.moduleNames && this.moduleNames) {
                 let moduleNames = this.moduleNames;
