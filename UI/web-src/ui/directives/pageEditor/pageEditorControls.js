@@ -270,25 +270,25 @@ class PageEditorControlsController {
                 if (!found) {
                     pageSummaries.push(this.selectedPageSummary);
                 }
-    
+
+                return this.pageSummaryStore.$save();
+            }).then(result => {
                 const toast = this.$mdToast.simple()
                     .textContent(this.Translate.trSync('ui.app.pageSaved', [this.selectedPageSummary.name]))
                     .action(this.Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .position('bottom center')
-                    .hideDelay(2000);
-    
+                    .hideDelay(5000);
+
                 this.$mdToast.show(toast);
-    
-                return this.pageSummaryStore.$save();
             }, error => {
                 const errorToast = this.$mdToast.simple()
                     .textContent(this.Translate.trSync('ui.app.errorSavingPage', [this.selectedPageSummary.name, error.status, error.mangoStatusText]))
                     .action(this.Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .position('bottom center')
-                    .hideDelay(2000);
-    
+                    .hideDelay(10000);
+
                 this.$mdToast.show(errorToast);
             });
         } else {
