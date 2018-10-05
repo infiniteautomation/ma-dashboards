@@ -71,9 +71,18 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
                 message = safeTranslate(`rest.httpStatus.${error.status}`, `HTTP error ${error.status}`);
             }
 
-    	    if (error.status === 422) {
-    	        const validationError = safeTranslate('ui.app.validationError', 'Validation error');
-    	        error.mangoStatusText = `${validationError} \u2014 ${message}`;
+    	    if (error.status === 422 && error.data.result && Array.isArray(error.data.result.messages)) {
+    	        const messages = error.data.result.messages;
+    	        if (messages.length) {
+    	            const firstMsg = messages[0];
+    	            let trKeyArgs;
+    	            if (firstMsg.property) {
+    	                trKeyArgs = ['ui.app.errorFirstValidationMsgWithProp', message, firstMsg.property, firstMsg.message];
+    	            } else {
+    	                trKeyArgs = ['ui.app.errorFirstValidationMsg', message, firstMsg.message];
+    	            }
+                    error.mangoStatusText = safeTranslate(trKeyArgs, message);
+    	        }
     	    } else {
     	        error.mangoStatusText = message;
     	    }
