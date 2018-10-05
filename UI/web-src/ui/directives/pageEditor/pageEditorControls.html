@@ -4,7 +4,7 @@
             <md-input-container flex="flex" flex-gt-md="33">
               <label ma-tr="ui.app.choosePageToEdit"></label>
               <md-select name="pageSelector" ng-model="$ctrl.selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.confirmLoadPage($ctrl.selectedPageSummary.xid)">
-                <md-option ng-repeat="page in $ctrl.pageSummaryStore.jsonData.pages track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
+                <md-option ng-repeat="page in $ctrl.pageList track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
               </md-select>
             </md-input-container>
             <md-button class="md-icon-button" ng-click="$ctrl.confirmLoadPage()">

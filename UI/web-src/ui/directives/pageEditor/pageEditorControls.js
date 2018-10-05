@@ -55,6 +55,7 @@ class PageEditorControlsController {
         
         this.jsonStoreEventManager.smartSubscribe(this.$scope, this.MA_UI_PAGES_XID, ['add', 'update'], (event, payload) => {
             this.pageSummaryStore.jsonData = payload.object.jsonData;
+            this.filterPages();
         });
         
         this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
@@ -83,9 +84,10 @@ class PageEditorControlsController {
             $window.onbeforeunload = oldUnload;
             $document.off('keydown', keyDownHandler);
         });
-    
+
         this.maUiPages.getPages().then(pageSummaryStore => {
             this.pageSummaryStore = pageSummaryStore;
+            this.filterPages();
         }, error => {
             this.pageSummaryStore = null;
             this.maDialogHelper.toastOptions({
@@ -109,6 +111,13 @@ class PageEditorControlsController {
         } else {
             this.createNewPage();
         }
+    }
+    
+    filterPages() {
+        const user = this.User.current;
+        this.pageList = this.pageSummaryStore.jsonData.pages.filter(p => {
+            return user.hasPermission(p.editPermission);
+        });
     }
     
     createNewPage(markup) {
@@ -237,7 +246,10 @@ class PageEditorControlsController {
                 }
             }
             this.createNewPage();
-            return this.pageSummaryStore.$save();
+            
+            return this.pageSummaryStore.$save().then(result => {
+                this.filterPages();
+            });
         });
     }
     
@@ -270,9 +282,11 @@ class PageEditorControlsController {
                 if (!found) {
                     pageSummaries.push(this.selectedPageSummary);
                 }
-
+                
                 return this.pageSummaryStore.$save();
             }).then(result => {
+                this.filterPages();
+                
                 const toast = this.$mdToast.simple()
                     .textContent(this.Translate.trSync('ui.app.pageSaved', [this.selectedPageSummary.name]))
                     .action(this.Translate.trSync('common.ok'))
