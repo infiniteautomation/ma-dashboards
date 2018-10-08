@@ -1,0 +1,19 @@
+<div ng-transclude="labelSlot"></div>
+<div flex class="ma-daily-schedule-bar" ng-class="'ma-daily-schedule-bar-' + ($ctrl.editAction || 'none')"
+        ng-mousedown="$ctrl.createSegment($event)" ng-mousemove="$ctrl.mouseMove($event)" ng-mouseup="$ctrl.mouseUp($event)" ng-mouseleave="$ctrl.mouseUp($event)"
+        ma-touchstart="$ctrl.createSegment($event)" ma-touchmove="$ctrl.mouseMove($event)"  ma-touchend="$ctrl.mouseUp($event)" ma-touchcancel="$ctrl.mouseUp($event)">
+    <div ng-repeat="guide in $ctrl.guides track by $index" class="ma-daily-schedule-guide" ng-class="{'ma-daily-schedule-guide-end': $first || $last}" ng-style="guide.style"></div>
+    <div ng-repeat="tick in $ctrl.ticks track by $index" class="ma-daily-schedule-tick" ng-style="tick.style">
+        <div class="ma-daily-schedule-tick-mark"></div>
+        <div class="ma-daily-schedule-tick-label" ng-bind="tick.label"></div>
+    </div>
+    <div class="ma-active-segment" md-colors="::{background: 'accent-A200-0.7'}" ng-repeat="segment in $ctrl.activeSegments track by segment.startTime"
+            ng-style="segment.style" ng-mousedown="$ctrl.moveSegment($event, segment)" ma-touchstart="$ctrl.moveSegment($event, segment)">
+        <div class="ma-segment-label ma-segment-start" ng-bind="segment.startLabel"></div>
+        <div class="ma-segment-label ma-segment-end" ng-bind="segment.endLabel"></div>
+        <em class="ma-segment-label ma-segment-duration" ng-bind="segment.durationLabel"></em>
+        
+        <div class="ma-segment-resize ma-segment-resize-left" ng-mousedown="$ctrl.resizeSegment($event, segment, true)" ma-touchstart="$ctrl.resizeSegment($event, segment, true)"></div>
+        <div class="ma-segment-resize ma-segment-resize-right" ng-mousedown="$ctrl.resizeSegment($event, segment, false)" ma-touchstart="$ctrl.resizeSegment($event, segment, false)"></div>
+    </div>
+</div>

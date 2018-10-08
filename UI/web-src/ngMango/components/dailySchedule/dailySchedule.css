@@ -1,0 +1,191 @@
+ma-daily-schedule {
+	display: block;
+	margin-bottom: 30px;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar {
+	height: 80px;
+	border-color: rgba(100,100,100,0.7);
+	border-width: 1px;
+	border-style: solid none;
+	position: relative;
+	cursor: pointer;
+	margin: 0 10px;
+	background-color: rgba(120,120,120,0.5);
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-create,
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-resize-left,
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-resize-right {
+	cursor: col-resize;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-move {
+	cursor: move;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar:before,
+ma-daily-schedule .ma-daily-schedule-bar:after {
+	position: absolute;
+	width: 15px;
+	height: 100%;
+	content: '';
+	display: block;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar:before {
+	left: -15px;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar:after {
+	right: -15px;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-active-segment {
+	position: absolute;
+	top: 0;
+	height: 100%;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-none .ma-active-segment {
+	cursor: move;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-label {
+	position: absolute;
+	font-size: 1.1rem;
+	white-space: pre;
+	pointer-events: none;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-start {
+	top: 0;
+	left: 0;
+	/*transform: translate(-50%);*/
+	text-align: left;
+	margin-left: 7px;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-end {
+	bottom: 0;
+	right: 0;
+	/*transform: translateX(50%);*/
+	text-align: right;
+	margin-right: 7px;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-duration {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	width: 0;
+	border-color: rgba(255,255,255,0.15);
+	border-width: 5px;
+	border-style: none;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar.ma-daily-schedule-bar-none .ma-segment-resize {
+	cursor: col-resize;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize-right {
+	right: 0;
+	border-style: none double none none;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-segment-resize-left {
+	border-style: none none none double;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-guide {
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	border-left: 1px dashed rgba(130,130,130,1);
+	transform: translateX(-50%);
+	width: 0;
+	pointer-events: none;
+}
+
+/* makes the first and last guides form end caps for the bar in lieu of border */
+/*
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-guide.ma-daily-schedule-guide-end {
+	border-left: 1px solid grey;
+	top: -1px;
+	height: calc(100% + 1px);
+}
+*/
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick {
+	position: absolute;
+	bottom: 0px;
+	transform: translateY(100%);
+	pointer-events: none;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick-mark {
+	width: 2px;
+	height: 6px;
+	transform: translateX(-50%);
+	background-color: grey;
+}
+
+ma-daily-schedule .ma-daily-schedule-bar .ma-daily-schedule-tick-label {
+	font-size: 1.1rem;
+	transform: translateX(-50%);
+	white-space: nowrap;
+}
+
+ma-daily-schedule .ma-daily-schedule-label {
+	width: 30px;
+	text-align: right;
+	font-weight: bold;
+	display: block;
+}
+
+/**
+ * Mini schedule styles
+ */
+ma-weekly-schedule.ma-schedule-mini ma-daily-schedule,
+ma-daily-schedule.ma-schedule-mini {
+	margin-bottom: 3px;
+}
+
+.ma-schedule-mini .ma-daily-schedule-bar {
+	height: 20px;
+	margin: 0 0 0 5px;
+	pointer-events: none;
+}
+
+.ma-schedule-mini .ma-daily-schedule-guide,
+.ma-schedule-mini .ma-daily-schedule-tick,
+.ma-schedule-mini .ma-active-segment .ma-segment-duration,
+.ma-schedule-mini .ma-daily-schedule-bar .ma-segment-resize {
+	display: none;
+}
+
+.ma-schedule-mini .ma-active-segment .ma-segment-start,
+.ma-schedule-mini .ma-active-segment .ma-segment-end {
+	top: 50%;
+	bottom: auto;
+	transform: translateY(-50%);
+	margin: 0 3px;
+}
+
+.ma-schedule-mini .ma-daily-schedule-label {
+	width: 20px;
+	font-size: 1.2rem;
+}

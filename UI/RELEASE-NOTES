@@ -4,6 +4,7 @@
 * Fix bug where point value components weren't being notified of events being deactivated
 * Way to get selected text from ma-ace-editor
 * Enable querying on multiple point ids in ma-events-table
+* Add ma-daily-schedule and ma-weekly-schedule components
 
 *Version 3.5.0*
 * Upgraded to work with core version 3.5.x

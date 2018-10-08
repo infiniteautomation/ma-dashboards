@@ -1,0 +1,6 @@
+<ma-daily-schedule ng-repeat="item in $ctrl.weeklySchedule | orderBy:'localeDayOfWeek' track by $index"
+        ng-model="item.dailySchedule" ng-change="$ctrl.dailyScheduleChanged(item)" round-to="$ctrl.roundTo"
+        tick-segments="$ctrl.tickSegments" guide-segments="$ctrl.guideSegments"
+        layout layout-align="start center">
+    <span ng-bind="$ctrl.weekDays[item.dayOfWeek]" class="ma-daily-schedule-label"></span>
+</ma-daily-schedule>

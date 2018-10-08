@@ -112,6 +112,8 @@ import pointBrowser from './components/pointBrowser/pointBrowser';
 import dataPointTagGroup from './components/dataPointTagGroup/dataPointTagGroup';
 import revisionSelect from './components/revisionSelect/revisionSelect';
 import cronPattern from './components/cronPattern/cronPattern';
+import dailySchedule from './components/dailySchedule/dailySchedule';
+import weeklySchedule from './components/weeklySchedule/weeklySchedule';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -238,6 +240,8 @@ ngMango.component('maPointBrowser', pointBrowser);
 ngMango.component('maDataPointTagGroup', dataPointTagGroup);
 ngMango.component('maRevisionSelect', revisionSelect);
 ngMango.component('maCronPattern', cronPattern);
+ngMango.component('maDailySchedule', dailySchedule);
+ngMango.component('maWeeklySchedule', weeklySchedule);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default
