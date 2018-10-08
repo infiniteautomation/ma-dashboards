@@ -91,7 +91,7 @@ export default {
         guideSegments: '<?'
     },
     designerInfo: {
-        translation: 'ui.dox.weeklySchedule',
+        translation: 'ui.components.maWeeklySchedule',
         icon: 'sd_storage'
     }
 };

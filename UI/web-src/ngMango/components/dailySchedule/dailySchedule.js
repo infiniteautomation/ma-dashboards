@@ -404,7 +404,7 @@ export default {
         labelSlot: '?span'
     },
     designerInfo: {
-        translation: 'ui.dox.dailySchedule',
+        translation: 'ui.components.maDailySchedule',
         icon: 'sd_storage'
     }
 };
