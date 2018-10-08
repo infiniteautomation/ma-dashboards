@@ -1738,4 +1738,52 @@ export default [
         },
         menuHidden: true,
     },
+    {
+        name: 'ui.settings.mailingList',
+        url: '/mailing-lists',
+        template: '<ma-mailing-list></ma-mailing-list>',
+        menuTr: 'ui.app.mailingLists',
+        menuIcon: 'email',
+        params: {
+            helpPage: 'ui.help.mailingList'
+        },
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                const p1 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                    '../ngMango/components/mailingLists/mailingList')
+                const p2 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                    '../ngMango/components/mailingLists/mailingListList')
+                const p3 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                    '../ngMango/components/mailingLists/mailingListSelect')
+                const p4 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                    '../ngMango/components/mailingLists/mailingListSetup')
+                const p5 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                    '../ngMango/services/mailingList')
+                    
+                return Promise.all([p1, p2, p3, p4, p5]).then(
+                    ([mailingList, mailingListList, mailingListSelect, mailingListSetup, mailingListFactory]) => {
+                        angular.module('maUiMailingList', [])
+                        .component('maMailingList', mailingList.default)
+                        .component('maMailingListList', mailingListList.default)
+                        .component('maMailingListelect', mailingListSelect.default)
+                        .component('maMailingListSetup', mailingListSetup.default)
+                        .factory('maMailingList', mailingListFactory.default);
+
+                        $injector.loadNewModules(['maUiMailingList']);
+                    }
+                );
+            }]
+        }
+    },
+    {
+        url: '/mailing-lists/help',
+        name: 'ui.help.mailingList',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/mailingLists.html');
+            }
+        },
+        menuTr: 'ui.app.mailingLists'
+    }
 ];
