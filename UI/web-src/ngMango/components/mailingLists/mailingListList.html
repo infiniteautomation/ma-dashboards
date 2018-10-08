@@ -1,0 +1,19 @@
+<md-list flex>
+    <md-list-item class="md-2-line" ng-click="$ctrl.newList()" md-colors="{'background': $ctrl.new ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3 ma-tr="ui.app.mailingLists.newList"></h3>
+            <p ma-tr="ui.app.mailingLists.createNewList"></p>
+        </div>
+        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.newList()">
+            <md-icon>add</md-icon>
+        </md-button>
+    </md-list-item>
+
+    <md-list-item ng-repeat="list in $ctrl.lists" class="md-2-line" ng-click="$ctrl.selectList(list)" md-colors="{'background': $ctrl.selectedList === list ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3> {{ list.name }} </h3>
+            <p> {{ list.username }} </p>
+        </div>
+    </md-list-item>
+
+</md-list>

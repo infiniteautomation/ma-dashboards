@@ -1,0 +1,24 @@
+<div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
+    <md-card flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card-title flex="nogrow">
+            <md-card-title-text>
+                <span class="md-headline">
+                    <span ma-tr="mailingLists.mailingLists"></span>
+                </span>
+            </md-card-title-text>
+        </md-card-title>
+    
+        <md-card-content flex ng-if="!$ctrl.$mdMedia('gt-md')">
+            <ma-mailing-list-select ng-model="$ctrl.selectedList"></ma-mailing-list-select>
+        </md-card-content>
+
+        <md-card-content flex layout layout-align="start start" ng-if="$ctrl.$mdMedia('gt-md')" style="padding-left: 0; padding-right: 0;">
+            <ma-mailing-list-list flex layout ng-model="$ctrl.selectedList"></ma-mailing-list-list>
+        </md-card-content>
+    
+    </md-card>
+
+    <div flex>
+        <ma-mailing-list-setup ng-model="$ctrl.selectedList"></ma-mailing-list-setup>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+<div flex layout="column" ng-form="$ctrl.form">
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <div flex layout>
+                    <div flex>
+                        <span class="md-headline">
+                            <span ma-tr="ui.app.mailingLists.setup"></span>
+                        </span>
+                    </div>
+        
+                    <div flex layout layout-align="end center" class="ma-margin-bottom">
+                        <md-button class="md-raised md-primary" ng-click="$ctrl.save($event)">
+                            <md-icon>save</md-icon> <span ma-tr="common.save"></span>
+                        </md-button>
+                        <md-button class="md-raised md-warn" ng-click="$ctrl.delete($event)" ng-disabled="!$ctrl.form.$valid && !$ctrl.form.$touched">
+                            <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
+                        </md-button>
+                    </div>
+                </div>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+        
+            <div layout="row" layout-align="space-between top" layout-wrap>
+                <md-input-container flex="100" flex-gt-md="45" flex-order-gt-md="1" class="ma-input-space-between">
+                    <label ma-tr="common.name"></label>
+                    <input name="name" ng-model="$ctrl.script.name" required>
+                    <span ng-if="$ctrl.checkError('name')" style="color: rgb(221,44,0);">{{ $ctrl.checkError('name').message }}</span>
+                    <div ng-messages="$ctrl.form.name.$error">
+                        <div ng-message="required" ma-tr="ui.app.required"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container flex="100" flex-gt-md="45" flex-order-gt-md="2" class="ma-input-space-between">
+                    <label ma-tr="common.xid"></label>
+                    <input name="xid" ng-model="$ctrl.script.xid">
+                    <div ng-messages="$ctrl.form.xid.$error">
+                        <div ng-message="required" ma-tr="ui.app.required"></div>
+                    </div>
+                </md-input-container>
+
+            </div>
+
+            <div layout="column">
+                <span class="md-headline">
+                    <span ma-tr="eventHandlers.emailRecipients"></span>
+                </span>
+                <span ng-if="$ctrl.checkError('recipients')" style="color: rgb(221,44,0);">{{ $ctrl.checkError('recipients').message }}</span>
+                
+                <md-input-container flex="100" class="ma-input-space-between" style="width: 100%;">
+                    <label ma-tr="ui.app.mailingLists.sendAlarmEmail"></label>
+                    <md-select ng-model="recipient.type" required>
+                            <md-option value="0">None</md-option>
+                            <md-option value="1">Information</md-option>
+                            <md-option value="2">Important</md-option>
+                            <md-option value="3">Warning</md-option>
+                            <md-option value="4">Urgent</md-option>
+                            <md-option value="5">Critical</md-option>
+                            <md-option value="6">Safety</md-option>
+                            <md-option value="-2">Do Not Log</md-option>
+                            <md-option value="-3">Ignore</md-option>
+                    </md-select>
+                </md-input-container>
+                
+                <md-table-container flex="100" class="ma-input-space-between">
+                    <table md-table>
+                        <thead md-head>
+                            <tr md-row>
+                                <th md-column ma-tr="common.type"></th>
+                                <th md-column ma-tr="mailingLists.recipient"></th>
+                                <th md-column></th>
+                            </tr>
+                        </thead>
+                        <tbody md-body>
+                            <tr md-row ng-repeat="recipient in $ctrl.recipients">
+                                <td style="padding-top: 0; padding-bottom: 0;" md-cell>
+                                    <md-input-container flex="100" class="ma-input-space-between" style="width: 100%;">
+                                        <label ma-tr="common.type"></label>
+                                        <md-select ng-model="recipient.type" required>
+                                            <md-option value="ADDRESS">Address</md-option>
+                                            <md-option value="USER">User</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </td>
+                                <td style="padding-top: 0; padding-bottom: 0;" md-cell>
+                                    <md-input-container ng-if="recipient.type === 'ADDRESS'" flex class="ma-input-space-between" style="width: 100%;">
+                                        <label ma-tr="mailingLists.emailAddress"></label>
+                                        <input name="address" ng-model="recipient.address" required ma-validation-messages="$ctrl.validationMessages">
+                                        <div ng-messages="$ctrl.form.address.$error">
+                                            <div ng-message="required" ma-tr="ui.app.required"></div>
+                                            <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container ng-if="recipient.type === 'USER'" flex class="ma-input-space-between" style="width: 100%;">
+                                        <label ma-tr="common.user"></label>
+                                        <md-select ng-model="recipient.username" required>
+                                            <md-option ng-repeat="user in $ctrl.users" value="{{user.username}}">{{ user.username }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </td>
+                                <td style="padding-top: 0; padding-bottom: 0;" md-cell>
+                                    <md-button class="md-icon-button" aria-label="Delete Template" ng-click="$ctrl.deleteRecipient(recipient)">
+                                        <md-tooltip md-direction="bottom" ma-tr="excelreports.ui.deleteTemplate"></md-tooltip>
+                                        <md-icon>delete</md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <div layout="row" layout-align="start top">
+                    <md-button class="md-raised md-primary" ng-click="$ctrl.addRecipient()" style="margin-top: 20px; margin-bottom: 20px;">
+                        <md-icon>add</md-icon><span ma-tr="mailingLists.addRecipient"></span>
+                    </md-button>
+                </div>
+            </div>
+
+            <md-divider></md-divider>
+
+            <div layout="row" style="margin-top: 20px;">
+                <ma-weekly-schedule style="width: 100%" ng-model="$ctrl.schedule" lock-all="false" lock-weekends="false" lock-weekdays="false"></ma-weekly-schedule>
+            </div>
+
+        </md-card-content>
+    </md-card>
+
+        
+</div>
