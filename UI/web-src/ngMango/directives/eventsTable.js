@@ -51,8 +51,8 @@ import moment from 'moment-timezone';
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
 
-eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO'];
-function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO) {
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout'];
+function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout) {
 
     const ANY_KEYWORD = 'any';
     
@@ -151,7 +151,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
             this.$scope.$on('maWatchdog', (event, current, previous) => {
                 if (current.status === 'LOGGED_IN') {
-                    this.doQuery();
+                    $timeout(() => {
+                        this.doQuery();
+                    }, 5000);
                 }
             });
         }

@@ -7,9 +7,9 @@ import activeEventIconsTemplate from './activeEventIcons.html';
 
 class ActiveEventIconsController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEvents', '$scope']; }
+    static get $inject() { return ['maEvents', '$scope', '$timeout']; }
 
-    constructor(maEvents, $scope) {
+    constructor(maEvents, $scope, $timeout) {
         this.maEvents = maEvents;
         
         this.refreshCount().then(() => {
@@ -21,7 +21,9 @@ class ActiveEventIconsController {
             // probably should implement a way to get this from the websocket when it connects
             $scope.$on('maWatchdog', (event, current, previous) => {
                 if (current.status === 'LOGGED_IN') {
-                    this.refreshCount();
+                    $timeout(() => {
+                        this.refreshCount();
+                    }, 5000);
                 }
             });
         });
