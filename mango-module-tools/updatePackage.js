@@ -26,6 +26,8 @@ module.exports = function updatePackage(pom, directory = path.resolve('.')) {
             packageJson.com_infiniteautomation = {};
         }
         
+        // TODO update main
+        
         packageJson.com_infiniteautomation.moduleName = pom.project.name[0];
         packageJson.name = '@infinite-automation/' + pom.project.name[0];
         packageJson.version = pom.project.version[0];
