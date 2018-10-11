@@ -32,14 +32,14 @@
             <md-input-container flex>
                   <label ma-tr="ui.app.alarmLvl"></label>
                   <md-select ng-model="$ctrl.params.alarmLevel" ng-change="$ctrl.storeState('alarmLevel')">
-                        <md-option value="any"><span ma-tr="ui.app.any"></span>&nbsp;<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-all"></i></md-option>
-                        <md-option value="NONE"><span ma-tr="ui.app.none"></span>&nbsp;<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none"></i></md-option>
-                        <md-option value="INFORMATION"><span ma-tr="ui.app.information"></span>&nbsp;<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information"></i></md-option>
-                        <md-option value="IMPORTANT"><span ma-tr="ui.app.important"></span>&nbsp;<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important"></i></md-option>
-						<md-option value="WARNING"><span ma-tr="ui.app.warning"></span>&nbsp;<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning"></i></md-option>
-                        <md-option value="URGENT"><span ma-tr="ui.app.urgent"></span>&nbsp;<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent"></i></md-option>
-                        <md-option value="CRITICAL"><span ma-tr="ui.app.critical"></span>&nbsp;<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical"></i></md-option>
-                        <md-option value="LIFE_SAFETY"><span ma-tr="ui.app.safety"></span>&nbsp;<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety"></i></md-option>
+                        <md-option value="any"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-all"></md-icon><span ma-tr="ui.app.any"></span></md-option>
+                        <md-option value="NONE"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none"></md-icon><span ma-tr="ui.app.none"></span></md-option>
+                        <md-option value="INFORMATION"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information"></md-icon><span ma-tr="ui.app.information"></span></md-option>
+                        <md-option value="IMPORTANT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important"></md-icon><span ma-tr="ui.app.important"></span></md-option>
+						<md-option value="WARNING"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning"></md-icon><span ma-tr="ui.app.warning"></span></md-option>
+                        <md-option value="URGENT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent"></md-icon><span ma-tr="ui.app.urgent"></span></md-option>
+                        <md-option value="CRITICAL"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical"></md-icon><span ma-tr="ui.app.critical"></span></md-option>
+                        <md-option value="LIFE_SAFETY"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety"></md-icon><span ma-tr="ui.app.safety"></span></md-option>
                   </md-select>
             </md-input-container>
             <md-input-container flex>

@@ -959,6 +959,12 @@ ma-point-browser ma-data-point-tag-group {
 }
 
 /* Alarm Flags */
+
+md-select-value md-icon.ma-alarm-flag,
+md-option md-icon.ma-alarm-flag {
+	margin-right: 8px;
+}
+
 .alarm-flag.ALL,
 .ma-alarm-flag.ALL,
 .ma-alarm-level-all,
