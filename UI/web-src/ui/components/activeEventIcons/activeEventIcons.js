@@ -48,6 +48,11 @@ class ActiveEventIconsController {
     
     counter(payloadEvent, payloadType) {
         if (payloadType === 'RAISED') {
+    	    // temporary fix/work-around for audit events / DO_NOT_LOG events coming through websocket
+            if (payloadEvent.id < 0) {
+                return;
+            }
+
             this.events[payloadEvent.alarmLevel].unsilencedCount++;
             this.events.totalCount++;
         } else if (payloadType === 'ACKNOWLEDGED') {

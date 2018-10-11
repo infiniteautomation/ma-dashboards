@@ -117,6 +117,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
         $onInit() {
             Events.notificationManager.subscribe((event, mangoEvent) => {
+                // temporary fix/work-around for audit events / DO_NOT_LOG events coming through websocket
+                if (mangoEvent.id < 0) {
+                    return;
+                }
+                
                 if (event.name === 'ACKNOWLEDGED' && (!this.acknowledged || this.acknowledged === ANY_KEYWORD) &&
                         this.totalUnAcknowledged > 0 && this.eventMatchesFilters(mangoEvent, true)) {
                     this.totalUnAcknowledged--;
