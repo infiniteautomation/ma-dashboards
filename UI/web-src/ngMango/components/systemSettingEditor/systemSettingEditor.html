@@ -8,15 +8,15 @@
     <div ng-transclude="options"></div>
   </md-select>
   <md-select ng-if="$ctrl.inputType === 'alarmlevel'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
-    <md-option ng-value="0"><md-icon class="fa fa-flag alarm-flag ma-alarm-level-none"></md-icon><span ma-tr="common.alarmLevel.none"></span></md-option>
-    <md-option ng-value="1"><md-icon class="fa fa-flag alarm-flag ma-alarm-level-information"></md-icon><span ma-tr="common.alarmLevel.info"></span></md-option>
-    <md-option ng-value="2"><md-icon class="fa fa-flag alarm-flag ma-alarm-level-important"></md-icon><span ma-tr="common.alarmLevel.important"></span></md-option>
-    <md-option ng-value="3"><md-icon class="fa fa-flag alarm-flag ma-alarm-level-warning"></md-icon><span ma-tr="common.alarmLevel.warning"></span></md-option>
-    <md-option ng-value="4"><md-icon class="fa fa-flag alarm-flag ma-alarm-level-urgent"></md-icon><span ma-tr="common.alarmLevel.urgent"></span></md-option>
-    <md-option ng-value="5"><md-icon class="fa fa-flag alarm-flag ma-alarm-level-critical"></md-icon><span ma-tr="common.alarmLevel.critical"></span></md-option>
-    <md-option ng-value="6"><md-icon class="fa fa-flag alarm-flag ma-alarm-level-life-safety"></md-icon><span ma-tr="common.alarmLevel.lifeSafety"></span></md-option>
-    <md-option ng-value="-2"><md-icon class="fa fa-times-circle alarm-flag ma-alarm-level-do-not-log"></md-icon><span ma-tr="common.alarmLevel.doNotLog"></span></md-option>
-    <md-option ng-value="-3"><md-icon class="fa fa-times alarm-flag IGNORE"></md-icon><span ma-tr="common.alarmLevel.ignore"></span></md-option>
+    <md-option ng-value="0"><md-icon class="fa fa-flag ma-alarm-flag ma-alarm-level-none"></md-icon><span ma-tr="common.alarmLevel.none"></span></md-option>
+    <md-option ng-value="1"><md-icon class="fa fa-flag ma-alarm-flag ma-alarm-level-information"></md-icon><span ma-tr="common.alarmLevel.info"></span></md-option>
+    <md-option ng-value="2"><md-icon class="fa fa-flag ma-alarm-flag ma-alarm-level-important"></md-icon><span ma-tr="common.alarmLevel.important"></span></md-option>
+    <md-option ng-value="3"><md-icon class="fa fa-flag ma-alarm-flag ma-alarm-level-warning"></md-icon><span ma-tr="common.alarmLevel.warning"></span></md-option>
+    <md-option ng-value="4"><md-icon class="fa fa-flag ma-alarm-flag ma-alarm-level-urgent"></md-icon><span ma-tr="common.alarmLevel.urgent"></span></md-option>
+    <md-option ng-value="5"><md-icon class="fa fa-flag ma-alarm-flag ma-alarm-level-critical"></md-icon><span ma-tr="common.alarmLevel.critical"></span></md-option>
+    <md-option ng-value="6"><md-icon class="fa fa-flag ma-alarm-flag ma-alarm-level-life-safety"></md-icon><span ma-tr="common.alarmLevel.lifeSafety"></span></md-option>
+    <md-option ng-value="-2"><md-icon class="fa fa-times-circle ma-alarm-flag ma-alarm-level-do-not-log"></md-icon><span ma-tr="common.alarmLevel.doNotLog"></span></md-option>
+    <md-option ng-value="-3"><md-icon class="fa fa-times ma-alarm-flag ma-alarm-level-ignore"></md-icon><span ma-tr="common.alarmLevel.ignore"></span></md-option>
   </md-select>
   <md-select ng-if="$ctrl.inputType === 'timeperiodtype'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()"
       ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">

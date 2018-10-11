@@ -9,7 +9,7 @@
         <md-menu-item>
             <md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'any'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
-                    <i class="fa fa-flag fa-lg alarm-flag ALL" style="padding-right:10px"></i>
+                    <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-all" style="padding-right:10px"></i>
                     <p flex ma-tr="ui.eventCount.unacknowledged" ma-tr-args="[$ctrl.events.totalCount]"></p>
                 </div>
             </md-button>
@@ -18,7 +18,7 @@
         <md-menu-item ng-if="$ctrl.events.NONE.unsilencedCount">
             <md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'NONE'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
-                    <i class="fa fa-flag fa-lg alarm-flag NONE" style="padding-right:10px"></i>
+                    <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none" style="padding-right:10px"></i>
                     <p flex ma-tr="ui.eventCount.none" ma-tr-args="[$ctrl.events.NONE.unsilencedCount]"></p>
                 </div>
             </md-button>
@@ -27,7 +27,7 @@
         <md-menu-item ng-if="$ctrl.events.INFORMATION.unsilencedCount">
             <md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'INFORMATION'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
-                    <i class="fa fa-flag fa-lg alarm-flag INFORMATION" style="padding-right:10px"></i>
+                    <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information" style="padding-right:10px"></i>
                     <p flex ma-tr="ui.eventCount.information" ma-tr-args="[$ctrl.events.INFORMATION.unsilencedCount]"></p>
                 </div>
             </md-button>
@@ -36,7 +36,7 @@
         <md-menu-item ng-if="$ctrl.events.IMPORTANT.unsilencedCount">
 			<md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'IMPORTANT'})">
 				<div layout="row" flex layout-align="start center" layout-fill>
-					<i class="fa fa-flag fa-lg alarm-flag IMPORTANT" style="padding-right:10px"></i>
+					<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important" style="padding-right:10px"></i>
 					<p flex ma-tr="ui.eventCount.important" ma-tr-args="[$ctrl.events.IMPORTANT.unsilencedCount]"></p>
 				</div>
 			</md-button>
@@ -45,7 +45,7 @@
 		<md-menu-item ng-if="$ctrl.events.WARNING.unsilencedCount">
 			<md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'WARNING'})">
 				<div layout="row" flex layout-align="start center" layout-fill>
-					<i class="fa fa-flag fa-lg alarm-flag WARNING" style="padding-right:10px"></i>
+					<i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning" style="padding-right:10px"></i>
 					<p flex ma-tr="ui.eventCount.warning" ma-tr-args="[$ctrl.events.WARNING.unsilencedCount]"></p>
 				</div>
 			</md-button>
@@ -54,7 +54,7 @@
         <md-menu-item ng-if="$ctrl.events.URGENT.unsilencedCount">
             <md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'URGENT'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
-                    <i class="fa fa-flag fa-lg alarm-flag URGENT" style="padding-right:10px"></i>
+                    <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent" style="padding-right:10px"></i>
                     <p flex ma-tr="ui.eventCount.urgent" ma-tr-args="[$ctrl.events.URGENT.unsilencedCount]"></p>
                 </div>
             </md-button>
@@ -63,7 +63,7 @@
         <md-menu-item ng-if="$ctrl.events.CRITICAL.unsilencedCount">
             <md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'CRITICAL'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
-                    <i class="fa fa-flag fa-lg alarm-flag CRITICAL" style="padding-right:10px"></i>
+                    <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical" style="padding-right:10px"></i>
                     <p flex ma-tr="ui.eventCount.critical" ma-tr-args="[$ctrl.events.CRITICAL.unsilencedCount]"></p>
                 </div>
             </md-button>
@@ -72,7 +72,7 @@
         <md-menu-item ng-if="$ctrl.events.LIFE_SAFETY.unsilencedCount">
             <md-button ui-sref="ui.events({dateFilter: 'false', acknowledged: 'false', eventType: 'any', alarmLevel: 'LIFE_SAFETY'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
-                    <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY" style="padding-right:10px"></i>
+                    <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety" style="padding-right:10px"></i>
                     <p flex ma-tr="ui.eventCount.safety" ma-tr-args="[$ctrl.events.LIFE_SAFETY.unsilencedCount]"></p>
                 </div>
             </md-button>

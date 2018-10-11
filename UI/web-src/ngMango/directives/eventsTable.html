@@ -31,7 +31,7 @@
         <tbody md-body ng-show="$ctrl.total">
             <tr md-row ng-repeat="event in $ctrl.events track by event.id">
                 <td md-cell class="narrow-column">
-                    <i class="fa fa-flag alarm-flag fa-lg" ng-class="event.alarmLevel" ng-click="$ctrl.addNote($event, event)">
+                    <i class="fa fa-flag ma-alarm-flag fa-lg" ng-class="event.alarmLevel" ng-click="$ctrl.addNote($event, event)">
                         <md-tooltip md-delay="250" md-direction="right" md-autohide>
                             <!--<span ma-tr="ui.app.addUserNote"></span> - -->
                             <span ng-bind="event.alarmLevel"></span> -
@@ -73,8 +73,8 @@
                 </td>
                 
                 <td md-cell class="narrow-column">
-                    <i class="fa fa-circle-o fa-lg acknowledged-checkbox" ng-click="$ctrl.acknowledgeEvent(event);" ng-if="!$ctrl.hideAckButton && !event.acknowledged"></i>
-                    <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox" ng-if="event.acknowledged">
+                    <i class="fa fa-circle-o fa-lg ma-acknowledged-checkbox" ng-click="$ctrl.acknowledgeEvent(event);" ng-if="!$ctrl.hideAckButton && !event.acknowledged"></i>
+                    <i class="fa fa-check-circle-o fa-lg ma-acknowledged-checkbox" ng-if="event.acknowledged">
                         <md-tooltip ma-tr="ui.app.acknowledgedByAt" ma-tr-args="[event.acknowledgedByUsername, (event.acknowledgedTimestamp | maMoment:'format':'l LT')]"></md-tooltip>
                     </i>
                 </td>
