@@ -1,3 +1,8 @@
+*Version 3.5.2*
+* Work around for incorrect event count
+* Remove .jar file that was incorrectly included in zip
+* Fix designer info for schedule components
+
 *Version 3.5.1*
 * Update the unacknowledged event count when Mango restarts
 * Fix bug that stopped auto-login from working on first page load
