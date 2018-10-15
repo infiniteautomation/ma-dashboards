@@ -6,15 +6,14 @@
 import componentTemplate from './mailingListSetup.html';
 import angular from 'angular';
 
-const $inject = Object.freeze(['$rootScope', '$scope', 'maMailingList', 'maDialogHelper', 'maUser']);
+const $inject = Object.freeze(['$scope', 'maMailingList', 'maDialogHelper', 'maUser']);
 
 class MailingListSetupController {
 
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($rootScope, $scope, maMailingList, maDialogHelper, maUser) {
-        this.$rootScope = $rootScope;
+    constructor($scope, maMailingList, maDialogHelper, maUser) {
         this.$scope = $scope;
         this.maMailingList = maMailingList;
         this.maDialogHelper = maDialogHelper;
@@ -45,8 +44,8 @@ class MailingListSetupController {
         this.list.save().then(() => {
             
             this.list = new this.maMailingList();
-            this.$rootScope.$broadcast('MailingListUpdated', true);
-            this.$rootScope.$broadcast('newMailingList', true);
+            this.$scope.emit('mailingListUpdated', true);
+            this.$scope.emit('newMailingList', true);
             this.setViewValue();
             this.render();
             this.maDialogHelper.toastOptions({textTr: ['ui.app.mailingLists.saved']});
@@ -79,8 +78,8 @@ class MailingListSetupController {
             this.list.delete().then(() => {
                 
                 this.list = new this.maMailingList();
-                this.$rootScope.$broadcast('mailingListUpdated', true);
-                this.$rootScope.$broadcast('newMailingList', true);
+                this.$scope.emit('mailingListUpdated', true);
+                this.$scope.emit('newMailingList', true);
                 this.setViewValue();
                 this.render();
                 this.maDialogHelper.toastOptions({textTr: ['ui.app.mailingLists.deleted']});
@@ -97,8 +96,8 @@ class MailingListSetupController {
 
     cancel(event) {
         this.list = new this.maMailingList();
-        this.$rootScope.$broadcast('mailingListUpdated', true);
-        this.$rootScope.$broadcast('newMailingList', true);
+        this.$scope.emit('mailingListUpdated', true);
+        this.$scope.emit('newMailingList', true);
         this.setViewValue();
         this.render();
     }
@@ -106,7 +105,6 @@ class MailingListSetupController {
     getUsers() {
         this.maUser.rql("").$promise.then(users => {
             this.users = users;
-            console.log(this.users);
         })
     }
 

@@ -12,13 +12,12 @@ import componentTemplate from './mailingList.html';
  * @description Displays a Mailing Lists Component
  */
 
-const $inject = Object.freeze(['$rootScope', '$scope', '$mdMedia']);
+const $inject = Object.freeze(['$scope', '$mdMedia']);
 class MailingLists {
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($rootScope, $scope, $mdMedia) {
-        this.$rootScope = $rootScope;
+    constructor($scope, $mdMedia) {
         this.$scope = $scope;
         this.$mdMedia = $mdMedia
     }
