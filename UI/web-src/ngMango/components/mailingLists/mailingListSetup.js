@@ -6,19 +6,19 @@
 import componentTemplate from './mailingListSetup.html';
 import angular from 'angular';
 
-const $inject = Object.freeze(['$rootScope', '$scope', 'maMailingList', 'maDialogHelper', '$http']);
+const $inject = Object.freeze(['$rootScope', '$scope', 'maMailingList', 'maDialogHelper', 'maUser']);
 
 class MailingListSetupController {
 
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($rootScope, $scope, maMailingList, maDialogHelper, $http) {
+    constructor($rootScope, $scope, maMailingList, maDialogHelper, maUser) {
         this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.maMailingList = maMailingList;
         this.maDialogHelper = maDialogHelper;
-        this.$http = $http;
+        this.maUser = maUser;
     }
 
     $onInit() {
@@ -104,16 +104,10 @@ class MailingListSetupController {
     }
 
     getUsers() {
-        this.$http({
-            url: '/rest/v1/users',
-            method: 'GET'
-        }).then(
-            (data) => {
-                this.users = data.data.items;
-            }, function(error) {
-                console.log(error);
-            }
-        );
+        this.maUser.rql("").$promise.then(users => {
+            this.users = users;
+            console.log(this.users);
+        })
     }
 
     addRecipient() {
