@@ -64,8 +64,13 @@ class EventHandlerEditorController {
     render() {
         this.validationMessages = [];
         
-        if (this.ngModelCtrl.$viewValue) {
-            this.eventHandler = angular.copy(this.ngModelCtrl.$viewValue);
+        const viewValue = this.ngModelCtrl.$viewValue;
+        if (viewValue) {
+            if (viewValue instanceof this.maEventHandler) {
+                this.eventHandler = viewValue.copy();
+            } else {
+                this.eventHandler = new this.maEventHandler(viewValue);
+            }
         } else {
             this.eventHandler = null;
         }
@@ -103,9 +108,10 @@ class EventHandlerEditorController {
     }
 
     deleteItem(event) {
-        this.maDialogHelper.confirm(event, ['ui.components.eventHandlerConfirmDelete', this.eventHandler.alias || this.eventHandler.xid]).then(() => {
+        const notifyName = this.eventHandler.alias || this.eventHandler.getOriginalId();
+        this.maDialogHelper.confirm(event, ['ui.components.eventHandlerConfirmDelete', notifyName]).then(() => {
             this.eventHandler.delete().then(() => {
-                this.maDialogHelper.toast(['ui.components.eventHandlerDeleted', this.eventHandler.alias || this.eventHandler.xid]);
+                this.maDialogHelper.toast(['ui.components.eventHandlerDeleted', notifyName]);
                 this.eventHandler = null;
                 this.setViewValue();
                 this.render();

@@ -1120,24 +1120,24 @@ export default [
             }]
         }
     },
-//    {
-//        name: 'ui.settings.eventHandlers',
-//        url: '/event-handlers/{xid}',
-//        template: '<ma-ui-event-handler-page flex="noshrink" layout="column"><ma-ui-event-handler-page>',
-//        menuTr: 'ui.app.eventHandlers',
-//        menuIcon: 'link',
-//        permission: 'superadmin',
-//        resolve: {
-//            loadMyDirectives: ['$injector', function($injector) {
-//                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
-//                        './components/eventHandlerPage/eventHandlerPage').then(eventHandlerPage => {
-//                    angular.module('eventHandlerPage', [])
-//                        .component('maUiEventHandlerPage', eventHandlerPage.default);
-//                    $injector.loadNewModules(['eventHandlerPage']);
-//                });
-//            }]
-//        }
-//    },
+    {
+        name: 'ui.settings.eventHandlers',
+        url: '/event-handlers/{xid}',
+        template: '<ma-ui-event-handler-page flex="noshrink" layout="column"><ma-ui-event-handler-page>',
+        menuTr: 'ui.app.eventHandlers',
+        menuIcon: 'link',
+        permission: 'superadmin',
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/eventHandlerPage/eventHandlerPage').then(eventHandlerPage => {
+                    angular.module('eventHandlerPage', [])
+                        .component('maUiEventHandlerPage', eventHandlerPage.default);
+                    $injector.loadNewModules(['eventHandlerPage']);
+                });
+            }]
+        }
+    },
     {
         name: 'ui.examples',
         url: '/examples',

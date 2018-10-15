@@ -62,10 +62,6 @@ import 'angular-sanitize';
 import 'angular-local-storage';
 import 'angular-cookies';
 
-import eventHandlerEditorEmailTemplate from './components/eventHandlerEditor/email.html';
-//import eventHandlerEditorProcessTemplate from './components/eventHandlerEditor/process.html';
-//import eventHandlerEditorSetPointTemplate from './components/eventHandlerEditor/setPoint.html';
-
 // rql library doesn't encode null correctly (it encodes as string:null)
 const oldEncodeValue = rqlQuery.encodeValue;
 rqlQuery.encodeValue = function(val) {
@@ -126,7 +122,7 @@ ngMangoServices.factory('maTemporaryRestResource', temporaryRestResourceFactory)
 ngMangoServices.factory('maRqlBuilder', rqlBuilderFactory);
 ngMangoServices.factory('maMath', mathFactory);
 ngMangoServices.factory('maEventDetector', maEventDetector);
-ngMangoServices.factory('maEventHandler', maEventHandler);
+ngMangoServices.provider('maEventHandler', maEventHandler);
 ngMangoServices.factory('maDataPointTags', maDataPointTags);
 ngMangoServices.factory('maAuditTrail', maAuditTrail);
 ngMangoServices.factory('maRevisionHistoryDialog', maRevisionHistoryDialog);
@@ -159,6 +155,7 @@ ngMangoServices.constant('MA_DATE_FORMATS', {
 ngMangoServices.constant('MA_DEFAULT_TIMEZONE', '');
 ngMangoServices.constant('MA_DEFAULT_LOCALE', '');
 
+// TODO Mango 3.6 remove this, no longer used
 ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
     {
         type: 'EMAIL',
@@ -192,13 +189,4 @@ ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provid
     $provide.decorator('$resource', resourceDecorator);
 }]);
 
-
-ngMangoServices.run(['$templateCache', function($templateCache) {
-    $templateCache.put('eventHandlers.email.html', eventHandlerEditorEmailTemplate);
-//    $templateCache.put('eventHandlers.process.html', eventHandlerEditorProcessTemplate);
-//    $templateCache.put('eventHandlers.setPoint.html', eventHandlerEditorSetPointTemplate);
-}]);
-
 export default ngMangoServices;
-
-
