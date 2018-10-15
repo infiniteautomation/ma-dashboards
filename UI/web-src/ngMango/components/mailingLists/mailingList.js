@@ -5,6 +5,8 @@
 
 import componentTemplate from './mailingList.html';
 
+import './mailingList.css';
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maMailingLists

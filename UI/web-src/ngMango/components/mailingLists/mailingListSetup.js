@@ -6,6 +6,8 @@
 import componentTemplate from './mailingListSetup.html';
 import angular from 'angular';
 
+import './mailingList.css';
+
 const $inject = Object.freeze(['$scope', 'maMailingList', 'maDialogHelper', 'maUser']);
 
 class MailingListSetupController {
