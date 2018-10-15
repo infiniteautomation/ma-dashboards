@@ -35,7 +35,7 @@
     <div layout="column" ng-include="$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].editorTemplateUrl"></div>
 
     <div layout>
-        <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.saveItem($event)" ng-disabled="$ctrl.eventHandler.originalXid && $ctrl.form.$pristine">
+        <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.saveItem($event)" ng-disabled="$ctrl.eventHandler.isNew() && $ctrl.form.$pristine">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
         </md-button>
@@ -43,7 +43,7 @@
             <md-icon>undo</md-icon>
             <span ma-tr="ui.app.revert"></span>
         </md-button>
-        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="!$ctrl.eventHandler.originalXid">
+        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.eventHandler.isNew()">
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>

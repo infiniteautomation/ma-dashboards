@@ -35,8 +35,18 @@ class EventHandlerPageController {
         this.eventHandlerChanged();
     }
     
+    eventHandlerSaved() {
+        if (this.eventHandler == null) {
+            // user deleted the event handler
+            this.eventHandler = new this.maEventHandler();
+        }
+        
+        // always update the state params, xids can change
+        this.eventHandlerChanged();
+    }
+    
     eventHandlerChanged() {
-        this.$state.params.xid = this.eventHandler.getOriginalId() || null;
+        this.$state.params.xid = this.eventHandler && this.eventHandler.getOriginalId() || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
 }
