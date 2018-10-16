@@ -5,14 +5,15 @@
 
 import eventHandlerPageTemplate from './eventHandlerPage.html';
 
-const $inject = Object.freeze(['maEventHandler', '$state']);
+const $inject = Object.freeze(['maEventHandler', '$state', '$mdMedia']);
 class EventHandlerPageController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maEventHandler, $state) {
+    constructor(maEventHandler, $state, $mdMedia) {
         this.maEventHandler = maEventHandler;
         this.$state = $state;
+        this.$mdMedia = $mdMedia;
     }
     
     $onInit() {
