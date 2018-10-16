@@ -25,7 +25,7 @@
             <div layout="row" layout-align="space-between top" layout-wrap>
                 <md-input-container flex="100" flex-gt-md="45" flex-order-gt-md="1" class="ma-input-space-between">
                     <label ma-tr="common.name"></label>
-                    <input name="name" ng-model="$ctrl.script.name" required>
+                    <input name="name" ng-model="$ctrl.list.name" required>
                     <span ng-if="$ctrl.checkError('name')" class="md-warn">{{ $ctrl.checkError('name').message }}</span>
                     <div ng-messages="$ctrl.form.name.$error">
                         <div ng-message="required" ma-tr="ui.app.required"></div>
@@ -34,7 +34,7 @@
 
                 <md-input-container flex="100" flex-gt-md="45" flex-order-gt-md="2" class="ma-input-space-between">
                     <label ma-tr="common.xid"></label>
-                    <input name="xid" ng-model="$ctrl.script.xid">
+                    <input name="xid" ng-model="$ctrl.list.xid">
                     <div ng-messages="$ctrl.form.xid.$error">
                         <div ng-message="required" ma-tr="ui.app.required"></div>
                     </div>

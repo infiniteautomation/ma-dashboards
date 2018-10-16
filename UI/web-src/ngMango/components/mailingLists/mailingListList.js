@@ -29,7 +29,7 @@ class MailingListsListController {
         this.getLists();
 
         this.$scope.$on('mailingListUpdated', (event, arg) => {
-            this.getScripts();
+            this.getLists();
         });
 
         this.$scope.$on('newMailingList', (event, arg) => {
