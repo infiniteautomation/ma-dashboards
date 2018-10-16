@@ -8,13 +8,16 @@ import angular from 'angular';
 MailingListFactory.$inject = ['maRestResource'];
 function MailingListFactory(RestResource) {
     
-    const baseUrl = '/v2/mailing-lists';
+    const baseUrl = '/rest/v2/mailing-lists';
     const xidPrefix = 'ML_';
 
     const defaultProperties = {
+        editPermissions: [],
+        entries: [],
+        inactiveSchedule: [],
         name: '',
-        username: '',
-        code: ''
+        readPermisions: [],
+        receiveAlarmEmails: 'IGNORE',
     };
 
 
