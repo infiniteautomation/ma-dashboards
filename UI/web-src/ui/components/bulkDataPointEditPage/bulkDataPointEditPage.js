@@ -80,7 +80,7 @@ class BulkDataPointEditPageController {
             {name: 'chartColour', label: 'pointEdit.props.chartColour', type: 'color', selectedByDefault: false},
             {name: 'plotType', label: 'pointEdit.plotType', type: 'plotType', selectedByDefault: false},
             {name: 'rollup', label: 'common.rollup', type: 'rollup', selectedByDefault: true},
-            {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false},
+            {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: true},
             {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
             {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', type: 'number', selectedByDefault: false},
             {name: 'simplifyType', label: 'pointEdit.props.simplifyType', type: 'simplifyType', selectedByDefault: false},
@@ -522,6 +522,10 @@ class BulkDataPointEditPageController {
     
     removeTag(tag) {
         this.updateBody.tags[tag.name] = null;
+    }
+    
+    nullColumn(column) {
+        this.updateBody[column.name] = null;
     }
     
     columnModified(column, point) {

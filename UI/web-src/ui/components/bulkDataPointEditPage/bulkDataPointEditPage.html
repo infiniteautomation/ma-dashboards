@@ -110,6 +110,10 @@
                                     <md-icon>undo</md-icon>
                                     <md-tooltip ma-tr="ui.app.resetColumn" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
                                 </md-button>
+                                <md-button class="md-icon-button" ng-click="$ctrl.nullColumn(column)" ng-if="column.nullable">
+                                    <md-icon>delete</md-icon>
+                                    <md-tooltip ma-tr="ui.app.nullColumn" ma-tr-args="::[(column.label | maTr)]"></md-tooltip>
+                                </md-button>
                             </th>
                             <th ng-repeat="tag in $ctrl.selectedTags track by tag.name">
                                 <md-button class="md-icon-button" ng-click="$ctrl.removeTag(tag)">
