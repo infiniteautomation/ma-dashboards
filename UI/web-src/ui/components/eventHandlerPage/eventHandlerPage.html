@@ -1,7 +1,38 @@
-<div>
-    <md-button class="md-raised" ng-click="$ctrl.newEventHandler()">
-        <md-icon>add</md-icon>
-        <span ma-tr="common.add"></span>
-    </md-button>
+<div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
+    <md-card flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card-title flex="nogrow">
+            <md-card-title-text>
+                <span class="md-headline">
+                    <span ma-tr="events.selectEventHandler"></span>
+                </span>
+            </md-card-title-text>
+        </md-card-title>
+    
+        <md-card-content flex layout layout-align="start center" ng-if="!$ctrl.$mdMedia('gt-md')">
+            <ma-event-handler-select flex layout ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerChanged()"></ma-event-handler-select>
+            <md-button class="md-raised" ng-click="$ctrl.newEventHandler()">
+                <md-icon>add</md-icon> <span ma-tr="advancedScheduler.ui.newSchedule"></span>
+            </md-button>
+        </md-card-content>
+    
+        <md-card-content flex class="ma-no-padding" ng-if="$ctrl.$mdMedia('gt-md')">
+            <ma-event-handler-list flex layout="column" ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerChanged()"></ma-event-handler-list>
+        </md-card-content>
+    </md-card>
+
+    <div flex>
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">
+                        <span ng-if="!$ctrl.eventHandler.isNew()" ma-tr="events.editEventHandler"></span>
+                        <span ng-if="$ctrl.eventHandler.isNew()" ma-tr="events.createEventHandler"></span>
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <ma-event-handler-editor flex layout="column" ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerSaved()"></ma-event-handler-editor>
+            </md-card-content>
+        </md-card>
+    </div>
 </div>
-<ma-event-handler-editor ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerSaved()"></ma-event-handler-editor>
