@@ -1,0 +1,23 @@
+<md-list>
+    <md-list-item class="md-2-line" ng-repeat="recipient in $ctrl.recipients">
+        <md-icon class="md-avatar-icon">{{$ctrl.iconForRecipient(recipient)}}</md-icon>
+        
+        <div class="md-list-item-text">
+            <h3 ng-bind="recipient.username || recipient.address || recipient.name || recipient.xid"></h3>
+            <p ma-tr="ui.components.emailRecipient.{{recipient.type}}"></p>
+        </div>
+
+        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.removeRecipient(recipient, $index)">
+            <md-icon>clear</md-icon>
+            <md-tooltip ma-tr="ui.components.removeFromList"></md-tooltip>
+        </md-button>
+    </md-list-item>
+    
+    <md-list-item class="md-2-line" ng-if="!$ctrl.recipients.length">
+        <md-icon class="md-avatar-icon">info</md-icon>
+        <div class="md-list-item-text">
+            <h3 ma-tr="eventHandlers.noEmailRecips"></h3>
+            <p ma-tr="eventHandlers.addEmailRecipients"></p>
+        </div>
+    </md-list-item>
+</md-list>

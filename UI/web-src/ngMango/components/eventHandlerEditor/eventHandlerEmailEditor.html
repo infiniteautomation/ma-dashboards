@@ -1,5 +1,4 @@
 <h3 ma-tr="eventHandlers.emailSettings"></h3>
-
 <div>
     <md-checkbox ng-model="$ctrl.eventHandler.includeSystemInfo"><span ma-tr="eventHandlers.includeSystemInfo"></span></md-checkbox>
 </div>
@@ -18,28 +17,34 @@
     </md-input-container>
 </div>
 
+<h3 ma-tr="eventHandlers.emailRecipients"></h3>
+<ma-email-recipients name="activeRecipients" ng-model="$ctrl.eventHandler.activeRecipients"></ma-email-recipients>
+
+<h3 ma-tr="eventHandlers.escalationEmail"></h3>
 <div>
     <md-checkbox ng-model="$ctrl.eventHandler.sendEscalation"><span ma-tr="eventHandlers.escal"></span></md-checkbox>
 </div>
 
 <div ng-if="$ctrl.eventHandler.sendEscalation">
-
+    <ma-email-recipients name="escalationRecipients" ng-model="$ctrl.eventHandler.escalationRecipients"></ma-email-recipients>
 </div>
 
+<h3 ma-tr="eventHandlers.inactiveEmail"></h3>
 <div>
     <md-checkbox ng-model="$ctrl.eventHandler.sendInactive"><span ma-tr="eventHandlers.inactiveNotif"></span></md-checkbox>
 </div>
 
 <div ng-if="$ctrl.eventHandler.sendInactive">
     <div>
-        <md-checkbox ng-model="overrideInactive"><span ma-tr="eventHandlers.inactiveOverride"></span></md-checkbox>
+        <md-checkbox ng-model="$ctrl.eventHandler.inactiveOverride"><span ma-tr="eventHandlers.inactiveOverride"></span></md-checkbox>
     </div>
 </div>
 
-<div ng-if="overrideInactive">
-    
+<div ng-if="$ctrl.eventHandler.sendInactive && $ctrl.eventHandler.inactiveOverride">
+    <ma-email-recipients name="inactiveRecipients" ng-model="$ctrl.eventHandler.inactiveRecipients"></ma-email-recipients>
 </div>
 
+<h3 ma-tr="eventHandlers.emailTemplateAndScript"></h3>
 <div>
     <md-checkbox ng-model="$ctrl.customizeTemplate" ma-form-exclude ng-change="$ctrl.customizeTemplateChanged()">
         <span ma-tr="eventHandlers.customizeEmailTemplate"></span>

@@ -117,12 +117,12 @@ import revisionSelect from './components/revisionSelect/revisionSelect';
 import cronPattern from './components/cronPattern/cronPattern';
 import dailySchedule from './components/dailySchedule/dailySchedule';
 import weeklySchedule from './components/weeklySchedule/weeklySchedule';
+import emailRecipients from './components/emailRecipients/emailRecipients';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
 
 import '../shims/exportAMD.js';
-
 import './ngMango.css';
 
 /**
@@ -248,6 +248,7 @@ ngMango.component('maRevisionSelect', revisionSelect);
 ngMango.component('maCronPattern', cronPattern);
 ngMango.component('maDailySchedule', dailySchedule);
 ngMango.component('maWeeklySchedule', weeklySchedule);
+ngMango.component('maEmailRecipients', emailRecipients);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default
