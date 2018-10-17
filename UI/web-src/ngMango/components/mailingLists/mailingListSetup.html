@@ -73,18 +73,18 @@
                             </tr>
                         </thead>
                         <tbody md-body>
-                            <tr md-row ng-repeat="recipient in $ctrl.recipients">
+                            <tr md-row ng-repeat="recipient in $ctrl.list.entries">
                                 <td class="cell" md-cell>
                                     <md-input-container flex="100" class="ma-input-space-between" class="w-100">
                                         <label ma-tr="common.type"></label>
-                                        <md-select ng-model="recipient.type" required>
+                                        <md-select ng-model="recipient.recipientType" required>
                                             <md-option value="ADDRESS">Address</md-option>
                                             <md-option value="USER">User</md-option>
                                         </md-select>
                                     </md-input-container>
                                 </td>
                                 <td class="cell" md-cell>
-                                    <md-input-container ng-if="recipient.type === 'ADDRESS'" flex class="ma-input-space-between" class="w-100">
+                                    <md-input-container ng-if="recipient.recipientType === 'ADDRESS'" flex class="ma-input-space-between" class="w-100">
                                         <label ma-tr="mailingLists.emailAddress"></label>
                                         <input name="address" ng-model="recipient.address" required ma-validation-messages="$ctrl.validationMessages">
                                         <div ng-messages="$ctrl.form.address.$error">
@@ -92,7 +92,7 @@
                                             <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
                                         </div>
                                     </md-input-container>
-                                    <md-input-container ng-if="recipient.type === 'USER'" flex class="ma-input-space-between" class="w-100">
+                                    <md-input-container ng-if="recipient.recipientType === 'USER'" flex class="ma-input-space-between" class="w-100">
                                         <label ma-tr="common.user"></label>
                                         <md-select ng-model="recipient.username" required>
                                             <md-option ng-repeat="user in $ctrl.users" value="{{user.username}}">{{ user.username }}</md-option>
@@ -119,7 +119,7 @@
             <md-divider></md-divider>
 
             <div layout="row" class="weekly-schedule-container">
-                <ma-weekly-schedule class="w-100" ng-model="$ctrl.schedule" lock-all="false" lock-weekends="false" lock-weekdays="false"></ma-weekly-schedule>
+                <ma-weekly-schedule class="w-100" ng-model="$ctrl.list.inactiveSchedule" lock-all="false" lock-weekends="false" lock-weekdays="false"></ma-weekly-schedule>
             </div>
 
         </md-card-content>

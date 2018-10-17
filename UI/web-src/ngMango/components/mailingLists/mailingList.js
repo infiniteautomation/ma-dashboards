@@ -21,7 +21,15 @@ class MailingLists {
     
     constructor($scope, $mdMedia) {
         this.$scope = $scope;
-        this.$mdMedia = $mdMedia
+        this.$mdMedia = $mdMedia;
+
+        this.$scope.$on('mailingListUpdated', (event, arg) => {
+            this.$scope.$broadcast('mailingListWasUpdated', true);
+        });
+
+        this.$scope.$on('newMailingList', (event, arg) => {
+            this.$scope.$broadcast('addNewMailingList', true);
+        });
     }
     
     $onInit() {}
