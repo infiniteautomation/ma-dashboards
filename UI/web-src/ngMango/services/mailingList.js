@@ -14,7 +14,15 @@ function MailingListFactory(RestResource) {
     const defaultProperties = {
         editPermissions: [],
         entries: [],
-        inactiveSchedule: [],
+        inactiveSchedule: [
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
+        ],
         name: '',
         readPermisions: [],
         receiveAlarmEmails: 'IGNORE',

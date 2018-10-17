@@ -28,11 +28,11 @@ class MailingListsListController {
         this.ngModelCtrl.$render = () => this.render();
         this.getLists();
 
-        this.$scope.$on('mailingListUpdated', (event, arg) => {
+        this.$scope.$on('mailingListWasUpdated', (event, arg) => {
             this.getLists();
         });
 
-        this.$scope.$on('newMailingList', (event, arg) => {
+        this.$scope.$on('addNewMailingList', (event, arg) => {
             this.new = true;
         });
 

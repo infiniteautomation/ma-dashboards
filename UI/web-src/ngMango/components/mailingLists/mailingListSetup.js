@@ -46,8 +46,8 @@ class MailingListSetupController {
         this.list.save().then(() => {
             
             this.list = new this.maMailingList();
-            this.$scope.emit('mailingListUpdated', true);
-            this.$scope.emit('newMailingList', true);
+            this.$scope.$emit('mailingListUpdated', true);
+            this.$scope.$emit('newMailingList', true);
             this.setViewValue();
             this.render();
             this.maDialogHelper.toastOptions({textTr: ['ui.app.mailingLists.saved']});
@@ -80,8 +80,8 @@ class MailingListSetupController {
             this.list.delete().then(() => {
                 
                 this.list = new this.maMailingList();
-                this.$scope.emit('mailingListUpdated', true);
-                this.$scope.emit('newMailingList', true);
+                this.$scope.$emit('mailingListUpdated', true);
+                this.$scope.$emit('newMailingList', true);
                 this.setViewValue();
                 this.render();
                 this.maDialogHelper.toastOptions({textTr: ['ui.app.mailingLists.deleted']});
@@ -116,15 +116,14 @@ class MailingListSetupController {
             username: this.users[0].username
         };
         
-        this.recipients.push(recipient);
-
+        this.list.entries.push(recipient);
     }
 
     deleteRecipient(recipient) {
-        const index = this.recipients.indexOf(recipient);
+        const index = this.list.entries.indexOf(recipient);
 
         if (index > -1) {
-            this.recipients.splice(index, 1);
+            this.list.entries.splice(index, 1);
         }
     }
 
