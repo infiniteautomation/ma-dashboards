@@ -1048,3 +1048,9 @@ md-input-container:not(.md-input-invalid).md-input-focused md-icon.ma-alarm-leve
 .ma-acknowledged-checkbox {
     color: #8BC34A;
 }
+
+/* Angular material fix */
+md-list-item.md-2-line md-icon.md-avatar-icon {
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
