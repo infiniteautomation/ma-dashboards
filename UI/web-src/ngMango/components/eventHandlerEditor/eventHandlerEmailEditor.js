@@ -20,6 +20,15 @@ class EventHandlerEmailEditorController {
             this.customizeTemplate = this.eventHandler && !!this.eventHandler.customTemplate;
         }
     }
+    
+    customizeTemplateChanged() {
+        if (!this.customizeTemplate) {
+            this.eventHandler.customTemplate = '';
+            if (this.formCtrl && this.formCtrl.customTemplate) {
+                this.formCtrl.customTemplate.$setDirty();
+            }
+        }
+    }
 }
 
 export default {
@@ -27,5 +36,8 @@ export default {
     controller: EventHandlerEmailEditorController,
     bindings: {
         eventHandler: '<'
+    },
+    require: {
+        formCtrl: '^?form'
     }
 };
