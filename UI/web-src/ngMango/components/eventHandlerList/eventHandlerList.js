@@ -9,17 +9,19 @@ import eventHandlerListTemplate from './eventHandlerList.html';
  * @ngdoc directive
  * @name ngMango.directive:maEventHandlerList
  * @restrict E
- * @description Displays a list of eventHandlers and allows enabling/disabling them
+ * @description Displays a list of event handlers
  */
 
-const $inject = Object.freeze(['maEventHandler', '$scope']);
 class EventHandlerListController {
-    static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
+    static get $inject() { return ['maEventHandler', '$scope', '$q', '$attrs', '$parse']; }
     
-    constructor(maEventHandler, $scope) {
+    constructor(maEventHandler, $scope, $q, $attrs, $parse) {
         this.maEventHandler = maEventHandler;
         this.$scope = $scope;
+        this.$q = $q;
+        this.$attrs = $attrs;
+        this.$parse = $parse;
     }
     
     $onInit() {
@@ -34,16 +36,24 @@ class EventHandlerListController {
 
             const index = this.eventHandlers.findIndex(eventHandler => eventHandler.id === item.id);
             if (index >= 0) {
-                if (event.name === 'update' || event.name === 'create' || event.name === 'rtDataSaved') {
+                if (event.name === 'update' || event.name === 'create') {
                     this.eventHandlers[index] = item;
                 } else if (event.name === 'delete') {
                     this.eventHandlers.splice(index, 1);
                 }
-            } else if (event.name === 'update' || event.name === 'create' || event.name === 'rtDataSaved') {
+            } else if (event.name === 'update' || event.name === 'create') {
                 this.eventHandlers.push(item);
             }
 
-        }, this.$scope, ['create', 'update', 'delete', 'rtDataSaved']);
+        }, this.$scope, ['create', 'update', 'delete']);
+        
+        
+        if (this.$attrs.hasOwnProperty('permitChange')) {
+            const getter = this.$parse(this.$attrs.permitChange);
+            this.permitChange = () => getter(this.$scope.$parent);
+        } else {
+            this.permitChange = () => true;
+        }
     }
     
     $onChanges(changes) {
@@ -58,33 +68,46 @@ class EventHandlerListController {
     }
     
     selectEventHandler(eventHandler) {
-        if (this.selected === eventHandler) {
-            // create a shallow copy if this eventHandler is already selected
-            // causes the model to update
-            this.selected = Object.assign(Object.create(this.maEventHandler.prototype), eventHandler);
-        } else {
-            this.selected = eventHandler;
-        }
-        
-        this.setViewValue();
+        this.checkPermitChange().then(() => {
+            if (this.selected === eventHandler) {
+                // create a shallow copy if this eventHandler is already selected
+                // causes the model to update
+                this.selected = Object.assign(Object.create(this.maEventHandler.prototype), eventHandler);
+            } else {
+                this.selected = eventHandler;
+            }
+            
+            this.setViewValue();
+        }, () => null);
     }
     
     newEventHandler(event) {
-        this.selected = new this.maEventHandler();
-        this.setViewValue();
+        this.checkPermitChange().then(() => {
+            this.selected = new this.maEventHandler();
+            this.setViewValue();
+        }, () => null);
+    }
+
+    checkPermitChange() {
+        return this.$q.resolve(this.permitChange()).then(permitted => {
+            if (!permitted) {
+                return this.$q.reject();
+            }
+        });
     }
 }
 
 export default {
     template: eventHandlerListTemplate,
     controller: EventHandlerListController,
-    bindings: {},
+    bindings: {
+    },
     require: {
         ngModelCtrl: 'ngModel'
     },
     designerInfo: {
-        translation: 'eventHandler.components.eventHandlerList',
-        icon: 'date_range'
+        translation: 'ui.components.eventHandlerList',
+        icon: 'link'
     }
 };
 

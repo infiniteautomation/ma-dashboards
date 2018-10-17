@@ -36,11 +36,9 @@ class EventHandlerEditorController {
         this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
             if (event.defaultPrevented) return;
             
-            if (this.form.$dirty) {
-                if (!this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'))) {
-                    event.preventDefault();
-                    return;
-                }
+            if (!this.confirmDiscard()) {
+                event.preventDefault();
+                return;
             }
         });
 
@@ -56,6 +54,10 @@ class EventHandlerEditorController {
         this.$scope.$on('$destroy', () => {
             this.$window.onbeforeunload = oldUnload;
         });
+        
+        if (typeof this.onInit === 'function') {
+            this.onInit({$controller: this});
+        }
     }
     
     $onChanges(changes) {
@@ -118,20 +120,26 @@ class EventHandlerEditorController {
             });
         }, angular.noop);
     }
+    
+    confirmDiscard() {
+        if (this.form.$dirty) {
+            return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
+        }
+        return true;
+    }
 }
 
 export default {
     template: eventHandlerEditorTemplate,
     controller: EventHandlerEditorController,
     bindings: {
+        onInit: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'
     },
     designerInfo: {
-        translation: 'ui.dox.eventHandlerEditor',
+        translation: 'ui.components.eventHandlerEditor',
         icon: 'link'
     }
 };
-
-
