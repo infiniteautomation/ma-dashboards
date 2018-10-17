@@ -3,10 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import eventHandlerEditorEmailTemplate from '../components/eventHandlerEditor/email.html';
-//import eventHandlerEditorProcessTemplate from './components/eventHandlerEditor/process.html';
-//import eventHandlerEditorSetPointTemplate from './components/eventHandlerEditor/setPoint.html';
-
 eventHandlerProvider.$inject = [];
 function eventHandlerProvider() {
     
@@ -14,7 +10,7 @@ function eventHandlerProvider() {
         {
             type: 'EMAIL',
             description: 'eventHandlers.type.email',
-            editorTemplateUrl: 'eventHandlers.email.html'
+            editorTemplate: `<ma-event-handler-email-editor event-handler="$ctrl.eventHandler"></ma-event-handler-email-editor>`
         },
         {
             type: 'PROCESS',
@@ -41,15 +37,20 @@ function eventHandlerProvider() {
     
     eventHandlerFactory.$inject = ['maRestResource', '$templateCache'];
     function eventHandlerFactory(RestResource, $templateCache) {
-        $templateCache.put('eventHandlers.email.html', eventHandlerEditorEmailTemplate);
 
         const eventHandlerBaseUrl = '/rest/v1/event-handlers';
         const eventHandlerWebSocketUrl = '/rest/v1/websocket/event-handlers';
         const eventHandlerXidPrefix = 'EH_';
 
         const eventHandlerTypesByName = Object.create(null);
-        eventHandlerTypes.forEach(type => {
-            eventHandlerTypesByName[type.type] = type;
+        eventHandlerTypes.forEach(eventHandlerType => {
+            eventHandlerTypesByName[eventHandlerType.type] = eventHandlerType;
+            
+            // put the templates in the template cache so we can ng-include them
+            if (eventHandlerType.editorTemplate && !eventHandlerType.editorTemplateUrl) {
+                eventHandlerType.editorTemplateUrl = `eventHandlers.${eventHandlerType.type}.html`;
+                $templateCache.put(eventHandlerType.editorTemplateUrl, eventHandlerType.editorTemplate);
+            }
         });
         
     	const defaultProperties = {

@@ -1,0 +1,52 @@
+<h3 ma-tr="eventHandlers.emailSettings"></h3>
+
+<div>
+    <md-checkbox ng-model="$ctrl.eventHandler.includeSystemInfo"><span ma-tr="eventHandlers.includeSystemInfo"></span></md-checkbox>
+</div>
+<div>
+    <md-checkbox ng-model="$ctrl.eventHandler.includeLogfile"><span ma-tr="eventHandlers.includeLogfile"></span></md-checkbox>
+</div>
+
+<div layout>
+    <md-input-container flex="100" flex-gt-md="25">
+        <label ma-tr="eventHandlers.includePointValueCount"></label>
+        <input name="includePointValueCount" ng-model="$ctrl.eventHandler.includePointValueCount" min="0" step="1" ma-validation-messages="$ctrl.validationMessages">
+        <div ng-messages="$ctrl.form.customTemplate.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.customTemplate.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>
+
+<div>
+    <md-checkbox ng-model="$ctrl.eventHandler.sendEscalation"><span ma-tr="eventHandlers.escal"></span></md-checkbox>
+</div>
+
+<div ng-if="$ctrl.eventHandler.sendEscalation">
+
+</div>
+
+<div>
+    <md-checkbox ng-model="$ctrl.eventHandler.sendInactive"><span ma-tr="eventHandlers.inactiveNotif"></span></md-checkbox>
+</div>
+
+<div ng-if="$ctrl.eventHandler.sendInactive">
+    <div>
+        <md-checkbox ng-model="overrideInactive"><span ma-tr="eventHandlers.inactiveOverride"></span></md-checkbox>
+    </div>
+</div>
+
+<div ng-if="overrideInactive">
+    
+</div>
+
+<div>
+    <md-checkbox ng-model="$ctrl.customizeTemplate" ng-change="$ctrl.eventHandler.customTemplate = $ctrl.customizeTemplate ? $ctrl.eventHandler.customTemplate : ''">
+        <span ma-tr="eventHandlers.customizeEmailTemplate"></span>
+    </md-checkbox>
+</div>
+
+<div ng-if="$ctrl.customizeTemplate">
+    <h4 ma-tr="eventHandlers.customTemplate"></h4>
+    <ma-ace-editor name="customTemplate" mode="html" ng-model="$ctrl.eventHandler.customTemplate"></ma-ace-editor>
+</div>
