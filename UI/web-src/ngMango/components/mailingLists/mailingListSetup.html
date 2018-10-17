@@ -50,16 +50,16 @@
                 
                 <md-input-container flex="100" class="ma-input-space-between" class="w-100">
                     <label ma-tr="ui.app.mailingLists.sendAlarmEmail"></label>
-                    <md-select ng-model="recipient.type" required>
-                            <md-option value="0">None</md-option>
-                            <md-option value="1">Information</md-option>
-                            <md-option value="2">Important</md-option>
-                            <md-option value="3">Warning</md-option>
-                            <md-option value="4">Urgent</md-option>
-                            <md-option value="5">Critical</md-option>
-                            <md-option value="6">Safety</md-option>
-                            <md-option value="-2">Do Not Log</md-option>
-                            <md-option value="-3">Ignore</md-option>
+                    <md-select ng-model="$ctrl.list.receiveAlarmEmails" required>
+                            <md-option value="NONE">None</md-option>
+                            <md-option value="INFORMATION">Information</md-option>
+                            <md-option value="IMPORTART">Important</md-option>
+                            <md-option value="WARNING">Warning</md-option>
+                            <md-option value="URGENT">Urgent</md-option>
+                            <md-option value="CRITICAL">Critical</md-option>
+                            <md-option value="LIFE_SAFETY">Safety</md-option>
+                            <md-option value="DO_NOT_LOG">Do Not Log</md-option>
+                            <md-option value="IGNORE">Ignore</md-option>
                     </md-select>
                 </md-input-container>
                 
