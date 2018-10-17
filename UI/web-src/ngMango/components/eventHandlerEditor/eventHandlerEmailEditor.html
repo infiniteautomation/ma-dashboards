@@ -1,9 +1,9 @@
 <h3 ma-tr="eventHandlers.emailSettings"></h3>
 <div>
-    <md-checkbox ng-model="$ctrl.eventHandler.includeSystemInfo"><span ma-tr="eventHandlers.includeSystemInfo"></span></md-checkbox>
+    <md-checkbox name="includeSystemInfo" ng-model="$ctrl.eventHandler.includeSystemInfo"><span ma-tr="eventHandlers.includeSystemInfo"></span></md-checkbox>
 </div>
 <div>
-    <md-checkbox ng-model="$ctrl.eventHandler.includeLogfile"><span ma-tr="eventHandlers.includeLogfile"></span></md-checkbox>
+    <md-checkbox name="includeLogfile" ng-model="$ctrl.eventHandler.includeLogfile"><span ma-tr="eventHandlers.includeLogfile"></span></md-checkbox>
 </div>
 
 <div layout>
@@ -22,7 +22,7 @@
 
 <h3 ma-tr="eventHandlers.escalationEmail"></h3>
 <div>
-    <md-checkbox ng-model="$ctrl.eventHandler.sendEscalation"><span ma-tr="eventHandlers.escal"></span></md-checkbox>
+    <md-checkbox name="sendEscalation" ng-model="$ctrl.eventHandler.sendEscalation"><span ma-tr="eventHandlers.escal"></span></md-checkbox>
 </div>
 
 <div ng-if="$ctrl.eventHandler.sendEscalation">
@@ -31,12 +31,12 @@
 
 <h3 ma-tr="eventHandlers.inactiveEmail"></h3>
 <div>
-    <md-checkbox ng-model="$ctrl.eventHandler.sendInactive"><span ma-tr="eventHandlers.inactiveNotif"></span></md-checkbox>
+    <md-checkbox name="sendInactive" ng-model="$ctrl.eventHandler.sendInactive"><span ma-tr="eventHandlers.inactiveNotif"></span></md-checkbox>
 </div>
 
 <div ng-if="$ctrl.eventHandler.sendInactive">
     <div>
-        <md-checkbox ng-model="$ctrl.eventHandler.inactiveOverride"><span ma-tr="eventHandlers.inactiveOverride"></span></md-checkbox>
+        <md-checkbox name="inactiveOverride" ng-model="$ctrl.eventHandler.inactiveOverride"><span ma-tr="eventHandlers.inactiveOverride"></span></md-checkbox>
     </div>
 </div>
 

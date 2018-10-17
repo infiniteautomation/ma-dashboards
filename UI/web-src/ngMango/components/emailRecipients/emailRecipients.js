@@ -47,6 +47,34 @@ class EmailRecipientsController {
         default: return '';
         }
     }
+    
+    userChanged() {
+        if (this.user) {
+            const existing = this.recipients.find(r => r.type === 'USER' && r.username === this.user.username);
+            if (!existing) {
+                this.recipients.push({
+                    type: 'USER',
+                    username: this.user.username
+                });
+                this.setViewValue();
+            }
+        }
+        this.user = null;
+    }
+    
+    emailChanged() {
+        if (this.email) {
+            const existing = this.recipients.find(r => r.type === 'ADDRESS' && r.address === this.email);
+            if (!existing) {
+                this.recipients.push({
+                    type: 'ADDRESS',
+                    address: this.email
+                });
+                this.setViewValue();
+            }
+        }
+        this.email = null;
+    }
 }
 
 export default {

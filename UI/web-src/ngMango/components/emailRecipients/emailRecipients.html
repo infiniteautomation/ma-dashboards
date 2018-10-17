@@ -1,3 +1,11 @@
+<div layout layout-align="start center" layout-wrap>
+    <ma-user-select flex="100" flex-gt-md="33" ng-model="$ctrl.user" ng-change="$ctrl.userChanged()" ma-form-exclude></ma-user-select>
+    <md-input-container flex="100" flex-gt-md="33">
+        <label ma-tr="common.email"></label>
+        <input type="email" ng-model="$ctrl.email" ng-change="$ctrl.emailChanged()" ng-model-options="{debounce: 2000}" ma-form-exclude>
+    </md-input-container>
+</div>
+
 <md-list>
     <md-list-item class="md-2-line" ng-repeat="recipient in $ctrl.recipients">
         <md-icon class="md-avatar-icon">{{$ctrl.iconForRecipient(recipient)}}</md-icon>
