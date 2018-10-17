@@ -41,7 +41,7 @@
 </div>
 
 <div>
-    <md-checkbox ng-model="$ctrl.customizeTemplate" ng-change="$ctrl.eventHandler.customTemplate = $ctrl.customizeTemplate ? $ctrl.eventHandler.customTemplate : ''">
+    <md-checkbox ng-model="$ctrl.customizeTemplate" ma-form-exclude ng-change="$ctrl.customizeTemplateChanged()">
         <span ma-tr="eventHandlers.customizeEmailTemplate"></span>
     </md-checkbox>
 </div>
