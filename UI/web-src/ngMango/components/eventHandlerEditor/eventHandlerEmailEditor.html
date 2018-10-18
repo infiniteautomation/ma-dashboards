@@ -24,8 +24,21 @@
 <div>
     <md-checkbox name="sendEscalation" ng-model="$ctrl.eventHandler.sendEscalation"><span ma-tr="eventHandlers.escal"></span></md-checkbox>
 </div>
-
 <div ng-if="$ctrl.eventHandler.sendEscalation">
+    <div>
+        <md-checkbox name="repeatEscalations" ng-model="$ctrl.eventHandler.repeatEscalations"><span ma-tr="eventHandlers.repeatEscal"></span></md-checkbox>
+    </div>
+    
+    <div layout="100" flex-gt-md="50" layout-align="start center">
+        <label for="escalationDelay" ma-tr="eventHandlers.escalPeriod"></label>
+        <md-input-container>
+            <input name="escalationDelay" ng-model="$ctrl.eventHandler.escalationDelay">
+        </md-input-container>
+        <md-input-container>
+            <ma-interval-type-picker name="escalationDelayType" ng-model="$ctrl.eventHandler.escalationDelayType"></ma-interval-type-picker>
+        </md-input-container>
+    </div>
+    
     <ma-email-recipients name="escalationRecipients" ng-model="$ctrl.eventHandler.escalationRecipients"></ma-email-recipients>
 </div>
 
@@ -40,9 +53,7 @@
     </div>
 </div>
 
-<div ng-if="$ctrl.eventHandler.sendInactive && $ctrl.eventHandler.inactiveOverride">
-    <ma-email-recipients name="inactiveRecipients" ng-model="$ctrl.eventHandler.inactiveRecipients"></ma-email-recipients>
-</div>
+<ma-email-recipients ng-if="$ctrl.eventHandler.sendInactive && $ctrl.eventHandler.inactiveOverride" name="inactiveRecipients" ng-model="$ctrl.eventHandler.inactiveRecipients"></ma-email-recipients>
 
 <h3 ma-tr="eventHandlers.emailTemplateAndScript"></h3>
 <div>
