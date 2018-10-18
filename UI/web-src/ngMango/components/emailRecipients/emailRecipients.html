@@ -3,9 +3,13 @@
         <ma-label ma-tr="ui.components.selectUsers"></ma-label>
     </ma-user-select>
     
-    <md-input-container flex="100" flex-gt-md="33">
-        <label ma-tr="common.email"></label>
-        <input type="email" ng-model="$ctrl.email" ng-change="$ctrl.emailChanged()" ng-model-options="{debounce: 2000}" ma-form-exclude>
+    <md-input-container flex="100" flex-gt-md="33" ng-form="$ctrl.emailForm" ma-form-exclude>
+        <label ma-tr="js.email.addAddress"></label>
+        <input type="email" name="email" ng-model="$ctrl.email" ma-enter="$ctrl.emailChanged()">
+        <md-button class="md-icon-button ma-input-button" ng-click="$ctrl.emailChanged()" ng-disabled="$ctrl.emailForm.email.$invalid">
+            <md-icon>add</md-icon>
+            <md-tooltip ma-tr="common.add"></md-tooltip>
+        </md-button>
     </md-input-container>
 </div>
 
