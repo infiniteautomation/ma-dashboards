@@ -6,11 +6,20 @@
 formExclude.$inject = [];
 function formExclude() {
     return {
-        require: 'ngModel',
+        require: {
+            modelCtrl: '?ngModel',
+            formCtrl: '?form'
+        },
         restrict: 'A',
-        link: function($scope, $element, $attrs, modelCtrl) {
-            if (modelCtrl.$$parentForm) {
+        link: function($scope, $element, $attrs, ctrls) {
+            const modelCtrl = ctrls.modelCtrl;
+            const formCtrl = ctrls.formCtrl;
+            
+            if (modelCtrl) {
                 modelCtrl.$$parentForm.$removeControl(modelCtrl);
+            }
+            if (formCtrl) {
+                formCtrl.$$parentForm.$removeControl(formCtrl);
             }
         }
     };
