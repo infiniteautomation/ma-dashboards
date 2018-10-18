@@ -8,43 +8,55 @@ import userSelectTemplate from './userSelect.html';
 
 const UPDATE_TYPES = ['add', 'update', 'delete'];
 
-UserSelectController.$inject = ['maUser', 'maUserEventManager', '$scope'];
-function UserSelectController(User, UserEventManager, $scope) {
-    this.User = User;
-    this.UserEventManager = UserEventManager;
-    this.$scope = $scope;
-}
-
-UserSelectController.prototype.$onInit = function() {
-    const $ctrl = this;
-    this.ngModelCtrl.$render = function() {
-        $ctrl.selectedUser = this.$viewValue;
-    };
-    this.users = this.User.query({rqlQuery: 'limit(10000)'});
+class UserSelectController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['maUser', 'maUserEventManager', '$scope', '$element']; }
     
-    this.UserEventManager.smartSubscribe(this.$scope, null, UPDATE_TYPES, this.updateHandler.bind(this));
-};
-
-UserSelectController.prototype.selectUser = function(user) {
-    this.ngModelCtrl.$setViewValue(user);
-};
-
-UserSelectController.prototype.updateHandler = function(event, update) {
-    this.users.$promise.then(users => {
-        const userIndex = users.findIndex(u => u.id === update.object.id);
-
-        if (update.action === 'add' || update.action === 'update') {
-            const user = userIndex >= 0 && users[userIndex];
-            if (user) {
-                angular.merge(user, update.object);
-            } else {
-                users.push(angular.merge(new this.User(), update.object));
+    constructor(User, UserEventManager, $scope, $element) {
+        this.User = User;
+        this.UserEventManager = UserEventManager;
+        this.$scope = $scope;
+    }
+    
+    $onInit() {
+        this.ngModelCtrl.$render = () => this.render();
+        
+        this.getUsers();
+        this.UserEventManager.smartSubscribe(this.$scope, null, UPDATE_TYPES, this.updateHandler.bind(this));
+    }
+    
+    render() {
+        this.selectedUser = this.ngModelCtrl.$viewValue;
+    }
+    
+    selectUser(user) {
+        this.ngModelCtrl.$setViewValue(user);
+    }
+    
+    getUsers() {
+        this.usersPromise = this.User.buildQuery().limit(10000).query().then(users => {
+            this.users = users;
+            return users;
+        });
+    }
+    
+    updateHandler(event, update) {
+        this.usersPromise.then(users => {
+            const userIndex = users.findIndex(u => u.id === update.object.id);
+    
+            if (update.action === 'add' || update.action === 'update') {
+                const user = userIndex >= 0 && users[userIndex];
+                if (user) {
+                    angular.merge(user, update.object);
+                } else {
+                    users.push(angular.merge(new this.User(), update.object));
+                }
+            } else if (update.action === 'delete' && userIndex >= 0) {
+                users.splice(userIndex, 1);
             }
-        } else if (update.action === 'delete' && userIndex >= 0) {
-            users.splice(userIndex, 1);
-        }
-    });
-};
+        });
+    }
+}
 
 export default {
     controller: UserSelectController,
@@ -53,7 +65,8 @@ export default {
         'ngModelCtrl': 'ngModel'
     },
     bindings: {
-        showClear: '<?'
+        showClear: '<?',
+        selectMultiple: '<?'
     },
     transclude: {
         label: '?maLabel'
@@ -66,5 +79,3 @@ export default {
         },
     }
 };
-
-
