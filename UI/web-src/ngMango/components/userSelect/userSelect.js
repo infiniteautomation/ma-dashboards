@@ -66,7 +66,8 @@ export default {
     },
     bindings: {
         showClear: '<?',
-        selectMultiple: '<?'
+        selectMultiple: '<?',
+        hideName: '<?'
     },
     transclude: {
         label: '?maLabel'
