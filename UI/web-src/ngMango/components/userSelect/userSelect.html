@@ -4,10 +4,10 @@
   </label>
   <md-select ng-if="$ctrl.selectMultiple" multiple="true" md-on-open="$ctrl.usersPromise" ma-form-exclude ng-model="$ctrl.selectedUser" ng-change="$ctrl.selectUser($ctrl.selectedUser, $event)" ng-model-options="{trackBy: '$value.username'}">
     <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
-    <md-option ng-repeat="user in $ctrl.users track by user.username" ng-value="user"><span ng-bind="user.username"></span> <em ng-bind="'(' + user.name + ')'"></em></md-option>
+    <md-option ng-repeat="user in $ctrl.users track by user.username" ng-value="user"><span ng-bind="user.username"></span><span ng-if="!$ctrl.hideName"> <em ng-bind="'(' + user.name + ')'"></em></span></md-option>
   </md-select>
   <md-select ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.usersPromise" ma-form-exclude ng-model="$ctrl.selectedUser" ng-change="$ctrl.selectUser($ctrl.selectedUser, $event)" ng-model-options="{trackBy: '$value.username'}">
     <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
-    <md-option ng-repeat="user in $ctrl.users track by user.username" ng-value="user"><span ng-bind="user.username"></span> <em ng-bind="'(' + user.name + ')'"></em></md-option>
+    <md-option ng-repeat="user in $ctrl.users track by user.username" ng-value="user"><span ng-bind="user.username"></span><span ng-if="!$ctrl.hideName"> <em ng-bind="'(' + user.name + ')'"></em></span></md-option>
   </md-select>
 </md-input-container>
