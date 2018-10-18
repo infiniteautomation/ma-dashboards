@@ -57,12 +57,20 @@ class EmailRecipientsController {
     }
     
     usersChanged() {
-        const usersAsRecipients = this.users.map(u => ({type: 'USER', username: u.username}));
-        
-        this.recipients = this.recipients.filter(r => r.type !== 'USER')
-            .concat(usersAsRecipients);
-        
-        this.setViewValue();
+        const current = new Set(this.recipients.filter(r => r.type === 'USER').map(u => u.username));
+        const selected = this.users.map(u => u.username);
+
+        // have to do this check for sets being equal as when mdSelect populates it checks that the model item is equal to the one in the array
+        // and calls $setViewValue if its not. Our model item initially looks like {username: 'admin'} and the one from REST in the array is a full
+        // user item, so angular.equals() returns false.
+        if (!(selected.length === current.size && selected.every(u => current.has(u)))) {
+            const usersAsRecipients = this.users.map(u => ({type: 'USER', username: u.username}));
+
+            this.recipients = this.recipients.filter(r => r.type !== 'USER')
+                .concat(usersAsRecipients);
+            
+            this.setViewValue();
+        }
     }
     
     emailChanged() {
@@ -75,8 +83,8 @@ class EmailRecipientsController {
                 });
                 this.setViewValue();
             }
+            this.email = null;
         }
-        this.email = null;
     }
 }
 

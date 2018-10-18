@@ -362,7 +362,7 @@ md-card.ma-accordion md-card-content {
 .ma-input-button.md-icon-button.md-button {
   margin: 0;
   position: absolute;
-  top: 0;
+  top: -4px;
   right: 0;
 }
 
