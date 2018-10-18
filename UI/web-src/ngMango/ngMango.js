@@ -325,13 +325,13 @@ ngMango.constant('MA_DATE_TIME_FORMATS', [
 ]);
 
 ngMango.constant('MA_TIME_PERIOD_TYPES', [
- {type: 'SECONDS', label: 'Seconds'},
- {type: 'MINUTES', label: 'Minutes'},
- {type: 'HOURS', label: 'Hours'},
- {type: 'DAYS', label: 'Days'},
- {type: 'WEEKS', label: 'Weeks'},
- {type: 'MONTHS', label: 'Months'},
- {type: 'YEARS', label: 'Years'}
+ {type: 'SECONDS', label: 'Seconds', translation: 'dateAndTime.seconds'},
+ {type: 'MINUTES', label: 'Minutes', translation: 'dateAndTime.minutes'},
+ {type: 'HOURS', label: 'Hours', translation: 'dateAndTime.hours'},
+ {type: 'DAYS', label: 'Days', translation: 'dateAndTime.days', showByDefault: true},
+ {type: 'WEEKS', label: 'Weeks', translation: 'dateAndTime.weeks', showByDefault: true},
+ {type: 'MONTHS', label: 'Months', translation: 'dateAndTime.months', showByDefault: true},
+ {type: 'YEARS', label: 'Years', translation: 'dateAndTime.years', showByDefault: true}
 ]);
 
 ngMango.constant('MA_CHART_TYPES', [

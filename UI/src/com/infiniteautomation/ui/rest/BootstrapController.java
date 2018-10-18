@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiOperation;
 public class BootstrapController {
 
     private static final String[] PUBLIC_TRANSLATIONS = new String[] {"login", "header"};
-    private static final String[] PRIVATE_TRANSLATIONS = new String[] {"ui", "common", "pointEdit", "rest", "footer"};
+    private static final String[] PRIVATE_TRANSLATIONS = new String[] {"ui", "common", "pointEdit", "rest", "footer", "dateAndTime"};
 
     private final JsonDataDao jsonDataDao;
     private final SystemSettingsDao systemSettingsDao;

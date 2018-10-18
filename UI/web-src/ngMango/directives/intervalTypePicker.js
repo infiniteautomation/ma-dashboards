@@ -41,31 +41,25 @@
  </md-input-container>
  *
  */
-function intervalTypePicker($injector) {
-    const types = [
-	  {type: 'SECONDS', label: 'Seconds'},
-	  {type: 'MINUTES', label: 'Minutes'},
-	  {type: 'HOURS', label: 'Hours'},
-	  {type: 'DAYS', label: 'Days'},
-	  {type: 'WEEKS', label: 'Weeks'},
-	  {type: 'MONTHS', label: 'Months'},
-	  {type: 'YEARS', label: 'Years'}
-	];
 
+intervalTypePicker.$inject = ['$injector', 'MA_TIME_PERIOD_TYPES'];
+function intervalTypePicker($injector, MA_TIME_PERIOD_TYPES) {
     return {
         restrict: 'E',
         scope: {},
         replace: true,
+        require: 'ngModel',
         template: function() {
             if ($injector.has('$mdpDatePicker')) {
-                return '<md-select>' +
-                    '<md-option ng-value="t.type" ng-repeat="t in types">{{t.label}}</md-option>' +
-                    '</md-select>';
+                return `
+                    <md-select>
+                        <md-option ng-value="t.type" ng-repeat="t in types track by t.type"><span ma-tr="{{t.translation}}"></span></md-option>
+                    </md-select>`;
             }
-            return '<select ng-options="t.type as t.label for t in types"></select>';
+            return `<select ng-options="t.type as (t.translation | maTr) for t in types track by t.type"></select>`;
         },
         link: function ($scope, $element, attr) {
-        	$scope.types = types;
+        	$scope.types = MA_TIME_PERIOD_TYPES;
         },
         designerInfo: {
             translation: 'ui.components.intervalTypePicker',
@@ -74,8 +68,4 @@ function intervalTypePicker($injector) {
     };
 }
 
-intervalTypePicker.$inject = ['$injector'];
-
 export default intervalTypePicker;
-
-
