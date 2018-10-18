@@ -4,6 +4,7 @@
  */
 
 import emailRecipientsTemplate from './emailRecipients.html';
+import './emailRecipients.css';
 
 /**
  * @ngdoc directive
@@ -28,6 +29,12 @@ class EmailRecipientsController {
     
     render() {
         this.recipients = this.ngModelCtrl.$viewValue || [];
+        this.updateUsers();
+    }
+    
+    updateUsers() {
+        this.users = this.recipients.filter(r => r.type === 'USER')
+            .map(r => ({username: r.username}));
     }
     
     setViewValue() {
@@ -36,6 +43,7 @@ class EmailRecipientsController {
     
     removeRecipient(recipient, index) {
         this.recipients.splice(index, 1);
+        this.updateUsers();
         this.setViewValue();
     }
     
@@ -48,18 +56,13 @@ class EmailRecipientsController {
         }
     }
     
-    userChanged() {
-        if (this.user) {
-            const existing = this.recipients.find(r => r.type === 'USER' && r.username === this.user.username);
-            if (!existing) {
-                this.recipients.push({
-                    type: 'USER',
-                    username: this.user.username
-                });
-                this.setViewValue();
-            }
-        }
-        this.user = null;
+    usersChanged() {
+        const usersAsRecipients = this.users.map(u => ({type: 'USER', username: u.username}));
+        
+        this.recipients = this.recipients.filter(r => r.type !== 'USER')
+            .concat(usersAsRecipients);
+        
+        this.setViewValue();
     }
     
     emailChanged() {
