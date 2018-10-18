@@ -16,7 +16,9 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
                 <md-input-container flex>
                     <label ma-tr="ui.app.updateUnit"></label>
                     <md-select name="updateIntervalPeriod" ng-model="$ctrl.params.updateIntervalPeriod" ng-disabled="!$ctrl.params.autoUpdate">
-                        <md-option ng-repeat="t in $ctrl.timePeriodTypes track by t.type" ng-value="t.type" ng-bind="t.label"></md-option>
+                        <md-option ng-repeat="t in $ctrl.timePeriodTypes track by t.type" ng-value="t.type">
+                            <span ma-tr="{{t.translation}}"></span>
+                        </md-option>
                     </md-select>
                 </md-input-container>
             </div>
@@ -37,7 +39,9 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
                     <label ma-tr="ui.app.rollupUnit"></label>
                     <md-select name="rollupIntervalPeriod" ng-model="$ctrl.params.rollupIntervalPeriod"
                         ng-disabled="$ctrl.params.rollupType=='NONE' || $ctrl.params.autoRollup">
-                      <md-option ng-repeat="t in $ctrl.timePeriodTypes track by t.type" ng-value="t.type" ng-bind="t.label"></md-option>
+                      <md-option ng-repeat="t in $ctrl.timePeriodTypes track by t.type" ng-value="t.type">
+                            <span ma-tr="{{t.translation}}"></span>
+                      </md-option>
                     </md-select>
                 </md-input-container>
             </div>

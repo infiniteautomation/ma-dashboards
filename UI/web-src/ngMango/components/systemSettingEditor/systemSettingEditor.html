@@ -20,14 +20,10 @@
   </md-select>
   <md-select ng-if="$ctrl.inputType === 'timeperiodtype'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()"
       ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
-    <md-option ng-if="$ctrl.availableOptions && $ctrl.availableOptions.includes('MILLISECONDS')" value="MILLISECONDS"><span ma-tr="common.tp.milliseconds"></span></md-option>
-    <md-option ng-if="$ctrl.availableOptions && $ctrl.availableOptions.includes('SECONDS')" value="SECONDS"><span ma-tr="common.tp.seconds"></span></md-option>
-    <md-option ng-if="$ctrl.availableOptions && $ctrl.availableOptions.includes('MINUTES')" value="MINUTES"><span ma-tr="common.tp.minutes"></span></md-option>
-    <md-option ng-if="$ctrl.availableOptions && $ctrl.availableOptions.includes('HOURS')" value="HOURS"><span ma-tr="common.tp.hours"></span></md-option>
-    <md-option ng-if="!$ctrl.availableOptions || $ctrl.availableOptions.includes('DAYS')" value="DAYS"><span ma-tr="common.tp.days"></span></md-option>
-    <md-option ng-if="!$ctrl.availableOptions || $ctrl.availableOptions.includes('WEEKS')" value="WEEKS"><span ma-tr="common.tp.weeks"></span></md-option>
-    <md-option ng-if="!$ctrl.availableOptions || $ctrl.availableOptions.includes('MONTHS')" value="MONTHS"><span ma-tr="common.tp.months"></span></md-option>
-    <md-option ng-if="!$ctrl.availableOptions || $ctrl.availableOptions.includes('YEARS')" value="YEARS"><span ma-tr="common.tp.years"></span></md-option>
+    <md-option ng-repeat="periodType in $ctrl.timePeriodTypes track by periodType.type" ng-value="periodType.type"
+            ng-if="!$ctrl.availableOptions && periodType.showByDefault || $ctrl.availableOptions.includes(periodType.type)">
+        <span ma-tr="{{periodType.translation}}"></span>
+    </md-option>
   </md-select>
   <ma-permissions-menu ng-if="$ctrl.inputType === 'permission' && !$ctrl.disabled" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()"></ma-permissions-menu>
   <textarea ng-if="$ctrl.inputType === 'textarea'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}"  ng-disabled="$ctrl.disabled"></textarea>

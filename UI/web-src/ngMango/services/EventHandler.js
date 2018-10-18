@@ -15,12 +15,12 @@ function eventHandlerProvider() {
         {
             type: 'PROCESS',
             description: 'eventHandlers.type.process',
-            editorTemplateUrl: 'eventHandlers.process.html'
+            editorTemplate: ``
         },
         {
             type: 'SET_POINT',
             description: 'eventHandlers.type.setPoint',
-            editorTemplateUrl: 'eventHandlers.setPoint.html'
+            editorTemplate: ``
         }
     ];
     
