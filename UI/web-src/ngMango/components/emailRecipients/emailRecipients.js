@@ -109,9 +109,12 @@ class EmailRecipientsController {
     
     chipKeyDown(event) {
         // stops the email being added if it is invalid
-        if (this.separatorKeys.includes(event.keyCode) && this.chipsForm.chipsEmail.$invalid) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
+        if (this.separatorKeys.includes(event.keyCode)) {
+            if (this.chipsForm.email.$invalid) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                this.chipsForm.email.$setTouched();
+            }
         }
     }
 }

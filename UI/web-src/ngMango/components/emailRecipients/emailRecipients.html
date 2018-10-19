@@ -6,14 +6,17 @@
 
 <!-- stops the md-chips input from marking forms containing this component dirty until enter is pressed -->
 <div ng-form="$ctrl.chipsForm" ma-form-exclude>
-    <md-chips ng-model="$ctrl.recipients" ng-change="$ctrl.chipsChanged()" name="fruitName" readonly="false" md-removable="true"
+    <md-chips name="recipients" ng-model="$ctrl.recipients" ng-change="$ctrl.chipsChanged()" name="fruitName" readonly="false" md-removable="true"
             md-transform-chip="$ctrl.toRecipient($chip)" md-separator-keys="$ctrl.separatorKeys">
     
-        <input name="chipsEmail" type="email" ng-model="$ctrl.emailBuffer" ma-tr="js.email.addAddress" ng-keydown="$ctrl.chipKeyDown($event)">
+        <input name="email" type="email" ng-model="$ctrl.email" ma-tr="js.email.addAddress" ng-keydown="$ctrl.chipKeyDown($event)">
         
         <md-chip-template>
             <strong><md-icon>{{$ctrl.iconForRecipient($chip)}}</md-icon>&nbsp;<span ng-bind="$chip.username || $chip.address || $chip.name || $chip.xid"></span>&nbsp;</strong>
             <md-tooltip ma-tr="ui.components.emailRecipient.{{$chip.type}}"></md-tooltip>
         </md-chip-template>
     </md-chips>
+    <div ng-messages="$ctrl.chipsForm.email.$error" md-colors="{color: 'warn'}">
+        <div ng-message="email">Invalid email</div>
+    </div>
 </div>
