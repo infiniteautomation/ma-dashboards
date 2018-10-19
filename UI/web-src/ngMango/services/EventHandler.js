@@ -54,15 +54,10 @@ function eventHandlerProvider() {
         });
         
     	const defaultProperties = {
-            alias: '',
-            eventType: {
-                typeName: 'SYSTEM',
-                systemEventType: 'SET_POINT_HANDLER_FAILURE',
-                refId1: 0
-            },
-            
+            name: '',
+            eventTypes: [],
             handlerType: 'EMAIL',
-            activeRecipients: [{type: 'USER', username: 'admin'}],
+            activeRecipients: [],
             additionalContext: [],
             customTemplate: '',
             disabled: false,
