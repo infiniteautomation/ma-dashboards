@@ -1,13 +1,3 @@
 ma-email-recipients {
 	display: block;
 }
-
-ma-email-recipients md-list > md-list-item.md-2-line md-icon.md-avatar-icon {
-	margin-top: auto;
-	margin-bottom: auto;
-}
-
-ma-email-recipients md-list > md-list-item.md-2-line {
-	min-height: 64px;
-	height: 64px;
-}

@@ -1,13 +1,14 @@
 <h3 ma-tr="eventHandlers.emailSettings"></h3>
-<div>
-    <md-checkbox name="includeSystemInfo" ng-model="$ctrl.eventHandler.includeSystemInfo"><span ma-tr="eventHandlers.includeSystemInfo"></span></md-checkbox>
-</div>
-<div>
-    <md-checkbox name="includeLogfile" ng-model="$ctrl.eventHandler.includeLogfile"><span ma-tr="eventHandlers.includeLogfile"></span></md-checkbox>
-</div>
-
-<div layout>
-    <md-input-container flex="100" flex-gt-md="25">
+<div layout layout-align="start center" layout-wrap>
+    <div flex="100" flex-gt-md="33">
+        <md-checkbox name="includeSystemInfo" ng-model="$ctrl.eventHandler.includeSystemInfo"><span ma-tr="eventHandlers.includeSystemInfo"></span></md-checkbox>
+    </div>
+    
+    <div flex="100" flex-gt-md="33">
+        <md-checkbox name="includeLogfile" ng-model="$ctrl.eventHandler.includeLogfile"><span ma-tr="eventHandlers.includeLogfile"></span></md-checkbox>
+    </div>
+    
+    <md-input-container flex="100" flex-gt-md="33">
         <label ma-tr="eventHandlers.includePointValueCount"></label>
         <input name="includePointValueCount" ng-model="$ctrl.eventHandler.includePointValueCount" min="0" step="1" ma-validation-messages="$ctrl.validationMessages">
         <div ng-messages="$ctrl.form.customTemplate.$error">
