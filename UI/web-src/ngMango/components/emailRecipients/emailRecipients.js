@@ -13,11 +13,19 @@ import './emailRecipients.css';
  * @description Component for selecting a list of email, users and mailing lists to send an email to
  */
 
+const typeOrder = {
+    MAILING_LIST: 1,
+    USER: 2,
+    ADDRESS: 3
+};
+
 class EmailRecipientsController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return []; }
     
     constructor() {
+        // COMMA, SEMICOLON, ENTER
+        this.separatorKeys = [188, 186, 13];
     }
     
     $onInit() {
@@ -28,8 +36,21 @@ class EmailRecipientsController {
     }
     
     render() {
-        this.recipients = this.ngModelCtrl.$viewValue || [];
+        if (Array.isArray(this.ngModelCtrl.$viewValue)) {
+            this.recipients = this.ngModelCtrl.$viewValue.slice();
+            this.sortRecipients();
+        } else {
+            this.recipients = [];
+        }
         this.updateUsers();
+    }
+    
+    sortRecipients() {
+        this.recipients.sort((a, b) => {
+            if (typeOrder[a.type] > typeOrder[b.type]) return 1;
+            if (typeOrder[a.type] < typeOrder[b.type]) return -1;
+            return 0;
+        });
     }
     
     updateUsers() {
@@ -41,10 +62,22 @@ class EmailRecipientsController {
         this.ngModelCtrl.$setViewValue(this.recipients.slice());
     }
     
-    removeRecipient(recipient, index) {
-        this.recipients.splice(index, 1);
+    chipsChanged() {
         this.updateUsers();
         this.setViewValue();
+    }
+    
+    toRecipient(address) {
+        const existing = this.recipients.find(r => r.type === 'ADDRESS' && r.address === address);
+        if (existing) {
+            // dont add
+            return null;
+        }
+        
+        return {
+            type: 'ADDRESS',
+            address
+        };
     }
     
     iconForRecipient(recipient) {
@@ -68,22 +101,17 @@ class EmailRecipientsController {
 
             this.recipients = this.recipients.filter(r => r.type !== 'USER')
                 .concat(usersAsRecipients);
-            
+
+            this.sortRecipients();
             this.setViewValue();
         }
     }
     
-    emailChanged() {
-        if (this.email) {
-            const existing = this.recipients.find(r => r.type === 'ADDRESS' && r.address === this.email);
-            if (!existing) {
-                this.recipients.push({
-                    type: 'ADDRESS',
-                    address: this.email
-                });
-                this.setViewValue();
-            }
-            this.email = null;
+    chipKeyDown(event) {
+        // stops the email being added if it is invalid
+        if (this.separatorKeys.includes(event.keyCode) && this.chipsForm.chipsEmail.$invalid) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
         }
     }
 }
