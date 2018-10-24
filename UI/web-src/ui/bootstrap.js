@@ -90,6 +90,17 @@ Promise.resolve().then(() => {
     const angularJsModuleNames = ['maUiApp'];
     angularModules.forEach((angularModule, index, array) => {
         if (angularModule && angularModule.name) {
+            if (Array.isArray(angularModule.optionalRequires)) {
+                angularModule.optionalRequires.forEach(require => {
+                    try {
+                        angular.module(require);
+                        angularModule.requires.push(require);
+                    } catch (e) {
+                        // module not loaded, don't add to requires
+                    }
+                });
+            }
+            
             angularJsModuleNames.push(angularModule.name);
             
             if (uiSettings.userModule && index === (array.length - 1)) {
