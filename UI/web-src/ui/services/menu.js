@@ -4,7 +4,6 @@
  */
 
 import angular from 'angular';
-import {loadLoginTranslations, loadTranslations} from '../util/loadLoginTranslations';
 
 MenuProvider.$inject = ['$stateProvider', 'MA_UI_MENU_ITEMS'];
 function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
@@ -71,16 +70,13 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
                 }
             }
 
-            if (menuItem.name.indexOf('ui.') !== 0) {
-                if (!menuItem.resolve) menuItem.resolve = {};
-                if (!menuItem.resolve.loginTranslations) {
-                    menuItem.resolve.loginTranslations = loadLoginTranslations;
-                }
-            }
-            
             if (Array.isArray(menuItem.requiredTranslations)) {
                 if (!menuItem.resolve) menuItem.resolve = {};
-                menuItem.resolve.requiredTranslations = loadTranslations(menuItem.requiredTranslations);
+
+                menuItem.resolve.requiredTranslations = function(maTranslate) {
+                    return maTranslate.loadNamespaces(menuItem.requiredTranslations);
+                };
+                menuItem.resolve.requiredTranslations.$inject = ['maTranslate'];
             }
             
             if (menuItem.name.indexOf('ui.examples.') === 0) {

@@ -7,9 +7,9 @@ import angular from 'angular';
 import systemSettingsPageTemplate from './systemSettingsPage.html';
 
 SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$state', 'maUiMenu', '$mdMedia',
-	'$scope', '$timeout', 'maSystemActions', 'maDialogHelper', 'maServer'];
+	'$scope', '$timeout', 'maSystemActions', 'maDialogHelper', 'maServer', 'maUiServerInfo'];
 function SystemSettingsPageController(SystemSettings, maLocales, User, $state, maUiMenu, $mdMedia,
-		$scope, $timeout, maSystemActions, maDialogHelper, maServer) {
+		$scope, $timeout, maSystemActions, maDialogHelper, maServer, maUiServerInfo) {
     this.SystemSettings = SystemSettings;
     this.User = User;
     this.$state = $state;
@@ -20,6 +20,7 @@ function SystemSettingsPageController(SystemSettings, maLocales, User, $state, m
     this.maSystemActions = maSystemActions;
     this.maDialogHelper = maDialogHelper;
     this.maServer = maServer;
+    this.maUiServerInfo = maUiServerInfo;
     
     maLocales.get().then(function(locales) {
         locales.forEach(function(locale) {
@@ -129,7 +130,7 @@ SystemSettingsPageController.prototype.saveSection = function() {
         this.settingForm.$setUntouched();
         
         if (this.changedValues.instanceDescription != null) {
-            this.$scope.$root.instanceDescription = this.changedValues.instanceDescription;
+            this.maUiServerInfo.instanceDescription = this.changedValues.instanceDescription;
         }
         
         this.changedValues = {};

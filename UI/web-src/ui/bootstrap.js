@@ -115,24 +115,17 @@ Promise.resolve().then(() => {
     const maUiBootstrap = angular.module('maUiBootstrap', angularJsModuleNames);
 
     // configure the the providers using data retrieved before bootstrap
-    maUiBootstrap.config(['maUserProvider', 'maUiMenuProvider', 'maUiSettingsProvider', 'maTranslateProvider', 'maUiLoginRedirectorProvider',
-            (UserProvider, maUiMenuProvider, maUiSettingsProvider, maTranslateProvider, maUiLoginRedirectorProvider) => {
-
-        maUiLoginRedirectorProvider.setLastUpgradeTime(preLoginData.lastUpgradeTime);
-        maTranslateProvider.loadTranslations(preLoginData.translations);
+    maUiBootstrap.config(['maUserProvider', 'maUiSettingsProvider', 'maUiServerInfoProvider',
+            (UserProvider, maUiSettingsProvider, maUiServerInfoProvider) => {
 
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
-        UserProvider.setSystemLocale(preLoginData.serverLocale);
-        UserProvider.setSystemTimezone(preLoginData.serverTimezone);
-        
-        if (postLoginData) {
-            // also registers the custom menu items
-            maUiMenuProvider.setCustomMenuStore(postLoginData.menu);
-            maTranslateProvider.loadTranslations(postLoginData.translations);
-        }
-
         maUiSettingsProvider.setUiSettings(uiSettings);
+
+        maUiServerInfoProvider.setPreLoginData(preLoginData);
+        if (postLoginData) {
+            maUiServerInfoProvider.setPostLoginData(postLoginData);
+        }
     }]);
 
     // promise resolves when DOM loaded

@@ -4,7 +4,6 @@
  */
 
 import angular from 'angular';
-import loadLoginTranslations from './util/loadLoginTranslations';
 import StackTrace from 'stacktrace-js';
 
 export default [
@@ -26,8 +25,7 @@ export default [
                         .directive('maUiLogin', login.default);
                     $injector.loadNewModules(['maUiLoginState']);
                 });
-            }],
-            loginTranslations: loadLoginTranslations
+            }]
         }
     },
     {
@@ -48,8 +46,7 @@ export default [
                         .component('maUiResetPassword', resetPassword.default);
                     $injector.loadNewModules(['maUiResetPasswordState']);
                 });
-            }],
-            loginTranslations: loadLoginTranslations
+            }]
         }
     },
     {
@@ -70,8 +67,7 @@ export default [
                         .component('maUiForgotPassword', forgotPassword.default);
                     $injector.loadNewModules(['maUiForgotPasswordState']);
                 });
-            }],
-            loginTranslations: loadLoginTranslations
+            }]
         }
     },
     {
@@ -92,8 +88,7 @@ export default [
                         .component('maUiChangePassword', changePassword.default);
                     $injector.loadNewModules(['maUiChangePasswordState']);
                 });
-            }],
-            loginTranslations: loadLoginTranslations
+            }]
         },
         params: {
             credentialsExpired: null,
@@ -131,25 +126,21 @@ export default [
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './views/main.html');
             },
-            auth: ['maTranslate', 'maUser', function(Translate, User) {
+            auth: ['maUser', function(User) {
                 if (!User.current) {
                     throw new User.NoUserError('No user logged in');
                 }
-                return Translate.loadNamespaces(['ui', 'common', 'pointEdit', 'rest']);
             }],
-            loginTranslations: loadLoginTranslations,
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './mainModule').then(() => {
                     $injector.loadNewModules(['maUiRootState']);
                 });
             }],
-            rootScopeData: ['$rootScope', 'maSystemSettings', 'maModules', 'maUser', function($rootScope, SystemSettings, maModules, maUser) {
-				if (maUser.current.admin) {
-	                return new SystemSettings('instanceDescription').getValue().then((result) => {
-	                    $rootScope.instanceDescription = result;
-	                }, angular.noop);
-                }
+            rootScopeData: ['$rootScope', 'maUiServerInfo', function($rootScope, maUiServerInfo) {
+                return maUiServerInfo.getPostLoginData().then(serverInfo => {
+                    $rootScope.serverInfo = serverInfo;
+                });
             }]
         }
     },

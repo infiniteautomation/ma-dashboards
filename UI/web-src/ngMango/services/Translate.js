@@ -178,10 +178,14 @@ function translateProvider() {
         };
 
         Translate.setLocale = setLocale;
+        Translate.loadTranslations = loadTranslations;
         
         maUser.notificationManager.subscribeLocal((event, newLocale, first) => {
-            // remove all currently loaded namespaces
-            clearLoadedNamespaces();
+            let globalizeLocale = Globalize.locale();
+            if (!globalizeLocale || globalizeLocale.locale !== newLocale) {
+                // clear the translation namespace cache if the user's locale changes
+                clearLoadedNamespaces();
+            }
         }, null, ['localeChanged']);
 
         return Translate;

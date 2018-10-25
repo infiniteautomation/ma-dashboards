@@ -7,14 +7,15 @@ import angular from 'angular';
 import modulesPageTemplate from './modulesPage.html';
 import usernamePasswordPromptTemplate from './usernamePasswordPrompt.html';
 
-ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$scope', '$sce', '$window'];
-function ModulesPageController(maModules, maTranslate, maDialogHelper, $scope, $sce, $window) {
+ModulesPageController.$inject = ['maModules', 'maTranslate', 'maDialogHelper', '$scope', '$sce', '$window', 'maUiServerInfo'];
+function ModulesPageController(maModules, maTranslate, maDialogHelper, $scope, $sce, $window, maUiServerInfo) {
     this.maModules = maModules;
     this.maTranslate = maTranslate;
     this.maDialogHelper = maDialogHelper;
     this.$scope = $scope;
     this.$sce = $sce;
     this.$window = $window;
+    this.maUiServerInfo = maUiServerInfo;
 }
 
 ModulesPageController.prototype.$onInit = function() {
@@ -77,7 +78,7 @@ ModulesPageController.prototype.deleteModule = function($event, module, doDelete
 };
 
 ModulesPageController.prototype.restart = function($event) {
-	this.maDialogHelper.confirm($event, 'modules.restartConfirm').then(function() {
+	this.maDialogHelper.confirm($event, ['ui.app.restartInstanceConfirm', this.maUiServerInfo.instanceDescription]).then(function() {
 		return this.maModules.restart();
 	}.bind(this)).then(function() {
 		this.maDialogHelper.toastOptions({

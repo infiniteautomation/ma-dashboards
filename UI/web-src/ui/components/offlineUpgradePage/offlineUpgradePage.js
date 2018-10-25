@@ -9,16 +9,17 @@ class OfflineUpgradePageController {
     static get $$ngIsClass() { return true; }
     
     static get $inject() {
-        return ['maModules', 'maTranslate', 'maDialogHelper', '$scope', '$element', '$state'];
+        return ['maModules', 'maTranslate', 'maDialogHelper', '$scope', '$element', '$state', 'maUiServerInfo'];
     }
     
-    constructor(maModules, maTranslate, maDialogHelper, $scope, $element, $state) {
+    constructor(maModules, maTranslate, maDialogHelper, $scope, $element, $state, maUiServerInfo) {
         this.maModules = maModules;
         this.maTranslate = maTranslate;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$element = $element;
         this.$state = $state;
+        this.maUiServerInfo = maUiServerInfo;
         
         this.backup = true;
         this.restart = true;
@@ -42,7 +43,7 @@ class OfflineUpgradePageController {
     }
 
     restart($event) {
-        this.maDialogHelper.confirm($event, 'modules.restartConfirm').then(() => {
+        this.maDialogHelper.confirm($event, ['ui.app.restartInstanceConfirm', this.maUiServerInfo.instanceDescription]).then(() => {
             return this.maModules.restart();
         }).then(() => {
             this.maDialogHelper.toastOptions({

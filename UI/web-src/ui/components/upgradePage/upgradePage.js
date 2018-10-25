@@ -5,8 +5,8 @@
 
 import upgradePageTemplate from './upgradePage.html';
 
-UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope', '$q', '$mdToast', 'maTranslate', '$timeout'];
-function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, maTranslate, $timeout) {
+UpgradePageController.$inject = ['maModules', 'maDialogHelper', '$scope', '$q', '$mdToast', 'maTranslate', '$timeout', 'maUiServerInfo'];
+function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, maTranslate, $timeout, maUiServerInfo) {
     this.maModules = maModules;
     this.maDialogHelper = maDialogHelper;
     this.$scope = $scope;
@@ -14,6 +14,7 @@ function UpgradePageController(maModules, maDialogHelper, $scope, $q, $mdToast, 
     this.$mdToast = $mdToast;
     this.maTranslate = maTranslate;
     this.$timeout = $timeout;
+    this.maUiServerInfo = maUiServerInfo;
     
     this.moduleSelectedBound = (module) => this.moduleSelected(module);
 }
@@ -188,7 +189,7 @@ UpgradePageController.prototype.doUpgrade = function($event) {
 };
 
 UpgradePageController.prototype.restart = function($event) {
-	this.maDialogHelper.confirm($event, 'modules.restartConfirm').then(function() {
+	this.maDialogHelper.confirm($event, ['ui.app.restartInstanceConfirm', this.maUiServerInfo.instanceDescription]).then(function() {
 		this.maModules.restart();
 	}.bind(this)).then(function() {
 		const toast = this.$mdToast.simple()
