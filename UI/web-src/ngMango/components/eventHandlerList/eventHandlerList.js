@@ -4,6 +4,7 @@
  */
 
 import eventHandlerListTemplate from './eventHandlerList.html';
+import './eventHandlerList.css';
 
 /**
  * @ngdoc directive
