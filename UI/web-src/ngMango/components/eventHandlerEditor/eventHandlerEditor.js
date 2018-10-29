@@ -93,6 +93,8 @@ class EventHandlerEditorController {
             return;
         }
         
+        this.validationMessages = [];
+        
         this.eventHandler.save().then(item => {
             this.setViewValue();
             this.render();
