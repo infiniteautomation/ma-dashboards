@@ -20,3 +20,7 @@
 .weekly-schedule-container {
     margin-top: 20px;
 }
+
+.ma-warn {
+    color: red;
+}

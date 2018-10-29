@@ -26,7 +26,7 @@
                 <md-input-container flex="100" flex-gt-md="45" flex-order-gt-md="1" class="ma-input-space-between">
                     <label ma-tr="common.name"></label>
                     <input name="name" ng-model="$ctrl.list.name" required>
-                    <span ng-if="$ctrl.checkError('name')" class="md-warn">{{ $ctrl.checkError('name').message }}</span>
+                    <span ng-if="$ctrl.checkError('name')" class="ma-warn">{{ $ctrl.checkError('name').message }}</span>
                     <div ng-messages="$ctrl.form.name.$error">
                         <div ng-message="required" ma-tr="ui.app.required"></div>
                     </div>
@@ -46,7 +46,7 @@
                 <span class="md-headline">
                     <span ma-tr="eventHandlers.emailRecipients"></span>
                 </span>
-                <span ng-if="$ctrl.checkError('recipients')" class="md-warn">{{ $ctrl.checkError('recipients').message }}</span>
+                <span ng-if="$ctrl.checkError('recipients')" class="ma-warn">{{ $ctrl.checkError('recipients').message }}</span>
                 
                 <md-input-container flex="100" class="ma-input-space-between" class="w-100">
                     <label ma-tr="ui.app.mailingLists.sendAlarmEmail"></label>

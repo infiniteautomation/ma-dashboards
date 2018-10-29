@@ -66,12 +66,13 @@ class MailingListSetupController {
     }
 
     checkError(property) {
-        if (!this.validationMessages || this.validationMessages.length == 0) {
+        if (!this.validationMessages || this.validationMessages.length === 0) {
             return null;
         }
-
         return this.validationMessages.filter((item) => {
-            return item.property.includes(property);
+            if (item.property) {
+                return item.property.includes(property);
+            }
         }, property)[0];
     }
 
