@@ -3,51 +3,89 @@
  * @author Jared Wiltshire
  */
 
-ValidationMessagesController.$inject = [];
-function ValidationMessagesController() {
-}
+function validationMessages() {
 
-ValidationMessagesController.prototype.$onInit = function() {
-    this.checkMessages();
-    this.ngModelCtrl.$validators.validationMessage = function() {
-        return true;
-    };
-};
-
-ValidationMessagesController.prototype.$onChanges = function(changes) {
-    if (changes.messages) {
-        this.checkMessages();
-    }
-};
-
-ValidationMessagesController.prototype.checkMessages = function() {
-    if (!this.ngModelCtrl) return;
-    if (this.messages) {
-        for (let i = 0; i < this.messages.length; i++) {
-            if (this.messages[i].property === this.ngModelCtrl.$name) {
-                this.ngModelCtrl.validationMessage = this.messages[i].message;
-                this.ngModelCtrl.$setValidity('validationMessage', false);
-                return;
+    class ValidationMessagesController {
+        static get $$ngIsClass() { return true; }
+        static get $inject() { return []; }
+        
+        constructor() {
+        }
+        
+        $onInit() {
+            // use a validator that always returns true so that when a user changes the input the error is always cleared
+            const allwaysValidate = () => true;
+            
+            if (this.ngModelCtrl) {
+                this.ngModelCtrl.$validators.validationMessage = allwaysValidate;
+            }
+            
+            if (this.ngFormCtrl) {
+                this.ngFormCtrl.$$controls.forEach(control => {
+                    control.$validators.validationMessage = allwaysValidate;
+                });
+                
+                const addControl = this.ngFormCtrl.$addControl;
+                this.ngFormCtrl.$addControl = function(control) {
+                    control.$validators.validationMessage = allwaysValidate;
+                    return addControl.apply(this, arguments);
+                };
+            }
+            
+            this.checkMessages();
+        }
+        
+        $onChanges(changes) {
+            if (changes.messages && !changes.messages.isFirstChange()) {
+                this.checkMessages();
+            }
+        }
+        
+        checkMessages() {
+            const messages = this.messages || [];
+            this.messagesByProperty = messages.reduce((map, item) => {
+                if (map[item.property]) {
+                    map[item.property] += '\n' + item.message;
+                } else {
+                    map[item.property] = item.message;
+                }
+                return map;
+            }, {});
+            
+            if (this.ngFormCtrl) {
+                this.ngFormCtrl.$$controls.forEach(control => {
+                    this.checkControl(control);
+                });
+            }
+            
+            if (this.ngModelCtrl) {
+                this.checkControl(this.ngModelCtrl);
+            }
+        }
+        
+        checkControl(control) {
+            const message = this.messagesByProperty[control.$name];
+            if (message) {
+                control.validationMessage = message;
+                control.$setValidity('validationMessage', false);
+            } else {
+                delete control.validationMessage;
+                control.$setValidity('validationMessage', true);
             }
         }
     }
-    delete this.ngModelCtrl.validationMessage;
-    this.ngModelCtrl.$setValidity('validationMessage', true);
-};
 
-function ValidationMessages() {
     return {
         restrict: 'A',
         bindToController: {
             messages: '<maValidationMessages'
         },
         require: {
-            ngModelCtrl: 'ngModel'
+            ngModelCtrl: '?ngModel',
+            ngFormCtrl: '?form'
         },
         controller: ValidationMessagesController
     };
 }
 
-export default ValidationMessages;
-
-
+export default validationMessages;
