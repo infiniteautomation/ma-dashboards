@@ -123,6 +123,15 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 return new this(item);
             });
         }
+        
+        static getById(id, opts) {
+            const item = Object.create(this.prototype);
+            item.id = id;
+            
+            return item.getById(opts).then(item => {
+                return new this(item);
+            });
+        }
 
         static subscribe(...args) {
             return this.notificationManager.subscribe(...args);
@@ -180,6 +189,21 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 this.initialize('get');
                 if (this.constructor.notifyUpdateOnGet) {
                     this.constructor.notify('update', this, originalId);
+                }
+                return this;
+            });
+        }
+        
+        getById(opts = {}) {
+            return this.constructor.http({
+                url: this.constructor.baseUrl + '/by-id/' + angular.$$encodeUriSegment(this.id),
+                method: 'GET',
+                params: opts.params
+            }, opts).then(response => {
+                this.itemUpdated(response.data, opts.responseType);
+                this.initialize('get');
+                if (this.constructor.notifyUpdateOnGet) {
+                    this.constructor.notify('update', this, this[originalIdProperty]);
                 }
                 return this;
             });
