@@ -35,6 +35,6 @@ public class UIMenuItemDefinition extends MenuItemDefinition {
 
     @Override
     public String getImage(HttpServletRequest request, HttpServletResponse response) {
-        return "/web/img/icon16.png";
+        return "web/img/icon16.png";
     }
 }
