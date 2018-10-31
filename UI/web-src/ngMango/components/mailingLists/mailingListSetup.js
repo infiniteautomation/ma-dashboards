@@ -69,9 +69,10 @@ class MailingListSetupController {
         if (!this.validationMessages || this.validationMessages.length === 0) {
             return null;
         }
+        console.log(property);
         return this.validationMessages.filter((item) => {
             if (item.property) {
-                return item.property.includes(property);
+                return item.property === property;
             }
         }, property)[0];
     }
@@ -106,14 +107,14 @@ class MailingListSetupController {
     }
 
     getUsers() {
-        this.maUser.rql("").$promise.then(users => {
+        this.maUser.rql('').$promise.then(users => {
             this.users = users;
-        })
+        });
     }
 
     addRecipient() {
         const recipient = {
-            type: 'USER',
+            recipientType: 'USER',
             username: this.users[0].username
         };
         

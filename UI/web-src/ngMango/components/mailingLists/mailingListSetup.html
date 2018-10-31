@@ -74,17 +74,17 @@
                         </thead>
                         <tbody md-body>
                             <tr md-row ng-repeat="recipient in $ctrl.list.recipients">
-                                <td class="cell" md-cell>
-                                    <md-input-container flex="100" class="ma-input-space-between" class="w-100">
+                                <td class="cell" flex md-cell>
+                                    <md-input-container layout flex class="ma-input-space-between">
                                         <label ma-tr="common.type"></label>
-                                        <md-select ng-model="recipient.recipientType" required>
+                                        <md-select ng-model="recipient.recipientType" flex required>
                                             <md-option value="ADDRESS">Address</md-option>
                                             <md-option value="USER">User</md-option>
                                         </md-select>
                                     </md-input-container>
                                 </td>
-                                <td class="cell" md-cell>
-                                    <md-input-container ng-if="recipient.recipientType === 'ADDRESS'" flex class="ma-input-space-between" class="w-100">
+                                <td class="cell" flex md-cell>
+                                    <md-input-container layout flex ng-if="recipient.recipientType === 'ADDRESS'" flex class="ma-input-space-between">
                                         <label ma-tr="mailingLists.emailAddress"></label>
                                         <input name="address" ng-model="recipient.address" required ma-validation-messages="$ctrl.validationMessages">
                                         <div ng-messages="$ctrl.form.address.$error">
@@ -92,14 +92,15 @@
                                             <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
                                         </div>
                                     </md-input-container>
-                                    <md-input-container ng-if="recipient.recipientType === 'USER'" flex class="ma-input-space-between" class="w-100">
+                                    <md-input-container ng-if="recipient.recipientType === 'USER'" layout flex class="ma-input-space-between">
                                         <label ma-tr="common.user"></label>
-                                        <md-select ng-model="recipient.username" required>
+                                        <md-select ng-model="recipient.username" required flex>
                                             <md-option ng-repeat="user in $ctrl.users" value="{{user.username}}">{{ user.username }}</md-option>
                                         </md-select>
                                     </md-input-container>
                                 </td>
                                 <td class="cell" md-cell>
+                                    <span ng-if="$ctrl.checkError('recipients[' + $index + ']')" class="ma-warn">{{ $ctrl.checkError('recipients[' + $index + ']').message }}</span>
                                     <md-button class="md-icon-button" aria-label="Delete Template" ng-click="$ctrl.deleteRecipient(recipient)">
                                         <md-tooltip md-direction="bottom" ma-tr="excelreports.ui.deleteTemplate"></md-tooltip>
                                         <md-icon>delete</md-icon>
