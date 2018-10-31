@@ -22,12 +22,14 @@ function validationMessages() {
             
             if (this.ngFormCtrl) {
                 this.ngFormCtrl.$$controls.forEach(control => {
-                    control.$validators.validationMessage = allwaysValidate;
+                    if (control.$validators) {
+                        control.$validators.validationMessage = allwaysValidate;
+                    }
                 });
                 
                 const addControl = this.ngFormCtrl.$addControl;
                 this.ngFormCtrl.$addControl = function(control) {
-                    control.$validators.validationMessage = allwaysValidate;
+                        control.$validators.validationMessage = allwaysValidate;
                     return addControl.apply(this, arguments);
                 };
             }
@@ -45,13 +47,15 @@ function validationMessages() {
             const messages = this.messages || [];
             this.messagesByProperty = messages.reduce((map, item) => {
                 if (map[item.property]) {
-                    map[item.property] += '\n' + item.message;
+                    if (this.multipleMessages) {
+                        map[item.property] += '\n' + item.message;
+                    }
                 } else {
                     map[item.property] = item.message;
                 }
                 return map;
             }, {});
-            
+        
             if (this.ngFormCtrl) {
                 this.ngFormCtrl.$$controls.forEach(control => {
                     this.checkControl(control);
@@ -78,7 +82,8 @@ function validationMessages() {
     return {
         restrict: 'A',
         bindToController: {
-            messages: '<maValidationMessages'
+            messages: '<maValidationMessages',
+            multipleMessages: '<?'
         },
         require: {
             ngModelCtrl: '?ngModel',
