@@ -1,0 +1,77 @@
+<div ng-init="page={selected:[]};"></div>
+<div ng-init="query={limit:20, page:1, order:'deviceName'};"></div>
+<div layout="row">
+    <md-input-container flex="50">
+        <label>Device name</label>
+        <input ng-model="page.dvName" ng-model-options="{debounce:1000}">
+    </md-input-container>
+    <md-input-container flex="50" layout layout-align="end">
+        <md-switch ng-init="liveCharts = true" ng-model="liveCharts">
+            Live Charts
+        </md-switch>
+    </md-input-container>
+</div>
+<ma-point-query query="{$and:true, deviceName:page.dvName, name:'Consecutive run polls'}" start="(query.page-1)*query.limit"
+limit="query.limit" points="page.crpPoints"></ma-point-query>
+<ma-point-query query="{$and:true, deviceName:page.dvName, name:'Poll duration'}" start="(query.page-1)*query.limit" limit="query.limit" points="page.pdPoints"></ma-point-query>
+<ma-point-query query="{$and:true, deviceName:page.dvName, name:'Poll success percentage'}" start="(query.page-1)*query.limit" limit="query.limit" points="page.pspPoints"></ma-point-query>
+<md-table-container ng-init="tableOrder='deviceName'">
+    <table md-table>
+        <thead md-head md-order="tableOrder">
+            <tr>
+                <th md-column md-order-by="deviceName">Data Source Name</th>
+                <th md-column>Previous Consecutive polls</th>
+                <th md-column md-order-by="crpValue"></th>
+                <th md-column>Poll duration (ms)</th>
+                <th md-column md-order-by="pdValue"></th>
+                <th md-column md-order-by="pspValue">Successful Polls (%)</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr ng-repeat="point in page.crpPoints | orderBy: tableOrder">
+                <td style="width: 15%">{{point.deviceName}}</td>
+                
+                <td style="width: 20%" ng-init="crpPoint = page.crpPoints[$index]">
+                    <div ng-if="liveCharts">
+                        <ma-point-values point="crpPoint" values="crpPointValues" latest="20"></ma-point-values>
+                        <ma-serial-chart style="height: 60px; width: 100%" series-1-values="crpPointValues" series-1-type="column" options="{autoMargins: false, marginBottom: 30, marginLeft: -100, categoryAxis:{labelsEnabled:false, gridAlpha: 0, axisAlpha: 0}, valueAxes:[{labelsEnabled: false, gridAlpha: 0, axisAlpha: 0}]}"></ma-serial-chart>
+                    </div>
+                    
+                    <div ng-if="!liveCharts">
+                        <ma-point-values point="crpPoint" values="crpPointValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
+                        </ma-point-values>
+                        <ma-serial-chart style="height: 60px; width: 100%" series-1-values="crpPointValues" series-1-type="column" options="{autoMargins: false, marginBottom: 30, marginLeft: -100, marginTop: -10, categoryAxis:{labelsEnabled:false, gridAlpha: 0, axisAlpha: 0}, valueAxes:[{labelsEnabled: false, gridAlpha: 0, axisAlpha: 0}]}"></ma-serial-chart>
+                    </div>
+                
+                </td>
+                <td style="width: 10%" ng-init="crpPoint = page.crpPoints[$index]">
+                    <ma-point-value flash-on-change="true" enable-popup=“right” point="crpPoint"></ma-point-value>
+                    <ma-calc input="crpPoint.value" output="point.crpValue"></ma-calc>
+                </td>
+                <td style="width: 20%" ng-init="pdPoint = page.pdPoints[$index]">
+                    <div ng-if="liveCharts">
+                        <ma-point-values point="pdPoint" values="pdPointValues" latest="20"></ma-point-values>
+                        <ma-serial-chart style="height: 60px; width: 100%" series-1-values="pdPointValues" series-1-type="line" options="{autoMargins: false, marginBottom: 20, marginLeft: -100, marginTop: -10, categoryAxis:{labelsEnabled:false, gridAlpha: 0, axisAlpha: 0}, valueAxes:[{labelsEnabled: false, gridAlpha: 0, axisAlpha: 0}]}"></ma-serial-chart> 
+                    </div>
+                    
+                    <div ng-if="!liveCharts">
+                        <ma-point-values point="pdPoint" values="pdPointValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}"></ma-point-values>
+                        <ma-serial-chart style="height: 60px; width: 100%" series-1-values="pdPointValues" series-1-type="line" options="{autoMargins: false, marginBottom: 30, marginLeft: -100, marginTop: -10, categoryAxis:{labelsEnabled:false, gridAlpha: 0, axisAlpha: 0}, valueAxes:[{labelsEnabled: false, gridAlpha: 0, axisAlpha: 0}]}"></ma-serial-chart>
+                    </div>
+                </td>
+                
+                <td style="width: 10%" ng-init="pdPoint = page.pdPoints[$index]">
+                    <ma-point-value  flash-on-change="true" enable-popup=“right” point="pdPoint"></ma-point-value>
+                    <ma-calc input="pdPoint.value" output="point.pdValue"></ma-calc>
+                </td>
+                
+                
+                <td ng-init="pspPoint = page.pspPoints[$index]">
+                    <ma-point-value flash-on-change="true" enable-popup=“right” point="pspPoint"></ma-point-value>
+                    <ma-calc input="pspPoint.value" output="point.pspValue"></ma-calc>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
+<md-table-pagination md-limit="query.limit" md-limit-options="[10, 20, 50, 100]" md-page="query.page" md-total="{{page.crpPoints.$total}}" md-page-select></md-table-pagination>

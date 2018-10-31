@@ -1725,5 +1725,17 @@ export default [
         },
         url: '/interactive-svg',
         menuTr: 'ui.dox.interactiveSvg'
-    }
+    },
+    {
+        name: 'ui.settings.systemStatus.dataSourcesPerformance',
+        url: '/ds-performance',
+        menuTr: 'ui.settings.systemStatus.dataSourcesPerformance',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                    './systemStatus/dataSourcesPerformance.html');
+            }
+        },
+        menuHidden: true,
+    },
 ];
