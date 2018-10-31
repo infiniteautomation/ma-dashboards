@@ -1730,7 +1730,12 @@ export default [
         name: 'ui.settings.systemStatus.dataSourcesPerformance',
         url: '/ds-performance',
         menuTr: 'ui.settings.systemStatus.dataSourcesPerformance',
-        templateUrl: require.toUrl('./systemStatus/dataSourcesPerformance.html'),
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                    './systemStatus/dataSourcesPerformance.html');
+            }
+        },
         menuHidden: true,
     },
 ];
