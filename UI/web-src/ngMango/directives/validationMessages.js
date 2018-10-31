@@ -29,7 +29,9 @@ function validationMessages() {
                 
                 const addControl = this.ngFormCtrl.$addControl;
                 this.ngFormCtrl.$addControl = function(control) {
+                    if (control.$validators) {
                         control.$validators.validationMessage = allwaysValidate;
+                    }
                     return addControl.apply(this, arguments);
                 };
             }
