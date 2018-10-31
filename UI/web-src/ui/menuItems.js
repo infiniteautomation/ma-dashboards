@@ -1765,7 +1765,7 @@ export default [
                         angular.module('maUiMailingList', [])
                         .component('maMailingList', mailingList.default)
                         .component('maMailingListList', mailingListList.default)
-                        .component('maMailingListelect', mailingListSelect.default)
+                        .component('maMailingListSelect', mailingListSelect.default)
                         .component('maMailingListSetup', mailingListSetup.default)
                         .factory('maMailingList', mailingListFactory.default);
 

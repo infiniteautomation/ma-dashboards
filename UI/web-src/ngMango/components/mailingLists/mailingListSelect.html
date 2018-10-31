@@ -1,8 +1,8 @@
-<md-input-container flex>
+<md-input-container flex layout="row">
     <label ng-transclude="labelSlot">
         <span ma-tr="ui.app.mailingLists.select"></span>
     </label>
-    <md-select ng-model="$ctrl.selected" ng-change="$ctrl.setViewValue()" ng-model-options="{trackBy: '$value.xid'}">
+    <md-select flex ng-model="$ctrl.selected" ng-change="$ctrl.setViewValue()" ng-model-options="{trackBy: '$value.xid'}">
         <md-option ng-repeat="list in $ctrl.lists | orderBy:'name' track by list.xid" ng-value="list">
             <span ng-bind="list.name"></span>
         </md-option>
