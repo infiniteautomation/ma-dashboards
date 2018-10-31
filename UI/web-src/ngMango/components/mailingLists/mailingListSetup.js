@@ -117,14 +117,14 @@ class MailingListSetupController {
             username: this.users[0].username
         };
         
-        this.list.entries.push(recipient);
+        this.list.recipients.push(recipient);
     }
 
     deleteRecipient(recipient) {
-        const index = this.list.entries.indexOf(recipient);
+        const index = this.list.recipients.indexOf(recipient);
 
         if (index > -1) {
-            this.list.entries.splice(index, 1);
+            this.list.recipients.splice(index, 1);
         }
     }
 

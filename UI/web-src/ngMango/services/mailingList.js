@@ -13,7 +13,7 @@ function MailingListFactory(RestResource) {
 
     const defaultProperties = {
         editPermissions: [],
-        entries: [],
+        recipients: [],
         inactiveSchedule: [
             [],
             [],

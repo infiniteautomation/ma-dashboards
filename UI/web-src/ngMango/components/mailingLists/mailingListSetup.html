@@ -46,23 +46,23 @@
                 <span class="md-headline">
                     <span ma-tr="eventHandlers.emailRecipients"></span>
                 </span>
-                <span ng-if="$ctrl.checkError('recipients')" class="ma-warn">{{ $ctrl.checkError('recipients').message }}</span>
                 
                 <md-input-container flex="100" class="ma-input-space-between" class="w-100">
                     <label ma-tr="ui.app.mailingLists.sendAlarmEmail"></label>
                     <md-select ng-model="$ctrl.list.receiveAlarmEmails" required>
-                            <md-option value="NONE">None</md-option>
-                            <md-option value="INFORMATION">Information</md-option>
-                            <md-option value="IMPORTART">Important</md-option>
-                            <md-option value="WARNING">Warning</md-option>
-                            <md-option value="URGENT">Urgent</md-option>
-                            <md-option value="CRITICAL">Critical</md-option>
-                            <md-option value="LIFE_SAFETY">Safety</md-option>
-                            <md-option value="DO_NOT_LOG">Do Not Log</md-option>
-                            <md-option value="IGNORE">Ignore</md-option>
+                        <md-option value="NONE">None</md-option>
+                        <md-option value="INFORMATION">Information</md-option>
+                        <md-option value="IMPORTART">Important</md-option>
+                        <md-option value="WARNING">Warning</md-option>
+                        <md-option value="URGENT">Urgent</md-option>
+                        <md-option value="CRITICAL">Critical</md-option>
+                        <md-option value="LIFE_SAFETY">Safety</md-option>
+                        <md-option value="DO_NOT_LOG">Do Not Log</md-option>
+                        <md-option value="IGNORE">Ignore</md-option>
                     </md-select>
                 </md-input-container>
                 
+                <span ng-if="$ctrl.checkError('recipients')" class="ma-warn">{{ $ctrl.checkError('recipients').message }}</span>
                 <md-table-container flex="100" class="ma-input-space-between">
                     <table md-table>
                         <thead md-head>
@@ -73,7 +73,7 @@
                             </tr>
                         </thead>
                         <tbody md-body>
-                            <tr md-row ng-repeat="recipient in $ctrl.list.entries">
+                            <tr md-row ng-repeat="recipient in $ctrl.list.recipients">
                                 <td class="cell" md-cell>
                                     <md-input-container flex="100" class="ma-input-space-between" class="w-100">
                                         <label ma-tr="common.type"></label>
