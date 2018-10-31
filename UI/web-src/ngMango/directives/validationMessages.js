@@ -40,38 +40,68 @@ function validationMessages() {
         }
         
         $onChanges(changes) {
-            if (changes.messages && !changes.messages.isFirstChange()) {
+            if (changes.messagesArray && !changes.messagesArray.isFirstChange()) {
                 this.checkMessages();
             }
         }
-        
+
         checkMessages() {
-            const messages = this.messages || [];
-            this.messagesByProperty = messages.reduce((map, item) => {
-                if (map[item.property]) {
-                    if (this.multipleMessages) {
-                        map[item.property] += '\n' + item.message;
-                    }
-                } else {
-                    map[item.property] = item.message;
+            this.messages = {};
+            const messagesArray = Array.isArray(this.messagesArray) ? this.messagesArray : [];
+            
+            messagesArray.forEach(item => {
+                // standardize path from segment[1].test to segment.1.test
+                const path = this.splitName(item.property).join('.');
+                let messages = this.messages[path];
+                if (!messages) {
+                    messages = this.messages[path] = [];
                 }
-                return map;
-            }, {});
+                messages.push(item.message);
+            });
+
+            this.checkControls();
+        }
         
-            if (this.ngFormCtrl) {
-                this.ngFormCtrl.$$controls.forEach(control => {
-                    this.checkControl(control);
+        splitName(name) {
+            const propArray = name.split('.');
+            
+            // forms are often named "$ctrl.name", remove the prefix
+            if (propArray.length && propArray[0] === '$ctrl') {
+                propArray.shift();
+            }
+            
+            for (let i = 0; i < propArray.length; i++) {
+                const j = i;
+                let prop = propArray[j];
+                
+                const arrayIndexMatch = /^(.+)\[(\d+)\]$/.exec(prop);
+                if (arrayIndexMatch) {
+                    prop = propArray[j] = arrayIndexMatch[1];
+                    propArray.splice(j + 1, 0, arrayIndexMatch[2]);
+                    i++; // skip in entry we just spliced in
+                }
+                
+                const matchesInternal = /^(.+)_internal$/.exec(prop);
+                if (matchesInternal) {
+                    prop = propArray[j] = matchesInternal[1];
+                }
+            }
+            
+            return propArray;
+        }
+        
+        checkControls(control = this.ngFormCtrl, parentPath = null) {
+            const path = !parentPath ? [] : parentPath.concat(this.splitName(control.$name));
+            
+            if (Array.isArray(control.$$controls)) {
+                control.$$controls.forEach(child => {
+                    this.checkControls(child, path);
                 });
             }
             
-            if (this.ngModelCtrl) {
-                this.checkControl(this.ngModelCtrl);
-            }
-        }
-        
-        checkControl(control) {
-            const message = this.messagesByProperty[control.$name];
-            if (message) {
+            const messages = this.messages[path.join('.')];
+            if (messages && messages.length) {
+                const message = this.multipleMessages ? messages.join('\n') : messages[0];
                 control.validationMessage = message;
                 control.$setValidity('validationMessage', false);
             } else {
@@ -84,12 +114,11 @@ function validationMessages() {
     return {
         restrict: 'A',
         bindToController: {
-            messages: '<maValidationMessages',
+            messagesArray: '<maValidationMessages',
             multipleMessages: '<?'
         },
         require: {
-            ngModelCtrl: '?ngModel',
-            ngFormCtrl: '?form'
+            ngFormCtrl: 'form'
         },
         controller: ValidationMessagesController
     };
