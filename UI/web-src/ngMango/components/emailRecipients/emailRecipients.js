@@ -26,6 +26,8 @@ class EmailRecipientsController {
     constructor() {
         // COMMA, SEMICOLON, ENTER
         this.separatorKeys = [188, 186, 13];
+        
+        this.typeProp = 'type';
     }
     
     $onInit() {
@@ -33,6 +35,9 @@ class EmailRecipientsController {
     }
     
     $onChanges(changes) {
+        if (changes.typeProperty) {
+            this.typeProp = this.typeProperty || 'type';
+        }
     }
     
     render() {
@@ -55,19 +60,19 @@ class EmailRecipientsController {
     
     sortRecipients() {
         this.recipients.sort((a, b) => {
-            if (typeOrder[a.type] > typeOrder[b.type]) return 1;
-            if (typeOrder[a.type] < typeOrder[b.type]) return -1;
+            if (typeOrder[a[this.typeProp]] > typeOrder[b[this.typeProp]]) return 1;
+            if (typeOrder[a[this.typeProp]] < typeOrder[b[this.typeProp]]) return -1;
             return 0;
         });
     }
     
     updateSelectedUsers() {
-        this.users = this.recipients.filter(r => r.type === 'USER')
+        this.users = this.recipients.filter(r => r[this.typeProp] === 'USER')
             .map(r => ({username: r.username}));
     }
     
     updateSelectedMailingLists() {
-        this.mailingLists = this.recipients.filter(r => r.type === 'MAILING_LIST')
+        this.mailingLists = this.recipients.filter(r => r[this.typeProp] === 'MAILING_LIST')
             .map(r => ({
                 xid: r.xid,
                 id: r.id,
@@ -87,20 +92,20 @@ class EmailRecipientsController {
     }
     
     emailToRecipient(address) {
-        const existing = this.recipients.find(r => r.type === 'ADDRESS' && r.address === address);
+        const existing = this.recipients.find(r => r[this.typeProp] === 'ADDRESS' && r.address === address);
         if (existing) {
             // dont add
             return null;
         }
         
         return {
-            type: 'ADDRESS',
+            [this.typeProp]: 'ADDRESS',
             address
         };
     }
     
     iconForRecipient(recipient) {
-        switch(recipient.type) {
+        switch(recipient[this.typeProp]) {
         case 'ADDRESS': return 'email';
         case 'USER': return 'person';
         case 'MAILING_LIST': return 'people';
@@ -109,16 +114,16 @@ class EmailRecipientsController {
     }
     
     usersChanged() {
-        const current = new Set(this.recipients.filter(r => r.type === 'USER').map(u => u.username));
+        const current = new Set(this.recipients.filter(r => r[this.typeProp] === 'USER').map(u => u.username));
         const selected = this.users.map(u => u.username);
 
         // have to do this check for sets being equal as when mdSelect populates it checks that the model item is equal to the one in the array
         // and calls $setViewValue if its not. Our model item initially looks like {username: 'admin'} and the one from REST in the array is a full
         // user item, so angular.equals() returns false.
         if (!(selected.length === current.size && selected.every(un => current.has(un)))) {
-            const usersAsRecipients = this.users.map(u => ({type: 'USER', username: u.username}));
+            const usersAsRecipients = this.users.map(u => ({[this.typeProp]: 'USER', username: u.username}));
 
-            this.recipients = this.recipients.filter(r => r.type !== 'USER')
+            this.recipients = this.recipients.filter(r => r[this.typeProp] !== 'USER')
                 .concat(usersAsRecipients);
 
             this.sortRecipients();
@@ -127,7 +132,7 @@ class EmailRecipientsController {
     }
     
     mailingListsChanged() {
-        const current = new Set(this.recipients.filter(r => r.type === 'MAILING_LIST').map(ml => ml.xid));
+        const current = new Set(this.recipients.filter(r => r[this.typeProp] === 'MAILING_LIST').map(ml => ml.xid));
         const selected = this.mailingLists.map(ml => ml.xid);
 
         // have to do this check for sets being equal as when mdSelect populates it checks that the model item is equal to the one in the array
@@ -135,14 +140,14 @@ class EmailRecipientsController {
         // user item, so angular.equals() returns false.
         if (!(selected.length === current.size && selected.every(xid => current.has(xid)))) {
             const mailingListsAsRecipients = this.mailingLists.map(ml => ({
-                type: 'MAILING_LIST',
+                [this.typeProp]: 'MAILING_LIST',
                 xid: ml.xid,
                 id: ml.id,
                 name: ml.name,
                 inactiveIntervals: ml.inactiveIntervals
             }));
 
-            this.recipients = this.recipients.filter(r => r.type !== 'MAILING_LIST')
+            this.recipients = this.recipients.filter(r => r[this.typeProp] !== 'MAILING_LIST')
                 .concat(mailingListsAsRecipients);
 
             this.sortRecipients();
@@ -166,7 +171,8 @@ export default {
     template: emailRecipientsTemplate,
     controller: EmailRecipientsController,
     bindings: {
-        hideMailingLists: '<?'
+        hideMailingLists: '<?',
+        typeProperty: '@?'
     },
     require: {
         ngModelCtrl: 'ngModel'
