@@ -76,9 +76,6 @@ UserEditorController.prototype.save = function() {
             }
             
             let errorText = this.Translate.trSync('ui.components.errorSavingUser', this.user.username, response.mangoStatusText);
-            if (response.mangoStatusText) {
-                errorText += ', ' + response.mangoStatusText;
-            }
             
             const toast = this.$mdToast.simple()
                 .textContent(errorText)
