@@ -10,7 +10,7 @@
     
     <md-input-container flex="100" flex-gt-md="33">
         <label ma-tr="eventHandlers.includePointValueCount"></label>
-        <input name="includePointValueCount" ng-model="$ctrl.eventHandler.includePointValueCount" min="0" step="1" ma-validation-messages="$ctrl.validationMessages">
+        <input name="includePointValueCount" ng-model="$ctrl.eventHandler.includePointValueCount" min="0" step="1">
         <div ng-messages="$ctrl.form.customTemplate.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.customTemplate.validationMessage"></div>
