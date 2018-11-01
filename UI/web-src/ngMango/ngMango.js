@@ -119,6 +119,9 @@ import cronPattern from './components/cronPattern/cronPattern';
 import dailySchedule from './components/dailySchedule/dailySchedule';
 import weeklySchedule from './components/weeklySchedule/weeklySchedule';
 import emailRecipients from './components/emailRecipients/emailRecipients';
+import mailingListList from './components/mailingLists/mailingListList';
+import mailingListSelect from './components/mailingLists/mailingListSelect';
+import mailingListSetup from './components/mailingLists/mailingListSetup';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -251,6 +254,9 @@ ngMango.component('maCronPattern', cronPattern);
 ngMango.component('maDailySchedule', dailySchedule);
 ngMango.component('maWeeklySchedule', weeklySchedule);
 ngMango.component('maEmailRecipients', emailRecipients);
+ngMango.component('maMailingListList', mailingListList);
+ngMango.component('maMailingListSelect', mailingListSelect);
+ngMango.component('maMailingListSetup', mailingListSetup);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default

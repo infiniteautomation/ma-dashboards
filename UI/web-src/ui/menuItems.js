@@ -1741,7 +1741,7 @@ export default [
     {
         name: 'ui.settings.mailingList',
         url: '/mailing-lists',
-        template: '<ma-mailing-list></ma-mailing-list>',
+        template: '<ma-mailing-list-page></ma-mailing-list-page>',
         menuTr: 'ui.app.mailingLists',
         menuIcon: 'email',
         params: {
@@ -1749,29 +1749,12 @@ export default [
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
-                const p1 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/components/mailingLists/mailingList');
-                const p2 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/components/mailingLists/mailingListList');
-                const p3 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/components/mailingLists/mailingListSelect');
-                const p4 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/components/mailingLists/mailingListSetup');
-                const p5 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/services/mailingList');
-                    
-                return Promise.all([p1, p2, p3, p4, p5]).then(
-                    ([mailingList, mailingListList, mailingListSelect, mailingListSetup, mailingListFactory]) => {
-                        angular.module('maUiMailingList', [])
-                        .component('maMailingList', mailingList.default)
-                        .component('maMailingListList', mailingListList.default)
-                        .component('maMailingListSelect', mailingListSelect.default)
-                        .component('maMailingListSetup', mailingListSetup.default)
-                        .factory('maMailingList', mailingListFactory.default);
-
-                        $injector.loadNewModules(['maUiMailingList']);
-                    }
-                );
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/mailingListPage/mailingList').then(mailingListPage => {
+                    angular.module('maUiMailingListPage', [])
+                        .component('maUiMailingListPage', mailingListPage.default);
+                    $injector.loadNewModules(['maUiMailingListPage']);
+                });
             }]
         }
     },
