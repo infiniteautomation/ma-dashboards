@@ -69,7 +69,6 @@ class MailingListSetupController {
         if (!this.validationMessages || this.validationMessages.length === 0) {
             return null;
         }
-        console.log(property);
         return this.validationMessages.filter((item) => {
             if (item.property) {
                 return item.property === property;
