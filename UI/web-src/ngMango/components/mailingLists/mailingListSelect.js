@@ -25,6 +25,7 @@ class MailingListSelectController {
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
         this.getLists();
+        this.newList();
     }
     
     $onChanges(changes) {
@@ -44,6 +45,12 @@ class MailingListSelectController {
                 this.lists = lists;
             }
         );
+    }
+
+    newList() {
+        this.new = true;
+        this.selected = new this.maMailingList();
+        this.setViewValue();
     }
 
 }
