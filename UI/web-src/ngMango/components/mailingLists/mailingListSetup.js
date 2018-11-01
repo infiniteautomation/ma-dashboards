@@ -39,6 +39,14 @@ class MailingListSetupController {
     }
 
     save() {  
+
+        this.form.$setSubmitted();
+        
+        if (!this.form.$valid) {
+            this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
+            return;
+        }
+
         this.validationMessages = [];
 
         this.list.save().then(() => {
@@ -51,12 +59,15 @@ class MailingListSetupController {
             this.maDialogHelper.toastOptions({textTr: ['ui.app.mailingLists.saved']});
 
         }, (error) => {
-            this.validationMessages = error.data.result.messages;
+            console.log(this.list);
+            if (error.status === 422) {
+                this.validationMessages = error.data.result.messages;
+            }
 
             this.maDialogHelper.toastOptions({
                 textTr: ['ui.app.mailingLists.notSaved', error.mangoStatusText],
                 classes: 'md-warn',
-                hideDelay: 10000
+                hideDelay: 5000
             });
             
         });

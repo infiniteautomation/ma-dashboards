@@ -1810,7 +1810,7 @@ export default [
     {
         name: 'ui.settings.mailingList',
         url: '/mailing-lists',
-        template: '<ma-mailing-list-page></ma-mailing-list-page>',
+        template: '<ma-ui-mailing-list-page></ma-ui-mailing-list-page>',
         menuTr: 'ui.app.mailingLists',
         menuIcon: 'email',
         params: {
