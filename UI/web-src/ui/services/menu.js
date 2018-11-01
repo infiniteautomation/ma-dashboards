@@ -7,6 +7,8 @@ import angular from 'angular';
 
 MenuProvider.$inject = ['$stateProvider', 'MA_UI_MENU_ITEMS'];
 function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
+    const registeredStates = {};
+    
     // register the built in MA_UI_MENU_ITEMS
     registerStates(MA_UI_MENU_ITEMS);
 
@@ -16,11 +18,15 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
         registerStates(menuItems);
     };
     
-    this.registerCustomMenuItems = function registerCustomMenuItems(customMenuItems) {
-        const menuItemsByName = MA_UI_MENU_ITEMS.reduce((map, item) => {
+    function builtInItemsByName() {
+        return MA_UI_MENU_ITEMS.reduce((map, item) => {
             map[item.name] = item;
             return map;
         }, {});
+    }
+    
+    function registerCustomMenuItems(customMenuItems) {
+        const menuItemsByName = builtInItemsByName();
 
         const onlyCustomMenuItems = customMenuItems.filter(item => {
             return !menuItemsByName[item.name];
@@ -28,17 +34,17 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
 
         // register the custom menu items retrieved at bootstrap
         registerStates(onlyCustomMenuItems);
-    };
+    }
     
     let customMenuStore;
     this.setCustomMenuStore = function setCustomMenuStore(store) {
         customMenuStore = store;
-        this.registerCustomMenuItems(store.jsonData.menuItems);
+        registerCustomMenuItems(store.jsonData.menuItems);
     };
 
     function registerStates(menuItems) {
         menuItems.forEach(menuItem => {
-            if (!menuItem.name) return;
+            if (!menuItem.name || registeredStates[menuItem.name]) return;
 
             if (menuItem.linkToPage) {
                 delete menuItem.templateUrl;
@@ -88,6 +94,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
 
             try {
                 $stateProvider.state(menuItem);
+                registeredStates[menuItem.name] = true;
             } catch (error) {
                 const endsWith = 'is already defined';
                 if (error.message && error.message.substr(-endsWith.length) === endsWith) {
