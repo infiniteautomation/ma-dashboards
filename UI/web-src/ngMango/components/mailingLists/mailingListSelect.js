@@ -43,7 +43,7 @@ class MailingListSelectController {
             lists => {
                 this.lists = lists;
             }
-        )
+        );
     }
 
 }

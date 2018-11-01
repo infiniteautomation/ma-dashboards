@@ -3,8 +3,6 @@
  * @author Luis Güette
  */
 
-import angular from 'angular';
-
 MailingListFactory.$inject = ['maRestResource'];
 function MailingListFactory(RestResource) {
     
