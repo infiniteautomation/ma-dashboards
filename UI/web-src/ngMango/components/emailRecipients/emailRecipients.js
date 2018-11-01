@@ -42,7 +42,15 @@ class EmailRecipientsController {
         } else {
             this.recipients = [];
         }
-        this.updateUsers();
+        
+        this.email = null;
+        if (this.emailCtrl) {
+            this.emailCtrl.$setPristine();
+            this.emailCtrl.$setUntouched();
+        }
+        
+        this.updateSelectedUsers();
+        this.updateSelectedMailingLists();
     }
     
     sortRecipients() {
@@ -53,21 +61,32 @@ class EmailRecipientsController {
         });
     }
     
-    updateUsers() {
+    updateSelectedUsers() {
         this.users = this.recipients.filter(r => r.type === 'USER')
             .map(r => ({username: r.username}));
     }
     
+    updateSelectedMailingLists() {
+        this.mailingLists = this.recipients.filter(r => r.type === 'MAILING_LIST')
+            .map(r => ({
+                xid: r.xid,
+                id: r.id,
+                name: r.name,
+                inactiveIntervals: r.inactiveIntervals
+            }));
+    }
+
     setViewValue() {
         this.ngModelCtrl.$setViewValue(this.recipients.slice());
     }
     
     chipsChanged() {
-        this.updateUsers();
+        this.updateSelectedUsers();
+        this.updateSelectedMailingLists();
         this.setViewValue();
     }
     
-    toRecipient(address) {
+    emailToRecipient(address) {
         const existing = this.recipients.find(r => r.type === 'ADDRESS' && r.address === address);
         if (existing) {
             // dont add
@@ -96,7 +115,7 @@ class EmailRecipientsController {
         // have to do this check for sets being equal as when mdSelect populates it checks that the model item is equal to the one in the array
         // and calls $setViewValue if its not. Our model item initially looks like {username: 'admin'} and the one from REST in the array is a full
         // user item, so angular.equals() returns false.
-        if (!(selected.length === current.size && selected.every(u => current.has(u)))) {
+        if (!(selected.length === current.size && selected.every(un => current.has(un)))) {
             const usersAsRecipients = this.users.map(u => ({type: 'USER', username: u.username}));
 
             this.recipients = this.recipients.filter(r => r.type !== 'USER')
@@ -107,13 +126,37 @@ class EmailRecipientsController {
         }
     }
     
+    mailingListsChanged() {
+        const current = new Set(this.recipients.filter(r => r.type === 'MAILING_LIST').map(ml => ml.xid));
+        const selected = this.mailingLists.map(ml => ml.xid);
+
+        // have to do this check for sets being equal as when mdSelect populates it checks that the model item is equal to the one in the array
+        // and calls $setViewValue if its not. Our model item initially looks like {username: 'admin'} and the one from REST in the array is a full
+        // user item, so angular.equals() returns false.
+        if (!(selected.length === current.size && selected.every(xid => current.has(xid)))) {
+            const mailingListsAsRecipients = this.mailingLists.map(ml => ({
+                type: 'MAILING_LIST',
+                xid: ml.xid,
+                id: ml.id,
+                name: ml.name,
+                inactiveIntervals: ml.inactiveIntervals
+            }));
+
+            this.recipients = this.recipients.filter(r => r.type !== 'MAILING_LIST')
+                .concat(mailingListsAsRecipients);
+
+            this.sortRecipients();
+            this.setViewValue();
+        }
+    }
+    
     chipKeyDown(event) {
         // stops the email being added if it is invalid
         if (this.separatorKeys.includes(event.keyCode)) {
-            if (this.chipsForm.email.$invalid) {
+            if (this.emailCtrl && this.emailCtrl.$invalid) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
-                this.chipsForm.email.$setTouched();
+                this.emailCtrl.$setTouched();
             }
         }
     }
@@ -123,6 +166,7 @@ export default {
     template: emailRecipientsTemplate,
     controller: EmailRecipientsController,
     bindings: {
+        hideMailingLists: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
