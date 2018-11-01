@@ -4,7 +4,6 @@
  */
 
 import componentTemplate from './mailingListList.html';
-import angular from 'angular';
 
 /**
  * @ngdoc directive

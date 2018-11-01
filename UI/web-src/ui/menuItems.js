@@ -1750,15 +1750,15 @@ export default [
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
                 const p1 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/components/mailingLists/mailingList')
+                    '../ngMango/components/mailingLists/mailingList');
                 const p2 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/components/mailingLists/mailingListList')
+                    '../ngMango/components/mailingLists/mailingListList');
                 const p3 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/components/mailingLists/mailingListSelect')
+                    '../ngMango/components/mailingLists/mailingListSelect');
                 const p4 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/components/mailingLists/mailingListSetup')
+                    '../ngMango/components/mailingLists/mailingListSetup');
                 const p5 = import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                    '../ngMango/services/mailingList')
+                    '../ngMango/services/mailingList');
                     
                 return Promise.all([p1, p2, p3, p4, p5]).then(
                     ([mailingList, mailingListList, mailingListSelect, mailingListSetup, mailingListFactory]) => {
