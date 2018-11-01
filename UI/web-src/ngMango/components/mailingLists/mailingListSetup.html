@@ -1,4 +1,4 @@
-<div flex layout="column" ng-form="$ctrl.form">
+<div flex layout="column" ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages">
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -86,7 +86,7 @@
                                 <td class="cell" flex md-cell>
                                     <md-input-container layout flex ng-if="recipient.recipientType === 'ADDRESS'" flex class="ma-input-space-between">
                                         <label ma-tr="mailingLists.emailAddress"></label>
-                                        <input name="address" ng-model="recipient.address" required ma-validation-messages="$ctrl.validationMessages">
+                                        <input name="address" ng-model="recipient.address" required>
                                         <div ng-messages="$ctrl.form.address.$error">
                                             <div ng-message="required" ma-tr="ui.app.required"></div>
                                             <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
