@@ -760,6 +760,30 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         
         regExpEscape(s) {
             return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+        },
+        
+        setsEqual(a, b) {
+            return a.size === b.size && Array.from(a).every(x => b.has(x));
+        },
+        
+        equalByFn(mapFn, a, b) {
+            if (a === b) return true;
+
+            const aIsArray = Array.isArray(a);
+            const bIsArray = Array.isArray(b);
+            
+            if (aIsArray || bIsArray) {
+                const aKeys = new Set((aIsArray ? a : [a]).map(mapFn));
+                const bKeys = new Set((bIsArray ? b : [b]).map(mapFn));
+
+                return this.setsEqual(aKeys, bKeys);
+            }
+
+            return mapFn(a) === mapFn(b);
+        },
+        
+        equalByKey(key, a, b) {
+            return this.equalByFn(x => x == null || typeof x !== 'object' ? x : x[key], a, b);
         }
     };
     
