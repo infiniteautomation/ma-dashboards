@@ -10,12 +10,14 @@ const UPDATE_TYPES = ['add', 'update', 'delete'];
 
 class UserSelectController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', 'maUserEventManager', '$scope', '$element']; }
+    static get $inject() { return ['maUser', 'maUserEventManager', '$scope', '$element', 'maUtil']; }
     
-    constructor(User, UserEventManager, $scope, $element) {
+    constructor(User, UserEventManager, $scope, $element, maUtil) {
         this.User = User;
         this.UserEventManager = UserEventManager;
         this.$scope = $scope;
+        
+        this.equalByUsername = maUtil.equalByKey.bind(maUtil, 'username');
     }
     
     $onInit() {
@@ -26,11 +28,16 @@ class UserSelectController {
     }
     
     render() {
-        this.selectedUser = this.ngModelCtrl.$viewValue;
+        this.selected = this.ngModelCtrl.$viewValue;
     }
     
-    selectUser(user) {
-        this.ngModelCtrl.$setViewValue(user);
+    selectChanged() {
+        // compare the sets of usernames and only set the view value if they are different
+        // this is needed as the md-select calls ng-change when its options are initialized and its view value isn't a full model
+        // we only want to set the view value when the user actually interacts with the select
+        if (!this.equalByUsername(this.selected, this.ngModelCtrl.$viewValue)) {
+            this.ngModelCtrl.$setViewValue(this.selected);
+        }
     }
     
     getUsers() {
