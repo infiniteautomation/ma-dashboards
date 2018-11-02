@@ -114,45 +114,29 @@ class EmailRecipientsController {
     }
     
     usersChanged() {
-        const current = new Set(this.recipients.filter(r => r[this.typeProp] === 'USER').map(u => u.username));
-        const selected = this.users.map(u => u.username);
+        const usersAsRecipients = this.users.map(u => ({[this.typeProp]: 'USER', username: u.username}));
 
-        // have to do this check for sets being equal as when mdSelect populates it checks that the model item is equal to the one in the array
-        // and calls $setViewValue if its not. Our model item initially looks like {username: 'admin'} and the one from REST in the array is a full
-        // user item, so angular.equals() returns false.
-        if (!(selected.length === current.size && selected.every(un => current.has(un)))) {
-            const usersAsRecipients = this.users.map(u => ({[this.typeProp]: 'USER', username: u.username}));
+        this.recipients = this.recipients.filter(r => r[this.typeProp] !== 'USER')
+            .concat(usersAsRecipients);
 
-            this.recipients = this.recipients.filter(r => r[this.typeProp] !== 'USER')
-                .concat(usersAsRecipients);
-
-            this.sortRecipients();
-            this.setViewValue();
-        }
+        this.sortRecipients();
+        this.setViewValue();
     }
     
     mailingListsChanged() {
-        const current = new Set(this.recipients.filter(r => r[this.typeProp] === 'MAILING_LIST').map(ml => ml.xid));
-        const selected = this.mailingLists.map(ml => ml.xid);
+        const mailingListsAsRecipients = this.mailingLists.map(ml => ({
+            [this.typeProp]: 'MAILING_LIST',
+            xid: ml.xid,
+            id: ml.id,
+            name: ml.name,
+            inactiveIntervals: ml.inactiveIntervals
+        }));
 
-        // have to do this check for sets being equal as when mdSelect populates it checks that the model item is equal to the one in the array
-        // and calls $setViewValue if its not. Our model item initially looks like {username: 'admin'} and the one from REST in the array is a full
-        // user item, so angular.equals() returns false.
-        if (!(selected.length === current.size && selected.every(xid => current.has(xid)))) {
-            const mailingListsAsRecipients = this.mailingLists.map(ml => ({
-                [this.typeProp]: 'MAILING_LIST',
-                xid: ml.xid,
-                id: ml.id,
-                name: ml.name,
-                inactiveIntervals: ml.inactiveIntervals
-            }));
+        this.recipients = this.recipients.filter(r => r[this.typeProp] !== 'MAILING_LIST')
+            .concat(mailingListsAsRecipients);
 
-            this.recipients = this.recipients.filter(r => r[this.typeProp] !== 'MAILING_LIST')
-                .concat(mailingListsAsRecipients);
-
-            this.sortRecipients();
-            this.setViewValue();
-        }
+        this.sortRecipients();
+        this.setViewValue();
     }
     
     chipKeyDown(event) {
