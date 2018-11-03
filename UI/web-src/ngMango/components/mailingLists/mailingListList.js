@@ -24,16 +24,25 @@ class MailingListsListController {
     }
     
     $onInit() {
+        console.log('hello');
         this.ngModelCtrl.$render = () => this.render();
         this.getLists();
 
-        this.$scope.$on('mailingListWasUpdated', (event, arg) => {
-            this.getLists();
-        });
+        this.maMailingList.subscribe((event, item, originalXid) => {
+            if (!this.lists) return;
 
-        this.$scope.$on('addNewMailingList', (event, arg) => {
-            this.new = true;
-        });
+            const index = this.lists.findIndex(list => list.id === item.id);
+            if (index >= 0) {
+                if (event.name === 'update' || event.name === 'create' || event.name === 'rtDataSaved') {
+                    this.lists[index] = item;
+                } else if (event.name === 'delete') {
+                    this.lists.splice(index, 1);
+                }
+            } else if (event.name === 'update' || event.name === 'create' || event.name === 'rtDataSaved') {
+                this.lists.push(item);
+            }
+
+        }, this.$scope, ['create', 'update', 'delete', 'rtDataSaved']);
 
     }
     
