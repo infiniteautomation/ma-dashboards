@@ -6,7 +6,7 @@
         <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
         <md-option ng-repeat="list in $ctrl.lists | orderBy:'name' track by list.xid" ng-value="list"><span ng-bind="list.name"></span></md-option>
     </md-select>
-    <md-select flex ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.usersPromise" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.setViewValue()" ng-model-options="{trackBy: '$value.xid'}">
+    <md-select flex ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.getLists" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.setViewValue()" ng-model-options="{trackBy: '$value.xid'}">
         <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
         <md-option ng-repeat="list in $ctrl.lists | orderBy:'name' track by list.xid" ng-value="list"><span ng-bind="list.name"></span></md-option>
     </md-select>
