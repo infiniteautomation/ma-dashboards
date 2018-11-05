@@ -28,6 +28,7 @@ class EventHandlerEditorController {
         
         this.handlerTypes = maEventHandler.handlerTypes;
         this.handlerTypesByName = maEventHandler.handlerTypesByName;
+        this.tabs = [];
     }
     
     $onInit() {
@@ -128,6 +129,20 @@ class EventHandlerEditorController {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
+    }
+    
+    addTab(tab) {
+        const index = this.tabs.findIndex(t => t.id === tab.id);
+        if (index < 0) {
+            this.tabs.push(tab);
+        }
+    }
+    
+    removeTab(id) {
+        const index = this.tabs.findIndex(t => t.id === id);
+        if (index >= 0) {
+            this.tabs.splice(index, 1);
+        }
     }
 }
 

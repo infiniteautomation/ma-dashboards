@@ -10,17 +10,17 @@ function eventHandlerProvider() {
         {
             type: 'EMAIL',
             description: 'eventHandlers.type.email',
-            editorTemplate: `<ma-event-handler-email-editor event-handler="$ctrl.eventHandler"></ma-event-handler-email-editor>`
+            template: `<ma-event-handler-email-editor></ma-event-handler-email-editor>`
         },
         {
             type: 'PROCESS',
             description: 'eventHandlers.type.process',
-            editorTemplate: ``
+            template: ``
         },
         {
             type: 'SET_POINT',
             description: 'eventHandlers.type.setPoint',
-            editorTemplate: ``
+            template: ``
         }
     ];
     
@@ -47,9 +47,18 @@ function eventHandlerProvider() {
             eventHandlerTypesByName[eventHandlerType.type] = eventHandlerType;
             
             // put the templates in the template cache so we can ng-include them
-            if (eventHandlerType.editorTemplate && !eventHandlerType.editorTemplateUrl) {
-                eventHandlerType.editorTemplateUrl = `eventHandlers.${eventHandlerType.type}.html`;
-                $templateCache.put(eventHandlerType.editorTemplateUrl, eventHandlerType.editorTemplate);
+            if (eventHandlerType.template && !eventHandlerType.templateUrl) {
+                eventHandlerType.templateUrl = `eventHandlers.${eventHandlerType.type}.html`;
+                $templateCache.put(eventHandlerType.templateUrl, eventHandlerType.template);
+            }
+            
+            if (Array.isArray(eventHandlerType.tabs)) {
+                eventHandlerType.tabs.forEach(tab => {
+                    if (tab.template && !tab.templateUrl) {
+                        tab.templateUrl = `eventHandlers.${eventHandlerType.type}.tab.${tab.id}.html`;
+                        $templateCache.put(tab.templateUrl, tab.template);
+                    }
+                });
             }
         });
         

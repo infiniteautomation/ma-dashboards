@@ -7,27 +7,17 @@ import eventHandlerEmailEditorTemplate from './eventHandlerEmailEditor.html';
 
 class EventHandlerEmailEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return []; }
+    static get $inject() { return ['$scope']; }
     
-    constructor() {
+    constructor($scope) {
+        this.$scope = $scope;
     }
     
     $onInit() {
+        this.$scope.editor = this.editor;
     }
     
     $onChanges(changes) {
-        if (changes.eventHandler) {
-            this.customizeTemplate = this.eventHandler && !!this.eventHandler.customTemplate;
-        }
-    }
-    
-    customizeTemplateChanged() {
-        if (!this.customizeTemplate) {
-            this.eventHandler.customTemplate = '';
-            if (this.formCtrl && this.formCtrl.customTemplate) {
-                this.formCtrl.customTemplate.$setDirty();
-            }
-        }
     }
 }
 
@@ -35,9 +25,8 @@ export default {
     template: eventHandlerEmailEditorTemplate,
     controller: EventHandlerEmailEditorController,
     bindings: {
-        eventHandler: '<'
     },
     require: {
-        formCtrl: '^?form'
+        editor: '^maEventHandlerEditor'
     }
 };

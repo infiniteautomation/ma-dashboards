@@ -1,44 +1,65 @@
-<form name="$ctrl.form" ma-validation-messages="$ctrl.validationMessages">
-    <div layout="row" layout-wrap layout-align="start center">
-        <md-input-container flex="100">
-            <label ma-tr="ui.components.eventHandlerType"></label>
-            <md-select name="handlerType" ng-model="$ctrl.eventHandler.handlerType" ng-disabled="!$ctrl.eventHandler.isNew()">
-                <md-option ng-repeat="type in $ctrl.handlerTypes track by type.type" ng-value="type.type">
-                    <span ma-tr="{{type.description}}"></span>
-                </md-option>
-            </md-select>
-            <div ng-messages="$ctrl.form.handlerType.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="validationMessage" ng-bind="$ctrl.form.handlerType.validationMessage"></div>
-            </div>
-        </md-input-container>
-
-        <md-input-container flex="100" flex-gt-md="50">
-            <label ma-tr="common.xid"></label>
-            <input name="xid" ng-model="$ctrl.eventHandler.xid" required>
-            <div ng-messages="$ctrl.form.xid.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
-            </div>
-        </md-input-container>
-
-        <md-input-container flex="100" flex-gt-md="50">
-            <label ma-tr="common.name"></label>
-            <input name="name" ng-model="$ctrl.eventHandler.name">
-            <div ng-messages="$ctrl.form.name.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
-            </div>
-        </md-input-container>
-        
-        <div flex="100">
-            <md-checkbox name="disabled" ng-model="$ctrl.eventHandler.disabled"><span ma-tr="common.disabled"></span></md-checkbox>
-        </div>
-    </div>
+<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" flex="noshrink" layout="column">
+    <md-tabs flex="noshrink" layout="column" md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false">
+        <md-tab>
+            <md-tab-label>
+                <span>Edit props</span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding">
+                    <div layout="row" layout-wrap layout-align="start center">
+                        <md-input-container flex="100">
+                            <label ma-tr="ui.components.eventHandlerType"></label>
+                            <md-select name="handlerType" ng-model="$ctrl.eventHandler.handlerType" ng-disabled="!$ctrl.eventHandler.isNew()">
+                                <md-option ng-repeat="type in $ctrl.handlerTypes track by type.type" ng-value="type.type">
+                                    <span ma-tr="{{type.description}}"></span>
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="$ctrl.form.handlerType.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.handlerType.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                
+                        <md-input-container flex="100" flex-gt-md="50">
+                            <label ma-tr="common.xid"></label>
+                            <input name="xid" ng-model="$ctrl.eventHandler.xid" required>
+                            <div ng-messages="$ctrl.form.xid.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                
+                        <md-input-container flex="100" flex-gt-md="50">
+                            <label ma-tr="common.name"></label>
+                            <input name="name" ng-model="$ctrl.eventHandler.name">
+                            <div ng-messages="$ctrl.form.name.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                        
+                        <div flex="100">
+                            <md-checkbox name="disabled" ng-model="$ctrl.eventHandler.disabled"><span ma-tr="common.disabled"></span></md-checkbox>
+                        </div>
+                    </div>
+                    
+                    <div ng-include="$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].templateUrl"></div>
+                </div>
+            </md-tab-body>
+        </md-tab>
+        <md-tab ng-repeat="tab in $ctrl.tabs track by tab.id" ng-attr-id="{{::tab.id}}">
+            <md-tab-label>
+                <span ng-if="::tab.labelTr" ma-tr="{{::tab.labelTr}}"></span>
+                <span ng-if="::!tab.labelTr" ng-bind="::tab.label"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div ma-event-handler-editor-tab-contents="::tab" ng-class="::{'md-padding': tab.padding}">
+                </div>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
     
-    <div ng-include="$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].editorTemplateUrl"></div>
-
-    <div layout>
+    <div class="md-padding">
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
@@ -52,4 +73,5 @@
             <span ma-tr="common.delete"></span>
         </md-button>
     </div>
-</form>
+
+</div>

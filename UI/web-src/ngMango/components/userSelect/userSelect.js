@@ -84,6 +84,6 @@ export default {
         icon: 'people',
         attributes: {
             showClear: {type: 'boolean'}
-        },
+        }
     }
 };
