@@ -24,7 +24,6 @@ class MailingListsListController {
     }
     
     $onInit() {
-        console.log('hello');
         this.ngModelCtrl.$render = () => this.render();
         this.getLists();
 

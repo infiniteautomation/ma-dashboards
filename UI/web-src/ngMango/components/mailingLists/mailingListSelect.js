@@ -74,7 +74,9 @@ class MailingListSelectController {
 export default {
     template: componentTemplate,
     controller: MailingListSelectController,
-    bindings: {},
+    bindings: {
+        selectMultiple: '<?',
+    },
     require: {
         ngModelCtrl: 'ngModel'
     },
