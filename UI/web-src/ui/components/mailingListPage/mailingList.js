@@ -14,14 +14,15 @@ import './mailingList.css';
  * @description Displays a Mailing Lists Component
  */
 
-const $inject = Object.freeze(['$scope', '$mdMedia']);
+const $inject = Object.freeze(['$scope', '$mdMedia', 'maMailingList']);
 class MailingLists {
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($scope, $mdMedia) {
+    constructor($scope, $mdMedia, maMailingList) {
         this.$scope = $scope;
         this.$mdMedia = $mdMedia;
+        this.maMailingList = maMailingList;
 
         this.$scope.$on('mailingListUpdated', (event, arg) => {
             this.$scope.$broadcast('mailingListWasUpdated', true);
@@ -33,6 +34,10 @@ class MailingLists {
     }
     
     $onInit() {}
+
+    newList() {
+        this.selectedList = new this.maMailingList();
+    }
 }
 
 export default {

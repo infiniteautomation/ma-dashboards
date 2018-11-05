@@ -11,7 +11,3 @@
         <md-option ng-repeat="list in $ctrl.lists | orderBy:'name' track by list.xid" ng-value="list"><span ng-bind="list.name"></span></md-option>
     </md-select>
 </md-input-container>
-
-<md-button class="md-raised md-primary" ng-click="$ctrl.newList()">
-    <md-icon>add</md-icon> <span ma-tr="ui.app.mailingLists.createNewList"></span>
-</md-button>
