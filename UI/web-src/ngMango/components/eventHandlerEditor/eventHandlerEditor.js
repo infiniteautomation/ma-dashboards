@@ -13,22 +13,22 @@ import eventHandlerEditorTemplate from './eventHandlerEditor.html';
  * @description Editor for an event handler, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate']);
+const $inject = Object.freeze(['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element']);
 class EventHandlerEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate) {
+    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $element) {
         this.maEventHandler = maEventHandler;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
+        this.$element = $element;
         
         this.handlerTypes = maEventHandler.handlerTypes;
         this.handlerTypesByName = maEventHandler.handlerTypesByName;
-        this.tabs = [];
     }
     
     $onInit() {
@@ -66,6 +66,7 @@ class EventHandlerEditorController {
     
     render() {
         this.validationMessages = [];
+        this.activeTab = 0;
         
         const viewValue = this.ngModelCtrl.$viewValue;
         if (viewValue) {
@@ -131,17 +132,11 @@ class EventHandlerEditorController {
         return true;
     }
     
-    addTab(tab) {
-        const index = this.tabs.findIndex(t => t.id === tab.id);
-        if (index < 0) {
-            this.tabs.push(tab);
-        }
-    }
-    
-    removeTab(id) {
-        const index = this.tabs.findIndex(t => t.id === id);
+    activateTab(query) {
+        const elements = this.$element[0].querySelectorAll('md-tab-content');
+        const index = Array.prototype.findIndex.call(elements, e => !!e.querySelector(query));
         if (index >= 0) {
-            this.tabs.splice(index, 1);
+            this.activeTab = index;
         }
     }
 }

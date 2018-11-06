@@ -56,7 +56,26 @@
 
 <ma-email-recipients ng-if="editor.eventHandler.sendInactive && editor.eventHandler.inactiveOverride" name="inactiveRecipients" ng-model="editor.eventHandler.inactiveRecipients"></ma-email-recipients>
 
-<ma-event-handler-editor-tab tab-id="email-script" tab-label-tr="eventHandlers.script">
-    <h3 ma-tr="eventHandlers.customTemplate"></h3>
-    <ma-ace-editor name="customTemplate" mode="html" ng-model="editor.eventHandler.customTemplate"></ma-ace-editor>
-</ma-event-handler-editor-tab>
+<md-tab>
+    <md-tab-label>
+        <span ma-tr="eventHandlers.customTemplate"></span>
+    </md-tab-label>
+    <md-tab-body>
+        <div class="md-padding" id="email-template">
+            <h3 ma-tr="eventHandlers.customTemplate"></h3>
+            <ma-ace-editor name="customTemplate" mode="html" ng-model="editor.eventHandler.customTemplate"></ma-ace-editor>
+        </div>
+    </md-tab-body>
+</md-tab>
+
+<md-tab>
+    <md-tab-label>
+        <span ma-tr="eventHandlers.script"></span>
+    </md-tab-label>
+    <md-tab-body>
+        <div class="md-padding" id="email-script">
+            <h3 ma-tr="eventHandlers.script"></h3>
+            <ma-ace-editor name="script" mode="javascript" ng-model="editor.eventHandler.script"></ma-ace-editor>
+        </div>
+    </md-tab-body>
+</md-tab>
