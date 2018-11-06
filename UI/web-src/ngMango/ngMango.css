@@ -611,6 +611,12 @@ md-card md-card-content.ma-no-padding {
   padding: 0;
 }
 
+.ma-no-padding-bottom,
+.md-padding.ma-no-padding-bottom,
+md-card md-card-content.ma-no-padding-bottom {
+	padding-bottom: 0;
+}
+
 .ma-progress-button div > md-icon {
   margin-left: 4px;
   margin-right: 4px;

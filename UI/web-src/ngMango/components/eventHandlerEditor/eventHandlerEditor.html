@@ -2,10 +2,10 @@
     <md-tabs flex="noshrink" layout="column" md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
         <md-tab>
             <md-tab-label>
-                <span>Edit props</span>
+                <span ma-tr="eventHandlers.eventHandler"></span>
             </md-tab-label>
             <md-tab-body>
-                <div class="md-padding" id="editor-main">
+                <div class="md-padding ma-no-padding-bottom" id="editor-main">
                     <div layout="row" layout-wrap layout-align="start center">
                         <md-input-container flex="100">
                             <label ma-tr="ui.components.eventHandlerType"></label>
@@ -48,8 +48,10 @@
             </md-tab-body>
         </md-tab>
     </md-tabs>
-    
+
     <div class="md-padding">
+        <div ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
+
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
@@ -63,5 +65,4 @@
             <span ma-tr="common.delete"></span>
         </md-button>
     </div>
-
 </div>

@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import eventHandlerEditorTemplate from './eventHandlerEditor.html';
+import './eventHandlerEditor.css';
 
 /**
  * @ngdoc directive
@@ -13,12 +14,12 @@ import eventHandlerEditorTemplate from './eventHandlerEditor.html';
  * @description Editor for an event handler, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element']);
+const $inject = Object.freeze(['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil']);
 class EventHandlerEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $element) {
+    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil) {
         this.maEventHandler = maEventHandler;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
@@ -26,6 +27,7 @@ class EventHandlerEditorController {
         this.$window = $window;
         this.maTranslate = maTranslate;
         this.$element = $element;
+        this.maUtil = maUtil;
         
         this.handlerTypes = maEventHandler.handlerTypes;
         this.handlerTypesByName = maEventHandler.handlerTypesByName;
@@ -104,6 +106,12 @@ class EventHandlerEditorController {
         }, error => {
             if (error.status === 422) {
                 this.validationMessages = error.data.validationMessages;
+                const withProperty = this.validationMessages.filter(m => m.property);
+                if (withProperty.length) {
+                    const property = withProperty[0].property;
+                    const selector = this.maUtil.propertyNameToSelector(property);
+                    this.activateTab(selector);
+                }
             }
             this.maDialogHelper.errorToast(['ui.components.eventHandlerSaveError', error.mangoStatusText]);
         });
