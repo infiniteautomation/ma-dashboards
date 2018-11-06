@@ -784,6 +784,48 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         
         equalByKey(key, a, b) {
             return this.equalByFn(x => x == null || typeof x !== 'object' ? x : x[key], a, b);
+        },
+        
+        splitPropertyName(name, isControlName = false) {
+            if (!name) {
+                return [];
+            }
+            
+            const propArray = name.split('.');
+            
+            if (isControlName) {
+                // forms are often named "$ctrl.name", remove the prefix
+                if (propArray.length && propArray[0] === '$ctrl') {
+                    propArray.shift();
+                }
+            }
+            
+            for (let i = 0; i < propArray.length; i++) {
+                const j = i;
+                let prop = propArray[j];
+                
+                const arrayIndexMatch = /^(.+)\[(\d+)\]$/.exec(prop);
+                if (arrayIndexMatch) {
+                    prop = propArray[j] = arrayIndexMatch[1];
+                    propArray.splice(j + 1, 0, arrayIndexMatch[2]);
+                    i++; // skip in entry we just spliced in
+                }
+                
+                if (isControlName) {
+                    const matchesInternal = /^(.+)_internal$/.exec(prop);
+                    if (matchesInternal) {
+                        prop = propArray[j] = matchesInternal[1];
+                    }
+                }
+            }
+            
+            return propArray;
+        },
+        
+        propertyNameToSelector(name) {
+            return this.splitPropertyName(name).map(n => {
+                return `[name='${n}']`;
+            }).join(' ');
         }
     };
     
