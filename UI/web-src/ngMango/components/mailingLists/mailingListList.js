@@ -41,6 +41,8 @@ class MailingListsListController {
                 this.lists.push(item);
             }
 
+            this.new = true;
+
         }, this.$scope, ['create', 'update', 'delete', 'rtDataSaved']);
 
     }
