@@ -76,9 +76,9 @@
     </div>
     <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
-            <a href="/excel-reports.shtm" target="mango-legacy" flex layout="column">
+            <a ui-sref="ui.settings.excelReports" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_excel_reports" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_excel_report_templates" class="home-page-count"></ma-point-value>
                     <md-icon>grid_on</md-icon>
                     <h3 ma-tr="ui.app.excelReports"></h3>
                 </md-card-content>
