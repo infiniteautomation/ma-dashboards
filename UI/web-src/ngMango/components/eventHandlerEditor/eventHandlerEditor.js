@@ -109,8 +109,8 @@ class EventHandlerEditorController {
                 const withProperty = this.validationMessages.filter(m => m.property);
                 if (withProperty.length) {
                     const property = withProperty[0].property;
-                    const selector = this.maUtil.propertyNameToSelector(property);
-                    this.activateTab(selector);
+                    const inputElement = this.maUtil.findInputElement(property, this.form);
+                    this.activateTab(inputElement);
                 }
             }
             this.maDialogHelper.errorToast(['ui.components.eventHandlerSaveError', error.mangoStatusText]);
@@ -141,8 +141,18 @@ class EventHandlerEditorController {
     }
     
     activateTab(query) {
-        const elements = this.$element[0].querySelectorAll('md-tab-content');
-        const index = Array.prototype.findIndex.call(elements, e => !!e.querySelector(query));
+        if (!query) return;
+        
+        const tabElements = this.$element[0].querySelectorAll('md-tab-content');
+
+        const index = Array.prototype.findIndex.call(tabElements, tab => {
+            if (query instanceof Node) {
+                return tab.contains(query);
+            }
+            
+            return !!tab.querySelector(query);
+        });
+        
         if (index >= 0) {
             this.activeTab = index;
         }
