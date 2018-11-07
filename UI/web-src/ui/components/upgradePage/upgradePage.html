@@ -4,39 +4,42 @@
 </div>
 
 <div ng-if="!$ctrl.checkPromise">
-	<div layout layout-align="start center">
-		<h1 ma-tr="ui.app.moduleUpgrades"></h1>
-		<div class="ma-guid-and-release-channel">
-			<div><span ma-tr="modules.guid"></span>:&nbsp;<strong ng-bind="$ctrl.coreModule.guid"></strong></div>
-			<div ng-switch="$ctrl.coreModule.upgradeVersionState">
-				<span ma-tr="systemSettings.upgradeVersionState"></span>:&nbsp;
-				<strong ng-switch-when="0" ma-tr="systemSettings.upgradeState.development"></strong>
-				<strong ng-switch-when="1" ma-tr="systemSettings.upgradeState.alpha"></strong>
-				<strong ng-switch-when="2" ma-tr="systemSettings.upgradeState.beta"></strong>
-				<strong ng-switch-when="3" ma-tr="systemSettings.upgradeState.releaseCandidate"></strong>
-				<strong ng-switch-when="4" ma-tr="systemSettings.upgradeState.production"></strong>
-			</div>
-		</div>
-	</div>
-
-	<md-button class="md-raised" ui-sref="^">
-		<md-icon>arrow_back</md-icon>
-		<span ma-tr="ui.app.backToModules"></span>
-	</md-button>
-	
-	<md-button class="md-raised md-primary" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'" ng-click="$ctrl.checkForUpgrades()">
-		<md-icon>update</md-icon>
-		<span ma-tr="modules.versionCheck"></span>
-	</md-button>
-	
-	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'" ng-click="$ctrl.doUpgrade($event)">
-		<md-icon>check</md-icon>
-		<span ma-tr="ui.app.installUpgradeX" ma-tr-args="[$ctrl.upgradesSelected.length + $ctrl.installsSelected.length]"></span>
-	</md-button>
-	
-	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'">
-        <md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span>
-    </md-button>
+    <div layout-wrap layout="column" layout-gt-md="row">
+        <div flex layout layout-wrap layout-align="center center" layout-align-gt-md="start center">
+        	<md-button class="md-raised" ui-sref="^">
+        		<md-icon>arrow_back</md-icon>
+        		<span ma-tr="ui.app.backToModules"></span>
+        	</md-button>
+        	
+        	<md-button class="md-raised md-primary" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'" ng-click="$ctrl.checkForUpgrades()">
+        		<md-icon>update</md-icon>
+        		<span ma-tr="modules.versionCheck"></span>
+        	</md-button>
+        	
+        	<md-button class="md-raised md-accent" ng-disabled="!$ctrl.upgradesSelected.length && !$ctrl.installsSelected.length || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'" ng-click="$ctrl.doUpgrade($event)">
+        		<md-icon>check</md-icon>
+        		<span ma-tr="ui.app.installUpgradeX" ma-tr-args="[$ctrl.upgradesSelected.length + $ctrl.installsSelected.length]"></span>
+        	</md-button>
+        	
+        	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()" ng-disabled="$ctrl.checkPromise || $ctrl.upgradePromise || $ctrl.upgradeState === 'RESTART'">
+                <md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span>
+            </md-button>
+        </div>
+        
+        <div layout layout-align="center center" layout-align-gt-md="end center">
+    		<div class="ma-guid-and-release-channel">
+    			<div><span ma-tr="modules.guid"></span>:&nbsp;<strong ng-bind="$ctrl.coreModule.guid"></strong></div>
+    			<div ng-switch="$ctrl.coreModule.upgradeVersionState">
+    				<span ma-tr="systemSettings.upgradeVersionState"></span>:&nbsp;
+    				<strong ng-switch-when="0" ma-tr="systemSettings.upgradeState.development"></strong>
+    				<strong ng-switch-when="1" ma-tr="systemSettings.upgradeState.alpha"></strong>
+    				<strong ng-switch-when="2" ma-tr="systemSettings.upgradeState.beta"></strong>
+    				<strong ng-switch-when="3" ma-tr="systemSettings.upgradeState.releaseCandidate"></strong>
+    				<strong ng-switch-when="4" ma-tr="systemSettings.upgradeState.production"></strong>
+    			</div>
+    		</div>
+        </div>
+    </div>
 
 	<div layout="column" layout-align="start start" class="md-padding">
 		<md-checkbox ng-model="$ctrl.backupBeforeDownload"><span ma-tr="modules.versionCheck.advanced.backup"></span></md-checkbox>

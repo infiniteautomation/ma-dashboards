@@ -1,50 +1,30 @@
-<div layout layout-align="start center">
-	<h1 ma-tr="header.modules"></h1>
-	<div class="ma-guid-and-release-channel">
-		<div><span ma-tr="modules.guid"></span>:&nbsp;<strong ng-bind="$ctrl.coreModule.guid"></strong></div>
-        <div ng-switch="$ctrl.coreModule.upgradeVersionState">
-            <span ma-tr="systemSettings.upgradeVersionState"></span>:&nbsp;
-            <strong ng-switch-when="0" ma-tr="systemSettings.upgradeState.development"></strong>
-            <strong ng-switch-when="1" ma-tr="systemSettings.upgradeState.alpha"></strong>
-            <strong ng-switch-when="2" ma-tr="systemSettings.upgradeState.beta"></strong>
-            <strong ng-switch-when="3" ma-tr="systemSettings.upgradeState.releaseCandidate"></strong>
-            <strong ng-switch-when="4" ma-tr="systemSettings.upgradeState.production"></strong>
+<div layout-wrap layout="column" layout-gt-md="row">
+    <div flex layout layout-wrap layout-align="center center" layout-align-gt-md="start center">
+    	<md-button class="md-raised md-primary" ui-sref=".upgrade"><md-icon>update</md-icon>&nbsp;<span ma-tr="modules.versionCheck"></span></md-button>
+        <md-button class="md-raised md-primary" ui-sref=".offlineUpgrade"><md-icon>update</md-icon>&nbsp;<span ma-tr="ui.app.offlineUpgrades"></span></md-button>
+    
+    	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
+    	<form action="{{::$ctrl.storeUrl}}" method="post" target="mangoStore" enctype="application/x-www-form-urlencoded">
+    		<md-button class="md-raised md-accent" type="sumbit" ng-disabled="!$ctrl.storeUrl"><md-icon>store</md-icon>&nbsp;<span ma-tr="modules.update"></span></md-button>
+    		<textarea style="display:none;" name="orderJson" ng-model="$ctrl.updateLicenseStr"></textarea>
+    		<input type="hidden" name="redirect" ng-value="$ctrl.pageUrl">
+    	</form>
+    	<md-button class="md-raised md-accent" ng-click="$ctrl.downloadLicense($event)"><md-icon>cloud_download</md-icon>&nbsp;<span ma-tr="modules.downloadLicense"></span></md-button>
+    </div>
+    
+    <div layout layout-align="center center" layout-align-gt-md="end center">
+        <div class="ma-guid-and-release-channel">
+            <div><span ma-tr="modules.guid"></span>:&nbsp;<strong ng-bind="$ctrl.coreModule.guid"></strong></div>
+            <div ng-switch="$ctrl.coreModule.upgradeVersionState">
+                <span ma-tr="systemSettings.upgradeVersionState"></span>:&nbsp;
+                <strong ng-switch-when="0" ma-tr="systemSettings.upgradeState.development"></strong>
+                <strong ng-switch-when="1" ma-tr="systemSettings.upgradeState.alpha"></strong>
+                <strong ng-switch-when="2" ma-tr="systemSettings.upgradeState.beta"></strong>
+                <strong ng-switch-when="3" ma-tr="systemSettings.upgradeState.releaseCandidate"></strong>
+                <strong ng-switch-when="4" ma-tr="systemSettings.upgradeState.production"></strong>
+            </div>
         </div>
-	</div>
-</div>
-
-<div layout>
-	<md-button class="md-raised md-primary" ui-sref=".upgrade"><md-icon>update</md-icon>&nbsp;<span ma-tr="modules.versionCheck"></span></md-button>
-    <md-button class="md-raised md-primary" ui-sref=".offlineUpgrade"><md-icon>update</md-icon>&nbsp;<span ma-tr="ui.app.offlineUpgrades"></span></md-button>
-    
-    <!--
-    <md-menu md-offset="16 60">
-        <md-button class="md-raised md-primary" ng-click="$mdMenu.open($event)"><md-icon>update</md-icon>&nbsp;<span ma-tr="ui.app.offlineUpgrades"></span></md-button>
-
-        <md-menu-content width="4">
-            <md-menu-item>
-                <md-button aria-label="{{'ui.app.userProfile'|maTr}}" ui-sref="ui.settings.users({username: User.current.username})">
-                    <md-icon md-menu-align-target>person</md-icon>
-                    <span ma-tr="ui.app.userProfile"></span>
-                </md-button>
-            </md-menu-item>
-            <md-menu-item>
-                <md-button aria-label="{{'header.logout'|maTr}}" ui-sref="logout">
-                    <md-icon md-menu-align-target>power_settings_new</md-icon>
-                    <span ma-tr="header.logout"></span>
-                </md-button>
-            </md-menu-item>
-        </md-menu-content>
-    </md-menu>
-    -->
-    
-	<md-button class="md-raised md-warn" ng-click="$ctrl.restart()"><md-icon>autorenew</md-icon>&nbsp;<span ma-tr="modules.restart"></span></md-button>
-	<form action="{{::$ctrl.storeUrl}}" method="post" target="mangoStore" enctype="application/x-www-form-urlencoded">
-		<md-button class="md-raised md-accent" type="sumbit" ng-disabled="!$ctrl.storeUrl"><md-icon>store</md-icon>&nbsp;<span ma-tr="modules.update"></span></md-button>
-		<textarea style="display:none;" name="orderJson" ng-model="$ctrl.updateLicenseStr"></textarea>
-		<input type="hidden" name="redirect" ng-value="$ctrl.pageUrl">
-	</form>
-	<md-button class="md-raised md-accent" ng-click="$ctrl.downloadLicense($event)"><md-icon>cloud_download</md-icon>&nbsp;<span ma-tr="modules.downloadLicense"></span></md-button>
+    </div>
 </div>
 
 <div layout="row" layout-wrap layout-align="start stretch">
