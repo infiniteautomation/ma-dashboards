@@ -47,7 +47,7 @@ class EventHandlerEditorController {
 
         const oldUnload = this.$window.onbeforeunload;
         this.$window.onbeforeunload = (event) => {
-            if (this.form.$dirty) {
+            if (this.form && this.form.$dirty) {
                 const text = this.maTranslate.trSync('ui.app.discardUnsavedChanges');
                 event.returnValue = text;
                 return text;
@@ -81,8 +81,10 @@ class EventHandlerEditorController {
             this.eventHandler = null;
         }
 
-        this.form.$setPristine();
-        this.form.$setUntouched();
+        if (this.form) {
+            this.form.$setPristine();
+            this.form.$setUntouched();
+        }
     }
     
     setViewValue() {
@@ -134,7 +136,7 @@ class EventHandlerEditorController {
     }
     
     confirmDiscard() {
-        if (this.form.$dirty) {
+        if (this.form && this.form.$dirty) {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
