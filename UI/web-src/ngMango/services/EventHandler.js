@@ -134,9 +134,12 @@ function eventHandlerProvider() {
                 
                 const $mdDialog = $injector.get('$mdDialog');
                 const $mdMedia = $injector.get('$mdMedia');
+                
+                const fullscreen = $mdMedia('xs') || $mdMedia('sm');
 
                 const dialogScope = Object.assign($rootScope.$new(true), {
-                    eventHandler
+                    eventHandler,
+                    fullscreen
                 });
 
                 return $mdDialog.show({
@@ -145,14 +148,14 @@ function eventHandlerProvider() {
                         `<md-dialog flex="100" flex-gt-sm="70" flex-gt-md="60" flex-gt-lg="50"
                                 ma-dialog
                                 ma-dialog-title-tr="events.editEventHandler" ma-dialog-hide-actions="true">
-                            <ma-event-handler-editor flex="noshrink" layout="column"
+                            <ma-event-handler-editor flex="noshrink" layout="column" dynamic-height="!fullscreen"
                                 ng-model="eventHandler" ng-change="$dialog.hide(eventHandler)">
                             </ma-event-handler-editor>
                         </md-dialog>`,
                     targetEvent: $event,
                     clickOutsideToClose: true,
                     escapeToClose: true,
-                    fullscreen: $mdMedia('xs') || $mdMedia('sm')
+                    fullscreen
                 });
             }
         }

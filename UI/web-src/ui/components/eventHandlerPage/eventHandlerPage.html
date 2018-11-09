@@ -28,7 +28,7 @@
                     <span ng-if="$ctrl.eventHandler.isNew()" ma-tr="events.createEventHandler"></span>
                 </div>
             </md-toolbar>
-            <ma-event-handler-editor flex layout="column" ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerSaved()" on-init="$ctrl.editorController = $controller"></ma-event-handler-editor>
+            <ma-event-handler-editor ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerSaved()" on-init="$ctrl.editorController = $controller"></ma-event-handler-editor>
         </md-card>
     </div>
 </div>

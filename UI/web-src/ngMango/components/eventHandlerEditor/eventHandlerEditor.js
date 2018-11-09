@@ -31,6 +31,8 @@ class EventHandlerEditorController {
         
         this.handlerTypes = maEventHandler.handlerTypes;
         this.handlerTypesByName = maEventHandler.handlerTypesByName;
+        
+        this.dynamicHeight = true;
     }
     
     $onInit() {
@@ -165,7 +167,8 @@ export default {
     template: eventHandlerEditorTemplate,
     controller: EventHandlerEditorController,
     bindings: {
-        onInit: '&?'
+        onInit: '&?',
+        dynamicHeight: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
