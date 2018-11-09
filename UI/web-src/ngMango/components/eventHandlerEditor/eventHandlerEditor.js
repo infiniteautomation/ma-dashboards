@@ -108,8 +108,12 @@ class EventHandlerEditorController {
             this.render();
             this.maDialogHelper.toast(['ui.components.eventHandlerSaved', this.eventHandler.alias || this.eventHandler.xid]);
         }, error => {
+            let statusText = error.mangoStatusText;
+            
             if (error.status === 422) {
+                statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.validationMessages;
+                
                 const withProperty = this.validationMessages.filter(m => m.property);
                 if (withProperty.length) {
                     const property = withProperty[0].property;
@@ -117,7 +121,8 @@ class EventHandlerEditorController {
                     this.activateTab(inputElement);
                 }
             }
-            this.maDialogHelper.errorToast(['ui.components.eventHandlerSaveError', error.mangoStatusText]);
+            
+            this.maDialogHelper.errorToast(['ui.components.eventHandlerSaveError', statusText]);
         });
     }
     

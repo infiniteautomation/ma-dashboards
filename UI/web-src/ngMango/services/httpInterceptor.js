@@ -71,6 +71,9 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
                 message = safeTranslate(`rest.httpStatus.${error.status}`, `HTTP error ${error.status}`);
             }
 
+            error.mangoStatusText = message;
+            error.mangoStatusTextShort = message;
+            
     	    if (error.status === 422) {
     	        let messages = [];
     	        if (error.data.result && Array.isArray(error.data.result.messages)) {
@@ -89,8 +92,6 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     	            }
                     error.mangoStatusText = safeTranslate(trKeyArgs, message);
     	        }
-    	    } else {
-    	        error.mangoStatusText = message;
     	    }
 
             return $q.reject(error);    
