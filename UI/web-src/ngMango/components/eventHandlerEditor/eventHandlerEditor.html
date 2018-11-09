@@ -1,5 +1,5 @@
 <div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" flex="noshrink" layout="column">
-    <md-tabs flex="noshrink" layout="column" md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
+    <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
         <md-tab>
             <md-tab-label>
                 <span ma-tr="eventHandlers.eventHandler"></span>
@@ -49,10 +49,10 @@
         </md-tab>
     </md-tabs>
 
-    <div class="md-padding">
-        <div ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
+    <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
 
-        <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)">
+    <div class="md-padding">
+        <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
         </md-button>

@@ -35,8 +35,8 @@ function eventHandlerProvider() {
     
     this.$get = eventHandlerFactory;
     
-    eventHandlerFactory.$inject = ['maRestResource', '$templateCache'];
-    function eventHandlerFactory(RestResource, $templateCache) {
+    eventHandlerFactory.$inject = ['maRestResource', '$templateCache', '$injector', '$rootScope'];
+    function eventHandlerFactory(RestResource, $templateCache, $injector, $rootScope) {
 
         const eventHandlerBaseUrl = '/rest/v1/event-handlers';
         const eventHandlerWebSocketUrl = '/rest/v1/websocket/event-handlers';
@@ -121,6 +121,39 @@ function eventHandlerProvider() {
                     queryBuilder.eq('eventTypeRef2', ref2);
                 }
                 return queryBuilder.query();
+            }
+            
+            showEditDialog($event) {
+                return this.constructor.showEditDialog($event, this);
+            }
+            
+            static showEditDialog($event, eventHandler) {
+                if (!$injector.has('$mdDialog') || !$injector.has('$mdMedia')) {
+                    throw new Error('$mdDialog/$mdMedia not available');
+                }
+                
+                const $mdDialog = $injector.get('$mdDialog');
+                const $mdMedia = $injector.get('$mdMedia');
+
+                const dialogScope = Object.assign($rootScope.$new(true), {
+                    eventHandler
+                });
+
+                return $mdDialog.show({
+                    scope: dialogScope,
+                    template:
+                        `<md-dialog flex="100" flex-gt-sm="70" flex-gt-md="60" flex-gt-lg="50"
+                                ma-dialog
+                                ma-dialog-title-tr="events.editEventHandler" ma-dialog-hide-actions="true">
+                            <ma-event-handler-editor flex="noshrink" layout="column"
+                                ng-model="eventHandler" ng-change="$dialog.hide(eventHandler)">
+                            </ma-event-handler-editor>
+                        </md-dialog>`,
+                    targetEvent: $event,
+                    clickOutsideToClose: true,
+                    escapeToClose: true,
+                    fullscreen: $mdMedia('xs') || $mdMedia('sm')
+                });
             }
         }
     

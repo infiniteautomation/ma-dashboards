@@ -1,0 +1,18 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h2 ma-tr="{{$ctrl.titleTr}}" ng-bind="$ctrl.title"></h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+            <md-icon>close</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<md-dialog-content layout="column" ng-class="{'md-padding': $ctrl.padding}" flex></md-dialog-content>
+
+<md-dialog-actions ng-if="!$ctrl.hideActions" layout="row">
+    <md-button class="md-raised" ng-click="$ctrl.cancel()">
+        <md-icon>close</md-icon>
+        <span ma-tr="common.close"></span>
+    </md-button>
+</md-dialog-actions>
