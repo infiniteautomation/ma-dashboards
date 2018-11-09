@@ -139,22 +139,25 @@ function eventHandlerProvider() {
 
                 const dialogScope = Object.assign($rootScope.$new(true), {
                     eventHandler,
-                    fullscreen
+                    fullscreen,
+                    dialog: {}
                 });
 
                 return $mdDialog.show({
                     scope: dialogScope,
                     template:
-                        `<md-dialog flex="100" flex-gt-sm="70" flex-gt-md="60" flex-gt-lg="50"
+                        `<md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30"
                                 ma-dialog
-                                ma-dialog-title-tr="events.editEventHandler" ma-dialog-hide-actions="true">
+                                ma-dialog-title-tr="events.editEventHandler" ma-dialog-hide-actions="true"
+                                ma-dialog-confirm-cancel="dialog.editorController.confirmDiscard()">
                             <ma-event-handler-editor flex="noshrink" layout="column" dynamic-height="!fullscreen"
-                                ng-model="eventHandler" ng-change="$dialog.hide(eventHandler)">
+                                ng-model="eventHandler" ng-change="$dialog.hide(eventHandler)"
+                                on-init="dialog.editorController = $controller">
                             </ma-event-handler-editor>
                         </md-dialog>`,
                     targetEvent: $event,
-                    clickOutsideToClose: true,
-                    escapeToClose: true,
+                    clickOutsideToClose: false,
+                    escapeToClose: false,
                     fullscreen
                 });
             }

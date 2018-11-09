@@ -127,7 +127,9 @@ class EventHandlerEditorController {
     }
     
     revertItem(event) {
-        this.render();
+        if (this.confirmDiscard()) {
+            this.render();
+        }
     }
 
     deleteItem(event) {

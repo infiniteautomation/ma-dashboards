@@ -18,13 +18,21 @@ function dialog($compile) {
 
     class DialogController {
         static get $$ngIsClass() { return true; }
-        static get $inject() { return ['$scope', '$element', '$transclude', '$mdDialog']; }
+        static get $inject() { return ['$scope', '$element', '$transclude', '$mdDialog', '$parse', '$attrs', '$q']; }
         
-        constructor($scope, $element, $transclude, $mdDialog) {
+        constructor($scope, $element, $transclude, $mdDialog, $parse, $attrs, $q) {
             this.$scope = $scope;
             this.$element = $element;
             this.$transclude = $transclude;
             this.$mdDialog = $mdDialog;
+            this.$q = $q;
+            
+            if ($attrs.hasOwnProperty('maDialogConfirmCancel')) {
+                const getter = $parse($attrs.maDialogConfirmCancel);
+                this.confirmCancel = () => getter($scope.$parent);
+            } else {
+                this.confirmCancel = () => true;
+            }
         }
         
         $onChanges(changes) {
@@ -62,7 +70,11 @@ function dialog($compile) {
         }
         
         cancel(error) {
-            this.$mdDialog.cancel(error);
+            this.$q.resolve(this.confirmCancel()).then(canCancel => {
+                if (canCancel) {
+                    this.$mdDialog.cancel(error);
+                }
+            });
         }
     }
     
