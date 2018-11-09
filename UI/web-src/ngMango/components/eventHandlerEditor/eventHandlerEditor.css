@@ -2,3 +2,7 @@
 ma-event-handler-editor md-tab-content:not(.md-active) * {
 	visibility: hidden;
 }
+
+ma-event-handler-editor .ma-dialog-actions > .md-button {
+	margin: 0 4px;
+}
