@@ -149,7 +149,8 @@ function uiSettingsProvider(MA_UI_SETTINGS, $mdThemingProvider, pointValuesProvi
             }
             
             'delete'() {
-                return this.userSettingsStore.$delete().then(() => {
+                this.userSettingsStore.jsonData = {};
+                return this.userSettingsStore.$save().then(store => {
                     this.reset();
                 });
             }
