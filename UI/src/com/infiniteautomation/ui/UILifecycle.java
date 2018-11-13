@@ -57,41 +57,41 @@ public class UILifecycle extends ModuleElementDefinition {
     }
 
     public void installPageData() {
-        JsonDataVO menu = JsonDataDao.getInstance().getByXid(MA_UI_PAGES_XID);
-        if (menu == null) {
-            menu = new JsonDataVO();
-            menu.setXid(MA_UI_PAGES_XID);
-            menu.setName("UI Pages");
-            menu.setPublicData(false);
-            menu.setReadPermission(MA_UI_DEFAULT_READ_PERMISSION);
-            menu.setEditPermission(MA_UI_EDIT_PAGES_PERMISSION);
+        JsonDataVO pages = JsonDataDao.getInstance().getByXid(MA_UI_PAGES_XID);
+        if (pages == null) {
+            pages = new JsonDataVO();
+            pages.setXid(MA_UI_PAGES_XID);
+            pages.setName("UI Pages");
+            pages.setPublicData(false);
+            pages.setReadPermission(MA_UI_DEFAULT_READ_PERMISSION);
+            pages.setEditPermission(MA_UI_EDIT_PAGES_PERMISSION);
         }
 
-        if (menu.getJsonData() == null) {
+        if (pages.getJsonData() == null) {
             ObjectNode object = nodeFactory.objectNode();
             object.set("pages", nodeFactory.arrayNode());
-            menu.setJsonData(object);
+            pages.setJsonData(object);
         }
 
-        JsonDataDao.getInstance().save(menu);
+        JsonDataDao.getInstance().save(pages);
     }
 
     public void installSettingsData() {
-        JsonDataVO menu = JsonDataDao.getInstance().getByXid(MA_UI_SETTINGS_XID);
-        if (menu == null) {
-            menu = new JsonDataVO();
-            menu.setXid(MA_UI_SETTINGS_XID);
-            menu.setName("UI Settings");
-            menu.setPublicData(true);
-            menu.setReadPermission(MA_UI_DEFAULT_READ_PERMISSION);
-            menu.setEditPermission(MA_UI_EDIT_SETTINGS_PERMISSION);
+        JsonDataVO settings = JsonDataDao.getInstance().getByXid(MA_UI_SETTINGS_XID);
+        if (settings == null) {
+            settings = new JsonDataVO();
+            settings.setXid(MA_UI_SETTINGS_XID);
+            settings.setName("UI Settings");
+            settings.setPublicData(true);
+            settings.setReadPermission(MA_UI_DEFAULT_READ_PERMISSION);
+            settings.setEditPermission(MA_UI_EDIT_SETTINGS_PERMISSION);
         }
 
-        if (menu.getJsonData() == null) {
+        if (settings.getJsonData() == null) {
             ObjectNode object = nodeFactory.objectNode();
-            menu.setJsonData(object);
+            settings.setJsonData(object);
         }
 
-        JsonDataDao.getInstance().save(menu);
+        JsonDataDao.getInstance().save(settings);
     }
 }
