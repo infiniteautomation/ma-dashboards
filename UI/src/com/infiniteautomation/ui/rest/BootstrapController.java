@@ -18,6 +18,7 @@ import com.serotonin.m2m2.ICoreLicense;
 import com.serotonin.m2m2.db.dao.JsonDataDao;
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.vo.User;
+import com.serotonin.m2m2.vo.json.JsonDataVO;
 import com.serotonin.m2m2.web.mvc.rest.v1.ModulesRestController;
 import com.serotonin.m2m2.web.mvc.rest.v1.TranslationsController;
 import com.serotonin.m2m2.web.mvc.rest.v1.TranslationsController.TranslationsModel;
@@ -57,7 +58,12 @@ public class BootstrapController {
         PreLoginData data = new PreLoginData();
 
         data.setAngularJsModules(ModulesRestController.getAngularJSModules());
-        data.setUiSettings(new JsonDataModel(this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID)));
+
+        JsonDataVO uiSettings = this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID);
+        if (uiSettings != null) {
+            data.setUiSettings(new JsonDataModel(uiSettings));
+        }
+
         data.setServerTimezone(TimeZone.getDefault().getID());
         data.setServerLocale(Common.getLocale().toLanguageTag());
         data.setLastUpgradeTime(Common.getLastUpgradeTime());
@@ -81,8 +87,17 @@ public class BootstrapController {
         data.setInstanceDescription(systemSettingsDao.getValue(SystemSettingsDao.INSTANCE_DESCRIPTION));
         data.setGuid(Providers.get(ICoreLicense.class).getGuid());
         data.setCoreVersion(Common.getVersion().toString());
-        data.setMenu(new JsonDataModel(this.jsonDataDao.getByXid(UILifecycle.MA_UI_MENU_XID)));
-        data.setPages(new JsonDataModel(this.jsonDataDao.getByXid(UILifecycle.MA_UI_PAGES_XID)));
+
+        JsonDataVO menuData = this.jsonDataDao.getByXid(UILifecycle.MA_UI_MENU_XID);
+        JsonDataVO pageData = this.jsonDataDao.getByXid(UILifecycle.MA_UI_PAGES_XID);
+
+        if (menuData != null) {
+            data.setMenu(new JsonDataModel(menuData));
+        }
+        if (pageData != null) {
+            data.setPages(new JsonDataModel(pageData));
+        }
+
         data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, user.getLocaleObject()));
 
         return data;
