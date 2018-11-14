@@ -146,10 +146,10 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
     const DOCS_PAGES = MA_UI_NG_DOCS.pages;
 
     // Loop through and create array of children based on moduleName
-    const modules = DOCS_PAGES.map(page => page.moduleName);
+    const moduleNames = new Set(DOCS_PAGES.map(page => page.moduleName));
 
     // Create module menu items & states
-    modules.forEach(item => {
+    Array.from(moduleNames).forEach(item => {
         const dashCaseUrl = item.replace(/[A-Z]/g, c => '-' + c.toLowerCase());
 
         let menuProperty = 'menuTr';
