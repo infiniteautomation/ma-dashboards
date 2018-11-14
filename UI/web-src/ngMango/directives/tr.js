@@ -15,49 +15,53 @@
  * @usage
  * <span ma-tr="ui.dox.input"></span>
  */
-maTr.$inject = ['maTranslate', '$q'];
-function maTr(Translate, $q) {
+maTr.$inject = ['maTranslate'];
+function maTr(Translate) {
     return {
         restrict: 'A',
         scope: false,
-        link: function ($scope, $elem, $attrs) {
-            let trKey, trArgs, trPromise;
-
-            $scope.$watch(function() {
+        link: function($scope, $elem, $attrs) {
+            $scope.$watch(() => {
                 return {
                     key: $attrs.maTr,
                     args: $scope.$eval($attrs.maTrArgs)
                 };
-            }, function(newValue) {
+            }, newValue => {
                 doTranslate(newValue.key, newValue.args);
             }, true);
 
-            function doTranslate(newKey, newArgs) {
-                trKey = newKey;
-                trArgs = newArgs;
+            function doTranslate(trKey, trArgs) {
                 if (!trKey) return;
+                
             	// dont attempt translation if args attribute exists but trArgs is currently undefined
                 // or any element in trArgs is undefined, prevents flicking from an error message to the real
                 // translation once the arguments load
-                if (typeof $attrs.maTrArgs !== 'undefined') {
-                	if (!Array.isArray(trArgs)) return;
-                	const containsUndefined = trArgs.some(function(arg) {
-                		return typeof arg === 'undefined';
-                	});
-                	if (containsUndefined) return;
+                const hasArgsAttr = $attrs.hasOwnProperty('maTrArgs');
+                const argsIsArray = Array.isArray(trArgs);
+                if (argsIsArray && trArgs.some(arg => typeof arg === 'undefined')) {
+                    return;
                 }
 
-                trPromise = Translate.tr(trKey, trArgs || []).then(function(translation) {
+                Translate.tr(trKey, trArgs || []).then(translation => {
 	            	return {
 	            		failed: false,
 	            		text: translation
 	            	};
-	            }, function(error) {
-            		return $q.resolve({
+	            }, error => {
+            		return {
             			failed: true,
-            			text: '!!' + $attrs.maTr + '!!'
-            		});
-	            }).then(function(result) {
+            			text: '!!' + trKey + '!!'
+            		};
+	            }).then(result => {
+	                if (result.failed) {
+	                    if (hasArgsAttr && !argsIsArray) {
+    	                    // assume failed due to args not being present yet
+    	                    return;
+	                    } else {
+	                        console.warn('Missing translation', trKey);
+	                    }
+	                }
+	                
 	            	const text = result.text;
 	            	const tagName = $elem.prop('tagName');
 	            	if (tagName === 'IMG') {
