@@ -78,8 +78,7 @@ function dialog($compile, $parse, $q) {
         }
 
         createElement() {
-            this.$container = angular.element('<div class="md-dialog-container"></div>');
-            const container = this.$container[0];
+            const $container = this.$container = angular.element('<div class="md-dialog-container"></div>');
 
             let $userContents;
             this.$transclude((tClone, tScope) => {
@@ -89,20 +88,18 @@ function dialog($compile, $parse, $q) {
                 $userContents = tClone;
             });
 
-            const hasMdDialog = Array.from($userContents).some(e => {
-                return e instanceof Element && e.matches('md-dialog');
-            });
-            
-            if (hasMdDialog) {
-                this.$container.append($userContents);
+            // check if user supplied a md-dialog
+            if ($userContents.maMatch('md-dialog').length) {
+                $container.append($userContents);
             } else {
-                // user didn't supply a full md-dialog, only contents, create a md-dialog from our template
+                // user didn't supply a md-dialog, only its contents, create a md-dialog from our template
                 $compile(dialogTemplate)(this.$scope, ($dialogClone) => {
-                    this.$container.append($dialogClone);
+                    $container.append($dialogClone);
                 });
-                
-                const $mdDialogContent = angular.element(container.querySelector('md-dialog-content'));
-                $mdDialogContent.append($userContents);
+
+                $container.maFind('md-dialog-content').append($userContents);
+                const $title = $userContents.maMatch('.ma-dialog-title');
+                $container.maFind('div.md-toolbar-tools > h2').append($title);
             }
         }
         
@@ -183,9 +180,6 @@ function dialog($compile, $parse, $q) {
             showTrigger: '<?showDialog',
             lazyCompile: '<?',
             destroyDialog: '<?',
-            titleText: '@?',
-            titleTr: '@?',
-            titleTrArgs: '<?',
             padding: '<?'
         }
     };
