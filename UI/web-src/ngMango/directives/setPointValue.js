@@ -100,7 +100,7 @@ function setPointValue(PointValueController, maTranslate, $q, $injector) {
         }
     
         updateValue() {
-            const focus = this.$element.find('input, select, md-select').is(':focus');
+            const focus = this.$element.maFind('input, select').maHasFocus();
             if (!focus) {
                 if (this.inputType === 'numeric') {
                     this.inputValue = this.convertRendered();

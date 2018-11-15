@@ -21,8 +21,8 @@ import moment from 'moment-timezone';
 * </pre>
 */
 
-UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT', 'maRqlBuilder', '$window', '$injector'];
-function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout, RqlBuilder, $window, $injector) {
+UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT', 'maRqlBuilder', '$window', '$injector', '$document'];
+function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout, RqlBuilder, $window, $injector, $document) {
     
     const $stateParams = $injector.has('$stateParams') ? $injector.get('$stateParams') : null;
     const $state = $injector.has('$state') ? $injector.get('$state') : null;
@@ -54,6 +54,19 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             }
         }
         return this.constructor(elements);
+    };
+
+    jqueryFns.maHasFocus = function maHasFocus() {
+        const activeElement = $document[0].activeElement;
+        if (!activeElement) return false;
+
+        for (let e of this) {
+            if (e === activeElement || e.contains(activeElement)) {
+                return true;
+            }
+        }
+        
+        return false;
     };
     
     const util = {
