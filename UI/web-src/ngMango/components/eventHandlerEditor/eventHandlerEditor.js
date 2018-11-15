@@ -72,6 +72,11 @@ class EventHandlerEditorController {
     }
     
     render() {
+        if (!this.confirmDiscard()) {
+            this.setViewValue();
+            return;
+        }
+        
         this.validationMessages = [];
         this.activeTab = 0;
         

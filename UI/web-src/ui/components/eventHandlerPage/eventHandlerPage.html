@@ -16,7 +16,7 @@
         </md-card-content>
     
         <md-card-content flex class="ma-no-padding" ng-if="$ctrl.$mdMedia('gt-md')">
-            <ma-event-handler-list flex layout="column" ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerChanged()" permit-change="$ctrl.editorController ? $ctrl.editorController.confirmDiscard() : true"></ma-event-handler-list>
+            <ma-event-handler-list flex layout="column" ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerChanged()"></ma-event-handler-list>
         </md-card-content>
     </md-card>
 
