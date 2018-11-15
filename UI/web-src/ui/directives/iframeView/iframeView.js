@@ -17,7 +17,7 @@ const iframeView = function() {
         },
         template: '<iframe flex sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" scrolling="no"></iframe>',
         link: function($scope, $element) {
-            const $iframe = $element.find('iframe');
+            const $iframe = $element.maFind('iframe');
             $iframe.attr('src', addParams($scope.src));
             
             let timer;

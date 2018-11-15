@@ -76,7 +76,7 @@ function maTr(Translate) {
 	            	    if ($elem.contents().length) return;
 	            	} else if (tagName === 'MDP-DATE-PICKER' || tagName === 'MDP-TIME-PICKER' ||
 	            	        tagName === 'MD-INPUT-CONTAINER' || tagName === 'MA-FILTERING-POINT-LIST') {
-	            	    $elem.find('label').text(text);
+	            	    $elem.maFind('label').text(text);
 	            	    return;
 	            	} else if (tagName === 'MD-SELECT') {
                         $attrs.$set('ariaLabel', text);

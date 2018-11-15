@@ -356,7 +356,7 @@ class FileStoreBrowserController {
     }
     
     uploadFilesButtonClicked(event) {
-    	this.$element.find('input[type=file]').trigger('click');
+    	this.$element.maFind('input[type=file]').trigger('click');
     }
     
     uploadFilesChanged(event, allowZip = true) {
@@ -445,7 +445,7 @@ class FileStoreBrowserController {
     		this.maDialogHelper.toast(['ui.fileBrowser.uploadFailed', msg], 'md-warn');
     	}).finally(() => {
     	    delete this.uploadPromise;
-            this.$element.find('input[type=file]').val('');
+            this.$element.maFind('input[type=file]').val('');
     	});
     }
     

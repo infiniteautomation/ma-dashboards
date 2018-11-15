@@ -57,7 +57,7 @@ function MenuToggleController($state, $timeout, $element, $scope, Translate) {
     };
 
     this.$postLink = function() {
-        this.$ul = $element.find('ul');
+        this.$ul = $element.maFind('ul');
         
         // use timeout to calc our height after ul has been populated by ng-repeat
         $timeout(function() {

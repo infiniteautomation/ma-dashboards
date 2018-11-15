@@ -60,7 +60,7 @@ class OfflineUpgradePageController {
     }
 
     uploadFilesButtonClicked(event) {
-        this.$element.find('input[type=file]').trigger('click');
+        this.$element.maFind('input[type=file]').trigger('click');
     }
 
     uploadFilesChanged(event) {

@@ -160,7 +160,7 @@ function gaugeChart(PointValueController, maUtil) {
             ]);
             
             maUtil.toAngularPromise(promise).then(([AmCharts]) => {
-                const $chartElement = this.$element.find('.amchart');
+                const $chartElement = this.$element.maFind('.amchart');
                 $chartElement.removeClass('amchart-loading');
 
                 const options = this.chartOptions;

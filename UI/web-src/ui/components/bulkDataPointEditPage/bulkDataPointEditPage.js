@@ -638,7 +638,7 @@ class BulkDataPointEditPageController {
     }
 
     uploadCSVButtonClicked(event) {
-        const fileInput = this.$element.find('input[type=file]');
+        const fileInput = this.$element.maFind('input[type=file]');
         fileInput.val(null);
         fileInput.trigger('click');
     }

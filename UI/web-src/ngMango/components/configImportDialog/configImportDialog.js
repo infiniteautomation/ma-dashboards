@@ -25,7 +25,7 @@ ConfigImportDialogController.prototype.close = function() {
 
 ConfigImportDialogController.prototype.getMessagesDiv = function() {
     if (this.messagesDiv) return this.messagesDiv;
-    const $messagesDiv = this.$element.find('.ma-config-import-messages');
+    const $messagesDiv = this.$element.maFind('.ma-config-import-messages');
     if ($messagesDiv.length) {
         return (this.messagesDiv = $messagesDiv[0]);
     }
