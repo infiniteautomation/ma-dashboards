@@ -44,7 +44,7 @@ class EventHandlerEditorController {
         this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
             if (event.defaultPrevented) return;
             
-            if (!this.confirmDiscard()) {
+            if (!this.confirmDiscard('stateChange')) {
                 event.preventDefault();
                 return;
             }
@@ -52,7 +52,7 @@ class EventHandlerEditorController {
 
         const oldUnload = this.$window.onbeforeunload;
         this.$window.onbeforeunload = (event) => {
-            if (this.form && this.form.$dirty) {
+            if (this.form && this.form.$dirty && this.checkDiscardOption('windowUnload')) {
                 const text = this.maTranslate.trSync('ui.app.discardUnsavedChanges');
                 event.returnValue = text;
                 return text;
@@ -62,17 +62,13 @@ class EventHandlerEditorController {
         this.$scope.$on('$destroy', () => {
             this.$window.onbeforeunload = oldUnload;
         });
-        
-        if (typeof this.onInit === 'function') {
-            this.onInit({$controller: this});
-        }
     }
     
     $onChanges(changes) {
     }
     
     render() {
-        if (!this.confirmDiscard()) {
+        if (!this.confirmDiscard('modelChange')) {
             this.setViewValue();
             return;
         }
@@ -135,7 +131,7 @@ class EventHandlerEditorController {
     }
     
     revertItem(event) {
-        if (this.confirmDiscard()) {
+        if (this.confirmDiscard('revert')) {
             this.render();
         }
     }
@@ -152,8 +148,12 @@ class EventHandlerEditorController {
         }, angular.noop);
     }
     
-    confirmDiscard() {
-        if (this.form && this.form.$dirty) {
+    checkDiscardOption(type) {
+        return this.discardOptions === true || (this.discardOptions && this.discardOptions[type]);
+    }
+    
+    confirmDiscard(type) {
+        if (this.form && this.form.$dirty && this.checkDiscardOption(type)) {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
@@ -182,7 +182,7 @@ export default {
     template: eventHandlerEditorTemplate,
     controller: EventHandlerEditorController,
     bindings: {
-        onInit: '&?'
+        discardOptions: '<?confirmDiscard'
     },
     require: {
         ngModelCtrl: 'ngModel'
