@@ -13,87 +13,180 @@
 import angular from 'angular';
 import dialogTemplate from './dialog.html';
 
-dialog.$inject = ['$compile'];
-function dialog($compile) {
+dialog.$inject = ['$compile', '$parse', '$q'];
+function dialog($compile, $parse, $q) {
 
     class DialogController {
         static get $$ngIsClass() { return true; }
-        static get $inject() { return ['$scope', '$element', '$transclude', '$mdDialog', '$parse', '$attrs', '$q']; }
+        static get $inject() { return ['$scope', '$element', '$attrs', '$transclude', '$mdDialog', '$mdMedia']; }
         
-        constructor($scope, $element, $transclude, $mdDialog, $parse, $attrs, $q) {
+        constructor($scope, $element, $attrs, $transclude, $mdDialog, $mdMedia) {
             this.$scope = $scope;
             this.$element = $element;
             this.$transclude = $transclude;
             this.$mdDialog = $mdDialog;
-            this.$q = $q;
+            this.$mdMedia = $mdMedia;
             
-            if ($attrs.hasOwnProperty('maDialogConfirmCancel')) {
-                const getter = $parse($attrs.maDialogConfirmCancel);
-                this.confirmCancel = () => getter($scope.$parent);
-            } else {
-                this.confirmCancel = () => true;
+            this.padding = true;
+            
+            if ($attrs.hasOwnProperty('canShow')) {
+                const getter = $parse($attrs.canShow);
+                this.canShow = options => getter($scope.$parent, {$options: options});
+            }
+            if ($attrs.hasOwnProperty('canHide')) {
+                const getter = $parse($attrs.canHide);
+                this.canHide = result => getter($scope.$parent, {$result: result});
+            }
+            if ($attrs.hasOwnProperty('canCancel')) {
+                const getter = $parse($attrs.canCancel);
+                this.canCancel = error => getter($scope.$parent, {$error: error});
+            }
+            if ($attrs.hasOwnProperty('onShow')) {
+                const getter = $parse($attrs.onShow);
+                this.onShow = options => getter($scope.$parent, {$options: options});
+            }
+            if ($attrs.hasOwnProperty('onHide')) {
+                const getter = $parse($attrs.onHide);
+                this.onHide = result => getter($scope.$parent, {$result: result});
+            }
+            if ($attrs.hasOwnProperty('onCancel')) {
+                const getter = $parse($attrs.onCancel);
+                this.onCancel = error => getter($scope.$parent, {$error: error});
             }
         }
         
         $onChanges(changes) {
+            if (changes.showTrigger && !changes.showTrigger.isFirstChange() && this.showTrigger) {
+                this.show(this.showTrigger);
+            }
         }
         
         $onInit() {
-            const $transclude = this.$transclude;
-            
-            const toolbar = angular.element(this.$element[0].querySelector('md-toolbar'));
-            const content = angular.element(this.$element[0].querySelector('md-dialog-content'));
-            const actions = angular.element(this.$element[0].querySelector('md-dialog-actions'));
-            
-            if ($transclude.isSlotFilled('toolbar')) {
-                $transclude((clone, scope) => {
-                    scope.$dialog = this;
-                    toolbar.append(clone);
-                }, null, 'toolbar');
+            if (!this.lazyCompile && !this.destroyDialog) {
+                this.createElement();
             }
             
-            if ($transclude.isSlotFilled('actions')) {
-                $transclude((clone, scope) => {
-                    scope.$dialog = this;
-                    actions.append(clone);
-                }, null, 'actions');
+            if (this.showTrigger) {
+                this.show(this.showTrigger);
             }
             
-            $transclude((clone, scope) => {
-                scope.$dialog = this;
-                content.append(clone);
+            this.$scope.$on('$destroy', () => {
+                if (this.dialogPromise) {
+                    this.$mdDialog.cancel();
+                }
+            });
+        }
+
+        createElement() {
+            this.$container = angular.element('<div class="md-dialog-container"></div>');
+            const container = this.$container[0];
+
+            let $userContents;
+            this.$transclude((tClone, tScope) => {
+                tScope.$dialog = this;
+                
+                this.transcludeScope = tScope;
+                $userContents = tClone;
+            });
+
+            const hasMdDialog = Array.from($userContents).some(e => {
+                return e instanceof Element && e.matches('md-dialog');
+            });
+            
+            if (hasMdDialog) {
+                this.$container.append($userContents);
+            } else {
+                // user didn't supply a full md-dialog, only contents, create a md-dialog from our template
+                $compile(dialogTemplate)(this.$scope, ($dialogClone) => {
+                    this.$container.append($dialogClone);
+                });
+                
+                const $mdDialogContent = angular.element(container.querySelector('md-dialog-content'));
+                $mdDialogContent.append($userContents);
+            }
+        }
+        
+        destroyElement() {
+            this.$container = null;
+            this.transcludeScope.$destroy();
+        }
+        
+        fullscreen() {
+            return this.$mdMedia('xs') || this.$mdMedia('sm');
+        }
+
+        show(options = {}) {
+            $q.resolve(this.canShow ? this.canShow(options) : true).then(shouldShow => {
+                if (shouldShow) {
+                    this.doShow(options);
+                }
+            }, () => null);
+        }
+        
+        doShow(options) {
+            if (!this.$container) {
+                this.createElement();
+            }
+            
+            options = Object.assign({
+                clickOutsideToClose: true,
+                escapeToClose: true,
+                fullscreen: this.fullscreen(),
+                contentElement: this.$container[0]
+            }, options);
+
+            if (this.onShow) {
+                this.onShow(options);
+            }
+            
+            this.dialogPromise = this.$mdDialog.show(options).then(result => {
+                if (this.onHide) {
+                    this.onHide(result);
+                }
+            }, error => {
+                if (this.onCancel) {
+                    this.onCancel(error);
+                }
+            }).finally(() => {
+                delete this.dialogPromise;
+                if (this.destroyDialog) {
+                    this.destroyElement();
+                }
             });
         }
         
         hide(result) {
-            this.$mdDialog.hide(result);
+            $q.resolve(this.canHide ? this.canHide(result) : true).then(shouldHide => {
+                if (shouldHide) {
+                    this.$mdDialog.hide(result);
+                }
+            }, () => null);
         }
         
         cancel(error) {
-            this.$q.resolve(this.confirmCancel()).then(canCancel => {
-                if (canCancel) {
+            $q.resolve(this.canCancel ? this.canCancel(error) : true).then(shouldCancel => {
+                if (shouldCancel) {
                     this.$mdDialog.cancel(error);
                 }
-            });
+            }, () => null);
         }
     }
     
     return {
         scope: {},
-        restrict: 'A',
-        transclude: {
-            toolbar: '?mdToolbar',
-            actions: '?mdDialogActions'
-        },
-        template: dialogTemplate,
-        terminal: false,
+        restrict: 'E',
+        transclude: true,
+        terminal: true,
         controller: DialogController,
-        controllerAs: '$ctrl',
+        controllerAs: '$dialog',
         bindToController: {
-            padding: '<?maDialogPadding',
-            title: '@?maDialogTitle',
-            titleTr: '@?maDialogTitleTr',
-            hideActions: '<?maDialogHideActions'
+            showTrigger: '<?showDialog',
+            lazyCompile: '<?',
+            destroyDialog: '<?',
+            titleText: '@?',
+            titleTr: '@?',
+            titleTrArgs: '<?',
+            padding: '<?'
         }
     };
 }
