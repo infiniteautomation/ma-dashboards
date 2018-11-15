@@ -33,6 +33,29 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
 
     const ENCODED_STATE_PARAM_NULL = 'null';
     
+    /* Extend jQuery lite / angular.element with some handy functions */
+    const jqueryFns = angular.element.fn;
+    jqueryFns.maMatch = function maMatch(selector) {
+        const elements = [];
+        for (let e of this) {
+            if (e instanceof Element && e.matches(selector)) {
+                elements.push(e);
+            }
+        }
+        return this.constructor(elements);
+    };
+
+    jqueryFns.maFind = function maFind(selector) {
+        const elements = Array.from(this.maMatch('selector'));
+        for (let e of this) {
+            if (e instanceof Element) {
+                const matches = e.querySelectorAll(selector); 
+                elements.push(...matches);
+            }
+        }
+        return this.constructor(elements);
+    };
+    
     const util = {
 
         /**
@@ -53,9 +76,12 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         arrayDiff(newArray, oldArray) {
             if (newArray === undefined) newArray = [];
             if (oldArray === undefined) oldArray = [];
+            
+            const newSet = new Set(newArray);
+            const oldSet = new Set(oldArray);
     
-            const added = angular.element(newArray).not(oldArray);
-            const removed = angular.element(oldArray).not(newArray);
+            const added = Array.from(newSet).filter(x => !oldSet.has(x));
+            const removed = Array.from(oldSet).filter(x => !newSet.has(x));
     
             return {
                 added: added,
