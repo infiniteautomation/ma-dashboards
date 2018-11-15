@@ -68,6 +68,16 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         
         return false;
     };
+
+    jqueryFns.maClick = function maClick() {
+        for (let e of this) {
+            if (e instanceof Element) {
+                e.click();
+                break;
+            }
+        }
+        return this;
+    };
     
     const util = {
 

@@ -356,7 +356,9 @@ class FileStoreBrowserController {
     }
     
     uploadFilesButtonClicked(event) {
-    	this.$element.maFind('input[type=file]').trigger('click');
+    	this.$element.maFind('input[type=file]')
+            .val(null)
+        	.maClick();
     }
     
     uploadFilesChanged(event, allowZip = true) {

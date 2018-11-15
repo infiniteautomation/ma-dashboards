@@ -4,7 +4,6 @@
  */
 
 import angular from 'angular';
-import $ from 'jquery';
 
 /**
 * @ngdoc service
@@ -153,19 +152,19 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 
 	    const socket = this.socket = new WebSocket(protocol + '//' + host + this.url);
 
-	    this.connectTimer = setTimeout(function() {
+	    this.connectTimer = setTimeout(() => {
 	    	this.closeSocket();
-	    }.bind(this), mangoTimeout);
+	    }, mangoTimeout);
 
-	    socket.onclose = function() {
+	    socket.onclose = () => {
 	        this.closeSocket();
-	    }.bind(this);
+	    };
 	    
-	    socket.onerror = function() {
+	    socket.onerror = () => {
 	    	this.closeSocket();
-	    }.bind(this);
+	    };
 	    
-	    socket.onopen = function() {
+	    socket.onopen = () => {
 	    	clearTimeout(this.connectTimer);
 	    	delete this.connectTimer;
 	    	
@@ -175,13 +174,12 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
             }
 	    	// update subscriptions to all xids
 	    	this.updateSubscriptions();
-	    	
-	    }.bind(this);
+	    };
 	    
-	    socket.onmessage = function(event) {
+	    socket.onmessage = (event) => {
 	        const message = JSON.parse(event.data);
 	        this.messageReceived(message);
-	    }.bind(this);
+	    };
 
 	    return socket;
 	};
@@ -213,9 +211,9 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 	        const xidSubscriptions = this.subscriptionsByXid[xid];
 	        if (xidSubscriptions) {
 	            xidSubscriptions.lastPayload = payload;
-	            $(xidSubscriptions.eventEmitter).trigger(eventType, payload);
+	            angular.element(xidSubscriptions.eventEmitter).triggerHandler(eventType, payload);
 	        }
-	        $(this).trigger(eventType, payload);
+	        angular.element(this).triggerHandler(eventType, payload);
 	    }
 	};
 
@@ -227,7 +225,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
     	    xidSubscriptions = this.subscriptionsByXid[xid];
 	    }
 
-	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
+	    if (!Array.isArray(eventTypes)) eventTypes = [eventTypes];
 
 	    if (this.replayLastPayload && xidSubscriptions && xidSubscriptions.lastPayload && typeof eventHandler === 'function') {
 	        eventHandler(null, xidSubscriptions.lastPayload);
@@ -238,7 +236,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 	        
 	    	if (xidSubscriptions) {
     	    	if (typeof eventHandler === 'function') {
-    	            $(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
+    	    	    angular.element(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
     	        }
     
     	        if (!xidSubscriptions[eventType]) {
@@ -249,7 +247,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
     	        }
 	    	} else {
 	    	    if (typeof eventHandler === 'function') {
-                    $(this).on(eventType, eventHandler);
+	    	        angular.element(this).on(eventType, eventHandler);
                 }
 	    	    
 	    	    if (!this.allSubscriptions[eventType]) {
@@ -270,14 +268,14 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 	        xidSubscriptions = this.subscriptionsByXid[xid];
 	    }
 
-	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
+	    if (!Array.isArray(eventTypes)) eventTypes = [eventTypes];
 
 	    for (let i = 0; i < eventTypes.length; i++) {
 	    	const eventType = eventTypes[i];
 	    	
 	    	if (xidSubscriptions) {
     	    	if (typeof eventHandler === 'function') {
-    	            $(xidSubscriptions.eventEmitter).off(eventType, eventHandler);
+    	            angular.element(xidSubscriptions.eventEmitter).off(eventType, eventHandler);
     	    	}
 
     	        if (xidSubscriptions[eventType] > 0) {
@@ -285,7 +283,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
     	        }
 	    	} else {
 	    	    if (typeof eventHandler === 'function') {
-                    $(this).off(eventType, eventHandler);
+                    angular.element(this).off(eventType, eventHandler);
                 }
 	    	    
 	    	    if (this.allSubscriptions[eventType] > 0) {
@@ -304,13 +302,13 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 	EventManager.prototype.smartSubscribe = function($scope, xid, eventTypes, eventHandler) {
 	    const appliedHandler = scopeApply.bind(null, $scope, eventHandler);
 	    this.subscribe(xid, eventTypes, appliedHandler);
-	    
-	    const $this = this;
-	    const unsubscribe = function() {
-	        $this.unsubscribe(xid, eventTypes, appliedHandler);
+
+	    const unsubscribe = () => {
+	        this.unsubscribe(xid, eventTypes, appliedHandler);
         };
         const deregister = $scope.$on('$destroy', unsubscribe);
-        const manualUnsubscribe = function() {
+        
+        const manualUnsubscribe = () => {
             deregister();
             unsubscribe();
         };
