@@ -4,7 +4,6 @@
  */
 
 import moment from 'moment-timezone';
-import $ from 'jquery';
 
 /**
  * @ngdoc directive
@@ -82,7 +81,7 @@ function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS, maUtil) {
     
     const postLinkImpl = function postLinkImpl($scope, $element, attributes, AmCharts) {
         let options = defaultOptions();
-        options = $.extend(true, options, $scope.options);
+        options = maUtil.deepMerge(options, $scope.options);
         const chart = AmCharts.makeChart($element[0], options);
 
         $scope.$on('$destroy', () => {

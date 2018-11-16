@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import $ from 'jquery';
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maPieChart
@@ -57,7 +55,7 @@ function pieChart($http, MA_DATE_FORMATS, maUtil) {
     };
     
     const postLinkImpl = function postLinkImpl($scope, $element, attributes, AmCharts) {
-        const options = $.extend(true, defaultOptions(), $scope.options);
+        const options = maUtil.deepMerge(defaultOptions(), $scope.options);
         const chart = AmCharts.makeChart($element[0], options);
         $scope.$on('$destroy', () => {
             chart.clear();
@@ -69,7 +67,7 @@ function pieChart($http, MA_DATE_FORMATS, maUtil) {
         });
 
         $scope.$watchCollection('values', function(newValue, oldValue) {
-            const values = $.extend(true, [], newValue);
+            const values = maUtil.deepMerge([], newValue);
 
             for (let i = 0; i < values.length; i++) {
                 const item = values[i];

@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import $ from 'jquery';
 import moment from 'moment-timezone';
 
  /**
@@ -85,7 +84,7 @@ function clock(MA_DATE_FORMATS, maUtil) {
     
     const postLinkImpl = function postLinkImpl($scope, $element, attributes, AmCharts) {
         let chart;
-        const options = $.extend(true, defaultOptions(), $scope.options);
+        const options = maUtil.deepMerge(defaultOptions(), $scope.options);
         const showSeconds = $scope.showSeconds !== 'false';
         if (!showSeconds) {
             options.arrows.pop();

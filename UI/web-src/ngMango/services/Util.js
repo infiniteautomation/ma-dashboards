@@ -6,7 +6,6 @@
 import angular from 'angular';
 import moment from 'moment-timezone';
 
-
 /**
 * @ngdoc service
 * @name ngMangoServices.maUtil
@@ -902,6 +901,44 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                         return elem;
                     }
                 }
+            }
+        },
+
+        deepMerge: function deepMerge(dst, ...srcArray) {
+            if (!isObject(dst)) {
+                dst = {};
+            }
+
+            for (let i = 0; i < srcArray.length; i++) {
+                const src = srcArray[i];
+                if (src == null) continue;
+                
+                for (let k of Object.keys(src)) {
+                    const srcVal = src[k];
+                    let dstVal = dst[k];
+
+                    if (isObject(srcVal)) {
+                        const srcIsArray = Array.isArray(srcVal);
+                        const dstIsArray = Array.isArray(dstVal);
+                        
+                        if (srcIsArray && !dstIsArray) {
+                            dstVal = [];
+                        } else if (!srcIsArray && dstIsArray) {
+                            dstVal = {};
+                        }
+                        
+                        dst[k] = deepMerge(dstVal, srcVal);
+                    } else if (srcVal !== undefined) {
+                        dst[k] = srcVal;
+                    }
+                }
+            }
+
+            return dst;
+            
+            function isObject(x) {
+                const type = typeof x;
+                return x !== null && (type === 'object' || type === 'function');
             }
         }
     };
