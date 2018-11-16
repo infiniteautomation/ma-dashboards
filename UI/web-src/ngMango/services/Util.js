@@ -905,7 +905,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         },
 
         deepMerge: function deepMerge(dst, ...srcArray) {
-            if (!isObject(dst)) {
+            if (dst === null || typeof dst !== 'object') {
                 dst = {};
             }
 
@@ -917,7 +917,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                     const srcVal = src[k];
                     let dstVal = dst[k];
 
-                    if (isObject(srcVal)) {
+                    if (srcVal !== null && typeof srcVal === 'object') {
                         const srcIsArray = Array.isArray(srcVal);
                         const dstIsArray = Array.isArray(dstVal);
                         
@@ -935,11 +935,6 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             }
 
             return dst;
-            
-            function isObject(x) {
-                const type = typeof x;
-                return x !== null && (type === 'object' || type === 'function');
-            }
         }
     };
     
