@@ -271,8 +271,10 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout,
             $scope.$watch('graphOptions', watchPointsAndGraphs, true);
         }
         
+        const attrPresent = name => attrs.hasOwnProperty(name);
+
         for (let i = 1; i <= MAX_SERIES; i++) {
-            const seriesAttributes = [
+            const seriesAttrs = [
                 'series' + i + 'Type',
                 'series' + i + 'Title',
                 'series' + i + 'Color',
@@ -282,20 +284,19 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout,
             ];
             
             if (!valueArray) {
-                //seriesAttributes.push('series' + i + 'Values');
-                seriesAttributes.push('series' + i + 'Point');
+                seriesAttrs.push('series' + i + 'Point');
             }
             
-            let hasSeries = false;
-            for (let j = 0; j < seriesAttributes.length; j++) {
-                if (attrs[seriesAttributes[j]] !== undefined) {
-                    hasSeries = true;
-                    break;
-                }
+            // create a separate array for watching graph options, don't want values attr in this array
+            const graphOptionsAttrs = seriesAttrs.slice();
+            
+            if (!valueArray) {
+                seriesAttrs.push('series' + i + 'Values');
             }
             
-            if (hasSeries) {
-                $scope.$watchGroup(seriesAttributes, graphOptionsChanged.bind(null, i));
+            // if any series attribute is present
+            if (seriesAttrs.some(attrPresent)) {
+                $scope.$watchGroup(graphOptionsAttrs, graphOptionsChanged.bind(null, i));
                 if (!valueArray) {
                     $scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
                 }
@@ -388,8 +389,6 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout,
         function valuesChanged(graphNum, newValues, oldValues) {
             if (newValues === oldValues && newValues === undefined) return;
 
-            console.log('valuesChanged');
-            
             if (!newValues) {
                 findGraph('graphNum', graphNum, true);
             } else  {
@@ -589,7 +588,6 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout,
         }
 
         function updateValues() {
-            console.log('updateValues');
             const values = {};
 
             for (let i = 1; i <= MAX_SERIES; i++) {
