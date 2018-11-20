@@ -1,15 +1,16 @@
 <md-list class="ma-no-padding">
     <md-divider ng-repeat-start="eventTypeName in $ctrl.eventTypeNames | orderBy:'typeName'" ng-if="!$first"></md-divider>
-    <md-subheader class="md-no-sticky">
-        <div layout layout-align="space-between center">
-            <span ng-bind="eventTypeName.description"></span>
-            <md-button class="md-icon-button" ng-click="expanded = !expanded" ng-init="expanded = $first">
-                <md-icon>{{expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
-            </md-button>
-        </div>
-    </md-subheader>
     
-    <md-list-item ng-if="expanded" ng-repeat-end ng-repeat="eventType in $ctrl.eventTypes[eventTypeName.typeName]" ng-click="$ctrl.selectEventType(eventType)">
+    <md-list-item class="ma-event-type-heading" ng-click="expanded = !expanded" ng-init="expanded = $first">
+        <p ng-bind="eventTypeName.description"></p>
+        <md-icon>{{expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+    </md-list-item>
+    
+    <md-list-item ng-if="expanded && $ctrl.eventTypes[eventTypeName.typeName].length" ng-repeat="eventType in $ctrl.eventTypes[eventTypeName.typeName]" ng-click="$ctrl.selectEventType(eventType)">
         <p ng-bind="eventType | json"></p>
+    </md-list-item>
+    
+    <md-list-item  ng-repeat-end ng-if="expanded && !$ctrl.eventTypes[eventTypeName.typeName].length">
+        <p><em ma-tr="ui.components.noEventTypes"></em></p>
     </md-list-item>
 </md-list>
