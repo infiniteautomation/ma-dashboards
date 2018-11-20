@@ -1,4 +1,8 @@
-ma-event-type-list md-list-item .md-list-item-text > p {
+ma-event-type-list {
+	display: block;
+}
+
+ma-event-type-list md-list-item .md-list-item-inner > p {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

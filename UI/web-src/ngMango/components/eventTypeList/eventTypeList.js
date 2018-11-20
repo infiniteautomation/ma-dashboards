@@ -23,9 +23,17 @@ class EventTypeListController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
+
+        this.maEventType.typeNames().then((eventTypeNames) => {
+            this.eventTypeNames = eventTypeNames;
+        });
         
         this.maEventType.list().then((eventTypes) => {
-            this.eventTypes = eventTypes;
+            this.eventTypes = eventTypes.reduce((map, eventType) => {
+                const eventTypes = map[eventType.typeName] || (map[eventType.typeName] = []);
+                eventTypes.push(eventType);
+                return map;
+            }, {});
         });
     }
     
