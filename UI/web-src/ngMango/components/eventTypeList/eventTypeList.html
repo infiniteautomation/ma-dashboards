@@ -1,0 +1,10 @@
+<md-list class="ma-no-padding">
+    <md-list-item ng-repeat="eventType in $ctrl.eventTypes | orderBy:'typeName'" ng-click="$ctrl.selectEventType(eventType)" class="md-2-line"
+            ng-class="{'ma-list-selected': $ctrl.selected.xid === eventType.xid}"
+            md-colors="{'background': $ctrl.selected.typeName === eventType.typeName ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3 ng-bind="eventType.typeName"></h3>
+            <p ng-bind="eventType | json"></p>
+        </div>
+    </md-list-item>
+</md-list>

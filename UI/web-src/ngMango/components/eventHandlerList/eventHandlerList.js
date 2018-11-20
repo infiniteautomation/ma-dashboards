@@ -17,7 +17,7 @@ class EventHandlerListController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maEventHandler', '$scope']; }
     
-    constructor(maEventHandler, $scope, $q, $attrs, $parse) {
+    constructor(maEventHandler, $scope) {
         this.maEventHandler = maEventHandler;
         this.$scope = $scope;
     }
