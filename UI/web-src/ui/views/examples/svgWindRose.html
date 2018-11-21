@@ -1,0 +1,136 @@
+<h1 ma-tr="ui.dox.svgWindRose"></h1>
+
+<p>
+    This example illustrates how to bind data to a SVG image embedded into the document itself. You can add the angular directives (attributes)
+    such as <code>ng-style</code> directly into the SVG.
+</p>
+
+<ma-ui-dual-pane-editor>
+
+<div ng-init="directions = {north: [25,75,90]}">
+    <md-slider ng-model="directions.north[0]" min="0" max="100" step="1"></md-slider>
+    <md-slider ng-model="directions.north[1]" min="0" max="100" step="1"></md-slider>
+    <md-slider ng-model="directions.north[2]" min="0" max="100" step="1"></md-slider>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120 -120 240 240" width="400" height="400">
+
+    <g class="grid">
+        <circle r="100" />
+        <circle r="75" />
+        <circle r="50" />
+        <circle r="25" />
+    </g>
+    
+    <g class="direction-lines">
+        <line x1="0" y1="0" x2="100" y2="0" transform="rotate(0)" />
+        <line x1="0" y1="0" x2="100" y2="0" transform="rotate(90)" />
+        <line x1="0" y1="0" x2="100" y2="0" transform="rotate(180)" />
+        <line x1="0" y1="0" x2="100" y2="0" transform="rotate(270)" />
+    </g>
+    
+    <g class="direction-text">
+        <text transform="translate(0,-110)">N</text>
+        <text transform="translate(110,0)">E</text>
+        <text transform="translate(0,110)">S</text>
+        <text transform="translate(-110,0)">W</text>
+    </g>
+
+    <clipPath id="cone" clip-path="url(#cone-end)">
+        <rect width="100" height="100" transform="rotate(-15)"></rect>
+    </clipPath>
+    
+    <clipPath id="cone-end">
+        <rect width="100" height="100" transform="rotate(-75)"></rect>
+    </clipPath>
+    
+    <g class="direction-cones" transform="rotate(-90)">
+        <g id="north" transform="rotate(0)">
+            <circle class="scale-3" r="100" ng-style="{transform: 'scale(' + directions.north[2] / 100 + ')'}" />
+            <circle class="scale-2" r="100" ng-style="{transform: 'scale(' + directions.north[1] / 100 + ')'}" />
+            <circle class="scale-1" r="100" ng-style="{transform: 'scale(' + directions.north[0] / 100 + ')'}" />
+        </g>
+        <g id="north-east" transform="rotate(45)">
+            <circle class="scale-3" r="100" />
+            <circle class="scale-2" r="100" />
+            <circle class="scale-1" r="100" />
+        </g>
+        <g id="east" transform="rotate(90)">
+            <circle class="scale-3" r="100" />
+            <circle class="scale-2" r="100" />
+            <circle class="scale-1" r="100" />
+        </g>
+        <g id="south-east" transform="rotate(135)">
+            <circle class="scale-3" r="100" />
+            <circle class="scale-2" r="100" />
+            <circle class="scale-1" r="100" />
+        </g>
+        <g id="south" transform="rotate(180)">
+            <circle class="scale-3" r="100" />
+            <circle class="scale-2" r="100" />
+            <circle class="scale-1" r="100" />
+        </g>
+        <g id="south-west" transform="rotate(225)">
+            <circle class="scale-3" r="100" />
+            <circle class="scale-2" r="100" />
+            <circle class="scale-1" r="100" />
+        </g>
+        <g id="west" transform="rotate(270)">
+            <circle class="scale-3" r="100" />
+            <circle class="scale-2" r="100" />
+            <circle class="scale-1" r="100" />
+        </g>
+        <g id="north-west" transform="rotate(315)">
+            <circle class="scale-3" r="100" />
+            <circle class="scale-2" r="100" />
+            <circle class="scale-1" r="100" />
+        </g>
+    </g>
+
+    <circle id="center" r="5" />
+</svg>
+
+<style>
+    g.grid circle {
+        fill: transparent;
+        stroke: grey;
+        stroke-width: 1px;
+        stroke-dasharray:10,10;
+        stroke-opacity: 0.5;
+    }
+
+    g.direction-cones circle {
+        clip-path: url(#cone);
+        transform: scale(0);
+    }
+    
+    g.direction-cones circle.scale-1 {
+        fill: darkblue;
+    }
+    
+    g.direction-cones circle.scale-2 {
+        fill: darkgreen;
+    }
+    
+    g.direction-cones circle.scale-3 {
+        fill: green;
+    }
+    
+    g.direction-lines line {
+        stroke: grey;
+        stroke-width: 1px;
+    }
+    
+    g.direction-text text {
+        fill: white;
+        text-anchor: middle;
+        alignment-baseline: middle;
+        font-size: 16px;
+    }
+    
+    #center {
+        fill: white;
+    }
+</style>
+
+</ma-ui-dual-pane-editor>

@@ -1725,5 +1725,16 @@ export default [
         },
         url: '/interactive-svg',
         menuTr: 'ui.dox.interactiveSvg'
+    },
+    {
+        name: 'ui.examples.svg.svgWindRose',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/svgWindRose.html');
+            }
+        },
+        url: '/wind-rose',
+        menuTr: 'ui.dox.svgWindRose'
     }
 ];
