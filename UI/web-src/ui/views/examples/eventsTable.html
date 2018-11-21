@@ -23,8 +23,8 @@
                 <span>Events Table</span>
             </h2>
             <div>
-                <md-button class="md-raised md-primary md-hue-1" ng-init="eventType='*'"
-                           ng-class="{ 'active md-accent': eventType === '*' }" ng-click="eventType='*'">All
+                <md-button class="md-raised md-primary md-hue-1" ng-init="eventType='any'"
+                           ng-class="{ 'active md-accent': eventType === 'any' }" ng-click="eventType='any'">Any
                 </md-button>
                 <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': eventType === 'DATA_POINT' }"
                            ng-click="eventType='DATA_POINT'">Data Point
@@ -43,33 +43,32 @@
     <md-card-actions layout="row" layout-align="start center" layout-wrap="">
         <md-input-container flex="">
             <label>Alarm Level</label>
-            <md-select ng-model="alarmLevel" ng-init="alarmLevel='*'">
-                <md-option value="*">All <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-all"></i></md-option>
-                <md-option value="NONE">None <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none"></i></md-option>
-                <md-option value="INFORMATION">Information <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information"></i></md-option>
-                <md-option value="IMPORTANT">Important <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important"></i></md-option>
-                <md-option value="WARNING">Warning <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning"></i></md-option>
-                <md-option value="URGENT">{{ 'ui.app.urgent' | maTr }} <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent"></i>
-                </md-option>
-                <md-option value="CRITICAL">Critical <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical"></i></md-option>
-                <md-option value="LIFE_SAFETY">Safety <i class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety"></i></md-option>
+            <md-select ng-model="alarmLevel" ng-init="alarmLevel='any'">
+                <md-option value="any"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-all"></md-icon>Any</md-option>
+                <md-option value="NONE"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none"></md-icon>None</md-option>
+                <md-option value="INFORMATION"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information"></md-icon>Information</md-option>
+                <md-option value="IMPORTANT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important"></md-icon>Important</md-option>
+                <md-option value="WARNING"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning"></md-icon>Warning</md-option>
+                <md-option value="URGENT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent">Urgent</md-icon></md-option>
+                <md-option value="CRITICAL"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical"></md-icon>Critical</md-option>
+                <md-option value="LIFE_SAFETY"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety"></md-icon>Safety</md-option>
             </md-select>
         </md-input-container>
         <md-input-container flex="">
             <label>Active Status</label>
-            <md-select ng-model="activeStatus" ng-init="activeStatus='*'">
-                <md-option value="*">All</md-option>
+            <md-select ng-model="activeStatus" ng-init="activeStatus='any'">
+                <md-option value="any">Any</md-option>
                 <md-option value="active">Active</md-option>
-                <md-option value="noRtn">No Return</md-option>
-                <md-option value="normal">Returned to Normal</md-option>
+                <md-option value="noRtn">No return</md-option>
+                <md-option value="normal">Returned to normal</md-option>
             </md-select>
         </md-input-container>
         <md-input-container flex="">
             <label>Acknowledged</label>
-            <md-select ng-model="acknowledged" ng-init="acknowledged='*'">
-                <md-option value="*">All</md-option>
-                <md-option value="true">True</md-option>
-                <md-option value="false">False</md-option>
+            <md-select ng-model="acknowledged" ng-init="acknowledged='any'">
+                <md-option value="any">Any</md-option>
+                <md-option ng-value="true">Acknowledged</md-option>
+                <md-option ng-value="false">Unacknowledged</md-option>
             </md-select>
         </md-input-container>
     </md-card-actions>
