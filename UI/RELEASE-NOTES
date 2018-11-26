@@ -1,3 +1,9 @@
+*Version 3.5.5*
+* Fix bug preventing API docs menu items from working
+* Improve ma-tr behavior when args are not present
+* Fix event table example
+* Add a wind rose SVG example
+
 *Version 3.5.4*
 * Dont delete the JSON data when resetting UI settings to default, fixes bug bootstrapping the UI app
 
