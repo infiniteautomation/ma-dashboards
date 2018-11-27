@@ -1,3 +1,17 @@
 <h1 ma-tr="ui.app.serverError"></h1>
 
-<p ma-tr="ui.app.serverErrorOccurred"></p>
+<div ng-if="noException">
+    <p ma-tr="ui.app.noExceptionFound"></p>
+</div>
+
+<div ng-if="exception" ng-init="data = {}">
+    <div ng-if="!data.showStack">
+        <p ng-bind="exception.localizedMessage"></p>
+        
+        <div>
+            <md-button ng-click="data.showStack = true"><span ma-tr="ui.app.showStackTrace"></span></md-button>
+        </div>
+    </div>
+
+    <pre ng-if="data.showStack" ng-bind="fullStack"></pre>
+</div>
