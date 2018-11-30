@@ -1000,7 +1000,7 @@ md-input-container:not(.md-input-invalid).md-input-focused md-icon.ma-alarm-leve
 .ma-alarm-level-important,
 md-icon.ma-alarm-level-important,
 md-input-container:not(.md-input-invalid).md-input-focused md-icon.ma-alarm-level-important {
-    color: #2C919E;
+    color: #26B183;
 }
 
 .alarm-flag.WARNING,
