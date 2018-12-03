@@ -1060,3 +1060,17 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 	margin-top: 16px;
 	margin-bottom: 16px;
 }
+
+.ma-scroll-parent {
+	position: relative;
+}
+
+.ma-scroll-parent .ma-scroll-child {
+  overflow-y: auto;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

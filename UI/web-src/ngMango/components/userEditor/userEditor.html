@@ -145,7 +145,7 @@
       <md-button class="md-raised md-primary" type="submit">
         <md-icon>save</md-icon> <span ma-tr="common.save"></span>
       </md-button>
-      <md-button class="md-raised md-accent" ng-click="$ctrl.revert($event)">
+      <md-button class="md-raised" ng-click="$ctrl.revert($event)">
         <md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span>
       </md-button>
       <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew || $ctrl.User.current.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">

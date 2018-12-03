@@ -1,5 +1,5 @@
 <div flex="noshrink" layout="column" layout-gt-md="row" layout-gt-lg="row">
-    <md-card flex-gt-md="25" flex-gt-lg="20" layout="column" ng-if="$ctrl.User.current.admin">
+    <md-card layout="column" flex="noshrink" flex-gt-md="25" flex-gt-lg="20" ng-if="$ctrl.User.current.admin">
         <md-toolbar class="md-hue-3">
             <div class="md-toolbar-tools">
                 <span ma-tr="users.selectUserToEdit"></span>
@@ -10,49 +10,52 @@
             </div>
         </md-toolbar>
         
-        <div class="md-padding" layout="column" ng-if="!$ctrl.$mdMedia('gt-md')">
-            <ma-user-select ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" flex>
+        <div class="md-padding" ng-if="!$ctrl.$mdMedia('gt-md')">
+            <ma-user-select ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()">
                 <ma-label ma-tr="users.selectUserToEdit"></ma-label>
             </ma-user-select>
         </div>
-        <div layout="column" ng-if="$ctrl.$mdMedia('gt-md')">
-            <ma-user-list ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" flex
+        
+        <div ng-if="$ctrl.$mdMedia('gt-md')" layout="column" flex="noshrink" class="ma-scroll-parent">
+            <ma-user-list ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" class="ma-scroll-child"
                     show-new-button="true" new-button-clicked="$ctrl.addUser($event)">
                 <ma-label ma-tr="users.selectUserToEdit"></ma-label>
             </ma-user-list>
         </div>
     </md-card>
-
-    <md-card flex layout="column">
-        <md-toolbar class="md-hue-3">
-            <div class="md-toolbar-tools">
-                <span ng-if="!$ctrl.user.isNew" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
-                <span ng-if="$ctrl.user.isNew" ma-tr="ui.app.editNewUser"></span>
-            </div>
-        </md-toolbar>
-        
-        <md-tabs flex layout="column" md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false">
-            <md-tab>
-                <md-tab-label>
-                    <span ng-if="!$ctrl.user.isNew" ma-tr="users.editUser"></span>
-                    <span ng-if="$ctrl.user.isNew" ma-tr="users.add"></span>
-                </md-tab-label>
-                <md-tab-body>
-                    <div class="md-padding" layout="column">
-                        <ma-user-editor flex user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
-                    </div>
-                </md-tab-body>
-            </md-tab>
-            <md-tab ng-if="!$ctrl.user.isNew">
-                <md-tab-label>
-                    <span ma-tr="ui.app.authTokens"></span>
-                </md-tab-label>
-                <md-tab-body>
-                    <div class="md-padding" layout="column">
-                        <ma-user-auth-tokens flex user="$ctrl.user"></ma-user-auth-tokens>
-                    </div>
-                </md-tab-body>
-            </md-tab>
-        </md-tabs>
-    </md-card>
+    
+    <div flex layout="column">
+        <md-card>
+            <md-toolbar class="md-hue-3">
+                <div class="md-toolbar-tools">
+                    <span ng-if="!$ctrl.user.isNew" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
+                    <span ng-if="$ctrl.user.isNew" ma-tr="ui.app.editNewUser"></span>
+                </div>
+            </md-toolbar>
+            
+            <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false">
+                <md-tab>
+                    <md-tab-label>
+                        <span ng-if="!$ctrl.user.isNew" ma-tr="users.editUser"></span>
+                        <span ng-if="$ctrl.user.isNew" ma-tr="users.add"></span>
+                    </md-tab-label>
+                    <md-tab-body>
+                        <div class="md-padding">
+                            <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab ng-if="!$ctrl.user.isNew">
+                    <md-tab-label>
+                        <span ma-tr="ui.app.authTokens"></span>
+                    </md-tab-label>
+                    <md-tab-body>
+                        <div class="md-padding">
+                            <ma-user-auth-tokens user="$ctrl.user"></ma-user-auth-tokens>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </md-card>
+    </div>
 </div>
