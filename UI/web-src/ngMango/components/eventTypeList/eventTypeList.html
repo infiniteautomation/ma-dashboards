@@ -6,8 +6,11 @@
         <md-icon>{{expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
     </md-list-item>
     
-    <md-list-item ng-if="expanded && $ctrl.eventTypes[eventTypeName.typeName].length" ng-repeat="eventType in $ctrl.eventTypes[eventTypeName.typeName]" ng-click="$ctrl.selectEventType(eventType)">
-        <p ng-bind="eventType | json"></p>
+    <md-list-item ng-if="expanded && $ctrl.eventTypes[eventTypeName.typeName].length"
+            ng-repeat="eventType in $ctrl.eventTypes[eventTypeName.typeName] track by eventType.uniqueId"
+            ng-click="$ctrl.selectEventType(eventType)"
+            md-colors="{'background': $ctrl.selected.uniqueId === eventType.uniqueId ? 'accent-hue-1' : 'background-hue-1'}">
+        <p ng-bind="eventType.description"></p>
     </md-list-item>
     
     <md-list-item  ng-repeat-end ng-if="expanded && !$ctrl.eventTypes[eventTypeName.typeName].length">

@@ -3,24 +3,26 @@
  * @author Jared Wiltshire
  */
 
-eventTypeFactory.$inject = ['$http'];
-function eventTypeFactory($http) {
+eventTypeFactory.$inject = ['maRestResource'];
+function eventTypeFactory(RestResource) {
 
     const eventTypeBaseUrl = '/rest/v2/event-types';
     
-    class EventType {
-        static list() {
-            return $http({
-                method: 'GET',
-                url: eventTypeBaseUrl,
-            }).then(response => response.data);
+    class EventType extends RestResource {
+        static get baseUrl() {
+            return eventTypeBaseUrl;
         }
-        
-        static typeNames() {
-            return $http({
+
+        static typeNames(opts = {}) {
+            return this.http({
                 method: 'GET',
                 url: `${eventTypeBaseUrl}/type-names`
-            }).then(response => response.data);
+            }, opts).then(response => response.data);
+        }
+        
+        get uniqueId() {
+            const type = this.type;
+            return `${type.eventType}_${type.subType}_${type.referenceId1}_${type.referenceId2}`;
         }
     }
     

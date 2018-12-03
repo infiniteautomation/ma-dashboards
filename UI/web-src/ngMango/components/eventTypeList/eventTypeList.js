@@ -30,7 +30,7 @@ class EventTypeListController {
         
         this.maEventType.list().then((eventTypes) => {
             this.eventTypes = eventTypes.reduce((map, eventType) => {
-                const eventTypes = map[eventType.typeName] || (map[eventType.typeName] = []);
+                const eventTypes = map[eventType.type.eventType] || (map[eventType.type.eventType] = []);
                 eventTypes.push(eventType);
                 return map;
             }, {});
