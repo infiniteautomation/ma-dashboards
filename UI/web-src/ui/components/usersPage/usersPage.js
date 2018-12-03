@@ -4,6 +4,7 @@
  */
 
 import usersPageTemplate from './usersPage.html';
+import './usersPage.css';
 
 UsersPageController.$inject = ['maUser', '$state', '$mdMedia'];
 function UsersPageController(User, $state, $mdMedia) {

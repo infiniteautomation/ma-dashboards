@@ -15,10 +15,17 @@
                 <ma-label ma-tr="users.selectUserToEdit"></ma-label>
             </ma-user-select>
         </div>
-        
+
+        <md-input-container class="ma-username-filter" md-no-float ng-if="$ctrl.$mdMedia('gt-md')">
+            <input ng-model="$ctrl.filter" ng-model-options="{debounce: 1000}" ma-tr="ui.app.filter">
+            <md-button class="ma-input-button md-icon-button" ng-click="$ctrl.filter = ''">
+                <md-icon>clear</md-icon>
+            </md-button>
+        </md-input-container>
+
         <div ng-if="$ctrl.$mdMedia('gt-md')" layout="column" flex="noshrink" class="ma-scroll-parent">
             <ma-user-list ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" class="ma-scroll-child"
-                    show-new-button="true" new-button-clicked="$ctrl.addUser($event)">
+                    show-new-button="true" new-button-clicked="$ctrl.addUser($event)" filter="$ctrl.filter">
                 <ma-label ma-tr="users.selectUserToEdit"></ma-label>
             </ma-user-list>
         </div>
