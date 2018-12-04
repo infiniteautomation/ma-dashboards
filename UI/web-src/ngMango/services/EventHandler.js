@@ -38,8 +38,8 @@ function eventHandlerProvider() {
     eventHandlerFactory.$inject = ['maRestResource', '$templateCache', '$injector', '$rootScope'];
     function eventHandlerFactory(RestResource, $templateCache, $injector, $rootScope) {
 
-        const eventHandlerBaseUrl = '/rest/v1/event-handlers';
-        const eventHandlerWebSocketUrl = '/rest/v1/websocket/event-handlers';
+        const eventHandlerBaseUrl = '/rest/v2/event-handlers';
+        const eventHandlerWebSocketUrl = '/rest/v2/websocket/event-handlers';
         const eventHandlerXidPrefix = 'EH_';
 
         const eventHandlerTypesByName = Object.create(null);
@@ -50,15 +50,6 @@ function eventHandlerProvider() {
             if (eventHandlerType.template && !eventHandlerType.templateUrl) {
                 eventHandlerType.templateUrl = `eventHandlers.${eventHandlerType.type}.html`;
                 $templateCache.put(eventHandlerType.templateUrl, eventHandlerType.template);
-            }
-            
-            if (Array.isArray(eventHandlerType.tabs)) {
-                eventHandlerType.tabs.forEach(tab => {
-                    if (tab.template && !tab.templateUrl) {
-                        tab.templateUrl = `eventHandlers.${eventHandlerType.type}.tab.${tab.id}.html`;
-                        $templateCache.put(tab.templateUrl, tab.template);
-                    }
-                });
             }
         });
         
