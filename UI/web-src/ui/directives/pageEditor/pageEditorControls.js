@@ -103,7 +103,9 @@ class PageEditorControlsController {
         if (this.$state.params.pageXid) {
             this.loadPage(this.$state.params.pageXid);
         } else if (this.$state.params.templateUrl) {
-            this.$templateRequest(this.$state.params.templateUrl).then(this.createNewPage.bind(this));
+            this.$templateRequest(this.$state.params.templateUrl).then(() => {
+                this.createNewPage();
+            });
         } else if (this.$state.params.markup) {
             this.createNewPage(this.$state.params.markup);
         } else if (lastSelectedPage && lastSelectedPage.pageXid) {
@@ -117,7 +119,22 @@ class PageEditorControlsController {
         const user = this.User.current;
         this.pageList = this.pageSummaryStore.jsonData.pages.filter(p => {
             return user.hasPermission(p.editPermission);
+        }).sort((a, b) => {
+            const aName = a.name.toLowerCase();
+            const bName = b.name.toLowerCase();
+            if (aName < bName) return -1;
+            if (aName > bName) return 1;
+            return 0;
         });
+    }
+    
+    searchPages() {
+        const pages = this.pageList || [];
+        if (!this.search) {
+            return pages;
+        }
+        const regex = new RegExp(this.search, 'gi');
+        return pages.filter(p => regex.test(p.name));
     }
     
     createNewPage(markup) {
@@ -136,9 +153,18 @@ class PageEditorControlsController {
         return form.pageName.$dirty || form.readPermission.$dirty || form.editPermission.$dirty;
     }
     
+    autocompleteChanged() {
+        // md-autocomplete calls this method whenever md-selected-item changes, track changes ourself
+        if (this.selectedPageSummary === this.prevSelectedPageSummary) {
+            return;
+        }
+        this.confirmLoadPage(this.selectedPageSummary ? this.selectedPageSummary.xid : null);
+    }
+    
     confirmLoadPage(xid) {
         if (this.inputsDirty() || this.selectedPage.$dirty) {
             if (!this.$window.confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'))) {
+                this.selectedPageSummary = this.prevSelectedPageSummary;
                 return;
             }
         }
@@ -152,7 +178,7 @@ class PageEditorControlsController {
     
     loadPage(xid) {
         const menuItemPromise = this.MenuEditor.getMenuItemForPageXid(xid).then(menuItem => {
-            this.menuItem = menuItem;
+            return (this.menuItem = menuItem);
         }, angular.noop);
         
         const pagePromise = this.maUiPages.loadPage(xid).then(page => {
@@ -162,9 +188,9 @@ class PageEditorControlsController {
             return page;
         });
         
-        return this.$q.all([menuItemPromise, pagePromise]).then(result => {
+        return this.$q.all([menuItemPromise, pagePromise]).then(([menuItem, page]) => {
             this.showInputs = false;
-            return this.setSelectedPage(result[1]);
+            return this.setSelectedPage(page);
         }, () => {
             return this.createNewPage();
         });
@@ -174,7 +200,7 @@ class PageEditorControlsController {
         if (triggerChange == null) triggerChange = true;
         
         this.selectedPage = page;
-        this.selectedPageSummary = pageToSummary(page);
+        this.prevSelectedPageSummary = this.selectedPageSummary = page.isNew ? null : pageToSummary(page);
         this.updateViewLink();
         // form might not have initialized
         if (this.pageEditorForm) {
@@ -222,7 +248,9 @@ class PageEditorControlsController {
             .ok(Translate.trSync('common.ok'))
             .cancel(Translate.trSync('common.cancel'));
     
-        return this.$mdDialog.show(confirm).then(this.deletePage.bind(this));
+        return this.$mdDialog.show(confirm).then(() => {
+            this.deletePage(this);
+        });
     }
     
     deletePage() {
@@ -239,12 +267,12 @@ class PageEditorControlsController {
         
         this.$q.all([pageDeletedPromise, menuItemDeletedPromise]).then(() => {
             const pageSummaries = this.pageSummaryStore.jsonData.pages;
-            for (let i = 0; i < pageSummaries.length; i++) {
-                if (pageSummaries[i].xid === pageXid) {
-                    pageSummaries.splice(i, 1);
-                    break;
-                }
+            
+            const pageIndex = pageSummaries.findIndex(ps => ps.xid === pageXid);
+            if (pageIndex >= 0) {
+                pageSummaries.splice(pageIndex, 1);
             }
+            
             this.createNewPage();
             
             return this.pageSummaryStore.$save().then(result => {
@@ -263,32 +291,25 @@ class PageEditorControlsController {
                     pageXid: page.xid
                 });
     
-                this.selectedPageSummary = pageToSummary(page);
+                this.prevSelectedPageSummary = this.selectedPageSummary = pageToSummary(page);
                 this.updateViewLink();
                 this.pageEditorForm.$setPristine();
                 this.pageEditorForm.$setUntouched();
     
                 const pageSummaries = this.pageSummaryStore.jsonData.pages;
-                let found = false;
-                
-                for (let i = 0; i < pageSummaries.length; i++) {
-                    if (pageSummaries[i].xid === page.xid) {
-                        angular.copy(this.selectedPageSummary, pageSummaries[i]);
-                        found = true;
-                        break;
-                    }
-                }
-                
-                if (!found) {
+                const existing = pageSummaries.find(ps => ps.xid === page.xid);
+                if (existing) {
+                    angular.copy(this.selectedPageSummary, existing);
+                } else {
                     pageSummaries.push(this.selectedPageSummary);
                 }
-                
+
                 return this.pageSummaryStore.$save();
             }).then(result => {
                 this.filterPages();
                 
                 const toast = this.$mdToast.simple()
-                    .textContent(this.Translate.trSync('ui.app.pageSaved', [this.selectedPageSummary.name]))
+                    .textContent(this.Translate.trSync('ui.app.pageSaved', [this.selectedPage.name]))
                     .action(this.Translate.trSync('common.ok'))
                     .highlightAction(true)
                     .position('bottom center')
@@ -336,7 +357,6 @@ class PageEditorControlsController {
             
         }, angular.noop);
     }
-
 }
 
 pageEditorControlsFactory.$inject = [];

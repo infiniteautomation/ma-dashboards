@@ -1,12 +1,30 @@
 <div layout="column" layout-gt-md="row" class="ma-ui-page-editor-inputs" ng-form="$ctrl.pageEditorForm">
     <div flex="50" layout="column">
         <div flex layout layout-align="start center" class="ma-ui-page-editor-top-row">
-            <md-input-container flex="flex" flex-gt-md="33">
-              <label ma-tr="ui.app.choosePageToEdit"></label>
-              <md-select name="pageSelector" ng-model="$ctrl.selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.confirmLoadPage($ctrl.selectedPageSummary.xid)">
-                <md-option ng-repeat="page in $ctrl.pageList track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
-              </md-select>
-            </md-input-container>
+            
+            <md-autocomplete flex="flex" flex-gt-md="33"
+                    md-input-name="pageSelector"
+                    md-selected-item="$ctrl.selectedPageSummary"
+                    md-selected-item-change="$ctrl.autocompleteChanged()"
+                    md-search-text="$ctrl.search"
+                    md-items="page in $ctrl.searchPages()"
+                    md-item-text="page.name || 'New page'"
+                    md-floating-label="{{'ui.app.choosePageToEdit' | maTr}}"
+                    md-no-cache="true"
+                    md-min-length="0"
+                    md-select-on-focus="true"
+                    md-escape-options="none"
+                    md-clear-button="true">
+                
+                <md-item-template>
+                    <span md-highlight-text="$ctrl.search" md-highlight-flags="gi">{{page.name}}</span>
+                </md-item-template>
+                
+                <md-not-found>
+                    <span ma-tr="ui.app.noMatchesFound" ma-tr-args="[$ctrl.search]"></span>
+                </md-not-found>
+            </md-autocomplete>
+            
             <md-button class="md-icon-button" ng-click="$ctrl.confirmLoadPage()">
                 <md-icon>add_box</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
