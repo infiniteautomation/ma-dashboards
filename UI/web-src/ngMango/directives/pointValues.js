@@ -72,6 +72,7 @@ import noDataForPeriod from '../img/noDataForPeriod.svg';
  * @param {number=} simplifyTolerance Only used if rollup is set to SIMPLIFY. Sets the tolerance for the simplify algorithm.
  * @param {number=} [simplifyTarget=1000] Only used if rollup is set to SIMPLIFY and simplifyTolerance is not set.
  *     Sets the target number of values for the simplify algorithm.
+ * @param {boolean=} [bookend=true] Insert bookend values at the start and end of the time range for ease of charting.
  * @usage
  *
 <ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
@@ -116,7 +117,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             timezone: '@',
             onValuesUpdated: '&?',
             simplifyTolerance: '<?',
-            simplifyTarget: '<?'
+            simplifyTarget: '<?',
+            bookend: '<?'
         },
         bindToController: {
             refresh: '<?'
@@ -464,6 +466,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         to: $scope.to,
                         rollup: $scope.rollup,
                         rendered: $scope.rendered,
+                        bookend: $scope.bookend,
                         rollupInterval: $scope.actualRollupInterval,
                         timeout: $scope.timeout,
                         timezone: $scope.timezone
