@@ -1157,7 +1157,7 @@ export default [
         url: '/event-handlers/{xid}',
         template: '<ma-ui-event-handler-page flex="noshrink" layout="column"><ma-ui-event-handler-page>',
         menuTr: 'ui.app.eventHandlers',
-        menuIcon: 'link',
+        menuIcon: 'email',
         permission: 'superadmin',
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
@@ -1169,6 +1169,14 @@ export default [
                 });
             }]
         }
+    },
+    {
+        name: 'ui.settings.eventTypes',
+        url: '/event-types',
+        template: '<md-card><ma-event-type-list ng-model="maEventTypeListModel"></ma-event-type-list></md-card>',
+        menuTr: 'ui.app.eventTypes',
+        menuIcon: 'link',
+        permission: 'superadmin'
     },
     {
         name: 'ui.examples',
