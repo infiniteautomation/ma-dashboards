@@ -50,13 +50,10 @@ class UserListController {
                 .up();
         }
 
-        this.usersPromise = queryBuilder.limit(1000)
-        .query().then(users => {
-            users.forEach(user => {
-                console.log(user, this.filterMatches(user));
-            });
-            return (this.users = users);
-        });
+        this.usersPromise = queryBuilder
+            .limit(1000)
+            .query()
+            .then(users => this.users = users);
     }
     
     selectUser(user) {
