@@ -47,7 +47,9 @@ function dataSourceScrollList($injector) {
                         this.items.splice(index, 1);
                     }
                 } else if (event.name === 'update' || event.name === 'create') {
-                    this.items.push(item);
+                    if (this.filterMatches(item)) {
+                        this.items.push(item);
+                    }
                 }
             }, this.$scope, ['create', 'update', 'delete']);
         }
@@ -56,12 +58,18 @@ function dataSourceScrollList($injector) {
             if ((changes.query && !changes.query.isFirstChange()) ||
                     (changes.start && !changes.start.isFirstChange()) ||
                     (changes.limit && !changes.limit.isFirstChange()) ||
-                    (changes.sort && !changes.sort.isFirstChange())) {
+                    (changes.sort && !changes.sort.isFirstChange()) ||
+                    (changes.filter && !changes.filter.isFirstChange())) {
                 this.doQuery();
             }
         }
         
         doQuery() {
+            if (this.filter || (this.query == null && this.start == null && this.limit == null && this.sort == null)) {
+                return this.doFilterQuery();
+            }
+            
+            // legacy query mode
             this.queryPromise = this.DataSource.objQuery({
                 query: this.query,
                 start: this.start,
@@ -74,6 +82,31 @@ function dataSourceScrollList($injector) {
             if (this.onQuery) {
                 this.onQuery({$promise: this.queryPromise});
             }
+            
+            return this.queryPromise;
+        }
+        
+        doFilterQuery() {
+            this.items = [];
+            
+            const queryBuilder = this.DataSource.buildQuery();
+            if (this.filter) {
+                let filter = this.filter.toLowerCase();
+                if (!filter.startsWith('*')) {
+                    filter = '*' + filter;
+                }
+                if (!filter.endsWith('*')) {
+                    filter = filter + '*';
+                }
+                
+                queryBuilder.like('name', filter);
+            }
+
+            this.queryPromise = queryBuilder
+                .sort('name')
+                .limit(1000)
+                .query()
+                .then(items => this.items = items);
             
             return this.queryPromise;
         }
@@ -93,6 +126,22 @@ function dataSourceScrollList($injector) {
             this.selected = this.DataSource.createNew();
             this.setViewValue(this.selected);
         }
+        
+        filterMatches(item) {
+            if (!this.filter) return true;
+
+            let filter = this.filter.toLowerCase();
+            if (!filter.startsWith('*')) {
+                filter = '*' + filter;
+            }
+            if (!filter.endsWith('*')) {
+                filter = filter + '*';
+            }
+            filter = filter.replace(/\*/g, '.*');
+            const regex = new RegExp(filter, 'i');
+
+            return regex.test(item.name);
+        }
     }
     
     return {
@@ -107,7 +156,8 @@ function dataSourceScrollList($injector) {
             limit: '<?',
             sort: '<?',
             onQuery: '&?',
-            showNew: '<?'
+            showNew: '<?',
+            filter: '<?'
         },
         template: function() {
             if ($injector.has('$mdUtil')) {

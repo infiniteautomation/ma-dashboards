@@ -54,6 +54,8 @@ class UserListController {
             .limit(1000)
             .query()
             .then(users => this.users = users);
+        
+        return this.usersPromise;
     }
     
     selectUser(user) {
@@ -70,7 +72,8 @@ class UserListController {
                 if (user) {
                     angular.merge(user, update.object);
                 } else if (this.filterMatches(update.object)) {
-                    users.push(angular.merge(new this.User(), update.object));
+                    const newItem = Object.assign(Object.create(this.User.prototype), update.object);
+                    users.push(newItem);
                 }
             } else if (update.action === 'delete' && userIndex >= 0) {
                 users.splice(userIndex, 1);
