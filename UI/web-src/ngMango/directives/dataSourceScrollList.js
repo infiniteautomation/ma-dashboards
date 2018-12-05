@@ -3,27 +3,104 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';import dataSourceScrollListMdTemplate from './dataSourceScrollList-md.html';
+import angular from 'angular';
+import dataSourceScrollListMdTemplate from './dataSourceScrollList-md.html';
 import dataSourceScrollListTemplate from './dataSourceScrollList.html';
 
 dataSourceScrollList.$inject = ['$injector'];
-export default dataSourceScrollList;
-
 function dataSourceScrollList($injector) {
     const DEFAULT_SORT = ['name'];
 
+    class DataSourceScrollListController {
+        static get $$ngIsClass() { return true; }
+        static get $inject() { return ['$scope', 'maDataSource']; }
+        
+        constructor($scope, DataSource) {
+            this.$scope = $scope;
+            this.DataSource = DataSource;
+        }
+        
+        $onInit() {
+            this.ngModelCtrl.$render = () => this.selected = this.ngModelCtrl.$viewValue;
+
+            const xid = this.selectXid;
+            if (xid) {
+                this.DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(item => {
+                    this.setViewValue(item);
+                });
+            }
+            
+            this.doQuery().then(items => {
+                this.items = items;
+                if (!xid && this.selectFirst && items.length) {
+                    this.setViewValue(items[0]);
+                }
+            });
+            
+            this.DataSource.notificationManager.subscribe((event, item, originalXid) => {
+                const index = this.items.findIndex(ds => ds.id === item.id);
+                if (index >= 0) {
+                    if (event.name === 'update' || event.name === 'create') {
+                        this.items[index] = item;
+                    } else if (event.name === 'delete') {
+                        this.items.splice(index, 1);
+                    }
+                } else if (event.name === 'update' || event.name === 'create') {
+                    this.items.push(item);
+                }
+            }, this.$scope, ['create', 'update', 'delete']);
+        }
+        
+        $onChanges(changes) {
+            if ((changes.query && !changes.query.isFirstChange()) ||
+                    (changes.start && !changes.start.isFirstChange()) ||
+                    (changes.limit && !changes.limit.isFirstChange()) ||
+                    (changes.sort && !changes.sort.isFirstChange())) {
+                this.doQuery();
+            }
+        }
+        
+        doQuery() {
+            this.queryPromise = this.DataSource.objQuery({
+                query: this.query,
+                start: this.start,
+                limit: this.limit,
+                sort: this.sort || DEFAULT_SORT
+            }).$promise.then(items => {
+                return (this.items = items);
+            });
+
+            if (this.onQuery) {
+                this.onQuery({$promise: this.queryPromise});
+            }
+            
+            return this.queryPromise;
+        }
+        
+        setViewValue(item) {
+            this.selected = item;
+            this.ngModelCtrl.$setViewValue(item);
+        }
+        
+        createNew(event) {
+            this.selected = this.DataSource.createNew();
+            this.setViewValue(this.selected);
+        }
+    }
+    
     return {
         restrict: 'E',
         controllerAs: '$ctrl',
-        bindToController: true,
-        scope: {
+        scope: {},
+        bindToController: {
             selectXid: '@',
             selectFirst: '<?',
             query: '<?',
             start: '<?',
             limit: '<?',
             sort: '<?',
-            onQuery: '&?'
+            onQuery: '&?',
+            showNew: '<?'
         },
         template: function() {
             if ($injector.has('$mdUtil')) {
@@ -34,69 +111,12 @@ function dataSourceScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['maDataSource', DataSourceScrollListController],
+        controller: DataSourceScrollListController,
         designerInfo: {
             translation: 'ui.components.dataSourceScrollList',
             icon: 'playlist_play'
         }
     };
-    
-    function DataSourceScrollListController(DataSource) {
-        this.$onInit = function() {
-            this.ngModelCtrl.$render = this.render;
-
-            const xid = this.selectXid;
-            if (xid) {
-                this.fetchingInitial = true;
-                DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
-                    this.fetchingInitial = false;
-                    this.setViewValue(item);
-                }.bind(this));
-            }
-            
-            this.doQuery().then(function(items) {
-                this.items = items;
-                if (!xid && (this.selectFirst === undefined || this.selectFirst) && items.length) {
-                    this.setViewValue(items[0]);
-                }
-            }.bind(this));
-        };
-        
-        this.$onChanges = function(changes) {
-            if ((changes.query && !changes.query.isFirstChange()) ||
-                    (changes.start && !changes.start.isFirstChange()) ||
-                    (changes.limit && !changes.limit.isFirstChange()) ||
-                    (changes.sort && !changes.sort.isFirstChange())) {
-                this.doQuery();
-            }
-        };
-        
-        this.doQuery = function() {
-            this.queryPromise = DataSource.objQuery({
-                query: this.query,
-                start: this.start,
-                limit: this.limit,
-                sort: this.sort || DEFAULT_SORT
-            }).$promise.then(function(items) {
-                return (this.items = items);
-            }.bind(this));
-
-            if (this.onQuery) {
-                this.onQuery({$promise: this.queryPromise});
-            }
-            
-            return this.queryPromise;
-        };
-        
-        this.setViewValue = function(item) {
-            this.ngModelCtrl.$setViewValue(item);
-            this.render();
-        };
-        
-        this.render = function() {
-            this.selected = this.ngModelCtrl.$viewValue;
-        }.bind(this);
-    }
 }
 
-
+export default dataSourceScrollList;

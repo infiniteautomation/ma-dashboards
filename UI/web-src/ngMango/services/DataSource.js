@@ -179,6 +179,38 @@ function DataSourceFactory($resource, Util) {
             method: 'PUT'
         }
     });
+    
+    Object.assign(DataSource.notificationManager, {
+        webSocketUrl: '/rest/v1/websocket/data-sources'
+    });
+    
+    DataSource.prototype.isDs = true;
+    
+    DataSource.createNew = function() {
+        const uuid = Util.uuid();
+        return new this({
+            xid: `DS_${uuid}`,
+            name: '',
+            enabled: false,
+            modelType: 'VIRTUAL',
+            pollPeriod: {
+                periods: 1,
+                type: 'MINUTES'
+            },
+            editPermission: '',
+            purgeSettings: {
+                override: false,
+                frequency: {
+                    periods: 1,
+                    type: 'YEARS'
+                }
+            },
+            alarmLevels: {
+                POLL_ABORTED: 'INFORMATION'
+            },
+            isNew: true
+        });
+    };
 
     return DataSource;
 }
