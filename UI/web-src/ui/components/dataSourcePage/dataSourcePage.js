@@ -47,7 +47,7 @@ class DataSourcePageController {
     }
     
     dataSourceChanged() {
-        this.$state.params.xid = this.dataSource && this.dataSource.xid || null;
+        this.$state.params.xid = this.dataSource && !this.dataSource.isNew && this.dataSource.xid || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
 }
