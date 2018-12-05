@@ -1,5 +1,5 @@
 <md-list class="ma-no-padding">
-  <md-list-item ng-if="$ctrl.showNewButton" class="md-2-line" ng-click="$ctrl.newButtonClicked({'$event': $event})">
+  <md-list-item ng-if="$ctrl.showNewButton" class="md-2-line" ng-click="$ctrl.newButtonClicked({'$event': $event})" md-colors="{'background': $ctrl.selectedUser.isNew ? 'accent-hue-1' : 'background-hue-1'}">
     <div class="md-list-item-text">
       <h3 ma-tr="ui.app.new"></h3>
       <p ma-tr="users.add"></p>

@@ -541,6 +541,24 @@ export default [
         permission: 'superadmin'
     },
     {
+        name: 'ui.settings.dataSourceEdit',
+        url: '/data-sources/{xid}',
+        template: '<ma-ui-data-source-page flex="noshrink" layout="column"><ma-ui-data-source-page>',
+        menuTr: 'header.dataSources',
+        menuIcon: 'device_hub',
+        permission: 'superadmin',
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/dataSourcePage/dataSourcePage').then(dataSourcePage => {
+                    angular.module('maDataSourcePage', [])
+                        .component('maUiDataSourcePage', dataSourcePage.default);
+                    $injector.loadNewModules(['maDataSourcePage']);
+                });
+            }]
+        }
+    },
+    {
         url: '/edit-pages/{pageXid}',
         name: 'ui.settings.editPages',
         resolve: {

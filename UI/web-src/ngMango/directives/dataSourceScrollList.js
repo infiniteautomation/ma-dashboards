@@ -6,6 +6,7 @@
 import angular from 'angular';
 import dataSourceScrollListMdTemplate from './dataSourceScrollList-md.html';
 import dataSourceScrollListTemplate from './dataSourceScrollList.html';
+import './dataSourceScrollList.css';
 
 dataSourceScrollList.$inject = ['$injector'];
 function dataSourceScrollList($injector) {
@@ -78,7 +79,13 @@ function dataSourceScrollList($injector) {
         }
         
         setViewValue(item) {
-            this.selected = item;
+            if (this.selected === item) {
+                // create a shallow copy if this item is already selected
+                // causes the model to update
+                this.selected = Object.assign(Object.create(this.DataSource.prototype), item);
+            } else {
+                this.selected = item;
+            }
             this.ngModelCtrl.$setViewValue(item);
         }
         
