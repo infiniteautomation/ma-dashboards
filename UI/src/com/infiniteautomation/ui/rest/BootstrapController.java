@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(value="UI application bootstrap")
 @RestController
-@RequestMapping("/v2/ui-bootstrap")
+@RequestMapping("/ui-bootstrap")
 public class BootstrapController {
 
     private static final String[] PUBLIC_TRANSLATIONS = new String[] {"login", "header"};
