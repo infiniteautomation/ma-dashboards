@@ -209,7 +209,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         };
 
         const User = $resource('/rest/v1/users/:username', {
-                username: '@originalId'
+                username: data => data && (data.originalId || data.username)
             }, {
             query: {
                 method: 'GET',
@@ -255,7 +255,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 isArray: false,
                 interceptor: {
                     response: loginInterceptor
-                }
+                },
+                hasBody: false
             },
             exitSwitchUser: {
                 url: '/rest/v2/login/exit-su',
@@ -263,7 +264,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 isArray: false,
                 interceptor: {
                     response: loginInterceptor
-                }
+                },
+                hasBody: false
             },
             logout: {
                 url: '/rest/v2/logout',
@@ -271,11 +273,15 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 isArray: false,
                 interceptor: {
                     response: logoutInterceptor
-                }
+                },
+                hasBody: false
             },
             save: {
                 method: 'POST',
-                url: '/rest/v1/users/'
+                url: '/rest/v1/users/',
+                params: {
+                    username: null
+                }
             },
             update: {
                 method: 'PUT'
@@ -283,8 +289,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         }, {
             idProperty: 'username',
             defaultProperties,
-            cancellable: true,
-            autoXid: false
+            autoXid: false,
+            cancellable: true
         });
 
         Object.assign(User.notificationManager, {

@@ -34,7 +34,7 @@ class PointBrowserController {
 
                 if (!this.selected) return;
                 
-                if (!this.selected.isNew) {
+                if (!this.selected.isNew()) {
                     this.listType = 'watchList';
                     this.watchList = this.selected;
                 } else if (this.selected.type === 'tags' && this.selected.tags) {
@@ -156,7 +156,6 @@ class PointBrowserController {
         const folderName = this.hierarchy.length ? this.hierarchy[0].name : '';
         
         this.selected = new this.maWatchList({
-            isNew: true,
             type: 'hierarchy',
             name: this.maTranslate.trSync('ui.app.hierarchyFolderX', [folderName]),
             hierarchyFolders: this.hierarchy
@@ -171,7 +170,6 @@ class PointBrowserController {
             .toString();
 
         this.selected = new this.maWatchList({
-            isNew: true,
             type: 'query',
             name: this.maTranslate.trSync('ui.app.deviceNameX', [this.deviceName]),
             query,
@@ -187,7 +185,6 @@ class PointBrowserController {
             .toString();
 
         this.selected = new this.maWatchList({
-            isNew: true,
             type: 'query',
             name: this.maTranslate.trSync('ui.app.dataSourceX', [this.dataSource.name]),
             query,
@@ -213,7 +210,6 @@ class PointBrowserController {
         }).filter(p => p != null);
         
         this.selected = new this.maWatchList({
-            isNew: true,
             type: 'tags',
             name: this.maTranslate.trSync('ui.app.newTagWatchList'),
             params,

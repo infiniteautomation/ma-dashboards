@@ -20,13 +20,21 @@
     watchListEventManager.subscribe(xid, SUBSCRIPTION_TYPES, websocketHandler);
 * </pre>
 */
-function WatchListEventManagerFactory(EventManager) {
+
+WatchListEventManagerFactory.$inject = ['maEventManager', 'maWatchList'];
+function WatchListEventManagerFactory(EventManager, WatchList) {
     return new EventManager({
-    	url: '/rest/v1/websocket/watch-lists'
+    	url: '/rest/v1/websocket/watch-lists',
+    	transformPayload(payload) {
+    	    if (payload.object) {
+    	        payload.object = Object.assign(Object.create(WatchList.prototype), payload.object);
+    	        if (payload.object.xid) {
+    	            payload.object.originalId = payload.object.xid;
+    	        }
+    	    }
+    	    return payload;
+    	}
     });
 }
 
-WatchListEventManagerFactory.$inject = ['maEventManager'];
 export default WatchListEventManagerFactory;
-
-

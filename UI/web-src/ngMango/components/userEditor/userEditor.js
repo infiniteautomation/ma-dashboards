@@ -157,7 +157,7 @@ UserEditorController.prototype.sendTestEmail = function() {
 UserEditorController.prototype.switchUser = function(event) {
     const $ctrl = this;
     const username = this.originalUser.username;
-    this.User.switchUser({username: username}).$promise.then(response => {
+    this.User.switchUser({username}).$promise.then(response => {
         const toast = $ctrl.$mdToast.simple()
             .textContent($ctrl.Translate.trSync('ui.components.switchedUser', username))
             .action($ctrl.Translate.trSync('common.ok'))

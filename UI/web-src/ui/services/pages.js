@@ -75,7 +75,6 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERM
             storeObject.editPermission = MA_UI_EDIT_PAGES_PERMISSION;
             storeObject.readPermission = 'user';
             storeObject.publicData = false;
-            storeObject.isNew = true;
             return storeObject;
         }
     }

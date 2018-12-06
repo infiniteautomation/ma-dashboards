@@ -20,11 +20,20 @@
 * </pre>
 */
 
-function JsonStoreEventManagerFactory(EventManager) {
+JsonStoreEventManagerFactory.$inject = ['maEventManager', 'maJsonStore'];
+function JsonStoreEventManagerFactory(EventManager, JsonStore) {
     return new EventManager({
-    	url: '/rest/v1/websocket/json-data'
+    	url: '/rest/v1/websocket/json-data',
+        transformPayload(payload) {
+            if (payload.object) {
+                payload.object = Object.assign(Object.create(JsonStore.prototype), payload.object);
+                if (payload.object.xid) {
+                    payload.object.originalId = payload.object.xid;
+                }
+            }
+            return payload;
+        }
     });
 }
 
-JsonStoreEventManagerFactory.$inject = ['maEventManager'];
 export default JsonStoreEventManagerFactory;

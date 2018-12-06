@@ -64,7 +64,7 @@ class JsonStoreEditorController {
         if (this.ngModelCtrl.$viewValue) {
             this.storeItem = angular.copy(this.ngModelCtrl.$viewValue);
         } else {
-            this.storeItem = this.maJsonStore.newItem();
+            this.storeItem = new this.maJsonStore();
         }
 
         this.form.$setPristine();
@@ -78,7 +78,7 @@ class JsonStoreEditorController {
     loadXid() {
         this.maJsonStore.get({xid: this.xid}).$promise.then(null, error => {
             if (error.status === 404) {
-                this.storeItem = this.maJsonStore.newItem(this.xid);
+                this.storeItem = new this.maJsonStore({xid: this.xid});
             } else {
                 this.maDialogHelper.errorToast(['ui.components.jsonStoreGetError', error.mangoStatusText]);
             }
@@ -115,7 +115,7 @@ class JsonStoreEditorController {
         this.maDialogHelper.confirm(event, ['ui.components.jsonStoreConfirmDelete', this.storeItem.name]).then(() => {
             this.storeItem.$delete().then(() => {
                 this.maDialogHelper.toast(['ui.components.jsonStoreDeleted', this.storeItem.name]);
-                this.storeItem = this.maJsonStore.newItem();
+                this.storeItem = new this.maJsonStore();
                 this.setViewValue();
                 this.render();
             });

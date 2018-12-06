@@ -37,13 +37,13 @@
                     <span ma-tr="common.save"></span>
                 </md-tooltip>
             </md-button>
-            <md-button class="md-icon-button md-warn" ng-click="$ctrl.confirmDeletePage($event)" ng-disabled="$ctrl.selectedPage.isNew || !$ctrl.pageSummaryStore">
+            <md-button class="md-icon-button md-warn" ng-click="$ctrl.confirmDeletePage($event)" ng-disabled="$ctrl.selectedPage.isNew() || !$ctrl.pageSummaryStore">
               <md-icon>delete</md-icon>
               <md-tooltip md-delay="150" md-direction="bottom" md-autohide><span ma-tr="ui.app.deletePage"></span></md-tooltip>
             </md-button>
             <!-- 
             <md-button ng-click="$ctrl.confirmLoadPage($ctrl.selectedPageSummary.xid)" class="md-icon-button"
-                    ng-disabled="$ctrl.selectedPage.isNew || !($ctrl.pageEditorForm.$dirty || $ctrl.selectedPage.$dirty)">
+                    ng-disabled="$ctrl.selectedPage.isNew() || !($ctrl.pageEditorForm.$dirty || $ctrl.selectedPage.$dirty)">
                 <md-icon>undo</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
                     <span ma-tr="ui.app.revert"></span>
@@ -62,13 +62,13 @@
                     <span ma-tr="ui.app.showRevisionHistory"></span>
                 </md-tooltip>
             </md-button>
-            <md-button ng-click="$ctrl.editMenuItem($event)" class="md-icon-button" ng-disabled="$ctrl.selectedPage.isNew || !$ctrl.User.current.hasPermission($ctrl.MA_UI_EDIT_MENUS_PERMISSION)">
+            <md-button ng-click="$ctrl.editMenuItem($event)" class="md-icon-button" ng-disabled="$ctrl.selectedPage.isNew() || !$ctrl.User.current.hasPermission($ctrl.MA_UI_EDIT_MENUS_PERMISSION)">
                 <md-icon>menu</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
                     <span ma-tr="ui.app.addEditMenuItem"></span>
                 </md-tooltip>
             </md-button>
-            <md-button ng-href="{{$ctrl.viewPageLink}}" target="_blank" class="md-icon-button" ng-disabled="$ctrl.selectedPage.isNew">
+            <md-button ng-href="{{$ctrl.viewPageLink}}" target="_blank" class="md-icon-button" ng-disabled="$ctrl.selectedPage.isNew()">
                 <md-icon>remove_red_eye</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
                     <span ma-tr="ui.app.viewPage"></span>

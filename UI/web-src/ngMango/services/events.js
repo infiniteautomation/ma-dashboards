@@ -151,6 +151,8 @@ function eventsFactory($resource, Util) {
             method: 'GET',
             isArray: true
         }
+    }, {
+        cancellable: true
     });
 
     Object.defineProperty(Events.prototype, 'duration', {

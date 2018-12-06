@@ -19,10 +19,19 @@
     userEventManager.subscribe(xid, SUBSCRIPTION_TYPES, websocketHandler);
 * </pre>
 */
-UserEventManagerFactory.$inject = ['maEventManager'];
-function UserEventManagerFactory(EventManager) {
+UserEventManagerFactory.$inject = ['maEventManager', 'maUser'];
+function UserEventManagerFactory(EventManager, User) {
     return new EventManager({
-    	url: '/rest/v1/websocket/users'
+    	url: '/rest/v1/websocket/users',
+        transformPayload(payload) {
+            if (payload.object) {
+                payload.object = Object.assign(Object.create(User.prototype), payload.object);
+                if (payload.object.username) {
+                    payload.object.originalId = payload.object.username;
+                }
+            }
+            return payload;
+        }
     });
 }
 

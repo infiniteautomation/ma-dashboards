@@ -151,6 +151,8 @@ function DeviceNameFactory($resource) {
             method: 'GET',
             isArray: true
         }
+    }, {
+        cancellable: true
     });
 
     return DeviceName;

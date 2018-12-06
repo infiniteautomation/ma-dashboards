@@ -21,8 +21,7 @@
   *     e.g. `on-parameters-change="$ctrl.paramsChanged($parameters)"`)
   */
 
-import angular from 'angular';import WatchListSelectController from './WatchListSelectController';
-
+import WatchListSelectController from './WatchListSelectController';
 
 watchListGetFactory.$inject = [];
 function watchListGetFactory() {
@@ -80,10 +79,8 @@ WatchListGetController.prototype.subscribe = function() {
 
 WatchListGetController.prototype.updateHandler = function updateHandler(event, update) {
     if (update.action === 'update' && update.object && this.watchList && update.object.xid === this.watchList.xid) {
-        this.setViewValue(angular.merge(new this.WatchList(), update.object));
+        this.setViewValue(update.object);
     }
 };
 
 export default watchListGetFactory;
-
-

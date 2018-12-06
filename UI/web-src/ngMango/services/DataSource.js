@@ -195,7 +195,7 @@ function dataSourceProvider() {
         };
         
         const DataSource = $resource('/rest/v1/data-sources/:xid', {
-        		xid: '@originalId'
+                xid: data => data && (data.originalId || data.xid)
         	}, {
             query: {
                 method: 'GET',
@@ -221,7 +221,10 @@ function dataSourceProvider() {
             },
             save: {
                 method: 'POST',
-                url: '/rest/v1/data-sources'
+                url: '/rest/v1/data-sources',
+                params: {
+                    xid: null
+                }
             },
             update: {
                 method: 'PUT'

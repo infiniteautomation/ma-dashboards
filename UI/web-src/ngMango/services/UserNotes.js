@@ -87,6 +87,8 @@ function UserNotesFactory($resource, Util, $mdDialog) {
             },
             cache: false
         }
+    }, {
+        cancellable: true
     });
     
     UserNotes.addNote = function(ev, commentType, referenceId, callback, other) {

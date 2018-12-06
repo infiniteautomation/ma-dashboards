@@ -64,15 +64,11 @@ class WatchListBuilderController {
 
     newWatchlist(name) {
         this.selectedWatchlist = null;
-        const watchlist = new this.WatchList();
-        watchlist.isNew = true;
-        watchlist.name = name;
-        watchlist.xid = '';
-        watchlist.points = [];
-        watchlist.username = this.User.current.username;
-        watchlist.type = 'tags';
-        watchlist.readPermission = 'user';
-        watchlist.editPermission = this.User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
+        const watchlist = new this.WatchList({
+            name,
+            username: this.User.current.username,
+            editPermission: this.User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : ''
+        });
         this.editWatchlist(watchlist);
         this.resetForm();
     }
@@ -159,8 +155,6 @@ class WatchListBuilderController {
     }
     
     save() {
-        const saveMethod = this.watchlist.isNew ? '$save' : '$updateWithRename';
-
         // reset all server error messages to allow saving
         Object.keys(this.watchListForm).forEach(key => {
             if (key.indexOf('$') !== 0) {
@@ -175,7 +169,7 @@ class WatchListBuilderController {
                 this.watchlist.data.paramValues = angular.copy(this.watchListParams);
             }
             
-            this.watchlist[saveMethod]().then(wl => {
+            this.watchlist.save().then(wl => {
                 this.selectedWatchlist = wl;
                 this.watchlistSelected();
                 
@@ -206,9 +200,9 @@ class WatchListBuilderController {
                     .textContent(this.Translate.trSync('ui.app.errorSavingWatchlist', response.mangoStatusText))
                     .action(this.Translate.trSync('common.ok'))
                     .highlightAction(true)
-                    .highlightClass('md-warn')
+                    .toastClass('md-warn')
                     .position('bottom center')
-                    .hideDelay(5000);
+                    .hideDelay(10000);
                 this.$mdToast.show(toast);
 
                 this.selectedTab = 0;
@@ -304,14 +298,14 @@ class WatchListBuilderController {
             copiedWatchList.originalXid = copiedWatchList.xid;
             this.editWatchlist(copiedWatchList);
             this.resetForm();
-        } else if (!this.watchlist || !this.watchlist.isNew) {
+        } else if (!this.watchlist || !this.watchlist.isNew()) {
             this.newWatchlist();
         }
     }
     
     editWatchlist(watchlist) {
         this.watchlist = watchlist;
-        this.$state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
+        this.$state.go('.', {watchListXid: watchlist.isNew() ? null : watchlist.xid}, {location: 'replace', notify: false});
         
         this.staticSelected = [];
         this.allPoints = [];
@@ -325,7 +319,7 @@ class WatchListBuilderController {
         
         if (watchlist.type === 'static') {
             let pointsPromise;
-            if (watchlist.isNew) {
+            if (watchlist.isNew()) {
                 watchlist.points = [];
                 pointsPromise = this.$q.when(watchlist.points);
             } else {

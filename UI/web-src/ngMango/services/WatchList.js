@@ -7,10 +7,20 @@ import angular from 'angular';
 import query from 'rql/query';
 
 WatchListFactory.$inject = ['$resource', 'maUtil', '$http', 'maPoint', 'maPointHierarchy', '$q',
-    '$interpolate', '$sce', '$parse', 'maRqlBuilder'];
+    '$interpolate', '$sce', '$parse', 'maRqlBuilder', 'maUser'];
 function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
-        $interpolate, $sce, $parse, RqlBuilder) {
+        $interpolate, $sce, $parse, RqlBuilder, User) {
 
+    const defaultProperties = {
+        name: '',
+        xid: '',
+        points: [],
+        username: '',
+        type: 'tags',
+        readPermission: 'user',
+        editPermission: 'edit-watchlists'
+    };
+    
     /**
     * @ngdoc service
     * @name ngMangoServices.maWatchList
@@ -18,8 +28,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
     * @description Service for querying, getting and saving watch lists.
     */
     const WatchList = $resource('/rest/v1/watch-lists/:xid', {
-        xid: '@xid',
-        originalXid: '@originalXid'
+        xid: data => data && (data.originalId || data.xid)
     }, {
         query: {
             method: 'GET',
@@ -32,20 +41,22 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
         },
         save: {
             method: 'POST',
-            url: '/rest/v1/watch-lists/'
+            url: '/rest/v1/watch-lists/',
+            params: {
+                xid: null
+            }
         },
         update: {
             method: 'PUT'
-        },
-        updateWithRename: {
-            method: 'PUT',
-            url: '/rest/v1/watch-lists/:originalXid'
         }
+    }, {
+        defaultProperties,
+        xidPrefix: 'WL_',
+        cancellable: true
     });
 
     const saveMethod = WatchList.prototype.$save;
     const updateMethod = WatchList.prototype.$update;
-    const updateWithRenameMethod = WatchList.prototype.$updateWithRename;
 
     Object.assign(WatchList.prototype, {
 
@@ -57,11 +68,6 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
         $update() {
             this.sanitizeParamValues();
             return updateMethod.apply(this, arguments);
-        },
-        
-        $updateWithRename() {
-            this.sanitizeParamValues();
-            return updateWithRenameMethod.apply(this, arguments);
         },
         
         getQuery(paramValues = this.defaultParamValues()) {
@@ -133,7 +139,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                     cache: false,
                     transformResponse: maUtil.transformArrayResponse
                 }).then(response => {
-                    this.points = response.data.map(pt => angular.merge(new Point(), pt));
+                    this.points = response.data.map(pt => Object.assign(Object.create(Point.prototype), pt));
                     return this.points;
                 });
             } else {
@@ -187,7 +193,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             if (!this.data || !this.data.paramValues) return;
             
             Object.keys(this.data.paramValues).forEach(paramName => {
-                const wlParam = this.params.find(p => p.name === paramName);
+                const wlParam = Array.isArray(this.params) && this.params.find(p => p.name === paramName);
                 if (!wlParam) {
                     delete this.data.paramValues[paramName];
                 } else {

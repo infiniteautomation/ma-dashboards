@@ -28,7 +28,8 @@ class WatchListPageController {
             'maStatistics',
             '$scope',
             '$mdColorPicker',
-            '$timeout'
+            '$timeout',
+            'maUser'
         ];
     }
 
@@ -41,7 +42,8 @@ class WatchListPageController {
             maStatistics,
             $scope,
             $mdColorPicker,
-            $timeout) {
+            $timeout,
+            User) {
 
         this.$mdMedia = $mdMedia;
         this.localStorageService = localStorageService;
@@ -52,6 +54,7 @@ class WatchListPageController {
         this.$scope = $scope;
         this.$mdColorPicker = $mdColorPicker;
         this.$timeout = $timeout;
+        this.User = User;
 
         this.selected = [];
         this.selectedStats = [];
@@ -150,7 +153,7 @@ class WatchListPageController {
     }
 
     saveLocalStorageSettings() {
-        if (this.watchList && this.watchList.isNew) {
+        if (this.watchList && this.watchList.isNew()) {
             const settings = this.localStorageService.get('watchListPage') || {};
             
             settings.selectedTags = this.selectedTags;
@@ -281,7 +284,7 @@ class WatchListPageController {
         this.getPoints();
 
         const stateUpdate = {};
-        if (!this.watchList.isNew) {
+        if (!this.watchList.isNew()) {
             stateUpdate.watchListXid = this.watchList.xid;
         } else if (this.watchList.type === 'query' && this.watchList.deviceName) {
             stateUpdate.deviceName = this.watchList.deviceName;
@@ -375,7 +378,7 @@ class WatchListPageController {
         // this.chartConfig is already mapped to this.watchList.data.chartConfig and so is saved too 
         this.watchList.data.paramValues = angular.copy(this.watchListParams);
 
-        if (this.watchList.isNew) {
+        if (this.watchList.isNew()) {
             this.$state.go('ui.settings.watchListBuilder', {watchList: this.watchList});
         } else {
             this.watchList.$update().then(wl => {

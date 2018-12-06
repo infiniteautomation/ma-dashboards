@@ -144,6 +144,8 @@ function PointHierarchyFactory($resource, Point) {
             url: ' /rest/v1/hierarchy/path/:xid',
             isArray: true
         }
+    }, {
+        cancellable: true
     });
     
     PointHierarchy.prototype.walkHierarchy = function walkHierarchy(fn) {

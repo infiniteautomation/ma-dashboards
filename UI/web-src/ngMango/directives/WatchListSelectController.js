@@ -163,7 +163,7 @@ WatchListSelectController.prototype.doGetPoints = function() {
 };
 
 WatchListSelectController.prototype.updateHandler = function updateHandler(event, update) {
-    const item = Object.assign(Object.create(this.WatchList.prototype), update.object);
+    const item = update.object;
     
     if (update.action === 'add') {
         // TODO filter added points according to the current query somehow

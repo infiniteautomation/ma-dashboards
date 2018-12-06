@@ -204,7 +204,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 
 	EventManager.prototype.messageReceived = function(message) {
 	    if (message.status === 'OK') {
-	        const payload = message.payload;
+	        const payload = this.transformPayload(message.payload);
 	        const eventType = payload.event || payload.action;
 	        const xid = payload.xid || payload.object.xid;
 
@@ -215,6 +215,10 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 	        }
 	        angular.element(this).triggerHandler(eventType, payload);
 	    }
+	};
+	
+	EventManager.prototype.transformPayload = function(payload) {
+	    return payload;
 	};
 
 	EventManager.prototype.subscribe = function(xid, eventTypes, eventHandler) {

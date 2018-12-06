@@ -25,7 +25,8 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
             };
         }
         
-        Object.keys(actions).forEach(key => {
+        // dont apply originalId to deleted item
+        Object.keys(actions).filter(key => key !== 'delete').forEach(key => {
             const action = actions[key];
             if (!action.interceptor) {
                 action.interceptor = {};
@@ -45,8 +46,8 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
         
         const Resource = $delegate.apply(this, arguments);
 
-        function ExtendedResource(value = defaultProperties) {
-            Resource.call(this, value);
+        function ExtendedResource(value) {
+            Resource.call(this, Object.assign({}, defaultProperties, value));
             
             if (autoXid && !this[idProperty]) {
                 this[idProperty] = xidPrefix + maUtil.uuid();

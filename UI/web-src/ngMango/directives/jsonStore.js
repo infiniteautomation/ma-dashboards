@@ -63,13 +63,11 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             	    if (invalidPath) return;
             	}
 
-            	JsonStore.newItem(newXid, newPath).$get().then(function(item) {
-            		return item;
-            	}, function(response) {
+            	const storeItem = new JsonStore({xid: newXid, dataPath: newPath});
+            	storeItem.$get().then(null, function(response) {
             	    if (response.status === 404) {
-            	        const item = JsonStore.newItem(newXid, newPath);
-                		item.jsonData = $scope.value || {};
-                		return angular.extend(item, $scope.item);
+            	        storeItem.jsonData = $scope.value || {};
+                		return angular.extend(storeItem, $scope.item);
             	    }
             		return $q.reject();
             	}).then(function(item) {

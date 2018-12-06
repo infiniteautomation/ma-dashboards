@@ -200,7 +200,7 @@ class PageEditorControlsController {
         if (triggerChange == null) triggerChange = true;
         
         this.selectedPage = page;
-        this.prevSelectedPageSummary = this.selectedPageSummary = page.isNew ? null : pageToSummary(page);
+        this.prevSelectedPageSummary = this.selectedPageSummary = page.isNew() ? null : pageToSummary(page);
         this.updateViewLink();
         // form might not have initialized
         if (this.pageEditorForm) {
@@ -214,7 +214,7 @@ class PageEditorControlsController {
     }
     
     updateViewLink() {
-        const xid = this.selectedPage.isNew ? null : this.selectedPage.xid;
+        const xid = this.selectedPage.isNew() ? null : this.selectedPage.xid;
         
         if (this.menuItem) {
             this.viewPageLink = this.$state.href(this.menuItem.name);

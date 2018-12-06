@@ -1123,8 +1123,7 @@ export default [
     {
         name: 'ui.settings.jsonStore',
         url: '/json-store',
-        template: `<h1 ma-tr="ui.app.jsonStorePage"></h1>
-            <div>
+        template: `<div>
                 <md-button class="md-raised" ui-sref="ui.settings.jsonStoreEditor">
                     <md-icon>add</md-icon>
                     <span ma-tr="ui.app.jsonStoreNew"></span>
@@ -1138,8 +1137,7 @@ export default [
     {
         name: 'ui.settings.jsonStoreEditor',
         url: '/json-store-editor/{xid}',
-        template: `<h1 ma-tr="ui.app.jsonStoreEditorPage"></h1>
-            <div>
+        template: `<div>
                 <md-button class="md-raised" ui-sref="ui.settings.jsonStore">
                     <md-icon>arrow_back</md-icon>
                     <span ma-tr="ui.app.backToJsonTable"></span>
