@@ -4,23 +4,23 @@
  */
 
 import angular from 'angular';
-import eventHandlerEditorTemplate from './eventHandlerEditor.html';
-import './eventHandlerEditor.css';
+import dataSourceEditorTemplate from './dataSourceEditor.html';
+import './dataSourceEditor.css';
 
 /**
  * @ngdoc directive
- * @name ngMango.directive:maEventHandlerEditor
+ * @name ngMango.directive:maDataSourceEditor
  * @restrict E
- * @description Editor for an event handler, allows creating, updating or deleting
+ * @description Editor for a data source, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']);
-class EventHandlerEditorController {
+const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']);
+class DataSourceEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse) {
-        this.maEventHandler = maEventHandler;
+    constructor(maDataSource, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse) {
+        this.maDataSource = maDataSource;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
@@ -29,8 +29,8 @@ class EventHandlerEditorController {
         this.$element = $element;
         this.maUtil = maUtil;
         
-        this.handlerTypes = maEventHandler.handlerTypes;
-        this.handlerTypesByName = maEventHandler.handlerTypesByName;
+        this.types = maDataSource.types;
+        this.typesByName = maDataSource.typesByName;
         
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
@@ -78,13 +78,13 @@ class EventHandlerEditorController {
         
         const viewValue = this.ngModelCtrl.$viewValue;
         if (viewValue) {
-            if (viewValue instanceof this.maEventHandler) {
-                this.eventHandler = viewValue.copy();
+            if (viewValue instanceof this.maDataSource) {
+                this.dataSource = viewValue.copy();
             } else {
-                this.eventHandler = new this.maEventHandler(viewValue);
+                this.dataSource = Object.assign(Object.create(this.maDataSource.prototype), viewValue);
             }
         } else {
-            this.eventHandler = null;
+            this.dataSource = null;
         }
 
         if (this.form) {
@@ -94,7 +94,7 @@ class EventHandlerEditorController {
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(this.eventHandler);
+        this.ngModelCtrl.$setViewValue(this.dataSource);
     }
 
     saveItem(event) {
@@ -107,10 +107,10 @@ class EventHandlerEditorController {
         
         this.validationMessages = [];
         
-        this.eventHandler.save().then(item => {
+        this.dataSource.save().then(item => {
             this.setViewValue();
             this.render();
-            this.maDialogHelper.toast(['ui.components.eventHandlerSaved', this.eventHandler.alias || this.eventHandler.xid]);
+            this.maDialogHelper.toast(['ui.components.dataSourceSaved', this.dataSource.name || this.dataSource.xid]);
         }, error => {
             let statusText = error.mangoStatusText;
             
@@ -126,7 +126,7 @@ class EventHandlerEditorController {
                 }
             }
             
-            this.maDialogHelper.errorToast(['ui.components.eventHandlerSaveError', statusText]);
+            this.maDialogHelper.errorToast(['ui.components.dataSourceSaveError', statusText]);
         });
     }
     
@@ -137,11 +137,11 @@ class EventHandlerEditorController {
     }
 
     deleteItem(event) {
-        const notifyName = this.eventHandler.alias || this.eventHandler.getOriginalId();
-        this.maDialogHelper.confirm(event, ['ui.components.eventHandlerConfirmDelete', notifyName]).then(() => {
-            this.eventHandler.delete().then(() => {
-                this.maDialogHelper.toast(['ui.components.eventHandlerDeleted', notifyName]);
-                this.eventHandler = null;
+        const notifyName = this.dataSource.name || this.dataSource.originalId;
+        this.maDialogHelper.confirm(event, ['ui.components.dataSourceConfirmDelete', notifyName]).then(() => {
+            this.dataSource.delete().then(() => {
+                this.maDialogHelper.toast(['ui.components.dataSourceDeleted', notifyName]);
+                this.dataSource = null;
                 this.setViewValue();
                 this.render();
             });
@@ -179,8 +179,8 @@ class EventHandlerEditorController {
 }
 
 export default {
-    template: eventHandlerEditorTemplate,
-    controller: EventHandlerEditorController,
+    template: dataSourceEditorTemplate,
+    controller: DataSourceEditorController,
     bindings: {
         discardOptions: '<?confirmDiscard'
     },
@@ -188,7 +188,7 @@ export default {
         ngModelCtrl: 'ngModel'
     },
     designerInfo: {
-        translation: 'ui.components.eventHandlerEditor',
+        translation: 'ui.components.dataSourceEditor',
         icon: 'link'
     }
 };

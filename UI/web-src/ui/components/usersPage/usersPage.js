@@ -30,7 +30,7 @@ UsersPageController.prototype.$onInit = function() {
 };
 
 UsersPageController.prototype.updateUrl = function() {
-    this.$state.params.username = this.user && this.user.username || null;
+    this.$state.params.username = this.user && !this.user.isNew() && this.user.username || null;
     this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
 };
 
@@ -45,21 +45,6 @@ UsersPageController.prototype.userSaved = function(user, prevUser) {
 
 UsersPageController.prototype.addUser = function($event) {
     this.user = new this.User();
-    this.user.isNew = true;
-    this.user.username = '';
-    this.user.name = '';
-    this.user.email = '';
-    this.user.phone = '';
-    this.user.homeUrl = '';
-    this.user.locale = '';
-    this.user.systemLocale = '';
-    this.user.timezone = '';
-    this.user.systemTimezone = '';
-    this.user.permissions = 'user';
-    this.user.muted = true;
-    this.user.receiveOwnAuditEvents = false;
-    this.user.disabled = false;
-    this.user.receiveAlarmEmails = 'IGNORE';
     this.updateUrl();
 };
 
@@ -67,4 +52,3 @@ export default {
     controller: UsersPageController,
     template: usersPageTemplate
 };
-

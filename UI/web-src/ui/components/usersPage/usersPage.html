@@ -35,16 +35,16 @@
         <md-card>
             <md-toolbar class="md-hue-3">
                 <div class="md-toolbar-tools">
-                    <span ng-if="!$ctrl.user.isNew" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
-                    <span ng-if="$ctrl.user.isNew" ma-tr="ui.app.editNewUser"></span>
+                    <span ng-if="!$ctrl.user.isNew()" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
+                    <span ng-if="$ctrl.user.isNew()" ma-tr="ui.app.editNewUser"></span>
                 </div>
             </md-toolbar>
             
             <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false">
                 <md-tab>
                     <md-tab-label>
-                        <span ng-if="!$ctrl.user.isNew" ma-tr="users.editUser"></span>
-                        <span ng-if="$ctrl.user.isNew" ma-tr="users.add"></span>
+                        <span ng-if="!$ctrl.user.isNew()" ma-tr="users.editUser"></span>
+                        <span ng-if="$ctrl.user.isNew()" ma-tr="users.add"></span>
                     </md-tab-label>
                     <md-tab-body>
                         <div class="md-padding">
@@ -52,7 +52,7 @@
                         </div>
                     </md-tab-body>
                 </md-tab>
-                <md-tab ng-if="!$ctrl.user.isNew">
+                <md-tab ng-if="!$ctrl.user.isNew()">
                     <md-tab-label>
                         <span ma-tr="ui.app.authTokens"></span>
                     </md-tab-label>

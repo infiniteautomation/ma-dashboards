@@ -50,9 +50,8 @@ UserEditorController.prototype.save = function() {
             this.user.password = this.password;
         }
         
-        this.user.saveOrUpdate({username: this.originalUser.username}).then(function(user) {
+        this.user.save().then(user => {
             const previous = angular.copy(this.originalUser);
-            delete this.originalUser.isNew;
             angular.merge(this.originalUser, user);
             
             // update the cached user if we are modifying our own user
@@ -70,7 +69,7 @@ UserEditorController.prototype.save = function() {
             
             this.onSave({$user: this.originalUser, $previous: previous});
             this.resetForm();
-        }.bind(this), function(response) {
+        }, response => {
             if (response.data && response.data.validationMessages) {
                 this.validationMessages = response.data.validationMessages;
             }
@@ -85,7 +84,7 @@ UserEditorController.prototype.save = function() {
                 .position('bottom center')
                 .hideDelay(10000);
             this.$mdToast.show(toast);
-        }.bind(this));
+        });
     }
 };
 

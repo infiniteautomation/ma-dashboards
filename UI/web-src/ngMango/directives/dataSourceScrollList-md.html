@@ -1,8 +1,8 @@
 <md-list class="ma-no-padding">
-    <md-list-item ng-if="$ctrl.showNew" class="md-2-line" ng-click="$ctrl.createNew($event)" md-colors="{'background': $ctrl.selected.isNew ? 'accent-hue-1' : 'background-hue-1'}">
+    <md-list-item ng-if="$ctrl.showNew" class="md-2-line" ng-click="$ctrl.createNew($event)" md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
         <div class="md-list-item-text">
             <h3 ma-tr="ui.app.new"></h3>
-            <p ma-tr="ui.components.createDataSource"></p>
+            <p ma-tr="dsList.createDataSource"></p>
         </div>
         <md-button class="md-secondary md-icon-button" ng-click="$ctrl.createNew($event)">
             <md-icon>add</md-icon>

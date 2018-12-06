@@ -1,0 +1,12 @@
+/* Stops the content of non-active tabs scrolling past on first load */ 
+ma-data-source-editor md-tab-content:not(.md-active) * {
+	visibility: hidden;
+}
+
+ma-data-source-editor .ma-dialog-actions > .md-button {
+	margin: 0 4px;
+}
+
+ma-data-source-editor md-switch {
+	margin-top: 0;
+}

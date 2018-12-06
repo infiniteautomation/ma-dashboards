@@ -258,6 +258,15 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                         start = parseInt(matches[2], 10);
                     }
                 }
+                
+                // copy the xid to the originalId property
+                data.resource.forEach(r => {
+                    const idProperty = r.constructor.idProperty;
+                    const originalId = idProperty && r[idProperty];
+                    if (originalId) {
+                        r.originalId = originalId;
+                    }
+                });
         
                 data.resource.$start = start;
                 data.resource.$limit = limit;

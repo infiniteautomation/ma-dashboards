@@ -73,6 +73,7 @@ class UserListController {
                     angular.merge(user, update.object);
                 } else if (this.filterMatches(update.object)) {
                     const newItem = Object.assign(Object.create(this.User.prototype), update.object);
+                    newItem.originalId = newItem.username;
                     users.push(newItem);
                 }
             } else if (update.action === 'delete' && userIndex >= 0) {

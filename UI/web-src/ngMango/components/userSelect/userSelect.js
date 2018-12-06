@@ -56,7 +56,9 @@ class UserSelectController {
                 if (user) {
                     angular.merge(user, update.object);
                 } else {
-                    users.push(angular.merge(new this.User(), update.object));
+                    const newItem = Object.assign(Object.create(this.User.prototype), update.object);
+                    newItem.originalId = newItem.username;
+                    users.push(newItem);
                 }
             } else if (update.action === 'delete' && userIndex >= 0) {
                 users.splice(userIndex, 1);

@@ -46,6 +46,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     		}
     		return config;
     	},
+
     	responseError: function(error) {
     	    let message = error.data && typeof error.data === 'object' && (error.data.message || error.data.localizedMessage);
     	    

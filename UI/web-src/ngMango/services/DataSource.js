@@ -143,53 +143,37 @@
 *
 */
 
-
-
-function DataSourceFactory($resource, Util) {
-    const DataSource = $resource('/rest/v1/data-sources/:xid', {
-    		xid: '@xid'
-    	}, {
-        query: {
-            method: 'GET',
-            isArray: true,
-            transformResponse: Util.transformArrayResponse,
-            interceptor: {
-                response: Util.arrayResponseInterceptor
-            }
-        },
-        rql: {
-        	url: '/rest/v1/data-sources?:query',
-            method: 'GET',
-            isArray: true,
-            transformResponse: Util.transformArrayResponse,
-            interceptor: {
-                response: Util.arrayResponseInterceptor
-            }
-        },
-        getById: {
-            url: '/rest/v1/data-sources/by-id/:id',
-            method: 'GET',
-            isArray: false
-        },
-        save: {
-            method: 'POST',
-            url: '/rest/v1/data-sources'
-        },
-        update: {
-            method: 'PUT'
+dataSourceProvider.$inject = [];
+function dataSourceProvider() {
+    
+    const types = [];
+    
+    this.registerType = function(type) {
+        const existing = types.find(t => t.type === type.type);
+        if (existing) {
+            console.error('Tried to register data source type twice', type);
+            return;
         }
-    });
+        types.push(type);
+    };
+
+    this.$get = dataSourceFactory;
     
-    Object.assign(DataSource.notificationManager, {
-        webSocketUrl: '/rest/v1/websocket/data-sources'
-    });
-    
-    DataSource.prototype.isDs = true;
-    
-    DataSource.createNew = function() {
-        const uuid = Util.uuid();
-        return new this({
-            xid: `DS_${uuid}`,
+    dataSourceFactory.$inject = ['$resource', 'maUtil', '$templateCache'];
+    function dataSourceFactory($resource, Util, $templateCache) {
+        
+        const typesByName = Object.create(null);
+        types.forEach(type => {
+            typesByName[type.type] = type;
+            
+            // put the templates in the template cache so we can ng-include them
+            if (type.template && !type.templateUrl) {
+                type.templateUrl = `dataSources.${type.type}.html`;
+                $templateCache.put(type.templateUrl, type.template);
+            }
+        });
+        
+        const defaultProperties = {
             name: '',
             enabled: false,
             modelType: 'VIRTUAL',
@@ -207,15 +191,63 @@ function DataSourceFactory($resource, Util) {
             },
             alarmLevels: {
                 POLL_ABORTED: 'INFORMATION'
+            }
+        };
+        
+        const DataSource = $resource('/rest/v1/data-sources/:xid', {
+        		xid: '@originalId'
+        	}, {
+            query: {
+                method: 'GET',
+                isArray: true,
+                transformResponse: Util.transformArrayResponse,
+                interceptor: {
+                    response: Util.arrayResponseInterceptor
+                }
             },
-            isNew: true
+            rql: {
+            	url: '/rest/v1/data-sources?:query',
+                method: 'GET',
+                isArray: true,
+                transformResponse: Util.transformArrayResponse,
+                interceptor: {
+                    response: Util.arrayResponseInterceptor
+                }
+            },
+            getById: {
+                url: '/rest/v1/data-sources/by-id/:id',
+                method: 'GET',
+                isArray: false
+            },
+            save: {
+                method: 'POST',
+                url: '/rest/v1/data-sources'
+            },
+            update: {
+                method: 'PUT'
+            }
+        }, {
+            defaultProperties,
+            xidPrefix: 'DS_',
+            cancellable: true
         });
-    };
+        
+        Object.assign(DataSource.notificationManager, {
+            webSocketUrl: '/rest/v1/websocket/data-sources'
+        });
+        
+        Object.assign(DataSource, {
+            get types() {
+                return Object.freeze(types);
+            },
+            
+            get typesByName() {
+                return Object.freeze(typesByName);
+            }
+        });
 
-    return DataSource;
+        return DataSource;
+    }
 }
 
-DataSourceFactory.$inject = ['$resource', 'maUtil'];
-export default DataSourceFactory;
-
-
+export default dataSourceProvider;

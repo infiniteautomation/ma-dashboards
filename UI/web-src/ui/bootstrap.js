@@ -59,6 +59,7 @@ Promise.resolve().then(() => {
     
     const userPromise = preLoginDataPromise.then(preLoginData => {
         if (preLoginData.user) {
+            preLoginData.user.originalId = preLoginData.user.username;
             return preLoginData.user;
         }
         

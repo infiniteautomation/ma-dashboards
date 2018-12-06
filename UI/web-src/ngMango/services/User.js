@@ -190,9 +190,26 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector'];
     function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector) {
         let cachedUser;
+        
+        const defaultProperties = {
+            username: '',
+            name: '',
+            email: '',
+            phone: '',
+            homeUrl: '',
+            locale: '',
+            systemLocale: '',
+            timezone: '',
+            systemTimezone: '',
+            permissions: 'user',
+            muted: true,
+            receiveOwnAuditEvents: false,
+            disabled: false,
+            receiveAlarmEmails: 'IGNORE'
+        };
 
         const User = $resource('/rest/v1/users/:username', {
-                username: '@username'
+                username: '@originalId'
             }, {
             query: {
                 method: 'GET',
@@ -263,6 +280,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             update: {
                 method: 'PUT'
             }
+        }, {
+            idProperty: 'username',
+            defaultProperties,
+            cancellable: true,
+            autoXid: false
         });
 
         Object.assign(User.notificationManager, {
@@ -276,7 +298,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 if (user) {
                     systemLocale = user.systemLocale;
                     systemTimezone = user.systemTimezone;
-                    cachedUser = user instanceof User ? user : new User(user);
+                    cachedUser = user instanceof User ? user : Object.assign(Object.create(User.prototype), user);
                 } else {
                     cachedUser = null;
                 }
@@ -377,6 +399,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             }
             
             User.loginInterceptors.forEach(interceptor => interceptor(data));
+            
+            if (data.resource.username) {
+                data.resource.originalId = data.resource.username;
+            }
 
             return data.resource;
         }
@@ -384,6 +410,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         function logoutInterceptor(data) {
             User.logoutInterceptors.forEach(interceptor => interceptor(data));
 
+            if (data.resource.username) {
+                data.resource.originalId = data.resource.username;
+            }
+            
             return data.resource;
         }
 
@@ -484,22 +514,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             return this.timezone || this.systemTimezone;
         };
 
-        User.prototype.saveOrUpdate = function() {
-            let method = '$save';
-            const args = Array.prototype.slice.apply(arguments);
-            if (!this.isNew) {
-                method = '$update';
-                if (!args.length) {
-                    args.push({});
-                }
-                const params = args[0];
-                if (!params.username) {
-                    params.username = this.originalUsername || this.username;
-                }
-            }
-            return this[method].apply(this, args);
-        };
-        
         User.prototype.sendTestEmail = function(toEmail, usernameInEmail) {
         	return maServer.sendTestEmail(toEmail || this.email, usernameInEmail || this.username);
         };

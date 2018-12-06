@@ -125,6 +125,7 @@ import mailingListList from './components/mailingLists/mailingListList';
 import mailingListSelect from './components/mailingLists/mailingListSelect';
 import mailingListSetup from './components/mailingLists/mailingListSetup';
 import eventTypeList from './components/eventTypeList/eventTypeList';
+import dataSourceEditor from './components/dataSourceEditor/dataSourceEditor';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -263,6 +264,7 @@ ngMango.component('maMailingListList', mailingListList);
 ngMango.component('maMailingListSelect', mailingListSelect);
 ngMango.component('maMailingListSetup', mailingListSetup);
 ngMango.component('maEventTypeList', eventTypeList);
+ngMango.component('maDataSourceEditor', dataSourceEditor);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default

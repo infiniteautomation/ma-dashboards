@@ -32,14 +32,14 @@ class DataSourcePageController {
     }
     
     newDataSource() {
-        this.dataSource = this.maDataSource.createNew();
+        this.dataSource = new this.maDataSource();
         this.dataSourceChanged();
     }
     
     dataSourceSaved() {
         if (this.dataSource == null) {
-            // user deleted the event handler
-            this.dataSource = this.maDataSource.createNew();
+            // user deleted the data source
+            this.dataSource = new this.maDataSource();
         }
         
         // always update the state params, xids can change
@@ -47,7 +47,7 @@ class DataSourcePageController {
     }
     
     dataSourceChanged() {
-        this.$state.params.xid = this.dataSource && !this.dataSource.isNew && this.dataSource.xid || null;
+        this.$state.params.xid = this.dataSource && !this.dataSource.isNew() && this.dataSource.xid || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
 }
