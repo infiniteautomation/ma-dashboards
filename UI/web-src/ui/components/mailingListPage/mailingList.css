@@ -12,6 +12,9 @@
     padding-top: 0;
 }
 
+.mt-20 {
+    margin-top: 20px;
+}
 
 .ma-warn {
     color: red;

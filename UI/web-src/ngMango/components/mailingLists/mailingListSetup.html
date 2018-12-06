@@ -66,9 +66,12 @@
 
             <md-divider></md-divider>
 
-            <div layout="row" class="weekly-schedule-container">
-                <h4 ma-tr="ui.app.inactiveSchedule"></h4>
-                <ma-weekly-schedule class="w-100" ng-model="$ctrl.list.inactiveSchedule" lock-all="false" lock-weekends="false" lock-weekdays="false"></ma-weekly-schedule>
+            <div layout="column" class="weekly-schedule-container">
+                <span class="md-headline">
+                    <span ma-tr="ui.app.inactiveSchedule"></span>
+                </span>
+
+                <ma-weekly-schedule class="w-100 mt-20" ng-model="$ctrl.list.inactiveSchedule" lock-all="false" lock-weekends="false" lock-weekdays="false"></ma-weekly-schedule>
             </div>
 
         </md-card-content>
