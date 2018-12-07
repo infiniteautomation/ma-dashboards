@@ -201,7 +201,9 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="ui.
  */
 PointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource', 'maRqlBuilder', 'maRestResource'];
 function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource, RqlBuilder, RestResource) {
-    
+
+    const realtimeUrl = '/rest/v2/realtime';
+
     class BulkDataPointTemporaryResource extends TemporaryRestResource {
         static get baseUrl() {
             return '/rest/v2/data-points/bulk';
@@ -286,9 +288,7 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
             });
         }
     }
-    
-    const realtimeUrl = '/rest/v2/realtime';
-    
+
     const Point = $resource('/rest/v2/data-points/:xid', {
             xid: data => data && (data.originalId || data.xid)
     	}, {
@@ -330,8 +330,43 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         cancellable: true
     });
     
-    Object.assign(Point.prototype, {
+    Object.assign(Point, {
+        buildRealtimeQuery() {
+            const builder = new RqlBuilder();
+            builder.queryFunction = (queryObj, opts) => {
+                return this.realtimeQuery(queryObj, opts);
+            };
+            return builder;
+        },
 
+        realtimeQuery(queryObject, opts = {}) {
+            const params = {};
+            
+            if (queryObject) {
+                const rqlQuery = queryObject.toString();
+                if (rqlQuery) {
+                    params.rqlQuery = rqlQuery;
+                }
+            }
+            
+            return $http({
+                url: realtimeUrl,
+                method: 'GET',
+                params: params
+            }).then(response => {
+                const items = response.data.items.map(item => {
+                    return new this(item);
+                });
+                items.$total = response.data.total;
+                return items;
+            });
+        },
+        
+        bulk: BulkDataPointTemporaryResource,
+        restResource: DataPointRestResource
+    });
+    
+    Object.assign(Point.prototype, {
         forceRead() {
             const url = '/rest/v1/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
             return $http.put(url, null);
@@ -343,14 +378,14 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
                 url,
                 method: 'PUT',
                 params: {
-                    enabled,
+                    enabled: !!enabled,
                     restart
                 }
             }).then(() => {
                 this.enabled = enabled;
             });
         },
-    
+
         restart() {
             return this.enable(true, true);
         },
@@ -438,14 +473,6 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
         valueFn(setValue) {
         	if (setValue === undefined) return this.value;
         	this.setValue(setValue);
-        },
-        
-        get valueGetterSetter() {
-            return this.value;
-        },
-        
-        set valueGetterSetter(setValue) {
-            return this.setValue(setValue);
         },
 
         rendererMap() {
@@ -535,18 +562,6 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
             default: return type;
             }
         },
-        
-        get dataType() {
-            if (this.pointLocator) {
-                return this.pointLocator.dataType;
-            }
-        },
-        
-        set dataType(value) {
-            if (this.pointLocator) {
-                this.pointLocator.dataType = value;
-            }
-        },
 
         getTags() {
             const tags = Object.assign({}, this.tags);
@@ -590,42 +605,28 @@ function PointFactory($resource, $http, $timeout, Util, User, TemporaryRestResou
             return label;
         }
     });
-    
-    //realtimePointValueUrl
-    Object.assign(Point, {
-        buildRealtimeQuery() {
-            const builder = new RqlBuilder();
-            builder.queryFunction = (queryObj, opts) => {
-                return this.realtimeQuery(queryObj, opts);
-            };
-            return builder;
-        },
 
-        realtimeQuery(queryObject, opts = {}) {
-            const params = {};
-            
-            if (queryObject) {
-                const rqlQuery = queryObject.toString();
-                if (rqlQuery) {
-                    params.rqlQuery = rqlQuery;
-                }
+    Object.defineProperty(Point.prototype, 'isEnabled', {
+        get() { return this.enabled; },
+        set(value) { this.enable(value); }
+    });
+    
+    Object.defineProperty(Point.prototype, 'valueGetterSetter', {
+        get() { return this.value; },
+        set(value) { this.setValue(value); }
+    });
+    
+    Object.defineProperty(Point.prototype, 'dataType', {
+        get() {
+            if (this.pointLocator) {
+                return this.pointLocator.dataType;
             }
-            
-            return $http({
-                url: realtimeUrl,
-                method: 'GET',
-                params: params
-            }).then(response => {
-                const items = response.data.items.map(item => {
-                    return new this(item);
-                });
-                items.$total = response.data.total;
-                return items;
-            });
         },
-        
-        bulk: BulkDataPointTemporaryResource,
-        restResource: DataPointRestResource
+        set(value) {
+            if (this.pointLocator) {
+                this.pointLocator.dataType = value;
+            }
+        }
     });
     
     return Point;
