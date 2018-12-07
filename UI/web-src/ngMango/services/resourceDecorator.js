@@ -57,16 +57,30 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
         Object.assign(ExtendedResource, Resource, {
             idProperty,
             objQuery: maUtil.objQuery,
+            
+            // maps request promises to resources
+            requests: new Map(),
 
             buildQuery() {
                 const builder = new RqlBuilder();
                 builder.queryFunction = (queryObj, opts) => {
                     const resource = this.query({rqlQuery: queryObj.toString()});
-                    // allow access to the resource via the promise so we can cancel the query
-                    resource.$promise.resource = resource;
-                    return resource.$promise;
+                    const promise = resource.$promise;
+                    
+                    this.requests.set(promise, resource);
+                    promise.catch(e => null).finally(() => this.requests.delete(promise));
+
+                    return promise;
                 };
                 return builder;
+            },
+            
+            cancelRequest(promise, reason) {
+                const resource = this.requests.get(promise);
+                if (resource && typeof resource.$cancelRequest === 'function' && !resource.$resolved) {
+                    resource.cancelled = true;
+                    resource.$cancelRequest(reason);
+                }
             },
 
             notificationManager: new NotificationManager({

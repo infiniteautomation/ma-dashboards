@@ -88,7 +88,7 @@
                                     <td md-cell ng-bind="point.xid"></td>
                                     <td md-cell ng-bind="point.formatTags()"></td>
                                 </tr>
-                                <tr ng-if="!$ctrl.points.length">
+                                <tr ng-if="!$ctrl.points.length && !$ctrl.queryRunning">
                                     <td colspan="5" class="ma-no-points-found" ma-tr="ui.app.noPointsFoundForDs"></td>
                                 </tr>
                             </tbody>

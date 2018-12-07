@@ -197,9 +197,8 @@ class DataSourceEditorController {
     }
     
     cancelPointsQuery() {
-        if (this.pointsQueryResource && !this.pointsQueryResource.$resolved) {
-            this.pointsQueryResource.cancelled = true;
-            this.pointsQueryResource.$cancelRequest('test');
+        if (this.pointsPromiseQuery) {
+            this.Point.cancelRequest(this.pointsPromiseQuery);
         }
     }
     
@@ -207,21 +206,20 @@ class DataSourceEditorController {
         this.cancelPointsQuery();
 
         if (!this.dataSource || this.dataSource.isNew()) {
-            this.pointsPromise = this.$q.resolve();
             return;
         }
         
         const opts = this.pointsQuery;
         
-        const p = this.Point.buildQuery()
+        this.pointsPromiseQuery = this.Point.buildQuery()
             .eq('dataSourceXid', this.dataSource.xid)
             .sort(opts.order)
             .limit(opts.limit, (opts.page - 1) * opts.limit)
             .query();
         
-        this.pointsQueryResource = p.resource;
-        
-        this.pointsPromise = p.then(points => {
+        this.queryRunning = true;
+
+        this.pointsPromise = this.pointsPromiseQuery.then(points => {
             this.points = points;
 
             // ensure we stay on a page with points
@@ -236,15 +234,16 @@ class DataSourceEditorController {
             
             return this.points;
         }).catch(error => {
-            const cancelled = error.status === -1 && error.resource && error.resource.cancelled;
-            if (cancelled) {
+            if (error.status === -1 && error.resource && error.resource.cancelled) {
                 // request cancelled, ignore error
                 return;
             }
             
             const message = error.mangoStatusText || (error + '');
             this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
-        });
+        }).finally(() => this.queryRunning = false);
+        
+        return this.pointsPromise;
     }
 }
 
