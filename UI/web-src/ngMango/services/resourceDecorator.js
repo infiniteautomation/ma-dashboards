@@ -61,7 +61,10 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
             buildQuery() {
                 const builder = new RqlBuilder();
                 builder.queryFunction = (queryObj, opts) => {
-                    return this.query({rqlQuery: queryObj.toString()}).$promise;
+                    const resource = this.query({rqlQuery: queryObj.toString()});
+                    // allow access to the resource via the promise so we can cancel the query
+                    resource.$promise.resource = resource;
+                    return resource.$promise;
                 };
                 return builder;
             },

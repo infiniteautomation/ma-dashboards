@@ -16,6 +16,7 @@ import './dataSourceEditor.css';
 
 const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
     'maPoint']);
+
 class DataSourceEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
@@ -196,8 +197,9 @@ class DataSourceEditorController {
     }
     
     cancelPointsQuery() {
-        if (this.pointsQuery2) {
-            this.pointsQuery2.$cancelRequest();
+        if (this.pointsQueryResource && !this.pointsQueryResource.$resolved) {
+            this.pointsQueryResource.cancelled = true;
+            this.pointsQueryResource.$cancelRequest('test');
         }
     }
     
@@ -211,23 +213,38 @@ class DataSourceEditorController {
         
         const opts = this.pointsQuery;
         
-        this.pointsPromise = this.Point.buildQuery()
+        const p = this.Point.buildQuery()
             .eq('dataSourceXid', this.dataSource.xid)
             .sort(opts.order)
             .limit(opts.limit, (opts.page - 1) * opts.limit)
-            .query().then(points => {
-                this.points = points;
+            .query();
+        
+        this.pointsQueryResource = p.resource;
+        
+        this.pointsPromise = p.then(points => {
+            this.points = points;
 
-                // ensure we stay on a page with points
-                if (!this.points.length && opts.page > 1) {
-                    if (this.points.$total > 0) {
-                        opts.page = Math.ceil(this.points.$total / opts.limit);
-                        this.queryPoints();
-                    } else {
-                        opts.page = 1;
-                    }
+            // ensure we stay on a page with points
+            if (!this.points.length && opts.page > 1) {
+                if (this.points.$total > 0) {
+                    opts.page = Math.ceil(this.points.$total / opts.limit);
+                    this.queryPoints();
+                } else {
+                    opts.page = 1;
                 }
-            });
+            }
+            
+            return this.points;
+        }).catch(error => {
+            const cancelled = error.status === -1 && error.resource && error.resource.cancelled;
+            if (cancelled) {
+                // request cancelled, ignore error
+                return;
+            }
+            
+            const message = error.mangoStatusText || (error + '');
+            this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
+        });
     }
 }
 
