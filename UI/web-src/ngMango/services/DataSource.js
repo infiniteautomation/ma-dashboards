@@ -168,7 +168,7 @@ function dataSourceProvider() {
             
             // put the templates in the template cache so we can ng-include them
             if (type.template && !type.templateUrl) {
-                type.templateUrl = `dataSources.${type.type}.html`;
+                type.templateUrl = `dataSourceEditor.${type.type}.html`;
                 $templateCache.put(type.templateUrl, type.template);
             }
         });
