@@ -41,7 +41,7 @@ class DataSourceEditorController {
         this.selectedPoints = [];
         this.pointsQuery = {
             page: 1,
-            limit: 15,
+            limit: 10,
             order: 'name'
         };
         
@@ -164,6 +164,8 @@ class DataSourceEditorController {
                 this.dataSource = null;
                 this.setViewValue();
                 this.render();
+            }, error => {
+                this.maDialogHelper.toast(['ui.components.dataSourceDeleteError', error.mangoStatusText]);
             });
         }, angular.noop);
     }
@@ -245,6 +247,18 @@ class DataSourceEditorController {
         }).finally(() => this.queryRunning = false);
         
         return this.pointsPromise;
+    }
+
+    deleteDataPoint(event, item) {
+        const notifyName = item.name || item.originalId;
+        this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
+            item.delete().then(() => {
+                this.maDialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
+                this.queryPoints();
+            }, error => {
+                this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
+            });
+        }, angular.noop);
     }
 }
 

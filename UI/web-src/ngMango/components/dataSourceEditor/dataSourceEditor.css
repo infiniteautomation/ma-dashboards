@@ -16,3 +16,19 @@ ma-data-source-editor td.ma-no-points-found {
 	text-align: center;
 	padding: 16px 0;
 }
+
+ma-data-source-editor .ma-point-actions md-switch,
+ma-data-source-editor .ma-point-actions .md-button.md-icon-button {
+	margin: 0;
+}
+
+ma-data-source-editor .ma-point-actions .md-button.md-icon-button {
+	padding: 4px;
+	width: 32px;
+	height: 32px;
+	min-height: 32px;
+}
+
+ma-data-source-editor .ma-point-actions md-switch > div.md-container {
+	margin-right: 4px;
+}
