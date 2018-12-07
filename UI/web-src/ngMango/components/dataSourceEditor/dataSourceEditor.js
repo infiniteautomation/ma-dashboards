@@ -77,6 +77,12 @@ class DataSourceEditorController {
         this.$scope.$on('$destroy', () => {
             this.$window.onbeforeunload = oldUnload;
         });
+
+        this.Point.notificationManager.subscribe((event, point) => {
+            if (this.dataSource && point.dataSourceXid === this.dataSource.xid && this.activeTab === 1) {
+                this.queryPoints();
+            }
+        }, this.$scope);
     }
     
     $onChanges(changes) {

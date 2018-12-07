@@ -230,7 +230,7 @@ function dataPointProvider() {
                 $templateCache.put(type.templateUrl, type.template);
             }
         });
-        
+
         const realtimeUrl = '/rest/v2/realtime';
     
         class BulkDataPointTemporaryResource extends TemporaryRestResource {
@@ -357,6 +357,10 @@ function dataPointProvider() {
             defaultProperties,
             xidPrefix: 'DP_',
             cancellable: true
+        });
+        
+        Object.assign(Point.notificationManager, {
+            webSocketUrl: '/rest/v1/websocket/data-points'
         });
         
         Object.assign(Point, {
