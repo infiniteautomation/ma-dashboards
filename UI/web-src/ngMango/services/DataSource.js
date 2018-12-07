@@ -159,8 +159,8 @@ function dataSourceProvider() {
 
     this.$get = dataSourceFactory;
     
-    dataSourceFactory.$inject = ['$resource', 'maUtil', '$templateCache'];
-    function dataSourceFactory($resource, Util, $templateCache) {
+    dataSourceFactory.$inject = ['$resource', 'maUtil', '$templateCache', '$http'];
+    function dataSourceFactory($resource, Util, $templateCache, $http) {
         
         const typesByName = Object.create(null);
         types.forEach(type => {
@@ -246,6 +246,32 @@ function dataSourceProvider() {
             
             get typesByName() {
                 return Object.freeze(typesByName);
+            }
+        });
+        
+        Object.assign(DataSource.prototype, {
+            enable(enabled = true, restart = false) {
+                const url = '/rest/v1/data-sources/enable-disable/' + encodeURIComponent(this.xid);
+                return $http({
+                    url,
+                    method: 'PUT',
+                    params: {
+                        enabled: !!enabled,
+                        restart
+                    }
+                }).then(() => {
+                    this.enabled = enabled;
+                });
+            }
+        });
+        
+        Object.defineProperty(DataSource.prototype, 'isEnabled', {
+            get() {
+                return this.enabled;
+            },
+            
+            set(value) {
+                this.enable(value);
             }
         });
 
