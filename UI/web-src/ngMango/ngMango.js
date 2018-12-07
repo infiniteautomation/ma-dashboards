@@ -341,6 +341,7 @@ ngMango.constant('MA_DATE_TIME_FORMATS', [
 ]);
 
 ngMango.constant('MA_TIME_PERIOD_TYPES', [
+ {type: 'MILLISECONDS', label: 'Milliseconds', translation: 'dateAndTime.milliseconds'},
  {type: 'SECONDS', label: 'Seconds', translation: 'dateAndTime.seconds'},
  {type: 'MINUTES', label: 'Minutes', translation: 'dateAndTime.minutes'},
  {type: 'HOURS', label: 'Hours', translation: 'dateAndTime.hours'},

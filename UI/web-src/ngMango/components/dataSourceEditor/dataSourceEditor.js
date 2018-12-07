@@ -15,14 +15,14 @@ import './dataSourceEditor.css';
  */
 
 const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maPoint']);
+    'maPoint', 'MA_TIME_PERIOD_TYPES']);
 
 class DataSourceEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maDataSource, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            Point) {
+            Point, MA_TIME_PERIOD_TYPES) {
         this.maDataSource = maDataSource;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
@@ -32,6 +32,7 @@ class DataSourceEditorController {
         this.$element = $element;
         this.maUtil = maUtil;
         this.Point = Point;
+        this.timePeriodTypes = MA_TIME_PERIOD_TYPES.slice(0, 4);
         
         this.types = maDataSource.types;
         this.typesByName = maDataSource.typesByName;
