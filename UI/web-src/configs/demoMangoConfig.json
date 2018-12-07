@@ -1,4 +1,21 @@
 {
+   "users": [
+    {
+      "timezone": "",
+      "locale": "",
+      "homeUrl": "",
+      "password": "{PLAINTEXT}testuser",
+      "phone": "",
+      "permissions": "user",
+      "name": "Demo",
+      "receiveAlarmEmails": "IGNORE",
+      "receiveOwnAuditEvents": false,
+      "disabled": false,
+      "muted": true,
+      "email": "demo@demo.com",
+      "username": "demo"
+    }
+   ],
    "dataSources":[
       {
          "xid":"DS_997094",
