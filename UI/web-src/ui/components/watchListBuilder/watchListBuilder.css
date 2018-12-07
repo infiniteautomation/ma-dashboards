@@ -17,7 +17,7 @@ ma-ui-watch-list-builder md-toolbar.md-table-toolbar em {
 }
 
 ma-ui-watch-list-builder md-card {
-  margin: 16px 0;
+  margin: 0;
 }
 
 ma-ui-watch-list-builder md-card.query-group > md-card-content,
