@@ -51,6 +51,54 @@
                 </div>
             </md-tab-body>
         </md-tab>
+        <md-tab md-on-select="$ctrl.queryPoints()">
+            <md-tab-label>
+                <span ma-tr="ui.app.dataPoints"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding ma-no-padding-bottom">
+                    <div>
+                        <md-button class="md-primary md-raised">
+                            <md-icon>add</md-icon>&nbsp;<span ma-tr="common.add"></span>
+                        </md-button>
+                        <md-button class="md-primary md-raised">
+                            <md-icon>add</md-icon>&nbsp;<span>Add multiple</span>
+                        </md-button>
+                        <md-button class="md-raised" ng-disabled="!$ctrl.selectedPoints.length">
+                            <md-icon>edit</md-icon>&nbsp;<span>Edit selected</span>
+                        </md-button>
+                        <md-button class="md-raised md-warn" ng-disabled="!$ctrl.selectedPoints.length">
+                            <md-icon>delete</md-icon>&nbsp;<span>Delete selected</span>
+                        </md-button>
+                    </div>
+                    <md-table-container>
+                        <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.pointsPromise">
+                            <thead md-head md-order="$ctrl.pointsQuery.order" md-on-reorder="$ctrl.queryPointsBound">
+                                <tr md-row>
+                                    <th md-column md-order-by="deviceName">Device name</th>
+                                    <th md-column md-order-by="name">Point name</th>
+                                    <th md-column md-order-by="xid">XID</th>
+                                    <th md-column>Tags</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row md-select="point" md-select-id="id" md-auto-select ng-repeat="point in $ctrl.points track by point.id">
+                                    <td md-cell ng-bind="point.deviceName"></td>
+                                    <td md-cell ng-bind="point.name"></td>
+                                    <td md-cell ng-bind="point.xid"></td>
+                                    <td md-cell ng-bind="point.formatTags()"></td>
+                                </tr>
+                                <tr ng-if="!$ctrl.points.length">
+                                    <td colspan="5" class="ma-no-points-found" ma-tr="ui.app.noPointsFoundForDs"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                    <md-table-pagination md-limit="$ctrl.pointsQuery.limit" md-limit-options="[5, 10, 15, 20, 50, 100]" md-page="$ctrl.pointsQuery.page"
+                        md-total="{{$ctrl.points.$total || 0}}" md-page-select md-on-paginate="$ctrl.queryPointsBound"></md-table-pagination>
+                </div>
+            </md-tab-body>
+        </md-tab>
     </md-tabs>
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>

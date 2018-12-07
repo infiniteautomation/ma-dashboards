@@ -14,12 +14,14 @@ import './dataSourceEditor.css';
  * @description Editor for a data source, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']);
+const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
+    'maPoint']);
 class DataSourceEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maDataSource, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse) {
+    constructor(maDataSource, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
+            Point) {
         this.maDataSource = maDataSource;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
@@ -28,14 +30,25 @@ class DataSourceEditorController {
         this.maTranslate = maTranslate;
         this.$element = $element;
         this.maUtil = maUtil;
+        this.Point = Point;
         
         this.types = maDataSource.types;
         this.typesByName = maDataSource.typesByName;
+
+        this.points = [];
+        this.selectedPoints = [];
+        this.pointsQuery = {
+            page: 1,
+            limit: 15,
+            order: 'name'
+        };
         
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
             this.dynamicHeight = $parse($attrs.dynamicHeight)($scope.$parent);
         }
+        
+        this.queryPointsBound = this.queryPoints.bind(this);
     }
     
     $onInit() {
@@ -91,6 +104,11 @@ class DataSourceEditorController {
             this.form.$setPristine();
             this.form.$setUntouched();
         }
+        
+        this.points = [];
+        this.selectedPoints = [];
+        this.pointsQuery.page = 1;
+        this.cancelPointsQuery();
     }
     
     setViewValue() {
@@ -175,6 +193,41 @@ class DataSourceEditorController {
         if (index >= 0) {
             this.activeTab = index;
         }
+    }
+    
+    cancelPointsQuery() {
+        if (this.pointsQuery2) {
+            this.pointsQuery2.$cancelRequest();
+        }
+    }
+    
+    queryPoints() {
+        this.cancelPointsQuery();
+
+        if (!this.dataSource || this.dataSource.isNew()) {
+            this.pointsPromise = this.$q.resolve();
+            return;
+        }
+        
+        const opts = this.pointsQuery;
+        
+        this.pointsPromise = this.Point.buildQuery()
+            .eq('dataSourceXid', this.dataSource.xid)
+            .sort(opts.order)
+            .limit(opts.limit, (opts.page - 1) * opts.limit)
+            .query().then(points => {
+                this.points = points;
+
+                // ensure we stay on a page with points
+                if (!this.points.length && opts.page > 1) {
+                    if (this.points.$total > 0) {
+                        opts.page = Math.ceil(this.points.$total / opts.limit);
+                        this.queryPoints();
+                    } else {
+                        opts.page = 1;
+                    }
+                }
+            });
     }
 }
 
