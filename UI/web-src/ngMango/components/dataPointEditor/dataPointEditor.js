@@ -4,26 +4,24 @@
  */
 
 import angular from 'angular';
-import dataSourceEditorTemplate from './dataSourceEditor.html';
-import './dataSourceEditor.css';
+import dataPointEditorTemplate from './dataPointEditor.html';
+import './dataPointEditor.css';
 
 /**
  * @ngdoc directive
- * @name ngMango.directive:maDataSourceEditor
+ * @name ngMango.directive:maDataPointEditor
  * @restrict E
- * @description Editor for a data source, allows creating, updating or deleting
+ * @description Editor for a data point, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maPoint', 'MA_TIME_PERIOD_TYPES']);
+const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']);
 
-class DataSourceEditorController {
+class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maDataSource, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            Point, MA_TIME_PERIOD_TYPES) {
-        this.maDataSource = maDataSource;
+    constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse) {
+        this.maPoint = maPoint;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
@@ -31,26 +29,14 @@ class DataSourceEditorController {
         this.maTranslate = maTranslate;
         this.$element = $element;
         this.maUtil = maUtil;
-        this.Point = Point;
-        this.timePeriodTypes = MA_TIME_PERIOD_TYPES.slice(0, 4);
         
-        this.types = maDataSource.types;
-        this.typesByName = maDataSource.typesByName;
+        this.types = maPoint.types;
+        this.typesByName = maPoint.typesByName;
 
-        this.points = [];
-        this.selectedPoints = [];
-        this.pointsQuery = {
-            page: 1,
-            limit: 10,
-            order: 'name'
-        };
-        
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
             this.dynamicHeight = $parse($attrs.dynamicHeight)($scope.$parent);
         }
-        
-        this.queryPointsBound = this.queryPoints.bind(this);
     }
     
     $onInit() {
@@ -80,9 +66,19 @@ class DataSourceEditorController {
     }
     
     $onChanges(changes) {
-        if (changes.backToDataSource) {
+        if (changes.backToDataPoint) {
             this.dataPoint = null;
         }
+        
+        if (changes.showBackButton && this.showBackButton) {
+            this.activeTab = 1;
+        }
+    }
+    
+    goBack() {
+        this.dataPoint = null;
+        this.setViewValue();
+        this.render();
     }
     
     render(confirmDiscard = false) {
@@ -92,32 +88,32 @@ class DataSourceEditorController {
         }
         
         this.validationMessages = [];
-        this.activeTab = 0;
+        
+        if (this.showBackButton) {
+            this.activeTab = 1;
+        } else {
+            this.activeTab = 0;
+        }
         
         const viewValue = this.ngModelCtrl.$viewValue;
         if (viewValue) {
-            if (viewValue instanceof this.maDataSource) {
-                this.dataSource = viewValue.copy();
+            if (viewValue instanceof this.maPoint) {
+                this.dataPoint = viewValue.copy();
             } else {
-                this.dataSource = Object.assign(Object.create(this.maDataSource.prototype), viewValue);
+                this.dataPoint = Object.assign(Object.create(this.maPoint.prototype), viewValue);
             }
         } else {
-            this.dataSource = null;
+            this.dataPoint = null;
         }
 
         if (this.form) {
             this.form.$setPristine();
             this.form.$setUntouched();
         }
-        
-        this.points = [];
-        this.selectedPoints = [];
-        this.pointsQuery.page = 1;
-        this.cancelPointsQuery();
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(this.dataSource);
+        this.ngModelCtrl.$setViewValue(this.dataPoint);
     }
 
     saveItem(event) {
@@ -130,10 +126,10 @@ class DataSourceEditorController {
         
         this.validationMessages = [];
         
-        this.dataSource.save().then(item => {
+        this.dataPoint.save().then(item => {
             this.setViewValue();
             this.render();
-            this.maDialogHelper.toast(['ui.components.dataSourceSaved', this.dataSource.name || this.dataSource.xid]);
+            this.maDialogHelper.toast(['ui.components.dataPointSaved', this.dataPoint.name || this.dataPoint.xid]);
         }, error => {
             let statusText = error.mangoStatusText;
             
@@ -149,7 +145,7 @@ class DataSourceEditorController {
                 }
             }
             
-            this.maDialogHelper.errorToast(['ui.components.dataSourceSaveError', statusText]);
+            this.maDialogHelper.errorToast(['ui.components.dataPointSaveError', statusText]);
         });
     }
     
@@ -160,15 +156,15 @@ class DataSourceEditorController {
     }
 
     deleteItem(event) {
-        const notifyName = this.dataSource.name || this.dataSource.originalId;
-        this.maDialogHelper.confirm(event, ['ui.components.dataSourceConfirmDelete', notifyName]).then(() => {
-            this.dataSource.delete().then(() => {
-                this.maDialogHelper.toast(['ui.components.dataSourceDeleted', notifyName]);
-                this.dataSource = null;
+        const notifyName = this.dataPoint.name || this.dataPoint.originalId;
+        this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
+            this.dataPoint.delete().then(() => {
+                this.maDialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
+                this.dataPoint = null;
                 this.setViewValue();
                 this.render();
             }, error => {
-                this.maDialogHelper.toast(['ui.components.dataSourceDeleteError', error.mangoStatusText]);
+                this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
             });
         }, angular.noop);
     }
@@ -202,63 +198,6 @@ class DataSourceEditorController {
         }
     }
     
-    cancelPointsQuery() {
-        if (this.pointsPromiseQuery) {
-            this.Point.cancelRequest(this.pointsPromiseQuery);
-        }
-    }
-    
-    queryPoints() {
-        this.cancelPointsQuery();
-
-        if (!this.dataSource || this.dataSource.isNew()) {
-            return;
-        }
-        
-        const opts = this.pointsQuery;
-        
-        this.pointsPromiseQuery = this.Point.buildQuery()
-            .eq('dataSourceXid', this.dataSource.xid)
-            .sort(opts.order)
-            .limit(opts.limit, (opts.page - 1) * opts.limit)
-            .query();
-        
-        this.queryRunning = true;
-
-        this.pointsPromise = this.pointsPromiseQuery.then(points => {
-            this.points = points;
-
-            // ensure we stay on a page with points
-            if (!this.points.length && opts.page > 1) {
-                if (this.points.$total > 0) {
-                    opts.page = Math.ceil(this.points.$total / opts.limit);
-                    this.queryPoints();
-                } else {
-                    opts.page = 1;
-                }
-            }
-            
-            return this.points;
-        }).catch(error => {
-            if (error.status === -1 && error.resource && error.resource.cancelled) {
-                // request cancelled, ignore error
-                return;
-            }
-            
-            const message = error.mangoStatusText || (error + '');
-            this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
-        }).finally(() => this.queryRunning = false);
-        
-        return this.pointsPromise;
-    }
-
-    editDataPoint(event, item) {
-        this.dataPoint = item;
-        if (typeof this.onEditDataPoint === 'function') {
-            this.onEditDataPoint({$point: item});
-        }
-    }
-    
     deleteDataPoint(event, item) {
         const notifyName = item.name || item.originalId;
         this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
@@ -273,18 +212,18 @@ class DataSourceEditorController {
 }
 
 export default {
-    template: dataSourceEditorTemplate,
-    controller: DataSourceEditorController,
+    template: dataPointEditorTemplate,
+    controller: DataPointEditorController,
     bindings: {
         discardOptions: '<?confirmDiscard',
-        onEditDataPoint: '&?',
-        backToDataSource: '<?'
+        fixedType: '<?',
+        showBackButton: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
     },
     designerInfo: {
-        translation: 'ui.components.dataSourceEditor',
+        translation: 'ui.components.dataPointEditor',
         icon: 'link'
     }
 };

@@ -1,4 +1,4 @@
-<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" flex="noshrink" layout="column">
+<div ng-show="!$ctrl.dataPoint" ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" flex="noshrink" layout="column">
     <md-tabs flex="noshrink" layout="column" ng-attr-md-dynamic-height="{{$ctrl.dynamicHeight}}" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
         <md-tab>
             <md-tab-label>
@@ -108,10 +108,10 @@
                                     <td md-cell ng-bind="point.name"></td>
                                     <td md-cell ng-bind="point.xid"></td>
                                     <td md-cell ng-bind="point.formatTags()"></td>
-                                    <td md-cell>
-                                        <div layout layout-align="start center" class="ma-point-actions">
+                                    <td md-cell class="ma-point-actions">
+                                        <div layout layout-align="end center">
                                             <md-switch ng-model="point.isEnabled" ma-form-exclude></md-switch>
-                                            <md-button class="md-icon-button">
+                                            <md-button class="md-icon-button" ng-click="$ctrl.editDataPoint($event, point)">
                                                 <md-icon>edit</md-icon>
                                                 <md-tooltip ma-tr="common.edit"></md-tooltip>
                                             </md-button>
@@ -152,3 +152,5 @@
         </md-button>
     </div>
 </div>
+
+<ma-data-point-editor ng-show="$ctrl.dataPoint" ng-model="$ctrl.dataPoint" fixed-type="true" show-back-button="true"></ma-data-point-editor>
