@@ -657,9 +657,9 @@ export default [
         menuTr: 'header.systemSettings',
         menuIcon: 'settings',
         permission: 'superadmin',
-        params: {
-            helpPage: 'ui.help.systemSettings'
-        },
+        // params: {
+        //     helpPage: 'ui.help.systemSettings'
+        // },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -747,7 +747,7 @@ export default [
         menuHidden: true
     },
     {
-        url: '/email/help',
+        url: '/email',
         name: 'ui.help.emailSettings',
         resolve: {
             viewTemplate: function() {
