@@ -733,6 +733,9 @@ export default [
     },
     {
         name: 'ui.settings.system.email',
+        params: {
+            helpPage: 'ui.help.emailSettings'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -742,6 +745,17 @@ export default [
         url: '/email',
         menuTr: 'systemSettings.emailSettings',
         menuHidden: true
+    },
+    {
+        url: '/email/help',
+        name: 'ui.help.emailSettings',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/emailSettings.html');
+            }
+        },
+        menuTr: 'systemSettings.emailSettings'
     },
     {
         name: 'ui.settings.system.http',
