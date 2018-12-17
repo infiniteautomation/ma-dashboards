@@ -11,7 +11,11 @@ function VirtualSerialPortFactory(RestResource) {
     const xidPrefix = 'VSP_';
 
     const defaultProperties = {
-        
+        portName: '',
+        address: '',
+        port: 9000,
+        timeout: 0,
+        portType: ''
     };
 
 
@@ -30,6 +34,19 @@ function VirtualSerialPortFactory(RestResource) {
         
         static get xidPrefix() {
             return xidPrefix;
+        }
+
+        static list() {
+            return this.http({
+                url: this.baseUrl,
+                method: 'GET'
+            }).then(response => {
+                const items = response.data.map(item => {
+                    return new this(item);
+                });
+                items.$total = response.data.length;
+                return items;
+            });
         }
     }
     
