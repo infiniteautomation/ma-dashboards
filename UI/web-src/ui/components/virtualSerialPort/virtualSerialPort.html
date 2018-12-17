@@ -1,1 +1,11 @@
-<h1>Virtual Serial Port</h1>
+<div layout="column" flex="noshrink">
+    
+    <div flex>
+        <ma-mailing-list-select ng-model="$ctrl.selected"></ma-mailing-list-select>
+
+        <md-button class="md-raised md-primary" ng-click="$ctrl.newVirtualPort()">
+            <md-icon>add</md-icon> <span ma-tr="ui.app.virtualSerialPort.create"></span>
+        </md-button>
+    </div>
+
+</div>

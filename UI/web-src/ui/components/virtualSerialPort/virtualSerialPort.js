@@ -9,7 +9,7 @@ import componentTemplate from './virtualSerialPort.html';
  * @ngdoc directive
  * @name ngMango.directive:maVirtualSerialPort
  * @restrict E
- * @description Displays a form create Virtual Serial Ports
+ * @description Displays a page to create Virtual Serial Ports
  */
 
 const $inject = Object.freeze(['$scope']);
