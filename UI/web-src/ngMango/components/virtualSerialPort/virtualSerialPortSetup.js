@@ -6,15 +6,17 @@
 import componentTemplate from './virtualSerialPortSetup.html';
 import angular from 'angular';
 
-const $inject = Object.freeze(['$scope']);
+const $inject = Object.freeze(['$scope', 'maDialogHelper', 'maVirtualSerialPort']);
 
 class VirtualSerialPortSetupController {
 
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($scope) {
+    constructor($scope, maDialogHelper, maVirtualSerialPort) {
         this.$scope = $scope;
+        this.maDialogHelper = maDialogHelper;
+        this.maVirtualSerialPort = maVirtualSerialPort;
     }
 
     $onInit() {
@@ -33,13 +35,41 @@ class VirtualSerialPortSetupController {
     }
 
     save() {  
-
         this.form.$setSubmitted();
+
+        this.virtualSerialPort.save().then(response => {
+            this.maDialogHelper.toastOptions({
+                textTr: ['systemSettings.comm.virtual.serialPortSaved'],
+                hideDelay: 5000
+            });
+        }, error => {
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.virtualSerialPort.notSaved', error.mangoStatusText],
+                classes: 'md-warn',
+                hideDelay: 5000
+            });
+        });
+        
+    }
+
+    delete() {  
+        this.virtualSerialPort.delete().then(response => {
+            this.maDialogHelper.toastOptions({
+                textTr: ['systemSettings.comm.virtual.serialPortRemoved'],
+                hideDelay: 5000
+            });
+        }, error => {
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.virtualSerialPort.notRemoved', error.mangoStatusText],
+                classes: 'md-warn',
+                hideDelay: 5000
+            });
+        });
         
     }
 
     cancel(event) {
-        this.list = new this.maMailingList();
+        this.virtualSerialPort = new this.maVirtualSerialPort();
         this.setViewValue();
         this.render();
     }

@@ -6,6 +6,9 @@
         <md-button class="md-raised md-warn" ng-click="$ctrl.delete($event)" ng-disabled="!$ctrl.form.$valid && !$ctrl.form.$touched">
             <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
         </md-button>
+        <md-button  ng-click="$ctrl.cancel($event)">
+            <md-icon>cancel</md-icon> <span ma-tr="common.cancel"></span>
+        </md-button>
     </div>
 
     <div flex layout="row" layout-align="space-between top" layout-wrap>
