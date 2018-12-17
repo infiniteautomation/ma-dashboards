@@ -12,16 +12,18 @@ import componentTemplate from './virtualSerialPortSelect.html';
  * @description Displays a select drop down of Virtual Serial Ports
  */
 
-const $inject = Object.freeze(['$scope']);
+const $inject = Object.freeze(['$scope', 'maVirtualSerialPort']);
 class VirtualSerialPortController {
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($scope) {
+    constructor($scope, maVirtualSerialPort) {
         this.$scope = $scope;
+        this.maVirtualSerialPort = maVirtualSerialPort;
     }
     
     $onInit() {
+        this.getVirtualSerialPorts();
     }
     
     $onChanges(changes) {
@@ -33,6 +35,12 @@ class VirtualSerialPortController {
     
     render() {
         this.selected = this.ngModelCtrl.$viewValue;
+    }
+
+    getVirtualSerialPorts() {
+        return this.maVirtualSerialPort.list().then(virtualSerialPorts => {
+            this.virtualSerialPorts = virtualSerialPorts;
+        });
     }
 
 }
