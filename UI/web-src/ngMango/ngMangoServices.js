@@ -133,7 +133,7 @@ ngMangoServices.factory('maPointValueController', PointValueController);
 ngMangoServices.factory('maModuleLoader', moduleLoader);
 ngMangoServices.factory('maMailingList', mailingListFactory);
 ngMangoServices.factory('maEventType', eventTypeFactory);
-ngMangoServices.factory('maVirtualSerialPortFactory', virtualSerialPortFactory);
+ngMangoServices.factory('maVirtualSerialPort', virtualSerialPortFactory);
 ngMangoServices.provider('$exceptionHandler', maExceptionHandler);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
