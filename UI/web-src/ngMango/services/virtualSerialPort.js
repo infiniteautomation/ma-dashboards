@@ -12,10 +12,11 @@ function VirtualSerialPortFactory(RestResource) {
 
     const defaultProperties = {
         portName: '',
-        address: '',
+        address: 'localhost',
         port: 9000,
         timeout: 0,
-        portType: ''
+        portType: 'SERIAL_SOCKET_BRIDGE',
+        bufferSize: 0
     };
 
 

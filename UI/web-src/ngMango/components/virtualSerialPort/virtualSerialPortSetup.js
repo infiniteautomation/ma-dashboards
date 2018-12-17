@@ -22,11 +22,11 @@ class VirtualSerialPortSetupController {
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(this.list);
+        this.ngModelCtrl.$setViewValue(this.virtualSerialPort);
     }
 
     render() {
-        this.list = this.ngModelCtrl.$viewValue;
+        this.virtualSerialPort = this.ngModelCtrl.$viewValue;
 
         this.form.$setPristine();
         this.form.$setUntouched();
