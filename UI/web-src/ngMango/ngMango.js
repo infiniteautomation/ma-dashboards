@@ -128,6 +128,7 @@ import eventTypeList from './components/eventTypeList/eventTypeList';
 import dataSourceEditor from './components/dataSourceEditor/dataSourceEditor';
 import dataPointEditor from './components/dataPointEditor/dataPointEditor';
 import virtualSerialPortSelect from './components/virtualSerialPort/virtualSerialPortSelect';
+import virtualSerialPortSetup from './components/virtualSerialPort/virtualSerialPortSetup';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -269,6 +270,7 @@ ngMango.component('maEventTypeList', eventTypeList);
 ngMango.component('maDataSourceEditor', dataSourceEditor);
 ngMango.component('maDataPointEditor', dataPointEditor);
 ngMango.component('maVirtualSerialPortSelect', virtualSerialPortSelect);
+ngMango.component('maVirtualSerialPortSetup', virtualSerialPortSetup);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default

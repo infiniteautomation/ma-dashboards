@@ -1,0 +1,10 @@
+<form flex layout="column" name="$ctrl.form" ma-validation-messages="$ctrl.validationMessages">
+    <div flex layout layout-align="end center" class="ma-margin-bottom">
+        <md-button class="md-raised md-primary" ng-click="$ctrl.save($event)">
+            <md-icon>save</md-icon> <span ma-tr="common.save"></span>
+        </md-button>
+        <md-button class="md-raised md-warn" ng-click="$ctrl.delete($event)" ng-disabled="!$ctrl.form.$valid && !$ctrl.form.$touched">
+            <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
+        </md-button>
+    </div>
+</form>

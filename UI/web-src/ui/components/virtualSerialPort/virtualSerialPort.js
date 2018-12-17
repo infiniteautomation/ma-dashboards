@@ -4,6 +4,7 @@
  */
 
 import componentTemplate from './virtualSerialPort.html';
+import './virtualSerialPort.css';
 
 /**
  * @ngdoc directive
