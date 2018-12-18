@@ -1,0 +1,17 @@
+<div layout="column" flex="noshrink">
+    
+    <div flex>
+        <ma-virtual-serial-port-select ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
+
+        <md-button class="md-raised md-primary" ng-click="$ctrl.newVirtualSerialPort()">
+            <md-icon>add</md-icon> <span ma-tr="ui.app.virtualSerialPort.create"></span>
+        </md-button>
+    </div>
+
+    <md-divider class="my-20"></md-divider>
+
+    <div flex>
+        <ma-virtual-serial-port-setup ng-model="$ctrl.selected"></ma-virtual-serial-port-setup>
+    </div>
+
+</div>

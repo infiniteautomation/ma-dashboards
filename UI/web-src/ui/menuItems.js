@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import StackTrace from 'stacktrace-js';
+import virtualSerialPort from './components/virtualSerialPort/virtualSerialPort';
 
 export default [
     {
@@ -1849,5 +1850,38 @@ export default [
             }
         },
         menuTr: 'ui.app.mailingLists'
+    },
+    {
+        name: 'ui.settings.system.virtualSerialPort',
+        url: '/virtual-serial-port',
+        template: '<ma-virtual-serial-port></ma-virtual-serial-port>',
+        menuTr: 'systemSettings.comm.virtual.serialPorts',
+        menuIcon: 'settings_input_hdmi',
+        permission: 'superadmin',
+        params: {
+            noPadding: false,
+            hideFooter: false,
+            helpPage: 'ui.help.virtualSerialPort'
+        },
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/virtualSerialPort/virtualSerialPort').then(virtualSerialPort => {
+                    angular.module('maVirtualSerialPort', [])
+                        .component('maVirtualSerialPort', virtualSerialPort.default);
+                    $injector.loadNewModules(['maVirtualSerialPort']);
+                });
+            }]
+        }
+    },
+    {
+        name: 'ui.help.virtualSerialPort',
+        url: '/virtual-serial-port/help',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "eager" */ './views/help/virtualSerialPort.html');
+            }
+        },
+        menuTr: 'systemSettings.comm.virtual.serialPorts'
     }
 ];
