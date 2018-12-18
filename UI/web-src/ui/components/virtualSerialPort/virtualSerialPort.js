@@ -24,7 +24,7 @@ class VirtualSerialPort {
     }
     
     $onInit() {
-        
+        this.newVirtualSerialPort();
     }
 
     newVirtualSerialPort() {
