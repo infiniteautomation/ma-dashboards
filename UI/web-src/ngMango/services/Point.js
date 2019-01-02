@@ -180,21 +180,14 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="ui.
 /**
 * @ngdoc method
 * @methodOf ngMangoServices.maPoint
-* @name Point#rendererMap
+* @name Point#getTextRenderer
 *
-* @returns {object} Returns an object mapping textRenderer values for binary or multistate points. Returns null if the point does not have a textRenderer.
-*/
-/**
-* @ngdoc method
-* @methodOf ngMangoServices.maPoint
-* @name Point#valueRenderer
-*
-* @description
-* This method internally will call this.rendererMap(). It is passed a value and it returns the textRendered object stored at that value's key in the map.
-* @param {number=} value Value used as the key in the rendererMap
-* @returns {object} Returns textRendered object for the value from the rendererMap. If no rendererMap is found object returned is `{text: value}`
+* @returns {object} Returns an TextRenderer object which can render values for binary or multistate points.
+*     Call `render(value)` on the renderer to render the value.
+*     A binary or multistate text renderer has a `values` property for accessing configured renderer mappings.
 */
 
+import TextRenderer from './TextRenderer';
 
 dataPointProvider.$inject = [];
 function dataPointProvider() {
@@ -515,61 +508,14 @@ function dataPointProvider() {
             	if (setValue === undefined) return this.value;
             	this.setValue(setValue);
             },
-    
-            rendererMap() {
-            	if (this._rendererMap) return this._rendererMap;
-            	const textRenderer = this.textRenderer;
-            	if (!textRenderer) return;
-        
-            	if (textRenderer.multistateValues) {
-            		this._rendererMap = {};
-            		const multistateValues = textRenderer.multistateValues;
-            		for (let i = 0; i < multistateValues.length; i++) {
-            			const item = multistateValues[i];
-            			item.color = item.colour;
-            			this._rendererMap[item.key] = item;
-            		}
-            	} else if (textRenderer.type === 'textRendererBinary') {
-            		this._rendererMap = {
-            			'true': {
-            			    key: true,
-            				color: textRenderer.oneColour,
-            				text: textRenderer.oneLabel
-            			},
-            			'false': {
-            			    key: false,
-            				color: textRenderer.zeroColour,
-            				text: textRenderer.zeroLabel
-            			}
-            		};
-            	}
-        
-            	return this._rendererMap;
-            },
-        
-            valueRenderer(value, renderedValue) {
-            	const rendererMap = this.rendererMap();
-            	if (rendererMap) {
-            	    const obj = rendererMap[value];
-            	    if (obj) return obj;
-            	} else if (this.textRenderer && this.textRenderer.type === 'textRendererRange' && Array.isArray(this.textRenderer.rangeValues)) {
-            	    // assume already sorted on backend
-            	    const rangeValues = this.textRenderer.rangeValues;
-            	    
-            	    // iterate in reverse
-            	    for (let i = rangeValues.length - 1; i >=0; i--) {
-            	        const range = rangeValues[i];
-            	        if (value >= range.from && value <= range.to) {
-            	            return {
-                                text: renderedValue,
-                                color: range.colour
-                            };
-            	        }
-            	    }
-            	}
-            	return {text: renderedValue};
-            },
             
+            getTextRenderer() {
+                if (this._textRenderer) {
+                    return this._textRenderer;
+                }
+                return (this._textRenderer = TextRenderer.forPoint(this));
+            },
+
             websocketHandler(payload) {
                 if (payload.xid !== this.xid) return;
         
@@ -579,12 +525,11 @@ function dataPointProvider() {
                 
                 this.enabled = !!payload.enabled;
                 if (payload.value != null) {
-                    const valueRenderer = this.valueRenderer(payload.value.value);
-                    const color = valueRenderer ? valueRenderer.color : null;
-        
+                    const rendered = this.getTextRenderer().render(payload.value.value);
+
                     this.value = payload.value.value;
                     this.time = payload.value.timestamp;
-                    this.renderedColor = color;
+                    this.renderedColor = rendered.color;
                     
                     this.convertedValue = payload.convertedValue;
                     this.renderedValue = payload.renderedValue;
@@ -675,7 +620,7 @@ function dataPointProvider() {
                 }
             }
         });
-        
+
         return Point;
     }
 

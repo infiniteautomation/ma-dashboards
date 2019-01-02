@@ -38,17 +38,14 @@ function switchDirective(PointValueController) {
             this.currentValue = this.getValue();
             
             if (this.point) {
-                const falseRenderer = this.point.valueRenderer(false);
-                const trueRenderer = this.point.valueRenderer(true);
-                
-                if (falseRenderer) {
-                    this.falseText = falseRenderer.text;
-                    this.falseStyle = {color: falseRenderer.colour || falseRenderer.color};
-                }
-                if (trueRenderer) {
-                    this.trueText = trueRenderer.text;
-                    this.trueStyle = {color: trueRenderer.colour || trueRenderer.color};
-                }
+                const renderer = this.point.getTextRenderer();
+                const falseRendered = renderer.render(false);
+                const trueRendered = renderer.render(true);
+
+                this.falseText = falseRendered.text;
+                this.falseStyle = {color: falseRendered.color};
+                this.trueText = trueRendered.text;
+                this.trueStyle = {color: trueRendered.color};
             } else {
                 delete this.falseText;
                 delete this.falseStyle;

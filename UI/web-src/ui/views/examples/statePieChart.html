@@ -18,14 +18,14 @@
 <div layout="row">
     <md-input-container flex>
         <label>Choose a point</label>
-        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
+        <ma-point-list limit="200" ng-model="myPoint" query="{dataTypeId: 2, $exact: true}"></ma-point-list>
     </md-input-container>
 </div>
 
 
 <ma-point-statistics point="myPoint" from="dateBar.from" to="dateBar.to" statistics="statsObj"></ma-point-statistics>
 
-<ma-pie-chart style="height: 300px; width: 600px" values="statsObj.startsAndRuntimes" value-labels="myPoint.rendererMap()"
+<ma-pie-chart style="height: 300px; width: 600px" values="statsObj.startsAndRuntimes" value-labels="myPoint.getTextRenderer().values"
               options="{depth3D:15,angle:30}"></ma-pie-chart>
 
 </ma-ui-dual-pane-editor>

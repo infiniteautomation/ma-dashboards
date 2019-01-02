@@ -30,5 +30,3 @@ function PointEventManagerFactory(EventManager) {
 
 PointEventManagerFactory.$inject = ['maEventManager'];
 export default PointEventManagerFactory;
-
-

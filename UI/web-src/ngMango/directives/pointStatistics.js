@@ -213,10 +213,9 @@ function pointValues(Point, Util, $q, statistics) {
                         if (data.startsAndRuntimes) {
                             for (let i = 0; i < data.startsAndRuntimes.length; i++) {
                                 const statsObj = data.startsAndRuntimes[i];
-                                const valueRenderer = point.valueRenderer(statsObj.value);
-                                if (!valueRenderer) continue;
-                                statsObj.renderedValue = valueRenderer.text;
-                                statsObj.renderedColor = valueRenderer.color;
+                                const rendered = point.getTextRenderer().render(statsObj.value);
+                                statsObj.renderedValue = rendered.text;
+                                statsObj.renderedColor = rendered.color;
                             }
                         }
                         return data;

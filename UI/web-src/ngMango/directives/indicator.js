@@ -60,8 +60,8 @@ function indicator(PointValueController, maUtil) {
                 color = this.$attrs[attrName];
                 
                 if (!color && this.point) {
-                    const renderer = this.point.valueRenderer(value);
-                    color = renderer.colour || renderer.color;
+                    const rendered = this.point.getTextRenderer().render(value);
+                    color = rendered.color;
                 }
                 
                 if (!color) {

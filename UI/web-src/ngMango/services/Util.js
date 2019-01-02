@@ -545,8 +545,8 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         },
         
         pointValueToString(pointValue, point) {
-            if (point && typeof point.valueRenderer === 'function') {
-                const rendered = point.valueRenderer(pointValue);
+            if (point && typeof point.getTextRenderer === 'function') {
+                const rendered = point.getTextRenderer().render(pointValue);
                 if (rendered && rendered.text && typeof rendered.text === 'string') {
                     return rendered.text;
                 }

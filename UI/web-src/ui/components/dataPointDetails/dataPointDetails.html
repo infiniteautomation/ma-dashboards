@@ -101,7 +101,7 @@
                             <tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder track by $index" ng-class="{'ma-point-value-cached': value.cached}">
                                 <td md-cell ng-bind="value.timestamp | maDate:'shortDateTimeSeconds'"></td>
                                 <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>
-                                <span ng-bind="value.rendered" ng-style="{color: myPoint.valueRenderer(value.value).color}"></span> <strong ng-if="value.annotation"><em>(<span ng-bind="value.annotation"></span>)</em></strong>
+                                <span ng-bind="value.rendered" ng-style="{color: myPoint.getTextRenderer().render(value.value).color}"></span> <strong ng-if="value.annotation"><em>(<span ng-bind="value.annotation"></span>)</em></strong>
                                 </td>
                                 <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
                             </tr>

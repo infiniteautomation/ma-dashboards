@@ -180,20 +180,22 @@ function setPointValue(PointValueController, maTranslate, $q, $injector) {
             } else if (type === 'BINARY') {
                 this.inputType = 'select';
                 
-                if (this.point.rendererMap()) {
-                    const falseRenderer = this.point.valueRenderer(false);
-                    const trueRenderer = this.point.valueRenderer(true);
+                if (this.point.textRenderer.type === 'textRendererBinary') {
+                    const renderer = this.point.getTextRenderer();
+                    const falseRendered = renderer.render(false);
+                    const trueRendered = renderer.render(true);
+                    
                     this.options = [{
                         id: false,
-                        label: falseRenderer.text,
+                        label: falseRendered.text,
                         style: {
-                            color: falseRenderer.colour || falseRenderer.color
+                            color: falseRendered.color
                         }
                     }, {
                         id: true,
-                        label: trueRenderer.text,
+                        label: trueRendered.text,
                         style: {
-                            color: trueRenderer.colour || trueRenderer.color
+                            color: trueRendered.color
                         }
                     }];
                 } else {

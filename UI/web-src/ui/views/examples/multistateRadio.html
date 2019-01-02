@@ -12,7 +12,7 @@
 </p>
 
 <p>
-    See API Documentation for the <code>valueFn</code> and <code>rendererMap</code> methods on the
+    See API Documentation for the <code>valueFn</code> and <code>getTextRenderer</code> methods on the
     <a ui-sref="ui.docs.ngMangoServices.maPoint"><code>Point</code></a> object.
 </p>
 
@@ -21,7 +21,7 @@
 <h3>Select multi-state point:</h3>
 <md-input-container>
     <label>Choose a point</label>
-    <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
+    <ma-point-list limit="200" ng-model="myPoint" query="{dataTypeId: 2, $exact: true}"></ma-point-list>
 </md-input-container>
 
 <p>
@@ -32,15 +32,15 @@
 
 <h3>Using multistate text renderer to get options and range</h3>
 <md-radio-group ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
-    <md-radio-button ng-repeat="value in myPoint.rendererMap()" ng-value="value.key" ng-style="value">{{value.text}}
+    <md-radio-button ng-repeat="(key,value) in myPoint.getTextRenderer().values" ng-value="key" ng-style="{color: value.color}">{{value.text}}
     </md-radio-button>
 </md-radio-group>
 <br>
 
 <h3>Using fixed values to set options and range</h3>
 <md-radio-group ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
-    <md-radio-button ng-repeat="i in range(0,5)" value="{{i}}" ng-style="myPoint.valueRenderer(i)">
-        {{myPoint.valueRenderer(i).text}}
+    <md-radio-button ng-repeat="i in [] | maRange:0:5" value="{{i}}" ng-style="{color: myPoint.getTextRenderer().render(i).color}">
+        {{myPoint.getTextRenderer().render(i).text}}
     </md-radio-button>
 </md-radio-group>
 

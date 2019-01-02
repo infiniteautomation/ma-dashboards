@@ -14,11 +14,11 @@
 <div layout="row" layout-xs="column">
     <md-input-container flex>
         <label>Multi-state point 1</label>
-        <ma-point-list limit="200" ng-model="point1"></ma-point-list>
+        <ma-point-list limit="200" ng-model="point1" query="{dataTypeId: 2, $exact: true}" init-point="false"></ma-point-list>
     </md-input-container>
     <md-input-container flex>
         <label>Multi-state point 2</label>
-        <ma-point-list limit="200" ng-model="point2"></ma-point-list>
+        <ma-point-list limit="200" ng-model="point2" query="{dataTypeId: 2, $exact: true}" init-point="false"></ma-point-list>
     </md-input-container>
 </div>
 
@@ -32,8 +32,8 @@
 </ma-point-values>
 
 <ma-state-chart style="height: 500px; width: 100%"
-                series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-labels="point1.rendererMap()"
-                series-2-title="{{point2.name}}" series-2-values="point2Values" series-2-labels="point2.rendererMap()">
+                series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-labels="point1.getTextRenderer().values"
+                series-2-title="{{point2.name}}" series-2-values="point2Values" series-2-labels="point2.getTextRenderer().values">
 </ma-state-chart>
 
 </ma-ui-dual-pane-editor>

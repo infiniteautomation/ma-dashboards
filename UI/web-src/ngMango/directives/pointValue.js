@@ -152,10 +152,12 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
                 this.resolvedDisplayType = this.displayType || 'rendered';
                 return;
             }
-            
-            const valueRenderer = this.point.valueRenderer(this.point.value, this.point.renderedValue);
-            const color = valueRenderer ? valueRenderer.color : null;
-    
+
+            const rendered = this.point.getTextRenderer().render(this.point.value, {
+                text: this.point.renderedValue,
+                color: null
+            });
+
             this.resolvedDisplayType = this.displayType || (this.point.pointLocator && this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered');
             delete this.valueStyle.color;
     
@@ -165,7 +167,7 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
                 break;
             case 'rendered':
                 this.displayValue = this.point.renderedValue;
-                this.valueStyle.color = color;
+                this.valueStyle.color = rendered.color;
                 break;
             case 'dateTime':
                 let dateTimeFormat = MA_DATE_FORMATS.shortDateTimeSeconds;

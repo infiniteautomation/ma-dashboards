@@ -441,13 +441,6 @@ function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
         });
     });
 
-	$rootScope.range = function(start, end) {
-		const result = [];
-		for (let i = start; i <= end; i++)
-			result.push(i);
-		return result;
-	};
-
     $rootScope.rollupTypes = MA_ROLLUP_TYPES;
     $rootScope.timePeriodTypes = MA_TIME_PERIOD_TYPES;
     $rootScope.chartTypes = MA_CHART_TYPES;
