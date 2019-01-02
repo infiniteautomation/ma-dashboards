@@ -5,7 +5,6 @@
 
 import angular from 'angular';
 import StackTrace from 'stacktrace-js';
-import virtualSerialPort from './components/virtualSerialPort/virtualSerialPort';
 
 export default [
     {
