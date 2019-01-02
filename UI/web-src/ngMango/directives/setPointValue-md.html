@@ -12,7 +12,8 @@
             </md-input-container>
             <md-select flex ng-if="$ctrl.inputType === 'select'"
                        ng-model="$ctrl.inputValue" ng-change="$ctrl.selectChanged()"
-                       ng-disabled="!$ctrl.point.pointLocator.settable || !$ctrl.point.enabled" aria-label="{{'common.value' | maTr}}">
+                       ng-disabled="!$ctrl.point.pointLocator.settable || !$ctrl.point.enabled" aria-label="{{'common.value' | maTr}}"
+                       ng-style="{color: $ctrl.point.getTextRenderer().render($ctrl.inputValue).color}">
                 <md-option ng-repeat="option in $ctrl.options track by option.id" ng-style="option.style" ng-value="option.id" ng-bind="option.label"></md-option>
             </md-select>
 
