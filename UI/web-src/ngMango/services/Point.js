@@ -553,12 +553,18 @@ function dataPointProvider() {
             	    const obj = rendererMap[value];
             	    if (obj) return obj;
             	} else if (this.textRenderer && this.textRenderer.type === 'textRendererRange' && Array.isArray(this.textRenderer.rangeValues)) {
-            	    const range = this.textRenderer.rangeValues.find(range => value >= range.from && value < range.to);
-            	    if (range) {
-            	        return {
-            	            text: renderedValue,
-            	            color: range.colour
-            	        };
+            	    // assume already sorted on backend
+            	    const rangeValues = this.textRenderer.rangeValues;
+            	    
+            	    // iterate in reverse
+            	    for (let i = rangeValues.length - 1; i >=0; i--) {
+            	        const range = rangeValues[i];
+            	        if (value >= range.from && value <= range.to) {
+            	            return {
+                                text: renderedValue,
+                                color: range.colour
+                            };
+            	        }
             	    }
             	}
             	return {text: renderedValue};
