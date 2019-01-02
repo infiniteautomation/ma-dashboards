@@ -24,7 +24,7 @@
     <h3>Select a settable binary point:</h3>
     <md-input-container>
         <label>Choose a point</label>
-        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
+        <ma-point-list limit="200" ng-model="myPoint" query="{dataTypeId: 1, $exact: true}"></ma-point-list>
     </md-input-container>
     <p>
         <strong>Point value:</strong>
@@ -39,7 +39,8 @@
     <ma-switch-img point="myPoint" ng-click="myPoint.toggleValue()"
                    src-false="img/ligthbulb_off.png"
                    src-true="img/ligthbulb_on.png"
-                   default-src="img/close.png">
+                   default-src="img/close.png"
+                   style="width: 50px; height: 50px">
     </ma-switch-img>
     <br>
 
@@ -47,6 +48,10 @@
     <md-switch ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
         Point value: {{ myPoint.value }}
     </md-switch>
+    <br>
+    
+    <h3>Toggle via maSwitch component:</h3>
+    <ma-switch point="myPoint"></ma-switch>
     <br>
 
     <h3>Toggle via checkbox:</h3>
