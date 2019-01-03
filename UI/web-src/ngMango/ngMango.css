@@ -599,6 +599,14 @@ ma-watch-list-parameters {
   animation: spin-counterclockwise 1s linear infinite;
 }
 
+.ma-led {
+	width: 30px;
+	height: 30px;
+	border: 3px solid lightgrey;
+	border-radius: 50%;
+	background: radial-gradient(rgba(255,255,255,0.5),rgba(0,0,0,0.5));
+}
+
 /* Utility classes */
 
 .ma-small-padding,
