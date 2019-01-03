@@ -24,7 +24,6 @@ import '../docs/ngMango/js/docs-setup';
 import 'md-color-picker';
 import {require as requirejs} from 'requirejs';
 import * as constants from './constants.js';
-import defaultUiSettings from './uiSettings.json';
 
 import 'angular-loading-bar/build/loading-bar.css';
 import 'md-color-picker/dist/mdColorPicker.css';
@@ -51,8 +50,7 @@ uiApp.provider('maUiMenu', menuProvider)
     .directive('maUiStateParams', stateParams)
     .directive('maUiIframeView', iframeView)
     .constant('MA_UI_NG_DOCS', window.NG_DOCS)
-    .constant('MA_UI_MENU_ITEMS', menuItems)
-    .constant('MA_UI_SETTINGS', angular.copy(defaultUiSettings));
+    .constant('MA_UI_MENU_ITEMS', menuItems);
 
 Object.keys(constants).forEach(name => {
     uiApp.constant(name, constants[name]);

@@ -7,12 +7,14 @@ import angular from 'angular';
 import interpolatedStyles from '../styles/interpolatedStyles.css';
 import defaultUiSettings from '../uiSettings.json';
 
-uiSettingsProvider.$inject = ['MA_UI_SETTINGS', '$mdThemingProvider', 'maPointValuesProvider'];
-function uiSettingsProvider(MA_UI_SETTINGS, $mdThemingProvider, pointValuesProvider) {
+uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider'];
+function uiSettingsProvider($mdThemingProvider, pointValuesProvider) {
+    
+    // stores the initial merged settings (defaults merged with custom settings from store)
+    const MA_UI_SETTINGS = {};
 
-    // TODO Mango 3.5 remove MA_UI_SETTINGS and use maUiSettingsProvider only
     this.setUiSettings = function setUiSettings(uiSettings) {
-        angular.copy(uiSettings, MA_UI_SETTINGS);
+        Object.assign(MA_UI_SETTINGS, uiSettings);
         
         this.registerThemes();
         
@@ -106,7 +108,7 @@ function uiSettingsProvider(MA_UI_SETTINGS, $mdThemingProvider, pointValuesProvi
         
         class UiSettings {
             constructor() {
-                angular.extend(this, MA_UI_SETTINGS);
+                angular.extend(this, angular.copy(MA_UI_SETTINGS));
                 
                 // used on uiSettingsPage.html to display available themes and palettes
                 this.theming = $mdTheming;
@@ -114,7 +116,7 @@ function uiSettingsProvider(MA_UI_SETTINGS, $mdThemingProvider, pointValuesProvi
                 this.userSettingsStore = new JsonStore();
                 this.userSettingsStore.name = 'UI Settings';
                 this.userSettingsStore.xid = MA_UI_SETTINGS_XID;
-                this.userSettingsStore.jsonData = MA_UI_SETTINGS;
+                this.userSettingsStore.jsonData = deepDiff(this, defaultUiSettings, excludeProperties);
                 this.userSettingsStore.publicData = true;
                 this.userSettingsStore.readPermission = '';
                 this.userSettingsStore.editPermission = MA_UI_EDIT_SETTINGS_PERMISSION;
