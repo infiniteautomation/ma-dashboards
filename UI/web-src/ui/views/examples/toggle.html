@@ -33,8 +33,6 @@
         <strong>Rendered point value:</strong>
         <ma-point-value point="myPoint"></ma-point-value>
     </p>
-    <br>
-
     <h3>Toggle via image:</h3>
     <ma-switch-img point="myPoint" ng-click="myPoint.toggleValue()"
                    src-false="img/ligthbulb_off.png"
@@ -42,22 +40,31 @@
                    default-src="img/close.png"
                    style="width: 50px; height: 50px">
     </ma-switch-img>
-    <br>
 
     <h3>Toggle via switch:</h3>
     <md-switch ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
         Point value: {{ myPoint.value }}
     </md-switch>
-    <br>
-    
+
     <h3>Toggle via maSwitch component:</h3>
     <ma-switch point="myPoint"></ma-switch>
-    <br>
 
     <h3>Toggle via checkbox:</h3>
     <md-checkbox ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
         Point value: {{ myPoint.value }}
     </md-checkbox>
+
+    <h3>Toggle via an indicator component:</h3>
+    <ma-indicator point="myPoint" toggle-on-click="true" style="width: 30px; height: 30px; border: 2px solid black;">
+    </ma-indicator>
+    
+    <br>
+    
+    <ma-indicator
+        point="myPoint"
+        toggle-on-click="true"
+        style="width: 30px; height: 30px; border: 3px solid lightgrey; border-radius: 50%; background: radial-gradient(rgba(255,255,255,0.5),rgba(0,0,0,0.5));">
+    </ma-indicator>
 </div>
 
 </ma-ui-dual-pane-editor>
