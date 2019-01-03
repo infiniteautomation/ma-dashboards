@@ -160,6 +160,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
                 }
                 break;
             case LOGGED_IN:
+                pingResult.user.originalId = pingResult.user.username;
                 User.current = pingResult.user;
                 
                 this.loggedIn = true;

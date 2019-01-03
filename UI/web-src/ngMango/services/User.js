@@ -312,7 +312,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 this.configureLocale();
                 this.configureTimezone();
                 
-                this.notificationManager.notify('userChanged', user, firstChange);
+                this.notificationManager.notify('userChanged', cachedUser, firstChange);
             }
         };
 
