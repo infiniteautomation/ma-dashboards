@@ -74,7 +74,7 @@
                     ma-tr="ui.app.tag" ma-tr-args="[tagKey]">
                 </th>
                 <th ng-repeat="col in $ctrl.selectedColumns | orderBy:'order'" md-column
-                    md-order-by="{{col.name}}" 
+                    md-order-by="{{col.disableSort ? '' : col.name}}"
                     ng-class="{'point-value': col.name === 'value', 'point-time': col.name === 'time'}"
                     ma-tr="{{col.label}}"
                     md-numeric="col.name === 'value'">
