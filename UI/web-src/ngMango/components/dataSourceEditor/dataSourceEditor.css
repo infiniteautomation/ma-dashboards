@@ -32,3 +32,9 @@ ma-data-source-editor .ma-point-actions .md-button.md-icon-button {
 ma-data-source-editor .ma-point-actions md-switch > div.md-container {
 	margin-right: 4px;
 }
+
+@media (min-width: 1280px) {
+	ma-data-source-editor .ma-inputs-container > [flex-gt-md="50"] {
+		max-width: calc(50% - 10px);
+	}
+}
