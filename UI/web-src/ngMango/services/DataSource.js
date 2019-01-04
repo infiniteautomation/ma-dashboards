@@ -159,19 +159,35 @@ function dataSourceProvider() {
 
     this.$get = dataSourceFactory;
     
-    dataSourceFactory.$inject = ['$resource', 'maUtil', '$templateCache', '$http'];
-    function dataSourceFactory($resource, Util, $templateCache, $http) {
-        
-        const typesByName = Object.create(null);
-        types.forEach(type => {
-            typesByName[type.type] = type;
-            
-            // put the templates in the template cache so we can ng-include them
-            if (type.template && !type.templateUrl) {
-                type.templateUrl = `dataSourceEditor.${type.type}.html`;
-                $templateCache.put(type.templateUrl, type.template);
+    dataSourceFactory.$inject = ['$resource', 'maUtil', '$templateCache', '$http', 'maPoint'];
+    function dataSourceFactory($resource, Util, $templateCache, $http, Point) {
+
+        class DataSourceType {
+            constructor(defaults = {}) {
+                Object.assign(this, defaults);
+
+                // put the templates in the template cache so we can ng-include them
+                if (this.template && !this.templateUrl) {
+                    this.templateUrl = `dataSourceEditor.${this.type}.html`;
+                    $templateCache.put(this.templateUrl, this.template);
+                }
             }
-        });
+            
+            createDataPoint() {
+                return new Point(this.defaultPoint || {
+                    dataSourceTypeName: this.type,
+                    pointLocator: {
+                        modelType: `PL.${this.type}`
+                    }
+                });
+            }
+        }
+
+        const typeInstances = types.map(type => new DataSourceType(type));
+        const typesByName = typeInstances.reduce((map, item) => {
+            map[item.type] = item;
+            return map;
+        }, Object.create(null));
         
         const defaultProperties = {
             name: '',
@@ -241,7 +257,7 @@ function dataSourceProvider() {
         
         Object.assign(DataSource, {
             get types() {
-                return Object.freeze(types);
+                return Object.freeze(typeInstances);
             },
             
             get typesByName() {

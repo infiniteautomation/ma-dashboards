@@ -1,12 +1,5 @@
 <div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" flex="noshrink" layout="column">
     <md-tabs flex="noshrink" layout="column" ng-attr-md-dynamic-height="{{$ctrl.dynamicHeight}}" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
-        <md-tab ng-if="$ctrl.showBackButton" md-on-select="$ctrl.goBack()">
-            <md-tab-label>
-                <span ma-tr="ui.components.backToDataSource" ng-init="$ctrl.activeTab = 1"></span>
-            </md-tab-label>
-            <md-tab-body>
-            </md-tab-body>
-        </md-tab>
         <md-tab>
             <md-tab-label>
                 <span ma-tr="ui.app.dataPoint"></span>

@@ -69,10 +69,6 @@ class DataPointEditorController {
         if (changes.backToDataPoint) {
             this.dataPoint = null;
         }
-        
-        if (changes.showBackButton && this.showBackButton) {
-            this.activeTab = 1;
-        }
     }
     
     goBack() {
@@ -88,12 +84,7 @@ class DataPointEditorController {
         }
         
         this.validationMessages = [];
-        
-        if (this.showBackButton) {
-            this.activeTab = 1;
-        } else {
-            this.activeTab = 0;
-        }
+        this.activeTab = 0;
         
         const viewValue = this.ngModelCtrl.$viewValue;
         if (viewValue) {
@@ -135,7 +126,7 @@ class DataPointEditorController {
             
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
-                this.validationMessages = error.data.validationMessages;
+                this.validationMessages = error.data.result.messages;
                 
                 const withProperty = this.validationMessages.filter(m => m.property);
                 if (withProperty.length) {
@@ -216,8 +207,7 @@ export default {
     controller: DataPointEditorController,
     bindings: {
         discardOptions: '<?confirmDiscard',
-        fixedType: '<?',
-        showBackButton: '<?'
+        fixedType: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

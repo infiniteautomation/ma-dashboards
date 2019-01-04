@@ -32,14 +32,11 @@
         <md-card>
             <md-toolbar class="md-hue-3">
                 <div class="md-toolbar-tools">
-                    <span ng-if="!$ctrl.dataPoint && !$ctrl.dataSource.isNew()" ma-tr="dsList.editDataSource" ma-tr-args="[$ctrl.dataSource.name]"></span>
-                    <span ng-if="!$ctrl.dataPoint && $ctrl.dataSource.isNew()" ma-tr="dsList.createDataSource"></span>
-                    <span ng-if="$ctrl.dataPoint && !$ctrl.dataPoint.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.dataPoint.name]"></span>
-                    <span ng-if="$ctrl.dataPoint && $ctrl.dataPoint.isNew()" ma-tr="dsList.createDataPoint"></span>
+                    <span ng-if="!$ctrl.dataSource.isNew()" ma-tr="dsList.editDataSource" ma-tr-args="[$ctrl.dataSource.name]"></span>
+                    <span ng-if="$ctrl.dataSource.isNew()" ma-tr="dsList.createDataSource"></span>
                 </div>
             </md-toolbar>
-            <ma-data-source-editor ng-model="$ctrl.dataSource" ng-change="$ctrl.dataSourceSaved()" confirm-discard="true"
-                on-edit-data-point="$ctrl.dataPoint = $point"></ma-data-source-editor>
+            <ma-data-source-editor ng-model="$ctrl.dataSource" ng-change="$ctrl.dataSourceSaved()" confirm-discard="true"></ma-data-source-editor>
         </md-card>
     </div>
 </div>

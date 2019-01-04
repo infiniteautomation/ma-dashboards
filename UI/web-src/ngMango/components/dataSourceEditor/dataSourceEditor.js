@@ -86,9 +86,6 @@ class DataSourceEditorController {
     }
     
     $onChanges(changes) {
-        if (changes.backToDataSource) {
-            this.dataPoint = null;
-        }
     }
     
     render(confirmDiscard = false) {
@@ -258,11 +255,28 @@ class DataSourceEditorController {
         return this.pointsPromise;
     }
 
+    createDataPoint(event) {
+        this.activeTab++;
+    }
+    
     editDataPoint(event, item) {
         this.dataPoint = item;
-        if (typeof this.onEditDataPoint === 'function') {
-            this.onEditDataPoint({$point: item});
+        this.activeTab++;
+    }
+    
+    dataPointEdited() {
+        this.activeTab--;
+    }
+    
+    editDataPointTabSelected() {
+        if (!this.dataPoint) {
+            this.dataPoint = this.typesByName[this.dataSource.modelType].createDataPoint();
+            this.dataPoint.dataSourceXid = this.dataSource.originalId;
         }
+    }
+    
+    cancelDataPointEdit() {
+        this.dataPoint = null;
     }
     
     deleteDataPoint(event, item) {
@@ -282,9 +296,7 @@ export default {
     template: dataSourceEditorTemplate,
     controller: DataSourceEditorController,
     bindings: {
-        discardOptions: '<?confirmDiscard',
-        onEditDataPoint: '&?',
-        backToDataSource: '<?'
+        discardOptions: '<?confirmDiscard'
     },
     require: {
         ngModelCtrl: 'ngModel'

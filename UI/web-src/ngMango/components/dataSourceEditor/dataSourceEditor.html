@@ -1,4 +1,4 @@
-<div ng-show="!$ctrl.dataPoint" ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" flex="noshrink" layout="column">
+<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" flex="noshrink" layout="column">
     <md-tabs flex="noshrink" layout="column" ng-attr-md-dynamic-height="{{$ctrl.dynamicHeight}}" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
         <md-tab>
             <md-tab-label>
@@ -78,7 +78,7 @@
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
                     <div>
-                        <md-button class="md-primary md-raised">
+                        <md-button class="md-primary md-raised" ng-click="$ctrl.createDataPoint($event)">
                             <md-icon>add</md-icon>&nbsp;<span ma-tr="common.add"></span>
                         </md-button>
                         <md-button class="md-primary md-raised">
@@ -133,6 +133,15 @@
                 </div>
             </md-tab-body>
         </md-tab>
+        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.editDataPointTabSelected()" md-on-deselect="$ctrl.cancelDataPointEdit()">
+            <md-tab-label>
+                <span ng-if="$ctrl.dataPoint && !$ctrl.dataPoint.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.dataPoint.name]"></span>
+                <span ng-if="!$ctrl.dataPoint || $ctrl.dataPoint.isNew()" ma-tr="dsList.createDataPoint"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <ma-data-point-editor ng-model="$ctrl.dataPoint" ng-change="$ctrl.dataPointEdited()" fixed-type="true" ma-form-exclude></ma-data-point-editor>
+            </md-tab-body>
+        </md-tab>
     </md-tabs>
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
@@ -152,5 +161,3 @@
         </md-button>
     </div>
 </div>
-
-<ma-data-point-editor ng-show="$ctrl.dataPoint" ng-model="$ctrl.dataPoint" ng-change="$ctrl.editDataPoint(null, $ctrl.dataPoint)" fixed-type="true" show-back-button="true"></ma-data-point-editor>
