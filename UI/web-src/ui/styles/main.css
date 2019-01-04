@@ -1133,13 +1133,6 @@ md-dialog .md-color-picker-container .md-color-picker-tabs.md-color-picker-color
   background-color: inherit;
 }
 
-/* license page */
-.ma-license {
-  overflow-y: scroll;
-  width: 100%;
-  max-width: 1024px;
-}
-
 /* module page */
 .ma-module-info .md-subhead {
   font-style: oblique;

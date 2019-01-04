@@ -106,11 +106,16 @@ export default [
     {
         name: 'agreeToLicense',
         url: '/agree-to-license',
+        template: '<ma-ui-license-page flex layout="column"></ma-ui-license-page>',
         resolve: {
-            viewTemplate: function() {
+            maUiAgreeToLicensePage: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
-                        './views/agreeToLicense.html');
-            }
+                        './components/licensePage/licensePage').then(licensePage => {
+                    angular.module('maUiLicensePage', [])
+                        .component('maUiLicensePage', licensePage.default);
+                    $injector.loadNewModules(['maUiLicensePage']);
+                });
+            }]
         },
         menuTr: 'ui.app.agreeToLicense',
         menuIcon: 'done',

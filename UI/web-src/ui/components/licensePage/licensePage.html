@@ -55,8 +55,16 @@
 <p>6.7. Open Source Software has the meaning given in section 2.3.</p>
 <p>6.8. Personal Use means use of a Licensed Product for: (a) personal use; (b) evaluation of a Licensed Product for the sole purpose of determining whether or not to purchase such Licensed Product; or (c) academic or other scholarly research. Personal Use shall not mean a use of a Licensed Product that: (i) is undertaken for profit, (ii) is intended to produce works, services, or data for commercial use, or (iii) is conducted or funded by a person or an entity engaged in the commercial use, application or exploitation of works similar to the Licensed Product.</p>
 <p>6.9. You (and variations thereof) means the entity that agrees to the terms and conditions of this Agreement as the licensee.</p>
-
-
     </div>
-    <md-button ui-sref="ui.settings.home({helpOpen: true})" class="md-raised md-accent" ma-tr="ui.app.agreeAndContinue"></md-button>
+
+    <div>
+        <div>
+            <md-checkbox ng-model="$ctrl.upgradeChecksEnabled.value"><span ma-tr="systemSettings.upgradeChecksEnabled"></span></md-checkbox>
+        </div>
+        <div>
+            <md-checkbox ng-model="$ctrl.usageTrackingEnabled.value" ng-disabled="!$ctrl.upgradeChecksEnabled.value"><span ma-tr="systemSettings.usageTrackingEnabled"></span></md-checkbox>
+        </div>
+    </div>
+
+    <md-button class="md-raised md-accent" ma-tr="ui.app.agreeAndContinue" ng-click="$ctrl.agreeToLicense($event)"></md-button>
 </div>

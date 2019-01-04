@@ -1,0 +1,5 @@
+ma-ui-license-page .ma-license {
+  overflow-y: scroll;
+  width: 100%;
+  max-width: 1024px;
+}

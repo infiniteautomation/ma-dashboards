@@ -44,9 +44,13 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
     const systemSettingsUrl = '/rest/v1/system-settings';
     const permissionsUrl = '/rest/v2/permissions';
     
-    function SystemSettings(key, type) {
+    function SystemSettings(key, type, value) {
         this.key = key;
         this.type = type;
+        
+        if (value != null) {
+            this.value = value;
+        }
     }
     
     SystemSettings.getSections = function() {
