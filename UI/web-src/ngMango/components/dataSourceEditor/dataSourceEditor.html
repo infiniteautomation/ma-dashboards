@@ -6,8 +6,9 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
-                    <div layout="row" layout-wrap layout-align="space-between center" class="ma-inputs-container">
+                    <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
                         <md-input-container flex="100">
+                            <md-icon>settings</md-icon>
                             <label ma-tr="dsEdit.dataSourceType"></label>
                             <md-select name="modelType" ng-model="$ctrl.dataSource.modelType" ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()">
                                 <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
@@ -55,7 +56,7 @@
                             <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission"></ma-permissions-menu>
                         </md-input-container>
                         
-                        <div flex="100" flex-gt-md="50" layout layout-align="start center" ng-if="$ctrl.typesByName[$ctrl.dataSource.modelType].polling">
+                        <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="$ctrl.typesByName[$ctrl.dataSource.modelType].polling">
                             <md-input-container flex>
                                 <md-icon>timer</md-icon>
                                 <label ma-tr="dsEdit.updatePeriod"></label>
