@@ -5,8 +5,8 @@
                 <span ma-tr="ui.app.dataSource"></span>
             </md-tab-label>
             <md-tab-body>
-                <div class="md-padding ma-no-padding-bottom" id="editor-main">
-                    <div layout="row" layout-wrap layout-align="start center">
+                <div class="md-padding ma-no-padding-bottom">
+                    <div layout="row" layout-wrap layout-align="space-between center">
                         <md-input-container flex="100">
                             <label ma-tr="dsEdit.dataSourceType"></label>
                             <md-select name="modelType" ng-model="$ctrl.dataSource.modelType" ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()">
@@ -19,12 +19,13 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.modelType.validationMessage"></div>
                             </div>
                         </md-input-container>
-                        
+
                         <div flex="100">
                             <md-switch name="enabled" ng-model="$ctrl.dataSource.enabled"><span ma-tr="common.enabled"></span></md-checkbox>
                         </div>
-                
-                        <md-input-container flex="100" flex-gt-md="50">
+
+                        <md-input-container flex="100" flex-gt-md="45">
+                            <md-icon>label</md-icon>
                             <label ma-tr="common.xid"></label>
                             <input name="xid" ng-model="$ctrl.dataSource.xid" required>
                             <div ng-messages="$ctrl.form.xid.$error">
@@ -33,7 +34,8 @@
                             </div>
                         </md-input-container>
                 
-                        <md-input-container flex="100" flex-gt-md="50">
+                        <md-input-container flex="100" flex-gt-md="45">
+                            <md-icon>label</md-icon>
                             <label ma-tr="common.name"></label>
                             <input name="name" ng-model="$ctrl.dataSource.name">
                             <div ng-messages="$ctrl.form.name.$error">
@@ -41,11 +43,21 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
                             </div>
                         </md-input-container>
-                    </div>
 
-                    <div layout="row" layout-wrap layout-align="start center" ng-if="$ctrl.typesByName[$ctrl.dataSource.modelType].polling">
-                        <div flex="100" flex-gt-md="50" layout layout-align="start center">
+                        <md-input-container flex="100" flex-gt-md="45">
+                            <md-icon>lock</md-icon>
+                            <label ma-tr="dsEdit.permission.edit"></label>
+                            <input name="editPermission" ng-model="$ctrl.dataSource.editPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+                            <div ng-messages="$ctrl.form.editPermission.$error">
+                                <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.editPermission.validationMessage"></div>
+                            </div>
+                            <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission"></ma-permissions-menu>
+                        </md-input-container>
+                        
+                        <div flex="100" flex-gt-md="45" layout layout-align="start center" ng-if="$ctrl.typesByName[$ctrl.dataSource.modelType].polling">
                             <md-input-container flex>
+                                <md-icon>timer</md-icon>
                                 <label ma-tr="dsEdit.updatePeriod"></label>
                                 <input name="pollPeriod.periods" ng-model="$ctrl.dataSource.pollPeriod.periods" required type="number" step="1" min="1">
                                 <div ng-messages="$ctrl.form['pollPeriod.periods'].$error">
@@ -56,7 +68,7 @@
                             <md-input-container flex>
                                 <label ma-tr="dsEdit.updatePeriod"></label>
                                 <md-select name="pollPeriod.type" ng-model="$ctrl.dataSource.pollPeriod.type" required>
-                                    <md-option ng-repeat="type in $ctrl.timePeriodTypes track by type.type" ng-value="type.type">
+                                    <md-option ng-repeat="type in $ctrl.pollTimePeriods track by type.type" ng-value="type.type">
                                         <span ma-tr="{{type.translation}}"></span>
                                     </md-option>
                                 </md-select>
@@ -71,6 +83,45 @@
                 </div>
             </md-tab-body>
         </md-tab>
+        
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="dsEdit.logging.purge"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding ma-no-padding-bottom">
+                    <div>
+                        <md-checkbox name="purgeSettings.override" ng-model="$ctrl.dataSource.purgeSettings.override"><span ma-tr="dsEdit.logging.purgeOverride"></span></md-checkbox>
+                    </div>
+                    
+                    <div flex="100" flex-gt-md="45" layout layout-align="start center">
+                        <md-input-container flex>
+                            <md-icon>access_time</md-icon>
+                            <label ma-tr="pointEdit.logging.after"></label>
+                            <input name="purgeSettings.frequency.periods" ng-model="$ctrl.dataSource.purgeSettings.frequency.periods"
+                                    required type="number" step="1" min="1" ng-disabled="!$ctrl.dataSource.purgeSettings.override">
+                            <div ng-messages="$ctrl.form['purgeSettings.frequency.periods'].$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.periods'].validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label ma-tr="pointEdit.logging.after"></label>
+                            <md-select name="purgeSettings.frequency.type" ng-model="$ctrl.dataSource.purgeSettings.frequency.type"
+                                    required ng-disabled="!$ctrl.dataSource.purgeSettings.override">
+                                <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
+                                    <span ma-tr="{{type.translation}}"></span>
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="$ctrl.form['purgeSettings.frequency.type'].$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.type'].validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </md-tab-body>
+        </md-tab>
+        
         <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.queryPoints()">
             <md-tab-label>
                 <span ma-tr="ui.app.dataPoints"></span>

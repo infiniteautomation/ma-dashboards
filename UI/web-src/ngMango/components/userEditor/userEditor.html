@@ -67,7 +67,7 @@
     </div>
 
     <md-input-container flex="100" flex-gt-md="45">
-        <md-icon>info</md-icon>
+        <md-icon>lock</md-icon>
         <label ma-tr="users.permissions"></label>
         <input name="permissions" ng-disabled="!$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
         <div ng-messages="$ctrl.userForm.permissions.$error">

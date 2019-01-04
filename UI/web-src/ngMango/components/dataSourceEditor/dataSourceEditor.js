@@ -32,7 +32,9 @@ class DataSourceEditorController {
         this.$element = $element;
         this.maUtil = maUtil;
         this.Point = Point;
-        this.timePeriodTypes = MA_TIME_PERIOD_TYPES.slice(0, 4);
+        
+        this.pollTimePeriods = MA_TIME_PERIOD_TYPES.slice(0, 4);
+        this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
         
         this.types = maDataSource.types;
         this.typesByName = maDataSource.typesByName;
