@@ -162,33 +162,6 @@ function dataSourceProvider() {
     dataSourceFactory.$inject = ['$resource', 'maUtil', '$templateCache', '$http', 'maPoint'];
     function dataSourceFactory($resource, Util, $templateCache, $http, Point) {
 
-        class DataSourceType {
-            constructor(defaults = {}) {
-                Object.assign(this, defaults);
-
-                // put the templates in the template cache so we can ng-include them
-                if (this.template && !this.templateUrl) {
-                    this.templateUrl = `dataSourceEditor.${this.type}.html`;
-                    $templateCache.put(this.templateUrl, this.template);
-                }
-            }
-            
-            createDataPoint() {
-                return new Point(this.defaultPoint || {
-                    dataSourceTypeName: this.type,
-                    pointLocator: {
-                        modelType: `PL.${this.type}`
-                    }
-                });
-            }
-        }
-
-        const typeInstances = types.map(type => new DataSourceType(type));
-        const typesByName = typeInstances.reduce((map, item) => {
-            map[item.type] = item;
-            return map;
-        }, Object.create(null));
-        
         const defaultProperties = {
             name: '',
             enabled: false,
@@ -197,7 +170,7 @@ function dataSourceProvider() {
                 periods: 1,
                 type: 'MINUTES'
             },
-            editPermission: '',
+            editPermission: 'superadmin',
             purgeSettings: {
                 override: false,
                 frequency: {
@@ -254,17 +227,7 @@ function dataSourceProvider() {
         Object.assign(DataSource.notificationManager, {
             webSocketUrl: '/rest/v1/websocket/data-sources'
         });
-        
-        Object.assign(DataSource, {
-            get types() {
-                return Object.freeze(typeInstances);
-            },
-            
-            get typesByName() {
-                return Object.freeze(typesByName);
-            }
-        });
-        
+
         Object.assign(DataSource.prototype, {
             enable(enabled = true, restart = false) {
                 const url = '/rest/v1/data-sources/enable-disable/' + encodeURIComponent(this.xid);
@@ -280,7 +243,7 @@ function dataSourceProvider() {
                 });
             }
         });
-        
+
         Object.defineProperty(DataSource.prototype, 'isEnabled', {
             get() {
                 return this.enabled;
@@ -288,6 +251,49 @@ function dataSourceProvider() {
             
             set(value) {
                 this.enable(value);
+            }
+        });
+
+        class DataSourceType {
+            constructor(defaults = {}) {
+                Object.assign(this, defaults);
+
+                // put the templates in the template cache so we can ng-include them
+                if (this.template && !this.templateUrl) {
+                    this.templateUrl = `dataSourceEditor.${this.type}.html`;
+                    $templateCache.put(this.templateUrl, this.template);
+                }
+            }
+            
+            createDataSource() {
+                return new DataSource(this.defaultDataSource || {
+                    modelType: this.type
+                });
+            }
+            
+            createDataPoint() {
+                return new Point(this.defaultDataPoint || {
+                    dataSourceTypeName: this.type,
+                    pointLocator: {
+                        modelType: `PL.${this.type}`
+                    }
+                });
+            }
+        }
+
+        const typeInstances = types.map(type => new DataSourceType(type));
+        const typesByName = typeInstances.reduce((map, item) => {
+            map[item.type] = item;
+            return map;
+        }, Object.create(null));
+
+        Object.assign(DataSource, {
+            get types() {
+                return Object.freeze(typeInstances);
+            },
+            
+            get typesByName() {
+                return Object.freeze(typesByName);
             }
         });
 

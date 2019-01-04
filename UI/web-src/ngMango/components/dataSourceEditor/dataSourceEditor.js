@@ -254,6 +254,17 @@ class DataSourceEditorController {
         
         return this.pointsPromise;
     }
+    
+    typeChanged() {
+        const prevSource = this.dataSource;
+        this.dataSource = this.typesByName[prevSource.modelType].createDataPoint();
+        
+        // copy only a select set of properties over
+        this.dataSource.enabled = prevSource.enabled;
+        this.dataSource.name = prevSource.name;
+        this.dataSource.editPermission = prevSource.editPermission;
+        this.purgeSettings = prevSource.purgeSettings;
+    }
 
     createDataPoint(event) {
         this.dataPoint = this.typesByName[this.dataSource.modelType].createDataPoint();

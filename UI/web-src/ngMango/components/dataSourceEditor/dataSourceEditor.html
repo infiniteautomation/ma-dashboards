@@ -9,7 +9,7 @@
                     <div layout="row" layout-wrap layout-align="start center">
                         <md-input-container flex="100">
                             <label ma-tr="dsEdit.dataSourceType"></label>
-                            <md-select name="modelType" ng-model="$ctrl.dataSource.modelType" ng-disabled="!$ctrl.dataSource.isNew()">
+                            <md-select name="modelType" ng-model="$ctrl.dataSource.modelType" ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()">
                                 <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
                                     <span ma-tr="{{type.description}}"></span>
                                 </md-option>
@@ -81,9 +81,9 @@
                         <md-button class="md-primary md-raised" ng-click="$ctrl.createDataPoint($event)">
                             <md-icon>add</md-icon>&nbsp;<span ma-tr="common.add"></span>
                         </md-button>
-                        <md-button class="md-primary md-raised">
+                        <!--<md-button class="md-primary md-raised">
                             <md-icon>add</md-icon>&nbsp;<span ma-tr="ui.app.addMultiple"></span>
-                        </md-button>
+                        </md-button>-->
                         <md-button class="md-raised" ng-disabled="!$ctrl.selectedPoints.length">
                             <md-icon>edit</md-icon>&nbsp;<span ma-tr="ui.app.editSelected"></span>
                         </md-button>

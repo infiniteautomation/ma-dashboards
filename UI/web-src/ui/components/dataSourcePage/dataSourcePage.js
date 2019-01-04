@@ -32,7 +32,12 @@ class DataSourcePageController {
     }
     
     newDataSource() {
-        this.dataSource = new this.maDataSource();
+        const dsTypes = this.maDataSource.types;
+        if (dsTypes.length) {
+            this.dataSource = dsTypes[0].createDataSource();
+        } else {
+            this.dataSource = new this.maDataSource();
+        }
         this.dataSourceChanged();
     }
     

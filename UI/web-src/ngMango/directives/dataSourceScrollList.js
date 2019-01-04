@@ -123,7 +123,12 @@ function dataSourceScrollList($injector) {
         }
         
         createNew(event) {
-            this.selected = new this.DataSource();
+            const dsTypes = this.DataSource.types;
+            if (dsTypes.length) {
+                this.selected = dsTypes[0].createDataSource();
+            } else {
+                this.selected = new this.DataSource();
+            }
             this.setViewValue(this.selected);
         }
         
