@@ -82,23 +82,23 @@
                             <md-icon>add</md-icon>&nbsp;<span ma-tr="common.add"></span>
                         </md-button>
                         <md-button class="md-primary md-raised">
-                            <md-icon>add</md-icon>&nbsp;<span>Add multiple</span>
+                            <md-icon>add</md-icon>&nbsp;<span ma-tr="ui.app.addMultiple"></span>
                         </md-button>
                         <md-button class="md-raised" ng-disabled="!$ctrl.selectedPoints.length">
-                            <md-icon>edit</md-icon>&nbsp;<span>Edit selected</span>
+                            <md-icon>edit</md-icon>&nbsp;<span ma-tr="ui.app.editSelected"></span>
                         </md-button>
                         <md-button class="md-raised md-warn" ng-disabled="!$ctrl.selectedPoints.length">
-                            <md-icon>delete</md-icon>&nbsp;<span>Delete selected</span>
+                            <md-icon>delete</md-icon>&nbsp;<span ma-tr="ui.app.deleteSelected"></span>
                         </md-button>
                     </div>
                     <md-table-container>
                         <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.pointsPromise">
                             <thead md-head md-order="$ctrl.pointsQuery.order" md-on-reorder="$ctrl.queryPointsBound">
                                 <tr md-row>
-                                    <th md-column md-order-by="deviceName">Device name</th>
-                                    <th md-column md-order-by="name">Point name</th>
-                                    <th md-column md-order-by="xid">XID</th>
-                                    <th md-column>Tags</th>
+                                    <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
+                                    <th md-column md-order-by="name" ma-tr="common.name"></th>
+                                    <th md-column md-order-by="xid" ma-tr="common.xid"></th>
+                                    <th md-column ma-tr="ui.app.tags"></th>
                                     <th md-column></th>
                                 </tr>
                             </thead>
@@ -133,15 +133,6 @@
                 </div>
             </md-tab-body>
         </md-tab>
-        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.editDataPointTabSelected()" md-on-deselect="$ctrl.cancelDataPointEdit()">
-            <md-tab-label>
-                <span ng-if="$ctrl.dataPoint && !$ctrl.dataPoint.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.dataPoint.name]"></span>
-                <span ng-if="!$ctrl.dataPoint || $ctrl.dataPoint.isNew()" ma-tr="dsList.createDataPoint"></span>
-            </md-tab-label>
-            <md-tab-body>
-                <ma-data-point-editor ng-model="$ctrl.dataPoint" ng-change="$ctrl.dataPointEdited()" fixed-type="true" ma-form-exclude></ma-data-point-editor>
-            </md-tab-body>
-        </md-tab>
     </md-tabs>
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
@@ -161,3 +152,27 @@
         </md-button>
     </div>
 </div>
+
+<ma-dialog show-dialog="$ctrl.dataPoint" on-hide="$ctrl.dataPoint = null" on-cancel="$ctrl.dataPoint = null">
+    <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span ng-if="!$ctrl.dataPoint.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.dataPoint.name]"></span>
+                    <span ng-if="$ctrl.dataPoint.isNew()" ma-tr="dsList.createDataPoint"></span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        
+        <md-dialog-content layout="column" flex>
+            <ma-data-point-editor flex="noshrink" layout="column" dynamic-height="!$dialog.fullscreen()"
+                ng-model="$ctrl.dataPoint" ng-change="$ctrl.dataPointEdited()" fixed-type="true"
+                ma-form-exclude>
+            </ma-data-point-editor>
+        </md-dialog-content>
+    </md-dialog>
+</ma-dialog>

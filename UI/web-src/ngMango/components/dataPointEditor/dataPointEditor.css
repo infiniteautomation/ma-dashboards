@@ -6,3 +6,7 @@ ma-data-point-editor md-tab-content:not(.md-active) * {
 ma-data-point-editor .ma-dialog-actions > .md-button {
 	margin: 0 4px;
 }
+
+ma-data-point-editor md-switch {
+	margin-top: 0;
+}

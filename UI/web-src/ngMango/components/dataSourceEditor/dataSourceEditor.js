@@ -256,35 +256,22 @@ class DataSourceEditorController {
     }
 
     createDataPoint(event) {
-        this.activeTab++;
+        this.dataPoint = this.typesByName[this.dataSource.modelType].createDataPoint();
+        this.dataPoint.dataSourceXid = this.dataSource.originalId;
     }
     
     editDataPoint(event, item) {
         this.dataPoint = item;
-        this.activeTab++;
     }
-    
-    dataPointEdited() {
-        this.activeTab--;
-    }
-    
-    editDataPointTabSelected() {
-        if (!this.dataPoint) {
-            this.dataPoint = this.typesByName[this.dataSource.modelType].createDataPoint();
-            this.dataPoint.dataSourceXid = this.dataSource.originalId;
-        }
-    }
-    
-    cancelDataPointEdit() {
-        this.dataPoint = null;
-    }
-    
+
     deleteDataPoint(event, item) {
         const notifyName = item.name || item.originalId;
         this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
             item.delete().then(() => {
                 this.maDialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
-                this.queryPoints();
+                
+                // rely on WebSocket to update the list of points
+                //this.queryPoints();
             }, error => {
                 this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
             });
