@@ -108,7 +108,7 @@ function JsonStoreFactory($resource, Util, NotificationManager, $q) {
     const jsonStoreUrl = '/rest/v1/json-data/';
     
     const defaultProperties = {
-        name: 'New JSON store item',
+        name: '',
         readPermission: 'user',
         editPermission: '',
         publicData: false,
