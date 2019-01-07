@@ -1856,7 +1856,7 @@ export default [
         menuTr: 'ui.app.mailingLists'
     },
     {
-        name: 'ui.settings.system.virtualSerialPort',
+        name: 'ui.settings.virtualSerialPort',
         url: '/virtual-serial-port',
         template: '<ma-virtual-serial-port></ma-virtual-serial-port>',
         menuTr: 'systemSettings.comm.virtual.serialPorts',
