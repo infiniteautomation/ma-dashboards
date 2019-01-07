@@ -8,5 +8,5 @@ ma-data-point-editor .ma-dialog-actions > .md-button {
 }
 
 ma-data-point-editor md-switch {
-	margin-top: 0;
+	display: inline-block;
 }

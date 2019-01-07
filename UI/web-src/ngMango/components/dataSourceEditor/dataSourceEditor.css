@@ -7,10 +7,6 @@ ma-data-source-editor .ma-dialog-actions > .md-button {
 	margin: 0 4px;
 }
 
-ma-data-source-editor md-switch {
-	margin-top: 0;
-}
-
 ma-data-source-editor td.ma-no-points-found {
 	font-style: italic;
 	text-align: center;
@@ -31,4 +27,8 @@ ma-data-source-editor .ma-point-actions .md-button.md-icon-button {
 
 ma-data-source-editor .ma-point-actions md-switch > div.md-container {
 	margin-right: 4px;
+}
+
+ma-data-source-editor md-switch {
+	display: inline-block;
 }
