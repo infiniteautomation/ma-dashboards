@@ -140,11 +140,13 @@
         </md-checkbox>
     </div>
 
-    <div class="md-padding">
+    <div class="ma-user-status" ng-if="!$ctrl.user.isNew()">
         <div md-colors="::{color: 'warn'}" ng-if="$ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></div>
         <div ng-if="$ctrl.user.lastLogin === null" ma-tr="ui.app.neverLoggedIn"></div>
-        <div ng-if="$ctrl.user.lastLogin !== null" ma-tr="ui.app.lastLogin" ma-tr-args="[($ctrl.user.lastLogin | maMoment:'format':'ll LT'), $ctrl.user.lastLoginDuration().humanize(true)]"></div>
-        <div ma-tr="ui.app.lastPasswordChange" ma-tr-args="[($ctrl.user.lastPasswordChange | maMoment:'format':'ll LT'), $ctrl.user.lastPasswordChangeDuration().humanize(true)]"></div>
+        <div ng-if="$ctrl.user.lastLogin !== null" ma-tr="ui.app.lastLogin"
+            ma-tr-args="[($ctrl.user.lastLogin | maMoment:'format':'ll LT'), $ctrl.user.lastLoginDuration().humanize(true)]"></div>
+        <div ma-tr="ui.app.lastPasswordChange"
+            ma-tr-args="[($ctrl.user.lastPasswordChange | maMoment:'format':'ll LT'), $ctrl.user.lastPasswordChangeDuration().humanize(true)]"></div>
     </div>
 
     <div>
