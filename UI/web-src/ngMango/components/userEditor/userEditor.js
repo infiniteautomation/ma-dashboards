@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import userEditorTemplate from './userEditor.html';
+import './userEditor.css';
 import moment from 'moment-timezone';
 
 UserEditorController.$inject = ['maUser', '$http', '$mdDialog', 'maTranslate', '$mdToast', 'maLocales', '$window', '$injector'];

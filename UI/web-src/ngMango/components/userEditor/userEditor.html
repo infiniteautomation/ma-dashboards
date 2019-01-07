@@ -1,162 +1,167 @@
 <form name="$ctrl.userForm" novalidate ng-submit="$ctrl.save($event)" ma-validation-messages="$ctrl.validationMessages">
-  <div layout layout-align="space-between start" layout-wrap>
-    <p flex="100" md-colors="{color: 'warn'}" ng-if="$ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></p>
-
-    <md-input-container flex="100" flex-gt-md="50">
-        <md-icon>label</md-icon>
-        <label ma-tr="users.username"></label>
-        <input name="username" ng-model="$ctrl.user.username" required maxlength="40">
-        <div ng-messages="$ctrl.userForm.username.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.username.$viewValue.length]"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.userForm.username.validationMessage"></div>
-        </div>
-    </md-input-container>
-    <md-input-container flex="100" flex-gt-md="45">
-        <md-icon>person</md-icon>
-        <label ma-tr="users.name"></label>
-        <input name="name" ng-model="$ctrl.user.name" required maxlength="255">
-        <div ng-messages="$ctrl.userForm.name.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.name.$viewValue.length]"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.userForm.name.validationMessage"></div>
-        </div>
-    </md-input-container>
-    <md-input-container flex="100" flex-gt-md="50">
-        <md-icon>email</md-icon>
-        <label ma-tr="users.email"></label>
-        <input type="email" name="email" ng-model="$ctrl.user.email" required maxlength="255">
-        <div ng-messages="$ctrl.userForm.email.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="email" ma-tr="ui.app.invalidEmail"></div>
-            <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.userForm.email.validationMessage"></div>
-        </div>
-    </md-input-container>
-    <md-input-container flex="100" flex-gt-md="45">
-        <md-icon>phone</md-icon>
-        <label ma-tr="users.phone"></label>
-        <input type="tel" name="phone" ng-model="$ctrl.user.phone" pattern="^(?:\+?[0-9]{1,3}[ -]?)?(?:\([0-9 ]+\)[ -]?)?[0-9]+(?:[ -][0-9]+)*$" maxlength="40">
-        <div ng-messages="$ctrl.userForm.phone.$error">
-            <div ng-message="pattern" ma-tr="ui.app.invalidPhone"></div>
-            <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.phone.$viewValue.length]"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.userForm.phone.validationMessage"></div>
-        </div>
-    </md-input-container>
-    
-    <div layout="column" flex="100" flex-gt-md="50">
-        <md-input-container>
-            <md-icon>vpn_key</md-icon>
-            <label ma-tr="users.newPassword"></label>
-            <input type="password" name="password" ng-model="$ctrl.password" minlength="8" ng-required="$ctrl.user.isNew()">
-            <div ng-messages="$ctrl.userForm.password.$error">
+    <div layout layout-align="space-between start" layout-wrap class="ma-inputs-container">
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>label</md-icon>
+            <label ma-tr="users.username"></label>
+            <input name="username" ng-model="$ctrl.user.username" required maxlength="40">
+            <div ng-messages="$ctrl.userForm.username.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="minlength" ma-tr="ui.app.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
-                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.password.validationMessage"></div>
+                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.username.$viewValue.length]"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.username.validationMessage"></div>
             </div>
         </md-input-container>
-        <md-input-container ng-show="!!$ctrl.password">
-            <md-icon>vpn_key</md-icon>
-            <label ma-tr="users.confirmNewPassword"></label>
-            <input type="password" name="confirmPassword" ng-model="$ctrl.confirmPassword" ng-pattern="$ctrl.regExpEscape($ctrl.password)" ng-required="!!$ctrl.password">
-            <div ng-messages="$ctrl.userForm.confirmPassword.$error">
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>person</md-icon>
+            <label ma-tr="users.name"></label>
+            <input name="name" ng-model="$ctrl.user.name" required maxlength="255">
+            <div ng-messages="$ctrl.userForm.name.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="pattern" ma-tr="ui.app.passwordsDoNotMatch"></div>
+                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.name.$viewValue.length]"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.name.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>email</md-icon>
+            <label ma-tr="users.email"></label>
+            <input type="email" name="email" ng-model="$ctrl.user.email" required maxlength="255">
+            <div ng-messages="$ctrl.userForm.email.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="email" ma-tr="ui.app.invalidEmail"></div>
+                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.email.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>phone</md-icon>
+            <label ma-tr="users.phone"></label>
+            <input type="tel" name="phone" ng-model="$ctrl.user.phone" pattern="^(?:\+?[0-9]{1,3}[ -]?)?(?:\([0-9 ]+\)[ -]?)?[0-9]+(?:[ -][0-9]+)*$" maxlength="40">
+            <div ng-messages="$ctrl.userForm.phone.$error">
+                <div ng-message="pattern" ma-tr="ui.app.invalidPhone"></div>
+                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.phone.$viewValue.length]"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.phone.validationMessage"></div>
+            </div>
+        </md-input-container>
+        
+        <div layout="column" flex="100" flex-gt-md="50">
+            <md-input-container>
+                <md-icon>vpn_key</md-icon>
+                <label ma-tr="users.newPassword"></label>
+                <input type="password" name="password" ng-model="$ctrl.password" minlength="8" ng-required="$ctrl.user.isNew()">
+                <div ng-messages="$ctrl.userForm.password.$error">
+                    <div ng-message="required" ma-tr="ui.app.required"></div>
+                    <div ng-message="minlength" ma-tr="ui.app.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
+                    <div ng-message="validationMessage" ng-bind="$ctrl.userForm.password.validationMessage"></div>
+                </div>
+            </md-input-container>
+            <md-input-container ng-show="!!$ctrl.password">
+                <md-icon>vpn_key</md-icon>
+                <label ma-tr="users.confirmNewPassword"></label>
+                <input type="password" name="confirmPassword" ng-model="$ctrl.confirmPassword" ng-pattern="$ctrl.regExpEscape($ctrl.password)" ng-required="!!$ctrl.password">
+                <div ng-messages="$ctrl.userForm.confirmPassword.$error">
+                    <div ng-message="required" ma-tr="ui.app.required"></div>
+                    <div ng-message="pattern" ma-tr="ui.app.passwordsDoNotMatch"></div>
+                </div>
+            </md-input-container>
+        </div>
+        
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>lock</md-icon>
+            <label ma-tr="users.permissions"></label>
+            <input name="permissions" ng-disabled="!$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+            <div ng-messages="$ctrl.userForm.permissions.$error">
+                <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
+            </div>
+            <ma-permissions-menu ng-if="$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions"></ma-permissions-menu>
+        </md-input-container>
+        
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>alarm</md-icon>
+            <label ma-tr="users.receiveAlarmEmails"></label>
+            <md-select name="receiveAlarmEmails" ng-model="$ctrl.user.receiveAlarmEmails" required>
+                <md-option value="NONE" ma-tr="common.alarmLevel.none"></md-option>
+                <md-option value="INFORMATION" ma-tr="common.alarmLevel.info"></md-option>
+                <md-option value="IMPORTANT" ma-tr="common.alarmLevel.important"></md-option>
+                <md-option value="WARNING" ma-tr="common.alarmLevel.warning"></md-option>
+                <md-option value="URGENT" ma-tr="common.alarmLevel.urgent"></md-option>
+                <md-option value="CRITICAL" ma-tr="common.alarmLevel.critical"></md-option>
+                <md-option value="LIFE_SAFETY" ma-tr="common.alarmLevel.lifeSafety"></md-option>
+                <md-option value="DO_NOT_LOG" ma-tr="common.alarmLevel.doNotLog"></md-option>
+                <md-option value="IGNORE" ma-tr="common.alarmLevel.ignore"></md-option>
+            </md-select>
+            <div ng-messages="$ctrl.userForm.receiveAlarmEmails.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.receiveAlarmEmails.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>home</md-icon>
+            <label ma-tr="users.homeURL"></label>
+            <input name="homeUrl" ng-model="$ctrl.user.homeUrl" pattern="^\/(?!\/).*">
+            <div ng-messages="$ctrl.userForm.homeUrl.$error">
+                <div ng-message="pattern" ma-tr="ui.app.mustBeAbsolutePath"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.homeUrl.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>language</md-icon>
+            <label ma-tr="users.locale"></label>
+            <md-select name="locale" ng-model="$ctrl.user.locale">
+                <md-option ng-value="''"><em ma-tr="users.useServerLocale"></em></md-option>
+                <md-option ng-repeat="locale in $ctrl.locales track by locale.id" ng-value="locale.id"><span ng-bind="locale.name"></span> &mdash; <span ng-bind="locale.native"></span></md-option>
+            </md-select>
+            <div ng-messages="$ctrl.userForm.locale.$error">
+            	<div ng-message="validationMessage" ng-bind="$ctrl.userForm.locale.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>access_time</md-icon>
+            <label ma-tr="users.timezone"></label>
+            <md-select name="timezone" ng-model="$ctrl.user.timezone">
+                <md-option ng-value="''"><em ma-tr="users.timezone.def"></em></md-option>
+                <md-option ng-repeat="zone in $ctrl.timezones" ng-value="zone" ng-bind="zone"></md-option>
+            </md-select>
+            <div ng-messages="$ctrl.userForm.timezone.$error">
+                <div ng-message="pattern" ma-tr="ui.app.invalidTimezone"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.timezone.validationMessage"></div>
             </div>
         </md-input-container>
     </div>
 
-    <md-input-container flex="100" flex-gt-md="45">
-        <md-icon>lock</md-icon>
-        <label ma-tr="users.permissions"></label>
-        <input name="permissions" ng-disabled="!$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
-        <div ng-messages="$ctrl.userForm.permissions.$error">
-            <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
-        </div>
-        <ma-permissions-menu ng-if="$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions"></ma-permissions-menu>
-    </md-input-container>
-    
-    <md-input-container flex="100" flex-gt-md="50">
-        <md-icon>alarm</md-icon>
-        <label ma-tr="users.receiveAlarmEmails"></label>
-        <md-select name="receiveAlarmEmails" ng-model="$ctrl.user.receiveAlarmEmails" required>
-            <md-option value="NONE" ma-tr="common.alarmLevel.none"></md-option>
-            <md-option value="INFORMATION" ma-tr="common.alarmLevel.info"></md-option>
-            <md-option value="IMPORTANT" ma-tr="common.alarmLevel.important"></md-option>
-            <md-option value="WARNING" ma-tr="common.alarmLevel.warning"></md-option>
-            <md-option value="URGENT" ma-tr="common.alarmLevel.urgent"></md-option>
-            <md-option value="CRITICAL" ma-tr="common.alarmLevel.critical"></md-option>
-            <md-option value="LIFE_SAFETY" ma-tr="common.alarmLevel.lifeSafety"></md-option>
-            <md-option value="DO_NOT_LOG" ma-tr="common.alarmLevel.doNotLog"></md-option>
-            <md-option value="IGNORE" ma-tr="common.alarmLevel.ignore"></md-option>
-        </md-select>
-        <div ng-messages="$ctrl.userForm.receiveAlarmEmails.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.userForm.receiveAlarmEmails.validationMessage"></div>
-        </div>
-    </md-input-container>
-    <md-input-container flex="100" flex-gt-md="45">
-        <md-icon>home</md-icon>
-        <label ma-tr="users.homeURL"></label>
-        <input name="homeUrl" ng-model="$ctrl.user.homeUrl" pattern="^\/(?!\/).*">
-        <div ng-messages="$ctrl.userForm.homeUrl.$error">
-            <div ng-message="pattern" ma-tr="ui.app.mustBeAbsolutePath"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.userForm.homeUrl.validationMessage"></div>
-        </div>
-    </md-input-container>
-    <md-input-container flex="100" flex-gt-md="50">
-        <md-icon>language</md-icon>
-        <label ma-tr="users.locale"></label>
-        <md-select name="locale" ng-model="$ctrl.user.locale">
-            <md-option ng-value="''"><em ma-tr="users.useServerLocale"></em></md-option>
-            <md-option ng-repeat="locale in $ctrl.locales track by locale.id" ng-value="locale.id"><span ng-bind="locale.name"></span> &mdash; <span ng-bind="locale.native"></span></md-option>
-        </md-select>
-        <div ng-messages="$ctrl.userForm.locale.$error">
-        	<div ng-message="validationMessage" ng-bind="$ctrl.userForm.locale.validationMessage"></div>
-        </div>
-    </md-input-container>
-    <md-input-container flex="100" flex-gt-md="45">
-        <md-icon>access_time</md-icon>
-        <label ma-tr="users.timezone"></label>
-        <md-select name="timezone" ng-model="$ctrl.user.timezone">
-            <md-option ng-value="''"><em ma-tr="users.timezone.def"></em></md-option>
-            <md-option ng-repeat="zone in $ctrl.timezones" ng-value="zone" ng-bind="zone"></md-option>
-        </md-select>
-        <div ng-messages="$ctrl.userForm.timezone.$error">
-            <div ng-message="pattern" ma-tr="ui.app.invalidTimezone"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.userForm.timezone.validationMessage"></div>
-        </div>
-    </md-input-container>
-
-    <div layout layout-align="start start" flex="100" layout-wrap style="margin: 15px 0;">
-      <md-checkbox name="muted" ng-model="$ctrl.user.muted">
-        <span ma-tr="users.muted"></span>
-      </md-checkbox>
-      <md-checkbox name="disabled" ng-model="$ctrl.user.disabled" ng-disabled="$ctrl.User.current.username === $ctrl.originalUser.username">
-        <span ma-tr="common.disabled"></span>
-      </md-checkbox>
-      <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents">
-        <span ma-tr="users.receiveOwnAuditEvents"></span>
-      </md-checkbox>
+    <div layout layout-align="start start" layout-wrap class="ma-user-checkboxes">
+        <md-checkbox name="muted" ng-model="$ctrl.user.muted">
+            <span ma-tr="users.muted"></span>
+        </md-checkbox>
+        <md-checkbox name="disabled" ng-model="$ctrl.user.disabled" ng-disabled="$ctrl.User.current.username === $ctrl.originalUser.username">
+            <span ma-tr="common.disabled"></span>
+        </md-checkbox>
+        <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents">
+            <span ma-tr="users.receiveOwnAuditEvents"></span>
+        </md-checkbox>
     </div>
 
-    <div flex="100" layout layout-align="start center" layout-wrap>
-      <md-button class="md-raised md-primary" type="submit">
-        <md-icon>save</md-icon> <span ma-tr="common.save"></span>
-      </md-button>
-      <md-button class="md-raised" ng-click="$ctrl.revert($event)">
-        <md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span>
-      </md-button>
-      <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew() || $ctrl.User.current.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">
-        <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
-      </md-button>
-      <md-button class="md-raised" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.userForm.email.$invalid">
-        <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
-      </md-button>
-      <md-button class="md-raised" ng-if="!$ctrl.user.isNew() && $ctrl.User.current.id !== $ctrl.originalUser.id && $ctrl.User.current.admin" ng-click="$ctrl.switchUser($event)">
-        <md-icon>swap_horiz</md-icon> <span ma-tr="users.su"></span>
-      </md-button>
+    <div class="md-padding">
+        <div md-colors="::{color: 'warn'}" ng-if="$ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></div>
+        <div ng-if="$ctrl.user.lastLogin === null" ma-tr="ui.app.neverLoggedIn"></div>
+        <div ng-if="$ctrl.user.lastLogin !== null" ma-tr="ui.app.lastLogin" ma-tr-args="[($ctrl.user.lastLogin | maMoment:'format':'ll LT'), $ctrl.user.lastLoginDuration().humanize(true)]"></div>
+        <div ma-tr="ui.app.lastPasswordChange" ma-tr-args="[($ctrl.user.lastPasswordChange | maMoment:'format':'ll LT'), $ctrl.user.lastPasswordChangeDuration().humanize(true)]"></div>
     </div>
-  </div>
+
+    <div>
+        <md-button class="md-raised md-primary" type="submit">
+            <md-icon>save</md-icon> <span ma-tr="common.save"></span>
+        </md-button>
+        <md-button class="md-raised" ng-click="$ctrl.revert($event)">
+            <md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span>
+        </md-button>
+        <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew() || $ctrl.User.current.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">
+            <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
+        </md-button>
+        <md-button class="md-raised" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.userForm.email.$invalid">
+            <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
+        </md-button>
+        <md-button class="md-raised" ng-if="!$ctrl.user.isNew() && $ctrl.User.current.id !== $ctrl.originalUser.id && $ctrl.User.current.admin" ng-click="$ctrl.switchUser($event)">
+            <md-icon>swap_horiz</md-icon> <span ma-tr="users.su"></span>
+        </md-button>
+    </div>
 </form>

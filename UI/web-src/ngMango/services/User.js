@@ -189,8 +189,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
      */
     UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector'];
     function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector) {
-        let cachedUser;
         
+        let cachedUser, angularLocaleDeferred;
+        const authTokenBaseUrl = '/rest/v2/auth-tokens';
+        const passwordResetUrl = '/rest/v2/password-reset';
         const defaultProperties = {
             username: '',
             name: '',
@@ -296,88 +298,202 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         Object.assign(User.notificationManager, {
             webSocketUrl: '/rest/v1/websocket/users'
         });
-        
-        User.setUser = function(user) {
-            if (!angular.equals(user, cachedUser)) {
-                const firstChange = cachedUser === undefined;
-                
-                if (user) {
-                    systemLocale = user.systemLocale;
-                    systemTimezone = user.systemTimezone;
-                    cachedUser = user instanceof User ? user : Object.assign(Object.create(User.prototype), user);
-                } else {
-                    cachedUser = null;
-                }
-                
-                this.configureLocale();
-                this.configureTimezone();
-                
-                this.notificationManager.notify('userChanged', cachedUser, firstChange);
-            }
-        };
 
-        let angularLocaleDeferred;
-        User.configureLocale = function(locale = this.getLocale()) {
-            if (locale !== this.locale) {
-                const firstChange = this.locale == null;
-                this.locale = locale;
-
-                // moment doesn't support locales with a script, just supply it with language and region
-                const cldrAttributes = new Cldr(locale).attributes;
-                moment.locale(`${cldrAttributes.language}-${cldrAttributes.region}`);
-
-                const localeId = locale.toLowerCase();
-                const $locale = $injector.get('$locale');
-                if (localeId !== $locale.id) {
-                    // cancel any pending request for a locale
-                    if (angularLocaleDeferred) {
-                        angularLocaleDeferred.reject('cancel');
+        Object.assign(User, {
+            setUser(user) {
+                if (!angular.equals(user, cachedUser)) {
+                    const firstChange = cachedUser === undefined;
+                    
+                    if (user) {
+                        systemLocale = user.systemLocale;
+                        systemTimezone = user.systemTimezone;
+                        cachedUser = user instanceof User ? user : Object.assign(Object.create(User.prototype), user);
+                    } else {
+                        cachedUser = null;
                     }
                     
-                    angularLocaleDeferred = $q.defer();
+                    this.configureLocale();
+                    this.configureTimezone();
                     
-                    // localeCache.getLocale() returns ES6 promise, convert to AngularJS $q promise
-                    angularLocaleCache.getLocale(localeId).then(angularLocaleDeferred.resolve, angularLocaleDeferred.reject);
-                    
-                    angularLocaleDeferred.promise.then(newLocaleData => {
-                        // deep replace all properties of existing locale with the keys from the new locale
-                        // this is necessary as the filters cache $locale.NUMBER_FORMATS for example
-                        Util.deepReplace($locale, newLocaleData);
-                    }, error => {
-                        if (error !== 'cancel') {
-                            return $q.reject(error);
-                        }
-                    });
+                    this.notificationManager.notify('userChanged', cachedUser, firstChange);
                 }
+            },
+    
+            configureLocale(locale = this.getLocale()) {
+                if (locale !== this.locale) {
+                    const firstChange = this.locale == null;
+                    this.locale = locale;
+    
+                    // moment doesn't support locales with a script, just supply it with language and region
+                    const cldrAttributes = new Cldr(locale).attributes;
+                    moment.locale(`${cldrAttributes.language}-${cldrAttributes.region}`);
+    
+                    const localeId = locale.toLowerCase();
+                    const $locale = $injector.get('$locale');
+                    if (localeId !== $locale.id) {
+                        // cancel any pending request for a locale
+                        if (angularLocaleDeferred) {
+                            angularLocaleDeferred.reject('cancel');
+                        }
+                        
+                        angularLocaleDeferred = $q.defer();
+                        
+                        // localeCache.getLocale() returns ES6 promise, convert to AngularJS $q promise
+                        angularLocaleCache.getLocale(localeId).then(angularLocaleDeferred.resolve, angularLocaleDeferred.reject);
+                        
+                        angularLocaleDeferred.promise.then(newLocaleData => {
+                            // deep replace all properties of existing locale with the keys from the new locale
+                            // this is necessary as the filters cache $locale.NUMBER_FORMATS for example
+                            Util.deepReplace($locale, newLocaleData);
+                        }, error => {
+                            if (error !== 'cancel') {
+                                return $q.reject(error);
+                            }
+                        });
+                    }
+    
+                    this.notificationManager.notify('localeChanged', locale, firstChange);
+                }
+            },
+    
+            configureTimezone(timezone = this.getTimezone()) {
+                if (timezone !== this.timezone) {
+                    const firstChange = this.timezone == null;
+                    this.timezone = timezone;
+                    
+                    moment.tz.setDefault(timezone);
+                    
+                    this.notificationManager.notify('timezoneChanged', timezone, firstChange);
+                }
+            },
+            
+            getLocale() {
+                if (cachedUser) {
+                    return cachedUser.getLocale();
+                }
+                return systemLocale || MA_DEFAULT_LOCALE || (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language;
+            },
+    
+            getTimezone() {
+                if (cachedUser) {
+                    return cachedUser.getTimezone();
+                }
+                return systemTimezone || MA_DEFAULT_TIMEZONE || moment.tz.guess();
+            },
 
-                this.notificationManager.notify('localeChanged', locale, firstChange);
+            loginInterceptors: [],
+            logoutInterceptors: [],
+    
+            storeCredentials(username, password) {
+                localStorageService.set('storedCredentials', {
+                    username: username,
+                    password: password
+                });
+            },
+            
+            storedUsername() {
+                const credentials = localStorageService.get('storedCredentials');
+                return credentials ? credentials.username : null;
+            },
+            
+            getCredentialsFromUrl() {
+            	const params = new URL(window.location.href).searchParams;
+            	if (!params) return;
+            	
+            	const credentials = {
+            		username: params.get('autoLoginUsername'),
+            		password: params.get('autoLoginPassword') || ''
+            	};
+            	
+            	if (params.get('autoLoginDeleteCredentials') != null) {
+            		User.clearStoredCredentials();
+            	} else if (params.get('autoLoginStoreCredentials') != null && credentials.username) {
+            		User.storeCredentials(credentials.username, credentials.password);
+            	}
+            	
+            	return credentials.username && credentials;
+            },
+            
+            autoLogin(maUiSettings) {
+                let credentials = User.getCredentialsFromUrl() || localStorageService.get('storedCredentials');
+            	if (!credentials && (maUiSettings || $injector.has('maUiSettings'))) {
+            		maUiSettings = maUiSettings || $injector.get('maUiSettings');
+            		if (maUiSettings.autoLoginUsername) {
+            			credentials = {
+        					username: maUiSettings.autoLoginUsername,
+        					password: maUiSettings.autoLoginPassword || ''
+        				};
+            		}
+            	}
+                if (!credentials) {
+                	return $q.reject('No stored credentials');
+                }
+                return this.login.call(this, credentials).$promise;
+            },
+            
+            clearStoredCredentials() {
+                localStorageService.remove('storedCredentials');
+            },
+            
+            sendPasswordResetEmail(username, email) {
+                return $http({
+                    url: `${passwordResetUrl}/send-email`,
+                    method: 'POST',
+                    data: {
+                        username,
+                        email
+                    }
+                });
+            },
+            
+            passwordReset(token, newPassword) {
+                return $http({
+                    url: `${passwordResetUrl}/reset`,
+                    method: 'POST',
+                    data: {
+                        token,
+                        newPassword
+                    }
+                });
+            },
+    
+            createAuthToken(expiry, username) {
+                return $http({
+                    url: `${authTokenBaseUrl}/create`,
+                    method: 'POST',
+                    data: {
+                        username,
+                        expiry
+                    }
+                }).then(response => {
+                    return response.data.token;
+                });
+            },
+    
+            revokeAuthTokens(username) {
+                let url = `${authTokenBaseUrl}/revoke`;
+                if (username != null && username !== (this.current && this.current.username)) {
+                    url += `/${encodeURIComponent(username)}`;
+                }
+    
+                return $http({
+                    url,
+                    method: 'POST'
+                }).then(response => {
+                    return response.data;
+                });
+            },
+    
+            revokeAllAuthTokens() {
+                let url = `${authTokenBaseUrl}/reset-keys`;
+                return $http({
+                    url,
+                    method: 'POST'
+                }).then(response => {
+                    return response.data;
+                });
             }
-        };
-
-        User.configureTimezone = function(timezone = this.getTimezone()) {
-            if (timezone !== this.timezone) {
-                const firstChange = this.timezone == null;
-                this.timezone = timezone;
-                
-                moment.tz.setDefault(timezone);
-                
-                this.notificationManager.notify('timezoneChanged', timezone, firstChange);
-            }
-        };
-        
-        User.getLocale = function() {
-            if (cachedUser) {
-                return cachedUser.getLocale();
-            }
-            return systemLocale || MA_DEFAULT_LOCALE || (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language;
-        };
-
-        User.getTimezone = function() {
-            if (cachedUser) {
-                return cachedUser.getTimezone();
-            }
-            return systemTimezone || MA_DEFAULT_TIMEZONE || moment.tz.guess();
-        };
+        });
 
         Object.defineProperty(User, 'current', {
             get: function() {
@@ -385,9 +501,58 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
             set: User.setUser
         });
+        
+        Object.assign(User.prototype, {
+            // returns true if user has any of the desired permissions (can be an array or comma separated string)
+            hasPermission(desiredPerms) {
+                if (this.admin || !desiredPerms) return true;
+                if (!this.permissions) return false;
 
-        User.loginInterceptors = [];
-        User.logoutInterceptors = [];
+                if (typeof desiredPerms === 'string') {
+                    desiredPerms = desiredPerms.split(/\s*\,\s*/);
+                }
+
+                const userPerms = this.permissions.split(/\s*\,\s*/).filter(function(userPerm) {
+                    return !!userPerm;
+                });
+                
+                return desiredPerms.some(function(desiredPerm) {
+                    return userPerms.indexOf(desiredPerm) >= 0;
+                });
+            },
+
+            getTimezone() {
+                return this.timezone || this.systemTimezone;
+            },
+
+            sendTestEmail(toEmail, usernameInEmail) {
+                return maServer.sendTestEmail(toEmail || this.email, usernameInEmail || this.username);
+            },
+            
+            getLocale() {
+                return this.locale || this.systemLocale;
+            },
+
+            createAuthToken(expiry) {
+                return this.constructor.createAuthToken(expiry);
+            },
+            
+            revokeAuthTokens() {
+                return this.constructor.revokeAuthTokens();
+            },
+            
+            lastLoginDuration(now = new Date()) {
+                const nowM = moment(now);
+                const lastLogin = moment(this.lastLogin);
+                return moment.duration(lastLogin.diff(nowM));
+            },
+            
+            lastPasswordChangeDuration(now = new Date()) {
+                const nowM = moment(now);
+                const lastPasswordChange = moment(this.lastPasswordChange);
+                return moment.duration(lastPasswordChange.diff(nowM));
+            }
+        });
 
         // This would be more accurately named "fetched current user" interceptor
         // User.current is set in maWatchdog.setStatus() via one of these interceptors which is registered in ngMango.js
@@ -422,158 +587,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             
             return data.resource;
         }
-
-        User.storeCredentials = function storeCredentials(username, password) {
-            localStorageService.set('storedCredentials', {
-                username: username,
-                password: password
-            });
-        };
-        
-        User.storedUsername = function storedUsername() {
-            const credentials = localStorageService.get('storedCredentials');
-            return credentials ? credentials.username : null;
-        };
-        
-        User.getCredentialsFromUrl = function() {
-        	const params = new URL(window.location.href).searchParams;
-        	if (!params) return;
-        	
-        	const credentials = {
-        		username: params.get('autoLoginUsername'),
-        		password: params.get('autoLoginPassword') || ''
-        	};
-        	
-        	if (params.get('autoLoginDeleteCredentials') != null) {
-        		User.clearStoredCredentials();
-        	} else if (params.get('autoLoginStoreCredentials') != null && credentials.username) {
-        		User.storeCredentials(credentials.username, credentials.password);
-        	}
-        	
-        	return credentials.username && credentials;
-        };
-        
-        User.autoLogin = function autoLogin(maUiSettings) {
-            let credentials = User.getCredentialsFromUrl() || localStorageService.get('storedCredentials');
-        	if (!credentials && (maUiSettings || $injector.has('maUiSettings'))) {
-        		maUiSettings = maUiSettings || $injector.get('maUiSettings');
-        		if (maUiSettings.autoLoginUsername) {
-        			credentials = {
-    					username: maUiSettings.autoLoginUsername,
-    					password: maUiSettings.autoLoginPassword || ''
-    				};
-        		}
-        	}
-            if (!credentials) {
-            	return $q.reject('No stored credentials');
-            }
-            return this.login.call(this, credentials).$promise;
-        };
-        
-        User.clearStoredCredentials = function clearStoredCredentials() {
-            localStorageService.remove('storedCredentials');
-        };
-        
-        const passwordResetUrl = '/rest/v2/password-reset';
-        
-        User.sendPasswordResetEmail = function sendPasswordResetEmail(username, email) {
-            return $http({
-                url: `${passwordResetUrl}/send-email`,
-                method: 'POST',
-                data: {
-                    username,
-                    email
-                }
-            });
-        };
-        
-        User.passwordReset = function passwordReset(token, newPassword) {
-            return $http({
-                url: `${passwordResetUrl}/reset`,
-                method: 'POST',
-                data: {
-                    token,
-                    newPassword
-                }
-            });
-        };
-
-        // returns true if user has any of the desired permissions (can be an array or comma separated string)
-        User.prototype.hasPermission = function(desiredPerms) {
-            if (this.admin || !desiredPerms) return true;
-            if (!this.permissions) return false;
-
-            if (typeof desiredPerms === 'string') {
-                desiredPerms = desiredPerms.split(/\s*\,\s*/);
-            }
-
-            const userPerms = this.permissions.split(/\s*\,\s*/).filter(function(userPerm) {
-                return !!userPerm;
-            });
-            
-            return desiredPerms.some(function(desiredPerm) {
-                return userPerms.indexOf(desiredPerm) >= 0;
-            });
-        };
-
-        User.prototype.getTimezone = function() {
-            return this.timezone || this.systemTimezone;
-        };
-
-        User.prototype.sendTestEmail = function(toEmail, usernameInEmail) {
-        	return maServer.sendTestEmail(toEmail || this.email, usernameInEmail || this.username);
-        };
-        
-        User.prototype.getLocale = function() {
-            return this.locale || this.systemLocale;
-        };
-        
-        const authTokenBaseUrl = '/rest/v2/auth-tokens';
-        
-        User.createAuthToken = function createAuthToken(expiry, username) {
-            return $http({
-                url: `${authTokenBaseUrl}/create`,
-                method: 'POST',
-                data: {
-                    username,
-                    expiry
-                }
-            }).then(response => {
-                return response.data.token;
-            });
-        };
-
-        User.revokeAuthTokens = function revokeAuthTokens(username) {
-            let url = `${authTokenBaseUrl}/revoke`;
-            if (username != null && username !== (this.current && this.current.username)) {
-                url += `/${encodeURIComponent(username)}`;
-            }
-
-            return $http({
-                url,
-                method: 'POST'
-            }).then(response => {
-                return response.data;
-            });
-        };
-
-        User.revokeAllAuthTokens = function revokeAllAuthTokens() {
-            let url = `${authTokenBaseUrl}/reset-keys`;
-            return $http({
-                url,
-                method: 'POST'
-            }).then(response => {
-                return response.data;
-            });
-        };
-
-        User.prototype.createAuthToken = function createAuthToken(expiry) {
-            return this.constructor.createAuthToken(expiry);
-        };
-        
-        User.prototype.revokeAuthTokens = function revokeAuthTokens() {
-            return this.constructor.revokeAuthTokens();
-        };
         
         class NoUserError extends Error {}
         User.NoUserError = NoUserError;

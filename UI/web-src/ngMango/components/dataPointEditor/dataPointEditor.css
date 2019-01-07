@@ -10,9 +10,3 @@ ma-data-point-editor .ma-dialog-actions > .md-button {
 ma-data-point-editor md-switch {
 	margin-top: 0;
 }
-
-@media (min-width: 1280px) {
-	ma-data-point-editor .ma-inputs-container > [flex-gt-md="50"] {
-		max-width: calc(50% - 10px);
-	}
-}
