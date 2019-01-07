@@ -5,23 +5,18 @@
 
 import angular from 'angular';
 import systemSettingEditorTemplate from './systemSettingEditor.html';
-import tinycolor from 'tinycolor2';
 
 class SystemSettingEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maSystemSettings', '$timeout', '$q', '$injector', 'maDialogHelper', 'MA_TIME_PERIOD_TYPES']; }
+    static get $inject() { return ['maSystemSettings', '$timeout', '$q', 'maDialogHelper', 'MA_TIME_PERIOD_TYPES']; }
     
-    constructor(SystemSettings, $timeout, $q, $injector, maDialogHelper, MA_TIME_PERIOD_TYPES) {
+    constructor(SystemSettings, $timeout, $q, maDialogHelper, MA_TIME_PERIOD_TYPES) {
         this.SystemSettings = SystemSettings;
         this.$timeout = $timeout;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.timePeriodTypes = MA_TIME_PERIOD_TYPES;
-    
-        if ($injector.has('$mdColorPicker')) {
-            this.$mdColorPicker = $injector.get('$mdColorPicker');
-        }
-    
+
         this.messages = {};
         this.debounceTime = 0;
     }
@@ -97,31 +92,6 @@ class SystemSettingEditorController {
             return this.$timeout(angular.noop, 5000);
         }).then(() => {
             this.done = false;
-        });
-    }
-    
-    chooseColor($event) {
-        if (!this.$mdColorPicker) return;
-    
-        this.$mdColorPicker.show({
-            value: this.systemSetting.value || tinycolor.random().toHexString(),
-            defaultValue: '',
-            random: false,
-            clickOutsideToClose: true,
-            hasBackdrop: true,
-            skipHide: false,
-            preserveScope: false,
-            mdColorAlphaChannel: true,
-            mdColorSpectrum: true,
-            mdColorSliders: false,
-            mdColorGenericPalette: true,
-            mdColorMaterialPalette: false,
-            mdColorHistory: false,
-            mdColorDefaultTab: 0,
-            $event: $event
-        }).then(color => {
-            this.systemSetting.value = color;
-            this.valueChanged();
         });
     }
 }

@@ -5,7 +5,6 @@
 
 import angular from 'angular';
 import bulkDataPointEditPageTemplate from './bulkDataPointEditPage.html';
-import tinycolor from 'tinycolor2';
 
 import './bulkDataPointEditPage.css';
 
@@ -24,7 +23,6 @@ class BulkDataPointEditPageController {
         'maTranslate',
         '$timeout',
         'maWatchList',
-        '$mdColorPicker',
         'MA_ROLLUP_TYPES',
         'MA_CHART_TYPES',
         'localStorageService',
@@ -38,7 +36,6 @@ class BulkDataPointEditPageController {
             maTranslate,
             $timeout,
             maWatchList,
-            $mdColorPicker,
             MA_ROLLUP_TYPES,
             MA_CHART_TYPES,
             localStorageService,
@@ -52,7 +49,6 @@ class BulkDataPointEditPageController {
         this.maTranslate = maTranslate;
         this.$timeout = $timeout;
         this.maWatchList = maWatchList;
-        this.$mdColorPicker = $mdColorPicker;
         this.MA_ROLLUP_TYPES = MA_ROLLUP_TYPES;
         this.MA_CHART_TYPES = MA_CHART_TYPES;
         this.localStorageService = localStorageService;
@@ -551,29 +547,7 @@ class BulkDataPointEditPageController {
             return point.tags && point.tags[tag.name];
         }
     }
-    
-    chooseColor($event, column) {
-        this.$mdColorPicker.show({
-            value: this.updateBody[column.name] || tinycolor.random().toHexString(),
-            defaultValue: '',
-            random: false,
-            clickOutsideToClose: true,
-            hasBackdrop: true,
-            skipHide: false,
-            preserveScope: false,
-            mdColorAlphaChannel: true,
-            mdColorSpectrum: true,
-            mdColorSliders: false,
-            mdColorGenericPalette: true,
-            mdColorMaterialPalette: false,
-            mdColorHistory: false,
-            mdColorDefaultTab: 0,
-            $event: $event
-        }).then((color) => {
-            this.updateBody[column.name] = color;
-        });
-    }
-    
+
     selectedColumnsChanged() {
         const settings = this.localStorageService.get(localStorageKey) || {};
         settings.selectedColumns = this.selectedColumns.map(c => c.name);

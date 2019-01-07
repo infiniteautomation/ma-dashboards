@@ -26,10 +26,7 @@
         </div>
         <div ng-if="$ctrl.chartOptions.configNextPoint" layout layout-align="start center" layout-wrap>
             <strong flex="100" flex-gt-xs="30" flex-gt-md="15" ma-tr="ui.app.configureNextPoint"></strong>
-            <div class="ma-color-picker-preview"
-                ng-click="$ctrl.showColorPicker($event, $ctrl.chartOptions, 'pointColor')" role="button" tabindex="-1">
-              <div class="ma-color-picker-result" ng-style="{'background-color': $ctrl.chartOptions.pointColor}"></div>
-            </div>
+            <ma-color-picker ng-model="$ctrl.chartOptions.pointColor"></ma-color-picker>
             
             <md-input-container flex>
             	<label ma-tr="ui.app.lineColor"></label>
@@ -66,10 +63,7 @@
             <strong flex="100" flex-gt-xs="30" flex-gt-md="15">
                 <span ng-repeat="(key, value) in config.tags"><span ng-bind="value"></span><span ng-if="!$last"> &mdash; </span></span>
             </strong>
-            <div class="ma-color-picker-preview"
-                ng-click="$ctrl.showColorPicker($event, config, 'lineColor', true)" role="button" tabindex="-1">
-              <div class="ma-color-picker-result" ng-style="{'background-color': config.lineColor}"></div>
-            </div>
+            <ma-color-picker ng-model="config.lineColor" ng-change="$ctrl.rebuildChart()"></ma-color-picker>
 
             <md-input-container flex>
                 <label ma-tr="ui.app.lineColor"></label>
@@ -111,10 +105,7 @@
                 </md-input-container>
                 
                 <div flex="50" flex-gt-xs="33" layout layout-align="start center">
-                    <div class="ma-color-picker-preview"
-                        ng-click="$ctrl.chooseAxisColor($event, axis.name)" role="button" tabindex="-1">
-                      <div class="ma-color-picker-result" ng-style="{'background-color': $ctrl.chartConfig.valueAxes[axis.name].color}"></div>
-                    </div>
+                    <ma-color-picker ng-model="$ctrl.chartConfig.valueAxes[axis.name].color" ng-change="$ctrl.rebuildChart()"></ma-color-picker>
                     
                     <md-input-container flex>
                         <label ma-tr="ui.app.axisColor"></label>
