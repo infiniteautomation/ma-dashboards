@@ -597,7 +597,12 @@ function dataPointProvider() {
                 return label;
             }
         });
-    
+
+        Object.defineProperty(Point.prototype, 'tagsString', {
+            get() { return this.formatTags(); },
+            set(value) { }
+        });
+        
         Object.defineProperty(Point.prototype, 'isEnabled', {
             get() { return this.enabled; },
             set(value) { this.enable(value); }
