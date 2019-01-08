@@ -12,6 +12,9 @@ class DataPointTagsEditorController {
     
     constructor(maDataPointTags) {
         this.maDataPointTags = maDataPointTags;
+        
+        this.tags = {};
+        this.updateExcludedTags();
     }
     
     $onInit() {
@@ -21,12 +24,30 @@ class DataPointTagsEditorController {
     $onChanges(changes) {
     }
 
+    updateExcludedTags() {
+        const tagKeys = Object.keys(this.tags);
+        this.excludedTags = ['device', 'name', ...tagKeys];
+    }
+    
     render() {
         this.tags = Object.assign({}, this.ngModelCtrl.$viewValue);
+        this.updateExcludedTags();
     }
     
     deleteTagKey(key) {
         delete this.tags[key];
+        
+        this.updateExcludedTags();
+        this.setViewValue();
+    }
+    
+    addTagKey(key) {
+        this.newTagKey = null;
+        if (this.tags.hasOwnProperty(key)) return;
+        
+        this.tags[key] = '';
+        
+        this.updateExcludedTags();
         this.setViewValue();
     }
     

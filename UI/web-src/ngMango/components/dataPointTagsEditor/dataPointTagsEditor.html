@@ -1,9 +1,19 @@
 <div>
     <div ng-repeat="(key, value) in $ctrl.tags" layout layout-align="start center">
-        <md-button class="md-icon-button" ng-click="$ctrl.deleteTagKey(key)"><md-icon>delete</md-icon></md-button>
-        <div ng-bind="key" flex></div>
-        <ma-data-point-tag-select flex ng-model="$ctrl.tags[key]" key="{{key}}" ng-change="$ctrl.tagValueChanged(key)"></ma-data-point-tag-select>
+        <md-button class="md-icon-button" ng-click="$ctrl.deleteTagKey(key)"><md-icon>clear</md-icon></md-button>
+        <div flex ng-bind="key"></div>
+        <ma-data-point-tag-select flex
+                key="{{key}}"
+                ng-model="$ctrl.tags[key]"
+                ng-change="$ctrl.tagValueChanged(key)"
+                show-any-option="::false"
+                edit-mode="::true">
+        </ma-data-point-tag-select>
     </div>
 </div>
 
-<ma-data-point-tag-key-select ng-model="$ctrl.newTagKey" ng-change="$ctrl.tags[$ctrl.newTagKey] = 'new value'; $ctrl.newTagKey = null;"></ma-data-point-tag-key-select>
+<ma-data-point-tag-key-select
+    ng-model="$ctrl.newTagKey"
+    ng-change="$ctrl.addTagKey($ctrl.newTagKey)"
+    exclude-tags="$ctrl.excludedTags"
+></ma-data-point-tag-key-select>
