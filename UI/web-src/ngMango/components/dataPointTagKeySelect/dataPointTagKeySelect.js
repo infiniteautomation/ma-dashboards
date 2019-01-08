@@ -26,6 +26,8 @@ class DataPointTagKeySelectController {
     
     constructor(maDataPointTags) {
         this.maDataPointTags = maDataPointTags;
+        
+        this.queryOnOpen = true;
     }
     
     $onInit() {
@@ -33,27 +35,47 @@ class DataPointTagKeySelectController {
             this.selected = this.ngModelCtrl.$viewValue;
         };
         
-        this.queryPromise = this.maDataPointTags.keys().then(values => {
-            this.values = values.sort();
-            if (Array.isArray(this.excludeTags)) {
-                this.values = this.values.filter(v => !this.excludeTags.includes(v));
-            }
-        });
-        
-        if (this.onQuery) {
-            this.onQuery({$promise: this.queryPromise});
-        }
+        this.doQuery();
     }
     
     $onChanges(changes) {
         if (changes.disabledOptions) {
             this.rebuildDisabledOptions();
         }
+        
+        if (changes.excludeTags) {
+            this.updateExcluded();
+        }
+    }
+    
+    doQuery() {
+        if (!this.queryOnOpen && this.queryPromise) {
+            return this.queryPromise;
+        }
+        
+        this.queryPromise = this.maDataPointTags.keys().then(values => {
+            this.values = this.allValues = values.sort();
+            this.updateExcluded();
+            
+            return this.values;
+        });
+        
+        if (this.onQuery) {
+            this.onQuery({$promise: this.queryPromise});
+        }
+        
+        return this.queryPromise;
+    }
+    
+    updateExcluded() {
+        if (Array.isArray(this.allValues) && Array.isArray(this.excludeTags)) {
+            this.values = this.allValues.filter(v => !this.excludeTags.includes(v));
+        }
     }
     
     rebuildDisabledOptions() {
         this.disabledOptionsMap = {};
-        if (this.disabledOptions) {
+        if (Array.isArray(this.disabledOptions)) {
             this.disabledOptions.forEach(o => this.disabledOptionsMap[o] = true);
         }
         if (this.ngModelCtrl) {
@@ -73,7 +95,8 @@ export default {
         selectedText: '<?',
         excludeTags: '<?',
         noFloat: '<?',
-        onQuery: '&?'
+        onQuery: '&?',
+        queryOnOpen: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

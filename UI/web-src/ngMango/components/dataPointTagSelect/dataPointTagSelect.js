@@ -28,6 +28,9 @@ class DataPointTagSelectController {
     
     constructor(maDataPointTags) {
         this.maDataPointTags = maDataPointTags;
+        
+        this.showAnyOption = true;
+        this.queryOnOpen = true;
     }
     
     $onInit() {
@@ -37,9 +40,19 @@ class DataPointTagSelectController {
     }
     
     $onChanges(changes) {
+        if (changes.key || changes.restrictions) {
+            this.doQuery();
+        }
+    }
+    
+    doQuery() {
+        if (this.queryPromise && (!this.queryOnOpen || this.editMode)) {
+            return this.queryPromise;
+        }
+        
         const restrictions = Object.assign({}, this.restrictions);
         delete restrictions[this.key];
-        
+
         this.queryPromise = this.maDataPointTags.values(this.key, restrictions).then(values => {
             this.values = values.sort();
             
@@ -57,15 +70,44 @@ class DataPointTagSelectController {
                     }
                 }
             }
+            
+            return this.values;
         });
         
         if (this.onQuery) {
             this.onQuery({$promise: this.queryPromise});
         }
+        
+        return this.queryPromise;
     }
     
     inputChanged() {
-        this.ngModelCtrl.$setViewValue(this.selected);
+        if (this.editMode) {
+            this.ngModelCtrl.$setViewValue(this.selected || this.searchText || '');
+        } else {
+            this.ngModelCtrl.$setViewValue(this.selected);
+        }
+    }
+
+    searchTextChanged() {
+        this.ngModelCtrl.$setViewValue(this.searchText);
+    }
+    
+    doSearch() {
+        return this.doQuery().then(values => {
+            return this.filterValues();
+        });
+    }
+    
+    filterValues() {
+        if (!this.searchText || typeof this.searchText !== 'string') {
+            return this.values.slice();
+        }
+        
+        const searchLower = this.searchText.toLowerCase();
+        return this.values.filter(val => {
+            return val.toLowerCase().includes(searchLower);
+        });
     }
 }
 
@@ -77,7 +119,10 @@ export default {
         deselectOnQuery: '<?',
         selectedText: '<?',
         noFloat: '<?',
-        onQuery: '&?'
+        onQuery: '&?',
+        showAnyOption: '<?',
+        queryOnOpen: '<?',
+        editMode: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
