@@ -686,10 +686,6 @@ md-card md-card-content.ma-no-padding-bottom {
   margin: 0;
 }
 
-md-menu-content md-checkbox:not(.md-checked) .md-container .md-icon {
-    border-color: rgba(0,0,0,0.54);
-}
-
 /* import/export config components */
 ma-config-export md-checkbox.ma-export-section {
   margin: 2px 0;
