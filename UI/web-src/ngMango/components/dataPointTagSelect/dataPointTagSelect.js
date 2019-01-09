@@ -140,7 +140,8 @@ export default {
         onQuery: '&?',
         showAnyOption: '<?',
         queryOnOpen: '<?',
-        editMode: '<?'
+        editMode: '<?',
+        labelText: '@?'
     },
     require: {
         ngModelCtrl: 'ngModel'

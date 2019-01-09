@@ -31,7 +31,7 @@
         md-item-text="value"
         md-no-cache="::true"
         md-min-length="0"
-        md-floating-label="{{'ui.components.selectTagValue' | maTr:[$ctrl.key]}}"
+        md-floating-label="{{$ctrl.labelText || ('ui.components.enterTagValue' | maTr:[$ctrl.key])}}"
         md-delay="0"
         md-select-on-match="::true"
         md-escape-options="blur"
