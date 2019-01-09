@@ -10,7 +10,7 @@ class DataPointTagsEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maDataPointTags']; }
     
-    constructor(maDataPointTags) {
+    constructor(maDataPointTags, $timeout) {
         this.maDataPointTags = maDataPointTags;
         
         this.tags = {};
@@ -42,6 +42,11 @@ class DataPointTagsEditorController {
     }
     
     addTagKey(key) {
+        // blurs the autocomplete so it's dropdown doesn't open again
+        if (document.activeElement) {
+            document.activeElement.blur();
+        }
+        
         this.newTagKey = null;
         if (this.tags.hasOwnProperty(key)) return;
         

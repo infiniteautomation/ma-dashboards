@@ -22,10 +22,11 @@ import dataPointTagKeySelectTemplate from './dataPointTagKeySelect.html';
 
 class DataPointTagKeySelectController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maDataPointTags']; }
+    static get $inject() { return ['maDataPointTags', '$element']; }
     
-    constructor(maDataPointTags) {
+    constructor(maDataPointTags, $element) {
         this.maDataPointTags = maDataPointTags;
+        this.$element = $element;
         
         this.queryOnOpen = true;
     }
@@ -35,7 +36,9 @@ class DataPointTagKeySelectController {
             this.selected = this.ngModelCtrl.$viewValue;
         };
         
-        this.doQuery();
+        if (!this.editMode) {
+            this.doQuery();
+        }
     }
     
     $onChanges(changes) {
@@ -45,16 +48,17 @@ class DataPointTagKeySelectController {
         
         if (changes.excludeTags) {
             this.updateExcluded();
+            this.searchValues = null;
         }
     }
     
-    doQuery() {
-        if (!this.queryOnOpen && this.queryPromise) {
+    doQuery(forceRefresh = this.queryOnOpen) {
+        if (this.queryPromise && !forceRefresh) {
             return this.queryPromise;
         }
         
         this.queryPromise = this.maDataPointTags.keys().then(values => {
-            this.values = this.allValues = values.sort();
+            this.allValues = values.sort();
             this.updateExcluded();
             
             return this.values;
@@ -68,8 +72,12 @@ class DataPointTagKeySelectController {
     }
     
     updateExcluded() {
-        if (Array.isArray(this.allValues) && Array.isArray(this.excludeTags)) {
+        if (!Array.isArray(this.allValues)) return;
+        
+        if (Array.isArray(this.excludeTags)) {
             this.values = this.allValues.filter(v => !this.excludeTags.includes(v));
+        } else {
+            this.values = this.allValues.slice();
         }
     }
     
@@ -86,6 +94,44 @@ class DataPointTagKeySelectController {
     inputChanged() {
         this.ngModelCtrl.$setViewValue(this.selected);
     }
+
+    searchTextChanged() {
+    }
+    
+    doSearch() {
+        // if we already have the array of tag keys, just filter it and return it now
+        if (Array.isArray(this.searchValues)) {
+            return this.filterValues();
+        }
+        
+        // refresh the array of tag keys and return promise
+        return this.doQuery().then(values => {
+            this.searchValues = values;
+            return this.filterValues();
+        });
+    }
+    
+    autocompleteBlurred() {
+        // clear the values when the input blurs so next time the drop down opens we call doQuery() again
+        this.searchValues = null;
+    }
+    
+    filterValues() {
+        if (!this.searchText || typeof this.searchText !== 'string') {
+            return this.searchValues.slice();
+        }
+        
+        const searchLower = this.searchText.toLowerCase();
+        return this.searchValues.filter(val => {
+            return val.toLowerCase().includes(searchLower);
+        });
+    }
+    
+    enterPressed() {
+        this.selected = this.searchText;
+        this.searchText = '';
+        this.inputChanged();
+    }
 }
 
 export default {
@@ -96,7 +142,9 @@ export default {
         excludeTags: '<?',
         noFloat: '<?',
         onQuery: '&?',
-        queryOnOpen: '<?'
+        queryOnOpen: '<?',
+        editMode: '<?',
+        labelText: '@?'
     },
     require: {
         ngModelCtrl: 'ngModel'

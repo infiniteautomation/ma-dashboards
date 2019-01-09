@@ -1,4 +1,4 @@
-<md-input-container ng-if="!$ctrl.selectMultiple" md-no-float="$ctrl.noFloat" flex>
+<md-input-container ng-if="!$ctrl.editMode && !$ctrl.selectMultiple" md-no-float="$ctrl.noFloat" flex>
     <label ng-if="!$ctrl.noFloat" ng-transclude="label"><span ma-tr="ui.components.selectTagKey"></span></label>
     <md-select ng-attr-md-selected-text="{{$ctrl.selectedText && '$ctrl.selectedText'}}"
             ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()" md-on-open="$ctrl.doQuery()">
@@ -8,7 +8,7 @@
     </md-select>
 </md-input-container>
 
-<md-input-container ng-if="$ctrl.selectMultiple" md-no-float="$ctrl.noFloat" flex>
+<md-input-container ng-if="!$ctrl.editMode && $ctrl.selectMultiple" md-no-float="$ctrl.noFloat" flex>
     <label ng-if="!$ctrl.noFloat" ng-transclude="label"><span ma-tr="ui.components.selectTagKey"></span></label>
     <md-select ng-attr-md-selected-text="{{$ctrl.selectedText && '$ctrl.selectedText'}}"
             multiple="true" ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()" md-on-open="$ctrl.doQuery()">
@@ -17,3 +17,24 @@
         </md-option>
     </md-select>
 </md-input-container>
+
+<md-autocomplete ng-if="$ctrl.editMode" flex
+        md-selected-item="$ctrl.selected"
+        md-selected-item-change="$ctrl.inputChanged()"
+        md-search-text="$ctrl.searchText"
+        md-search-text-change="$ctrl.searchTextChanged()"
+        md-items="value in $ctrl.doSearch()"
+        md-item-text="value"
+        md-no-cache="::true"
+        md-min-length="0"
+        md-floating-label="{{$ctrl.labelText || ('ui.components.addTagKey' | maTr)}}"
+        md-delay="0"
+        md-select-on-match="::false"
+        md-escape-options="blur"
+        md-clear-button="::true"
+        ng-blur="$ctrl.autocompleteBlurred()"
+        ma-enter="$ctrl.enterPressed()">
+    <md-item-template>
+        <span md-highlight-text="$ctrl.searchText" md-highlight-flags="gi">{{value}}</span>
+    </md-item-template>
+</md-autocomplete>

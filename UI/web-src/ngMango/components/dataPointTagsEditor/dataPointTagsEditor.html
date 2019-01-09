@@ -6,7 +6,6 @@
                 key="{{key}}"
                 ng-model="$ctrl.tags[key]"
                 ng-change="$ctrl.tagValueChanged(key)"
-                show-any-option="::false"
                 edit-mode="::true">
         </ma-data-point-tag-select>
     </div>
@@ -16,4 +15,5 @@
     ng-model="$ctrl.newTagKey"
     ng-change="$ctrl.addTagKey($ctrl.newTagKey)"
     exclude-tags="$ctrl.excludedTags"
+    edit-mode="::true"
 ></ma-data-point-tag-key-select>
