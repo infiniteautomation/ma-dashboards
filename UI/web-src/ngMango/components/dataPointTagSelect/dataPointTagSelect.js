@@ -40,13 +40,19 @@ class DataPointTagSelectController {
     }
     
     $onChanges(changes) {
-        if (changes.key || changes.restrictions) {
-            this.doQuery();
+        if (changes.key || changes.restrictions || changes.editMode) {
+            delete this.queryPromise;
+            delete this.values;
+            delete this.searchValues;
+            
+            if (!this.editMode) {
+                this.doQuery(true);
+            }
         }
     }
     
-    doQuery() {
-        if (this.queryPromise && (!this.queryOnOpen || this.editMode)) {
+    doQuery(forceRefresh = this.queryOnOpen) {
+        if (this.queryPromise && !forceRefresh) {
             return this.queryPromise;
         }
         
@@ -94,18 +100,30 @@ class DataPointTagSelectController {
     }
     
     doSearch() {
+        // if we already have the array of tags, just filter it and return it now
+        if (Array.isArray(this.searchValues)) {
+            return this.filterValues();
+        }
+        
+        // refresh the array of tags and return promise
         return this.doQuery().then(values => {
+            this.searchValues = values;
             return this.filterValues();
         });
     }
     
+    autocompleteBlurred() {
+        // clear the values when the input blurs so next time the drop down opens we call doQuery() again
+        this.searchValues = null;
+    }
+    
     filterValues() {
         if (!this.searchText || typeof this.searchText !== 'string') {
-            return this.values.slice();
+            return this.searchValues.slice();
         }
         
         const searchLower = this.searchText.toLowerCase();
-        return this.values.filter(val => {
+        return this.searchValues.filter(val => {
             return val.toLowerCase().includes(searchLower);
         });
     }

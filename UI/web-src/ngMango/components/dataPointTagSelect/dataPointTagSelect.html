@@ -36,7 +36,7 @@
         md-select-on-match="::true"
         md-escape-options="blur"
         md-clear-button="true"
-        ng-blur="$ctrl.queryPromise = null">
+        ng-blur="$ctrl.autocompleteBlurred()">
     <md-item-template>
         <span md-highlight-text="$ctrl.searchText" md-highlight-flags="gi">{{value}}</span>
     </md-item-template>
