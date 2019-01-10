@@ -85,10 +85,14 @@ class DataPointEditorController {
         
         this.validationMessages = [];
         this.activeTab = 0;
+        this.points = null;
         
         const viewValue = this.ngModelCtrl.$viewValue;
         if (viewValue) {
-            if (viewValue instanceof this.maPoint) {
+            if (Array.isArray(viewValue)) {
+                this.points = viewValue.slice();
+                this.dataPoint = this.createCombinedPoint(this.points);
+            } else if (viewValue instanceof this.maPoint) {
                 this.dataPoint = viewValue.copy();
             } else {
                 this.dataPoint = Object.assign(Object.create(this.maPoint.prototype), viewValue);
@@ -103,7 +107,74 @@ class DataPointEditorController {
         }
     }
     
+    createCombinedPoint(points) {
+        if (!points.length) {
+            this.dataPoint = null;
+            return;
+        }
+        
+        return points.slice(1).reduce((combined, point, i) => {
+            return this.combineObjects(combined, point);
+        }, angular.copy(points[0]));
+    }
+    
+    combineObjects(dst, src) {
+        const allKeysSet = new Set(Object.keys(src));
+        Object.keys(dst).forEach(k => allKeysSet.add(k));
+
+        allKeysSet.forEach(key => {
+            const srcValue = src[key];
+            const dstValue = dst[key];
+            
+            if (srcValue !== dstValue) {
+                // do we need special array handling? maybe for .length
+                if (typeof srcValue === 'object' && typeof dstValue === 'object' && srcValue != null && dstValue != null) {
+                    this.combineObjects(dstValue, srcValue);
+                } else {
+                    dst[key] = '<<multiple>>';
+                }
+            }
+        });
+        
+        return dst;
+    }
+    
+    applyCombined(dst, src) {
+        const srcKeysSet = new Set(Object.keys(src));
+        
+        srcKeysSet.forEach(key => {
+            const srcValue = src[key];
+            const dstValue = dst[key];
+
+            if (srcValue !== dstValue && srcValue !== '<<multiple>>') {
+                if (typeof srcValue === 'object' && typeof dstValue === 'object' && srcValue != null && dstValue != null) {
+                    this.applyCombined(dstValue, srcValue);
+                } else {
+                    dst[key] = srcValue;
+                }
+            }
+        });
+        
+        // remove any properties which exist in the destination but have been removed from the combined point 
+        Object.keys(dst).forEach(key => {
+            if (!srcKeysSet.has(key)) {
+                delete dst[key];
+            }
+        });
+        
+        return dst;
+    }
+    
     setViewValue() {
+        if (this.points) {
+            this.points.forEach(point => {
+                this.applyCombined(point, this.dataPoint);
+            });
+            
+            this.ngModelCtrl.$setViewValue(this.points);
+            return;
+        }
+        
         this.ngModelCtrl.$setViewValue(this.dataPoint);
     }
 
@@ -116,6 +187,12 @@ class DataPointEditorController {
         }
         
         this.validationMessages = [];
+        
+        if (this.points) {
+            this.setViewValue();
+            this.render();
+            return;
+        }
         
         this.dataPoint.save().then(item => {
             this.setViewValue();

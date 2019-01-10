@@ -182,3 +182,18 @@
         </md-button>
     </div>
 </div>
+
+<div layout>
+    <div flex="50">
+        <pre ng-bind="$ctrl.points[0].name"></pre>
+        <pre ng-bind="$ctrl.points[0].tags | json"></pre>
+    </div>
+    <div flex="50">
+        <pre ng-bind="$ctrl.points[1].name"></pre>
+        <pre ng-bind="$ctrl.points[1].tags | json"></pre>
+    </div>
+</div>
+
+<hr>
+
+<pre ng-bind="$ctrl.dataPoint | json"></pre>
