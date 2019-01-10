@@ -8,7 +8,7 @@ import angular from 'angular';
 scriptingEditorFactory.$inject = ['$http'];
 function scriptingEditorFactory($http) {
     
-    const baseUrl = '/rest/v2/script';
+    const baseUrl = '/rest/v2/script/validate';
     
     const defaultProperties = {
         wrapInFunction: false,
@@ -24,10 +24,10 @@ function scriptingEditorFactory($http) {
             Object.assign(this, angular.copy(defaultProperties), properties);
         } 
         
-        validate(opts = {}) {
+        validate(url = baseUrl, opts = {}) {
             return $http({
                 method: 'POST',
-                url: baseUrl + '/validate',
+                url: url,
                 data: this 
             }, opts).then(response => {
                 return response.data;

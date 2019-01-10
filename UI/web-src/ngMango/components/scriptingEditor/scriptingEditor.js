@@ -54,7 +54,7 @@ class scriptingEditorController {
         this.scriptActions = null;
         this.scriptOutput = null;
 
-        this.scriptData.validate().then(response => {
+        this.scriptData.validate(this.url).then(response => {
             this.scriptErrors = response.errors;
             this.scriptActions = response.actions;
             this.scriptOutput = response.scriptOutput;
@@ -80,7 +80,8 @@ export default {
         context: '<',
         resultDataType: '<?',
         wrapInFunction: '<?',
-        permissions: '<?'
+        permissions: '<?',
+        url: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
