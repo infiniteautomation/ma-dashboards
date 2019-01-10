@@ -1065,3 +1065,32 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 		max-width: calc(50% - 10px);
 	}
 }
+
+.my-10 {
+    margin-top: 10px; 
+    margin-bottom: 10px;
+}
+
+.color-error {
+    color: #F44336;
+}
+
+.color-warn {
+    color: #FDD835;
+}
+
+.p-10 {
+    padding: 10px;
+}
+
+.overflow-y-scroll {
+    overflow-y: scroll;
+}
+
+.max-height-100 {
+    max-height: 100px;
+}
+
+.log-bg {
+    background-color: #272822;
+}

@@ -1,0 +1,47 @@
+<div flex layout="column">
+    <div flex layout="column">
+        <ma-ace-editor flex mode="javascript" ng-change="$ctrl.setViewValue()" ng-model="$ctrl.scriptData.script"></ma-ace-editor>
+    </div>
+    <div flex layout layout-align="space-between top" layout-wrap>
+        <div flex="100" flex-gt-sm="70" flex-gt-md="80">
+            <div ng-if="$ctrl.scriptOutput" flex class="log-bg p-10 overflow-y-scroll max-height-100">
+                <pre>{{ $ctrl.scriptOutput }}</pre>
+            </div>
+            <ul ng-if="$ctrl.scriptErrors" class="my-10">
+                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="error.property" class="color-error">
+                    <pre>{{ error.message }}</pre> on <b>{{ error.property }}</b>
+                </li>
+                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property" class="color-error">
+                    <pre>{{ error.message }}</pre>
+                </li>
+            </ul>
+            <ul ng-if="$ctrl.scriptActions" class="my-10">
+                <li ng-repeat="action in $ctrl.scriptActions" ng-class="{'color-error': action.level === 'error', 'color-warn': action.level === 'warning'}">
+                    <pre ng-if="action.level === 'error'" class="color-error">{{ action.message }}</pre>
+                    <pre ng-if="action.level === 'warning'" class="color-warn">{{ action.message }}</pre>
+                    <pre ng-if="action.level !== 'warning' && action.level !== 'error'">{{ action.message }}</pre>
+                </li>
+            </ul>
+        </div>
+        <div flex="100" flex-gt-sm="80" flex-gt-md="20" layout layout-align="end top">
+            <md-input-container>
+                <label ma-tr="common.logging.logLevel"></label>
+                <md-select name="relativeDateType" ng-model="$ctrl.scriptData.logLevel">
+                    <md-option value="NONE" ma-tr="common.none"></md-option>
+                    <md-option value="TRACE" ma-tr="common.logging.trace"></md-option>
+                    <md-option value="DEBUG" ma-tr="common.logging.debug"></md-option>
+                    <md-option value="INFO" ma-tr="common.logging.info"></md-option>
+                    <md-option value="WARN" ma-tr="common.logging.warn"></md-option>
+                    <md-option value="ERROR" ma-tr="common.logging.error"></md-option>
+                    <md-option value="FATAL" ma-tr="common.logging.fatal"></md-option>
+                </md-select>
+            </md-input-container>
+            <div>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.validate($event)">
+                    <md-icon>done</md-icon> <span ma-tr="scriptingEditor.ui.validate"></span>
+                </md-button>
+            </div>
+        </div>
+        
+    </div>
+</div>

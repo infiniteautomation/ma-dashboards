@@ -131,6 +131,7 @@ import virtualSerialPortSelect from './components/virtualSerialPort/virtualSeria
 import virtualSerialPortSetup from './components/virtualSerialPort/virtualSerialPortSetup';
 import colorPicker from './components/colorPicker/colorPicker';
 import dataPointTagsEditor from './components/dataPointTagsEditor/dataPointTagsEditor';
+import scriptingEditor from './components/scriptingEditor/scriptingEditor';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -275,6 +276,7 @@ ngMango.component('maVirtualSerialPortSelect', virtualSerialPortSelect);
 ngMango.component('maVirtualSerialPortSetup', virtualSerialPortSetup);
 ngMango.component('maColorPicker', colorPicker);
 ngMango.component('maDataPointTagsEditor', dataPointTagsEditor);
+ngMango.component('maScriptingEditor', scriptingEditor);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default
