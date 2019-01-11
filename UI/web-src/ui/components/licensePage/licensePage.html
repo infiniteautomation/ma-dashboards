@@ -57,13 +57,21 @@
 <p>6.9. You (and variations thereof) means the entity that agrees to the terms and conditions of this Agreement as the licensee.</p>
     </div>
 
-    <div>
+    <div class="ma-license-checkboxes">
         <div>
             <md-checkbox ng-model="$ctrl.upgradeChecksEnabled.value"><span ma-tr="systemSettings.upgradeChecksEnabled"></span></md-checkbox>
+            <md-button class="md-icon-button" ng-click="$ctrl.upgradeChecksHelp = !$ctrl.upgradeChecksHelp"><md-icon>help</md-icon></md-button>
         </div>
+        <em class="ma-license-help" ng-if="$ctrl.upgradeChecksHelp">
+            Help text here
+        </em>
         <div>
             <md-checkbox ng-model="$ctrl.usageTrackingEnabled.value" ng-disabled="!$ctrl.upgradeChecksEnabled.value"><span ma-tr="systemSettings.usageTrackingEnabled"></span></md-checkbox>
+            <md-button class="md-icon-button" ng-click="$ctrl.usageTrackingHelp = !$ctrl.usageTrackingHelp"><md-icon>help</md-icon></md-button>
         </div>
+        <em class="ma-license-help" ng-if="$ctrl.usageTrackingHelp">
+            Help text here
+        </em>
     </div>
 
     <md-button class="md-raised md-accent" ma-tr="ui.app.agreeAndContinue" ng-click="$ctrl.agreeToLicense($event)"></md-button>

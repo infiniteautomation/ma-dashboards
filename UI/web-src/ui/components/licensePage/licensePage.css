@@ -2,4 +2,23 @@ ma-ui-license-page .ma-license {
   overflow-y: scroll;
   width: 100%;
   max-width: 1024px;
+  margin-bottom: 8px;
+}
+
+ma-ui-license-page .md-button.md-icon-button {
+	margin: -8px 0;
+}
+
+ma-ui-license-page md-checkbox {
+	margin: 4px 0;
+}
+
+ma-ui-license-page .ma-license-checkboxes {
+	width: 1024px;
+}
+
+ma-ui-license-page em.ma-license-help {
+	margin-left: 30px;
+	max-width: calc(100% - 30px);
+	display: inline-block;
 }
