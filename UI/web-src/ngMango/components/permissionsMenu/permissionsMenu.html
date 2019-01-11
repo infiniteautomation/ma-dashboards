@@ -1,5 +1,5 @@
 <md-menu class="ma-input-button" md-position-mode="target-right target">
-  <md-button ng-click="$mdMenu.open($event)" class="md-icon-button"><md-icon>arrow_drop_down</md-icon></md-button>
+  <md-button ng-click="$mdMenu.open($event)" class="md-icon-button" ng-disabled="$ctrl.disabled"><md-icon>arrow_drop_down</md-icon></md-button>
   <md-menu-content width="4" class="ma-permissions-menu">
     <md-menu-item ng-repeat="permission in $ctrl.permissions track by permission.name">
       <div flex layout layout-align="start center">

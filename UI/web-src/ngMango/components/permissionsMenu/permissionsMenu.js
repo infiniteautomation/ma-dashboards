@@ -80,7 +80,9 @@ export default {
     require: {
         'ngModelCtrl': 'ngModel'
     },
-    bindings: {},
+    bindings: {
+        disabled: '@?'
+    },
     designerInfo: {
         translation: 'ui.components.maPermissionsMenu',
         icon: 'verified_user'
