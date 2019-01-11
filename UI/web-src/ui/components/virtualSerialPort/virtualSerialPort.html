@@ -10,7 +10,7 @@
 
 
         <md-card-content flex ng-if="!$ctrl.$mdMedia('gt-md')">
-            <ma-virtual-serial-port-select flex layout ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
+            <ma-virtual-serial-port-select flex layout updated-item="$ctrl.updatedItem"  ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
             <md-button class="md-raised md-primary" ng-click="$ctrl.newVirtualSerialPort()">
                 <md-icon>add</md-icon> <span ma-tr="ui.app.virtualSerialPort.create"></span>
             </md-button>

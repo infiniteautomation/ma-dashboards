@@ -53,7 +53,6 @@ class VirtualSerialPortSetupController {
     }
 
     delete() {
-        console.log(this.virtualSerialPort);
         this.virtualSerialPort.delete().then(response => {
             this.updateItem();
             this.maDialogHelper.toastOptions({

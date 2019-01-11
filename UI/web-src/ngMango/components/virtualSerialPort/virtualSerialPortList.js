@@ -49,9 +49,9 @@ class VirtualSerialPortListController {
         this.setViewValue();
     }
 
-    selectVirtualSerialPort(virtualSerialPorts) {
+    selectVirtualSerialPort(virtualSerialPort) {
         this.new = false;
-        this.selected = angular.copy(virtualSerialPorts);
+        this.selected = virtualSerialPort;
         this.setViewValue();
     }
 

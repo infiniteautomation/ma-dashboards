@@ -23,13 +23,20 @@ class VirtualSerialPortController {
     }
     
     $onInit() {
+        this.ngModelCtrl.$render = () => this.render();
         this.getVirtualSerialPorts();
     }
     
     $onChanges(changes) {
         if (changes.updatedItem && this.updatedItem) {
             this.getVirtualSerialPorts();
+            this.newVirtualSerialPort();
         }
+    }
+
+    newVirtualSerialPort() {
+        this.selected = new this.maVirtualSerialPort();
+        this.setViewValue();
     }
     
     setViewValue() {
