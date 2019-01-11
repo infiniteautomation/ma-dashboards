@@ -81,7 +81,7 @@ export default {
         resultDataType: '<?',
         wrapInFunction: '<?',
         permissions: '<?',
-        url: '<?'
+        url: '@'
     },
     require: {
         ngModelCtrl: 'ngModel'
