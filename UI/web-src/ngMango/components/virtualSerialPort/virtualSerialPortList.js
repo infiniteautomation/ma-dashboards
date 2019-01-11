@@ -4,7 +4,6 @@
  */
 
 import componentTemplate from './virtualSerialPortList.html';
-import angular from 'angular';
 
 /**
  * @ngdoc directive

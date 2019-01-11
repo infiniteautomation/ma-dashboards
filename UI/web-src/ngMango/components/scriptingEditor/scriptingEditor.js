@@ -4,7 +4,6 @@
  */
 
 import componentTemplate from './scriptingEditor.html';
-import angular from 'angular';
 
 const $inject = Object.freeze(['$scope', 'maScriptingEditor', 'maDialogHelper']);
 
