@@ -40,7 +40,7 @@ class VirtualSerialPortController {
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(this.selected);
+        this.ngModelCtrl.$setViewValue(this.selected.copy());
     }
     
     render() {

@@ -51,7 +51,7 @@ class VirtualSerialPortListController {
 
     selectVirtualSerialPort(virtualSerialPort) {
         this.new = false;
-        this.selected = virtualSerialPort;
+        this.selected = virtualSerialPort.copy();
         this.setViewValue();
     }
 
