@@ -33,10 +33,21 @@ function AceEditor(maModuleLoader) {
             if ($injector.has('maUiSettings')) {
                 this.uiSettings = $injector.get('maUiSettings');
             }
+            
             this.$templateRequest = $templateRequest;
             this.$sce = $sce;
             this.$timeout = $timeout;
             this.$scope = $scope;
+            
+            this.defaultOptions = {
+                useWrapMode : true,
+                showGutter: !!this.showGutter,
+                showPrintMargin: false,
+                theme: this.theme || (this.uiSettings && this.uiSettings.codeTheme),
+                mode: this.mode || 'html',
+                onLoad: this.aceLoaded.bind(this),
+                onChange: this.aceChanged.bind(this)
+            };
         }
     
         $onInit() {
@@ -46,15 +57,7 @@ function AceEditor(maModuleLoader) {
                 $ctrl.setEditorText(this.$viewValue || '');
             };
             
-            this.aceConfig = {
-                useWrapMode : true,
-                showGutter: !!this.showGutter,
-                showPrintMargin: false,
-                theme: this.theme || (this.uiSettings && this.uiSettings.codeTheme),
-                mode: this.mode || 'html',
-                onLoad: this.aceLoaded.bind(this),
-                onChange: this.aceChanged.bind(this)
-            };
+            this.aceConfig = Object.assign({}, this.defaultOptions, this.options);
         }
     
         $onChanges(changes) {
@@ -69,6 +72,9 @@ function AceEditor(maModuleLoader) {
             }
             if (changes.showGutter) {
                 this.setShowGutter();
+            }
+            if (changes.options && !changes.options.isFirstChange()) {
+                this.aceConfig = Object.assign({}, this.defaultOptions, this.options);
             }
         }
     
@@ -91,6 +97,10 @@ function AceEditor(maModuleLoader) {
                         this.selectionChanged({$text: this.editor.getSelectedText()});
                     });
                 });
+            }
+            
+            if (typeof this.editorLoaded === 'function') {
+                this.editorLoaded({$editor: this.editor});
             }
         }
     
@@ -156,7 +166,9 @@ function AceEditor(maModuleLoader) {
             mode: '@?',
             theme: '@?',
             showGutter: '<?',
-            selectionChanged: '&?'
+            selectionChanged: '&?',
+            editorLoaded: '&?',
+            options: '<?'
         },
         controller: AceEditorController,
         designerInfo: {
