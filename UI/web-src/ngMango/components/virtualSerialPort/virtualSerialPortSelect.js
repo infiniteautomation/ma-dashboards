@@ -27,6 +27,9 @@ class VirtualSerialPortController {
     }
     
     $onChanges(changes) {
+        if (changes.updatedItem && this.updatedItem) {
+            this.getVirtualSerialPorts();
+        }
     }
     
     setViewValue() {
@@ -50,6 +53,7 @@ export default {
     controller: VirtualSerialPortController,
     bindings: {
         selectMultiple: '<?',
+        updatedItem: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
