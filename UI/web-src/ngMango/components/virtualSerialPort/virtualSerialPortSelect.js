@@ -23,14 +23,24 @@ class VirtualSerialPortController {
     }
     
     $onInit() {
+        this.ngModelCtrl.$render = () => this.render();
         this.getVirtualSerialPorts();
     }
     
     $onChanges(changes) {
+        if (changes.updatedItem && this.updatedItem) {
+            this.getVirtualSerialPorts();
+            this.newVirtualSerialPort();
+        }
+    }
+
+    newVirtualSerialPort() {
+        this.selected = new this.maVirtualSerialPort();
+        this.setViewValue();
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(this.selected);
+        this.ngModelCtrl.$setViewValue(this.selected.copy());
     }
     
     render() {
@@ -50,6 +60,7 @@ export default {
     controller: VirtualSerialPortController,
     bindings: {
         selectMultiple: '<?',
+        updatedItem: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

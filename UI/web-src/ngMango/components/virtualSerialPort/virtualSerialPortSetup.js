@@ -37,6 +37,7 @@ class VirtualSerialPortSetupController {
         this.form.$setSubmitted();
 
         this.virtualSerialPort.save().then(response => {
+            this.updateItem();
             this.maDialogHelper.toastOptions({
                 textTr: ['systemSettings.comm.virtual.serialPortSaved'],
                 hideDelay: 5000
@@ -51,8 +52,9 @@ class VirtualSerialPortSetupController {
         
     }
 
-    delete() {  
+    delete() {
         this.virtualSerialPort.delete().then(response => {
+            this.updateItem();
             this.maDialogHelper.toastOptions({
                 textTr: ['systemSettings.comm.virtual.serialPortRemoved'],
                 hideDelay: 5000
@@ -69,14 +71,24 @@ class VirtualSerialPortSetupController {
 
     cancel(event) {
         this.virtualSerialPort = new this.maVirtualSerialPort();
+        this.updateItem();
         this.setViewValue();
         this.render();
+    }
+
+    updateItem() {
+        if (typeof this.itemUpdated === 'function') {
+            const copyOfItem = angular.copy(this.virtualSerialPort);
+            this.itemUpdated({$item: copyOfItem});
+        }
     }
 
 }
 
 export default {
-    bindings: {},
+    bindings: {
+        itemUpdated: '&?'
+    },
     require: {
         ngModelCtrl: 'ngModel'
     },

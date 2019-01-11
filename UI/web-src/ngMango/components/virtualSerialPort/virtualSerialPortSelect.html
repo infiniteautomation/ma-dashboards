@@ -2,11 +2,11 @@
     <label ng-transclude="labelSlot">
         <span ma-tr="ui.app.virtualSerialPort.select"></span>
     </label>
-    <md-select flex ng-if="$ctrl.selectMultiple" multiple="true" md-on-open="$ctrl.getVirtualSerialPorts()" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.setViewValue()" ng-model-options="{trackBy: '$value.xid'}">
+    <md-select flex ng-if="$ctrl.selectMultiple" multiple="true" md-on-open="$ctrl.getVirtualSerialPorts()" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectVirtualSerialPort()" ng-model-options="{trackBy: '$value.xid'}">
         <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
         <md-option ng-repeat="virtualSerialPort in $ctrl.virtualSerialPorts | orderBy:'name' track by virtualSerialPort.xid" ng-value="virtualSerialPort"><span ng-bind="virtualSerialPort.name"></span></md-option>
     </md-select>
-    <md-select flex ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.getVirtualSerialPorts()" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.setViewValue()" ng-model-options="{trackBy: '$value.xid'}">
+    <md-select flex ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.getVirtualSerialPorts()" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectVirtualSerialPort()" ng-model-options="{trackBy: '$value.xid'}">
         <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
         <md-option ng-repeat="virtualSerialPort in $ctrl.virtualSerialPorts | orderBy:'name' track by virtualSerialPort.xid" ng-value="virtualSerialPort"><span ng-bind="virtualSerialPort.portName"></span></md-option>
     </md-select>

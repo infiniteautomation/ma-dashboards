@@ -13,14 +13,15 @@ import './virtualSerialPort.css';
  * @description Displays a page to create Virtual Serial Ports
  */
 
-const $inject = Object.freeze(['$scope', 'maVirtualSerialPort']);
+const $inject = Object.freeze(['$scope', 'maVirtualSerialPort', '$mdMedia']);
 class VirtualSerialPort {
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($scope, maVirtualSerialPort) {
+    constructor($scope, maVirtualSerialPort, $mdMedia) {
         this.$scope = $scope;
         this.maVirtualSerialPort = maVirtualSerialPort;
+        this.$mdMedia = $mdMedia;
     }
     
     $onInit() {

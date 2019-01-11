@@ -19,7 +19,6 @@ function VirtualSerialPortFactory(RestResource) {
         bufferSize: 0
     };
 
-
     class VirtualSerialPortResource extends RestResource {
         static get defaultProperties() {
             return defaultProperties;

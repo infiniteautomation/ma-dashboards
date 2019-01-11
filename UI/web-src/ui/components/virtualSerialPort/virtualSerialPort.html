@@ -1,17 +1,29 @@
-<div layout="column" flex="noshrink">
+<div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
+    <md-card flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-card-title flex="nogrow">
+            <md-card-title-text>
+                <span class="md-headline">
+                    <span ma-tr="ui.app.virtualSerialPort.select"></span>
+                </span>
+            </md-card-title-text>
+        </md-card-title>
+
+
+        <md-card-content flex ng-if="!$ctrl.$mdMedia('gt-md')">
+            <ma-virtual-serial-port-select flex layout updated-item="$ctrl.updatedItem"  ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.newVirtualSerialPort()">
+                <md-icon>add</md-icon> <span ma-tr="ui.app.virtualSerialPort.create"></span>
+            </md-button>
+        </md-card-content>
+
+        <md-card-content flex layout layout-align="start start" ng-if="$ctrl.$mdMedia('gt-md')" style="padding-left: 0; padding-right: 0;">
+            <ma-virtual-serial-port-list flex layout updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-list>
+        </md-card-content>
     
-    <div flex>
-        <ma-virtual-serial-port-select ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
-
-        <md-button class="md-raised md-primary" ng-click="$ctrl.newVirtualSerialPort()">
-            <md-icon>add</md-icon> <span ma-tr="ui.app.virtualSerialPort.create"></span>
-        </md-button>
-    </div>
-
-    <md-divider class="my-20"></md-divider>
+    </md-card>
 
     <div flex>
-        <ma-virtual-serial-port-setup ng-model="$ctrl.selected"></ma-virtual-serial-port-setup>
+        <ma-virtual-serial-port-setup item-updated="$ctrl.updatedItem = $item" ng-model="$ctrl.selected"></ma-virtual-serial-port-setup> 
     </div>
-
+    
 </div>

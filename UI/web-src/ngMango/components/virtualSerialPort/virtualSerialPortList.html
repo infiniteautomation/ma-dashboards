@@ -1,0 +1,20 @@
+<md-list flex>
+
+    <md-list-item class="md-2-line" ng-click="$ctrl.newVirtualSerialPort()" md-colors="{'background': $ctrl.new ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3 ma-tr="ui.app.virtualSerialPort.new"></h3>
+            <p ma-tr="ui.app.virtualSerialPort.create"></p>
+        </div>
+        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.newVirtualSerialPort()">
+            <md-icon>add</md-icon>
+        </md-button>
+    </md-list-item>
+
+    <md-list-item ng-repeat="virtualSerialPort in $ctrl.virtualSerialPorts" class="md-2-line" ng-click="$ctrl.selectVirtualSerialPort(virtualSerialPort)" md-colors="{'background': $ctrl.selected.xid === virtualSerialPort.xid ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3> {{ virtualSerialPort.portName}} </h3>
+            <p> {{ virtualSerialPort.port }} </p>
+        </div>
+    </md-list-item>
+
+</md-list>
