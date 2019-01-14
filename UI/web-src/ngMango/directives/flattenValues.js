@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-multipleValueInput.$inject = ['$parse'];
-function multipleValueInput($parse) {
+flattenValues.$inject = ['$parse', 'maMultipleValues'];
+function flattenValues($parse, MultipleValues) {
     return {
         require: 'ngModel',
         restrict: 'A',
@@ -17,9 +17,9 @@ function multipleValueInput($parse) {
             }
             
             ngModel.$formatters.push(function multipleValueFormatter(value) {
-                if (value != null && typeof value.isAllEqual === 'function') {
+                if (value instanceof MultipleValues) {
                     if (expression) {
-                        return expression($scope, {$multiple: value});
+                        return expression($scope, {$values: value});
                     }
                     return undefined;
                 }
@@ -29,4 +29,4 @@ function multipleValueInput($parse) {
     };
 }
 
-export default multipleValueInput;
+export default flattenValues;

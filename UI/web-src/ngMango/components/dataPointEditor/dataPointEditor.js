@@ -14,74 +14,16 @@ import './dataPointEditor.css';
  * @description Editor for a data point, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']);
-
-class Multiple {
-    constructor(length) {
-        this.values = Array(length);
-    }
-
-    addEmpty(count = 1) {
-        this.values.length = this.values.length + count;
-    }
-    
-    addValue(value) {
-        this.values.push(value);
-    }
-    
-    getFirstValue() {
-        return this.values[0];
-    }
-    
-    getFirstNonEmptyValue() {
-        return this.values.find(v => !!v);
-    }
-    
-    getFirstNonNullValue() {
-        return this.values.find(v => v != null);
-    }
-    
-    hasValue(i) {
-        return this.values.hasOwnProperty(i);
-    }
-    
-    getValue(i) {
-        return this.values[i];
-    }
-
-    get isMultiple() {
-        return true;
-    }
-    
-    isAllEqual() {
-        const first = this.getFirstValue();
-        return this.values.every((v, i, arr) => arr.hasOwnProperty(i) && v === first);
-    }
-    
-    valueOf() {
-        if (this.isAllEqual()) {
-            return this.getFirstValue();
-        }
-        return this;
-    }
-    
-    toString() {
-        if (this.isAllEqual()) {
-            return String(this.getFirstValue());
-        }
-        return `<<mutiple values (${this.values.length})>>`;
-    }
-    
-    toJSON() {
-        return this.valueOf();
-    }
-}
+const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
+    'maMultipleValues']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse) {
+    constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
+            MultipleValues) {
+        
         this.maPoint = maPoint;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
@@ -90,6 +32,7 @@ class DataPointEditorController {
         this.maTranslate = maTranslate;
         this.$element = $element;
         this.maUtil = maUtil;
+        this.MultipleValues = MultipleValues;
 
         this.types = maPoint.types;
         this.typesByName = maPoint.typesByName;
@@ -149,15 +92,14 @@ class DataPointEditorController {
         this.points = null;
         
         const viewValue = this.ngModelCtrl.$viewValue;
-        if (viewValue) {
-            if (Array.isArray(viewValue)) {
-                this.points = viewValue.slice();
-                this.dataPoint = this.createCombinedPoint(this.points);
-            } else if (viewValue instanceof this.maPoint) {
-                this.dataPoint = viewValue.copy();
-            } else {
-                this.dataPoint = Object.assign(Object.create(this.maPoint.prototype), viewValue);
-            }
+        
+        if (Array.isArray(viewValue) && viewValue.length) {
+            this.points = viewValue;
+            this.dataPoint = this.MultipleValues.fromArray(this.points);
+        } else if (viewValue instanceof this.maPoint) {
+            this.dataPoint = viewValue.copy();
+        } else if (viewValue) {
+            this.dataPoint = Object.assign(Object.create(this.maPoint.prototype), viewValue);
         } else {
             this.dataPoint = null;
         }
@@ -167,109 +109,10 @@ class DataPointEditorController {
             this.form.$setUntouched();
         }
     }
-    
-    createCombinedPoint(points) {
-        if (!points.length) {
-            this.dataPoint = null;
-            return;
-        }
 
-        const combined = points.reduce((combined, point, i) => {
-            return this.combineInto(combined, point, i);
-        }, null);
-
-        return this.replaceEqualValues(combined);
-    }
-    
-    /**
-     * Constructs an object with Multiple properties from an array of objects
-     */
-    combineInto(dst, src, index) {
-        // dst can be a multiple if we previously encountered this key containing a primitive (e.g. null)
-        if (dst == null || dst instanceof Multiple) {
-            dst = Array.isArray(src) ? [] : Object.create(Object.getPrototypeOf(src));
-        }
-        
-        // check for different dst/src types
-        
-        const allKeysSet = new Set(Object.keys(src));
-        Object.keys(dst).forEach(k => allKeysSet.add(k));
-        
-        allKeysSet.forEach(key => {
-            const srcValue = src[key];
-            const dstValue = dst[key];
-
-            if (srcValue != null && typeof srcValue === 'object') {
-                dst[key] = this.combineInto(dstValue, srcValue, index);
-            } else {
-                let multiple;
-                if (dstValue instanceof Multiple) {
-                    multiple = dstValue;
-                } else if (dstValue != null && typeof dstValue === 'object') {
-                    // previously encountered this key as an object/array, wont override this with a Multiple of a primitive
-                    return;
-                } else {
-                    dst[key] = multiple = new Multiple(index);
-                }
-                
-                if (src.hasOwnProperty(key)) {
-                    multiple.addValue(srcValue);
-                } else {
-                    multiple.addEmpty();
-                }
-            }
-        });
-
-        return dst;
-    }
-    
-    /**
-     * Traverses the object tree and replaces Multiple properties which have the same value with the primitive value
-     */
-    replaceEqualValues(obj) {
-        Object.keys(obj).forEach(key => {
-            const value = obj[key];
-            if (value instanceof Multiple) {
-                obj[key] = value.valueOf();
-            } else if (value != null && typeof value === 'object') {
-                this.replaceEqualValues(value);
-            } else {
-                throw new Error('Values should always be an object or array');
-            }
-        });
-        
-        return obj;
-    }
-    
-    /**
-     * Splits a combined object with Multiple property values into an array of objects
-     */
-    splitCombined(src, index) {
-        const dst = Array.isArray(src) ? [] : Object.create(Object.getPrototypeOf(src));
-
-        Object.keys(src).forEach(key => {
-            const srcValue = src[key];
-            
-            if (srcValue instanceof Multiple) {
-                if (srcValue.hasValue(index)) {
-                    dst[key] = srcValue.getValue(index);
-                }
-            } else if (srcValue != null && typeof srcValue === 'object') {
-                dst[key] = this.splitCombined(srcValue, index);
-            } else {
-                dst[key] = srcValue;
-            }
-        });
-
-        return dst;
-    }
-    
     setViewValue() {
-        if (this.points) {
-            const newPoints = this.points.map((point, i) => {
-                return this.splitCombined(this.dataPoint, i);
-            });
-            
+        if (Array.isArray(this.points)) {
+            const newPoints = this.MultipleValues.toArray(this.dataPoint, this.points.length);
             this.ngModelCtrl.$setViewValue(newPoints);
             return;
         }

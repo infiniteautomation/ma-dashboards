@@ -59,6 +59,7 @@ import virtualSerialPortFactory from './services/virtualSerialPort';
 import dateFilterFactory from './filters/dateFilter';
 import trFilterFactory from './filters/trFilter';
 import scriptingEditorFactory from './services/scriptingEditor';
+import multipleValuesFactory from './services/MultipleValues';
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -137,6 +138,7 @@ ngMangoServices.factory('maEventType', eventTypeFactory);
 ngMangoServices.factory('maVirtualSerialPort', virtualSerialPortFactory);
 ngMangoServices.factory('maScriptingEditor', scriptingEditorFactory);
 ngMangoServices.provider('$exceptionHandler', maExceptionHandler);
+ngMangoServices.factory('maMultipleValues', multipleValuesFactory);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 
