@@ -177,7 +177,8 @@ class DataPointEditorController {
      * Constructs an object with Multiple properties from an array of objects
      */
     combineInto(dst, src, index) {
-        if (dst == null) {
+        // dst can be a multiple if we previously encountered this key containing a primitive (e.g. null)
+        if (dst == null || dst instanceof Multiple) {
             dst = Array.isArray(src) ? [] : Object.create(Object.getPrototypeOf(src));
         }
         
@@ -196,6 +197,9 @@ class DataPointEditorController {
                 let multiple;
                 if (dstValue instanceof Multiple) {
                     multiple = dstValue;
+                } else if (dstValue != null && typeof dstValue === 'object') {
+                    // previously encountered this key as an object/array, wont override this with a Multiple of a primitive
+                    return;
                 } else {
                     dst[key] = multiple = new Multiple(index);
                 }
