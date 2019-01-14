@@ -27,4 +27,18 @@ ngMangoMaterial.factory('maFileStoreDialog', fileStoreDialogFactory);
 ngMangoMaterial.factory('maStatsDialog', statsDialogFactory);
 ngMangoMaterial.factory('maSetPointDialog', setPointDialogFactory);
 
+
+ngMangoMaterial.config(['$provide', function($provide) {
+    $provide.decorator('$mdDialog', ['$delegate', function($delegate) {
+        const originalShow = $delegate.show;
+        $delegate.show = function(options) {
+            if (options && options.skipHide) {
+                options.multiple = true;
+            }
+            return originalShow.apply(this, arguments);
+        };
+        return $delegate;
+    }]);
+}]);
+
 export default ngMangoMaterial;
