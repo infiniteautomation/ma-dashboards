@@ -39,7 +39,7 @@ function multipleValuesFactory() {
             return this.values[i];
         }
 
-        get isMultiple() {
+        hasMultipleValues() {
             return true;
         }
         
