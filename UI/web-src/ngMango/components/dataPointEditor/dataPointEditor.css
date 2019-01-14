@@ -1,3 +1,7 @@
+ma-data-point-editor {
+	display: block;
+}
+
 /* Stops the content of non-active tabs scrolling past on first load */ 
 ma-data-point-editor md-tab-content:not(.md-active) * {
 	visibility: hidden;

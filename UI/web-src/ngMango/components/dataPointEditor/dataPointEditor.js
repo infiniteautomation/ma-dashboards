@@ -33,6 +33,14 @@ class Multiple {
         return this.values[0];
     }
     
+    getFirstNonEmptyValue() {
+        return this.values.find(v => !!v);
+    }
+    
+    getFirstNonNullValue() {
+        return this.values.find(v => v != null);
+    }
+    
     hasValue(i) {
         return this.values.hasOwnProperty(i);
     }
