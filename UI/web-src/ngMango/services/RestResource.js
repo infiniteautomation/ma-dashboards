@@ -167,14 +167,19 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return this[httpBodyProperty];
         }
         
-        copy() {
+        copy(createWithNewId = false) {
             const copy = angular.copy(this);
-            if (!this.isNew()) {
+
+            if (createWithNewId) {
+                copy[this.constructor.idProperty] = (this.constructor.xidPrefix || '') + maUtil.uuid();
+            } else if (!this.isNew()) {
                 copy[originalIdProperty] = this.getOriginalId();
             }
+            
             if (this.hasOwnProperty(httpBodyProperty)) {
                 copy[httpBodyProperty] = this[httpBodyProperty];
             }
+
             return copy;
         }
 

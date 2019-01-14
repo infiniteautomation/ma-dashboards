@@ -133,8 +133,14 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
                 });
             },
             
-            copy() {
-                return angular.copy(this);
+            copy(createWithNewId = false) {
+                const copy = angular.copy(this);
+                if (createWithNewId) {
+                    delete copy.id;
+                    delete copy.originalId;
+                    copy[idProperty] = xidPrefix + maUtil.uuid();
+                }
+                return copy;
             }
         });
 
