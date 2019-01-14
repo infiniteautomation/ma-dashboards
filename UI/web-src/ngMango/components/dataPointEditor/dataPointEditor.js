@@ -130,13 +130,13 @@ class DataPointEditorController {
         
         this.validationMessages = [];
         
-        if (this.points) {
+        if (Array.isArray(this.points)) {
             this.setViewValue();
             this.render();
             return;
         }
         
-        this.dataPoint.save().then(item => {
+        this.savePromise = this.dataPoint.save().then(item => {
             this.setViewValue();
             this.render();
             this.maDialogHelper.toast(['ui.components.dataPointSaved', this.dataPoint.name || this.dataPoint.xid]);
@@ -156,9 +156,9 @@ class DataPointEditorController {
             }
             
             this.maDialogHelper.errorToast(['ui.components.dataPointSaveError', statusText]);
-        });
+        }).finally(() => delete this.savePromise);
     }
-    
+
     revertItem(event) {
         if (this.confirmDiscard('revert')) {
             this.render();
