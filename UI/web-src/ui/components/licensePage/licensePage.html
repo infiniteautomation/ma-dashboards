@@ -62,15 +62,13 @@
             <md-checkbox ng-model="$ctrl.upgradeChecksEnabled.value"><span ma-tr="systemSettings.upgradeChecksEnabled"></span></md-checkbox>
             <md-button class="md-icon-button" ng-click="$ctrl.upgradeChecksHelp = !$ctrl.upgradeChecksHelp"><md-icon>help</md-icon></md-button>
         </div>
-        <em class="ma-license-help" ng-if="$ctrl.upgradeChecksHelp">
-            Help text here
+        <em class="ma-license-help" ng-if="$ctrl.upgradeChecksHelp" ma-tr="ui.app.upgradeChecksHelp">
         </em>
         <div>
             <md-checkbox ng-model="$ctrl.usageTrackingEnabled.value" ng-disabled="!$ctrl.upgradeChecksEnabled.value"><span ma-tr="systemSettings.usageTrackingEnabled"></span></md-checkbox>
             <md-button class="md-icon-button" ng-click="$ctrl.usageTrackingHelp = !$ctrl.usageTrackingHelp"><md-icon>help</md-icon></md-button>
         </div>
-        <em class="ma-license-help" ng-if="$ctrl.usageTrackingHelp">
-            Help text here
+        <em class="ma-license-help" ng-if="$ctrl.usageTrackingHelp" ma-tr=ui.app.usageTrackingHelp>
         </em>
     </div>
 
