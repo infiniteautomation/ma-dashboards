@@ -12,8 +12,8 @@ function flattenValues($parse, MultipleValues) {
         link: function($scope, $element, $attrs, ngModel) {
             
             let expression;
-            if ($attrs.maMultipleValue) {
-                expression = $parse($attrs.maMultipleValue);
+            if ($attrs.maFlattenValues) {
+                expression = $parse($attrs.maFlattenValues);
             }
             
             ngModel.$formatters.push(function multipleValueFormatter(value) {
