@@ -1,0 +1,77 @@
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls tr th {
+	font-weight: normal;
+	text-align: left;
+	padding: 0 20px 0 0;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls tr.ma-bulk-edit-input-row th {
+	font-weight: bold;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th:first-of-type {
+	padding: 0 0 0 24px;
+	width: 20px;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th:first-of-type > md-checkbox {
+	margin: 0;
+	width: 20px;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th:nth-child(2) {
+	padding: 0 24px;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th:last-of-type {
+	padding: 0;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th .md-button.md-icon-button {
+	margin: 0 -3px;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th md-input-container {
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th md-checkbox {
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
+ma-bulk-data-point-editor table .ma-empty-null {
+	opacity: 0.5;
+	font-style: italic;
+}
+
+ma-bulk-data-point-editor table.md-table thead.md-table-progress md-progress-linear {
+	top: -3px;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls tr th.ma-points-selected {
+	font-size: 1.2rem;
+	text-align: center;
+	padding: 8px 10px 0;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th ma-permissions-menu md-menu {
+	position: unset;
+}
+
+ma-bulk-data-point-editor table thead.ma-bulk-edit-controls th ma-permissions-menu md-menu button.md-button.md-icon-button {
+	margin: 0 -10px 0 -5px;
+	padding: 0;
+}
+
+ma-bulk-data-point-editor thead tr th:nth-child(1n+3) {
+	min-width: 120px;
+}
+
+ma-bulk-data-point-editor thead tr th > md-input-container {
+	display: block;
+}
+
+ma-bulk-data-point-editor ma-extra-controls {
+	display: inline-block;
+}
