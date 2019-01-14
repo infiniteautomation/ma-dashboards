@@ -48,7 +48,7 @@ class ColorPickerController {
             random: false,
             clickOutsideToClose: true,
             hasBackdrop: true,
-            skipHide: false,
+            skipHide: true,
             preserveScope: false,
             mdColorAlphaChannel: true,
             mdColorSpectrum: true,
@@ -57,8 +57,7 @@ class ColorPickerController {
             mdColorMaterialPalette: false,
             mdColorHistory: false,
             mdColorDefaultTab: 0,
-            $event: event,
-            multiple: true
+            $event: event
         }).then(color => {
             this.color = color;
             this.setViewValue();
