@@ -24,8 +24,10 @@ class scriptingEditorController {
     }
 
     setHighlightLines() {
-        this.range = this.editor.session.highlightLines(...this.highlightLines);
-        return this.range;
+        if (this.highlightLines.length > 0) {
+            this.range = this.editor.session.highlightLines(...this.highlightLines);
+            return this.range;
+        }
     }
 
     getHighlightLines() {
