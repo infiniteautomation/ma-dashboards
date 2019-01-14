@@ -276,6 +276,10 @@ class DataSourceEditorController {
     editDataPoint(event, item) {
         this.dataPoint = item;
     }
+    
+    copyDataPoint(event, item) {
+        this.dataPoint = item.copy(true);
+    }
 
     deleteDataPoint(event, item) {
         const notifyName = item.name || item.originalId;
@@ -289,6 +293,19 @@ class DataSourceEditorController {
                 this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
             });
         }, angular.noop);
+    }
+    
+    editSelectedPoints(event) {
+        if (Array.isArray(this.selectedPoints) && this.selectedPoints.length) {
+            if (this.selectedPoints.length < 2) {
+                this.dataPoint = this.selectedPoints[0];
+            } else {
+                this.dataPoint = this.selectedPoints;
+            }
+        }
+    }
+    
+    deleteSelectedPoints(event) {
     }
 }
 

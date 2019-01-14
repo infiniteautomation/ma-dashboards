@@ -137,10 +137,10 @@
                         <!--<md-button class="md-primary md-raised">
                             <md-icon>add</md-icon>&nbsp;<span ma-tr="ui.app.addMultiple"></span>
                         </md-button>-->
-                        <md-button class="md-raised" ng-disabled="!$ctrl.selectedPoints.length">
+                        <md-button class="md-raised" ng-disabled="!$ctrl.selectedPoints.length" ng-click="$ctrl.editSelectedPoints($event)">
                             <md-icon>edit</md-icon>&nbsp;<span ma-tr="ui.app.editSelected"></span>
                         </md-button>
-                        <md-button class="md-raised md-warn" ng-disabled="!$ctrl.selectedPoints.length">
+                        <md-button class="md-raised md-warn" ng-disabled="!$ctrl.selectedPoints.length" ng-click="$ctrl.deleteSelectedPoints($event)">
                             <md-icon>delete</md-icon>&nbsp;<span ma-tr="ui.app.deleteSelected"></span>
                         </md-button>
                     </div>
@@ -167,6 +167,10 @@
                                             <md-button class="md-icon-button" ng-click="$ctrl.editDataPoint($event, point)">
                                                 <md-icon>edit</md-icon>
                                                 <md-tooltip ma-tr="common.edit"></md-tooltip>
+                                            </md-button>
+                                            <md-button class="md-icon-button" ng-click="$ctrl.copyDataPoint($event, point)">
+                                                <md-icon>content_copy</md-icon>
+                                                <md-tooltip ma-tr="common.copy"></md-tooltip>
                                             </md-button>
                                             <md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteDataPoint($event, point)">
                                                 <md-icon>delete</md-icon>
@@ -211,8 +215,9 @@
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>
-                    <span ng-if="!$ctrl.dataPoint.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.dataPoint.name]"></span>
-                    <span ng-if="$ctrl.dataPoint.isNew()" ma-tr="dsList.createDataPoint"></span>
+                    <span ng-if="$ctrl.dataPoint.length" ma-tr="ui.components.editXDataPoints" ma-tr-args="[$ctrl.dataPoint.length]"></span>
+                    <span ng-if="!$ctrl.dataPoint.length && !$ctrl.dataPoint.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.dataPoint.name]"></span>
+                    <span ng-if="!$ctrl.dataPoint.length && $ctrl.dataPoint.isNew()" ma-tr="dsList.createDataPoint"></span>
                 </h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="$dialog.cancel()">
