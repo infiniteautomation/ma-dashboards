@@ -20,9 +20,29 @@ class scriptingEditorController {
 
     $onInit() {
         this.ngModelCtrl.$render = () => this.render(); 
+        this.highlightLines = [];
     }
 
-    $onChanges(changes) {
+    setHighlightLines() {
+        this.range = this.editor.session.highlightLines(...this.highlightLines);
+        return this.range;
+    }
+
+    getHighlightLines() {
+        if (this.scriptErrors && this.scriptErrors.length > 0) {
+            this.scriptErrors.forEach(error => {
+                if (error.lineNumber) {
+                    this.highlightLines.push(error.lineNumber - 1);
+                }
+            });
+        }
+    }
+
+    clearHighLightLines() {
+        if (this.range) {
+            this.highlightLines = [];
+            return this.editor.session.removeMarker(this.range.id);
+        }
     }
 
     setViewValue() {
@@ -53,10 +73,15 @@ class scriptingEditorController {
         this.scriptActions = null;
         this.scriptOutput = null;
 
+        this.clearHighLightLines();
+
         this.scriptData.validate(this.url).then(response => {
             this.scriptErrors = response.errors;
             this.scriptActions = response.actions;
             this.scriptOutput = response.scriptOutput;
+
+            this.getHighlightLines();
+            this.setHighlightLines();
 
             this.maDialogHelper.toastOptions({
                 textTr: ['scriptingEditor.ui.scriptValidated'],
@@ -80,7 +105,7 @@ export default {
         resultDataType: '<?',
         wrapInFunction: '<?',
         permissions: '<?',
-        url: '@'
+        url: '@',
     },
     require: {
         ngModelCtrl: 'ngModel'
