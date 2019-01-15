@@ -71,7 +71,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
                         return template;
                     }];
                 } else {
-                    menuItem.template = '<div ui-view></div>';
+                    menuItem.template = '<div ui-view flex="noshrink" layout="column"></div>';
                     menuItem.abstract = true;
                 }
             }
