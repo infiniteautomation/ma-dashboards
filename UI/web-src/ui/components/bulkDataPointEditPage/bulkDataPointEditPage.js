@@ -38,31 +38,8 @@ class BulkDataPointEditPageController {
         if (this.watchList) {
             this.watchList.defaultParamValues(this.watchListParams);
         }
-        this.getPoints();
     }
-    
-    getPoints() {
-        if (this.wlPointsPromise) {
-            this.wlPointsPromise.cancel();
-        }
-        
-        if (this.watchList) {
-            this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
-        } else {
-            this.wlPointsPromise = this.$q.resolve([]);
-        }
 
-        this.points = this.wlPointsPromise.then(points => {
-            return (this.points = points);
-        }, error => {
-            this.maDialogHelper.toastOptions({
-                textTr: ['ui.app.errorGettingPoints', error.mangoStatusText || '' + error],
-                hideDelay: 10000
-            });
-            this.points = [];
-        });
-    }
-    
     taskStarted(promise) {
         this.bulkTaskPromise = promise.finally(() => delete this.bulkTaskPromise);
     }

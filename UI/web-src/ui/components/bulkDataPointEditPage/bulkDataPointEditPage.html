@@ -9,13 +9,13 @@
     <div flex layout="column">
         <md-card ng-if="$ctrl.watchList.hasParamOptions()" class="ma-watch-list-parameters">
             <ma-watch-list-parameters watch-list="$ctrl.watchList"
-                ng-model="$ctrl.watchListParams" ng-change="$ctrl.getPoints()"
+                ng-model="$ctrl.watchListParams"
                 class="md-padding" layout layout-wrap>
             </ma-watch-list-parameters>
         </md-card>
         
-        <md-card class="ma-bulk-data-point-edit" flex="noshrink">
-            <ma-bulk-data-point-editor ng-model="$ctrl.points" task-started="$ctrl.taskStarted($promise)">
+        <md-card class="ma-bulk-data-point-edit">
+            <ma-bulk-data-point-editor watch-list="$ctrl.watchList" watch-list-params="$ctrl.watchListParams" task-started="$ctrl.taskStarted($promise)">
                 <ma-extra-controls>
                     <md-button class="md-icon-button" ng-click="$ctrl.browserOpen = !$ctrl.browserOpen">
                         <md-icon>{{$ctrl.browserOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</md-icon>

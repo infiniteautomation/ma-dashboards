@@ -6,17 +6,22 @@
 multipleValuesFactory.$inject = [];
 function multipleValuesFactory() {
 
+    const empty = {};
+    
     class MultipleValues {
         constructor(length) {
             this.values = Array(length);
+            this.valuesSet = new Set();
         }
 
         addEmpty(count = 1) {
             this.values.length = this.values.length + count;
+            this.valuesSet.add(empty);
         }
         
         addValue(value) {
             this.values.push(value);
+            this.valuesSet.add(value);
         }
         
         first() {
@@ -44,8 +49,9 @@ function multipleValuesFactory() {
         }
         
         isAllEqual() {
-            const first = this.first();
-            return this.values.every((v, i, arr) => arr.hasOwnProperty(i) && v === first);
+            //const first = this.first();
+            //return this.values.every((v, i, arr) => arr.hasOwnProperty(i) && v === first);
+            return this.valuesSet.size <= 1;
         }
         
         valueOf() {
@@ -59,7 +65,9 @@ function multipleValuesFactory() {
             if (this.isAllEqual()) {
                 return String(this.first());
             }
-            return `<<mutiple values (${this.values.length})>>`;
+
+            //return `<<mutiple values (${this.values.length})>>`;
+            return `<<mutiple values (${this.valuesSet.size})>>`;
         }
         
         toJSON() {
