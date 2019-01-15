@@ -37,22 +37,11 @@ class DataSourceEditorController {
         this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
         
         this.types = maDataSource.types;
-        this.typesByName = maDataSource.typesByName;
 
-        this.points = [];
-        this.selectedPoints = [];
-        this.pointsQuery = {
-            page: 1,
-            limit: 10,
-            order: 'name'
-        };
-        
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
             this.dynamicHeight = $parse($attrs.dynamicHeight)($scope.$parent);
         }
-        
-        this.queryPointsBound = this.queryPoints.bind(this);
     }
     
     $onInit() {
@@ -81,8 +70,12 @@ class DataSourceEditorController {
         });
 
         this.Point.notificationManager.subscribe((event, point) => {
-            if (this.dataSource && point.dataSourceXid === this.dataSource.xid && this.activeTab === 1) {
-                this.queryPoints();
+            if (this.dataSource && point.dataSourceXid === this.dataSource.xid && this.activeTab === 1 && Array.isArray(this.points)) {
+                debugger;
+                const target = this.points.find(p => p.xid === point.xid);
+                if (event.name === 'update' && target) {
+                    angular.copy(point, target);
+                }
             }
         }, this.$scope);
     }
@@ -116,8 +109,6 @@ class DataSourceEditorController {
         }
         
         this.points = [];
-        this.selectedPoints = [];
-        this.pointsQuery.page = 1;
         this.cancelPointsQuery();
     }
     
@@ -219,31 +210,14 @@ class DataSourceEditorController {
         if (!this.dataSource || this.dataSource.isNew()) {
             return;
         }
-        
-        const opts = this.pointsQuery;
-        
+
         this.pointsPromiseQuery = this.Point.buildQuery()
             .eq('dataSourceXid', this.dataSource.xid)
-            .sort(opts.order)
-            .limit(opts.limit, (opts.page - 1) * opts.limit)
+            .limit(100000) // TODO
             .query();
-        
-        this.queryRunning = true;
 
         this.pointsPromise = this.pointsPromiseQuery.then(points => {
-            this.points = points;
-
-            // ensure we stay on a page with points
-            if (!this.points.length && opts.page > 1) {
-                if (this.points.$total > 0) {
-                    opts.page = Math.ceil(this.points.$total / opts.limit);
-                    this.queryPoints();
-                } else {
-                    opts.page = 1;
-                }
-            }
-            
-            return this.points;
+            return (this.points = points);
         }).catch(error => {
             if (error.status === -1 && error.resource && error.resource.cancelled) {
                 // request cancelled, ignore error
@@ -252,7 +226,7 @@ class DataSourceEditorController {
             
             const message = error.mangoStatusText || (error + '');
             this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
-        }).finally(() => this.queryRunning = false);
+        });
         
         return this.pointsPromise;
     }
@@ -268,45 +242,6 @@ class DataSourceEditorController {
         this.purgeSettings = prevSource.purgeSettings;
     }
 
-    createDataPoint(event) {
-        this.dataPoint = this.typesByName[this.dataSource.modelType].createDataPoint();
-        this.dataPoint.dataSourceXid = this.dataSource.originalId;
-    }
-    
-    editDataPoint(event, item) {
-        this.dataPoint = item;
-    }
-    
-    copyDataPoint(event, item) {
-        this.dataPoint = item.copy(true);
-    }
-
-    deleteDataPoint(event, item) {
-        const notifyName = item.name || item.originalId;
-        this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
-            item.delete().then(() => {
-                this.maDialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
-                
-                // rely on WebSocket to update the list of points
-                //this.queryPoints();
-            }, error => {
-                this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
-            });
-        }, angular.noop);
-    }
-    
-    editSelectedPoints(event) {
-        if (Array.isArray(this.selectedPoints) && this.selectedPoints.length) {
-            if (this.selectedPoints.length < 2) {
-                this.dataPoint = this.selectedPoints[0];
-            } else {
-                this.dataPoint = this.selectedPoints;
-            }
-        }
-    }
-    
-    deleteSelectedPoints(event) {
-    }
 }
 
 export default {

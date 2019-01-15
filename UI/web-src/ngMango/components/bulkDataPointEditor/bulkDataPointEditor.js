@@ -8,7 +8,7 @@ import bulkDataPointEditorTemplate from './bulkDataPointEditor.html';
 
 import './bulkDataPointEditor.css';
 
-const selectedProperty = typeof Symbol === 'function' ? Symbol('selected') : '___selected___';
+const selectedProperty = '$selected';
 const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error___';
 const actionProperty = typeof Symbol === 'function' ? Symbol('action') : '___action___';
 const localStorageKey = 'bulkDataPointEditPage';
@@ -18,6 +18,7 @@ class BulkDataPointEditorController {
     
     static get $inject() { return [
         'maPoint',
+        'maDataSource',
         'maDataPointTags',
         'maDialogHelper',
         'maTranslate',
@@ -29,7 +30,9 @@ class BulkDataPointEditorController {
         '$q',
         '$scope',
         '$element']; }
-    constructor(maPoint,
+    constructor(
+            maPoint,
+            maDataSource,
             maDataPointTags,
             maDialogHelper,
             maTranslate,
@@ -43,6 +46,7 @@ class BulkDataPointEditorController {
             $element) {
 
         this.maPoint = maPoint;
+        this.maDataSource = maDataSource;
         this.maDataPointTags = maDataPointTags;
         this.maDialogHelper = maDialogHelper;
         this.maTranslate = maTranslate;
@@ -54,31 +58,31 @@ class BulkDataPointEditorController {
         this.$q = $q;
         this.$scope = $scope;
         this.$element = $element;
-        
-        this.numberOfRows = 25;
+
+        this.numberOfRows = 15;
         this.pageNumber = 1;
         this.tableOrder = 'name';
 
         this.columns = [
-            {name: 'rowNumber', label: 'ui.app.rowNumber', disableEdit: true, selectedByDefault: false},
-            {name: 'xid', label: 'ui.app.xidShort', disableEdit: true, selectedByDefault: false},
-            {name: 'dataSourceName', label: 'ui.app.dataSource', disableEdit: true, selectedByDefault: false},
-            {name: 'dataType', label: 'dsEdit.pointDataType', disableEdit: true, selectedByDefault: false},
+            {name: 'rowNumber', label: 'ui.app.rowNumber', selectedByDefault: false},
+            {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false},
+            {name: 'dataSourceName', label: 'ui.app.dataSource', selectedByDefault: false},
+            {name: 'dataType', label: 'dsEdit.pointDataType', selectedByDefault: false},
             {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
             {name: 'name', label: 'common.name', selectedByDefault: true},
-            {name: 'enabled', label: 'common.enabled', type: 'checkbox', selectedByDefault: true},
-            {name: 'readPermission', label: 'pointEdit.props.permission.read', type: 'permission', selectedByDefault: true},
-            {name: 'setPermission', label: 'pointEdit.props.permission.set', type: 'permission', selectedByDefault: true},
+            {name: 'enabled', label: 'common.enabled', selectedByDefault: true},
+            {name: 'readPermission', label: 'pointEdit.props.permission.read', selectedByDefault: true},
+            {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: true},
             {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: true},
-            {name: 'chartColour', label: 'pointEdit.props.chartColour', type: 'color', selectedByDefault: false},
-            {name: 'plotType', label: 'pointEdit.plotType', type: 'plotType', selectedByDefault: false},
-            {name: 'rollup', label: 'common.rollup', type: 'rollup', selectedByDefault: true},
+            {name: 'chartColour', label: 'pointEdit.props.chartColour', selectedByDefault: false},
+            {name: 'plotType', label: 'pointEdit.plotType', selectedByDefault: false},
+            {name: 'rollup', label: 'common.rollup', selectedByDefault: true},
             {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: true},
             {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
-            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', type: 'number', selectedByDefault: false},
-            {name: 'simplifyType', label: 'pointEdit.props.simplifyType', type: 'simplifyType', selectedByDefault: false},
-            {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', type: 'number', selectedByDefault: false},
-            {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', type: 'number', selectedByDefault: false}
+            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', selectedByDefault: false},
+            {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
+            {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', selectedByDefault: false},
+            {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false}
         ];
 
         this.columns.forEach((c, i) => c.order = i);
@@ -95,13 +99,6 @@ class BulkDataPointEditorController {
         this.selectedTags = [];
         this.prevSelectedTags = [];
         this.manuallySelectedTags = [];
-
-        this.pointSelectedBound = (...args) => {
-            this.pointSelected(...args);
-        };
-        this.pointDeselectedBound = (...args) => {
-            this.pointDeselected(...args);
-        };
 
         this.reset();
     }
@@ -126,6 +123,9 @@ class BulkDataPointEditorController {
     }
     
     $onChanges(changes) {
+        if (changes.pointsPromiseInput && this.pointsPromiseInput instanceof this.$q) {
+            this.pointsPromise = this.pointsPromiseInput.finally(() => delete this.pointsPromise);
+        }
     }
     
     addTagToAvailable(tagKey) {
@@ -387,11 +387,7 @@ class BulkDataPointEditorController {
 
         this.reset();
         
-        if (viewValue instanceof this.$q) {
-            this.pointsPromise = viewValue.finally(() => {
-                delete this.pointsPromise;
-            });
-        } else if (Array.isArray(viewValue)) {
+        if (Array.isArray(viewValue)) {
             this.points = viewValue.slice();
             this.checkAvailableTags();
         }
@@ -425,16 +421,19 @@ class BulkDataPointEditorController {
         return point && point[actionProperty];
     }
 
-    pointSelected(point) {
-        point[selectedProperty] = true;
+    pointSelectedChanged(point) {
+        if (point[selectedProperty]) {
+            this.selectedPoints.push(point);
+        } else {
+            delete point[selectedProperty];
+            const i = this.selectedPoints.findIndex(p => p.xid === point.xid);
+            if (i >= 0) {
+                this.selectedPoints.splice(i, 1);
+            }
+        }
         this.selectedPointsChanged();
     }
-    
-    pointDeselected(point) {
-        delete point[selectedProperty];
-        this.selectedPointsChanged();
-    }
-    
+
     selectedPointsChanged() {
         if (this.selectedPoints.length === this.points.length) {
             this.selectAllIndeterminate = false;
@@ -656,18 +655,57 @@ class BulkDataPointEditorController {
             });
         }
     }
+
+    createDataPoint(event) {
+        this.editTarget = this.maDataSource.typesByName[this.dataSource.modelType].createDataPoint();
+        this.editTarget.dataSourceXid = this.dataSource.originalId;
+    }
+    
+    editDataPoint(event, item) {
+        this.editTarget = item;
+    }
+    
+    copyDataPoint(event, item) {
+        this.editTarget = item.copy(true);
+    }
+
+    deleteDataPoint(event, item) {
+        const notifyName = item.name || item.originalId;
+        this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
+            item.delete().then(() => {
+                this.maDialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
+                
+                // rely on WebSocket to update the list of points
+                //this.queryPoints();
+            }, error => {
+                this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
+            });
+        }, angular.noop);
+    }
+    
+    editSelectedPoints(event) {
+        if (Array.isArray(this.selectedPoints) && this.selectedPoints.length) {
+            if (this.selectedPoints.length < 2) {
+                this.editTarget = this.selectedPoints[0];
+            } else {
+                this.editTarget = this.selectedPoints;
+            }
+        }
+    }
 }
 
 export default {
     template: bulkDataPointEditorTemplate,
     controller: BulkDataPointEditorController,
     bindings: {
-        taskStarted: '&?'
+        taskStarted: '&?',
+        dataSource: '<?source',
+        pointsPromiseInput: '<?pointsPromise'
     },
     require: {
         ngModelCtrl: 'ngModel'
     },
     transclude: {
-        extraControls: 'maExtraControls'
+        extraControls: '?maExtraControls'
     }
 };

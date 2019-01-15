@@ -52,7 +52,7 @@ class BulkDataPointEditPageController {
             this.wlPointsPromise = this.$q.resolve([]);
         }
 
-        this.points = this.wlPointsPromise.then(points => {
+        this.pointsPromise = this.wlPointsPromise.then(points => {
             return (this.points = points);
         }, error => {
             this.maDialogHelper.toastOptions({

@@ -14,8 +14,8 @@
             </ma-watch-list-parameters>
         </md-card>
         
-        <md-card class="ma-bulk-data-point-edit" flex="noshrink">
-            <ma-bulk-data-point-editor ng-model="$ctrl.points" task-started="$ctrl.taskStarted($promise)">
+        <md-card class="ma-bulk-data-point-edit">
+            <ma-bulk-data-point-editor ng-model="$ctrl.points" task-started="$ctrl.taskStarted($promise)" points-promise="$ctrl.pointsPromise">
                 <ma-extra-controls>
                     <md-button class="md-icon-button" ng-click="$ctrl.browserOpen = !$ctrl.browserOpen">
                         <md-icon>{{$ctrl.browserOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</md-icon>
