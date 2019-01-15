@@ -1,5 +1,4 @@
 ma-bulk-data-point-editor .ma-bulk-edit-toolbar {
-	padding: 0 8px;
 	margin-top: 8px;
 	margin-bottom: 16px;
 }
@@ -74,4 +73,8 @@ ma-bulk-data-point-editor .ma-no-points-found {
 	font-style: italic;
 	text-align: center;
 	padding: 16px 0;
+}
+
+ma-bulk-data-point-editor .ma-selection-count {
+	font-size: 1.3rem;
 }

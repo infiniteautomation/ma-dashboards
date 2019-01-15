@@ -9,7 +9,7 @@ import bulkDataPointEditorTemplate from './bulkDataPointEditor.html';
 import './bulkDataPointEditor.css';
 
 const selectedProperty = '$selected';
-const errorProperty = typeof Symbol === 'function' ? Symbol('error') : '___error___';
+const errorProperty = '$error';
 const actionProperty = typeof Symbol === 'function' ? Symbol('action') : '___action___';
 const localStorageKey = 'bulkDataPointEditPage';
 
@@ -65,19 +65,19 @@ class BulkDataPointEditorController {
 
         this.columns = [
             {name: 'rowNumber', label: 'ui.app.rowNumber', selectedByDefault: false},
-            {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false},
+            {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: true},
             {name: 'dataSourceName', label: 'ui.app.dataSource', selectedByDefault: false},
             {name: 'dataType', label: 'dsEdit.pointDataType', selectedByDefault: false},
             {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
             {name: 'name', label: 'common.name', selectedByDefault: true},
-            {name: 'enabled', label: 'common.enabled', selectedByDefault: true},
-            {name: 'readPermission', label: 'pointEdit.props.permission.read', selectedByDefault: true},
-            {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: true},
-            {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: true},
+            {name: 'enabled', label: 'common.enabled', selectedByDefault: false},
+            {name: 'readPermission', label: 'pointEdit.props.permission.read', selectedByDefault: false},
+            {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: false},
+            {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: false},
             {name: 'chartColour', label: 'pointEdit.props.chartColour', selectedByDefault: false},
             {name: 'plotType', label: 'pointEdit.plotType', selectedByDefault: false},
-            {name: 'rollup', label: 'common.rollup', selectedByDefault: true},
-            {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: true},
+            {name: 'rollup', label: 'common.rollup', selectedByDefault: false},
+            {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: false},
             {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
             {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', selectedByDefault: false},
             {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
@@ -107,13 +107,8 @@ class BulkDataPointEditorController {
         this.selectedPoints = [];
         this.selectAll = false;
         this.selectAllIndeterminate = false;
-        this.updateBody = {
-            tags: {},
-            mergeTags: true
-        };
     }
-    
-    
+
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
         
@@ -167,18 +162,10 @@ class BulkDataPointEditorController {
     }
     
     hasEdits() {
-        return Object.keys(this.updateBody).length > 2 || Object.keys(this.updateBody.tags).length > 0;
+        return !!this.points.find(p => p.$edited);
     }
     
     confirmDeleteSelected(event) {
-        if (!this.selectedPoints.length) {
-            this.maDialogHelper.toastOptions({
-                textTr: ['ui.app.bulkEditNoPointsSelected'],
-                hideDelay: 10000
-            });
-            return;
-        }
-        
         this.maDialogHelper.confirm(event, ['ui.app.bulkEditConfirmDelete', this.selectedPoints.length]).then(() => {
             this.deleteSelected();
         }, () => null);
@@ -205,7 +192,6 @@ class BulkDataPointEditorController {
                 if (response.error) {
                     point[errorProperty] = response.error;
                     point[actionProperty] = response.action;
-                    this.makePropertyErrorsMap(response.error);
                 } else {
                     deletedPoints.push(point);
                 }
@@ -242,14 +228,6 @@ class BulkDataPointEditorController {
     }
     
     confirmStart(event) {
-        if (!this.selectedPoints.length) {
-            this.maDialogHelper.toastOptions({
-                textTr: ['ui.app.bulkEditNoPointsSelected'],
-                hideDelay: 10000
-            });
-            return;
-        }
-        
         if (!this.hasEdits()) {
             this.maDialogHelper.toastOptions({
                 textTr: ['ui.app.bulkEditNoChanges'],
@@ -258,7 +236,7 @@ class BulkDataPointEditorController {
             return;
         }
 
-        this.maDialogHelper.confirm(event, ['ui.app.bulkEditConfirmEdit', this.selectedPoints.length]).then(() => {
+        this.maDialogHelper.confirm(event, ['ui.app.bulkEditConfirmEdit', this.points.filter(p => p.$edited).length]).then(() => {
             this.start();
         }, () => null);
     }
@@ -305,7 +283,6 @@ class BulkDataPointEditorController {
                 } else if (response.error) {
                     point[errorProperty] = response.error;
                     point[actionProperty] = response.action;
-                    this.makePropertyErrorsMap(response.error);
                 }
             });
             
@@ -412,14 +389,6 @@ class BulkDataPointEditorController {
         });
         this.prevSelectedTags = this.selectedTags.slice();
     }
-    
-    getPointError(point) {
-        return point && point[errorProperty];
-    }
-    
-    getPointAction(point) {
-        return point && point[actionProperty];
-    }
 
     pointSelectedChanged(point) {
         if (point[selectedProperty]) {
@@ -464,54 +433,6 @@ class BulkDataPointEditorController {
             } else {
                 this.points.forEach(pt => delete pt[selectedProperty]);
             }
-        }
-    }
-
-    sortColumn(column) {
-        if (column.name === this.tableOrder) {
-            this.tableOrder = '-' + column.name;
-        } else {
-            this.tableOrder = column.name;
-        }
-    }
-    
-    resetColumn(column) {
-        delete this.updateBody[column.name];
-    }
-    
-    resetTag(tag) {
-        delete this.updateBody.tags[tag.name];
-    }
-    
-    removeTag(tag) {
-        this.updateBody.tags[tag.name] = null;
-    }
-    
-    nullColumn(column) {
-        this.updateBody[column.name] = null;
-    }
-    
-    columnModified(column, point) {
-        return point[selectedProperty] && this.updateBody.hasOwnProperty(column.name);
-    }
-    
-    tagModified(tag, point) {
-        return point[selectedProperty] && this.updateBody.tags.hasOwnProperty(tag.name);
-    }
-    
-    valueForColumn(column, point) {
-        if (this.columnModified(column, point)) {
-            return this.updateBody[column.name];
-        } else {
-            return point[column.name];
-        }
-    }
-    
-    valueForTag(tag, point) {
-        if (this.tagModified(tag, point)) {
-            return this.updateBody.tags[tag.name];
-        } else {
-            return point.tags && point.tags[tag.name];
         }
     }
 
@@ -621,7 +542,6 @@ class BulkDataPointEditorController {
                 } else if (response.error) {
                     point[errorProperty] = response.error;
                     point[actionProperty] = response.action;
-                    this.makePropertyErrorsMap(response.error);
                     point.xid = response.xid;
                 }
                 point.rowNumber = i + 2;
@@ -642,17 +562,6 @@ class BulkDataPointEditorController {
         
         if (typeof this.taskStarted === 'function') {
             this.taskStarted({$promise: this.bulkTaskPromise});
-        }
-    }
-    
-    makePropertyErrorsMap(error) {
-        if (error.result && Array.isArray(error.result.messages)) {
-            error.propertyErrors = {};
-            error.result.messages.forEach(msg => {
-                if (msg.property) {
-                    error.propertyErrors[msg.property] = msg.message;
-                }
-            });
         }
     }
 

@@ -15,12 +15,12 @@
 
         <md-button ng-if="!$ctrl.bulkTaskPromise" class="md-raised" ng-disabled="!$ctrl.selectedPoints.length || $ctrl.pointsPromise" ng-click="$ctrl.editSelectedPoints($event)">
             <md-icon>edit</md-icon>
-            <span ma-tr="ui.app.editXPoints" ma-tr-args="[$ctrl.selectedPoints.length]"></span>
+            <span ma-tr="ui.app.editSelected"></span>
         </md-button>
         
         <md-button ng-if="!$ctrl.bulkTaskPromise" class="md-raised md-warn" ng-click="$ctrl.confirmDeleteSelected($event)" ng-disabled="!$ctrl.selectedPoints.length || $ctrl.pointsPromise">
             <md-icon>delete</md-icon>
-            <span ma-tr="ui.app.deleteXPoints" ma-tr-args="[$ctrl.selectedPoints.length]"></span>
+            <span ma-tr="ui.app.deleteSelected"></span>
         </md-button>
         
         <md-button ng-if="$ctrl.bulkTask" class="md-raised md-warn" ng-click="$ctrl.cancel($event)">
@@ -84,12 +84,10 @@
                     </th>
                     <th md-column><!-- Spacer for error --></th>
                     <th md-column ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
-                            ng-class="{'ma-column-modified': $ctrl.updateBody[column.name] !== undefined}"
                             md-order-by="{{column.name}}">
                         <span ma-tr="{{column.label}}"></span>
                     </th>
-                    <th md-column ng-repeat="tag in $ctrl.selectedTags track by tag.name"
-                            ng-class="{'ma-column-modified': $ctrl.updateBody.tags[tag.name] !== undefined}">
+                    <th md-column ng-repeat="tag in $ctrl.selectedTags track by tag.name">
                         <span ng-bind="tag.label"></span>
                     </th>
                     <th md-column><!-- Spacer for point actions column --></th>
@@ -98,7 +96,7 @@
             <tbody md-body>
                 <tr md-row ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows track by point.xid"
                         ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise"
-                        ng-class="{'ma-row-error': point.error}">
+                        ng-class="{'ma-row-error': point.$error, 'ma-row-modified': point.$modified}">
 
                     <td md-cell class="ma-checkbox-column">
                         <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="point.$selected" ng-change="$ctrl.pointSelectedChanged(point)"
@@ -106,26 +104,19 @@
                         </md-checkbox>
                     </td>
                     
-                    <td md-cell ng-init="ptError = $ctrl.getPointError(point)">
-                        <md-button class="md-warn md-icon-button" ng-if="ptError" ng-click="ptError.showError = !ptError.showError">
+                    <td md-cell>
+                        <md-button class="md-warn md-icon-button" ng-if="point.$error" ng-click="$ctrl.editDataPoint($event, point)">
                             <md-icon>warning</md-icon>
-                            <md-tooltip ma-tr="ui.app.errorDoingX" ma-tr-args="[$ctrl.getPointAction(point), ptError.localizedMessage]"></md-tooltip>
+                            <md-tooltip ma-tr="ui.app.errorDoingX" ma-tr-args="[point.$action, ptError.localizedMessage]"></md-tooltip>
                         </md-button>
-                        <div ng-if="ptError.showError">
-                            <div ng-repeat="msg in ptError.result.messages">
-                                <span ng-if="msg.property"><span ng-bind="msg.property"></span>: </span>
-                                <span ng-bind="msg.message"></span>
-                            </div>
-                        </div>
                     </td>
 
-                    <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell ng-class="{'ma-cell-modified': $ctrl.columnModified(column, point), 'ma-cell-error': ptError && ptError.propertyErrors[column.name]}">
-                        <span ng-class="{'ma-empty-null': $ctrl.valueForColumn(column, point) == null}" ng-bind="$ctrl.valueForColumn(column, point) | maDisplayNull"></span>
-                        <md-tooltip ng-if="ptError && ptError.propertyErrors[column.name]" ng-bind="ptError.propertyErrors[column.name]"></md-tooltip>
+                    <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell>
+                        <span ng-class="{'ma-empty-null': point[column.name] == null}" ng-bind="point[column.name] | maDisplayNull"></span>
                     </td>
                     
-                    <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell ng-class="{'ma-cell-modified': $ctrl.tagModified(tag, point)}">
-                        <span ng-class="{'ma-empty-null': $ctrl.valueForTag(tag, point) == null}" ng-bind="$ctrl.valueForTag(tag, point) | maDisplayNull"></span>
+                    <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell>
+                        <span ng-class="{'ma-empty-null': point.tags[tag.name] == null}" ng-bind="point.tags[tag.name] | maDisplayNull"></span>
                     </td>
                     
                     <td md-cell class="ma-point-actions">
@@ -150,7 +141,12 @@
         </table>
         <div ng-if="!$ctrl.points.length && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
     </md-table-container>
-    <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination> 
+    
+    <div layout layout-align="start center">
+        <div class="ma-selection-count" ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.length]"></div>
+        <md-table-pagination  flex md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination>
+    </div>
+    
 </div>
 
 <ma-dialog show-dialog="$ctrl.editTarget" on-hide="$ctrl.editTarget = null" on-cancel="$ctrl.editTarget = null">
