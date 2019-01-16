@@ -1194,6 +1194,11 @@ export default [
         menuTr: 'ui.app.eventHandlers',
         menuIcon: 'email',
         permission: 'superadmin',
+        params: {
+            noPadding: false,
+            hideFooter: false,
+            helpPage: 'ui.help.eventHandlers'
+        },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -1204,6 +1209,16 @@ export default [
                 });
             }]
         }
+    },
+    {
+        name: 'ui.help.eventHandlers',
+        url: '/event-handlers/help',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "eager" */ './views/help/eventHandlers.html');
+            }
+        },
+        menuTr: 'ui.app.eventHandlers'
     },
     {
         name: 'ui.settings.eventTypes',

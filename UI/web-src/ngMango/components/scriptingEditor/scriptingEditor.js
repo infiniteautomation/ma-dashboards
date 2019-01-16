@@ -21,6 +21,14 @@ class scriptingEditorController {
     $onInit() {
         this.ngModelCtrl.$render = () => this.render(); 
         this.highlightLines = [];
+
+        this.initMode();
+    }
+
+    initMode() {
+        if (!this.mode) {
+            this.mode = 'javascript';
+        }
     }
 
     setHighlightLines() {
@@ -108,6 +116,7 @@ export default {
         wrapInFunction: '<?',
         permissions: '<?',
         url: '@',
+        mode: '@'
     },
     require: {
         ngModelCtrl: 'ngModel'
