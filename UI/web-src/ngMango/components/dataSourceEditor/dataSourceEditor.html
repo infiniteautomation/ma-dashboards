@@ -124,13 +124,13 @@
             </md-tab-body>
         </md-tab>
         
-        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.queryPoints()">
+        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.pointsTabActive = true" md-on-deselect="$ctrl.pointsTabActive = false">
             <md-tab-label>
                 <span ma-tr="ui.app.dataPoints"></span>
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
-                    <ma-bulk-data-point-editor ng-model="$ctrl.points" points-promise="$ctrl.pointsPromise" data-source="$ctrl.dataSource"></ma-bulk-data-point-editor>
+                    <ma-bulk-data-point-editor ng-if="$ctrl.pointsTabActive" data-source="$ctrl.dataSource"></ma-bulk-data-point-editor>
                 </div>
             </md-tab-body>
         </md-tab>

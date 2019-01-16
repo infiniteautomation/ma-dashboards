@@ -68,16 +68,6 @@ class DataSourceEditorController {
         this.$scope.$on('$destroy', () => {
             this.$window.onbeforeunload = oldUnload;
         });
-
-        this.Point.notificationManager.subscribe((event, point) => {
-            if (this.dataSource && point.dataSourceXid === this.dataSource.xid && this.activeTab === 1 && Array.isArray(this.points)) {
-                debugger;
-                const target = this.points.find(p => p.xid === point.xid);
-                if (event.name === 'update' && target) {
-                    angular.copy(point, target);
-                }
-            }
-        }, this.$scope);
     }
     
     $onChanges(changes) {
@@ -107,9 +97,6 @@ class DataSourceEditorController {
             this.form.$setPristine();
             this.form.$setUntouched();
         }
-        
-        this.points = [];
-        this.cancelPointsQuery();
     }
     
     setViewValue() {
@@ -197,40 +184,7 @@ class DataSourceEditorController {
             this.activeTab = index;
         }
     }
-    
-    cancelPointsQuery() {
-        if (this.pointsPromiseQuery) {
-            this.Point.cancelRequest(this.pointsPromiseQuery);
-        }
-    }
-    
-    queryPoints() {
-        this.cancelPointsQuery();
 
-        if (!this.dataSource || this.dataSource.isNew()) {
-            return;
-        }
-
-        this.pointsPromiseQuery = this.Point.buildQuery()
-            .eq('dataSourceXid', this.dataSource.xid)
-            .limit(100000) // TODO
-            .query();
-
-        this.pointsPromise = this.pointsPromiseQuery.then(points => {
-            return (this.points = points);
-        }).catch(error => {
-            if (error.status === -1 && error.resource && error.resource.cancelled) {
-                // request cancelled, ignore error
-                return;
-            }
-            
-            const message = error.mangoStatusText || (error + '');
-            this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
-        });
-        
-        return this.pointsPromise;
-    }
-    
     typeChanged() {
         const prevSource = this.dataSource;
         this.dataSource = this.typesByName[prevSource.modelType].createDataPoint();
