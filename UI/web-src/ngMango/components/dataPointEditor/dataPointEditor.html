@@ -166,7 +166,22 @@
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
 
-    <div class="md-padding ma-action-buttons">
+    <div ng-if="$ctrl.bulkTask" class="md-padding ma-action-buttons">
+        <div layout layout-align="center">
+            <em>
+                <span ng-bind="$ctrl.bulkTask.progress || 0"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position || 0, $ctrl.bulkTask.maximum || 0]"></span>)
+            </em>
+        </div>
+        
+        <md-progress-linear md-mode="determinate" ng-value="$ctrl.bulkTask.progress"></md-progress-linear>
+        
+        <md-button class="md-raised md-warn" ng-click="$ctrl.bulkTask.cancel()">
+            <md-icon>cancel</md-icon>
+            <span ma-tr="ui.app.cancelBulkEdit"></span>
+        </md-button>
+    </div>
+
+    <div ng-if="!$ctrl.bulkTask" class="md-padding ma-action-buttons">
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form || $ctrl.savePromise">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
@@ -175,10 +190,11 @@
             <md-icon>undo</md-icon>
             <span ma-tr="ui.app.revert"></span>
         </md-button>
-        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.dataPoint.isNew() || $ctrl.savePromise">
+        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.dataPoint.isNew() || $ctrl.savePromise" ng-if="$ctrl.points">
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>
         <em ng-if="$ctrl.points.length" ma-tr="ui.components.editXDataPoints" ma-tr-args="[$ctrl.points.length]"></em>
     </div>
+    
 </div>
