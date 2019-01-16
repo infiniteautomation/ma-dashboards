@@ -81,6 +81,8 @@ class scriptingEditorController {
 
     setViewValue() {
         this.ngModelCtrl.$setViewValue(this.scriptData.script);
+        this.clearAnnotations();
+        this.clearHighLightLines();
     }
 
     render() {
