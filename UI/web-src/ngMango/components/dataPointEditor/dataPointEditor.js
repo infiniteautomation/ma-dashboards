@@ -70,20 +70,11 @@ class DataPointEditorController {
     }
     
     $onChanges(changes) {
-        if (changes.backToDataPoint) {
-            this.dataPoint = null;
-        }
     }
-    
-    goBack() {
-        this.dataPoint = null;
-        this.setViewValue();
-        this.render();
-    }
-    
+
     render(confirmDiscard = false) {
         if (confirmDiscard && !this.confirmDiscard('modelChange')) {
-            this.setViewValue();
+            this.setViewValue(this.prevViewValue);
             return;
         }
         
@@ -91,7 +82,7 @@ class DataPointEditorController {
         this.activeTab = 0;
         this.points = null;
         
-        const viewValue = this.ngModelCtrl.$viewValue;
+        const viewValue = this.prevViewValue = this.ngModelCtrl.$viewValue;
         
         if (Array.isArray(viewValue) && viewValue.length) {
             this.points = viewValue;
@@ -110,14 +101,8 @@ class DataPointEditorController {
         }
     }
 
-    setViewValue() {
-        if (Array.isArray(this.points)) {
-            const newPoints = this.MultipleValues.toArray(this.dataPoint, this.points.length);
-            this.ngModelCtrl.$setViewValue(newPoints);
-            return;
-        }
-        
-        this.ngModelCtrl.$setViewValue(this.dataPoint);
+    setViewValue(viewValue = this.dataPoint) {
+        this.ngModelCtrl.$setViewValue(viewValue);
     }
 
     saveItem(event) {
@@ -131,8 +116,7 @@ class DataPointEditorController {
         this.validationMessages = [];
         
         if (Array.isArray(this.points)) {
-            this.setViewValue();
-            this.render();
+            this.saveMultiple();
             return;
         }
         
@@ -157,6 +141,58 @@ class DataPointEditorController {
             
             this.maDialogHelper.errorToast(['ui.components.dataPointSaveError', statusText]);
         }).finally(() => delete this.savePromise);
+    }
+    
+    saveMultiple() {
+        const newPoints = this.MultipleValues.toArray(this.dataPoint, this.points.length);
+        
+        this.bulkTask = new this.maPoint.bulk({
+            action: 'UPDATE',
+            requests: newPoints.map(pt => ({
+                xid: pt.originalId,
+                body: pt
+            }))
+        });
+        
+        this.savePromise = this.bulkTask.start(this.$scope).then(resource => {
+            const responses = resource.result.responses;
+            responses.forEach((response, i) => {
+                const point = newPoints[i];
+                if (response.body) {
+                    angular.copy(response.body, point);
+                } else if (response.error) {
+                    // TODO
+                    point.$error = response.error;
+                }
+            });
+
+            this.setViewValue(newPoints);
+            this.render();
+            this.notifyBulkEditComplete(resource);
+            
+            // do for individual
+//            let statusText = error.mangoStatusText;
+//            
+//            if (error.status === 422) {
+//                statusText = error.mangoStatusTextShort;
+//                this.validationMessages = error.data.result.messages;
+//                
+//                const withProperty = this.validationMessages.filter(m => m.property);
+//                if (withProperty.length) {
+//                    const property = withProperty[0].property;
+//                    const inputElement = this.maUtil.findInputElement(property, this.form);
+//                    this.activateTab(inputElement);
+//                }
+//            }
+            
+        }, error => {
+            this.notifyBulkEditError(error);
+        }, resource => {
+            // progress
+        }).finally(() => {
+            delete this.bulkTask;
+            delete this.savePromise;
+        });
     }
 
     revertItem(event) {
@@ -219,6 +255,48 @@ class DataPointEditorController {
             });
         }, angular.noop);
     }
+    
+    notifyBulkEditError(error) {
+        this.maDialogHelper.toastOptions({
+            textTr: ['ui.app.errorStartingBulkEdit', error.mangoStatusText],
+            hideDelay: 10000,
+            classes: 'md-warn'
+        });
+    }
+    
+    notifyBulkEditComplete(resource) {
+        const numErrors = resource.result.responses.reduce((accum, response) => response.error ? accum + 1 : accum, 0);
+        
+        const toastOptions = {
+            textTr: [null, resource.position, resource.maximum, numErrors],
+            hideDelay: 10000,
+            classes: 'md-warn'
+        };
+
+        switch (resource.status) {
+        case 'CANCELLED':
+            toastOptions.textTr[0] = 'ui.app.bulkEditCancelled';
+            break;
+        case 'TIMED_OUT':
+            toastOptions.textTr[0] = 'ui.app.bulkEditTimedOut';
+            break;
+        case 'ERROR':
+            toastOptions.textTr[0] = 'ui.app.bulkEditError';
+            toastOptions.textTr.push(resource.error.localizedMessage);
+            break;
+        case 'SUCCESS':
+            if (!numErrors) {
+                toastOptions.textTr = ['ui.app.bulkEditSuccess', resource.position];
+                delete toastOptions.classes;
+            } else {
+                toastOptions.textTr[0] = 'ui.app.bulkEditSuccessWithErrors';
+            }
+            break;
+        }
+
+        this.maDialogHelper.toastOptions(toastOptions);
+    }
+    
 }
 
 export default {

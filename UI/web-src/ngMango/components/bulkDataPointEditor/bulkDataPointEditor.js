@@ -14,34 +14,11 @@ const localStorageKey = 'bulkDataPointEditPage';
 class BulkDataPointEditorController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return [
-        'maPoint',
-        'maDataSource',
-        'maDataPointTags',
-        'maDialogHelper',
-        'maTranslate',
-        '$timeout',
-        'MA_ROLLUP_TYPES',
-        'MA_CHART_TYPES',
-        'localStorageService',
-        'maUtil',
-        '$q',
-        '$scope',
-        '$element']; }
-    constructor(
-            maPoint,
-            maDataSource,
-            maDataPointTags,
-            maDialogHelper,
-            maTranslate,
-            $timeout,
-            MA_ROLLUP_TYPES,
-            MA_CHART_TYPES,
-            localStorageService,
-            maUtil,
-            $q,
-            $scope,
-            $element) {
+    static get $inject() { return ['maPoint', 'maDataSource', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout',
+            'localStorageService', 'maUtil', '$q', '$scope', '$element']; }
+    
+    constructor(maPoint, maDataSource, maDataPointTags, maDialogHelper, maTranslate, $timeout,
+            localStorageService, maUtil, $q, $scope, $element) {
 
         this.maPoint = maPoint;
         this.maDataSource = maDataSource;
@@ -49,8 +26,6 @@ class BulkDataPointEditorController {
         this.maDialogHelper = maDialogHelper;
         this.maTranslate = maTranslate;
         this.$timeout = $timeout;
-        this.MA_ROLLUP_TYPES = MA_ROLLUP_TYPES;
-        this.MA_CHART_TYPES = MA_CHART_TYPES;
         this.localStorageService = localStorageService;
         this.maUtil = maUtil;
         this.$q = $q;
@@ -122,7 +97,11 @@ class BulkDataPointEditorController {
             } else if (event.name === 'update') {
                 const found = this.points.find(p => p.id === point.id);
                 if (found) {
-                    angular.merge(found, point);
+                    const selected = found.$selected;
+                    angular.copy(point, found);
+                    if (selected) {
+                        found.$selected = true;
+                    }
                 }
             } else if (event.name === 'delete') {
                 const selectedIndex = this.selectedPoints.findIndex(p => p.id === point.id);
@@ -282,79 +261,6 @@ class BulkDataPointEditorController {
                 }
             });
 
-            this.selectedPointsChanged();
-
-            this.notifyBulkEditComplete(resource);
-            //resource.delete();
-        }, error => {
-            this.notifyBulkEditError(error);
-        }, resource => {
-            // progress
-        }).finally(() => {
-            delete this.bulkTaskPromise;
-            delete this.bulkTask;
-        });
-
-        if (typeof this.taskStarted === 'function') {
-            this.taskStarted({$promise: this.bulkTaskPromise});
-        }
-    }
-
-    start() {
-        const body = angular.copy(this.updateBody);
-        if (!Object.keys(body.tags).length) {
-            delete body.tags;
-            delete body.mergeTags;
-        }
-
-        let tagsOnly = false;
-        const requests = this.selectedPoints.map(pt => ({xid: pt.xid}));
-        if (body.tags && Object.keys(body).length === 2) {
-            tagsOnly = true;
-            
-            this.bulkTask = new this.maDataPointTags.bulk({
-                action: 'MERGE',
-                body: body.tags,
-                requests
-            });
-        } else {
-            this.bulkTask = new this.maPoint.bulk({
-                action: 'UPDATE',
-                body,
-                requests
-            });
-        }
-        
-        this.selectedPoints.forEach(pt => {
-            delete pt[errorProperty];
-        });
-
-        this.bulkTaskPromise = this.bulkTask.start(this.$scope).then(resource => {
-            const responses = resource.result.responses;
-            responses.forEach((response, i) => {
-                const point = this.selectedPoints[i];
-                if (response.body) {
-                    if (tagsOnly) {
-                        point.tags = response.body;
-                    } else {
-                        angular.copy(response.body, point);
-                    }
-                } else if (response.error) {
-                    point[errorProperty] = response.error;
-                    point[actionProperty] = response.action;
-                }
-            });
-            
-            // deselect the points without errors
-            for (let i = 0, j = 0; i < this.selectedPoints.length && j < responses.length; j++) {
-                const point = this.selectedPoints[i];
-                if (!point[errorProperty]) {
-                    delete point[selectedProperty];
-                    this.selectedPoints.splice(i, 1);
-                } else {
-                    i++;
-                }
-            }
             this.selectedPointsChanged();
 
             this.notifyBulkEditComplete(resource);
@@ -665,10 +571,6 @@ class BulkDataPointEditorController {
             this.editTarget = this.selectedPoints;
         }
         this.showDialog = {};
-    }
-    
-    dataPointEdited() {
-        this.editTarget = null;
     }
 }
 
