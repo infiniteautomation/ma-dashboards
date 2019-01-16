@@ -26,7 +26,7 @@
         <div flex></div>
         
         <span ng-if="$ctrl.bulkTask">
-            <span ng-bind="$ctrl.bulkTask.progress"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position, $ctrl.bulkTask.maximum]"></span>)
+            <span ng-bind="$ctrl.bulkTask.progress || 0"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position || 0, $ctrl.bulkTask.maximum || 0]"></span>)
         </span>
         
         <div flex></div>
