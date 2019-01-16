@@ -76,5 +76,6 @@ ma-bulk-data-point-editor .ma-no-points-found {
 }
 
 ma-bulk-data-point-editor .ma-selection-count {
+	margin-left: 16px;
 	font-size: 1.3rem;
 }
