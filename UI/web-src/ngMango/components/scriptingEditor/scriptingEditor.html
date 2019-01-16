@@ -1,6 +1,6 @@
 <div flex layout="column">
     <div flex layout="column">
-        <ma-ace-editor flex mode="$ctrl.mode" editor-loaded="$ctrl.editor = $editor" ng-change="$ctrl.setViewValue()" ng-model="$ctrl.scriptData.script"></ma-ace-editor>
+        <ma-ace-editor flex mode="javascript" options="$ctrl.options" editor-loaded="$ctrl.editor = $editor" show-gutter="true" theme="tomorrow_night_bright" ng-change="$ctrl.setViewValue()" ng-model="$ctrl.scriptData.script"></ma-ace-editor>
     </div>
     <div flex layout layout-align="space-between top" layout-wrap>
         <div flex="100" flex-gt-sm="70" flex-gt-md="80">
@@ -39,7 +39,7 @@
                 </md-select>
             </md-input-container>
             <div>
-                <md-button class="md-raised md-primary" ng-click="$ctrl.validate($event)">
+                <md-button class="md-raised md-primary" ng-disabled="$ctrl.disabled" ng-click="$ctrl.validate($event)">
                     <md-icon>done</md-icon> <span ma-tr="scriptingEditor.ui.validate"></span>
                 </md-button>
             </div>

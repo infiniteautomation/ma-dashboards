@@ -21,13 +21,16 @@ class scriptingEditorController {
     $onInit() {
         this.ngModelCtrl.$render = () => this.render(); 
         this.highlightLines = [];
-
-        this.initMode();
+        this.initOptions();
     }
 
-    initMode() {
-        if (!this.mode) {
-            this.mode = 'javascript';
+    $onChanges(changes) {}
+
+    initOptions() {
+        if (!this.options) {
+            this.options = {
+                enableLiveAutocompletion: true
+            };
         }
     }
 
@@ -53,6 +56,27 @@ class scriptingEditorController {
             this.highlightLines = [];
             return this.editor.session.removeMarker(this.range.id);
         }
+    }
+
+    setAnnotations() {
+        if (this.scriptErrors && this.scriptErrors.length > 0) {
+            let annotations = [];
+
+            this.scriptErrors.forEach(error => {
+                annotations.push({
+                    row: error.lineNumber - 1,
+                    column: error.columnNumber,
+                    text: 'Error Message', // Or the Json reply from the parser 
+                    type: 'error' // also warning and information
+                });
+            });
+            
+            this.editor.session.setAnnotations(annotations);
+        }
+    }
+
+    clearAnnotations() {
+        return this.editor.session.clearAnnotations();
     }
 
     setViewValue() {
@@ -84,6 +108,7 @@ class scriptingEditorController {
         this.scriptOutput = null;
 
         this.clearHighLightLines();
+        this.clearAnnotations();
 
         this.scriptData.validate(this.url).then(response => {
             this.scriptErrors = response.errors;
@@ -92,6 +117,7 @@ class scriptingEditorController {
 
             this.getHighlightLines();
             this.setHighlightLines();
+            this.setAnnotations();
 
             this.maDialogHelper.toastOptions({
                 textTr: ['scriptingEditor.ui.scriptValidated'],
@@ -116,7 +142,8 @@ export default {
         wrapInFunction: '<?',
         permissions: '<?',
         url: '@',
-        mode: '@'
+        disabled: '<?',
+        options: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
