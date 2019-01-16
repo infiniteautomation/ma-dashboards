@@ -120,8 +120,10 @@ class BulkDataPointEditorController {
     }
     
     $onChanges(changes) {
-        if (changes.query || changes.dataSource || changes.refresh || changes.watchList || changes.watchListParams) {
-            this.getPoints();
+        if (changes.query || changes.dataSource || changes.refresh || changes.watchList || changes.watchListParams || changes.queryingDisabled) {
+            if (!this.queryingDisabled) {
+                this.getPoints();
+            }
         }
     }
 
@@ -583,7 +585,8 @@ export default {
         dataSource: '<?source',
         watchList: '<?',
         watchListParams: '<?',
-        refresh: '<?'
+        refresh: '<?',
+        queryingDisabled: '<?'
     },
     transclude: {
         extraControls: '?maExtraControls'

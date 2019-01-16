@@ -130,7 +130,7 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
-                    <ma-bulk-data-point-editor ng-if="$ctrl.pointsTabActive" data-source="$ctrl.dataSource"></ma-bulk-data-point-editor>
+                    <ma-bulk-data-point-editor data-source="$ctrl.dataSource" refresh="$ctrl.refresh" querying-disabled="!$ctrl.pointsTabActive"></ma-bulk-data-point-editor>
                 </div>
             </md-tab-body>
         </md-tab>
