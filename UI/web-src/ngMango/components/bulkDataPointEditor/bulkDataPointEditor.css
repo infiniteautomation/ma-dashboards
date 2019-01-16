@@ -33,7 +33,7 @@ ma-bulk-data-point-editor table.md-table thead tr th {
 ma-bulk-data-point-editor table.md-table:not(.md-row-select) td.md-cell:first-child,
 ma-bulk-data-point-editor table.md-table:not(.md-row-select) th.md-column:first-child {
     width: 20px;
-    padding-right: 0;
+    padding-right: 24px;
     padding-left: 24px;
 }
 
