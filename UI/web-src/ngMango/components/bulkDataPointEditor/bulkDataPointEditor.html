@@ -77,7 +77,6 @@
                             ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" md-indeterminate="$ctrl.selectAllIndeterminate">
                         </md-checkbox>
                     </th>
-                    <th md-column><!-- Spacer for error --></th>
                     <th md-column ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
                             md-order-by="{{column.name}}">
                         <span ma-tr="{{column.label}}"></span>
@@ -90,20 +89,12 @@
             </thead>
             <tbody md-body>
                 <tr md-row ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows track by point.xid"
-                        ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise"
-                        ng-class="{'ma-row-error': point.$error, 'ma-row-modified': point.$modified}">
+                        ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
 
                     <td md-cell class="ma-checkbox-column">
                         <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="point.$selected" ng-change="$ctrl.pointSelectedChanged(point)"
                             ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                         </md-checkbox>
-                    </td>
-                    
-                    <td md-cell>
-                        <md-button class="md-warn md-icon-button" ng-if="point.$error" ng-click="$ctrl.editDataPoint($event, point)">
-                            <md-icon>warning</md-icon>
-                            <md-tooltip ma-tr="ui.app.errorDoingX" ma-tr-args="[point.$action, ptError.localizedMessage]"></md-tooltip>
-                        </md-button>
                     </td>
 
                     <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell>
