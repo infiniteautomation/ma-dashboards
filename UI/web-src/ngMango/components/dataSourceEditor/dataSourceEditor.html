@@ -138,7 +138,7 @@
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
 
-    <div class="md-padding ma-action-buttons">
+    <div class="md-padding ma-action-buttons" ng-if="!$ctrl.pointsTabActive">
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
