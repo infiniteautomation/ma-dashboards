@@ -69,7 +69,6 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                 }
                 timeoutPromise = $timeout(() => {
                     this.get().then(() => {
-                        console.log('timeout', this);
                         gotUpdate(this);
                     }, error => {
                         tmpResourceDeferred.reject(error);
@@ -78,10 +77,8 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             };
 
             deregister = this.constructor.subscribe((event, item) => {
-                console.log('ws', item);
                 if (item.id === this.id) {
                     this.itemUpdated(item);
-                    console.log('ws id match', this);
                     gotUpdate(item);
                 }
             }, $scope);
@@ -92,7 +89,6 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             }).then(() => {
                 return this.save(opts);
             }).then(item => {
-                console.log('saved', this);
                 gotUpdate(this);
             }, error => {
                 // couldn't start the temporary resource
