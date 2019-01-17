@@ -77,6 +77,17 @@
         <span ma-tr="eventHandlers.script"></span>
     </md-tab-label>
     <md-tab-body>
+        <div layout="row" class="md-padding ma-no-padding-bottom">
+            <md-input-container flex="100" flex-gt-md="50">
+                <label ma-tr="users.permissions"></label>
+                <input name="permissions" ng-model="editor.eventHandler.scriptPermissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+                <div ng-messages="$ctrl.eventHandler.scriptPermissions.$error">
+                    <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                    <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
+                </div>
+                <ma-permissions-menu ng-model="$ctrl.eventHandler.scriptPermissions"></ma-permissions-menu>
+            </md-input-container>
+        </div>
         <div class="md-padding ma-no-padding-bottom" id="email-script">
             <h3 ma-tr="eventHandlers.script"></h3>
             <ma-scripting-editor ng-model="editor.eventHandler.script"></ma-scripting-editor>
