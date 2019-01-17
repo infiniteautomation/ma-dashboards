@@ -43,8 +43,13 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             let pollPeriod = this.constructor.pollPeriodOpenSocket || 10000;
             let startTimeout = () => null;
             let deregister = () => null;
+            let wsCache = [];
 
-            const gotUpdate = item => {
+            const gotUpdate = (item) => {
+                if (item) {
+                    this.itemUpdated(item);
+                }
+                
                 if (this.resourceVersion > lastSeenVersion) {
                     lastSeenVersion = this.resourceVersion;
                     
@@ -69,7 +74,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                 }
                 timeoutPromise = $timeout(() => {
                     this.get().then(() => {
-                        gotUpdate(this);
+                        gotUpdate();
                     }, error => {
                         tmpResourceDeferred.reject(error);
                     });
@@ -78,8 +83,10 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
 
             deregister = this.constructor.subscribe((event, item) => {
                 if (item.id === this.id) {
-                    this.itemUpdated(item);
                     gotUpdate(item);
+                } else if (Array.isArray(wsCache)) {
+                    // store any updates that don't match our id in a cache for use later
+                    wsCache.unshift(item);
                 }
             }, $scope);
 
@@ -89,12 +96,16 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             }).then(() => {
                 return this.save(opts);
             }).then(item => {
-                gotUpdate(this);
+                gotUpdate();
+                // we tend to get updates over websocket before this save callback is triggered
+                // check for newer updates from the websocket cache
+                wsCache.forEach(item => gotUpdate(item));
             }, error => {
                 // couldn't start the temporary resource
                 tmpResourceDeferred.reject(error);
                 deregister();
-            });
+                $timeout.cancel(timeoutPromise);
+            }).finally(() => wsCache = null);
             
             return tmpResourceDeferred.promise;
         }
