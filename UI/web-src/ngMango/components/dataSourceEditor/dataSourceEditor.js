@@ -80,17 +80,18 @@ class DataSourceEditorController {
         }
         
         this.validationMessages = [];
-        this.activeTab = 0;
         
         const viewValue = this.ngModelCtrl.$viewValue;
-        if (viewValue) {
-            if (viewValue instanceof this.maDataSource) {
-                this.dataSource = viewValue.copy();
-            } else {
-                this.dataSource = Object.assign(Object.create(this.maDataSource.prototype), viewValue);
-            }
+        if (viewValue instanceof this.maDataSource) {
+            this.dataSource = viewValue.copy();
+        } if (viewValue) {
+            this.dataSource = Object.assign(Object.create(this.maDataSource.prototype), viewValue);
         } else {
             this.dataSource = null;
+        }
+        
+        if (this.dataSource && this.dataSource.isNew()) {
+            this.activeTab = 0;
         }
 
         if (this.form) {

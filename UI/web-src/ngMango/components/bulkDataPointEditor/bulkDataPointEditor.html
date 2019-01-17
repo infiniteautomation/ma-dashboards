@@ -126,6 +126,7 @@
             </tbody>
         </table>
         <div ng-if="!$ctrl.points.length && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
+        <div ng-if="!$ctrl.points.length && $ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.loadingPoints"></div>
     </md-table-container>
     
     <div layout layout-align="start center">

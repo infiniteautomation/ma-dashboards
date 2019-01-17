@@ -77,9 +77,9 @@ class DataPointEditorController {
             this.setViewValue(this.prevViewValue);
             return;
         }
-        
+
+        this.errorMessages = [];
         this.validationMessages = [];
-        this.activeTab = 0;
         this.points = null;
         
         const viewValue = this.prevViewValue = this.ngModelCtrl.$viewValue;
@@ -93,6 +93,10 @@ class DataPointEditorController {
             this.dataPoint = Object.assign(Object.create(this.maPoint.prototype), viewValue);
         } else {
             this.dataPoint = null;
+        }
+        
+        if (this.dataPoint && this.dataPoint.isNew()) {
+            this.activeTab = 0;
         }
 
         if (this.form) {
@@ -115,6 +119,7 @@ class DataPointEditorController {
             return;
         }
         
+        this.errorMessages = [];
         this.validationMessages = [];
         
         if (Array.isArray(this.points)) {
@@ -132,14 +137,10 @@ class DataPointEditorController {
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.result.messages;
-                
-                const withProperty = this.validationMessages.filter(m => m.property);
-                if (withProperty.length) {
-                    const property = withProperty[0].property;
-                    const inputElement = this.maUtil.findInputElement(property, this.form);
-                    this.activateTab(inputElement);
-                }
+                this.activateTabWithValidationError();
             }
+            
+            this.errorMessages.push(statusText);
             
             this.maDialogHelper.errorToast(['ui.components.dataPointSaveError', statusText]);
         }).finally(() => delete this.savePromise);
@@ -157,36 +158,49 @@ class DataPointEditorController {
         });
         
         this.savePromise = this.bulkTask.start(this.$scope).then(resource => {
+            const hasError = resource.result.hasError;
             const responses = resource.result.responses;
-            responses.forEach((response, i) => {
-                const point = newPoints[i];
-                if (response.body) {
+            
+            if (hasError) {
+                const validationMessages = [];
+                
+                responses.forEach((response, i) => {
+                    const message = response.error && response.error.localizedMessage;
+                    if (message && !this.errorMessages.includes(message)) {
+                        this.errorMessages.push(message);
+                    }
+                    
+                    if (response.httpStatus === 422) {
+                        const messages = response.error.result.messages;
+                        messages.forEach(m => {
+                            const validationMessage = `${m.level}: ${m.message}`;
+                            if (!m.property && !this.errorMessages.includes(validationMessage)) {
+                                this.errorMessages.push(validationMessage);
+                            }
+                            
+                            const found = validationMessages.find(m2 => {
+                                return m.level === m2.level && m.property === m2.property && m.message === m2.message;
+                            });
+                            
+                            if (!found) {
+                                validationMessages.push(m);
+                            }
+                        });
+                    }
+                });
+                this.validationMessages = validationMessages;
+                this.activateTabWithValidationError();
+            } else {
+                responses.forEach((response, i) => {
+                    const point = newPoints[i];
                     angular.copy(response.body, point);
-                } else if (response.error) {
-                    // TODO
-                    point.$error = response.error;
-                }
-            });
+                });
+                
+                this.setViewValue(newPoints);
+                this.render();
+            }
 
-            this.setViewValue(newPoints);
-            this.render();
             this.notifyBulkEditComplete(resource);
-            
-            // do for individual
-//            let statusText = error.mangoStatusText;
-//            
-//            if (error.status === 422) {
-//                statusText = error.mangoStatusTextShort;
-//                this.validationMessages = error.data.result.messages;
-//                
-//                const withProperty = this.validationMessages.filter(m => m.property);
-//                if (withProperty.length) {
-//                    const property = withProperty[0].property;
-//                    const inputElement = this.maUtil.findInputElement(property, this.form);
-//                    this.activateTab(inputElement);
-//                }
-//            }
-            
         }, error => {
             this.notifyBulkEditError(error);
         }, resource => {
@@ -195,6 +209,15 @@ class DataPointEditorController {
             delete this.bulkTask;
             delete this.savePromise;
         });
+    }
+    
+    activateTabWithValidationError() {
+        const withProperty = this.validationMessages.filter(m => m.property);
+        if (withProperty.length) {
+            const property = withProperty[0].property;
+            const inputElement = this.maUtil.findInputElement(property, this.form);
+            this.activateTab(inputElement);
+        }
     }
 
     revertItem(event) {
