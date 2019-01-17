@@ -18,7 +18,8 @@ class eventHandlerSetPointEditorController {
     }
 
     $onInit() {
-        
+        this.$scope.editor = this.editor;
+        console.log(this.editor.eventHandler.targetPointXid);
     }
 
 }
@@ -26,7 +27,7 @@ class eventHandlerSetPointEditorController {
 export default {
     bindings: {},
     require: {
-
+        editor: '^maEventHandlerEditor'
     },
     controller: eventHandlerSetPointEditorController,
     template: componentTemplate
