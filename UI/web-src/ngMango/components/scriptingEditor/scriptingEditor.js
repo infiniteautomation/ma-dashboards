@@ -22,6 +22,12 @@ class scriptingEditorController {
         this.ngModelCtrl.$render = () => this.render(); 
         this.highlightLines = [];
         this.initOptions();
+
+        this.$scope.$watch('$ctrl.scriptData.script', (script) => {
+            this.clearAnnotations();
+            this.clearHighLightLines();
+            this.clearErrors();
+        });
     }
 
     $onChanges(changes) {}
@@ -76,7 +82,9 @@ class scriptingEditorController {
     }
 
     clearAnnotations() {
-        return this.editor.session.clearAnnotations();
+        if (this.editor) {
+            return this.editor.session.clearAnnotations();
+        }
     }
 
     setViewValue() {
@@ -88,6 +96,12 @@ class scriptingEditorController {
     render() {
         this.scriptData = new this.maScriptingEditor();
         this.scriptData.script = this.ngModelCtrl.$viewValue;
+    }
+
+    clearErrors() {
+        this.scriptErrors = null;
+        this.scriptActions = null;
+        this.scriptOutput = null;
     }
 
     validate() {
@@ -105,10 +119,7 @@ class scriptingEditorController {
             this.scriptData.permissions = this.permissions;
         }
 
-        this.scriptErrors = null;
-        this.scriptActions = null;
-        this.scriptOutput = null;
-
+        this.clearErrors();
         this.clearHighLightLines();
         this.clearAnnotations();
 
