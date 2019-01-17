@@ -275,10 +275,6 @@ class BulkDataPointEditorController {
             delete this.bulkTaskPromise;
             delete this.bulkTask;
         });
-
-        if (typeof this.taskStarted === 'function') {
-            this.taskStarted({$promise: this.bulkTaskPromise});
-        }
     }
 
     notifyBulkEditError(error) {
@@ -485,47 +481,10 @@ class BulkDataPointEditorController {
             }
         }
     }
-
+    
     startFromCsv(csvFile) {
-        this.bulkTaskPromise = this.$q.resolve().then(() => {
-            this.bulkTask = new this.maPoint.bulk();
-            this.bulkTask.setHttpBody(csvFile);
-            
-            return this.bulkTask.start(this.$scope, {
-                headers: {
-                    'Content-Type': 'text/csv'
-                }
-            });
-        }).then(resource => {
-            const responses = resource.result.responses;
-            responses.forEach((response, i) => {
-                const point = new this.maPoint();
-                
-                if (response.body) {
-                    angular.copy(response.body, point);
-                } else if (response.error) {
-                    // TODO
-                    point.xid = response.xid;
-                }
-                
-                // TODO
-                //this.points.push(point);
-            });
-
-            this.notifyBulkEditComplete(resource);
-            //resource.delete();
-        }, error => {
-            this.notifyBulkEditError(error);
-        }, resource => {
-            // progress
-        }).finally(() => {
-            delete this.bulkTaskPromise;
-            delete this.bulkTask;
-        });
-        
-        if (typeof this.taskStarted === 'function') {
-            this.taskStarted({$promise: this.bulkTaskPromise});
-        }
+        this.csvFile = csvFile;
+        this.showDialog = {};
     }
 
     createDataPoint(event) {
@@ -581,7 +540,6 @@ export default {
     controller: BulkDataPointEditorController,
     bindings: {
         query: '<?',
-        taskStarted: '&?',
         dataSource: '<?source',
         watchList: '<?',
         watchListParams: '<?',

@@ -2,8 +2,7 @@
     <ma-point-browser ng-show="$ctrl.browserOpen"
         flex="20"
         ng-model="$ctrl.watchList"
-        ng-change="$ctrl.watchListChanged()"
-        ng-disabled="$ctrl.bulkTaskPromise">
+        ng-change="$ctrl.watchListChanged()">
     </ma-point-browser>
 
     <div flex layout="column">
@@ -15,7 +14,7 @@
         </md-card>
         
         <md-card class="ma-bulk-data-point-edit">
-            <ma-bulk-data-point-editor watch-list="$ctrl.watchList" watch-list-params="$ctrl.watchListParams" task-started="$ctrl.taskStarted($promise)">
+            <ma-bulk-data-point-editor watch-list="$ctrl.watchList" watch-list-params="$ctrl.watchListParams">
                 <ma-extra-controls>
                     <md-button class="md-icon-button" ng-click="$ctrl.browserOpen = !$ctrl.browserOpen">
                         <md-icon>{{$ctrl.browserOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</md-icon>

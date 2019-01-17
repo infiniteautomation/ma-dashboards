@@ -39,10 +39,6 @@ class BulkDataPointEditPageController {
             this.watchList.defaultParamValues(this.watchListParams);
         }
     }
-
-    taskStarted(promise) {
-        this.bulkTaskPromise = promise.finally(() => delete this.bulkTaskPromise);
-    }
 }
 
 export default {
