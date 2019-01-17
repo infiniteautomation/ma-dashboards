@@ -41,41 +41,48 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             let lastSeenVersion = -1;
             let timeoutPromise;
             let pollPeriod = this.constructor.pollPeriodOpenSocket || 10000;
+            let startTimeout = () => null;
+            let deregister = () => null;
 
-            const startTimeout = () => {
+            const gotUpdate = item => {
+                if (this.resourceVersion > lastSeenVersion) {
+                    lastSeenVersion = this.resourceVersion;
+                    
+                    if (this.isComplete()) {
+                        tmpResourceDeferred.resolve(this);
+                        deregister();
+                        $timeout.cancel(timeoutPromise);
+                    } else {
+                        // cancel and restart the timer every time we get an update
+                        startTimeout();
+                        
+                        // notify with a copy as the listener as the subscribe callback uses $applyAsync
+                        // resulting in a batch of messages being processed at once, we might want to see each progress message separately
+                        tmpResourceDeferred.notify(angular.copy(this));
+                    }
+                }
+            };
+            
+            startTimeout = () => {
                 if (timeoutPromise) {
                     $timeout.cancel(timeoutPromise);
                 }
                 timeoutPromise = $timeout(() => {
                     this.get().then(() => {
-                        if (!this.isComplete()) {
-                            startTimeout();
-                        }
+                        console.log('timeout', this);
+                        gotUpdate(this);
                     }, error => {
                         tmpResourceDeferred.reject(error);
                     });
                 }, pollPeriod, false);
             };
 
-            const deregister = this.constructor.subscribe((event, item) => {
+            deregister = this.constructor.subscribe((event, item) => {
+                console.log('ws', item);
                 if (item.id === this.id) {
                     this.itemUpdated(item);
-                    if (this.resourceVersion > lastSeenVersion) {
-                        lastSeenVersion = this.resourceVersion;
-                        
-                        if (this.isComplete()) {
-                            tmpResourceDeferred.resolve(this);
-                            deregister();
-                            $timeout.cancel(timeoutPromise);
-                        } else {
-                            // cancel and restart the timer every time we get an update
-                            startTimeout();
-                            
-                            // notify with a copy as the listener as the subscribe callback uses $applyAsync
-                            // resulting in a batch of messages being processed at once, we might want to see each progress message separately
-                            tmpResourceDeferred.notify(angular.copy(this));
-                        }
-                    }
+                    console.log('ws id match', this);
+                    gotUpdate(item);
                 }
             }, $scope);
 
@@ -85,9 +92,8 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             }).then(() => {
                 return this.save(opts);
             }).then(item => {
-                if (!this.isComplete()) {
-                    startTimeout();
-                }
+                console.log('saved', this);
+                gotUpdate(this);
             }, error => {
                 // couldn't start the temporary resource
                 tmpResourceDeferred.reject(error);
@@ -146,5 +152,3 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
 }
 
 export default temporaryRestResourceFactory;
-
-
