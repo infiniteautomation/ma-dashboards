@@ -194,10 +194,8 @@
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>
-        <em ng-if="$ctrl.points.length && !$ctrl.errorMessages.length" ma-tr="ui.components.editXDataPoints" ma-tr-args="[$ctrl.points.length]"></em>
         <em ng-if="$ctrl.errorMessages.length" md-colors="::{color: 'warn'}">
             <span ng-repeat="msg in $ctrl.errorMessages"><span ng-bind="msg"></span><span ng-if="!$last">, </span></span>
         </em>
     </div>
-    
 </div>

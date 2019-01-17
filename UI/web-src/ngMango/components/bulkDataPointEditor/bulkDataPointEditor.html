@@ -136,11 +136,12 @@
     
 </div>
 
-<ma-dialog show-dialog="$ctrl.showDialog" on-hide="$ctrl.editTarget = null" on-cancel="$ctrl.editTarget = null">
+<ma-dialog show-dialog="$ctrl.showDialog" on-hide="$ctrl.editTarget = null; $ctrl.csvFile = null" on-cancel="$ctrl.editTarget = null;  $ctrl.csvFile = null">
     <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>
+                    <span ng-if="$ctrl.csvFile">Uploading CSV</span>
                     <span ng-if="$ctrl.editTarget.length" ma-tr="ui.components.editXDataPoints" ma-tr-args="[$ctrl.editTarget.length]"></span>
                     <span ng-if="!$ctrl.editTarget.length && !$ctrl.editTarget.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.editTarget.name]"></span>
                     <span ng-if="!$ctrl.editTarget.length && $ctrl.editTarget.isNew()" ma-tr="dsList.createDataPoint"></span>
@@ -154,7 +155,7 @@
 
         <md-dialog-content layout="column" flex>
             <ma-data-point-editor flex="noshrink" layout="column" dynamic-height="!$dialog.fullscreen()"
-                ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true">
+                ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true" import-csv="$ctrl.csvFile">
             </ma-data-point-editor>
         </md-dialog-content>
     </md-dialog>

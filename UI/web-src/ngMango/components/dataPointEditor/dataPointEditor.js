@@ -70,6 +70,9 @@ class DataPointEditorController {
     }
     
     $onChanges(changes) {
+        if (changes.importCsv && this.importCsv) {
+            this.startFromCsv(this.importCsv);
+        }
     }
 
     render(confirmDiscard = false) {
@@ -158,49 +161,7 @@ class DataPointEditorController {
         });
         
         this.savePromise = this.bulkTask.start(this.$scope).then(resource => {
-            const hasError = resource.result.hasError;
-            const responses = resource.result.responses;
-            
-            if (hasError) {
-                const validationMessages = [];
-                
-                responses.forEach((response, i) => {
-                    const message = response.error && response.error.localizedMessage;
-                    if (message && !this.errorMessages.includes(message)) {
-                        this.errorMessages.push(message);
-                    }
-                    
-                    if (response.httpStatus === 422) {
-                        const messages = response.error.result.messages;
-                        messages.forEach(m => {
-                            const validationMessage = `${m.level}: ${m.message}`;
-                            if (!m.property && !this.errorMessages.includes(validationMessage)) {
-                                this.errorMessages.push(validationMessage);
-                            }
-                            
-                            const found = validationMessages.find(m2 => {
-                                return m.level === m2.level && m.property === m2.property && m.message === m2.message;
-                            });
-                            
-                            if (!found) {
-                                validationMessages.push(m);
-                            }
-                        });
-                    }
-                });
-                this.validationMessages = validationMessages;
-                this.activateTabWithValidationError();
-            } else {
-                responses.forEach((response, i) => {
-                    const point = newPoints[i];
-                    angular.copy(response.body, point);
-                });
-                
-                this.setViewValue(newPoints);
-                this.render();
-            }
-
-            this.notifyBulkEditComplete(resource);
+            this.saveMultipleComplete(resource, newPoints);
         }, error => {
             this.notifyBulkEditError(error);
         }, resource => {
@@ -209,6 +170,54 @@ class DataPointEditorController {
             delete this.bulkTask;
             delete this.savePromise;
         });
+    }
+    
+    saveMultipleComplete(resource, savedPoints) {
+        const hasError = resource.result.hasError;
+        const responses = resource.result.responses;
+
+        responses.forEach((response, i) => {
+            const point = savedPoints[i];
+            if (response.body && ['CREATE', 'UPDATE'].includes(response.action)) {
+                angular.copy(response.body, point);
+            }
+        });
+        
+        if (hasError) {
+            const validationMessages = [];
+            
+            responses.forEach((response, i) => {
+                const message = response.error && response.error.localizedMessage;
+                if (message && !this.errorMessages.includes(message)) {
+                    this.errorMessages.push(message);
+                }
+                
+                if (response.httpStatus === 422) {
+                    const messages = response.error.result.messages;
+                    messages.forEach(m => {
+                        const validationMessage = `${m.level}: ${m.message}`;
+                        if (!m.property && !this.errorMessages.includes(validationMessage)) {
+                            this.errorMessages.push(validationMessage);
+                        }
+                        
+                        const found = validationMessages.find(m2 => {
+                            return m.level === m2.level && m.property === m2.property && m.message === m2.message;
+                        });
+                        
+                        if (!found) {
+                            validationMessages.push(m);
+                        }
+                    });
+                }
+            });
+            this.validationMessages = validationMessages;
+            this.activateTabWithValidationError();
+        } else {
+            this.setViewValue(savedPoints);
+            this.render();
+        }
+
+        this.notifyBulkEditComplete(resource);
     }
     
     activateTabWithValidationError() {
@@ -322,6 +331,54 @@ class DataPointEditorController {
         this.maDialogHelper.toastOptions(toastOptions);
     }
     
+    startFromCsv(csvFile) {
+        if (!this.confirmDiscard('modelChange')) {
+            return;
+        }
+        
+        this.errorMessages = [];
+        this.validationMessages = [];
+        this.dataPoint = null;
+        this.points = null;
+        
+        if (this.form) {
+            this.form.$setPristine();
+            this.form.$setUntouched();
+        }
+        
+        this.bulkTaskPromise = this.$q.resolve().then(() => {
+            this.bulkTask = new this.maPoint.bulk();
+            this.bulkTask.setHttpBody(csvFile);
+            
+            return this.bulkTask.start(this.$scope, {
+                headers: {
+                    'Content-Type': 'text/csv'
+                }
+            });
+        }).then(resource => {
+            const responses = resource.result.responses;
+            this.points = responses.filter(response => {
+                return (response.body && ['CREATE', 'UPDATE'].includes(response.action));
+            }).map(response => {
+                const pt = Object.assign(Object.create(this.maPoint.prototype), response.body);
+                pt.originalId = pt.xid;
+                return pt;
+            });
+            
+            this.dataPoint = this.MultipleValues.fromArray(this.points);
+
+            this.form.$setSubmitted();
+            
+            this.saveMultipleComplete(resource, this.points);
+        }, error => {
+            this.notifyBulkEditError(error);
+        }, resource => {
+            // progress
+        }).finally(() => {
+            delete this.bulkTaskPromise;
+            delete this.bulkTask;
+        });
+    }
 }
 
 export default {
@@ -329,7 +386,8 @@ export default {
     controller: DataPointEditorController,
     bindings: {
         discardOptions: '<?confirmDiscard',
-        fixedType: '<?'
+        fixedType: '<?',
+        importCsv: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
