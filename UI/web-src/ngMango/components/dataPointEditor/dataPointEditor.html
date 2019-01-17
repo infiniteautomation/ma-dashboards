@@ -190,7 +190,7 @@
             <md-icon>undo</md-icon>
             <span ma-tr="ui.app.revert"></span>
         </md-button>
-        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.dataPoint.isNew() || $ctrl.savePromise" ng-if="$ctrl.points">
+        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.dataPoint.isNew() || $ctrl.savePromise" ng-if="!$ctrl.points">
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>

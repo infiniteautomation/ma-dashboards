@@ -106,8 +106,10 @@ class DataPointEditorController {
     }
 
     saveItem(event) {
-        this.form.$setSubmitted();
+        this.MultipleValues.checkFormValidity(this.form);
         
+        this.form.$setSubmitted();
+
         if (!this.form.$valid) {
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
