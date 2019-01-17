@@ -69,8 +69,21 @@
 <p>
   The whole Map&lt;String, Object&gt; model map is passed into an optionally defined script. The script can manipulate the 'model'
   variable however it sees fit prior to the template being processed. The script can also prevent the sending of the email by doing a 
-  "return CANCEL;" or a "return UNCHANGED;"
+  "return CANCEL;" or a "return UNCHANGED;"  The permissions for the script allow restricting what it can access.
 </p>
+
+<h3>Script Permissions</h3>
+<p>
+  Script Permissions are used by any Script Utility to access Mango Points, 
+  Publishers,Data Sources and any other items that require permission.  
+</p>
+<h3>Script Utilities That Use Permissions</h3>
+<ul>
+	<li>RuntimeManager</li>
+	<li>DataSourceQuery</li>
+	<li>DataPointQuery</li>
+	<li>JsonEmportScriptUtility</li>
+</ul>
 
 <h3>Custom Email Templates</h3>
 
