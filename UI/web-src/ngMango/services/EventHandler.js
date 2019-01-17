@@ -20,7 +20,7 @@ function eventHandlerProvider() {
         {
             type: 'SET_POINT',
             description: 'eventHandlers.type.setPoint',
-            template: ``
+            template: `<ma-event-handler-set-point-editor></ma-event-handler-set-point-editor>`
         }
     ];
     
