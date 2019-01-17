@@ -1902,5 +1902,15 @@ export default [
             }
         },
         menuTr: 'systemSettings.comm.virtual.serialPorts'
-    }
+    },
+    {
+        name: 'ui.help.scriptingEditor',
+        url: '/scripting-editor/help',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "eager" */ './views/help/scriptingEditor.html');
+            }
+        },
+        menuTr: 'ui.app.eventHandlers'
+    },
 ];
