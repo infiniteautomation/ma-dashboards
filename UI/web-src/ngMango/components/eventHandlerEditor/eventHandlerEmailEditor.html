@@ -19,7 +19,7 @@
 </div>
 
 <h3 ma-tr="eventHandlers.emailRecipients"></h3>
-<ma-email-recipients name="activeRecipients" ng-model="editor.eventHandler.activeRecipients"></ma-email-recipients>
+<ma-email-recipients name="activeRecipients" ng-model="editor.eventHandler.activeRecipients" type-property="recipientType"></ma-email-recipients>
 
 <h3 ma-tr="eventHandlers.escalationEmail"></h3>
 <div>
@@ -40,7 +40,7 @@
         </md-input-container>
     </div>
     
-    <ma-email-recipients name="escalationRecipients" ng-model="editor.eventHandler.escalationRecipients"></ma-email-recipients>
+    <ma-email-recipients name="escalationRecipients" ng-model="editor.eventHandler.escalationRecipients" type-property="recipientType"></ma-email-recipients>
 </div>
 
 <h3 ma-tr="eventHandlers.inactiveEmail"></h3>
@@ -54,7 +54,7 @@
     </div>
 </div>
 
-<ma-email-recipients ng-if="editor.eventHandler.sendInactive && editor.eventHandler.inactiveOverride" name="inactiveRecipients" ng-model="editor.eventHandler.inactiveRecipients"></ma-email-recipients>
+<ma-email-recipients ng-if="editor.eventHandler.sendInactive && editor.eventHandler.inactiveOverride" type-property="recipientType" name="inactiveRecipients" ng-model="editor.eventHandler.inactiveRecipients"></ma-email-recipients>
 
 <md-tab>
     <md-tab-label>
