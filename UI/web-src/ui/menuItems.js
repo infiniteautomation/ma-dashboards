@@ -1913,4 +1913,14 @@ export default [
         },
         menuTr: 'ui.app.eventHandlers'
     },
+    {
+        name: 'ui.help.freeMarkerTemplates',
+        url: '/scripting-editor/help',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "eager" */ './views/help/freeMarkerTemplates.html');
+            }
+        },
+        menuTr: 'ui.dox.freeMarker'
+    },
 ];

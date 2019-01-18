@@ -64,7 +64,8 @@
   like those in the EventInstance class. Audit events have the JSON for the changes in question stored in their
   'context' attribute. Data source and data point events store the data source's object under 'evt.context.dataSource'.
   Publisher events have the publisher's object stored in 'evt.context.publisher'. System events have a null evt.context.
-  If the event type is defined by a module, the contents of its context should be described in the help for that module.
+  If the event type is defined by a module, the contents of its context should be described in the help for that module. 
+  See <a ui-sref="ui.help.freeMarkerTemplates">here for how to code templates</a>.
 </p>
 <p>
   The whole Map&lt;String, Object&gt; model map is passed into an optionally defined script. The script can manipulate the 'model'
