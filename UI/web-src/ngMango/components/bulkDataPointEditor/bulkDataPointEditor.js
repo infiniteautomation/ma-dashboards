@@ -37,11 +37,12 @@ class BulkDataPointEditorController {
         this.tableOrder = 'name';
 
         this.columns = [
-            {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: true},
+            {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false},
             {name: 'dataSourceName', label: 'ui.app.dataSource', selectedByDefault: false},
             {name: 'dataType', label: 'dsEdit.pointDataType', selectedByDefault: false},
             {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
             {name: 'name', label: 'common.name', selectedByDefault: true},
+            {name: 'tagsString', label: 'ui.app.tags', selectedByDefault: true, disableSort: false},
             {name: 'enabled', label: 'common.enabled', selectedByDefault: false},
             {name: 'readPermission', label: 'pointEdit.props.permission.read', selectedByDefault: false},
             {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: false},

@@ -42,11 +42,9 @@ ma-bulk-data-point-editor table.md-table thead tr th.ma-checkbox-column > md-che
     width: 20px;
 }
 
-ma-bulk-data-point-editor table.md-table thead tr th:nth-child(1n+3),
-ma-bulk-data-point-editor table.md-table tbody tr td:nth-child(1n+3) {
-	overflow: hidden;
+ma-bulk-data-point-editor table.md-table thead tr th:nth-child(1n+2),
+ma-bulk-data-point-editor table.md-table tbody tr td:nth-child(1n+2) {
 	white-space: nowrap;
-	text-overflow: ellipsis;
 }
 
 ma-bulk-data-point-editor .ma-point-actions md-switch {

@@ -78,7 +78,7 @@
                         </md-checkbox>
                     </th>
                     <th md-column ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
-                            md-order-by="{{column.name}}">
+                            md-order-by="{{column.disableSort ? '' : column.name}}">
                         <span ma-tr="{{column.label}}"></span>
                     </th>
                     <th md-column ng-repeat="tag in $ctrl.selectedTags track by tag.name">
