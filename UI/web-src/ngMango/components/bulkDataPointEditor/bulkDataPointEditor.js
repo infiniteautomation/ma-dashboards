@@ -642,8 +642,5 @@ export default {
         watchListParams: '<?',
         refresh: '<?',
         queryingDisabled: '<?'
-    },
-    transclude: {
-        extraControls: '?maExtraControls'
     }
 };

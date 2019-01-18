@@ -13,18 +13,18 @@
             </ma-watch-list-parameters>
         </md-card>
         
+        <!--
+        <md-button class="md-icon-button" ng-click="$ctrl.browserOpen = !$ctrl.browserOpen">
+            <md-icon>{{$ctrl.browserOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</md-icon>
+            <md-tooltip>
+                <span ng-if="$ctrl.browserOpen" ma-tr="ui.app.hidePointBrowser"></span>
+                <span ng-if="!$ctrl.browserOpen" ma-tr="ui.app.showPointBrowser"></span>
+            </md-tooltip>
+        </md-button>
+         -->
+        
         <md-card class="ma-bulk-data-point-edit">
-            <ma-bulk-data-point-editor watch-list="$ctrl.watchList" watch-list-params="$ctrl.watchListParams">
-                <ma-extra-controls>
-                    <md-button class="md-icon-button" ng-click="$ctrl.browserOpen = !$ctrl.browserOpen">
-                        <md-icon>{{$ctrl.browserOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</md-icon>
-                        <md-tooltip>
-                            <span ng-if="$ctrl.browserOpen" ma-tr="ui.app.hidePointBrowser"></span>
-                            <span ng-if="!$ctrl.browserOpen" ma-tr="ui.app.showPointBrowser"></span>
-                        </md-tooltip>
-                    </md-button>
-                </ma-extra-controls>
-            </ma-bulk-data-point-editor>
+            <ma-bulk-data-point-editor watch-list="$ctrl.watchList" watch-list-params="$ctrl.watchListParams"></ma-bulk-data-point-editor>
         </md-card>
     </div>
 </div>

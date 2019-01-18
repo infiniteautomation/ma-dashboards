@@ -7,12 +7,12 @@ ma-bulk-data-point-editor .ma-bulk-edit-toolbar ma-extra-controls {
 	display: inline-block;
 }
 
-ma-bulk-data-point-editor .ma-bulk-edit-toolbar > .md-button.md-icon-button,
+ma-bulk-data-point-editor .ma-bulk-edit-toolbar .md-button.md-icon-button,
 ma-bulk-data-point-editor .ma-bulk-edit-toolbar ma-extra-controls > .md-button.md-icon-button {
 	margin: 0 -4px;
 }
 
-ma-bulk-data-point-editor .ma-bulk-edit-toolbar > md-input-container {
+ma-bulk-data-point-editor .ma-bulk-edit-toolbar md-input-container {
 	margin: 0;
 }
 
@@ -74,7 +74,7 @@ ma-bulk-data-point-editor .ma-no-points-found {
 }
 
 ma-bulk-data-point-editor .ma-selection-count {
-	margin-left: 16px;
+	margin: 8px;
 	font-size: 1.3rem;
 }
 
