@@ -8,17 +8,16 @@ import bulkDataPointEditorTemplate from './bulkDataPointEditor.html';
 
 import './bulkDataPointEditor.css';
 
-const selectedProperty = '$selected';
 const localStorageKey = 'bulkDataPointEditPage';
 
 class BulkDataPointEditorController {
     static get $$ngIsClass() { return true; }
     
     static get $inject() { return ['maPoint', 'maDataSource', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout',
-            'localStorageService', 'maUtil', '$q', '$scope', '$element']; }
+            'localStorageService', 'maUtil', '$q', '$scope', '$element', '$filter']; }
     
     constructor(maPoint, maDataSource, maDataPointTags, maDialogHelper, maTranslate, $timeout,
-            localStorageService, maUtil, $q, $scope, $element) {
+            localStorageService, maUtil, $q, $scope, $element, $filter) {
 
         this.maPoint = maPoint;
         this.maDataSource = maDataSource;
@@ -31,10 +30,11 @@ class BulkDataPointEditorController {
         this.$q = $q;
         this.$scope = $scope;
         this.$element = $element;
+        
+        this.sortFilter = $filter('orderBy');
+        this.filterFilter = $filter('filter');
 
         this.numberOfRows = 15;
-        this.pageNumber = 1;
-        this.tableOrder = 'name';
 
         this.columns = [
             {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false},
@@ -74,11 +74,25 @@ class BulkDataPointEditorController {
         this.manuallySelectedTags = [];
 
         this.reset();
+
+        this.filterPointsBound = (...args) => this.filterPoints(...args);
+        this.sortStringChangedBound = (...args) => this.sortStringChanged(...args);
+        this.sortPointsBound = (...args) => this.sortPoints(...args);
+        this.slicePointsBound = (...args) => this.slicePoints(...args);
     }
     
     reset() {
         this.points = [];
+        this.filteredPoints = [];
+        this.sortedPoints = [];
+        this.slicedPoints = [];
         this.selectedPoints = [];
+
+        this.pageNumber = 1;
+        this.sortString = 'deviceName';
+        this.sortArray = ['deviceName', 'name'];
+        this.filterObject = {};
+        
         this.selectAll = false;
         this.selectAllIndeterminate = false;
     }
@@ -90,33 +104,12 @@ class BulkDataPointEditorController {
 
         this.maPoint.notificationManager.subscribe((event, point) => {
             if (event.name === 'create') {
-                // TODO check the point matches this.queryObj
-                if (this.dataSource && point.dataSourceXid === this.dataSource.xid) {
-                    this.points.push(point);
-                    this.selectedPointsChanged();
-                }
+                this.pointAdded(point);
             } else if (event.name === 'update') {
-                const found = this.points.find(p => p.id === point.id);
-                if (found) {
-                    const selected = found.$selected;
-                    angular.copy(point, found);
-                    if (selected) {
-                        found.$selected = true;
-                    }
-                }
+                this.pointUpdated(point);
             } else if (event.name === 'delete') {
-                const selectedIndex = this.selectedPoints.findIndex(p => p.id === point.id);
-                if (selectedIndex >= 0) {
-                    this.selectedPoints.splice(selectedIndex, 1);
-                }
-                
-                const index = this.points.findIndex(p => p.id === point.id);
-                if (index >= 0) {
-                    this.points.splice(index, 1);
-                    this.selectedPointsChanged();
-                }
+                this.pointDeleted(point);
             }
-            
         }, this.$scope);
     }
     
@@ -153,6 +146,7 @@ class BulkDataPointEditorController {
 
         this.pointsPromise = pointsPromise.then(points => {
             this.points = points;
+            this.filterPoints();
             this.checkAvailableTags();
             return this.points;
         }).catch(error => {
@@ -180,6 +174,48 @@ class BulkDataPointEditorController {
             this.wlPointsPromise.cancel();
         }
     }
+    
+    filterPoints() {
+        this.filteredPoints = this.filterFilter(this.points, this.filterObject);
+        
+        this.selectedPoints = this.selectedPoints.filter(pt => {
+            if (!this.filteredPoints.includes(pt)) {
+                delete pt.$selected;
+                return false;
+            }
+            return true;
+        });
+        
+        this.updateSelectAllStatus();
+        
+        this.sortPoints();
+    }
+
+    sortStringChanged() {
+        const newSort = this.sortString;
+        const property = newSort.startsWith('-') ? newSort.slice(1) : newSort;
+        
+        this.sortArray = this.sortArray.filter(sort => {
+            const prevProperty = sort.startsWith('-') ? sort.slice(1) : sort;
+            return prevProperty !== property;
+        });
+
+        this.sortArray.unshift(newSort);
+        if (this.sortArray.length > 3) {
+            this.sortArray.pop();
+        }
+        this.sortPoints();
+    }
+    
+    sortPoints() {
+        this.sortedPoints = this.sortFilter(this.filteredPoints, this.sortArray);
+        this.slicePoints();
+    }
+    
+    slicePoints() {
+        const start = (this.pageNumber - 1) * this.numberOfRows;
+        this.slicedPoints = this.sortedPoints.slice(start, start + this.numberOfRows);
+    }
 
     addTagToAvailable(tagKey) {
         if (tagKey === 'device' || tagKey === 'name') {
@@ -200,17 +236,6 @@ class BulkDataPointEditorController {
         this.availableTagsByKey[tagKey] = option;
 
         return option;
-    }
-
-    addTagColumn(event) {
-        this.maDialogHelper.prompt(event, 'ui.app.tagName').then(tagKey => {
-            const option = this.addTagToAvailable(tagKey);
-            if (option) {
-                this.selectTag(option);
-                this.manuallySelectedTags.push(option);
-                this.prevSelectedTags = this.selectedTags.slice();
-            }
-        }, angular.noop);
     }
     
     selectTag(option) {
@@ -234,7 +259,9 @@ class BulkDataPointEditorController {
     }
     
     deleteSelected() {
-        const requests = this.selectedPoints.map(pt => ({xid: pt.xid}));
+        // WS can modify this so make copy so we can retrieve point by index later
+        const selected = this.selectedPoints.slice();
+        const requests = selected.map(pt => ({xid: pt.xid}));
         
         this.bulkTask = new this.maPoint.bulk({
             action: 'DELETE',
@@ -243,28 +270,12 @@ class BulkDataPointEditorController {
 
         this.bulkTaskPromise = this.bulkTask.start(this.$scope).then(resource => {
             const responses = resource.result.responses;
-            const deletedPoints = [];
-            
-            responses.forEach((response, i) => {
-                const point = this.selectedPoints[i];
-                if (!response.error) {
-                    deletedPoints.push(point);
-                }
-            });
-            
-            deletedPoints.forEach(point => {
-                const pointsIndex = this.points.indexOf(point);
-                if (pointsIndex >= 0) {
-                    this.points.splice(pointsIndex, 1);
-                }
-                
-                const selectedPointsIndex = this.selectedPoints.indexOf(point);
-                if (selectedPointsIndex >= 0) {
-                    this.selectedPoints.splice(selectedPointsIndex, 1);
-                }
-            });
 
-            this.selectedPointsChanged();
+            responses.forEach((response, i) => {
+                if (!response.error) {
+                    this.pointDeleted(selected[i]);
+                }
+            });
 
             this.notifyBulkEditComplete(resource);
             //resource.delete();
@@ -342,20 +353,20 @@ class BulkDataPointEditorController {
     }
 
     pointSelectedChanged(point) {
-        if (point[selectedProperty]) {
+        if (point.$selected) {
             this.selectedPoints.push(point);
         } else {
-            delete point[selectedProperty];
-            const i = this.selectedPoints.findIndex(p => p.xid === point.xid);
+            delete point.$selected;
+            const i = this.selectedPoints.findIndex(p => p.id === point.id);
             if (i >= 0) {
                 this.selectedPoints.splice(i, 1);
             }
         }
-        this.selectedPointsChanged();
+        this.updateSelectAllStatus();
     }
 
-    selectedPointsChanged() {
-        if (this.selectedPoints.length === this.points.length) {
+    updateSelectAllStatus() {
+        if (this.selectedPoints.length === this.filteredPoints.length) {
             this.selectAllIndeterminate = false;
             // seems to be a bug changing md-checkbox indeterminate and checked at same time
             const selectAll = this.selectedPoints.length > 0;
@@ -373,16 +384,16 @@ class BulkDataPointEditorController {
             this.selectAll = false;
             this.selectedPoints = [];
         } else {
-            this.selectedPoints = this.selectAll && this.points ? this.points.slice() : [];
+            this.selectedPoints = this.selectAll && this.filteredPoints ? this.filteredPoints.slice() : [];
         }
         
         this.selectAllIndeterminate = false;
         
-        if (this.points) {
+        if (this.filteredPoints) {
             if (this.selectAll) {
-                this.points.forEach(pt => pt[selectedProperty] = true);
+                this.filteredPoints.forEach(pt => pt.$selected = true);
             } else {
-                this.points.forEach(pt => delete pt[selectedProperty]);
+                this.filteredPoints.forEach(pt => delete pt.$selected);
             }
         }
     }
@@ -485,23 +496,23 @@ class BulkDataPointEditorController {
     
     startFromCsv(csvFile) {
         this.csvFile = csvFile;
-        this.showDialog = {};
+        this.showPointDialog = {};
     }
 
     createDataPoint(event) {
         this.editTarget = this.maDataSource.typesByName[this.dataSource.modelType].createDataPoint();
         this.editTarget.dataSourceXid = this.dataSource.originalId;
-        this.showDialog = {};
+        this.showPointDialog = {};
     }
     
     editDataPoint(event, item) {
         this.editTarget = item;
-        this.showDialog = {};
+        this.showPointDialog = {};
     }
     
     copyDataPoint(event, item) {
         this.editTarget = item.copy(true);
-        this.showDialog = {};
+        this.showPointDialog = {};
     }
 
     deleteDataPoint(event, item) {
@@ -509,9 +520,7 @@ class BulkDataPointEditorController {
         this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
             item.delete().then(() => {
                 this.maDialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
-                
-                // rely on WebSocket to update the list of points
-                //this.queryPoints();
+                this.pointDeleted(item);
             }, error => {
                 this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
             });
@@ -532,7 +541,94 @@ class BulkDataPointEditorController {
         } else {
             this.editTarget = this.selectedPoints;
         }
-        this.showDialog = {};
+        this.showPointDialog = {};
+    }
+    
+    pointMatchesQuery(point) {
+        // TODO check the point matches this.queryObj
+        if (this.dataSource && point.dataSourceXid === this.dataSource.xid) {
+            return true;
+        }
+    }
+
+    pointAdded(point) {
+        if (this.pointMatchesQuery(point)) {
+            this.points.push(point);
+            this.updateSelectAllStatus();
+            
+            // WS updates can happen very rapidly, debounce filtering points
+            this.filterPointsAfterTimeout();
+        }
+    }
+    
+    pointUpdated(point) {
+        const found = this.points.find(p => p.id === point.id);
+        if (found) {
+            const selected = found.$selected;
+            angular.copy(point, found);
+            if (selected) {
+                found.$selected = true;
+            }
+            
+            // WS updates can happen very rapidly, debounce filtering points
+            this.filterPointsAfterTimeout();
+        }
+    }
+    
+    pointDeleted(point) {
+        const selectedIndex = this.selectedPoints.findIndex(p => p.id === point.id);
+        if (selectedIndex >= 0) {
+            this.selectedPoints.splice(selectedIndex, 1);
+        }
+        
+        const index = this.points.findIndex(p => p.id === point.id);
+        if (index >= 0) {
+            this.points.splice(index, 1);
+            this.updateSelectAllStatus();
+            this.slicePoints();
+        }
+    }
+    
+    filterPointsAfterTimeout(time = 500) {
+        this.filterPointsAfterTimeoutCount++;
+        this.$timeout.cancel(this.filterTimeout);
+        
+        if (this.filterPointsAfterTimeoutCount >= 1000) {
+            this.filterPointsAfterTimeoutCount = 0;
+            this.filterPoints();
+        } else {
+            this.filterTimeout = this.$timeout(() => {
+                this.filterPointsAfterTimeoutCount = 0;
+                this.filterPoints();
+            }, time);
+        }
+    }
+    
+    filterButtonClicked() {
+        this.showFilters = !this.showFilters;
+        if (!this.showFilters) {
+            this.filterObject = {};
+            this.filterChanged();
+        }
+    }
+    
+    filterChanged() {
+        this.clearEmptyKeys(this.filterObject);
+        this.filterPoints();
+    }
+    
+    clearEmptyKeys(obj) {
+        Object.keys(obj).forEach(key => {
+            const val = obj[key];
+            if (typeof val === 'object') {
+                this.clearEmptyKeys(val);
+                if (Object.keys(val).length === 0) {
+                    delete obj[key];
+                }
+            } else if (!val) {
+                delete obj[key];
+            }
+        });
     }
 }
 

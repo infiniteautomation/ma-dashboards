@@ -46,22 +46,22 @@
                 <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
             </md-select>
         </md-input-container>
-        
-        <md-button class="md-icon-button" ng-click="$ctrl.addTagColumn($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
-            <md-icon>add</md-icon>
-            <md-tooltip ma-tr="ui.app.addATag"></md-tooltip>
+
+        <md-button class="md-icon-button" ng-click="$ctrl.filterButtonClicked($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" ng-class="{'md-accent': $ctrl.showFilters}">
+            <md-icon>filter_list</md-icon>
+            <md-tooltip ma-tr="ui.app.filterDataPoints"></md-tooltip>
         </md-button>
-        
+
         <md-button class="md-icon-button" ng-click="$ctrl.downloadCSV($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
             <md-icon>file_download</md-icon>
             <md-tooltip ma-tr="ui.app.downloadCSV"></md-tooltip>
         </md-button>
-        
+
         <md-button class="md-icon-button" ng-click="$ctrl.uploadCSVButtonClicked($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
             <md-icon>file_upload</md-icon>
             <md-tooltip ma-tr="ui.app.uploadCSV"></md-tooltip>
         </md-button>
-        
+
         <input style="display:none" type="file" ng-model="dummyFileModel"
             ma-change="$ctrl.csvFileInputChanged($event)" ng-attr-accept="text/csv,.csv">
     </div>
@@ -70,7 +70,7 @@
 
     <md-table-container>
         <table md-table md-progress="$ctrl.pointsPromise">
-            <thead md-head md-order="$ctrl.tableOrder">
+            <thead md-head md-order="$ctrl.sortString" md-on-reorder="$ctrl.sortStringChangedBound">
                 <tr md-row>
                     <th md-column class="ma-checkbox-column">
                         <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
@@ -81,16 +81,33 @@
                             md-order-by="{{column.disableSort ? '' : column.name}}">
                         <span ma-tr="{{column.label}}"></span>
                     </th>
-                    <th md-column ng-repeat="tag in $ctrl.selectedTags track by tag.name">
+                    <th md-column ng-repeat="tag in $ctrl.selectedTags track by tag.name"
+                            md-order-by="tags.{{tag.name}}">
                         <span ng-bind="tag.label"></span>
                     </th>
                     <th md-column><!-- Spacer for point actions column --></th>
                 </tr>
             </thead>
+            <thead ng-if="$ctrl.showFilters" class="ma-filter-header">
+                <tr>
+                    <th><!-- Spacer for checkbox column --></th>
+                    <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
+                            md-order-by="{{column.disableSort ? '' : column.name}}">
+                        <md-input-container md-no-float="true">
+                            <input ng-model="$ctrl.filterObject[column.name]" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                        </md-input-container>
+                    </th>
+                    <th ng-repeat="tag in $ctrl.selectedTags track by tag.name"
+                            md-order-by="tags.{{tag.name}}">
+                        <md-input-container md-no-float="true">
+                            <input ng-model="$ctrl.filterObject.tags[tag.name]" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                        </md-input-container>
+                    </th>
+                    <th><!-- Spacer for point actions column --></th>
+                </tr>
+            </thead>
             <tbody md-body>
-                <tr md-row ng-repeat="point in $ctrl.points | orderBy: $ctrl.tableOrder | limitTo: $ctrl.numberOfRows: ($ctrl.pageNumber - 1) * $ctrl.numberOfRows track by point.xid"
-                        ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
-
+                <tr md-row ng-repeat="point in $ctrl.slicedPoints track by point.xid">
                     <td md-cell class="ma-checkbox-column">
                         <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="point.$selected" ng-change="$ctrl.pointSelectedChanged(point)"
                             ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
@@ -125,38 +142,38 @@
                 </tr>
             </tbody>
         </table>
-        <div ng-if="!$ctrl.points.length && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
-        <div ng-if="!$ctrl.points.length && $ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.loadingPoints"></div>
+        <div ng-if="!$ctrl.filteredPoints.length && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
+        <div ng-if="!$ctrl.filteredPoints.length && $ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.loadingPoints"></div>
     </md-table-container>
     
     <div layout layout-align="start center">
         <div class="ma-selection-count" ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.length]"></div>
-        <md-table-pagination  flex md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100]" md-page="$ctrl.pageNumber" md-page-select md-total="{{$ctrl.points.length}}"></md-table-pagination>
+        <md-table-pagination  flex md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100]" md-page="$ctrl.pageNumber"
+            md-page-select md-total="{{$ctrl.filteredPoints.length}}" md-on-paginate="$ctrl.slicePointsBound"></md-table-pagination>
     </div>
+
+    <ma-dialog show-dialog="$ctrl.showPointDialog" on-hide="$ctrl.editTarget = null; $ctrl.csvFile = null" on-cancel="$ctrl.editTarget = null;  $ctrl.csvFile = null">
+        <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>
+                        <span ng-if="$ctrl.csvFile" ma-tr="ui.app.uploadingCSV"></span>
+                        <span ng-if="$ctrl.editTarget.length" ma-tr="ui.components.editXDataPoints" ma-tr-args="[$ctrl.editTarget.length]"></span>
+                        <span ng-if="!$ctrl.editTarget.length && !$ctrl.editTarget.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.editTarget.name]"></span>
+                        <span ng-if="!$ctrl.editTarget.length && $ctrl.editTarget.isNew()" ma-tr="dsList.createDataPoint"></span>
+                    </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                        <md-icon>close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
     
+            <md-dialog-content layout="column" flex>
+                <ma-data-point-editor flex="noshrink" layout="column" dynamic-height="!$dialog.fullscreen()"
+                    ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true" import-csv="$ctrl.csvFile">
+                </ma-data-point-editor>
+            </md-dialog-content>
+        </md-dialog>
+    </ma-dialog>
 </div>
-
-<ma-dialog show-dialog="$ctrl.showDialog" on-hide="$ctrl.editTarget = null; $ctrl.csvFile = null" on-cancel="$ctrl.editTarget = null;  $ctrl.csvFile = null">
-    <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>
-                    <span ng-if="$ctrl.csvFile">Uploading CSV</span>
-                    <span ng-if="$ctrl.editTarget.length" ma-tr="ui.components.editXDataPoints" ma-tr-args="[$ctrl.editTarget.length]"></span>
-                    <span ng-if="!$ctrl.editTarget.length && !$ctrl.editTarget.isNew()" ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.editTarget.name]"></span>
-                    <span ng-if="!$ctrl.editTarget.length && $ctrl.editTarget.isNew()" ma-tr="dsList.createDataPoint"></span>
-                </h2>
-                <span flex></span>
-                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
-                    <md-icon>close</md-icon>
-                </md-button>
-            </div>
-        </md-toolbar>
-
-        <md-dialog-content layout="column" flex>
-            <ma-data-point-editor flex="noshrink" layout="column" dynamic-height="!$dialog.fullscreen()"
-                ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true" import-csv="$ctrl.csvFile">
-            </ma-data-point-editor>
-        </md-dialog-content>
-    </md-dialog>
-</ma-dialog>
