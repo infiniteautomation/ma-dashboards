@@ -585,7 +585,9 @@ class BulkDataPointEditorController {
         if (index >= 0) {
             this.points.splice(index, 1);
             this.updateSelectAllStatus();
-            this.slicePoints();
+            
+            // WS updates can happen very rapidly, debounce filtering points
+            this.filterPointsAfterTimeout();
         }
     }
     

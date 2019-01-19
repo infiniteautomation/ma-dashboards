@@ -20,11 +20,14 @@
             </md-button>
         </div>
         
-        <div flex ng-if="!$ctrl.bulkTask" class="ma-selection-count" ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.length]"></div>
-
-        <div flex ng-if="$ctrl.bulkTask">
-            <span ng-bind="$ctrl.bulkTask.progress || 0"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position || 0, $ctrl.bulkTask.maximum || 0]"></span>)
+        <div flex class="ma-bulk-edit-toolbar-center-text">
+            <span ng-if="!$ctrl.bulkTask" ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.length]"></span>
+    
+            <span ng-if="$ctrl.bulkTask">
+                <span ng-bind="$ctrl.bulkTask.progress || 0"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position || 0, $ctrl.bulkTask.maximum || 0]"></span>)
+            </span>
         </div>
+        
         
         <div>
             <md-input-container md-no-float="true">
