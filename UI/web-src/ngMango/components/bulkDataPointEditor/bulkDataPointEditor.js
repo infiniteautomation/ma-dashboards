@@ -129,10 +129,9 @@ class BulkDataPointEditorController {
             return;
         }
         
-        let pointsPromise;
-        
+        let p;
         if (this.watchList) {
-            pointsPromise = this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
+            p = this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
             this.queryObj = this.watchList.getQuery(this.watchListParams);
         } else {
             this.queryObj = this.query;
@@ -141,10 +140,10 @@ class BulkDataPointEditorController {
                     .eq('dataSourceXid', this.dataSource.xid)
                     .limit(100000); // TODO
             }
-            pointsPromise = this.pointsPromiseQuery = this.queryObj.query();
+            p = this.pointsPromiseQuery = this.queryObj.query();
         }
 
-        this.pointsPromise = pointsPromise.then(points => {
+        const pointsPromise = this.pointsPromise = p.then(points => {
             this.points = points;
             this.filterPoints();
             this.checkAvailableTags();
@@ -158,9 +157,13 @@ class BulkDataPointEditorController {
             const message = error.mangoStatusText || (error + '');
             this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
         }).finally(() => {
-            delete this.wlPointsPromise;
-            delete this.pointsPromiseQuery;
-            delete this.pointsPromise;
+            //delete this.wlPointsPromise;
+            //delete this.pointsPromiseQuery;
+            
+            // check we are deleting our own promise, not one for a new query
+            if (this.pointsPromise === pointsPromise) {
+                delete this.pointsPromise;
+            }
         });
         
         return this.pointsPromise;
