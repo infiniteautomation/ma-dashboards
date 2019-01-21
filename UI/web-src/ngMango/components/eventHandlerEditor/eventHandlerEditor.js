@@ -87,6 +87,12 @@ class EventHandlerEditorController {
             this.eventHandler = null;
         }
 
+        if (this.eventHandler && !this.eventHandler.isNew()) {
+            this.showInputs = false;
+        } else {
+            this.showInputs = true;
+        }
+
         if (this.form) {
             this.form.$setPristine();
             this.form.$setUntouched();
