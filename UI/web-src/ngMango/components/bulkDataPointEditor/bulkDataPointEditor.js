@@ -180,17 +180,7 @@ class BulkDataPointEditorController {
     
     filterPoints() {
         this.filteredPoints = this.filterFilter(this.points, this.filterObject);
-        
-        this.selectedPoints = this.selectedPoints.filter(pt => {
-            if (!this.filteredPoints.includes(pt)) {
-                delete pt.$selected;
-                return false;
-            }
-            return true;
-        });
-        
         this.updateSelectAllStatus();
-        
         this.sortPoints();
     }
 
@@ -369,35 +359,32 @@ class BulkDataPointEditorController {
     }
 
     updateSelectAllStatus() {
-        if (this.selectedPoints.length === this.filteredPoints.length) {
+        const selectedFiltered = this.filteredPoints.filter(pt => pt.$selected);
+        if (selectedFiltered.length === this.filteredPoints.length) {
             this.selectAllIndeterminate = false;
             // seems to be a bug changing md-checkbox indeterminate and checked at same time
-            const selectAll = this.selectedPoints.length > 0;
+            const selectAll = selectedFiltered.length > 0;
             this.$timeout(() => {
                 this.selectAll = selectAll;
             }, 0);
         } else {
             this.selectAll = false;
-            this.selectAllIndeterminate = this.selectedPoints.length > 0;
+            this.selectAllIndeterminate = selectedFiltered.length > 0;
         }
     }
     
     selectAllChanged() {
         if (this.selectAllIndeterminate) {
             this.selectAll = false;
-            this.selectedPoints = [];
-        } else {
-            this.selectedPoints = this.selectAll && this.filteredPoints ? this.filteredPoints.slice() : [];
         }
-        
         this.selectAllIndeterminate = false;
         
-        if (this.filteredPoints) {
-            if (this.selectAll) {
-                this.filteredPoints.forEach(pt => pt.$selected = true);
-            } else {
-                this.filteredPoints.forEach(pt => delete pt.$selected);
-            }
+        if (this.selectAll) {
+            this.filteredPoints.forEach(pt => pt.$selected = true);
+            this.selectedPoints = this.points.filter(pt => pt.$selected);
+        } else {
+            this.filteredPoints.forEach(pt => delete pt.$selected);
+            this.selectedPoints = this.selectedPoints.filter(pt => pt.$selected);
         }
     }
 
