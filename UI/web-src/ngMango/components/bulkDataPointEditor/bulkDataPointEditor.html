@@ -95,12 +95,19 @@
                             md-order-by="{{column.disableSort ? '' : column.name}}">
                         <md-input-container md-no-float="true">
                             <input ng-model="$ctrl.filterObject[column.name]" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                            <md-button ng-show="!!$ctrl.filterObject[column.name]" class="ma-input-button md-icon-button" ng-click="$ctrl.filterObject[column.name] = ''; $ctrl.filterChanged()">
+                                <md-icon>clear</md-icon>
+                            </md-button>
                         </md-input-container>
                     </th>
+
                     <th ng-repeat="tag in $ctrl.selectedTags track by tag.name"
                             md-order-by="tags.{{tag.name}}">
                         <md-input-container md-no-float="true">
                             <input ng-model="$ctrl.filterObject.tags[tag.name]" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                            <md-button ng-show="!!$ctrl.filterObject.tags[tag.name]" class="ma-input-button md-icon-button" ng-click="$ctrl.filterObject.tags[tag.name] = ''; $ctrl.filterChanged()">
+                                <md-icon>clear</md-icon>
+                            </md-button>
                         </md-input-container>
                     </th>
                     <th><!-- Spacer for point actions column --></th>
