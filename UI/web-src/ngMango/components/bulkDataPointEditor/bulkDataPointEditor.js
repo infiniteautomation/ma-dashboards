@@ -67,6 +67,10 @@ class BulkDataPointEditorController {
             this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
         }
         
+        if (settings && settings.hasOwnProperty('showFilters')) {
+            this.showFilters = settings.showFilters;
+        }
+        
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
@@ -598,6 +602,11 @@ class BulkDataPointEditorController {
     
     filterButtonClicked() {
         this.showFilters = !this.showFilters;
+        
+        const settings = this.localStorageService.get(localStorageKey) || {};
+        settings.showFilters = this.showFilters;
+        this.localStorageService.set(localStorageKey, settings);
+        
         if (!this.showFilters) {
             this.filterObject = {};
             this.filterChanged();
