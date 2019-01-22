@@ -91,21 +91,19 @@
             <thead ng-if="$ctrl.showFilters" class="ma-filter-header">
                 <tr>
                     <th><!-- Spacer for checkbox column --></th>
-                    <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
-                            md-order-by="{{column.disableSort ? '' : column.name}}">
+                    <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
                         <md-input-container md-no-float="true">
-                            <input ng-model="$ctrl.filterObject[column.name]" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
-                            <md-button ng-show="!!$ctrl.filterObject[column.name]" class="ma-input-button md-icon-button" ng-click="$ctrl.filterObject[column.name] = ''; $ctrl.filterChanged()">
+                            <input ng-model="column.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                            <md-button ng-show="!!column.filter" class="ma-input-button md-icon-button" ng-click="column.filter = null; $ctrl.filterChanged()">
                                 <md-icon>clear</md-icon>
                             </md-button>
                         </md-input-container>
                     </th>
 
-                    <th ng-repeat="tag in $ctrl.selectedTags track by tag.name"
-                            md-order-by="tags.{{tag.name}}">
+                    <th ng-repeat="tag in $ctrl.selectedTags track by tag.name">
                         <md-input-container md-no-float="true">
                             <input ng-model="$ctrl.filterObject.tags[tag.name]" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
-                            <md-button ng-show="!!$ctrl.filterObject.tags[tag.name]" class="ma-input-button md-icon-button" ng-click="$ctrl.filterObject.tags[tag.name] = ''; $ctrl.filterChanged()">
+                            <md-button ng-show="!!$ctrl.filterObject.tags[tag.name]" class="ma-input-button md-icon-button" ng-click="$ctrl.filterObject.tags[tag.name] = null; $ctrl.filterChanged()">
                                 <md-icon>clear</md-icon>
                             </md-button>
                         </md-input-container>
@@ -122,7 +120,7 @@
                     </td>
 
                     <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell>
-                        <span ng-class="{'ma-empty-null': point[column.name] == null}" ng-bind="point[column.name] | maDisplayNull"></span>
+                        <span ng-class="{'ma-empty-null': $ctrl.getCellValue(point, column.property) == null}" ng-bind="$ctrl.getCellValue(point, column.property) | maDisplayNull"></span>
                     </td>
                     
                     <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell>

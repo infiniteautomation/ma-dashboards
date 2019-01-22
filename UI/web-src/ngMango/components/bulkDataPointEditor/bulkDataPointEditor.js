@@ -59,7 +59,10 @@ class BulkDataPointEditorController {
             {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false}
         ];
 
-        this.columns.forEach((c, i) => c.order = i);
+        this.columns.forEach((column, i) => {
+            column.order = i;
+            column.property = column.name.split('.');
+        });
         
         const settings = this.localStorageService.get(localStorageKey);
         if (settings && Array.isArray(settings.selectedColumns)) {
@@ -96,10 +99,15 @@ class BulkDataPointEditorController {
         this.pageNumber = 1;
         this.sortString = 'deviceName';
         this.sortArray = ['deviceName', 'name'];
-        this.filterObject = {};
+        this.clearFilters();
         
         this.selectAll = false;
         this.selectAllIndeterminate = false;
+    }
+    
+    clearFilters() {
+        this.filterObject = {};
+        this.columns.forEach(column => delete column.filter);
     }
 
     $onInit() {
@@ -611,26 +619,46 @@ class BulkDataPointEditorController {
         this.localStorageService.set(localStorageKey, settings);
         
         if (!this.showFilters) {
-            this.filterObject = {};
+            this.clearFilters();
             this.filterChanged();
         }
     }
     
     filterChanged() {
+        this.columns.forEach(column => {
+            this.deepSetValue(this.filterObject, column.property, column.filter);
+        });
+        
         this.clearEmptyKeys(this.filterObject);
         this.filterPoints();
+    }
+
+    deepSetValue(obj, property, value) {
+        const lastIndex = property.length - 1;
+
+        for (let i = 0; i < property.length; i++) {
+            const propertyName = property[i];
+            
+            if (i === lastIndex) {
+                obj[propertyName] = value;
+            } else if (obj[propertyName] == null) {
+                obj = obj[propertyName] = {};
+            } else {
+                obj = obj[propertyName];
+            }
+        }
     }
     
     clearEmptyKeys(obj) {
         Object.keys(obj).forEach(key => {
             const val = obj[key];
-            if (typeof val === 'object') {
+            if (val == null) {
+                delete obj[key];
+            } else if (typeof val === 'object') {
                 this.clearEmptyKeys(val);
                 if (Object.keys(val).length === 0) {
                     delete obj[key];
                 }
-            } else if (!val) {
-                delete obj[key];
             }
         });
     }
@@ -650,6 +678,17 @@ class BulkDataPointEditorController {
                 this.selectedPoints.delete(point.id);
             }
         };
+    }
+
+    getCellValue(point, property) {
+        let result = point;
+        for (let i = 0; i < property.length; i++) {
+            if (typeof result !== 'object') {
+                return;
+            }
+            result = result[property[i]];
+        }
+        return result;
     }
 }
 
