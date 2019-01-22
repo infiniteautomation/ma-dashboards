@@ -21,7 +21,7 @@
         </div>
         
         <div flex class="ma-bulk-edit-toolbar-center-text">
-            <span ng-if="!$ctrl.bulkTask" ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.length]"></span>
+            <span ng-if="!$ctrl.bulkTask" ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.size]"></span>
     
             <span ng-if="$ctrl.bulkTask">
                 <span ng-bind="$ctrl.bulkTask.progress || 0"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position || 0, $ctrl.bulkTask.maximum || 0]"></span>)
@@ -74,7 +74,7 @@
                 <tr md-row>
                     <th md-column class="ma-checkbox-column">
                         <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
-                            ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" md-indeterminate="$ctrl.selectAllIndeterminate">
+                            ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise || !$ctrl.filteredPoints.length" md-indeterminate="$ctrl.selectAllIndeterminate">
                         </md-checkbox>
                     </th>
                     <th md-column ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
@@ -114,9 +114,9 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row ng-repeat="point in $ctrl.slicedPoints track by point.xid">
+                <tr md-row ng-repeat="point in $ctrl.slicedPoints track by point.xid" ng-init="pointSelected = $ctrl.pointSelected(point)">
                     <td md-cell class="ma-checkbox-column">
-                        <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="point.$selected" ng-change="$ctrl.pointSelectedChanged(point)"
+                        <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="pointSelected" ng-model-options="{getterSetter: true}" ng-change="$ctrl.pointSelectedChanged(point)"
                             ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                         </md-checkbox>
                     </td>
