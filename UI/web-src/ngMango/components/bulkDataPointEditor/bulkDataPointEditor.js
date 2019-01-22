@@ -64,14 +64,12 @@ class BulkDataPointEditorController {
         this.prevSelectedTags = [];
         this.manuallySelectedTags = [];
 
+        this.loadSettings();
         this.reset();
 
-        this.filterPointsBound = (...args) => this.filterPoints(...args);
         this.sortStringChangedBound = (...args) => this.sortStringChanged(...args);
-        this.sortPointsBound = (...args) => this.sortPoints(...args);
         this.slicePointsBound = (...args) => this.slicePoints(...args);
     }
-
 
     $onInit() {
         this.maDataPointTags.keys().then(keys => {
@@ -130,6 +128,17 @@ class BulkDataPointEditorController {
             }
         }
     }
+    
+    loadSettings() {
+        this.settings = this.localStorageService.get(localStorageKey) || {};
+        if (this.settings.hasOwnProperty('showFilters')) {
+            this.showFilters = !!this.settings.showFilters;
+        }
+    }
+    
+    saveSettings() {
+        this.localStorageService.set(localStorageKey, this.settings);
+    }
 
     reset() {
         this.points = new Map();
@@ -147,7 +156,6 @@ class BulkDataPointEditorController {
         
         this.resetColumns();
         this.clearFilters();
-        this.loadSettings();
     }
     
     resetColumns() {
@@ -165,22 +173,14 @@ class BulkDataPointEditorController {
             column.order = i;
             column.property = column.name.split('.');
         });
-    }
-    
-    loadSettings() {
-        const settings = this.localStorageService.get(localStorageKey);
-        
-        if (settings && Array.isArray(settings.selectedColumns)) {
-            this.selectedColumns = this.columns.filter(c => settings.selectedColumns.includes(c.name));
+
+        if (Array.isArray(this.settings.selectedColumns)) {
+            this.selectedColumns = this.columns.filter(c => this.settings.selectedColumns.includes(c.name));
         } else {
             this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
         }
-        
-        if (settings && settings.hasOwnProperty('showFilters')) {
-            this.showFilters = !!settings.showFilters;
-        }
     }
-    
+
     clearFilters() {
         this.filterObject = {};
         this.columns.forEach(column => delete column.filter);
@@ -451,9 +451,8 @@ class BulkDataPointEditorController {
     }
 
     selectedColumnsChanged() {
-        const settings = this.localStorageService.get(localStorageKey) || {};
-        settings.selectedColumns = this.selectedColumns.map(c => c.name);
-        this.localStorageService.set(localStorageKey, settings);
+        this.settings.selectedColumns = this.selectedColumns.map(c => c.name);
+        this.saveSettings();
     }
     
     selectedTagsChanged() {
@@ -638,10 +637,9 @@ class BulkDataPointEditorController {
 
     filterButtonClicked() {
         this.showFilters = !this.showFilters;
-        
-        const settings = this.localStorageService.get(localStorageKey) || {};
-        settings.showFilters = this.showFilters;
-        this.localStorageService.set(localStorageKey, settings);
+
+        this.settings.showFilters = this.showFilters;
+        this.saveSettings();
         
         if (!this.showFilters) {
             this.clearFilters();
