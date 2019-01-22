@@ -10,6 +10,28 @@ import './bulkDataPointEditor.css';
 
 const localStorageKey = 'bulkDataPointEditPage';
 
+const defaultColumns = [
+    {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false},
+    {name: 'dataSourceName', label: 'ui.app.dataSource', selectedByDefault: false},
+    {name: 'dataType', label: 'dsEdit.pointDataType', selectedByDefault: false},
+    {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
+    {name: 'name', label: 'common.name', selectedByDefault: true},
+    {name: 'tagsString', label: 'ui.app.tags', selectedByDefault: true, disableSort: false},
+    {name: 'enabled', label: 'common.enabled', selectedByDefault: false},
+    {name: 'readPermission', label: 'pointEdit.props.permission.read', selectedByDefault: false},
+    {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: false},
+    {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: false},
+    {name: 'chartColour', label: 'pointEdit.props.chartColour', selectedByDefault: false},
+    {name: 'plotType', label: 'pointEdit.plotType', selectedByDefault: false},
+    {name: 'rollup', label: 'common.rollup', selectedByDefault: false},
+    {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: false},
+    {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
+    {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', selectedByDefault: false},
+    {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
+    {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', selectedByDefault: false},
+    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false}
+];
+
 class BulkDataPointEditorController {
     static get $$ngIsClass() { return true; }
     
@@ -36,45 +58,6 @@ class BulkDataPointEditorController {
         this.filterFilter = $filter('filter');
 
         this.numberOfRows = 15;
-
-        this.columns = [
-            {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false},
-            {name: 'dataSourceName', label: 'ui.app.dataSource', selectedByDefault: false},
-            {name: 'dataType', label: 'dsEdit.pointDataType', selectedByDefault: false},
-            {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
-            {name: 'name', label: 'common.name', selectedByDefault: true},
-            {name: 'tagsString', label: 'ui.app.tags', selectedByDefault: true, disableSort: false},
-            {name: 'enabled', label: 'common.enabled', selectedByDefault: false},
-            {name: 'readPermission', label: 'pointEdit.props.permission.read', selectedByDefault: false},
-            {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: false},
-            {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: false},
-            {name: 'chartColour', label: 'pointEdit.props.chartColour', selectedByDefault: false},
-            {name: 'plotType', label: 'pointEdit.plotType', selectedByDefault: false},
-            {name: 'rollup', label: 'common.rollup', selectedByDefault: false},
-            {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: false},
-            {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
-            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', selectedByDefault: false},
-            {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
-            {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', selectedByDefault: false},
-            {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false}
-        ];
-
-        this.columns.forEach((column, i) => {
-            column.order = i;
-            column.property = column.name.split('.');
-        });
-        
-        const settings = this.localStorageService.get(localStorageKey);
-        if (settings && Array.isArray(settings.selectedColumns)) {
-            this.selectedColumns = this.columns.filter(c => settings.selectedColumns.includes(c.name));
-        } else {
-            this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
-        }
-        
-        if (settings && settings.hasOwnProperty('showFilters')) {
-            this.showFilters = settings.showFilters;
-        }
-        
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
@@ -88,27 +71,7 @@ class BulkDataPointEditorController {
         this.sortPointsBound = (...args) => this.sortPoints(...args);
         this.slicePointsBound = (...args) => this.slicePoints(...args);
     }
-    
-    reset() {
-        this.points = new Map();
-        this.filteredPoints = [];
-        this.sortedPoints = [];
-        this.slicedPoints = [];
-        this.selectedPoints = new Map();
 
-        this.pageNumber = 1;
-        this.sortString = 'deviceName';
-        this.sortArray = ['deviceName', 'name'];
-        this.clearFilters();
-        
-        this.selectAll = false;
-        this.selectAllIndeterminate = false;
-    }
-    
-    clearFilters() {
-        this.filterObject = {};
-        this.columns.forEach(column => delete column.filter);
-    }
 
     $onInit() {
         this.maDataPointTags.keys().then(keys => {
@@ -166,6 +129,61 @@ class BulkDataPointEditorController {
                 this.getPoints();
             }
         }
+    }
+
+    reset() {
+        this.points = new Map();
+        this.filteredPoints = [];
+        this.sortedPoints = [];
+        this.slicedPoints = [];
+        this.selectedPoints = new Map();
+
+        this.pageNumber = 1;
+        this.sortString = 'deviceName';
+        this.sortArray = ['deviceName', 'name'];
+        
+        this.selectAll = false;
+        this.selectAllIndeterminate = false;
+        
+        this.resetColumns();
+        this.clearFilters();
+        this.loadSettings();
+    }
+    
+    resetColumns() {
+        this.columns = defaultColumns.slice();
+        
+        if (this.dataSource) {
+            const dsType = this.maDataSource.typesByName[this.dataSource.modelType];
+            const extraColumns = dsType && dsType.bulkEditorColumns;
+            if (Array.isArray(extraColumns)) {
+                this.columns.push(...extraColumns);
+            }
+        }
+        
+        this.columns.forEach((column, i) => {
+            column.order = i;
+            column.property = column.name.split('.');
+        });
+    }
+    
+    loadSettings() {
+        const settings = this.localStorageService.get(localStorageKey);
+        
+        if (settings && Array.isArray(settings.selectedColumns)) {
+            this.selectedColumns = this.columns.filter(c => settings.selectedColumns.includes(c.name));
+        } else {
+            this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
+        }
+        
+        if (settings && settings.hasOwnProperty('showFilters')) {
+            this.showFilters = !!settings.showFilters;
+        }
+    }
+    
+    clearFilters() {
+        this.filterObject = {};
+        this.columns.forEach(column => delete column.filter);
     }
 
     getPoints() {
@@ -534,7 +552,14 @@ class BulkDataPointEditorController {
     }
 
     createDataPoint(event) {
-        this.editTarget = this.maDataSource.typesByName[this.dataSource.modelType].createDataPoint();
+        const dsType = this.maDataSource.typesByName[this.dataSource.modelType];
+        
+        if (!dsType || typeof dsType.createDataPoint !== 'function') {
+            this.maDialogHelper.toast(['ui.components.createPointNotSupported', this.dataSource.modelType]);
+            return;
+        }
+        
+        this.editTarget = dsType.createDataPoint();
         this.editTarget.dataSourceXid = this.dataSource.originalId;
         this.showPointDialog = {};
     }
