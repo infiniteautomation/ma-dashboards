@@ -54,20 +54,37 @@ function dataSourceList(DataSource, $injector) {
             limit: '<?',
             sort: '<?',
             showClear: '<?',
+            showNew: '<?',
             onQuery: '&?'
         },
         template: function(element, attrs) {
-          if ($injector.has('$mdUtil')) {
-              return '<md-select md-on-open="onOpen()">' +
-              '<md-option ng-if="showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>' +
-              '<md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.xid">' +
-              '<span ng-bind="dataSourceLabel(dataSource)"></span>' +
-              '</md-option></md-select>';
-          }
-          return '<select ng-options="dataSourceLabel(dataSource) for dataSource in dataSources track by dataSource.xid"></select>';
+            if ($injector.has('$mdUtil')) {
+                return `<md-select md-on-open="onOpen()">
+                    <md-option ng-if="showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
+                    <md-option ng-if="showNew" ng-value="newValue"><em ma-tr="dsList.createDataSource"></em></md-option>
+                    <md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.xid">
+                    <span ng-bind="dataSourceLabel(dataSource)"></span>
+                </md-option></md-select>`;
+            }
+            return '<select ng-options="dataSourceLabel(dataSource) for dataSource in dataSources track by dataSource.xid"></select>';
         },
         replace: true,
         link: function ($scope, $element, attrs, ngModelCtrl) {
+            $scope.newValue = {};
+
+            ngModelCtrl.$formatters.push(value => {
+                if (value instanceof DataSource && value.isNew()) {
+                    return $scope.newValue;
+                }
+                return value;
+            });
+            ngModelCtrl.$parsers.push(value => {
+                if (value === $scope.newValue) {
+                    return new DataSource();
+                }
+                return value;
+            });
+            
             if ($scope.autoInit === undefined) {
                 $scope.autoInit = true;
             }

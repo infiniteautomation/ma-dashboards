@@ -1,3 +1,7 @@
 ma-ui-data-source-page md-input-container.ma-filter {
 	margin: 8px;
 }
+
+ma-ui-data-source-page .ma-data-source-list {
+	margin: 0;
+}
