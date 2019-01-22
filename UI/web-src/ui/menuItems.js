@@ -539,14 +539,6 @@ export default [
     },
     {
         name: 'ui.settings.dataSources',
-        menuIcon: 'device_hub',
-        menuTr: 'header.dataSources',
-        href: '/data_sources.shtm',
-        target: 'mango-legacy',
-        permission: 'superadmin'
-    },
-    {
-        name: 'ui.settings.dataSourceEdit',
         url: '/data-sources/{xid}',
         template: '<ma-ui-data-source-page flex="noshrink" layout="column"><ma-ui-data-source-page>',
         menuTr: 'header.dataSources',
