@@ -25,10 +25,10 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             return true;
         }
         
-        itemUpdated(item) {
+        itemUpdated(item, responseType) {
             // only update if the new resource version is newer than what we already have
             if (this.resourceVersion == null || item.resourceVersion > this.resourceVersion) {
-                super.itemUpdated(item);
+                super.itemUpdated(item, responseType, true);
             }
         }
         

@@ -139,7 +139,6 @@ class BulkDataPointEditorController {
                 if (changeMade) {
                     this.$scope.$apply(() => {
                         this.filterPoints();
-                        this.updateSelectAllStatus();
                     });
                 }
             }

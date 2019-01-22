@@ -259,9 +259,13 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             });
         }
         
-        itemUpdated(item, responseType) {
+        itemUpdated(item, responseType, useMerge) {
             if (responseType == null) {
-                angular.copy(item, this);
+                if (useMerge) {
+                    angular.merge(this, item);
+                } else {
+                    angular.copy(item, this);
+                }
                 this[originalIdProperty] = this[this.constructor.idProperty];
             } else {
                 this[httpBodyProperty] = item;
