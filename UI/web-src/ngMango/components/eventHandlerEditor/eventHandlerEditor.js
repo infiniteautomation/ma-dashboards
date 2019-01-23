@@ -88,9 +88,6 @@ class EventHandlerEditorController {
 
         if (this.eventHandler && this.eventHandler.isNew()) {
             this.activeTab = 0;
-            this.showInputs = true;
-        } else {
-            this.showInputs = false;
         }
 
         if (this.form) {

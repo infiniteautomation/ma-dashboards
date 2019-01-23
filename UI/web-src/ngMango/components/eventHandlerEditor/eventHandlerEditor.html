@@ -6,7 +6,7 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom" id="editor-main">
-                    <div layout="row" layout-wrap layout-align="start center">
+                    <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
                         <md-input-container flex="100">
                             <label ma-tr="ui.components.eventHandlerType"></label>
                             <md-select name="handlerType" ng-model="$ctrl.eventHandler.handlerType" ng-disabled="!$ctrl.eventHandler.isNew()">
@@ -20,25 +20,23 @@
                             </div>
                         </md-input-container>
                 
-                        <div ng-if="$ctrl.showInputs" flex="100" layout="row">
-                            <md-input-container flex="100" flex-gt-md="50">
-                                <label ma-tr="common.xid"></label>
-                                <input name="xid" ng-model="$ctrl.eventHandler.xid" required>
-                                <div ng-messages="$ctrl.form.xid.$error">
-                                    <div ng-message="required" ma-tr="ui.app.required"></div>
-                                    <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
-                                </div>
-                            </md-input-container>
-                    
-                            <md-input-container flex="100" flex-gt-md="50">
-                                <label ma-tr="common.name"></label>
-                                <input name="name" ng-model="$ctrl.eventHandler.name">
-                                <div ng-messages="$ctrl.form.name.$error">
-                                    <div ng-message="required" ma-tr="ui.app.required"></div>
-                                    <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
-                                </div>
-                            </md-input-container>
-                        </div>
+                        <md-input-container flex="100" flex-gt-md="50">
+                            <label ma-tr="common.xid"></label>
+                            <input name="xid" ng-model="$ctrl.eventHandler.xid" required>
+                            <div ng-messages="$ctrl.form.xid.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                
+                        <md-input-container flex="100" flex-gt-md="50">
+                            <label ma-tr="common.name"></label>
+                            <input name="name" ng-model="$ctrl.eventHandler.name">
+                            <div ng-messages="$ctrl.form.name.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
+                            </div>
+                        </md-input-container>
 
                         <div flex="100">
                             <md-checkbox name="disabled" ng-model="$ctrl.eventHandler.disabled"><span ma-tr="common.disabled"></span></md-checkbox>
@@ -73,10 +71,6 @@
         <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.eventHandler.isNew()">
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
-        </md-button>
-        <md-button class="md-icon-button" ng-class="{'md-accent': $ctrl.showInputs}" ng-click="$ctrl.showInputs = !$ctrl.showInputs">
-            <md-icon>edit</md-icon>
-            <md-tooltip ma-tr="eventHandlers.editNameAndXid"></md-tooltip>
         </md-button>
     </div>
 </div>
