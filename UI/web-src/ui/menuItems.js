@@ -1184,7 +1184,7 @@ export default [
         url: '/event-handlers/{xid}',
         template: '<ma-ui-event-handler-page flex="noshrink" layout="column"><ma-ui-event-handler-page>',
         menuTr: 'ui.app.eventHandlers',
-        menuIcon: 'email',
+        menuIcon: 'change_history',
         permission: 'superadmin',
         params: {
             noPadding: false,

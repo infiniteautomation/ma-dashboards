@@ -118,7 +118,7 @@
     </div>
     <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
-            <a href="/event_handlers.shtm" target="mango-legacy" flex layout="column">
+            <a ui-sref="ui.settings.eventHandlers" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
                     <ma-point-value point-xid="internal_mango_num_event_handlers" class="home-page-count"></ma-point-value>
                     <md-icon>change_history</md-icon>
