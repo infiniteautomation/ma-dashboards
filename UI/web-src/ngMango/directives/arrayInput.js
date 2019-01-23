@@ -1,26 +1,25 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
+arrayInput.$inject = [];
 function arrayInput() {
     return {
         require: 'ngModel',
         restrict: 'A',
         link: function($scope, $element, $attrs, ngModel) {
             ngModel.$parsers.push(function toArray(viewValue) {
-                return (typeof viewValue === 'string') ? viewValue.split($attrs.arrayDelimiter || ',') : viewValue;
+                if (typeof viewValue !== 'string') return viewValue;
+                return viewValue.split($attrs.arrayDelimiter || ',').map(p => p.trim());
             });
             
             ngModel.$formatters.push(function fromArray(modelValue) {
-                return Array.isArray(modelValue) ? modelValue.join($attrs.arrayDelimiter || ',') : modelValue;
+                if (!Array.isArray(modelValue)) return modelValue;
+                return modelValue.map(p => p.trim()).join($attrs.arrayDelimiter || ', ');
             });
         }
     };
 }
 
-arrayInput.$inject = [];
-
 export default arrayInput;
-
-
