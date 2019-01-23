@@ -4,7 +4,6 @@
  */
 
 import componentTemplate from './eventHandlerSetPointEditor.html';
-import angular from 'angular';
 
 const $inject = Object.freeze(['$scope']);
 
