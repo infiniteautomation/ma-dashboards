@@ -49,6 +49,14 @@
                 </div>
             </md-tab-body>
         </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="eventHandlers.selectEventTypes"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <ma-event-type-list ng-model="$ctrl.eventHandler.eventTypes"></ma-event-type-list>
+            </md-tab-body>
+        </md-tab>
     </md-tabs>
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>

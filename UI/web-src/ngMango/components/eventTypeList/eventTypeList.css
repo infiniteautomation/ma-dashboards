@@ -11,3 +11,7 @@ ma-event-type-list md-list-item .md-list-item-inner > p {
 ma-event-type-list md-list-item.ma-event-type-heading .md-list-item-inner p {
 	font-weight: bold;
 }
+
+ma-event-type-list md-list-item > p > md-progress-circular {
+	margin: 16px 0;
+}

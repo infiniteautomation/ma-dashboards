@@ -21,7 +21,10 @@ function eventTypeFactory(RestResource) {
         }
         
         get uniqueId() {
-            const type = this.type;
+            return this.constructor.uniqueId(this.type);
+        }
+        
+        static uniqueId(type) {
             return `${type.eventType}_${type.subType}_${type.referenceId1}_${type.referenceId2}`;
         }
     }

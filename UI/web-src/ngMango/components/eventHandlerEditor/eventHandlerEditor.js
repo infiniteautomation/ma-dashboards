@@ -74,7 +74,6 @@ class EventHandlerEditorController {
         }
         
         this.validationMessages = [];
-        this.activeTab = 0;
         
         const viewValue = this.ngModelCtrl.$viewValue;
         if (viewValue) {
@@ -87,10 +86,11 @@ class EventHandlerEditorController {
             this.eventHandler = null;
         }
 
-        if (this.eventHandler && !this.eventHandler.isNew()) {
-            this.showInputs = false;
-        } else {
+        if (this.eventHandler && this.eventHandler.isNew()) {
+            this.activeTab = 0;
             this.showInputs = true;
+        } else {
+            this.showInputs = false;
         }
 
         if (this.form) {

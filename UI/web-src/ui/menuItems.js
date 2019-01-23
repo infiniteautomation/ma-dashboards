@@ -1213,14 +1213,6 @@ export default [
         menuTr: 'ui.app.eventHandlers'
     },
     {
-        name: 'ui.settings.eventTypes',
-        url: '/event-types',
-        template: '<md-card><ma-event-type-list ng-model="maEventTypeListModel"></ma-event-type-list></md-card>',
-        menuTr: 'ui.app.eventTypes',
-        menuIcon: 'link',
-        permission: 'superadmin'
-    },
-    {
         name: 'ui.examples',
         url: '/examples',
         menuTr: 'ui.dox.examples',

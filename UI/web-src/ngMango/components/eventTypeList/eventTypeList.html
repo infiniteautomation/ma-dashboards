@@ -1,19 +1,22 @@
 <md-list class="ma-no-padding">
-    <md-divider ng-repeat-start="eventTypeName in $ctrl.eventTypeNames | orderBy:'typeName'" ng-if="!$first"></md-divider>
+    <md-divider ng-repeat-start="category in $ctrl.categories | orderBy:'typeName' track by category.typeName" ng-if="!$first"></md-divider>
     
-    <md-list-item class="ma-event-type-heading" ng-click="expanded = !expanded" ng-init="expanded = $first">
-        <p ng-bind="eventTypeName.description"></p>
-        <md-icon>{{expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+    <md-list-item class="ma-event-type-heading" ng-click="$ctrl.expandSection(category)" ng-init="category.expanded = $first">
+        <p><span ng-bind="category.description"></span><span ng-if="category.selected"> (<em ma-tr="ui.app.xPointsSelected" ma-tr-args="[category.selected.size]"></em>)</span></p>
+        <md-icon>{{category.expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
     </md-list-item>
     
-    <md-list-item ng-if="expanded && $ctrl.eventTypes[eventTypeName.typeName].length"
-            ng-repeat="eventType in $ctrl.eventTypes[eventTypeName.typeName] track by eventType.uniqueId"
-            ng-click="$ctrl.selectEventType(eventType)"
-            md-colors="{'background': $ctrl.selected.uniqueId === eventType.uniqueId ? 'accent-hue-1' : 'background-hue-1'}">
-        <p ng-bind="eventType.description"></p>
+    <md-list-item ng-repeat="eventType in category.types track by eventType.uniqueId" ng-if="category.expanded"
+            ng-init="checked = $ctrl.selectedGetterSetter(category, eventType.type)">
+        <span ng-bind="eventType.description"></span>
+        <md-checkbox class="md-secondary" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude></md-checkbox>
     </md-list-item>
     
-    <md-list-item  ng-repeat-end ng-if="expanded && !$ctrl.eventTypes[eventTypeName.typeName].length">
+    <md-list-item ng-if="category.expanded && $ctrl.loading">
+        <p layout layout-align="center"><md-progress-circular md-mode="indeterminate" class="md-accent"></md-progress-circular></p>
+    </md-list-item>
+
+    <md-list-item ng-repeat-end ng-if="category.expanded && !$ctrl.loading && !category.types.length">
         <p><em ma-tr="ui.components.noEventTypes"></em></p>
     </md-list-item>
 </md-list>
