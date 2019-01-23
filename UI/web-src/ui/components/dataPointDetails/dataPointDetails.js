@@ -1,79 +1,91 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
+ * @author Jared Wiltshire
  */
 
 import angular from 'angular';
 import dataPointDetailsTemplate from './dataPointDetails.html';
 
-DataPointDetailsController.$inject = ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser'];
-function DataPointDetailsController($scope, $element, $stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User) {
+class DataPointDetailsController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser']; }
+    
+    constructor($scope, $element, $stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User) {
+        this.$scope = $scope;
+        this.$element = $element;
+        this.$state = $state;
+        this.$stateParams = $stateParams;
+        this.localStorageService = localStorageService;
+        this.PointHierarchy = PointHierarchy;
+        this.dateBar = maUiDateBar;
+        this.User = User;
+        
+        this.chartType = 'smoothedLine';
+    }
 
-    this.dateBar = maUiDateBar;
-    this.User = User;
-    
-    this.chartType = 'smoothedLine';
-    
-    this.$onInit = function() {
+    $onInit() {
+        const $stateParams = this.$stateParams;
+        
         if ($stateParams.pointXid) {
             this.pointXid = $stateParams.pointXid;
         } else if ($stateParams.pointId) {
             this.pointId = $stateParams.pointId;
         } else {
             // Attempt load pointXid from local storage
-            const storedPoint = localStorageService.get('lastDataPointDetailsItem');
+            const storedPoint = this.localStorageService.get('lastDataPointDetailsItem');
             if (storedPoint) {
                 this.pointXid = storedPoint.xid;
             }
         }
         
         this.retrievePreferences();
-    };
+    }
     
-    this.pointChanged = function(point) {
+    pointChanged(point) {
         if (!point) return;
 
-        delete $scope.pointValues;
-        delete $scope.realtimePointValues;
+        delete this.pointValues;
+        delete this.realtimePointValues;
         
-        $scope.myPoint = point;
+        this.dataPoint = point;
         const xid = point.xid;
 
-        $state.go('.', {pointXid: xid}, {location: 'replace', notify: false});
+        this.$state.go('.', {pointXid: xid}, {location: 'replace', notify: false});
         
-        localStorageService.set('lastDataPointDetailsItem', {
+        this.localStorageService.set('lastDataPointDetailsItem', {
             xid: xid
         });
         
-        PointHierarchy.pathByXid({xid: xid}).$promise.then(function(response) {
+        this.PointHierarchy.pathByXid({xid: xid}).$promise.then(function(response) {
             this.path = response;
         }.bind(this));
         
-        const pointType = $scope.myPoint.pointLocator.dataType;
+        const pointType = this.dataPoint.pointLocator.dataType;
         this.dateBar.rollupTypesFilter = pointType === 'NUMERIC' ? {} : { nonNumeric: true };
 
-        this.chartType = $scope.myPoint.amChartsGraphType();
-    };
+        this.chartType = this.dataPoint.amChartsGraphType();
+    }
 
-    this.updatePreferences = function() {
-        const preferences = localStorageService.get('uiPreferences') || {};
+    updatePreferences() {
+        const preferences = this.localStorageService.get('uiPreferences') || {};
         preferences.numberOfPointValues = this.numValues;
         preferences.realtimeMode = this.realtimeMode;
         preferences.showCachedData = this.showCachedData;
-        localStorageService.set('uiPreferences', preferences);
-    };
+        this.localStorageService.set('uiPreferences', preferences);
+    }
     
-    this.retrievePreferences = function() {
+    retrievePreferences() {
         const defaults = {
             numberOfPointValues: 100,
             realtimeMode: true,
             showCachedData: false
         };
-        const preferences = angular.merge(defaults, localStorageService.get('uiPreferences'));
+        const preferences = angular.merge(defaults, this.localStorageService.get('uiPreferences'));
         this.numValues = preferences.numberOfPointValues;
         this.realtimeMode = preferences.realtimeMode;
         this.showCachedData = preferences.showCachedData;
-    };
+    }
 }
 
 export default {
