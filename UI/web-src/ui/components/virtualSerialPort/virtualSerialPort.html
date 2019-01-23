@@ -1,13 +1,10 @@
 <div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
-    <md-card flex-gt-md="25" flex-gt-lg="20" layout="column">
-        <md-card-title flex="nogrow">
-            <md-card-title-text>
-                <span class="md-headline">
-                    <span ma-tr="ui.app.virtualSerialPort.select"></span>
-                </span>
-            </md-card-title-text>
-        </md-card-title>
-
+    <md-card flex="noshrink" flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-toolbar class="md-hue-3">
+            <div class="md-toolbar-tools">
+                <span ma-tr="ui.app.virtualSerialPort.select"></span>
+            </div>
+        </md-toolbar>
 
         <md-card-content flex ng-if="!$ctrl.$mdMedia('gt-md')">
             <ma-virtual-serial-port-select flex layout updated-item="$ctrl.updatedItem"  ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
@@ -16,14 +13,25 @@
             </md-button>
         </md-card-content>
 
-        <md-card-content flex layout layout-align="start start" ng-if="$ctrl.$mdMedia('gt-md')" style="padding-left: 0; padding-right: 0;">
+        <md-card-content flex layout layout-align="start start" class="ma-no-padding ma-scroll-parent" ng-if="$ctrl.$mdMedia('gt-md')">
             <ma-virtual-serial-port-list flex layout updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-list>
         </md-card-content>
     
     </md-card>
 
     <div flex>
-        <ma-virtual-serial-port-setup item-updated="$ctrl.updatedItem = $item" ng-model="$ctrl.selected"></ma-virtual-serial-port-setup> 
+        <md-card>
+            <md-toolbar class="md-hue-3">
+                <div class="md-toolbar-tools">
+                    <span ng-if="!$ctrl.selected.isNew()" ma-tr="ui.app.virtualSerialPort.setup" ma-tr-args="[$ctrl.selected.portName]"></span>
+                    <span ng-if="$ctrl.selected.isNew()" ma-tr="ui.app.virtualSerialPort.create"></span>
+                </div>
+            </md-toolbar>
+
+            <md-card-content>
+                <ma-virtual-serial-port-setup item-updated="$ctrl.updatedItem = $item" ng-model="$ctrl.selected"></ma-virtual-serial-port-setup> 
+            </md-card-content>
+        </md-card>
     </div>
     
 </div>

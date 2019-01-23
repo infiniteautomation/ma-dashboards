@@ -28,10 +28,16 @@ class VirtualSerialPortSetupController {
     }
 
     render() {
-        this.virtualSerialPort = this.ngModelCtrl.$viewValue;
+        if (this.ngModelCtrl.$viewValue) {
+            this.virtualSerialPort = this.ngModelCtrl.$viewValue.copy();
+        }
 
         this.form.$setPristine();
         this.form.$setUntouched();
+    }
+
+    revert(event) {
+        this.render();
     }
 
     save() {  
