@@ -47,14 +47,7 @@ PermissionsMenuController.prototype.render = function render() {
     
     // undefined if invalid
     if (this.ngModelCtrl.$viewValue) {
-        let array;
-
-        if (Array.isArray(this.ngModelCtrl.$viewValue)) {
-            array = this.ngModelCtrl.$viewValue;
-        } else {
-            array = this.ngModelCtrl.$viewValue.split(','); 
-        }
-        
+        const array = this.ngModelCtrl.$viewValue.split(',');
         for (let i = 0; i < array.length; i++) {
             const permName = array[i].trim();
             if (!permName) continue;
