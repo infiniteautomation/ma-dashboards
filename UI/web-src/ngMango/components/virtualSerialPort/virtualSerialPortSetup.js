@@ -56,6 +56,10 @@ class VirtualSerialPortSetupController {
                 hideDelay: 5000
             });
         }, error => {
+            if (error.status === 422) {
+                this.validationMessages = error.data.result.messages;
+            }
+
             this.maDialogHelper.toastOptions({
                 textTr: ['ui.app.virtualSerialPort.notSaved', error.mangoStatusText],
                 classes: 'md-warn',
