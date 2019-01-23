@@ -11,6 +11,7 @@ function arrayInput() {
         link: function($scope, $element, $attrs, ngModel) {
             ngModel.$parsers.push(function toArray(viewValue) {
                 if (typeof viewValue !== 'string') return viewValue;
+                if (!viewValue.trim().length) return [];
                 return viewValue.split($attrs.arrayDelimiter || ',').map(p => p.trim());
             });
             
