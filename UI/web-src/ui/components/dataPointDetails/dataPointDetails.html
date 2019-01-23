@@ -54,7 +54,7 @@
             		<div layout="row">
             			<ma-set-point-value ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" point="myPoint" flex="95"></ma-set-point-value>
             			<md-button class="md-accent md-raised" ng-show="$ctrl.User.current.hasPermission('superadmin')"
-                            ng-href="/data_point_edit.shtm?dpid={{myPoint.id}}" target="_blank"><md-icon>open_in_new</md-icon> <span ma-tr="ui.app.edit"></span></md-button>
+                            ng-click="$ctrl.editTarget = myPoint; $ctrl.showDialog = {};"><md-icon>edit</md-icon> <span ma-tr="ui.app.edit"></span></md-button>
             		</div>
             	</md-card-content>
             </md-card>
@@ -191,3 +191,25 @@
         </md-card>
     </div>
 </div>
+
+<ma-dialog show-dialog="$ctrl.showDialog" on-hide="$ctrl.editTarget = null" on-cancel="$ctrl.editTarget = null">
+    <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span ma-tr="dsList.editDataPoint" ma-tr-args="[$ctrl.editTarget.name]"></span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content layout="column" flex>
+            <ma-data-point-editor flex="noshrink" layout="column" dynamic-height="!$dialog.fullscreen()"
+                ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true">
+            </ma-data-point-editor>
+        </md-dialog-content>
+    </md-dialog>
+</ma-dialog>
