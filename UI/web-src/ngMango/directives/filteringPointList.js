@@ -35,14 +35,16 @@ import query from 'rql/query';
 
 class FilteringPointListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPoint', '$filter', 'maTranslate']; }
+    static get $inject() { return ['maPoint', '$filter', 'maTranslate', '$scope']; }
     
-    constructor(Point, $filter, Translate) {
+    constructor(Point, $filter, Translate, $scope) {
         this.Point = Point;
         this.$filter = $filter;
         this.Translate = Translate;
+        this.$scope = $scope;
         
         this.getByXid = true;
+        this.allowClear = true;
     }
 
     $onChanges(changes) {
@@ -82,17 +84,43 @@ class FilteringPointListController {
         function defaultText(opts) {
             return opts.$point.formatLabel();
         }
+        
+        this.deregister = this.Point.notificationManager.subscribe((event, point) => {
+            if (this.viewValue && this.viewValue.id === point.id) {
+                this.$scope.$apply(() => {
+                    if (event.name === 'update') {
+                        this.setViewValue(point);
+                    } else if (event.name === 'delete') {
+                        this.setViewValue(null);
+                    }
+                });
+            }
+        });
+    }
+    
+    $onDestroy() {
+        this.deregister();
     }
 
     render() {
-        this.selectedItem = this.ngModelCtrl.$viewValue || null;
+        this.viewValue = this.selectedItem = this.ngModelCtrl.$viewValue || null;
     }
 
-    setViewValue(point) {
-        if (point) {
-            this.selectedItem = point;
+    pointListChanged(point) {
+        if (point || this.allowClear) {
+            this.setViewValue(point);
         }
-        this.ngModelCtrl.$setViewValue(this.selectedItem);
+    }
+    
+    blurred($event) {
+        if (!this.allowClear && !this.selectedItem) {
+            this.selectedItem = this.viewValue;
+        }
+    }
+    
+    setViewValue(point) {
+        this.viewValue = this.selectedItem = point;
+        this.ngModelCtrl.$setViewValue(this.viewValue);
     }
 
     querySearch(inputText) {
@@ -168,18 +196,14 @@ class FilteringPointListController {
             this.Point.get({xid: this.pointXid}).$promise.then(item => {
                 this.setViewValue(item);
             });
-        } else {
-            this.setViewValue(null);
         }
     }
 
     setById() {
-        if (this.pointId || this.pointId === 0) {
+        if (this.pointId !== null) {
             this.Point.getById({id: this.pointId}).$promise.then(item => {
                 this.setViewValue(item);
             });
-        } else {
-            this.setViewValue(null);
         }
     }
 }
@@ -202,7 +226,8 @@ function filteringPointList() {
             listText: '&?',
             displayText: '&?',
             clientSideFilter: '<?',
-            getByXid: '<?'
+            getByXid: '<?',
+            allowClear: '<?'
         },
         require: {
             ngModelCtrl: 'ngModel'

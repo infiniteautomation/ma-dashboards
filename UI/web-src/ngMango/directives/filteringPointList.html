@@ -1,5 +1,5 @@
 <md-autocomplete
-  md-selected-item-change="$ctrl.setViewValue()"
+  md-selected-item-change="$ctrl.pointListChanged($ctrl.selectedItem)"
   md-selected-item="$ctrl.selectedItem"
   md-search-text="$ctrl.searchText"
   md-items="item in $ctrl.querySearch($ctrl.searchText)"
@@ -10,7 +10,8 @@
   md-delay="500"
   md-select-on-focus="true"
   md-escape-options="none"
-  md-clear-button="true">
+  md-clear-button="true"
+  ng-blur="$ctrl.blurred($event)">
 
     <md-item-template>
       <span md-highlight-text="$ctrl.highlight" md-highlight-flags="gi">{{$ctrl.listText({$point: item})}}</span>
