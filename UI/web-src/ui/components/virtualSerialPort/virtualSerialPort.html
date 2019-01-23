@@ -7,14 +7,14 @@
         </md-toolbar>
 
         <md-card-content flex ng-if="!$ctrl.$mdMedia('gt-md')">
-            <ma-virtual-serial-port-select flex layout updated-item="$ctrl.updatedItem"  ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
-            <md-button class="md-raised md-primary" ng-click="$ctrl.newVirtualSerialPort()">
+            <ma-virtual-serial-port-select flex layout on-select="$ctrl.itemSelected($item)" deleted-item="$ctrl.deletedItem" updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.newItem()">
                 <md-icon>add</md-icon> <span ma-tr="ui.app.virtualSerialPort.create"></span>
             </md-button>
         </md-card-content>
 
         <md-card-content flex layout layout-align="start start" class="ma-no-padding ma-scroll-parent" ng-if="$ctrl.$mdMedia('gt-md')">
-            <ma-virtual-serial-port-list flex layout updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-list>
+            <ma-virtual-serial-port-list flex layout on-select="$ctrl.itemSelected($item)" deleted-item="$ctrl.deletedItem" updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-list>
         </md-card-content>
     
     </md-card>
@@ -29,7 +29,7 @@
             </md-toolbar>
 
             <md-card-content>
-                <ma-virtual-serial-port-setup item-updated="$ctrl.updatedItem = $item" ng-model="$ctrl.selected"></ma-virtual-serial-port-setup> 
+                <ma-virtual-serial-port-setup item-deleted="$ctrl.itemDeleted($item)" item-updated="$ctrl.itemUpdated($item)" ng-model="$ctrl.selected"></ma-virtual-serial-port-setup> 
             </md-card-content>
         </md-card>
     </div>

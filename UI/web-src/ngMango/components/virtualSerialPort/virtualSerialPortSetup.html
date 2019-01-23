@@ -2,7 +2,7 @@
     <div flex layout="row" layout-align="space-between top" layout-wrap>
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
             <label ma-tr="common.xid"></label>
-            <input name="xid" ng-model="$ctrl.virtualSerialPort.xid" required>
+            <input name="xid" ng-model="$ctrl.selected.xid" required>
             <div ng-messages="$ctrl.form.xid.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
             </div>
@@ -10,15 +10,15 @@
 
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.commPortId"></label>
-            <input name="portName" ng-model="$ctrl.virtualSerialPort.portName" required>
+            <input name="portName" ng-model="$ctrl.selected.portName" required>
             <div ng-messages="$ctrl.form.portName.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
             </div>
         </md-input-container>
 
-        <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between" ng-if="$ctrl.virtualSerialPort.portType !== 'SERIAL_SERVER_SOCKET_BRIDGE'">
+        <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between" ng-if="$ctrl.selected.portType !== 'SERIAL_SERVER_SOCKET_BRIDGE'">
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.address"></label>
-            <input name="address" ng-model="$ctrl.virtualSerialPort.address" required>
+            <input name="address" ng-model="$ctrl.selected.address" required>
             <div ng-messages="$ctrl.form.address.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
             </div>
@@ -26,7 +26,7 @@
 
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.port"></label>
-            <input name="port" ng-model="$ctrl.virtualSerialPort.port" type="number" required>
+            <input name="port" ng-model="$ctrl.selected.port" type="number" required>
             <div ng-messages="$ctrl.form.port.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
             </div>
@@ -34,7 +34,7 @@
 
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
             <label ma-tr="systemSettings.comm.virtual.serialPorts.types"></label>
-            <md-select name="portType" ng-model="$ctrl.virtualSerialPort.portType" required>
+            <md-select name="portType" ng-model="$ctrl.selected.portType" required>
                 <md-option value="SERIAL_SOCKET_BRIDGE" ma-tr="systemSettings.comm.virtual.serialPorts.types.serialClientSocketBridge"></md-option>
                 <md-option value="SERIAL_SERVER_SOCKET_BRIDGE" ma-tr="systemSettings.comm.virtual.serialPorts.types.serialServerSocketBridge"></md-option>
             </md-select>
@@ -43,9 +43,9 @@
             </div>
         </md-input-container>
 
-        <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between" ng-if="$ctrl.virtualSerialPort.portType === 'SERIAL_SERVER_SOCKET_BRIDGE'">
+        <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between" ng-if="$ctrl.selected.portType === 'SERIAL_SERVER_SOCKET_BRIDGE'">
             <label ma-tr="systemSettings.comm.virtual.serialServerSocketBridgeSettings.bufferSize"></label>
-            <input name="port" ng-model="$ctrl.virtualSerialPort.bufferSize" type="number" required>
+            <input name="port" ng-model="$ctrl.selected.bufferSize" type="number" required>
             <div ng-messages="$ctrl.form.port.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
             </div>
@@ -53,7 +53,7 @@
 
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.timeout"></label>
-            <input name="port" ng-model="$ctrl.virtualSerialPort.timeout" type="number" required>
+            <input name="port" ng-model="$ctrl.selected.timeout" type="number" required>
             <div ng-messages="$ctrl.form.port.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
             </div>

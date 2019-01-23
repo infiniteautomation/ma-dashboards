@@ -1864,7 +1864,7 @@ export default [
     },
     {
         name: 'ui.settings.virtualSerialPort',
-        url: '/virtual-serial-port',
+        url: '/virtual-serial-port/{xid}',
         template: '<ma-virtual-serial-port></ma-virtual-serial-port>',
         menuTr: 'systemSettings.comm.virtual.serialPorts',
         menuIcon: 'settings_input_hdmi',

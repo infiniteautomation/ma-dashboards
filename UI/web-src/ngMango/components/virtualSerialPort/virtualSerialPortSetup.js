@@ -24,12 +24,14 @@ class VirtualSerialPortSetupController {
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(this.virtualSerialPort);
+        this.ngModelCtrl.$setViewValue(this.selected);
     }
 
     render() {
+        this.validationMessages = [];
+
         if (this.ngModelCtrl.$viewValue) {
-            this.virtualSerialPort = this.ngModelCtrl.$viewValue.copy();
+            this.selected = this.ngModelCtrl.$viewValue.copy();
         }
 
         this.form.$setPristine();
@@ -43,8 +45,12 @@ class VirtualSerialPortSetupController {
     save() {  
         this.form.$setSubmitted();
 
-        this.virtualSerialPort.save().then(response => {
+        this.selected.save().then(response => {
+            
             this.updateItem();
+            this.setViewValue();
+            this.render();
+
             this.maDialogHelper.toastOptions({
                 textTr: ['systemSettings.comm.virtual.serialPortSaved'],
                 hideDelay: 5000
@@ -60,41 +66,48 @@ class VirtualSerialPortSetupController {
     }
 
     delete() {
-        this.virtualSerialPort.delete().then(response => {
-            this.updateItem();
-            this.maDialogHelper.toastOptions({
-                textTr: ['systemSettings.comm.virtual.serialPortRemoved'],
-                hideDelay: 5000
-            });
-        }, error => {
-            this.maDialogHelper.toastOptions({
-                textTr: ['ui.app.virtualSerialPort.notRemoved', error.mangoStatusText],
-                classes: 'md-warn',
-                hideDelay: 5000
+        this.maDialogHelper.confirm(event, ['ui.app.virtualSerialPort.deleteConfirm']).then(() => {
+            this.selected.delete().then(response => {
+                this.deleteItem();
+                this.selected = new this.maVirtualSerialPort();
+                this.setViewValue();
+                this.render();
+    
+                this.maDialogHelper.toastOptions({
+                    textTr: ['systemSettings.comm.virtual.serialPortRemoved'],
+                    hideDelay: 5000
+                });
+            }, error => {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['ui.app.virtualSerialPort.notRemoved', error.mangoStatusText],
+                    classes: 'md-warn',
+                    hideDelay: 5000
+                });
             });
         });
         
     }
 
-    cancel(event) {
-        this.virtualSerialPort = new this.maVirtualSerialPort();
-        this.updateItem();
-        this.setViewValue();
-        this.render();
-    }
-
     updateItem() {
         if (typeof this.itemUpdated === 'function') {
-            const copyOfItem = angular.copy(this.virtualSerialPort);
+            const copyOfItem = this.selected.copy();
             this.itemUpdated({$item: copyOfItem});
         }
+    }
+
+    deleteItem() {
+        if (typeof this.itemDeleted === 'function') {
+            const copyOfItem = this.selected.copy();
+            this.itemDeleted({$item: copyOfItem});
+        } 
     }
 
 }
 
 export default {
     bindings: {
-        itemUpdated: '&?'
+        itemUpdated: '&?',
+        itemDeleted: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'

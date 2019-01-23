@@ -24,33 +24,64 @@ class VirtualSerialPortController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        this.getVirtualSerialPorts();
+        this.getItems();
     }
     
     $onChanges(changes) {
         if (changes.updatedItem && this.updatedItem) {
-            this.getVirtualSerialPorts();
-            this.newVirtualSerialPort();
+            const foundIndex = this.items.findIndex(item => item.xid === this.updatedItem.xid);
+
+            if (foundIndex >= 0) {
+                // if we found it then replace it in the list
+                this.items[foundIndex] = this.updatedItem;
+                this.selected = this.updatedItem;
+                
+            } else {
+                // otherwise add it to the list
+                this.items.push(this.updatedItem);
+                this.selected = this.items[this.items.length - 1];
+            }
+
+        }
+
+        if (changes.deletedItem && this.deletedItem) {
+            const foundIndex = this.items.findIndex(item => item.xid === this.deletedItem.xid);
+
+            if (foundIndex >= 0) {
+                this.selected = this.updatedItem;
+                this.items.splice(foundIndex, 1);
+                this.newItem();
+            } 
         }
     }
 
-    newVirtualSerialPort() {
-        this.selected = new this.maVirtualSerialPort();
-        this.setViewValue();
-    }
-    
-    setViewValue() {
-        this.ngModelCtrl.$setViewValue(this.selected.copy());
+    setViewValue(selected) {
+        this.ngModelCtrl.$setViewValue(selected);
     }
     
     render() {
         this.selected = this.ngModelCtrl.$viewValue;
     }
 
-    getVirtualSerialPorts() {
-        return this.maVirtualSerialPort.list().then(virtualSerialPorts => {
-            this.virtualSerialPorts = virtualSerialPorts;
+    getItems() {
+        return this.maVirtualSerialPort.list().then(items => {
+            this.items = items;
         });
+    }
+
+    selectItem() {
+        const selectedItem = this.selected.copy();
+        this.setViewValue(selectedItem);
+
+        if (typeof this.onSelect === 'function') {
+            const copyOfItem = this.selected.copy(); 
+            this.onSelect({$item: copyOfItem});
+        }
+    }
+
+    newItem() {
+        this.selected = new this.maVirtualSerialPort();
+        this.setViewValue(this.selected);
     }
 
 }
@@ -60,7 +91,9 @@ export default {
     controller: VirtualSerialPortController,
     bindings: {
         selectMultiple: '<?',
-        updatedItem: '<?'
+        updatedItem: '<?',
+        deletedItem: '<?',
+        onSelect: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'

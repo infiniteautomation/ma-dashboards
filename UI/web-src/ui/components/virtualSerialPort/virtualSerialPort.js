@@ -13,23 +13,55 @@ import './virtualSerialPort.css';
  * @description Displays a page to create Virtual Serial Ports
  */
 
-const $inject = Object.freeze(['$scope', 'maVirtualSerialPort', '$mdMedia']);
+const $inject = Object.freeze(['$scope', 'maVirtualSerialPort', '$mdMedia', '$state']);
 class VirtualSerialPort {
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($scope, maVirtualSerialPort, $mdMedia) {
+    constructor($scope, maVirtualSerialPort, $mdMedia, $state) {
         this.$scope = $scope;
         this.maVirtualSerialPort = maVirtualSerialPort;
         this.$mdMedia = $mdMedia;
+        this.$state = $state;
     }
     
     $onInit() {
-        this.newVirtualSerialPort();
+        if (this.$state.params.xid) {
+            this.maVirtualSerialPort.get(this.$state.params.xid).then((item) => {
+                delete item.$promise;
+                this.selected = item;
+                this.itemUpdated(this.selected);
+            }, () => {
+                this.newItem(); 
+                this.updateUrl();
+            });
+        } else {
+            this.newItem();
+            this.updateUrl();
+        } 
     }
 
-    newVirtualSerialPort() {
+    newItem() {
         this.selected = new this.maVirtualSerialPort();
+    }
+
+    updateUrl() {
+        this.$state.params.xid = this.selected && !this.selected.isNew() && this.selected.xid || null;
+        this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
+    }
+
+    itemSelected(item) {
+        this.updateUrl();
+    }
+
+    itemUpdated(item) {
+        this.updatedItem = item;
+        this.updateUrl();
+    }
+
+    itemDeleted(item) {
+        this.deletedItem = item;
+        this.updateUrl();
     }
 
 }
