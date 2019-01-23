@@ -22,21 +22,23 @@ class eventHandlerSetPointEditorController {
     }
 
     changeTargetPoint() {
-        console.log(this.targetPoint.pointLocator);
-        this.$scope.editor.eventHandler.targetPointXid = this.targetPoint.xid;
+        if (this.targetPoint) {
+            this.$scope.editor.eventHandler.targetPointXid = this.targetPoint.xid;
+        }
     }
 
     changeSourcePoint() {
-        console.log(this.sourcePoint.pointLocator.dataType);
-        this.$scope.editor.eventHandler.sourcePointXid = this.sourcePoint.xid;
+        if (this.sourcePoint) {
+            this.$scope.editor.eventHandler.sourcePointXid = this.sourcePoint.xid;
+        }
     }
 
     targetPointIs(dataType) {
         if (this.targetPoint) {
             return this.targetPoint.pointLocator.dataType === dataType;
+        } else {
+            return dataType === 'ALPHANUMERIC';
         }
-
-        return false;
     }
 
 }
