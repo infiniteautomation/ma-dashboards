@@ -9,17 +9,17 @@ import dataPointDetailsTemplate from './dataPointDetails.html';
 
 class DataPointDetailsController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element', '$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser']; }
+    static get $inject() { return ['$scope', '$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint']; }
     
-    constructor($scope, $element, $stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User) {
+    constructor($scope, $stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point) {
         this.$scope = $scope;
-        this.$element = $element;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.localStorageService = localStorageService;
         this.PointHierarchy = PointHierarchy;
         this.dateBar = maUiDateBar;
         this.User = User;
+        this.Point = Point;
         
         this.chartType = 'smoothedLine';
     }
@@ -40,6 +40,19 @@ class DataPointDetailsController {
         }
         
         this.retrievePreferences();
+        
+        this.deregister = this.Point.notificationManager.subscribe((event, point) => {
+            if (this.dataPoint && this.dataPoint.id === point.id && event.name === 'update') {
+                this.$scope.$apply(() => {
+                    this.dataPoint = point;
+                    this.pointUpdated();
+                });
+            }
+        });
+    }
+    
+    $onDestroy() {
+        this.deregister();
     }
     
     pointChanged(point) {
@@ -49,7 +62,11 @@ class DataPointDetailsController {
         delete this.realtimePointValues;
         
         this.dataPoint = point;
-        const xid = point.xid;
+        this.pointUpdated();
+    }
+    
+    pointUpdated() {
+        const xid = this.dataPoint.xid;
 
         this.$state.go('.', {pointXid: xid}, {location: 'replace', notify: false});
         
