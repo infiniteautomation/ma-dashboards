@@ -3,7 +3,6 @@
  * @author Luis Güette
  */
 
-import angular from 'angular';
 import componentTemplate from './virtualSerialPortSetup.html';
 
 const $inject = Object.freeze(['$scope', 'maDialogHelper', 'maVirtualSerialPort']);
