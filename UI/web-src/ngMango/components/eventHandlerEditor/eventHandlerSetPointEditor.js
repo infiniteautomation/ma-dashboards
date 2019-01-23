@@ -1,5 +1,5 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Luis Güette
  */
 
@@ -18,7 +18,25 @@ class eventHandlerSetPointEditorController {
 
     $onInit() {
         this.$scope.editor = this.editor;
-        console.log(this.editor.eventHandler.targetPointXid);
+
+    }
+
+    changeTargetPoint() {
+        console.log(this.targetPoint.pointLocator);
+        this.$scope.editor.eventHandler.targetPointXid = this.targetPoint.xid;
+    }
+
+    changeSourcePoint() {
+        console.log(this.sourcePoint.pointLocator.dataType);
+        this.$scope.editor.eventHandler.sourcePointXid = this.sourcePoint.xid;
+    }
+
+    targetPointIs(dataType) {
+        if (this.targetPoint) {
+            return this.targetPoint.pointLocator.dataType === dataType;
+        }
+
+        return false;
     }
 
 }

@@ -1,44 +1,59 @@
 <h3 ma-tr="eventHandlers.setPointSettings"></h3>
 
 <div layout="row" flex layout-align="space-between center">
-    <md-input-container flex="100">
-        <ma-filtering-point-list auto-init="true" label="Target point" name="targetPointXid" point-xid="{{editor.eventHandler.targetPointXid}}" ng-change="editor.eventHandler.targetPointXid = $ctrl.targetPoint.xid" ng-model="$ctrl.targetPoint"></ma-filtering-point-list>
+    <div flex="100">
+        <ma-filtering-point-list auto-init="true" label="Target point" name="targetPointXid" point-xid="{{editor.eventHandler.targetPointXid}}" ng-change="$ctrl.changeTargetPoint()" ng-model="$ctrl.targetPoint"></ma-filtering-point-list>
         <div ng-messages="$ctrl.form.targetPointXid.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.targetPointXid.validationMessage"></div>
         </div>
-    </md-input-container>
+    </div>
 </div>
 
 <div layout="row" flex layout-align="space-between center">
     <md-input-container flex="100" flex-gt-md="50">
         <label ma-tr="eventHandlers.activeAction"></label>
-        <md-select name="handlerType" ng-model="editor.eventHandler.handlerType">
-            <md-option ng-value="NONE"><span ma-tr="eventHandlers.action.none"></span></md-option>
-            <md-option ng-value="POINT_VALUE"><span ma-tr="eventHandlers.action.point"></span></md-option>
-            <md-option ng-value="STATIC_VALUE"><span ma-tr="eventHandlers.action.static"></span></md-option>
-            <md-option ng-value="SCRIPT_VALUE"><span ma-tr="eventHandlers.action.script"></span></md-option>
+        <md-select name="activeAction" ng-model="editor.eventHandler.activeAction">
+            <md-option value="NONE"><span ma-tr="eventHandlers.action.none"></span></md-option>
+            <md-option value="POINT_VALUE"><span ma-tr="eventHandlers.action.point"></span></md-option>
+            <md-option value="STATIC_VALUE"><span ma-tr="eventHandlers.action.static"></span></md-option>
+            <md-option value="SCRIPT_VALUE"><span ma-tr="eventHandlers.action.script"></span></md-option>
         </md-select>
-        <div ng-messages="$ctrl.form.handlerType.$error">
+        <div ng-messages="$ctrl.form.activeAction.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.form.handlerType.validationMessage"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.activeAction.validationMessage"></div>
         </div>
     </md-input-container> 
 
-    <md-input-container flex="100" ng-if="editor.eventHandler.handlerType == 'POINT_VALUE'">
-        <ma-filtering-point-list auto-init="true" label="Target point" name="sourcePointXid" point-xid="{{editor.eventHandler.sourcePointXid}}" ng-change="editor.eventHandler.sourcePointXid = $ctrl.sourcePoint.xid" ng-model="$ctrl.sourcePoint"></ma-filtering-point-list>
+    <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'POINT_VALUE'">
+        <ma-filtering-point-list auto-init="false" label="Source point" name="sourcePointXid" point-xid="{{editor.eventHandler.sourcePointXid}}" ng-change="$ctrl.changeSourcePoint()" ng-model="$ctrl.sourcePoint"></ma-filtering-point-list>
         <div ng-messages="$ctrl.form.sourcePointXid.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.sourcePointXid.validationMessage"></div>
         </div>
-    </md-input-container>
+    </div>
 
-    <md-input-container flex="100" flex-gt-md="50">
-        <label ma-tr="common.xid"></label>
-        <input name="xid" ng-model="$ctrl.eventHandler.xid" required>
-        <div ng-messages="$ctrl.form.xid.$error">
+    <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'STATIC_VALUE'">
+        <label ma-tr="eventHandlers.valueToSet"></label>
+        
+        <input ng-if="$ctrl.targetPointIs('ALPHANUMERIC')" name="activeValueToSet" ng-model="$ctrl.eventHandler.activeValueToSet" required>
+       
+        <input 
+            ng-if="$ctrl.targetPointIs('NUMERIC')" 
+            type="number" min="{{$ctrl.targetPoint.pointLocator.min}}" 
+            max="{{$ctrl.targetPoint.pointLocator.max}}" 
+            name="activeValueToSet" 
+            ng-model="editor.eventHandler.activeValueToSet" 
+            required>
+
+        <md-select ng-if="$ctrl.targetPointIs('BINARY')" name="activeValueToSet" ng-model="editor.eventHandler.activeValueToSet">
+            <md-option value="false"><span ma-tr="common.false"></span></md-option>
+            <md-option value="true"><span ma-tr="common.true"></span></md-option>
+        </md-select> 
+
+        <div ng-messages="$ctrl.form.activeValueToSet.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.activeValueToSet.validationMessage"></div>
         </div>
     </md-input-container>
 
