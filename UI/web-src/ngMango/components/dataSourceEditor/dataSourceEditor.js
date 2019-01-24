@@ -37,6 +37,7 @@ class DataSourceEditorController {
         this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
         
         this.types = maDataSource.types;
+        this.typesByName = maDataSource.typesByName;
 
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
