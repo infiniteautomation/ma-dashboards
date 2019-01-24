@@ -15,3 +15,7 @@ ma-event-type-list md-list-item.ma-event-type-heading .md-list-item-inner p {
 ma-event-type-list md-list-item > p > md-progress-circular {
 	margin: 16px 0;
 }
+
+ma-event-type-list md-list-item md-icon.ma-alarm-flag {
+	margin-right: 4px;
+}
