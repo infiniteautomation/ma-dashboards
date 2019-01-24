@@ -68,4 +68,9 @@
         </div>
     </md-input-container>
 
+    
+</div>
+
+<div flex="100" ng-if="editor.eventHandler.activeAction == 'SCRIPT_VALUE'">
+    <ma-scripting-editor ng-model="editor.eventHandler.activeScript"></ma-scripting-editor>
 </div>
