@@ -397,7 +397,15 @@ function dataPointProvider() {
             
             get typesByName() {
                 return Object.freeze(typesByName);
-            }
+            },
+            
+            dataTypes: Object.freeze([
+                {key: 'BINARY', translation: 'common.dataTypes.binary'},
+                {key: 'MULTISTATE', translation: 'common.dataTypes.multistate'},
+                {key: 'NUMERIC', translation: 'common.dataTypes.numeric'},
+                {key: 'ALPHANUMERIC', translation: 'common.dataTypes.alphanumeric'},
+                {key: 'IMAGE', translation: 'common.dataTypes.image'}
+            ])
         });
         
         Object.assign(Point.prototype, {
