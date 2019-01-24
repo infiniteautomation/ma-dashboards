@@ -102,6 +102,8 @@ class DataPointEditorController {
             this.activeTab = 0;
         }
 
+        this.dataSourceType = this.dataPoint && this.typesByName[this.dataPoint.dataSourceTypeName];
+
         if (this.form) {
             this.form.$setPristine();
             this.form.$setUntouched();

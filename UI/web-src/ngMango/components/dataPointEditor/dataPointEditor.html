@@ -82,12 +82,12 @@
                 </div>
             </md-tab-body>
         </md-tab>
-        <md-tab ng-if="$ctrl.typesByName[$ctrl.dataPoint.dataSourceTypeName].templateUrl">
+        <md-tab ng-if="$ctrl.dataSourceType.templateUrl">
             <md-tab-label>
-                <span ma-tr="{{$ctrl.typesByName[$ctrl.dataPoint.dataSourceTypeName].description}}"></span>
+                <span ma-tr="{{$ctrl.dataSourceType.description}}"></span>
             </md-tab-label>
             <md-tab-body>
-                <div class="md-padding ma-no-padding-bottom" ng-include="$ctrl.typesByName[$ctrl.dataPoint.dataSourceTypeName].templateUrl"></div>
+                <div class="md-padding ma-no-padding-bottom" ng-include="$ctrl.dataSourceType.templateUrl"></div>
             </md-tab-body>
         </md-tab>
         <md-tab>
