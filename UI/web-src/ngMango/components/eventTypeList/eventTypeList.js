@@ -15,10 +15,12 @@ import './eventTypeList.css';
 
 class EventTypeListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventType']; }
+    static get $inject() { return ['maEventType', 'maEvents']; }
     
-    constructor(maEventType) {
+    constructor(maEventType, maEvents) {
         this.maEventType = maEventType;
+        
+        this.alarmLevels = maEvents.levels.reduce((map, level) => (map[level.key] = level, map), {});
     }
     
     $onInit() {

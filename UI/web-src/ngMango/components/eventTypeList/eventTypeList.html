@@ -9,9 +9,8 @@
     <md-list-item ng-repeat="eventType in category.types track by eventType.uniqueId" ng-if="category.expanded"
             ng-init="checked = $ctrl.selectedGetterSetter(category, eventType.type)">
         <span>
-            <md-icon class="fa fa-lg ma-alarm-flag"
-                ng-class="eventType.alarmLevel + ' ' + (eventType.alarmLevel === 'DO_NOT_LOG' ? 'fa-times-circle' : 'fa-flag')">
-                <md-tooltip ma-tr="common.alarmLevel.{{eventType.alarmLevel}}"></md-tooltip>
+            <md-icon class="fa fa-lg ma-alarm-flag" ng-class="$ctrl.alarmLevels[eventType.alarmLevel].classes">
+                <md-tooltip ma-tr="{{$ctrl.alarmLevels[eventType.alarmLevel].translation}}"></md-tooltip>
             </md-icon>
             <span ng-bind="eventType.description"></span>
         </span>
