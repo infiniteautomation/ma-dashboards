@@ -186,6 +186,20 @@ function eventsFactory($resource, Util) {
             }
         }
     });
+    
+    Object.assign(Events, {
+        levels: Object.freeze([
+            {key: 'NONE', classes: 'fa-flag ma-alarm-level-none', translation: 'common.alarmLevel.none'},
+            {key: 'INFORMATION', classes: 'fa-flag ma-alarm-level-information', translation: 'common.alarmLevel.info'},
+            {key: 'IMPORTANT', classes: 'fa-flag ma-alarm-level-important', translation: 'common.alarmLevel.important'},
+            {key: 'WARNING', classes: 'fa-flag ma-alarm-level-warning', translation: 'common.alarmLevel.warning'},
+            {key: 'URGENT', classes: 'fa-flag ma-alarm-level-urgent', translation: 'common.alarmLevel.urgent'},
+            {key: 'CRITICAL', classes: 'fa-flag ma-alarm-level-critical', translation: 'common.alarmLevel.critical'},
+            {key: 'LIFE_SAFETY', classes: 'fa-flag ma-alarm-level-life', translation: 'common.alarmLevel.lifeSafety'},
+            {key: 'DO_NOT_LOG', classes: 'fa-times-circle ma-alarm-level-do', translation: 'common.alarmLevel.doNotLog'},
+            {key: 'IGNORE', classes: 'fa-times ma-alarm-level-ignore', translation: 'common.alarmLevel.ignore'}
+        ])
+    });
 
     return Events;
 }

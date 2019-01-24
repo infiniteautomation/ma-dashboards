@@ -150,6 +150,31 @@
             </md-tab-body>
         </md-tab>
         
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="dsEdit.events.alarmLevels"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding ma-no-padding-bottom">
+                    <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+                        <md-input-container flex="100" flex-gt-md="50" ng-repeat="(key, level) in $ctrl.dataSource.alarmLevels">
+                            <label ng-bind="key"></label>
+                            <md-select name="alarmLevels.{{key}}" ng-model="$ctrl.dataSource.alarmLevels[key]" required ma-get-ctrl="modelCtrl = $ngModel">
+                                <md-option ng-repeat="level in $ctrl.maEvents.levels track by level.key" ng-value="level.key">
+                                    <md-icon class="fa fa-lg ma-alarm-flag" ng-class="level.classes"></md-icon>
+                                    <span ma-tr="{{level.translation}}"></span>
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="modelCtrl.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="modelCtrl.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+            </md-tab-body>
+        </md-tab>
+        
         <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.pointsTabActive = true" md-on-deselect="$ctrl.pointsTabActive = false">
             <md-tab-label>
                 <span ma-tr="ui.app.dataPoints"></span>
