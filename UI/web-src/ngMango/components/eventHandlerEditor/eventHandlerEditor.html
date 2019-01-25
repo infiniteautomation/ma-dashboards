@@ -42,9 +42,15 @@
                             <md-checkbox name="disabled" ng-model="$ctrl.eventHandler.disabled"><span ma-tr="common.disabled"></span></md-checkbox>
                         </div>
                     </div>
-
-                    <div ng-include="$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].templateUrl"></div>
                 </div>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="{{$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].description}}"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding ma-no-padding-bottom" ng-include="$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].templateUrl"></div>
             </md-tab-body>
         </md-tab>
         <md-tab>
