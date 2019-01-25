@@ -18,7 +18,6 @@ class eventHandlerSetPointEditorController {
 
     $onInit() {
         this.$scope.editor = this.editor;
-
     }
 
     changeTargetPoint() {

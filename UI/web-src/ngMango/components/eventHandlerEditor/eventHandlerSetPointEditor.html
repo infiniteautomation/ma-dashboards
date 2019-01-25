@@ -8,11 +8,9 @@
             <div ng-message="validationMessage" ng-bind="$ctrl.form.targetPointXid.validationMessage"></div>
         </div>
     </div>
+</div>
 
-</div>
-<div layout="row" flex>
-    <ma-script-context></ma-script-context>
-</div>
+<ma-script-context flex="100" ng-model="editor.eventHandler.scriptContext"></ma-script-context>
 
 <md-tab>
     <md-tab-label>
