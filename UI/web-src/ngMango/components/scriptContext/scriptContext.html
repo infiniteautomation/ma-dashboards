@@ -21,7 +21,7 @@
                 <td md-cell>
                     <md-input-container flex="100" flex-gt-md="50">
                         <label ma-tr="pointEdit.text.key"></label>
-                        <input name="variableName" ng-model="item.variableName" required>
+                        <input name="variableName" ng-model="item.variableName" ng-change="$ctrl.setViewValue()" required>
                     </md-input-container>
                 </td>
                 <td md-cell>

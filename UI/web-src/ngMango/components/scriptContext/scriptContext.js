@@ -20,12 +20,17 @@ class scriptContextController {
 
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
+        this.contextTable = [];
     }
 
     render() {
         this.contextPoints = this.ngModelCtrl.$viewValue;
-        this.contextTable = angular.copy(this.contextPoints);
-        this.getPoints();
+        
+        if (!this.contextPoints) {
+            this.contextPoints = [];
+        } else if (this.contextPoints.length > 0) {
+            this.getPoints();
+        }
     }
 
     setViewValue() {
@@ -36,6 +41,8 @@ class scriptContextController {
     }
 
     getPoints() {
+        this.contextTable = angular.copy(this.contextPoints);
+
         this.maPoint.rql({query: this.getRqlQuery()}).$promise.then(points => {
             this.contextTable.forEach(item => {
                 item.point = points.filter(point =>  point.xid === item.xid )[0];

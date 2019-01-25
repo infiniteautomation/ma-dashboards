@@ -32,6 +32,7 @@
     "jquery-ui": "^1.12.1",
     "jquery-ui-touch-punch-c": "^1.4.0",
     "js-sha512": "^0.7.1",
+    "jshint": "^2.9.7",
     "jszip": "^3.1.5",
     "material-design-icons-iconfont": "^3.0.3",
     "mathjs": "^4.4.2",
