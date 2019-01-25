@@ -143,6 +143,10 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return this.notificationManager.notifyIfNotConnected(...args);
         }
         
+        static encodeUriSegment(segment) {
+            return angular.$$encodeUriSegment(segment);
+        }
+        
         isNew() {
             return !this.hasOwnProperty(originalIdProperty);
         }
@@ -150,9 +154,9 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         getOriginalId() {
             return this[originalIdProperty];
         }
-        
+
         getEncodedId() {
-            return angular.$$encodeUriSegment(this.getOriginalId());
+            return this.constructor.encodeUriSegment(this.getOriginalId());
         }
         
         setHttpBody(httpBody) {
@@ -186,7 +190,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         get(opts = {}) {
             const originalId = this[originalIdProperty];
             return this.constructor.http({
-                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(originalId),
+                url: this.constructor.baseUrl + '/' + this.constructor.encodeUriSegment(originalId),
                 method: 'GET',
                 params: opts.params
             }, opts).then(response => {
@@ -201,7 +205,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         
         getById(opts = {}) {
             return this.constructor.http({
-                url: this.constructor.baseUrl + '/by-id/' + angular.$$encodeUriSegment(this.id),
+                url: this.constructor.baseUrl + '/by-id/' + this.constructor.encodeUriSegment(this.id),
                 method: 'GET',
                 params: opts.params
             }, opts).then(response => {
@@ -237,7 +241,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             
             let url, method;
             if (originalId) {
-                url = this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(originalId);
+                url = this.constructor.baseUrl + '/' + this.constructor.encodeUriSegment(originalId);
                 method = 'PUT';
             } else {
                 url = this.constructor.baseUrl;
@@ -276,7 +280,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             const originalId = this[originalIdProperty];
             
             return this.constructor.http({
-                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(originalId),
+                url: this.constructor.baseUrl + '/' + this.constructor.encodeUriSegment(originalId),
                 method: 'DELETE',
                 params: opts.params
             }, opts).then(response => {
