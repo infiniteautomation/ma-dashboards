@@ -9,23 +9,23 @@
     </div>
     <div flex layout layout-align="space-between top" layout-wrap>
         <div flex="100" flex-gt-sm="70" flex-gt-md="80">
-            <div ng-if="$ctrl.scriptOutput" flex class="log-bg p-10 overflow-y-scroll max-height-100">
+            <div ng-if="$ctrl.scriptOutput" flex class="script-output">
                 <pre>{{ $ctrl.scriptOutput }}</pre>
             </div>
-            <ul ng-if="$ctrl.scriptErrors" class="my-10">
-                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="error.property" class="color-error">
+            <ul ng-if="$ctrl.scriptErrors" class="md-padding">
+                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="error.property" class="error">
                     <pre>{{ error.message }}</pre> on <b>{{ error.property }}</b>
                 </li>
-                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property" class="color-error">
+                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property" class="error">
                     <pre>{{ error.message }}</pre>
                     <span ng-if="error.lineNumber">line {{error.lineNumber}}</span> 
                     <span ng-if="error.columnNumber">, column {{error.columnNumber}}</span>
                 </li>
             </ul>
-            <ul ng-if="$ctrl.scriptActions" class="my-10">
-                <li ng-repeat="action in $ctrl.scriptActions" ng-class="{'color-error': action.level === 'error', 'color-warn': action.level === 'warning'}">
-                    <pre ng-if="action.level === 'error'" class="color-error">{{ action.message }}</pre>
-                    <pre ng-if="action.level === 'warning'" class="color-warn">{{ action.message }}</pre>
+            <ul ng-if="$ctrl.scriptActions" class="md-padding">
+                <li ng-repeat="action in $ctrl.scriptActions" ng-class="{'error': action.level === 'error', 'warn': action.level === 'warning'}">
+                    <pre ng-if="action.level === 'error'" class="error">{{ action.message }}</pre>
+                    <pre ng-if="action.level === 'warning'" class="warn">{{ action.message }}</pre>
                     <pre ng-if="action.level !== 'warning' && action.level !== 'error'">{{ action.message }}</pre>
                 </li>
             </ul>

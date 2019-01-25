@@ -20,7 +20,7 @@ function eventHandlerProvider() {
         {
             type: 'SET_POINT',
             description: 'eventHandlers.type.setPoint',
-            template: ``
+            template: `<ma-event-handler-set-point-editor></ma-event-handler-set-point-editor>`
         }
     ];
     
@@ -70,7 +70,8 @@ function eventHandlerProvider() {
             inactiveRecipients: [],
             includeLogfile: false,
             includePointValueCount: 10,
-            includeSystemInfo: false
+            includeSystemInfo: false,
+            scriptContext: []
     	};
     	
         class EventHandler extends RestResource {

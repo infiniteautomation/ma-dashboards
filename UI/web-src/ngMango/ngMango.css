@@ -622,7 +622,7 @@ md-card md-card-content.ma-no-padding {
 .ma-no-padding-top,
 .md-padding.ma-no-padding-top,
 md-card md-card-content.ma-no-padding-top {
-	padding-bottom: 0;
+	padding-top: 0;
 }
 
 .ma-no-padding-bottom,
@@ -1084,31 +1084,17 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 	}
 }
 
-.my-10 {
-    margin-top: 10px; 
-    margin-bottom: 10px;
+ma-scripting-editor .script-output {
+    padding: 10px;
+    overflow-y: scroll; 
+    max-height: 100px;
+    background-color: #272822;
 }
 
-.color-error {
+ma-scripting-editor .error {
     color: #F44336;
 }
 
-.color-warn {
+ma-scripting-editor .warn {
     color: #FDD835;
-}
-
-.p-10 {
-    padding: 10px;
-}
-
-.overflow-y-scroll {
-    overflow-y: scroll;
-}
-
-.max-height-100 {
-    max-height: 100px;
-}
-
-.log-bg {
-    background-color: #272822;
 }
