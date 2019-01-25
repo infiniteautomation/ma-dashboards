@@ -13,13 +13,13 @@ function eventTypeProvider() {
     
     this.registerEventTypeOptions({
         typeName: 'DATA_POINT',
-        orderBy: ['type.dataPoint.deviceName', 'type.dataPoint.name'],
+        orderBy: ['type.source.deviceName', 'type.source.name'],
         icon: 'label',
         group: ['maPoint', function(Point) {
-            return function group(eventTypes) {
+            return function(eventTypes) {
                 const groups = new Map();
                 eventTypes.forEach(et => {
-                    const point = new Point(et.type.dataPoint);
+                    const point = new Point(et.type.source);
                     if (groups.has(point.id)) {
                         const group = groups.get(point.id);
                         group.types.push(et);
@@ -41,13 +41,15 @@ function eventTypeProvider() {
     eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', '$injector'];
     function eventTypeFactory(RestResource, RqlBuilder, $injector) {
         
+        /**
+         * Injects the group() fn and freezes the options
+         */
         Object.keys(eventTypeOptions).forEach(typeName => {
             const options = eventTypeOptions[typeName];
-            
-            if (Array.isArray(options.group) || typeof options.group === 'function' && Array.isArray(options.group.$inject)) {
-                options.group = $injector.invoke(options.group);
+            const groupFn = options.group;
+            if (Array.isArray(groupFn) || typeof groupFn === 'function' && Array.isArray(groupFn.$inject)) {
+                options.group = $injector.invoke(groupFn);
             }
-            
             eventTypeOptions[typeName] = Object.freeze(options);
         });
 
