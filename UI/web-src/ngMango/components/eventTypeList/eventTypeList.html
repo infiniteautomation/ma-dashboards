@@ -5,8 +5,28 @@
         <p><span ng-bind="category.description"></span><span ng-if="category.selected"> (<em ma-tr="ui.app.xPointsSelected" ma-tr-args="[category.selected.size]"></em>)</span></p>
         <md-icon>{{category.expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
     </md-list-item>
-    
-    <md-list-item ng-repeat="eventType in category.types track by eventType.uniqueId" ng-if="category.expanded"
+
+    <md-list-item ng-repeat-start="group in category.groups track by $index"
+            class="ma-event-type-group">
+        <p>
+            <md-icon>{{group.icon}}</md-icon>
+            <span ng-bind="group.description"></span>
+        </p>
+    </md-list-item>
+
+    <md-list-item ng-repeat-end ng-repeat="eventType in group.types track by eventType.uniqueId"
+            class="ma-event-type-group-item"
+            ng-init="checked = $ctrl.selectedGetterSetter(category, eventType.type)">
+        <span>
+            <md-icon class="fa fa-lg ma-alarm-flag" ng-class="$ctrl.alarmLevels[eventType.alarmLevel].classes">
+                <md-tooltip ma-tr="{{$ctrl.alarmLevels[eventType.alarmLevel].translation}}"></md-tooltip>
+            </md-icon>
+            <span ng-bind="eventType.description"></span>
+        </span>
+        <md-checkbox class="md-secondary" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude></md-checkbox>
+    </md-list-item>
+
+    <md-list-item ng-repeat="eventType in category.types track by eventType.uniqueId"
             ng-init="checked = $ctrl.selectedGetterSetter(category, eventType.type)">
         <span>
             <md-icon class="fa fa-lg ma-alarm-flag" ng-class="$ctrl.alarmLevels[eventType.alarmLevel].classes">
@@ -21,7 +41,7 @@
         <p layout layout-align="center"><md-progress-linear md-mode="indeterminate" class="md-primary"></md-progress-linear></p>
     </md-list-item>
 
-    <md-list-item ng-repeat-end ng-if="category.expanded && !category.loading && !category.types.length">
+    <md-list-item ng-repeat-end ng-if="category.expanded && !category.loading && !category.types.length && !category.groups.length">
         <p><em ma-tr="ui.components.noEventTypes"></em></p>
     </md-list-item>
 </md-list>

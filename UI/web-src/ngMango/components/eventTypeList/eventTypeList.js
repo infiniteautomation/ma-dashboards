@@ -15,11 +15,12 @@ import './eventTypeList.css';
 
 class EventTypeListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventType', 'maEvents', '$filter']; }
+    static get $inject() { return ['maEventType', 'maEvents', '$filter', 'maPoint']; }
     
-    constructor(maEventType, maEvents, $filter) {
-        this.maEventType = maEventType;
-        this.$filter = $filter;
+    constructor(EventType, maEvents, $filter, Point) {
+        this.EventType = EventType;
+        this.orderBy = $filter('orderBy');
+        this.Point = Point;
         
         this.alarmLevels = maEvents.levels.reduce((map, level) => (map[level.key] = level, map), {});
     }
@@ -27,9 +28,34 @@ class EventTypeListController {
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
 
-        this.loadingCategories = this.maEventType.typeNames().then(categories => {
-            this.categories = this.$filter('orderBy')(categories, 'description');
+        this.loadingCategories = this.EventType.typeNames().then(categories => {
+            this.categories = this.orderBy(categories, 'description');
             this.categoriesMap = categories.reduce((map, c) => (map[c.typeName] = c, map), {});
+            
+            const dataPoint = this.categories.find(c => c.typeName === 'DATA_POINT');
+            
+            dataPoint.orderBy = ['type.dataPoint.deviceName', 'type.dataPoint.name'];
+            
+            dataPoint.group = (eventTypes) => {
+                const groups = new Map();
+                eventTypes.forEach(et => {
+                    const point = new this.Point(et.type.dataPoint);
+                    if (groups.has(point.id)) {
+                        const group = groups.get(point.id);
+                        group.types.push(et);
+                    } else {
+                        groups.set(point.id, {
+                            description: point.formatLabel(),
+                            types: [et],
+                            icon: dataPoint.icon
+                        });
+                    }
+                });
+                return Array.from(groups.values());
+            };
+            
+            dataPoint.icon = 'label';
+            
             delete this.loadingCategories;
             this.render();
         }).finally(() => {
@@ -56,7 +82,7 @@ class EventTypeListController {
         if (!Array.isArray(selectedTypes)) return;
         
         selectedTypes.forEach(eventType => {
-            const id = this.maEventType.uniqueId(eventType);
+            const id = this.EventType.uniqueId(eventType);
             this.selected.set(id, eventType);
             const category = this.categoriesMap[eventType.eventType];
             if (category) {
@@ -67,7 +93,13 @@ class EventTypeListController {
 
     expandCategory(category) {
         const wasExpanded = category.expanded;
-        this.categories.forEach(etn => etn.expanded = false);
+        
+        this.categories.forEach(category => {
+            category.expanded = false;
+            delete category.types;
+            delete category.groups;
+        });
+        
         if (!wasExpanded) {
             category.expanded = true;
         }
@@ -76,18 +108,28 @@ class EventTypeListController {
             this.loadCategory(category);
         } else {
             delete category.types;
+            delete category.groups;
         }
     }
     
     loadCategory(category) {
-        category.loading = this.maEventType.list(category.typeName).then(eventTypes => {
-            category.types = eventTypes;
+        category.loading = this.EventType.list(category.typeName).then(eventTypes => {
+            category.types = category.orderBy ? this.orderBy(eventTypes, category.orderBy) : eventTypes;
+
+            if (category.group) {
+                category.groups = category.group(category.types);
+                //category.groups.forEach(g => {
+                //    g.expanded = g.types.some(t => category.selected.has(t.uniqueId));
+                //});
+                delete category.types;
+            }
+            
         }).finally(() => delete category.loading);
     }
     
     selectedGetterSetter(category, eventType) {
         return value => {
-            const id = this.maEventType.uniqueId(eventType);
+            const id = this.EventType.uniqueId(eventType);
             
             if (value === undefined) {
                 return category.selected.has(id);

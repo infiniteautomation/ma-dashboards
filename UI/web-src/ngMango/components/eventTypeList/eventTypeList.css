@@ -12,6 +12,10 @@ ma-event-type-list md-list-item.ma-event-type-heading .md-list-item-inner p {
 	font-weight: bold;
 }
 
-ma-event-type-list md-list-item md-icon.ma-alarm-flag {
+ma-event-type-list md-list-item.ma-event-type-group-item .md-list-item-inner {
+	padding-left: 44px;
+}
+
+ma-event-type-list md-list-item > .md-list-item-inner > span > md-icon {
 	margin-right: 4px;
 }
