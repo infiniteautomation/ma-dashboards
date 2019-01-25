@@ -7,20 +7,16 @@ eventTypeProvider.$inject = [];
 function eventTypeProvider() {
     
     const eventTypeOptions = {};
-    this.registerEventTypeOptions = function(options, fn) {
-        if (typeof options === 'string') {
-            eventTypeOptions[options] = fn;
-        } else if (typeof options === 'object') {
-            eventTypeOptions[options.typeName] = Object.freeze(options);
-        }
+    this.registerEventTypeOptions = function(options) {
+        eventTypeOptions[options.typeName] = options;
     };
     
-    this.registerEventTypeOptions('DATA_POINT', ['maPoint', function(Point) {
-        return {
-            typeName: 'DATA_POINT',
-            orderBy: ['type.dataPoint.deviceName', 'type.dataPoint.name'],
-            icon: 'label',
-            group(eventTypes) {
+    this.registerEventTypeOptions({
+        typeName: 'DATA_POINT',
+        orderBy: ['type.dataPoint.deviceName', 'type.dataPoint.name'],
+        icon: 'label',
+        group: ['maPoint', function(Point) {
+            return function group(eventTypes) {
                 const groups = new Map();
                 eventTypes.forEach(et => {
                     const point = new Point(et.type.dataPoint);
@@ -36,14 +32,24 @@ function eventTypeProvider() {
                     }
                 });
                 return Array.from(groups.values());
-            }
-        };
-    }]);
+            };
+        }]
+    });
 
     this.$get = eventTypeFactory;
 
     eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', '$injector'];
     function eventTypeFactory(RestResource, RqlBuilder, $injector) {
+        
+        Object.keys(eventTypeOptions).forEach(typeName => {
+            const options = eventTypeOptions[typeName];
+            
+            if (Array.isArray(options.group) || typeof options.group === 'function' && Array.isArray(options.group.$inject)) {
+                options.group = $injector.invoke(options.group);
+            }
+            
+            eventTypeOptions[typeName] = Object.freeze(options);
+        });
 
         const eventTypeBaseUrl = '/rest/v2/event-types';
         
@@ -115,11 +121,7 @@ function eventTypeProvider() {
         
         Object.assign(EventType, {
             eventTypeOptions(name) {
-                const options = eventTypeOptions[name];
-                if (typeof options === 'function' || Array.isArray(options)) {
-                    return $injector.invoke(options);
-                }
-                return options;
+                return eventTypeOptions[name];
             }
         });
         
