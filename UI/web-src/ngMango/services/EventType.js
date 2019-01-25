@@ -12,6 +12,10 @@ function eventTypeFactory(RestResource, RqlBuilder) {
         static get baseUrl() {
             return eventTypeBaseUrl;
         }
+        
+        static get idProperty() {
+            return null;
+        }
 
         static typeNames(opts = {}) {
             return this.http({
