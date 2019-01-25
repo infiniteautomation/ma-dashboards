@@ -15,10 +15,11 @@ import './eventTypeList.css';
 
 class EventTypeListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventType', 'maEvents']; }
+    static get $inject() { return ['maEventType', 'maEvents', '$filter']; }
     
-    constructor(maEventType, maEvents) {
+    constructor(maEventType, maEvents, $filter) {
         this.maEventType = maEventType;
+        this.$filter = $filter;
         
         this.alarmLevels = maEvents.levels.reduce((map, level) => (map[level.key] = level, map), {});
     }
@@ -26,80 +27,78 @@ class EventTypeListController {
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
 
-        this.eventTypesMap = {};
-        
-        this.loading = this.maEventType.typeNames().then(categories => {
-            this.categories = categories;
-            this.categoriesMap = categories.reduce((map, et) => {
-                et.types = [];
-                map[et.typeName] = et;
-                return map;
-            }, {});
-        }).then(() => {
-            return this.maEventType.list();
-        }).then((eventTypes) => {
-            eventTypes.forEach(eventType => {
-                const name = eventType.type.eventType;
-                const category = this.categoriesMap[name];
-                if (category) {
-                    category.types.push(eventType);
-                }
-                this.eventTypesMap[eventType.uniqueId] = eventType.type;
-            });
-
-            delete this.loading;
+        this.loadingCategories = this.maEventType.typeNames().then(categories => {
+            this.categories = this.$filter('orderBy')(categories, 'description');
+            this.categoriesMap = categories.reduce((map, c) => (map[c.typeName] = c, map), {});
+            delete this.loadingCategories;
             this.render();
-        }, () => delete this.loading);
+        }).finally(() => {
+            delete this.loadingCategories;
+        });
     }
     
     $onChanges(changes) {
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(Array.from(this.selected));
+        this.ngModelCtrl.$setViewValue(Array.from(this.selected.values()));
     }
     
     render() {
-        if (this.loading) {
+        if (this.loadingCategories) {
             return;
         }
         
-        this.selected = new Set();
-        this.categories.forEach(c => c.selected = new Set());
+        this.selected = new Map();
+        this.categories.forEach(c => c.selected = new Map());
 
-        const view = this.ngModelCtrl.$viewValue;
-        if (!Array.isArray(view)) return;
+        const selectedTypes = this.ngModelCtrl.$viewValue;
+        if (!Array.isArray(selectedTypes)) return;
         
-        view.map(type => this.eventTypesMap[this.maEventType.uniqueId(type)])
-        .filter(et => !!et).forEach(eventType => {
-            this.selected.add(eventType);
+        selectedTypes.forEach(eventType => {
+            const id = this.maEventType.uniqueId(eventType);
+            this.selected.set(id, eventType);
             const category = this.categoriesMap[eventType.eventType];
             if (category) {
-                category.selected.add(eventType);
+                category.selected.set(id, eventType);
             }
         });
     }
 
-    expandSection(category) {
+    expandCategory(category) {
         const wasExpanded = category.expanded;
         this.categories.forEach(etn => etn.expanded = false);
         if (!wasExpanded) {
             category.expanded = true;
         }
+        
+        if (category.expanded) {
+            this.loadCategory(category);
+        } else {
+            delete category.types;
+        }
+    }
+    
+    loadCategory(category) {
+        category.loading = this.maEventType.list(category.typeName).then(eventTypes => {
+            category.types = eventTypes;
+        }).finally(() => delete category.loading);
     }
     
     selectedGetterSetter(category, eventType) {
         return value => {
+            const id = this.maEventType.uniqueId(eventType);
+            
             if (value === undefined) {
-                return category.selected.has(eventType);
+                return category.selected.has(id);
             }
             
             if (value) {
-                this.selected.add(eventType);
-                category.selected.add(eventType);
+                this.selected.set(id, eventType);
+                category.selected.set(id, eventType);
             } else {
-                this.selected.delete(eventType);
-                category.selected.delete(eventType);
+                this.selected.delete(id);
+                category.selected.delete(id);
             }
             
             this.setViewValue();

@@ -1,7 +1,7 @@
 <md-list class="ma-no-padding">
-    <md-divider ng-repeat-start="category in $ctrl.categories | orderBy:'typeName' track by category.typeName" ng-if="!$first"></md-divider>
+    <md-divider ng-repeat-start="category in $ctrl.categories track by category.typeName" ng-if="!$first"></md-divider>
     
-    <md-list-item class="ma-event-type-heading" ng-click="$ctrl.expandSection(category)" ng-init="category.expanded = $first">
+    <md-list-item class="ma-event-type-heading" ng-click="$ctrl.expandCategory(category)">
         <p><span ng-bind="category.description"></span><span ng-if="category.selected"> (<em ma-tr="ui.app.xPointsSelected" ma-tr-args="[category.selected.size]"></em>)</span></p>
         <md-icon>{{category.expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
     </md-list-item>
@@ -17,11 +17,11 @@
         <md-checkbox class="md-secondary" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude></md-checkbox>
     </md-list-item>
     
-    <md-list-item ng-if="category.expanded && $ctrl.loading">
-        <p layout layout-align="center"><md-progress-circular md-mode="indeterminate" class="md-accent"></md-progress-circular></p>
+    <md-list-item ng-if="category.expanded && category.loading">
+        <p layout layout-align="center"><md-progress-linear md-mode="indeterminate" class="md-primary"></md-progress-linear></p>
     </md-list-item>
 
-    <md-list-item ng-repeat-end ng-if="category.expanded && !$ctrl.loading && !category.types.length">
+    <md-list-item ng-repeat-end ng-if="category.expanded && !category.loading && !category.types.length">
         <p><em ma-tr="ui.components.noEventTypes"></em></p>
     </md-list-item>
 </md-list>
