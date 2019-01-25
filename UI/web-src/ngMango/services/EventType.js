@@ -6,12 +6,44 @@
 eventTypeProvider.$inject = [];
 function eventTypeProvider() {
     
+    const eventTypeOptions = {};
+    this.registerEventTypeOptions = function(options, fn) {
+        if (typeof options === 'string') {
+            eventTypeOptions[options] = fn;
+        } else if (typeof options === 'object') {
+            eventTypeOptions[options.typeName] = Object.freeze(options);
+        }
+    };
     
+    this.registerEventTypeOptions('DATA_POINT', ['maPoint', function(Point) {
+        return {
+            typeName: 'DATA_POINT',
+            orderBy: ['type.dataPoint.deviceName', 'type.dataPoint.name'],
+            icon: 'label',
+            group(eventTypes) {
+                const groups = new Map();
+                eventTypes.forEach(et => {
+                    const point = new Point(et.type.dataPoint);
+                    if (groups.has(point.id)) {
+                        const group = groups.get(point.id);
+                        group.types.push(et);
+                    } else {
+                        groups.set(point.id, {
+                            description: point.formatLabel(),
+                            types: [et],
+                            icon: this.icon
+                        });
+                    }
+                });
+                return Array.from(groups.values());
+            }
+        };
+    }]);
 
     this.$get = eventTypeFactory;
 
-    eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder'];
-    function eventTypeFactory(RestResource, RqlBuilder) {
+    eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', '$injector'];
+    function eventTypeFactory(RestResource, RqlBuilder, $injector) {
 
         const eventTypeBaseUrl = '/rest/v2/event-types';
         
@@ -80,6 +112,16 @@ function eventTypeProvider() {
                 });
             }
         }
+        
+        Object.assign(EventType, {
+            eventTypeOptions(name) {
+                const options = eventTypeOptions[name];
+                if (typeof options === 'function' || Array.isArray(options)) {
+                    return $injector.invoke(options);
+                }
+                return options;
+            }
+        });
         
         return EventType;
     }

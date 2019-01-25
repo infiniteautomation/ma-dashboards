@@ -32,30 +32,9 @@ class EventTypeListController {
             this.categories = this.orderBy(categories, 'description');
             this.categoriesMap = categories.reduce((map, c) => (map[c.typeName] = c, map), {});
             
-            const dataPoint = this.categories.find(c => c.typeName === 'DATA_POINT');
-            
-            dataPoint.orderBy = ['type.dataPoint.deviceName', 'type.dataPoint.name'];
-            
-            dataPoint.group = (eventTypes) => {
-                const groups = new Map();
-                eventTypes.forEach(et => {
-                    const point = new this.Point(et.type.dataPoint);
-                    if (groups.has(point.id)) {
-                        const group = groups.get(point.id);
-                        group.types.push(et);
-                    } else {
-                        groups.set(point.id, {
-                            description: point.formatLabel(),
-                            types: [et],
-                            icon: dataPoint.icon
-                        });
-                    }
-                });
-                return Array.from(groups.values());
-            };
-            
-            dataPoint.icon = 'label';
-            
+            // add options for grouping etc to the categories
+            this.categories.forEach(c => Object.assign(c, this.EventType.eventTypeOptions(c.typeName)));
+
             delete this.loadingCategories;
             this.render();
         }).finally(() => {
