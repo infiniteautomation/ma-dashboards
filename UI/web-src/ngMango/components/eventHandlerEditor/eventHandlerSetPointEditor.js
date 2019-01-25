@@ -26,9 +26,15 @@ class eventHandlerSetPointEditorController {
         }
     }
 
-    changeSourcePoint() {
-        if (this.sourcePoint) {
-            this.$scope.editor.eventHandler.sourcePointXid = this.sourcePoint.xid;
+    changeActivePoint() {
+        if (this.activePoint) {
+            this.$scope.editor.eventHandler.activePointXid = this.activePoint.xid;
+        }
+    }
+
+    changeInactivePoint() {
+        if (this.inactivePoint) {
+            this.$scope.editor.eventHandler.inactivePointXid = this.inactivePoint.xid;
         }
     }
 
