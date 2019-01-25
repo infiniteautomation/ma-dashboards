@@ -622,7 +622,7 @@ md-card md-card-content.ma-no-padding {
 .ma-no-padding-top,
 .md-padding.ma-no-padding-top,
 md-card md-card-content.ma-no-padding-top {
-	padding-bottom: 0;
+	padding-top: 0;
 }
 
 .ma-no-padding-bottom,
