@@ -5,52 +5,77 @@
 
 eventTypeProvider.$inject = [];
 function eventTypeProvider() {
-    
-    const eventTypeOptions = {};
+
+    const eventTypeOptions = [];
     this.registerEventTypeOptions = function(options) {
-        eventTypeOptions[options.typeName] = options;
+        eventTypeOptions.push(options);
     };
     
-    this.registerEventTypeOptions({
-        typeName: 'DATA_POINT',
-        orderBy: ['type.source.deviceName', 'type.source.name'],
-        icon: 'label',
-        group: ['maPoint', function(Point) {
-            return function(eventTypes) {
-                const groups = new Map();
-                eventTypes.forEach(et => {
-                    const point = new Point(et.type.source);
-                    if (groups.has(point.id)) {
-                        const group = groups.get(point.id);
-                        group.types.push(et);
-                    } else {
-                        groups.set(point.id, {
-                            description: point.formatLabel(),
-                            types: [et],
-                            icon: this.icon
-                        });
-                    }
-                });
-                return Array.from(groups.values());
-            };
-        }]
-    });
+    class EventTypeOptions {
+        constructor(options) {
+            Object.assign(this, options);
+        }
+        
+        groupDescription(eventType) {
+            return '' + eventType;
+        }
+        
+        group(eventTypes) {
+            if (typeof this.groupBy !== 'function') {
+                return;
+            }
+            
+            return Array.from(eventTypes.reduce((groups, et) => {
+                const id = this.groupBy(et);
+                
+                if (groups.has(id)) {
+                    const group = groups.get(id);
+                    group.types.push(et);
+                } else {
+                    groups.set(id, {
+                        description: this.groupDescription(et),
+                        types: [et],
+                        icon: this.icon
+                    });
+                }
+                
+                return groups;
+            }, new Map()).values());
+        }
+    }
+
+    this.registerEventTypeOptions(['maPoint', function(Point) {
+        return {
+            typeName: 'DATA_POINT',
+            orderBy: ['type.source.deviceName', 'type.source.name'],
+            icon: 'label',
+            groupBy(eventType) {
+                eventType.type.source = Object.assign(Object.create(Point.prototype), eventType.type.source);
+                return eventType.type.source.id;
+            },
+            groupDescription(eventType) {
+                return eventType.type.source.formatLabel();
+            }
+        };
+    }]);
 
     this.$get = eventTypeFactory;
 
-    eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', '$injector'];
-    function eventTypeFactory(RestResource, RqlBuilder, $injector) {
+    eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', 'maUtil'];
+    function eventTypeFactory(RestResource, RqlBuilder, Util) {
+
+        const eventTypeOptionsMap = {};
         
         /**
-         * Injects the group() fn and freezes the options
+         * Injects options, freezes the result so it cant be modified and creates a map of type name to options
          */
-        Object.keys(eventTypeOptions).forEach(typeName => {
-            const options = eventTypeOptions[typeName];
-            const groupFn = options.group;
-            if (Array.isArray(groupFn) || typeof groupFn === 'function' && Array.isArray(groupFn.$inject)) {
-                options.group = $injector.invoke(groupFn);
+        eventTypeOptions.forEach(options => {
+            try {
+                const injected = Util.inject(options);
+                eventTypeOptionsMap[injected.typeName] = injected;
+            } catch (e) {
+                console.error(e);
             }
-            eventTypeOptions[typeName] = Object.freeze(options);
         });
 
         const eventTypeBaseUrl = '/rest/v2/event-types';
@@ -68,7 +93,10 @@ function eventTypeProvider() {
                 return this.http({
                     method: 'GET',
                     url: `${eventTypeBaseUrl}/type-names`
-                }, opts).then(response => response.data);
+                }, opts).then(response => response.data.map(eventType => {
+                    const options = new EventTypeOptions(eventTypeOptionsMap[eventType.typeName]);
+                    return Object.assign(options, eventType);
+                }));
             }
             
             get uniqueId() {
@@ -120,13 +148,7 @@ function eventTypeProvider() {
                 });
             }
         }
-        
-        Object.assign(EventType, {
-            eventTypeOptions(name) {
-                return eventTypeOptions[name];
-            }
-        });
-        
+
         return EventType;
     }
 }

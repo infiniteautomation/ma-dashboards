@@ -31,10 +31,6 @@ class EventTypeListController {
         this.loadingCategories = this.EventType.typeNames().then(categories => {
             this.categories = this.orderBy(categories, 'description');
             this.categoriesMap = categories.reduce((map, c) => (map[c.typeName] = c, map), {});
-            
-            // add options for grouping etc to the categories
-            this.categories.forEach(c => Object.assign(c, this.EventType.eventTypeOptions(c.typeName)));
-
             delete this.loadingCategories;
             this.render();
         }).finally(() => {
@@ -95,7 +91,7 @@ class EventTypeListController {
         category.loading = this.EventType.list(category.typeName).then(eventTypes => {
             category.types = category.orderBy ? this.orderBy(eventTypes, category.orderBy) : eventTypes;
 
-            if (category.group) {
+            if (typeof category.groupBy === 'function') {
                 category.groups = category.group(category.types);
                 //category.groups.forEach(g => {
                 //    g.expanded = g.types.some(t => category.selected.has(t.uniqueId));
