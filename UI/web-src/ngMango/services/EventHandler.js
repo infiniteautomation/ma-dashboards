@@ -71,7 +71,9 @@ function eventHandlerProvider() {
             includeLogfile: false,
             includePointValueCount: 10,
             includeSystemInfo: false,
-            scriptContext: []
+            scriptContext: [],
+            activeAction: 'NONE',
+            inactiveAction: 'NONE'
     	};
     	
         class EventHandler extends RestResource {

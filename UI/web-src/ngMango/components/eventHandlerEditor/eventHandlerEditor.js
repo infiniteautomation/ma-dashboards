@@ -119,7 +119,7 @@ class EventHandlerEditorController {
             
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
-                this.validationMessages = error.data.validationMessages;
+                this.validationMessages = error.data.result.messages;
                 
                 const withProperty = this.validationMessages.filter(m => m.property);
                 if (withProperty.length) {
