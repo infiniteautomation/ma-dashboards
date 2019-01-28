@@ -15,12 +15,12 @@ function eventHandlerProvider() {
         {
             type: 'PROCESS',
             description: 'eventHandlers.type.process',
-            template: `<ma-event-handler-process-editor></ma-event-handler-process-editor>`
+            template: ``
         },
         {
             type: 'SET_POINT',
             description: 'eventHandlers.type.setPoint',
-            template: ``
+            template: `<ma-event-handler-set-point-editor></ma-event-handler-set-point-editor>`
         }
     ];
     
@@ -70,7 +70,10 @@ function eventHandlerProvider() {
             inactiveRecipients: [],
             includeLogfile: false,
             includePointValueCount: 10,
-            includeSystemInfo: false
+            includeSystemInfo: false,
+            scriptContext: [],
+            activeAction: 'NONE',
+            inactiveAction: 'NONE'
     	};
     	
         class EventHandler extends RestResource {
@@ -112,6 +115,23 @@ function eventHandlerProvider() {
                     queryBuilder.eq('eventTypeRef2', ref2);
                 }
                 return queryBuilder.query();
+            }
+
+            static runCommand (command, timeout) {
+                const url = `/rest/v2/server/execute-command`;
+
+                const data = {
+                    command: command,
+                    timeout: timeout
+                };
+
+                return this.constructor.http({
+                    method: 'POST',
+                    url: url,
+                    data: data
+                }).then(response => {
+                    return response.data;
+                });
             }
         }
     
