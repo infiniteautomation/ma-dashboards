@@ -1,0 +1,47 @@
+<div layout="row" layout-wrap>
+    <div flex="100" flex-gt-md="50" layout="row" layout-align="center center">
+        <md-input-container flex>
+            <label ma-tr="eventHandlers.activeCommand"></label>
+            <input name="activeProcessCommand" ng-model="editor.eventHandler.activeProcessCommand">
+            <div ng-messages="$ctrl.form.activeProcessCommand.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.activeProcessCommand.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-button class="md-icon-button" ng-click="$ctrl.saveItem($event)">
+            <md-icon>settings</md-icon>
+        </md-button>
+    </div>
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="eventHandlers.activeTimeout"></label>
+        <input name="activeProcessTimeout" type="number" ng-model="editor.eventHandler.activeProcessTimeout">
+        <div ng-messages="$ctrl.form.activeProcessTimeout.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.activeProcessTimeout.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>
+
+<div layout="row" layout-wrap>
+    <div flex="100" flex-gt-md="50" layout="row" layout-align="center center">
+        <md-input-container flex>
+            <label ma-tr="eventHandlers.inactiveCommand"></label>
+            <input name="inactiveProcessCommand" ng-model="editor.eventHandler.inactiveProcessCommand">
+            <div ng-messages="$ctrl.form.inactiveProcessCommand.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.inactiveProcessCommand.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-button class="md-icon-button" ng-click="$ctrl.saveItem($event)">
+            <md-icon>settings</md-icon>
+        </md-button>
+    </div>
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="eventHandlers.inactiveTimeout"></label>
+        <input name="inactiveProcessTimeout" type="number" ng-model="editor.eventHandler.inactiveProcessTimeout">
+        <div ng-messages="$ctrl.form.inactiveProcessTimeout.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.inactiveProcessTimeout.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>
