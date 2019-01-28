@@ -95,6 +95,11 @@ The following fields can be useful for conversions:</p>
   The <b>set(value, timestamp, annotation)</b> function is the same as set(value, timestamp) but also sets the annotation on the point value to the supplied annotation.
 </p>
 
+<h2>Permissions</h2>
+<p>Each script is executed with a set of permissions that are likely supplied when the item that will run the script was created.  This is usually a script permissions setting 
+  but could simply the the permissions of the owner of the item.  All non-admin users are restricted from executing Java code from within the script.  The permissions are also
+  used to ensure that all script utilities obey Mango permissions such as setting and viewing/querying for points.
+</p>
 
 <h2>Statistics objects</h2>
 <p>
