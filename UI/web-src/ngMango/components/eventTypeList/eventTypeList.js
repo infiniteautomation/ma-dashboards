@@ -89,7 +89,7 @@ class EventTypeListController {
     
     loadCategory(category) {
         category.loading = this.EventType.list(category.typeName).then(eventTypes => {
-            category.types = category.orderBy ? this.orderBy(eventTypes, category.orderBy) : eventTypes;
+            category.types = this.orderBy(eventTypes, category.orderBy);
 
             if (typeof category.groupBy === 'function') {
                 category.groups = category.group(category.types);

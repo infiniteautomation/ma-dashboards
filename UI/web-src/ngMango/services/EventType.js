@@ -15,7 +15,7 @@ function eventTypeProvider() {
         constructor(options) {
             Object.assign(this, options);
         }
-        
+
         groupDescription(eventType) {
             return '' + eventType;
         }
@@ -43,11 +43,15 @@ function eventTypeProvider() {
             }, new Map()).values());
         }
     }
+    
+    Object.assign(EventTypeOptions.prototype, {
+        orderBy: 'description'
+    });
 
     this.registerEventTypeOptions(['maPoint', function(Point) {
         return {
             typeName: 'DATA_POINT',
-            orderBy: ['type.source.deviceName', 'type.source.name'],
+            orderBy: ['type.source.deviceName', 'type.source.name', 'description'],
             icon: 'label',
             groupBy(eventType) {
                 eventType.type.source = Object.assign(Object.create(Point.prototype), eventType.type.source);
@@ -58,6 +62,18 @@ function eventTypeProvider() {
             }
         };
     }]);
+
+    this.registerEventTypeOptions({
+        typeName: 'DATA_SOURCE',
+        orderBy: ['type.source.name', 'description'],
+        icon: 'device_hub',
+        groupBy(eventType) {
+            return eventType.type.source.id;
+        },
+        groupDescription(eventType) {
+            return eventType.type.source.name;
+        }
+    });
 
     this.$get = eventTypeFactory;
 
