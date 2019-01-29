@@ -37,6 +37,8 @@ class DataPointEditorController {
         this.plotTypes = MA_CHART_TYPES;
         this.simplifyTypes = MA_SIMPLIFY_TYPES;
         
+        $scope.Number = Number;
+        
         this.simplifyDataTypes = ['NUMERIC', 'MULTISTATE', 'BINARY'];
 
         this.types = maPoint.types;
