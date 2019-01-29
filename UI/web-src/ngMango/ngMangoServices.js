@@ -215,6 +215,12 @@ ngMangoServices.constant('MA_CHART_TYPES', [
     {type: 'column', apiType: 'BAR', label: 'Bar', translation: 'ui.app.bar'}
 ]);
 
+ngMangoServices.constant('MA_SIMPLIFY_TYPES', [
+    {type: 'NONE', translation: 'pointEdit.simplify.none'},
+    {type: 'TARGET', translation: 'pointEdit.simplify.target'},
+    {type: 'TOLERANCE', translation: 'pointEdit.simplify.tolerance'}
+]);
+
 // properties are added/defined in UI module
 ngMangoServices.constant('MA_EVENT_LINK_INFO', {});
 

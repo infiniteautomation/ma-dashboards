@@ -15,14 +15,14 @@ import './dataPointEditor.css';
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES']);
+    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES) {
+            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES) {
         
         this.maPoint = maPoint;
         this.$q = $q;
@@ -35,6 +35,9 @@ class DataPointEditorController {
         this.MultipleValues = MultipleValues;
         this.rollupTypes = MA_ROLLUP_TYPES.filter(t => !t.nonAssignable);
         this.plotTypes = MA_CHART_TYPES;
+        this.simplifyTypes = MA_SIMPLIFY_TYPES;
+        
+        this.simplifyDataTypes = ['NUMERIC', 'MULTISTATE', 'BINARY'];
 
         this.types = maPoint.types;
         this.typesByName = maPoint.typesByName;

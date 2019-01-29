@@ -128,9 +128,12 @@
                         </div>
                         
                         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.dataPoint.dataType.hasMultipleValues()">
-                            <md-icon>unfold_less</md-icon>
+                            <md-icon>loop</md-icon>
                             <label ma-tr="common.rollup"></label>
                             <md-select name="rollup" ng-model="$ctrl.dataPoint.rollup">
+                                <md-option ng-if="$ctrl.dataPoint.rollup.hasMultipleValues()" ng-value="$ctrl.dataPoint.rollup">
+                                    <em ng-bind="$ctrl.dataPoint.rollup"></em>
+                                </md-option>
                                 <md-option ng-repeat="rollup in $ctrl.rollupTypes track by rollup.type" ng-value="rollup.type"
                                         ng-if="$ctrl.dataPoint.dataType === 'NUMERIC' || rollup.nonNumeric">
                                     <span ma-tr="{{rollup.translation}}"></span>
@@ -144,14 +147,51 @@
                         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.dataPoint.dataType.hasMultipleValues()">
                             <md-icon>show_chart</md-icon>
                             <label ma-tr="pointEdit.plotType"></label>
-                            <md-select name="plotType" ng-model="$ctrl.dataPoint.plotType">
+                            <md-select name="plotType" ng-model="$ctrl.dataPoint.plotType" required>
+                                <md-option ng-if="$ctrl.dataPoint.plotType.hasMultipleValues()" ng-value="$ctrl.dataPoint.plotType">
+                                    <em ng-bind="$ctrl.dataPoint.plotType"></em>
+                                </md-option>
                                 <md-option ng-repeat="plot in $ctrl.plotTypes track by plot.apiType" ng-value="plot.apiType"
                                         ng-if="$ctrl.dataPoint.dataType === 'NUMERIC' || plot.nonNumeric">
                                     <span ma-tr="{{plot.translation}}"></span>
                                 </md-option>
                             </md-select>
-                            <div ng-messages="$ctrl.form.rollup.$error">
-                                <div ng-message="validationMessage" ng-bind="$ctrl.form.rollup.validationMessage"></div>
+                            <div ng-messages="$ctrl.form.plotType.$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.plotType.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                        
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.simplifyDataTypes.includes($ctrl.dataPoint.dataType)">
+                            <md-icon>vertical_align_center</md-icon>
+                            <label ma-tr="pointEdit.props.simplifyType"></label>
+                            <md-select name="simplifyType" ng-model="$ctrl.dataPoint.simplifyType" required>
+                                <md-option ng-if="$ctrl.dataPoint.simplifyType.hasMultipleValues()" ng-value="$ctrl.dataPoint.simplifyType">
+                                    <em ng-bind="$ctrl.dataPoint.simplifyType"></em>
+                                </md-option>
+                                <md-option ng-repeat="simplifyType in $ctrl.simplifyTypes track by simplifyType.type" ng-value="simplifyType.type">
+                                    <span ma-tr="{{simplifyType.translation}}"></span>
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="$ctrl.form.simplifyType.$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.simplifyType.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.simplifyDataTypes.includes($ctrl.dataPoint.dataType) && $ctrl.dataPoint.simplifyType === 'TARGET'">
+                            <md-icon>linear_scale</md-icon>
+                            <label ma-tr="pointEdit.props.simplifyTarget"></label>
+                            <input name="simplifyTarget" ng-model="$ctrl.dataPoint.simplifyTarget" type="number" required min="1">
+                            <div ng-messages="$ctrl.form.simplifyTarget.$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.simplifyTarget.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                        
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.simplifyDataTypes.includes($ctrl.dataPoint.dataType) && $ctrl.dataPoint.simplifyType === 'TOLERANCE'">
+                            <md-icon>tune</md-icon>
+                            <label ma-tr="pointEdit.props.simplifyTolerance"></label>
+                            <input name="simplifyTolerance" ng-model="$ctrl.dataPoint.simplifyTolerance" type="number" required min="0">
+                            <div ng-messages="$ctrl.form.simplifyTolerance.$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.simplifyTolerance.validationMessage"></div>
                             </div>
                         </md-input-container>
                     </div>
