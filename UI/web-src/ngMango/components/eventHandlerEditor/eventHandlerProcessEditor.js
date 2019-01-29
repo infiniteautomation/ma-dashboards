@@ -39,10 +39,15 @@ class eventHandlerProcessEditorController {
     runCommand(command, timeout) {
         this.commandResponse = null;
 
-        this.maEventHandler.runCommand(command, timeout).then(response => {
-            this.maDialogHelper.toast(['eventHandlers.commandExcuted']);
-
-            this.commandResponse = response;
+        this.maEventHandler.runCommand(command, timeout).then(
+            response => {
+                this.maDialogHelper.toast(['eventHandlers.commandExcuted']);
+                this.commandResponse = response;
+        }, error => {
+            this.maDialogHelper.toastOptions({
+                textTr: ['eventHandlers.commandError', error.data.cause],
+                classes: 'md-warn'
+            }); 
         });
     }
 
