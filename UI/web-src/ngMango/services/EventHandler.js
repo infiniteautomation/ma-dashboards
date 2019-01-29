@@ -15,7 +15,7 @@ function eventHandlerProvider() {
         {
             type: 'PROCESS',
             description: 'eventHandlers.type.process',
-            template: ``
+            template: `<ma-event-handler-process-editor></ma-event-handler-process-editor>`
         },
         {
             type: 'SET_POINT',
@@ -125,7 +125,7 @@ function eventHandlerProvider() {
                     timeout: timeout
                 };
 
-                return this.constructor.http({
+                return this.http({
                     method: 'POST',
                     url: url,
                     data: data
