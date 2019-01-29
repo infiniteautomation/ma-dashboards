@@ -16,6 +16,13 @@ ma-event-type-list md-list-item.ma-event-type-group-item .md-list-item-inner {
 	padding-left: 44px;
 }
 
-ma-event-type-list md-list-item > .md-list-item-inner > span > md-icon {
+ma-event-type-list md-list-item md-icon.ma-alarm-flag,
+ma-event-type-list md-list-item md-icon.ma-event-type-group-icon {
 	margin-right: 4px;
+}
+
+ma-event-type-list md-list-item.ma-event-type-group > p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }

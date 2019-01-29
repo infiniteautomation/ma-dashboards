@@ -20,20 +20,26 @@ function eventTypeProvider() {
             return '' + eventType;
         }
         
+        getSource(eventType) {
+            return eventType.type.source;
+        }
+        
         group(eventTypes) {
             if (typeof this.groupBy !== 'function') {
                 return;
             }
             
             return Array.from(eventTypes.reduce((groups, et) => {
-                const id = this.groupBy(et);
+                const source = this.getSource(et);
+                const id = this.groupBy(source);
                 
                 if (groups.has(id)) {
                     const group = groups.get(id);
                     group.types.push(et);
                 } else {
                     groups.set(id, {
-                        description: this.groupDescription(et),
+                        source,
+                        description: this.groupDescription(source),
                         types: [et],
                         icon: this.icon
                     });
@@ -41,6 +47,10 @@ function eventTypeProvider() {
                 
                 return groups;
             }, new Map()).values());
+        }
+        
+        stateParams(eventType) {
+            return null;
         }
     }
     
@@ -53,12 +63,20 @@ function eventTypeProvider() {
             typeName: 'DATA_POINT',
             orderBy: ['type.source.deviceName', 'type.source.name', 'description'],
             icon: 'label',
-            groupBy(eventType) {
-                eventType.type.source = Object.assign(Object.create(Point.prototype), eventType.type.source);
-                return eventType.type.source.id;
+            getSource(eventType) {
+                return Object.assign(Object.create(Point.prototype), eventType.type.source);
             },
-            groupDescription(eventType) {
-                return eventType.type.source.formatLabel();
+            groupBy(source) {
+                return source.id;
+            },
+            groupDescription(source) {
+                return source.formatLabel();
+            },
+            stateName: 'ui.dataPointDetails',
+            stateParams(source) {
+                return {
+                    pointXid: source.xid
+                };
             }
         };
     }]);
@@ -67,11 +85,29 @@ function eventTypeProvider() {
         typeName: 'DATA_SOURCE',
         orderBy: ['type.source.name', 'description'],
         icon: 'device_hub',
-        groupBy(eventType) {
-            return eventType.type.source.id;
+        groupBy(source) {
+            return source.id;
         },
-        groupDescription(eventType) {
-            return eventType.type.source.name;
+        groupDescription(source) {
+            return source.name;
+        },
+        stateName: 'ui.settings.dataSources',
+        stateParams(source) {
+            return {
+                xid: source.xid
+            };
+        }
+    });
+
+    this.registerEventTypeOptions({
+        typeName: 'PUBLISHER',
+        orderBy: ['type.source.name', 'description'],
+        icon: 'cloud_upload',
+        groupBy(source) {
+            return source.id;
+        },
+        groupDescription(source) {
+            return source.name;
         }
     });
 

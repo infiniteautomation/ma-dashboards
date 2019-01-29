@@ -9,8 +9,12 @@
     <md-list-item ng-repeat-start="group in category.groups track by $index"
             class="ma-event-type-group">
         <p>
-            <md-icon>{{group.icon}}</md-icon>
+            <md-icon class="ma-event-type-group-icon">{{group.icon}}</md-icon>
             <span ng-bind="group.description"></span>
+            <span ng-if="::category.stateName">
+                &nbsp;&mdash;&nbsp;
+                <a ui-state="category.stateName" ui-state-params="category.stateParams(group.source)" ma-tr="pointDetails.goto"></a>            
+            </span>
         </p>
     </md-list-item>
 
