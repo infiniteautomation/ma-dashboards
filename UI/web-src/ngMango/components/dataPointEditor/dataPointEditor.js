@@ -15,14 +15,14 @@ import './dataPointEditor.css';
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maMultipleValues']);
+    'maMultipleValues', 'MA_ROLLUP_TYPES']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            MultipleValues) {
+            MultipleValues, MA_ROLLUP_TYPES) {
         
         this.maPoint = maPoint;
         this.$q = $q;
@@ -33,6 +33,7 @@ class DataPointEditorController {
         this.$element = $element;
         this.maUtil = maUtil;
         this.MultipleValues = MultipleValues;
+        this.rollupTypes = MA_ROLLUP_TYPES.filter(t => !t.nonAssignable);
 
         this.types = maPoint.types;
         this.typesByName = maPoint.typesByName;
