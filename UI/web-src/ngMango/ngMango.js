@@ -323,64 +323,6 @@ ngMango.constant('MA_DATE_RANGE_PRESETS', [
    {type: 'PREVIOUS_YEAR', label: 'Previous year'}
 ]);
 
-ngMango.constant('MA_ROLLUP_TYPES', [
- {type: 'POINT_DEFAULT', nonNumeric: true, label: 'Point default', translation: 'common.rollup.pointDefault'},
- {type: 'NONE', nonNumeric: true, label: 'None', translation: 'common.rollup.none'},
- {type: 'SIMPLIFY', nonNumeric: false, label: 'Simplify', translation: 'ui.app.simplify'},
- {type: 'AVERAGE', nonNumeric: false, label: 'Average', translation: 'common.rollup.average'},
- {type: 'DELTA', nonNumeric: false, label: 'Delta', translation: 'common.rollup.delta'},
- {type: 'MINIMUM', nonNumeric: false, label: 'Minimum', translation: 'common.rollup.minimum'},
- {type: 'MAXIMUM', nonNumeric: false, label: 'Maximum', translation: 'common.rollup.maximum'},
- {type: 'ACCUMULATOR', nonNumeric: false, label: 'Accumulator', translation: 'common.rollup.accumulator'},
- {type: 'SUM', nonNumeric: false, label: 'Sum', translation: 'common.rollup.sum'},
- {type: 'START', nonNumeric: true, label: 'Start', translation: 'common.rollup.start'},
- {type: 'FIRST', nonNumeric: true, label: 'First', translation: 'common.rollup.first'},
- {type: 'LAST', nonNumeric: true, label: 'Last', translation: 'common.rollup.last'},
- {type: 'COUNT', nonNumeric: true, label: 'Count', translation: 'common.rollup.count'},
- {type: 'INTEGRAL', nonNumeric: false, label: 'Integral', translation: 'common.rollup.integral'}
- //{name: 'FFT', nonNumeric: false}
-]);
-
-ngMango.constant('MA_DATE_TIME_FORMATS', [
-    {
-        translation: 'ui.app.timeFormat.iso',
-        format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX'
-    },
-    {
-        translation: 'ui.app.timeFormat.excelCompatible',
-        format: 'yyyy-MM-dd HH:mm:ss'
-    },
-    {
-        translation: 'ui.app.timeFormat.excelCompatibleMs',
-        format: 'yyyy-MM-dd HH:mm:ss.SSS'
-    },
-    {
-        translation: 'ui.app.timeFormat.epoch',
-        format: ''
-    }
-]);
-
-ngMango.constant('MA_TIME_PERIOD_TYPES', [
- {type: 'MILLISECONDS', label: 'Milliseconds', translation: 'dateAndTime.milliseconds'},
- {type: 'SECONDS', label: 'Seconds', translation: 'dateAndTime.seconds'},
- {type: 'MINUTES', label: 'Minutes', translation: 'dateAndTime.minutes'},
- {type: 'HOURS', label: 'Hours', translation: 'dateAndTime.hours'},
- {type: 'DAYS', label: 'Days', translation: 'dateAndTime.days', showByDefault: true},
- {type: 'WEEKS', label: 'Weeks', translation: 'dateAndTime.weeks', showByDefault: true},
- {type: 'MONTHS', label: 'Months', translation: 'dateAndTime.months', showByDefault: true},
- {type: 'YEARS', label: 'Years', translation: 'dateAndTime.years', showByDefault: true}
-]);
-
-ngMango.constant('MA_CHART_TYPES', [
- {type: 'line', apiType: 'LINE', label: 'Line', translation: 'ui.app.line'},
- {type: 'smoothedLine', apiType: 'SPLINE', label: 'Smoothed', translation: 'ui.app.smooth'},
- {type: 'step', apiType: 'STEP', label: 'Step', translation: 'ui.app.step'},
- {type: 'column', apiType: 'BAR', label: 'Bar', translation: 'ui.app.bar'}
-]);
-
-// defined in UI module
-ngMango.constant('MA_EVENT_LINK_INFO', {});
-
 ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDateFormats) {
     return {
         categoryAxis: [
