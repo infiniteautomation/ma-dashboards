@@ -13,7 +13,6 @@ import loginRedirectorProvider from './services/loginRedirector';
 import serverInfoProvider from './services/serverInfo';
 import pageView from './directives/pageView/page_view';
 import livePreview from './directives/liveEditor/livePreview';
-import stateParams from './directives/stateParams/stateParams';
 import iframeView from './directives/iframeView/iframeView';
 import menuItems from './menuItems';
 import 'moment-timezone';
@@ -47,7 +46,6 @@ uiApp.provider('maUiMenu', menuProvider)
     .provider('maUiServerInfo', serverInfoProvider)
     .directive('maUiPageView', pageView)
     .directive('maUiLivePreview', livePreview)
-    .directive('maUiStateParams', stateParams)
     .directive('maUiIframeView', iframeView)
     .constant('MA_UI_NG_DOCS', window.NG_DOCS)
     .constant('MA_UI_MENU_ITEMS', menuItems);
