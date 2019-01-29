@@ -380,35 +380,6 @@ ngMango.constant('MA_CHART_TYPES', [
  {type: 'column', apiType: 'BAR', label: 'Bar', translation: 'ui.app.bar'}
 ]);
 
-{
-    // jshint quotmark:false
-    ngMango.constant('MA_RELATIVE_DATE_TYPES', [
-        {type: "", label: 'Now'},
-        {type: "moment:'subtract':5:'minutes'", label: '5 minutes ago'},
-        {type: "moment:'subtract':15:'minutes'", label: '15 minutes ago'},
-        {type: "moment:'subtract':30:'minutes'", label: '30 minutes ago'},
-        {type: "moment:'subtract':1:'hours'", label: '1 hour ago'},
-        {type: "moment:'subtract':3:'hours'", label: '3 hours ago'},
-        {type: "moment:'subtract':5:'hours'", label: '6 hours ago'},
-        {type: "moment:'subtract':12:'hours'", label: '12 hours ago'},
-        {type: "moment:'startOf':'day'", label: 'Start of day'},
-        {type: "moment:'subtract':1:'days'|maMoment:'startOf':'day'", label: 'Start of previous day'},
-        {type: "moment:'subtract':1:'days'", label: '1 day ago'},
-        {type: "moment:'startOf':'week'", label: 'Start of week'},
-        {type: "moment:'subtract':1:'weeks'|maMoment:'startOf':'week'", label: 'Start of last week'},
-        {type: "moment:'subtract':1:'weeks'", label: '1 week ago'},
-        {type: "moment:'subtract':2:'weeks'", label: '2 weeks ago'},
-        {type: "moment:'startOf':'month'", label: 'Start of month'},
-        {type: "moment:'subtract':1:'months'|maMoment:'startOf':'month'", label: 'Start of last month'},
-        {type: "moment:'subtract':1:'months'", label: '1 month ago'},
-        {type: "moment:'subtract':3:'months'", label: '3 months ago'},
-        {type: "moment:'subtract':6:'months'", label: '6 months ago'},
-        {type: "moment:'startOf':'year'", label: 'Start of year'},
-        {type: "moment:'subtract':1:'years'|maMoment:'startOf':'year'", label: 'Start of last year'},
-        {type: "moment:'subtract':1:'years'", label: '1 year ago'}
-    ]);
-}
-
 // defined in UI module
 ngMango.constant('MA_EVENT_LINK_INFO', {});
 
@@ -434,11 +405,10 @@ ngMango.run([
     'MA_ROLLUP_TYPES',
     'MA_TIME_PERIOD_TYPES',
     'MA_CHART_TYPES',
-    'MA_RELATIVE_DATE_TYPES',
     'MA_DATE_RANGE_PRESETS',
     'maUser',
 function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
-        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, User) {
+        MA_CHART_TYPES, MA_DATE_RANGE_PRESETS, User) {
 
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
@@ -460,7 +430,6 @@ function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
     $rootScope.rollupTypes = MA_ROLLUP_TYPES;
     $rootScope.timePeriodTypes = MA_TIME_PERIOD_TYPES;
     $rootScope.chartTypes = MA_CHART_TYPES;
-    $rootScope.relativeDateTypes = MA_RELATIVE_DATE_TYPES;
     $rootScope.dateRangePresets = MA_DATE_RANGE_PRESETS;
 
 }]);
