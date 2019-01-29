@@ -163,25 +163,6 @@ ngMangoServices.constant('MA_DATE_FORMATS', {
 ngMangoServices.constant('MA_DEFAULT_TIMEZONE', '');
 ngMangoServices.constant('MA_DEFAULT_LOCALE', '');
 
-// TODO Mango 3.6 remove this, no longer used
-ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
-    {
-        type: 'EMAIL',
-        description: 'eventHandlers.type.email',
-        editorTemplateUrl: 'eventHandlers.email.html'
-    },
-    {
-        type: 'PROCESS',
-        description: 'eventHandlers.type.process',
-        editorTemplateUrl: 'eventHandlers.process.html'
-    },
-    {
-        type: 'SET_POINT',
-        description: 'eventHandlers.type.setPoint',
-        editorTemplateUrl: 'eventHandlers.setPoint.html'
-    }
-]);
-
 ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide',
         function(localStorageServiceProvider, $httpProvider, $provide) {
     localStorageServiceProvider
