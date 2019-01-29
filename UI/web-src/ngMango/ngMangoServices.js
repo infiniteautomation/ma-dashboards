@@ -211,7 +211,7 @@ ngMangoServices.constant('MA_TIME_PERIOD_TYPES', [
 ngMangoServices.constant('MA_CHART_TYPES', [
     {type: 'line', apiType: 'LINE', label: 'Line', translation: 'ui.app.line'},
     {type: 'smoothedLine', apiType: 'SPLINE', label: 'Smoothed', translation: 'ui.app.smooth'},
-    {type: 'step', apiType: 'STEP', label: 'Step', translation: 'ui.app.step'},
+    {type: 'step', apiType: 'STEP', label: 'Step', translation: 'ui.app.step', nonNumeric: true},
     {type: 'column', apiType: 'BAR', label: 'Bar', translation: 'ui.app.bar'}
 ]);
 
