@@ -21,7 +21,6 @@ import 'angular-ui-sortable';
 import 'angular-loading-bar';
 import '../docs/ngMango/js/docs-setup';
 import 'md-color-picker';
-import {require as requirejs} from 'requirejs';
 import * as constants from './constants.js';
 
 import 'angular-loading-bar/build/loading-bar.css';
@@ -90,12 +89,11 @@ uiApp.config([
     '$locationProvider',
     '$mdAriaProvider',
     'cfpLoadingBarProvider',
-    'maRequireQProvider',
     'maUiMenuProvider',
     '$anchorScrollProvider',
 function(MA_UI_NG_DOCS, $urlRouterProvider,
         $httpProvider, $compileProvider, $locationProvider, $mdAriaProvider,
-        cfpLoadingBarProvider, maRequireQProvider,
+        cfpLoadingBarProvider,
         maUiMenuProvider, $anchorScrollProvider) {
 
     $compileProvider.debugInfoEnabled(false);
@@ -103,7 +101,6 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
     $compileProvider.cssClassDirectivesEnabled(false);
     
     $mdAriaProvider.disableWarnings();
-    maRequireQProvider.setRequireJs(requirejs);
 
     $httpProvider.useApplyAsync(true);
     
