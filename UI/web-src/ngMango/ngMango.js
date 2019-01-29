@@ -297,8 +297,6 @@ ngMango.animation('.ma-slide-up', slideUp);
     ngMango.directive(directiveName, fn);
 });
 
-ngMango.constant('MA_INSERT_CSS', true);
-
 ngMango.constant('MA_DATE_RANGE_PRESETS', [
    {type: 'LAST_5_MINUTES', label: 'Last 5 minutes'},
    {type: 'LAST_15_MINUTES', label: 'Last 15 minutes'},
