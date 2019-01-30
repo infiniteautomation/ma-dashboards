@@ -262,10 +262,39 @@
         </md-tab>
         <md-tab>
             <md-tab-label>
-                <span ma-tr="pointEdit.purge.purgeNow"></span>
+                <span ma-tr="dsEdit.logging.purge"></span>
             </md-tab-label>
             <md-tab-body>
-                
+                <div class="md-padding ma-no-padding-bottom">
+                    <div>
+                        <md-checkbox name="purgeOverride" ng-model="$ctrl.dataPoint.purgeOverride"><span ma-tr="pointEdit.logging.purgeOverride"></span></md-checkbox>
+                    </div>
+                    
+                    <div flex="100" flex-gt-md="50" layout layout-align="start start">
+                        <md-input-container flex>
+                            <md-icon>access_time</md-icon>
+                            <label ma-tr="pointEdit.logging.after"></label>
+                            <input name="purgePeriod.periods" ng-model="$ctrl.dataPoint.purgePeriod.periods"
+                                    required type="number" step="1" min="1" ng-disabled="!$ctrl.dataPoint.purgeOverride">
+                            <div ng-messages="$ctrl.form['purgePeriod.periods'].$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form['purgePeriod.periods'].validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label ma-tr="pointEdit.logging.after"></label>
+                            <md-select name="purgePeriod.type" ng-model="$ctrl.dataPoint.purgePeriod.type"
+                                    required ng-disabled="!$ctrl.dataPoint.purgeOverride">
+                                <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
+                                    <span ma-tr="{{type.translation}}"></span>
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="$ctrl.form['purgePeriod.type'].$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form['purgePeriod.type'].validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
             </md-tab-body>
         </md-tab>
     </md-tabs>

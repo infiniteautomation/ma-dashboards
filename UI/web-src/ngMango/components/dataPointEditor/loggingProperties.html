@@ -42,17 +42,17 @@
         </md-input-container>
         <md-input-container flex>
             <label ma-tr="pointEdit.logging.period"></label>
-            <md-select name="intervalLoggingPeriod.periodType" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periodType" required>
-                <md-option ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periodType.hasMultipleValues()" ng-value="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periodType">
-                    <em ng-bind="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periodType"></em>
+            <md-select name="intervalLoggingPeriod.type" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.type" required>
+                <md-option ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.type.hasMultipleValues()" ng-value="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.type">
+                    <em ng-bind="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.type"></em>
                 </md-option>
                 <md-option ng-repeat="period in $ctrl.intervalLoggingPeriods track by period.type" ng-value="period.type">
                     <span ma-tr="{{period.translation}}"></span>
                 </md-option>
             </md-select>
-            <div ng-messages="loggingProperties['intervalLoggingPeriod.periodType'].$error">
+            <div ng-messages="loggingProperties['intervalLoggingPeriod.type'].$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="validationMessage" ng-bind="loggingProperties['intervalLoggingPeriod.periodType'].validationMessage"></div>
+                <div ng-message="validationMessage" ng-bind="loggingProperties['intervalLoggingPeriod.type'].validationMessage"></div>
             </div>
         </md-input-container>
     </div>
