@@ -5,7 +5,10 @@
 
 import angular from 'angular';
 import dataPointEditorTemplate from './dataPointEditor.html';
+import loggingPropertiesTemplate from './loggingProperties.html';
 import './dataPointEditor.css';
+
+const loggingPropertiesTemplateName = 'maDataPointEditor.loggingProperties.html';
 
 /**
  * @ngdoc directive
@@ -15,14 +18,19 @@ import './dataPointEditor.css';
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_LOGGING_TYPES']);
+    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_LOGGING_TYPES', '$templateCache']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_LOGGING_TYPES) {
+            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_LOGGING_TYPES, $templateCache) {
+        
+        this.loggingPropertiesTemplateName = loggingPropertiesTemplateName;
+        if (!$templateCache.get(loggingPropertiesTemplateName)) {
+            $templateCache.put(loggingPropertiesTemplateName, loggingPropertiesTemplate);
+        }
         
         this.maPoint = maPoint;
         this.$q = $q;

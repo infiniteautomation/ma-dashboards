@@ -1,0 +1,60 @@
+<div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+    <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>save</md-icon>
+        <label ma-tr="pointEdit.logging.type"></label>
+        <md-select name="loggingType" ng-model="$ctrl.dataPoint.loggingProperties.loggingType" required>
+            <md-option ng-if="$ctrl.dataPoint.loggingProperties.loggingType.hasMultipleValues()" ng-value="$ctrl.dataPoint.loggingProperties.loggingType">
+                <em ng-bind="$ctrl.dataPoint.loggingProperties.loggingType"></em>
+            </md-option>
+            <md-option ng-repeat="loggingType in $ctrl.loggingTypes track by loggingType.type" ng-value="loggingType.type">
+                <span ma-tr="{{loggingType.translation}}"></span>
+            </md-option>
+        </md-select>
+        <div ng-messages="loggingProperties.loggingType.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="loggingProperties.loggingType.validationMessage"></div>
+        </div>
+    </md-input-container>
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'">
+        <md-icon>tune</md-icon>
+        <label ma-tr="pointEdit.logging.tolerance"></label>
+        <input name="tolerance" ng-model="$ctrl.dataPoint.loggingProperties.tolerance" required type="number" min="0">
+        <div ng-messages="loggingProperties.tolerance.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[0]"></div>
+            <div ng-message="validationMessage" ng-bind="loggingProperties.tolerance.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>
+
+<div ng-if="$ctrl.dataPoint.dataType === 'NUMERIC'">
+    <md-checkbox class="ma-input-container-height" name="discardExtremeValues" ng-model="$ctrl.dataPoint.loggingProperties.discardExtremeValues">
+        <span ma-tr="pointEdit.logging.discard"></span>
+    </md-checkbox>
+</div>
+
+<div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container"
+        ng-if="$ctrl.dataPoint.dataType === 'NUMERIC' && $ctrl.dataPoint.loggingProperties.discardExtremeValues">
+    <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>vertical_align_bottom</md-icon>
+        <label ma-tr="pointEdit.logging.discardLow"></label>
+        <input name="discardLowLimit" ng-model="$ctrl.dataPoint.loggingProperties.discardLowLimit" type="number" required
+                ma-less-than="{{$ctrl.dataPoint.loggingProperties.discardHighLimit}}">
+        <div ng-messages="loggingProperties.discardLowLimit.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="lessThan" ma-tr="ui.app.lessThan" ma-tr-args="[$ctrl.dataPoint.loggingProperties.discardHighLimit]"></div>
+            <div ng-message="validationMessage" ng-bind="loggingProperties.discardLowLimit.validationMessage"></div>
+        </div>
+    </md-input-container>
+    <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>vertical_align_top</md-icon>
+        <label ma-tr="pointEdit.logging.discardHigh"></label>
+        <input name="discardHighLimit" ng-model="$ctrl.dataPoint.loggingProperties.discardHighLimit" type="number" required
+                ma-greater-than="{{$ctrl.dataPoint.loggingProperties.discardLowLimit}}">
+        <div ng-messages="loggingProperties.discardHighLimit.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="greaterThan" ma-tr="ui.app.greaterThan" ma-tr-args="[$ctrl.dataPoint.loggingProperties.discardLowLimit]"></div>
+            <div ng-message="validationMessage" ng-bind="loggingProperties.discardHighLimit.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>
