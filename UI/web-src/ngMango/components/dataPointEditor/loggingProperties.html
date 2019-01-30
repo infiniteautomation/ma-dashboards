@@ -15,6 +15,7 @@
             <div ng-message="validationMessage" ng-bind="loggingProperties.loggingType.validationMessage"></div>
         </div>
     </md-input-container>
+    
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'">
         <md-icon>tune</md-icon>
         <label ma-tr="pointEdit.logging.tolerance"></label>
@@ -25,6 +26,36 @@
             <div ng-message="validationMessage" ng-bind="loggingProperties.tolerance.validationMessage"></div>
         </div>
     </md-input-container>
+    
+    <div flex="100" flex-gt-md="50" layout layout-align="start start"
+            ng-if="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'">
+        <md-input-container flex>
+            <md-icon>av_timer</md-icon>
+            <label ma-tr="pointEdit.logging.period"></label>
+            <input name="intervalLoggingPeriod.periods" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periods" required type="number" min="1" step="1">
+            <div ng-messages="loggingProperties['intervalLoggingPeriod.periods'].$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[1]"></div>
+                <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+                <div ng-message="validationMessage" ng-bind="loggingProperties['intervalLoggingPeriod.periods'].validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.logging.period"></label>
+            <md-select name="intervalLoggingPeriod.periodType" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periodType" required>
+                <md-option ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periodType.hasMultipleValues()" ng-value="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periodType">
+                    <em ng-bind="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod.periodType"></em>
+                </md-option>
+                <md-option ng-repeat="period in $ctrl.intervalLoggingPeriods track by period.type" ng-value="period.type">
+                    <span ma-tr="{{period.translation}}"></span>
+                </md-option>
+            </md-select>
+            <div ng-messages="loggingProperties['intervalLoggingPeriod.periodType'].$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="loggingProperties['intervalLoggingPeriod.periodType'].validationMessage"></div>
+            </div>
+        </md-input-container>
+    </div>
 </div>
 
 <div ng-if="$ctrl.dataPoint.dataType === 'NUMERIC'">

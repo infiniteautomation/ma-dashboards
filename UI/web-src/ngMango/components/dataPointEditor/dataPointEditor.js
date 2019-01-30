@@ -18,14 +18,14 @@ const loggingPropertiesTemplateName = 'maDataPointEditor.loggingProperties.html'
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_LOGGING_TYPES', '$templateCache']);
+    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_LOGGING_TYPES', 'MA_TIME_PERIOD_TYPES', '$templateCache']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_LOGGING_TYPES, $templateCache) {
+            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_LOGGING_TYPES, MA_TIME_PERIOD_TYPES, $templateCache) {
         
         this.loggingPropertiesTemplateName = loggingPropertiesTemplateName;
         if (!$templateCache.get(loggingPropertiesTemplateName)) {
@@ -45,6 +45,7 @@ class DataPointEditorController {
         this.plotTypes = MA_CHART_TYPES;
         this.simplifyTypes = MA_SIMPLIFY_TYPES;
         this.loggingTypes = MA_LOGGING_TYPES;
+        this.intervalLoggingPeriods = MA_TIME_PERIOD_TYPES.slice(1);
         
         $scope.Number = Number;
         
