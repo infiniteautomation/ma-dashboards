@@ -18,14 +18,14 @@ const loggingPropertiesTemplateName = 'maDataPointEditor.loggingProperties.html'
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_LOGGING_TYPES', 'MA_TIME_PERIOD_TYPES', '$templateCache']);
+    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_TIME_PERIOD_TYPES', '$templateCache']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_LOGGING_TYPES, MA_TIME_PERIOD_TYPES, $templateCache) {
+            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_TIME_PERIOD_TYPES, $templateCache) {
         
         this.loggingPropertiesTemplateName = loggingPropertiesTemplateName;
         if (!$templateCache.get(loggingPropertiesTemplateName)) {
@@ -44,8 +44,22 @@ class DataPointEditorController {
         this.rollupTypes = MA_ROLLUP_TYPES.filter(t => !t.nonAssignable);
         this.plotTypes = MA_CHART_TYPES;
         this.simplifyTypes = MA_SIMPLIFY_TYPES;
-        this.loggingTypes = MA_LOGGING_TYPES;
+        this.loggingTypes = [
+            {type: 'ON_CHANGE', translation: 'pointEdit.logging.type.change'},
+            {type: 'ALL', translation: 'pointEdit.logging.type.all'},
+            {type: 'NONE', translation: 'pointEdit.logging.type.never'},
+            {type: 'INTERVAL', translation: 'pointEdit.logging.type.interval'},
+            {type: 'ON_TS_CHANGE', translation: 'pointEdit.logging.type.tsChange'},
+            {type: 'ON_CHANGE_INTERVAL', translation: 'pointEdit.logging.type.changeInterval'}
+        ];
         this.intervalLoggingPeriods = MA_TIME_PERIOD_TYPES.slice(1);
+        this.intervalLoggingValueTypes = [
+            {type: 'INSTANT', translation: 'pointEdit.logging.valueType.instant'},
+            {type: 'MAXIMUM', translation: 'pointEdit.logging.valueType.maximum'},
+            {type: 'MINIMUM', translation: 'pointEdit.logging.valueType.minimum'},
+            {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
+        ];
+        this.allowSampleWindow = this.intervalLoggingValueTypes.slice(0,3).map(t => t.type);
         
         $scope.Number = Number;
         

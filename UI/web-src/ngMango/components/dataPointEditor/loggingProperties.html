@@ -28,7 +28,7 @@
     </md-input-container>
     
     <div flex="100" flex-gt-md="50" layout layout-align="start start"
-            ng-if="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'">
+            ng-if-start="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'">
         <md-input-container flex>
             <md-icon>av_timer</md-icon>
             <label ma-tr="pointEdit.logging.period"></label>
@@ -55,6 +55,39 @@
                 <div ng-message="validationMessage" ng-bind="loggingProperties['intervalLoggingPeriod.periodType'].validationMessage"></div>
             </div>
         </md-input-container>
+    </div>
+
+    <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>build</md-icon>
+        <label ma-tr="pointEdit.logging.valueType"></label>
+        <md-select name="intervalLoggingType" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingType" required>
+            <md-option ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingType.hasMultipleValues()" ng-value="$ctrl.dataPoint.loggingProperties.intervalLoggingType">
+                <em ng-bind="$ctrl.dataPoint.loggingProperties.intervalLoggingType"></em>
+            </md-option>
+            <md-option ng-repeat="valueType in $ctrl.intervalLoggingValueTypes track by valueType.type" ng-value="valueType.type">
+                <span ma-tr="{{valueType.translation}}"></span>
+            </md-option>
+        </md-select>
+        <div ng-messages="loggingProperties.intervalLoggingType.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="loggingProperties.intervalLoggingType.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.allowSampleWindow.includes($ctrl.dataPoint.loggingProperties.intervalLoggingType) || $ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples">
+        <md-icon>aspect_ratio</md-icon>
+        <label ma-tr="pointEdit.props.intervalLoggingSampleWindowSize"></label>
+        <input name="intervalLoggingSampleWindowSize" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingSampleWindowSize" type="number" required>
+        <div ng-messages="loggingProperties.intervalLoggingSampleWindowSize.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="loggingProperties.intervalLoggingSampleWindowSize.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <div flex="100" ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingType === 'AVERAGE'" ng-if-end>
+        <md-checkbox class="ma-input-container-height" name="overrideIntervalLoggingSamples" ng-model="$ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples">
+            <span ma-tr="pointEdit.props.overrideIntervalLoggingSamples"></span>
+        </md-checkbox>
     </div>
 </div>
 

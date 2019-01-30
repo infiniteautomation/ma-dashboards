@@ -221,15 +221,6 @@ ngMangoServices.constant('MA_SIMPLIFY_TYPES', [
     {type: 'TOLERANCE', translation: 'pointEdit.simplify.tolerance'}
 ]);
 
-ngMangoServices.constant('MA_LOGGING_TYPES', [
-    {type: 'ON_CHANGE', translation: 'pointEdit.logging.type.change'},
-    {type: 'ALL', translation: 'pointEdit.logging.type.all'},
-    {type: 'NONE', translation: 'pointEdit.logging.type.never'},
-    {type: 'INTERVAL', translation: 'pointEdit.logging.type.interval'},
-    {type: 'ON_TS_CHANGE', translation: 'pointEdit.logging.type.tsChange'},
-    {type: 'ON_CHANGE_INTERVAL', translation: 'pointEdit.logging.type.changeInterval'}
-]);
-
 // properties are added/defined in UI module
 ngMangoServices.constant('MA_EVENT_LINK_INFO', {});
 
