@@ -128,6 +128,7 @@ class DataPointEditorController {
         this.form.$setSubmitted();
 
         if (!this.form.$valid) {
+            this.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
@@ -228,6 +229,15 @@ class DataPointEditorController {
         }
 
         this.notifyBulkEditComplete(resource);
+    }
+
+    activateTabWithClientError() {
+        Object.values(this.form.$error).some(ctrls => {
+            return ctrls.some(ctrl => {
+                this.activateTab(ctrl.$$element[0]);
+                return true;
+            });
+        });
     }
     
     activateTabWithValidationError() {
