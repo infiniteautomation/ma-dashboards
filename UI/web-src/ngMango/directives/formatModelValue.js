@@ -9,9 +9,9 @@ function formatModelValue($parse) {
         require: 'ngModel',
         restrict: 'A',
         link: function($scope, $element, $attrs, ngModel) {
-            if (!$attrs.formatModelValue) return;
+            if (!$attrs.maFormatModelValue) return;
             
-            const expression = $parse($attrs.formatModelValue);
+            const expression = $parse($attrs.maFormatModelValue);
             ngModel.$formatters.push(function(value) {
                 return expression($scope, {$modelValue: value});
             });
