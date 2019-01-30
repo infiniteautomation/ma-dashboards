@@ -104,6 +104,7 @@ class EventHandlerEditorController {
         this.form.$setSubmitted();
         
         if (!this.form.$valid) {
+            this.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
@@ -121,12 +122,7 @@ class EventHandlerEditorController {
                 statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.result.messages;
                 
-                const withProperty = this.validationMessages.filter(m => m.property);
-                if (withProperty.length) {
-                    const property = withProperty[0].property;
-                    const inputElement = this.maUtil.findInputElement(property, this.form);
-                    this.activateTab(inputElement);
-                }
+                this.activateTabWithValidationError();
             }
             
             this.maDialogHelper.errorToast(['ui.components.eventHandlerSaveError', statusText]);
@@ -160,6 +156,24 @@ class EventHandlerEditorController {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
+    }
+    
+    activateTabWithClientError() {
+        Object.values(this.form.$error).some(ctrls => {
+            return ctrls.some(ctrl => {
+                this.activateTab(ctrl.$$element[0]);
+                return true;
+            });
+        });
+    }
+    
+    activateTabWithValidationError() {
+        const withProperty = this.validationMessages.filter(m => m.property);
+        if (withProperty.length) {
+            const property = withProperty[0].property;
+            const inputElement = this.maUtil.findInputElement(property, this.form);
+            this.activateTab(inputElement);
+        }
     }
     
     activateTab(query) {
