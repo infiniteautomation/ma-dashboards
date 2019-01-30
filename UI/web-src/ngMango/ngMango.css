@@ -1109,3 +1109,10 @@ ma-scripting-editor .warn {
     background-size: 10px 10px;
     background-image: linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%), linear-gradient(45deg, #ddd 25%, #fff 25%, #fff 75%, #ddd 75%);
 }
+
+/* Tools for making elements same height as md-input-container (70px) */
+
+md-checkbox.ma-input-container-height {
+	margin-top: 23px;
+	margin-bottom: 23px;
+}

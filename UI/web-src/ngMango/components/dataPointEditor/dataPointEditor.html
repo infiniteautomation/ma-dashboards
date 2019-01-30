@@ -201,6 +201,37 @@
                             </div>
                         </md-input-container>
                     </div>
+                    
+                    <div ng-if="$ctrl.dataPoint.dataType === 'NUMERIC'">
+                        <md-checkbox class="ma-input-container-height" name="preventSetExtremeValues" ng-model="$ctrl.dataPoint.preventSetExtremeValues">
+                            <span ma-tr="pointEdit.props.preventSetExtremeValues"></span>
+                        </md-checkbox>
+                    </div>
+                    <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container"
+                            ng-if="$ctrl.dataPoint.dataType === 'NUMERIC' && $ctrl.dataPoint.preventSetExtremeValues">
+                        <md-input-container flex="100" flex-gt-md="50">
+                            <md-icon>vertical_align_bottom</md-icon>
+                            <label ma-tr="pointEdit.props.setExtremeLowLimit"></label>
+                            <input name="setExtremeLowLimit" ng-model="$ctrl.dataPoint.setExtremeLowLimit" type="number" required
+                                    ma-less-than="{{$ctrl.dataPoint.setExtremeHighLimit}}">
+                            <div ng-messages="$ctrl.form.setExtremeLowLimit.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="lessThan" ma-tr="ui.app.lessThan" ma-tr-args="[$ctrl.dataPoint.setExtremeHighLimit]"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.setExtremeLowLimit.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex="100" flex-gt-md="50">
+                            <md-icon>vertical_align_top</md-icon>
+                            <label ma-tr="pointEdit.props.setExtremeHighLimit"></label>
+                            <input name="setExtremeHighLimit" ng-model="$ctrl.dataPoint.setExtremeHighLimit" type="number" required
+                                    ma-greater-than="{{$ctrl.dataPoint.setExtremeLowLimit}}">
+                            <div ng-messages="$ctrl.form.setExtremeHighLimit.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="greaterThan" ma-tr="ui.app.greaterThan" ma-tr-args="[$ctrl.dataPoint.setExtremeLowLimit]"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.setExtremeHighLimit.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                    </div>
                 </div>
             </md-tab-body>
         </md-tab>
