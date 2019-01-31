@@ -74,7 +74,13 @@
         </div>
     </md-input-container>
     
-    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.allowSampleWindow.includes($ctrl.dataPoint.loggingProperties.intervalLoggingType) || $ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples">
+    <div flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingType === 'AVERAGE'">
+        <md-checkbox class="ma-input-container-height" name="overrideIntervalLoggingSamples" ng-model="$ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples">
+            <span ma-tr="pointEdit.props.overrideIntervalLoggingSamples"></span>
+        </md-checkbox>
+    </div>
+    
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingType === 'AVERAGE' && $ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples" ng-if-end>
         <md-icon>aspect_ratio</md-icon>
         <label ma-tr="pointEdit.props.intervalLoggingSampleWindowSize"></label>
         <input name="intervalLoggingSampleWindowSize" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingSampleWindowSize" type="number" required>
@@ -83,12 +89,6 @@
             <div ng-message="validationMessage" ng-bind="loggingProperties.intervalLoggingSampleWindowSize.validationMessage"></div>
         </div>
     </md-input-container>
-    
-    <div flex="100" ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingType === 'AVERAGE'" ng-if-end>
-        <md-checkbox class="ma-input-container-height" name="overrideIntervalLoggingSamples" ng-model="$ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples">
-            <span ma-tr="pointEdit.props.overrideIntervalLoggingSamples"></span>
-        </md-checkbox>
-    </div>
 </div>
 
 <div ng-if="$ctrl.dataPoint.dataType === 'NUMERIC'">

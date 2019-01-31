@@ -59,7 +59,6 @@ class DataPointEditorController {
             {type: 'MINIMUM', translation: 'pointEdit.logging.valueType.minimum'},
             {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
         ];
-        this.allowSampleWindow = this.intervalLoggingValueTypes.slice(0,3).map(t => t.type);
         this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
         
         $scope.Number = Number;
