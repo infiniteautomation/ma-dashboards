@@ -28,7 +28,7 @@
     </md-input-container>
     
     <div flex="100" flex-gt-md="50" layout layout-align="start start"
-            ng-if-start="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'">
+            ng-if="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'">
         <md-input-container flex>
             <md-icon>av_timer</md-icon>
             <label ma-tr="pointEdit.logging.period"></label>
@@ -57,7 +57,7 @@
         </md-input-container>
     </div>
 
-    <md-input-container flex="100" flex-gt-md="50">
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL'">
         <md-icon>build</md-icon>
         <label ma-tr="pointEdit.logging.valueType"></label>
         <md-select name="intervalLoggingType" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingType" required>
@@ -74,13 +74,13 @@
         </div>
     </md-input-container>
     
-    <div flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingType === 'AVERAGE'">
+    <div flex="100" flex-gt-md="50" ng-if-start="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL' && $ctrl.dataPoint.loggingProperties.intervalLoggingType === 'AVERAGE'">
         <md-checkbox class="ma-input-container-height" name="overrideIntervalLoggingSamples" ng-model="$ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples">
             <span ma-tr="pointEdit.props.overrideIntervalLoggingSamples"></span>
         </md-checkbox>
     </div>
     
-    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.intervalLoggingType === 'AVERAGE' && $ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples" ng-if-end>
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples" ng-if-end>
         <md-icon>aspect_ratio</md-icon>
         <label ma-tr="pointEdit.props.intervalLoggingSampleWindowSize"></label>
         <input name="intervalLoggingSampleWindowSize" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingSampleWindowSize" type="number" required>
