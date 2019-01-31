@@ -9,14 +9,14 @@
     </div>
     <div flex layout layout-align="space-between top" layout-wrap>
         <div flex="100" flex-gt-sm="70" flex-gt-md="80">
-            <div ng-if="$ctrl.scriptOutput" flex class="script-output">
+            <div ng-if="$ctrl.scriptOutput" flex class="script-output" md-colors="{background: 'grey-900'}">
                 <pre>{{ $ctrl.scriptOutput }}</pre>
             </div>
             <ul ng-if="$ctrl.scriptErrors" class="md-padding">
-                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="error.property" class="error">
+                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="error.property" md-colors="{color: 'red'}">
                     <pre>{{ error.message }}</pre> on <b>{{ error.property }}</b>
                 </li>
-                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property" class="error">
+                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property" md-colors="{color: 'red'}">
                     <pre>{{ error.message }}</pre>
                     <span ng-if="error.lineNumber">line {{error.lineNumber}}</span> 
                     <span ng-if="error.columnNumber">, column {{error.columnNumber}}</span>
@@ -24,8 +24,8 @@
             </ul>
             <ul ng-if="$ctrl.scriptActions" class="md-padding">
                 <li ng-repeat="action in $ctrl.scriptActions" ng-class="{'error': action.level === 'error', 'warn': action.level === 'warning'}">
-                    <pre ng-if="action.level === 'error'" class="error">{{ action.message }}</pre>
-                    <pre ng-if="action.level === 'warning'" class="warn">{{ action.message }}</pre>
+                    <pre ng-if="action.level === 'error'" md-colors="{color: 'red'}">{{ action.message }}</pre>
+                    <pre ng-if="action.level === 'warning'" md-colors="{color: 'orange'}">{{ action.message }}</pre>
                     <pre ng-if="action.level !== 'warning' && action.level !== 'error'">{{ action.message }}</pre>
                 </li>
             </ul>

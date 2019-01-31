@@ -1084,21 +1084,6 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 	}
 }
 
-ma-scripting-editor .script-output {
-    padding: 10px;
-    overflow-y: scroll; 
-    max-height: 100px;
-    background-color: #272822;
-}
-
-ma-scripting-editor .error {
-    color: #F44336;
-}
-
-ma-scripting-editor .warn {
-    color: #FDD835;
-}
-
 /* Color picker checked background */
 
 .ma-color-picker-checkered-bg,

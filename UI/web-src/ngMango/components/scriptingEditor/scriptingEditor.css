@@ -1,0 +1,5 @@
+ma-scripting-editor .script-output {
+    padding: 10px;
+    overflow-y: scroll; 
+    max-height: 100px;
+}
