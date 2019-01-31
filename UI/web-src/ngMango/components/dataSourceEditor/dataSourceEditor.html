@@ -121,37 +121,41 @@
                         <md-checkbox name="purgeSettings.override" ng-model="$ctrl.dataSource.purgeSettings.override"><span ma-tr="dsEdit.logging.purgeOverride"></span></md-checkbox>
                     </div>
                     
-                    <div flex="100" flex-gt-md="50" layout layout-align="start center">
-                        <md-input-container flex>
-                            <md-icon>access_time</md-icon>
-                            <label ma-tr="pointEdit.logging.after"></label>
-                            <input name="purgeSettings.frequency.periods" ng-model="$ctrl.dataSource.purgeSettings.frequency.periods"
-                                    required type="number" step="1" min="1" ng-disabled="!$ctrl.dataSource.purgeSettings.override">
-                            <div ng-messages="$ctrl.form['purgeSettings.frequency.periods'].$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
-                                <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.periods'].validationMessage"></div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container flex>
-                            <label ma-tr="pointEdit.logging.after"></label>
-                            <md-select name="purgeSettings.frequency.type" ng-model="$ctrl.dataSource.purgeSettings.frequency.type"
-                                    required ng-disabled="!$ctrl.dataSource.purgeSettings.override">
-                                <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
-                                    <span ma-tr="{{type.translation}}"></span>
-                                </md-option>
-                            </md-select>
-                            <div ng-messages="$ctrl.form['purgeSettings.frequency.type'].$error">
-                                <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.type'].validationMessage"></div>
-                            </div>
-                        </md-input-container>
+                    <div layout layout-wrap layout-align="start start">
+                        <div flex="100" flex-gt-md="50" layout layout-align="start start">
+                            <md-input-container flex>
+                                <md-icon>access_time</md-icon>
+                                <label ma-tr="pointEdit.logging.after"></label>
+                                <input name="purgeSettings.frequency.periods" ng-model="$ctrl.dataSource.purgeSettings.frequency.periods"
+                                        required type="number" step="1" min="1" ng-disabled="!$ctrl.dataSource.purgeSettings.override">
+                                <div ng-messages="$ctrl.form['purgeSettings.frequency.periods'].$error">
+                                    <div ng-message="required" ma-tr="ui.app.required"></div>
+                                    <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.periods'].validationMessage"></div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label ma-tr="pointEdit.logging.after"></label>
+                                <md-select name="purgeSettings.frequency.type" ng-model="$ctrl.dataSource.purgeSettings.frequency.type"
+                                        required ng-disabled="!$ctrl.dataSource.purgeSettings.override">
+                                    <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
+                                        <span ma-tr="{{type.translation}}"></span>
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="$ctrl.form['purgeSettings.frequency.type'].$error">
+                                    <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.type'].validationMessage"></div>
+                                </div>
+                            </md-input-container>
+                        </div>
                     </div>
                     
                     <h3 ma-tr="dsEdit.purge.purgeNow"></h3>
-
-                    <md-checkbox ng-init="purgeAll = false" ng-model="purgeAll" ma-form-exclude><span ma-tr="dsEdit.purge.allForDataSource"></span></md-checkbox>
+                    
+                    <div>
+                        <md-checkbox ng-init="purgeAll = false" ng-model="purgeAll" ma-form-exclude><span ma-tr="dsEdit.purge.allData"></span></md-checkbox>
+                    </div>
                     
                     <div layout layout-wrap layout-align="start center">
-                        <div flex="100" flex-gt-md="50" layout layout-align="start center">
+                        <div flex="100" flex-gt-md="50" layout layout-align="start start">
                             <md-input-container flex>
                                 <md-icon>access_time</md-icon>
                                 <label ma-tr="dsEdit.purge.olderThan"></label>
@@ -167,9 +171,11 @@
                             </md-input-container>
                         </div>
                         
-                        <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeAll, purgeNowPeriods, purgeNowType)">
-                            <md-icon>delete</md-icon> <span ma-tr="dsEdit.purge.purgeNow"></span>
-                        </md-button>
+                        <div flex="100" flex-gt-md="50">
+                            <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeAll, purgeNowPeriods, purgeNowType)">
+                                <md-icon>delete</md-icon> <span ma-tr="dsEdit.purge.purgeNow"></span>
+                            </md-button>
+                        </div>
                     </div>
                 </div>
             </md-tab-body>
