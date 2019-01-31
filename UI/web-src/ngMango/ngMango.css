@@ -707,16 +707,6 @@ md-card md-card-content.ma-no-padding-bottom {
 	width: 100%;
 }
 
-/* permissions menu */
-
-.ma-permissions-menu {
-  padding: 0;
-}
-
-.ma-permissions-menu md-checkbox {
-  margin: 0;
-}
-
 /* import/export config components */
 ma-config-export md-checkbox.ma-export-section {
   margin: 2px 0;
