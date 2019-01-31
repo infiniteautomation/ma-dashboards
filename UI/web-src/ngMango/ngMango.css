@@ -1089,6 +1089,7 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 
 /* Color picker checked background */
 
+/*
 .ma-color-picker-checkered-bg,
 .md-color-picker-checkered-bg[md-color-picker-alpha],
 .md-color-picker-preview.md-color-picker-checkered-bg {
@@ -1096,6 +1097,13 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
     background-position: 0 0, 5px 5px;
     background-size: 10px 10px;
     background-image: linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%), linear-gradient(45deg, #ddd 25%, #fff 25%, #fff 75%, #ddd 75%);
+}
+*/
+
+.ma-color-picker-checkered-bg,
+.md-color-picker-checkered-bg[md-color-picker-alpha],
+.md-color-picker-preview.md-color-picker-checkered-bg {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAKElEQVQoU2O8e/fufwY0oKSkhC7EwDgUFP7//x/DM/fu3cP0zBBQCAC7zDTlG2JgjAAAAABJRU5ErkJggg==) repeat;
 }
 
 /* Tools for making elements same height as md-input-container (70px) */
