@@ -89,6 +89,23 @@
             <div ng-message="validationMessage" ng-bind="loggingProperties.intervalLoggingSampleWindowSize.validationMessage"></div>
         </div>
     </md-input-container>
+
+    <div flex="100" flex-gt-md="50" layout="row" layout-align="start center">
+        <md-input-container flex>
+            <md-icon>memory</md-icon>
+            <label ma-tr="pointEdit.logging.defaultCache"></label>
+            <input name="cacheSize" ng-model="$ctrl.dataPoint.loggingProperties.cacheSize" required type="number" min="0" step="1">
+            <div ng-messages="loggingProperties.cacheSize.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[0]"></div>
+                <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+                <div ng-message="validationMessage" ng-bind="loggingProperties.cacheSize.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-button>
+            <span ma-tr="pointEdit.logging.clearCache"></span>
+        </md-button>
+    </div>
 </div>
 
 <div ng-if="$ctrl.dataPoint.dataType === 'NUMERIC'">
