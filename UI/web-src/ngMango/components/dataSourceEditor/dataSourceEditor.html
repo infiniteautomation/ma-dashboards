@@ -154,7 +154,7 @@
                         <md-checkbox ng-init="purgeAll = false" ng-model="purgeAll" ma-form-exclude><span ma-tr="dsEdit.purge.allData"></span></md-checkbox>
                     </div>
                     
-                    <div layout layout-wrap layout-align="start center">
+                    <div layout layout-wrap layout-align="start start">
                         <div flex="100" flex-gt-md="50" layout layout-align="start start">
                             <md-input-container flex>
                                 <md-icon>access_time</md-icon>
@@ -170,12 +170,12 @@
                                 </md-select>
                             </md-input-container>
                         </div>
-                        
-                        <div flex="100" flex-gt-md="50">
-                            <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeAll, purgeNowPeriods, purgeNowType)">
-                                <md-icon>delete</md-icon> <span ma-tr="dsEdit.purge.purgeNow"></span>
-                            </md-button>
-                        </div>
+                    </div>
+                    
+                    <div>
+                        <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeAll, purgeNowPeriods, purgeNowType)">
+                            <md-icon>delete</md-icon> <span ma-tr="dsEdit.purge.purgeNow"></span>
+                        </md-button>
                     </div>
                 </div>
             </md-tab-body>
