@@ -299,32 +299,41 @@
                     
                     <h3 ma-tr="pointEdit.purge.purgeNow"></h3>
 
-                    <div>
-                        <md-checkbox ng-init="purgeAll = false" ng-model="purgeAll" ma-form-exclude><span ma-tr="pointEdit.purge.allData"></span></md-checkbox>
+                    <div ng-init="purgeNow = {all: false, timeRange: false, from: ('now' | maMoment:'startOf':'day' | maMoment:'subtract':1:'month').toDate(), to: ('now' | maMoment:'startOf':'day').toDate()}">
+                        <md-checkbox ng-model="purgeNow.all" ma-form-exclude><span ma-tr="pointEdit.purge.allData"></span></md-checkbox>
                     </div>
-                    
-                    <div layout layout-wrap layout-align="start center">
-                        <div flex="100" flex-gt-md="50" layout layout-align="start start">
+
+                    <md-radio-group class="ma-margin-bottom-large" ng-if="!purgeNow.all" ng-model="purgeNow.timeRange" layout="row">
+                        <md-radio-button ng-value="false"><span ma-tr="pointEdit.purge.olderThan"></span></md-radio-button>
+                        <md-radio-button ng-value="true"><span ma-tr="pointEdit.purge.specificTimeRange"></span></md-radio-button>
+                    </md-radio-group>
+
+                    <div layout layout-wrap layout-align="start center" ng-if="!purgeNow.all">
+                        <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="!purgeNow.timeRange">
                             <md-input-container flex>
                                 <md-icon>access_time</md-icon>
                                 <label ma-tr="pointEdit.purge.olderThan"></label>
-                                <input ng-init="purgeNowPeriods = 1" ng-model="purgeNowPeriods" required type="number" step="1" min="1" ma-form-exclude ng-disabled="purgeAll">
+                                <input ng-init="purgeNowPeriods = 1" ng-model="purgeNowPeriods" required type="number" step="1" min="1" ma-form-exclude>
                             </md-input-container>
                             <md-input-container flex>
                                 <label ma-tr="pointEdit.purge.olderThan"></label>
-                                <md-select ng-init="purgeNowType = 'YEARS'" ng-model="purgeNowType" required ma-form-exclude ng-disabled="purgeAll">
+                                <md-select ng-init="purgeNowType = 'YEARS'" ng-model="purgeNowType" required ma-form-exclude>
                                     <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
                                         <span ma-tr="{{type.translation}}"></span>
                                     </md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
-
-                        <div flex="100" flex-gt-md="50">
-                            <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeAll, purgeNowPeriods, purgeNowType)">
-                                <md-icon>delete</md-icon> <span ma-tr="pointEdit.purge.purgeNow"></span>
-                            </md-button>
+                        <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="purgeNow.timeRange">
+                            <mdp-date-picker flex="100" flex-gt-md="50" mdp-placeholder="{{'pointEdit.text.from' | maTr}}" mdp-open-on-click mdp-format="ll" ng-model="purgeNow.from"></mdp-date-picker>
+                            <mdp-date-picker flex="100" flex-gt-md="50" mdp-placeholder="{{'pointEdit.text.to' | maTr}}" mdp-open-on-click mdp-format="ll" ng-model="purgeNow.to"></mdp-date-picker>
                         </div>
+                    </div>
+
+                    <div>
+                        <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeNow.all, purgeNowPeriods, purgeNowType)">
+                            <md-icon>delete</md-icon> <span ma-tr="pointEdit.purge.purgeNow"></span>
+                        </md-button>
                     </div>
                 </div>
             </md-tab-body>

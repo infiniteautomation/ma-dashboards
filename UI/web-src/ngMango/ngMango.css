@@ -658,13 +658,26 @@ md-card md-card-content.ma-no-padding-bottom {
 	margin-top: 8px;
 }
 
+.ma-margin-top-large {
+	margin-top: 16px;
+}
+
 .ma-margin-bottom {
 	margin-bottom: 8px;
+}
+
+.ma-margin-bottom-large {
+	margin-bottom: 16px;
 }
 
 .ma-margin-top-bottom {
 	margin-top: 8px;
 	margin-bottom: 8px;
+}
+
+.ma-margin-top-bottom-large {
+	margin-top: 16px;
+	margin-bottom: 16px;
 }
 
 .ma-no-margin-top {
@@ -1100,4 +1113,12 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 md-checkbox.ma-input-container-height {
 	margin-top: 23px;
 	margin-bottom: 23px;
+}
+
+/* Fix time/date pickers not stretching */
+mdp-time-picker md-input-container,
+mdp-date-picker md-input-container {
+	display: block;
+	flex: 1;
+	box-sizing: border-box;
 }
