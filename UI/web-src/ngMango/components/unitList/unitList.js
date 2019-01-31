@@ -12,6 +12,11 @@ class UnitListController {
     static get $inject() { return []; }
     
     constructor() {
+        this.mode = 'replace';
+    }
+    
+    buttonClicked(event) {
+        // if we do this in the constructor the component takes a noticeable amount of time to render
         this.unitList = unitList;
     }
     
@@ -23,7 +28,29 @@ class UnitListController {
         this.unit = this.ngModelCtrl.$viewValue;
     }
     
-    setViewValue() {
+    unitSelected(unit) {
+        const current = (this.unit || '').trim();
+        
+        switch (this.mode) {
+            case 'replace': {
+                this.unit = unit;
+                break;
+            }
+            case 'multiply': {
+                this.unit = current ? `${current}\u00b7${unit}` : unit;
+                break;
+            }
+            case 'divide': {
+                this.unit = current ? `${current}/${unit}` : unit;
+                break;
+            }
+        }
+        
+        this.ngModelCtrl.$setViewValue(this.unit);
+    }
+    
+    clearUnit() {
+        this.unit = '';
         this.ngModelCtrl.$setViewValue(this.unit);
     }
 }
@@ -35,6 +62,7 @@ export default {
         'ngModelCtrl': 'ngModel'
     },
     bindings: {
-        disabled: '@?'
+        disabled: '@?',
+        mode: '@?'
     }
 };

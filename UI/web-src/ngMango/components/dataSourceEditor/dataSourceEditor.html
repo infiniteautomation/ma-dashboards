@@ -121,13 +121,13 @@
                         <md-checkbox name="purgeSettings.override" ng-model="$ctrl.dataSource.purgeSettings.override"><span ma-tr="dsEdit.logging.purgeOverride"></span></md-checkbox>
                     </div>
                     
-                    <div layout layout-wrap layout-align="start start">
+                    <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataSource.purgeSettings.override">
                         <div flex="100" flex-gt-md="50" layout layout-align="start start">
                             <md-input-container flex>
                                 <md-icon>access_time</md-icon>
                                 <label ma-tr="pointEdit.logging.after"></label>
                                 <input name="purgeSettings.frequency.periods" ng-model="$ctrl.dataSource.purgeSettings.frequency.periods"
-                                        required type="number" step="1" min="1" ng-disabled="!$ctrl.dataSource.purgeSettings.override">
+                                        required type="number" step="1" min="1">
                                 <div ng-messages="$ctrl.form['purgeSettings.frequency.periods'].$error">
                                     <div ng-message="required" ma-tr="ui.app.required"></div>
                                     <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.periods'].validationMessage"></div>
@@ -135,8 +135,7 @@
                             </md-input-container>
                             <md-input-container flex>
                                 <label ma-tr="pointEdit.logging.after"></label>
-                                <md-select name="purgeSettings.frequency.type" ng-model="$ctrl.dataSource.purgeSettings.frequency.type"
-                                        required ng-disabled="!$ctrl.dataSource.purgeSettings.override">
+                                <md-select name="purgeSettings.frequency.type" ng-model="$ctrl.dataSource.purgeSettings.frequency.type" required>
                                     <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
                                         <span ma-tr="{{type.translation}}"></span>
                                     </md-option>

@@ -111,7 +111,7 @@
                             <md-icon>straighten</md-icon>
                             <label ma-tr="pointEdit.props.unit"></label>
                             <input name="unit" ng-model="$ctrl.dataPoint.unit">
-                            <ma-unit-list ng-model="$ctrl.dataPoint.unit"></ma-unit-list>
+                            <ma-unit-list ng-model="$ctrl.dataPoint.unit" mode="multiply"></ma-unit-list>
                             <div ng-messages="$ctrl.form.unit.$error">
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.unit.validationMessage"></div>
                             </div>
@@ -126,8 +126,8 @@
                             <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useRenderedUnit">
                                 <md-icon>straighten</md-icon>
                                 <label ma-tr="pointEdit.props.renderedUnit"></label>
-                                <input name="unit" ng-model="$ctrl.dataPoint.renderedUnit">
-                                <ma-unit-list ng-model="$ctrl.dataPoint.renderedUnit"></ma-unit-list>
+                                <input name="renderedUnit" ng-model="$ctrl.dataPoint.renderedUnit">
+                                <ma-unit-list ng-model="$ctrl.dataPoint.renderedUnit" mode="multiply"></ma-unit-list>
                                 <div ng-messages="$ctrl.form.renderedUnit.$error">
                                     <div ng-message="validationMessage" ng-bind="$ctrl.form.renderedUnit.validationMessage"></div>
                                 </div>
@@ -141,8 +141,8 @@
                             <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useIntegralUnit">
                                 <md-icon>straighten</md-icon>
                                 <label ma-tr="pointEdit.props.integralUnit"></label>
-                                <input name="unit" ng-model="$ctrl.dataPoint.integralUnit">
-                                <ma-unit-list ng-model="$ctrl.dataPoint.integralUnit"></ma-unit-list>
+                                <input name="integralUnit" ng-model="$ctrl.dataPoint.integralUnit">
+                                <ma-unit-list ng-model="$ctrl.dataPoint.integralUnit" mode="multiply"></ma-unit-list>
                                 <div ng-messages="$ctrl.form.integralUnit.$error">
                                     <div ng-message="validationMessage" ng-bind="$ctrl.form.integralUnit.validationMessage"></div>
                                 </div>
@@ -284,7 +284,7 @@
                 <span ma-tr="pointEdit.text.props"></span>
             </md-tab-label>
             <md-tab-body>
-                
+                <!-- needs content -->
             </md-tab-body>
         </md-tab>
         <md-tab>
@@ -292,7 +292,7 @@
                 <span ma-tr="pointEdit.chart.props"></span>
             </md-tab-label>
             <md-tab-body>
-                
+                <!-- needs content -->
             </md-tab-body>
         </md-tab>
         <md-tab>
@@ -305,13 +305,12 @@
                         <md-checkbox name="purgeOverride" ng-model="$ctrl.dataPoint.purgeOverride"><span ma-tr="pointEdit.logging.purgeOverride"></span></md-checkbox>
                     </div>
                     
-                    <div layout layout-wrap layout-align="start start">
+                    <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataPoint.purgeOverride">
                         <div flex="100" flex-gt-md="50" layout layout-align="start start">
                             <md-input-container flex>
                                 <md-icon>access_time</md-icon>
                                 <label ma-tr="pointEdit.logging.after"></label>
-                                <input name="purgePeriod.periods" ng-model="$ctrl.dataPoint.purgePeriod.periods"
-                                        required type="number" step="1" min="1" ng-disabled="!$ctrl.dataPoint.purgeOverride">
+                                <input name="purgePeriod.periods" ng-model="$ctrl.dataPoint.purgePeriod.periods" required type="number" step="1" min="1">
                                 <div ng-messages="$ctrl.form['purgePeriod.periods'].$error">
                                     <div ng-message="required" ma-tr="ui.app.required"></div>
                                     <div ng-message="validationMessage" ng-bind="$ctrl.form['purgePeriod.periods'].validationMessage"></div>
@@ -319,8 +318,7 @@
                             </md-input-container>
                             <md-input-container flex>
                                 <label ma-tr="pointEdit.logging.after"></label>
-                                <md-select name="purgePeriod.type" ng-model="$ctrl.dataPoint.purgePeriod.type"
-                                        required ng-disabled="!$ctrl.dataPoint.purgeOverride">
+                                <md-select name="purgePeriod.type" ng-model="$ctrl.dataPoint.purgePeriod.type" required>
                                     <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
                                         <span ma-tr="{{type.translation}}"></span>
                                     </md-option>
