@@ -16,7 +16,7 @@
         </div>
     </md-input-container>
     
-    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'">
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.dataType === 'NUMERIC' && ($ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL')">
         <md-icon>tune</md-icon>
         <label ma-tr="pointEdit.logging.tolerance"></label>
         <input name="tolerance" ng-model="$ctrl.dataPoint.loggingProperties.tolerance" required type="number" min="0">
