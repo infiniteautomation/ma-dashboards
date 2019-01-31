@@ -5,10 +5,14 @@
 
 import angular from 'angular';
 import dataPointEditorTemplate from './dataPointEditor.html';
-import loggingPropertiesTemplate from './loggingProperties.html';
 import './dataPointEditor.css';
+import loggingPropertiesTemplate from './loggingProperties.html';
+import textRendererTemplate from './textRenderer.html';
 
-const loggingPropertiesTemplateName = 'maDataPointEditor.loggingProperties.html';
+const templates = {
+    loggingProperties: loggingPropertiesTemplate,
+    textRenderer: textRendererTemplate
+};
 
 /**
  * @ngdoc directive
@@ -26,11 +30,13 @@ class DataPointEditorController {
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
             MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_TIME_PERIOD_TYPES, $templateCache) {
-        
-        this.loggingPropertiesTemplateName = loggingPropertiesTemplateName;
-        if (!$templateCache.get(loggingPropertiesTemplateName)) {
-            $templateCache.put(loggingPropertiesTemplateName, loggingPropertiesTemplate);
-        }
+
+        Object.keys(templates).forEach(key => {
+            const name = `maDataPointEditor.${key}.html`;
+            if (!$templateCache.get(name)) {
+                $templateCache.put(name, templates[key]);
+            }
+        });
         
         this.maPoint = maPoint;
         this.$q = $q;
@@ -60,6 +66,12 @@ class DataPointEditorController {
             {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
         ];
         this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
+        this.textRenderTypes = [
+            {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC'])},
+            {type: 'textRendererAnalog', translation: 'textRenderer.analog', dataTypes: new Set(['NUMERIC'])},
+            {type: 'textRendererRange', translation: 'textRenderer.range', dataTypes: new Set(['NUMERIC'])}
+        ];
+        this.suffixTextRenderers = new Set(this.textRenderTypes.slice(0, 2).map(t => t.type));
         
         $scope.Number = Number;
         

@@ -1,0 +1,33 @@
+<div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+    <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>build</md-icon>
+        <label ma-tr="pointEdit.text.type"></label>
+        <md-select name="type" ng-model="$ctrl.dataPoint.textRenderer.type" ng-disabled="$ctrl.dataPoint.dataType.hasMultipleValues()" required>
+            <md-option ng-if="$ctrl.dataPoint.textRenderer.type.hasMultipleValues()" ng-value="$ctrl.dataPoint.textRenderer.type">
+                <em ng-bind="$ctrl.dataPoint.textRenderer.type"></em>
+            </md-option>
+            <md-option ng-repeat="type in $ctrl.textRenderTypes track by type.type" ng-value="type.type"ng-if="type.dataTypes.has($ctrl.dataPoint.dataType)">
+                <span ma-tr="{{type.translation}}"></span>
+            </md-option>
+        </md-select>
+        <div ng-messages="$ctrl.form.type.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.type.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <div flex="100" flex-gt-md="50" ng-if="$ctrl.suffixTextRenderers.has($ctrl.dataPoint.textRenderer.type) && $ctrl.dataPoint.dataType === 'NUMERIC'">
+        <md-checkbox class="ma-input-container-height" name="useUnitAsSuffix" ng-model="$ctrl.dataPoint.textRenderer.useUnitAsSuffix">
+            <span ma-tr="pointEdit.props.useUnitAsSuffix"></span>
+        </md-checkbox>
+    </div>
+    
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.suffixTextRenderers.has($ctrl.dataPoint.textRenderer.type) && !$ctrl.dataPoint.textRenderer.useUnitAsSuffix">
+        <md-icon>last_page</md-icon>
+        <label ma-tr="pointEdit.text.suffix"></label>
+        <input name="suffix" ng-model="$ctrl.dataPoint.textRenderer.suffix">
+        <div ng-messages="$ctrl.form.suffix.$error">
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.suffix.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>
