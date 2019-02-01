@@ -10,9 +10,9 @@
                 <span ma-tr="{{type.translation}}"></span>
             </md-option>
         </md-select>
-        <div ng-messages="$ctrl.form.type.$error">
+        <div ng-messages="textRenderer.type.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="validationMessage" ng-bind="$ctrl.form.type.validationMessage"></div>
+            <div ng-message="validationMessage" ng-bind="textRenderer.type.validationMessage"></div>
         </div>
     </md-input-container>
     
@@ -26,17 +26,18 @@
         <md-icon>last_page</md-icon>
         <label ma-tr="pointEdit.text.suffix"></label>
         <input name="suffix" ng-model="$ctrl.dataPoint.textRenderer.suffix">
-        <div ng-messages="$ctrl.form.suffix.$error">
-            <div ng-message="validationMessage" ng-bind="$ctrl.form.suffix.validationMessage"></div>
+        <div ng-messages="textRenderer.suffix.$error">
+            <div ng-message="validationMessage" ng-bind="textRenderer.suffix.validationMessage"></div>
         </div>
     </md-input-container>
     
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.formatTextRenderers.has($ctrl.dataPoint.textRenderer.type)">
         <md-icon>format_paint</md-icon>
         <label ma-tr="pointEdit.text.format"></label>
-        <input name="format" ng-model="$ctrl.dataPoint.textRenderer.format">
-        <div ng-messages="$ctrl.form.format.$error">
-            <div ng-message="validationMessage" ng-bind="$ctrl.form.format.validationMessage"></div>
+        <input name="format" ng-model="$ctrl.dataPoint.textRenderer.format" required>
+        <div ng-messages="textRenderer.format.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="textRenderer.format.validationMessage"></div>
         </div>
     </md-input-container>
     
@@ -44,8 +45,8 @@
         <md-icon>swap_horiz</md-icon>
         <label ma-tr="pointEdit.text.conversionExponent"></label>
         <input name="conversionExponent" ng-model="$ctrl.dataPoint.textRenderer.conversionExponent" type="number">
-        <div ng-messages="$ctrl.form.conversionExponent.$error">
-            <div ng-message="validationMessage" ng-bind="$ctrl.form.conversionExponent.validationMessage"></div>
+        <div ng-messages="textRenderer.conversionExponent.$error">
+            <div ng-message="validationMessage" ng-bind="textRenderer.conversionExponent.validationMessage"></div>
         </div>
     </md-input-container>
 </div>
