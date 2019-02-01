@@ -1113,6 +1113,11 @@ md-checkbox.ma-input-container-height {
 	margin-bottom: 23px;
 }
 
+.md-button.md-icon-button.ma-input-container-height {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
 /* Fix time/date pickers not stretching */
 mdp-time-picker md-input-container,
 mdp-date-picker md-input-container {

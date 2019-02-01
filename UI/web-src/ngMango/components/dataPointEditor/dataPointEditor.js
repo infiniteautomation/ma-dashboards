@@ -22,14 +22,14 @@ const templates = {
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_TIME_PERIOD_TYPES', '$templateCache']);
+    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_TIME_PERIOD_TYPES', '$templateCache', '$filter']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_TIME_PERIOD_TYPES, $templateCache) {
+            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_TIME_PERIOD_TYPES, $templateCache, $filter) {
 
         Object.keys(templates).forEach(key => {
             const name = `maDataPointEditor.${key}.html`;
@@ -47,6 +47,7 @@ class DataPointEditorController {
         this.$element = $element;
         this.maUtil = maUtil;
         this.MultipleValues = MultipleValues;
+        this.orderBy = $filter('orderBy');
         this.rollupTypes = MA_ROLLUP_TYPES.filter(t => !t.nonAssignable);
         this.plotTypes = MA_CHART_TYPES;
         this.simplifyTypes = MA_SIMPLIFY_TYPES;
@@ -433,6 +434,30 @@ class DataPointEditorController {
             delete this.bulkTaskPromise;
             delete this.bulkTask;
         });
+    }
+    
+    addRange(form) {
+        const newRange = {};
+        
+        let rangeValues = this.dataPoint.textRenderer.rangeValues;
+        if (!Array.isArray(rangeValues)) {
+            rangeValues = this.dataPoint.textRenderer.rangeValues = [];
+        }
+        if (rangeValues.length) {
+            const highestTo = this.orderBy(rangeValues, '-to')[0];
+            if (Number.isFinite(highestTo.to)) {
+                newRange.from = highestTo.to;
+            }
+        }
+
+        this.dataPoint.textRenderer.rangeValues.push(newRange);
+        form.$setDirty();
+    }
+    
+    removeRange(range, form) {
+        const index = this.dataPoint.textRenderer.rangeValues.indexOf(range);
+        this.dataPoint.textRenderer.rangeValues.splice(index, 1);
+        form.$setDirty();
     }
 }
 
