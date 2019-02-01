@@ -1,0 +1,31 @@
+<div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+    <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>build</md-icon>
+        <label ma-tr=pointEdit.chart.type></label>
+        <md-select name="type" ng-model="$ctrl.dataPoint.chartRenderer.type" ng-disabled="$ctrl.dataPoint.dataType.hasMultipleValues()" required>
+            <md-option ng-if="$ctrl.dataPoint.chartRenderer.type.hasMultipleValues()" ng-value="$ctrl.dataPoint.chartRenderer.type">
+                <em ng-bind="$ctrl.dataPoint.chartRenderer.type"></em>
+            </md-option>
+            <md-option ng-repeat="type in $ctrl.chartRendererTypes track by type.type" ng-value="type.type"ng-if="type.dataTypes.has($ctrl.dataPoint.dataType)">
+                <span ma-tr="{{type.translation}}"></span>
+            </md-option>
+        </md-select>
+        <div ng-messages="chartRenderer.type.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="chartRenderer.type.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.chartRenderer.type === 'chartRendererImageFlipbook' || $ctrl.dataPoint.chartRenderer.type === 'chartRendererTable'">
+        <md-icon>vertical_align_top</md-icon>
+        <label ma-tr="pointEdit.chart.limit"></label>
+        <input name="limit" ng-model="$ctrl.dataPoint.chartRenderer.limit" type="number" step="1" min="2" max="50" required>
+        <div ng-messages="chartRenderer.limit.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[2]"></div>
+            <div ng-message="max" ma-tr="ui.app.maxNumber" ma-tr-args="[50]"></div>
+            <div ng-message="validationMessage" ng-bind="key.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>

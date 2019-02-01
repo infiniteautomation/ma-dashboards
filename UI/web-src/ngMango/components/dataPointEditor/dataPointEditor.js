@@ -8,10 +8,12 @@ import dataPointEditorTemplate from './dataPointEditor.html';
 import './dataPointEditor.css';
 import loggingPropertiesTemplate from './loggingProperties.html';
 import textRendererTemplate from './textRenderer.html';
+import chartRendererTemplate from './chartRenderer.html';
 
 const templates = {
     loggingProperties: loggingPropertiesTemplate,
-    textRenderer: textRendererTemplate
+    textRenderer: textRendererTemplate,
+    chartRenderer: chartRendererTemplate
 };
 
 /**
@@ -81,6 +83,7 @@ class DataPointEditorController {
         this.formatTextRenderers = new Set(this.textRendererTypes.filter(t => t.format).map(t => t.type));
         this.simplifyDataTypes = new Set(['NUMERIC', 'MULTISTATE', 'BINARY']);
         this.chartRendererTypes = [
+            {type: 'chartRendererNone', translation: 'chartRenderer.none', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC', 'IMAGE'])},
             {type: 'chartRendererImageFlipbook', translation: 'chartRenderer.flipbook', dataTypes: new Set(['IMAGE'])},
             {type: 'chartRendererTable', translation: 'chartRenderer.table', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])},
             {type: 'chartRendererImage', translation: 'chartRenderer.image', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])},
