@@ -68,15 +68,16 @@ class DataPointEditorController {
         ];
         this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
         this.textRenderTypes = [
-            {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC'])},
-            {type: 'textRendererAnalog', translation: 'textRenderer.analog', dataTypes: new Set(['NUMERIC'])},
+            {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC']),
+                suffix: true},
+            {type: 'textRendererAnalog', translation: 'textRenderer.analog', dataTypes: new Set(['NUMERIC']), suffix: true},
             {type: 'textRendererRange', translation: 'textRenderer.range', dataTypes: new Set(['NUMERIC'])},
-            {type: 'textRendererBinary', translation: 'textRenderer.binary', dataTypes: new Set(['BINARY'])}
+            {type: 'textRendererBinary', translation: 'textRenderer.binary', dataTypes: new Set(['BINARY'])},
+            {type: 'textRendererNone', translation: 'textRenderer.none', dataTypes: new Set(['IMAGE'])},
+            {type: 'textRendererTime', translation: 'textRenderer.time', dataTypes: new Set(['NUMERIC'])},
+            {type: 'textRendererMultistate', translation: 'textRenderer.multistate', dataTypes: new Set(['MULTISTATE'])}
         ];
-        this.suffixTextRenderers = new Set(this.textRenderTypes.slice(0, 2).map(t => t.type));
-        
-        $scope.Number = Number;
-        
+        this.suffixTextRenderers = new Set(this.textRenderTypes.filter(t => t.suffix).map(t => t.type));
         this.simplifyDataTypes = ['NUMERIC', 'MULTISTATE', 'BINARY'];
 
         this.types = maPoint.types;
