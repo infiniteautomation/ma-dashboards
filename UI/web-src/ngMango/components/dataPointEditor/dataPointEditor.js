@@ -69,6 +69,7 @@ class DataPointEditorController {
             {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
         ];
         this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
+        this.chartRendererTimePeriods = MA_TIME_PERIOD_TYPES.slice(2, 7);
         this.textRendererTypes = [
             {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC']),
                 suffix: true},
