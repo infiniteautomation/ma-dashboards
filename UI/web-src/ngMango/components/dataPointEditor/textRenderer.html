@@ -137,3 +137,39 @@
         </div>
     </div>
 </div>
+
+<div ng-if="$ctrl.dataPoint.textRenderer.type === 'textRendererMultistate'" ng-form="multistateValues">
+    <div ng-repeat="value in $ctrl.dataPoint.textRenderer.multistateValues | orderBy:'key'" layout layout-align="start start">
+        <md-button class="md-icon-button md-icon-button ma-input-container-height" ng-click="$ctrl.removeMultistateValue(value, multistateValues)">
+            <md-icon>clear</md-icon>
+            <md-tooltip><span ma-tr="common.remove"></span></md-tooltip>
+        </md-button>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.key"></label>
+            <input name="[{{$index}}].key" ng-model="value.key" type="number" step="1" required ma-get-ctrl="key = $ngModel" ng-model-options="{updateOn: 'blur'}">
+            <div ng-messages="key.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+                <div ng-message="validationMessage" ng-bind="key.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.text"></label>
+            <input name="[{{$index}}].text" ng-model="value.text" ma-get-ctrl="text = $ngModel">
+            <div ng-messages="text.$error">
+                <div ng-message="validationMessage" ng-bind="text.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <div flex layout layout-align="start center">
+            <ma-color-picker ng-model="value.colour" ma-flatten-values="$values.firstNonEmpty()"></ma-color-picker>
+            <md-input-container flex>
+                <label ma-tr="pointEdit.text.colour"></label>
+                <input name="[{{$index}}].colour" ng-model="value.colour" ma-get-ctrl="colour = $ngModel">
+                <div ng-messages="colour.$error">
+                    <div ng-message="validationMessage" ng-bind="colour.validationMessage"></div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+    <md-button ng-click="$ctrl.addMultistateValue(multistateValues)"><span ma-tr="pointEdit.text.addMultistateValue"></span></md-button>
+</div>

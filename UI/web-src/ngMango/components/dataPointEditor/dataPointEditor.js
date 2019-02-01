@@ -446,11 +446,10 @@ class DataPointEditorController {
         if (!Array.isArray(rangeValues)) {
             rangeValues = this.dataPoint.textRenderer.rangeValues = [];
         }
-        if (rangeValues.length) {
-            const highestTo = this.orderBy(rangeValues, '-to')[0];
-            if (Number.isFinite(highestTo.to)) {
-                newRange.from = highestTo.to;
-            }
+
+        const highestTo = rangeValues.reduce((h, r) => r.to > h ? r.to : h, -Infinity);
+        if (Number.isFinite(highestTo)) {
+            newRange.from = highestTo;
         }
 
         this.dataPoint.textRenderer.rangeValues.push(newRange);
@@ -460,6 +459,29 @@ class DataPointEditorController {
     removeRange(range, form) {
         const index = this.dataPoint.textRenderer.rangeValues.indexOf(range);
         this.dataPoint.textRenderer.rangeValues.splice(index, 1);
+        form.$setDirty();
+    }
+    
+    addMultistateValue(form) {
+        const newValue = {};
+        
+        let multistateValues = this.dataPoint.textRenderer.multistateValues;
+        if (!Array.isArray(multistateValues)) {
+            multistateValues = this.dataPoint.textRenderer.multistateValues = [];
+        }
+        
+        const highestKey = multistateValues.reduce((h, r) => r.key > h ? r.key : h, -Infinity);
+        if (Number.isFinite(highestKey)) {
+            newValue.key = Math.floor(highestKey) + 1;
+        }
+
+        this.dataPoint.textRenderer.multistateValues.push(newValue);
+        form.$setDirty();
+    }
+    
+    removeMultistateValue(value, form) {
+        const index = this.dataPoint.textRenderer.multistateValues.indexOf(value);
+        this.dataPoint.textRenderer.multistateValues.splice(index, 1);
         form.$setDirty();
     }
 }
