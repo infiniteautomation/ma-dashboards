@@ -22,7 +22,7 @@
         </md-checkbox>
     </div>
     
-    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.suffixTextRenderers.has($ctrl.dataPoint.textRenderer.type) && !$ctrl.dataPoint.textRenderer.useUnitAsSuffix">
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.suffixTextRenderers.has($ctrl.dataPoint.textRenderer.type) && (!$ctrl.dataPoint.textRenderer.useUnitAsSuffix || $ctrl.dataPoint.dataType !== 'NUMERIC')">
         <md-icon>last_page</md-icon>
         <label ma-tr="pointEdit.text.suffix"></label>
         <input name="suffix" ng-model="$ctrl.dataPoint.textRenderer.suffix">
