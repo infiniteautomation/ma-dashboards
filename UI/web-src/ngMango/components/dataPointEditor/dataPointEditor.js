@@ -70,7 +70,8 @@ class DataPointEditorController {
         this.textRenderTypes = [
             {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC'])},
             {type: 'textRendererAnalog', translation: 'textRenderer.analog', dataTypes: new Set(['NUMERIC'])},
-            {type: 'textRendererRange', translation: 'textRenderer.range', dataTypes: new Set(['NUMERIC'])}
+            {type: 'textRendererRange', translation: 'textRenderer.range', dataTypes: new Set(['NUMERIC'])},
+            {type: 'textRendererBinary', translation: 'textRenderer.binary', dataTypes: new Set(['BINARY'])}
         ];
         this.suffixTextRenderers = new Set(this.textRenderTypes.slice(0, 2).map(t => t.type));
         
