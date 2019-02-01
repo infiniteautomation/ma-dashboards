@@ -79,7 +79,7 @@ class DataPointEditorController {
         ];
         this.suffixTextRenderers = new Set(this.textRenderTypes.filter(t => t.suffix).map(t => t.type));
         this.formatTextRenderers = new Set(this.textRenderTypes.filter(t => t.format).map(t => t.type));
-        this.simplifyDataTypes = ['NUMERIC', 'MULTISTATE', 'BINARY'];
+        this.simplifyDataTypes = new Set(['NUMERIC', 'MULTISTATE', 'BINARY']);
 
         this.types = maPoint.types;
         this.typesByName = maPoint.typesByName;
