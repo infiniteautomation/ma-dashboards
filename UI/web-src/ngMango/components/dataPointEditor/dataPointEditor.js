@@ -67,7 +67,7 @@ class DataPointEditorController {
             {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
         ];
         this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
-        this.textRenderTypes = [
+        this.textRendererTypes = [
             {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC']),
                 suffix: true},
             {type: 'textRendererAnalog', translation: 'textRenderer.analog', dataTypes: new Set(['NUMERIC']), suffix: true, format: true},
@@ -77,9 +77,15 @@ class DataPointEditorController {
             {type: 'textRendererTime', translation: 'textRenderer.time', dataTypes: new Set(['NUMERIC']), format: true},
             {type: 'textRendererMultistate', translation: 'textRenderer.multistate', dataTypes: new Set(['MULTISTATE'])}
         ];
-        this.suffixTextRenderers = new Set(this.textRenderTypes.filter(t => t.suffix).map(t => t.type));
-        this.formatTextRenderers = new Set(this.textRenderTypes.filter(t => t.format).map(t => t.type));
+        this.suffixTextRenderers = new Set(this.textRendererTypes.filter(t => t.suffix).map(t => t.type));
+        this.formatTextRenderers = new Set(this.textRendererTypes.filter(t => t.format).map(t => t.type));
         this.simplifyDataTypes = new Set(['NUMERIC', 'MULTISTATE', 'BINARY']);
+        this.chartRendererTypes = [
+            {type: 'chartRendererImageFlipbook', translation: 'chartRenderer.flipbook', dataTypes: new Set(['IMAGE'])},
+            {type: 'chartRendererTable', translation: 'chartRenderer.table', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])},
+            {type: 'chartRendererImage', translation: 'chartRenderer.image', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])},
+            {type: 'chartRendererStats', translation: 'chartRenderer.statistics', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])}
+        ];
 
         this.types = maPoint.types;
         this.typesByName = maPoint.typesByName;

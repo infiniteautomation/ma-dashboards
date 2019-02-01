@@ -6,7 +6,7 @@
             <md-option ng-if="$ctrl.dataPoint.textRenderer.type.hasMultipleValues()" ng-value="$ctrl.dataPoint.textRenderer.type">
                 <em ng-bind="$ctrl.dataPoint.textRenderer.type"></em>
             </md-option>
-            <md-option ng-repeat="type in $ctrl.textRenderTypes track by type.type" ng-value="type.type"ng-if="type.dataTypes.has($ctrl.dataPoint.dataType)">
+            <md-option ng-repeat="type in $ctrl.textRendererTypes track by type.type" ng-value="type.type"ng-if="type.dataTypes.has($ctrl.dataPoint.dataType)">
                 <span ma-tr="{{type.translation}}"></span>
             </md-option>
         </md-select>
