@@ -33,7 +33,7 @@
         <md-input-container flex>
             <md-icon>access_time</md-icon>
             <label ma-tr="pointEdit.chart.timePeriod"></label>
-            <input name="timePeriod.periods" ng-model="$ctrl.dataPoint.timePeriod.periods" required type="number" step="1" min="1">
+            <input name="timePeriod.periods" ng-model="$ctrl.dataPoint.chartRenderer.timePeriod.periods" required type="number" step="1" min="1">
             <div ng-messages="chartRenderer['timePeriod.periods'].$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="validationMessage" ng-bind="chartRenderer['timePeriod.periods'].validationMessage"></div>
@@ -41,7 +41,7 @@
         </md-input-container>
         <md-input-container flex>
             <label ma-tr="pointEdit.chart.timePeriod"></label>
-            <md-select name="timePeriod.type" ng-model="$ctrl.dataPoint.timePeriod.type" required>
+            <md-select name="timePeriod.type" ng-model="$ctrl.dataPoint.chartRenderer.timePeriod.type" required>
                 <md-option ng-repeat="type in $ctrl.chartRendererTimePeriods track by type.type" ng-value="type.type">
                     <span ma-tr="{{type.translation}}"></span>
                 </md-option>
@@ -51,5 +51,11 @@
                 <div ng-message="validationMessage" ng-bind="chartRenderer['timePeriod.type'].validationMessage"></div>
             </div>
         </md-input-container>
+    </div>
+    
+    <div flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.chartRenderer.type === 'chartRendererStats'">
+        <md-checkbox name="includeSum" ng-model="$ctrl.dataPoint.chartRenderer.includeSum" class="ma-input-container-height">
+            <span ma-tr="pointEdit.chart.includeSum"></span>
+        </md-checkbox>
     </div>
 </div>
