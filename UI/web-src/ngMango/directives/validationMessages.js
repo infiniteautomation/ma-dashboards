@@ -4,7 +4,7 @@
  */
 
 validationMessages.$inject = ['maUtil'];
-function validationMessages(maUtil) {
+function validationMessages(Util) {
 
     class ValidationMessagesController {
         static get $$ngIsClass() { return true; }
@@ -17,6 +17,10 @@ function validationMessages(maUtil) {
             // use a validator that always returns true so that when a user changes the input the error is always cleared
             const allwaysValidate = () => true;
 
+            this.ngFormCtrl.activateTabWithClientError = () => {
+                this.activateTabWithClientError();
+            };
+            
             this.ngFormCtrl.$$controls.forEach(control => {
                 if (control.$validators) {
                     control.$validators.validationMessage = allwaysValidate;
@@ -39,6 +43,45 @@ function validationMessages(maUtil) {
                 this.checkMessages();
             }
         }
+        
+        activateTabWithClientError() {
+            Object.values(this.ngFormCtrl.$error).some(ctrls => {
+                return ctrls.some(ctrl => {
+                    this.activateTab(ctrl.$$element[0]);
+                    return true;
+                });
+            });
+        }
+        
+        activateTabWithValidationError() {
+            if (!Array.isArray(this.messagesArray)) return;
+            
+            const withProperty = this.messagesArray.filter(m => m.property);
+            if (withProperty.length) {
+                const property = withProperty[0].property;
+                const inputElement = Util.findInputElement(property, this.ngFormCtrl);
+                this.activateTab(inputElement);
+            }
+        }
+        
+        activateTab(query) {
+            if (!query) return;
+            
+            const formElement = this.ngFormCtrl.$$element[0];
+            const tabElements = formElement.querySelectorAll('md-tab-content');
+
+            const index = Array.prototype.findIndex.call(tabElements, tab => {
+                if (query instanceof Node) {
+                    return tab.contains(query);
+                }
+                
+                return !!tab.querySelector(query);
+            });
+            
+            if (index >= 0 && typeof this.activateTabCallback === 'function') {
+                this.activateTabCallback({$index: index});
+            }
+        }
 
         checkMessages() {
             this.messages = {};
@@ -46,7 +89,7 @@ function validationMessages(maUtil) {
             
             messagesArray.forEach(item => {
                 // standardize path from segment[1].test to segment.1.test
-                const path = maUtil.splitPropertyName(item.property).join('.');
+                const path = Util.splitPropertyName(item.property).join('.');
                 let messages = this.messages[path];
                 if (!messages) {
                     messages = this.messages[path] = [];
@@ -55,10 +98,11 @@ function validationMessages(maUtil) {
             });
 
             this.checkControls();
+            this.activateTabWithValidationError();
         }
         
         checkControls(control = this.ngFormCtrl, parentPath = null) {
-            const path = !parentPath ? [] : parentPath.concat(maUtil.splitPropertyName(control.$name, true));
+            const path = !parentPath ? [] : parentPath.concat(Util.splitPropertyName(control.$name, true));
             
             const isForm = Array.isArray(control.$$controls);
             if (isForm) {
@@ -94,7 +138,8 @@ function validationMessages(maUtil) {
         restrict: 'A',
         bindToController: {
             messagesArray: '<maValidationMessages',
-            multipleMessages: '<?'
+            multipleMessages: '<?',
+            activateTabCallback: '&?activateTab'
         },
         require: {
             ngFormCtrl: 'form'
