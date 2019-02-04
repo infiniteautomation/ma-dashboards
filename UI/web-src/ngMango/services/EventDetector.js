@@ -9,7 +9,9 @@ function eventDetectorProvider() {
         {
             type: 'MULTISTATE_STATE',
             description: 'pointEdit.detectors.state',
-            template: ``
+            template: ``,
+            pointEventDetector: true,
+            dataTypes: new Set(['MULTISTATE'])
         }
     ];
     
@@ -24,8 +26,8 @@ function eventDetectorProvider() {
     
     this.$get = eventDetectorFactory;
 
-    eventDetectorFactory.$inject = ['maRestResource', '$injector', '$q', '$templateCache'];
-    function eventDetectorFactory(RestResource, $injector, $q, $templateCache) {
+    eventDetectorFactory.$inject = ['maRestResource', '$injector', '$q', '$templateCache', 'maPoint'];
+    function eventDetectorFactory(RestResource, $injector, $q, $templateCache, Point) {
     
         const eventDetectorBaseUrl = '/rest/v2/event-detectors';
         const eventDetectorWebSocketUrl = '/rest/v1/websocket/event-detectors';
@@ -158,6 +160,23 @@ function eventDetectorProvider() {
             
             static detectorTypesByName() {
                 return eventDetectorTypesByName;
+            }
+            
+            get dataPoint() {
+                if (this.detectorSourceType !== 'DATA_POINT') return;
+                
+                if (this.$dataPoint) {
+                    return this.$dataPoint;
+                }
+                
+                return (this.$dataPoint = Point.getById({id: this.sourceId}));
+            }
+            
+            set dataPoint(point) {
+                if (this.detectorSourceType !== 'DATA_POINT') return;
+                
+                this.$dataPoint = point;
+                this.sourceId = point && point.id;
             }
         }
         
