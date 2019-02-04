@@ -16,17 +16,17 @@ import './eventDetectorEditor.css';
 
 class EventDetectorEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']; }
+    static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', 'maUtil', '$attrs', '$parse']; }
     
-    constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse) {
+    constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, Util, $attrs, $parse) {
+        
         this.maEventDetector = maEventDetector;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        this.$element = $element;
-        this.maUtil = maUtil;
+        this.Util = Util;
         
         this.detectorTypes = maEventDetector.detectorTypes();
         this.detectorTypesByName = maEventDetector.detectorTypesByName();
@@ -103,7 +103,7 @@ class EventDetectorEditorController {
         this.form.$setSubmitted();
         
         if (!this.form.$valid) {
-            this.activateTabWithClientError();
+            this.form.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
@@ -120,8 +120,6 @@ class EventDetectorEditorController {
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.result.messages;
-                
-                this.activateTabWithValidationError();
             }
             
             this.maDialogHelper.errorToast(['ui.components.eventDetectorSaveError', statusText]);
@@ -155,42 +153,6 @@ class EventDetectorEditorController {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
-    }
-    
-    activateTabWithClientError() {
-        Object.values(this.form.$error).some(ctrls => {
-            return ctrls.some(ctrl => {
-                this.activateTab(ctrl.$$element[0]);
-                return true;
-            });
-        });
-    }
-    
-    activateTabWithValidationError() {
-        const withProperty = this.validationMessages.filter(m => m.property);
-        if (withProperty.length) {
-            const property = withProperty[0].property;
-            const inputElement = this.maUtil.findInputElement(property, this.form);
-            this.activateTab(inputElement);
-        }
-    }
-    
-    activateTab(query) {
-        if (!query) return;
-        
-        const tabElements = this.$element[0].querySelectorAll('md-tab-content');
-
-        const index = Array.prototype.findIndex.call(tabElements, tab => {
-            if (query instanceof Node) {
-                return tab.contains(query);
-            }
-            
-            return !!tab.querySelector(query);
-        });
-        
-        if (index >= 0) {
-            this.activeTab = index;
-        }
     }
 }
 

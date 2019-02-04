@@ -1,4 +1,4 @@
-<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" flex="noshrink" layout="column">
+<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" activate-tab="$ctrl.activeTab = $index" flex="noshrink" layout="column">
     <md-tabs flex="noshrink" layout="column" ng-attr-md-dynamic-height="{{$ctrl.dynamicHeight}}" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
         <md-tab>
             <md-tab-label>
@@ -10,7 +10,8 @@
                         <md-input-container flex="100">
                             <label ma-tr="ui.eventDetectors.type"></label>
                             <md-select name="detectorType" ng-model="$ctrl.eventDetector.detectorType" ng-disabled="!$ctrl.eventDetector.isNew()">
-                                <md-option ng-repeat="type in $ctrl.detectorTypes track by type.type" ng-value="type.type">
+                                <md-option ng-repeat="type in $ctrl.detectorTypes track by type.type" ng-value="type.type"
+                                        ng-if="$ctrl.eventDetector.detectorSourceType === 'DATA_POINT' ? type.pointEventDetector && type.dataTypes.has($ctrl.eventDetector.dataPoint.dataType) : !type.pointEventDetector">
                                     <span ma-tr="{{type.description}}"></span>
                                 </md-option>
                             </md-select>
@@ -41,7 +42,7 @@
                 </div>
             </md-tab-body>
         </md-tab>
-        <md-tab>
+        <md-tab ng-if="$ctrl.detectorTypesByName[$ctrl.eventDetector.detectorType]">
             <md-tab-label>
                 <span ma-tr="{{$ctrl.detectorTypesByName[$ctrl.eventDetector.detectorType].description}}"></span>
             </md-tab-label>
