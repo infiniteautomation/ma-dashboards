@@ -77,6 +77,8 @@
               </md-button>
             </div>
             
+            <div ng-if="::userActions" ng-include="userActions"></div>
+            
             <md-button class="md-icon-button" ng-if="$state.params.helpPage" ui-state="$state.params.helpPage">
                 <md-icon>help</md-icon>
                 <md-tooltip md-autohide>
