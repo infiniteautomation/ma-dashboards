@@ -14,10 +14,9 @@ import './eventHandlerEditor.css';
  * @description Editor for an event handler, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']);
 class EventHandlerEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return $inject; }
+    static get $inject() { return ['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']; }
     
     constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse) {
         this.maEventHandler = maEventHandler;
@@ -29,8 +28,8 @@ class EventHandlerEditorController {
         this.$element = $element;
         this.maUtil = maUtil;
         
-        this.handlerTypes = maEventHandler.handlerTypes;
-        this.handlerTypesByName = maEventHandler.handlerTypesByName;
+        this.handlerTypes = maEventHandler.handlerTypes();
+        this.handlerTypesByName = maEventHandler.handlerTypesByName();
         
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
