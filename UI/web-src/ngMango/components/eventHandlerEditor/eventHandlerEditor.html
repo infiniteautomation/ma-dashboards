@@ -9,7 +9,7 @@
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
                         <md-input-container flex="100">
                             <label ma-tr="ui.components.eventHandlerType"></label>
-                            <md-select name="handlerType" ng-model="$ctrl.eventHandler.handlerType" ng-disabled="!$ctrl.eventHandler.isNew()">
+                            <md-select name="handlerType" ng-model="$ctrl.eventHandler.handlerType" ng-disabled="!$ctrl.eventHandler.isNew()" required>
                                 <md-option ng-repeat="type in $ctrl.handlerTypes track by type.type" ng-value="type.type">
                                     <span ma-tr="{{type.description}}"></span>
                                 </md-option>
@@ -45,7 +45,7 @@
                 </div>
             </md-tab-body>
         </md-tab>
-        <md-tab>
+        <md-tab ng-if="$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType]">
             <md-tab-label>
                 <span ma-tr="{{$ctrl.handlerTypesByName[$ctrl.eventHandler.handlerType].description}}"></span>
             </md-tab-label>
