@@ -104,82 +104,94 @@ function translateProvider() {
 
     translateFactory.$inject = ['$http', '$q', 'maUser'];
     function translateFactory($http, $q, maUser) {
-        const Translate = function() {};
 
-        Translate.tr = function(key) {
-            const functionArgs = arguments;
-            if (Array.isArray(key)) {
-                key = key[0];
+        const translationsUrl = '/rest/v1/translations';
+        
+        class Translate {
+            static tr(key) {
+                const functionArgs = arguments;
+                if (Array.isArray(key)) {
+                    key = key[0];
+                }
+
+                const namespace = key.split('.')[0];
+                return Translate.loadNamespaces(namespace).then(() => {
+                    return Translate.trSync.apply(null, functionArgs);
+                });
             }
 
-            const namespace = key.split('.')[0];
-            return Translate.loadNamespaces(namespace).then(function() {
-                return Translate.trSync.apply(null, functionArgs);
-            });
-        };
-
-        Translate.trSync = function(key, args) {
-            if (Array.isArray(key)) {
-                args = key;
-                key = key.shift();
-            } else if (!Array.isArray(args)) {
-                args = Array.prototype.slice.call(arguments, 1);
-            }
-            return Globalize.messageFormatter(key).apply(Globalize, args);
-        };
-
-
-        Translate.loadNamespaces = function(namespaces) {
-            if (!Array.isArray(namespaces)) {
-                namespaces = Array.prototype.slice.call(arguments);
+            static trSync(key, args) {
+                if (Array.isArray(key)) {
+                    args = key;
+                    key = key.shift();
+                } else if (!Array.isArray(args)) {
+                    args = Array.prototype.slice.call(arguments, 1);
+                }
+                return Globalize.messageFormatter(key).apply(Globalize, args);
             }
 
-            return $q.resolve().then(() => {
-                let namespacePromises = namespaces.map(namespace => {
-                    let loadedNamespace = loadedNamespaces[namespace];
-                    if (loadedNamespace) {
-                        return $q.when(loadedNamespace);
-                    }
-                    
-                    let request = pendingRequests[namespace];
-                    if (!request) {
-                        let translationsUrl = '/rest/v1/translations/';
-                        if (namespace === 'public' || namespace === 'login' || namespace === 'header') {
-                            translationsUrl += 'public/';
+            static loadNamespaces(namespaces) {
+                if (!Array.isArray(namespaces)) {
+                    namespaces = Array.prototype.slice.call(arguments);
+                }
+
+                return $q.resolve().then(() => {
+                    let namespacePromises = namespaces.map(namespace => {
+                        let loadedNamespace = loadedNamespaces[namespace];
+                        if (loadedNamespace) {
+                            return $q.when(loadedNamespace);
                         }
-
-                        request = $http.get(translationsUrl + encodeURIComponent(namespace), {
-                            params: {
-                                //language: 'en-US',
-                                //server: true,
-                                //browser: true
+                        
+                        let request = pendingRequests[namespace];
+                        if (!request) {
+                            let url = translationsUrl;
+                            if (namespace === 'public' || namespace === 'login' || namespace === 'header') {
+                                url += '/public';
                             }
-                        }).then(response => {
-                            loadTranslations(response.data);
-                            return response.data;
-                        }).finally(() => {
-                            delete pendingRequests[namespace];
-                        });
 
-                        pendingRequests[namespace] = request;
-                    }
-                    return request;
-                });
-                return $q.all(namespacePromises);
-            }).then(function(result) {
-                const allData = {};
-                
-                result.forEach(data => {
-                    angular.merge(allData, data);
-                });
+                            request = $http.get(`${url}/${encodeURIComponent(namespace)}`, {
+                                params: {
+                                    //language: 'en-US',
+                                    //server: true,
+                                    //browser: true
+                                }
+                            }).then(response => {
+                                loadTranslations(response.data);
+                                return response.data;
+                            }).finally(() => {
+                                delete pendingRequests[namespace];
+                            });
 
-                return allData;
-            });
-        };
+                            pendingRequests[namespace] = request;
+                        }
+                        return request;
+                    });
+                    return $q.all(namespacePromises);
+                }).then(result => {
+                    const allData = {};
+                    
+                    result.forEach(data => {
+                        angular.merge(allData, data);
+                    });
+
+                    return allData;
+                });
+            }
+            
+            static clearCache() {
+                return $http({
+                    method: 'POST',
+                    url: `${translationsUrl}/clear-cache`
+                }).then(() => {
+                    clearLoadedNamespaces();
+                });
+            }
+        }
 
         Translate.setLocale = setLocale;
         Translate.loadTranslations = loadTranslations;
-        
+        Translate.clearLoadedNamespaces = clearLoadedNamespaces;
+
         maUser.notificationManager.subscribeLocal((event, newLocale, first) => {
             let globalizeLocale = Globalize.locale();
             if (!globalizeLocale || globalizeLocale.locale !== newLocale) {
