@@ -124,7 +124,7 @@ ngMangoServices.factory('maRestResource', restResourceFactory);
 ngMangoServices.factory('maTemporaryRestResource', temporaryRestResourceFactory);
 ngMangoServices.factory('maRqlBuilder', rqlBuilderFactory);
 ngMangoServices.factory('maMath', mathFactory);
-ngMangoServices.factory('maEventDetector', maEventDetector);
+ngMangoServices.provider('maEventDetector', maEventDetector);
 ngMangoServices.provider('maEventHandler', maEventHandler);
 ngMangoServices.factory('maDataPointTags', maDataPointTags);
 ngMangoServices.factory('maAuditTrail', maAuditTrail);

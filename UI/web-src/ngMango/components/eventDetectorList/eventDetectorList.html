@@ -1,0 +1,20 @@
+<md-list class="ma-no-padding">
+    <md-list-item class="md-2-line" ng-click="$ctrl.newEventDetector($event)" md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3 ma-tr="ui.app.new"></h3>
+            <p ma-tr="ui.eventDetectors.create"></p>
+        </div>
+        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.newEventDetector($event)">
+            <md-icon>add</md-icon>
+        </md-button>
+    </md-list-item>
+    
+    <md-list-item ng-repeat="eventDetector in $ctrl.eventDetectors | orderBy:'name' track by eventDetector.xid" ng-click="$ctrl.selectEventDetector(eventDetector)" class="md-2-line"
+            ng-class="{'ma-list-selected': $ctrl.selected.xid === eventDetector.xid}"
+            md-colors="{'background': $ctrl.selected.xid === eventDetector.xid ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3 ng-bind="eventDetector.description || eventDetector.name"></h3>
+            <p ng-bind="eventDetector.xid"></p>
+        </div>
+    </md-list-item>
+</md-list>

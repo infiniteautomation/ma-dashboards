@@ -141,6 +141,9 @@ import bulkDataPointEditor from './components/bulkDataPointEditor/bulkDataPointE
 import eventHandlerSetPointEditor from './components/eventHandlerEditor/eventHandlerSetPointEditor';
 import scriptContext from './components/scriptContext/scriptContext';
 import unitList from './components/unitList/unitList';
+import eventDetectorList from './components/eventDetectorList/eventDetectorList';
+import eventDetectorEditor from './components/eventDetectorEditor/eventDetectorEditor';
+import eventDetectorSelect from './components/eventDetectorSelect/eventDetectorSelect';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -295,6 +298,9 @@ ngMango.component('maBulkDataPointEditor', bulkDataPointEditor);
 ngMango.component('maEventHandlerSetPointEditor', eventHandlerSetPointEditor);
 ngMango.component('maScriptContext', scriptContext);
 ngMango.component('maUnitList', unitList);
+ngMango.component('maEventDetectorList', eventDetectorList);
+ngMango.component('maEventDetectorEditor', eventDetectorEditor);
+ngMango.component('maEventDetectorSelect', eventDetectorSelect);
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default

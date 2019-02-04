@@ -1,0 +1,13 @@
+<md-input-container flex>
+    <label ng-transclude="labelSlot">
+        <span ma-tr="ui.eventDetectors.select"></span>
+    </label>
+    <md-select ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectEventDetector()" ng-model-options="{trackBy: '$value.xid'}">
+        <md-option ng-if="$ctrl.showNewOption" ng-value="$ctrl.newValue" md-option-empty>
+            <em ma-tr="ui.eventDetectors.create"></em>
+        </md-option>
+        <md-option ng-repeat="eventDetector in $ctrl.eventDetectors | orderBy:'name' track by eventDetector.xid" ng-value="eventDetector">
+            <span ng-bind="eventDetector.description || eventDetector.name || eventDetector.xid"></span>
+        </md-option>
+    </md-select>
+</md-input-container>

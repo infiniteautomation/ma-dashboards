@@ -1187,17 +1187,33 @@ export default [
         menuIcon: 'change_history',
         permission: 'superadmin',
         params: {
-            noPadding: false,
-            hideFooter: false,
             helpPage: 'ui.help.eventHandlers'
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
                         './components/eventHandlerPage/eventHandlerPage').then(eventHandlerPage => {
-                    angular.module('eventHandlerPage', [])
+                    angular.module('maUiEventHandlerPage', [])
                         .component('maUiEventHandlerPage', eventHandlerPage.default);
-                    $injector.loadNewModules(['eventHandlerPage']);
+                    $injector.loadNewModules(['maUiEventHandlerPage']);
+                });
+            }]
+        }
+    },
+    {
+        name: 'ui.settings.eventDetectors',
+        url: '/event-detectors/{xid}',
+        template: '<ma-ui-event-detector-page flex="noshrink" layout="column"><ma-ui-event-detector-page>',
+        menuTr: 'ui.app.eventDetectors',
+        menuIcon: 'change_history',
+        permission: 'superadmin',
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/eventDetectorPage/eventDetectorPage').then(eventDetectorPage => {
+                    angular.module('maUieventDetectorPage', [])
+                        .component('maUiEventDetectorPage', eventDetectorPage.default);
+                    $injector.loadNewModules(['maUieventDetectorPage']);
                 });
             }]
         }
