@@ -23,14 +23,14 @@ const templates = {
  * @description Editor for a data point, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
+const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
     'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_TIME_PERIOD_TYPES', '$templateCache', '$filter']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
+    constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
             MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_TIME_PERIOD_TYPES, $templateCache, $filter) {
 
         Object.keys(templates).forEach(key => {
@@ -46,8 +46,6 @@ class DataPointEditorController {
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        this.$element = $element;
-        this.maUtil = maUtil;
         this.MultipleValues = MultipleValues;
         this.orderBy = $filter('orderBy');
         this.rollupTypes = MA_ROLLUP_TYPES.filter(t => !t.nonAssignable);
@@ -177,7 +175,7 @@ class DataPointEditorController {
         this.form.$setSubmitted();
 
         if (!this.form.$valid) {
-            this.activateTabWithClientError();
+            this.form.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
@@ -200,7 +198,6 @@ class DataPointEditorController {
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.result.messages;
-                this.activateTabWithValidationError();
             }
             
             this.errorMessages.push(statusText);
@@ -271,31 +268,12 @@ class DataPointEditorController {
                 }
             });
             this.validationMessages = validationMessages;
-            this.activateTabWithValidationError();
         } else {
             this.setViewValue(savedPoints);
             this.render();
         }
 
         this.notifyBulkEditComplete(resource);
-    }
-
-    activateTabWithClientError() {
-        Object.values(this.form.$error).some(ctrls => {
-            return ctrls.some(ctrl => {
-                this.activateTab(ctrl.$$element[0]);
-                return true;
-            });
-        });
-    }
-    
-    activateTabWithValidationError() {
-        const withProperty = this.validationMessages.filter(m => m.property);
-        if (withProperty.length) {
-            const property = withProperty[0].property;
-            const inputElement = this.maUtil.findInputElement(property, this.form);
-            this.activateTab(inputElement);
-        }
     }
 
     revertItem(event) {
@@ -327,24 +305,6 @@ class DataPointEditorController {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
-    }
-    
-    activateTab(query) {
-        if (!query) return;
-        
-        const tabElements = this.$element[0].querySelectorAll('md-tab-content');
-
-        const index = Array.prototype.findIndex.call(tabElements, tab => {
-            if (query instanceof Node) {
-                return tab.contains(query);
-            }
-            
-            return !!tab.querySelector(query);
-        });
-        
-        if (index >= 0) {
-            this.activeTab = index;
-        }
     }
     
     deleteDataPoint(event, item) {

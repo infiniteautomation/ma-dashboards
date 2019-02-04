@@ -139,7 +139,7 @@ function validationMessages(Util) {
         bindToController: {
             messagesArray: '<maValidationMessages',
             multipleMessages: '<?',
-            activateTabCallback: '&?activateTab'
+            activateTabCallback: '&?maActivateTab'
         },
         require: {
             ngFormCtrl: 'form'

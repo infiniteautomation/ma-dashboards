@@ -16,9 +16,9 @@ import './eventDetectorEditor.css';
 
 class EventDetectorEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', 'maUtil', '$attrs', '$parse']; }
+    static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse']; }
     
-    constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, Util, $attrs, $parse) {
+    constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse) {
         
         this.maEventDetector = maEventDetector;
         this.$q = $q;
@@ -26,7 +26,6 @@ class EventDetectorEditorController {
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        this.Util = Util;
         
         this.detectorTypes = maEventDetector.detectorTypes();
         this.detectorTypesByName = maEventDetector.detectorTypesByName();
