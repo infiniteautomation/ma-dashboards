@@ -1895,7 +1895,7 @@ export default [
                 return import(/* webpackMode: "eager" */ './views/help/scriptingEditor.html');
             }
         },
-        menuTr: 'ui.app.eventHandlers'
+        menuTr: 'ui.app.mangoJavaScript'
     },
     {
         name: 'ui.help.freeMarkerTemplates',
