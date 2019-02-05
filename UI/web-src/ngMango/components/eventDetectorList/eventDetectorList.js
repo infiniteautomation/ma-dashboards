@@ -60,6 +60,10 @@ class EventDetectorListController {
         
         query.query().then(eventDetectors => {
             this.eventDetectors = eventDetectors;
+            
+            if (typeof this.onQuery === 'function') {
+                this.onQuery({$items: this.eventDetectors});
+            }
         });
     }
     
@@ -98,7 +102,8 @@ export default {
     template: eventDetectorListTemplate,
     controller: EventDetectorListController,
     bindings: {
-        dataPoint: '<?point'
+        dataPoint: '<?point',
+        onQuery: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'

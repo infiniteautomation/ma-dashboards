@@ -1,5 +1,6 @@
 <md-list class="ma-no-padding">
-    <md-list-item ng-class="{'md-2-line': !$ctrl.dataPoint}" ng-click="$ctrl.newEventDetector($event)" md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
+    <md-list-item ng-class="{'md-2-line': !$ctrl.dataPoint}" ng-click="$ctrl.newEventDetector($event)"
+            md-colors="$ctrl.selected.isNew() ? {background: 'accent-hue-1'} : {}">
         <div ng-if="!$ctrl.dataPoint" class="md-list-item-text">
             <h3 ma-tr="ui.app.new"></h3>
             <p ma-tr="ui.eventDetectors.create"></p>
@@ -12,7 +13,7 @@
 
     <md-list-item ng-repeat="eventDetector in $ctrl.eventDetectors | orderBy:'name' track by eventDetector.xid" ng-click="$ctrl.selectEventDetector(eventDetector)"
             ng-class="{'ma-list-selected': $ctrl.selected.xid === eventDetector.xid, 'md-2-line': !$ctrl.dataPoint}"
-            md-colors="{'background': $ctrl.selected.xid === eventDetector.xid ? 'accent-hue-1' : 'background-hue-1'}">
+            md-colors="$ctrl.selected.xid === eventDetector.xid ? {background: 'accent-hue-1'} : {}">
         <div ng-if="!$ctrl.dataPoint" class="md-list-item-text">
             <h3 ng-bind="eventDetector.description || eventDetector.name"></h3>
             <p ng-bind="eventDetector.detectorSourceType === 'DATA_POINT' ? eventDetector.dataPoint.formatLabel() : eventDetector.xid"></p>
