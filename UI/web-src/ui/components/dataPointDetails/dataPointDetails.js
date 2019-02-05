@@ -6,6 +6,7 @@
 
 import angular from 'angular';
 import dataPointDetailsTemplate from './dataPointDetails.html';
+import './dataPointDetails.css';
 
 class DataPointDetailsController {
     static get $$ngIsClass() { return true; }
@@ -41,6 +42,7 @@ class DataPointDetailsController {
     }
 
     pointChanged(point) {
+        delete this.eventDetector;
         if (!point) return;
 
         if (this.dataPoint && this.dataPoint.id !== point.id) {
