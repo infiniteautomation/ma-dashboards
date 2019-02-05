@@ -230,9 +230,9 @@
         </md-toolbar>
 
         <md-dialog-content flex layout="row" class="ma-data-point-details-event-detectors">
-            <ma-event-detector-list md-colors="{background: 'background'}" flex="25" ng-if="$ctrl.dataPoint" ng-model="$ctrl.eventDetector" data-point="$ctrl.dataPoint"
+            <ma-event-detector-list md-colors="{background: 'background'}" flex="30" ng-if="$ctrl.dataPoint" ng-model="$ctrl.eventDetector" data-point="$ctrl.dataPoint"
                 on-query="$ctrl.eventDetectors = $items; $ctrl.eventDetector = $items[0] || null"></ma-event-detector-list>
-            <ma-event-detector-editor flex="75" ng-model="$ctrl.eventDetector"></ma-event-detector-editor>
+            <ma-event-detector-editor flex="70" ng-model="$ctrl.eventDetector"></ma-event-detector-editor>
         </md-dialog-content>
     </md-dialog>
 </ma-dialog>

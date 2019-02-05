@@ -50,6 +50,13 @@
                 <div class="md-padding ma-no-padding-bottom" ng-include="$ctrl.detectorTypesByName[$ctrl.eventDetector.detectorType].templateUrl"></div>
             </md-tab-body>
         </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="ui.app.eventHandlers"></span>
+            </md-tab-label>
+            <md-tab-body>
+            </md-tab-body>
+        </md-tab>
     </md-tabs>
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
