@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import eventDetectorEditorTemplate from './eventDetectorEditor.html';
 import './eventDetectorEditor.css';
 
@@ -19,7 +18,6 @@ class EventDetectorEditorController {
     static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse']; }
     
     constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse) {
-        
         this.maEventDetector = maEventDetector;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
@@ -108,11 +106,12 @@ class EventDetectorEditorController {
         }
         
         this.validationMessages = [];
-        
+
+        const notifyName = this.eventDetector.description || this.eventDetector.getOriginalId();
         this.eventDetector.save().then(item => {
             this.setViewValue();
             this.render();
-            this.maDialogHelper.toast(['ui.components.eventDetectorSaved', this.eventDetector.alias || this.eventDetector.xid]);
+            this.maDialogHelper.toast(['ui.eventDetectors.saved', notifyName]);
         }, error => {
             let statusText = error.mangoStatusText;
             
@@ -121,7 +120,7 @@ class EventDetectorEditorController {
                 this.validationMessages = error.data.result.messages;
             }
             
-            this.maDialogHelper.errorToast(['ui.components.eventDetectorSaveError', statusText]);
+            this.maDialogHelper.errorToast(['ui.app.saveError', notifyName, statusText]);
         });
     }
     
@@ -132,15 +131,17 @@ class EventDetectorEditorController {
     }
 
     deleteItem(event) {
-        const notifyName = this.eventDetector.alias || this.eventDetector.getOriginalId();
-        this.maDialogHelper.confirm(event, ['ui.components.eventDetectorConfirmDelete', notifyName]).then(() => {
+        const notifyName = this.eventDetector.description || this.eventDetector.getOriginalId();
+        this.maDialogHelper.confirm(event, ['ui.eventDetectors.confirmDelete', notifyName]).then(() => {
             this.eventDetector.delete().then(() => {
-                this.maDialogHelper.toast(['ui.components.eventDetectorDeleted', notifyName]);
+                this.maDialogHelper.toast(['ui.eventDetectors.deleted', notifyName]);
                 this.eventDetector = null;
                 this.setViewValue();
                 this.render();
             });
-        }, angular.noop);
+        }, error => {
+            this.maDialogHelper.errorToast(['ui.app.deleteError', notifyName, error.mangoStatusText]);
+        });
     }
     
     checkDiscardOption(type) {

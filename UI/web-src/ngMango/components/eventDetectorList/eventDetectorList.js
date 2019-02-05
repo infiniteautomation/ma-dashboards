@@ -25,9 +25,7 @@ class EventDetectorListController {
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
         
-        this.EventDetector.list().then((eventDetectors) => {
-            this.eventDetectors = eventDetectors;
-        });
+        this.doQuery();
         
         this.EventDetector.subscribe((event, item, originalXid) => {
             if (!this.eventDetectors) return;
@@ -47,6 +45,22 @@ class EventDetectorListController {
     }
     
     $onChanges(changes) {
+        if (changes.dataPoint && !changes.dataPoint.isFirstChange()) {
+            this.doQuery();
+        }
+    }
+    
+    doQuery() {
+        const query = this.EventDetector.buildQuery();
+        
+        if (this.dataPoint) {
+            query.eq('sourceTypeName', 'DATA_POINT');
+            query.eq('dataPointId', this.dataPoint.id);
+        }
+        
+        query.query().then(eventDetectors => {
+            this.eventDetectors = eventDetectors;
+        });
     }
     
     setViewValue() {
@@ -71,6 +85,11 @@ class EventDetectorListController {
     
     newEventDetector(event) {
         this.selected = new this.EventDetector();
+        if (this.dataPoint) {
+            this.selected.detectorSourceType = 'DATA_POINT';
+            this.selected.dataPoint = this.dataPoint;
+            this.selected.sourceId = this.dataPoint.id;
+        }
         this.setViewValue();
     }
 }
@@ -79,6 +98,7 @@ export default {
     template: eventDetectorListTemplate,
     controller: EventDetectorListController,
     bindings: {
+        dataPoint: '<?point'
     },
     require: {
         ngModelCtrl: 'ngModel'

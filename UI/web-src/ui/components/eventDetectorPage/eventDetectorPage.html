@@ -1,3 +1,4 @@
+<ma-filtering-point-list ng-model="$ctrl.dataPoint"></ma-filtering-point-list>
 <div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
     <md-card flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-toolbar class="md-hue-3">
@@ -16,7 +17,7 @@
         </md-card-content>
     
         <md-card-content flex class="ma-no-padding" ng-if="$ctrl.$mdMedia('gt-md')">
-            <ma-event-detector-list flex layout="column" ng-model="$ctrl.eventDetector" ng-change="$ctrl.eventDetectorChanged()"></ma-event-detector-list>
+            <ma-event-detector-list flex layout="column" ng-model="$ctrl.eventDetector" ng-change="$ctrl.eventDetectorChanged()" data-point="$ctrl.dataPoint"></ma-event-detector-list>
         </md-card-content>
     </md-card>
 
