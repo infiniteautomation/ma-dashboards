@@ -5,3 +5,9 @@ ma-ui-data-source-page md-input-container.ma-filter {
 ma-ui-data-source-page .ma-data-source-list {
 	margin: 0;
 }
+
+@media (min-width: 1921px) {
+	ma-ui-data-source-page > div.layout-gt-md-row > .flex-gt-md-25 {
+		max-width: 20%;
+	}
+}
