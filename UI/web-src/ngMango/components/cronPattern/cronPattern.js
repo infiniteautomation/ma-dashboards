@@ -12,14 +12,11 @@ import componentTemplate from './cronPattern.html';
  * @description Interface for editing a cron pattern.
  */
 
-const $inject = Object.freeze(['$scope', '$http']);
 class CronPatternController {
-    static get $inject() { return $inject; }
+    static get $inject() { return []; }
     static get $$ngIsClass() { return true; }
     
-    constructor($scope, $http) {
-        this.$scope = $scope;
-        this.$http = $http;
+    constructor() {
     }
     
     $onInit() {
@@ -43,7 +40,6 @@ class CronPatternController {
             this.cronPattern = '* * * * * ?';
         }
 
-        this.setViewValue();
         this.updateSelectBoxes();
     }
 
@@ -92,6 +88,7 @@ class CronPatternController {
         this.cronArray[5] = this.dayOfWeek;
         this.cronArray[3] = '?';
         this.cronPattern = this.cronArray.join(' ');
+        this.setViewValue();
     }
 
     updateSelectBoxes() {

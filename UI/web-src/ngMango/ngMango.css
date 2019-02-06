@@ -1085,6 +1085,10 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 	.ma-inputs-container.layout-row > .flex-gt-md-50 {
 		max-width: calc(50% - 10px);
 	}
+	
+	.ma-inputs-container.layout-row > .flex-gt-md-33 {
+		max-width: calc(33.33% - 10px);
+	}
 }
 
 /* Color picker checked background */

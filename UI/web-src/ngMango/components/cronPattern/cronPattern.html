@@ -1,7 +1,7 @@
-<div layout layout-align="space-between center" layout-wrap>
-    <md-input-container flex="100" flex-gt-md="30">
+<div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
+    <md-input-container flex="100" flex-gt-md="33">
         <label ma-tr="dateAndTime.second"></label>
-        <md-select ng-model="$ctrl.second" ng-change="$ctrl.selectSecond()" placeholder="Second">
+        <md-select ng-model="$ctrl.second" ng-change="$ctrl.selectSecond()">
             <md-option value="*" ma-tr="cronPicker.every"></md-option>
             <md-option value="0/5" ma-tr="cronPicker.everyX" ma-tr-args="[5]"></md-option>
             <md-option value="0/10" ma-tr="cronPicker.everyX" ma-tr-args="[10]"></md-option>
@@ -12,9 +12,9 @@
         </md-select>
     </md-input-container>
     
-    <md-input-container flex="100" flex-gt-md="30">
+    <md-input-container flex="100" flex-gt-md="33">
         <label ma-tr="dateAndTime.minute"></label>
-        <md-select ng-model="$ctrl.minute" ng-change="$ctrl.selectMinute()" placeholder="Minute">
+        <md-select ng-model="$ctrl.minute" ng-change="$ctrl.selectMinute()">
             <md-option value="*" ma-tr="cronPicker.every"></md-option>
             <md-option value="0/5" ma-tr="cronPicker.everyX" ma-tr-args="[5]"></md-option>
             <md-option value="0/10" ma-tr="cronPicker.everyX" ma-tr-args="[10]"></md-option>
@@ -25,9 +25,9 @@
         </md-select>
     </md-input-container>
     
-    <md-input-container flex="100" flex-gt-md="30">
+    <md-input-container flex="100" flex-gt-md="33">
         <label ma-tr="dateAndTime.hour"></label>
-        <md-select ng-model="$ctrl.hour" ng-change="$ctrl.selectHour()" placeholder="Hour">
+        <md-select ng-model="$ctrl.hour" ng-change="$ctrl.selectHour()">
             <md-option value="*" ma-tr="cronPicker.every"></md-option>
             <md-option value="0/2" ma-tr="cronPicker.everyX" ma-tr-args="[2]"></md-option>
             <md-option value="0/3" ma-tr="cronPicker.everyX" ma-tr-args="[3]"></md-option>
@@ -38,9 +38,9 @@
         </md-select>
     </md-input-container>
     
-    <md-input-container flex="100" flex-gt-md="30">
+    <md-input-container flex="100" flex-gt-md="33">
         <label ma-tr="dateAndTime.dayOfMonth"></label>
-        <md-select ng-model="$ctrl.dayOfMonth" ng-change="$ctrl.selectDayOfMonth()" placeholder="Day of Month">
+        <md-select ng-model="$ctrl.dayOfMonth" ng-change="$ctrl.selectDayOfMonth()">
             <md-option value="*" ma-tr="cronPicker.every"></md-option>
             <md-option value="0/2" ma-tr="cronPicker.everyX" ma-tr-args="[2]"></md-option>
             <md-option value="0/5" ma-tr="cronPicker.everyX" ma-tr-args="[5]"></md-option>
@@ -51,9 +51,9 @@
         </md-select>
     </md-input-container>
     
-    <md-input-container flex="100" flex-gt-md="30">
+    <md-input-container flex="100" flex-gt-md="33">
         <label ma-tr="dateAndTime.month"></label>
-        <md-select ng-model="$ctrl.month" ng-change="$ctrl.selectMonth()" placeholder="Month">
+        <md-select ng-model="$ctrl.month" ng-change="$ctrl.selectMonth()">
             <md-option value="*" ma-tr="cronPicker.every"></md-option>
             <md-option value="0/2" ma-tr="cronPicker.everyX" ma-tr-args="[2]"></md-option>
             <md-option value="0/3" ma-tr="cronPicker.everyX" ma-tr-args="[3]"></md-option>
@@ -74,9 +74,9 @@
         </md-select>
     </md-input-container>
 
-    <md-input-container flex="100" flex-gt-md="30">
+    <md-input-container flex="100" flex-gt-md="33">
         <label ma-tr="dateAndTime.dayOfWeek"></label>
-        <md-select ng-model="$ctrl.dayOfWeek" ng-change="$ctrl.selectDayOfWeek()" placeholder="Day of Week">
+        <md-select ng-model="$ctrl.dayOfWeek" ng-change="$ctrl.selectDayOfWeek()">
             <md-option value="*" ma-tr="cronPicker.every"></md-option>
             <md-option value="1,7" ma-tr="dateAndTime.weekends"></md-option>
             <md-option value="2-6" ma-tr="dateAndTime.weekdays"></md-option>
