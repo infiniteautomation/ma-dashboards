@@ -10,9 +10,9 @@ import './dataPointDetails.css';
 
 class DataPointDetailsController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint']; }
+    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint', '$scope']; }
     
-    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point) {
+    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point, $scope) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.localStorageService = localStorageService;
@@ -20,6 +20,7 @@ class DataPointDetailsController {
         this.dateBar = maUiDateBar;
         this.User = User;
         this.Point = Point;
+        this.$scope = $scope;
         
         this.chartType = 'smoothedLine';
     }
@@ -40,11 +41,27 @@ class DataPointDetailsController {
         }
         
         this.retrievePreferences();
+
+        this.deregister = this.Point.notificationManager.subscribe((event, point) => {
+            if (this.dataPoint && this.dataPoint.id === point.id) {
+                this.$scope.$apply(() => {
+                    if (event.name === 'update') {
+                        Object.assign(this.dataPoint, point);
+                        this.pointUpdated();
+                    } else if (event.name === 'delete') {
+                        this.pointChanged(null);
+                    }
+                });
+            }
+        });
+    }
+
+    $onDestroy() {
+        this.deregister();
     }
     
     getPointByXid(xid) {
         this.Point.get({xid}).$promise.then(dp => {
-            this.selectedPoint = dp;
             if (this.$stateParams.edit) {
                 this.editTarget = dp;
                 this.showEditDialog = {};
@@ -55,7 +72,6 @@ class DataPointDetailsController {
     
     getPointById(id) {
         this.Point.getById({id}).$promise.then(dp => {
-            this.selectedPoint = dp;
             if (this.$stateParams.edit) {
                 this.editTarget = dp;
                 this.showEditDialog = {};
@@ -65,8 +81,8 @@ class DataPointDetailsController {
     }
 
     pointChanged(point) {
-        delete this.eventDetector;
         if (this.dataPoint && this.dataPoint.id !== point.id) {
+            delete this.eventDetector;
             delete this.pointValues;
             delete this.realtimePointValues;
         }
@@ -79,14 +95,11 @@ class DataPointDetailsController {
         const xid = this.dataPoint.xid;
 
         this.$state.go('.', {pointXid: xid}, {location: 'replace', notify: false});
+        this.localStorageService.set('lastDataPointDetailsItem', {xid});
         
-        this.localStorageService.set('lastDataPointDetailsItem', {
-            xid: xid
-        });
-        
-        this.PointHierarchy.pathByXid({xid: xid}).$promise.then(function(response) {
+        this.PointHierarchy.pathByXid({xid}).$promise.then(response => {
             this.path = response;
-        }.bind(this));
+        });
         
         const pointType = this.dataPoint.pointLocator.dataType;
         this.dateBar.rollupTypesFilter = pointType === 'NUMERIC' ? {} : { nonNumeric: true };
