@@ -89,7 +89,10 @@ class FilteringPointListController {
             if (this.viewValue && this.viewValue.id === point.id) {
                 this.$scope.$apply(() => {
                     if (event.name === 'update') {
-                        this.setViewValue(point);
+                        Object.assign(this.viewValue, point);
+                        
+                        // label doesn't update if its not a different item
+                        this.selectedItem = point;
                     } else if (event.name === 'delete') {
                         this.setViewValue(null);
                     }
