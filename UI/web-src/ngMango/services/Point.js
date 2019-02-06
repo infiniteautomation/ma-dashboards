@@ -34,7 +34,7 @@
 * @name Point#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/data-points/:xid`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/data-points/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -46,7 +46,7 @@
 * @name Point#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/data-points/:xid`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/data-points/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -58,7 +58,7 @@
 * @name Point#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/data-points/:xid`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/data-points/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -70,7 +70,7 @@
 * @name Point#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/data-points/:xid`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/data-points/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -96,7 +96,7 @@
 * @name Point#rql
 *
 * @description
-* Passed a string containing RQL for the query and returns an array of data point objects. Queries the endpoint `/rest/v1/data-points?:query`
+* Passed a string containing RQL for the query and returns an array of data point objects. Queries the endpoint `/rest/v2/data-points?:query`
 * @param {string} RQL RQL string for the query
 * @returns {array} An array of data point objects. Objects will be of the resource class and have resource actions available to them.
 *
@@ -109,7 +109,7 @@
 * @name Point#getById
 *
 * @description
-* Query the REST endpoint `/rest/v1/data-points/by-id/:id` with the `GET` method.
+* Query the REST endpoint `/rest/v2/data-points/by-id/:id` with the `GET` method.
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -138,7 +138,7 @@
 * Method for setting the value of a settable data point.
 * @param {number} value New value to set on the data point.
 * @param {object=} options Optional object for setting converted property.
-* @returns {object} Returns promise object from $http.put at `/rest/v1/point-values/`
+* @returns {object} Returns promise object from $http.put at `/rest/v2/point-values/`
 *
 */
 
@@ -353,7 +353,7 @@ function dataPointProvider() {
         });
         
         Object.assign(Point.notificationManager, {
-            webSocketUrl: '/rest/v1/websocket/data-points'
+            webSocketUrl: '/rest/v2/websocket/data-points'
         });
         
         Object.assign(Point, {
@@ -415,7 +415,7 @@ function dataPointProvider() {
             },
         
             enable(enabled = true, restart = false) {
-                const url = '/rest/v1/data-points/enable-disable/' + encodeURIComponent(this.xid);
+                const url = '/rest/v2/data-points/enable-disable/' + encodeURIComponent(this.xid);
                 return $http({
                     url,
                     method: 'PUT',
