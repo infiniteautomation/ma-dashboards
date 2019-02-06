@@ -1201,24 +1201,6 @@ export default [
         }
     },
     {
-        name: 'ui.settings.eventDetectors',
-        url: '/event-detectors/{xid}',
-        template: '<ma-ui-event-detector-page flex="noshrink" layout="column"><ma-ui-event-detector-page>',
-        menuTr: 'ui.app.eventDetectors',
-        menuIcon: 'change_history',
-        permission: 'superadmin',
-        resolve: {
-            loadMyDirectives: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
-                        './components/eventDetectorPage/eventDetectorPage').then(eventDetectorPage => {
-                    angular.module('maUieventDetectorPage', [])
-                        .component('maUiEventDetectorPage', eventDetectorPage.default);
-                    $injector.loadNewModules(['maUieventDetectorPage']);
-                });
-            }]
-        }
-    },
-    {
         name: 'ui.help.eventHandlers',
         url: '/event-handlers/help',
         resolve: {
