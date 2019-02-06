@@ -1,5 +1,7 @@
+<md-progress-linear ng-if="$ctrl.queryPromise"></md-progress-linear>
+
 <md-list class="ma-no-padding ma-no-text-overflow">
-    <md-list-item ng-if="$ctrl.showNew" class="md-2-line" ng-click="$ctrl.createNew($event)" md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
+    <md-list-item ng-if="$ctrl.showNew && !$ctrl.filter" class="md-2-line" ng-click="$ctrl.createNew($event)" md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
         <div class="md-list-item-text">
             <h3 ma-tr="ui.app.new"></h3>
             <p ma-tr="dsList.createDataSource"></p>
@@ -18,5 +20,9 @@
             <p><span ng-bind="item.description"></span> &mdash; <span ng-bind="item.connectionDescription"></span></p>
         </div>
         <md-switch ng-if="$ctrl.showEnableSwitch" class="md-secondary" ng-model="item.isEnabled"></md-switch>
+    </md-list-item>
+    
+    <md-list-item ng-if="!$ctrl.items.length && !$ctrl.queryPromise">
+        <span ma-tr="dsList.emptyList"></span>
     </md-list-item>
 </md-list>

@@ -16,7 +16,7 @@
         </md-card-content>
         
         <md-input-container class="ma-filter" md-no-float ng-if="$ctrl.$mdMedia('gt-md')">
-            <input ng-model="$ctrl.filter" ng-model-options="{debounce: 1000}" ma-tr="ui.app.filter">
+            <input ng-model="$ctrl.filter" ng-model-options="{debounce: 500}" ma-tr="ui.app.filter">
             <md-button class="ma-input-button md-icon-button" ng-click="$ctrl.filter = ''">
                 <md-icon>clear</md-icon>
             </md-button>
