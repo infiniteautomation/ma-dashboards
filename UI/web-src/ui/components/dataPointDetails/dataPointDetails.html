@@ -9,7 +9,7 @@
 <ma-point-values point="$ctrl.dataPoint" values="$ctrl.realtimePointValues" realtime="$ctrl.realtimeMode" rendered="true" latest="$ctrl.numValues" use-cache="$ctrl.showCachedData"
     refresh="$ctrl.refreshTable"></ma-point-values>
 
-<ma-point-statistics point="$ctrl.dataPoint" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
+<ma-point-statistics point="$ctrl.dataPoint" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" statistics="$ctrl.statsObj"></ma-point-statistics>
 
 <div layout="row" layout-wrap class="data-point-details-page">
     <div flex="100" layout="column" layout-gt-md="row" class="ma-dpd-row-container">
@@ -48,7 +48,8 @@
                             <div ng-repeat="(key, value) in $ctrl.dataPoint.tags"><span ng-bind="key"></span>=<span ng-bind="value"></span></div>
                         </div>
                         <label flex="35"><span ma-tr="ui.app.dataSource"></span>:</label><div flex="65" ng-bind="$ctrl.dataPoint.dataSourceName"></div>
-                        <label flex="35"><span ma-tr="pointEdit.detectors.eventDetectors"></span>:</label><div flex="65"><a ma-tr="ui.eventDetectors.count" ma-tr-args="[$ctrl.eventDetectors.length]" ng-click="$ctrl.showDetectorDialog = {}"></a></div>
+                        <label flex="35"><span ma-tr="pointEdit.detectors.eventDetectors"></span>:</label><div flex="65"><a ng-if="$ctrl.eventDetectors"
+                            ma-tr="ui.eventDetectors.count" ma-tr-args="[$ctrl.eventDetectors.length]" ng-click="$ctrl.showDetectorDialog = {}"></a></div>
             		</div>
                     
             		<div layout="row">
@@ -121,7 +122,7 @@
         			</div>
         		</md-toolbar>
                 <md-card-content>
-        		  <ma-statistics-table statistics="statsObj"></ma-statistics-table>
+        		  <ma-statistics-table statistics="$ctrl.statsObj"></ma-statistics-table>
                 </md-card-content>
         	</md-card>
         </div>
@@ -228,10 +229,8 @@
             </div>
         </md-toolbar>
 
-        <md-dialog-content flex layout="row" class="ma-data-point-details-event-detectors">
-            <ma-event-detector-list md-colors="{background: 'background'}" flex="30" ng-if="$ctrl.dataPoint" ng-model="$ctrl.eventDetector" data-point="$ctrl.dataPoint"
-                on-query="$ctrl.eventDetectors = $items; $ctrl.eventDetector = $items[0] || null"></ma-event-detector-list>
-            <ma-event-detector-editor flex="70" ng-model="$ctrl.eventDetector"></ma-event-detector-editor>
+        <md-dialog-content class="ma-data-point-details-event-detectors" flex layout="column">
+            <ma-event-detector-layout data-point="$ctrl.dataPoint" on-query="$ctrl.eventDetectors = $items"></ma-event-detector-layout>
         </md-dialog-content>
     </md-dialog>
 </ma-dialog>

@@ -49,7 +49,8 @@ class DataPointDetailsController {
                         Object.assign(this.dataPoint, point);
                         this.pointUpdated();
                     } else if (event.name === 'delete') {
-                        this.pointChanged(null);
+                        this.dataPoint = null;
+                        this.pointChanged();
                     }
                 });
             }
@@ -66,7 +67,8 @@ class DataPointDetailsController {
                 this.editTarget = dp;
                 this.showEditDialog = {};
             }
-            this.pointChanged(dp);
+            this.dataPoint = dp;
+            this.pointChanged();
         });
     }
     
@@ -76,18 +78,24 @@ class DataPointDetailsController {
                 this.editTarget = dp;
                 this.showEditDialog = {};
             }
-            this.pointChanged(dp);
+            this.dataPoint = dp;
+            this.pointChanged();
         });
     }
 
-    pointChanged(point) {
-        if (this.dataPoint && this.dataPoint.id !== point.id) {
-            delete this.eventDetector;
-            delete this.pointValues;
-            delete this.realtimePointValues;
-        }
+    pointChanged() {
+        delete this.eventDetectors;
+        delete this.pointValues;
+        delete this.realtimePointValues;
+        delete this.statsObj;
         
-        this.dataPoint = point;
+        if (!this.dataPoint) {
+            this.$state.go('.', {pointXid: null}, {location: 'replace', notify: false});
+            this.localStorageService.set('lastDataPointDetailsItem', {xid: null});
+            this.path = [];
+            return;
+        }
+
         this.pointUpdated();
     }
     

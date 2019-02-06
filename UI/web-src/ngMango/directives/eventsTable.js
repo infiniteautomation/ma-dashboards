@@ -245,6 +245,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         doQuery() {
             // dont query if element has a pointId attribute but its not defined
             if (this.$attrs.hasOwnProperty('pointId') && this.pointId == null || this.$attrs.hasOwnProperty('sourceId') && this.sourceId == null) {
+                this.events = [];
+                this.total = 0;
+                this.totalUnAcknowledged = 0;
                 return;
             }
 
