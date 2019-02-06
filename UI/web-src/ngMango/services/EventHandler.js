@@ -15,7 +15,7 @@ function eventHandlerProvider() {
         {
             type: 'PROCESS',
             description: 'eventHandlers.type.process',
-            template: ``
+            template: `<ma-event-handler-process-editor></ma-event-handler-process-editor>`
         },
         {
             type: 'SET_POINT',
@@ -121,6 +121,23 @@ function eventHandlerProvider() {
                     queryBuilder.eq('eventTypeRef2', ref2);
                 }
                 return queryBuilder.query();
+            }
+
+            static runCommand (command, timeout) {
+                const url = `/rest/v2/server/execute-command`;
+
+                const data = {
+                    command: command,
+                    timeout: timeout
+                };
+
+                return this.http({
+                    method: 'POST',
+                    url: url,
+                    data: data
+                }).then(response => {
+                    return response.data;
+                });
             }
         }
     

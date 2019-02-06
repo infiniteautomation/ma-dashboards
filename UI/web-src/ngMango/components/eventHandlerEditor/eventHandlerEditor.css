@@ -6,3 +6,8 @@ ma-event-handler-editor md-tab-content:not(.md-active) * {
 ma-event-handler-editor .ma-dialog-actions > .md-button {
 	margin: 0 4px;
 }
+
+ma-event-handler-process-editor .command-response {
+    background-color: #272822;
+    padding: 10px;
+}

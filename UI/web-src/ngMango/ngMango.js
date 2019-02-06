@@ -138,6 +138,7 @@ import colorPicker from './components/colorPicker/colorPicker';
 import dataPointTagsEditor from './components/dataPointTagsEditor/dataPointTagsEditor';
 import scriptingEditor from './components/scriptingEditor/scriptingEditor';
 import bulkDataPointEditor from './components/bulkDataPointEditor/bulkDataPointEditor';
+import eventHandlerProcessEditor from './components/eventHandlerEditor/eventHandlerProcessEditor';
 import eventHandlerSetPointEditor from './components/eventHandlerEditor/eventHandlerSetPointEditor';
 import scriptContext from './components/scriptContext/scriptContext';
 import unitList from './components/unitList/unitList';
@@ -295,12 +296,14 @@ ngMango.component('maColorPicker', colorPicker);
 ngMango.component('maDataPointTagsEditor', dataPointTagsEditor);
 ngMango.component('maScriptingEditor', scriptingEditor);
 ngMango.component('maBulkDataPointEditor', bulkDataPointEditor);
+ngMango.component('maEventHandlerProcessEditor', eventHandlerProcessEditor);
 ngMango.component('maEventHandlerSetPointEditor', eventHandlerSetPointEditor);
 ngMango.component('maScriptContext', scriptContext);
 ngMango.component('maUnitList', unitList);
 ngMango.component('maEventDetectorList', eventDetectorList);
 ngMango.component('maEventDetectorEditor', eventDetectorEditor);
 ngMango.component('maEventDetectorSelect', eventDetectorSelect);
+
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default
