@@ -193,6 +193,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             } else if (Array.isArray(this.pointIds)) {
                 queryBuilder.addToRql('eventType', 'eq', 'DATA_POINT');
                 queryBuilder.addToRql('referenceId1', 'in', this.pointIds);
+            } else if (this.sourceId != null && this.sourceId !== ANY_KEYWORD) {
+                queryBuilder.addToRql('eventType', 'eq', 'DATA_SOURCE');
+                queryBuilder.addToRql('referenceId1', 'eq', this.sourceId);
             } else {
                 queryBuilder.addToRql('eventType', 'eq', this.eventType);
                 queryBuilder.addToRql('referenceId1', 'eq', this.referenceId1);
@@ -241,7 +244,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
         doQuery() {
             // dont query if element has a pointId attribute but its not defined
-            if (this.$attrs.hasOwnProperty('pointId') && this.pointId == null) {
+            if (this.$attrs.hasOwnProperty('pointId') && this.pointId == null || this.$attrs.hasOwnProperty('sourceId') && this.sourceId == null) {
                 return;
             }
 
@@ -385,7 +388,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
 
         eventMatchesFilters(event, ignoreAckFilter) {
-            if (this.$attrs.hasOwnProperty('pointId') && this.pointId == null) {
+            if (this.$attrs.hasOwnProperty('pointId') && this.pointId == null || this.$attrs.hasOwnProperty('sourceId') && this.sourceId == null) {
                 return false;
             }
             
@@ -394,6 +397,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 new Equals(event.alarmLevel, this.alarmLevel),
                 new Equals(event.active, this.active),
                 new Equals(event.eventType.dataPointId, this.pointId),
+                new Equals(event.eventType.dataSourceId, this.sourceId),
                 new InArray(event.eventType.dataPointId, this.pointIds),
                 new Equals(event.id, this.eventId),
                 new Equals(event.eventType.referenceId1, this.referenceId1),
@@ -441,7 +445,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             hideAckButton: '<?',
             referenceId1: '<?',
             referenceId2: '<?',
-            hideCsvButton: '<?'
+            hideCsvButton: '<?',
+            sourceId: '<?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',

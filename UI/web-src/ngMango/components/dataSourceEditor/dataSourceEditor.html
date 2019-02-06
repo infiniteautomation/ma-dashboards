@@ -214,6 +214,27 @@
                 </div>
             </md-tab-body>
         </md-tab>
+
+        <md-tab ng-if="!$ctrl.dataSource.isNew()">
+            <md-tab-label>
+                <span ma-tr="dsEdit.currentAlarms"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding ma-no-padding-bottom">
+                    <ma-events-table data-source-id="$ctrl.dataSource.id" limit="15" sort="'-activeTimestamp'" hide-link="DATA_SOURCE"></ma-events-table>
+                </div>
+            </md-tab-body>
+        </md-tab>
+
+        <md-tab ng-if="!$ctrl.dataSource.isNew()">
+            <md-tab-label>
+                <span ma-tr="dsEdit.rtStatus"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding ma-no-padding-bottom">
+                </div>
+            </md-tab-body>
+        </md-tab>
     </md-tabs>
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
