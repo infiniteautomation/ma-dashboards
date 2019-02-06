@@ -284,7 +284,7 @@ export default [
     },
     {
         name: 'ui.dataPointDetails',
-        url: '/data-point-details/{pointXid}?pointId',
+        url: '/data-point-details/{pointXid}?pointId&edit',
         template: '<ma-ui-data-point-details></ma-ui-data-point-details>',
         menuTr: 'ui.app.dataPointDetails',
         menuIcon: 'timeline',

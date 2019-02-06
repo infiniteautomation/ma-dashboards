@@ -10,15 +10,16 @@ import './dataPointDetails.css';
 
 class DataPointDetailsController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser']; }
+    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint']; }
     
-    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User) {
+    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.localStorageService = localStorageService;
         this.PointHierarchy = PointHierarchy;
         this.dateBar = maUiDateBar;
         this.User = User;
+        this.Point = Point;
         
         this.chartType = 'smoothedLine';
     }
@@ -27,24 +28,44 @@ class DataPointDetailsController {
         const $stateParams = this.$stateParams;
         
         if ($stateParams.pointXid) {
-            this.pointXid = $stateParams.pointXid;
+            this.getPointByXid($stateParams.pointXid);
         } else if ($stateParams.pointId) {
-            this.pointId = $stateParams.pointId;
+            this.getPointById($stateParams.pointId);
         } else {
             // Attempt load pointXid from local storage
             const storedPoint = this.localStorageService.get('lastDataPointDetailsItem');
-            if (storedPoint) {
-                this.pointXid = storedPoint.xid;
+            if (storedPoint && storedPoint.xid) {
+                this.getPointByXid(storedPoint.xid);
             }
         }
         
         this.retrievePreferences();
     }
+    
+    getPointByXid(xid) {
+        this.Point.get({xid}).$promise.then(dp => {
+            this.selectedPoint = dp;
+            if (this.$stateParams.edit) {
+                this.editTarget = dp;
+                this.showEditDialog = {};
+            }
+            this.pointChanged(dp);
+        });
+    }
+    
+    getPointById(id) {
+        this.Point.getById({id}).$promise.then(dp => {
+            this.selectedPoint = dp;
+            if (this.$stateParams.edit) {
+                this.editTarget = dp;
+                this.showEditDialog = {};
+            }
+            this.pointChanged(dp);
+        });
+    }
 
     pointChanged(point) {
         delete this.eventDetector;
-        if (!point) return;
-
         if (this.dataPoint && this.dataPoint.id !== point.id) {
             delete this.pointValues;
             delete this.realtimePointValues;
