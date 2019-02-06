@@ -49,12 +49,12 @@
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>lock</md-icon>
                             <label ma-tr="dsEdit.permission.edit"></label>
-                            <input name="editPermission" ng-model="$ctrl.dataSource.editPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+                            <input name="editPermission" ng-model="$ctrl.dataSource.editPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
                             <div ng-messages="$ctrl.form.editPermission.$error">
                                 <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.editPermission.validationMessage"></div>
                             </div>
-                            <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission"></ma-permissions-menu>
+                            <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission" ma-array-input></ma-permissions-menu>
                         </md-input-container>
 
                         <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="$ctrl.typesByName[$ctrl.dataSource.modelType].polling">
@@ -93,9 +93,9 @@
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
-                        <md-input-container flex="100" flex-gt-md="50" ng-repeat="(key, level) in $ctrl.dataSource.alarmLevels">
-                            <label ng-bind="key"></label>
-                            <md-select name="alarmLevels.{{key}}" ng-model="$ctrl.dataSource.alarmLevels[key]" required ma-get-ctrl="modelCtrl = $ngModel">
+                        <md-input-container flex="100" flex-gt-md="50" ng-repeat="entry in $ctrl.dataSource.eventAlarmLevels track by entry.eventType">
+                            <label ng-bind="entry.description"></label>
+                            <md-select name="alarmLevels[{{$index}}]" ng-model="entry.level" required ma-get-ctrl="modelCtrl = $ngModel">
                                 <md-option ng-repeat="level in $ctrl.maEvents.levels track by level.key" ng-value="level.key">
                                     <md-icon class="fa fa-lg ma-alarm-flag" ng-class="level.classes"></md-icon>
                                     <span ma-tr="{{level.translation}}"></span>

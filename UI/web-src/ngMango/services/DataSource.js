@@ -49,7 +49,7 @@
 * @name DataSource#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/data-sources/:xid`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -61,7 +61,7 @@
 * @name DataSource#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/data-sources/:xid`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -73,7 +73,7 @@
 * @name DataSource#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/data-sources/:xid`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -85,7 +85,7 @@
 * @name DataSource#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/data-sources/:xid`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -124,7 +124,7 @@
 * @name DataSource#getById
 *
 * @description
-* Query the REST endpoint `/rest/v1/data-sources/by-id/:id` with the `GET` method.
+* Query the REST endpoint `/rest/v2/data-sources/by-id/:id` with the `GET` method.
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -165,12 +165,13 @@ function dataSourceProvider() {
         const defaultProperties = {
             name: '',
             enabled: false,
+            polling: true,
             modelType: 'VIRTUAL',
             pollPeriod: {
                 periods: 1,
                 type: 'MINUTES'
             },
-            editPermission: 'superadmin',
+            editPermission: ['superadmin'],
             purgeSettings: {
                 override: false,
                 frequency: {
@@ -178,12 +179,14 @@ function dataSourceProvider() {
                     type: 'YEARS'
                 }
             },
-            alarmLevels: {
-                POLL_ABORTED: 'INFORMATION'
-            }
+            eventAlarmLevels: [
+                {eventType: 'POLL_ABORTED', level: 'INFORMATION', duplicateHandling: 'IGNORE'}
+            ],
+            quantize: false,
+            useCron: false
         };
         
-        const DataSource = $resource('/rest/v1/data-sources/:xid', {
+        const DataSource = $resource('/rest/v2/data-sources/:xid', {
                 xid: data => data && (data.originalId || data.xid)
         	}, {
             query: {
@@ -195,7 +198,7 @@ function dataSourceProvider() {
                 }
             },
             rql: {
-            	url: '/rest/v1/data-sources?:query',
+            	url: '/rest/v2/data-sources?:query',
                 method: 'GET',
                 isArray: true,
                 transformResponse: Util.transformArrayResponse,
@@ -204,13 +207,13 @@ function dataSourceProvider() {
                 }
             },
             getById: {
-                url: '/rest/v1/data-sources/by-id/:id',
+                url: '/rest/v2/data-sources/by-id/:id',
                 method: 'GET',
                 isArray: false
             },
             save: {
                 method: 'POST',
-                url: '/rest/v1/data-sources',
+                url: '/rest/v2/data-sources',
                 params: {
                     xid: null
                 }
@@ -225,12 +228,12 @@ function dataSourceProvider() {
         });
         
         Object.assign(DataSource.notificationManager, {
-            webSocketUrl: '/rest/v1/websocket/data-sources'
+            webSocketUrl: '/rest/v2/websocket/data-sources'
         });
 
         Object.assign(DataSource.prototype, {
             enable(enabled = true, restart = false) {
-                const url = '/rest/v1/data-sources/enable-disable/' + encodeURIComponent(this.xid);
+                const url = '/rest/v2/data-sources/enable-disable/' + encodeURIComponent(this.xid);
                 return $http({
                     url,
                     method: 'PUT',
@@ -281,21 +284,14 @@ function dataSourceProvider() {
             }
         }
 
-        const typeInstances = types.map(type => new DataSourceType(type));
+        const typeInstances = types.map(type => Object.freeze(new DataSourceType(type)));
         const typesByName = typeInstances.reduce((map, item) => {
             map[item.type] = item;
             return map;
         }, Object.create(null));
-
-        Object.assign(DataSource, {
-            get types() {
-                return Object.freeze(typeInstances);
-            },
-            
-            get typesByName() {
-                return Object.freeze(typesByName);
-            }
-        });
+        
+        DataSource.types = Object.freeze(typeInstances);
+        DataSource.typesByName = Object.freeze(typesByName);
 
         return DataSource;
     }

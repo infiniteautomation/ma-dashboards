@@ -512,13 +512,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     desiredPerms = desiredPerms.split(/\s*\,\s*/);
                 }
 
-                const userPerms = this.permissions.split(/\s*\,\s*/).filter(function(userPerm) {
-                    return !!userPerm;
-                });
+                const userPerms = this.permissions.split(/\s*\,\s*/).filter(p => !!p);
                 
-                return desiredPerms.some(function(desiredPerm) {
-                    return userPerms.indexOf(desiredPerm) >= 0;
-                });
+                return desiredPerms.some(p => userPerms.includes(p));
             },
 
             getTimezone() {
