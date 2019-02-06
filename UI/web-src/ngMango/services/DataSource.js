@@ -167,6 +167,7 @@ function dataSourceProvider() {
             enabled: false,
             polling: true,
             modelType: 'VIRTUAL',
+            descriptionKey: 'VIRTUAL.dataSource',
             pollPeriod: {
                 periods: 1,
                 type: 'MINUTES'
@@ -180,7 +181,7 @@ function dataSourceProvider() {
                 }
             },
             eventAlarmLevels: [
-                {eventType: 'POLL_ABORTED', level: 'INFORMATION', duplicateHandling: 'IGNORE'}
+                {eventType: 'POLL_ABORTED', level: 'INFORMATION', duplicateHandling: 'IGNORE', descriptionKey: 'event.ds.pollAborted'}
             ],
             quantize: false,
             useCron: false

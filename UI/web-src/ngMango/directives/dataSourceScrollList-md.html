@@ -15,7 +15,7 @@
             ng-click="$ctrl.setViewValue(item)">
         <div class="md-list-item-text">
             <h3 ng-bind="item.name"></h3>
-            <p><span ng-bind="item.modelType"></span></p>
+            <p><span ng-bind="item.description"></span> &mdash; <span ng-bind="item.connectionDescription"></span></p>
         </div>
         <md-switch ng-if="$ctrl.showEnableSwitch" class="md-secondary" ng-model="item.isEnabled"></md-switch>
     </md-list-item>
