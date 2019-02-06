@@ -1,0 +1,9 @@
+ma-event-detector-layout {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+ma-event-detector-layout ma-event-detector-select {
+	margin: 8px 8px 0 8px;
+}

@@ -1,0 +1,12 @@
+<div flex layout="column" layout-gt-md="row" layout-gt-lg="row">
+    <ma-event-detector-select ng-if="!$ctrl.$mdMedia('gt-md') && (!$ctrl.hasPointAttr || $ctrl.dataPoint)"
+        ng-model="$ctrl.eventDetector" data-point="$ctrl.dataPoint"
+        on-query="$ctrl.onQuery($items)">
+    </ma-event-detector-select>
+    <ma-event-detector-list ng-if="$ctrl.$mdMedia('gt-md') && (!$ctrl.hasPointAttr || $ctrl.dataPoint)" flex-gt-md="30"
+        md-colors="{background: 'background'}"
+        ng-model="$ctrl.eventDetector" data-point="$ctrl.dataPoint"
+        on-query="$ctrl.onQuery($items)">
+    </ma-event-detector-list>
+    <ma-event-detector-editor flex flex-gt-md="70" ng-model="$ctrl.eventDetector"></ma-event-detector-editor>
+</div>
