@@ -107,11 +107,11 @@ class EventDetectorEditorController {
         
         this.validationMessages = [];
 
-        const notifyName = this.eventDetector.description || this.eventDetector.getOriginalId();
+        const notifyName = this.eventDetector.description || this.eventDetector.getOriginalId() || this.eventDetector.xid;
         this.eventDetector.save().then(item => {
             this.setViewValue();
             this.render();
-            this.maDialogHelper.toast(['ui.eventDetectors.saved', notifyName]);
+            this.maDialogHelper.toast(['ui.eventDetectors.saved', item.description]);
         }, error => {
             let statusText = error.mangoStatusText;
             
