@@ -90,6 +90,9 @@
                                 <div ng-message="required" ma-tr="ui.app.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.cronPattern.validationMessage"></div>
                             </div>
+                            <md-button class="md-icon-button ma-input-button" ng-click="$ctrl.showCronDialog = {}">
+                                <md-icon>open_in_new</md-icon>
+                            </md-button>
                         </md-input-container>
 
                         <div flex="100" flex-gt-md="50" ng-if-end>
@@ -229,4 +232,26 @@
             <span ma-tr="common.delete"></span>
         </md-button>
     </div>
+    
+    <ma-dialog show-dialog="$ctrl.showCronDialog">
+        <md-dialog flex="100" flex-gt-sm="50" flex-gt-md="40" flex-gt-lg="30" flex-gt-xl="20">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>
+                        <span ma-tr="dsEdit.cronPattern"></span>
+                    </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                        <md-icon>close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+    
+            <md-dialog-content layout="column" flex>
+                <div class="md-padding">
+                    <ma-cron-pattern ng-model="$ctrl.dataSource.cronPattern"></ma-cron-pattern>
+                </div>
+            </md-dialog-content>
+        </md-dialog>
+    </ma-dialog>
 </div>
