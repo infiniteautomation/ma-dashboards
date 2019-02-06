@@ -1129,3 +1129,10 @@ mdp-date-picker md-input-container {
 	flex: 1;
 	box-sizing: border-box;
 }
+
+/* Class for stopping text overflow in list items */
+md-list.ma-no-text-overflow md-list-item .md-list-item-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
