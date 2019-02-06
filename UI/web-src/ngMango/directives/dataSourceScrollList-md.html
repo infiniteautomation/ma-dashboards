@@ -11,7 +11,7 @@
         </md-button>
     </md-list-item>
 
-    <md-list-item class="md-2-line" ng-repeat="item in $ctrl.items track by item.xid"
+    <md-list-item class="md-2-line" ng-repeat="item in $ctrl.items track by item.xid | orderBy:'name'"
             ng-class="{'ma-list-selected': $ctrl.selected.xid === item.xid}"
             md-colors="{'background': $ctrl.selected.xid === item.xid ? 'accent-hue-1' : 'background-hue-1'}"
             ng-click="$ctrl.setViewValue(item)">
