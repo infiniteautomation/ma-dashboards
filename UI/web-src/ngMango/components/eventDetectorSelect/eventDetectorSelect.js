@@ -4,6 +4,7 @@
  */
 
 import eventDetectorSelectTemplate from './eventDetectorSelect.html';
+import './eventDetectorSelect.css';
 
 /**
  * @ngdoc directive
