@@ -539,7 +539,7 @@ export default [
     },
     {
         name: 'ui.settings.dataSources',
-        url: '/data-sources/{xid}',
+        url: '/data-sources/{xid}?dataSourceId',
         template: '<ma-ui-data-source-page flex="noshrink" layout="column"><ma-ui-data-source-page>',
         menuTr: 'header.dataSources',
         menuIcon: 'device_hub',

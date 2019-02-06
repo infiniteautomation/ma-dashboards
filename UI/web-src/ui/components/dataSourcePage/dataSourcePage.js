@@ -23,6 +23,12 @@ class DataSourcePageController {
             }, error => {
                 this.newDataSource();
             });
+        } else if (this.$state.params.dataSourceId != null) {
+            this.maDataSource.getById({id: this.$state.params.dataSourceId}).$promise.then(item => {
+                this.dataSource = item;
+            }, error => {
+                this.newDataSource();
+            });
         } else {
             this.newDataSource();
         }
@@ -52,6 +58,7 @@ class DataSourcePageController {
     }
     
     dataSourceChanged() {
+        this.$state.params.dataSourceId = null;
         this.$state.params.xid = this.dataSource && !this.dataSource.isNew() && this.dataSource.xid || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
