@@ -1,0 +1,15 @@
+<md-menu class="ma-input-button" md-position-mode="target-right target">
+  <md-button ng-click="$ctrl.buttonClicked($event); $mdMenu.open($event)" class="md-icon-button" ng-disabled="$ctrl.disabled"><md-icon>arrow_drop_down</md-icon></md-button>
+  <md-menu-content width="4" class="ma-unit-list">
+    <md-menu-item>
+        <md-button ng-click="$ctrl.clearUnit()">
+            <em ma-tr="ui.app.clear"></em>
+        </md-button>
+    </md-menu-item>
+    <md-menu-item ng-repeat="unit in $ctrl.unitList">
+        <md-button ng-click="$ctrl.unitSelected(unit)" ng-class="{'md-primary': $ctrl.unit === unit}">
+            <span ng-bind="unit"></span>
+        </md-button>
+    </md-menu-item>
+  </md-menu-content>
+</md-menu>

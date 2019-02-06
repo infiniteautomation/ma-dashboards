@@ -49,12 +49,13 @@
                             <div ng-repeat="(key, value) in $ctrl.dataPoint.tags"><span ng-bind="key"></span>=<span ng-bind="value"></span></div>
                         </div>
                         <label flex="35"><span ma-tr="ui.app.dataSource"></span>:</label><div flex="65" ng-bind="$ctrl.dataPoint.dataSourceName"></div>
+                        <label flex="35"><span ma-tr="pointEdit.detectors.eventDetectors"></span>:</label><div flex="65"><a ma-tr="ui.eventDetectors.count" ma-tr-args="[$ctrl.eventDetectors.length]" ng-click="$ctrl.showDetectorDialog = {}"></a></div>
             		</div>
                     
             		<div layout="row">
             			<ma-set-point-value ng-if="$ctrl.dataPoint.pointLocator.dataType !== 'IMAGE'" point="$ctrl.dataPoint" flex="95"></ma-set-point-value>
             			<md-button class="md-accent md-raised" ng-show="$ctrl.User.current.hasPermission('superadmin')"
-                            ng-click="$ctrl.editTarget = $ctrl.dataPoint; $ctrl.showDialog = {};"><md-icon>edit</md-icon> <span ma-tr="ui.app.edit"></span></md-button>
+                            ng-click="$ctrl.editTarget = $ctrl.dataPoint; $ctrl.showEditDialog = {};"><md-icon>edit</md-icon> <span ma-tr="ui.app.edit"></span></md-button>
             		</div>
             	</md-card-content>
             </md-card>
@@ -158,7 +159,7 @@
         			</md-select>
         		</div>
         	</md-toolbar>
-        	<ma-serial-chart style="width: 100%" series-1-values="$ctrl.pointValues" series-1-point="$ctrl.dataPoint" series-1-type="{{$ctrl.chartType}}" legend="false" balloon="true" export="true">
+        	<ma-serial-chart series-1-values="$ctrl.pointValues" series-1-point="$ctrl.dataPoint" series-1-type="{{$ctrl.chartType}}" legend="false" balloon="true" export="true">
         	</ma-serial-chart>
         </md-card>
     </div>
@@ -192,7 +193,7 @@
     </div>
 </div>
 
-<ma-dialog show-dialog="$ctrl.showDialog" on-hide="$ctrl.editTarget = null" on-cancel="$ctrl.editTarget = null">
+<ma-dialog show-dialog="$ctrl.showEditDialog" on-hide="$ctrl.editTarget = null" on-cancel="$ctrl.editTarget = null">
     <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -206,10 +207,32 @@
             </div>
         </md-toolbar>
 
-        <md-dialog-content layout="column" flex>
+        <md-dialog-content flex layout="column" class="ma-data-point-details-editor">
             <ma-data-point-editor flex="noshrink" layout="column" dynamic-height="!$dialog.fullscreen()"
                 ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true">
             </ma-data-point-editor>
+        </md-dialog-content>
+    </md-dialog>
+</ma-dialog>
+
+<ma-dialog show-dialog="$ctrl.showDetectorDialog">
+    <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span ma-tr="ui.eventDetectors.for" ma-tr-args="[$ctrl.dataPoint.formatLabel()]"></span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content flex layout="row" class="ma-data-point-details-event-detectors">
+            <ma-event-detector-list md-colors="{background: 'background'}" flex="30" ng-if="$ctrl.dataPoint" ng-model="$ctrl.eventDetector" data-point="$ctrl.dataPoint"
+                on-query="$ctrl.eventDetectors = $items; $ctrl.eventDetector = $items[0] || null"></ma-event-detector-list>
+            <ma-event-detector-editor flex="70" ng-model="$ctrl.eventDetector"></ma-event-detector-editor>
         </md-dialog-content>
     </md-dialog>
 </ma-dialog>

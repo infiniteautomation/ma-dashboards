@@ -1,0 +1,61 @@
+<div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+    <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>build</md-icon>
+        <label ma-tr=pointEdit.chart.type></label>
+        <md-select name="type" ng-model="$ctrl.dataPoint.chartRenderer.type" ng-disabled="$ctrl.dataPoint.dataType.hasMultipleValues()" required>
+            <md-option ng-if="$ctrl.dataPoint.chartRenderer.type.hasMultipleValues()" ng-value="$ctrl.dataPoint.chartRenderer.type">
+                <em ng-bind="$ctrl.dataPoint.chartRenderer.type"></em>
+            </md-option>
+            <md-option ng-repeat="type in $ctrl.chartRendererTypes track by type.type" ng-value="type.type"ng-if="type.dataTypes.has($ctrl.dataPoint.dataType)">
+                <span ma-tr="{{type.translation}}"></span>
+            </md-option>
+        </md-select>
+        <div ng-messages="chartRenderer.type.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="chartRenderer.type.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.chartRenderer.type === 'chartRendererImageFlipbook' || $ctrl.dataPoint.chartRenderer.type === 'chartRendererTable'">
+        <md-icon>vertical_align_top</md-icon>
+        <label ma-tr="pointEdit.chart.limit"></label>
+        <input name="limit" ng-model="$ctrl.dataPoint.chartRenderer.limit" type="number" step="1" min="2" max="50" required>
+        <div ng-messages="chartRenderer.limit.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[2]"></div>
+            <div ng-message="max" ma-tr="ui.app.maxNumber" ma-tr-args="[50]"></div>
+            <div ng-message="validationMessage" ng-bind="key.validationMessage"></div>
+        </div>
+    </md-input-container>
+
+    <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="$ctrl.dataPoint.chartRenderer.type === 'chartRendererImage' || $ctrl.dataPoint.chartRenderer.type === 'chartRendererStats'">
+        <md-input-container flex>
+            <md-icon>access_time</md-icon>
+            <label ma-tr="pointEdit.chart.timePeriod"></label>
+            <input name="timePeriod.periods" ng-model="$ctrl.dataPoint.chartRenderer.timePeriod.periods" required type="number" step="1" min="1">
+            <div ng-messages="chartRenderer['timePeriod.periods'].$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="chartRenderer['timePeriod.periods'].validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.chart.timePeriod"></label>
+            <md-select name="timePeriod.type" ng-model="$ctrl.dataPoint.chartRenderer.timePeriod.type" required>
+                <md-option ng-repeat="type in $ctrl.chartRendererTimePeriods track by type.type" ng-value="type.type">
+                    <span ma-tr="{{type.translation}}"></span>
+                </md-option>
+            </md-select>
+            <div ng-messages="chartRenderer['timePeriod.type'].$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="chartRenderer['timePeriod.type'].validationMessage"></div>
+            </div>
+        </md-input-container>
+    </div>
+    
+    <div flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.chartRenderer.type === 'chartRendererStats'">
+        <md-checkbox name="includeSum" ng-model="$ctrl.dataPoint.chartRenderer.includeSum" class="ma-input-container-height">
+            <span ma-tr="pointEdit.chart.includeSum"></span>
+        </md-checkbox>
+    </div>
+</div>

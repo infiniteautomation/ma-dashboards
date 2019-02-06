@@ -82,6 +82,9 @@ import formExclude from './directives/formExclude';
 import getCtrl from './directives/getCtrl';
 import dialog from './directives/dialog';
 import flattenValues from './directives/flattenValues';
+import lessThan from './directives/lessThan';
+import greaterThan from './directives/greaterThan';
+import formatModelValue from './directives/formatModelValue';
 import queryBuilder from './components/queryBuilder/queryBuilder';
 import queryGroup from './components/queryBuilder/queryGroup';
 import queryPredicate from './components/queryBuilder/queryPredicate';
@@ -136,6 +139,12 @@ import dataPointTagsEditor from './components/dataPointTagsEditor/dataPointTagsE
 import scriptingEditor from './components/scriptingEditor/scriptingEditor';
 import bulkDataPointEditor from './components/bulkDataPointEditor/bulkDataPointEditor';
 import eventHandlerProcessEditor from './components/eventHandlerEditor/eventHandlerProcessEditor';
+import eventHandlerSetPointEditor from './components/eventHandlerEditor/eventHandlerSetPointEditor';
+import scriptContext from './components/scriptContext/scriptContext';
+import unitList from './components/unitList/unitList';
+import eventDetectorList from './components/eventDetectorList/eventDetectorList';
+import eventDetectorEditor from './components/eventDetectorEditor/eventDetectorEditor';
+import eventDetectorSelect from './components/eventDetectorSelect/eventDetectorSelect';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -231,6 +240,9 @@ ngMango.directive('maFormExclude', formExclude);
 ngMango.directive('maGetCtrl', getCtrl);
 ngMango.directive('maDialog', dialog);
 ngMango.directive('maFlattenValues', flattenValues);
+ngMango.directive('maLessThan', lessThan);
+ngMango.directive('maGreaterThan', greaterThan);
+ngMango.directive('maFormatModelValue', formatModelValue);
 ngMango.component('maQueryBuilder', queryBuilder);
 ngMango.component('maQueryGroup', queryGroup);
 ngMango.component('maQueryPredicate', queryPredicate);
@@ -285,6 +297,13 @@ ngMango.component('maDataPointTagsEditor', dataPointTagsEditor);
 ngMango.component('maScriptingEditor', scriptingEditor);
 ngMango.component('maBulkDataPointEditor', bulkDataPointEditor);
 ngMango.component('maEventHandlerProcessEditor', eventHandlerProcessEditor);
+ngMango.component('maEventHandlerSetPointEditor', eventHandlerSetPointEditor);
+ngMango.component('maScriptContext', scriptContext);
+ngMango.component('maUnitList', unitList);
+ngMango.component('maEventDetectorList', eventDetectorList);
+ngMango.component('maEventDetectorEditor', eventDetectorEditor);
+ngMango.component('maEventDetectorSelect', eventDetectorSelect);
+
 ngMango.animation('.ma-slide-up', slideUp);
 
 // add some additional event handlers which aren't in Angular by default
@@ -294,8 +313,6 @@ ngMango.animation('.ma-slide-up', slideUp);
     fn.$inject = eventHandler.$inject;
     ngMango.directive(directiveName, fn);
 });
-
-ngMango.constant('MA_INSERT_CSS', true);
 
 ngMango.constant('MA_DATE_RANGE_PRESETS', [
    {type: 'LAST_5_MINUTES', label: 'Last 5 minutes'},
@@ -323,93 +340,6 @@ ngMango.constant('MA_DATE_RANGE_PRESETS', [
    {type: 'PREVIOUS_YEAR', label: 'Previous year'}
 ]);
 
-ngMango.constant('MA_ROLLUP_TYPES', [
- {type: 'POINT_DEFAULT', nonNumeric: true, label: 'Point default', translation: 'common.rollup.pointDefault'},
- {type: 'NONE', nonNumeric: true, label: 'None', translation: 'common.rollup.none'},
- {type: 'SIMPLIFY', nonNumeric: false, label: 'Simplify', translation: 'ui.app.simplify'},
- {type: 'AVERAGE', nonNumeric: false, label: 'Average', translation: 'common.rollup.average'},
- {type: 'DELTA', nonNumeric: false, label: 'Delta', translation: 'common.rollup.delta'},
- {type: 'MINIMUM', nonNumeric: false, label: 'Minimum', translation: 'common.rollup.minimum'},
- {type: 'MAXIMUM', nonNumeric: false, label: 'Maximum', translation: 'common.rollup.maximum'},
- {type: 'ACCUMULATOR', nonNumeric: false, label: 'Accumulator', translation: 'common.rollup.accumulator'},
- {type: 'SUM', nonNumeric: false, label: 'Sum', translation: 'common.rollup.sum'},
- {type: 'START', nonNumeric: true, label: 'Start', translation: 'common.rollup.start'},
- {type: 'FIRST', nonNumeric: true, label: 'First', translation: 'common.rollup.first'},
- {type: 'LAST', nonNumeric: true, label: 'Last', translation: 'common.rollup.last'},
- {type: 'COUNT', nonNumeric: true, label: 'Count', translation: 'common.rollup.count'},
- {type: 'INTEGRAL', nonNumeric: false, label: 'Integral', translation: 'common.rollup.integral'}
- //{name: 'FFT', nonNumeric: false}
-]);
-
-ngMango.constant('MA_DATE_TIME_FORMATS', [
-    {
-        translation: 'ui.app.timeFormat.iso',
-        format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX'
-    },
-    {
-        translation: 'ui.app.timeFormat.excelCompatible',
-        format: 'yyyy-MM-dd HH:mm:ss'
-    },
-    {
-        translation: 'ui.app.timeFormat.excelCompatibleMs',
-        format: 'yyyy-MM-dd HH:mm:ss.SSS'
-    },
-    {
-        translation: 'ui.app.timeFormat.epoch',
-        format: ''
-    }
-]);
-
-ngMango.constant('MA_TIME_PERIOD_TYPES', [
- {type: 'MILLISECONDS', label: 'Milliseconds', translation: 'dateAndTime.milliseconds'},
- {type: 'SECONDS', label: 'Seconds', translation: 'dateAndTime.seconds'},
- {type: 'MINUTES', label: 'Minutes', translation: 'dateAndTime.minutes'},
- {type: 'HOURS', label: 'Hours', translation: 'dateAndTime.hours'},
- {type: 'DAYS', label: 'Days', translation: 'dateAndTime.days', showByDefault: true},
- {type: 'WEEKS', label: 'Weeks', translation: 'dateAndTime.weeks', showByDefault: true},
- {type: 'MONTHS', label: 'Months', translation: 'dateAndTime.months', showByDefault: true},
- {type: 'YEARS', label: 'Years', translation: 'dateAndTime.years', showByDefault: true}
-]);
-
-ngMango.constant('MA_CHART_TYPES', [
- {type: 'line', apiType: 'LINE', label: 'Line', translation: 'ui.app.line'},
- {type: 'smoothedLine', apiType: 'SPLINE', label: 'Smoothed', translation: 'ui.app.smooth'},
- {type: 'step', apiType: 'STEP', label: 'Step', translation: 'ui.app.step'},
- {type: 'column', apiType: 'BAR', label: 'Bar', translation: 'ui.app.bar'}
-]);
-
-{
-    // jshint quotmark:false
-    ngMango.constant('MA_RELATIVE_DATE_TYPES', [
-        {type: "", label: 'Now'},
-        {type: "moment:'subtract':5:'minutes'", label: '5 minutes ago'},
-        {type: "moment:'subtract':15:'minutes'", label: '15 minutes ago'},
-        {type: "moment:'subtract':30:'minutes'", label: '30 minutes ago'},
-        {type: "moment:'subtract':1:'hours'", label: '1 hour ago'},
-        {type: "moment:'subtract':3:'hours'", label: '3 hours ago'},
-        {type: "moment:'subtract':5:'hours'", label: '6 hours ago'},
-        {type: "moment:'subtract':12:'hours'", label: '12 hours ago'},
-        {type: "moment:'startOf':'day'", label: 'Start of day'},
-        {type: "moment:'subtract':1:'days'|maMoment:'startOf':'day'", label: 'Start of previous day'},
-        {type: "moment:'subtract':1:'days'", label: '1 day ago'},
-        {type: "moment:'startOf':'week'", label: 'Start of week'},
-        {type: "moment:'subtract':1:'weeks'|maMoment:'startOf':'week'", label: 'Start of last week'},
-        {type: "moment:'subtract':1:'weeks'", label: '1 week ago'},
-        {type: "moment:'subtract':2:'weeks'", label: '2 weeks ago'},
-        {type: "moment:'startOf':'month'", label: 'Start of month'},
-        {type: "moment:'subtract':1:'months'|maMoment:'startOf':'month'", label: 'Start of last month'},
-        {type: "moment:'subtract':1:'months'", label: '1 month ago'},
-        {type: "moment:'subtract':3:'months'", label: '3 months ago'},
-        {type: "moment:'subtract':6:'months'", label: '6 months ago'},
-        {type: "moment:'startOf':'year'", label: 'Start of year'},
-        {type: "moment:'subtract':1:'years'|maMoment:'startOf':'year'", label: 'Start of last year'},
-        {type: "moment:'subtract':1:'years'", label: '1 year ago'}
-    ]);
-}
-
-// defined in UI module
-ngMango.constant('MA_EVENT_LINK_INFO', {});
-
 ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDateFormats) {
     return {
         categoryAxis: [
@@ -432,11 +362,10 @@ ngMango.run([
     'MA_ROLLUP_TYPES',
     'MA_TIME_PERIOD_TYPES',
     'MA_CHART_TYPES',
-    'MA_RELATIVE_DATE_TYPES',
     'MA_DATE_RANGE_PRESETS',
     'maUser',
 function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
-        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, User) {
+        MA_CHART_TYPES, MA_DATE_RANGE_PRESETS, User) {
 
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
@@ -458,7 +387,6 @@ function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
     $rootScope.rollupTypes = MA_ROLLUP_TYPES;
     $rootScope.timePeriodTypes = MA_TIME_PERIOD_TYPES;
     $rootScope.chartTypes = MA_CHART_TYPES;
-    $rootScope.relativeDateTypes = MA_RELATIVE_DATE_TYPES;
     $rootScope.dateRangePresets = MA_DATE_RANGE_PRESETS;
 
 }]);

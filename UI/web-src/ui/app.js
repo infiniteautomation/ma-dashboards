@@ -13,7 +13,6 @@ import loginRedirectorProvider from './services/loginRedirector';
 import serverInfoProvider from './services/serverInfo';
 import pageView from './directives/pageView/page_view';
 import livePreview from './directives/liveEditor/livePreview';
-import stateParams from './directives/stateParams/stateParams';
 import iframeView from './directives/iframeView/iframeView';
 import menuItems from './menuItems';
 import 'moment-timezone';
@@ -22,7 +21,6 @@ import 'angular-ui-sortable';
 import 'angular-loading-bar';
 import '../docs/ngMango/js/docs-setup';
 import 'md-color-picker';
-import {require as requirejs} from 'requirejs';
 import * as constants from './constants.js';
 
 import 'angular-loading-bar/build/loading-bar.css';
@@ -47,7 +45,6 @@ uiApp.provider('maUiMenu', menuProvider)
     .provider('maUiServerInfo', serverInfoProvider)
     .directive('maUiPageView', pageView)
     .directive('maUiLivePreview', livePreview)
-    .directive('maUiStateParams', stateParams)
     .directive('maUiIframeView', iframeView)
     .constant('MA_UI_NG_DOCS', window.NG_DOCS)
     .constant('MA_UI_MENU_ITEMS', menuItems);
@@ -92,12 +89,11 @@ uiApp.config([
     '$locationProvider',
     '$mdAriaProvider',
     'cfpLoadingBarProvider',
-    'maRequireQProvider',
     'maUiMenuProvider',
     '$anchorScrollProvider',
 function(MA_UI_NG_DOCS, $urlRouterProvider,
         $httpProvider, $compileProvider, $locationProvider, $mdAriaProvider,
-        cfpLoadingBarProvider, maRequireQProvider,
+        cfpLoadingBarProvider,
         maUiMenuProvider, $anchorScrollProvider) {
 
     $compileProvider.debugInfoEnabled(false);
@@ -105,7 +101,6 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
     $compileProvider.cssClassDirectivesEnabled(false);
     
     $mdAriaProvider.disableWarnings();
-    maRequireQProvider.setRequireJs(requirejs);
 
     $httpProvider.useApplyAsync(true);
     

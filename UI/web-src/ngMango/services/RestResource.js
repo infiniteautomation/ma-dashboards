@@ -18,13 +18,15 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         constructor(properties) {
             Object.assign(this, angular.copy(this.constructor.defaultProperties), properties);
             
-            const itemId = this[this.constructor.idProperty];
-            if (itemId) {
-                // item already has an ID store it in a private property so we can use it later when updating the item
-                this[originalIdProperty] = itemId;
-            } else {
-                // new item, generate a new id for the item
-                this[this.constructor.idProperty] = (this.constructor.xidPrefix || '') + maUtil.uuid();
+            if (this.constructor.idProperty) {
+                const itemId = this[this.constructor.idProperty];
+                if (itemId) {
+                    // item already has an ID store it in a private property so we can use it later when updating the item
+                    this[originalIdProperty] = itemId;
+                } else {
+                    // new item, generate a new id for the item
+                    this[this.constructor.idProperty] = (this.constructor.xidPrefix || '') + maUtil.uuid();
+                }
             }
             
             this.initialize('constructor');

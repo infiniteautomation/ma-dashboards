@@ -51,7 +51,13 @@ function eventHandlerProvider() {
                 eventHandlerType.templateUrl = `eventHandlers.${eventHandlerType.type}.html`;
                 $templateCache.put(eventHandlerType.templateUrl, eventHandlerType.template);
             }
+            
+            Object.freeze(eventHandlerType);
         });
+        
+        Object.freeze(eventHandlerTypes);
+        Object.freeze(eventHandlerTypesByName);
+        
         
     	const defaultProperties = {
             name: '',
@@ -93,12 +99,12 @@ function eventHandlerProvider() {
                 return eventHandlerXidPrefix;
             }
             
-            static get handlerTypes() {
-                return Object.freeze(eventHandlerTypes);
+            static handlerTypes() {
+                return eventHandlerTypes;
             }
             
-            static get handlerTypesByName() {
-                return Object.freeze(eventHandlerTypesByName);
+            static handlerTypesByName() {
+                return eventHandlerTypesByName;
             }
             
             static forEventType(eventType, subType, ref1, ref2) {

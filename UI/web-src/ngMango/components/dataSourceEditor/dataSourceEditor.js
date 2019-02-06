@@ -14,14 +14,14 @@ import './dataSourceEditor.css';
  * @description Editor for a data source, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
+const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
     'maPoint', 'MA_TIME_PERIOD_TYPES', 'maEvents']);
 
 class DataSourceEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maDataSource, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
+    constructor(maDataSource, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
             Point, MA_TIME_PERIOD_TYPES, maEvents) {
         this.maDataSource = maDataSource;
         this.$q = $q;
@@ -29,8 +29,6 @@ class DataSourceEditorController {
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        this.$element = $element;
-        this.maUtil = maUtil;
         this.Point = Point;
         this.maEvents = maEvents;
         
@@ -110,6 +108,7 @@ class DataSourceEditorController {
         this.form.$setSubmitted();
         
         if (!this.form.$valid) {
+            this.form.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
@@ -126,13 +125,6 @@ class DataSourceEditorController {
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.validationMessages;
-                
-                const withProperty = this.validationMessages.filter(m => m.property);
-                if (withProperty.length) {
-                    const property = withProperty[0].property;
-                    const inputElement = this.maUtil.findInputElement(property, this.form);
-                    this.activateTab(inputElement);
-                }
             }
             
             this.maDialogHelper.errorToast(['ui.components.dataSourceSaveError', statusText]);
@@ -168,24 +160,6 @@ class DataSourceEditorController {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
-    }
-    
-    activateTab(query) {
-        if (!query) return;
-        
-        const tabElements = this.$element[0].querySelectorAll('md-tab-content');
-
-        const index = Array.prototype.findIndex.call(tabElements, tab => {
-            if (query instanceof Node) {
-                return tab.contains(query);
-            }
-            
-            return !!tab.querySelector(query);
-        });
-        
-        if (index >= 0) {
-            this.activeTab = index;
-        }
     }
 
     typeChanged() {

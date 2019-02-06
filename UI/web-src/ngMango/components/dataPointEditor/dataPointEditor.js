@@ -6,6 +6,15 @@
 import angular from 'angular';
 import dataPointEditorTemplate from './dataPointEditor.html';
 import './dataPointEditor.css';
+import loggingPropertiesTemplate from './loggingProperties.html';
+import textRendererTemplate from './textRenderer.html';
+import chartRendererTemplate from './chartRenderer.html';
+
+const templates = {
+    loggingProperties: loggingPropertiesTemplate,
+    textRenderer: textRendererTemplate,
+    chartRenderer: chartRendererTemplate
+};
 
 /**
  * @ngdoc directive
@@ -14,15 +23,22 @@ import './dataPointEditor.css';
  * @description Editor for a data point, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse',
-    'maMultipleValues']);
+const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
+    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_TIME_PERIOD_TYPES', '$templateCache', '$filter']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse,
-            MultipleValues) {
+    constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
+            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_TIME_PERIOD_TYPES, $templateCache, $filter) {
+
+        Object.keys(templates).forEach(key => {
+            const name = `maDataPointEditor.${key}.html`;
+            if (!$templateCache.get(name)) {
+                $templateCache.put(name, templates[key]);
+            }
+        });
         
         this.maPoint = maPoint;
         this.$q = $q;
@@ -30,9 +46,48 @@ class DataPointEditorController {
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        this.$element = $element;
-        this.maUtil = maUtil;
         this.MultipleValues = MultipleValues;
+        this.orderBy = $filter('orderBy');
+        this.rollupTypes = MA_ROLLUP_TYPES.filter(t => !t.nonAssignable);
+        this.plotTypes = MA_CHART_TYPES;
+        this.simplifyTypes = MA_SIMPLIFY_TYPES;
+        this.loggingTypes = [
+            {type: 'ON_CHANGE', translation: 'pointEdit.logging.type.change'},
+            {type: 'ALL', translation: 'pointEdit.logging.type.all'},
+            {type: 'NONE', translation: 'pointEdit.logging.type.never'},
+            {type: 'INTERVAL', translation: 'pointEdit.logging.type.interval'},
+            {type: 'ON_TS_CHANGE', translation: 'pointEdit.logging.type.tsChange'},
+            {type: 'ON_CHANGE_INTERVAL', translation: 'pointEdit.logging.type.changeInterval'}
+        ];
+        this.intervalLoggingPeriods = MA_TIME_PERIOD_TYPES.slice(1);
+        this.intervalLoggingValueTypes = [
+            {type: 'INSTANT', translation: 'pointEdit.logging.valueType.instant'},
+            {type: 'MAXIMUM', translation: 'pointEdit.logging.valueType.maximum'},
+            {type: 'MINIMUM', translation: 'pointEdit.logging.valueType.minimum'},
+            {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
+        ];
+        this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
+        this.chartRendererTimePeriods = MA_TIME_PERIOD_TYPES.slice(2, 7);
+        this.textRendererTypes = [
+            {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC']),
+                suffix: true},
+            {type: 'textRendererAnalog', translation: 'textRenderer.analog', dataTypes: new Set(['NUMERIC']), suffix: true, format: true},
+            {type: 'textRendererRange', translation: 'textRenderer.range', dataTypes: new Set(['NUMERIC']), format: true},
+            {type: 'textRendererBinary', translation: 'textRenderer.binary', dataTypes: new Set(['BINARY'])},
+            {type: 'textRendererNone', translation: 'textRenderer.none', dataTypes: new Set(['IMAGE'])},
+            {type: 'textRendererTime', translation: 'textRenderer.time', dataTypes: new Set(['NUMERIC']), format: true},
+            {type: 'textRendererMultistate', translation: 'textRenderer.multistate', dataTypes: new Set(['MULTISTATE'])}
+        ];
+        this.suffixTextRenderers = new Set(this.textRendererTypes.filter(t => t.suffix).map(t => t.type));
+        this.formatTextRenderers = new Set(this.textRendererTypes.filter(t => t.format).map(t => t.type));
+        this.simplifyDataTypes = new Set(['NUMERIC', 'MULTISTATE', 'BINARY']);
+        this.chartRendererTypes = [
+            {type: 'chartRendererNone', translation: 'chartRenderer.none', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC', 'IMAGE'])},
+            {type: 'chartRendererImageFlipbook', translation: 'chartRenderer.flipbook', dataTypes: new Set(['IMAGE'])},
+            {type: 'chartRendererTable', translation: 'chartRenderer.table', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])},
+            {type: 'chartRendererImage', translation: 'chartRenderer.image', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])},
+            {type: 'chartRendererStats', translation: 'chartRenderer.statistics', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])}
+        ];
 
         this.types = maPoint.types;
         this.typesByName = maPoint.typesByName;
@@ -120,6 +175,7 @@ class DataPointEditorController {
         this.form.$setSubmitted();
 
         if (!this.form.$valid) {
+            this.form.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
@@ -142,7 +198,6 @@ class DataPointEditorController {
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.result.messages;
-                this.activateTabWithValidationError();
             }
             
             this.errorMessages.push(statusText);
@@ -213,22 +268,12 @@ class DataPointEditorController {
                 }
             });
             this.validationMessages = validationMessages;
-            this.activateTabWithValidationError();
         } else {
             this.setViewValue(savedPoints);
             this.render();
         }
 
         this.notifyBulkEditComplete(resource);
-    }
-    
-    activateTabWithValidationError() {
-        const withProperty = this.validationMessages.filter(m => m.property);
-        if (withProperty.length) {
-            const property = withProperty[0].property;
-            const inputElement = this.maUtil.findInputElement(property, this.form);
-            this.activateTab(inputElement);
-        }
     }
 
     revertItem(event) {
@@ -260,24 +305,6 @@ class DataPointEditorController {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
-    }
-    
-    activateTab(query) {
-        if (!query) return;
-        
-        const tabElements = this.$element[0].querySelectorAll('md-tab-content');
-
-        const index = Array.prototype.findIndex.call(tabElements, tab => {
-            if (query instanceof Node) {
-                return tab.contains(query);
-            }
-            
-            return !!tab.querySelector(query);
-        });
-        
-        if (index >= 0) {
-            this.activeTab = index;
-        }
     }
     
     deleteDataPoint(event, item) {
@@ -380,6 +407,52 @@ class DataPointEditorController {
             delete this.bulkTaskPromise;
             delete this.bulkTask;
         });
+    }
+    
+    addRange(form) {
+        const newRange = {};
+        
+        let rangeValues = this.dataPoint.textRenderer.rangeValues;
+        if (!Array.isArray(rangeValues)) {
+            rangeValues = this.dataPoint.textRenderer.rangeValues = [];
+        }
+
+        const highestTo = rangeValues.reduce((h, r) => r.to > h ? r.to : h, -Infinity);
+        if (Number.isFinite(highestTo)) {
+            newRange.from = highestTo;
+        }
+
+        this.dataPoint.textRenderer.rangeValues.push(newRange);
+        form.$setDirty();
+    }
+    
+    removeRange(range, form) {
+        const index = this.dataPoint.textRenderer.rangeValues.indexOf(range);
+        this.dataPoint.textRenderer.rangeValues.splice(index, 1);
+        form.$setDirty();
+    }
+    
+    addMultistateValue(form) {
+        const newValue = {};
+        
+        let multistateValues = this.dataPoint.textRenderer.multistateValues;
+        if (!Array.isArray(multistateValues)) {
+            multistateValues = this.dataPoint.textRenderer.multistateValues = [];
+        }
+        
+        const highestKey = multistateValues.reduce((h, r) => r.key > h ? r.key : h, -Infinity);
+        if (Number.isFinite(highestKey)) {
+            newValue.key = Math.floor(highestKey) + 1;
+        }
+
+        this.dataPoint.textRenderer.multistateValues.push(newValue);
+        form.$setDirty();
+    }
+    
+    removeMultistateValue(value, form) {
+        const index = this.dataPoint.textRenderer.multistateValues.indexOf(value);
+        this.dataPoint.textRenderer.multistateValues.splice(index, 1);
+        form.$setDirty();
     }
 }
 

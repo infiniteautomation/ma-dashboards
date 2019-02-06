@@ -1,0 +1,22 @@
+/* Stops the content of non-active tabs scrolling past on first load */ 
+ma-event-detector-editor md-tab-content:not(.md-active) * {
+	visibility: hidden;
+}
+
+ma-event-detector-editor .ma-dialog-actions > .md-button {
+	margin: 0 4px;
+}
+
+ma-event-detector-editor {
+	display: flex;
+	flex-direction: column;
+}
+
+ma-event-detector-editor > div {
+	display: flex;
+	flex-direction: column;
+}
+
+ma-event-detector-editor > div > div:first-child {
+	flex: 1 1 100%;
+}

@@ -1,0 +1,15 @@
+ma-scripting-editor .ma-script-output {
+    padding: 10px;
+    overflow-y: scroll;
+    max-height: 100px;
+}
+
+ma-scripting-editor .ma-scripting-editor-help-container {
+	position: relative;
+}
+
+ma-scripting-editor .ma-scripting-editor-help-container > .md-button {
+	position: absolute;
+	right: 0;
+	top: 0;
+}

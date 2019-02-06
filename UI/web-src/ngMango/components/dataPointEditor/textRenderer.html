@@ -1,0 +1,177 @@
+<div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+    <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>build</md-icon>
+        <label ma-tr="pointEdit.text.type"></label>
+        <md-select name="type" ng-model="$ctrl.dataPoint.textRenderer.type" ng-disabled="$ctrl.dataPoint.dataType.hasMultipleValues()" required>
+            <md-option ng-if="$ctrl.dataPoint.textRenderer.type.hasMultipleValues()" ng-value="$ctrl.dataPoint.textRenderer.type">
+                <em ng-bind="$ctrl.dataPoint.textRenderer.type"></em>
+            </md-option>
+            <md-option ng-repeat="type in $ctrl.textRendererTypes track by type.type" ng-value="type.type"ng-if="type.dataTypes.has($ctrl.dataPoint.dataType)">
+                <span ma-tr="{{type.translation}}"></span>
+            </md-option>
+        </md-select>
+        <div ng-messages="textRenderer.type.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="textRenderer.type.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <div flex="100" flex-gt-md="50" ng-if="$ctrl.suffixTextRenderers.has($ctrl.dataPoint.textRenderer.type) && $ctrl.dataPoint.dataType === 'NUMERIC'">
+        <md-checkbox class="ma-input-container-height" name="useUnitAsSuffix" ng-model="$ctrl.dataPoint.textRenderer.useUnitAsSuffix">
+            <span ma-tr="pointEdit.props.useUnitAsSuffix"></span>
+        </md-checkbox>
+    </div>
+    
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.suffixTextRenderers.has($ctrl.dataPoint.textRenderer.type) && (!$ctrl.dataPoint.textRenderer.useUnitAsSuffix || $ctrl.dataPoint.dataType !== 'NUMERIC')">
+        <md-icon>last_page</md-icon>
+        <label ma-tr="pointEdit.text.suffix"></label>
+        <input name="suffix" ng-model="$ctrl.dataPoint.textRenderer.suffix">
+        <div ng-messages="textRenderer.suffix.$error">
+            <div ng-message="validationMessage" ng-bind="textRenderer.suffix.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.formatTextRenderers.has($ctrl.dataPoint.textRenderer.type)">
+        <md-icon>format_paint</md-icon>
+        <label ma-tr="pointEdit.text.format"></label>
+        <input name="format" ng-model="$ctrl.dataPoint.textRenderer.format" required>
+        <div ng-messages="textRenderer.format.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="textRenderer.format.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.textRenderer.type === 'textRendererTime'">
+        <md-icon>swap_horiz</md-icon>
+        <label ma-tr="pointEdit.text.conversionExponent"></label>
+        <input name="conversionExponent" ng-model="$ctrl.dataPoint.textRenderer.conversionExponent" type="number">
+        <div ng-messages="textRenderer.conversionExponent.$error">
+            <div ng-message="validationMessage" ng-bind="textRenderer.conversionExponent.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>
+
+<div ng-if="$ctrl.dataPoint.textRenderer.type === 'textRendererRange'" ng-form="rangeValues">
+    <div ng-repeat="rangeValue in $ctrl.dataPoint.textRenderer.rangeValues | orderBy:'from'" layout layout-align="start start"
+            ng-init="$i = $ctrl.dataPoint.textRenderer.rangeValues.indexOf(rangeValue)">
+        <md-button class="md-icon-button md-icon-button ma-input-container-height" ng-click="$ctrl.removeRange(rangeValue, rangeValues)">
+            <md-icon>clear</md-icon>
+            <md-tooltip><span ma-tr="common.remove"></span></md-tooltip>
+        </md-button>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.from"></label>
+            <input name="[{{$i}}].from" ng-model="rangeValue.from" type="number" required ma-get-ctrl="from = $ngModel" ng-model-options="{updateOn: 'blur'}">
+            <div ng-messages="from.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="from.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.to"></label>
+            <input name="[{{$i}}].to" ng-model="rangeValue.to" type="number" required ng-min="rangeValue.from" ma-get-ctrl="to = $ngModel">
+            <div ng-messages="to.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[rangeValue.from]"></div>
+                <div ng-message="validationMessage" ng-bind="to.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.text"></label>
+            <input name="[{{$i}}].text" ng-model="rangeValue.text" ma-get-ctrl="text = $ngModel">
+            <div ng-messages="text.$error">
+                <div ng-message="validationMessage" ng-bind="text.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <div flex layout layout-align="start center">
+            <ma-color-picker ng-model="rangeValue.colour" ma-flatten-values="$values.firstNonEmpty()"></ma-color-picker>
+            <md-input-container flex>
+                <label ma-tr="pointEdit.text.colour"></label>
+                <input name="[{{$i}}].colour" ng-model="rangeValue.colour" ma-get-ctrl="colour = $ngModel">
+                <div ng-messages="colour.$error">
+                    <div ng-message="validationMessage" ng-bind="colour.validationMessage"></div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+    <md-button ng-click="$ctrl.addRange(rangeValues)"><span ma-tr="pointEdit.text.addRange"></span></md-button>
+</div>
+
+<div ng-if="$ctrl.dataPoint.textRenderer.type === 'textRendererBinary'">
+    <div layout layout-align="start start">
+        <span class="ma-zero-one-label" ma-tr="pointEdit.text.zero"></span>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.text"></label>
+            <input name="zeroLabel" ng-model="$ctrl.dataPoint.textRenderer.zeroLabel" ma-get-ctrl="zeroLabel = $ngModel">
+            <div ng-messages="zeroLabel.$error">
+                <div ng-message="validationMessage" ng-bind="zeroLabel.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <div flex layout layout-align="start center">
+            <ma-color-picker ng-model="$ctrl.dataPoint.textRenderer.zeroColour" ma-flatten-values="$values.firstNonEmpty()"></ma-color-picker>
+            <md-input-container flex>
+                <label ma-tr="pointEdit.text.colour"></label>
+                <input name="zeroColour" ng-model="$ctrl.dataPoint.textRenderer.zeroColour" ma-get-ctrl="zeroColour = $ngModel">
+                <div ng-messages="zeroColour.$error">
+                    <div ng-message="validationMessage" ng-bind="zeroColour.validationMessage"></div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+    <div layout layout-align="start start">
+        <span class="ma-zero-one-label" ma-tr="pointEdit.text.one"></span>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.text"></label>
+            <input name="oneLabel" ng-model="$ctrl.dataPoint.textRenderer.oneLabel" ma-get-ctrl="oneLabel = $ngModel">
+            <div ng-messages="oneLabel.$error">
+                <div ng-message="validationMessage" ng-bind="oneLabel.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <div flex layout layout-align="start center">
+            <ma-color-picker ng-model="$ctrl.dataPoint.textRenderer.oneColour" ma-flatten-values="$values.firstNonEmpty()"></ma-color-picker>
+            <md-input-container flex>
+                <label ma-tr="pointEdit.text.colour"></label>
+                <input name="oneColour" ng-model="$ctrl.dataPoint.textRenderer.oneColour" ma-get-ctrl="oneColour = $ngModel">
+                <div ng-messages="oneColour.$error">
+                    <div ng-message="validationMessage" ng-bind="oneColour.validationMessage"></div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+</div>
+
+<div ng-if="$ctrl.dataPoint.textRenderer.type === 'textRendererMultistate'" ng-form="multistateValues">
+    <div ng-repeat="value in $ctrl.dataPoint.textRenderer.multistateValues | orderBy:'key'" layout layout-align="start start"
+            ng-init="$i = $ctrl.dataPoint.textRenderer.multistateValues.indexOf(value)">
+        <md-button class="md-icon-button md-icon-button ma-input-container-height" ng-click="$ctrl.removeMultistateValue(value, multistateValues)">
+            <md-icon>clear</md-icon>
+            <md-tooltip><span ma-tr="common.remove"></span></md-tooltip>
+        </md-button>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.key"></label>
+            <input name="[{{$i}}].key" ng-model="value.key" type="number" step="1" required ma-get-ctrl="key = $ngModel" ng-model-options="{updateOn: 'blur'}">
+            <div ng-messages="key.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+                <div ng-message="validationMessage" ng-bind="key.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="pointEdit.text.text"></label>
+            <input name="[{{$i}}].text" ng-model="value.text" ma-get-ctrl="text = $ngModel">
+            <div ng-messages="text.$error">
+                <div ng-message="validationMessage" ng-bind="text.validationMessage"></div>
+            </div>
+        </md-input-container>
+        <div flex layout layout-align="start center">
+            <ma-color-picker ng-model="value.colour" ma-flatten-values="$values.firstNonEmpty()"></ma-color-picker>
+            <md-input-container flex>
+                <label ma-tr="pointEdit.text.colour"></label>
+                <input name="[{{$i}}].colour" ng-model="value.colour" ma-get-ctrl="colour = $ngModel">
+                <div ng-messages="colour.$error">
+                    <div ng-message="validationMessage" ng-bind="colour.validationMessage"></div>
+                </div>
+            </md-input-container>
+        </div>
+    </div>
+    <md-button ng-click="$ctrl.addMultistateValue(multistateValues)"><span ma-tr="pointEdit.text.addMultistateValue"></span></md-button>
+</div>

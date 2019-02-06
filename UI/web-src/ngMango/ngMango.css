@@ -622,7 +622,7 @@ md-card md-card-content.ma-no-padding {
 .ma-no-padding-top,
 .md-padding.ma-no-padding-top,
 md-card md-card-content.ma-no-padding-top {
-	padding-bottom: 0;
+	padding-top: 0;
 }
 
 .ma-no-padding-bottom,
@@ -658,13 +658,26 @@ md-card md-card-content.ma-no-padding-bottom {
 	margin-top: 8px;
 }
 
+.ma-margin-top-large {
+	margin-top: 16px;
+}
+
 .ma-margin-bottom {
 	margin-bottom: 8px;
+}
+
+.ma-margin-bottom-large {
+	margin-bottom: 16px;
 }
 
 .ma-margin-top-bottom {
 	margin-top: 8px;
 	margin-bottom: 8px;
+}
+
+.ma-margin-top-bottom-large {
+	margin-top: 16px;
+	margin-bottom: 16px;
 }
 
 .ma-no-margin-top {
@@ -692,16 +705,6 @@ md-card md-card-content.ma-no-padding-bottom {
 
 .ma-full-width {
 	width: 100%;
-}
-
-/* permissions menu */
-
-.ma-permissions-menu {
-  padding: 0;
-}
-
-.ma-permissions-menu md-checkbox {
-  margin: 0;
 }
 
 /* import/export config components */
@@ -1084,31 +1087,41 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 	}
 }
 
-.my-10 {
-    margin-top: 10px; 
-    margin-bottom: 10px;
+/* Color picker checked background */
+
+/*
+.ma-color-picker-checkered-bg,
+.md-color-picker-checkered-bg[md-color-picker-alpha],
+.md-color-picker-preview.md-color-picker-checkered-bg {
+    background-color: #fff;
+    background-position: 0 0, 5px 5px;
+    background-size: 10px 10px;
+    background-image: linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%), linear-gradient(45deg, #ddd 25%, #fff 25%, #fff 75%, #ddd 75%);
+}
+*/
+
+.ma-color-picker-checkered-bg,
+.md-color-picker-checkered-bg[md-color-picker-alpha],
+.md-color-picker-preview.md-color-picker-checkered-bg {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAKElEQVQoU2O8e/fufwY0oKSkhC7EwDgUFP7//x/DM/fu3cP0zBBQCAC7zDTlG2JgjAAAAABJRU5ErkJggg==) repeat;
 }
 
-.color-error {
-    color: #F44336;
+/* Tools for making elements same height as md-input-container (70px) */
+
+md-checkbox.ma-input-container-height {
+	margin-top: 23px;
+	margin-bottom: 23px;
 }
 
-.color-warn {
-    color: #FDD835;
+.md-button.md-icon-button.ma-input-container-height {
+	margin-top: 15px;
+	margin-bottom: 15px;
 }
 
-.p-10 {
-    padding: 10px;
-}
-
-.overflow-y-scroll {
-    overflow-y: scroll;
-}
-
-.max-height-100 {
-    max-height: 100px;
-}
-
-.log-bg {
-    background-color: #272822;
+/* Fix time/date pickers not stretching */
+mdp-time-picker md-input-container,
+mdp-date-picker md-input-container {
+	display: block;
+	flex: 1;
+	box-sizing: border-box;
 }

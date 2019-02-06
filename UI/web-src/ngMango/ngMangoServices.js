@@ -35,7 +35,6 @@ import systemSettingsProvider from './services/systemSettings';
 import systemStatusFactory from './services/systemStatus';
 import ImportExportFactory from './services/ImportExport';
 import webAnalyticsFactory from './services/analytics';
-import requireQProvider from './services/requireQ';
 import localesFactory from './services/locales';
 import fileStoreFactory from './services/fileStore';
 import systemActionsFactory from './services/systemActions';
@@ -54,7 +53,7 @@ import maExceptionHandler from './services/exceptionHandler';
 import PointValueController from './services/PointValueController';
 import moduleLoader from './services/moduleLoader';
 import mailingListFactory from './services/mailingList';
-import eventTypeFactory from './services/EventType';
+import eventTypeProvider from './services/EventType';
 import virtualSerialPortFactory from './services/virtualSerialPort';
 import dateFilterFactory from './filters/dateFilter';
 import trFilterFactory from './filters/trFilter';
@@ -116,7 +115,6 @@ ngMangoServices.provider('maSystemSettings', systemSettingsProvider);
 ngMangoServices.factory('maSystemStatus', systemStatusFactory);
 ngMangoServices.factory('maImportExport', ImportExportFactory);
 ngMangoServices.factory('maWebAnalytics', webAnalyticsFactory);
-ngMangoServices.provider('maRequireQ', requireQProvider);
 ngMangoServices.factory('maLocales', localesFactory);
 ngMangoServices.factory('maFileStore', fileStoreFactory);
 ngMangoServices.factory('maSystemActions', systemActionsFactory);
@@ -126,7 +124,7 @@ ngMangoServices.factory('maRestResource', restResourceFactory);
 ngMangoServices.factory('maTemporaryRestResource', temporaryRestResourceFactory);
 ngMangoServices.factory('maRqlBuilder', rqlBuilderFactory);
 ngMangoServices.factory('maMath', mathFactory);
-ngMangoServices.factory('maEventDetector', maEventDetector);
+ngMangoServices.provider('maEventDetector', maEventDetector);
 ngMangoServices.provider('maEventHandler', maEventHandler);
 ngMangoServices.factory('maDataPointTags', maDataPointTags);
 ngMangoServices.factory('maAuditTrail', maAuditTrail);
@@ -134,7 +132,7 @@ ngMangoServices.factory('maRevisionHistoryDialog', maRevisionHistoryDialog);
 ngMangoServices.factory('maPointValueController', PointValueController);
 ngMangoServices.factory('maModuleLoader', moduleLoader);
 ngMangoServices.factory('maMailingList', mailingListFactory);
-ngMangoServices.factory('maEventType', eventTypeFactory);
+ngMangoServices.provider('maEventType', eventTypeProvider);
 ngMangoServices.factory('maVirtualSerialPort', virtualSerialPortFactory);
 ngMangoServices.factory('maScriptingEditor', scriptingEditorFactory);
 ngMangoServices.provider('$exceptionHandler', maExceptionHandler);
@@ -162,27 +160,72 @@ ngMangoServices.constant('MA_DATE_FORMATS', {
     iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 });
 
-ngMangoServices.constant('MA_DEFAULT_TIMEZONE', '');
-ngMangoServices.constant('MA_DEFAULT_LOCALE', '');
+ngMangoServices.constant('MA_ROLLUP_TYPES', [
+    {type: 'POINT_DEFAULT', nonNumeric: true, label: 'Point default', translation: 'common.rollup.pointDefault', nonAssignable: true},
+    {type: 'NONE', nonNumeric: true, label: 'None', translation: 'common.rollup.none'},
+    {type: 'SIMPLIFY', nonNumeric: false, label: 'Simplify', translation: 'ui.app.simplify', nonAssignable: true},
+    {type: 'AVERAGE', nonNumeric: false, label: 'Average', translation: 'common.rollup.average'},
+    {type: 'DELTA', nonNumeric: false, label: 'Delta', translation: 'common.rollup.delta'},
+    {type: 'MINIMUM', nonNumeric: false, label: 'Minimum', translation: 'common.rollup.minimum'},
+    {type: 'MAXIMUM', nonNumeric: false, label: 'Maximum', translation: 'common.rollup.maximum'},
+    {type: 'ACCUMULATOR', nonNumeric: false, label: 'Accumulator', translation: 'common.rollup.accumulator'},
+    {type: 'SUM', nonNumeric: false, label: 'Sum', translation: 'common.rollup.sum'},
+    {type: 'START', nonNumeric: true, label: 'Start', translation: 'common.rollup.start'},
+    {type: 'FIRST', nonNumeric: true, label: 'First', translation: 'common.rollup.first'},
+    {type: 'LAST', nonNumeric: true, label: 'Last', translation: 'common.rollup.last'},
+    {type: 'COUNT', nonNumeric: true, label: 'Count', translation: 'common.rollup.count'},
+    {type: 'INTEGRAL', nonNumeric: false, label: 'Integral', translation: 'common.rollup.integral'}
+    //{name: 'FFT', nonNumeric: false}
+]);
 
-// TODO Mango 3.6 remove this, no longer used
-ngMangoServices.constant('MA_EVENT_HANDLER_TYPES', [
+ngMangoServices.constant('MA_DATE_TIME_FORMATS', [
     {
-        type: 'EMAIL',
-        description: 'eventHandlers.type.email',
-        editorTemplateUrl: 'eventHandlers.email.html'
+        translation: 'ui.app.timeFormat.iso',
+        format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX'
     },
     {
-        type: 'PROCESS',
-        description: 'eventHandlers.type.process',
-        editorTemplateUrl: 'eventHandlers.process.html'
+        translation: 'ui.app.timeFormat.excelCompatible',
+        format: 'yyyy-MM-dd HH:mm:ss'
     },
     {
-        type: 'SET_POINT',
-        description: 'eventHandlers.type.setPoint',
-        editorTemplateUrl: 'eventHandlers.setPoint.html'
+        translation: 'ui.app.timeFormat.excelCompatibleMs',
+        format: 'yyyy-MM-dd HH:mm:ss.SSS'
+    },
+    {
+        translation: 'ui.app.timeFormat.epoch',
+        format: ''
     }
 ]);
+
+ngMangoServices.constant('MA_TIME_PERIOD_TYPES', [
+    {type: 'MILLISECONDS', label: 'Milliseconds', translation: 'dateAndTime.milliseconds'},
+    {type: 'SECONDS', label: 'Seconds', translation: 'dateAndTime.seconds'},
+    {type: 'MINUTES', label: 'Minutes', translation: 'dateAndTime.minutes'},
+    {type: 'HOURS', label: 'Hours', translation: 'dateAndTime.hours'},
+    {type: 'DAYS', label: 'Days', translation: 'dateAndTime.days', showByDefault: true},
+    {type: 'WEEKS', label: 'Weeks', translation: 'dateAndTime.weeks', showByDefault: true},
+    {type: 'MONTHS', label: 'Months', translation: 'dateAndTime.months', showByDefault: true},
+    {type: 'YEARS', label: 'Years', translation: 'dateAndTime.years', showByDefault: true}
+]);
+
+ngMangoServices.constant('MA_CHART_TYPES', [
+    {type: 'line', apiType: 'LINE', label: 'Line', translation: 'ui.app.line'},
+    {type: 'smoothedLine', apiType: 'SPLINE', label: 'Smoothed', translation: 'ui.app.smooth'},
+    {type: 'step', apiType: 'STEP', label: 'Step', translation: 'ui.app.step', nonNumeric: true},
+    {type: 'column', apiType: 'BAR', label: 'Bar', translation: 'ui.app.bar'}
+]);
+
+ngMangoServices.constant('MA_SIMPLIFY_TYPES', [
+    {type: 'NONE', translation: 'pointEdit.simplify.none'},
+    {type: 'TARGET', translation: 'pointEdit.simplify.target'},
+    {type: 'TOLERANCE', translation: 'pointEdit.simplify.tolerance'}
+]);
+
+// properties are added/defined in UI module
+ngMangoServices.constant('MA_EVENT_LINK_INFO', {});
+
+ngMangoServices.constant('MA_DEFAULT_TIMEZONE', '');
+ngMangoServices.constant('MA_DEFAULT_LOCALE', '');
 
 ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide',
         function(localStorageServiceProvider, $httpProvider, $provide) {

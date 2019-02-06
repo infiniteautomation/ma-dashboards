@@ -1,0 +1,35 @@
+<ma-filtering-point-list ng-model="$ctrl.dataPoint"></ma-filtering-point-list>
+<div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
+    <md-card flex-gt-md="25" flex-gt-lg="20" layout="column">
+        <md-toolbar class="md-hue-3">
+            <div class="md-toolbar-tools">
+                <span ma-tr="ui.eventDetectors.select"></span>
+                <div flex></div>
+                <md-button class="md-raised" ng-click="$ctrl.newEventDetector($event)" ng-if="!$ctrl.$mdMedia('gt-md')">
+                    <md-icon>add</md-icon> <span ma-tr="ui.app.new"></span>
+                    <md-tooltip><span ma-tr="ui.eventDetectors.create"></span></md-tooltip>
+                </md-button>
+            </div>
+        </md-toolbar>
+    
+        <md-card-content flex layout layout-align="start center" ng-if="!$ctrl.$mdMedia('gt-md')">
+            <ma-event-detector-select flex layout ng-model="$ctrl.eventDetector" ng-change="$ctrl.eventDetectorChanged()" show-new-option="true"></ma-event-detector-select>
+        </md-card-content>
+    
+        <md-card-content flex class="ma-no-padding" ng-if="$ctrl.$mdMedia('gt-md')">
+            <ma-event-detector-list flex layout="column" ng-model="$ctrl.eventDetector" ng-change="$ctrl.eventDetectorChanged()" data-point="$ctrl.dataPoint"></ma-event-detector-list>
+        </md-card-content>
+    </md-card>
+
+    <div flex>
+        <md-card>
+            <md-toolbar class="md-hue-3">
+                <div class="md-toolbar-tools">
+                    <span ng-if="!$ctrl.eventDetector.isNew()" ma-tr="ui.eventDetectors.edit"></span>
+                    <span ng-if="$ctrl.eventDetector.isNew()" ma-tr="ui.eventDetectors.create"></span>
+                </div>
+            </md-toolbar>
+            <ma-event-detector-editor ng-model="$ctrl.eventDetector" ng-change="$ctrl.eventDetectorSaved()" confirm-discard="true"></ma-event-detector-editor>
+        </md-card>
+    </div>
+</div>

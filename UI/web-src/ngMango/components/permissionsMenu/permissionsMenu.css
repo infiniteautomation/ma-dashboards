@@ -1,0 +1,7 @@
+md-menu-content.ma-permissions-menu {
+  padding: 0;
+}
+
+md-menu-content.ma-permissions-menu md-checkbox {
+  margin: 0;
+}

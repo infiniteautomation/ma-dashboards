@@ -944,6 +944,14 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
             }
 
             return dst;
+        },
+        
+        inject(object) {
+            if (Array.isArray(object) && object.length && typeof object[object.length - 1] === 'function' ||
+                    typeof object === 'function' && Array.isArray(object.$inject)) {
+                return $injector.invoke(object);
+            }
+            return object;
         }
     };
     

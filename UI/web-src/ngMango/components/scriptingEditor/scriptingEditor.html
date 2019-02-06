@@ -1,32 +1,29 @@
 <div flex layout="column">
-    <div flex layout="row" layout-wrap="center top">
-        <div flex="100" layout="row" layout-align="end top">
-            <md-button class="md-icon-button" ui-sref="ui.help.scriptingEditor">
-                <md-icon>help</md-icon>
-            </md-button>
-        </div>
+    <div flex layout="row" layout-wrap="center top" class="ma-scripting-editor-help-container">
         <ma-ace-editor flex="100" mode="javascript" options="$ctrl.options" editor-loaded="$ctrl.editor = $editor" show-gutter="true" theme="tomorrow_night_bright" ng-change="$ctrl.setViewValue()" ng-model="$ctrl.scriptData.script"></ma-ace-editor>
+        <md-button class="md-icon-button" ui-sref="ui.help.scriptingEditor">
+            <md-icon>help</md-icon>
+        </md-button>
     </div>
     <div flex layout layout-align="space-between top" layout-wrap>
         <div flex="100" flex-gt-sm="70" flex-gt-md="80">
-            <div ng-if="$ctrl.scriptOutput" flex class="log-bg p-10 overflow-y-scroll max-height-100">
+            <div ng-if="$ctrl.scriptOutput" flex class="ma-script-output" md-colors="{background: 'grey-900'}">
                 <pre>{{ $ctrl.scriptOutput }}</pre>
             </div>
-            <ul ng-if="$ctrl.scriptErrors" class="my-10">
-                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="error.property" class="color-error">
-                    <pre>{{ error.message }}</pre> on <b>{{ error.property }}</b>
+            <ul ng-if="$ctrl.scriptErrors" class="md-padding ma-script-errors" md-colors="::{color: 'warn'}">
+                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="error.property">
+                    <span ma-tr="ui.components.errorOnProperty" ma-tr-args="[error.message, error.property]"></span>
                 </li>
-                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property" class="color-error">
-                    <pre>{{ error.message }}</pre>
-                    <span ng-if="error.lineNumber">line {{error.lineNumber}}</span> 
-                    <span ng-if="error.columnNumber">, column {{error.columnNumber}}</span>
+                <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property && error.lineNumber != null">
+                    <span ng-if="error.columnNumber == null" ma-tr="ui.components.errorOnLine" ma-tr-args="[error.message, error.lineNumber]"></span>
+                    <span ng-if="error.columnNumber != null" ma-tr="ui.components.errorOnLineCol" ma-tr-args="[error.message, error.lineNumber, error.columnNumber]"></span>
                 </li>
             </ul>
-            <ul ng-if="$ctrl.scriptActions" class="my-10">
-                <li ng-repeat="action in $ctrl.scriptActions" ng-class="{'color-error': action.level === 'error', 'color-warn': action.level === 'warning'}">
-                    <pre ng-if="action.level === 'error'" class="color-error">{{ action.message }}</pre>
-                    <pre ng-if="action.level === 'warning'" class="color-warn">{{ action.message }}</pre>
-                    <pre ng-if="action.level !== 'warning' && action.level !== 'error'">{{ action.message }}</pre>
+            <ul ng-if="$ctrl.scriptActions" class="md-padding ma-script-actions">
+                <li ng-repeat="action in $ctrl.scriptActions">
+                    <span ng-if="action.level === 'error'" md-colors="::{color: 'warn'}">{{ action.message }}</span>
+                    <span ng-if="action.level === 'warning'" md-colors="::{color: 'accent'}">{{ action.message }}</span>
+                    <span ng-if="action.level !== 'warning' && action.level !== 'error'">{{ action.message }}</span>
                 </li>
             </ul>
         </div>

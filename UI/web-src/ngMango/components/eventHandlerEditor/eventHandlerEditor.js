@@ -14,23 +14,20 @@ import './eventHandlerEditor.css';
  * @description Editor for an event handler, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$element', 'maUtil', '$attrs', '$parse']);
 class EventHandlerEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return $inject; }
+    static get $inject() { return ['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse']; }
     
-    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $element, maUtil, $attrs, $parse) {
+    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse) {
         this.maEventHandler = maEventHandler;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        this.$element = $element;
-        this.maUtil = maUtil;
         
-        this.handlerTypes = maEventHandler.handlerTypes;
-        this.handlerTypesByName = maEventHandler.handlerTypesByName;
+        this.handlerTypes = maEventHandler.handlerTypes();
+        this.handlerTypesByName = maEventHandler.handlerTypesByName();
         
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
@@ -104,6 +101,7 @@ class EventHandlerEditorController {
         this.form.$setSubmitted();
         
         if (!this.form.$valid) {
+            this.form.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
@@ -119,14 +117,7 @@ class EventHandlerEditorController {
             
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
-                this.validationMessages = error.data.validationMessages;
-                
-                const withProperty = this.validationMessages.filter(m => m.property);
-                if (withProperty.length) {
-                    const property = withProperty[0].property;
-                    const inputElement = this.maUtil.findInputElement(property, this.form);
-                    this.activateTab(inputElement);
-                }
+                this.validationMessages = error.data.result.messages;
             }
             
             this.maDialogHelper.errorToast(['ui.components.eventHandlerSaveError', statusText]);
@@ -160,24 +151,6 @@ class EventHandlerEditorController {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
-    }
-    
-    activateTab(query) {
-        if (!query) return;
-        
-        const tabElements = this.$element[0].querySelectorAll('md-tab-content');
-
-        const index = Array.prototype.findIndex.call(tabElements, tab => {
-            if (query instanceof Node) {
-                return tab.contains(query);
-            }
-            
-            return !!tab.querySelector(query);
-        });
-        
-        if (index >= 0) {
-            this.activeTab = index;
-        }
     }
 }
 

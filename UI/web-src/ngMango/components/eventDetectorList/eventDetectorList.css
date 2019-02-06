@@ -1,0 +1,15 @@
+ma-event-detector-list md-list-item .md-list-item-text > p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+ma-event-detector-list {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+}
+
+ma-event-detector-list > md-list {
+	flex: 1 1 100%;
+}

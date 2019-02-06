@@ -227,7 +227,9 @@ function filteringPointList() {
             displayText: '&?',
             clientSideFilter: '<?',
             getByXid: '<?',
-            allowClear: '<?'
+            allowClear: '<?',
+            required: '@?',
+            disabled: '@?'
         },
         require: {
             ngModelCtrl: 'ngModel'

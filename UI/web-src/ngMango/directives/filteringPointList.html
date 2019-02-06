@@ -11,7 +11,9 @@
   md-select-on-focus="true"
   md-escape-options="none"
   md-clear-button="true"
-  ng-blur="$ctrl.blurred($event)">
+  ng-blur="$ctrl.blurred($event)"
+  ng-required="$ctrl.required"
+  ng-disabled="$ctrl.disabled">
 
     <md-item-template>
       <span md-highlight-text="$ctrl.highlight" md-highlight-flags="gi">{{$ctrl.listText({$point: item})}}</span>
@@ -21,4 +23,7 @@
       <span ma-tr="ui.app.noPointsFound" ma-tr-args="[$ctrl.searchText]"></span>
     </md-not-found>
 
+    <div ng-messages="$ctrl.ngModelCtrl.$error">
+        <div ng-message="required" ma-tr="ui.app.required"></div>
+    </div>
 </md-autocomplete>
