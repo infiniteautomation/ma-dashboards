@@ -16,7 +16,7 @@
             md-colors="$ctrl.selected.xid === eventDetector.xid ? {background: 'accent-hue-1'} : {}">
         <div ng-if="!$ctrl.dataPoint" class="md-list-item-text">
             <h3 ng-bind="eventDetector.description || eventDetector.name"></h3>
-            <p ng-bind="eventDetector.detectorSourceType === 'DATA_POINT' ? eventDetector.dataPoint.formatLabel() : eventDetector.xid"></p>
+            <p ng-bind="eventDetector.sourceTypeName === 'DATA_POINT' ? eventDetector.dataPoint.formatLabel() : eventDetector.xid"></p>
         </div>
         <span ng-if="$ctrl.dataPoint" ng-bind="eventDetector.description || eventDetector.name"></span>
     </md-list-item>

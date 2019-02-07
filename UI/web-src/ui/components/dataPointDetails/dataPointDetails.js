@@ -200,7 +200,7 @@ class DataPointDetailsController {
 
     newEventDetector() {
         const detector = new this.EventDetector();
-        detector.detectorSourceType = 'DATA_POINT';
+        detector.sourceTypeName = 'DATA_POINT';
         detector.dataPoint = this.dataPoint;
         detector.sourceId = this.dataPoint.id;
         return detector;

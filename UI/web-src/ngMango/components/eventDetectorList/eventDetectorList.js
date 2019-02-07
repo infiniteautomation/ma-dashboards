@@ -90,7 +90,7 @@ class EventDetectorListController {
     newEventDetector(event) {
         this.selected = new this.EventDetector();
         if (this.dataPoint) {
-            this.selected.detectorSourceType = 'DATA_POINT';
+            this.selected.sourceTypeName = 'DATA_POINT';
             this.selected.dataPoint = this.dataPoint;
             this.selected.sourceId = this.dataPoint.id;
         }

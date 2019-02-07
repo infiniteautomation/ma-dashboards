@@ -29,7 +29,7 @@ function eventDetectorProvider() {
     eventDetectorFactory.$inject = ['maRestResource', '$injector', '$q', '$templateCache', 'maPoint'];
     function eventDetectorFactory(RestResource, $injector, $q, $templateCache, Point) {
     
-        const eventDetectorBaseUrl = '/rest/v2/event-detectors';
+        const eventDetectorBaseUrl = '/rest/v2/full-event-detectors';
         const eventDetectorWebSocketUrl = '/rest/v1/websocket/event-detectors';
         const eventDetectorXidPrefix = 'ED_';
         
@@ -104,9 +104,8 @@ function eventDetectorProvider() {
                     
                     if (!detector) {
                         detector = new this({
-                            durationType: 'SECONDS',
                             alarmLevel: 'WARNING',
-                            detectorSourceType: 'DATA_POINT',
+                            sourceTypeName: 'DATA_POINT',
                             rtnApplicable: true
                         });
                     }
@@ -160,23 +159,6 @@ function eventDetectorProvider() {
             
             static detectorTypesByName() {
                 return eventDetectorTypesByName;
-            }
-            
-            get dataPoint() {
-                if (this.detectorSourceType !== 'DATA_POINT') return;
-                
-                if (this.$dataPoint) {
-                    return this.$dataPoint;
-                }
-                
-                return (this.$dataPoint = Point.getById({id: this.sourceId}));
-            }
-            
-            set dataPoint(point) {
-                if (this.detectorSourceType !== 'DATA_POINT') return;
-                
-                this.$dataPoint = point;
-                this.sourceId = point && point.id;
             }
         }
         
