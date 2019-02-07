@@ -18,28 +18,38 @@ class EventDetectorLayoutController {
     }
     
     $onInit() {
+        this.ngModelCtrl.$render = () => this.render();
     }
     
     $onChanges(changes) {
     }
     
+    render() {
+        this.eventDetector = this.ngModelCtrl.$viewValue;
+    }
+    
+    eventDetectorChanged() {
+        this.ngModelCtrl.$setViewValue(this.eventDetector);
+    }
+    
     newEventDetector() {
         this.eventDetector = new this.EventDetector();
         if (this.hasPointAttr) {
+            this.eventDetector.detectorSourceType = 'DATA_POINT';
             this.eventDetector.dataPoint = this.dataPoint;
+            this.eventDetector.sourceId = this.dataPoint.id;
         }
     }
     
     onQuery(items) {
-        if (items.length) {
-            this.eventDetector = items[0];
-        } else {
-            this.newEventDetector();
-        }
-        
-        if (typeof this.onQueryCallback === 'function') {
-            this.onQueryCallback({$items: items});
-        }
+//        if (!this.eventDetector) {
+//            if (items.length) {
+//                this.eventDetector = items[0];
+//            } else {
+//                this.newEventDetector();
+//            }
+//            this.eventDetectorChanged();
+//        }
     }
 }
 
@@ -47,9 +57,9 @@ export default {
     template: eventDetectorLayoutTemplate,
     controller: EventDetectorLayoutController,
     bindings: {
-        dataPoint: '<?point',
-        onQueryCallback: '&?onQuery'
+        dataPoint: '<?point'
     },
     require: {
+        ngModelCtrl: 'ngModel'
     }
 };

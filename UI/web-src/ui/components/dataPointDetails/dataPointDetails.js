@@ -198,6 +198,7 @@ class DataPointDetailsController {
     detectorChanged() {
         this.$state.params.detectorId = null;
         this.$state.params.detectorXid = this.eventDetector && !this.eventDetector.isNew() && this.eventDetector.xid || null;
+        this.stateGo();
     }
     
     stateGo() {
