@@ -131,10 +131,6 @@ function eventDetectorProvider() {
                 });
             }
             
-            saveAndNotify() {
-                return this.constructor.saveAndNotify(this);
-            }
-            
             static saveAndNotify(detector) {
                 return $q.when(detector).then(detector => {
                     return detector.save();
@@ -159,6 +155,16 @@ function eventDetectorProvider() {
             
             static detectorTypesByName() {
                 return eventDetectorTypesByName;
+            }
+
+            saveAndNotify() {
+                return this.constructor.saveAndNotify(this);
+            }
+            
+            initialize(reason) {
+                if (this.dataPoint && !(this.dataPoint instanceof Point)) {
+                    this.dataPoint = Object.assign(Object.create(Point.prototype), this.dataPoint);
+                }
             }
         }
         
