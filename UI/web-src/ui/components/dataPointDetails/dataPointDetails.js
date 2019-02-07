@@ -10,9 +10,9 @@ import './dataPointDetails.css';
 
 class DataPointDetailsController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint', '$scope']; }
+    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint', '$scope', 'maEventDetector']; }
     
-    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point, $scope) {
+    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point, $scope, EventDetector) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.localStorageService = localStorageService;
@@ -21,6 +21,7 @@ class DataPointDetailsController {
         this.User = User;
         this.Point = Point;
         this.$scope = $scope;
+        this.EventDetector = EventDetector;
         
         this.chartType = 'smoothedLine';
     }
@@ -28,7 +29,11 @@ class DataPointDetailsController {
     $onInit() {
         const $stateParams = this.$stateParams;
         
-        if ($stateParams.pointXid) {
+        if ($stateParams.detectorId) {
+            this.getPointByDetectorId($stateParams.detectorId);
+        } else if ($stateParams.detectorXid) {
+            this.getPointByDetectorXid($stateParams.detectorXid);
+        } else if ($stateParams.pointXid) {
             this.getPointByXid($stateParams.pointXid);
         } else if ($stateParams.pointId) {
             this.getPointById($stateParams.pointId);
@@ -62,18 +67,7 @@ class DataPointDetailsController {
     }
     
     getPointByXid(xid) {
-        this.Point.get({xid}).$promise.then(dp => {
-            if (this.$stateParams.edit) {
-                this.editTarget = dp;
-                this.showEditDialog = {};
-            }
-            this.dataPoint = dp;
-            this.pointChanged();
-        });
-    }
-    
-    getPointById(id) {
-        this.Point.getById({id}).$promise.then(dp => {
+        return this.Point.get({xid}).$promise.then(dp => {
             if (this.$stateParams.edit) {
                 this.editTarget = dp;
                 this.showEditDialog = {};
@@ -83,14 +77,45 @@ class DataPointDetailsController {
         });
     }
 
+    getPointById(id) {
+        return this.Point.getById({id}).$promise.then(dp => {
+            if (this.$stateParams.edit) {
+                this.editTarget = dp;
+                this.showEditDialog = {};
+            }
+            this.dataPoint = dp;
+            this.pointChanged();
+        });
+    }
+    
+    getPointByDetectorId(id) {
+        return this.EventDetector.getById(id).then(detector => {
+            this.getPointById(detector.sourceId).then(() => {
+                this.eventDetector = detector;
+                this.openDetectorDialog();
+            });
+        });
+    }
+    
+    getPointByDetectorXid(xid) {
+        return this.EventDetector.get(xid).then(detector => {
+            this.getPointById(detector.sourceId).then(() => {
+                this.eventDetector = detector;
+                this.openDetectorDialog();
+            });
+        });
+    }
+
     pointChanged() {
-        delete this.eventDetectors;
+        delete this.eventDetector;
+        delete this.eventDetectorCount;
         delete this.pointValues;
         delete this.realtimePointValues;
         delete this.statsObj;
         
         if (!this.dataPoint) {
-            this.$state.go('.', {pointXid: null}, {location: 'replace', notify: false});
+            this.$state.params.pointXid = null;
+            this.stateGo();
             this.localStorageService.set('lastDataPointDetailsItem', {xid: null});
             this.path = [];
             return;
@@ -102,11 +127,19 @@ class DataPointDetailsController {
     pointUpdated() {
         const xid = this.dataPoint.xid;
 
-        this.$state.go('.', {pointXid: xid}, {location: 'replace', notify: false});
+        this.$state.params.pointXid = xid;
+        this.stateGo();
         this.localStorageService.set('lastDataPointDetailsItem', {xid});
         
         this.PointHierarchy.pathByXid({xid}).$promise.then(response => {
             this.path = response;
+        });
+        
+        this.EventDetector.buildQuery()
+        .eq('sourceTypeName', 'DATA_POINT')
+        .eq('dataPointId', this.dataPoint.id)
+        .limit(0).query().then(items => {
+            this.eventDetectorCount = items.$total;
         });
         
         const pointType = this.dataPoint.pointLocator.dataType;
@@ -133,6 +166,42 @@ class DataPointDetailsController {
         this.numValues = preferences.numberOfPointValues;
         this.realtimeMode = preferences.realtimeMode;
         this.showCachedData = preferences.showCachedData;
+    }
+    
+    openDetectorDialog() {
+        this.showDetectorDialog = {};
+        this.$state.params.detectorId = null;
+        this.$state.params.detectorXid = this.eventDetector && !this.eventDetector.isNew() && this.eventDetector.xid || null;
+        this.stateGo();
+    }
+    
+    detectorDialogClosed() {
+        delete this.eventDetector;
+        this.$state.params.detectorId = null;
+        this.$state.params.detectorXid = null;
+        this.stateGo();
+    }
+    
+    openEditDialog(target) {
+        this.editTarget = target;
+        this.$state.params.edit = true;
+        this.stateGo();
+        this.showEditDialog = {};
+    }
+    
+    editDialogClosed() {
+        this.editTarget = null;
+        this.$state.params.edit = null;
+        this.stateGo();
+    }
+    
+    detectorChanged() {
+        this.$state.params.detectorId = null;
+        this.$state.params.detectorXid = this.eventDetector && !this.eventDetector.isNew() && this.eventDetector.xid || null;
+    }
+    
+    stateGo() {
+        this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
 }
 
