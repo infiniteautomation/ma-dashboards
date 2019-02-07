@@ -2,7 +2,7 @@
     <ma-event-detector-select ng-if="!$ctrl.$mdMedia('gt-md') && (!$ctrl.hasPointAttr || $ctrl.dataPoint)"
         ng-model="$ctrl.eventDetector" data-point="$ctrl.dataPoint"
         ng-change="$ctrl.eventDetectorChanged()"
-        on-query="$ctrl.onQuery($items)">
+        on-query="$ctrl.onQuery($items)" show-new-option="true">
     </ma-event-detector-select>
     <ma-event-detector-list ng-if="$ctrl.$mdMedia('gt-md') && (!$ctrl.hasPointAttr || $ctrl.dataPoint)" flex-gt-md="30"
         md-colors="{background: 'background'}"

@@ -8,7 +8,7 @@ import './eventDetectorSelect.css';
 
 /**
  * @ngdoc directive
- * @name ngMango.directive:maEventDetectorSelect
+ * @name ngMango.directive:EventDetectorSelect
  * @restrict E
  * @description Displays a drop down select of event handlers
  */
@@ -17,8 +17,8 @@ class EventDetectorSelectController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maEventDetector', '$scope']; }
     
-    constructor(maEventDetector, $scope) {
-        this.maEventDetector = maEventDetector;
+    constructor(EventDetector, $scope) {
+        this.EventDetector = EventDetector;
         this.$scope = $scope;
         
         this.newValue = {};
@@ -26,12 +26,10 @@ class EventDetectorSelectController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
+
+        this.doQuery();
         
-        this.maEventDetector.list().then((eventDetectors) => {
-            this.eventDetectors = eventDetectors;
-        });
-        
-        this.maEventDetector.subscribe((event, item, originalXid) => {
+        this.EventDetector.subscribe((event, item, originalXid) => {
             if (!this.eventDetectors) return;
 
             const index = this.eventDetectors.findIndex(eventDetector => eventDetector.id === item.id);
@@ -49,6 +47,26 @@ class EventDetectorSelectController {
     }
     
     $onChanges(changes) {
+        if (changes.dataPoint && !changes.dataPoint.isFirstChange()) {
+            this.doQuery();
+        }
+    }
+    
+    doQuery() {
+        const query = this.EventDetector.buildQuery();
+        
+        if (this.dataPoint) {
+            query.eq('sourceTypeName', 'DATA_POINT');
+            query.eq('dataPointId', this.dataPoint.id);
+        }
+        
+        query.query().then(eventDetectors => {
+            this.eventDetectors = eventDetectors;
+            
+            if (typeof this.onQuery === 'function') {
+                this.onQuery({$items: this.eventDetectors});
+            }
+        });
     }
     
     setViewValue() {
@@ -61,7 +79,17 @@ class EventDetectorSelectController {
     
     selectEventDetector() {
         if (this.selected === this.newValue) {
-            this.selected = new this.maEventDetector();
+            this.selected = this.newEventDetector();
+        }
+        this.setViewValue();
+    }
+    
+    newEventDetector(event) {
+        this.selected = new this.EventDetector();
+        if (this.dataPoint) {
+            this.selected.sourceTypeName = 'DATA_POINT';
+            this.selected.dataPoint = this.dataPoint;
+            this.selected.sourceId = this.dataPoint.id;
         }
         this.setViewValue();
     }
@@ -74,7 +102,9 @@ export default {
         labelSlot: '?maLabel'
     },
     bindings: {
-        showNewOption: '<?'
+        showNewOption: '<?',
+        dataPoint: '<?point',
+        onQuery: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel'
