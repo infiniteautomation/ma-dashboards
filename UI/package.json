@@ -34,7 +34,7 @@
     "js-sha512": "^0.7.1",
     "jshint": "^2.9.7",
     "jszip": "^3.1.5",
-    "material-design-icons-iconfont": "^3.0.3",
+    "material-design-icons-iconfont": "4.0.4",
     "mathjs": "^4.4.2",
     "md-color-picker": "^0.2.6",
     "md-pickers": "^1.1.1",
