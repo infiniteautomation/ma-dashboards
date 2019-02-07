@@ -31,25 +31,11 @@ class EventDetectorLayoutController {
     eventDetectorChanged() {
         this.ngModelCtrl.$setViewValue(this.eventDetector);
     }
-    
-    newEventDetector() {
-        this.eventDetector = new this.EventDetector();
-        if (this.hasPointAttr) {
-            this.eventDetector.detectorSourceType = 'DATA_POINT';
-            this.eventDetector.dataPoint = this.dataPoint;
-            this.eventDetector.sourceId = this.dataPoint.id;
-        }
-    }
-    
+
     onQuery(items) {
-//        if (!this.eventDetector) {
-//            if (items.length) {
-//                this.eventDetector = items[0];
-//            } else {
-//                this.newEventDetector();
-//            }
-//            this.eventDetectorChanged();
-//        }
+        if (typeof this.onQueryCallback === 'function') {
+            this.onQueryCallback({$items: items});
+        }
     }
 }
 
@@ -57,7 +43,8 @@ export default {
     template: eventDetectorLayoutTemplate,
     controller: EventDetectorLayoutController,
     bindings: {
-        dataPoint: '<?point'
+        dataPoint: '<?point',
+        onQueryCallback: '&?onQuery'
     },
     require: {
         ngModelCtrl: 'ngModel'

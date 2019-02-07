@@ -91,8 +91,7 @@ class DataPointDetailsController {
     getPointByDetectorId(id) {
         return this.EventDetector.getById(id).then(detector => {
             this.getPointById(detector.sourceId).then(() => {
-                this.eventDetector = detector;
-                this.openDetectorDialog();
+                this.openDetectorDialog(detector);
             });
         });
     }
@@ -100,15 +99,14 @@ class DataPointDetailsController {
     getPointByDetectorXid(xid) {
         return this.EventDetector.get(xid).then(detector => {
             this.getPointById(detector.sourceId).then(() => {
-                this.eventDetector = detector;
-                this.openDetectorDialog();
+                this.openDetectorDialog(detector);
             });
         });
     }
 
     pointChanged() {
         delete this.eventDetector;
-        delete this.eventDetectorCount;
+        delete this.eventDetectors;
         delete this.pointValues;
         delete this.realtimePointValues;
         delete this.statsObj;
@@ -127,19 +125,13 @@ class DataPointDetailsController {
     pointUpdated() {
         const xid = this.dataPoint.xid;
 
+        this.$state.params.pointId = null;
         this.$state.params.pointXid = xid;
         this.stateGo();
         this.localStorageService.set('lastDataPointDetailsItem', {xid});
         
         this.PointHierarchy.pathByXid({xid}).$promise.then(response => {
             this.path = response;
-        });
-        
-        this.EventDetector.buildQuery()
-        .eq('sourceTypeName', 'DATA_POINT')
-        .eq('dataPointId', this.dataPoint.id)
-        .limit(0).query().then(items => {
-            this.eventDetectorCount = items.$total;
         });
         
         const pointType = this.dataPoint.pointLocator.dataType;
@@ -168,10 +160,11 @@ class DataPointDetailsController {
         this.showCachedData = preferences.showCachedData;
     }
     
-    openDetectorDialog() {
+    openDetectorDialog(detector) {
         this.showDetectorDialog = {};
+        this.eventDetector = detector || this.eventDetectors[0] || this.newEventDetector();
         this.$state.params.detectorId = null;
-        this.$state.params.detectorXid = this.eventDetector && !this.eventDetector.isNew() && this.eventDetector.xid || null;
+        this.$state.params.detectorXid = this.eventDetector.getOriginalId() || null;
         this.stateGo();
     }
     
@@ -203,6 +196,14 @@ class DataPointDetailsController {
     
     stateGo() {
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
+    }
+
+    newEventDetector() {
+        const detector = new this.EventDetector();
+        detector.detectorSourceType = 'DATA_POINT';
+        detector.dataPoint = this.dataPoint;
+        detector.sourceId = this.dataPoint.id;
+        return detector;
     }
 }
 

@@ -48,8 +48,8 @@
                             <div ng-repeat="(key, value) in $ctrl.dataPoint.tags"><span ng-bind="key"></span>=<span ng-bind="value"></span></div>
                         </div>
                         <label flex="35"><span ma-tr="ui.app.dataSource"></span>:</label><div flex="65" ng-bind="$ctrl.dataPoint.dataSourceName"></div>
-                        <label flex="35"><span ma-tr="pointEdit.detectors.eventDetectors"></span>:</label><div flex="65"><a ng-if="$ctrl.eventDetectorCount != null"
-                            ma-tr="ui.eventDetectors.count" ma-tr-args="[$ctrl.eventDetectorCount]" ng-click="$ctrl.openDetectorDialog()"></a></div>
+                        <label flex="35"><span ma-tr="pointEdit.detectors.eventDetectors"></span>:</label><div flex="65"><a ng-if="$ctrl.eventDetectors != null"
+                            ma-tr="ui.eventDetectors.count" ma-tr-args="[$ctrl.eventDetectors.length]" ng-click="$ctrl.openDetectorDialog()"></a></div>
             		</div>
                     
             		<div layout="row">
@@ -230,7 +230,7 @@
         </md-toolbar>
 
         <md-dialog-content class="ma-data-point-details-event-detectors" flex layout="column">
-            <ma-event-detector-layout data-point="$ctrl.dataPoint" ng-model="$ctrl.eventDetector" ng-change="$ctrl.detectorChanged()"></ma-event-detector-layout>
+            <ma-event-detector-layout data-point="$ctrl.dataPoint" ng-model="$ctrl.eventDetector" ng-change="$ctrl.detectorChanged()" on-query="$ctrl.eventDetectors = $items"></ma-event-detector-layout>
         </md-dialog-content>
     </md-dialog>
 </ma-dialog>
