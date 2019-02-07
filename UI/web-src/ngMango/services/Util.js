@@ -952,38 +952,28 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                 return $injector.invoke(object);
             }
             return object;
-        }
-    };
-    
-    /**
-    * @ngdoc method
-    * @methodOf ngMangoServices.maUtil
-    * @name uuid
-    *
-    * @description
-    * Generates a v4 (random) UUID
-    */
-    if ($window.crypto && typeof $window.crypto.getRandomValues === 'function') {
-        util.uuid = function uuid() {
+        },
+
+        /**
+        * @ngdoc method
+        * @methodOf ngMangoServices.maUtil
+        * @name uuid
+        *
+        * @description
+        * Generates a v4 (random) UUID
+        */
+        uuid() {
             return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => {
                 return (c ^ $window.crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
             });
-        };
-    } else {
-        util.uuid = function uuid() {
-            let uuid = '', i, random;
-            for (i = 0; i < 32; i++) {
-                random = Math.random() * 16 | 0;
-    
-                if (i === 8 || i === 12 || i === 16 || i === 20) {
-                    uuid += '-';
-                }
-                uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
-            }
-            return uuid;
-        };
-    }
-    
+        },
+        
+        generateKey(keySizeBits = 256) {
+            const bytes = $window.crypto.getRandomValues(new Uint8Array(keySizeBits / 8));
+            return bytes.reduce((key, byte) => key + ('0' + byte.toString(16)).slice(-2), '');
+        }
+    };
+
     return Object.freeze(util);
 }
 
