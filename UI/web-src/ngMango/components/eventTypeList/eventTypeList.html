@@ -2,7 +2,7 @@
     <md-divider ng-repeat-start="category in $ctrl.categories track by category.typeName" ng-if="!$first"></md-divider>
     
     <md-list-item class="ma-event-type-heading" ng-click="$ctrl.expandCategory(category)">
-        <p><span ng-bind="category.description"></span><span ng-if="category.selected"> (<em ma-tr="ui.app.xPointsSelected" ma-tr-args="[category.selected.size]"></em>)</span></p>
+        <p><span ng-bind="category.description"></span><span ng-if="category.selected"> (<em ma-tr="ui.app.xSelected" ma-tr-args="[category.selected.size]"></em>)</span></p>
         <md-icon>{{category.expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
     </md-list-item>
 
@@ -18,7 +18,7 @@
         </p>
     </md-list-item>
 
-    <md-list-item ng-repeat-end ng-repeat="eventType in group.types track by eventType.uniqueId"
+    <md-list-item ng-repeat-end ng-repeat="eventType in group.types track by eventType.typeId"
             class="ma-event-type-group-item"
             ng-init="checked = $ctrl.selectedGetterSetter(category, eventType.type)">
         <span>
@@ -30,7 +30,7 @@
         <md-checkbox class="md-secondary" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude></md-checkbox>
     </md-list-item>
 
-    <md-list-item ng-repeat="eventType in category.types track by eventType.uniqueId"
+    <md-list-item ng-repeat="eventType in category.types track by eventType.typeId"
             ng-init="checked = $ctrl.selectedGetterSetter(category, eventType.type)">
         <span>
             <md-icon class="fa fa-lg ma-alarm-flag" ng-class="$ctrl.alarmLevels[eventType.alarmLevel].classes">

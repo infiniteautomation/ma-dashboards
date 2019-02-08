@@ -124,7 +124,7 @@ function eventTypeProvider() {
         eventTypeOptions.forEach(options => {
             try {
                 const injected = Util.inject(options);
-                eventTypeOptionsMap[injected.typeName] = injected;
+                eventTypeOptionsMap[injected.typeName] = Object.freeze(injected);
             } catch (e) {
                 console.error(e);
             }
@@ -132,7 +132,23 @@ function eventTypeProvider() {
 
         const eventTypeBaseUrl = '/rest/v2/event-types';
         
-        class EventType extends RestResource {
+        class EventType {
+            constructor(data) {
+                Object.assign(this, data);
+                if (!this.subType) {
+                    this.subType = this.eventSubtype || null;
+                }
+                delete this.eventSubtype;
+                
+                this.typeId = this.constructor.typeId(this);
+            }
+            
+            static typeId(type) {
+                return `${type.eventType}_${type.subType || type.eventSubtype || null}_${type.referenceId1}_${type.referenceId2}`;
+            }
+        }
+        
+        class EventTypeInfo extends RestResource {
             static get baseUrl() {
                 return eventTypeBaseUrl;
             }
@@ -151,12 +167,14 @@ function eventTypeProvider() {
                 }));
             }
             
-            get uniqueId() {
-                return this.constructor.uniqueId(this.type);
+            initialize() {
+                if (this.type) {
+                    this.type = new EventType(this.type);
+                }
             }
             
-            static uniqueId(type) {
-                return `${type.eventType}_${type.subType || null}_${type.referenceId1}_${type.referenceId2}`;
+            get typeId() {
+                return this.type && this.type.typeId;
             }
             
             static list(name, opts = {}) {
@@ -200,8 +218,10 @@ function eventTypeProvider() {
                 });
             }
         }
+        
+        EventTypeInfo.EventType = EventType;
 
-        return EventType;
+        return EventTypeInfo;
     }
 }
 

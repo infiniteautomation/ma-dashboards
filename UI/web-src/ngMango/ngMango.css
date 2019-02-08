@@ -654,7 +654,9 @@ md-card md-card-content.ma-no-padding-bottom {
   cursor: pointer;
 }
 
-.ma-no-margin {
+.ma-no-margin,
+.md-button.ma-no-margin,
+.md-button.md-icon-button.ma-no-margin {
 	margin: 0;
 }
 
@@ -692,8 +694,28 @@ md-card md-card-content.ma-no-padding-bottom {
 	margin-bottom: 0;
 }
 
+.ma-no-margin-right,
+.md-button.ma-no-margin-right,
+.md-button.md-icon-button.ma-no-margin-right {
+	margin-right: 0;
+}
+
+.ma-no-margin-left,
+.md-button.ma-no-margin-left,
+.md-button.md-icon-button.ma-no-margin-left {
+	margin-left: 0;
+}
+
 .ma-margin-input-container {
 	margin-top: 20px;
+}
+
+/* small icon button with less padding */
+.md-button.md-icon-button.ma-small-button {
+	padding: 4px;
+	width: 32px;
+	height: 32px;
+	min-height: 32px;
 }
 
 .ma-text-centered,

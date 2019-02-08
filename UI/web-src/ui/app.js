@@ -67,26 +67,17 @@ uiApp.constant('MA_EVENT_LINK_INFO', {
         icon: 'device_hub',
         tooltipTranslation: 'header.dataSources',
         stateName: 'ui.settings.dataSources',
-        stateParams: event => {
-            return { dataSourceId: event.eventType.dataSourceId };
-        }
+        stateParams: event => ({dataSourceId: event.eventType.dataSourceId})
     },
     LICENSE_CHECK: {
         icon: 'extension',
         tooltipTranslation: 'header.modules',
         stateName: 'ui.settings.modules',
-        stateParams: event => {
-            return {};
-        }
+        stateParams: event => ({})
     },
     EVENT_HANDLERS_LINK: {
         stateName: 'ui.settings.eventHandlers',
-        stateParams: event => {
-            return {
-                event,
-                eventTypeId: event.typeId
-            };
-        }
+        stateParams: event => ({event})
     }
 });
 

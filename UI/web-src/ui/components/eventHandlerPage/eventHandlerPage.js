@@ -5,10 +5,9 @@
 
 import eventHandlerPageTemplate from './eventHandlerPage.html';
 
-const $inject = Object.freeze(['maEventHandler', '$state', '$mdMedia']);
 class EventHandlerPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return $inject; }
+    static get $inject() { return ['maEventHandler', '$state', '$mdMedia']; }
     
     constructor(maEventHandler, $state, $mdMedia) {
         this.maEventHandler = maEventHandler;
@@ -33,6 +32,9 @@ class EventHandlerPageController {
     
     newEventHandler() {
         this.eventHandler = new this.maEventHandler();
+        if (this.$state.params.event) {
+            this.eventHandler.addEventType(this.$state.params.event.getEventType());
+        }
         this.eventHandlerChanged();
     }
     
@@ -48,6 +50,11 @@ class EventHandlerPageController {
     
     eventHandlerChanged() {
         this.$state.params.xid = this.eventHandler && this.eventHandler.getOriginalId() || null;
+        this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
+    }
+    
+    clearEventState() {
+        this.$state.params.event = null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
 }

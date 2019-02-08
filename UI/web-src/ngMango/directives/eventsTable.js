@@ -52,10 +52,8 @@ import moment from 'moment-timezone';
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
 
-eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout', 'maEventHandler',
-    'maEventType'];
-function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout, EventHandler,
-        EventType) {
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout', 'maEventHandler'];
+function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout, EventHandler) {
 
     const ANY_KEYWORD = 'any';
 
@@ -210,7 +208,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         rebuildHandlersMap() {
             this.handlers.forEach(handler => {
                 handler.eventTypes.forEach(et => {
-                    this.handlersForType.set(EventType.uniqueId(et), handler);
+                    this.handlersForType.set(et.typeId, handler);
                 });
             });
         }

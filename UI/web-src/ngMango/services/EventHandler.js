@@ -35,8 +35,8 @@ function eventHandlerProvider() {
     
     this.$get = eventHandlerFactory;
     
-    eventHandlerFactory.$inject = ['maRestResource', '$templateCache', '$injector', '$rootScope'];
-    function eventHandlerFactory(RestResource, $templateCache, $injector, $rootScope) {
+    eventHandlerFactory.$inject = ['maRestResource', '$templateCache', '$injector', '$rootScope', 'maEventTypeInfo'];
+    function eventHandlerFactory(RestResource, $templateCache, $injector, $rootScope, EventTypeInfo) {
 
         const eventHandlerBaseUrl = '/rest/v2/event-handlers';
         const eventHandlerWebSocketUrl = '/rest/v2/websocket/event-handlers';
@@ -138,6 +138,23 @@ function eventHandlerProvider() {
                 }).then(response => {
                     return response.data;
                 });
+            }
+            
+            initialize() {
+                if (Array.isArray(this.eventTypes)) {
+                    this.eventTypes = this.eventTypes.map(et => new EventTypeInfo.EventType(et));
+                }
+            }
+            
+            addEventType(eventType) {
+                if (!(eventType instanceof EventTypeInfo.EventType)) {
+                    eventType = new EventTypeInfo.EventType(eventType);
+                }
+                this.eventTypes.push(eventType);
+            }
+
+            hasEventType(eventTypeId) {
+                return this.eventTypes.some(et => et.typeId === eventTypeId);
             }
         }
     

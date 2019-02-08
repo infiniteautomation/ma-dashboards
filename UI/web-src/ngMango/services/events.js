@@ -121,8 +121,8 @@
 *
 */
 
-eventsFactory.$inject = ['$resource', 'maUtil'];
-function eventsFactory($resource, Util) {
+eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo'];
+function eventsFactory($resource, Util, EventTypeInfo) {
     const Events = $resource('/rest/v1/events', {
         id: '@id'
     }, {
@@ -184,11 +184,7 @@ function eventsFactory($resource, Util) {
             {key: 'LIFE_SAFETY', classes: 'fa-flag ma-alarm-level-life', translation: 'common.alarmLevel.lifeSafety'},
             {key: 'DO_NOT_LOG', classes: 'fa-times-circle ma-alarm-level-do', translation: 'common.alarmLevel.doNotLog'},
             {key: 'IGNORE', classes: 'fa-times ma-alarm-level-ignore', translation: 'common.alarmLevel.ignore'}
-        ]),
-        
-        typeId(type) {
-            return `${type.eventType}_${type.eventSubtype || null}_${type.referenceId1}_${type.referenceId2}`;
-        }
+        ])
     });
 
     Object.defineProperty(Events.prototype, 'duration', {
@@ -207,7 +203,16 @@ function eventsFactory($resource, Util) {
 
     Object.defineProperty(Events.prototype, 'typeId', {
         get: function() {
-            return this.constructor.typeId(this.eventType);
+            return this.eventType && this.getEventType().typeId;
+        }
+    });
+    
+    Object.assign(Events.prototype, {
+        getEventType() {
+            if (this.eventType && !(this.eventType instanceof EventTypeInfo.EventType)) {
+                this.eventType = new EventTypeInfo.EventType(this.eventType);
+            }
+            return this.eventType;
         }
     });
 

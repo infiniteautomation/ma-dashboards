@@ -25,28 +25,43 @@ class EventHandlerListController {
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
         
-        this.maEventHandler.list().then((eventHandlers) => {
-            this.eventHandlers = eventHandlers;
-        });
+        this.doQuery();
         
         this.maEventHandler.subscribe((event, item, originalXid) => {
             if (!this.eventHandlers) return;
 
+            const filterMatches = !this.event || item.hasEventType(this.event.typeId);
             const index = this.eventHandlers.findIndex(eventHandler => eventHandler.id === item.id);
             if (index >= 0) {
-                if (event.name === 'update' || event.name === 'create') {
-                    this.eventHandlers[index] = item;
-                } else if (event.name === 'delete') {
+                if (!filterMatches || event.name === 'delete') {
                     this.eventHandlers.splice(index, 1);
+                } else if (event.name === 'update' || event.name === 'create') {
+                    Object.assign(this.eventHandlers[index], item);
                 }
-            } else if (event.name === 'update' || event.name === 'create') {
+            } else if (filterMatches && (event.name === 'update' || event.name === 'create')) {
                 this.eventHandlers.push(item);
             }
-
         }, this.$scope, ['create', 'update', 'delete']);
     }
     
     $onChanges(changes) {
+        if (changes.event && !changes.event.isFirstChange()) {
+            this.doQuery();
+        }
+    }
+    
+    doQuery() {
+        const queryBuilder = this.maEventHandler.buildQuery();
+        queryBuilder.limit(10000);
+        return queryBuilder.query().then(eventHandlers => {
+            if (this.event) {
+                const eventTypeId = this.event.typeId;
+                this.eventHandlers = eventHandlers.filter(eh => eh.hasEventType(eventTypeId));
+            } else {
+                this.eventHandlers = eventHandlers;
+            }
+            return this.eventHandlers;
+        });
     }
     
     setViewValue() {
@@ -71,6 +86,9 @@ class EventHandlerListController {
     
     newEventHandler(event) {
         this.selected = new this.maEventHandler();
+        if (this.event) {
+            this.selected.addEventType(this.event.getEventType());
+        }
         this.setViewValue();
     }
 }
@@ -79,6 +97,7 @@ export default {
     template: eventHandlerListTemplate,
     controller: EventHandlerListController,
     bindings: {
+        event: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

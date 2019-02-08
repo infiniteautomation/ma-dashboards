@@ -15,10 +15,10 @@ import './eventTypeList.css';
 
 class EventTypeListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventType', 'maEvents', '$filter', 'maPoint']; }
+    static get $inject() { return ['maEventTypeInfo', 'maEvents', '$filter', 'maPoint']; }
     
-    constructor(EventType, maEvents, $filter, Point) {
-        this.EventType = EventType;
+    constructor(EventTypeInfo, maEvents, $filter, Point) {
+        this.EventTypeInfo = EventTypeInfo;
         this.orderBy = $filter('orderBy');
         this.Point = Point;
         
@@ -28,7 +28,7 @@ class EventTypeListController {
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
 
-        this.loadingCategories = this.EventType.typeNames().then(categories => {
+        this.loadingCategories = this.EventTypeInfo.typeNames().then(categories => {
             this.categories = this.orderBy(categories, 'description');
             this.categoriesMap = categories.reduce((map, c) => (map[c.typeName] = c, map), {});
             delete this.loadingCategories;
@@ -57,7 +57,7 @@ class EventTypeListController {
         if (!Array.isArray(selectedTypes)) return;
         
         selectedTypes.forEach(eventType => {
-            const id = this.EventType.uniqueId(eventType);
+            const id = eventType.typeId;
             this.selected.set(id, eventType);
             const category = this.categoriesMap[eventType.eventType];
             if (category) {
@@ -88,13 +88,13 @@ class EventTypeListController {
     }
     
     loadCategory(category) {
-        category.loading = this.EventType.list(category.typeName).then(eventTypes => {
+        category.loading = this.EventTypeInfo.list(category.typeName).then(eventTypes => {
             category.types = this.orderBy(eventTypes, category.orderBy);
 
             if (typeof category.groupBy === 'function') {
                 category.groups = category.group(category.types);
                 //category.groups.forEach(g => {
-                //    g.expanded = g.types.some(t => category.selected.has(t.uniqueId));
+                //    g.expanded = g.types.some(t => category.selected.has(t.typeId));
                 //});
                 delete category.types;
             }
@@ -104,7 +104,7 @@ class EventTypeListController {
     
     selectedGetterSetter(category, eventType) {
         return value => {
-            const id = this.EventType.uniqueId(eventType);
+            const id = eventType.typeId;
             
             if (value === undefined) {
                 return category.selected.has(id);

@@ -55,7 +55,7 @@
         </md-tab>
         <md-tab>
             <md-tab-label>
-                <span ma-tr="eventHandlers.selectEventTypes"></span>
+                <span ma-tr="eventHandlers.selectEventTypes"></span> (<span ma-tr="ui.app.xSelected" ma-tr-args="[$ctrl.eventHandler.eventTypes.length || 0]"></span>)
             </md-tab-label>
             <md-tab-body>
                 <ma-event-type-list ng-model="$ctrl.eventHandler.eventTypes"></ma-event-type-list>
