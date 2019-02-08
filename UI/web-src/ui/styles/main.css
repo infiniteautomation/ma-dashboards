@@ -516,8 +516,8 @@ md-card md-toolbar.mdp-clock-center {
 	max-height: unset;
 }
 
-md-toolbar.ma-ma-small-toolbar-font,
-md-toolbar.ma-ma-small-toolbar-font .md-toolbar-tools {
+md-toolbar.ma-small-toolbar-font,
+md-toolbar.ma-small-toolbar-font .md-toolbar-tools {
   font-size: 1.7rem;
 }
 
