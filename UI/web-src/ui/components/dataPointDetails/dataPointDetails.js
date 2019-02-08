@@ -10,9 +10,11 @@ import './dataPointDetails.css';
 
 class DataPointDetailsController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint', '$scope', 'maEventDetector']; }
+    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint',
+        '$scope', 'maEventDetector']; }
     
-    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point, $scope, EventDetector) {
+    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point,
+            $scope, EventDetector) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.localStorageService = localStorageService;

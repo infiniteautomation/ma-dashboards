@@ -156,7 +156,7 @@ function eventTypeProvider() {
             }
             
             static uniqueId(type) {
-                return `${type.eventType}_${type.subType}_${type.referenceId1}_${type.referenceId2}`;
+                return `${type.eventType}_${type.subType || null}_${type.referenceId1}_${type.referenceId2}`;
             }
             
             static list(name, opts = {}) {

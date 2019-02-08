@@ -4,6 +4,7 @@
  */
 
 import eventsTableTemplate from './eventsTable.html';
+import './eventsTable.css';
 import moment from 'moment-timezone';
 
 /**
@@ -51,10 +52,29 @@ import moment from 'moment-timezone';
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
 
-eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout'];
-function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout) {
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout', 'maEventHandler',
+    'maEventType'];
+function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout, EventHandler,
+        EventType) {
 
     const ANY_KEYWORD = 'any';
+
+    class MultiMap extends Map {
+        getOrCreate(key) {
+            if (this.has(key)) {
+                return this.get(key);
+            }
+            const values = new Set();
+            super.set(key, values);
+            return values;
+        }
+        
+        set(key, value) {
+            const values = this.getOrCreate(key);
+            values.add(value);
+            return this;
+        }
+    }
     
     class Equals {
         constructor(value, filter) {
@@ -113,6 +133,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             
             this.onPaginateBound = (...args) => this.onPaginate(...args);
             this.onReorderBound = (...args) => this.onReorder(...args);
+            
+            this.handlersForType = new MultiMap();
         }
 
         $onInit() {
@@ -161,6 +183,14 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                     }, 5000);
                 }
             });
+
+            // TODO update with websocket
+            EventHandler.buildQuery()
+            .limit(10000)
+            .query().then(handlers => {
+                this.handlers = handlers;
+                this.rebuildHandlersMap();
+            });
         }
         
         $onChanges(changes) {
@@ -175,6 +205,14 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             }
             
             this.doQuery();
+        }
+        
+        rebuildHandlersMap() {
+            this.handlers.forEach(handler => {
+                handler.eventTypes.forEach(et => {
+                    this.handlersForType.set(EventType.uniqueId(et), handler);
+                });
+            });
         }
         
         baseQuery() {
@@ -421,6 +459,17 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             return tests.reduce((accum, test) => {
                 return accum && test.test();
             }, true);
+        }
+        
+        eventHandlerState() {
+            return 'ui.settings.eventHandlers';
+        }
+        
+        eventHandlerStateParams(event) {
+            return {
+                eventDescription: event.description,
+                eventTypeId: event.typeId
+            };
         }
     }
     

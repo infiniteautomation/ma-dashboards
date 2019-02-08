@@ -155,20 +155,6 @@ function eventsFactory($resource, Util) {
         cancellable: true
     });
 
-    Object.defineProperty(Events.prototype, 'duration', {
-        get: function() {
-            if (this.returnToNormalTimestamp === 0) {
-                if (!this.active) return null;
-                
-                // round to prevent infinite digests
-                const time = Math.floor(new Date().valueOf() / 1000) * 1000;
-                return time - this.activeTimestamp;
-            } else {
-                return this.returnToNormalTimestamp - this.activeTimestamp;
-            }
-        }
-    });
-
     const subscriptionMessage = {
         eventTypes: ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED'],
         levels: ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE']
@@ -186,7 +172,7 @@ function eventsFactory($resource, Util) {
             }
         }
     });
-    
+
     Object.assign(Events, {
         levels: Object.freeze([
             {key: 'NONE', classes: 'fa-flag ma-alarm-level-none', translation: 'common.alarmLevel.none'},
@@ -198,7 +184,31 @@ function eventsFactory($resource, Util) {
             {key: 'LIFE_SAFETY', classes: 'fa-flag ma-alarm-level-life', translation: 'common.alarmLevel.lifeSafety'},
             {key: 'DO_NOT_LOG', classes: 'fa-times-circle ma-alarm-level-do', translation: 'common.alarmLevel.doNotLog'},
             {key: 'IGNORE', classes: 'fa-times ma-alarm-level-ignore', translation: 'common.alarmLevel.ignore'}
-        ])
+        ]),
+        
+        typeId(type) {
+            return `${type.eventType}_${type.eventSubtype || null}_${type.referenceId1}_${type.referenceId2}`;
+        }
+    });
+
+    Object.defineProperty(Events.prototype, 'duration', {
+        get: function() {
+            if (this.returnToNormalTimestamp === 0) {
+                if (!this.active) return null;
+                
+                // round to prevent infinite digests
+                const time = Math.floor(new Date().valueOf() / 1000) * 1000;
+                return time - this.activeTimestamp;
+            } else {
+                return this.returnToNormalTimestamp - this.activeTimestamp;
+            }
+        }
+    });
+
+    Object.defineProperty(Events.prototype, 'typeId', {
+        get: function() {
+            return this.constructor.typeId(this.eventType);
+        }
     });
 
     return Events;

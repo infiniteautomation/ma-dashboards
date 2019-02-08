@@ -692,7 +692,9 @@ md-card md-card-content.ma-no-padding-bottom {
 	margin-top: 20px;
 }
 
-.ma-text-centered {
+.ma-text-centered,
+table.md-table td.md-cell.ma-text-centered,
+table.md-table th.md-column.ma-text-centered {
 	text-align: center;
 }
 
@@ -853,16 +855,6 @@ ma-ace-editor > .ace_editor {
 	display: flex;
 	flex-grow: 1;
 	font-size: 1.4rem;
-}
-
-/* Events table */
-
-ma-events-table .active-status {
-	font-weight: bold;
-}
-
-ma-events-table .event-link md-icon {
-	font-size: 22px;
 }
 
 ma-query-predicate > div > .md-button.md-icon-button {
@@ -1054,10 +1046,6 @@ md-input-container:not(.md-input-invalid).md-input-focused md-icon.ma-alarm-leve
 md-icon.ma-alarm-level-ignore,
 md-input-container:not(.md-input-invalid).md-input-focused md-icon.ma-alarm-level-ignore {
     color: #9E9E9E;
-}
-
-.ma-acknowledged-checkbox {
-    color: #8BC34A;
 }
 
 /* Angular material fix */

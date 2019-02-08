@@ -1,0 +1,16 @@
+ma-events-table .ma-active-status {
+	font-weight: bold;
+}
+
+ma-events-table .ma-acknowledged-checkbox,
+ma-events-table .ma-acknowledged-checkbox.material-icons {
+    color: #8BC34A;
+}
+
+ma-events-table .ma-acknowledged-checkbox.ma-acknowledged {
+    cursor: default;
+}
+
+ma-events-table a.ma-no-border {
+	border: none;
+}

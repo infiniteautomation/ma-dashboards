@@ -1181,13 +1181,14 @@ export default [
     },
     {
         name: 'ui.settings.eventHandlers',
-        url: '/event-handlers/{xid}',
+        url: '/event-handlers/{xid}?eventTypeId',
         template: '<ma-ui-event-handler-page flex="noshrink" layout="column"><ma-ui-event-handler-page>',
         menuTr: 'ui.app.eventHandlers',
-        menuIcon: 'change_history',
+        menuIcon: 'assignment_turned_in',
         permission: 'superadmin',
         params: {
-            helpPage: 'ui.help.eventHandlers'
+            helpPage: 'ui.help.eventHandlers',
+            event: null
         },
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {

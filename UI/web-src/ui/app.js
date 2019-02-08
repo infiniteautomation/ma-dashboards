@@ -78,6 +78,15 @@ uiApp.constant('MA_EVENT_LINK_INFO', {
         stateParams: event => {
             return {};
         }
+    },
+    EVENT_HANDLERS_LINK: {
+        stateName: 'ui.settings.eventHandlers',
+        stateParams: event => {
+            return {
+                event,
+                eventTypeId: event.typeId
+            };
+        }
     }
 });
 
