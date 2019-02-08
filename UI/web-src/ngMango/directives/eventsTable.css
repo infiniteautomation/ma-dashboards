@@ -14,3 +14,32 @@ ma-events-table .ma-acknowledged-checkbox.ma-acknowledged {
 ma-events-table a.ma-no-border {
 	border: none;
 }
+
+ma-events-table td:not(.ma-message-column),
+ma-events-table th:not(.ma-message-column) {
+	white-space: nowrap;
+}
+
+ma-events-table table.md-table td.md-cell.ma-message-column,
+ma-events-table table.md-table th.md-column.ma-message-column {
+	max-width: 380px;
+}
+
+ma-events-table table.md-table td.md-cell.ma-message-column a {
+    border: none;
+}
+
+@media (max-width: 959px) {
+	ma-events-table table.md-table td.md-cell.ma-message-column,
+	ma-events-table table.md-table th.md-column.ma-message-column {
+		max-width: 200px;
+	}
+}
+
+ma-events-table table.md-table td.md-cell.ma-message-column.ma-truncated {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-height: 20px;
+	line-height: 20px;
+}

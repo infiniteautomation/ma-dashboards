@@ -4,9 +4,9 @@
     converted="true" rendered="true" latest="$ctrl.numValues" refresh="$ctrl.refreshTable">
 </ma-point-values>
 
-<md-dialog aria-label="{{$ctrl.point.name}} Statistics" class="stats-dialog">
+<md-dialog aria-label="{{$ctrl.point.name}} Statistics" class="ma-stats-dialog">
       <form>
-            <md-toolbar class="small-toolbar-font">
+            <md-toolbar class="ma-ma-small-toolbar-font">
                   <div class="md-toolbar-tools">
                         <h2>{{ 'ui.app.history' | maTr }}: {{$ctrl.point.deviceName}} &mdash; {{$ctrl.point.name}}</h2>
                         <md-button ng-show="!$ctrl.realtimeMode" class="md-icon-button" ng-click="$ctrl.refreshTable = {}"><md-icon>refresh</md-icon></md-button>
@@ -20,12 +20,12 @@
                   </div>
             </md-toolbar>
             
-            <md-toolbar class="small-toolbar md-padding md-hue-2" ng-show="$ctrl.showTableOptions" layout layout-wrap layout-align="space-between center">
+            <md-toolbar class="ma-small-toolbar md-padding md-hue-2" ng-show="$ctrl.showTableOptions" layout layout-wrap layout-align="space-between center">
                 <span>
                     <md-input-container md-no-float>
-                        <input id="number-of-values" ng-model="$ctrl.numValues" type="number" ng-change="$ctrl.updatePreferences()">
+                        <input id="ma-stats-number-of-values" ng-model="$ctrl.numValues" type="number" ng-change="$ctrl.updatePreferences()">
                     </md-input-container>
-                    <label ma-tr="ui.app.numberOfValues" for="number-of-values"></label>
+                    <label ma-tr="ui.app.numberOfValues" for="ma-stats-number-of-values"></label>
                 </span>
                 <md-switch ng-model="$ctrl.realtimeMode" ng-change="$ctrl.showCachedData = $ctrl.realtimeMode ? false : $ctrl.showCachedData; $ctrl.updatePreferences()">
                     <span ma-tr="ui.app.realtime"></span>

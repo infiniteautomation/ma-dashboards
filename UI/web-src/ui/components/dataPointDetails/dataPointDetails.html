@@ -79,9 +79,9 @@
                 <md-toolbar class="md-padding md-hue-2" ng-show="$ctrl.showTableOptions" layout layout-wrap layout-align="space-between center">
                     <span class="dpd-num-values">
                         <md-input-container md-no-float>
-                            <input id="number-of-values" ng-model="$ctrl.numValues" type="number" ng-change="$ctrl.updatePreferences()">
+                            <input id="ma-number-of-values" ng-model="$ctrl.numValues" type="number" ng-change="$ctrl.updatePreferences()">
                         </md-input-container>
-                        <label ma-tr="ui.app.numberOfValues" for="number-of-values"></label>
+                        <label ma-tr="ui.app.numberOfValues" for="ma-number-of-values"></label>
                     </span>
                     <md-switch ng-model="$ctrl.realtimeMode" ng-change="$ctrl.showCachedData = $ctrl.realtimeMode ? false : $ctrl.showCachedData; $ctrl.updatePreferences()">
                         <span ma-tr="ui.app.realtime"></span>

@@ -37,7 +37,7 @@
         <h4 ma-tr="ui.settings.systemStatus.mediumPriority"></h4>
         <h5 ng-if="$ctrl.isEmptyObj($ctrl.workItemsQueueCounts.mediumPriorityServiceQueueClassCounts)"
             ma-tr="ui.settings.systemStatus.noneFound"></h5>
-        <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}"
+        <table md-table
                ng-if="!$ctrl.isEmptyObj($ctrl.workItemsQueueCounts.mediumPriorityServiceQueueClassCounts)">
             <thead md-head>
                 <tr md-row>

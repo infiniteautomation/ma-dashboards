@@ -1,23 +1,27 @@
 /* Stats Dialog */
 
-.stats-dialog {
+.ma-stats-dialog {
   width: 730px;
 }
-.stats-dialog .md-toolbar-tools h2 {
+.ma-stats-dialog .md-toolbar-tools h2 {
   line-height: 20px;
   font-size: 16px;
   text-align: center;
 }
-.stats-dialog .md-toolbar-tools h2 span.nowrap {
+.ma-stats-dialog .md-toolbar-tools h2 span.nowrap {
   white-space: nowrap;
 }
-.stats-dialog.mobile table.md-table td.md-cell, table.md-table th.md-column {
-  font-size: 1.4rem;
+
+@media (max-width: 959px) {
+	.ma-stats-dialog table.md-table td.md-cell, table.md-table th.md-column {
+	  font-size: 1.4rem;
+	}
 }
-.stats-dialog table.md-table thead.md-head>tr.md-row {
+
+.ma-stats-dialog table.md-table thead.md-head>tr.md-row {
   height: 0px;
 }
-.stats-dialog input#number-of-values {
+.ma-stats-dialog input#ma-stats-number-of-values {
   width: 55px;
 }
 
@@ -834,10 +838,11 @@ ma-file-store-browser > md-progress-linear.ng-hide:not(.ng-hide-animate) {
 	height: 90%;
 }
 
-.mobile .ma-file-store-dialog {
-	height: 100%;
+@media (max-width: 959px) {
+	.ma-file-store-dialog {
+		height: 100%;
+	}
 }
-
 
 /* Ace editor styles */
 

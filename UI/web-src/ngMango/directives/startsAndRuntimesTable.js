@@ -18,7 +18,7 @@ import startsAndRuntimesTableTemplate from './startsAndRuntimesTable.html';
  * @param {object} starts-and-runtimes Input `statistics.startsAndRuntimes`.
  *
  * @usage
- * <tr md-row ng-if="statistics.startsAndRuntimes && !hideStartsAndRuntimes" class="statistics-summary">
+ * <tr md-row ng-if="statistics.startsAndRuntimes && !hideStartsAndRuntimes" class="ma-statistics-summary">
      <td md-cell ma-tr="common.stats.summary"></td>
      <td md-cell colspan="2">
          <ma-starts-and-runtimes-table starts-and-runtimes="statistics.startsAndRuntimes"></ma-starts-and-runtimes-table>

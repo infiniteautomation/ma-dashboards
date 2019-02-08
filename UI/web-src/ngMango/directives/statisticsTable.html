@@ -1,7 +1,7 @@
 <ma-point-statistics point="point" point-xid="{{pointXid}}" statistics="statistics"
 					 from="from" to="to"></ma-point-statistics>
 
-<table class="statistics table table-striped">
+<table class="ma-statistics">
 	<thead>
 		<tr>
 			<th></th>
@@ -15,52 +15,52 @@
 		</tr>
 	</tbody>
 	<tbody ng-if="statistics.hasData">
-		<tr ng-if="statistics.first" class="statistics-first">
+		<tr ng-if="statistics.first" class="ma-statistics-first">
 			<td ma-tr="common.stats.start"></td>
 			<td ng-bind="statistics.first.value"></td>
 			<td ng-bind="formatTimestamp(statistics.first.timestamp)"></td>
 		</tr>
-		<tr ng-if="statistics.last" class="statistics-last">
+		<tr ng-if="statistics.last" class="ma-statistics-last">
 			<td ma-tr="common.stats.end"></td>
 			<td ng-bind="statistics.last.value"></td>
 			<td ng-bind="formatTimestamp(statistics.last.timestamp)"></td>
 		</tr>
-		<tr ng-if="statistics.minimum" class="statistics-minimum">
+		<tr ng-if="statistics.minimum" class="ma-statistics-minimum">
 			<td ma-tr="common.stats.min"></td>
 			<td ng-bind="statistics.minimum.value"></td>
 			<td ng-bind="formatTimestamp(statistics.minimum.timestamp)"></td>
 		</tr>
-		<tr ng-if="statistics.maximum" class="statistics-maximum">
+		<tr ng-if="statistics.maximum" class="ma-statistics-maximum">
 			<td ma-tr="common.stats.max"></td>
 			<td ng-bind="statistics.maximum.value"></td>
 			<td ng-bind="formatTimestamp(statistics.maximum.timestamp)"></td>
 		</tr>
-		<tr ng-if="statistics.average" class="statistics-average">
+		<tr ng-if="statistics.average" class="ma-statistics-average">
 			<td ma-tr="common.stats.avg"></td>
 			<td ng-bind="statistics.average.value"></td>
 			<td ng-bind="formatTimestamp(statistics.average.timestamp)"></td>
 		</tr>
-		<tr ng-if="statistics.integral" class="statistics-integral">
+		<tr ng-if="statistics.integral" class="ma-statistics-integral">
 			<td ma-tr="common.stats.integral"></td>
 			<td ng-bind="statistics.integral.value"></td>
 			<td ng-bind="formatTimestamp(statistics.integral.timestamp)"></td>
 		</tr>
-		<tr ng-if="statistics.sum" class="statistics-sum">
+		<tr ng-if="statistics.sum" class="ma-statistics-sum">
 			<td ma-tr="common.stats.sum"></td>
 			<td ng-bind="statistics.sum.value"></td>
 			<td ng-bind="formatTimestamp(statistics.sum.timestamp)"></td>
 		</tr>
-		<tr ng-if="statistics.count" class="statistics-count">
+		<tr ng-if="statistics.count" class="ma-statistics-count">
 			<td ma-tr="common.stats.count"></td>
 			<td ng-bind="statistics.count"></td>
 			<td></td>
 		</tr>
-		<tr ng-if="statistics.changes" class="statistics-changes">
+		<tr ng-if="statistics.changes" class="ma-statistics-changes">
 			<td ma-tr="common.stats.changes"></td>
 			<td ng-bind="statistics.changes"></td>
 			<td></td>
 		</tr>
-		<tr ng-if="statistics.startsAndRuntimes && !hideStartsAndRuntimes" class="statistics-summary">
+		<tr ng-if="statistics.startsAndRuntimes && !hideStartsAndRuntimes" class="ma-statistics-summary">
 			<td ma-tr="ui.app.summary"></td>
 			<td colspan="2">
 				<ma-starts-and-runtimes-table starts-and-runtimes="statistics.startsAndRuntimes"></ma-starts-and-runtimes-table>
