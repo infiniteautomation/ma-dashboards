@@ -77,6 +77,9 @@ function eventTypeProvider() {
                 return {
                     pointXid: source.xid
                 };
+            },
+            typeId(type, subType, ref1, ref2) {
+                return `${type}_${ref1}_${ref2}`;
             }
         };
     }]);
@@ -96,6 +99,9 @@ function eventTypeProvider() {
             return {
                 xid: source.xid
             };
+        },
+        typeId(type, subType, ref1, ref2) {
+            return `${type}_${subType}_${ref1}_${ref2}`;
         }
     });
 
@@ -108,6 +114,9 @@ function eventTypeProvider() {
         },
         groupDescription(source) {
             return source.name;
+        },
+        typeId(type, subType, ref1, ref2) {
+            return `${type}_${ref1}_${ref2}`;
         }
     });
 
@@ -116,7 +125,7 @@ function eventTypeProvider() {
     eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', 'maUtil'];
     function eventTypeFactory(RestResource, RqlBuilder, Util) {
 
-        const eventTypeOptionsMap = {};
+        const eventTypeOptionsMap = new Map();
         
         /**
          * Injects options, freezes the result so it cant be modified and creates a map of type name to options
@@ -124,7 +133,7 @@ function eventTypeProvider() {
         eventTypeOptions.forEach(options => {
             try {
                 const injected = Util.inject(options);
-                eventTypeOptionsMap[injected.typeName] = Object.freeze(injected);
+                eventTypeOptionsMap.set(injected.typeName, Object.freeze(injected));
             } catch (e) {
                 console.error(e);
             }
@@ -143,8 +152,18 @@ function eventTypeProvider() {
                 this.typeId = this.constructor.typeId(this);
             }
             
-            static typeId(type) {
-                return `${type.eventType}_${type.subType || type.eventSubtype || null}_${type.referenceId1}_${type.referenceId2}`;
+            static typeId(eventType) {
+                const type = eventType.eventType;
+                const subType = eventType.subType || eventType.eventSubtype || null;
+                const ref1 = eventType.referenceId1 || 0;
+                const ref2 = eventType.referenceId2 || 0;
+                
+                const options = eventTypeOptionsMap.get(type);
+                if (options && typeof options.typeId === 'function') {
+                    return options.typeId(type, subType, ref1, ref2);
+                }
+                
+                return `${type}_${subType}`;
             }
         }
         
@@ -162,7 +181,7 @@ function eventTypeProvider() {
                     method: 'GET',
                     url: `${eventTypeBaseUrl}/type-names`
                 }, opts).then(response => response.data.map(eventType => {
-                    const options = new EventTypeOptions(eventTypeOptionsMap[eventType.typeName]);
+                    const options = new EventTypeOptions(eventTypeOptionsMap.get(eventType.typeName));
                     return Object.assign(options, eventType);
                 }));
             }
