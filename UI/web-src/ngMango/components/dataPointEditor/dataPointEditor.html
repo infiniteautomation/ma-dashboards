@@ -117,37 +117,34 @@
                             </div>
                         </md-input-container>
                         
-                        <div flex="100" flex-gt-md="50"></div>
-
-                        <div flex="100" flex-gt-md="50" layout="column">
-                            <md-checkbox name="useRenderedUnit" ng-model="$ctrl.dataPoint.useRenderedUnit">
+                        <div flex="100" flex-gt-md="50">
+                            <md-checkbox class="ma-input-container-height" name="useRenderedUnit" ng-model="$ctrl.dataPoint.useRenderedUnit">
                                 <span ma-tr="pointEdit.props.useRenderedUnit"></span>
                             </md-checkbox>
-                            <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useRenderedUnit">
-                                <md-icon>straighten</md-icon>
-                                <label ma-tr="pointEdit.props.renderedUnit"></label>
-                                <input name="renderedUnit" ng-model="$ctrl.dataPoint.renderedUnit">
-                                <ma-unit-list ng-model="$ctrl.dataPoint.renderedUnit" mode="multiply"></ma-unit-list>
-                                <div ng-messages="$ctrl.form.renderedUnit.$error">
-                                    <div ng-message="validationMessage" ng-bind="$ctrl.form.renderedUnit.validationMessage"></div>
-                                </div>
-                            </md-input-container>
-                        </div>
-                        
-                        <div flex="100" flex-gt-md="50" layout="column">
-                            <md-checkbox name="useIntegralUnit" ng-model="$ctrl.dataPoint.useIntegralUnit">
+                            <md-checkbox class="ma-input-container-height" name="useIntegralUnit" ng-model="$ctrl.dataPoint.useIntegralUnit">
                                 <span ma-tr="pointEdit.props.useIntegralUnit"></span>
                             </md-checkbox>
-                            <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useIntegralUnit">
-                                <md-icon>straighten</md-icon>
-                                <label ma-tr="pointEdit.props.integralUnit"></label>
-                                <input name="integralUnit" ng-model="$ctrl.dataPoint.integralUnit">
-                                <ma-unit-list ng-model="$ctrl.dataPoint.integralUnit" mode="multiply"></ma-unit-list>
-                                <div ng-messages="$ctrl.form.integralUnit.$error">
-                                    <div ng-message="validationMessage" ng-bind="$ctrl.form.integralUnit.validationMessage"></div>
-                                </div>
-                            </md-input-container>
                         </div>
+
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useRenderedUnit">
+                            <md-icon>straighten</md-icon>
+                            <label ma-tr="pointEdit.props.renderedUnit"></label>
+                            <input name="renderedUnit" ng-model="$ctrl.dataPoint.renderedUnit">
+                            <ma-unit-list ng-model="$ctrl.dataPoint.renderedUnit" mode="multiply"></ma-unit-list>
+                            <div ng-messages="$ctrl.form.renderedUnit.$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.renderedUnit.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                        
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useIntegralUnit">
+                            <md-icon>straighten</md-icon>
+                            <label ma-tr="pointEdit.props.integralUnit"></label>
+                            <input name="integralUnit" ng-model="$ctrl.dataPoint.integralUnit">
+                            <ma-unit-list ng-model="$ctrl.dataPoint.integralUnit" mode="multiply"></ma-unit-list>
+                            <div ng-messages="$ctrl.form.integralUnit.$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.integralUnit.validationMessage"></div>
+                            </div>
+                        </md-input-container>
                     </div>
                     
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
