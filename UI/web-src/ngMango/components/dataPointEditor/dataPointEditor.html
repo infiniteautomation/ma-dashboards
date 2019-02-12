@@ -197,14 +197,14 @@
                             </div>
                         </md-input-container>
                         
-                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.simplifyDataTypes.has($ctrl.dataPoint.dataType)">
+                        <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>vertical_align_center</md-icon>
                             <label ma-tr="pointEdit.props.simplifyType"></label>
                             <md-select name="simplifyType" ng-model="$ctrl.dataPoint.simplifyType" required>
                                 <md-option ng-if="$ctrl.dataPoint.simplifyType.hasMultipleValues()" ng-value="$ctrl.dataPoint.simplifyType">
                                     <em ng-bind="$ctrl.dataPoint.simplifyType"></em>
                                 </md-option>
-                                <md-option ng-repeat="simplifyType in $ctrl.simplifyTypes track by simplifyType.type" ng-value="simplifyType.type">
+                                <md-option ng-repeat="simplifyType in $ctrl.simplifyTypes track by simplifyType.type" ng-value="simplifyType.type" ng-if="simplifyType.dataTypes.has($ctrl.dataPoint.dataType)">
                                     <span ma-tr="{{simplifyType.translation}}"></span>
                                 </md-option>
                             </md-select>
@@ -214,7 +214,7 @@
                             </div>
                         </md-input-container>
 
-                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.simplifyDataTypes.has($ctrl.dataPoint.dataType) && $ctrl.dataPoint.simplifyType === 'TARGET'">
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.simplifyType === 'TARGET'">
                             <md-icon>linear_scale</md-icon>
                             <label ma-tr="pointEdit.props.simplifyTarget"></label>
                             <input name="simplifyTarget" ng-model="$ctrl.dataPoint.simplifyTarget" type="number" required min="1" step="1">
@@ -226,7 +226,7 @@
                             </div>
                         </md-input-container>
                         
-                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.simplifyDataTypes.has($ctrl.dataPoint.dataType) && $ctrl.dataPoint.simplifyType === 'TOLERANCE'">
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.simplifyType === 'TOLERANCE'">
                             <md-icon>tune</md-icon>
                             <label ma-tr="pointEdit.props.simplifyTolerance"></label>
                             <input name="simplifyTolerance" ng-model="$ctrl.dataPoint.simplifyTolerance" type="number" required ma-greater-than="0"

@@ -80,7 +80,6 @@ class DataPointEditorController {
         ];
         this.suffixTextRenderers = new Set(this.textRendererTypes.filter(t => t.suffix).map(t => t.type));
         this.formatTextRenderers = new Set(this.textRendererTypes.filter(t => t.format).map(t => t.type));
-        this.simplifyDataTypes = new Set(['NUMERIC', 'MULTISTATE', 'BINARY']);
         this.chartRendererTypes = [
             {type: 'chartRendererNone', translation: 'chartRenderer.none', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC', 'IMAGE'])},
             {type: 'chartRendererImageFlipbook', translation: 'chartRenderer.flipbook', dataTypes: new Set(['IMAGE'])},
@@ -453,6 +452,29 @@ class DataPointEditorController {
         const index = this.dataPoint.textRenderer.multistateValues.indexOf(value);
         this.dataPoint.textRenderer.multistateValues.splice(index, 1);
         form.$setDirty();
+    }
+    
+    dataTypeChanged() {
+        const dataType = this.dataPoint.dataType;
+        
+        const simplifyType = this.simplifyTypes.find(t => t.type === this.dataPoint.simplifyType);
+        if (!simplifyType.dataTypes.has(dataType)) {
+            this.dataPoint.simplifyType = this.simplifyTypes.find(t => t.dataTypes.has(dataType));
+        }
+        
+        if (this.dataPoint.textRenderer) {
+            const textRendererType = this.textRendererTypes.find(t => t.type === this.dataPoint.textRenderer.type);
+            if (!textRendererType.dataTypes.has(dataType)) {
+                this.dataPoint.textRenderer.type = this.textRendererTypes.find(t => t.dataTypes.has(dataType));
+            }
+        }
+        
+        if (this.dataPoint.chartRenderer) {
+            const chartRendererType = this.chartRendererTypes.find(t => t.type === this.dataPoint.chartRenderer.type);
+            if (!chartRendererType.dataTypes.has(dataType)) {
+                this.dataPoint.chartRenderer.type = this.chartRendererTypes.find(t => t.dataTypes.has(dataType));
+            }
+        }
     }
 }
 
