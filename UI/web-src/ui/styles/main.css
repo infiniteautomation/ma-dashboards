@@ -1033,12 +1033,12 @@ md-icon {
   border-bottom-color: #f2f2f2;
 }
 
-div.help-doc-container {
+div.ma-help-doc-container {
   max-width: 1200px;
   padding-right: 5px;
 }
 
-div.help-doc-container li {
+div.ma-help-doc-container li {
   list-style-type: disc;
 }
 
