@@ -3,14 +3,16 @@
  * @author Jared Wiltshire
  */
 
+import multistateState from '../components/eventDetectorEditor/detectorTypes/multistateState.html';
+
 function eventDetectorProvider() {
-    
     const eventDetectorTypes = [
         {
             type: 'MULTISTATE_STATE',
             description: 'pointEdit.detectors.state',
-            template: ``,
+            template: multistateState,
             pointEventDetector: true,
+            hasDuration: true,
             dataTypes: new Set(['MULTISTATE'])
         }
     ];

@@ -15,16 +15,16 @@ import './eventDetectorEditor.css';
 
 class EventDetectorEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse']; }
+    static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse', 'MA_TIME_PERIOD_TYPES']; }
     
-    constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse) {
+    constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse, MA_TIME_PERIOD_TYPES) {
         this.maEventDetector = maEventDetector;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        
+
         this.detectorTypes = maEventDetector.detectorTypes();
         this.detectorTypesByName = maEventDetector.detectorTypesByName();
         
