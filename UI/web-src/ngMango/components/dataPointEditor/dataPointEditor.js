@@ -459,20 +459,20 @@ class DataPointEditorController {
         
         const simplifyType = this.simplifyTypes.find(t => t.type === this.dataPoint.simplifyType);
         if (!simplifyType.dataTypes.has(dataType)) {
-            this.dataPoint.simplifyType = this.simplifyTypes.find(t => t.dataTypes.has(dataType));
+            this.dataPoint.simplifyType = this.simplifyTypes.find(t => t.dataTypes.has(dataType)).type;
         }
         
         if (this.dataPoint.textRenderer) {
             const textRendererType = this.textRendererTypes.find(t => t.type === this.dataPoint.textRenderer.type);
             if (!textRendererType.dataTypes.has(dataType)) {
-                this.dataPoint.textRenderer.type = this.textRendererTypes.find(t => t.dataTypes.has(dataType));
+                this.dataPoint.textRenderer.type = this.textRendererTypes.find(t => t.dataTypes.has(dataType)).type;
             }
         }
         
         if (this.dataPoint.chartRenderer) {
             const chartRendererType = this.chartRendererTypes.find(t => t.type === this.dataPoint.chartRenderer.type);
             if (!chartRendererType.dataTypes.has(dataType)) {
-                this.dataPoint.chartRenderer.type = this.chartRendererTypes.find(t => t.dataTypes.has(dataType));
+                this.dataPoint.chartRenderer.type = this.chartRendererTypes.find(t => t.dataTypes.has(dataType)).type;
             }
         }
     }
