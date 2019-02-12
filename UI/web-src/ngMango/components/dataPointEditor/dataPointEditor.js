@@ -24,14 +24,14 @@ const templates = {
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
-    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', 'MA_TIME_PERIOD_TYPES', '$templateCache', '$filter']);
+    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', '$templateCache', '$filter']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
-            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, MA_TIME_PERIOD_TYPES, $templateCache, $filter) {
+            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, $templateCache, $filter) {
 
         Object.keys(templates).forEach(key => {
             const name = `maDataPointEditor.${key}.html`;
@@ -59,15 +59,12 @@ class DataPointEditorController {
             {type: 'ON_TS_CHANGE', translation: 'pointEdit.logging.type.tsChange'},
             {type: 'ON_CHANGE_INTERVAL', translation: 'pointEdit.logging.type.changeInterval'}
         ];
-        this.intervalLoggingPeriods = MA_TIME_PERIOD_TYPES.slice(1);
         this.intervalLoggingValueTypes = [
             {type: 'INSTANT', translation: 'pointEdit.logging.valueType.instant'},
             {type: 'MAXIMUM', translation: 'pointEdit.logging.valueType.maximum'},
             {type: 'MINIMUM', translation: 'pointEdit.logging.valueType.minimum'},
             {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
         ];
-        this.purgeTimePeriods = MA_TIME_PERIOD_TYPES.slice(4, 8);
-        this.chartRendererTimePeriods = MA_TIME_PERIOD_TYPES.slice(2, 7);
         this.textRendererTypes = [
             {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC']),
                 suffix: true},

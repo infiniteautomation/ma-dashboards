@@ -57,8 +57,16 @@
                         </md-input-container>
 
                         <div style="display: none" ng-if-start="$ctrl.typesByName[$ctrl.dataSource.modelType].polling"></div>
-
-                        <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="!$ctrl.dataSource.useCron">
+                        
+                        <ma-duration-editor
+                                ng-if="!$ctrl.dataSource.useCron"
+                                flex="100" flex-gt-md="50" name="pollPeriod" ng-model="$ctrl.dataSource.pollPeriod"
+                                allowed-types="::['MILLISECONDS', 'SECONDS', 'MINUTES', 'HOURS']">
+                            <ma-periods-label ma-tr="dsEdit.updatePeriod"></ma-periods-label>
+                            <ma-type-label ma-tr="dsEdit.updatePeriod"></ma-type-label>
+                        </ma-duration-editor>
+                        
+                        <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="">
                             <md-input-container flex>
                                 <md-icon>timer</md-icon>
                                 <label ma-tr="dsEdit.updatePeriod"></label>
@@ -145,29 +153,11 @@
                     </div>
                     
                     <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataSource.purgeSettings.override">
-                        <div flex="100" flex-gt-md="50" layout layout-align="start start">
-                            <md-input-container flex>
-                                <md-icon>access_time</md-icon>
-                                <label ma-tr="pointEdit.logging.after"></label>
-                                <input name="purgeSettings.frequency.periods" ng-model="$ctrl.dataSource.purgeSettings.frequency.periods"
-                                        required type="number" step="1" min="1">
-                                <div ng-messages="$ctrl.form['purgeSettings.frequency.periods'].$error">
-                                    <div ng-message="required" ma-tr="ui.app.required"></div>
-                                    <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.periods'].validationMessage"></div>
-                                </div>
-                            </md-input-container>
-                            <md-input-container flex>
-                                <label ma-tr="pointEdit.logging.after"></label>
-                                <md-select name="purgeSettings.frequency.type" ng-model="$ctrl.dataSource.purgeSettings.frequency.type" required>
-                                    <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
-                                        <span ma-tr="{{type.translation}}"></span>
-                                    </md-option>
-                                </md-select>
-                                <div ng-messages="$ctrl.form['purgeSettings.frequency.type'].$error">
-                                    <div ng-message="validationMessage" ng-bind="$ctrl.form['purgeSettings.frequency.type'].validationMessage"></div>
-                                </div>
-                            </md-input-container>
-                        </div>
+                        <ma-duration-editor flex="100" flex-gt-md="50" name="purgeSettings.frequency" ng-model="$ctrl.dataSource.purgeSettings.frequency"
+	                        allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']">
+                            <ma-periods-label ma-tr="pointEdit.logging.after"></ma-periods-label>
+                            <ma-type-label ma-tr="pointEdit.logging.after"></ma-type-label>
+	                    </ma-duration-editor>
                     </div>
 
                     <h3>
@@ -182,25 +172,15 @@
                     </div>
                     
                     <div layout layout-wrap layout-align="start start">
-                        <div flex="100" flex-gt-md="50" layout layout-align="start start">
-                            <md-input-container flex>
-                                <md-icon>access_time</md-icon>
-                                <label ma-tr="dsEdit.purge.olderThan"></label>
-                                <input ng-init="purgeNowPeriods = 1" ng-model="purgeNowPeriods" required type="number" step="1" min="1" ma-form-exclude ng-disabled="purgeAll">
-                            </md-input-container>
-                            <md-input-container flex>
-                                <label ma-tr="dsEdit.purge.olderThan"></label>
-                                <md-select ng-init="purgeNowType = 'YEARS'" ng-model="purgeNowType" required ma-form-exclude ng-disabled="purgeAll">
-                                    <md-option ng-repeat="type in $ctrl.purgeTimePeriods track by type.type" ng-value="type.type">
-                                        <span ma-tr="{{type.translation}}"></span>
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-                        </div>
+                        <ma-duration-editor flex="100" flex-gt-md="50" ng-model="purgeNowDuration"
+                            allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" ma-form-exclude>
+                            <ma-periods-label ma-tr="dsEdit.purge.olderThan"></ma-periods-label>
+                            <ma-type-label ma-tr="dsEdit.purge.olderThan"></ma-type-label>
+                        </ma-duration-editor>
                     </div>
                     
                     <div>
-                        <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeAll, purgeNowPeriods, purgeNowType)">
+                        <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeAll, purgeNowDuration)">
                             <md-icon>delete</md-icon> <span ma-tr="dsEdit.purge.purgeNow"></span>
                         </md-button>
                     </div>
