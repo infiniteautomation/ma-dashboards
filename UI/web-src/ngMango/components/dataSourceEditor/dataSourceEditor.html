@@ -7,7 +7,6 @@
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
-                        
                         <div flex="100" flex-gt-md="50">
                             <md-switch name="enabled" ng-model="$ctrl.dataSource.enabled"><span ma-tr="common.enabled"></span></md-switch>
                         </div>
@@ -170,8 +169,13 @@
                             </md-input-container>
                         </div>
                     </div>
-                    
-                    <h3 ma-tr="dsEdit.purge.purgeNow"></h3>
+
+                    <h3>
+                        <span ma-tr="dsEdit.purge.purgeNow"></span>
+                        <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.purgeNow">
+                            <md-icon>help</md-icon>
+                        </md-button>
+                    </h3>
                     
                     <div>
                         <md-checkbox ng-init="purgeAll = false" ng-model="purgeAll" ma-form-exclude><span ma-tr="dsEdit.purge.allData"></span></md-checkbox>

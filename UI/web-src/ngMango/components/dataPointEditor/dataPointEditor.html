@@ -332,7 +332,12 @@
                         </div>
                     </div>
                     
-                    <h3 ma-tr="pointEdit.purge.purgeNow"></h3>
+                    <h3>
+                        <span ma-tr="pointEdit.purge.purgeNow"></span>
+                        <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.purgeNow">
+                            <md-icon>help</md-icon>
+                        </md-button>
+                    </h3>
 
                     <div ng-init="purgeNow = {all: false, timeRange: false, from: ('now' | maMoment:'startOf':'day' | maMoment:'subtract':1:'month').toDate(), to: ('now' | maMoment:'startOf':'day').toDate()}">
                         <md-checkbox ng-model="purgeNow.all" ma-form-exclude><span ma-tr="pointEdit.purge.allData"></span></md-checkbox>

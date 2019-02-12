@@ -485,6 +485,28 @@ export default [
         menuTr: 'ui.settings.systemStatus'
     },
     {
+        url: '/data-sources',
+        name: 'ui.help.dataSources',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/dataSources.html');
+            }
+        },
+        menuTr: 'header.dataSources'
+    },
+    {
+        url: '/purge-now',
+        name: 'ui.help.purgeNow',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/purgeNow.html');
+            }
+        },
+        menuTr: 'dsEdit.purge.purgeNow'
+    },
+    {
         url: '/view-page/{pageXid}',
         name: 'ui.viewPage',
         template: '<ma-ui-page-view xid="{{pageXid}}" flex layout="column"></ma-ui-page-view>',
@@ -553,6 +575,9 @@ export default [
                     $injector.loadNewModules(['maDataSourcePage']);
                 });
             }]
+        },
+        params: {
+            helpPage: 'ui.help.dataSources'
         }
     },
     {
