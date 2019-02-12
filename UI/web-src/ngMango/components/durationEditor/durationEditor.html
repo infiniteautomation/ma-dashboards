@@ -1,7 +1,7 @@
 <div layout layout-align="start start">
     <md-input-container flex>
         <md-icon>access_time</md-icon>
-        <label ma-tr="pointEdit.detectors.duration"></label>
+        <label ng-transclude="periodsLabel"><span ma-tr="ui.app.timePeriods"></span></label>
         <input name="periods" ng-model="$ctrl.duration.periods" ng-change="$ctrl.setViewValue()" required type="number" step="1" min="1" ma-get-ctrl="periods = $ngModel" ma-form-exclude>
         <div ng-messages="periods.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
@@ -11,7 +11,7 @@
         </div>
     </md-input-container>
     <md-input-container flex>
-        <label ma-tr="pointEdit.detectors.duration"></label>
+        <label ng-transclude="typeLabel"><span ma-tr="ui.app.timePeriodType"></span></label>
         <md-select name="type" ng-model="$ctrl.duration.type" ng-change="$ctrl.setViewValue()" required ma-get-ctrl="type = $ngModel" ma-form-exclude>
             <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
                 <span ma-tr="{{type.translation}}"></span>

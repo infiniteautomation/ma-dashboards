@@ -53,6 +53,10 @@ export default {
     require: {
         ngModelCtrl: 'ngModel'
     },
+    transclude: {
+        periodsLabel: '?maPeriodsLabel',
+        typeLabel: '?maTypeLabel'
+    },
     designerInfo: {
         translation: 'ui.components.durationEditor',
         icon: 'access_time'
