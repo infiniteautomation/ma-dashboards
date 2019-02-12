@@ -1,0 +1,25 @@
+<div layout layout-align="start start">
+    <md-input-container flex>
+        <md-icon>access_time</md-icon>
+        <label ma-tr="pointEdit.detectors.duration"></label>
+        <input name="periods" ng-model="$ctrl.duration.periods" ng-change="$ctrl.setViewValue()" required type="number" step="1" min="1" ma-get-ctrl="periods = $ngModel" ma-form-exclude>
+        <div ng-messages="periods.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[1]"></div>
+            <div ng-message="validationMessage" ng-bind="periods.validationMessage"></div>
+        </div>
+    </md-input-container>
+    <md-input-container flex>
+        <label ma-tr="pointEdit.detectors.duration"></label>
+        <md-select name="type" ng-model="$ctrl.duration.type" ng-change="$ctrl.setViewValue()" required ma-get-ctrl="type = $ngModel" ma-form-exclude>
+            <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
+                <span ma-tr="{{type.translation}}"></span>
+            </md-option>
+        </md-select>
+        <div ng-messages="type.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="type.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>

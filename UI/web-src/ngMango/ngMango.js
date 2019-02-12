@@ -146,6 +146,7 @@ import eventDetectorList from './components/eventDetectorList/eventDetectorList'
 import eventDetectorEditor from './components/eventDetectorEditor/eventDetectorEditor';
 import eventDetectorSelect from './components/eventDetectorSelect/eventDetectorSelect';
 import eventDetectorLayout from './components/eventDetectorLayout/eventDetectorLayout';
+import durationEditor from './components/durationEditor/durationEditor';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -305,6 +306,7 @@ ngMango.component('maEventDetectorList', eventDetectorList);
 ngMango.component('maEventDetectorEditor', eventDetectorEditor);
 ngMango.component('maEventDetectorSelect', eventDetectorSelect);
 ngMango.component('maEventDetectorLayout', eventDetectorLayout);
+ngMango.component('maDurationEditor', durationEditor);
 
 ngMango.animation('.ma-slide-up', slideUp);
 
