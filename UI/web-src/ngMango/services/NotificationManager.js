@@ -247,6 +247,31 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             return this.subscribe(handler, $scope, eventTypes, null, true);
         }
         
+        keepUpdated({items, scope, filterFn}) {
+            if (typeof filterFn !== 'function') {
+                filterFn = () => true;
+            }
+            
+            return this.subscribe((event, item, originalXid) => {
+                const array = typeof items === 'function' ? items() : items;
+                if (!Array.isArray(array)) {
+                    return;
+                }
+                const filterMatches = filterFn(item);
+                
+                const index = array.findIndex(o => o.id === item.id);
+                if (index >= 0) {
+                    if (!filterMatches || event.name === 'delete') {
+                        array.splice(index, 1);
+                    } else if (event.name === 'update' || event.name === 'create') {
+                        Object.assign(array[index], item);
+                    }
+                } else if (filterMatches && (event.name === 'update' || event.name === 'create')) {
+                    array.push(item);
+                }
+            }, scope);
+        }
+        
         subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete'], xids = null, localOnly = false) {
             if (!localOnly) {
                 const firstListener = this.listeners++ === 0;

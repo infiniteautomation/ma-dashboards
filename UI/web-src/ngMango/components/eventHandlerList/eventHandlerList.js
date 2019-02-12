@@ -27,23 +27,13 @@ class EventHandlerListController {
         
         this.doQuery();
         
-        this.maEventHandler.subscribe((event, item, originalXid) => {
-            if (!this.eventHandlers) return;
-
-            const filterMatches = !this.event || item.hasEventType(this.event.typeId);
-            const index = this.eventHandlers.findIndex(eventHandler => eventHandler.id === item.id);
-            if (index >= 0) {
-                if (!filterMatches || event.name === 'delete') {
-                    this.eventHandlers.splice(index, 1);
-                } else if (event.name === 'update' || event.name === 'create') {
-                    Object.assign(this.eventHandlers[index], item);
-                }
-            } else if (filterMatches && (event.name === 'update' || event.name === 'create')) {
-                this.eventHandlers.push(item);
-            }
-        }, this.$scope, ['create', 'update', 'delete']);
+        this.maEventHandler.keepUpdated({
+            items: () => this.eventHandlers,
+            filterFn: item => !this.event || item.hasEventType(this.event.typeId),
+            scope: this.$scope
+        });
     }
-    
+
     $onChanges(changes) {
         if (changes.event && !changes.event.isFirstChange()) {
             this.doQuery();
