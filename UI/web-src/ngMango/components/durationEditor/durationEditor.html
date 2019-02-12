@@ -13,6 +13,9 @@
     <md-input-container flex>
         <label ng-transclude="typeLabel"><span ma-tr="ui.app.timePeriodType"></span></label>
         <md-select name="type" ng-model="$ctrl.duration.type" ng-change="$ctrl.setViewValue()" required ma-get-ctrl="type = $ngModel" ma-form-exclude>
+            <md-option ng-if="$ctrl.duration.type.hasMultipleValues()" ng-value="$ctrl.duration.type">
+                <em ng-bind="$ctrl.duration.type"></em>
+            </md-option>
             <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
                 <span ma-tr="{{type.translation}}"></span>
             </md-option>
