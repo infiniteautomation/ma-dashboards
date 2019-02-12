@@ -270,30 +270,32 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         
         if (helpPageState.templateUrl) {
             this.pageOpts.helpUrl = helpPageState.templateUrl;
+        } else if (helpPageState.template) {
+            this.pageOpts.helpUrl = getTemplateUrl(helpPageState, helpPageState.template);
         } else if (helpPageState.resolve && helpPageState.resolve.viewTemplate) {
-            const templateUrl = helpPageState.name + '.tmpl.html';
-
-            if ($templateCache.get(templateUrl)) {
-                // already in the cache just load the template URL
-                $rootScope.pageOpts.helpUrl = templateUrl;
-            } else {
-                // load the view template via the resolve promise
-                helpPageState.resolve.viewTemplate().then((viewTemplate) => {
-                    // resolve promise is a ES6 promise not AngularJS $q promise, call $apply
-                    $rootScope.$apply(() => {
-                        const template = viewTemplate.default;
-    
-                        // put the template in the cache and then set the help url
-                        $templateCache.put(templateUrl, template);
-                        
-                        helpPageState.templateUrl = templateUrl;
-                        delete helpPageState.templateProvider;
-                        delete helpPageState.resolve.viewTemplate;
-
-                        $rootScope.pageOpts.helpUrl = templateUrl;
-                    });
+            // load the view template via the resolve promise
+            helpPageState.resolve.viewTemplate().then((viewTemplate) => {
+                // resolve promise is a ES6 promise not AngularJS $q promise, call $apply
+                $rootScope.$apply(() => {
+                    // put the template in the cache and then set the help url
+                    this.pageOpts.helpUrl = getTemplateUrl(helpPageState, viewTemplate.default);
                 });
+            });
+        }
+        
+        function getTemplateUrl(state, template) {
+            const templateUrl = `${state.name}.tmpl.html`;
+            
+            if (!$templateCache.get(templateUrl)) {
+                $templateCache.put(templateUrl, template);
             }
+            
+            delete state.template;
+            if (state.resolve) {
+                delete state.resolve.viewTemplate;
+            }
+            
+            return (state.templateUrl = templateUrl);
         }
     };
     
