@@ -305,45 +305,47 @@
                     
                     <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataPoint.purgeOverride">
                         <ma-duration-editor flex="100" flex-gt-md="50" name="purgePeriod" ng-model="$ctrl.dataPoint.purgePeriod"
-	                        allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']">
+	                           allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']">
                             <ma-periods-label ma-tr="pointEdit.logging.after"></ma-periods-label>
                             <ma-type-label ma-tr="pointEdit.logging.after"></ma-type-label>
 	                    </ma-duration-editor>
                     </div>
                     
-                    <h3>
-                        <span ma-tr="pointEdit.purge.purgeNow"></span>
-                        <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.purgeNow">
-                            <md-icon>help</md-icon>
-                        </md-button>
-                    </h3>
-
-                    <div ng-init="purgeNow = {all: false, timeRange: false, from: ('now' | maMoment:'startOf':'day' | maMoment:'subtract':1:'month').toDate(), to: ('now' | maMoment:'startOf':'day').toDate()}">
-                        <md-checkbox ng-model="purgeNow.all" ma-form-exclude><span ma-tr="pointEdit.purge.allData"></span></md-checkbox>
-                    </div>
-
-                    <md-radio-group class="ma-margin-bottom-large" ng-if="!purgeNow.all" ng-model="purgeNow.timeRange" layout="row">
-                        <md-radio-button ng-value="false"><span ma-tr="pointEdit.purge.olderThan"></span></md-radio-button>
-                        <md-radio-button ng-value="true"><span ma-tr="pointEdit.purge.specificTimeRange"></span></md-radio-button>
-                    </md-radio-group>
-
-                    <div layout layout-wrap layout-align="start start" ng-if="!purgeNow.all">
-                        <ma-duration-editor ng-if="!purgeNow.timeRange" flex="100" flex-gt-md="50" ng-model="purgeNowDuration"
-                            allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" ma-form-exclude>
-                            <ma-periods-label ma-tr="pointEdit.purge.olderThan"></ma-periods-label>
-                            <ma-type-label ma-tr="pointEdit.purge.olderThan"></ma-type-label>
-                        </ma-duration-editor>
-
-                        <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="purgeNow.timeRange">
-                            <mdp-date-picker flex="100" flex-gt-md="50" mdp-placeholder="{{'pointEdit.text.from' | maTr}}" mdp-open-on-click mdp-format="ll" ng-model="purgeNow.from"></mdp-date-picker>
-                            <mdp-date-picker flex="100" flex-gt-md="50" mdp-placeholder="{{'pointEdit.text.to' | maTr}}" mdp-open-on-click mdp-format="ll" ng-model="purgeNow.to"></mdp-date-picker>
+                    <div ng-form="purgeNow" ma-form-exclude>
+                        <h3>
+                            <span ma-tr="pointEdit.purge.purgeNow"></span>
+                            <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.purgeNow">
+                                <md-icon>help</md-icon>
+                            </md-button>
+                        </h3>
+    
+                        <div ng-init="purgeNow = {all: false, timeRange: false, from: ('now' | maMoment:'startOf':'day' | maMoment:'subtract':1:'month').toDate(), to: ('now' | maMoment:'startOf':'day').toDate()}">
+                            <md-checkbox ng-model="purgeNow.all"><span ma-tr="pointEdit.purge.allData"></span></md-checkbox>
                         </div>
-                    </div>
-
-                    <div>
-                        <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeNow.all, purgeNowDuration)">
-                            <md-icon>delete</md-icon> <span ma-tr="pointEdit.purge.purgeNow"></span>
-                        </md-button>
+    
+                        <md-radio-group class="ma-margin-bottom-large" ng-if="!purgeNow.all" ng-model="purgeNow.timeRange" layout="row">
+                            <md-radio-button ng-value="false"><span ma-tr="pointEdit.purge.olderThan"></span></md-radio-button>
+                            <md-radio-button ng-value="true"><span ma-tr="pointEdit.purge.specificTimeRange"></span></md-radio-button>
+                        </md-radio-group>
+    
+                        <div layout layout-wrap layout-align="start start" ng-if="!purgeNow.all">
+                            <ma-duration-editor ng-if="!purgeNow.timeRange" flex="100" flex-gt-md="50" ng-model="purgeNowDuration"
+                                allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']">
+                                <ma-periods-label ma-tr="pointEdit.purge.olderThan"></ma-periods-label>
+                                <ma-type-label ma-tr="pointEdit.purge.olderThan"></ma-type-label>
+                            </ma-duration-editor>
+    
+                            <div flex="100" flex-gt-md="50" layout layout-align="start start" ng-if="purgeNow.timeRange">
+                                <mdp-date-picker flex="100" flex-gt-md="50" mdp-placeholder="{{'pointEdit.text.from' | maTr}}" mdp-open-on-click mdp-format="ll" ng-model="purgeNow.from"></mdp-date-picker>
+                                <mdp-date-picker flex="100" flex-gt-md="50" mdp-placeholder="{{'pointEdit.text.to' | maTr}}" mdp-open-on-click mdp-format="ll" ng-model="purgeNow.to"></mdp-date-picker>
+                            </div>
+                        </div>
+    
+                        <div>
+                            <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeNow.all, purgeNowDuration)">
+                                <md-icon>delete</md-icon> <span ma-tr="pointEdit.purge.purgeNow"></span>
+                            </md-button>
+                        </div>
                     </div>
                 </div>
             </md-tab-body>
