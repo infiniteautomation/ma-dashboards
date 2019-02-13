@@ -196,7 +196,7 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
-                    <ma-bulk-data-point-editor data-source="$ctrl.dataSource" refresh="$ctrl.refresh" querying-disabled="!$ctrl.pointsTabActive"></ma-bulk-data-point-editor>
+                    <ma-bulk-data-point-editor data-source="$ctrl.dataSource" querying-disabled="!$ctrl.pointsTabActive"></ma-bulk-data-point-editor>
                 </div>
             </md-tab-body>
         </md-tab>
@@ -212,12 +212,13 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="!$ctrl.dataSource.isNew()">
+        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.refreshStatus = {}">
             <md-tab-label>
                 <span ma-tr="dsEdit.rtStatus"></span>
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
+                    <ma-data-source-status ng-if="!!$ctrl.refreshStatus" data-source="$ctrl.dataSource" refresh="$ctrl.refreshStatus"></ma-data-source-status>
                 </div>
             </md-tab-body>
         </md-tab>

@@ -169,7 +169,6 @@ class DataSourceEditorController {
         this.dataSource.editPermission = prevSource.editPermission;
         this.purgeSettings = prevSource.purgeSettings;
     }
-
 }
 
 export default {
@@ -183,6 +182,6 @@ export default {
     },
     designerInfo: {
         translation: 'ui.components.dataSourceEditor',
-        icon: 'link'
+        icon: 'device_hub'
     }
 };
