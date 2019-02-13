@@ -227,7 +227,7 @@
                             <md-icon>tune</md-icon>
                             <label ma-tr="pointEdit.props.simplifyTolerance"></label>
                             <input name="simplifyTolerance" ng-model="$ctrl.dataPoint.simplifyTolerance" type="number" required ma-greater-than="0"
-                                ma-format-model-value="$modelValue === 'NaN' ? null : $modelValue">
+                                ma-format-value="$value === 'NaN' ? null : $value">
                             <div ng-messages="$ctrl.form.simplifyTolerance.$error">
                                 <div ng-message="required" ma-tr="ui.app.required"></div>
                                 <div ng-message="greaterThan" ma-tr="ui.app.greaterThan" ma-tr-args="[0]"></div>

@@ -3,16 +3,18 @@
  * @author Jared Wiltshire
  */
 
-arrayFormat.$inject = ['$parse'];
-function arrayFormat($parse) {
+parseArray.$inject = ['$parse'];
+function parseArray($parse) {
     return {
         require: 'ngModel',
         restrict: 'A',
         link: function($scope, $element, $attrs, ngModel) {
-            const expression = $parse($attrs.maArrayFormat);
-            const method = $attrs.maArrayFormatMethod || 'map';
+            if (!$attrs.maParseArray) return;
+            
+            const expression = $parse($attrs.maParseArray);
+            const method = $attrs.maParseArrayMethod || 'map';
 
-            ngModel.$formatters.push(value => {
+            ngModel.$parsers.push(value => {
                 if (!Array.isArray(value)) return value;
 
                 return value[method](($item, $index, $array) => {
@@ -23,4 +25,4 @@ function arrayFormat($parse) {
     };
 }
 
-export default arrayFormat;
+export default parseArray;
