@@ -9,7 +9,8 @@ function getCtrl() {
     class GetCtrlController {
         $onInit() {
             this.initCallback({
-                $ngModel: this.ngModel
+                $ngModel: this.ngModel,
+                $ngForm: this.ngForm
             });
         }
     }
@@ -19,7 +20,8 @@ function getCtrl() {
         scope: false,
         controller: GetCtrlController,
         require: {
-            ngModel: '?ngModel'
+            ngModel: '?ngModel',
+            ngForm: '?form'
         },
         bindToController: {
             initCallback: '&maGetCtrl'
