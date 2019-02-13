@@ -245,6 +245,14 @@ function dataSourceProvider() {
                 }).then(() => {
                     this.enabled = enabled;
                 });
+            },
+            
+            getStatus() {
+                const url = '/rest/v2/data-sources/status/' + encodeURIComponent(this.xid);
+                return $http({
+                    url,
+                    method: 'GET'
+                }).then(response => response.data);
             }
         });
 
