@@ -35,7 +35,7 @@ class DurationEditorController {
         }
     }
     
-    setViewValue() {
+    inputChanged() {
         this.ngModelCtrl.$setViewValue(Object.assign({}, this.duration));
     }
     

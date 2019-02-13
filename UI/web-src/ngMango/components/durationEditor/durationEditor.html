@@ -2,7 +2,9 @@
     <md-input-container flex>
         <md-icon>access_time</md-icon>
         <label ng-transclude="periodsLabel"><span ma-tr="ui.app.timePeriods"></span></label>
-        <input name="periods" ng-model="$ctrl.duration.periods" ng-change="$ctrl.setViewValue()" required type="number" step="1" min="1" ma-get-ctrl="periods = $ngModel" ma-form-exclude>
+        <input name="{{$ctrl.ngModelCtrl.$name}}.periods" ng-model="$ctrl.duration.periods" ng-change="$ctrl.inputChanged()"
+            ma-form-exclude="parent" ma-get-ctrl="periods = $ngModel"
+            required type="number" step="1" min="1">
         <div ng-messages="periods.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
@@ -12,7 +14,9 @@
     </md-input-container>
     <md-input-container flex>
         <label ng-transclude="typeLabel"><span ma-tr="ui.app.timePeriodType"></span></label>
-        <md-select name="type" ng-model="$ctrl.duration.type" ng-change="$ctrl.setViewValue()" required ma-get-ctrl="type = $ngModel" ma-form-exclude>
+        <md-select name="{{$ctrl.ngModelCtrl.$name}}.type" ng-model="$ctrl.duration.type" ng-change="$ctrl.inputChanged()"
+                ma-form-exclude="parent" ma-get-ctrl="type = $ngModel"
+                required>
             <md-option ng-if="$ctrl.duration.type.hasMultipleValues()" ng-value="$ctrl.duration.type">
                 <em ng-bind="$ctrl.duration.type"></em>
             </md-option>
