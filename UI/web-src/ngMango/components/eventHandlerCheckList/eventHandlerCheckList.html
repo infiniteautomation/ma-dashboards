@@ -1,0 +1,7 @@
+<md-list class="ma-no-padding ma-no-text-overflow">
+    <md-list-item ng-repeat="eventHandler in $ctrl.eventHandlers | orderBy:'name' track by eventHandler.xid"
+            ng-init="checked = $ctrl.selectedGetterSetter(eventHandler)">
+        <span ng-bind="eventHandler.name"></span>
+        <md-checkbox class="md-secondary" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude></md-checkbox>
+    </md-list-item>
+</md-list>
