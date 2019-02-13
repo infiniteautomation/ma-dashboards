@@ -46,8 +46,8 @@ import {require} from 'requirejs';
   *
   */
   
-    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'maUiSettings', '$injector', '$window'];
-    function MaMapController($scope, $mdMedia, NgMap, uiSettings, $injector, $window) {
+    MaMapController.$inject = ['$scope', '$mdMedia', 'NgMap', '$injector', '$window'];
+    function MaMapController($scope, $mdMedia, NgMap, $injector, $window) {
         let $state;
         if ($injector.has('$state')) {
             $state = $injector.get('$state');
@@ -59,7 +59,8 @@ import {require} from 'requirejs';
         $ctrl.infoWindowCache = {};
         $ctrl.allInfoWindows = [];
 
-        if (uiSettings.googleMapsApiKey) {
+        const uiSettings = $injector.has('maUiSettings') && $injector.get('maUiSettings');
+        if (uiSettings && uiSettings.googleMapsApiKey) {
             $ctrl.apiKeySet = true;
             require(['https://maps.google.com/maps/api/js?v=3&key=' + uiSettings.googleMapsApiKey], function() {
                 $scope.$applyAsync(function() {
