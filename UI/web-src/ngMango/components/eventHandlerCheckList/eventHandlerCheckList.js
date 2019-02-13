@@ -26,9 +26,11 @@ class EventHandlerCheckListController {
         
         this.doQuery();
         
-        this.maEventHandler.keepUpdated({
-            items: () => this.eventHandlers,
-            scope: this.$scope
+        this.maEventHandler.subscribe({
+            scope: this.$scope,
+            handler: (event, item, attributes) => {
+                attributes.updateArray(this.eventHandlers);
+            }
         });
         
         this.selected = new Map();

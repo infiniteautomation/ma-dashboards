@@ -141,10 +141,28 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                 const eventType = mapEventType[payload.action] || payload.action;
                 if (eventType) {
                     const item = this.transformObject(payload.object);
+                    const originalXid = payload.originalXid;
                     
                     const attributes = {
+                        originalXid,
                         initiatorId: payload.initiatorId,
-                        originalXid: payload.originalXid
+                        updateArray(array, filterFn) {
+                            if (!Array.isArray(array)) return;
+                            const filterMatches = typeof filterFn === 'function' ? filterFn(item) : true;
+                            const idProp = item.hasOwnProperty('id') ? 'id' : 'xid';
+                            const itemId = idProp === 'xid' && originalXid || item[idProp];
+                            
+                            const index = array.findIndex(o => o[idProp] === itemId);
+                            if (index >= 0) {
+                                if (!filterMatches || eventType === 'delete') {
+                                    array.splice(index, 1);
+                                } else if (eventType === 'update' || eventType === 'create') {
+                                    Object.assign(array[index], item);
+                                }
+                            } else if (filterMatches && (eventType === 'update' || eventType === 'create')) {
+                                array.push(item);
+                            }
+                        }
                     };
                     
                     this.notify(eventType, item, attributes);
@@ -246,33 +264,17 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
         subscribeLocal(handler, $scope, eventTypes = []) {
             return this.subscribe(handler, $scope, eventTypes, null, true);
         }
-        
-        keepUpdated({items, scope, filterFn}) {
-            if (typeof filterFn !== 'function') {
-                filterFn = () => true;
+
+        subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete'], xids = null, localOnly = false) {
+            if (typeof handler === 'object') {
+                const options = handler;
+                handler = options.handler;
+                $scope = options.scope;
+                eventTypes = options.eventTypes || ['create', 'update', 'delete'];
+                xids = options.xids || null;
+                localOnly = options.localOnly || false;
             }
             
-            return this.subscribe((event, item, originalXid) => {
-                const array = typeof items === 'function' ? items() : items;
-                if (!Array.isArray(array)) {
-                    return;
-                }
-                const filterMatches = filterFn(item);
-                
-                const index = array.findIndex(o => o.id === item.id);
-                if (index >= 0) {
-                    if (!filterMatches || event.name === 'delete') {
-                        array.splice(index, 1);
-                    } else if (event.name === 'update' || event.name === 'create') {
-                        Object.assign(array[index], item);
-                    }
-                } else if (filterMatches && (event.name === 'update' || event.name === 'create')) {
-                    array.push(item);
-                }
-            }, scope);
-        }
-        
-        subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete'], xids = null, localOnly = false) {
             if (!localOnly) {
                 const firstListener = this.listeners++ === 0;
 

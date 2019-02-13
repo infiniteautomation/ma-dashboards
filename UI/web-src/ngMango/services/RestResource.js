@@ -139,10 +139,6 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             return this.notificationManager.subscribe(...args);
         }
 
-        static keepUpdated(...args) {
-            return this.notificationManager.keepUpdated(...args);
-        }
-        
         static notify(...args) {
             // we only want to notify the listeners if they dont have a connected websocket
             // otherwise they will get 2 events

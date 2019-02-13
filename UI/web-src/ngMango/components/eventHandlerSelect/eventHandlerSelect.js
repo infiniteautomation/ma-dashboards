@@ -28,10 +28,11 @@ class EventHandlerSelectController {
         
         this.doQuery();
         
-        this.maEventHandler.keepUpdated({
-            items: () => this.eventHandlers,
-            filterFn: item => !this.event || item.hasEventType(this.event.typeId),
-            scope: this.$scope
+        this.maEventHandler.subscribe({
+            scope: this.$scope,
+            handler: (event, item, attributes) => {
+                attributes.updateArray(this.eventHandlers, item => !this.event || item.hasEventType(this.event.typeId));
+            }
         });
     }
     
