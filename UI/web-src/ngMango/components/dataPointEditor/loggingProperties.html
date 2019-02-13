@@ -30,7 +30,7 @@
     <ma-duration-editor
             ng-if="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL'"
             flex="100" flex-gt-md="50" name="intervalLoggingPeriod" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingPeriod"
-            allowed-types="::['SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']">
+            allowed-types="::['SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']" required>
         <ma-periods-label ma-tr="pointEdit.logging.period"></ma-periods-label>
         <ma-type-label ma-tr="pointEdit.logging.period"></ma-type-label>
     </ma-duration-editor>

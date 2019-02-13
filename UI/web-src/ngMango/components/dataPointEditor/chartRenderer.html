@@ -31,7 +31,7 @@
 
     <ma-duration-editor
             ng-if="$ctrl.dataPoint.chartRenderer.type === 'chartRendererImage' || $ctrl.dataPoint.chartRenderer.type === 'chartRendererStats'"
-            flex="100" flex-gt-md="50" name="timePeriod" ng-model="$ctrl.dataPoint.chartRenderer.timePeriod"
+            flex="100" flex-gt-md="50" name="timePeriod" ng-model="$ctrl.dataPoint.chartRenderer.timePeriod" required
             allowed-types="::['MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS']">
         <ma-periods-label ma-tr="pointEdit.chart.timePeriod"></ma-periods-label>
         <ma-type-label ma-tr="pointEdit.chart.timePeriod"></ma-type-label>

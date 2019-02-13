@@ -305,7 +305,7 @@
                     
                     <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataPoint.purgeOverride">
                         <ma-duration-editor flex="100" flex-gt-md="50" name="purgePeriod" ng-model="$ctrl.dataPoint.purgePeriod"
-	                           allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']">
+	                           allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" required>
                             <ma-periods-label ma-tr="pointEdit.logging.after"></ma-periods-label>
                             <ma-type-label ma-tr="pointEdit.logging.after"></ma-type-label>
 	                    </ma-duration-editor>
@@ -330,7 +330,7 @@
     
                         <div layout layout-wrap layout-align="start start" ng-if="!purgeNow.all">
                             <ma-duration-editor ng-if="!purgeNow.timeRange" flex="100" flex-gt-md="50" ng-model="purgeNowDuration"
-                                allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']">
+                                allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" required>
                                 <ma-periods-label ma-tr="pointEdit.purge.olderThan"></ma-periods-label>
                                 <ma-type-label ma-tr="pointEdit.purge.olderThan"></ma-type-label>
                             </ma-duration-editor>
