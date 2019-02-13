@@ -1,5 +1,0 @@
-ma-event-handler-list md-list-item .md-list-item-text > p {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}

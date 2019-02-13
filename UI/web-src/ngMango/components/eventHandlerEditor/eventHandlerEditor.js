@@ -165,6 +165,6 @@ export default {
     },
     designerInfo: {
         translation: 'ui.components.eventHandlerEditor',
-        icon: 'link'
+        icon: 'assignment_turned_in'
     }
 };

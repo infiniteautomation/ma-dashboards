@@ -4,7 +4,6 @@
  */
 
 import eventHandlerListTemplate from './eventHandlerList.html';
-import './eventHandlerList.css';
 
 /**
  * @ngdoc directive
@@ -94,6 +93,6 @@ export default {
     },
     designerInfo: {
         translation: 'ui.components.eventHandlerList',
-        icon: 'link'
+        icon: 'assignment_turned_in'
     }
 };

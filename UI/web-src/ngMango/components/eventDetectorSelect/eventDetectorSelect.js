@@ -111,6 +111,6 @@ export default {
     },
     designerInfo: {
         translation: 'ui.components.eventDetectorSelect',
-        icon: 'link'
+        icon: 'assignment_turned_in'
     }
 };
