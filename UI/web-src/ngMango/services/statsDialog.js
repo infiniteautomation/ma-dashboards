@@ -7,13 +7,13 @@ import angular from 'angular';
 import statsDialogTemplate from './statsDialog.html';
 import moment from 'moment-timezone';
 
-statsDialog.$inject = ['$mdDialog', '$mdMedia', 'maUiDateBar', 'localStorageService'];
-function statsDialog($mdDialog, $mdMedia, maUiDateBar, localStorageService) {
+statsDialog.$inject = ['$mdDialog', '$mdMedia', '$injector', 'localStorageService'];
+function statsDialog($mdDialog, $mdMedia, $injector, localStorageService) {
     const statsDialog = {
         show(ev, point, tab) {
             return $mdDialog.show({
                 controller: function() {
-                    this.dateBar = maUiDateBar;
+                    this.dateBar = $injector.has('maUiDateBar') && $injector.get('maUiDateBar');
 
                     this.retrievePreferences = function() {
                         const defaults = {
