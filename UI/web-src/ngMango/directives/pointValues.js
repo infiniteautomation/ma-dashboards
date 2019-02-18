@@ -405,15 +405,16 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     } else {
                     	value = payload.value.value;
                     }
-                	
-                	const rendered = payload.renderedValue;
 
                 	const item = {
                         value : value,
-                        rendered: rendered,
                         timestamp : payload.value.timestamp,
                         annotation : payload.value.annotation
                     };
+                	
+                	if ($scope.rendered) {
+                	    item.rendered = payload.renderedValue;
+                	}
 
                     if (pendingRequest) {
                     	if (!tempValues[xid]) tempValues[xid] = [];
