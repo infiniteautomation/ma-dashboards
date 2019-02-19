@@ -481,7 +481,8 @@ export default {
     bindings: {
         discardOptions: '<?confirmDiscard',
         fixedType: '<?',
-        importCsv: '<?'
+        importCsv: '<?',
+        dataSource: '<?source'
     },
     require: {
         ngModelCtrl: 'ngModel'

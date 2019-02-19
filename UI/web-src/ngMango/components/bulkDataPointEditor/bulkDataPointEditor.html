@@ -173,7 +173,7 @@
     
             <md-dialog-content layout="column" flex>
                 <ma-data-point-editor flex="noshrink" layout="column" dynamic-height="!$dialog.fullscreen()"
-                    ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true" import-csv="$ctrl.csvFile">
+                    ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true" import-csv="$ctrl.csvFile" data-source="$ctrl.dataSource">
                 </ma-data-point-editor>
             </md-dialog-content>
         </md-dialog>
