@@ -88,7 +88,7 @@ class SystemSettingEditorController {
             this.saving = false;
             this.error = true;
             this.messages.errorSaving = true;
-            this.errorMessage = error.mangoStatusText;
+            this.errorMessage = error.mangoStatusTextFirstValidationMsg || error.mangoStatusText;
             return this.$q.reject();
         }).then(() => {
             return this.$timeout(angular.noop, 5000);

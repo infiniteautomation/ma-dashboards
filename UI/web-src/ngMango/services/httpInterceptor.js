@@ -91,6 +91,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     	            } else {
     	                trKeyArgs = ['ui.app.errorFirstValidationMsg', message, firstMsg.message];
     	            }
+    	            error.mangoStatusTextFirstValidationMsg = firstMsg.message;
                     error.mangoStatusText = safeTranslate(trKeyArgs, message);
     	        }
     	    }
