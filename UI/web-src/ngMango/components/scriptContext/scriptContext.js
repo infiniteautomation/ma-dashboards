@@ -45,7 +45,7 @@ class scriptContextController {
 
         this.maPoint.rql({query: this.getRqlQuery()}).$promise.then(points => {
             this.contextTable.forEach(item => {
-                item.point = points.filter(point =>  point.xid === item.xid )[0];
+                item.point = points.filter(point =>  point.xid === item[this.getContextVarXidName()] )[0];
             });
         });
     }
@@ -55,9 +55,9 @@ class scriptContextController {
         
         this.contextPoints.forEach((point, idx, array) => {
             if (idx === array.length - 1){ 
-                ids += point.xid;
+                ids += point[this.getContextVarXidName()];
             } else {
-                ids += point.xid + ',';
+                ids += point[this.getContextVarXidName()] + ',';
             }
         });
 
@@ -67,9 +67,10 @@ class scriptContextController {
     selectContextPoint() {
         const context = {
             point: this.contextPoint,
-            xid: this.contextPoint.xid,
             variableName: ''
         };
+
+        context[this.getContextVarXidName()] = this.contextPoint.xid;
 
         this.contextTable.push(context);
         this.setViewValue();
@@ -85,10 +86,16 @@ class scriptContextController {
         this.setViewValue();
     }
 
+    getContextVarXidName() {
+        return this.contextVarXidName ? this.contextVarXidName : 'xid';
+    }
+
 }
 
 export default {
-    bindings: {},
+    bindings: {
+        contextVarXidName: '<?'
+    },
     require: {
         ngModelCtrl: 'ngModel'
     },
