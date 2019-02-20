@@ -4,7 +4,6 @@
  */
 import angular from 'angular';
 
-
 SystemSettingsProvider.$inject = [];
 function SystemSettingsProvider() {
     const sections = [];

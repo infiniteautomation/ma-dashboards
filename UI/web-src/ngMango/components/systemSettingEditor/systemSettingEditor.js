@@ -68,6 +68,7 @@ class SystemSettingEditorController {
     saveSetting() {
         this.done = false;
         this.error = false;
+        delete this.errorMessage;
         delete this.messages.errorSaving;
         
         // dont show the sync icon for saves of less than 200ms, stops icon flashing
@@ -82,11 +83,12 @@ class SystemSettingEditorController {
             this.$timeout.cancel(delay);
             this.saving = false;
             this.done = true;
-        }, () => {
+        }, error => {
             this.$timeout.cancel(delay);
             this.saving = false;
             this.error = true;
             this.messages.errorSaving = true;
+            this.errorMessage = error.mangoStatusText;
             return this.$q.reject();
         }).then(() => {
             return this.$timeout(angular.noop, 5000);
