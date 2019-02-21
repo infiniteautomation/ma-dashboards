@@ -686,6 +686,32 @@ md-card md-card-content.ma-no-padding-bottom {
 	margin-bottom: 16px;
 }
 
+.ma-margin-right {
+	margin-right: 8px;
+}
+
+.ma-margin-left {
+	margin-left: 8px;
+}
+
+.ma-margin-right-large {
+	margin-right: 16px;
+}
+
+.ma-margin-left-large {
+	margin-left: 16px;
+}
+
+.ma-margin-left-right {
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+.ma-margin-left-right-large {
+	margin-left: 16px;
+	margin-right: 16px;
+}
+
 .ma-no-margin-top {
 	margin-bottom: 0;
 }

@@ -94,7 +94,7 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
 
         return $http({
             method: 'GET',
-            url: systemSettingsUrl + '/' + this.key,
+            url: systemSettingsUrl + '/' + encodeURIComponent(this.key),
             params: {
                 type: type || this.type
             },
@@ -112,7 +112,7 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
         value = angular.toJson(value || this.value);
         return $http({
             method: 'PUT',
-            url: systemSettingsUrl + '/' + this.key,
+            url: systemSettingsUrl + '/' + encodeURIComponent(this.key),
             params: {
                 type: type || this.type
             },

@@ -1,4 +1,4 @@
-<md-input-container class="ma-icon-inside" ng-if="$ctrl.inputType !== 'checkbox' && $ctrl.inputType !== 'color'">
+<md-input-container class="ma-icon-inside" ng-if="$ctrl.inputType !== 'checkbox' && $ctrl.inputType !== 'color' && $ctrl.inputType !== 'none' && $ctrl.inputType !== 'status'">
     <label ma-tr="{{$ctrl.labelTr}}"></label>
     <input ng-if="$ctrl.inputType === 'text' || $ctrl.inputType === 'permission'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
     <input ng-if="$ctrl.inputType === 'password'" type="password" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
@@ -38,7 +38,7 @@
     </md-select>
     <ma-permissions-menu ng-if="$ctrl.inputType === 'permission' && !$ctrl.disabled" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()"></ma-permissions-menu>
     <textarea ng-if="$ctrl.inputType === 'textarea'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}"  ng-disabled="$ctrl.disabled"></textarea>
-    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" ng-class="{'md-warn': $ctrl.error}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
+    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
     <div ng-messages="$ctrl.messages" md-auto-hide="false">
         <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
     </div>
@@ -51,9 +51,16 @@
     <md-input-container flex class="ma-icon-inside">
         <label ma-tr="{{$ctrl.labelTr}}"></label>
         <input ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
-        <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" ng-class="{'md-warn': $ctrl.error}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
+        <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
         <div ng-messages="$ctrl.messages" md-auto-hide="false">
             <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
         </div>
     </md-input-container>
+</div>
+
+<div ng-if="$ctrl.inputType === 'status'" layout>
+    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button ma-margin-right" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
+    <div flex ng-messages="$ctrl.messages" md-colors="::{color: 'warn-A700'}">
+        <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
+    </div>
 </div>
