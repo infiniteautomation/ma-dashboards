@@ -1,5 +1,5 @@
 <div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
-    <md-card flex="noshrink" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <md-card flex-gt-md="25" layout="column">
         <md-toolbar class="md-hue-3">
             <div class="md-toolbar-tools">
                 <span ma-tr="ui.app.virtualSerialPort.select"></span>
@@ -13,8 +13,8 @@
             </md-button>
         </md-card-content>
 
-        <md-card-content flex layout layout-align="start start" class="ma-no-padding ma-scroll-parent" ng-if="$ctrl.$mdMedia('gt-md')">
-            <ma-virtual-serial-port-list flex layout on-select="$ctrl.itemSelected($item)" deleted-item="$ctrl.deletedItem" updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-list>
+        <md-card-content flex layout layout-align="start start" class="ma-no-padding ma-scroll-parent full-height" ng-if="$ctrl.$mdMedia('gt-md')">
+            <ma-virtual-serial-port-list class="ma-scroll-child" flex layout on-select="$ctrl.itemSelected($item)" deleted-item="$ctrl.deletedItem" updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-list>
         </md-card-content>
     
     </md-card>
