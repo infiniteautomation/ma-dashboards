@@ -161,7 +161,7 @@ class DataSourceEditorController {
 
     typeChanged() {
         const prevSource = this.dataSource;
-        this.dataSource = this.typesByName[prevSource.modelType].createDataPoint();
+        this.dataSource = this.typesByName[prevSource.modelType].createDataSource();
         
         // copy only a select set of properties over
         this.dataSource.enabled = prevSource.enabled;
