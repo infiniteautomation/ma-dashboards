@@ -2,11 +2,11 @@
     <md-input-container flex="100" flex-gt-md="50">
         <md-icon>build</md-icon>
         <label ma-tr="pointEdit.text.type"></label>
-        <md-select name="type" ng-model="$ctrl.dataPoint.textRenderer.type" ng-disabled="$ctrl.dataPoint.dataType.hasMultipleValues()" required>
+        <md-select name="type" ng-model="$ctrl.dataPoint.textRenderer.type" required>
             <md-option ng-if="$ctrl.dataPoint.textRenderer.type.hasMultipleValues()" ng-value="$ctrl.dataPoint.textRenderer.type">
                 <em ng-bind="$ctrl.dataPoint.textRenderer.type"></em>
             </md-option>
-            <md-option ng-repeat="type in $ctrl.textRendererTypes track by type.type" ng-value="type.type"ng-if="type.dataTypes.has($ctrl.dataPoint.dataType)">
+            <md-option ng-repeat="type in $ctrl.textRendererTypes track by type.type" ng-value="type.type" ng-if="$ctrl.optionSupported(type.dataTypes, $ctrl.dataPoint.dataType)">
                 <span ma-tr="{{type.translation}}"></span>
             </md-option>
         </md-select>

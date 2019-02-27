@@ -473,6 +473,17 @@ class DataPointEditorController {
             }
         }
     }
+    
+    optionSupported(options, value) {
+        if (!(options instanceof Set)) {
+            return false;
+        }
+        
+        if (value instanceof this.MultipleValues) {
+            return value.values.every(v => options.has(v));
+        }
+        return options.has(value);
+    }
 }
 
 export default {
