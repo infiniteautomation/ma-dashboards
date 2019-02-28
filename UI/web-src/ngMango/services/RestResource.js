@@ -353,10 +353,17 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 return this.enabled;
             }
             
+            const prevValue = this.enabled;
             this.enabled = enable;
             
             if (this[originalIdProperty]) {
-                this.save();
+                this.$enableToggling = true;
+                this.save().catch(error => {
+                    this.enabled = prevValue;
+                    return $q.reject(error);
+                }).finally(() => {
+                    delete this.$enableToggling;
+                });
             }
         }
     }
