@@ -1183,3 +1183,8 @@ table.md-table.ma-no-wrap thead tr th,
 table.md-table.ma-no-wrap tbody tr td {
 	white-space: nowrap;
 }
+
+/* Text size */
+.ma-small-text {
+	font-size: 1.2rem;
+}
