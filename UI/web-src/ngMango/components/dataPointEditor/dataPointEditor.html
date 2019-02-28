@@ -11,7 +11,7 @@
                             <md-icon>settings</md-icon>
                             <label ma-tr="dsEdit.dataPointType"></label>
                             <md-select name="dataSourceTypeName" ng-model="$ctrl.dataPoint.dataSourceTypeName"
-                                    ng-disabled="$ctrl.fixedType || !$ctrl.dataPoint.isNew()" required>
+                                    ng-disabled="$ctrl.fixedType || !$ctrl.dataPoint.isNew()" ng-change="$ctrl.typeChanged()" required>
                                 <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
                                     <span ma-tr="{{type.description}}"></span>
                                 </md-option>
@@ -29,7 +29,7 @@
                             </md-switch>
                         </div>
                 
-                        <md-input-container flex="100" flex-gt-md="50">
+                        <md-input-container flex="100">
                             <md-icon>label</md-icon>
                             <label ma-tr="common.xid"></label>
                             <input name="xid" ng-model="$ctrl.dataPoint.xid" required ng-disabled="$ctrl.dataPoint.xid.hasMultipleValues()">
@@ -40,21 +40,21 @@
                         </md-input-container>
 
                         <md-input-container flex="100" flex-gt-md="50">
+                            <md-icon>device_hub</md-icon>
+                            <label ma-tr="common.deviceName"></label>
+                            <input name="deviceName" ng-model="$ctrl.dataPoint.deviceName">
+                            <div ng-messages="$ctrl.form.deviceName.$error">
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.deviceName.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                        
+                        <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>label</md-icon>
                             <label ma-tr="common.name"></label>
                             <input name="name" ng-model="$ctrl.dataPoint.name" required>
                             <div ng-messages="$ctrl.form.name.$error">
                                 <div ng-message="required" ma-tr="ui.app.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
-                            </div>
-                        </md-input-container>
-                
-                        <md-input-container flex="100" flex-gt-md="50">
-                            <md-icon>device_hub</md-icon>
-                            <label ma-tr="common.deviceName"></label>
-                            <input name="deviceName" ng-model="$ctrl.dataPoint.deviceName">
-                            <div ng-messages="$ctrl.form.deviceName.$error">
-                                <div ng-message="validationMessage" ng-bind="$ctrl.form.deviceName.validationMessage"></div>
                             </div>
                         </md-input-container>
 
@@ -370,6 +370,12 @@
             <span ma-tr="ui.app.cancelBulkEdit"></span>
         </md-button>
     </div>
+    
+    <div ng-if="$ctrl.errorMessages.length" class="md-padding">
+        <em md-colors="::{color: 'warn'}">
+            <span ng-repeat="msg in $ctrl.errorMessages"><span ng-bind="msg"></span><span ng-if="!$last">, </span></span>
+        </em>
+    </div>
 
     <div ng-if="!$ctrl.bulkTask" class="md-padding ma-action-buttons">
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form || $ctrl.savePromise">
@@ -384,8 +390,6 @@
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>
-        <em ng-if="$ctrl.errorMessages.length" md-colors="::{color: 'warn'}">
-            <span ng-repeat="msg in $ctrl.errorMessages"><span ng-bind="msg"></span><span ng-if="!$last">, </span></span>
-        </em>
+        <em ng-if="!$ctrl.dataSourceType" md-colors="::{color: 'accent'}" ma-tr="ui.app.dataPointTypeNotSupported"></em>
     </div>
 </div>

@@ -59,7 +59,7 @@
                             <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission" ma-array-input></ma-permissions-menu>
                         </md-input-container>
 
-                        <div style="display: none" ng-if-start="$ctrl.typesByName[$ctrl.dataSource.modelType].polling"></div>
+                        <div style="display: none" ng-if-start="$ctrl.dataSourceType.polling"></div>
                         
                         <ma-duration-editor
                                 ng-if="!$ctrl.dataSource.useCron"
@@ -115,7 +115,7 @@
                         </div>
                     </div>
 
-                    <div ng-include="$ctrl.typesByName[$ctrl.dataSource.modelType].templateUrl"></div>
+                    <div ng-include="$ctrl.dataSourceType.templateUrl"></div>
                 </div>
             </md-tab-body>
         </md-tab>
@@ -230,7 +230,7 @@
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
 
     <div class="md-padding ma-action-buttons" ng-if="!$ctrl.pointsTabActive">
-        <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form">
+        <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form || !$ctrl.dataSourceType">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
         </md-button>
@@ -242,8 +242,9 @@
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>
+        <em ng-if="!$ctrl.dataSourceType" md-colors="::{color: 'accent'}" ma-tr="ui.app.dataSourceTypeNotSupported"></em>
     </div>
-    
+
     <ma-dialog show-dialog="$ctrl.showCronDialog">
         <md-dialog flex="100" flex-gt-sm="50" flex-gt-md="40" flex-gt-lg="30" flex-gt-xl="20">
             <md-toolbar>

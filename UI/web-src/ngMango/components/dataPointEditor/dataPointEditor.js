@@ -126,7 +126,7 @@ class DataPointEditorController {
             this.activeTab = 0;
         }
 
-        this.dataSourceType = this.dataPoint && this.typesByName[this.dataPoint.dataSourceTypeName];
+        this.typeChanged();
 
         if (this.form) {
             this.form.$setPristine();
@@ -433,6 +433,10 @@ class DataPointEditorController {
             return value.values.every(v => options.has(v));
         }
         return options.has(value);
+    }
+    
+    typeChanged() {
+        this.dataSourceType = this.typesByName[this.dataPoint && this.dataPoint.dataSourceTypeName];
     }
 }
 

@@ -90,6 +90,8 @@ class DataSourceEditorController {
         if (this.dataSource && this.dataSource.isNew()) {
             this.activeTab = 0;
         }
+        
+        this.dataSourceType = this.typesByName[this.dataSource && this.dataSource.modelType];
 
         if (this.form) {
             this.form.$setPristine();
@@ -168,6 +170,8 @@ class DataSourceEditorController {
         this.dataSource.name = prevSource.name;
         this.dataSource.editPermission = prevSource.editPermission;
         this.purgeSettings = prevSource.purgeSettings;
+        
+        this.dataSourceType = this.typesByName[this.dataSource && this.dataSource.modelType];
     }
 }
 
