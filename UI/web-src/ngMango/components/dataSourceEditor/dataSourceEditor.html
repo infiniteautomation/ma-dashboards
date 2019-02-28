@@ -7,10 +7,6 @@
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
-                        <div flex="100" flex-gt-md="50">
-                            <md-switch name="enabled" ng-model="$ctrl.dataSource.enabled"><span ma-tr="common.enabled"></span></md-switch>
-                        </div>
-                        
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>settings</md-icon>
                             <label ma-tr="dsEdit.dataSourceType"></label>
@@ -24,6 +20,10 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.modelType.validationMessage"></div>
                             </div>
                         </md-input-container>
+                        
+                        <div flex="100" flex-gt-md="50">
+                            <md-switch name="enabled" ng-model="$ctrl.dataSource.enabled"><span ma-tr="common.enabled"></span></md-switch>
+                        </div>
 
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>label</md-icon>
