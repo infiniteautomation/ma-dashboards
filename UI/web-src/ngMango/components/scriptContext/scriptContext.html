@@ -10,6 +10,7 @@
                 <th md-column ma-tr="common.pointName"></th>
                 <th md-column ma-tr="pointEdit.template.dataType"></th>
                 <th md-column ma-tr="pointEdit.text.key"></th>
+                <th ng-if="$ctrl.updatesContext" md-column ma-tr="scriptingEditor.ui.updatesContext"></th>
                 <th md-column></th>
             </tr>
         </thead>
@@ -19,9 +20,14 @@
                 <td md-cell>{{ item.point.name }}</td>
                 <td md-cell>{{ item.point.pointLocator.dataType }}</td>
                 <td md-cell>
-                    <md-input-container flex="100" flex-gt-md="50">
+                    <md-input-container flex="100">
                         <label ma-tr="pointEdit.text.key"></label>
                         <input name="variableName" ng-model="item.variableName" ng-change="$ctrl.setViewValue()" required>
+                    </md-input-container>
+                </td>
+                <td md-cell ng-if="$ctrl.updatesContext">
+                    <md-input-container flex="100" flex-gt-md="50">
+                        <md-checkbox ng-model="item.contextUpdate" ng-change="$ctrl.setViewValue()"></md-checkbox>
                     </md-input-container>
                 </td>
                 <td md-cell>

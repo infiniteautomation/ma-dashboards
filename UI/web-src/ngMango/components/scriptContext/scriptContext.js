@@ -67,7 +67,8 @@ class scriptContextController {
     selectContextPoint() {
         const context = {
             point: this.contextPoint,
-            variableName: ''
+            variableName: '',
+            contextUpdate: false
         };
 
         context[this.getContextVarXidName()] = this.contextPoint.xid;
@@ -94,7 +95,8 @@ class scriptContextController {
 
 export default {
     bindings: {
-        contextVarXidName: '<?'
+        contextVarXidName: '<?',
+        updatesContext: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
