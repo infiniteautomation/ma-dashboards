@@ -36,10 +36,10 @@ class BulkDataPointEditorController {
     static get $$ngIsClass() { return true; }
     
     static get $inject() { return ['maPoint', 'maDataSource', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout',
-            'localStorageService', 'maUtil', '$q', '$scope', '$element', '$filter', '$interval']; }
+            'localStorageService', 'maUtil', '$q', '$scope', '$element', '$filter', '$interval', 'maEventDetector']; }
     
     constructor(maPoint, maDataSource, maDataPointTags, maDialogHelper, maTranslate, $timeout,
-            localStorageService, maUtil, $q, $scope, $element, $filter, $interval) {
+            localStorageService, maUtil, $q, $scope, $element, $filter, $interval, EventDetector) {
 
         this.maPoint = maPoint;
         this.maDataSource = maDataSource;
@@ -53,6 +53,7 @@ class BulkDataPointEditorController {
         this.$scope = $scope;
         this.$element = $element;
         this.$interval = $interval;
+        this.EventDetector = EventDetector;
         
         this.sortFilter = $filter('orderBy');
         this.filterFilter = $filter('filter');
@@ -713,6 +714,15 @@ class BulkDataPointEditorController {
             result = result[property[i]];
         }
         return result;
+    }
+
+    gotDetectors(detectors) {
+        this.eventDetector = detectors[0] || this.EventDetector.forDataPoint(this.eventDetectorPoint);
+    }
+
+    detectorDialogClosed() {
+        this.eventDetectorPoint = null;
+        this.eventDetector = null;
     }
 }
 

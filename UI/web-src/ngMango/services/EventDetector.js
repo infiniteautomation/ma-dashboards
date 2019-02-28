@@ -158,6 +158,16 @@ function eventDetectorProvider() {
             static detectorTypesByName() {
                 return eventDetectorTypesByName;
             }
+            
+            static forDataPoint(point) {
+                if (!point) return null;
+                
+                const detector = new this();
+                detector.sourceTypeName = 'DATA_POINT';
+                detector.dataPoint = point;
+                detector.sourceId = point.id;
+                return detector;
+            }
 
             saveAndNotify() {
                 return this.constructor.saveAndNotify(this);

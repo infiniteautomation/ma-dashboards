@@ -164,7 +164,7 @@ class DataPointDetailsController {
     
     openDetectorDialog(detector) {
         this.showDetectorDialog = {};
-        this.eventDetector = detector || this.eventDetectors[0] || this.newEventDetector();
+        this.eventDetector = detector || this.eventDetectors[0] || this.EventDetector.forDataPoint(this.dataPoint);
         this.$state.params.detectorId = null;
         this.$state.params.detectorXid = this.eventDetector.getOriginalId() || null;
         this.stateGo();
@@ -198,14 +198,6 @@ class DataPointDetailsController {
     
     stateGo() {
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
-    }
-
-    newEventDetector() {
-        const detector = new this.EventDetector();
-        detector.sourceTypeName = 'DATA_POINT';
-        detector.dataPoint = this.dataPoint;
-        detector.sourceId = this.dataPoint.id;
-        return detector;
     }
 }
 

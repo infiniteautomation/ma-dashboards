@@ -82,3 +82,7 @@ ma-bulk-data-point-editor thead.ma-filter-header > tr > th > md-input-container 
 	width: 100%;
     margin: 0;
 }
+
+.ma-bulk-data-point-editor-event-detectors {
+	min-height: 400px;
+}

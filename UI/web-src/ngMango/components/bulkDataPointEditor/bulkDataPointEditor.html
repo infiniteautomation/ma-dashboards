@@ -142,6 +142,10 @@
                                 <md-icon>delete</md-icon>
                                 <md-tooltip ma-tr="common.delete"></md-tooltip>
                             </md-button>
+                            <md-button class="md-icon-button" ng-click="$ctrl.eventDetectorPoint = point">
+                                <md-icon>change_history</md-icon>
+                                <md-tooltip ma-tr="ui.eventDetectors.plural"></md-tooltip>
+                            </md-button>
                         </div>
                     </td>
                 </tr>
@@ -175,6 +179,27 @@
                 <ma-data-point-editor flex="noshrink" layout="column" dynamic-height="!$dialog.fullscreen()"
                     ng-model="$ctrl.editTarget" ng-change="$dialog.hide()" fixed-type="true" import-csv="$ctrl.csvFile" data-source="$ctrl.dataSource">
                 </ma-data-point-editor>
+            </md-dialog-content>
+        </md-dialog>
+    </ma-dialog>
+
+    <ma-dialog show-dialog="$ctrl.eventDetectorPoint" on-hide="$ctrl.detectorDialogClosed()" on-cancel="$ctrl.detectorDialogClosed()">
+        <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>
+                        <span ma-tr="ui.eventDetectors.for" ma-tr-args="[$ctrl.eventDetectorPoint.formatLabel()]"></span>
+                    </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                        <md-icon>close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+    
+            <md-dialog-content class="ma-bulk-data-point-editor-event-detectors" flex layout="column">
+                <ma-event-detector-layout data-point="$ctrl.eventDetectorPoint" ng-model="$ctrl.eventDetector" on-query="$ctrl.gotDetectors($items)">
+                </ma-event-detector-layout>
             </md-dialog-content>
         </md-dialog>
     </ma-dialog>
