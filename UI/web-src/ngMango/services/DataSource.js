@@ -236,6 +236,8 @@ function dataSourceProvider() {
 
         Object.assign(DataSource.prototype, {
             enable(enabled = true, restart = false) {
+                this.$enableToggling = true;
+                
                 const url = '/rest/v2/data-sources/enable-disable/' + encodeURIComponent(this.xid);
                 return $http({
                     url,
@@ -246,6 +248,8 @@ function dataSourceProvider() {
                     }
                 }).then(() => {
                     this.enabled = enabled;
+                }).finally(() => {
+                    delete this.$enableToggling;
                 });
             },
             

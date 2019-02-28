@@ -129,7 +129,7 @@
                     
                     <td md-cell class="ma-point-actions">
                         <div layout layout-align="end center">
-                            <md-switch ng-model="point.isEnabled"></md-switch>
+                            <md-switch ng-model="point.isEnabled" ng-class="{'ma-throb-opacity': point.$enableToggling}" ng-disabled="point.$enableToggling"></md-switch>
                             <md-button class="md-icon-button" ng-click="$ctrl.editDataPoint($event, point)">
                                 <md-icon>edit</md-icon>
                                 <md-tooltip ma-tr="common.edit"></md-tooltip>

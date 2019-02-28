@@ -408,6 +408,8 @@ function dataPointProvider() {
             },
         
             enable(enabled = true, restart = false) {
+                this.$enableToggling = true;
+                
                 const url = '/rest/v2/data-points/enable-disable/' + encodeURIComponent(this.xid);
                 return $http({
                     url,
@@ -418,6 +420,8 @@ function dataPointProvider() {
                     }
                 }).then(() => {
                     this.enabled = enabled;
+                }).finally(() => {
+                    delete this.$enableToggling;
                 });
             },
     
