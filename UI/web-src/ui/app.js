@@ -268,6 +268,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             return;
         }
         
+        $rootScope.newPageUrl = $state.href($state.params.helpPage);
+        
         if (helpPageState.templateUrl) {
             this.pageOpts.helpUrl = helpPageState.templateUrl;
         } else if (helpPageState.template) {
