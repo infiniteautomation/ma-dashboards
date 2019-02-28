@@ -173,6 +173,16 @@ class DataSourceEditorController {
         
         this.dataSourceType = this.typesByName[this.dataSource && this.dataSource.modelType];
     }
+    
+    showPollingControls() {
+        if (this.dataSourceType && this.dataSourceType.polling) {
+            if (typeof this.dataSourceType.polling === 'function') {
+                return !!(this.dataSource && this.dataSourceType.polling(this.dataSource));
+            }
+            return true;
+        }
+        return false;
+    }
 }
 
 export default {

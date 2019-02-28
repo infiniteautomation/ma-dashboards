@@ -59,7 +59,7 @@
                             <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission" ma-array-input></ma-permissions-menu>
                         </md-input-container>
 
-                        <div style="display: none" ng-if-start="$ctrl.dataSourceType.polling"></div>
+                        <div style="display: none" ng-if-start="$ctrl.showPollingControls()"></div>
                         
                         <ma-duration-editor
                                 ng-if="!$ctrl.dataSource.useCron"
