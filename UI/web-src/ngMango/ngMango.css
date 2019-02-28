@@ -1172,11 +1172,15 @@ mdp-date-picker md-input-container {
 }
 
 /* Class for stopping text overflow in list items */
-md-list.ma-no-text-overflow md-list-item .md-list-item-text {
-    text-overflow: ellipsis;
+md-list.ma-no-text-overflow md-list-item .md-list-item-inner,
+md-list.ma-no-text-overflow md-list-item .md-list-item-inner .md-list-item-text,
+md-list.ma-no-text-overflow md-list-item .md-list-item-inner .md-list-item-text > * {
     overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+md-list-item._md-button-wrap > div.md-button:first-child .md-list-item-inner
 
 /* Class for setting md-table cells to not text wrap */
 table.md-table.ma-no-wrap thead tr th,

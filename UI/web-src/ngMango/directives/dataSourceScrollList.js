@@ -6,7 +6,6 @@
 import angular from 'angular';
 import dataSourceScrollListMdTemplate from './dataSourceScrollList-md.html';
 import dataSourceScrollListTemplate from './dataSourceScrollList.html';
-import './dataSourceScrollList.css';
 
 dataSourceScrollList.$inject = ['$injector'];
 function dataSourceScrollList($injector) {
