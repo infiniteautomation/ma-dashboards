@@ -1,5 +1,5 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -187,7 +187,9 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="ui.
 *     A binary or multistate text renderer has a `values` property for accessing configured renderer mappings.
 */
 
+import angular from 'angular';
 import TextRenderer from './TextRenderer';
+import {defaultProperties, defaultPropertiesForDataTypes} from './PointDefaults';
 
 dataPointProvider.$inject = [];
 function dataPointProvider() {
@@ -209,9 +211,9 @@ function dataPointProvider() {
      * Provides service for getting list of points and create, update, delete
      */
     dataPointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource', 'maRqlBuilder', 'maRestResource',
-        '$templateCache'];
+        '$templateCache', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES'];
     function dataPointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource, RqlBuilder, RestResource,
-            $templateCache) {
+            $templateCache, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES) {
 
         const typesByName = Object.create(null);
         types.forEach(type => {
@@ -234,56 +236,7 @@ function dataPointProvider() {
                 return 'BULK_DATA_POINT';
             }
         }
-    
-        const defaultProperties = {
-            xid: '',
-            name: '',
-            enabled: true,
-            deviceName: '',
-            readPermission: 'user',
-            setPermission: '',
-            pointFolderId: 0,
-            purgeOverride: false,
-            unit: '',
-            useIntegralUnit: false,
-            useRenderedUnit: false,
-            pointLocator: {
-                max: 100.0,
-                min: 0.0,
-                maxChange: 0.1,
-                startValue: '50',
-                modelType: 'PL.VIRTUAL',
-                dataType: 'NUMERIC',
-                settable: true,
-                changeType: 'BROWNIAN'
-            },
-            chartColour: '',
-            plotType: 'STEP',
-            loggingProperties: {
-                loggingType: 'ALL',
-                tolerance: 0.0,
-                discardExtremeValues: false,
-                overrideIntervalLoggingSamples: false,
-                cacheSize: 1
-            },
-            textRenderer: {
-                useUnitAsSuffix: false,
-                unit: '',
-                renderedUnit: '',
-                format: '#.00',
-                suffix: '',
-                type: 'textRendererAnalog'
-            },
-            chartRenderer: null,
-            rollup: 'AVERAGE',
-            simplifyType: 'TARGET',
-            simplifyTolerance: 'NaN',
-            simplifyTarget: 1000,
-            templateXid: null,
-            dataSourceXid: '',
-            tags: {}
-        };
-        
+
         class DataPointRestResource extends RestResource {
             static get baseUrl() {
                 return '/rest/v2/data-points';
@@ -405,7 +358,47 @@ function dataPointProvider() {
                 {key: 'NUMERIC', translation: 'common.dataTypes.numeric'},
                 {key: 'ALPHANUMERIC', translation: 'common.dataTypes.alphanumeric'},
                 {key: 'IMAGE', translation: 'common.dataTypes.image'}
-            ])
+            ]),
+            
+            loggingTypes: Object.freeze([
+                {type: 'ON_CHANGE', translation: 'pointEdit.logging.type.change'},
+                {type: 'ALL', translation: 'pointEdit.logging.type.all'},
+                {type: 'NONE', translation: 'pointEdit.logging.type.never'},
+                {type: 'INTERVAL', translation: 'pointEdit.logging.type.interval'},
+                {type: 'ON_TS_CHANGE', translation: 'pointEdit.logging.type.tsChange'},
+                {type: 'ON_CHANGE_INTERVAL', translation: 'pointEdit.logging.type.changeInterval'}
+            ]),
+            
+            intervalLoggingValueTypes: Object.freeze([
+                {type: 'INSTANT', translation: 'pointEdit.logging.valueType.instant'},
+                {type: 'MAXIMUM', translation: 'pointEdit.logging.valueType.maximum'},
+                {type: 'MINIMUM', translation: 'pointEdit.logging.valueType.minimum'},
+                {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
+            ]),
+            
+            textRendererTypes: Object.freeze([
+                {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC']),
+                    suffix: true},
+                {type: 'textRendererAnalog', translation: 'textRenderer.analog', dataTypes: new Set(['NUMERIC']), suffix: true, format: true},
+                {type: 'textRendererRange', translation: 'textRenderer.range', dataTypes: new Set(['NUMERIC']), format: true},
+                {type: 'textRendererBinary', translation: 'textRenderer.binary', dataTypes: new Set(['BINARY'])},
+                {type: 'textRendererNone', translation: 'textRenderer.none', dataTypes: new Set(['IMAGE'])},
+                {type: 'textRendererTime', translation: 'textRenderer.time', dataTypes: new Set(['NUMERIC']), format: true},
+                {type: 'textRendererMultistate', translation: 'textRenderer.multistate', dataTypes: new Set(['MULTISTATE'])}
+            ]),
+
+            chartRendererTypes: Object.freeze([
+                {type: 'chartRendererNone', translation: 'chartRenderer.none',
+                    dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC', 'IMAGE'])},
+                {type: 'chartRendererImageFlipbook', translation: 'chartRenderer.flipbook', dataTypes: new Set(['IMAGE'])},
+                {type: 'chartRendererTable', translation: 'chartRenderer.table', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])},
+                {type: 'chartRendererImage', translation: 'chartRenderer.image', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])},
+                {type: 'chartRendererStats', translation: 'chartRenderer.statistics', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])}
+            ]),
+            
+            rollupTypes: MA_ROLLUP_TYPES,
+            chartTypes: MA_CHART_TYPES,
+            simplifyTypes: MA_SIMPLIFY_TYPES
         });
         
         Object.assign(Point.prototype, {
@@ -603,6 +596,41 @@ function dataPointProvider() {
                     label += ` [${this.formatTags(includeDeviceAndName)}]`;
                 }
                 return label;
+            },
+            
+            dataTypeChanged() {
+                const dataTypeDefaults = defaultPropertiesForDataTypes[this.dataType];
+
+                // we could try and keep some properties as per previous code in data point editor
+                /*
+                const rollupType = this.constructor.rollupTypes.find(t => t.type === this.rollup);
+                if (!rollupType.dataTypes.has(this.dataType)) {
+                    this.rollup = dataTypeDefaults.rollup;
+                }
+                
+                const simplifyType = this.constructor.simplifyTypes.find(t => t.type === this.simplifyType);
+                if (!simplifyType.dataTypes.has(this.dataType)) {
+                    this.simplifyType = dataTypeDefaults.simplifyType;
+                    this.simplifyTolerance = dataTypeDefaults.simplifyTolerance;
+                    this.simplifyTarget = dataTypeDefaults.simplifyTarget;
+                }
+
+                const textRendererType = this.textRenderer && this.textRenderer.type;
+                const textRendererTypeDef = this.constructor.textRendererTypes.find(t => t.type === textRendererType);
+                if (!textRendererTypeDef || !textRendererTypeDef.dataTypes.has(this.dataType)) {
+                    this.textRenderer = angular.copy(dataTypeDefaults.textRenderer);
+                }
+                
+                const chartRendererType = this.chartRenderer && this.chartRenderer.type;
+                const chartRendererTypeDef = this.constructor.chartRendererTypes.find(t => t.type === chartRendererType);
+                if (!chartRendererTypeDef || !chartRendererTypeDef.dataTypes.has(this.dataType)) {
+                    this.chartRenderer = angular.copy(dataTypeDefaults.chartRenderer);
+                }
+                
+                this.loggingProperties = angular.copy(dataTypeDefaults.loggingProperties);
+                */
+                
+                Object.assign(this, angular.copy(dataTypeDefaults));
             }
         });
 
@@ -623,14 +651,17 @@ function dataPointProvider() {
         
         Object.defineProperty(Point.prototype, 'dataType', {
             get() {
-                if (this.pointLocator) {
-                    return this.pointLocator.dataType;
+                if (!this.pointLocator) {
+                    this.pointLocator = {};
                 }
+                return this.pointLocator.dataType;
             },
             set(value) {
-                if (this.pointLocator) {
-                    this.pointLocator.dataType = value;
+                if (!this.pointLocator) {
+                    this.pointLocator = {};
                 }
+                this.pointLocator.dataType = value;
+                this.dataTypeChanged();
             }
         });
 

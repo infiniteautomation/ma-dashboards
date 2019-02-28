@@ -143,6 +143,8 @@
 *
 */
 
+import angular from 'angular';
+
 dataSourceProvider.$inject = [];
 function dataSourceProvider() {
     
@@ -278,18 +280,30 @@ function dataSourceProvider() {
             }
             
             createDataSource() {
-                return new DataSource(this.defaultDataSource || {
+                return new DataSource(this.defaultDataSource && angular.copy(this.defaultDataSource) || {
                     modelType: this.type
                 });
             }
             
             createDataPoint() {
-                return new Point(this.defaultDataPoint || {
+                const defaults = this.defaultDataPoint && angular.copy(this.defaultDataPoint) || {
                     dataSourceTypeName: this.type,
                     pointLocator: {
                         modelType: `PL.${this.type}`
                     }
-                });
+                };
+                const dataType = defaults.pointLocator && defaults.pointLocator.dataType || 'NUMERIC';
+                
+                // create a new data point with default properties
+                const newPoint = new Point();
+                
+                // set the data type so it gets default properties for that data type
+                newPoint.dataType = dataType;
+                
+                // assign default properties defined by data source type
+                Object.assign(newPoint, defaults);
+                
+                return newPoint;
             }
         }
 

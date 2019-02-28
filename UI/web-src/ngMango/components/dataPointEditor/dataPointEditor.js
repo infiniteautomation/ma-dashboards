@@ -24,14 +24,14 @@ const templates = {
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
-    'maMultipleValues', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', '$templateCache', '$filter']);
+    'maMultipleValues', '$templateCache', '$filter']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
-            MultipleValues, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, $templateCache, $filter) {
+            MultipleValues, $templateCache, $filter) {
 
         Object.keys(templates).forEach(key => {
             const name = `maDataPointEditor.${key}.html`;
@@ -48,42 +48,15 @@ class DataPointEditorController {
         this.maTranslate = maTranslate;
         this.MultipleValues = MultipleValues;
         this.orderBy = $filter('orderBy');
-        this.rollupTypes = MA_ROLLUP_TYPES.filter(t => !t.nonAssignable);
-        this.plotTypes = MA_CHART_TYPES;
-        this.simplifyTypes = MA_SIMPLIFY_TYPES;
-        this.loggingTypes = [
-            {type: 'ON_CHANGE', translation: 'pointEdit.logging.type.change'},
-            {type: 'ALL', translation: 'pointEdit.logging.type.all'},
-            {type: 'NONE', translation: 'pointEdit.logging.type.never'},
-            {type: 'INTERVAL', translation: 'pointEdit.logging.type.interval'},
-            {type: 'ON_TS_CHANGE', translation: 'pointEdit.logging.type.tsChange'},
-            {type: 'ON_CHANGE_INTERVAL', translation: 'pointEdit.logging.type.changeInterval'}
-        ];
-        this.intervalLoggingValueTypes = [
-            {type: 'INSTANT', translation: 'pointEdit.logging.valueType.instant'},
-            {type: 'MAXIMUM', translation: 'pointEdit.logging.valueType.maximum'},
-            {type: 'MINIMUM', translation: 'pointEdit.logging.valueType.minimum'},
-            {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
-        ];
-        this.textRendererTypes = [
-            {type: 'textRendererPlain', translation: 'textRenderer.plain', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC']),
-                suffix: true},
-            {type: 'textRendererAnalog', translation: 'textRenderer.analog', dataTypes: new Set(['NUMERIC']), suffix: true, format: true},
-            {type: 'textRendererRange', translation: 'textRenderer.range', dataTypes: new Set(['NUMERIC']), format: true},
-            {type: 'textRendererBinary', translation: 'textRenderer.binary', dataTypes: new Set(['BINARY'])},
-            {type: 'textRendererNone', translation: 'textRenderer.none', dataTypes: new Set(['IMAGE'])},
-            {type: 'textRendererTime', translation: 'textRenderer.time', dataTypes: new Set(['NUMERIC']), format: true},
-            {type: 'textRendererMultistate', translation: 'textRenderer.multistate', dataTypes: new Set(['MULTISTATE'])}
-        ];
+        this.rollupTypes = maPoint.rollupTypes.filter(t => !t.nonAssignable);
+        this.plotTypes = maPoint.chartTypes;
+        this.simplifyTypes = maPoint.simplifyTypes;
+        this.loggingTypes = maPoint.loggingTypes;
+        this.intervalLoggingValueTypes = maPoint.intervalLoggingValueTypes;
+        this.textRendererTypes = maPoint.textRendererTypes;
         this.suffixTextRenderers = new Set(this.textRendererTypes.filter(t => t.suffix).map(t => t.type));
         this.formatTextRenderers = new Set(this.textRendererTypes.filter(t => t.format).map(t => t.type));
-        this.chartRendererTypes = [
-            {type: 'chartRendererNone', translation: 'chartRenderer.none', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC', 'IMAGE'])},
-            {type: 'chartRendererImageFlipbook', translation: 'chartRenderer.flipbook', dataTypes: new Set(['IMAGE'])},
-            {type: 'chartRendererTable', translation: 'chartRenderer.table', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])},
-            {type: 'chartRendererImage', translation: 'chartRenderer.image', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])},
-            {type: 'chartRendererStats', translation: 'chartRenderer.statistics', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])}
-        ];
+        this.chartRendererTypes = maPoint.chartRendererTypes;
 
         this.types = maPoint.types;
         this.typesByName = maPoint.typesByName;
@@ -450,30 +423,7 @@ class DataPointEditorController {
         this.dataPoint.textRenderer.multistateValues.splice(index, 1);
         form.$setDirty();
     }
-    
-    dataTypeChanged() {
-        const dataType = this.dataPoint.dataType;
-        
-        const simplifyType = this.simplifyTypes.find(t => t.type === this.dataPoint.simplifyType);
-        if (!simplifyType.dataTypes.has(dataType)) {
-            this.dataPoint.simplifyType = this.simplifyTypes.find(t => t.dataTypes.has(dataType)).type;
-        }
-        
-        if (this.dataPoint.textRenderer) {
-            const textRendererType = this.textRendererTypes.find(t => t.type === this.dataPoint.textRenderer.type);
-            if (!textRendererType.dataTypes.has(dataType)) {
-                this.dataPoint.textRenderer.type = this.textRendererTypes.find(t => t.dataTypes.has(dataType)).type;
-            }
-        }
-        
-        if (this.dataPoint.chartRenderer) {
-            const chartRendererType = this.chartRendererTypes.find(t => t.type === this.dataPoint.chartRenderer.type);
-            if (!chartRendererType.dataTypes.has(dataType)) {
-                this.dataPoint.chartRenderer.type = this.chartRendererTypes.find(t => t.dataTypes.has(dataType)).type;
-            }
-        }
-    }
-    
+
     optionSupported(options, value) {
         if (!(options instanceof Set)) {
             return false;

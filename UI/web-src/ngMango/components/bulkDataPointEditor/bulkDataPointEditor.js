@@ -560,6 +560,7 @@ class BulkDataPointEditorController {
         
         this.editTarget = dsType.createDataPoint();
         this.editTarget.dataSourceXid = this.dataSource.originalId;
+        this.editTarget.deviceName = this.dataSource.name;
         this.showPointDialog = {};
     }
     

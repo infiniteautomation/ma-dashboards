@@ -47,8 +47,8 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
         const Resource = $delegate.apply(this, arguments);
 
         function ExtendedResource(value) {
-            Resource.call(this, Object.assign({}, defaultProperties, value));
-            
+            Resource.call(this, Object.assign({}, angular.copy(defaultProperties), value));
+
             if (autoXid && !this[idProperty]) {
                 this[idProperty] = xidPrefix + maUtil.uuid();
             }
