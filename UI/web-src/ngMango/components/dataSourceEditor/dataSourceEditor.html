@@ -10,7 +10,7 @@
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>settings</md-icon>
                             <label ma-tr="dsEdit.dataSourceType"></label>
-                            <md-select name="modelType" ng-model="$ctrl.dataSource.modelType" ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()">
+                            <md-select name="modelType" ng-model="$ctrl.dataSource.modelType" ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()" required>
                                 <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
                                     <span ma-tr="{{type.description}}"></span>
                                 </md-option>
