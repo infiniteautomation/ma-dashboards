@@ -127,6 +127,12 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.timezone.validationMessage"></div>
             </div>
         </md-input-container>
+        <ma-duration-editor ng-if="$ctrl.user.sessionExpirationOverride"
+                flex="100" flex-gt-md="50" name="sessionExpirationPeriod" ng-model="$ctrl.user.sessionExpirationPeriod"
+                allowed-types="::['MINUTES', 'HOURS', 'DAYS', 'MONTHS', 'YEARS']" required>
+            <ma-periods-label ma-tr="users.sessionExpirationPeriod"></ma-periods-label>
+            <ma-type-label ma-tr="users.sessionExpirationPeriodUnit"></ma-type-label>
+        </ma-duration-editor>
     </div>
 
     <div layout layout-align="start start" layout-wrap class="ma-user-checkboxes">
@@ -138,6 +144,9 @@
         </md-checkbox>
         <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents">
             <span ma-tr="users.receiveOwnAuditEvents"></span>
+        </md-checkbox>
+        <md-checkbox name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride">
+            <span ma-tr="users.sessionExpirationOverride"></span>
         </md-checkbox>
     </div>
 
