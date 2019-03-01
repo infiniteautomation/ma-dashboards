@@ -3,6 +3,7 @@
  * @author Luis Güette
  */
 
+import angular from 'angular';
 import componentTemplate from './scriptingEditor.html';
 import './scriptingEditor.css';
 
@@ -108,7 +109,14 @@ class scriptingEditorController {
     }
 
     validate() {
-        this.scriptData.context = this.context;
+        this.scriptData.context = angular.copy(this.context);
+
+        if(this.contextVarXidName) {
+            this.scriptData.context.forEach(item => {
+                item.xid = item[this.contextVarXidName];
+                delete item[this.contextVarXidName];
+            });
+        }
 
         if (this.resultDataType) {
             this.scriptData.resultDataType = this.resultDataType;
@@ -164,7 +172,8 @@ export default {
         options: '<?',
         logLevel: '=?',
         logCount: '=?',
-        logSize: '=?'
+        logSize: '=?',
+        contextVarXidName: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
