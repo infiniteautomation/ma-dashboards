@@ -560,7 +560,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             
             if (loginRedirectUrl) {
                 data.resource.loginRedirectUrl = loginRedirectUrl;
+                const required = data.headers('X-Mango-Default-URI-Required');
+                data.resource.loginRedirectUrlRequired = !!(required && required.toLowerCase() !== 'false');
             }
+            
             if (lastUpgrade) {
                 data.resource.lastUpgradeTime = parseInt(lastUpgrade, 10);
             }

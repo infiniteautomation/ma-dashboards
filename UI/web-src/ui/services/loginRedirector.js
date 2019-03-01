@@ -15,6 +15,7 @@ function loginRedirectorProvider () {
     function loginRedirectorFactory($state, $window, $location, maUser, maUiMenu) {
 
         const basePath = '/ui/';
+        const dontSaveStates = new Set(['ui.error', 'ui.serverError']);
         
         class LoginRedirector {
             redirect(user = maUser.current) {
@@ -24,6 +25,7 @@ function loginRedirectorProvider () {
                 .then(() => {
                     let reload = false;
                     let redirectUrl = null;
+                    let redirectUrlRequired = false;
                     
                     if (user) {
                         if (user.lastUpgradeTime != null && user.lastUpgradeTime !== lastUpgradeTime) {
@@ -33,13 +35,17 @@ function loginRedirectorProvider () {
     
                         // loginRedirectUrl will contain the homeUrl if set, or the UI module configured start page if not
                         redirectUrl = user.loginRedirectUrl || user.homeUrl;
+                        redirectUrlRequired = !!user.loginRedirectUrlRequired;
                         
                         // remove tmp properties
                         delete user.loginRedirectUrl;
+                        delete user.loginRedirectUrlRequired;
                         delete user.lastUpgradeTime;
                     }
                     
-                    if (this.savedState) {
+                    if (redirectUrl && redirectUrlRequired) {
+                        this.goToUrl(redirectUrl, reload);
+                    } else if (this.savedState) {
                         this.goToSavedState(reload);
                     } else if (!user) {
                         this.goToState('login', {}, reload);
@@ -116,7 +122,7 @@ function loginRedirectorProvider () {
 
             saveState(state, params) {
                 // dont want to save these states
-                if (state === 'ui.error' || state === 'ui.serverError') {
+                if (dontSaveStates.has(state)) {
                     return;
                 }
                 
