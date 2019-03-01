@@ -203,7 +203,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             systemLocale: '',
             timezone: '',
             systemTimezone: '',
-            permissions: 'user',
+            permissions: '',
             muted: true,
             receiveOwnAuditEvents: false,
             disabled: false,
