@@ -1201,3 +1201,11 @@ table.md-table.ma-no-wrap tbody tr td {
 .ma-small-text {
 	font-size: 1.2rem;
 }
+
+/* for displaying a message under a input container input */
+md-input-container > .ma-input-container-note {
+	font-size: 1.2rem;
+	font-style: italic;
+	padding-top: 8px;
+	clear: left;
+}

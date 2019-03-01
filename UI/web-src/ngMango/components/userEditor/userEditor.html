@@ -65,13 +65,14 @@
         </div>
         
         <md-input-container flex="100" flex-gt-md="50">
-            <md-icon>lock</md-icon>
+            <md-icon>group</md-icon>
             <label ma-tr="users.permissions"></label>
             <input name="permissions" ng-disabled="!$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
             <div ng-messages="$ctrl.userForm.permissions.$error">
                 <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
             </div>
+            <div class="ma-input-container-note" ma-tr="ui.app.userRoleNotice"></div>
             <ma-permissions-menu ng-if="$ctrl.User.current.hasPermission('superadmin')" ng-model="$ctrl.user.permissions"></ma-permissions-menu>
         </md-input-container>
         
