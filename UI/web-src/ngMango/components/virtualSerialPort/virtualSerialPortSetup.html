@@ -18,24 +18,6 @@
             </div>
         </md-input-container>
 
-        <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between" ng-if="$ctrl.selected.portType !== 'SERIAL_SERVER_SOCKET_BRIDGE'">
-            <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.address"></label>
-            <input name="address" ng-model="$ctrl.selected.address" required>
-            <div ng-messages="$ctrl.form.address.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="validationMessage" ng-bind="$ctrl.form.address.validationMessage"></div>
-            </div>
-        </md-input-container>
-
-        <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
-            <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.port"></label>
-            <input name="port" ng-model="$ctrl.selected.port" type="number" required>
-            <div ng-messages="$ctrl.form.port.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="validationMessage" ng-bind="$ctrl.form.port.validationMessage"></div>
-            </div>
-        </md-input-container>
-
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
             <label ma-tr="systemSettings.comm.virtual.serialPorts.types"></label>
             <md-select name="portType" ng-model="$ctrl.selected.portType" required>
@@ -48,12 +30,30 @@
             </div>
         </md-input-container>
 
+        <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between" ng-if="$ctrl.selected.portType !== 'SERIAL_SERVER_SOCKET_BRIDGE'">
+            <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.address"></label>
+            <input name="address" ng-model="$ctrl.selected.address" required>
+            <div ng-messages="$ctrl.form.address.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.address.validationMessage"></div>
+            </div>
+        </md-input-container>
+
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between" ng-if="$ctrl.selected.portType === 'SERIAL_SERVER_SOCKET_BRIDGE'">
             <label ma-tr="systemSettings.comm.virtual.serialServerSocketBridgeSettings.bufferSize"></label>
             <input name="port" ng-model="$ctrl.selected.bufferSize" type="number" required>
             <div ng-messages="$ctrl.form.port.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.bufferSize.validationMessage"></div>
+            </div>
+        </md-input-container>
+
+        <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
+            <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.port"></label>
+            <input name="port" ng-model="$ctrl.selected.port" type="number" required>
+            <div ng-messages="$ctrl.form.port.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.port.validationMessage"></div>
             </div>
         </md-input-container>
 
