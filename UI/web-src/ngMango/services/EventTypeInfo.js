@@ -3,6 +3,8 @@
  * @author Jared Wiltshire
  */
 
+import MultiMap from './MultiMap';
+
 eventTypeProvider.$inject = [];
 function eventTypeProvider() {
 
@@ -77,9 +79,6 @@ function eventTypeProvider() {
                 return {
                     pointXid: source.xid
                 };
-            },
-            typeId(type, subType, ref1, ref2) {
-                return `${type}_${ref1}_${ref2}`;
             }
         };
     }]);
@@ -99,9 +98,6 @@ function eventTypeProvider() {
             return {
                 xid: source.xid
             };
-        },
-        typeId(type, subType, ref1, ref2) {
-            return `${type}_${subType}_${ref1}_${ref2}`;
         }
     });
 
@@ -114,9 +110,6 @@ function eventTypeProvider() {
         },
         groupDescription(source) {
             return source.name;
-        },
-        typeId(type, subType, ref1, ref2) {
-            return `${type}_${ref1}_${ref2}`;
         }
     });
 
@@ -140,6 +133,47 @@ function eventTypeProvider() {
         });
 
         const eventTypeBaseUrl = '/rest/v2/event-types';
+
+        
+        class EventTypeMap extends MultiMap {
+            eventTypeKey(eventType) {
+                const type = eventType.eventType;
+                const subType = eventType.subType || eventType.eventSubtype || null;
+                return `${type}_${subType}`;
+            }
+            
+            set(eventType, value) {
+                const key = this.eventTypeKey(eventType);
+                super.set(key, {
+                    eventType,
+                    value
+                });
+            }
+            
+            get(eventType) {
+                const subTypeMatches = super.get(this.eventTypeKey(eventType));
+                
+                const values = new Set();
+                for (let m of subTypeMatches) {
+                    if (m.eventType.matches(eventType)) {
+                        values.add(m.value);
+                    }
+                }
+                return values;
+            }
+            
+            count(eventType) {
+                const subTypeMatches = super.get(this.eventTypeKey(eventType));
+                
+                let count = 0;
+                for (let m of subTypeMatches) {
+                    if (m.eventType.matches(eventType)) {
+                        count++;
+                    }
+                }
+                return count;
+            }
+        }
         
         class EventType {
             constructor(data) {
@@ -147,9 +181,25 @@ function eventTypeProvider() {
                 if (!this.subType) {
                     this.subType = this.eventSubtype || null;
                 }
-                delete this.eventSubtype;
+            }
+            
+            get typeId() {
+                return this.constructor.typeId(this);
+            }
+            
+            matches(other) {
+                if (this.eventType !== other.eventType || this.subType !== (other.subType || other.eventSubtype || null)) {
+                    return false;
+                }
                 
-                this.typeId = this.constructor.typeId(this);
+                if (!this.referenceId1) {
+                    return true;
+                } else if (this.referenceId1 === other.referenceId1) {
+                    if (!this.referenceId2 || this.referenceId2 === other.referenceId2) {
+                        return true;
+                    }
+                }
+                return false;
             }
             
             static typeId(eventType) {
@@ -157,13 +207,7 @@ function eventTypeProvider() {
                 const subType = eventType.subType || eventType.eventSubtype || null;
                 const ref1 = eventType.referenceId1 || 0;
                 const ref2 = eventType.referenceId2 || 0;
-                
-                const options = eventTypeOptionsMap.get(type);
-                if (options && typeof options.typeId === 'function') {
-                    return options.typeId(type, subType, ref1, ref2);
-                }
-                
-                return `${type}_${subType}`;
+                return `${type}_${subType}_${ref1}_${ref2}`;
             }
         }
         
@@ -176,16 +220,6 @@ function eventTypeProvider() {
                 return null;
             }
 
-            static typeNames(opts = {}) {
-                return this.http({
-                    method: 'GET',
-                    url: `${eventTypeBaseUrl}/type-names`
-                }, opts).then(response => response.data.map(eventType => {
-                    const options = new EventTypeOptions(eventTypeOptionsMap.get(eventType.typeName));
-                    return Object.assign(options, eventType);
-                }));
-            }
-            
             initialize() {
                 if (this.type) {
                     this.type = new EventType(this.type);
@@ -196,19 +230,19 @@ function eventTypeProvider() {
                 return this.type && this.type.typeId;
             }
             
-            static list(name, opts = {}) {
+            static list(eventType, opts = {}) {
                 return this.query(name, null, opts);
             }
             
-            static buildQuery(name) {
+            static buildQuery(eventType) {
                 const builder = new RqlBuilder();
                 builder.queryFunction = (queryObj, opts) => {
-                    return this.query(name, queryObj, opts);
+                    return this.query(eventType, queryObj, opts);
                 };
                 return builder;
             }
 
-            static query(name, queryObject, opts = {}) {
+            static query(eventType, queryObject, opts = {}) {
                 const params = {};
                 
                 if (queryObject) {
@@ -218,10 +252,14 @@ function eventTypeProvider() {
                     }
                 }
                 
-                const nameEncoded = this.encodeUriSegment(name);
-                
+                if (!eventType) eventType = {};
+                const segments = [eventType.eventType, eventType.subType, eventType.referenceId1, eventType.referenceId2]
+                    .map(s => s && this.encodeUriSegment(s) || undefined); // reference id of 0 is set to undefined
+                segments.length = segments.indexOf(undefined); // remove any elements following an undefined
+                segments.unshift(this.baseUrl);
+
                 return this.http({
-                    url: `${this.baseUrl}/${nameEncoded}`,
+                    url: segments.join('/'),
                     method: 'GET',
                     params: params
                 }, opts).then(response => {
@@ -239,6 +277,7 @@ function eventTypeProvider() {
         }
         
         EventTypeInfo.EventType = EventType;
+        EventTypeInfo.EventTypeMap = EventTypeMap;
 
         return EventTypeInfo;
     }

@@ -57,23 +57,6 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
     const ANY_KEYWORD = 'any';
 
-    class MultiMap extends Map {
-        getOrCreate(key) {
-            if (this.has(key)) {
-                return this.get(key);
-            }
-            const values = new Set();
-            super.set(key, values);
-            return values;
-        }
-        
-        set(key, value) {
-            const values = this.getOrCreate(key);
-            values.add(value);
-            return this;
-        }
-    }
-    
     class Equals {
         constructor(value, filter) {
             this.value = value;
@@ -109,12 +92,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
     }
 
-    const $inject = Object.freeze(['$scope', '$attrs', '$element']);
     class EventsTableController {
         static get $$ngIsClass() { return true; }
-        static get $inject() { return $inject; }
+        static get $inject() { return ['$scope', '$attrs', '$element', 'maEventTypeInfo']; }
         
-        constructor($scope, $attrs, $element) {
+        constructor($scope, $attrs, $element, EventTypeInfo) {
             this.$scope = $scope;
             this.$attrs = $attrs;
             this.$element = $element;
@@ -132,7 +114,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             this.onPaginateBound = (...args) => this.onPaginate(...args);
             this.onReorderBound = (...args) => this.onReorder(...args);
             
-            this.handlersForType = new MultiMap();
+            this.handlersForType = new EventTypeInfo.EventTypeMap();
         }
 
         $onInit() {
@@ -206,9 +188,10 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
         
         rebuildHandlersMap() {
+            this.handlersForType.clear();
             this.handlers.forEach(handler => {
                 handler.eventTypes.forEach(et => {
-                    this.handlersForType.set(et.typeId, handler);
+                    this.handlersForType.set(et, handler);
                 });
             });
         }

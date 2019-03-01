@@ -75,7 +75,7 @@
                     <span ng-if="event.returnToNormalTimestamp !== 0 || event.active" ng-bind="event.duration | maDuration: 'humanize'"></span>
                 </td>
                 
-                <td md-cell class="ma-narrow-column ma-text-centered" ng-init="handlerCount = $ctrl.handlersForType.get(event.typeId).size || 0; handlerLink = $ctrl.linkInfo.EVENT_HANDLERS_LINK; handlerParams = handlerLink.stateParams(event);">
+                <td md-cell class="ma-narrow-column ma-text-centered" ng-init="handlerCount = $ctrl.handlersForType.count(event.eventType); handlerLink = $ctrl.linkInfo.EVENT_HANDLERS_LINK; handlerParams = handlerLink.stateParams(event);">
                     <a ui-state="handlerLink.stateName" ui-state-params="handlerParams" class="ma-no-border">
                         <md-icon>
                             {{handlerCount > 0 ? 'assignment_turned_in' : 'link'}}
