@@ -169,7 +169,7 @@
         <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew() || $ctrl.User.current.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">
             <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
         </md-button>
-        <md-button class="md-raised" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.userForm.email.$invalid">
+        <md-button class="md-raised" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.userForm.email.$invalid || $ctrl.sendingEmail" ng-class="{'ma-throb-opacity': $ctrl.sendingEmail}">
             <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
         </md-button>
         <md-button class="md-raised" ng-if="!$ctrl.user.isNew() && $ctrl.User.current.id !== $ctrl.originalUser.id && $ctrl.User.current.admin" ng-click="$ctrl.switchUser($event)">
