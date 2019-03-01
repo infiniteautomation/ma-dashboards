@@ -51,13 +51,13 @@
         </md-select>
     </md-input-container>
 
-    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.logSize">
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.showLogFileInputs && $ctrl.logLevel !== 'NONE'">
         <md-icon>photo_size_select_small</md-icon>
         <label ma-tr="dsEdit.logFileSizeMB"></label>
         <input name="logSize" type="number" ng-model="$ctrl.logSize" required>
     </md-input-container>
 
-    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.logCount">
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.showLogFileInputs && $ctrl.logLevel !== 'NONE'">
         <md-icon>filter_none</md-icon>
         <label ma-tr="dsEdit.logFileCount"></label>
         <input name="logCount" type="number" ng-model="$ctrl.logCount" required>

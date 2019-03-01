@@ -173,7 +173,8 @@ export default {
         logLevel: '=?',
         logCount: '=?',
         logSize: '=?',
-        contextVarXidName: '<?'
+        contextVarXidName: '<?',
+        showLogFileInputs: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
