@@ -24,6 +24,8 @@ class scriptingEditorController {
         this.highlightLines = [];
         this.initOptions();
 
+        if (!this.logLevel) this.logLevel = 'TRACE';
+
         this.$scope.$watch('$ctrl.scriptData.script', (script) => {
             this.clearAnnotations();
             this.clearHighLightLines();
@@ -120,6 +122,8 @@ class scriptingEditorController {
             this.scriptData.permissions = this.permissions;
         }
 
+        this.scriptData.logLevel = this.logLevel;
+
         this.clearErrors();
         this.clearHighLightLines();
         this.clearAnnotations();
@@ -157,7 +161,10 @@ export default {
         permissions: '<?',
         url: '@',
         disabled: '<?',
-        options: '<?'
+        options: '<?',
+        logLevel: '=?',
+        logCount: '=?',
+        logSize: '=?'
     },
     require: {
         ngModelCtrl: 'ngModel'
