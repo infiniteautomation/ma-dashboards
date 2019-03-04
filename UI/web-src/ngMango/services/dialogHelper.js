@@ -5,10 +5,11 @@
 
 import basicDialogTemplate from './basicDialog.html';
 import configImportDialogContainerTemplate from '../components/configImportDialog/configImportDialogContainer.html';
-import angular from 'angular';
 
 DialogHelperFactory.$inject = ['$injector', 'maTranslate', 'maSystemActions', '$q', 'maUtil'];
 function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil) {
+    
+    const noop = function() {};
     
     let $mdDialog, $mdMedia, $mdToast;
     if ($injector.has('$mdDialog')) {
@@ -129,7 +130,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                     toast.toastClass(classes);
                 }
                 
-                return $mdToast.show(toast);
+                return $mdToast.show(toast).catch(noop);
             });
         }
         
@@ -146,7 +147,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                     .hideDelay(10000)
                     .toastClass('md-warn');
 
-                return $mdToast.show(toast);
+                return $mdToast.show(toast).catch(noop);
             });
         }
         
@@ -166,7 +167,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                     toast.toastClass(options.classes);
                 }
                 
-                return $mdToast.show(toast);
+                return $mdToast.show(toast).catch(noop);
             });
         }
         
@@ -187,7 +188,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                     .toastClass('md-warn')
                     .hideDelay(10000);
 
-                return $mdToast.show(toast);
+                return $mdToast.show(toast).catch(noop);
             });
         }
 
@@ -205,27 +206,25 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
 //          resultsTr
 //        }
         confirmSystemAction(options) {
-            return maTranslate.tr(options.descriptionTr).then(description => {
-                return this.confirm(options.event, options.confirmTr).then(() => {
-                    return maSystemActions.trigger(options.actionName, options.actionData).then(triggerResult => {
-                        this.toastOptions({textTr: ['ui.app.systemAction.started', description], hideDelay: 0});
-                        return triggerResult.refreshUntilFinished();
-                    }, error => {
-                        this.toastOptions({textTr: ['ui.app.systemAction.startFailed', description, error.mangoStatusText],
-                            hideDelay: 10000, classes: 'md-warn'});
-                        return $q.reject();
-                    });
-                }).then(finishedResult => {
-                    const results = finishedResult.results;
-                    if (results.failed) {
-                        const msg = results.exception ? results.exception.message : '';
-                        this.toastOptions({textTr: ['ui.app.systemAction.failed', description, msg], hideDelay: 10000, classes: 'md-warn'});
-                    } else {
-                        const resultTxt = maTranslate.trSync(options.resultsTr, results);
-                        this.toastOptions({textTr: ['ui.app.systemAction.succeeded', description, resultTxt]});
-                    }
-                }, angular.noop);
-            });
+            const description = [options.descriptionTr];
+            return this.confirm(options.event, options.confirmTr).then(() => {
+                return maSystemActions.trigger(options.actionName, options.actionData).then(triggerResult => {
+                    this.toastOptions({textTr: ['ui.app.systemAction.started', description], hideDelay: 0});
+                    return triggerResult.refreshUntilFinished();
+                }, error => {
+                    this.toastOptions({textTr: ['ui.app.systemAction.startFailed', description, error.mangoStatusText],
+                        hideDelay: 10000, classes: 'md-warn'});
+                    return $q.reject();
+                });
+            }).then(finishedResult => {
+                const results = finishedResult.results;
+                if (results.failed) {
+                    const msg = results.exception ? results.exception.message : '';
+                    this.toastOptions({textTr: ['ui.app.systemAction.failed', description, msg], hideDelay: 10000, classes: 'md-warn'});
+                } else {
+                    this.toastOptions({textTr: ['ui.app.systemAction.succeeded', description, [options.resultsTr, results]]});
+                }
+            }, noop);
         }
     }
 
