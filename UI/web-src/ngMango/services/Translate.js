@@ -119,6 +119,23 @@ function translateProvider() {
                     return Translate.trSync.apply(null, functionArgs);
                 });
             }
+            
+            static trAll(keys) {
+                if (Array.isArray(keys)) {
+                    return $q.all(keys.map(key => this.tr(key)));
+                }
+                
+                const promises = Object.values(keys).map(translationKey => {
+                    return translationKey ? this.tr(translationKey) : undefined;
+                });
+                
+                return $q.all(promises).then(translated => {
+                    return Object.keys(keys).reduce((obj, k, i) => {
+                        obj[k] = translated[i];
+                        return obj;
+                    }, {});
+                });
+            }
 
             static trSync(key, args) {
                 if (Array.isArray(key)) {
