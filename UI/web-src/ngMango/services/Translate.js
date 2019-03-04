@@ -108,16 +108,36 @@ function translateProvider() {
         const translationsUrl = '/rest/v1/translations';
         
         class Translate {
-            static tr(key) {
-                const functionArgs = arguments;
+            static tr(key, args) {
                 if (Array.isArray(key)) {
+                    args = key.slice(1);
                     key = key[0];
+                } else if (args != null && !Array.isArray(args)) {
+                    console.warn('Deprecated use of maTranslate.tr()');
+                    args = Array.prototype.slice.call(arguments, 1);
                 }
 
-                const namespace = key.split('.')[0];
-                return Translate.loadNamespaces(namespace).then(() => {
-                    return Translate.trSync.apply(null, functionArgs);
+                const namespaces = this.findNamespaces(key, args);
+                
+                return Translate.loadNamespaces(namespaces).then(() => {
+                    return Translate.trSync(key, args);
                 });
+            }
+            
+            static findNamespaces(key, args, namespaces = []) {
+                const namespace = key.split('.')[0];
+                namespaces.push(namespace);
+                
+                if (Array.isArray(args)) {
+                    for (let i = 0; i < args.length; i++) {
+                        const arg = args[i];
+                        if (Array.isArray(arg)) {
+                            this.findNamespaces(arg[0], arg.slice(1), namespaces);
+                        }
+                    }
+                }
+                
+                return namespaces;
             }
             
             static trAll(keys) {
@@ -139,11 +159,22 @@ function translateProvider() {
 
             static trSync(key, args) {
                 if (Array.isArray(key)) {
-                    args = key;
-                    key = key.shift();
-                } else if (!Array.isArray(args)) {
+                    args = key.slice(1);
+                    key = key[0];
+                } else if (args != null && !Array.isArray(args)) {
+                    console.warn('Deprecated use of maTranslate.trSync()');
                     args = Array.prototype.slice.call(arguments, 1);
                 }
+                
+                if (Array.isArray(args)) {
+                    for (let i = 0; i < args.length; i++) {
+                        const arg = args[i];
+                        if (Array.isArray(arg)) {
+                            args[i] = this.trSync(arg);
+                        }
+                    }
+                }
+                
                 return Globalize.messageFormatter(key).apply(Globalize, args);
             }
 

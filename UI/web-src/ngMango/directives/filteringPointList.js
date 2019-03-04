@@ -61,7 +61,7 @@ class FilteringPointListController {
         this.ngModelCtrl.$render = this.render.bind(this);
         
         if (!this.label)
-            this.label = this.Translate.trSync('ui.app.searchBy', 'points', 'name or device');
+            this.label = this.Translate.trSync('ui.app.searchBy', ['points', 'name or device']);
         
         if (this.autoInit) {
             if (!this.pointXid && !(this.pointId || this.pointId === 0)) {

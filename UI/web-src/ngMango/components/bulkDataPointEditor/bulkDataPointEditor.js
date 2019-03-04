@@ -288,7 +288,7 @@ class BulkDataPointEditorController {
         
         const option = {
             name: tagKey,
-            label: this.maTranslate.trSync('ui.app.tag', tagKey)
+            label: this.maTranslate.trSync('ui.app.tag', [tagKey])
         };
         
         this.availableTags.push(option);
