@@ -59,111 +59,136 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
         }
 
         confirm(event, translation) {
-            const areYouSure = maTranslate.trSync('ui.app.areYouSure');
-            const textContent = translation ? maTranslate.trSync(translation) : areYouSure;
+            return maTranslate.trAll({
+                textContent: translation || 'ui.app.areYouSure',
+                areYouSure: 'ui.app.areYouSure',
+                okText: 'login.ok',
+                cancelText: 'login.cancel'
+            }).then(({textContent, areYouSure, okText, cancelText}) => {
+                const confirm = $mdDialog.confirm()
+                    .title(areYouSure)
+                    .ariaLabel(areYouSure)
+                    .textContent(textContent)
+                    .targetEvent(event)
+                    .ok(okText)
+                    .cancel(cancelText)
+                    .multiple(true);
 
-            const confirm = $mdDialog.confirm()
-                .title(areYouSure)
-                .ariaLabel(areYouSure)
-                .textContent(textContent)
-                .targetEvent(event)
-                .ok(maTranslate.trSync('login.ok'))
-                .cancel(maTranslate.trSync('login.cancel'))
-                .multiple(true);
-
-            return $mdDialog.show(confirm);
+                return $mdDialog.show(confirm);
+            });
         }
 
         prompt(event, shortTr, longTr, placeHolderTr, initialValue) {
-            const shortText = maTranslate.trSync(shortTr);
-            const longText = longTr && maTranslate.trSync(longTr);
-            const placeHolderText = placeHolderTr && maTranslate.trSync(placeHolderTr);
+            return maTranslate.trAll({
+                shortText: shortTr,
+                longText: longTr,
+                placeHolderText: placeHolderTr,
+                okText: 'login.ok',
+                cancelText: 'login.cancel'
+            }).then(({shortText, longText, placeHolderText, okText, cancelText}) => {
+                const prompt = $mdDialog.prompt()
+                    .title(shortText)
+                    .ariaLabel(shortText)
+                    .targetEvent(event)
+                    .ok(okText)
+                    .cancel(cancelText)
+                    .multiple(true);
+                
+                if (longText) {
+                    prompt.textContent(longText);
+                }
+                
+                if (placeHolderText) {
+                    prompt.placeholder(placeHolderText);
+                }
+                
+                if (initialValue != null) {
+                    prompt.initialValue(initialValue);
+                }
 
-            const prompt = $mdDialog.prompt()
-                .title(shortText)
-                .ariaLabel(shortText)
-                .targetEvent(event)
-                .ok(maTranslate.trSync('login.ok'))
-                .cancel(maTranslate.trSync('login.cancel'))
-                .multiple(true);
-            
-            if (longText) {
-                prompt.textContent(longText);
-            }
-            
-            if (placeHolderText) {
-                prompt.placeholder(placeHolderText);
-            }
-            
-            if (initialValue != null) {
-                prompt.initialValue(initialValue);
-            }
-
-            return $mdDialog.show(prompt);
+                return $mdDialog.show(prompt);
+            });
         }
         
         toast(translation, classes) {
-            const text = maTranslate.trSync(translation, Array.prototype.slice.call(arguments, 2));
-            
-            const toast = $mdToast.simple()
-                .textContent(text)
-                .action(maTranslate.trSync('login.ok'))
-                .highlightAction(true)
-                .position('bottom center')
-                .hideDelay(5000);
-            
-            if (classes) {
-                toast.toastClass(classes);
-            }
-            
-            return $mdToast.show(toast);
+            const translationArgs = Array.prototype.slice.call(arguments, 2);
+            const translatableMessage = Array.isArray(translation) ? translation : [translation, ...translationArgs];
+
+            return maTranslate.trAll({
+                text: translatableMessage,
+                okText: 'login.ok'
+            }).then(({text, okText}) => {
+                const toast = $mdToast.simple()
+                    .textContent(text)
+                    .action(okText)
+                    .highlightAction(true)
+                    .position('bottom center')
+                    .hideDelay(5000);
+                
+                if (classes) {
+                    toast.toastClass(classes);
+                }
+                
+                return $mdToast.show(toast);
+            });
         }
         
         errorToast(translation) {
-            const text = maTranslate.trSync(translation);
-            
-            const toast = $mdToast.simple()
-                .textContent(text)
-                .action(maTranslate.trSync('login.ok'))
-                .highlightAction(true)
-                .position('bottom center')
-                .hideDelay(10000)
-                .toastClass('md-warn');
+            return maTranslate.trAll({
+                text: translation,
+                okText: 'login.ok'
+            }).then(({text, okText}) => {
+                const toast = $mdToast.simple()
+                    .textContent(text)
+                    .action(okText)
+                    .highlightAction(true)
+                    .position('bottom center')
+                    .hideDelay(10000)
+                    .toastClass('md-warn');
 
-            return $mdToast.show(toast);
+                return $mdToast.show(toast);
+            });
         }
         
         toastOptions(options) {
-            const text = options.textTr ? maTranslate.trSync(options.textTr) : options.text;
-            
-            const toast = $mdToast.simple()
-                .textContent(text)
-                .action(maTranslate.trSync('login.ok'))
-                .highlightAction(true)
-                .position('bottom center')
-                .hideDelay(isFinite(options.hideDelay) ? options.hideDelay : 5000);
-            
-            if (options.classes) {
-                toast.toastClass(options.classes);
-            }
-            
-            return $mdToast.show(toast);
+            return maTranslate.trAll({
+                text: options.textTr,
+                okText: 'login.ok'
+            }).then(({text, okText}) => {
+                const toast = $mdToast.simple()
+                    .textContent(text || options.text)
+                    .action(okText)
+                    .highlightAction(true)
+                    .position('bottom center')
+                    .hideDelay(isFinite(options.hideDelay) ? options.hideDelay : 5000);
+                
+                if (options.classes) {
+                    toast.toastClass(options.classes);
+                }
+                
+                return $mdToast.show(toast);
+            });
         }
         
         httpErrorToast(error, allowedCodes = []) {
             if (allowedCodes.includes(error.status)) {
-                return;
+                return $q.resolve();
             }
 
-            const toast = $mdToast.simple()
-                .textContent(maTranslate.trSync(['ui.app.genericRestError', error.mangoStatusText]))
-                .action(maTranslate.trSync('login.ok'))
-                .highlightAction(true)
-                .position('bottom center')
-                .toastClass('md-warn')
-                .hideDelay(10000);
+            return maTranslate.trAll({
+                text: ['ui.app.genericRestError', error.mangoStatusText],
+                okText: 'login.ok'
+            }).then(({text, okText}) => {
+                const toast = $mdToast.simple()
+                    .textContent(text)
+                    .action(okText)
+                    .highlightAction(true)
+                    .position('bottom center')
+                    .toastClass('md-warn')
+                    .hideDelay(10000);
 
-            return $mdToast.show(toast);
+                return $mdToast.show(toast);
+            });
         }
 
         showConfigImportDialog(importData, $event) {
@@ -180,28 +205,27 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
 //          resultsTr
 //        }
         confirmSystemAction(options) {
-            const maDialogHelper = this;
-            const description = maTranslate.trSync(options.descriptionTr);
-            
-            return maDialogHelper.confirm(options.event, options.confirmTr).then(function() {
-                return maSystemActions.trigger(options.actionName, options.actionData).then(function(triggerResult) {
-                    maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.started', description], hideDelay: 0});
-                    return triggerResult.refreshUntilFinished();
-                }, function(error) {
-                    maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.startFailed', description, error.mangoStatusText],
-                        hideDelay: 10000, classes: 'md-warn'});
-                    return $q.reject();
-                });
-            }).then(function(finishedResult) {
-                const results = finishedResult.results;
-                if (results.failed) {
-                    const msg = results.exception ? results.exception.message : '';
-                    maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.failed', description, msg], hideDelay: 10000, classes: 'md-warn'});
-                } else {
-                    const resultTxt = maTranslate.trSync(options.resultsTr, results);
-                    maDialogHelper.toastOptions({textTr: ['ui.app.systemAction.succeeded', description, resultTxt]});
-                }
-            }, angular.noop);
+            return maTranslate.tr(options.descriptionTr).then(description => {
+                return this.confirm(options.event, options.confirmTr).then(() => {
+                    return maSystemActions.trigger(options.actionName, options.actionData).then(triggerResult => {
+                        this.toastOptions({textTr: ['ui.app.systemAction.started', description], hideDelay: 0});
+                        return triggerResult.refreshUntilFinished();
+                    }, error => {
+                        this.toastOptions({textTr: ['ui.app.systemAction.startFailed', description, error.mangoStatusText],
+                            hideDelay: 10000, classes: 'md-warn'});
+                        return $q.reject();
+                    });
+                }).then(finishedResult => {
+                    const results = finishedResult.results;
+                    if (results.failed) {
+                        const msg = results.exception ? results.exception.message : '';
+                        this.toastOptions({textTr: ['ui.app.systemAction.failed', description, msg], hideDelay: 10000, classes: 'md-warn'});
+                    } else {
+                        const resultTxt = maTranslate.trSync(options.resultsTr, results);
+                        this.toastOptions({textTr: ['ui.app.systemAction.succeeded', description, resultTxt]});
+                    }
+                }, angular.noop);
+            });
         }
     }
 
