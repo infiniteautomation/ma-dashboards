@@ -4,7 +4,7 @@
 	<li ng-if="!context.childrenPromise && !context.children.length"><em ma-tr="ui.components.noItemsToList"></em></li>
 	<li ng-if="context.childrenPromise"><em ma-tr="ui.components.loadingItems"></em></li>
     <li ng-repeat="item in context.children track by $ctrl.id(item)" ng-init="itemContext = $ctrl.newContext(item, context)">
-		<span ng-if="itemContext.hasChildren" ng-click="$ctrl.itemClicked(itemContext)">
+		<span ng-if="itemContext.hasChildren" ng-click="itemContext.toggleChildren()">
         	<span ma-tree-view-transclude></span>
             <md-icon>{{itemContext.showChildren ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
 		</span>

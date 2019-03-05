@@ -32,6 +32,13 @@ class Context {
             }
         });
     }
+    
+    toggleChildren() {
+        this.showChildren = !this.showChildren;
+        if (this.showChildren) {
+            this.loadChildren();
+        }
+    }
 }
 
 class TreeViewController {
@@ -74,13 +81,6 @@ class TreeViewController {
             return this.itemChildren({$item: item});
         } else {
             return item.children;
-        }
-    }
-    
-    itemClicked(context) {
-        context.showChildren = !context.showChildren;
-        if (context.showChildren) {
-            context.loadChildren();
         }
     }
 }
