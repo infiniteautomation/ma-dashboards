@@ -8,7 +8,7 @@
     <div ng-if="!data.showStack">
         <p ng-bind="exception.localizedMessage"></p>
         
-        <div>
+        <div ng-if="fullStack">
             <md-button ng-click="data.showStack = true"><span ma-tr="ui.app.showStackTrace"></span></md-button>
         </div>
     </div>
