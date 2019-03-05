@@ -10,6 +10,6 @@
         	<span ma-tree-view-transclude></span>
 		</span>
 
-        <ul ng-if="context.folderOpen" ng-include="'maTreeView.listItems.html'" ng-init="parent = item"></ul>
+        <ul ng-if="context.folderOpen" ng-include="'maTreeView.listItems.html'" ng-init="parent = item; level = level + 1"></ul>
     </li>
 </script>
