@@ -9,13 +9,14 @@ function treeViewTransclude() {
         restrict: 'A',
         scope: false,
         link: function($scope, $element, $attrs, maTreeViewCtrl) {
+            const context = $scope.itemContext;
             maTreeViewCtrl.$transclude(($el, $trScope) => {
                 $scope.$on('$destroy', () => $trScope.$destroy());
-                
-                $trScope.$item = $scope.item;
-                $trScope.$parentItem = $scope.context.parent;
-                $trScope.$level = $scope.context.level;
-                $trScope.$hasChildren = $scope.itemContext.hasChildren;
+
+                $trScope.$context = context;
+                $trScope.$item = context.item;
+                $trScope.$depth = context.depth;
+                $trScope.$hasChildren = context.hasChildren;
 
                 $element.append($el);
             });

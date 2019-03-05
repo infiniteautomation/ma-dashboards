@@ -6,23 +6,53 @@
 import treeViewTemplate from './treeView.html';
 import './treeView.css';
 
+class Context {
+    constructor($ctrl, item, parent) {
+        this.item = item;
+        this.parent = parent;
+        this.depth = parent ? parent.depth + 1 : 0;
+        this.$q = $ctrl.$q;
+        
+        if (item) {
+            this.hasChildren = $ctrl.hasChildren(item);
+            this.retrieveChildren = () => $ctrl.children(this.item);
+        }
+    }
+
+    loadChildren() {
+        const children = this.retrieveChildren();
+
+        const p = this.childrenPromise = this.$q.when(children).then(children => {
+            this.children = children;
+        });
+        
+        p.finally(() => {
+            if (this.childrenPromise === p) {
+                delete this.childrenPromise;
+            }
+        });
+    }
+}
+
 class TreeViewController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$transclude', '$q', '$timeout']; }
+    static get $inject() { return ['$scope', '$transclude', '$q']; }
     
-    constructor($scope, $transclude, $q, $timeout) {
+    constructor($scope, $transclude, $q) {
         this.$scope = $scope;
         this.$transclude = $transclude;
         this.$q = $q;
-        this.$timeout = $timeout;
 
-        this.$scope.context = {
-            level: 0
-        };
+        this.$scope.context = new Context(this);
+        this.$scope.context.retrieveChildren = () => this.items;
     }
     
     $onChanges(changes) {
-        this.loadChildren(this.items, this.$scope.context);
+        this.$scope.context.loadChildren();
+    }
+    
+    newContext(item, parent) {
+        return new Context(this, item, parent);
     }
 
     id(item) {
@@ -39,29 +69,19 @@ class TreeViewController {
         return Array.isArray(item.children) && item.children.length;
     }
 
-    children(item, context) {
-        let children;
+    children(item) {
         if (typeof this.itemChildren === 'function') {
-            children = this.itemChildren({$item: item});
+            return this.itemChildren({$item: item});
         } else {
-            children = item.children;
+            return item.children;
         }
-        this.loadChildren(children, context);
     }
     
-    loadChildren(children, context) {
-        let c = children;
-        children = this.$timeout(() => c, 1000);
-        
-        const p = context.itemsPromise = this.$q.when(children).then(children => {
-            context.items = children;
-        });
-        
-        p.finally(() => {
-            if (context.itemsPromise === p) {
-                delete context.itemsPromise;
-            }
-        });
+    itemClicked(context) {
+        context.showChildren = !context.showChildren;
+        if (context.showChildren) {
+            context.loadChildren();
+        }
     }
 }
 
