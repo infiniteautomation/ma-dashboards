@@ -14,6 +14,7 @@ function treeViewTransclude() {
                 $trScope.$item = $scope.item;
                 $trScope.$parentItem = $scope.parent;
                 $trScope.$level = $scope.level;
+                $trScope.$children = $scope.children;
                 $element.append($el);
             });
         },
