@@ -1,0 +1,16 @@
+ma-tree-view ul li {
+	list-style: none;
+	margin-left: 0;
+}
+
+ma-tree-view ul li > span:focus {
+	outline: none;
+}
+
+ma-tree-view ul ul li {
+	margin-left: 30px;
+}
+
+ma-tree-view md-checkbox {
+	margin: 4px 0;
+}

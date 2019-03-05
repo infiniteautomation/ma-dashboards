@@ -152,6 +152,8 @@ import eventDetectorEditor from './components/eventDetectorEditor/eventDetectorE
 import eventDetectorSelect from './components/eventDetectorSelect/eventDetectorSelect';
 import eventDetectorLayout from './components/eventDetectorLayout/eventDetectorLayout';
 import durationEditor from './components/durationEditor/durationEditor';
+import treeView from './components/treeView/treeView';
+import treeViewTransclude from './components/treeView/treeViewTransclude';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -253,6 +255,7 @@ ngMango.directive('maFormatValue', formatValue);
 ngMango.directive('maFormatArray', formatArray);
 ngMango.directive('maParseValue', parseValue);
 ngMango.directive('maParseArray', parseArray);
+ngMango.directive('maTreeViewTransclude', treeViewTransclude);
 ngMango.component('maQueryBuilder', queryBuilder);
 ngMango.component('maQueryGroup', queryGroup);
 ngMango.component('maQueryPredicate', queryPredicate);
@@ -317,6 +320,7 @@ ngMango.component('maEventDetectorEditor', eventDetectorEditor);
 ngMango.component('maEventDetectorSelect', eventDetectorSelect);
 ngMango.component('maEventDetectorLayout', eventDetectorLayout);
 ngMango.component('maDurationEditor', durationEditor);
+ngMango.component('maTreeView', treeView);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

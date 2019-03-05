@@ -1,0 +1,15 @@
+<ul ng-include="'maTreeView.listItems.html'"></ul>
+
+<script type="text/ng-template" id="maTreeView.listItems.html">
+    <li ng-repeat="item in children track by $ctrl.id(item)" ng-init="children = $ctrl.children(item); context = {folderOpen: false}">
+		<span ng-if="children.length" ng-click="context.folderOpen = !context.folderOpen">
+        	<span ma-tree-view-transclude></span>
+            <md-icon>{{context.folderOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+		</span>
+		<span ng-if="!children.length">
+        	<span ma-tree-view-transclude></span>
+		</span>
+
+        <ul ng-if="context.folderOpen" ng-include="'maTreeView.listItems.html'" ng-init="parent = item"></ul>
+    </li>
+</script>
