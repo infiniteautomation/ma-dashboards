@@ -147,6 +147,10 @@ class BulkDataPointEditorController {
         this.sortedPoints = [];
         this.slicedPoints = [];
         this.selectedPoints = new Map();
+        
+        if (typeof this.selectedPointsAttr === 'function') {
+            this.selectedPointsAttr({$selected: this.selectedPoints});
+        }
 
         this.pageNumber = 1;
         this.sortString = 'deviceName';
@@ -735,6 +739,7 @@ export default {
         watchList: '<?',
         watchListParams: '<?',
         refresh: '<?',
-        queryingDisabled: '<?'
+        queryingDisabled: '<?',
+        selectedPointsAttr: '&?selectedPoints'
     }
 };
