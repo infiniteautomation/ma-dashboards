@@ -13,6 +13,8 @@ class TreeViewController {
     constructor($scope, $transclude) {
         this.$scope = $scope;
         this.$transclude = $transclude;
+        
+        this.$scope.level = 0;
     }
     
     $onChanges(changes) {
@@ -20,10 +22,16 @@ class TreeViewController {
     }
 
     id(item) {
+        if (typeof this.itemId === 'function') {
+            return this.itemId({$item: item});
+        }
         return item.id;
     }
 
     children(item) {
+        if (typeof this.itemChildren === 'function') {
+            return this.itemChildren({$item: item});
+        }
         return item.children;
     }
 }
@@ -32,7 +40,9 @@ export default {
     template: treeViewTemplate,
     controller: TreeViewController,
     bindings: {
-        items: '<'
+        items: '<',
+        itemId: '&?',
+        itemChildren: '&?'
     },
     transclude: true
 };

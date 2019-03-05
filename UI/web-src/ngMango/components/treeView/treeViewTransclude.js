@@ -13,6 +13,7 @@ function treeViewTransclude() {
                 $scope.$on('$destroy', () => $trScope.$destroy());
                 $trScope.$item = $scope.item;
                 $trScope.$parentItem = $scope.parent;
+                $trScope.$level = $scope.level;
                 $element.append($el);
             });
         },
