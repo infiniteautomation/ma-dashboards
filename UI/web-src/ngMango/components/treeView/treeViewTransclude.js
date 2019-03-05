@@ -11,10 +11,12 @@ function treeViewTransclude() {
         link: function($scope, $element, $attrs, maTreeViewCtrl) {
             maTreeViewCtrl.$transclude(($el, $trScope) => {
                 $scope.$on('$destroy', () => $trScope.$destroy());
+                
                 $trScope.$item = $scope.item;
-                $trScope.$parentItem = $scope.parent;
-                $trScope.$level = $scope.level;
-                $trScope.$children = $scope.children;
+                $trScope.$parentItem = $scope.context.parent;
+                $trScope.$level = $scope.context.level;
+                $trScope.$hasChildren = $scope.itemContext.hasChildren;
+
                 $element.append($el);
             });
         },

@@ -1,15 +1,17 @@
 <ul ng-include="'maTreeView.listItems.html'"></ul>
 
 <script type="text/ng-template" id="maTreeView.listItems.html">
-    <li ng-repeat="item in children track by $ctrl.id(item)" ng-init="children = $ctrl.children(item); context = {folderOpen: false}">
-		<span ng-if="children.length" ng-click="context.folderOpen = !context.folderOpen">
+	<li ng-if="!context.itemsPromise && !context.items.length"><em>No items</em></li>
+	<li ng-if="context.itemsPromise"><em>Loading items</em></li>
+    <li ng-repeat="item in context.items track by $ctrl.id(item)" ng-init="itemContext = {hasChildren: $ctrl.hasChildren(item)}">
+		<span ng-if="itemContext.hasChildren" ng-click="itemContext.folderOpen = !itemContext.folderOpen">
         	<span ma-tree-view-transclude></span>
-            <md-icon>{{context.folderOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+            <md-icon>{{itemContext.folderOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
 		</span>
-		<span ng-if="!children.length">
+		<span ng-if="!itemContext.hasChildren">
         	<span ma-tree-view-transclude></span>
 		</span>
 
-        <ul ng-if="context.folderOpen" ng-include="'maTreeView.listItems.html'" ng-init="parent = item; level = level + 1"></ul>
+        <ul ng-if="itemContext.folderOpen" ng-include="'maTreeView.listItems.html'" ng-init="context = {parent: item, level: context.level + 1}; $ctrl.children(item, context)"></ul>
     </li>
 </script>

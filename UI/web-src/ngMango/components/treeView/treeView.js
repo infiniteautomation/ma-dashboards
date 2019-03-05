@@ -8,17 +8,21 @@ import './treeView.css';
 
 class TreeViewController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$transclude']; }
+    static get $inject() { return ['$scope', '$transclude', '$q', '$timeout']; }
     
-    constructor($scope, $transclude) {
+    constructor($scope, $transclude, $q, $timeout) {
         this.$scope = $scope;
         this.$transclude = $transclude;
-        
-        this.$scope.level = 0;
+        this.$q = $q;
+        this.$timeout = $timeout;
+
+        this.$scope.context = {
+            level: 0
+        };
     }
     
     $onChanges(changes) {
-        this.$scope.children = this.items;
+        this.loadChildren(this.items, this.$scope.context);
     }
 
     id(item) {
@@ -27,12 +31,37 @@ class TreeViewController {
         }
         return item.id;
     }
-
-    children(item) {
-        if (typeof this.itemChildren === 'function') {
-            return this.itemChildren({$item: item});
+    
+    hasChildren(item) {
+        if (typeof this.itemHasChildren === 'function') {
+            return this.itemHasChildren({$item: item});
         }
-        return item.children;
+        return Array.isArray(item.children) && item.children.length;
+    }
+
+    children(item, context) {
+        let children;
+        if (typeof this.itemChildren === 'function') {
+            children = this.itemChildren({$item: item});
+        } else {
+            children = item.children;
+        }
+        this.loadChildren(children, context);
+    }
+    
+    loadChildren(children, context) {
+        let c = children;
+        children = this.$timeout(() => c, 1000);
+        
+        const p = context.itemsPromise = this.$q.when(children).then(children => {
+            context.items = children;
+        });
+        
+        p.finally(() => {
+            if (context.itemsPromise === p) {
+                delete context.itemsPromise;
+            }
+        });
     }
 }
 
@@ -42,7 +71,8 @@ export default {
     bindings: {
         items: '<',
         itemId: '&?',
-        itemChildren: '&?'
+        itemChildren: '&?',
+        itemHasChildren: '&?'
     },
     transclude: true
 };
