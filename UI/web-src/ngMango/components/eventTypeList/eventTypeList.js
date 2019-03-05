@@ -6,6 +6,9 @@
 import eventTypeListTemplate from './eventTypeList.html';
 import './eventTypeList.css';
 
+// TODO show number of more specific items underneath that are checked
+// TODO expand tree when rendering
+
 /**
  * @ngdoc directive
  * @name ngMango.directive:maEventTypeList
@@ -27,14 +30,9 @@ class EventTypeListController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-
-        this.loadingCategories = this.EventTypeInfo.typeNames().then(categories => {
-            this.categories = this.orderBy(categories, 'description');
-            this.categoriesMap = categories.reduce((map, c) => (map[c.typeName] = c, map), {});
-            delete this.loadingCategories;
-            this.render();
-        }).finally(() => {
-            delete this.loadingCategories;
+        
+        this.typesPromise = this.EventTypeInfo.list().then(eventTypes => {
+            return eventTypes.filter(et => et.subType == null);
         });
     }
     
@@ -46,76 +44,44 @@ class EventTypeListController {
     }
     
     render() {
-        if (this.loadingCategories) {
-            return;
-        }
-        
         this.selected = new Map();
-        this.categories.forEach(c => c.selected = new Map());
 
         const selectedTypes = this.ngModelCtrl.$viewValue;
         if (!Array.isArray(selectedTypes)) return;
         
         selectedTypes.forEach(eventType => {
-            const id = eventType.typeId;
-            this.selected.set(id, eventType);
-            const category = this.categoriesMap[eventType.eventType];
-            if (category) {
-                category.selected.set(id, eventType);
-            }
+            this.selected.set(eventType.typeId, eventType);
         });
     }
 
-    expandCategory(category) {
-        const wasExpanded = category.expanded;
-        
-        this.categories.forEach(category => {
-            category.expanded = false;
-            delete category.types;
-            delete category.groups;
-        });
-        
-        if (!wasExpanded) {
-            category.expanded = true;
-        }
-        
-        if (category.expanded) {
-            this.loadCategory(category);
+    loadSpecificEventTypes(info) {
+        return this.EventTypeInfo.list(info.type);
+    }
+    
+    hasChildren(info) {
+        const eventType = info.type;
+        if (eventType.referenceId1 && eventType.referenceId2) {
+            return false;
+        } else if (eventType.referenceId1) {
+            return info.supportsReferenceId2;
         } else {
-            delete category.types;
-            delete category.groups;
+            return info.supportsReferenceId1;
         }
     }
     
-    loadCategory(category) {
-        category.loading = this.EventTypeInfo.list(category.typeName).then(eventTypes => {
-            category.types = this.orderBy(eventTypes, category.orderBy);
-
-            if (typeof category.groupBy === 'function') {
-                category.groups = category.group(category.types);
-                //category.groups.forEach(g => {
-                //    g.expanded = g.types.some(t => category.selected.has(t.typeId));
-                //});
-                delete category.types;
-            }
-            
-        }).finally(() => delete category.loading);
-    }
-    
-    selectedGetterSetter(category, eventType) {
+    selectedGetterSetter(eventType) {
         return value => {
             const id = eventType.typeId;
             
             if (value === undefined) {
-                return category.selected.has(id);
+                return this.selected.has(id);
             }
             
             if (value) {
                 this.selected.set(id, eventType);
-                category.selected.set(id, eventType);
+                // TODO uncheck any more specific event types
             } else {
                 this.selected.delete(id);
-                category.selected.delete(id);
             }
             
             this.setViewValue();

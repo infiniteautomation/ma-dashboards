@@ -1,51 +1,7 @@
-<md-list class="ma-no-padding">
-    <md-divider ng-repeat-start="category in $ctrl.categories track by category.typeName" ng-if="!$first"></md-divider>
-    
-    <md-list-item class="ma-event-type-heading" ng-click="$ctrl.expandCategory(category)">
-        <p><span ng-bind="category.description"></span><span ng-if="category.selected"> (<em ma-tr="ui.app.xSelected" ma-tr-args="[category.selected.size]"></em>)</span></p>
-        <md-icon>{{category.expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
-    </md-list-item>
-
-    <md-list-item ng-repeat-start="group in category.groups track by $index"
-            class="ma-event-type-group">
-        <p>
-            <md-icon class="ma-event-type-group-icon">{{group.icon}}</md-icon>
-            <span ng-bind="group.description"></span>
-            <span ng-if="::category.stateName">
-                &nbsp;&mdash;&nbsp;
-                <a ui-state="category.stateName" ui-state-params="category.stateParams(group.source)" ma-tr="pointDetails.goto"></a>            
-            </span>
-        </p>
-    </md-list-item>
-
-    <md-list-item ng-repeat-end ng-repeat="eventType in group.types track by eventType.typeId"
-            class="ma-event-type-group-item"
-            ng-init="checked = $ctrl.selectedGetterSetter(category, eventType.type)">
-        <span>
-            <md-icon class="fa fa-lg ma-alarm-flag" ng-class="$ctrl.alarmLevels[eventType.alarmLevel].classes">
-                <md-tooltip ma-tr="{{$ctrl.alarmLevels[eventType.alarmLevel].translation}}"></md-tooltip>
-            </md-icon>
-            <span ng-bind="eventType.description"></span>
-        </span>
-        <md-checkbox class="md-secondary" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude></md-checkbox>
-    </md-list-item>
-
-    <md-list-item ng-repeat="eventType in category.types track by eventType.typeId"
-            ng-init="checked = $ctrl.selectedGetterSetter(category, eventType.type)">
-        <span>
-            <md-icon class="fa fa-lg ma-alarm-flag" ng-class="$ctrl.alarmLevels[eventType.alarmLevel].classes">
-                <md-tooltip ma-tr="{{$ctrl.alarmLevels[eventType.alarmLevel].translation}}"></md-tooltip>
-            </md-icon>
-            <span ng-bind="eventType.description"></span>
-        </span>
-        <md-checkbox class="md-secondary" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude></md-checkbox>
-    </md-list-item>
-    
-    <md-list-item ng-if="category.expanded && category.loading">
-        <p layout layout-align="center"><md-progress-linear md-mode="indeterminate" class="md-primary"></md-progress-linear></p>
-    </md-list-item>
-
-    <md-list-item ng-repeat-end ng-if="category.expanded && !category.loading && !category.types.length && !category.groups.length">
-        <p><em ma-tr="ui.components.noEventTypes"></em></p>
-    </md-list-item>
-</md-list>
+<ma-tree-view items="$ctrl.typesPromise" item-id="$item.typeId" item-children="$ctrl.loadSpecificEventTypes($item)" item-has-children="$ctrl.hasChildren($item)"><!-- no space
+ --><md-checkbox ng-if="$context.parent" ng-click="$event.stopPropagation()" ng-disabled="$ctrl.selected.has($context.parent.item.typeId)"
+        ng-init="checked = $ctrl.selectedGetterSetter($item.type)" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude>
+    </md-checkbox><!-- no space
+ --><md-icon>{{$hasChildren ? 'folder' : 'flag'}}</md-icon>
+    <span ng-bind="$item.description"></span>
+</ma-tree-view>

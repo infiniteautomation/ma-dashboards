@@ -231,7 +231,7 @@ function eventTypeProvider() {
             }
             
             static list(eventType, opts = {}) {
-                return this.query(name, null, opts);
+                return this.query(eventType, null, opts);
             }
             
             static buildQuery(eventType) {
@@ -252,10 +252,17 @@ function eventTypeProvider() {
                     }
                 }
                 
-                if (!eventType) eventType = {};
-                const segments = [eventType.eventType, eventType.subType, eventType.referenceId1, eventType.referenceId2]
-                    .map(s => s && this.encodeUriSegment(s) || undefined); // reference id of 0 is set to undefined
-                segments.length = segments.indexOf(undefined); // remove any elements following an undefined
+                let segments = [];
+                if (eventType && eventType.eventType && (eventType.subType || eventType.subType === null)) {
+                    segments.push(eventType.eventType, eventType.subType);
+                    if (eventType.referenceId1) {
+                        segments.push(eventType.referenceId1);
+                        if (eventType.referenceId2) {
+                            segments.push(eventType.referenceId2);
+                        }
+                    }
+                }
+                segments = segments.map(s => this.encodeUriSegment(s));
                 segments.unshift(this.baseUrl);
 
                 return this.http({
