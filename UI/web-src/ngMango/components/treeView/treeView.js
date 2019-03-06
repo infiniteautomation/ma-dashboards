@@ -18,7 +18,7 @@ class Context {
             this.hasChildren = $ctrl.hasChildren(item);
             this.retrieveChildren = () => $ctrl.children(this.item);
             
-            if ($ctrl.expanded(item, this.depth)) {
+            if (this.hasChildren && $ctrl.expanded(item, this.depth)) {
                 this.toggleChildren();
             }
         }
