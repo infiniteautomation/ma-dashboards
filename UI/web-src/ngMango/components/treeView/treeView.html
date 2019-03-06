@@ -1,12 +1,13 @@
 <ul ng-include="'maTreeView.listItems.html'"></ul>
 
 <script type="text/ng-template" id="maTreeView.listItems.html">
-	<li ng-if="!context.childrenPromise && !context.children.length"><em ma-tr="ui.components.noItemsToList"></em></li>
-	<li ng-if="context.childrenPromise"><em ma-tr="ui.components.loadingItems"></em></li>
-    <li ng-repeat="item in context.children track by $ctrl.id(item)" ng-init="itemContext = $ctrl.newContext(item, context)">
+	<li ng-if="!context.childrenPromise && !context.children.length" class="ma-tree-view-no-items"><em ma-tr="ui.components.noItemsToList"></em></li>
+	<li ng-if="context.loading" class="ma-tree-view-loading"><em ma-tr="ui.components.loadingItems"></em></li>
+    <li ng-repeat="item in context.children track by $ctrl.id(item)" class="ma-tree-view-item" ng-init="itemContext = $ctrl.newContext(item, context)"
+			ng-class="{'ma-tree-view-open': itemContext.showChildren, 'ma-tree-view-items-loaded': itemContext.children}">
 		<span ng-if="itemContext.hasChildren" ng-click="itemContext.toggleChildren()">
         	<span ma-tree-view-transclude></span>
-            <md-icon>{{itemContext.showChildren ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+            <md-icon class="ma-tree-view-open-icon">keyboard_arrow_down</md-icon>
 		</span>
 		<span ng-if="!itemContext.hasChildren">
         	<span ma-tree-view-transclude></span>

@@ -14,3 +14,11 @@ ma-tree-view ul ul li {
 ma-tree-view md-checkbox {
 	margin: 4px 0;
 }
+
+ma-tree-view .ma-tree-view-open-icon {
+	transition: transform 0.3s ease-in-out;
+}
+
+ma-tree-view li.ma-tree-view-open > span > .ma-tree-view-open-icon {
+  transform: rotate(-180deg);
+}

@@ -12,6 +12,7 @@ class Context {
         this.parent = parent;
         this.depth = parent ? parent.depth + 1 : 0;
         this.$q = $ctrl.$q;
+        this.$timeout = $ctrl.$timeout;
         
         if (item) {
             this.hasChildren = $ctrl.hasChildren(item);
@@ -22,13 +23,17 @@ class Context {
     loadChildren() {
         const children = this.retrieveChildren();
 
-        const p = this.childrenPromise = this.$q.when(children).then(children => {
-            this.children = children;
+        const loadingDelay = this.$timeout(() => this.loading = true, 100);
+        
+        const p = this.childrenPromise = this.$q.when(children).then(resolvedChildren => {
+            this.children = resolvedChildren;
         });
         
         p.finally(() => {
+            this.$timeout.cancel(loadingDelay);
             if (this.childrenPromise === p) {
                 delete this.childrenPromise;
+                delete this.loading;
             }
         });
     }
@@ -37,18 +42,21 @@ class Context {
         this.showChildren = !this.showChildren;
         if (this.showChildren) {
             this.loadChildren();
+        } else {
+            delete this.children;
         }
     }
 }
 
 class TreeViewController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$transclude', '$q']; }
+    static get $inject() { return ['$scope', '$transclude', '$q', '$timeout']; }
     
-    constructor($scope, $transclude, $q) {
+    constructor($scope, $transclude, $q, $timeout) {
         this.$scope = $scope;
         this.$transclude = $transclude;
         this.$q = $q;
+        this.$timeout = $timeout;
 
         this.$scope.context = new Context(this);
         this.$scope.context.retrieveChildren = () => this.items;

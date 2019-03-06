@@ -175,15 +175,24 @@ function eventsFactory($resource, Util, EventTypeInfo) {
 
     Object.assign(Events, {
         levels: Object.freeze([
-            {key: 'NONE', classes: 'fa-flag ma-alarm-level-none', translation: 'common.alarmLevel.none'},
-            {key: 'INFORMATION', classes: 'fa-flag ma-alarm-level-information', translation: 'common.alarmLevel.info'},
-            {key: 'IMPORTANT', classes: 'fa-flag ma-alarm-level-important', translation: 'common.alarmLevel.important'},
-            {key: 'WARNING', classes: 'fa-flag ma-alarm-level-warning', translation: 'common.alarmLevel.warning'},
-            {key: 'URGENT', classes: 'fa-flag ma-alarm-level-urgent', translation: 'common.alarmLevel.urgent'},
-            {key: 'CRITICAL', classes: 'fa-flag ma-alarm-level-critical', translation: 'common.alarmLevel.critical'},
-            {key: 'LIFE_SAFETY', classes: 'fa-flag ma-alarm-level-life', translation: 'common.alarmLevel.lifeSafety'},
-            {key: 'DO_NOT_LOG', classes: 'fa-times-circle ma-alarm-level-do', translation: 'common.alarmLevel.doNotLog'},
-            {key: 'IGNORE', classes: 'fa-times ma-alarm-level-ignore', translation: 'common.alarmLevel.ignore'}
+            {key: 'NONE', classes: 'fa-flag ma-alarm-level-none', translation: 'common.alarmLevel.none',
+                materialIcon: 'flag', materialClasses: 'ma-alarm-level-none'},
+            {key: 'INFORMATION', classes: 'fa-flag ma-alarm-level-information', translation: 'common.alarmLevel.info',
+                materialIcon: 'flag', materialClasses: 'ma-alarm-level-information'},
+            {key: 'IMPORTANT', classes: 'fa-flag ma-alarm-level-important', translation: 'common.alarmLevel.important',
+                materialIcon: 'flag', materialClasses: 'ma-alarm-level-important'},
+            {key: 'WARNING', classes: 'fa-flag ma-alarm-level-warning', translation: 'common.alarmLevel.warning',
+                materialIcon: 'flag', materialClasses: 'ma-alarm-level-warning'},
+            {key: 'URGENT', classes: 'fa-flag ma-alarm-level-urgent', translation: 'common.alarmLevel.urgent',
+                materialIcon: 'flag', materialClasses: 'ma-alarm-level-urgent'},
+            {key: 'CRITICAL', classes: 'fa-flag ma-alarm-level-critical', translation: 'common.alarmLevel.critical',
+                materialIcon: 'flag', materialClasses: 'ma-alarm-level-critical'},
+            {key: 'LIFE_SAFETY', classes: 'fa-flag ma-alarm-level-life-safety', translation: 'common.alarmLevel.lifeSafety',
+                materialIcon: 'flag', materialClasses: 'ma-alarm-level-life-safety'},
+            {key: 'DO_NOT_LOG', classes: 'fa-times-circle ma-alarm-level-do-not-log', translation: 'common.alarmLevel.doNotLog',
+                materialIcon: 'cancel', materialClasses: 'ma-alarm-level-do-not-log'},
+            {key: 'IGNORE', classes: 'fa-times ma-alarm-level-ignore', translation: 'common.alarmLevel.ignore',
+                materialIcon: 'block', materialClasses: 'ma-alarm-level-ignore'}
         ])
     });
 

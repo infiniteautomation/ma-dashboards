@@ -2,6 +2,7 @@
  --><md-checkbox ng-if="$context.parent" ng-click="$event.stopPropagation()" ng-disabled="$ctrl.selected.has($context.parent.item.typeId)"
         ng-init="checked = $ctrl.selectedGetterSetter($item.type)" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude>
     </md-checkbox><!-- no space
- --><md-icon>{{$hasChildren ? 'folder' : 'flag'}}</md-icon>
+ --><md-icon ng-class="$ctrl.alarmLevels[$item.alarmLevel].materialClasses">{{$ctrl.alarmLevels[$item.alarmLevel].materialIcon || 'folder'}}<!-- no space
+         --><md-tooltip ng-if="$item.alarmLevel" ma-tr="{{$ctrl.alarmLevels[$item.alarmLevel].translation}}"></md-tooltip></md-icon>
     <span ng-bind="$item.description"></span>
 </ma-tree-view>

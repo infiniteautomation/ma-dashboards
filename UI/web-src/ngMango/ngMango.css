@@ -1209,3 +1209,12 @@ md-input-container > .ma-input-container-note {
 	padding-top: 8px;
 	clear: left;
 }
+
+md-icon {
+	cursor: default;
+}
+
+.md-button md-icon,
+[ng-click] md-icon {
+	cursor: pointer;
+}
