@@ -33,18 +33,26 @@ class MultiMap extends Map {
     }
     
     delete(key, value) {
-        if (value !== undefined) {
-            const values = super.get(key);
-            if (values) {
-                const result = values.delete(value);
-                if (!values.size) {
-                    super.delete(key);
-                }
-                return result;
-            }
-            return false;
+        const values = super.get(key);
+        if (!values) {
+            return new Set();
         }
-        return super.delete(key);
+        
+        if (value !== undefined) {
+            const deleted = values.delete(value);
+            if (!values.size) {
+                super.delete(key);
+            }
+            
+            if (deleted) {
+                return new Set([value]);
+            } else {
+                return new Set();
+            }
+        }
+        
+        super.delete(key);
+        return values;
     }
     
     entries() {
