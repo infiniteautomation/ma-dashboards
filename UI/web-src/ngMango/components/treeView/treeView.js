@@ -23,7 +23,7 @@ class Context {
     loadChildren() {
         const children = this.retrieveChildren();
 
-        const loadingDelay = this.$timeout(() => this.loading = true, 100);
+        const loadingDelay = this.$timeout(() => this.loading = true, 200);
         
         const p = this.childrenPromise = this.$q.when(children).then(resolvedChildren => {
             this.children = resolvedChildren;
