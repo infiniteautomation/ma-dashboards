@@ -17,6 +17,10 @@ class Context {
         if (item) {
             this.hasChildren = $ctrl.hasChildren(item);
             this.retrieveChildren = () => $ctrl.children(this.item);
+            
+            if ($ctrl.expanded(item, this.depth)) {
+                this.toggleChildren();
+            }
         }
     }
 
@@ -91,6 +95,14 @@ class TreeViewController {
             return item.children;
         }
     }
+    
+    expanded(item, depth) {
+        if (typeof this.itemExpanded === 'function') {
+            return this.itemExpanded({$item: item, $depth: depth});
+        } else {
+            return false;
+        }
+    }
 }
 
 export default {
@@ -100,7 +112,8 @@ export default {
         items: '<',
         itemId: '&?',
         itemChildren: '&?',
-        itemHasChildren: '&?'
+        itemHasChildren: '&?',
+        itemExpanded: '&?'
     },
     transclude: true
 };
