@@ -60,8 +60,9 @@ class EventTypeListController {
                 return this.selected.has(eventType);
             }
             
-            if (value) {                
-                // TODO uncheck any more specific event types
+            if (value) {
+                // remove the more specific forms of this event type from the map
+                this.selected.deleteMoreSpecific(eventType);
                 this.selected.set(eventType, eventType);
             } else {
                 this.selected.delete(eventType, eventType);

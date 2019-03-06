@@ -224,6 +224,19 @@ function eventTypeProvider() {
             count(eventType) {
                 return this.get(eventType).size;
             }
+            
+            deleteMoreSpecific(eventType) {
+                // return immediately if eventType is the most specific form
+                if (eventType.referenceId1 && eventType.referenceId2) {
+                    return;
+                }
+                
+                for (let et of this.values()) {
+                    if (et.matchingIds.includes(eventType.typeId)) {
+                        this.delete(et);
+                    }
+                }
+            }
         }
         
         class EventTypeInfo extends RestResource {
