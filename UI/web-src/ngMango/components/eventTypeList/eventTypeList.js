@@ -30,10 +30,7 @@ class EventTypeListController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        
-        this.typesPromise = this.EventTypeInfo.list().then(eventTypes => {
-            return eventTypes.filter(et => et.subType == null);
-        });
+        this.typesPromise = this.EventTypeInfo.list();
     }
     
     $onChanges(changes) {
@@ -65,11 +62,15 @@ class EventTypeListController {
                 this.selected.deleteMoreSpecific(eventType);
                 this.selected.set(eventType, eventType);
             } else {
-                this.selected.delete(eventType, eventType);
+                this.selected.delete(eventType, true);
             }
             
             this.setViewValue();
         };
+    }
+    
+    getSelectedCount(eventType) {
+        return 0;
     }
 }
 

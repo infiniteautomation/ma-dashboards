@@ -4,7 +4,10 @@
     </md-checkbox><!-- no space
  --><md-icon ng-class="$ctrl.alarmLevels[$item.alarmLevel].materialClasses">{{$ctrl.alarmLevels[$item.alarmLevel].materialIcon || 'folder'}}<!-- no space
          --><md-tooltip ng-if="$item.alarmLevel" ma-tr="{{$ctrl.alarmLevels[$item.alarmLevel].translation}}"></md-tooltip></md-icon>
-    <span ng-bind="$item.description"></span>
+    <span>
+        <span ng-bind="$item.description"></span>
+        (<em ma-tr="ui.app.xSelected" ma-tr-args="[$ctrl.getSelectedCount($item.type)]"></em>)
+    </span>
     
     <!--<pre ng-bind="$item | json"></pre>-->
 </ma-tree-view>
