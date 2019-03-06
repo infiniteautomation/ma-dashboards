@@ -178,6 +178,14 @@ function eventTypeProvider() {
                         referenceId2: 0
                     }));
                 }
+                if (eventType.subType) {
+                    ids.push(this.typeId({
+                        eventType: eventType.eventType,
+                        subType: null,
+                        referenceId1: 0,
+                        referenceId2: 0
+                    }));
+                }
                 return ids;
             }
         }
@@ -187,8 +195,12 @@ function eventTypeProvider() {
                 return super.set(eventType.typeId, value);
             }
             
-            get(eventType) {
+            get(eventType, exact) {
                 const values = new Set();
+                
+                if (exact) {
+                    return super.get(eventType.typeId || EventType.typeId(eventType));
+                }
                 
                 const matchingIds = eventType.matchingIds || EventType.matchingIds(eventType);
                 for (let id of matchingIds) {
@@ -200,7 +212,11 @@ function eventTypeProvider() {
                 return values;
             }
             
-            has(eventType, value) {
+            has(eventType, exact, value) {
+                if (exact) {
+                    return super.has(eventType.typeId || EventType.typeId(eventType));
+                }
+                
                 const matchingIds = eventType.matchingIds || EventType.matchingIds(eventType);
                 for (let id of matchingIds) {
                     if (super.has(id, value)) {
@@ -210,19 +226,23 @@ function eventTypeProvider() {
                 return false;
             }
             
-            delete(eventType, value) {
-                let deleted = false;
+            delete(eventType, exact, value) {
+                if (exact) {
+                    return super.delete(eventType.typeId || EventType.typeId(eventType));
+                }
+                
+                const deleted = new Set();
                 const matchingIds = eventType.matchingIds || EventType.matchingIds(eventType);
                 for (let id of matchingIds) {
-                    if (super.delete(id, value)) {
-                        deleted = true;
+                    for (let d of super.delete(id, value)) {
+                        deleted.add(d);
                     }
                 }
                 return deleted;
             }
             
-            count(eventType) {
-                return this.get(eventType).size;
+            count(eventType, exact) {
+                return this.get(eventType, exact).size;
             }
             
             deleteMoreSpecific(eventType) {
