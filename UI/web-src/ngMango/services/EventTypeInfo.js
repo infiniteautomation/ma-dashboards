@@ -134,80 +134,95 @@ function eventTypeProvider() {
 
         const eventTypeBaseUrl = '/rest/v2/event-types';
 
-        
-        class EventTypeMap extends MultiMap {
-            eventTypeKey(eventType) {
-                const type = eventType.eventType;
-                const subType = eventType.subType || eventType.eventSubtype || null;
-                return `${type}_${subType}`;
-            }
-            
-            set(eventType, value) {
-                const key = this.eventTypeKey(eventType);
-                super.set(key, {
-                    eventType,
-                    value
-                });
-            }
-            
-            get(eventType) {
-                const subTypeMatches = super.get(this.eventTypeKey(eventType));
-                
-                const values = new Set();
-                for (let m of subTypeMatches) {
-                    if (m.eventType.matches(eventType)) {
-                        values.add(m.value);
-                    }
-                }
-                return values;
-            }
-            
-            count(eventType) {
-                const subTypeMatches = super.get(this.eventTypeKey(eventType));
-                
-                let count = 0;
-                for (let m of subTypeMatches) {
-                    if (m.eventType.matches(eventType)) {
-                        count++;
-                    }
-                }
-                return count;
-            }
-        }
-        
         class EventType {
             constructor(data) {
                 Object.assign(this, data);
                 if (!this.subType) {
                     this.subType = this.eventSubtype || null;
                 }
+                this.typeId = this.getTypeId();
+                this.matchingIds = this.getMatchingIds();
             }
             
-            get typeId() {
+            getTypeId() {
                 return this.constructor.typeId(this);
             }
             
-            matches(other) {
-                if (this.eventType !== other.eventType || this.subType !== (other.subType || other.eventSubtype || null)) {
-                    return false;
-                }
-                
-                if (!this.referenceId1) {
-                    return true;
-                } else if (this.referenceId1 === other.referenceId1) {
-                    if (!this.referenceId2 || this.referenceId2 === other.referenceId2) {
-                        return true;
-                    }
-                }
-                return false;
+            getMatchingIds() {
+                return this.constructor.matchingIds(this);
             }
-            
+
             static typeId(eventType) {
                 const type = eventType.eventType;
                 const subType = eventType.subType || eventType.eventSubtype || null;
                 const ref1 = eventType.referenceId1 || 0;
                 const ref2 = eventType.referenceId2 || 0;
                 return `${type}_${subType}_${ref1}_${ref2}`;
+            }
+            
+            static matchingIds(eventType) {
+                const ids = [eventType.typeId || this.typeId(eventType)];
+                if (eventType.referenceId2) {
+                    ids.push(this.typeId({
+                        eventType: eventType.eventType,
+                        subType: eventType.subType,
+                        referenceId1: eventType.referenceId1,
+                        referenceId2: 0
+                    }));
+                }
+                if (eventType.referenceId1) {
+                    ids.push(this.typeId({
+                        eventType: eventType.eventType,
+                        subType: eventType.subType,
+                        referenceId1: 0,
+                        referenceId2: 0
+                    }));
+                }
+                return ids;
+            }
+        }
+
+        class EventTypeMap extends MultiMap {
+            set(eventType, value) {
+                return super.set(eventType.typeId, value);
+            }
+            
+            get(eventType) {
+                const values = new Set();
+                
+                const matchingIds = eventType.matchingIds || EventType.matchingIds(eventType);
+                for (let id of matchingIds) {
+                    for (let v of super.get(id)) {
+                        values.add(v);
+                    }
+                }
+                
+                return values;
+            }
+            
+            has(eventType, value) {
+                const matchingIds = eventType.matchingIds || EventType.matchingIds(eventType);
+                for (let id of matchingIds) {
+                    if (super.has(id, value)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            
+            delete(eventType, value) {
+                let deleted = false;
+                const matchingIds = eventType.matchingIds || EventType.matchingIds(eventType);
+                for (let id of matchingIds) {
+                    if (super.delete(id, value)) {
+                        deleted = true;
+                    }
+                }
+                return deleted;
+            }
+            
+            count(eventType) {
+                return this.get(eventType).size;
             }
         }
         

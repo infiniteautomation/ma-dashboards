@@ -44,29 +44,27 @@ class EventTypeListController {
     }
     
     render() {
-        this.selected = new Map();
+        this.selected = new this.EventTypeInfo.EventTypeMap();
 
         const selectedTypes = this.ngModelCtrl.$viewValue;
         if (!Array.isArray(selectedTypes)) return;
         
         selectedTypes.forEach(eventType => {
-            this.selected.set(eventType.typeId, eventType);
+            this.selected.set(eventType, eventType);
         });
     }
 
     selectedGetterSetter(eventType) {
         return value => {
-            const id = eventType.typeId;
-            
             if (value === undefined) {
-                return this.selected.has(id);
+                return this.selected.has(eventType);
             }
             
-            if (value) {
-                this.selected.set(id, eventType);
+            if (value) {                
                 // TODO uncheck any more specific event types
+                this.selected.set(eventType, eventType);
             } else {
-                this.selected.delete(id);
+                this.selected.delete(eventType, eventType);
             }
             
             this.setViewValue();
