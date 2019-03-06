@@ -230,6 +230,32 @@ function eventTypeProvider() {
                 return this.type && this.type.typeId;
             }
             
+            handleable() {
+                return this.type.eventType && (this.type.subType || !this.supportsSubtype);
+            }
+
+            hasChildren() {
+                const eventType = this.type;
+                if (this.supportsSubtype && !eventType.subType) {
+                    return true;
+                } else if (this.supportsReferenceId1 && !eventType.referenceId1) {
+                    return true;
+                } else if (this.supportsReferenceId2 && !eventType.referenceId2) {
+                    return true;
+                }
+                return false;
+            }
+            
+            loadChildren() {
+                const eventType = this.type;
+                return this.constructor.list({
+                    eventType: eventType.eventType,
+                    subType: this.supportsSubtype ? eventType.subType || undefined : null,
+                    referenceId1: eventType.referenceId1,
+                    referenceId2: eventType.referenceId2
+                });
+            }
+            
             static list(eventType, opts = {}) {
                 return this.query(eventType, null, opts);
             }
@@ -253,12 +279,15 @@ function eventTypeProvider() {
                 }
                 
                 let segments = [];
-                if (eventType && eventType.eventType && (eventType.subType || eventType.subType === null)) {
-                    segments.push(eventType.eventType, eventType.subType);
-                    if (eventType.referenceId1) {
-                        segments.push(eventType.referenceId1);
-                        if (eventType.referenceId2) {
-                            segments.push(eventType.referenceId2);
+                if (eventType && eventType.eventType) {
+                    segments.push(eventType.eventType);
+                    if (eventType.subType || eventType.subType === null) {
+                        segments.push(eventType.subType);
+                        if (eventType.referenceId1) {
+                            segments.push(eventType.referenceId1);
+                            if (eventType.referenceId2) {
+                                segments.push(eventType.referenceId2);
+                            }
                         }
                     }
                 }

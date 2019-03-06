@@ -54,21 +54,6 @@ class EventTypeListController {
         });
     }
 
-    loadSpecificEventTypes(info) {
-        return this.EventTypeInfo.list(info.type);
-    }
-    
-    hasChildren(info) {
-        const eventType = info.type;
-        if (eventType.referenceId1 && eventType.referenceId2) {
-            return false;
-        } else if (eventType.referenceId1) {
-            return info.supportsReferenceId2;
-        } else {
-            return info.supportsReferenceId1;
-        }
-    }
-    
     selectedGetterSetter(eventType) {
         return value => {
             const id = eventType.typeId;
