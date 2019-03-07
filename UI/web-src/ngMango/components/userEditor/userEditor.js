@@ -32,6 +32,10 @@ class UserEditorController {
             this.user = angular.copy(this.originalUser);
             this.resetForm();
         }
+        
+        if (changes.disabledAttr) {
+            this.disabled = this.disabledAttr || !this.User.current.hasAnyPermission('permissions.user.editSelf');
+        }
     }
 
     resetForm() {
@@ -145,7 +149,8 @@ export default {
     bindings: {
         originalUser: '<?user',
         onSave: '&?',
-        onDelete: '&?'
+        onDelete: '&?',
+        disabledAttr: '@?disabled'
     },
     designerInfo: {
         hideFromMenu: true
