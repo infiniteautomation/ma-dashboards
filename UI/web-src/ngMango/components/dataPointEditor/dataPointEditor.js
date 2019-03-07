@@ -24,14 +24,14 @@ const templates = {
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
-    'maMultipleValues', '$templateCache', '$filter']);
+    'maMultipleValues', '$templateCache', '$filter', 'maUser']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
     constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
-            MultipleValues, $templateCache, $filter) {
+            MultipleValues, $templateCache, $filter, User) {
 
         Object.keys(templates).forEach(key => {
             const name = `maDataPointEditor.${key}.html`;
@@ -48,6 +48,7 @@ class DataPointEditorController {
         this.maTranslate = maTranslate;
         this.MultipleValues = MultipleValues;
         this.orderBy = $filter('orderBy');
+        this.User = User;
         this.rollupTypes = maPoint.rollupTypes.filter(t => !t.nonAssignable);
         this.plotTypes = maPoint.chartTypes;
         this.simplifyTypes = maPoint.simplifyTypes;
@@ -97,6 +98,13 @@ class DataPointEditorController {
         if (changes.importCsv && this.importCsv) {
             this.startFromCsv(this.importCsv);
         }
+        if (changes.disabledAttr) {
+            this.updateDisabled();
+        }
+    }
+    
+    updateDisabled() {
+        this.disabled = this.disabledAttr || !(this.dataPoint && this.dataPoint.hasEditPermission(this.User.current));
     }
 
     render(confirmDiscard = false) {
@@ -126,6 +134,7 @@ class DataPointEditorController {
             this.activeTab = 0;
         }
 
+        this.updateDisabled();
         this.typeChanged();
 
         if (this.form) {

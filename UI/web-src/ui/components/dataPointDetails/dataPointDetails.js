@@ -199,6 +199,10 @@ class DataPointDetailsController {
     stateGo() {
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
+    
+    hasEditPermission() {
+        return this.dataPoint && this.dataPoint.hasEditPermission(this.User.current);
+    }
 }
 
 export default {

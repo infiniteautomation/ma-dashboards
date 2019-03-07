@@ -635,6 +635,10 @@ function dataPointProvider() {
                 */
                 
                 Object.assign(this, angular.copy(dataTypeDefaults));
+            },
+            
+            hasEditPermission(user) {
+                return user.hasAnyPermission('permissionDatasource') || user.hasAnyRole(this.dataSourceEditRoles || 'superadmin');
             }
         });
 

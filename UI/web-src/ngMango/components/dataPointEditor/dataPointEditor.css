@@ -19,3 +19,9 @@ ma-data-point-editor .ma-zero-one-label {
 	font-weight: bold;
 	margin: 24px 16px 24px 0;
 }
+
+ma-data-point-editor fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}

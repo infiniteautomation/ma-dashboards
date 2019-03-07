@@ -48,14 +48,16 @@
                             <div ng-repeat="(key, value) in $ctrl.dataPoint.tags"><span ng-bind="key"></span>=<span ng-bind="value"></span></div>
                         </div>
                         <label flex="35"><span ma-tr="ui.app.dataSource"></span>:</label><div flex="65" ng-bind="$ctrl.dataPoint.dataSourceName"></div>
-                        <label flex="35"><span ma-tr="pointEdit.detectors.eventDetectors"></span>:</label><div flex="65"><a ng-if="$ctrl.eventDetectors != null"
+                        <label flex="35" ng-if="$ctrl.hasEditPermission()"><span ma-tr="pointEdit.detectors.eventDetectors"></span>:</label><div flex="65" ng-if="$ctrl.hasEditPermission()"><a ng-if="$ctrl.eventDetectors != null"
                             ma-tr="ui.eventDetectors.count" ma-tr-args="[$ctrl.eventDetectors.length]" ng-click="$ctrl.openDetectorDialog()"></a></div>
             		</div>
                     
             		<div layout="row">
             			<ma-set-point-value ng-if="$ctrl.dataPoint.pointLocator.dataType !== 'IMAGE'" point="$ctrl.dataPoint" flex="95"></ma-set-point-value>
-            			<md-button class="md-accent md-raised" ng-show="$ctrl.User.current.hasAnyPermission('permissionDatasource') || $ctrl.User.current.hasAnyRole($ctrl.dataPoint.dataSourceEditRoles)"
-                            ng-click="$ctrl.openEditDialog($ctrl.dataPoint)"><md-icon>edit</md-icon> <span ma-tr="ui.app.edit"></span></md-button>
+            			<md-button class="md-accent md-raised" ng-click="$ctrl.openEditDialog($ctrl.dataPoint)" ng-switch="$ctrl.hasEditPermission()">
+                            <span ng-switch-when="true"><md-icon>edit</md-icon> <span ma-tr="ui.app.edit"></span></span>
+                            <span ng-switch-default><md-icon>remove_red_eye</md-icon> <span ma-tr="ui.app.viewPoint"></span></span>
+                        </md-button>
             		</div>
             	</md-card-content>
             </md-card>

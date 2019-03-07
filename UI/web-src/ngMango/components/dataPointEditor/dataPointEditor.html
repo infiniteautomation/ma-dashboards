@@ -1,4 +1,5 @@
 <div ng-form="$ctrl.form" ng-disabled="$ctrl.savePromise" ma-validation-messages="$ctrl.validationMessages" ma-activate-tab="$ctrl.activeTab = $index" flex="noshrink" layout="column">
+    <fieldset ng-disabled="$ctrl.disabled" flex="noshrink" layout="column">
     <md-tabs flex="noshrink" layout="column" ng-attr-md-dynamic-height="{{$ctrl.dynamicHeight}}" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
         <md-tab>
             <md-tab-label>
@@ -377,7 +378,7 @@
         </em>
     </div>
 
-    <div ng-if="!$ctrl.bulkTask" class="md-padding ma-action-buttons">
+    <div ng-if="!$ctrl.bulkTask && !$ctrl.disabled" class="md-padding ma-action-buttons">
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form || $ctrl.savePromise">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
@@ -392,4 +393,5 @@
         </md-button>
         <em ng-if="!$ctrl.dataSourceType" md-colors="::{color: 'accent'}" ma-tr="ui.app.dataPointTypeNotSupported"></em>
     </div>
+    </fieldset>
 </div>
