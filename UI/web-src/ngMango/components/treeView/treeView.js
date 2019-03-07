@@ -51,7 +51,7 @@ class Context {
         }
     }
 }
-
+    
 class TreeViewController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', '$transclude', '$q', '$timeout']; }
@@ -67,7 +67,10 @@ class TreeViewController {
     }
     
     $onChanges(changes) {
-        this.$scope.context.loadChildren();
+        if (changes.items) {
+            delete this.$scope.context.children;
+            this.$scope.context.loadChildren();
+        }
     }
     
     newContext(item, parent) {

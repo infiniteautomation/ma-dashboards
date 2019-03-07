@@ -245,6 +245,7 @@ function eventTypeProvider() {
                 return this.get(eventType, exact).size;
             }
             
+            /* Not used for now
             deleteMoreSpecific(eventType) {
                 // return immediately if eventType is the most specific form
                 if (eventType.referenceId1 && eventType.referenceId2) {
@@ -257,6 +258,7 @@ function eventTypeProvider() {
                     }
                 }
             }
+            */
         }
         
         class EventTypeInfo extends RestResource {

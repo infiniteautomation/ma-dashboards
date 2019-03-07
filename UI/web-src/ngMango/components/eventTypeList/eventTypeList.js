@@ -5,9 +5,10 @@
 
 import eventTypeListTemplate from './eventTypeList.html';
 import './eventTypeList.css';
+import MultiMap from '../../services/MultiMap';
 
-// TODO show number of more specific items underneath that are checked
-// TODO expand tree when rendering
+// TODO collapse all by default when rendering?
+// TODO cache results for type and subtype
 
 /**
  * @ngdoc directive
@@ -42,12 +43,13 @@ class EventTypeListController {
     
     render() {
         this.selected = new this.EventTypeInfo.EventTypeMap();
+        this.childrenByTypeId = new MultiMap();
 
         const selectedTypes = this.ngModelCtrl.$viewValue;
         if (!Array.isArray(selectedTypes)) return;
         
         selectedTypes.forEach(eventType => {
-            this.selected.set(eventType, eventType);
+            this.selectEventType(eventType);
         });
     }
 
@@ -58,19 +60,44 @@ class EventTypeListController {
             }
             
             if (value) {
-                // remove the more specific forms of this event type from the map
-                this.selected.deleteMoreSpecific(eventType);
-                this.selected.set(eventType, eventType);
+                // remove the more specific forms of the event type from the map
+                const children = this.childrenByTypeId.get(eventType.typeId);
+                for (let c of children) {
+                    this.deselectEventType(c);
+                }
+
+                this.selectEventType(eventType);
             } else {
-                this.selected.delete(eventType, true);
+                this.deselectEventType(eventType);
             }
             
             this.setViewValue();
         };
     }
     
+    selectEventType(eventType) {
+        this.selected.set(eventType, eventType);
+        
+        for (let id of eventType.matchingIds) {
+            this.childrenByTypeId.set(id, eventType);
+        }
+    }
+
+    deselectEventType(eventType) {
+        const deleted = this.selected.delete(eventType, true);
+        for (let d of deleted) {
+            for (let id of d.matchingIds) {
+                this.childrenByTypeId.delete(id, d);
+            }
+        }
+    }
+    
     getSelectedCount(eventType) {
-        return 0;
+        return this.childrenByTypeId.get(eventType.typeId).size;
+    }
+    
+    hasSelectedCount(eventType) {
+        return this.childrenByTypeId.has(eventType.typeId);
     }
 }
 
