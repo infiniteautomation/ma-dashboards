@@ -19,11 +19,11 @@ function MenuController() {
                 info.visible = !menuItem.menuHidden &&
                     !!info.visibleChildren &&
                     this.user.hasAnyRole(menuItem.permission) &&
-                    this.user.hasAnyPermission(menuItem.anyPermission);
+                    this.user.hasAnyPermission(menuItem.requiredPermission);
             } else {
                 info.visible = !menuItem.menuHidden &&
                     this.user.hasAnyRole(menuItem.permission) &&
-                    this.user.hasAnyPermission(menuItem.anyPermission);
+                    this.user.hasAnyPermission(menuItem.requiredPermission);
             }
             if (info.visible) {
                 visibleCount++;

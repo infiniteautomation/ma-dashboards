@@ -565,7 +565,7 @@ export default [
         template: '<ma-ui-data-source-page flex="noshrink" layout="column"><ma-ui-data-source-page>',
         menuTr: 'header.dataSources',
         menuIcon: 'device_hub',
-        permission: 'superadmin',
+        requiredPermission: 'permissionDatasource',
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
