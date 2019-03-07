@@ -11,3 +11,9 @@ ma-user-editor .ma-user-status {
 	margin-top: 16px;
 	margin-bottom: 16px;
 }
+
+ma-user-editor fieldset {
+	margin: 0;
+	border: 0;
+	padding: 0;
+}

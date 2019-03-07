@@ -49,7 +49,8 @@ export default {
     controller: DurationEditorController,
     bindings: {
         allowedTypes: '<?',
-        required: '@?'
+        required: '@?',
+        disabled: '@?'
     },
     require: {
         ngModelCtrl: 'ngModel'
