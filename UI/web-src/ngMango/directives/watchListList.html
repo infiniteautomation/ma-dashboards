@@ -10,6 +10,6 @@
     <strong ng-bind="item.name"></strong>
     <em ng-bind="item.username"></em>
     <button ng-click="$ctrl.editButtonClicked({'$event': $event, '$watchList': item})" ma-tr="common.edit"
-        ng-if="$ctrl.showEditButtons && ($ctrl.User.current.hasRole(item.editPermission) || $ctrl.User.current.username === item.username)"></button>
+        ng-if="$ctrl.showEditButtons && ($ctrl.User.current.hasAnyRole(item.editPermission) || $ctrl.User.current.username === item.username)"></button>
   </li>
 </ul>

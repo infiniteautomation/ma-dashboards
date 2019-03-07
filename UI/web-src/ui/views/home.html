@@ -227,7 +227,7 @@
 
 <div class="home-page" layout="row" layout-align="start start" layout-wrap>
     <div ng-repeat="item in ::utilityMenuItems track by item.name"
-            ng-if="User.current.hasRole(item.permission)"
+            ng-if="User.current.hasAnyRole(item.permission)"
             flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="{{item.name}}" flex layout="column">

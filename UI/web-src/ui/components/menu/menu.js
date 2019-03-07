@@ -16,9 +16,14 @@ function MenuController() {
             
             if (menuItem.children && menuItem.abstract) {
                 info.visibleChildren = this.childVisible(menuItem.children);
-                info.visible = !menuItem.menuHidden && !!info.visibleChildren && this.user.hasRole(menuItem.permission);
+                info.visible = !menuItem.menuHidden &&
+                    !!info.visibleChildren &&
+                    this.user.hasAnyRole(menuItem.permission) &&
+                    this.user.hasAnyPermission(menuItem.anyPermission);
             } else {
-                info.visible = !menuItem.menuHidden && this.user.hasRole(menuItem.permission);
+                info.visible = !menuItem.menuHidden &&
+                    this.user.hasAnyRole(menuItem.permission) &&
+                    this.user.hasAnyPermission(menuItem.anyPermission);
             }
             if (info.visible) {
                 visibleCount++;

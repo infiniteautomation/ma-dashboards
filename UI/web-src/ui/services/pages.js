@@ -41,7 +41,7 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERM
                 // the whole purpose of this section is to remove missing pages from the list of pages
                 if (error.status === 404 && user) {
                     this.getPages().then(pagesStore => {
-                        if (user.hasRole(pagesStore.editPermission)) {
+                        if (user.hasAnyRole(pagesStore.editPermission)) {
                             const pages = pagesStore.jsonData.pages;
                             let pageRemovedFromList = false;
                             for (let i = 0; i < pages.length;) {

@@ -14,7 +14,7 @@ const autoLoginSettings = function autoLoginSettings(User, $scope) {
         if (!this.username) return;
         User.get({username: this.username}).$promise.then(function(user) {
             $scope.autoLoginSettings.username.$setValidity('notFound', true);
-            $scope.autoLoginSettings.username.$setValidity('adminUser', !user.hasRole('superadmin'));
+            $scope.autoLoginSettings.username.$setValidity('adminUser', !user.hasAnyRole('superadmin'));
         }, function() {
             $scope.autoLoginSettings.username.$setValidity('notFound', false);
             $scope.autoLoginSettings.username.$setValidity('adminUser', true);

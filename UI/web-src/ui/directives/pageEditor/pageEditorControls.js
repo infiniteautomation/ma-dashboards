@@ -118,7 +118,7 @@ class PageEditorControlsController {
     filterPages() {
         const user = this.User.current;
         this.pageList = this.pageSummaryStore.jsonData.pages.filter(p => {
-            return user.hasRole(p.editPermission);
+            return user.hasAnyRole(p.editPermission);
         }).sort((a, b) => {
             const aName = a.name.toLowerCase();
             const bName = b.name.toLowerCase();
