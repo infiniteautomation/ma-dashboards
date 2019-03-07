@@ -511,18 +511,21 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             /**
              * returns true if user has any of the desired roles (can be an array or comma separated string)
              */
-            hasAnyRole(roles) {
-                if (this.admin || !roles) return true;
-                if (!this.permissions) return false;
+            hasAnyRole(roles, emptyIsAdminOnly) {
+                if (emptyIsAdminOnly && (!roles || !roles.length)) {
+                    roles = ['superadmin'];
+                }
+                
+                if (this.admin || !roles || !roles.length) return true;
 
                 if (typeof roles === 'string') {
                     roles = roles.split(/\s*\,\s*/);
                 }
 
                 const userRoles = this.permissions.split(/\s*\,\s*/).filter(r => !!r);
-                return roles.some(p => userRoles.includes(p));
+                return roles.some(p => p === 'user' || userRoles.includes(p));
             },
-            
+
             /**
              * returns true if user has any of the permissions (can be an array or a single permission string)
              */

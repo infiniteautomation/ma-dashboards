@@ -638,7 +638,11 @@ function dataPointProvider() {
             },
             
             hasEditPermission(user) {
-                return user.hasAnyPermission('permissionDatasource') || user.hasAnyRole(this.dataSourceEditRoles || 'superadmin');
+                return user.hasAnyPermission('permissionDatasource') || user.hasAnyRole(this.dataSourceEditRoles, true);
+            },
+            
+            hasSetPermission(user) {
+                return this.hasEditPermission(user) || user.hasAnyRole(this.setPermission, true);
             }
         });
 
