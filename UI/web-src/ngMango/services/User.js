@@ -503,7 +503,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         });
         
         Object.assign(User.prototype, {
-            hasPermission(roles) {
+            hasPermission() {
                 console.warn('The hasPermission() method is deprecated, please use hasRole() instead');
                 return this.hasRole.apply(this, arguments);
             },
@@ -515,7 +515,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 if (this.admin || !roles) return true;
                 if (!this.permissions) return false;
 
-                if (typeof desiredPerms === 'string') {
+                if (typeof roles === 'string') {
                     roles = roles.split(/\s*\,\s*/);
                 }
 
