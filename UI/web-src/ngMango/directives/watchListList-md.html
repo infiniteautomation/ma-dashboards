@@ -18,7 +18,7 @@
       <p ng-bind="item.username"></p>
     </div>
     <md-button class="md-secondary md-icon-button" ng-click="$ctrl.editButtonClicked({'$event': $event, '$watchList': item})"
-        ng-if="$ctrl.showEditButtons && ($ctrl.user.hasPermission(item.editPermission) || $ctrl.user.username === item.username)">
+        ng-if="$ctrl.showEditButtons && ($ctrl.user.hasRole(item.editPermission) || $ctrl.user.username === item.username)">
       <md-icon>edit</md-icon>
     </md-button>
   </md-list-item>

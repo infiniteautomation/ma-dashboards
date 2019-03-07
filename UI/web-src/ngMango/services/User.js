@@ -503,18 +503,34 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         });
         
         Object.assign(User.prototype, {
-            // returns true if user has any of the desired permissions (can be an array or comma separated string)
-            hasPermission(desiredPerms) {
-                if (this.admin || !desiredPerms) return true;
+            hasPermission(roles) {
+                console.warn('The hasPermission() method is deprecated, please use hasRole() instead');
+                return this.hasRole.apply(this, arguments);
+            },
+            
+            /**
+             * returns true if user has any of the desired roles (can be an array or comma separated string)
+             */
+            hasRole(roles) {
+                if (this.admin || !roles) return true;
                 if (!this.permissions) return false;
 
                 if (typeof desiredPerms === 'string') {
-                    desiredPerms = desiredPerms.split(/\s*\,\s*/);
+                    roles = roles.split(/\s*\,\s*/);
                 }
 
-                const userPerms = this.permissions.split(/\s*\,\s*/).filter(p => !!p);
-                
-                return desiredPerms.some(p => userPerms.includes(p));
+                const userRoles = this.permissions.split(/\s*\,\s*/).filter(r => !!r);
+                return roles.some(p => userRoles.includes(p));
+            },
+            
+            /**
+             * returns true if user has any of the permissions (can be an array or a single permission string)
+             */
+            isGrantedPermission(permission) {
+                if (Array.isArray(permission)) {
+                    return permission.some(p => this.grantedPermissions.includes(p));
+                }
+                return this.grantedPermissions.includes(permission);
             },
 
             getTimezone() {

@@ -54,7 +54,7 @@
                     
             		<div layout="row">
             			<ma-set-point-value ng-if="$ctrl.dataPoint.pointLocator.dataType !== 'IMAGE'" point="$ctrl.dataPoint" flex="95"></ma-set-point-value>
-            			<md-button class="md-accent md-raised" ng-show="$ctrl.User.current.hasPermission('superadmin')"
+            			<md-button class="md-accent md-raised" ng-show="$ctrl.User.current.hasRole('superadmin')"
                             ng-click="$ctrl.openEditDialog($ctrl.dataPoint)"><md-icon>edit</md-icon> <span ma-tr="ui.app.edit"></span></md-button>
             		</div>
             	</md-card-content>

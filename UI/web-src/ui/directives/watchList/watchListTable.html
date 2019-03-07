@@ -6,7 +6,7 @@
         <div flex></div>
         
         <md-button class="md-primary md-raised" ng-click="$ctrl.saveSettings()"
-                ng-disabled="!$ctrl.watchList.isNew() && !$ctrl.User.current.hasPermission($ctrl.watchList.editPermission)">
+                ng-disabled="!$ctrl.watchList.isNew() && !$ctrl.User.current.hasRole($ctrl.watchList.editPermission)">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
             <md-tooltip>
@@ -16,7 +16,7 @@
         </md-button>
         <md-button class="md-raised" ui-sref="ui.settings.watchListBuilder({watchListXid: $ctrl.watchList.xid})"
                 ng-if="!$ctrl.watchList.isNew()"
-                ng-disabled="!$ctrl.User.current.hasPermission($ctrl.watchList.editPermission)">
+                ng-disabled="!$ctrl.User.current.hasRole($ctrl.watchList.editPermission)">
             <md-icon>edit</md-icon>
             <span ma-tr="common.edit"></span>
         </md-button>
