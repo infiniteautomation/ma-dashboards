@@ -23,14 +23,15 @@
  * Translation namespace must be loaded into Globalize prior to filter being run.
  */
 function trFilterFactory(Translate) {
-    return function trFilter(key) {
-        let args;
+    return function trFilter(key, args) {
         if (Array.isArray(key)) {
-            args = Array.prototype.slice.call(key, 1);
+            args = key.slice(1);
             key = key[0];
-        } else {
+        } else if (args != null && !Array.isArray(args)) {
+            console.warn('Deprecated use of maTranslate.trSync()');
             args = Array.prototype.slice.call(arguments, 1);
         }
+
     	let text;
     	try {
         	text = Translate.trSync(key, args);
