@@ -34,14 +34,14 @@
 <br>
 
 <h3>Custom horizontal bar</h3>
-<div class="bar-display" ng-class="{'point-disabled': !myPoint.enabled}">
+<div class="bar-display" ng-class="{'ma-point-disabled': !myPoint.enabled}">
     <div class="bar-display-fill" ng-style="{width: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
     <div class="bar-display-text">{{myPoint.renderedValue}}</div>
 </div>
 <br>
 
 <h3>Custom vertical bar</h3>
-<div class="bar-display bar-display-vertical" ng-class="{'point-disabled': !myPoint.enabled}">
+<div class="bar-display bar-display-vertical" ng-class="{'ma-point-disabled': !myPoint.enabled}">
     <div class="bar-display-fill" ng-style="{height: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
     <div class="bar-display-text">{{myPoint.renderedValue}}</div>
 </div>

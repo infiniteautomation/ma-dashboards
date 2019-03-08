@@ -163,10 +163,10 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
     
             switch(this.resolvedDisplayType) {
             case 'converted':
-                this.displayValue = this.point.convertedValue;
+                this.displayValue = String(this.point.convertedValue);
                 break;
             case 'rendered':
-                this.displayValue = this.point.renderedValue;
+                this.displayValue = String(this.point.renderedValue);
                 this.valueStyle.color = rendered.color;
                 break;
             case 'dateTime':
@@ -180,8 +180,10 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
                 this.displayValue = m.format(dateTimeFormat);
                 break;
             default:
-                this.displayValue = this.point.value;
+                this.displayValue = String(this.point.value);
             }
+            
+            
         }
     }
 

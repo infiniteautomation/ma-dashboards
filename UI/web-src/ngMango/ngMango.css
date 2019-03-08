@@ -29,13 +29,18 @@
  *	Point disabled styles
  */
 
-.ma-disabled-text {
+.ma-disabled-text,
+.ma-point-value-no-value {
 	color: #aaa;
 	font-style: italic;
 }
 
 ma-switch .ma-disabled-text {
   display: none;
+}
+
+.ma-point-disabled .ma-point-value-no-value {
+	display: none;
 }
 
 /* API down / not logged in styles for live displays */
