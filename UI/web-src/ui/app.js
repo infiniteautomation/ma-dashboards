@@ -27,6 +27,7 @@ import 'angular-loading-bar/build/loading-bar.css';
 import 'md-color-picker/dist/mdColorPicker.css';
 import './styles/fonts.css';
 import './styles/main.css';
+import './styles/help.css';
 
 const uiApp = angular.module('maUiApp', [
     'ui.router',
