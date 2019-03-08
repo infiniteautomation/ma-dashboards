@@ -221,6 +221,7 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
+                    <md-button ng-click="$ctrl.refreshStatus = {}"><md-icon>refresh</md-icon>&nbsp;<span ma-tr="common.refresh"></span></md-button>
                     <ma-data-source-status ng-if="!!$ctrl.refreshStatus" data-source="$ctrl.dataSource" refresh="$ctrl.refreshStatus"></ma-data-source-status>
                 </div>
             </md-tab-body>
