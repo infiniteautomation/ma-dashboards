@@ -268,7 +268,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             return;
         }
         
-        $rootScope.pageOpts.newWindowHelpUrl = $state.href($state.params.helpPage);
+        $rootScope.pageOpts.newWindowHelpUrl = $state.href(helpPageState);
         
         if (helpPageState.templateUrl) {
             this.pageOpts.helpUrl = helpPageState.templateUrl;
