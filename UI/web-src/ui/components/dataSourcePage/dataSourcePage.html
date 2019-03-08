@@ -43,21 +43,6 @@
                     <span ng-if="!$ctrl.dataSource.isNew()" ma-tr="dsList.editDataSource" ma-tr-args="[$ctrl.dataSource.name]"></span>
                     <span ng-if="$ctrl.dataSource.isNew()" ma-tr="dsList.createDataSource"></span>
                     <div flex></div>
-                    
-                    <!-- 
-                    <md-menu class="ma-input-button" md-position-mode="target-right target">
-                      <md-button ng-click="$mdMenu.open($event)" class="md-icon-button" ng-disabled="$ctrl.disabled"><md-icon>arrow_drop_down</md-icon></md-button>
-                      <md-menu-content width="4" class="ma-permissions-menu">
-                        <md-menu-item ng-repeat="permission in $ctrl.permissions track by permission.name">
-                          <div flex layout layout-align="start center">
-                            <md-checkbox flex ng-model="permission.value" ng-change="$ctrl.checkboxChanged(permission)"><span ng-bind="permission.name"></span></md-checkbox>
-                            <div md-menu-align-target style="height:100%"></div>
-                          </div>
-                        </md-menu-item>
-                      </md-menu-content>
-                    </md-menu>
-                     -->
-                    
                     <md-menu md-position-mode="target-right bottom" md-offset="0 9" ng-if="!$ctrl.dataSource.isNew()">
                         <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
                             <md-icon md-menu-origin>more_vert</md-icon>
