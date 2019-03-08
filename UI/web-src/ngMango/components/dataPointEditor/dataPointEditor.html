@@ -13,8 +13,8 @@
                             <label ma-tr="dsEdit.dataPointType"></label>
                             <md-select name="dataSourceTypeName" ng-model="$ctrl.dataPoint.dataSourceTypeName"
                                     ng-disabled="$ctrl.fixedType || !$ctrl.dataPoint.isNew()" ng-change="$ctrl.typeChanged()" required>
-                                <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
-                                    <span ma-tr="{{type.description}}"></span>
+                                <md-option ng-repeat="type in $ctrl.types | orderBy:'descriptionTranslated' track by type.type" ng-value="type.type">
+                                    <span ng-bind="type.descriptionTranslated"></span>
                                 </md-option>
                             </md-select>
                             <div ng-messages="$ctrl.form.dataSourceTypeName.$error">

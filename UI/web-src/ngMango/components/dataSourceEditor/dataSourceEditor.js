@@ -15,25 +15,33 @@ import './dataSourceEditor.css';
  */
 
 const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
-    'maPoint', 'maEvents']);
+    'maPoint', 'maEvents', 'maUtil']);
 
 class DataSourceEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maDataSource, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
-            Point, maEvents) {
+    constructor(maDataSource, $q, maDialogHelper, $scope, $window, Translate, $attrs, $parse,
+            Point, Events, Util) {
         this.maDataSource = maDataSource;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$window = $window;
-        this.maTranslate = maTranslate;
+        this.Translate = Translate;
         this.Point = Point;
-        this.maEvents = maEvents;
         
-        this.types = maDataSource.types;
-        this.typesByName = maDataSource.typesByName;
+        this.eventLevels = Events.levels;
+        
+        this.types = maDataSource.types.map(t => {
+            const item = angular.copy(t);
+            Translate.tr(item.description).then(translated => {
+                item.descriptionTranslated = translated;
+            });
+            return item;
+        });
+
+        this.typesByName = Util.createMapObject(this.types, 'type');
 
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
@@ -56,7 +64,7 @@ class DataSourceEditorController {
         const oldUnload = this.$window.onbeforeunload;
         this.$window.onbeforeunload = (event) => {
             if (this.form && this.form.$dirty && this.checkDiscardOption('windowUnload')) {
-                const text = this.maTranslate.trSync('ui.app.discardUnsavedChanges');
+                const text = this.Translate.trSync('ui.app.discardUnsavedChanges');
                 event.returnValue = text;
                 return text;
             }
@@ -156,7 +164,7 @@ class DataSourceEditorController {
     
     confirmDiscard(type) {
         if (this.form && this.form.$dirty && this.checkDiscardOption(type)) {
-            return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
+            return this.$window.confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
     }

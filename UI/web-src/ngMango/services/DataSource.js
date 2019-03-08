@@ -312,10 +312,7 @@ function dataSourceProvider() {
         }
 
         const typeInstances = types.map(type => Object.freeze(new DataSourceType(type)));
-        const typesByName = typeInstances.reduce((map, item) => {
-            map[item.type] = item;
-            return map;
-        }, Object.create(null));
+        const typesByName = Util.createMapObject(typeInstances, 'type');
         
         DataSource.types = Object.freeze(typeInstances);
         DataSource.typesByName = Object.freeze(typesByName);

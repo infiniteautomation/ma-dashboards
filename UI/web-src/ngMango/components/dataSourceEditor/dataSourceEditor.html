@@ -11,8 +11,8 @@
                             <md-icon>settings</md-icon>
                             <label ma-tr="dsEdit.dataSourceType"></label>
                             <md-select name="modelType" ng-model="$ctrl.dataSource.modelType" ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()" required>
-                                <md-option ng-repeat="type in $ctrl.types track by type.type" ng-value="type.type">
-                                    <span ma-tr="{{type.description}}"></span>
+                                <md-option ng-repeat="type in $ctrl.types | orderBy:'descriptionTranslated' track by type.type" ng-value="type.type">
+                                    <span ng-bind="type.descriptionTranslated"></span>
                                 </md-option>
                             </md-select>
                             <div ng-messages="$ctrl.form.modelType.$error">
@@ -130,7 +130,7 @@
                         <md-input-container flex="100" flex-gt-md="50" ng-repeat="entry in $ctrl.dataSource.eventAlarmLevels track by entry.eventType">
                             <label ma-tr="{{entry.descriptionKey}}"></label>
                             <md-select name="alarmLevels[{{$index}}]" ng-model="entry.level" required ma-get-ctrl="modelCtrl = $ngModel">
-                                <md-option ng-repeat="level in $ctrl.maEvents.levels track by level.key" ng-value="level.key">
+                                <md-option ng-repeat="level in $ctrl.eventLevels track by level.key" ng-value="level.key">
                                     <md-icon class="fa fa-lg ma-alarm-flag" ng-class="level.classes"></md-icon>
                                     <span ma-tr="{{level.translation}}"></span>
                                 </md-option>

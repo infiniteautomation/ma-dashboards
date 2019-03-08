@@ -971,6 +971,13 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         generateKey(keySizeBits = 256) {
             const bytes = $window.crypto.getRandomValues(new Uint8Array(keySizeBits / 8));
             return bytes.reduce((key, byte) => key + ('0' + byte.toString(16)).slice(-2), '');
+        },
+        
+        createMapObject(array, keyProperty) {
+            return array.reduce((map, item) => {
+                map[item[keyProperty]] = item;
+                return map;
+            }, Object.create(null));
         }
     };
 

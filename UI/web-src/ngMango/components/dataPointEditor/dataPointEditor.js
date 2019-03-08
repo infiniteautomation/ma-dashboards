@@ -24,14 +24,14 @@ const templates = {
  */
 
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
-    'maMultipleValues', '$templateCache', '$filter', 'maUser']);
+    'maMultipleValues', '$templateCache', '$filter', 'maUser', 'maUtil']);
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maPoint, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
-            MultipleValues, $templateCache, $filter, User) {
+    constructor(Point, $q, DialogHelper, $scope, $window, Translate, $attrs, $parse,
+            MultipleValues, $templateCache, $filter, User, Util) {
 
         Object.keys(templates).forEach(key => {
             const name = `maDataPointEditor.${key}.html`;
@@ -40,27 +40,33 @@ class DataPointEditorController {
             }
         });
         
-        this.maPoint = maPoint;
+        this.Point = Point;
         this.$q = $q;
-        this.maDialogHelper = maDialogHelper;
+        this.DialogHelper = DialogHelper;
         this.$scope = $scope;
         this.$window = $window;
-        this.maTranslate = maTranslate;
+        this.Translate = Translate;
         this.MultipleValues = MultipleValues;
         this.orderBy = $filter('orderBy');
         this.User = User;
-        this.rollupTypes = maPoint.rollupTypes.filter(t => !t.nonAssignable);
-        this.plotTypes = maPoint.chartTypes;
-        this.simplifyTypes = maPoint.simplifyTypes;
-        this.loggingTypes = maPoint.loggingTypes;
-        this.intervalLoggingValueTypes = maPoint.intervalLoggingValueTypes;
-        this.textRendererTypes = maPoint.textRendererTypes;
+        this.rollupTypes = Point.rollupTypes.filter(t => !t.nonAssignable);
+        this.plotTypes = Point.chartTypes;
+        this.simplifyTypes = Point.simplifyTypes;
+        this.loggingTypes = Point.loggingTypes;
+        this.intervalLoggingValueTypes = Point.intervalLoggingValueTypes;
+        this.textRendererTypes = Point.textRendererTypes;
         this.suffixTextRenderers = new Set(this.textRendererTypes.filter(t => t.suffix).map(t => t.type));
         this.formatTextRenderers = new Set(this.textRendererTypes.filter(t => t.format).map(t => t.type));
-        this.chartRendererTypes = maPoint.chartRendererTypes;
+        this.chartRendererTypes = Point.chartRendererTypes;
 
-        this.types = maPoint.types;
-        this.typesByName = maPoint.typesByName;
+        this.types = Point.types.map(t => {
+            const item = angular.copy(t);
+            Translate.tr(item.description).then(translated => {
+                item.descriptionTranslated = translated;
+            });
+            return item;
+        });
+        this.typesByName = Util.createMapObject(this.types, 'type');
 
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
@@ -83,7 +89,7 @@ class DataPointEditorController {
         const oldUnload = this.$window.onbeforeunload;
         this.$window.onbeforeunload = (event) => {
             if (this.form && this.form.$dirty && this.checkDiscardOption('windowUnload')) {
-                const text = this.maTranslate.trSync('ui.app.discardUnsavedChanges');
+                const text = this.Translate.trSync('ui.app.discardUnsavedChanges');
                 event.returnValue = text;
                 return text;
             }
@@ -122,10 +128,10 @@ class DataPointEditorController {
         if (Array.isArray(viewValue) && viewValue.length) {
             this.points = viewValue;
             this.dataPoint = this.MultipleValues.fromArray(this.points);
-        } else if (viewValue instanceof this.maPoint) {
+        } else if (viewValue instanceof this.Point) {
             this.dataPoint = viewValue.copy();
         } else if (viewValue) {
-            this.dataPoint = Object.assign(Object.create(this.maPoint.prototype), viewValue);
+            this.dataPoint = Object.assign(Object.create(this.Point.prototype), viewValue);
         } else {
             this.dataPoint = null;
         }
@@ -154,7 +160,7 @@ class DataPointEditorController {
 
         if (!this.form.$valid) {
             this.form.activateTabWithClientError();
-            this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
+            this.DialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
         
@@ -169,7 +175,7 @@ class DataPointEditorController {
         this.savePromise = this.dataPoint.save().then(item => {
             this.setViewValue();
             this.render();
-            this.maDialogHelper.toast(['ui.components.dataPointSaved', this.dataPoint.name || this.dataPoint.xid]);
+            this.DialogHelper.toast(['ui.components.dataPointSaved', this.dataPoint.name || this.dataPoint.xid]);
         }, error => {
             let statusText = error.mangoStatusText;
             
@@ -180,14 +186,14 @@ class DataPointEditorController {
             
             this.errorMessages.push(statusText);
             
-            this.maDialogHelper.errorToast(['ui.components.dataPointSaveError', statusText]);
+            this.DialogHelper.errorToast(['ui.components.dataPointSaveError', statusText]);
         }).finally(() => delete this.savePromise);
     }
     
     saveMultiple() {
         const newPoints = this.MultipleValues.toArray(this.dataPoint, this.points.length);
         
-        this.bulkTask = new this.maPoint.bulk({
+        this.bulkTask = new this.Point.bulk({
             action: 'UPDATE',
             requests: newPoints.map(pt => ({
                 xid: pt.originalId,
@@ -262,14 +268,14 @@ class DataPointEditorController {
 
     deleteItem(event) {
         const notifyName = this.dataPoint.name || this.dataPoint.originalId;
-        this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
+        this.DialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
             this.dataPoint.delete().then(() => {
-                this.maDialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
+                this.DialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
                 this.dataPoint = null;
                 this.setViewValue();
                 this.render();
             }, error => {
-                this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
+                this.DialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
             });
         }, angular.noop);
     }
@@ -280,25 +286,25 @@ class DataPointEditorController {
     
     confirmDiscard(type) {
         if (this.form && this.form.$dirty && this.checkDiscardOption(type)) {
-            return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
+            return this.$window.confirm(this.Translate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
     }
     
     deleteDataPoint(event, item) {
         const notifyName = item.name || item.originalId;
-        this.maDialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
+        this.DialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
             item.delete().then(() => {
-                this.maDialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
+                this.DialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
                 this.queryPoints();
             }, error => {
-                this.maDialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
+                this.DialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
             });
         }, angular.noop);
     }
     
     notifyBulkEditError(error) {
-        this.maDialogHelper.toastOptions({
+        this.DialogHelper.toastOptions({
             textTr: ['ui.app.errorStartingBulkEdit', error.mangoStatusText],
             hideDelay: 10000,
             classes: 'md-warn'
@@ -335,7 +341,7 @@ class DataPointEditorController {
             break;
         }
 
-        this.maDialogHelper.toastOptions(toastOptions);
+        this.DialogHelper.toastOptions(toastOptions);
     }
     
     startFromCsv(csvFile) {
@@ -354,7 +360,7 @@ class DataPointEditorController {
         }
         
         this.bulkTaskPromise = this.$q.resolve().then(() => {
-            this.bulkTask = new this.maPoint.bulk();
+            this.bulkTask = new this.Point.bulk();
             this.bulkTask.setHttpBody(csvFile);
             
             return this.bulkTask.start(this.$scope, {
@@ -367,7 +373,7 @@ class DataPointEditorController {
             this.points = responses.filter(response => {
                 return (response.body && ['CREATE', 'UPDATE'].includes(response.action));
             }).map(response => {
-                const pt = Object.assign(Object.create(this.maPoint.prototype), response.body);
+                const pt = Object.assign(Object.create(this.Point.prototype), response.body);
                 pt.originalId = pt.xid;
                 return pt;
             });

@@ -215,16 +215,17 @@ function dataPointProvider() {
     function dataPointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource, RqlBuilder, RestResource,
             $templateCache, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES) {
 
-        const typesByName = Object.create(null);
         types.forEach(type => {
-            typesByName[type.type] = type;
-            
             // put the templates in the template cache so we can ng-include them
             if (type.template && !type.templateUrl) {
                 type.templateUrl = `dataPointEditor.${type.type}.html`;
                 $templateCache.put(type.templateUrl, type.template);
             }
+            Object.freeze(type);
         });
+        Object.freeze(types);
+        
+        const typesByName = Object.freeze(Util.createMapObject(types, 'type'));
 
         const realtimeUrl = '/rest/v2/realtime';
     
@@ -345,11 +346,11 @@ function dataPointProvider() {
             restResource: DataPointRestResource,
 
             get types() {
-                return Object.freeze(types);
+                return types;
             },
             
             get typesByName() {
-                return Object.freeze(typesByName);
+                return typesByName;
             },
             
             dataTypes: Object.freeze([
