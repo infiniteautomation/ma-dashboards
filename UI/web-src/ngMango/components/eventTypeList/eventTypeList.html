@@ -3,10 +3,10 @@
  --><md-checkbox ng-if="$item.handleable()" ng-click="$event.stopPropagation()" ng-disabled="$context.parent.item && $ctrl.selected.has($context.parent.item.type)"
         ng-init="checked = $ctrl.selectedGetterSetter($item.type)" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude>
     </md-checkbox><!-- no space
- --><md-icon ng-class="$ctrl.alarmLevels[$item.alarmLevel].materialClasses">{{$ctrl.alarmLevels[$item.alarmLevel].materialIcon || 'folder'}}<!-- no space
+ --><md-icon ng-class="$ctrl.alarmLevels[$item.alarmLevel].materialClasses">{{$ctrl.alarmLevels[$item.alarmLevel].materialIcon || $item.icon || 'folder'}}<!-- no space
          --><md-tooltip ng-if="$item.alarmLevel" ma-tr="{{$ctrl.alarmLevels[$item.alarmLevel].translation}}"></md-tooltip></md-icon>
     <span>
-        <span ng-bind="$item.description"></span>
+        <span ng-bind="$item.getDescription()"></span>
         <span ng-if="$item.hasChildren()">(<em ma-tr="ui.app.xSelected" ma-tr-args="[$ctrl.getSelectedCount($item.type)]"></em>)</span>
     </span>
     

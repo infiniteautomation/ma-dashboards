@@ -12,72 +12,29 @@ function eventTypeProvider() {
     this.registerEventTypeOptions = function(options) {
         eventTypeOptions.push(options);
     };
-    
-    class EventTypeOptions {
-        constructor(options) {
-            Object.assign(this, options);
-        }
-
-        groupDescription(eventType) {
-            return '' + eventType;
-        }
-        
-        getSource(eventType) {
-            return eventType.type.source;
-        }
-        
-        group(eventTypes) {
-            if (typeof this.groupBy !== 'function') {
-                return;
-            }
-            
-            return Array.from(eventTypes.reduce((groups, et) => {
-                const source = this.getSource(et);
-                const id = this.groupBy(source);
-                
-                if (groups.has(id)) {
-                    const group = groups.get(id);
-                    group.types.push(et);
-                } else {
-                    groups.set(id, {
-                        source,
-                        description: this.groupDescription(source),
-                        types: [et],
-                        icon: this.icon
-                    });
-                }
-                
-                return groups;
-            }, new Map()).values());
-        }
-        
-        stateParams(eventType) {
-            return null;
-        }
-    }
-    
-    Object.assign(EventTypeOptions.prototype, {
-        orderBy: 'description'
-    });
 
     this.registerEventTypeOptions(['maPoint', function(Point) {
         return {
             typeName: 'DATA_POINT',
-            orderBy: ['type.source.deviceName', 'type.source.name', 'description'],
+            orderBy: ['type.reference1.deviceName', 'type.reference1.name', 'description'],
             icon: 'label',
-            getSource(eventType) {
-                return Object.assign(Object.create(Point.prototype), eventType.type.source);
+            getSource() {
+                if (!this.type.reference1) {
+                    return;
+                }
+                return Object.assign(Object.create(Point.prototype), this.type.reference1);
             },
-            groupBy(source) {
-                return source.id;
-            },
-            groupDescription(source) {
-                return source.formatLabel();
+            getDescription() {
+                if (this.type.reference1 && !this.type.reference2) {
+                    const source = this.getSource();
+                    return source && source.formatLabel() || this.description;
+                }
+                return this.description;
             },
             stateName: 'ui.dataPointDetails',
-            stateParams(source) {
+            stateParams() {
                 return {
-                    pointXid: source.xid
+                    pointXid: this.getSource().xid
                 };
             }
         };
@@ -85,39 +42,26 @@ function eventTypeProvider() {
 
     this.registerEventTypeOptions({
         typeName: 'DATA_SOURCE',
-        orderBy: ['type.source.name', 'description'],
         icon: 'device_hub',
-        groupBy(source) {
-            return source.id;
-        },
-        groupDescription(source) {
-            return source.name;
-        },
         stateName: 'ui.settings.dataSources',
-        stateParams(source) {
+        stateParams() {
             return {
-                xid: source.xid
+                xid: this.getSource().xid
             };
         }
     });
 
     this.registerEventTypeOptions({
         typeName: 'PUBLISHER',
-        orderBy: ['type.source.name', 'description'],
-        icon: 'cloud_upload',
-        groupBy(source) {
-            return source.id;
-        },
-        groupDescription(source) {
-            return source.name;
-        }
+        icon: 'cloud_upload'
     });
 
     this.$get = eventTypeFactory;
 
-    eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', 'maUtil'];
-    function eventTypeFactory(RestResource, RqlBuilder, Util) {
+    eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', 'maUtil', '$filter'];
+    function eventTypeFactory(RestResource, RqlBuilder, Util, $filter) {
 
+        const orderBy = $filter('orderBy');
         const eventTypeOptionsMap = new Map();
         
         /**
@@ -273,11 +217,18 @@ function eventTypeProvider() {
             initialize() {
                 if (this.type) {
                     this.type = new EventType(this.type);
+                    
+                    const options = eventTypeOptionsMap.get(this.type.eventType);
+                    Object.assign(this, options);
                 }
             }
             
             get typeId() {
                 return this.type && this.type.typeId;
+            }
+            
+            set typeId(v) {
+                // do nothing
             }
             
             handleable() {
@@ -303,9 +254,19 @@ function eventTypeProvider() {
                     subType: this.supportsSubtype ? eventType.subType || undefined : null,
                     referenceId1: eventType.referenceId1,
                     referenceId2: eventType.referenceId2
+                }).then(items => {
+                    return orderBy(items, this.orderBy || 'description');
                 });
             }
+
+            getSource() {
+                return this.type.reference2 || this.type.reference1;
+            }
             
+            getDescription() {
+                return this.description;
+            }
+
             static list(eventType, opts = {}) {
                 return this.query(eventType, null, opts);
             }

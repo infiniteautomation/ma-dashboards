@@ -31,7 +31,9 @@ class EventTypeListController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        this.typesPromise = this.EventTypeInfo.list();
+        this.typesPromise = this.EventTypeInfo.list().then(items => {
+            return this.orderBy(items, 'description');
+        });
     }
     
     $onChanges(changes) {
