@@ -1,6 +1,9 @@
 <label ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></label>
-<span ng-if="$ctrl.resolvedDisplayType !== 'image'" ng-style="$ctrl.valueStyle" ng-class="{'ma-point-value-no-value': !$ctrl.displayValue}"
-    class="ma-point-value-value" ng-bind="$ctrl.displayValue || ('ui.app.noValue' | maTr)"></span>
+<span ng-if="$ctrl.resolvedDisplayType !== 'image'" ng-style="$ctrl.valueStyle" ng-class="$ctrl.valueClasses" class="ma-point-value-value">
+    <span ng-if="$ctrl.noValue" ma-tr="ui.app.noValue"></span>
+    <span ng-if="$ctrl.emptyValue" ma-tr="ui.app.emptyValue"></span>
+    <span ng-if="!$ctrl.noValue && !$ctrl.emptyValue" ng-bind="$ctrl.displayValue"></span>
+</span>
 <img ng-if="$ctrl.resolvedDisplayType === 'image'" ng-style="$ctrl.valueStyle" class="ma-point-value-value" ng-src="{{$ctrl.point.value}}" alt="Image point value">
 <span ng-if="$ctrl.point && !$ctrl.point.enabled" class="ma-disabled-text" ma-tr="common.disabled"></span>
 

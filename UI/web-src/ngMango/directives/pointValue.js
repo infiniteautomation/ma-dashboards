@@ -55,6 +55,7 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             }
             
             this.valueStyle = {};
+            this.valueClasses = {};
         }
 
         $onInit() {
@@ -146,10 +147,15 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
     
         updateText() {
             delete this.valueStyle.color;
-            
+
             if (!this.point || this.point.time == null) {
                 this.displayValue = '';
                 this.resolvedDisplayType = this.displayType || 'rendered';
+                
+                this.noValue = this.point && this.point.time == null;
+                this.emptyValue = false;
+                
+                this.updateValueClasses();
                 return;
             }
 
@@ -182,8 +188,15 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             default:
                 this.displayValue = String(this.point.value);
             }
-            
-            
+
+            this.noValue = this.displayValue == null;
+            this.emptyValue = this.displayValue === '';
+            this.updateValueClasses();
+        }
+        
+        updateValueClasses() {
+            this.valueClasses['ma-point-value-no-value'] = this.noValue;
+            this.valueClasses['ma-point-value-empty-value'] = this.emptyValue;
         }
     }
 

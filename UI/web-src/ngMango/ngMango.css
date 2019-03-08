@@ -30,7 +30,8 @@
  */
 
 .ma-disabled-text,
-.ma-point-value-no-value {
+.ma-point-value-no-value,
+.ma-point-value-empty-value {
 	color: #aaa;
 	font-style: italic;
 }
@@ -39,7 +40,8 @@ ma-switch .ma-disabled-text {
   display: none;
 }
 
-.ma-point-disabled .ma-point-value-no-value {
+.ma-point-disabled .ma-point-value-no-value,
+.ma-point-disabled .ma-point-value-empty-value {
 	display: none;
 }
 
