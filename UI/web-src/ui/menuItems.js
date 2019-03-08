@@ -507,6 +507,39 @@ export default [
         menuTr: 'dsEdit.purge.purgeNow'
     },
     {
+        url: '/alarms',
+        name: 'ui.help.alarms',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/alarms.html');
+            }
+        },
+        menuTr: 'ui.dox.alarms'
+    },
+    {
+        url: '/textRenderer',
+        name: 'ui.help.textRenderer',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/textRenderer.html');
+            }
+        },
+        menuTr: 'ui.dox.textRenderer'
+    },
+    {
+        url: '/logging',
+        name: 'ui.help.logging',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/loggingProperties.html');
+            }
+        },
+        menuTr: 'ui.dox.logging'
+    },
+    {
         url: '/view-page/{pageXid}',
         name: 'ui.viewPage',
         template: '<ma-ui-page-view xid="{{pageXid}}" flex layout="column"></ma-ui-page-view>',
