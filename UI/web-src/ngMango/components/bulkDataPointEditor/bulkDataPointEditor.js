@@ -29,7 +29,8 @@ const defaultColumns = [
     {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', selectedByDefault: false},
     {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
     {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', selectedByDefault: false},
-    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false}
+    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false},
+    {name: 'value', label: 'ui.app.pointValue', selectedByDefault: true}
 ];
 
 class BulkDataPointEditorController {
@@ -184,6 +185,7 @@ class BulkDataPointEditorController {
         } else {
             this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
         }
+        this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
     }
 
     clearFilters() {
@@ -456,6 +458,7 @@ class BulkDataPointEditorController {
     }
 
     selectedColumnsChanged() {
+        this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
         this.settings.selectedColumns = this.selectedColumns.map(c => c.name);
         this.saveSettings();
     }

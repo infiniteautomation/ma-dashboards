@@ -78,20 +78,21 @@
                         </md-checkbox>
                     </th>
                     <th md-column ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
-                            md-order-by="{{column.disableSort ? '' : column.name}}">
+                            md-order-by="{{column.disableSort ? '' : column.name}}" ng-if="column.name !== 'value'">
                         <span ma-tr="{{column.label}}"></span>
                     </th>
                     <th md-column ng-repeat="tag in $ctrl.selectedTags track by tag.name"
                             md-order-by="tags.{{tag.name}}">
                         <span ng-bind="tag.label"></span>
                     </th>
+                    <th ma-tr="ui.app.pointValue" ng-if="$ctrl.showPointValueColumn"></th>
                     <th md-column><!-- Spacer for point actions column --></th>
                 </tr>
             </thead>
             <thead ng-if="$ctrl.showFilters" class="ma-filter-header">
                 <tr>
                     <th><!-- Spacer for checkbox column --></th>
-                    <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
+                    <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-if="column.name !== 'value'">
                         <md-input-container md-no-float="true">
                             <input ng-model="column.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
                             <md-button ng-show="!!column.filter" class="ma-input-button md-icon-button" ng-click="column.filter = null; $ctrl.filterChanged()">
@@ -108,6 +109,7 @@
                             </md-button>
                         </md-input-container>
                     </th>
+                    <th ng-if="$ctrl.showPointValueColumn"><!-- Spacer for point value column --></th>
                     <th><!-- Spacer for point actions column --></th>
                 </tr>
             </thead>
@@ -119,12 +121,16 @@
                         </md-checkbox>
                     </td>
 
-                    <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell>
+                    <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell ng-if="column.name !== 'value'">
                         <span ng-class="{'ma-empty-null': $ctrl.getCellValue(point, column.property) == null}" ng-bind="$ctrl.getCellValue(point, column.property) | maDisplayNull"></span>
                     </td>
                     
                     <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell>
                         <span ng-class="{'ma-empty-null': point.tags[tag.name] == null}" ng-bind="point.tags[tag.name] | maDisplayNull"></span>
+                    </td>
+                    
+                    <td md-cell class="ma-point-value" ng-if="$ctrl.showPointValueColumn">
+                        <ma-point-value point="point"></ma-point-value>
                     </td>
                     
                     <td md-cell class="ma-point-actions">
