@@ -1,1 +1,37 @@
-Data sources help
+<!--
+    Copyright (C) 2019 Infinite Automation Systems Inc. All rights reserved.
+    @author Craig Webber
+-->
+
+
+
+
+<div class="ma-help-doc-container">
+    <h1 ma-tr="ui.dox.dataSourcePage"></h1>
+
+    <p>
+        The <a ui-sref="ui.dataSource">Data Sources Page</a> page allows you to create , edit and delete data sources
+        on your system.
+        You can filter the list of data sources by typeing the data source name or data source type in the filter
+        input.
+        Data sources can be enabled/disabled by toggling the switch <img md-whiteframe="5" style="max-width: 400px;"
+            src="./images/Help-ScreenShots-EditMenu-Toggle.png" alt="Help-ScreenShots-DPD-PointOverview" />.
+    </p>
+
+
+    <p>To add a new data source click on the top selection </p>
+    <img src="./images/Help-ScreenShots-newDataSource.png">
+    <p> then selct your data source type from the data
+        source type drop down menu.
+        All poling data source have the option to poll periodically or by a cron pattern. Checking Quantize will cause
+        the
+        data source startup to be delayed so that pollings occur at a "rounded" point in time (e.g. if polling is every
+        10
+        seconds, polls will occur on the 10th second, the 20th second, etc). Otherwise, polling will begin immediately.
+    </p>
+    <p>To edit a data source click on the data source name in the list and their attribues will apear on the right
+        in the edit data source container. Edits will not take effect untill the data sourceis saved.
+        To delete a data source,click on the delete button.
+    </p>
+    <img src="./images/Help-ScreenShots-delete.png">
+</div>

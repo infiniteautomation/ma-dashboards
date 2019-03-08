@@ -125,6 +125,14 @@
                 <span ma-tr="dsEdit.events.alarmLevels"></span>
             </md-tab-label>
             <md-tab-body>
+                    <div class="md-padding ma-no-padding-bottom">
+                    <h3>
+                            <span ma-tr="ui.dox.alarms"></span>
+                            <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.alarms">
+                                <md-icon>help</md-icon>
+                            </md-button>
+                        </h3>
+                    </div>   
                 <div class="md-padding ma-no-padding-bottom">
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
                         <md-input-container flex="100" flex-gt-md="50" ng-repeat="entry in $ctrl.dataSource.eventAlarmLevels track by entry.eventType">
