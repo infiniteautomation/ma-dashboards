@@ -46,8 +46,9 @@
                     <md-menu md-position-mode="target-right bottom" md-offset="0 9" ng-if="!$ctrl.dataSource.isNew()">
                         <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
                             <md-icon md-menu-origin>more_vert</md-icon>
+                            <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
                         </md-button>
-                        <md-menu-content width="4" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
+                        <md-menu-content width="3" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
                             <md-menu-item>
                                 <md-button class="ma-no-padding-right" ng-href="/rest/v2/data-sources/export/{{$ctrl.dataSource.originalId}}" ng-attr-download="{{$ctrl.dataSource.name}}.json">
                                     <div layout="row" flex>

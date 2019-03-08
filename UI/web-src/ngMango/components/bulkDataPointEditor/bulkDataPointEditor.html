@@ -136,22 +136,55 @@
                     <td md-cell class="ma-point-actions">
                         <div layout layout-align="end center">
                             <md-switch ng-model="point.isEnabled" ng-class="{'ma-throb-opacity': point.$enableToggling}" ng-disabled="point.$enableToggling"></md-switch>
-                            <md-button class="md-icon-button" ng-click="$ctrl.editDataPoint($event, point)">
-                                <md-icon>edit</md-icon>
-                                <md-tooltip ma-tr="common.edit"></md-tooltip>
-                            </md-button>
-                            <md-button class="md-icon-button" ng-click="$ctrl.copyDataPoint($event, point)">
-                                <md-icon>content_copy</md-icon>
-                                <md-tooltip ma-tr="common.copy"></md-tooltip>
-                            </md-button>
-                            <md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteDataPoint($event, point)">
-                                <md-icon>delete</md-icon>
-                                <md-tooltip ma-tr="common.delete"></md-tooltip>
-                            </md-button>
-                            <md-button class="md-icon-button" ng-click="$ctrl.eventDetectorPoint = point">
-                                <md-icon>change_history</md-icon>
-                                <md-tooltip ma-tr="ui.eventDetectors.plural"></md-tooltip>
-                            </md-button>
+
+                            <md-menu md-position-mode="target-right bottom" md-offset="0 4">
+                                <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                                    <md-icon md-menu-origin>more_vert</md-icon>
+                                    <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
+                                </md-button>
+                                <md-menu-content width="3" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
+                                    <md-menu-item>
+                                        <md-button class="ma-no-padding-right" ng-click="$ctrl.editDataPoint($event, point)">
+                                            <div layout="row" flex>
+                                                <div flex ma-tr="common.edit"></div>
+                                                <md-icon md-menu-align-target>edit</md-icon>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button class="ma-no-padding-right" ng-click="$ctrl.copyDataPoint($event, point)">
+                                            <div layout="row" flex>
+                                                <div flex ma-tr="common.copy"></div>
+                                                <md-icon md-menu-align-target>content_copy</md-icon>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button class="ma-no-padding-right md-warn" ng-click="$ctrl.deleteDataPoint($event, point)">
+                                            <div layout="row" flex>
+                                                <div flex ma-tr="common.delete"></div>
+                                                <md-icon md-menu-align-target>delete</md-icon>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button class="ma-no-padding-right" ng-click="$ctrl.eventDetectorPoint = point">
+                                            <div layout="row" flex>
+                                                <div flex ma-tr="ui.eventDetectors.plural"></div>
+                                                <md-icon md-menu-align-target>change_history</md-icon>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button class="ma-no-padding-right" ng-href="/rest/v2/data-points/export/{{point.originalId}}" ng-attr-download="{{point.name}}.json">
+                                            <div layout="row" flex>
+                                                <div flex ma-tr="emport.export"></div>
+                                                <md-icon md-menu-align-target>save_alt</md-icon>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
                         </div>
                     </td>
                 </tr>
