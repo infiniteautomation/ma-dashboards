@@ -1,0 +1,22 @@
+img.ma-ui-help{
+    max-width: 400px;
+}
+ul.ma-help-list {
+    list-style-type:none;
+}
+table.ma-ui-help{
+    border:1px solid black; 
+    border-collapse: collapse;
+}
+th.ma-ui-help,td.ma-ui-help{
+    border: 1px solid black; 
+    padding-left: 5px;
+    padding-right:5px; 
+    text-align:center;
+}
+tr.ma-ui-help{
+    border: 1px solid black; 
+}
+tr td:first-child {
+	text-align:left;
+}

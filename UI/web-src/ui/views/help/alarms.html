@@ -15,7 +15,7 @@
 <p>An <b>Alarm</b> is an Event with an alarm level. When your application has (an) unacknowledged alarm(s), you will see
  a flag icon (<i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-information"></i>,) and an associated description (or count) near the center of the header area. 
  The color of the icon(s) will indicate the severity of the alarm(s). The levels of alarm are:</p>
-<ul style="list-style-type:none;">
+<ul class="ma-ui-help">
   <li><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-none"></i>,None</li>
   <li><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-information"></i>, Information</li>
   <li><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-important"></i>, Important</li>
@@ -27,14 +27,14 @@
 <p>There are 2 additional alarm levels that can be used to reduce the visibility of an event instance.  The can be used if visual notification 
 or acknowledgement is un-necessary.  These levels are: </p>
 
-<ul style="list-style-type:none;">
+<ul class="ma-ui-help">
   <li><md-icon class="fa fa-lg ma-alarm-flag md-mangoDark-theme material-icons fa-times-circle ma-alarm-level-do"></md-icon>, Do Not Log</li>
   <li><md-icon class="fa fa-lg ma-alarm-flag md-mangoDark-theme material-icons fa-times ma-alarm-level-ignore" ></md-icon>, Ignore</li>
 </ul>
 
 <p>The events system is <i>user based</i> meaning that only events pertaining to a given user can be seen by that user.  There are 
 4 ways an event can be used:</p>
-<ul style="list-style-type:none;">
+<ul class="ma-ui-help">
   <li><b>User Event Cache</b> is an in memory store of all events per logged in user</li>
   <li><b>Event database table</b> is the persistent store for all logged event instances</li>
   <li><b>Event handling</b> is the application of any handlers to the event instance</li>
@@ -42,83 +42,83 @@ or acknowledgement is un-necessary.  These levels are: </p>
 </ul>
 
 <p>The following describes how an alarm level effects the event instance:</p>
-<table style="border:1px solid black; border-collapse: collapse">
-<tr style="border: 1px solid black">
-	<th style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;">Level</th>
-	<th style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;">User Event Cache</th>
-	<th style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;">Database</th>
-	<th style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;">Handled</th>
-	<th style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;">User Event</th>
+<table class="ma-ui-help">
+<tr class="ma-ui-help">
+	<th class="ma-ui-help">Level</th>
+	<th class="ma-ui-help">User Event Cache</th>
+	<th class="ma-ui-help">Database</th>
+	<th class="ma-ui-help">Handled</th>
+	<th class="ma-ui-help">User Event</th>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-none"></i>, None</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-none"></i>, None</td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-information"></i>, Information</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-information"></i>, Information</td>
+	<td class="ma-ui-help"></th><b>x</b></td>
+	<td class="ma-ui-help"></th><b>x</b></td>
+	<td class="ma-ui-help"></th><b>x</b></td>
+	<td class="ma-ui-help"></th><b>x</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-important"></i>, Important</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-important"></i>, Important</td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-warning"></i>, Warning</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-warning"></i>, Warning</td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-urgent"></i>, Urgent</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-urgent"></i>, Urgent</td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-critical"></i>, Critical</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-critical"></i>, Critical</td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-life-safety"></i>, Safety</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><i class="fa fa-flag ma-alarm-flag fa-lg ma-alarm-level-life-safety"></i>, Safety</td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><md-icon class="fa fa-lg ma-alarm-flag md-mangoDark-theme material-icons fa-times-circle ma-alarm-level-do"></md-icon>, Do Not Log</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><md-icon class="fa fa-lg ma-alarm-flag md-mangoDark-theme material-icons fa-times-circle ma-alarm-level-do"></md-icon>, Do Not Log</td>
+	<td class="ma-ui-help"><b>-</b></td>
+	<td class="ma-ui-help"><b>-</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>-</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><md-icon class="fa fa-lg ma-alarm-flag md-mangoDark-theme material-icons fa-times-circle ma-alarm-level-ignore"></md-icon></i>, Ignore</td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><md-icon class="fa fa-lg ma-alarm-flag md-mangoDark-theme material-icons fa-times-circle ma-alarm-level-ignore"></md-icon></i>, Ignore</td>
+	<td class="ma-ui-help"><b>-</b></td>
+	<td class="ma-ui-help"><b>-</b></td>
+	<td class="ma-ui-help"><b>-</b></td>
+	<td class="ma-ui-help"><b>-</b></td>
 </tr>
-<tr style="border: 1px solid black">
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:left;"><b>Audit</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>-</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
-	<td style="border: 1px solid black; padding-left: 5px; padding-right:5px; text-align:center;"><b>x</b></td>
+<tr class="ma-ui-help">
+	<td class="ma-ui-help"><b>Audit</b></td>
+	<td class="ma-ui-help"><b>-</b></td>
+	<td class="ma-ui-help"><b>-</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
+	<td class="ma-ui-help"><b>x</b></td>
 </tr>
 </table>
 

@@ -507,6 +507,28 @@ export default [
         menuTr: 'dsEdit.purge.purgeNow'
     },
     {
+        url: '/ds-purge-override',
+        name: 'ui.help.dsPurgeOverride',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/dsPurgeOverride.html');
+            }
+        },
+        menuTr: 'ui.dox.dsPurgeOverride'
+    },
+    {
+        url: '/dp-purge-override',
+        name: 'ui.help.dpPurgeOverride',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/dpPurgeOverride.html');
+            }
+        },
+        menuTr: 'ui.dox.dpPurgeOverride'
+    },
+    {
         url: '/alarms',
         name: 'ui.help.alarms',
         resolve: {
