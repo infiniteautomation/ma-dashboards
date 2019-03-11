@@ -36,6 +36,9 @@ class PurgePointValuesController {
     }
     
     $onChanges(changes) {
+        if (changes.cancelAttr) {
+            this.cancel();
+        }
     }
     
     confirmStart(event) {
@@ -75,14 +78,25 @@ class PurgePointValuesController {
             });
         }
         
+        if (typeof this.onPurge === 'function') {
+            this.onPurge({$promise: this.purgePromise});
+        }
+        
         this.purgePromise.then(purgeTask => {
             this.purgeTask = purgeTask;
         }, null, update => {
             this.purgeTask = update;
         }).finally(() => {
-            //delete this.purgeTask;
+            delete this.purgeTask;
             delete this.purgePromise;
         });
+    }
+    
+    cancel() {
+        console.log('cancelled');
+        if (this.purgeTask) {
+            this.pointValues.cancelPurge(this.purgeTask.id);
+        }
     }
 }
 
@@ -92,6 +106,7 @@ export default {
     bindings: {
         dataPoints: '<?points',
         dataSource: '<?source',
-        onPurge: '&?'
+        onPurge: '&?',
+        cancelAttr: '<?cancel'
     }
 };

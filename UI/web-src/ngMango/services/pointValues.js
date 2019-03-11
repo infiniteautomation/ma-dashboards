@@ -359,6 +359,16 @@ function pointValuesProvider() {
                     url: `${pointValuesUrl}/purge/data-sources`,
                     data
                 }).then(result => result.data);
+            },
+            
+            cancelPurge(id) {
+                return $http({
+                    method: 'PUT',
+                    url: `${pointValuesUrl}/purge/${encodeURIComponent(id)}`,
+                    data: {
+                        status: 'CANCELLED'
+                    }
+                }).then(result => result.data);
             }
         };
 

@@ -29,7 +29,14 @@
     <span ng-bind="$ctrl.purgeTask.progress || 0"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.purgeTask.position || 0, $ctrl.purgeTask.maximum || 0]"></span>)
 </div>
 
-<md-button ng-click="$ctrl.confirmStart($event)" class="md-raised md-warn" ng-disabled="$ctrl.purgePromise" ng-class="{'ma-throb-opacity': $ctrl.purgePromise}">
-    <md-icon>delete_forever</md-icon>
-    <span ma-tr="ui.app.pointValuePurge"></span>
-</md-button>
+<div>
+    <md-button ng-click="$ctrl.confirmStart($event)" class="md-raised md-warn" ng-disabled="$ctrl.purgePromise" ng-class="{'ma-throb-opacity': $ctrl.purgePromise}">
+        <md-icon>delete_forever</md-icon>
+        <span ma-tr="ui.app.pointValuePurge"></span>
+    </md-button>
+    
+    <md-button ng-click="$ctrl.cancel($event)" class="md-raised" ng-if="$ctrl.purgePromise">
+        <md-icon>cancel</md-icon>
+        <span ma-tr="common.cancel"></span>
+    </md-button>
+</div>
