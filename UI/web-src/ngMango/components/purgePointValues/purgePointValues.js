@@ -16,11 +16,12 @@ import './purgePointValues.css';
 
 class PurgePointValuesController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maDialogHelper', 'maPointValues']; }
+    static get $inject() { return ['maDialogHelper', 'maPointValues', '$scope']; }
     
-    constructor(DialogHelper, pointValues) {
+    constructor(DialogHelper, pointValues, $scope) {
         this.DialogHelper = DialogHelper;
         this.pointValues = pointValues;
+        this.$scope = $scope;
         
         this.duration = {
             periods: 1,
@@ -36,7 +37,7 @@ class PurgePointValuesController {
     }
     
     $onChanges(changes) {
-        if (changes.cancelAttr) {
+        if (changes.cancelAttr && !changes.cancelAttr.isFirstChange()) {
             this.cancel();
         }
     }
@@ -54,34 +55,20 @@ class PurgePointValuesController {
     }
     
     start() {
-        if (Array.isArray(this.dataPoints) && this.dataPoints.length) {
-            this.purgePromise = this.pointValues.purgeDataPoints({
-                dataPoints: this.dataPoints,
-                purgeAll: this.purgeAll,
-                duration: this.duration,
-                useTimeRange: this.useTimeRange,
-                timeRange: {
-                    from: this.from,
-                    to: this.to
-                }
-            });
-        } else if (this.dataSource) {
-            this.purgePromise = this.pointValues.purgeDataSource({
-                dataSource: this.dataSource,
-                purgeAll: this.purgeAll,
-                duration: this.duration,
-                useTimeRange: this.useTimeRange,
-                timeRange: {
-                    from: this.from,
-                    to: this.to
-                }
-            });
-        }
+        this.purgeTask = new this.pointValues.PurgeTemporaryResource({
+            xids: Array.isArray(this.dataPoints) && this.dataPoints.map(p => p.xid),
+            dataSourceXid: this.dataSource && this.dataSource.xid,
+            purgeAll: this.purgeAll,
+            duration: this.duration,
+            useTimeRange: this.useTimeRange,
+            timeRange: {
+                from: this.from,
+                to: this.to
+            }
+        });
         
-        if (typeof this.onPurge === 'function') {
-            this.onPurge({$promise: this.purgePromise});
-        }
-        
+        this.purgePromise = this.purgeTask.start(this.$scope);
+
         this.purgePromise.then(purgeTask => {
             this.purgeTask = purgeTask;
         }, null, update => {
@@ -93,7 +80,6 @@ class PurgePointValuesController {
     }
     
     cancel() {
-        console.log('cancelled');
         if (this.purgeTask) {
             this.pointValues.cancelPurge(this.purgeTask.id);
         }
