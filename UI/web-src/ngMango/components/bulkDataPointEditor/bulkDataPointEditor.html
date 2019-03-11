@@ -8,11 +8,13 @@
             </md-button>
             <md-button ng-if="!$ctrl.bulkTaskPromise" class="md-raised" ng-disabled="$ctrl.pointsPromise" ng-click="$ctrl.editSelectedPoints($event)">
                 <md-icon>edit</md-icon>
-                <span ma-tr="ui.app.editSelected"></span>
+                <span ma-tr="common.edit"></span>
+                <md-tooltip><span ma-tr="ui.app.editSelectedPoints"></span></md-tooltip>
             </md-button>
             <md-button ng-if="!$ctrl.bulkTaskPromise" class="md-raised md-warn" ng-click="$ctrl.confirmDeleteSelected($event)" ng-disabled="$ctrl.pointsPromise">
                 <md-icon>delete</md-icon>
-                <span ma-tr="ui.app.deleteSelected"></span>
+                <span ma-tr="common.delete"></span>
+                <md-tooltip><span ma-tr="ui.app.deleteSelectedPoints"></span></md-tooltip>
             </md-button>
             <md-button ng-if="$ctrl.bulkTask" class="md-raised md-warn" ng-click="$ctrl.cancel($event)">
                 <md-icon>cancel</md-icon>
