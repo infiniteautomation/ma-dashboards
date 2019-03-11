@@ -62,6 +62,11 @@
                 <md-icon>file_upload</md-icon>
                 <md-tooltip ma-tr="ui.app.uploadCSV"></md-tooltip>
             </md-button>
+            
+            <md-button ng-if="!$ctrl.bulkTaskPromise" class="md-warn md-icon-button" ng-click="$ctrl.confirmPurge($event)" ng-disabled="$ctrl.pointsPromise">
+                <md-icon>delete_forever</md-icon>
+                <md-tooltip><span ma-tr="ui.app.pointValuePurgeForSelectedPoints"></span></md-tooltip>
+            </md-button>
     
             <input style="display:none" type="file" ng-model="dummyFileModel"
                 ma-change="$ctrl.csvFileInputChanged($event)" ng-attr-accept="text/csv,.csv">
@@ -241,6 +246,26 @@
             <md-dialog-content class="ma-bulk-data-point-editor-event-detectors" flex layout="column">
                 <ma-event-detector-layout data-point="$ctrl.eventDetectorPoint" ng-model="$ctrl.eventDetector" on-query="$ctrl.gotDetectors($items)">
                 </ma-event-detector-layout>
+            </md-dialog-content>
+        </md-dialog>
+    </ma-dialog>
+
+    <ma-dialog show-dialog="$ctrl.showPurgeDialogObj" on-hide="$ctrl.cancelPurge()" on-cancel="$ctrl.cancelPurge()">
+        <md-dialog flex="100" flex-gt-sm="60" flex-gt-md="50" flex-gt-lg="40" flex-gt-xl="30">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>
+                        <span ma-tr="ui.app.pointValuePurge"></span>
+                    </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                        <md-icon>close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+    
+            <md-dialog-content class="ma-bulk-data-point-editor-purge md-padding" flex layout="column">
+                <ma-purge-point-values data-points="$ctrl.purgePoints" cancel="$ctrl.cancelPurgeObj"></ma-purge-point-values>
             </md-dialog-content>
         </md-dialog>
     </ma-dialog>

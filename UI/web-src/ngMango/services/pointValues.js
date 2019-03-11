@@ -309,6 +309,56 @@ function pointValuesProvider() {
                 } catch (error) {
                     return $q.reject(error);
                 }
+            },
+
+            /**
+             * Options
+             * 
+             * array<maPoint> dataPoints
+             * boolean purgeAll
+             * object duration: {boolean periods, string type (MINUTES, HOURS)}
+             * boolean useTimeRange
+             * object timeRange: {Date from, Date to}
+             * number expiry
+             * number timeout
+             */
+            purgeDataPoints(options) {
+                const data = Object.assign({}, options);
+                if (Array.isArray(data.dataPoints)) {
+                    data.xids = data.dataPoints.map(p => p.xid);
+                    delete data.dataPoints;
+                }
+                
+                return $http({
+                    method: 'POST',
+                    url: `${pointValuesUrl}/purge/data-points`,
+                    data
+                }).then(result => result.data);
+            },
+
+            /**
+             * Options
+             * 
+             * maDataSource dataSource
+             * boolean purgeAll
+             * object duration: {boolean periods, string type (MINUTES, HOURS)}
+             * boolean useTimeRange
+             * object timeRange: {Date from, Date to}
+             * number expiry
+             * number timeout
+             */
+            purgeDataSource(options) {
+                const data = Object.assign({}, options);
+                if (data.dataSource) {
+                    data.xid = data.dataSource.xid;
+                    delete data.dataSource;
+                }
+                
+                return $http({
+                    method: 'POST',
+                    url: `${pointValuesUrl}/purge/data-sources`,
+                    data
+                }).then(result => result.data);
             }
         };
 

@@ -1,0 +1,35 @@
+<md-button style="float: right" class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.purgeNow">
+    <md-icon>help</md-icon>
+</md-button>
+
+<div>
+    <md-checkbox ng-model="$ctrl.purgeAll">
+        <span ng-if="$ctrl.dataSource" ma-tr="dsEdit.purge.allData"></span>
+        <span ng-if="$ctrl.dataPoints" ma-tr="pointEdit.purge.allDataForPoints"></span>
+    </md-checkbox>
+</div>
+
+<md-radio-group class="ma-margin-bottom-large" ng-if="!$ctrl.purgeAll" ng-model="$ctrl.useTimeRange" layout="row">
+    <md-radio-button ng-value="false"><span ma-tr="pointEdit.purge.olderThan"></span></md-radio-button>
+    <md-radio-button ng-value="true"><span ma-tr="pointEdit.purge.specificTimeRange"></span></md-radio-button>
+</md-radio-group>
+
+<ma-duration-editor ng-if="!$ctrl.purgeAll && !$ctrl.useTimeRange" ng-model="$ctrl.duration" allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']">
+    <ma-periods-label ma-tr="pointEdit.purge.olderThan"></ma-periods-label>
+    <ma-type-label ma-tr="pointEdit.purge.olderThan"></ma-type-label>
+</ma-duration-editor>
+    
+<div layout layout-align="start start" ng-if="!$ctrl.purgeAll && $ctrl.useTimeRange">
+    <mdp-date-picker flex="100" flex-gt-md="50" mdp-placeholder="{{'pointEdit.text.from' | maTr}}" mdp-open-on-click mdp-format="ll" ng-model="$ctrl.from"></mdp-date-picker>
+    <mdp-date-picker flex="100" flex-gt-md="50" mdp-placeholder="{{'pointEdit.text.to' | maTr}}" mdp-open-on-click mdp-format="ll" ng-model="$ctrl.to"></mdp-date-picker>
+</div>
+
+<md-progress-linear ng-if="$ctrl.purgeTask" md-mode="determinate" ng-value="$ctrl.purgeTask.progress"></md-progress-linear>
+<div ng-if="$ctrl.purgeTask" class="ma-text-centered">
+    <span ng-bind="$ctrl.purgeTask.progress || 0"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.purgeTask.position || 0, $ctrl.purgeTask.maximum || 0]"></span>)
+</div>
+
+<md-button ng-click="$ctrl.confirmStart($event)" class="md-raised md-warn" ng-disabled="$ctrl.purgePromise" ng-class="{'ma-throb-opacity': $ctrl.purgePromise}">
+    <md-icon>delete_forever</md-icon>
+    <span ma-tr="ui.app.pointValuePurge"></span>
+</md-button>

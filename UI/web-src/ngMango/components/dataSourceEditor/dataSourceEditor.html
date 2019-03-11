@@ -162,33 +162,6 @@
                             <ma-type-label ma-tr="pointEdit.logging.after"></ma-type-label>
 	                    </ma-duration-editor>
                     </div>
-
-                    <div ng-form="purgeNow" ma-form-exclude>
-                        <h3>
-                            <span ma-tr="dsEdit.purge.purgeNow"></span>
-                            <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.purgeNow">
-                                <md-icon>help</md-icon>
-                            </md-button>
-                        </h3>
-                        
-                        <div>
-                            <md-checkbox ng-init="purgeAll = false" ng-model="purgeAll"><span ma-tr="dsEdit.purge.allData"></span></md-checkbox>
-                        </div>
-                        
-                        <div layout layout-wrap layout-align="start start">
-                            <ma-duration-editor flex="100" flex-gt-md="50" ng-model="purgeNowDuration"
-                                allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" required>
-                                <ma-periods-label ma-tr="dsEdit.purge.olderThan"></ma-periods-label>
-                                <ma-type-label ma-tr="dsEdit.purge.olderThan"></ma-type-label>
-                            </ma-duration-editor>
-                        </div>
-                        
-                        <div>
-                            <md-button class="md-warn" ng-click="$ctrl.purgeNow(purgeAll, purgeNowDuration)">
-                                <md-icon>delete</md-icon> <span ma-tr="dsEdit.purge.purgeNow"></span>
-                            </md-button>
-                        </div>
-                    </div>
                 </div>
             </md-tab-body>
         </md-tab>

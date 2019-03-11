@@ -731,6 +731,29 @@ class BulkDataPointEditorController {
         this.eventDetectorPoint = null;
         this.eventDetector = null;
     }
+
+    confirmPurge(event) {
+        if (!this.selectedPoints.size) {
+            this.maDialogHelper.toastOptions({
+                textTr: ['ui.app.bulkEditNoPointsSelected'],
+                hideDelay: 10000
+            });
+            return;
+        }
+        
+        this.showPurgeDialog();
+    }
+    
+    cancelPurge() {
+        this.cancelPurgeObj = {};
+        delete this.showPurgeDialogObj;
+        delete this.purgePoints;
+    }
+    
+    showPurgeDialog() {
+        this.purgePoints = Array.from(this.selectedPoints.values());
+        this.showPurgeDialogObj = {};
+    }
 }
 
 export default {
