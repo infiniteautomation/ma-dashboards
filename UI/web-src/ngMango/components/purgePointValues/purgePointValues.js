@@ -16,12 +16,13 @@ import './purgePointValues.css';
 
 class PurgePointValuesController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maDialogHelper', 'maPointValues', '$scope']; }
+    static get $inject() { return ['maDialogHelper', 'maPointValues', '$scope', '$timeout']; }
     
-    constructor(DialogHelper, pointValues, $scope) {
+    constructor(DialogHelper, pointValues, $scope, $timeout) {
         this.DialogHelper = DialogHelper;
         this.pointValues = pointValues;
         this.$scope = $scope;
+        this.$timeout = $timeout;
         
         this.duration = {
             periods: 1,
@@ -55,6 +56,11 @@ class PurgePointValuesController {
     }
     
     start() {
+        if (this.timeoutPromise) {
+            this.$timeout.cancel(this.timeoutPromise);
+            delete this.timeoutPromise;
+        }
+        
         this.purgeTask = new this.pointValues.PurgeTemporaryResource({
             xids: Array.isArray(this.dataPoints) && this.dataPoints.map(p => p.xid),
             dataSourceXid: this.dataSource && this.dataSource.xid,
@@ -74,14 +80,18 @@ class PurgePointValuesController {
         }, null, update => {
             this.purgeTask = update;
         }).finally(() => {
-            delete this.purgeTask;
             delete this.purgePromise;
+            
+            this.timeoutPromise = this.$timeout(() => {
+                delete this.purgeTask;
+                delete this.timeoutPromise;
+            }, 10000);
         });
     }
     
     cancel() {
         if (this.purgeTask) {
-            this.pointValues.cancelPurge(this.purgeTask.id);
+            this.purgeTask.cancel();
         }
     }
 }
