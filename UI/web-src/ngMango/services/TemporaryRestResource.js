@@ -63,7 +63,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                         
                         // notify with a copy as the listener as the subscribe callback uses $applyAsync
                         // resulting in a batch of messages being processed at once, we might want to see each progress message separately
-                        tmpResourceDeferred.notify(angular.copy(this));
+                        tmpResourceDeferred.notify(this.copy());
                     }
                 }
             };
