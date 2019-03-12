@@ -26,9 +26,9 @@ class scriptContextController {
     render() {
         this.contextPoints = this.ngModelCtrl.$viewValue;
         
-        if (!this.contextPoints) {
-            this.contextPoints = [];
-        } else if (this.contextPoints.length > 0) {
+        if (Array.isArray(this.contextPoints) && this.contextPoints.length === 0) {
+            this.contextTable = angular.copy(this.contextPoints);
+        } else if (Array.isArray(this.contextPoints) && this.contextPoints.length > 0) {
             this.getPoints();
         }
     }
