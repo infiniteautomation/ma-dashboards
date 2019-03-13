@@ -1,0 +1,45 @@
+<h1 ma-tr="ui.dox.ledIndicator"></h1>
+
+<p>
+    This example illustrates the use of CSS to style a <code>&lt;div&gt;</code> to look like a LED indicator. You can use a point's value
+    to set the background color of the LED indicator or to throb the LED on and off. The CSS classes used to accomplish this are quite simple and are shown
+    below if you wish to modify them (rename the classes and put them in your user stylesheet in <a ui-sref="ui.settings.uiSettings">UI Settings</a>).
+</p>
+
+<pre><code>.ma-led {
+    width: 30px;
+    height: 30px;
+    border: 3px solid lightgrey;
+    border-radius: 50%;
+    background: radial-gradient(rgba(255,255,255,0.5),rgba(0,0,0,0.5));
+}
+
+@keyframes throb-opacity {
+  50% { opacity: 0.5 }
+  100% { opacity: 1 }
+}
+
+.ma-throb-opacity {
+    animation: throb-opacity 1s ease-in-out infinite;
+}</code></pre>
+
+<ma-ui-dual-pane-editor>
+
+<div layout>
+    <md-input-container flex>
+        <label>Choose a binary point</label>
+        <ma-point-list limit="200" ng-model="binaryPoint" query="{dataTypeId: 1, $exact: true}"></ma-point-list>
+    </md-input-container>
+</div>
+
+<div>
+    <ma-point-value point="binaryPoint" label="Point value:"></ma-point-value>
+</div>
+
+<md-checkbox ng-model="throb">Throb LED</md-checkbox>
+
+<div>
+    <div class="ma-led" ng-class="{'ma-throb-opacity': throb}" ng-style="{'background-color': binaryPoint.value ? 'green' : 'red'}"></div>
+</div>
+
+</ma-ui-dual-pane-editor>

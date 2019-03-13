@@ -1434,6 +1434,17 @@ export default [
         menuTr: 'ui.dox.switchImage'
     },
     {
+        name: 'ui.examples.singleValueDisplays.ledIndicator',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/ledIndicator.html');
+            }
+        },
+        url: '/led-indicator',
+        menuTr: 'ui.dox.ledIndicator'
+    },
+    {
         name: 'ui.examples.singleValueDisplays.bars',
         resolve: {
             viewTemplate: function() {
