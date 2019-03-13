@@ -56,6 +56,8 @@ class scriptContextController {
     }
 
     selectContextPoint() {
+        if (!this.contextPoint) return;
+        
         const context = {
             point: this.contextPoint,
             variableName: '',
