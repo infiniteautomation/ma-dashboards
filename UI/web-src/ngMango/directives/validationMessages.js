@@ -21,7 +21,7 @@ function validationMessages(Util) {
                 this.activateTabWithClientError();
             };
             
-            this.ngFormCtrl.$$controls.forEach(control => {
+            this.ngFormCtrl.$getControls().forEach(control => {
                 if (control.$validators) {
                     control.$validators.validationMessage = allwaysValidate;
                 }
@@ -104,9 +104,9 @@ function validationMessages(Util) {
         checkControls(control = this.ngFormCtrl, parentPath = null) {
             const path = !parentPath ? [] : parentPath.concat(Util.splitPropertyName(control.$name, true));
             
-            const isForm = Array.isArray(control.$$controls);
+            const isForm = typeof control.$getControls === 'function';
             if (isForm) {
-                control.$$controls.forEach(child => {
+                control.$getControls().forEach(child => {
                     this.checkControls(child, path);
                 });
             }

@@ -175,8 +175,8 @@ function multipleValuesFactory() {
          * Checks form controls with untouched MultipleValues models are set to valid
          */
         static checkFormValidity(form) {
-            form.$$controls.forEach(control => {
-                if (Array.isArray(control.$$controls)) {
+            form.$getControls().forEach(control => {
+                if (typeof control.$getControls === 'function') {
                     this.checkFormValidity(control);
                 } else if (control.$modelValue instanceof this) {
                     Object.keys(control.$error).forEach(errorName => {

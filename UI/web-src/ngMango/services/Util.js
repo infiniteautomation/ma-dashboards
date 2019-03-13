@@ -900,9 +900,9 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                 return control.$$element[0];
             }
             
-            const isForm = Array.isArray(control.$$controls);
+            const isForm = typeof control.$getControls === 'function';
             if (isForm) {
-                const children = control.$$controls;
+                const children = control.$getControls();
                 for (let i = 0; i < children.length; i++) {
                     const child = children[i];
                     const elem = this.findInputElement(name, child, path);
