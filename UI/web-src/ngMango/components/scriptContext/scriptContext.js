@@ -42,26 +42,17 @@ class scriptContextController {
 
     getPoints() {
         this.contextTable = angular.copy(this.contextPoints);
-
-        this.maPoint.rql({query: this.getRqlQuery()}).$promise.then(points => {
-            this.contextTable.forEach(item => {
-                item.point = points.filter(point =>  point.xid === item[this.getContextVarXidName()] )[0];
-            });
-        });
-    }
-
-    getRqlQuery() {
-        let ids = '';
         
-        this.contextPoints.forEach((point, idx, array) => {
-            if (idx === array.length - 1){ 
-                ids += point[this.getContextVarXidName()];
-            } else {
-                ids += point[this.getContextVarXidName()] + ',';
-            }
-        });
-
-        return '&in(xid' + (ids ? ',' + ids : '') +')';
+        const xidProp = this.getContextVarXidName();
+        
+        return this.maPoint.buildQuery()
+            .in('xid', this.contextPoints.map(p => p[xidProp]))
+            .query()
+            .then(points => {
+                this.contextTable.forEach(item => {
+                    item.point = points.find(point =>  point.xid === item[xidProp]);
+                });
+            });
     }
 
     selectContextPoint() {
