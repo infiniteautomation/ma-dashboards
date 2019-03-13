@@ -156,11 +156,14 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
                             if (index >= 0) {
                                 if (!filterMatches || eventType === 'delete') {
                                     array.splice(index, 1);
+                                    return true;
                                 } else if (eventType === 'update' || eventType === 'create') {
                                     Object.assign(array[index], item);
+                                    return true;
                                 }
                             } else if (filterMatches && (eventType === 'update' || eventType === 'create')) {
                                 array.push(item);
+                                return true;
                             }
                         }
                     };
