@@ -363,7 +363,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             return;
         }
         
-        if ($state.includes('ui')) {
+        if ($state.includes('ui') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }
         
@@ -434,11 +434,28 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 
     // this event is fired after all the elements are compiled and in the DOM
     $rootScope.$on('$viewContentAnimationEnded', event => {
-        /*
         // we dont get the view name for this event, get it from where we stored it in $viewName
         const view = event.targetScope.$viewName;
-        */
 
+        if (view === '@ui') {
+            if ($mdMedia('gt-sm')) {
+                const uiPrefs = localStorageService.get('uiPreferences');
+                if (!uiPrefs || !uiPrefs.menuClosed) {
+                    $rootScope.openMenu();
+                }
+            }
+            
+            // ensure the sidenav is in in the DOM (it should be)
+            if (document.querySelector('[md-component-id=left]')) {
+                // the closeMenu() function already does this but we need this for when the ESC key is pressed
+                // which just calls $mdSidenav(..).close();
+                $mdSidenav('left').onClose(() => {
+                    $rootScope.navLockedOpen = false;
+                });
+            }
+
+        }
+        
         const mainContent = document.querySelector('.main-content');
         if (mainContent) {
             mainContent.scrollTop = 0;
@@ -455,21 +472,57 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     });
 
+    // automatically open or close the menu when the screen size is changed
+    $rootScope.$watch($mdMedia.bind($mdMedia, 'gt-sm'), (gtSm, prev) => {
+        if (gtSm === prev) return; // ignore first "change"
+        if (!$state.includes('ui')) return; // nothing to do if menu not visible
+        
+        const sideNav = $mdSidenav('left');
+        const uiPrefs = localStorageService.get('uiPreferences') || {};
+        
+        // window expanded
+        if (gtSm && !uiPrefs.menuClosed && !sideNav.isOpen()) {
+            $rootScope.openMenu();
+        }
+        // window made smaller
+        if (!gtSm && sideNav.isOpen()) {
+            $rootScope.closeMenu();
+        }
+    });
+    
+    $rootScope.toggleMenu = function() {
+        const sideNav = $mdSidenav('left');
+        const uiPrefs = localStorageService.get('uiPreferences') || {};
+        
+        if (sideNav.isOpen()) {
+            uiPrefs.menuClosed = true;
+            this.closeMenu();
+        } else {
+            uiPrefs.menuClosed = false;
+            this.openMenu();
+        }
+        
+        // we dont update the preferences when on a small screen as the nav is never locked open or closed
+        if ($mdMedia('gt-sm')) {
+            localStorageService.set('uiPreferences', uiPrefs);
+        }
+        angular.element('#menu-button').blur();
+    };
+
     $rootScope.closeMenu = function() {
+        $rootScope.navLockedOpen = false;
         if ($state.includes('ui')) {
             $mdSidenav('left').close();
         }
     };
 
-    $rootScope.openMenu = function(touched) {
-        if (touched) {
-            this.touchOpenedMenu = true;
+    $rootScope.openMenu = function() {
+        if ($mdMedia('gt-sm')) {
+            $rootScope.navLockedOpen = true;
         }
-        
         if ($state.includes('ui')) {
             $mdSidenav('left').open();
         }
-        //angular.element('#menu-button').blur();
     };
     
     if (User.current && User.current.admin) {

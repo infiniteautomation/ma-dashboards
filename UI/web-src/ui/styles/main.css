@@ -111,15 +111,6 @@ md-menu-content.right-icons md-icon {
 
 /* Dashboard menu */
 
-.ma-left-open-menu-bar {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	width: 5px;
-	z-index: 59; /* one less than the side bar */
-}
-
 .ma-ui-menu-link md-icon,
 .ma-ui-menu-toggle md-icon {
   min-height: 0;
