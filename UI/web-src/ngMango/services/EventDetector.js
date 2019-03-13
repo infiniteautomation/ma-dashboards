@@ -3,14 +3,23 @@
  * @author Jared Wiltshire
  */
 
-import multistateState from '../components/eventDetectorEditor/detectorTypes/multistateState.html';
+import multistateStateTemplate from '../components/eventDetectorEditor/detectorTypes/multistateState.html';
+import pointChangeTemplate from '../components/eventDetectorEditor/detectorTypes/pointChange.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
         {
+            type: 'POINT_CHANGE',
+            description: 'pointEdit.detectors.change',
+            template: pointChangeTemplate,
+            pointEventDetector: true,
+            hasDuration: false,
+            dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC'])
+        },
+        {
             type: 'MULTISTATE_STATE',
             description: 'pointEdit.detectors.state',
-            template: multistateState,
+            template: multistateStateTemplate,
             pointEventDetector: true,
             hasDuration: true,
             dataTypes: new Set(['MULTISTATE'])
@@ -57,6 +66,8 @@ function eventDetectorProvider() {
         }
         
     	const defaultProperties = {
+	        detectorType: 'POINT_CHANGE',
+	        alarmLevel: 'NONE'
     	};
     
         class EventDetector extends RestResource {

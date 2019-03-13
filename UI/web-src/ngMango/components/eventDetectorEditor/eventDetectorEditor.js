@@ -15,9 +15,12 @@ import './eventDetectorEditor.css';
 
 class EventDetectorEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse', 'MA_TIME_PERIOD_TYPES']; }
+    static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
+        'MA_TIME_PERIOD_TYPES', 'maEvents']; }
     
-    constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse, MA_TIME_PERIOD_TYPES) {
+    constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
+            MA_TIME_PERIOD_TYPES, maEvents) {
+        
         this.maEventDetector = maEventDetector;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
@@ -32,6 +35,8 @@ class EventDetectorEditorController {
         if ($attrs.hasOwnProperty('dynamicHeight')) {
             this.dynamicHeight = $parse($attrs.dynamicHeight)($scope.$parent);
         }
+
+        this.alarmLevels = maEvents.levels.slice();
     }
     
     $onInit() {

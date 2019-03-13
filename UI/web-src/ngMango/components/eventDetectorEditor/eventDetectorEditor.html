@@ -38,6 +38,20 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
                             </div>
                         </md-input-container>
+
+                        <md-input-container flex="100">
+                            <label ma-tr="ui.app.alarmLvl"></label>
+                            <md-select name="alarmLevel" ng-model="$ctrl.eventDetector.alarmLevel" required>
+                                <md-option ng-repeat="level in $ctrl.alarmLevels track by level.key" ng-value="level.key">
+                                    <md-icon ng-class="level.materialClasses">{{level.materialIcon}}</md-icon>
+                                    <span ma-tr="{{level.translation}}"></span>
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="$ctrl.form.alarmLevel.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.alarmLevel.validationMessage"></div>
+                            </div>
+                        </md-input-container>
                     </div>
                 </div>
             </md-tab-body>
