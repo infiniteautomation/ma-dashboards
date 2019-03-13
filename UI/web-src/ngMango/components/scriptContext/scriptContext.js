@@ -56,18 +56,24 @@ class scriptContextController {
     }
 
     selectContextPoint() {
-        if (!this.contextPoint) return;
+        const addedPoint = this.contextPoint;
+        const xidProp = this.getContextVarXidName();
         
-        const context = {
+        // dont allow duplicate xids in table
+        if (!addedPoint || this.contextTable.some(c => c[xidProp] === addedPoint.xid)) {
+            this.contextPoint = null;
+            return;
+        }
+
+        this.contextTable.push({
             point: this.contextPoint,
             variableName: '',
-            contextUpdate: false
-        };
-
-        context[this.getContextVarXidName()] = this.contextPoint.xid;
-
-        this.contextTable.push(context);
+            contextUpdate: false,
+            [xidProp]: addedPoint.xid
+        });
+        
         this.setViewValue();
+        this.contextPoint = null;
     }
 
     deleteContextPoint(point) {

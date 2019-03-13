@@ -1,7 +1,3 @@
-<div flex="100">
-    <ma-filtering-point-list auto-init="false" label="Additional context" name="contextPoint" ng-change="$ctrl.selectContextPoint()" ng-model="$ctrl.contextPoint"></ma-filtering-point-list>
-</div>
-
 <md-table-container flex="100" ng-if="$ctrl.contextTable.length > 0">
     <table md-table>
         <thead md-head>
@@ -40,3 +36,7 @@
         </tbody>
     </table>
 </md-table-container>
+
+<div flex="100">
+    <ma-filtering-point-list auto-init="false" label="Additional context" name="contextPoint" ng-change="$ctrl.selectContextPoint()" ng-model="$ctrl.contextPoint"></ma-filtering-point-list>
+</div>
