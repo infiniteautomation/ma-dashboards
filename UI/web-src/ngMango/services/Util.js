@@ -33,8 +33,15 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
     const ENCODED_STATE_PARAM_NULL = 'null';
     
     /* Extend jQuery lite / angular.element with some handy functions */
-    const jqueryFns = angular.element.fn;
-    jqueryFns.maMatch = function maMatch(selector) {
+    const jQuery = angular.element;
+    
+    if (jQuery.event && typeof jQuery.event.addProp === 'function') {
+        jQuery.event.addProp('wheelDelta', function(event) {
+            return event.wheelDelta;
+        });
+    }
+    
+    jQuery.fn.maMatch = function maMatch(selector) {
         const elements = [];
         for (let e of this) {
             if (e instanceof Element && e.matches(selector)) {
@@ -44,7 +51,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         return this.constructor(elements);
     };
 
-    jqueryFns.maFind = function maFind(selector) {
+    jQuery.fn.maFind = function maFind(selector) {
         const elements = Array.from(this.maMatch('selector'));
         for (let e of this) {
             if (e instanceof Element) {
@@ -55,7 +62,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         return this.constructor(elements);
     };
 
-    jqueryFns.maHasFocus = function maHasFocus() {
+    jQuery.fn.maHasFocus = function maHasFocus() {
         const activeElement = $document[0].activeElement;
         if (!activeElement) return false;
 
@@ -68,7 +75,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         return false;
     };
 
-    jqueryFns.maClick = function maClick() {
+    jQuery.fn.maClick = function maClick() {
         for (let e of this) {
             if (e instanceof Element) {
                 e.click();
