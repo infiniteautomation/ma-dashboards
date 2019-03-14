@@ -90,6 +90,8 @@ class EventDetectorEditorController {
         if (this.eventDetector && this.eventDetector.isNew()) {
             this.activeTab = 0;
         }
+        
+        this.typeChanged();
 
         if (this.form) {
             this.form.$setPristine();
@@ -158,6 +160,10 @@ class EventDetectorEditorController {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
+    }
+    
+    typeChanged() {
+        this.detectorType = this.eventDetector && this.detectorTypesByName[this.eventDetector.detectorType];
     }
 }
 

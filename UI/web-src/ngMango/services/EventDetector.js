@@ -4,14 +4,12 @@
  */
 
 import multistateStateTemplate from '../components/eventDetectorEditor/detectorTypes/multistateState.html';
-import pointChangeTemplate from '../components/eventDetectorEditor/detectorTypes/pointChange.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
         {
             type: 'POINT_CHANGE',
             description: 'pointEdit.detectors.change',
-            template: pointChangeTemplate,
             pointEventDetector: true,
             hasDuration: false,
             dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC'])
@@ -41,7 +39,7 @@ function eventDetectorProvider() {
     function eventDetectorFactory(RestResource, $injector, $q, $templateCache, Point) {
     
         const eventDetectorBaseUrl = '/rest/v2/full-event-detectors';
-        const eventDetectorWebSocketUrl = '/rest/v1/websocket/event-detectors';
+        const eventDetectorWebSocketUrl = '/rest/v2/websocket/full-event-detectors';
         const eventDetectorXidPrefix = 'ED_';
         
         const eventDetectorTypesByName = Object.create(null);
