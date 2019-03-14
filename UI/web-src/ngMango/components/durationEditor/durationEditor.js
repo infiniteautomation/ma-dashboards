@@ -33,6 +33,11 @@ class DurationEditorController {
                 this.types = [];
             }
         }
+        
+        // work around for https://github.com/angular/material/issues/11679
+        if (changes.requiredAttr) {
+            this.required = this.requiredAttr;
+        }
     }
     
     inputChanged() {
@@ -49,7 +54,7 @@ export default {
     controller: DurationEditorController,
     bindings: {
         allowedTypes: '<?',
-        required: '@?',
+        requiredAttr: '@?required',
         disabled: '@?'
     },
     require: {
