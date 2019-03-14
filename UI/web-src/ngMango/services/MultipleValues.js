@@ -114,6 +114,8 @@ function multipleValuesFactory() {
                         multiple = dstValue;
                     } else if (dstValue != null && typeof dstValue === 'object') {
                         // previously encountered this key as an object/array, wont override this with a MultipleValues of a primitive
+                        // instead merge an empty object in
+                        dst[key] = this.combineInto(dstValue, Array.isArray(dstValue) ? [] : {}, index);
                         return;
                     } else {
                         dst[key] = multiple = new this(index);
