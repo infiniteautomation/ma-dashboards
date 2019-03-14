@@ -371,10 +371,11 @@ function dataPointProvider() {
             ]),
             
             intervalLoggingValueTypes: Object.freeze([
-                {type: 'INSTANT', translation: 'pointEdit.logging.valueType.instant'},
-                {type: 'MAXIMUM', translation: 'pointEdit.logging.valueType.maximum'},
-                {type: 'MINIMUM', translation: 'pointEdit.logging.valueType.minimum'},
-                {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average'}
+                {type: 'INSTANT', translation: 'pointEdit.logging.valueType.instant', dataTypes: new Set(['BINARY', 'ALPHANUMERIC', 'MULTISTATE', 'NUMERIC',
+                    'IMAGE'])},
+                {type: 'MAXIMUM', translation: 'pointEdit.logging.valueType.maximum', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])},
+                {type: 'MINIMUM', translation: 'pointEdit.logging.valueType.minimum', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])},
+                {type: 'AVERAGE', translation: 'pointEdit.logging.valueType.average', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])}
             ]),
             
             textRendererTypes: Object.freeze([
