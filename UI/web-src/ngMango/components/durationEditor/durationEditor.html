@@ -4,7 +4,7 @@
         <label ng-transclude="periodsLabel"><span ma-tr="ui.app.timePeriods"></span></label>
         <input name="{{$ctrl.ngModelCtrl.$name}}.periods" ng-model="$ctrl.duration.periods" ng-change="$ctrl.inputChanged()"
             ma-form-exclude="parent" ma-get-ctrl="periods = $ngModel"
-            ng-attr-required="{{$ctrl.required}}" type="number" step="1" min="1" ng-disabled="$ctrl.disabled">
+            ng-required="$ctrl.required" type="number" step="1" min="1" ng-disabled="$ctrl.disabled">
         <div ng-messages="periods.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
@@ -16,7 +16,7 @@
         <label ng-transclude="typeLabel"><span ma-tr="ui.app.timePeriodType"></span></label>
         <md-select name="{{$ctrl.ngModelCtrl.$name}}.type" ng-model="$ctrl.duration.type" ng-change="$ctrl.inputChanged()"
                 ma-form-exclude="parent" ma-get-ctrl="type = $ngModel"
-                ng-attr-required="{{$ctrl.required}}" ng-disabled="$ctrl.disabled">
+                ng-required="$ctrl.required" ng-disabled="$ctrl.disabled">
             <md-option ng-if="$ctrl.duration.type.hasMultipleValues()" ng-value="$ctrl.duration.type">
                 <em ng-bind="$ctrl.duration.type"></em>
             </md-option>
