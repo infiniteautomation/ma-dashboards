@@ -73,6 +73,10 @@ class EventDetectorListController {
     
     render() {
         this.selected = this.ngModelCtrl.$viewValue;
+        
+        if (this.selected === null) {
+            this.newEventDetector();
+        }
     }
     
     selectEventDetector(eventDetector) {
@@ -88,11 +92,10 @@ class EventDetectorListController {
     }
     
     newEventDetector(event) {
-        this.selected = new this.EventDetector();
         if (this.dataPoint) {
-            this.selected.sourceTypeName = 'DATA_POINT';
-            this.selected.dataPoint = this.dataPoint;
-            this.selected.sourceId = this.dataPoint.id;
+            this.selected = this.EventDetector.forDataPoint(this.dataPoint);
+        } else {
+            this.selected = new this.EventDetector();
         }
         this.setViewValue();
     }

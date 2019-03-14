@@ -164,9 +164,9 @@ class DataPointDetailsController {
     
     openDetectorDialog(detector) {
         this.showDetectorDialog = {};
-        this.eventDetector = detector || this.eventDetectors[0] || this.EventDetector.forDataPoint(this.dataPoint);
+        this.eventDetector = detector || this.eventDetectors[0] || null;
         this.$state.params.detectorId = null;
-        this.$state.params.detectorXid = this.eventDetector.getOriginalId() || null;
+        this.$state.params.detectorXid = this.eventDetector && this.eventDetector.getOriginalId() || null;
         this.stateGo();
     }
     
