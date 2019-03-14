@@ -129,7 +129,7 @@
                             </md-checkbox>
                         </div>
 
-                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useRenderedUnit">
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useRenderedUnit == true">
                             <md-icon>straighten</md-icon>
                             <label ma-tr="pointEdit.props.renderedUnit"></label>
                             <input name="renderedUnit" ng-model="$ctrl.dataPoint.renderedUnit">
@@ -139,7 +139,7 @@
                             </div>
                         </md-input-container>
                         
-                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useIntegralUnit">
+                        <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useIntegralUnit == true">
                             <md-icon>straighten</md-icon>
                             <label ma-tr="pointEdit.props.integralUnit"></label>
                             <input name="integralUnit" ng-model="$ctrl.dataPoint.integralUnit">
@@ -306,7 +306,7 @@
                         <md-checkbox name="purgeOverride" ng-model="$ctrl.dataPoint.purgeOverride"><span ma-tr="pointEdit.logging.purgeOverride"></span></md-checkbox>
                     </div>
                     
-                    <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataPoint.purgeOverride">
+                    <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataPoint.purgeOverride == true">
                         <ma-duration-editor flex="100" flex-gt-md="50" name="purgePeriod" ng-model="$ctrl.dataPoint.purgePeriod"
 	                           allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" required>
                             <ma-periods-label ma-tr="pointEdit.logging.after"></ma-periods-label>
