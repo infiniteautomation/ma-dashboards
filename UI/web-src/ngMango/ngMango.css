@@ -763,6 +763,20 @@ md-menu-item > .md-button.ma-no-padding-left {
 	margin-top: 20px;
 }
 
+.ma-checkbox-messages {
+	margin-top: -16px;
+	margin-bottom: 16px;
+	margin-left: 30px;
+	font-size: 1.2rem;
+}
+
+.ma-switch-messages {
+	margin-top: -24px;
+	margin-bottom: 16px;
+	margin-left: 44px;
+	font-size: 1.2rem;
+}
+
 /* small icon button with less padding */
 .md-button.md-icon-button.ma-small-button {
 	padding: 4px;
