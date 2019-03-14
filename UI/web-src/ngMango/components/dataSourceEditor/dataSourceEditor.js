@@ -130,8 +130,7 @@ class DataSourceEditorController {
             let statusText = error.mangoStatusText;
             
             if (error.status === 422) {
-                statusText = error.mangoStatusTextShort;
-                this.validationMessages = error.data.validationMessages;
+                this.validationMessages = error.data.result.messages;
             }
             
             this.maDialogHelper.errorToast(['ui.components.dataSourceSaveError', statusText]);
