@@ -20,7 +20,8 @@
         </md-toolbar>
     
         <md-card-content flex layout layout-align="start center" ng-if="!$ctrl.$mdMedia('gt-md')">
-            <ma-data-source-list class="ma-data-source-list" flex layout ng-model="$ctrl.dataSource" ng-change="$ctrl.dataSourceChanged()" show-new="true"></ma-data-source-list>
+            <ma-data-source-list class="ma-data-source-list" flex layout ng-model="$ctrl.dataSource" ng-change="$ctrl.dataSourceChanged()"
+                show-new="true" auto-init="false"></ma-data-source-list>
         </md-card-content>
         
         <md-input-container class="ma-filter" md-no-float ng-if="$ctrl.$mdMedia('gt-md')">
