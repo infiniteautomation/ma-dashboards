@@ -836,6 +836,9 @@ export default [
     },
     {
         name: 'ui.settings.system.http',
+        params: {
+            helpPage: 'ui.help.httpSettings'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -847,7 +850,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/http',
+        name: 'ui.help.httpSettings',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/httpSettings.html');
+            }
+        },
+        menuTr: 'systemSettings.httpSettings'
+    },
+    {
         name: 'ui.settings.system.httpServer',
+        params: {
+            helpPage: 'ui.help.httpServerSettings'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -857,6 +874,17 @@ export default [
         url: '/http-server',
         menuTr: 'systemSettings.httpServerSettings',
         menuHidden: true
+    },
+    {
+        url: '/http-server',
+        name: 'ui.help.httpServerSettings',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/httpServerSettings.html');
+            }
+        },
+        menuTr: 'systemSettings.httpServerSettings'
     },
     {
         name: 'ui.settings.system.password',
