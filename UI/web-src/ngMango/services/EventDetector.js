@@ -43,28 +43,42 @@ function eventDetectorProvider() {
             description: 'pointEdit.detectors.analogChange',
             template: analogChangeTemplate,
             pointEventDetector: true,
-            dataTypes: new Set(['NUMERIC'])
+            dataTypes: new Set(['NUMERIC']),
+            defaultProperties: {
+                checkIncrease: true,
+                checkDecrease: true,
+                updateEvent: 'CHANGES_ONLY'
+            }
         },
         {
             type: 'HIGH_LIMIT',
             description: 'pointEdit.detectors.highLimit',
             template: highLimitTemplate,
             pointEventDetector: true,
-            dataTypes: new Set(['NUMERIC'])
+            dataTypes: new Set(['NUMERIC']),
+            defaultProperties: {
+                notHigher: false
+            }
         },
         {
             type: 'LOW_LIMIT',
             description: 'pointEdit.detectors.lowLimit',
             template: lowLimitTemplate,
             pointEventDetector: true,
-            dataTypes: new Set(['NUMERIC'])
+            dataTypes: new Set(['NUMERIC']),
+            defaultProperties: {
+                notLower: false
+            }
         },
         {
             type: 'RANGE',
             description: 'pointEdit.detectors.range',
             template: analogRangeTemplate,
             pointEventDetector: true,
-            dataTypes: new Set(['NUMERIC'])
+            dataTypes: new Set(['NUMERIC']),
+            defaultProperties: {
+                withinRange: false
+            }
         },
         {
             type: 'BINARY_STATE',
@@ -111,7 +125,10 @@ function eventDetectorProvider() {
             description: 'pointEdit.detectors.smoothness',
             template: smoothnessTemplate,
             pointEventDetector: true,
-            dataTypes: new Set(['NUMERIC'])
+            dataTypes: new Set(['NUMERIC']),
+            defaultProperties: {
+                boxcar: 3
+            }
         },
         {
             type: 'STATE_CHANGE_COUNT',

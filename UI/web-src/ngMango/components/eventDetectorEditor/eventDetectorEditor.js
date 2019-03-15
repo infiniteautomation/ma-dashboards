@@ -164,6 +164,9 @@ class EventDetectorEditorController {
     
     typeChanged() {
         this.detectorType = this.eventDetector && this.detectorTypesByName[this.eventDetector.detectorType];
+        if (this.detectorType && this.detectorType.defaultProperties) {
+            Object.assign(this.eventDetector, this.detectorType.defaultProperties);
+        }
     }
 }
 
