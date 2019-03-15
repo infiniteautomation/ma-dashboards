@@ -9,6 +9,7 @@ import alphanumericStateTemplate from '../components/eventDetectorEditor/detecto
 import analogChangeTemplate from '../components/eventDetectorEditor/detectorTypes/analogChange.html';
 import highLimitTemplate from '../components/eventDetectorEditor/detectorTypes/highLimit.html';
 import lowLimitTemplate from '../components/eventDetectorEditor/detectorTypes/lowLimit.html';
+import analogRangeTemplate from '../components/eventDetectorEditor/detectorTypes/analogRange.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -56,6 +57,7 @@ function eventDetectorProvider() {
         {
             type: 'RANGE',
             description: 'pointEdit.detectors.range',
+            template: analogRangeTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['NUMERIC'])
         },

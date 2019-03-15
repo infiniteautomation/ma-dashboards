@@ -1,0 +1,34 @@
+<md-radio-group name="withinRange" ng-model="$ctrl.eventDetector.withinRange" required layout
+        class="ma-margin-bottom" md-colors="$ctrl.form.$submitted && $ctrl.form.withinRange.$invalid ? {color: 'warn-A700'} : {}">
+    <md-radio-button ng-value="false"><span ma-tr="pointEdit.detectors.outsideRange"></span></md-radio-button>
+    <md-radio-button ng-value="true"><span ma-tr="pointEdit.detectors.withinRange"></span></md-radio-button>
+</md-radio-group>
+
+<div ng-messages="$ctrl.form.withinRange.$error" class="ma-small-text" md-colors="::{color: 'warn-A700'}">
+    <div ng-message="required" ma-tr="ui.app.required"></div>
+    <div ng-message="validationMessage" ng-bind="$ctrl.form.withinRange.validationMessage"></div>
+</div>
+
+<div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="pointEdit.detectors.rangeLow"></label>
+        <input name="low" ng-model="$ctrl.eventDetector.low" type="number" required>
+        <div ng-messages="$ctrl.form.low.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.low.validationMessage"></div>
+        </div>
+    </md-input-container>
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="pointEdit.detectors.rangeHigh"></label>
+        <input name="high" ng-model="$ctrl.eventDetector.high" type="number" required>
+        <div ng-messages="$ctrl.form.high.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.high.validationMessage"></div>
+        </div>
+    </md-input-container>
+    <ma-duration-editor flex="100" flex-gt-md="50" name="duration" ng-model="$ctrl.eventDetector.duration"
+            allowed-types="::['SECONDS', 'MINUTES', 'HOURS', 'DAYS']">
+        <ma-periods-label ma-tr="pointEdit.detectors.duration"></ma-periods-label>
+        <ma-type-label ma-tr="pointEdit.detectors.durationUnit"></ma-type-label>
+    </ma-duration-editor>
+</div>
