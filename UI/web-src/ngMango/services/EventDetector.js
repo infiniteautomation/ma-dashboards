@@ -4,6 +4,8 @@
  */
 
 import multistateStateTemplate from '../components/eventDetectorEditor/detectorTypes/multistateState.html';
+import regexStateTemplate from '../components/eventDetectorEditor/detectorTypes/regexState.html';
+import alphanumericStateTemplate from '../components/eventDetectorEditor/detectorTypes/alphanumericState.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -16,12 +18,14 @@ function eventDetectorProvider() {
         {
             type: 'ALPHANUMERIC_REGEX_STATE',
             description: 'pointEdit.detectors.regexState',
+            template: regexStateTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['ALPHANUMERIC'])
         },
         {
             type: 'ALPHANUMERIC_STATE',
             description: 'pointEdit.detectors.state',
+            template: alphanumericStateTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['ALPHANUMERIC'])
         },
