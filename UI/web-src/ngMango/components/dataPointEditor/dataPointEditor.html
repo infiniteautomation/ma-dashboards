@@ -7,6 +7,12 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
+                        <h3>
+                                <span ma-tr="ui.dox.dataPoint"></span>
+                                <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.dataPointProperties">
+                                    <md-icon>help</md-icon>
+                                </md-button>
+                        </h3>
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>settings</md-icon>
@@ -104,7 +110,7 @@
                                 <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.tags">
                                     <md-icon>help</md-icon>
                                 </md-button>
-                            </h3>
+                        </h3>
                     <ma-data-point-tags-editor name="tags" ng-model="$ctrl.dataPoint.tags"></ma-data-point-tags-editor>
                 </div>
             </md-tab-body>

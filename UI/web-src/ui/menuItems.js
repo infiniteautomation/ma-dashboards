@@ -562,6 +562,50 @@ export default [
         menuTr: 'ui.dox.logging'
     },
     {
+        url: '/tags',
+        name: 'ui.help.tags',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/tags.html');
+            }
+        },
+        menuTr: 'ui.dox.tags'
+    },
+    {
+        url: '/pointProperties',
+        name: 'ui.help.pointProperties',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/pointProperties.html');
+            }
+        },
+        menuTr: 'ui.dox.pointProperties'
+    },
+    {
+        url: '/chartRenderer',
+        name: 'ui.help.chartRenderer',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/charRendererProperties.html');
+            }
+        },
+        menuTr: 'ui.dox.chartRenderer'
+    },
+    {
+        url: '/dataPointProperties',
+        name: 'ui.help.dataPointProperties',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/dataPointProperties.html');
+            }
+        },
+        menuTr: 'ui.dox.dataPoint'
+    },
+    {
         url: '/view-page/{pageXid}',
         name: 'ui.viewPage',
         template: '<ma-ui-page-view xid="{{pageXid}}" flex layout="column"></ma-ui-page-view>',
@@ -750,6 +794,9 @@ export default [
     },
     {
         name: 'ui.settings.system.systemInformation',
+        params: {
+            helpPage: 'ui.help.systemInformation'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -761,7 +808,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/system-information',
+        name: 'ui.help.systemInformation',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/systemInformation.html');
+            }
+        },
+        menuTr: 'systemSettings.systemInformation'
+    },
+    {
         name: 'ui.settings.system.siteAnalytics',
+        params: {
+            helpPage: 'ui.help.siteAnalytics'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -773,7 +834,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/site-analytics',
+        name: 'ui.help.siteAnalytics',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/siteAnalytics.html');
+            }
+        },
+        menuTr: 'systemSettings.siteAnalytics' 
+    },
+    {
         name: 'ui.settings.system.language',
+        params: {
+            helpPage: 'ui.help.language'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -785,7 +860,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/language',
+        name: 'ui.help.language',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/language.html');
+            }
+        },
+        menuTr: 'systemSettings.languageSettings'
+    },
+    {
         name: 'ui.settings.system.systemAlarmLevels',
+        params: {
+            helpPage: 'ui.help.systemAlarmLevels'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -797,7 +886,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/system-alarm-levels',
+        name: 'ui.help.systemAlarmLevels',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/systemAlarmLevels.html');
+            }
+        },
+        menuTr: 'systemSettings.systemAlarmLevels'
+    },
+    {
         name: 'ui.settings.system.auditAlarmLevels',
+        params: {
+            helpPage: 'ui.help.auditAlarmLevels'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -807,6 +910,17 @@ export default [
         url: '/audit-alarm-levels',
         menuTr: 'systemSettings.auditAlarmLevels',
         menuHidden: true
+    },
+    {
+        url: '/audit-alarm-levels',
+        name: 'ui.help.auditAlarmLevels',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/auditAlarmLevels.html');
+            }
+        },
+        menuTr: 'systemSettings.auditAlarmLevels'
     },
     {
         name: 'ui.settings.system.email',
@@ -888,6 +1002,9 @@ export default [
     },
     {
         name: 'ui.settings.system.password',
+        params: {
+            helpPage: 'ui.help.password'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -899,7 +1016,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/password',
+        name: 'ui.help.password',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/password.html');
+            }
+        },
+        menuTr: 'systemSettings.passwordSettings'
+    },
+    {
         name: 'ui.settings.system.threadPools',
+        params: {
+            helpPage: 'ui.help.threadPools'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -911,7 +1042,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/thread-pools',
+        name: 'ui.help.threadPools',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/threadPools.html');
+            }
+        },
+        menuTr: 'systemSettings.threadPools'
+    },
+    {
         name: 'ui.settings.system.uiPerformance',
+        params: {
+            helpPage: 'ui.help.uiPerformance'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -923,7 +1068,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/ui-performance',
+        name: 'ui.help.uiPerformance',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/uiPerformance.html');
+            }
+        },
+        menuTr: 'systemSettings.uiPerformance'
+    },
+    {
         name: 'ui.settings.system.purge',
+        params: {
+            helpPage: 'ui.help.systemPurge'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -935,7 +1094,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/system-purge',
+        name: 'ui.help.systemPurge',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/systemPurge.html');
+            }
+        },
+        menuTr: 'systemSettings.purgeSettings'
+    },
+    {
         name: 'ui.settings.system.ui',
+        params: {
+            helpPage: 'ui.help.ui'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -947,7 +1120,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/ui',
+        name: 'ui.help.ui',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/ui.html');
+            }
+        },
+        menuTr: 'ui.settings'
+    },
+    {
         name: 'ui.settings.system.color',
+        params: {
+            helpPage: 'ui.help.color'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -959,7 +1146,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/color',
+        name: 'ui.help.color',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/chartColor.html');
+            }
+        },
+        menuTr: 'systemSettings.colourSettings'
+    },
+    {
         name: 'ui.settings.system.configBackup',
+        params: {
+            helpPage: 'ui.help.configBackup'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -971,7 +1172,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/config-backup',
+        name: 'ui.help.configBackup',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/configBackup.html');
+            }
+        },
+        menuTr: 'systemSettings.backupSettings'
+    },
+    {
         name: 'ui.settings.system.sqlBackup',
+        params: {
+            helpPage: 'ui.help.sqlBackup'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -983,7 +1198,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/sql-backup',
+        name: 'ui.help.sqlBackup',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/sqlBackup.html');
+            }
+        },
+        menuTr: 'systemSettings.H2DatabaseBackupSettings'
+    },
+    {
         name: 'ui.settings.system.chart',
+        params: {
+            helpPage: 'ui.help.chart'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -995,7 +1224,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/chart',
+        name: 'ui.help.chart',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/chart.html');
+            }
+        },
+        menuTr: 'systemSettings.chartSettings'
+    },
+    {
         name: 'ui.settings.system.permissions',
+        params: {
+            helpPage: 'ui.help.permissions'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -1007,7 +1250,21 @@ export default [
         menuHidden: true
     },
     {
+        url: '/permissions',
+        name: 'ui.help.permissions',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/permissions.html');
+            }
+        },
+        menuTr: 'systemSettings.systemPermissions'
+    },
+    {
         name: 'ui.settings.system.pointHierarchy',
+        params: {
+            helpPage: 'ui.help.pointHierarchy'
+        },
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -1017,6 +1274,17 @@ export default [
         url: '/point-hierarchy',
         menuTr: 'systemSettings.pointHierarchySettings',
         menuHidden: true
+    },
+    {
+        url: '/pointHierarchy',
+        name: 'ui.help.pointHierarchy',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/pointHierarchy.html');
+            }
+        },
+        menuTr: 'systemSettings.pointHierarchySettings'
     },
     {
         name: 'ui.settings.systemStatus',
