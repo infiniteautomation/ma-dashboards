@@ -10,6 +10,7 @@ import analogChangeTemplate from '../components/eventDetectorEditor/detectorType
 import highLimitTemplate from '../components/eventDetectorEditor/detectorTypes/highLimit.html';
 import lowLimitTemplate from '../components/eventDetectorEditor/detectorTypes/lowLimit.html';
 import analogRangeTemplate from '../components/eventDetectorEditor/detectorTypes/analogRange.html';
+import binaryStateTemplate from '../components/eventDetectorEditor/detectorTypes/binaryState.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -64,6 +65,7 @@ function eventDetectorProvider() {
         {
             type: 'BINARY_STATE',
             description: 'pointEdit.detectors.state',
+            template: binaryStateTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['BINARY'])
         },
