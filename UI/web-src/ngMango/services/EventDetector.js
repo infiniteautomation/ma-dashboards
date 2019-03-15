@@ -14,6 +14,7 @@ import binaryStateTemplate from '../components/eventDetectorEditor/detectorTypes
 import negativeCusumTemplate from '../components/eventDetectorEditor/detectorTypes/negativeCusum.html';
 import positiveCusumTemplate from '../components/eventDetectorEditor/detectorTypes/positiveCusum.html';
 import smoothnessTemplate from '../components/eventDetectorEditor/detectorTypes/smoothness.html';
+import stateChangeCountTemplate from '../components/eventDetectorEditor/detectorTypes/stateChangeCount.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -115,6 +116,7 @@ function eventDetectorProvider() {
         {
             type: 'STATE_CHANGE_COUNT',
             description: 'pointEdit.detectors.changeCount',
+            template: stateChangeCountTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['BINARY', 'MULTISTATE', 'ALPHANUMERIC'])
         }
