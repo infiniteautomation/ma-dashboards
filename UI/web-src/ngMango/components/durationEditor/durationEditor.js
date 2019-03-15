@@ -19,6 +19,8 @@ class DurationEditorController {
     constructor(MA_TIME_PERIOD_TYPES) {
         this.allTypes = MA_TIME_PERIOD_TYPES;
         this.types = MA_TIME_PERIOD_TYPES.slice();
+        
+        this.min = 0;
     }
     
     $onInit() {
@@ -54,6 +56,7 @@ export default {
     controller: DurationEditorController,
     bindings: {
         allowedTypes: '<?',
+        min: '<?',
         requiredAttr: '@?required',
         disabled: '@?'
     },
