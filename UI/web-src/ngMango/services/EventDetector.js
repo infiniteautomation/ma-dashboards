@@ -11,6 +11,8 @@ import highLimitTemplate from '../components/eventDetectorEditor/detectorTypes/h
 import lowLimitTemplate from '../components/eventDetectorEditor/detectorTypes/lowLimit.html';
 import analogRangeTemplate from '../components/eventDetectorEditor/detectorTypes/analogRange.html';
 import binaryStateTemplate from '../components/eventDetectorEditor/detectorTypes/binaryState.html';
+import negativeCusumTemplate from '../components/eventDetectorEditor/detectorTypes/negativeCusum.html';
+import positiveCusumTemplate from '../components/eventDetectorEditor/detectorTypes/positiveCusum.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -79,6 +81,7 @@ function eventDetectorProvider() {
         {
             type: 'NEGATIVE_CUSUM',
             description: 'pointEdit.detectors.negCusum',
+            template: negativeCusumTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['NUMERIC'])
         },
@@ -97,6 +100,7 @@ function eventDetectorProvider() {
         {
             type: 'POSITIVE_CUSUM',
             description: 'pointEdit.detectors.posCusum',
+            template: positiveCusumTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['NUMERIC'])
         },
