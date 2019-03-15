@@ -6,6 +6,7 @@
 import multistateStateTemplate from '../components/eventDetectorEditor/detectorTypes/multistateState.html';
 import regexStateTemplate from '../components/eventDetectorEditor/detectorTypes/regexState.html';
 import alphanumericStateTemplate from '../components/eventDetectorEditor/detectorTypes/alphanumericState.html';
+import analogChangeTemplate from '../components/eventDetectorEditor/detectorTypes/analogChange.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -32,6 +33,7 @@ function eventDetectorProvider() {
         {
             type: 'ANALOG_CHANGE',
             description: 'pointEdit.detectors.analogChange',
+            template: analogChangeTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['NUMERIC'])
         },
@@ -265,6 +267,24 @@ function eventDetectorProvider() {
             initialize(reason) {
                 if (this.dataPoint && !(this.dataPoint instanceof Point)) {
                     this.dataPoint = Object.assign(Object.create(Point.prototype), this.dataPoint);
+                }
+            }
+            
+            get analogChangeType() {
+                if (this.checkIncrease && this.checkDecrease) {
+                    return 'CHANGE';
+                } else if (this.checkIncrease) {
+                    return 'INCREASE';
+                } else if (this.checkDecrease) {
+                    return 'DECREASE';
+                }
+            }
+            
+            set analogChangeType(type) {
+                switch(type) {
+                case 'CHANGE': this.checkIncrease = true; this.checkDecrease = true; break;
+                case 'INCREASE': this.checkIncrease = true; this.checkDecrease = false; break;
+                case 'DECREASE': this.checkIncrease = false; this.checkDecrease = true; break;
                 }
             }
         }
