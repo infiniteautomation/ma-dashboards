@@ -1,18 +1,21 @@
 <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
     <md-input-container flex="100" flex-gt-md="50">
         <label ma-tr="pointEdit.detectors.lowLimit"></label>
-        <input name="limit" ng-model="$ctrl.eventDetector.limit" type="number" required>
+        <input name="limit" ng-model="$ctrl.eventDetector.limit" type="number" min="0" max="1" required>
         <div ng-messages="$ctrl.form.limit.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="::[0]"></div>
+            <div ng-message="max" ma-tr="ui.app.maxNumber" ma-tr-args="::[1]"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.limit.validationMessage"></div>
         </div>
     </md-input-container>
     <md-input-container flex="100" flex-gt-md="50">
         <label ma-tr="pointEdit.detectors.smoothnessBoxcar"></label>
-        <input name="boxcar" ng-model="$ctrl.eventDetector.boxcar" type="number" required ma-greater-than="2">
+        <input name="boxcar" ng-model="$ctrl.eventDetector.boxcar" type="number" required step="1" min="3">
         <div ng-messages="$ctrl.form.boxcar.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="greaterThan" ma-tr="validate.greaterThan" ma-tr-args="[2]"></div>
+            <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="::[3]"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.boxcar.validationMessage"></div>
         </div>
     </md-input-container>
