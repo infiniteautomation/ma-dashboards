@@ -7,6 +7,8 @@ import multistateStateTemplate from '../components/eventDetectorEditor/detectorT
 import regexStateTemplate from '../components/eventDetectorEditor/detectorTypes/regexState.html';
 import alphanumericStateTemplate from '../components/eventDetectorEditor/detectorTypes/alphanumericState.html';
 import analogChangeTemplate from '../components/eventDetectorEditor/detectorTypes/analogChange.html';
+import highLimitTemplate from '../components/eventDetectorEditor/detectorTypes/highLimit.html';
+import lowLimitTemplate from '../components/eventDetectorEditor/detectorTypes/lowLimit.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -40,12 +42,14 @@ function eventDetectorProvider() {
         {
             type: 'HIGH_LIMIT',
             description: 'pointEdit.detectors.highLimit',
+            template: highLimitTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['NUMERIC'])
         },
         {
             type: 'LOW_LIMIT',
             description: 'pointEdit.detectors.lowLimit',
+            template: lowLimitTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['NUMERIC'])
         },
