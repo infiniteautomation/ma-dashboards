@@ -11,16 +11,92 @@ function eventDetectorProvider() {
             type: 'POINT_CHANGE',
             description: 'pointEdit.detectors.change',
             pointEventDetector: true,
-            hasDuration: false,
             dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC'])
+        },
+        {
+            type: 'ALPHANUMERIC_REGEX_STATE',
+            description: 'pointEdit.detectors.regexState',
+            pointEventDetector: true,
+            dataTypes: new Set(['ALPHANUMERIC'])
+        },
+        {
+            type: 'ALPHANUMERIC_STATE',
+            description: 'pointEdit.detectors.state',
+            pointEventDetector: true,
+            dataTypes: new Set(['ALPHANUMERIC'])
+        },
+        {
+            type: 'ANALOG_CHANGE',
+            description: 'pointEdit.detectors.analogChange',
+            pointEventDetector: true,
+            dataTypes: new Set(['NUMERIC'])
+        },
+        {
+            type: 'HIGH_LIMIT',
+            description: 'pointEdit.detectors.highLimit',
+            pointEventDetector: true,
+            dataTypes: new Set(['NUMERIC'])
+        },
+        {
+            type: 'LOW_LIMIT',
+            description: 'pointEdit.detectors.lowLimit',
+            pointEventDetector: true,
+            dataTypes: new Set(['NUMERIC'])
+        },
+        {
+            type: 'RANGE',
+            description: 'pointEdit.detectors.range',
+            pointEventDetector: true,
+            dataTypes: new Set(['NUMERIC'])
+        },
+        {
+            type: 'BINARY_STATE',
+            description: 'pointEdit.detectors.state',
+            pointEventDetector: true,
+            dataTypes: new Set(['BINARY'])
         },
         {
             type: 'MULTISTATE_STATE',
             description: 'pointEdit.detectors.state',
             template: multistateStateTemplate,
             pointEventDetector: true,
-            hasDuration: true,
             dataTypes: new Set(['MULTISTATE'])
+        },
+        {
+            type: 'NEGATIVE_CUSUM',
+            description: 'pointEdit.detectors.negCusum',
+            pointEventDetector: true,
+            dataTypes: new Set(['NUMERIC'])
+        },
+        {
+            type: 'NO_CHANGE',
+            description: 'pointEdit.detectors.noChange',
+            pointEventDetector: true,
+            dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC'])
+        },
+        {
+            type: 'NO_UPDATE',
+            description: 'pointEdit.detectors.noUpdate',
+            pointEventDetector: true,
+            dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC'])
+        },
+        {
+            type: 'POSITIVE_CUSUM',
+            description: 'pointEdit.detectors.posCusum',
+            pointEventDetector: true,
+            dataTypes: new Set(['NUMERIC'])
+        },
+        {
+            type: 'SMOOTHNESS',
+            description: 'pointEdit.detectors.smoothness',
+            pointEventDetector: true,
+            dataTypes: new Set(['NUMERIC'])
+        },
+        {
+            type: 'STATE_CHANGE_COUNT',
+            description: 'pointEdit.detectors.changeCount',
+            pointEventDetector: true,
+            dataTypes: new Set(['BINARY', 'MULTISTATE', 'ALPHANUMERIC'])
         }
     ];
     

@@ -9,7 +9,7 @@
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
                         <md-input-container flex="100">
                             <label ma-tr="ui.eventDetectors.type"></label>
-                            <md-select name="detectorType" ng-model="$ctrl.eventDetector.detectorType" required ng-change="$ctrl.typeChanged()">
+                            <md-select name="detectorType" ng-model="$ctrl.eventDetector.detectorType" required ng-change="$ctrl.typeChanged()" ng-disabled="!$ctrl.eventDetector.isNew()">
                                 <md-option ng-repeat="type in $ctrl.detectorTypes track by type.type" ng-value="type.type"
                                         ng-if="$ctrl.eventDetector.dataPoint ? type.pointEventDetector && type.dataTypes.has($ctrl.eventDetector.dataPoint.dataType) : !type.pointEventDetector">
                                     <span ma-tr="{{type.description}}"></span>
