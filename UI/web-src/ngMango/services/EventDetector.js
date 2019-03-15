@@ -13,6 +13,7 @@ import analogRangeTemplate from '../components/eventDetectorEditor/detectorTypes
 import binaryStateTemplate from '../components/eventDetectorEditor/detectorTypes/binaryState.html';
 import negativeCusumTemplate from '../components/eventDetectorEditor/detectorTypes/negativeCusum.html';
 import positiveCusumTemplate from '../components/eventDetectorEditor/detectorTypes/positiveCusum.html';
+import smoothnessTemplate from '../components/eventDetectorEditor/detectorTypes/smoothness.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -107,6 +108,7 @@ function eventDetectorProvider() {
         {
             type: 'SMOOTHNESS',
             description: 'pointEdit.detectors.smoothness',
+            template: smoothnessTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['NUMERIC'])
         },
