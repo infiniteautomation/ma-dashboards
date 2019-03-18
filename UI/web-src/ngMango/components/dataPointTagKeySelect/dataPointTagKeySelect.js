@@ -4,6 +4,7 @@
  */
 
 import dataPointTagKeySelectTemplate from './dataPointTagKeySelect.html';
+import './dataPointTagKeySelect.css';
 
 /**
  * @ngdoc directive

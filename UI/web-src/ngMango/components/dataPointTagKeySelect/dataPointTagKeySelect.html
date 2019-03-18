@@ -18,7 +18,12 @@
     </md-select>
 </md-input-container>
 
-<md-autocomplete ng-if="$ctrl.editMode" flex
+<md-button ng-if-start="$ctrl.editMode" ng-disabled="!$ctrl.searchText" class="md-icon-button ma-small-button" ng-click="$ctrl.enterPressed()">
+    <md-icon>add</md-icon>
+    <md-tooltip><span ma-tr="ui.components.addTagKey"></span></md-tooltip>
+</md-button>
+
+<md-autocomplete ng-if-end flex
         md-selected-item="$ctrl.selected"
         md-selected-item-change="$ctrl.inputChanged()"
         md-search-text="$ctrl.searchText"

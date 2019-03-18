@@ -1,6 +1,9 @@
 <div>
     <div ng-repeat="(key, value) in $ctrl.tags" layout layout-align="start center">
-        <md-button class="md-icon-button" ng-click="$ctrl.deleteTagKey(key)"><md-icon>clear</md-icon></md-button>
+        <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.deleteTagKey(key)">
+            <md-icon>remove_circle_outline</md-icon>
+            <md-tooltip><span ma-tr="ui.app.removeTag" ma-tr-args="[key]"></span></md-tooltip>
+        </md-button>
         <div class="ma-key-name" ng-bind="key"></div>
         <ma-data-point-tag-select flex
                 key="{{key}}"
