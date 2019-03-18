@@ -166,12 +166,12 @@ class BulkDataPointEditorController {
     
     resetColumns() {
         this.columns = defaultColumns.slice();
-        
+
         if (this.dataSource) {
             const dsType = this.maDataSource.typesByName[this.dataSource.modelType];
-            const extraColumns = dsType && dsType.bulkEditorColumns;
-            if (Array.isArray(extraColumns)) {
-                this.columns.push(...extraColumns);
+            const dataSourceColumns = dsType && dsType.bulkEditorColumns;
+            if (Array.isArray(dataSourceColumns)) {
+                this.columns.push(...dataSourceColumns);
             }
         }
         
@@ -180,11 +180,10 @@ class BulkDataPointEditorController {
             column.property = column.name.split('.');
         });
 
-        if (Array.isArray(this.settings.selectedColumns)) {
-            this.selectedColumns = this.columns.filter(c => this.settings.selectedColumns.includes(c.name));
-        } else {
-            this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
-        }
+        const selected = Array.isArray(this.settings.selectedColumns) ? this.settings.selectedColumns : [];
+        const deselected = Array.isArray(this.settings.deselectedColumns) ? this.settings.deselectedColumns : [];
+        this.selectedColumns = this.columns.filter(c => selected.includes(c.name) || c.selectedByDefault && !deselected.includes(c.name));
+        
         this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
     }
 
@@ -459,7 +458,15 @@ class BulkDataPointEditorController {
 
     selectedColumnsChanged() {
         this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
-        this.settings.selectedColumns = this.selectedColumns.map(c => c.name);
+        
+        this.settings.deselectedColumns = this.columns
+            .filter(c => c.selectedByDefault && !this.selectedColumns.includes(c))
+            .map(c => c.name);
+        
+        this.settings.selectedColumns = this.selectedColumns
+            .filter(c => !c.selectedByDefault)
+            .map(c => c.name);
+        
         this.saveSettings();
     }
     
