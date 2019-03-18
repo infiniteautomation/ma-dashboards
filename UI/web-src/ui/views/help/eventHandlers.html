@@ -10,18 +10,18 @@
 </p>
 
 <ul>
-    <li><b>Email:</b> send email to an address, user or mailing list</li>
-    <li><b>Set point:</b> write values ​​in data points (which must be configured as settable)</li>
-    <li><b>Process:</b> run a command on the server</li>
-    <li><b>Report:</b> run a report</li>
+    <li><strong>Email:</strong> send email to an address, user or mailing list</li>
+    <li><strong>Set point:</strong> write values ​​in data points (which must be configured as settable)</li>
+    <li><strong>Process:</strong> run a command on the server</li>
+    <li><strong>Report:</strong> run a report</li>
 </ul>
 
 <h2>Editing Email Event Handlers</h2>
 
 <p>
     To add a mailing list to a list of recipients, select it from the list of add recipients and click. To add a user, 
-    select a user from the Add user list and click. To add another address, enter it in the add address field and press <b>Enter</b>. 
-    To delete any recipients from the list, click <b>x</b> button.
+    select a user from the Add user list and click. To add another address, enter it in the add address field and press <strong>Enter</strong>. 
+    To delete any recipients from the list, click <strong>x</strong> button.
 </p>
 
 <p>
@@ -42,17 +42,17 @@
   problematic if your system has hundreds of thousands or millions of work items, so be aware when using this feature. 
 </p>
 <p>
-  Including the logfile is optional and can be used to capture the <b>full</b> logfile at the moment of the event.  This is a zip attachment to the email.
+  Including the logfile is optional and can be used to capture the <strong>full</strong> logfile at the moment of the event.  This is a zip attachment to the email.
 </p>
 <p>
-  A <b>Custom template</b> can be provided to override the event active message sent by the email handler. The default templates
+  A <strong>Custom template</strong> can be provided to override the event active message sent by the email handler. The default templates
   can be found in MA_HOME/ftl/*/active.ftl (depends on system settings for email) and the include folders. The same object model is 
   passed to the custom template. Having an empty custom template means the default will be used. The textarea can be resized by
   dragging its corner. One can include other FTL files if they are on the loader path, which begins at MA_HOME/ftl/ . To replicate the 
   existing event template, you must add "html" or "text" in front of the include paths when setting the custom template.
 </p>
 <p>
-  Points may be added as <b>Additional context</b> to appear in the model in the 'additionalContext' object using their <b>template key</b>.
+  Points may be added as <strong>Additional context</strong> to appear in the model in the 'additionalContext' object using their <strong>template key</strong>.
   Additional context points have the following hash (object) fields:
 </p>
 <ul><li>templateKey - the identifier in the additional context hash (object)</li>

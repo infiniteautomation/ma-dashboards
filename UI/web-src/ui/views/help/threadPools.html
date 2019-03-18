@@ -10,8 +10,8 @@
 a thread pool corresponding to its priority.
 </p>
 <h2>High Priority Thread Pool</h2>
-<p>Mango's high priority pool is the only pool that can grow and shrink dynamically. The <b>core pool size</b> is the number of threads that will remain around to process work.  If more work is required to be done than 
-there are threads in the pool, Mango will create new threads up to <b>maximum pool size</b>.  When the maximum pool size threads have been reached, work will be discarded.  It is important for large systems to configure their 
+<p>Mango's high priority pool is the only pool that can grow and shrink dynamically. The <strong>core pool size</strong> is the number of threads that will remain around to process work.  If more work is required to be done than 
+there are threads in the pool, Mango will create new threads up to <strong>maximum pool size</strong>.  When the maximum pool size threads have been reached, work will be discarded.  It is important for large systems to configure their 
 thread pools properly because too large of a pool can cause system crashes while too small may not be able to perform all work.  
 </p>
 
@@ -26,7 +26,7 @@ thread pools properly because too large of a pool can cause system crashes while
 </ul>
 
 <h2>Low and Medimum Priority Thread Pools</h2>
-<p>These pools begin empty and will grow up to <b>core pool size</b>.  Once the pool has reached its core size it will not grow any larger and the existing threads 
+<p>These pools begin empty and will grow up to <strong>core pool size</strong>.  Once the pool has reached its core size it will not grow any larger and the existing threads 
 wiil wait in the pool for work.  If not enough threads are availble for the pool to do work, the task will be queued.  This queue can grow unbounded.</p>
 
 <h3>Medium Priority Tasks</h3>
