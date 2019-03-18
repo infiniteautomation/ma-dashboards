@@ -20,10 +20,10 @@ class CronPatternController {
     }
     
     $onInit() {
-        this.seconds = 60;
-        this.minutes = 60;
-        this.hours = 24;
-        this.daysOfMonth = 31;
+        this.seconds = Array(60).fill().map((v,i) => i);
+        this.minutes = Array(60).fill().map((v,i) => i);
+        this.hours = Array(24).fill().map((v,i) => i);
+        this.daysOfMonth = Array(31).fill().map((v,i) => i + 1);
 
         this.ngModelCtrl.$render = () => this.render();
         this.cronArray = [];
@@ -41,10 +41,6 @@ class CronPatternController {
         }
 
         this.updateSelectBoxes();
-    }
-
-    getNumber(num) {
-        return new Array(num);   
     }
 
     selectSecond() {

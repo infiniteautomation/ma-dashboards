@@ -8,7 +8,7 @@
             <md-option value="0/15" ma-tr="cronPicker.everyX" ma-tr-args="[15]"></md-option>
             <md-option value="0/20" ma-tr="cronPicker.everyX" ma-tr-args="[20]"></md-option>
             <md-option value="0/30" ma-tr="cronPicker.everyX" ma-tr-args="[30]"></md-option>
-            <md-option ng-repeat="second in $ctrl.getNumber($ctrl.seconds) track by $index" value="{{$index}}">{{$index}}</md-option>
+            <md-option ng-repeat="second in $ctrl.seconds track by $index" value="{{second}}">{{second}}</md-option>
         </md-select>
     </md-input-container>
     
@@ -21,7 +21,7 @@
             <md-option value="0/15" ma-tr="cronPicker.everyX" ma-tr-args="[15]"></md-option>
             <md-option value="0/20" ma-tr="cronPicker.everyX" ma-tr-args="[20]"></md-option>
             <md-option value="0/30" ma-tr="cronPicker.everyX" ma-tr-args="[30]"></md-option>
-            <md-option ng-repeat="minute in $ctrl.getNumber($ctrl.minutes) track by $index" value="{{$index}}">{{$index}}</md-option>
+            <md-option ng-repeat="minute in $ctrl.minutes track by $index" value="{{minute}}">{{minute}}</md-option>
         </md-select>
     </md-input-container>
     
@@ -34,7 +34,7 @@
             <md-option value="0/4" ma-tr="cronPicker.everyX" ma-tr-args="[4]"></md-option>
             <md-option value="0/6" ma-tr="cronPicker.everyX" ma-tr-args="[6]"></md-option>
             <md-option value="0/12" ma-tr="cronPicker.everyX" ma-tr-args="[12]"></md-option>
-            <md-option ng-repeat="hour in $ctrl.getNumber($ctrl.hours) track by $index" value="{{$index}}">{{$index}}</md-option>
+            <md-option ng-repeat="hour in $ctrl.hours track by $index" value="{{hour}}">{{hour}}</md-option>
         </md-select>
     </md-input-container>
     
@@ -42,12 +42,12 @@
         <label ma-tr="dateAndTime.dayOfMonth"></label>
         <md-select ng-model="$ctrl.dayOfMonth" ng-change="$ctrl.selectDayOfMonth()">
             <md-option value="*" ma-tr="cronPicker.every"></md-option>
-            <md-option value="0/2" ma-tr="cronPicker.everyX" ma-tr-args="[2]"></md-option>
-            <md-option value="0/5" ma-tr="cronPicker.everyX" ma-tr-args="[5]"></md-option>
-            <md-option value="0/7" ma-tr="cronPicker.everyX" ma-tr-args="[7]"></md-option>
-            <md-option value="0/10" ma-tr="cronPicker.everyX" ma-tr-args="[10]"></md-option>
+            <md-option value="1/2" ma-tr="cronPicker.everyX" ma-tr-args="[2]"></md-option>
+            <md-option value="1/5" ma-tr="cronPicker.everyX" ma-tr-args="[5]"></md-option>
+            <md-option value="1/7" ma-tr="cronPicker.everyX" ma-tr-args="[7]"></md-option>
+            <md-option value="1/10" ma-tr="cronPicker.everyX" ma-tr-args="[10]"></md-option>
             <md-option value="?" ma-tr="cronPicker.dontCare"></md-option>
-            <md-option ng-repeat="hour in $ctrl.getNumber($ctrl.daysOfMonth) track by $index" value="{{$index}}">{{$index}}</md-option>
+            <md-option ng-repeat="day in $ctrl.daysOfMonth track by $index" value="{{day}}">{{day}}</md-option>
         </md-select>
     </md-input-container>
     
