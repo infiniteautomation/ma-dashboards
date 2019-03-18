@@ -22,6 +22,3 @@ th.ma-ui-help,td.ma-ui-help{
 tr.ma-ui-help{
     border: 1px solid black; 
 }
-tr td:first-child {
-	text-align:left;
-}
