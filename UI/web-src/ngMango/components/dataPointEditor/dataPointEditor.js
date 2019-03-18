@@ -462,7 +462,8 @@ export default {
         discardOptions: '<?confirmDiscard',
         fixedType: '<?',
         importCsv: '<?',
-        dataSource: '<?source'
+        dataSource: '<?source',
+        disabledAttr: '@?disabled'
     },
     require: {
         ngModelCtrl: 'ngModel'
