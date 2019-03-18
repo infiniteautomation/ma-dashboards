@@ -717,6 +717,17 @@ export default [
         }
     },
     {
+        url: '/mLogic-settings',
+        name: 'ui.help.mLogiSettings',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
+                        './views/help/measurlogicSettings.html');
+            }
+        },
+        menuTr: 'mlogic.settings.header'
+    },
+    {
         url: '/auto-login-settings',
         name: 'ui.settings.autoLoginSettings',
         resolve: {
