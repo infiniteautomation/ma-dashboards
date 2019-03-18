@@ -240,6 +240,10 @@ md-sidenav.site-sidenav > md-content {
     }
 }
 
+md-sidenav.ma-help-sidebar {
+	z-index: 81; /* one more than a dialog */
+}
+
 @media (max-width: 549px) {
   .ma-help-sidebar {
     width: calc(100% - 50px);
