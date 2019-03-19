@@ -2,367 +2,432 @@
     Copyright (C) 2015 Infinite Automation Systems Inc. All rights reserved.
     @author Terry Packer
 -->
-<h1>Mango JavaScript</h1>
-<p>The <strong>Script</strong> area is where the script to execute is entered. Scripts can be any valid ECMAScript that would be written within a function.</p>
+<div class="ma-help-doc-container">
+  <h1 ma-tr="ui.app.mangoJavaScript"></h1>
+  <p>The <strong>Script</strong> area is where the script to execute is entered. Scripts can be any valid ECMAScript
+    that would be written within a function.</p>
 
-<p>In addition to the ECMAScript context, globally-accessible functions can be defined, such as max(), min(), avg(), and sum(). (These functions are implemented in an modules such as SST Global Scripts.) To use them, simply call them from your script, for example:</p>
-<pre>return max(x.value, y.value, z.value);</pre>
-<p>This returns the maximum of the present values of 'x', 'y', and 'z'. Any number of parameters can be provided to any of these global functions.</p>
-<p>Once the script has been entered, click the Validate button to execute it and attempt to calculate the result.</p>
+  <p>In addition to the ECMAScript context, globally-accessible functions can be defined, such as max(), min(), avg(),
+    and sum(). (These functions are implemented in an modules such as SST Global Scripts.) To use them, simply call
+    them from your script, for example:</p>
+  <pre>return max(x.value, y.value, z.value);</pre>
+  <p>This returns the maximum of the present values of 'x', 'y', and 'z'. Any number of parameters can be provided to
+    any of these global functions.</p>
+  <p>Once the script has been entered, click the Validate button to execute it and attempt to calculate the result.</p>
 
-<h2>Point Value Time Objects</h2>
-Mango stores its data in Point Value Time objects that contain a value and a time.  When accessing internal 
-data from Mango it is important to know if you are dealing with a raw value or a Point Value Time.
-<pre>
+  <h2>Point Value Time Objects</h2>
+  Mango stores its data in Point Value Time objects that contain a value and a time. When accessing internal
+  data from Mango it is important to know if you are dealing with a raw value or a Point Value Time.
+  <pre>
   {
     value: value of object,
     time: timestamp in milliseconds since epoch
   }
 </pre>
 
-<h2>Time values</h2>
-<p>The timestamp of  value is also available to the script. 
-The following fields can be useful for conversions:</p>
-<ul>
-  <li>p.time - timestamp of the value in milliseconds since the epoch</li>
-  <li>p.millis - 0-999 the millisecond portion of p.time</li>
-  <li>p.second - 0-60</li>
-  <li>p.minute - 0-60</li>
-  <li>p.hour - 0-23</li>
-  <li>p.day - 1-28,31</li>
-  <li>p.dayOfWeek - 1-7 where 1 is Sunday</li>
-  <li>p.dayOfYear - 1-365,366</li>
-  <li>p.month - 1-12</li>
-  <li>p.year - four digits</li>
-</ul>
+  <h2>Time values</h2>
+  <p>The timestamp of value is also available to the script.
+    The following fields can be useful for conversions:</p>
+  <ul>
+    <li>p.time - timestamp of the value in milliseconds since the epoch</li>
+    <li>p.millis - 0-999 the millisecond portion of p.time</li>
+    <li>p.second - 0-60</li>
+    <li>p.minute - 0-60</li>
+    <li>p.hour - 0-23</li>
+    <li>p.day - 1-28,31</li>
+    <li>p.dayOfWeek - 1-7 where 1 is Sunday</li>
+    <li>p.dayOfYear - 1-365,366</li>
+    <li>p.month - 1-12</li>
+    <li>p.year - four digits</li>
+  </ul>
 
-<h2>Context objects</h2>
-<p>The script var that represents a point in a script is actually an 'object', in JavaScript terminology. An object is a container of values and functions that can be referenced by their property names. To get a description of the properties available for use in a script var, use the help property, e.g.:</p>
-<pre>return x.help;</pre>
-<p>This script works best if the data type is set to alphanumeric, but this is not required. The help property is identical to the toString() function, which is available on all context objects (i.e. not just script vars).</p>
-<p>The <strong>value</strong> property is the present value of the point. The JavaScript type of the value is analogous to its Mango type: Binary become boolean, Numeric becomes float, Multistate becomes integer, and Alphanumeric becomes string.</p>
-<p>Each script var also implements additional functions. The objects returned by these functions depend upon the data type of the point the var refers to. Again, the help property can be used to get a description of the returned object's properties. For the "periodType" parameter in all of the functions below, the following pre-defined global variables can be used: SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, and YEAR.</p>
-<p>The <strong>ago()</strong> function returns the value that the point had the given amount of time ago. For example, the call "x.ago(HOUR, 3)" returns the point's value exactly 3 hours ago without using the cache.</p>
-<p>The <strong>past()</strong> function returns an object containing statistics over the given period ending now. See below for a description of the various statistics objects.</p>
-<p>The <strong>prev()</strong> and <strong>previous()</strong> functions are identical; the latter is provided for its linguistic completeness. The functions return the same statistically object as past(), but over a different time span. The start and end times are quantized such that they correspond to the period type. For example, if the period type is HOURLY and periods is 1, and the function runs at 18:05, the time span that will be used is from 17:00 (inclusive) to 18:00 (exclusive). If the periods were, say, 3, the time span would be from 15:00 to 18:00. Similarly, MONTH starts the time span at midnight on the first day of the previous month and ends it on the last day of the previous month (when periods is 1). Other period types work the same. A WEEK starts on Monday at midnight in accordance with ISO standards.</p>
-<p>
-  The <strong>last(limit, cache)</strong> function return a list of the latest point value/time objects up to the given limit. The list will 
-  never be null, but could have a size from 0 to n depending on how many historical values there actually are. Values 
-  are sorted from most newest to oldest so that list.get(0) will return the most recent value. The list is a 
-  java.util.List object, and so has all of the methods available in that interface, including get(index) and size(). 
-  The get(index) method will throw an ArrayIndexOutOfBoundsException if you ask for an index that is >= the size, so be 
-  sure to check the list size before using get. Point value/time objects have "value" and "time" properties.
-</p>
-<p>
-  The <strong>lastValue(index, cache)</strong> function returns a single point value/time object, or null if the index is invalid. (Size checking
-  in the list is done automatically, so an ArrayIndexOutOfBoundsException will never be thrown.) lastValue() and 
-  lastValue(0) will return the most recent logged value, lastValue(1, true) will return the second-most recent value (including cached values), etc.
-</p>
-<p>
-  The <strong>pointValuesBetween(from, to, cache)</strong> function return a list of point value/time objects between the given timestamps.
-  The returned values are <strong>inclusive of the from time</strong> and <strong>exclusive of the end time</strong>.
-   The list will never be null, but could have a size from 0 to n depending on how many historical values there actually are. Values 
-  are sorted in time order so that list.get(0) will return the oldest value. The list is a 
-  java.util.List object, and so has all of the methods available in that interface, including get(index) and size(). 
-  The get(index) method will throw an ArrayIndexOutOfBoundsException if you ask for an index that is >= the size, so be 
-  sure to check the list size before using get. Point value/time objects have "value" and "time" properties.
-</p>
-<p>
-  The <strong>pointValuesSince(timestamp, cache)</strong> function return a list of point value/time objects since the given timestamp.
-  The returned values are <strong>inclusive of the timestamp</strong>.
-   The list will never be null, but could have a size from 0 to n depending on how many historical values there actually are. Values 
-  are sorted in time order so that list.get(0) will return the oldest value. The list is a 
-  java.util.List object, and so has all of the methods available in that interface, including get(index) and size(). 
-  The get(index) method will throw an ArrayIndexOutOfBoundsException if you ask for an index that is >= the size, so be 
-  sure to check the list size before using get. Point value/time objects have "value" and "time" properties.
-</p>
-<p>
-  The <strong>pointValueBefore(timestamp, cache)</strong> function returns the nearest point value/time object prior to timestamp, or null if there is not one.
-</p>
-<p>
-  The <strong>pointValueAfter(timestamp, cache)</strong> function returns the nearest point value/time object after to timestamp, or null if there is not one.
-</p>
-<p>
-  The <strong>pointValueAt(timestamp, cache)</strong> function returns the a point value/time object that was recorded exactly at the timestamp, or null if there is not one.
-</p>
-<p>
-  The <strong>set(value)</strong> function attempts to set the value to the context point through the point's data source (i.e. sending the set out to the device).
-</p>
-<p>
-  The <strong>set(value, timestamp)</strong> function is the same as set(value) but with a timestamp for the new value supplied. Use new Date().getTime() to get the current time.
-</p>
-<p>
-  The <strong>set(value, timestamp, annotation)</strong> function is the same as set(value, timestamp) but also sets the annotation on the point value to the supplied annotation.
-</p>
+  <h2>Context objects</h2>
+  <p>The script var that represents a point in a script is actually an 'object', in JavaScript terminology. An object
+    is a container of values and functions that can be referenced by their property names. To get a description of the
+    properties available for use in a script var, use the help property, e.g.:</p>
+  <pre>return x.help;</pre>
+  <p>This script works best if the data type is set to alphanumeric, but this is not required. The help property is
+    identical to the toString() function, which is available on all context objects (i.e. not just script vars).</p>
+  <p>The <strong>value</strong> property is the present value of the point. The JavaScript type of the value is
+    analogous to its Mango type: Binary become boolean, Numeric becomes float, Multistate becomes integer, and
+    Alphanumeric becomes string.</p>
+  <p>Each script var also implements additional functions. The objects returned by these functions depend upon the data
+    type of the point the var refers to. Again, the help property can be used to get a description of the returned
+    object's properties. For the "periodType" parameter in all of the functions below, the following pre-defined global
+    variables can be used: SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, and YEAR.</p>
+  <p>The <strong>ago()</strong> function returns the value that the point had the given amount of time ago. For
+    example, the call "x.ago(HOUR, 3)" returns the point's value exactly 3 hours ago without using the cache.</p>
+  <p>The <strong>past()</strong> function returns an object containing statistics over the given period ending now. See
+    below for a description of the various statistics objects.</p>
+  <p>The <strong>prev()</strong> and <strong>previous()</strong> functions are identical; the latter is provided for
+    its linguistic completeness. The functions return the same statistically object as past(), but over a different
+    time span. The start and end times are quantized such that they correspond to the period type. For example, if the
+    period type is HOURLY and periods is 1, and the function runs at 18:05, the time span that will be used is from
+    17:00 (inclusive) to 18:00 (exclusive). If the periods were, say, 3, the time span would be from 15:00 to 18:00.
+    Similarly, MONTH starts the time span at midnight on the first day of the previous month and ends it on the last
+    day of the previous month (when periods is 1). Other period types work the same. A WEEK starts on Monday at
+    midnight in accordance with ISO standards.</p>
+  <p>
+    The <strong>last(limit, cache)</strong> function return a list of the latest point value/time objects up to the
+    given limit. The list will
+    never be null, but could have a size from 0 to n depending on how many historical values there actually are. Values
+    are sorted from most newest to oldest so that list.get(0) will return the most recent value. The list is a
+    java.util.List object, and so has all of the methods available in that interface, including get(index) and size().
+    The get(index) method will throw an ArrayIndexOutOfBoundsException if you ask for an index that is >= the size, so
+    be
+    sure to check the list size before using get. Point value/time objects have "value" and "time" properties.
+  </p>
+  <p>
+    The <strong>lastValue(index, cache)</strong> function returns a single point value/time object, or null if the
+    index is invalid. (Size checking
+    in the list is done automatically, so an ArrayIndexOutOfBoundsException will never be thrown.) lastValue() and
+    lastValue(0) will return the most recent logged value, lastValue(1, true) will return the second-most recent value
+    (including cached values), etc.
+  </p>
+  <p>
+    The <strong>pointValuesBetween(from, to, cache)</strong> function return a list of point value/time objects between
+    the given timestamps.
+    The returned values are <strong>inclusive of the from time</strong> and <strong>exclusive of the end time</strong>.
+    The list will never be null, but could have a size from 0 to n depending on how many historical values there
+    actually are. Values
+    are sorted in time order so that list.get(0) will return the oldest value. The list is a
+    java.util.List object, and so has all of the methods available in that interface, including get(index) and size().
+    The get(index) method will throw an ArrayIndexOutOfBoundsException if you ask for an index that is >= the size, so
+    be
+    sure to check the list size before using get. Point value/time objects have "value" and "time" properties.
+  </p>
+  <p>
+    The <strong>pointValuesSince(timestamp, cache)</strong> function return a list of point value/time objects since
+    the given timestamp.
+    The returned values are <strong>inclusive of the timestamp</strong>.
+    The list will never be null, but could have a size from 0 to n depending on how many historical values there
+    actually are. Values
+    are sorted in time order so that list.get(0) will return the oldest value. The list is a
+    java.util.List object, and so has all of the methods available in that interface, including get(index) and size().
+    The get(index) method will throw an ArrayIndexOutOfBoundsException if you ask for an index that is >= the size, so
+    be
+    sure to check the list size before using get. Point value/time objects have "value" and "time" properties.
+  </p>
+  <p>
+    The <strong>pointValueBefore(timestamp, cache)</strong> function returns the nearest point value/time object prior
+    to timestamp, or null if there is not one.
+  </p>
+  <p>
+    The <strong>pointValueAfter(timestamp, cache)</strong> function returns the nearest point value/time object after
+    to timestamp, or null if there is not one.
+  </p>
+  <p>
+    The <strong>pointValueAt(timestamp, cache)</strong> function returns the a point value/time object that was
+    recorded exactly at the timestamp, or null if there is not one.
+  </p>
+  <p>
+    The <strong>set(value)</strong> function attempts to set the value to the context point through the point's data
+    source (i.e. sending the set out to the device).
+  </p>
+  <p>
+    The <strong>set(value, timestamp)</strong> function is the same as set(value) but with a timestamp for the new
+    value supplied. Use new Date().getTime() to get the current time.
+  </p>
+  <p>
+    The <strong>set(value, timestamp, annotation)</strong> function is the same as set(value, timestamp) but also sets
+    the annotation on the point value to the supplied annotation.
+  </p>
 
-<h2>Permissions</h2>
-<p>Each script is executed with a set of permissions that are likely supplied when the item that will run the script was created.  This is usually a script permissions setting 
-  but could simply the the permissions of the owner of the item.  All non-admin users are restricted from executing Java code from within the script.  The permissions are also
-  used to ensure that all script utilities obey Mango permissions such as setting and viewing/querying for points.
-</p>
+  <h2>Permissions</h2>
+  <p>Each script is executed with a set of permissions that are likely supplied when the item that will run the script
+    was created. This is usually a script permissions setting
+    but could simply the the permissions of the owner of the item. All non-admin users are restricted from executing
+    Java code from within the script. The permissions are also
+    used to ensure that all script utilities obey Mango permissions such as setting and viewing/querying for points.
+  </p>
 
-<h2>Statistics objects</h2>
-<p>
-  Statistics objects are returned from the past(PeriodType[, Periods][, cache]), prev(PeriodType[, Periods][, cache]), and 
-  previous(PeriodType[, Periods][, cache]), getStats(from, to[, cache]) functions. (See "Context objects" above.) The properties 
-  of the object returned depend upon the data type of point upon which they were generated. Time values in objects are stored as integers,
-  but represent the number of milliseconds since midnight Jan 1, 1970.
-</p>
-<p><strong>Note 1:</strong> getStats(from, to) operates on timestamps, usage:</p>
-<pre>//Get the stats for the past 20 minutes
+  <h2>Statistics objects</h2>
+  <p>
+    Statistics objects are returned from the past(PeriodType[, Periods][, cache]), prev(PeriodType[, Periods][,
+    cache]), and
+    previous(PeriodType[, Periods][, cache]), getStats(from, to[, cache]) functions. (See "Context objects" above.) The
+    properties
+    of the object returned depend upon the data type of point upon which they were generated. Time values in objects
+    are stored as integers,
+    but represent the number of milliseconds since midnight Jan 1, 1970.
+  </p>
+  <p><strong>Note 1:</strong> getStats(from, to) operates on timestamps, usage:</p>
+  <pre>//Get the stats for the past 20 minutes
     var end = new Date();
     var start = new Date(end.getTime() - 1000 * 60 * 20); //20 min before now
     var stats = p1.getStats(start.getTime(), end.getTime());</pre>
 
-<p>
-  The <strong>AnalogStatistics</strong> object is returned by Numeric points. It contains the following properties:
-</p>
-<ul>
-  <li><strong>minimumValue</strong>: (float) the minimum value the point reached over the period</li>
-  <li><strong>minimumTime</strong>: (integer) the time at which the minimum value was reached</li>
-  <li><strong>maximumValue</strong>: (float) the maximum value the point reached over the period</li>
-  <li><strong>maximumTime</strong>: (integer) the time at which the maximum value was reached</li>
-  <li><strong>average</strong>: (float) the average value of the point over the period</li>
-  <li><strong>integral</strong>: (float) the integral value of the point over the period</li>
-  <li><strong>sum</strong>: (float) the sum of all value updates over the period (appropriate for pulse counting)</li>
-  <li><strong>startValue</strong>: (float) the value before or exactly at the period start time</li>
-  <li><strong>firstValue</strong>: (float) the first value in the period</li>
-  <li><strong>firstTime</strong>: (integer) the time of the first value</li>
-  <li><strong>lastValue</strong>: (float) the last value in the period</li>
-  <li><strong>lastTime</strong>: (integer) the time of the last value</li> 
-  <li><strong>count</strong>: (integer) the number of updates over the period</li>
-  <li><strong>delta</strong>: (float) the change in value from startValue, or if null firstValue, to lastValue</li>
-  <li><strong>periodStartTime</strong> (integer) the start time used for the calculation </li>
-  <li><strong>periodEndTime</strong> (integer) the end time used for the calculation </li>
-</ul>
-<p>
-  For example, the following returns the minimum value of 'n' over the past hour without considering cached values:
-</p>
-<pre>n.past(HOUR).minimumValue;</pre>
-<p>
-  The <strong>StartsAndRuntimeList</strong> object is returned by Binary and Multistate points. It contains the following 
-  properties:
-</p>
-<ul>
-  <li><strong>periodStartTime</strong> (integer) the start time used for the calculation </li>
-  <li><strong>periodEndTime</strong> (integer) the end time used for the calculation </li>
-  <li><strong>count</strong> (integer) count of the total number of entries
-  <li><strong>startValue</strong>: the value before or exactly at the period start time</li>
-  <li><strong>firstValue</strong>: the first value in the period</li>
-  <li><strong>firstTime</strong>: (integer) the time of the first value</li>
-  <li><strong>lastValue</strong>: the last value in the period</li>
-  <li><strong>lastTime</strong>: (integer) the time of the last value</li> 
-  <li><strong>data</strong>: (array) the list of individual StartAndRuntime objects.</li>
-</ul>
-Each StartsAndRuntime object has the following properties:
-<ul>
-  <li><strong>value</strong>: (boolean for Binary, integer for Multistate) the point state to which the remaining properties apply</li>
-  <li><strong>starts</strong>: (integer) the number of times the state was entered over the period</li>
-  <li><strong>runtime</strong>: (integer) the amount of time in milliseconds the point was in the state over the period</li>
-  <li><strong>proportion</strong>: (float) the proportion of the period the point was in the state (runtime / real duration)</li>
-  <li><strong>percentage</strong>: (float) proportion * 100</li>
-</ul>
+  <p>
+    The <strong>AnalogStatistics</strong> object is returned by Numeric points. It contains the following properties:
+  </p>
+  <ul>
+    <li><strong>minimumValue</strong>: (float) the minimum value the point reached over the period</li>
+    <li><strong>minimumTime</strong>: (integer) the time at which the minimum value was reached</li>
+    <li><strong>maximumValue</strong>: (float) the maximum value the point reached over the period</li>
+    <li><strong>maximumTime</strong>: (integer) the time at which the maximum value was reached</li>
+    <li><strong>average</strong>: (float) the average value of the point over the period</li>
+    <li><strong>integral</strong>: (float) the integral value of the point over the period</li>
+    <li><strong>sum</strong>: (float) the sum of all value updates over the period (appropriate for pulse counting)</li>
+    <li><strong>startValue</strong>: (float) the value before or exactly at the period start time</li>
+    <li><strong>firstValue</strong>: (float) the first value in the period</li>
+    <li><strong>firstTime</strong>: (integer) the time of the first value</li>
+    <li><strong>lastValue</strong>: (float) the last value in the period</li>
+    <li><strong>lastTime</strong>: (integer) the time of the last value</li>
+    <li><strong>count</strong>: (integer) the number of updates over the period</li>
+    <li><strong>delta</strong>: (float) the change in value from startValue, or if null firstValue, to lastValue</li>
+    <li><strong>periodStartTime</strong> (integer) the start time used for the calculation </li>
+    <li><strong>periodEndTime</strong> (integer) the end time used for the calculation </li>
+  </ul>
+  <p>
+    For example, the following returns the minimum value of 'n' over the past hour without considering cached values:
+  </p>
+  <pre>n.past(HOUR).minimumValue;</pre>
+  <p>
+    The <strong>StartsAndRuntimeList</strong> object is returned by Binary and Multistate points. It contains the
+    following
+    properties:
+  </p>
+  <ul>
+    <li><strong>periodStartTime</strong> (integer) the start time used for the calculation </li>
+    <li><strong>periodEndTime</strong> (integer) the end time used for the calculation </li>
+    <li><strong>count</strong> (integer) count of the total number of entries
+    <li><strong>startValue</strong>: the value before or exactly at the period start time</li>
+    <li><strong>firstValue</strong>: the first value in the period</li>
+    <li><strong>firstTime</strong>: (integer) the time of the first value</li>
+    <li><strong>lastValue</strong>: the last value in the period</li>
+    <li><strong>lastTime</strong>: (integer) the time of the last value</li>
+    <li><strong>data</strong>: (array) the list of individual StartAndRuntime objects.</li>
+  </ul>
+  Each StartsAndRuntime object has the following properties:
+  <ul>
+    <li><strong>value</strong>: (boolean for Binary, integer for Multistate) the point state to which the remaining
+      properties apply</li>
+    <li><strong>starts</strong>: (integer) the number of times the state was entered over the period</li>
+    <li><strong>runtime</strong>: (integer) the amount of time in milliseconds the point was in the state over the
+      period</li>
+    <li><strong>proportion</strong>: (float) the proportion of the period the point was in the state (runtime / real
+      duration)</li>
+    <li><strong>percentage</strong>: (float) proportion * 100</li>
+  </ul>
 
-<p>
-  To access a specific StartAndRuntime object in the list, you will first need to test to see if the state exists, as states that the point was not in during the period will not exist. 
-  For example, the following returns the proportion of time that 'b' was in state 'false' over the previous 2 months without considering the cache.  Note 
-  that any states that have not occurred in this period will still return a StartsAndRuntime object from get() with 0 starts, 0 runtime, and 0 proportion.
-</p>
-<pre>
+  <p>
+    To access a specific StartAndRuntime object in the list, you will first need to test to see if the state exists, as
+    states that the point was not in during the period will not exist.
+    For example, the following returns the proportion of time that 'b' was in state 'false' over the previous 2 months
+    without considering the cache. Note
+    that any states that have not occurred in this period will still return a StartsAndRuntime object from get() with 0
+    starts, 0 runtime, and 0 proportion.
+  </p>
+  <pre>
     var stats = b.past(MONTH, 2);
     var sar = stats.get(false).proportion; //get the proportion of time in false whether or not false occurred
     var stateNotNull = stats.getStartsAndRuntime().containsKey(false); //see if false occurred
 </pre>
 
-<p>
-  The <strong>ValueChangeCounter</strong> object is returned by Alphanumeric points. 
-  It contains a property <strong>changes</strong>, which is the number of times the point changed during the period. 
-  For example, the following returns the number of times 'a' changed during the previous 45 minutes, including cached values.
-</p>
-<pre>b.previous(MINUTE, 45, true);</pre>
-Each ValueChangeCounter has the following properties:
-<ul>
-  <li><strong>periodStartTime</strong> (integer) the start time used for the calculation </li>
-  <li><strong>periodEndTime</strong> (integer) the end time used for the calculation </li>
-  <li><strong>count</strong> (integer) count of the total number of entries</li>
-  <li><strong>startValue</strong>: the value before or exactly at the period start time</li>
-  <li><strong>firstValue</strong>: the first value in the period</li>
-  <li><strong>firstTime</strong>: (integer) the time of the first value</li>
-  <li><strong>lastValue</strong>: the last value in the period</li>
-  <li><strong>lastTime</strong>: (integer) the time of the last value</li> 
-  <li><strong>changes</strong>: (integer) number of values not equal to the preceding value</li>
-</ul>
+  <p>
+    The <strong>ValueChangeCounter</strong> object is returned by Alphanumeric points.
+    It contains a property <strong>changes</strong>, which is the number of times the point changed during the period.
+    For example, the following returns the number of times 'a' changed during the previous 45 minutes, including cached
+    values.
+  </p>
+  <pre>b.previous(MINUTE, 45, true);</pre>
+  Each ValueChangeCounter has the following properties:
+  <ul>
+    <li><strong>periodStartTime</strong> (integer) the start time used for the calculation </li>
+    <li><strong>periodEndTime</strong> (integer) the end time used for the calculation </li>
+    <li><strong>count</strong> (integer) count of the total number of entries</li>
+    <li><strong>startValue</strong>: the value before or exactly at the period start time</li>
+    <li><strong>firstValue</strong>: the first value in the period</li>
+    <li><strong>firstTime</strong>: (integer) the time of the first value</li>
+    <li><strong>lastValue</strong>: the last value in the period</li>
+    <li><strong>lastTime</strong>: (integer) the time of the last value</li>
+    <li><strong>changes</strong>: (integer) number of values not equal to the preceding value</li>
+  </ul>
 
-<p><strong>Note 2: </strong>
-  startValue, firstValue, firstTime, lastValue, and lastTime can readily be null if there is no value before or especially in the period.
-  Null values are cast by the JavaScript engine when used, typically to false or 0. When cast to a string, it will be "null" . Other statistics
-  may have NaN, 0, or null values when there is no data in the period.
-</p>
+  <p><strong>Note 2: </strong>
+    startValue, firstValue, firstTime, lastValue, and lastTime can readily be null if there is no value before or
+    especially in the period.
+    Null values are cast by the JavaScript engine when used, typically to false or 0. When cast to a string, it will be
+    "null" . Other statistics
+    may have NaN, 0, or null values when there is no data in the period.
+  </p>
 
-<h3>Cache Control</h3>
-<p>
-  The cache argument can always be omitted to imply not using the point value cache. If using the cache, one may notice the cache may expand
-  through use of the last and lastValue functions. Then new update will fill the cache even if the point is interval logging, which
-  results in inconsistent data density if you then do a statistics calculation over the period of the cached values, which can lead
-  to slightly different values than if you regenerated the point history after the fact.
-</p>
+  <h3>Cache Control</h3>
+  <p>
+    The cache argument can always be omitted to imply not using the point value cache. If using the cache, one may
+    notice the cache may expand
+    through use of the last and lastValue functions. Then new update will fill the cache even if the point is interval
+    logging, which
+    results in inconsistent data density if you then do a statistics calculation over the period of the cached values,
+    which can lead
+    to slightly different values than if you regenerated the point history after the fact.
+  </p>
 
-<h2>Global Utilities</h2>
-The script context has some utilites that are globally available.
-<h3>DateTimeUtility</h3>
-This utility is accessible via DateTimeUtility.{method}.
+  <h2>Global Utilities</h2>
+  The script context has some utilites that are globally available.
+  <h3>DateTimeUtility</h3>
+  This utility is accessible via DateTimeUtility.{method}.
 
-<h4>getOffset(timezoneId, timestamp)</h4> 
-timezoneId - "Europe/Rome"
-timestamp - ms timestamp of any date
-return - timezone offset in milliseconds at that point in time
+  <h4>getOffset(timezoneId, timestamp)</h4>
+  timezoneId - "Europe/Rome"
+  timestamp - ms timestamp of any date
+  return - timezone offset in milliseconds at that point in time
 
-<h4>getTimezone()</h4>
-return - Timezone from where the script is being run.
+  <h4>getTimezone()</h4>
+  return - Timezone from where the script is being run.
 
-<h4>getUtcOffset(timestamp)</h4>
-timestamp - ms timestamp of any date
-return - the UTC offset in milliseconds from where the script is being run
+  <h4>getUtcOffset(timestamp)</h4>
+  timestamp - ms timestamp of any date
+  return - the UTC offset in milliseconds from where the script is being run
 
-<h4>parseDate(format, dateString, timezoneId)</h4>
-format - See <a href="https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html" target="blank">here</a>
-dateString - String date and is related to above
-timezoneId - Timezone ID to use
-return - millisecond date
+  <h4>parseDate(format, dateString, timezoneId)</h4>
+  format - See <a href="https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html" target="blank">here</a>
+  dateString - String date and is related to above
+  timezoneId - Timezone ID to use
+  return - millisecond date
 
-<h4>formatDate(formate, timestamp, timezoneId)</h4>
-format - See <a href="https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html" target="blank">here</a>
-timestamp - milliseconds since epoch 
-timezoneId - timezone to use
-return - String formatted date
-
-
-<h3>CONTEXT</h3>
-This utility holds the timestamp of the runtime (not the time of the event that triggered it) and a few methods for computing period milliseconds.
-
-<h4>getRuntime()</h4>
-return - the runtime in milliseconds for this run of the script
-
-<h4>getTimestamp()</h4>
-return - the timestamp of the event that triggered execution
-
-<h4>millisInPast(periodType, count)</h4>
-periodType - integer corresponding with time period type, as defined in Common.TimePeriods
-count - the number of periods
-returns - the current runtime minus a count of periodType
-
-<h4>millisInPrev(periodType, count)</h4>
-periodType - integer corresponding with time period type, as defined in Common.TimePeriods
-count - the number of periods
-returns - the current runtime minus a count of periodType, bookended to the periodType.
-
-<h4>millisInPrevious(periodType, count)</h4>
-see millisInPrev(periodType, count)
-
-<h4>useRuntime()</h4>
-set CONTEXT to use the runtime to compute past and previous. This is the default.
-
-<h4>useTimestamp()</h4>
-set CONTEXT to use the timestamp to compute past and previous.
-
-<h4>setComputeTime(long)</h4>
-set the time to compute past and previous relative to.
+  <h4>formatDate(formate, timestamp, timezoneId)</h4>
+  format - See <a href="https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html" target="blank">here</a>
+  timestamp - milliseconds since epoch
+  timezoneId - timezone to use
+  return - String formatted date
 
 
-<h3>RuntimeManager</h3>
-This utility is accessible via RuntimeManager.{method}.
-The enable/disable methods return a status of:
-<ul>
-  <li>-1 - Does Not Exist</li>
-  <li>0 - No change in state</li>
-  <li>1 - Operation successful</li>
-</ul>
+  <h3>CONTEXT</h3>
+  This utility holds the timestamp of the runtime (not the time of the event that triggered it) and a few methods for
+  computing period milliseconds.
 
-Available Methods:
-<hr></hr>
-<h3>refreshDataPoint(xid)</h3>
-Refreshing a data point suggests to the Data Source that the point value should be collected ASAP.  This will only happen if the underlying 
-data source has implemented this functionality.
+  <h4>getRuntime()</h4>
+  return - the runtime in milliseconds for this run of the script
 
-xid - Xid for data point
-returns:
-<ul>
-  <li>-1 - Point does not exist</li>
-  <li>0 - Point is not enabled</li>
-  <li>1 - Suggestion made to data source</li>
-</ul>
+  <h4>getTimestamp()</h4>
+  return - the timestamp of the event that triggered execution
 
-<h4>refreshDataSource(xid)</h4>
-Refreshing a data source suggests to the Data Source that a regular poll should be collected ASAP.  This will only happen if the underlying 
-data source has implemented this functionality.
+  <h4>millisInPast(periodType, count)</h4>
+  periodType - integer corresponding with time period type, as defined in Common.TimePeriods
+  count - the number of periods
+  returns - the current runtime minus a count of periodType
 
-xid - Xid for data soure
-returns:
-<ul>
-  <li>-1 - Source does not exist</li>
-  <li>0 - Source is not enabled</li>
-  <li>1 - Suggestion made to data source</li>
-</ul>
+  <h4>millisInPrev(periodType, count)</h4>
+  periodType - integer corresponding with time period type, as defined in Common.TimePeriods
+  count - the number of periods
+  returns - the current runtime minus a count of periodType, bookended to the periodType.
 
-<h4>isDataSourceEnabled(xid)</h4>
-xid - Xid for a data source
-return true if enabled false if not or DNE
+  <h4>millisInPrevious(periodType, count)</h4>
+  see millisInPrev(periodType, count)
 
-<h4>enableDataSource(xid)</h4>
-xid - Xid for a data source
-return status
+  <h4>useRuntime()</h4>
+  set CONTEXT to use the runtime to compute past and previous. This is the default.
 
-<h4>disableDataSource(xid)</h4>
-xid - Xid for a data source
-return status
+  <h4>useTimestamp()</h4>
+  set CONTEXT to use the timestamp to compute past and previous.
 
-<h4>isDataPointEnabled(xid)</h4>
-xid - Xid for a data point
-return true if enabled false if not or DNE or User does not have permissions
-<strong>Note: </strong> a disabled data point is a data point that is not collecting data, which can be due to either the point 
-being disabled or its data source being disabled.
+  <h4>setComputeTime(long)</h4>
+  set the time to compute past and previous relative to.
 
-<h4>enableDataPoint(xid)</h4>
-xid - Xid for a data point
-return status
 
-<h4>disableDataPoint(xid)</h4>
-xid - Xid for a data point
-return status
+  <h3>RuntimeManager</h3>
+  This utility is accessible via RuntimeManager.{method}.
+  The enable/disable methods return a status of:
+  <ul>
+    <li>-1 - Does Not Exist</li>
+    <li>0 - No change in state</li>
+    <li>1 - Operation successful</li>
+  </ul>
 
-<h4>sleep(milliseconds)</h4>
-milliseconds - the number of milliseconds to sleep for
-nothing returned
+  Available Methods:
+  <hr>
+  </hr>
+  <h3>refreshDataPoint(xid)</h3>
+  Refreshing a data point suggests to the Data Source that the point value should be collected ASAP. This will only
+  happen if the underlying
+  data source has implemented this functionality.
 
-<h3>Data Point Queries</h3>
-Data points can be queried by using the <strong>DataPointQuery</strong> utility.  This utility has one method:
-<code>DataPointQuery.query(stringRql);</code>
-The RQL has a default limit of 100. Add <pre>'&limit(-1)'</pre> to have no limit in the query.
+  xid - Xid for data point
+  returns:
+  <ul>
+    <li>-1 - Point does not exist</li>
+    <li>0 - Point is not enabled</li>
+    <li>1 - Suggestion made to data source</li>
+  </ul>
 
-<h3>Data Source Queries</h3>
-<p>Data sources can be queried in much the same way. There is one method, <code>DataSourceQuery.query(stringRql);</code> A returned
-object will contain:</p>
-<ul>
-  <li>name - String</li>
-  <li>xid - String</li>
-  <li>enabled - boolean</li>
-  <li>type - String</li>
-  <li>points - List&lt;DataPointWrapper&gt;</li>
-</ul>
+  <h4>refreshDataSource(xid)</h4>
+  Refreshing a data source suggests to the Data Source that a regular poll should be collected ASAP. This will only
+  happen if the underlying
+  data source has implemented this functionality.
 
-<h4>RQL</h4>
-<p>
-RQL is a query language that is highly flexible, more info <a href="https://github.com/persvr/rql" target="rql">here</a>.
-For example to find all points with a name that starts with Volts use this query:
-<code>like(name, Volts*)</code>
-Note the use of the asterisk wildcard, this is the default for all Mango RQL.  
-Also to see what is available to use in the query go <a href="/rest/v1/data-points/explain-query?format=json" target="explain">/rest/v1/data-points/explain-query?format=json</a>.
-</p>
+  xid - Xid for data soure
+  returns:
+  <ul>
+    <li>-1 - Source does not exist</li>
+    <li>0 - Source is not enabled</li>
+    <li>1 - Suggestion made to data source</li>
+  </ul>
 
-<h4>RQL Examples</h4>
-<p>This example will query for a set of the first 10 data points who's names contain the word 'boiler' 
-and return an average their values.  There is an additional check to ensure that only points that are enabled are used.  Note that this could also be done in the RQL statement.</p>
-<pre>
+  <h4>isDataSourceEnabled(xid)</h4>
+  xid - Xid for a data source
+  return true if enabled false if not or DNE
+
+  <h4>enableDataSource(xid)</h4>
+  xid - Xid for a data source
+  return status
+
+  <h4>disableDataSource(xid)</h4>
+  xid - Xid for a data source
+  return status
+
+  <h4>isDataPointEnabled(xid)</h4>
+  xid - Xid for a data point
+  return true if enabled false if not or DNE or User does not have permissions
+  <strong>Note: </strong> a disabled data point is a data point that is not collecting data, which can be due to either
+  the point
+  being disabled or its data source being disabled.
+
+  <h4>enableDataPoint(xid)</h4>
+  xid - Xid for a data point
+  return status
+
+  <h4>disableDataPoint(xid)</h4>
+  xid - Xid for a data point
+  return status
+
+  <h4>sleep(milliseconds)</h4>
+  milliseconds - the number of milliseconds to sleep for
+  nothing returned
+
+  <h3>Data Point Queries</h3>
+  Data points can be queried by using the <strong>DataPointQuery</strong> utility. This utility has one method:
+  <code>DataPointQuery.query(stringRql);</code>
+  The RQL has a default limit of 100. Add
+  <pre>'&limit(-1)'</pre> to have no limit in the query.
+
+  <h3>Data Source Queries</h3>
+  <p>Data sources can be queried in much the same way. There is one method, <code>DataSourceQuery.query(stringRql);</code>
+    A returned
+    object will contain:</p>
+  <ul>
+    <li>name - String</li>
+    <li>xid - String</li>
+    <li>enabled - boolean</li>
+    <li>type - String</li>
+    <li>points - List&lt;DataPointWrapper&gt;</li>
+  </ul>
+
+  <h4>RQL</h4>
+  <p>
+    RQL is a query language that is highly flexible, more info <a href="https://github.com/persvr/rql" target="rql">here</a>.
+    For example to find all points with a name that starts with Volts use this query:
+    <code>like(name, Volts*)</code>
+    Note the use of the asterisk wildcard, this is the default for all Mango RQL.
+    Also to see what is available to use in the query go <a href="/rest/v1/data-points/explain-query?format=json"
+      target="explain">/rest/v1/data-points/explain-query?format=json</a>.
+  </p>
+
+  <h4>RQL Examples</h4>
+  <p>This example will query for a set of the first 10 data points who's names contain the word 'boiler'
+    and return an average their values. There is an additional check to ensure that only points that are enabled are
+    used. Note that this could also be done in the RQL statement.</p>
+  <pre>
 var points = DataPointQuery.query('like(name, *boiler*)&amp;limit(10)');
 var average = 0.0;
 
@@ -378,49 +443,59 @@ for(var i=0; i&lt;points.size(); i++){
 return average/points.size();
 </pre>
 
-<h3>DataPointWrapper</h3>
-<p>The DataPointWrapper returned has some of the basic information on a data point in addition to the
-Runtime member which is the same as the Object that wraps the context points for a script. 
- The following are members of the DataPointWrapper Object: </p>
-<ul>
-  <li>extendedName - String</li>
-  <li>settable - Boolean</li>
-  <li>deviceName - String</li>
-  <li>enabled - Boolean</li>
-  <li>xid - String</li>
-  <li>name - String</li>
-  <li>unit - String</li>
-  <li>dataSourceName - String</li>
-  <li>dataSourceXid - String</li>
-  <li>runtime - Point Context object</li>
-</ul>
-<p>Note: The runtime is the object you would expect to see by adding a point to the script context.  This is the object 
-that contains the .ago(), .past() and .prev() methods as described above.  Use caution as this member is null if the data point is not enabled.</p>
+  <h3>DataPointWrapper</h3>
+  <p>The DataPointWrapper returned has some of the basic information on a data point in addition to the
+    Runtime member which is the same as the Object that wraps the context points for a script.
+    The following are members of the DataPointWrapper Object: </p>
+  <ul>
+    <li>extendedName - String</li>
+    <li>settable - Boolean</li>
+    <li>deviceName - String</li>
+    <li>enabled - Boolean</li>
+    <li>xid - String</li>
+    <li>name - String</li>
+    <li>unit - String</li>
+    <li>dataSourceName - String</li>
+    <li>dataSourceXid - String</li>
+    <li>runtime - Point Context object</li>
+  </ul>
+  <p>Note: The runtime is the object you would expect to see by adding a point to the script context. This is the
+    object
+    that contains the .ago(), .past() and .prev() methods as described above. Use caution as this member is null if the
+    data point is not enabled.</p>
 
-<h3>Point Value Queries</h3>
-<p>While point values and statistics can be gotten through point wrappers, one need use the <code>PointValueQuery</code> utility
-to easily stream values or collate multiple points' values by time. A second method is provided to optionally roll the data up into
-rollup periods, and then to pass a part or the whole statistics object to the callback. To see the method signatures, run <code>print(PointValueQuery);</code>
-from within the scripting environment.</p>
+  <h3>Point Value Queries</h3>
+  <p>While point values and statistics can be gotten through point wrappers, one need use the <code>PointValueQuery</code>
+    utility
+    to easily stream values or collate multiple points' values by time. A second method is provided to optionally roll
+    the data up into
+    rollup periods, and then to pass a part or the whole statistics object to the callback. To see the method
+    signatures, run <code>print(PointValueQuery);</code>
+    from within the scripting environment.</p>
 
-<h3>JsonEmport utility</h3>
-<p>The JsonEmport utility provides methods to pass JSON or get JSON as one would through an import/export page. A script cannot save itself
-through the emport utility. If it tried, that item in the JSON will be ignored. This utility is accessible through the context 
-key "JsonEmport" and has the following functions:</p>
-<ul>	
-<li>getFullConfiguration(): String</li>
-<li>getConfiguration(String): String</li> 
-<li>dataPointQuery(rql): String</li>
-<li>dataSourceQuery(rql): String</li> 
-<li>doImport(String): void</li>
-<li>doImportGetStatus(String): List&lt;String&gt;</li>
-</ul>
+  <h3>JsonEmport utility</h3>
+  <p>The JsonEmport utility provides methods to pass JSON or get JSON as one would through an import/export page. A
+    script cannot save itself
+    through the emport utility. If it tried, that item in the JSON will be ignored. This utility is accessible through
+    the context
+    key "JsonEmport" and has the following functions:</p>
+  <ul>
+    <li>getFullConfiguration(): String</li>
+    <li>getConfiguration(String): String</li>
+    <li>dataPointQuery(rql): String</li>
+    <li>dataSourceQuery(rql): String</li>
+    <li>doImport(String): void</li>
+    <li>doImportGetStatus(String): List&lt;String&gt;</li>
+  </ul>
 
-<h3>HttpBuilder</h3>
-<p>HTTP exchanges can be sent and handled from within the script body without using Java directly. The <strong>HttpBuilder</strong> object provides GET, POST, PUT and DELETE
-with synchronous callbacks. By default, responses with status 200 will be passed to the resp function if defined, other responses to the err function if defined, and
-local exceptions to the excp function if defined, or the err function if that is defined instead with status -1. Two forms of usage are supported:</p>
-<pre>
+  <h3>HttpBuilder</h3>
+  <p>HTTP exchanges can be sent and handled from within the script body without using Java directly. The <strong>HttpBuilder</strong>
+    object provides GET, POST, PUT and DELETE
+    with synchronous callbacks. By default, responses with status 200 will be passed to the resp function if defined,
+    other responses to the err function if defined, and
+    local exceptions to the excp function if defined, or the err function if that is defined instead with status -1.
+    Two forms of usage are supported:</p>
+  <pre>
 //First format, method chaining
 print(HttpBuilder.get("http://localhost:8080/help.htm", {/* user supplied headers */}, {/* user supplied parameters */})
 	.err(function(status, headers, content) { //setErrorCallback for linguistic completion
@@ -452,12 +527,14 @@ print(HttpBuilder.request({
 }));
 </pre>
 
-<h3>CONTEXT_POINTS</h3>
-<p>CONTEXT_POINTS is a variable declared in all scripting environments. It is a map of variable names to context point runtimes.</p>
+  <h3>CONTEXT_POINTS</h3>
+  <p>CONTEXT_POINTS is a variable declared in all scripting environments. It is a map of variable names to context
+    point runtimes.</p>
 
-<h2>Logging</h2>
-<p>Logging can be achieved during script testing on the edit page by enabling the logging level desired and then using the appropriate log statement.</p>
-<pre>
+  <h2>Logging</h2>
+  <p>Logging can be achieved during script testing on the edit page by enabling the logging level desired and then
+    using the appropriate log statement.</p>
+  <pre>
 LOG.trace('trace');
 LOG.debug('debug');
 LOG.info('info');
@@ -465,8 +542,12 @@ LOG.warn('warn');
 LOG.error('error');
 LOG.fatal('fatal');
 </pre>
-<p>Additionally most test utilities will let you use the print() function to write out information while debugging a script in the test area</p>
+  <p>Additionally most test utilities will let you use the print() function to write out information while debugging a
+    script in the test area</p>
 
-<h2>More Help</h2>
-<p>More examples of user created scripts can be found <a href="http://infiniteautomation.com/wiki/doku.php?id=automation:script_examples" target="wiki">here</a>.</p>
-<p>For general discussion on scripting in Mango see <a href="http://infiniteautomation.com/forum/category/14/scripting-general-discussion" target="forum">here</a>.</p>
+  <h2>More Help</h2>
+  <p>More examples of user created scripts can be found <a href="http://infiniteautomation.com/wiki/doku.php?id=automation:script_examples"
+      target="wiki">here</a>.</p>
+  <p>For general discussion on scripting in Mango see <a href="http://infiniteautomation.com/forum/category/14/scripting-general-discussion"
+      target="forum">here</a>.</p>
+</div>
