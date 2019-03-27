@@ -22,6 +22,8 @@ class Context {
                 this.toggleChildren();
             }
         }
+        
+        this.loadCount = 0;
     }
 
     loadChildren() {
@@ -29,17 +31,30 @@ class Context {
 
         const loadingDelay = this.$timeout(() => this.loading = true, 200);
         
-        const p = this.childrenPromise = this.$q.when(children).then(resolvedChildren => {
-            this.children = resolvedChildren;
-        });
-        
-        p.finally(() => {
+        const count = ++this.loadCount;
+
+        const finishedLoading = () => {
             this.$timeout.cancel(loadingDelay);
-            if (this.childrenPromise === p) {
+            if (this.loadCount === count) {
                 delete this.childrenPromise;
                 delete this.loading;
             }
+        };
+        
+        this.childrenPromise = this.$q.when(children).then(resolvedChildren => {
+            if (this.loadCount === count) {
+                this.children = resolvedChildren;
+            }
+        }, error => {
+            // TODO display error
+        }, progressChildren => {
+            if (Array.isArray(progressChildren) && this.loadCount === count) {
+                this.children = progressChildren;
+                finishedLoading();
+            }
         });
+        
+        this.childrenPromise.finally(finishedLoading);
     }
     
     toggleChildren() {
