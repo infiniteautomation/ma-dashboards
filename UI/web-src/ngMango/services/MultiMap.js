@@ -32,6 +32,10 @@ class MultiMap extends Map {
         return this;
     }
     
+    add(key, value) {
+        return this.set.apply(this, arguments);
+    }
+    
     delete(key, value) {
         const values = super.get(key);
         if (!values) {

@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import moment from 'moment-timezone';
+import MultiMap from './MultiMap';
 
 /**
 * @ngdoc service
@@ -985,6 +986,10 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
                 map[item[keyProperty]] = item;
                 return map;
             }, Object.create(null));
+        },
+        
+        get MultiMap() {
+            return MultiMap;
         }
     };
 
