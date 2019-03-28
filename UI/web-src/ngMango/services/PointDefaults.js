@@ -127,6 +127,7 @@ const defaultPropertiesForDataTypes = {
         }
     },
     IMAGE: {
+        plotType: 'STEP',
         rollup: 'NONE',
         simplifyType: 'NONE',
         loggingProperties: {
@@ -136,7 +137,7 @@ const defaultPropertiesForDataTypes = {
             discardExtremeValues: false
         },
         textRenderer: {
-            type: 'textRendererPlain',
+            type: 'textRendererNone',
             suffix: ''
         },
         chartRenderer: {
