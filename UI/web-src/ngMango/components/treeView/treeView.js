@@ -46,7 +46,7 @@ class Context {
                 this.children = resolvedChildren;
             }
         }, error => {
-            // TODO display error
+            this.loadError = error && (error.mangoStatusText || error.localizedMessage) || ('' + error);
         }, progressChildren => {
             if (Array.isArray(progressChildren) && this.loadCount === count) {
                 this.children = progressChildren;
@@ -63,6 +63,7 @@ class Context {
             this.loadChildren();
         } else {
             delete this.children;
+            delete this.loadError;
         }
     }
 }
