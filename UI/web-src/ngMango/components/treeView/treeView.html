@@ -1,4 +1,4 @@
-<ul ng-include="'maTreeView.listItems.html'"></ul>
+<ul ng-include="'maTreeView.listItems.html'" class="ma-tree-view-depth-0"></ul>
 
 <script type="text/ng-template" id="maTreeView.listItems.html">
 	<li ng-if="!context.childrenPromise && !context.loadError && !context.children.length" class="ma-tree-view-no-items"><em ma-tr="ui.components.noItemsToList"></em></li>
@@ -16,6 +16,6 @@
         	<span ma-tree-view-transclude></span>
 		</span>
 
-        <ul ng-if="itemContext.showChildren" ng-include="'maTreeView.listItems.html'" ng-init="context = itemContext"></ul>
+        <ul ng-if="itemContext.showChildren" ng-include="'maTreeView.listItems.html'" ng-init="context = itemContext" ng-class="::'ma-tree-view-depth-' + context.depth"></ul>
     </li>
 </script>
