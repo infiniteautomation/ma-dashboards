@@ -15,6 +15,8 @@ import negativeCusumTemplate from '../components/eventDetectorEditor/detectorTyp
 import positiveCusumTemplate from '../components/eventDetectorEditor/detectorTypes/positiveCusum.html';
 import smoothnessTemplate from '../components/eventDetectorEditor/detectorTypes/smoothness.html';
 import stateChangeCountTemplate from '../components/eventDetectorEditor/detectorTypes/stateChangeCount.html';
+import noUpdate from '../components/eventDetectorEditor/detectorTypes/noUpdate.html';
+import noChange from '../components/eventDetectorEditor/detectorTypes/noChange.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -105,13 +107,15 @@ function eventDetectorProvider() {
             type: 'NO_CHANGE',
             description: 'pointEdit.detectors.noChange',
             pointEventDetector: true,
+            template: noChange,
             dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC'])
         },
         {
             type: 'NO_UPDATE',
             description: 'pointEdit.detectors.noUpdate',
             pointEventDetector: true,
-            dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC'])
+            template: noUpdate,
+            dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC','IMAGE'])
         },
         {
             type: 'POSITIVE_CUSUM',
