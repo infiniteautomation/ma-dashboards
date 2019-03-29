@@ -122,6 +122,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                 const toast = $mdToast.simple()
                     .textContent(text)
                     .action(okText)
+                    .actionKey('o')
                     .highlightAction(true)
                     .position('bottom center')
                     .hideDelay(5000);
@@ -142,6 +143,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                 const toast = $mdToast.simple()
                     .textContent(text)
                     .action(okText)
+                    .actionKey('o')
                     .highlightAction(true)
                     .position('bottom center')
                     .hideDelay(10000)
@@ -159,6 +161,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                 const toast = $mdToast.simple()
                     .textContent(text || options.text)
                     .action(okText)
+                    .actionKey('o')
                     .highlightAction(true)
                     .position('bottom center')
                     .hideDelay(isFinite(options.hideDelay) ? options.hideDelay : 5000);
@@ -183,6 +186,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                 const toast = $mdToast.simple()
                     .textContent(text)
                     .action(okText)
+                    .actionKey('o')
                     .highlightAction(true)
                     .position('bottom center')
                     .toastClass('md-warn')

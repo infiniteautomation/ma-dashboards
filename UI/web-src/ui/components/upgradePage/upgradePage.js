@@ -195,6 +195,7 @@ UpgradePageController.prototype.restart = function($event) {
 		const toast = this.$mdToast.simple()
 	        .textContent(this.maTranslate.trSync('modules.restartScheduled'))
 	        .action(this.maTranslate.trSync('common.ok'))
+            .actionKey('o')
 	        .highlightAction(true)
 	        .position('bottom center')
 	        .hideDelay(10000);

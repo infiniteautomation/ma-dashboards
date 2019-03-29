@@ -188,6 +188,7 @@ class WatchListBuilderController {
                 const toast = this.$mdToast.simple()
                     .textContent(this.Translate.trSync('ui.app.watchListSaved'))
                     .action(this.Translate.trSync('common.ok'))
+                    .actionKey('o')
                     .highlightAction(true)
                     .position('bottom center')
                     .hideDelay(2000);
@@ -199,6 +200,7 @@ class WatchListBuilderController {
                 const toast = this.$mdToast.simple()
                     .textContent(this.Translate.trSync('ui.app.errorSavingWatchlist', response.mangoStatusText))
                     .action(this.Translate.trSync('common.ok'))
+                    .actionKey('o')
                     .highlightAction(true)
                     .toastClass('md-warn')
                     .position('bottom center')

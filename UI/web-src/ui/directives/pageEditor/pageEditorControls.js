@@ -311,6 +311,7 @@ class PageEditorControlsController {
                 const toast = this.$mdToast.simple()
                     .textContent(this.Translate.trSync('ui.app.pageSaved', [this.selectedPage.name]))
                     .action(this.Translate.trSync('common.ok'))
+                    .actionKey('o')
                     .highlightAction(true)
                     .position('bottom center')
                     .hideDelay(5000);
@@ -320,6 +321,7 @@ class PageEditorControlsController {
                 const errorToast = this.$mdToast.simple()
                     .textContent(this.Translate.trSync('ui.app.errorSavingPage', [this.selectedPage.name, error.mangoStatusText]))
                     .action(this.Translate.trSync('common.ok'))
+                    .actionKey('o')
                     .highlightAction(true)
                     .position('bottom center')
                     .toastClass('md-warn')

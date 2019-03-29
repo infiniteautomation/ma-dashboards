@@ -589,6 +589,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             const toast = $mdToast.simple()
                 .textContent(message)
                 .action(Translate.trSync('login.ui.app.ok'))
+                .actionKey('o')
                 .highlightAction(true)
                 .position('bottom center')
                 .hideDelay(hideDelay);
