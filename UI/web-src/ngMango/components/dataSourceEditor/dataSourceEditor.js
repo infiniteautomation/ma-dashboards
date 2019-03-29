@@ -84,6 +84,8 @@ class DataSourceEditorController {
             return;
         }
         
+        delete this.addDataPointsArray;
+        
         this.validationMessages = [];
         
         const viewValue = this.ngModelCtrl.$viewValue;
@@ -190,6 +192,11 @@ class DataSourceEditorController {
             return true;
         }
         return false;
+    }
+    
+    addDataPoints(points) {
+        //this.activeTab = 3;
+        this.addDataPointsArray = points;
     }
 }
 

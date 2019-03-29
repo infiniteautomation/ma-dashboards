@@ -1,6 +1,6 @@
 <div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" ma-activate-tab="$ctrl.activeTab = $index" flex="noshrink" layout="column">
     <md-tabs flex="noshrink" layout="column" ng-attr-md-dynamic-height="{{$ctrl.dynamicHeight}}" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
-        <md-tab>
+        <md-tab md-on-select="$ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="ui.app.dataSource"></span>
             </md-tab-label>
@@ -120,7 +120,7 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab>
+        <md-tab md-on-select="$ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="dsEdit.events.alarmLevels"></span>
             </md-tab-label>
@@ -153,7 +153,7 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab>
+        <md-tab md-on-select="$ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="dsEdit.logging.purge"></span>
             </md-tab-label>
@@ -180,18 +180,19 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.pointsTabActive = true" md-on-deselect="$ctrl.pointsTabActive = false">
+        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.pointsTabActive = true; $ctrl.hideSaveButtons = true" md-on-deselect="$ctrl.pointsTabActive = false; $ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="ui.app.dataPoints"></span>
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
-                    <ma-bulk-data-point-editor data-source="$ctrl.dataSource" querying-disabled="!$ctrl.pointsTabActive" selected-points="$ctrl.selectedPoints = $selected"></ma-bulk-data-point-editor>
+                    <ma-bulk-data-point-editor data-source="$ctrl.dataSource" querying-disabled="!$ctrl.pointsTabActive"
+                        selected-points="$ctrl.selectedPoints = $selected" add-data-points="$ctrl.addDataPointsArray"></ma-bulk-data-point-editor>
                 </div>
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="!$ctrl.dataSource.isNew()">
+        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.hideSaveButtons = true" md-on-deselect="$ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="dsEdit.currentAlarms"></span>
             </md-tab-label>
@@ -202,12 +203,12 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.refreshStatus = {}">
+        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.refreshStatus = {}; $ctrl.hideSaveButtons = true" md-on-deselect="$ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="dsEdit.rtStatus"></span>
             </md-tab-label>
             <md-tab-body>
-                <div class="md-padding ma-no-padding-bottom">
+                <div class="md-padding">
                     <md-button ng-click="$ctrl.refreshStatus = {}"><md-icon>refresh</md-icon>&nbsp;<span ma-tr="common.refresh"></span></md-button>
                     <ma-data-source-status ng-if="!!$ctrl.refreshStatus" data-source="$ctrl.dataSource" refresh="$ctrl.refreshStatus"></ma-data-source-status>
                 </div>
@@ -217,7 +218,7 @@
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
 
-    <div class="md-padding ma-action-buttons" ng-if="!$ctrl.pointsTabActive">
+    <div class="md-padding ma-action-buttons" ng-if="!$ctrl.hideSaveButtons">
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form || !$ctrl.dataSourceType">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>

@@ -193,12 +193,20 @@ class DataPointEditorController {
     saveMultiple() {
         const newPoints = this.MultipleValues.toArray(this.dataPoint, this.points.length);
         
+        const action = this.points.every(dp => dp.isNew()) ? 'CREATE' : 'UPDATE';
+        
         this.bulkTask = new this.Point.bulk({
-            action: 'UPDATE',
-            requests: newPoints.map(pt => ({
-                xid: pt.originalId,
-                body: pt
-            }))
+            action,
+            requests: newPoints.map(pt => {
+                const request = {
+                    xid: pt.originalId,
+                    body: pt
+                };
+                if (action !== 'CREATE' && pt.isNew()) {
+                    request.action = 'CREATE';
+                }
+                return request;
+            })
         });
         
         this.savePromise = this.bulkTask.start(this.$scope).then(resource => {

@@ -129,6 +129,9 @@ class BulkDataPointEditorController {
                 this.getPoints();
             }
         }
+        if (changes.addDataPoints) {
+            this.addPointsFromAttr();
+        }
     }
     
     loadSettings() {
@@ -761,6 +764,27 @@ class BulkDataPointEditorController {
         this.purgePoints = Array.from(this.selectedPoints.values());
         this.showPurgeDialogObj = {};
     }
+    
+    addPointsFromAttr() {
+        const pointsToAdd = this.addDataPoints;
+        
+        if (!Array.isArray(pointsToAdd) || this.editTarget || this.csvFile) {
+            return;
+        }
+        
+        if (this.dataSource) {
+            if (pointsToAdd.some(dp => dp.dataSourceXid !== this.dataSource.xid)) {
+                return;
+            }
+        }
+        
+        if (pointsToAdd.length === 1) {
+            this.editTarget = pointsToAdd[0];
+        } else {
+            this.editTarget = pointsToAdd;
+        }
+        this.showPointDialog = {};
+    }
 }
 
 export default {
@@ -773,6 +797,7 @@ export default {
         watchListParams: '<?',
         refresh: '<?',
         queryingDisabled: '<?',
-        selectedPointsAttr: '&?selectedPoints'
+        selectedPointsAttr: '&?selectedPoints',
+        addDataPoints: '<?'
     }
 };

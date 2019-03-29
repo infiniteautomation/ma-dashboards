@@ -204,7 +204,7 @@
     <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100]" md-page="$ctrl.pageNumber"
             md-page-select md-total="{{$ctrl.filteredPoints.length}}" md-on-paginate="$ctrl.slicePointsBound"></md-table-pagination>
 
-    <ma-dialog show-dialog="$ctrl.showPointDialog" on-hide="$ctrl.editTarget = null; $ctrl.csvFile = null" on-cancel="$ctrl.editTarget = null;  $ctrl.csvFile = null">
+    <ma-dialog show-dialog="$ctrl.showPointDialog" on-hide="$ctrl.editTarget = null; $ctrl.csvFile = null" on-cancel="$ctrl.editTarget = null;  $ctrl.csvFile = null; $ctrl.addDataPoints = null;">
         <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
             <md-toolbar>
                 <div class="md-toolbar-tools">
