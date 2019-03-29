@@ -65,7 +65,6 @@ const exposedVendorModules = {
     'mathjs': () => import(/* webpackMode: "eager" */ 'mathjs'),
     'simplify-js': () => import(/* webpackMode: "eager" */ 'simplify-js'),
     'jszip': () => import(/* webpackMode: "eager" */ 'jszip'),
-    'plotly': () => import(/* webpackMode: "lazy", webpackChunkName: "plotly" */ 'plotly.js'),
     'stacktrace': () => import(/* webpackMode: "eager" */ 'stacktrace-js')
 };
 

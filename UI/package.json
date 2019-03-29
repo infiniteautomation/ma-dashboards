@@ -43,7 +43,6 @@
     "ngmap": "^1.18.4",
     "papaparse": "^4.5.0",
     "pdfmake": "^0.1.36",
-    "plotly.js": "^1.38.3",
     "requirejs": "^2.3.5",
     "rql": "^0.3.3",
     "simplify-js": "^1.2.3",
