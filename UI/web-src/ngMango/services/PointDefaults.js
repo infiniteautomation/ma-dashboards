@@ -44,7 +44,11 @@ const defaultPropertiesForDataTypes = {
             cacheSize: 1,
             loggingType: 'ON_CHANGE',
             tolerance: 0,
-            discardExtremeValues: false
+            discardExtremeValues: false,
+            intervalLoggingPeriod: {
+                periods: 1,
+                type: 'MINUTES'
+            }
         },
         textRenderer: {
             type: 'textRendererPlain',
@@ -63,7 +67,11 @@ const defaultPropertiesForDataTypes = {
             cacheSize: 1,
             loggingType: 'ON_CHANGE',
             tolerance: 0,
-            discardExtremeValues: false
+            discardExtremeValues: false,
+            intervalLoggingPeriod: {
+                periods: 1,
+                type: 'MINUTES'
+            }
         },
         textRenderer: {
             oneColour: '#00ff00',
@@ -85,7 +93,11 @@ const defaultPropertiesForDataTypes = {
             cacheSize: 1,
             loggingType: 'ON_CHANGE',
             tolerance: 0,
-            discardExtremeValues: false
+            discardExtremeValues: false,
+            intervalLoggingPeriod: {
+                periods: 1,
+                type: 'MINUTES'
+            }
         },
         textRenderer: {
             type: 'textRendererPlain',
@@ -134,7 +146,11 @@ const defaultPropertiesForDataTypes = {
             cacheSize: 1,
             loggingType: 'ON_CHANGE',
             tolerance: 0,
-            discardExtremeValues: false
+            discardExtremeValues: false,
+            intervalLoggingPeriod: {
+                periods: 1,
+                type: 'MINUTES'
+            }
         },
         textRenderer: {
             type: 'textRendererNone',
