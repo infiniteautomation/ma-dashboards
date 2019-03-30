@@ -1429,6 +1429,8 @@ export default [
         menuTr: 'header.emport',
         menuIcon: 'import_export',
         permission: 'superadmin',
+        menuHidden: true,
+        showInUtilities: true,
         params: {
             helpPage: 'ui.help.importExport'
         },
