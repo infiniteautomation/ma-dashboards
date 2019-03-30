@@ -1304,6 +1304,8 @@ export default [
         menuTr: 'ui.settings.systemStatus',
         menuIcon: 'new_releases',
         permission: 'superadmin',
+        menuHidden: true,
+        showInUtilities: true,
         params: {
             helpPage: 'ui.help.systemStatus'
         },
