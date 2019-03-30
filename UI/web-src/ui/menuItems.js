@@ -1532,7 +1532,9 @@ export default [
             <ma-json-store-table edit-clicked="$state.go(\'ui.settings.jsonStoreEditor\', {xid: $item.xid})"><ma-json-store-table>`,
         menuTr: 'ui.app.jsonStorePage',
         menuIcon: 'sd_storage',
-        permission: 'superadmin'
+        permission: 'superadmin',
+        menuHidden: true,
+        showInUtilities: true
     },
     {
         name: 'ui.settings.jsonStoreEditor',
