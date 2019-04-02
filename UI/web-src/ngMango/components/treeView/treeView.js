@@ -13,6 +13,7 @@ class Context {
         this.depth = parent ? parent.depth + 1 : 0;
         this.$q = $ctrl.$q;
         this.$timeout = $ctrl.$timeout;
+        this.$ctrl = $ctrl;
         
         if (item) {
             this.hasChildren = $ctrl.hasChildren(item);
@@ -33,7 +34,7 @@ class Context {
         
         const count = ++this.loadCount;
 
-        const finishedLoading = () => {
+        const showResults = () => {
             this.$timeout.cancel(loadingDelay);
             if (this.loadCount === count) {
                 delete this.childrenPromise;
@@ -43,18 +44,38 @@ class Context {
         
         this.childrenPromise = this.$q.when(children).then(resolvedChildren => {
             if (this.loadCount === count) {
-                this.children = resolvedChildren;
+                this.updateChildren(resolvedChildren);
             }
         }, error => {
             this.loadError = error && (error.mangoStatusText || error.localizedMessage) || ('' + error);
         }, progressChildren => {
             if (Array.isArray(progressChildren) && this.loadCount === count) {
-                this.children = progressChildren;
-                finishedLoading();
+                this.updateChildren(progressChildren);
+                showResults();
             }
         });
         
-        this.childrenPromise.finally(finishedLoading);
+        this.childrenPromise.finally(showResults);
+    }
+    
+    updateChildren(newChildren) {
+        const existingChildren = this.children;
+        this.children = newChildren;
+        
+        if (!Array.isArray(existingChildren)) {
+            return;
+        }
+        
+        // context is created via a ng-init for each object tracked by id
+        // we need to update the existing item if it exists so the item in the context is updated
+        const existingById = existingChildren.reduce((map, e) => (map[this.$ctrl.id(e)] = e, map), {});
+        this.children.forEach(c => {
+            const id = this.$ctrl.id(c);
+            const existing = existingById[id];
+            if (existing) {
+                Object.assign(existing, c);
+            }
+        });
     }
     
     toggleChildren() {
