@@ -337,7 +337,6 @@
 
   Available Methods:
   <hr>
-  </hr>
   <h3>refreshDataPoint(xid)</h3>
   Refreshing a data point suggests to the Data Source that the point value should be collected ASAP. This will only
   happen if the underlying
@@ -399,7 +398,7 @@
   Data points can be queried by using the <strong>DataPointQuery</strong> utility. This utility has one method:
   <code>DataPointQuery.query(stringRql);</code>
   The RQL has a default limit of 100. Add
-  <pre>'&limit(-1)'</pre> to have no limit in the query.
+  <pre>'&amp;limit(-1)'</pre> to have no limit in the query.
 
   <h3>Data Source Queries</h3>
   <p>Data sources can be queried in much the same way. There is one method, <code>DataSourceQuery.query(stringRql);</code>

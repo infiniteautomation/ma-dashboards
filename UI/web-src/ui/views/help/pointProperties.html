@@ -16,12 +16,16 @@
     unit, e.g. there are metric tonnes (t),
     short tons (ton_us) and long tons (ton_uk). You can use all SI prefixes on SI units, e.g. you can enter W for watt
     and also &micro;W (microwatt), MW (megawatt) etc.</p>
+    
+    <p>
     <br>
     For SI Units see the list here <a href='http://jscience.org/api/javax/measure/unit/SI.html' target='blank'>here</a>.
     <br>
     For NonSI Units see the list <a href='http://jscience.org/api/javax/measure/unit/NonSI.html' target='blank'>here</a>.
     <br>
     Note that there are also some units internally defined in this system:
+    </p>
+    
     <ul>
         <li>btu - British thermal unit</li>
         <li>thm - Thermal Unit (BTU * 100000)</li>
@@ -31,12 +35,11 @@
         <li>ppb - Part per billion</li>
     </ul>
 
-    There are also some aliases for common units defined here:
+    <p>There are also some aliases for common units defined here:</p>
     <ul>
         <li>Celsius - &deg;C</li>
         <li>Fahrenheit - &deg;F</li>
     </ul>
-</p>
     <p>
         Units can also be constructed as an expression of units, such as expressing the units of acceleration m/s^2 or
         a
@@ -65,13 +68,13 @@
     </p>
     <p>
             The <strong>Plot type</strong> is the default way the data will be represented on a chart.  
-            <ul>
-                <li><strong>Line: </strong> Will draw a direct line between each point useing the shortest possible route.</li>
-                <li><strong>Smooth: </strong> Will apply a smoothing algorithm when drawings the line between each point on the chart.</li>
-                <li><strong>Step: </strong> Will connect each point on the chart by only useing 90 degree angles.</li>
-                <li><strong>Bar: </strong> Will draw a column for each data point on the cart.</li>
-            </ul>
-        </p>
+    </p>
+    <ul>
+        <li><strong>Line: </strong> Will draw a direct line between each point useing the shortest possible route.</li>
+        <li><strong>Smooth: </strong> Will apply a smoothing algorithm when drawings the line between each point on the chart.</li>
+        <li><strong>Step: </strong> Will connect each point on the chart by only useing 90 degree angles.</li>
+        <li><strong>Bar: </strong> Will draw a column for each data point on the cart.</li>
+    </ul>
     <p>
         The point can influence its default charting through a <strong>Rollup</strong> which will plot that statistical metric
         when

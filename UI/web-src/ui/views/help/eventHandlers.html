@@ -98,10 +98,10 @@
 
 <ul>
     <li>
-        <code><@subject>email subject content< /@subject></code> - Defines the subject
+        <code>&lt;@subject&gt;email subject content&lt;/@subject&gt;</code> - Defines the subject
     </li>
     <li>
-        <code><@fmt message=translatable message OR key=i18n key/></code> - allows the use of Mango's i18n translations
+        <code>&lt;@fmt message=translatable message OR key=i18n key/&gt;</code> - allows the use of Mango's i18n translations
     </li>
 </ul>
 
@@ -115,12 +115,12 @@
 </p>
 
 <p>
-    <code><#if evt.alarmLevel==0> <@fmt key="common.alarmLevel.urgent"/> < /#if></code>
+    <code>&lt;#if evt.alarmLevel==0&gt; &lt;@fmt key="common.alarmLevel.urgent"/&gt; &lt; /#if&gt;</code>
 </p>
 
 <p>Another example of adding data point tags:</p>
 
-<p><code><#list point.tags as tag,value> ${tag} - ${value} < /#list></code></p>
+<p><code>&lt;#list point.tags as tag,value&gt; ${tag} - ${value} &lt;/#list&gt;</code></p>
 
 <p>
     Describing how to use all of the data within the model is not within the scope of this document, for examples please see the existing templates in the ftl folder.
