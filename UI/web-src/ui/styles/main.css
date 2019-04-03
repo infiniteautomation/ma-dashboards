@@ -260,11 +260,13 @@ md-sidenav.ma-help-sidebar {
 }
 
 .ma-help-sidebar md-content {
-  overflow-x: hidden;
+  position: relative;
 }
 
-.ma-help-sidebar md-content .md-button {
-  float: right;
+.ma-help-sidebar md-content .ma-help-sidebar-buttons {
+  position: fixed;
+  top: 0;
+  right: 0;
 }
 
 .ma-help-sidebar md-content li {
