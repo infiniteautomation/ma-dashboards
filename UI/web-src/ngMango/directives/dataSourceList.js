@@ -36,7 +36,8 @@
  <p>You have chosen data source "{{myDataSource.name}}". It is {{myDataSource.enabled ? 'enabled' : 'disabled'}} and has an XID of {{myDataSource.xid}}.</p>
  
  */
-function dataSourceList(DataSource, $injector) {
+dataSourceList.$inject = ['maDataSource', '$injector', '$filter'];
+function dataSourceList(DataSource, $injector, $filter) {
     const DEFAULT_SORT = ['name'];
 
     return {
@@ -70,6 +71,13 @@ function dataSourceList(DataSource, $injector) {
         },
         replace: true,
         link: function ($scope, $element, attrs, ngModelCtrl) {
+            DataSource.notificationManager.subscribe((event, item, attributes) => {
+                if (Array.isArray($scope.dataSources) && !$scope.query && $scope.start == null && $scope.limit == null) {
+                    attributes.updateArray($scope.dataSources);
+                    $scope.dataSources = $filter('orderBy')($scope.dataSources, $scope.sort || DEFAULT_SORT);
+                }
+            }, $scope);
+            
             $scope.newValue = {};
 
             ngModelCtrl.$formatters.push(value => {
@@ -137,7 +145,6 @@ function dataSourceList(DataSource, $injector) {
     };
 }
 
-dataSourceList.$inject = ['maDataSource', '$injector'];
 export default dataSourceList;
 
 
