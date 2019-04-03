@@ -13,11 +13,12 @@ function dataSourceScrollList($injector) {
 
     class DataSourceScrollListController {
         static get $$ngIsClass() { return true; }
-        static get $inject() { return ['$scope', 'maDataSource']; }
+        static get $inject() { return ['$scope', 'maDataSource', '$filter']; }
         
-        constructor($scope, DataSource) {
+        constructor($scope, DataSource, $filter) {
             this.$scope = $scope;
             this.DataSource = DataSource;
+            this.$filter = $filter;
         }
         
         $onInit() {
@@ -36,19 +37,13 @@ function dataSourceScrollList($injector) {
                 }
             });
             
-            this.DataSource.notificationManager.subscribe((event, item, originalXid) => {
-                const index = this.preFilterItems.findIndex(ds => ds.id === item.id);
-                if (index >= 0) {
-                    if (event.name === 'update' || event.name === 'create') {
-                        this.preFilterItems[index] = item;
-                    } else if (event.name === 'delete') {
-                        this.preFilterItems.splice(index, 1);
-                    }
-                } else if (event.name === 'update' || event.name === 'create') {
-                    this.preFilterItems.push(item);
+
+            this.DataSource.notificationManager.subscribe((event, item, attributes) => {
+                if (Array.isArray(this.preFilterItems) && this.query == null && this.start == null && this.limit == null) {
+                    attributes.updateArray(this.preFilterItems);
+                    this.filterList();
                 }
-                this.filterList();
-            }, this.$scope, ['create', 'update', 'delete']);
+            }, this.$scope);
         }
         
         $onChanges(changes) {
@@ -64,7 +59,7 @@ function dataSourceScrollList($injector) {
         }
         
         doQuery() {
-            if (this.filter || (this.query == null && this.start == null && this.limit == null && this.sort == null)) {
+            if (this.filter || (this.query == null && this.start == null && this.limit == null)) {
                 return this.doFilterQuery();
             }
             
@@ -94,7 +89,7 @@ function dataSourceScrollList($injector) {
         
         doFilterQuery() {
             const queryPromise = this.DataSource.buildQuery()
-                .sort('name')
+                .sort(this.sort || 'name')
                 .limit(1000)
                 .query()
                 .then(items => {
@@ -113,8 +108,10 @@ function dataSourceScrollList($injector) {
             if (!Array.isArray(this.preFilterItems)) {
                 this.items = [];
             }
-            this.items = this.preFilterItems.filter(this.createFilter());
-            return this.items;
+            
+            let items = this.preFilterItems.filter(this.createFilter());
+            items = this.$filter('orderBy')(items, this.sort || 'name');
+            return (this.items = items);
         }
         
         setViewValue(item) {
