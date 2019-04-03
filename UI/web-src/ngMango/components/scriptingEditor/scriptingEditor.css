@@ -13,3 +13,9 @@ ma-scripting-editor .ma-scripting-editor-help-container > .md-button {
 	right: 0;
 	top: 0;
 }
+
+ma-scripting-editor .ma-script-output {
+    padding: 10px;
+    overflow-y: scroll;
+    max-height: 300px;
+}
