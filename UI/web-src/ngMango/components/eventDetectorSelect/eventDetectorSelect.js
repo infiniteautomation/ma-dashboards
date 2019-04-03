@@ -75,21 +75,25 @@ class EventDetectorSelectController {
     
     render() {
         this.selected = this.ngModelCtrl.$viewValue;
+        
+        if (this.selected === null) {
+            this.newEventDetector();
+        }
     }
     
     selectEventDetector() {
         if (this.selected === this.newValue) {
-            this.selected = this.newEventDetector();
+            this.newEventDetector();
+        } else {
+            this.setViewValue();
         }
-        this.setViewValue();
     }
     
     newEventDetector(event) {
-        this.selected = new this.EventDetector();
         if (this.dataPoint) {
-            this.selected.sourceTypeName = 'DATA_POINT';
-            this.selected.dataPoint = this.dataPoint;
-            this.selected.sourceId = this.dataPoint.id;
+            this.selected = this.EventDetector.forDataPoint(this.dataPoint);
+        } else {
+            this.selected = new this.EventDetector();
         }
         this.setViewValue();
     }
