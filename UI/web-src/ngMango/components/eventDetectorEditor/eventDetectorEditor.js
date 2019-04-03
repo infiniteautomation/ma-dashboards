@@ -91,7 +91,7 @@ class EventDetectorEditorController {
             this.activeTab = 0;
         }
         
-        this.typeChanged();
+        this.updateDetectorType();
 
         if (this.form) {
             this.form.$setPristine();
@@ -168,8 +168,12 @@ class EventDetectorEditorController {
         return true;
     }
     
-    typeChanged() {
+    updateDetectorType() {
         this.detectorType = this.eventDetector && this.detectorTypesByName[this.eventDetector.detectorType];
+    }
+    
+    typeChanged() {
+        this.updateDetectorType();
         if (this.detectorType && this.detectorType.defaultProperties) {
             Object.assign(this.eventDetector, this.detectorType.defaultProperties);
         }
