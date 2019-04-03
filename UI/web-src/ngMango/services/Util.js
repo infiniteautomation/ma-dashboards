@@ -37,8 +37,11 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
     const jQuery = angular.element;
     
     if (jQuery.event && typeof jQuery.event.addProp === 'function') {
-        jQuery.event.addProp('wheelDelta', function(event) {
-            return event.wheelDelta;
+        jQuery.event.addProp('deltaX', function(event) {
+            return event.deltaX;
+        });
+        jQuery.event.addProp('deltaY', function(event) {
+            return event.deltaY;
         });
     }
     
