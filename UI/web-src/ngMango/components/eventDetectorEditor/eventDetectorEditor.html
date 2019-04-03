@@ -79,15 +79,15 @@
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
 
     <div class="md-padding ma-action-buttons">
-        <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form">
+        <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form || $ctrl.savePromise || $ctrl.deletePromise">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
         </md-button>
-        <md-button class="md-raised" ng-click="$ctrl.revertItem($event)" ng-disabled="$ctrl.form.$pristine">
+        <md-button class="md-raised" ng-click="$ctrl.revertItem($event)" ng-disabled="$ctrl.form.$pristine || $ctrl.savePromise || $ctrl.deletePromise">
             <md-icon>undo</md-icon>
             <span ma-tr="ui.app.revert"></span>
         </md-button>
-        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.eventDetector.isNew()">
+        <md-button class="md-raised md-warn" ng-click="$ctrl.deleteItem($event)" ng-disabled="$ctrl.eventDetector.isNew() || $ctrl.savePromise || $ctrl.deletePromise">
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>

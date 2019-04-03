@@ -115,7 +115,7 @@ class EventDetectorEditorController {
         this.validationMessages = [];
 
         const notifyName = this.eventDetector.description || this.eventDetector.getOriginalId() || this.eventDetector.xid;
-        this.eventDetector.save().then(item => {
+        this.savePromise = this.eventDetector.save().then(item => {
             this.setViewValue();
             this.render();
             this.maDialogHelper.toast(['ui.eventDetectors.saved', item.description]);
@@ -129,6 +129,8 @@ class EventDetectorEditorController {
             
             this.maDialogHelper.errorToast(['ui.app.saveError', notifyName, statusText]);
         });
+        
+        this.savePromise.finally(() => delete this.savePromise);
     }
     
     revertItem(event) {
@@ -139,7 +141,7 @@ class EventDetectorEditorController {
 
     deleteItem(event) {
         const notifyName = this.eventDetector.description || this.eventDetector.getOriginalId();
-        this.maDialogHelper.confirm(event, ['ui.eventDetectors.confirmDelete', notifyName]).then(() => {
+        this.deletePromise = this.maDialogHelper.confirm(event, ['ui.eventDetectors.confirmDelete', notifyName]).then(() => {
             this.eventDetector.delete().then(() => {
                 this.maDialogHelper.toast(['ui.eventDetectors.deleted', notifyName]);
                 this.eventDetector = null;
@@ -147,8 +149,12 @@ class EventDetectorEditorController {
                 this.render();
             });
         }, error => {
-            this.maDialogHelper.errorToast(['ui.app.deleteError', notifyName, error.mangoStatusText]);
+            if (error) {
+                this.maDialogHelper.errorToast(['ui.app.deleteError', notifyName, error.mangoStatusText]);
+            }
         });
+        
+        this.deletePromise.finally(() => delete this.deletePromise);
     }
     
     checkDiscardOption(type) {
