@@ -26,6 +26,14 @@ const templates = {
 const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
     'maMultipleValues', '$templateCache', '$filter', 'maUser', 'maUtil']);
 
+/**
+ * Stores a map of validation property keys that come back from the API and what they actually map to in the model.
+ */
+const validationMessagePropertyMap = {
+    purgeType: 'purgePeriod.type',
+    purgePeriod: 'purgePeriod.periods'
+};
+
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
@@ -181,7 +189,7 @@ class DataPointEditorController {
             
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
-                this.validationMessages = error.data.result.messages;
+                this.validationMessages = this.fixValidationMessages(error.data.result.messages);
             }
             
             this.errorMessages.push(statusText);
@@ -192,6 +200,13 @@ class DataPointEditorController {
     
     saveMultiple() {
         const newPoints = this.MultipleValues.toArray(this.dataPoint, this.points.length);
+        
+        // work around for validation failing on empty purgePeriod object
+        newPoints.forEach(pt => {
+            if (pt.purgePeriod && !Object.keys(pt.purgePeriod).length) {
+                delete pt.purgePeriod;
+            }
+        });
         
         const action = this.points.every(dp => dp.isNew()) ? 'CREATE' : 'UPDATE';
         
@@ -259,13 +274,23 @@ class DataPointEditorController {
                     });
                 }
             });
-            this.validationMessages = validationMessages;
+            this.validationMessages = this.fixValidationMessages(validationMessages);
         } else {
             this.setViewValue(savedPoints);
             this.render();
         }
 
         this.notifyBulkEditComplete(resource);
+    }
+    
+    fixValidationMessages(validationMessages) {
+        validationMessages.forEach(vm => {
+            const newKey = validationMessagePropertyMap[vm.property];
+            if (newKey) {
+                vm.property = newKey;
+            }
+        });
+        return validationMessages;
     }
 
     revertItem(event) {
