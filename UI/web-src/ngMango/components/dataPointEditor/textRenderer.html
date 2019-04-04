@@ -23,7 +23,7 @@
     </md-input-container>
     
     <div flex="100" flex-gt-md="50" ng-if="$ctrl.suffixTextRenderers.has($ctrl.dataPoint.textRenderer.type) && $ctrl.dataPoint.dataType === 'NUMERIC'">
-        <md-checkbox class="ma-input-container-height" name="useUnitAsSuffix" ng-model="$ctrl.dataPoint.textRenderer.useUnitAsSuffix">
+        <md-checkbox class="ma-input-container-height" name="useUnitAsSuffix" ng-model="$ctrl.dataPoint.textRenderer.useUnitAsSuffix" ma-flatten-values="false">
             <span ma-tr="pointEdit.props.useUnitAsSuffix"></span>
         </md-checkbox>
     </div>
@@ -50,7 +50,7 @@
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.textRenderer.type === 'textRendererTime'">
         <md-icon>swap_horiz</md-icon>
         <label ma-tr="pointEdit.text.conversionExponent"></label>
-        <input name="conversionExponent" ng-model="$ctrl.dataPoint.textRenderer.conversionExponent" type="number">
+        <input name="conversionExponent" ng-model="$ctrl.dataPoint.textRenderer.conversionExponent" type="number" ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="textRenderer.conversionExponent.$error">
             <div ng-message="validationMessage" ng-bind="textRenderer.conversionExponent.validationMessage"></div>
         </div>
@@ -66,7 +66,7 @@
         </md-button>
         <md-input-container flex>
             <label ma-tr="pointEdit.text.from"></label>
-            <input name="[{{$i}}].from" ng-model="rangeValue.from" type="number" required ma-get-ctrl="from = $ngModel" ng-model-options="{updateOn: 'blur'}">
+            <input name="[{{$i}}].from" ng-model="rangeValue.from" type="number" required ma-get-ctrl="from = $ngModel" ng-model-options="{updateOn: 'blur'}" ma-flatten-values="$values.firstNonEmpty()">
             <div ng-messages="from.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="validationMessage" ng-bind="from.validationMessage"></div>
@@ -74,7 +74,7 @@
         </md-input-container>
         <md-input-container flex>
             <label ma-tr="pointEdit.text.to"></label>
-            <input name="[{{$i}}].to" ng-model="rangeValue.to" type="number" required ng-min="rangeValue.from" ma-get-ctrl="to = $ngModel">
+            <input name="[{{$i}}].to" ng-model="rangeValue.to" type="number" required ng-min="rangeValue.from" ma-get-ctrl="to = $ngModel" ma-flatten-values="$values.firstNonEmpty()">
             <div ng-messages="to.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[rangeValue.from]"></div>
@@ -154,7 +154,7 @@
         </md-button>
         <md-input-container flex>
             <label ma-tr="pointEdit.text.key"></label>
-            <input name="[{{$i}}].key" ng-model="value.key" type="number" step="1" required ma-get-ctrl="key = $ngModel" ng-model-options="{updateOn: 'blur'}">
+            <input name="[{{$i}}].key" ng-model="value.key" type="number" step="1" required ma-get-ctrl="key = $ngModel" ng-model-options="{updateOn: 'blur'}" ma-flatten-values="$values.firstNonEmpty()">
             <div ng-messages="key.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>

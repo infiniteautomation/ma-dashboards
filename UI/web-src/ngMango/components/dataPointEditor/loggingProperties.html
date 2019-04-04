@@ -25,7 +25,7 @@
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.dataType === 'NUMERIC' && ($ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE' || $ctrl.dataPoint.loggingProperties.loggingType === 'ON_CHANGE_INTERVAL')">
         <md-icon>tune</md-icon>
         <label ma-tr="pointEdit.logging.tolerance"></label>
-        <input name="tolerance" ng-model="$ctrl.dataPoint.loggingProperties.tolerance" required type="number" min="0">
+        <input name="tolerance" ng-model="$ctrl.dataPoint.loggingProperties.tolerance" required type="number" min="0" ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="loggingProperties.tolerance.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[0]"></div>
@@ -59,7 +59,7 @@
     </md-input-container>
     
     <div flex="100" flex-gt-md="50" ng-if-start="$ctrl.dataPoint.loggingProperties.loggingType === 'INTERVAL' && $ctrl.dataPoint.loggingProperties.intervalLoggingType === 'AVERAGE'">
-        <md-checkbox class="ma-input-container-height" name="overrideIntervalLoggingSamples" ng-model="$ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples">
+        <md-checkbox class="ma-input-container-height" name="overrideIntervalLoggingSamples" ng-model="$ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples" ma-flatten-values="false">
             <span ma-tr="pointEdit.props.overrideIntervalLoggingSamples"></span>
         </md-checkbox>
     </div>
@@ -67,7 +67,7 @@
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.loggingProperties.overrideIntervalLoggingSamples" ng-if-end>
         <md-icon>aspect_ratio</md-icon>
         <label ma-tr="pointEdit.props.intervalLoggingSampleWindowSize"></label>
-        <input name="intervalLoggingSampleWindowSize" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingSampleWindowSize" type="number" required>
+        <input name="intervalLoggingSampleWindowSize" ng-model="$ctrl.dataPoint.loggingProperties.intervalLoggingSampleWindowSize" type="number" required ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="loggingProperties.intervalLoggingSampleWindowSize.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="validationMessage" ng-bind="loggingProperties.intervalLoggingSampleWindowSize.validationMessage"></div>
@@ -78,7 +78,7 @@
         <md-input-container flex>
             <md-icon>memory</md-icon>
             <label ma-tr="pointEdit.logging.defaultCache"></label>
-            <input name="cacheSize" ng-model="$ctrl.dataPoint.loggingProperties.cacheSize" required type="number" min="0" step="1">
+            <input name="cacheSize" ng-model="$ctrl.dataPoint.loggingProperties.cacheSize" required type="number" min="0" step="1" ma-flatten-values="$values.firstNonEmpty()">
             <div ng-messages="loggingProperties.cacheSize.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[0]"></div>
@@ -93,7 +93,7 @@
 </div>
 
 <div ng-if="$ctrl.dataPoint.dataType === 'NUMERIC'">
-    <md-checkbox class="ma-input-container-height" name="discardExtremeValues" ng-model="$ctrl.dataPoint.loggingProperties.discardExtremeValues">
+    <md-checkbox class="ma-input-container-height" name="discardExtremeValues" ng-model="$ctrl.dataPoint.loggingProperties.discardExtremeValues" ma-flatten-values="false">
         <span ma-tr="pointEdit.logging.discard"></span>
     </md-checkbox>
 </div>
@@ -104,7 +104,7 @@
         <md-icon>vertical_align_bottom</md-icon>
         <label ma-tr="pointEdit.logging.discardLow"></label>
         <input name="discardLowLimit" ng-model="$ctrl.dataPoint.loggingProperties.discardLowLimit" type="number" required
-                ma-less-than="{{$ctrl.dataPoint.loggingProperties.discardHighLimit}}">
+                ma-less-than="{{$ctrl.dataPoint.loggingProperties.discardHighLimit}}" ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="loggingProperties.discardLowLimit.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="lessThan" ma-tr="ui.app.lessThan" ma-tr-args="[$ctrl.dataPoint.loggingProperties.discardHighLimit]"></div>
@@ -115,7 +115,7 @@
         <md-icon>vertical_align_top</md-icon>
         <label ma-tr="pointEdit.logging.discardHigh"></label>
         <input name="discardHighLimit" ng-model="$ctrl.dataPoint.loggingProperties.discardHighLimit" type="number" required
-                ma-greater-than="{{$ctrl.dataPoint.loggingProperties.discardLowLimit}}">
+                ma-greater-than="{{$ctrl.dataPoint.loggingProperties.discardLowLimit}}" ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="loggingProperties.discardHighLimit.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="greaterThan" ma-tr="ui.app.greaterThan" ma-tr-args="[$ctrl.dataPoint.loggingProperties.discardLowLimit]"></div>

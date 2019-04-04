@@ -138,10 +138,10 @@
                         </md-input-container>
                         
                         <div flex="100" flex-gt-md="50">
-                            <md-checkbox class="ma-input-container-height" name="useRenderedUnit" ng-model="$ctrl.dataPoint.useRenderedUnit">
+                            <md-checkbox class="ma-input-container-height" name="useRenderedUnit" ng-model="$ctrl.dataPoint.useRenderedUnit" ma-flatten-values="false">
                                 <span ma-tr="pointEdit.props.useRenderedUnit"></span>
                             </md-checkbox>
-                            <md-checkbox class="ma-input-container-height" name="useIntegralUnit" ng-model="$ctrl.dataPoint.useIntegralUnit">
+                            <md-checkbox class="ma-input-container-height" name="useIntegralUnit" ng-model="$ctrl.dataPoint.useIntegralUnit" ma-flatten-values="false">
                                 <span ma-tr="pointEdit.props.useIntegralUnit"></span>
                             </md-checkbox>
                         </div>
@@ -234,7 +234,7 @@
                         <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.simplifyType === 'TARGET'">
                             <md-icon>linear_scale</md-icon>
                             <label ma-tr="pointEdit.props.simplifyTarget"></label>
-                            <input name="simplifyTarget" ng-model="$ctrl.dataPoint.simplifyTarget" type="number" required min="1" step="1">
+                            <input name="simplifyTarget" ng-model="$ctrl.dataPoint.simplifyTarget" type="number" required min="1" step="1" ma-flatten-values="$values.firstNonEmpty()">
                             <div ng-messages="$ctrl.form.simplifyTarget.$error">
                                 <div ng-message="required" ma-tr="ui.app.required"></div>
                                 <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[1]"></div>
@@ -247,7 +247,7 @@
                             <md-icon>tune</md-icon>
                             <label ma-tr="pointEdit.props.simplifyTolerance"></label>
                             <input name="simplifyTolerance" ng-model="$ctrl.dataPoint.simplifyTolerance" type="number" required ma-greater-than="0"
-                                ma-format-value="$value === 'NaN' ? null : $value">
+                                ma-format-value="$value === 'NaN' ? null : $value" ma-flatten-values="$values.firstNonEmpty()">
                             <div ng-messages="$ctrl.form.simplifyTolerance.$error">
                                 <div ng-message="required" ma-tr="ui.app.required"></div>
                                 <div ng-message="greaterThan" ma-tr="ui.app.greaterThan" ma-tr-args="[0]"></div>
@@ -257,7 +257,7 @@
                     </div>
                     
                     <div ng-if="$ctrl.dataPoint.dataType === 'NUMERIC'">
-                        <md-checkbox class="ma-input-container-height" name="preventSetExtremeValues" ng-model="$ctrl.dataPoint.preventSetExtremeValues">
+                        <md-checkbox class="ma-input-container-height" name="preventSetExtremeValues" ng-model="$ctrl.dataPoint.preventSetExtremeValues" ma-flatten-values="false">
                             <span ma-tr="pointEdit.props.preventSetExtremeValues"></span>
                         </md-checkbox>
                     </div>
@@ -267,7 +267,7 @@
                             <md-icon>vertical_align_bottom</md-icon>
                             <label ma-tr="pointEdit.props.setExtremeLowLimit"></label>
                             <input name="setExtremeLowLimit" ng-model="$ctrl.dataPoint.setExtremeLowLimit" type="number" required
-                                    ma-less-than="{{$ctrl.dataPoint.setExtremeHighLimit}}">
+                                    ma-less-than="{{$ctrl.dataPoint.setExtremeHighLimit}}" ma-flatten-values="$values.firstNonEmpty()">
                             <div ng-messages="$ctrl.form.setExtremeLowLimit.$error">
                                 <div ng-message="required" ma-tr="ui.app.required"></div>
                                 <div ng-message="lessThan" ma-tr="ui.app.lessThan" ma-tr-args="[$ctrl.dataPoint.setExtremeHighLimit]"></div>
@@ -278,7 +278,7 @@
                             <md-icon>vertical_align_top</md-icon>
                             <label ma-tr="pointEdit.props.setExtremeHighLimit"></label>
                             <input name="setExtremeHighLimit" ng-model="$ctrl.dataPoint.setExtremeHighLimit" type="number" required
-                                    ma-greater-than="{{$ctrl.dataPoint.setExtremeLowLimit}}">
+                                    ma-greater-than="{{$ctrl.dataPoint.setExtremeLowLimit}}" ma-flatten-values="$values.firstNonEmpty()">
                             <div ng-messages="$ctrl.form.setExtremeHighLimit.$error">
                                 <div ng-message="required" ma-tr="ui.app.required"></div>
                                 <div ng-message="greaterThan" ma-tr="ui.app.greaterThan" ma-tr-args="[$ctrl.dataPoint.setExtremeLowLimit]"></div>
@@ -326,7 +326,7 @@
                                 </md-button>
                             </h3>
                     <div>
-                        <md-checkbox name="purgeOverride" ng-model="$ctrl.dataPoint.purgeOverride"><span ma-tr="pointEdit.logging.purgeOverride"></span></md-checkbox>
+                        <md-checkbox name="purgeOverride" ng-model="$ctrl.dataPoint.purgeOverride" ma-flatten-values="false"><span ma-tr="pointEdit.logging.purgeOverride"></span></md-checkbox>
                     </div>
                     
                     <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataPoint.purgeOverride == true">

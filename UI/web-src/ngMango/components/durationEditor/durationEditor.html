@@ -4,7 +4,8 @@
         <label ng-transclude="periodsLabel"><span ma-tr="ui.app.timePeriods"></span></label>
         <input name="{{$ctrl.ngModelCtrl.$name}}.periods" ng-model="$ctrl.duration.periods" ng-change="$ctrl.inputChanged()"
             ma-form-exclude="parent" ma-get-ctrl="periods = $ngModel"
-            ng-required="$ctrl.required" type="number" step="1" ng-attr-min="{{$ctrl.min}}" ng-disabled="$ctrl.disabled">
+            ng-required="$ctrl.required" type="number" step="1" ng-attr-min="{{$ctrl.min}}" ng-disabled="$ctrl.disabled"
+            ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="periods.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>

@@ -25,7 +25,7 @@
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.chartRenderer.type === 'chartRendererImageFlipbook' || $ctrl.dataPoint.chartRenderer.type === 'chartRendererTable'">
         <md-icon>vertical_align_top</md-icon>
         <label ma-tr="pointEdit.chart.limit"></label>
-        <input name="limit" ng-model="$ctrl.dataPoint.chartRenderer.limit" type="number" step="1" min="2" max="50" required>
+        <input name="limit" ng-model="$ctrl.dataPoint.chartRenderer.limit" type="number" step="1" min="2" max="50" required ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="chartRenderer.limit.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
@@ -44,7 +44,7 @@
     </ma-duration-editor>
     
     <div flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.chartRenderer.type === 'chartRendererStats'">
-        <md-checkbox name="includeSum" ng-model="$ctrl.dataPoint.chartRenderer.includeSum" class="ma-input-container-height">
+        <md-checkbox name="includeSum" ng-model="$ctrl.dataPoint.chartRenderer.includeSum" class="ma-input-container-height" ma-flatten-values="false">
             <span ma-tr="pointEdit.chart.includeSum"></span>
         </md-checkbox>
     </div>
