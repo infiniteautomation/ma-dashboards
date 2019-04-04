@@ -54,8 +54,16 @@ function multipleValuesFactory() {
         isAllEqual() {
             //const first = this.first();
             //return this.values.every((v, i, arr) => arr.hasOwnProperty(i) && v === first);
+            
+            try {
                 return this.valuesSet.size <= 1;
+            } catch (e) {
+                // AngularJS does a deep copy of this object when doing debug logging, getting the size of the set subsequently fails
+                // fall back to using array
+                const first = this.first();
+                return this.values.every((v, i, arr) => arr.hasOwnProperty(i) && v === first);
             }
+        }
         
         valueOf() {
             if (this.isAllEqual()) {
