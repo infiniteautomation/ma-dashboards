@@ -145,17 +145,20 @@ class scriptingEditorController {
             this.setHighlightLines();
             this.setAnnotations();
 
-            this.maDialogHelper.toastOptions({
-                textTr: ['scriptingEditor.ui.scriptValidated'],
-                hideDelay: 5000
-            });
+            if (!this.scriptErrors) {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['scriptingEditor.ui.scriptValidated'],
+                    hideDelay: 5000
+                });
+            } else {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['scriptingEditor.ui.scriptError'],
+                    hideDelay: 5000,
+                    classes: 'md-warn'
+                });
+            }
         }, error => {
             this.scriptErrors = error.data.result.messages;
-
-            this.maDialogHelper.toastOptions({
-                textTr: ['scriptingEditor.ui.scriptError'],
-                hideDelay: 5000
-            });
         });
     }
 
