@@ -1044,6 +1044,10 @@ div.ma-help-doc-container {
   padding-right: 5px;
 }
 
+md-sidenav.ma-help-sidebar div.ma-help-doc-container > h1 {
+	margin-right: 80px;
+}
+
 div.ma-help-doc-container li {
   list-style-type: disc;
 }
