@@ -12,6 +12,9 @@ function multipleValuesFactory() {
         constructor(length) {
             this.values = Array(length);
             this.valuesSet = new Set();
+            if (length > 0) {
+                this.valuesSet.add(empty);
+            }
         }
 
         addEmpty(count = 1) {
