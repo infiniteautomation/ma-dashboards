@@ -56,7 +56,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
     };
 
     jQuery.fn.maFind = function maFind(selector) {
-        const elements = Array.from(this.maMatch('selector'));
+        const elements = Array.from(this.maMatch(selector));
         for (let e of this) {
             if (e instanceof Element) {
                 const matches = e.querySelectorAll(selector); 
