@@ -200,14 +200,6 @@ class DataPointEditorController {
     
     saveMultiple() {
         const newPoints = this.MultipleValues.toArray(this.dataPoint, this.points.length);
-        
-        // work around for validation failing on empty purgePeriod object
-        newPoints.forEach(pt => {
-            if (pt.purgePeriod && !Object.keys(pt.purgePeriod).length) {
-                delete pt.purgePeriod;
-            }
-        });
-        
         const action = this.points.every(dp => dp.isNew()) ? 'CREATE' : 'UPDATE';
         
         this.bulkTask = new this.Point.bulk({

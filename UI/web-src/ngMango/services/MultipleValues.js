@@ -54,8 +54,8 @@ function multipleValuesFactory() {
         isAllEqual() {
             //const first = this.first();
             //return this.values.every((v, i, arr) => arr.hasOwnProperty(i) && v === first);
-            return this.valuesSet.size <= 1;
-        }
+                return this.valuesSet.size <= 1;
+            }
         
         valueOf() {
             if (this.isAllEqual()) {
@@ -85,9 +85,9 @@ function multipleValuesFactory() {
             return this.replaceEqualValues(combined);
         }
         
-        static toArray(obj, length) {
+        static toArray(obj, length, removeEmptyObjects = true) {
             return Array(length).fill().map((v, i) => {
-                return this.splitCombined(obj, i);
+                return this.splitCombined(obj, i, removeEmptyObjects);
             });
         }
 
@@ -156,7 +156,7 @@ function multipleValuesFactory() {
         /**
          * Splits a combined object with MultipleValues property values into an array of objects
          */
-        static splitCombined(src, index) {
+        static splitCombined(src, index, removeEmptyObjects = true) {
             const dst = Array.isArray(src) ? [] : Object.create(Object.getPrototypeOf(src));
 
             Object.keys(src).forEach(key => {
@@ -167,7 +167,10 @@ function multipleValuesFactory() {
                         dst[key] = srcValue.getValue(index);
                     }
                 } else if (srcValue != null && typeof srcValue === 'object') {
-                    dst[key] = this.splitCombined(srcValue, index);
+                    const result = this.splitCombined(srcValue, index);
+                    if (!removeEmptyObjects || Object.keys(result).length) {
+                        dst[key] = result;
+                    }
                 } else {
                     dst[key] = srcValue;
                 }
