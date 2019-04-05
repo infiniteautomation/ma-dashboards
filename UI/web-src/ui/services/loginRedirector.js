@@ -11,22 +11,19 @@ function loginRedirectorProvider () {
     };
     this.$get = loginRedirectorFactory;
 
-    loginRedirectorFactory.$inject = ['$state', '$window', '$location', 'maUser', 'maUiMenu'];
-    function loginRedirectorFactory($state, $window, $location, maUser, maUiMenu) {
+    loginRedirectorFactory.$inject = ['$state', '$window', '$location', 'maUser', 'maUiMenu', '$q'];
+    function loginRedirectorFactory($state, $window, $location, maUser, maUiMenu, $q) {
 
         const basePath = '/ui/';
         const dontSaveStates = new Set(['ui.error', 'ui.serverError']);
         
         class LoginRedirector {
             redirect(user = maUser.current) {
-                // load the user menu after logging in and register the UI router states
-                return maUiMenu.refresh(false, true)
-                .then(null, error => null)
-                .then(() => {
-                    let reload = false;
-                    let redirectUrl = null;
-                    let redirectUrlRequired = false;
-                    
+                let reload = false;
+                let redirectUrl = null;
+                let redirectUrlRequired = false;
+                
+                return $q.resolve().then(() => {
                     if (user) {
                         if (user.lastUpgradeTime != null && user.lastUpgradeTime !== lastUpgradeTime) {
                             lastUpgradeTime = user.lastUpgradeTime;
@@ -43,6 +40,12 @@ function loginRedirectorProvider () {
                         delete user.lastUpgradeTime;
                     }
                     
+                    if (!reload) {
+                        // load the user menu after logging in and register the UI router states
+                        return maUiMenu.refresh(false, true)
+                            .then(null, error => null);
+                    }
+                }).then(() => {
                     if (redirectUrl && redirectUrlRequired) {
                         this.goToUrl(redirectUrl, reload);
                     } else if (this.savedState) {
@@ -62,7 +65,6 @@ function loginRedirectorProvider () {
                     return user;
                 });
             }
-
             handleUnknownPath(path) {
                 const user = maUser.current;
 

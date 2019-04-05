@@ -382,17 +382,22 @@ ngMango.run([
     'MA_CHART_TYPES',
     'MA_DATE_RANGE_PRESETS',
     'maUser',
+    '$timeout',
 function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
-        MA_CHART_TYPES, MA_DATE_RANGE_PRESETS, User) {
+        MA_CHART_TYPES, MA_DATE_RANGE_PRESETS, User, $timeout) {
 
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
     
     User.loginInterceptors.push(function(data) {
-        mangoWatchdog.setStatus({
-            status: 'LOGGED_IN',
-            user: data.resource
-        });
+        // add a $timeout call so LOGGED_IN status is only broadcast after maLoginRedirector gets a chance to reload the page
+        // Otherwise maEventManager instances will open WS connections which are immediately terminated
+        $timeout(() => {
+            mangoWatchdog.setStatus({
+                status: 'LOGGED_IN',
+                user: data.resource
+            });
+        }, 0, false);
     });
     
     User.logoutInterceptors.push(function(data) {
