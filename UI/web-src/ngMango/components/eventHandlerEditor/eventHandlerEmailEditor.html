@@ -89,8 +89,15 @@
             </md-input-container>
         </div>
         <div class="md-padding ma-no-padding-bottom">
+            <div flex="100" >
+                <ma-script-context ng-model="editor.eventHandler.scriptContext"></ma-script-context>
+            </div>
             <h3 ma-tr="eventHandlers.script"></h3>
-            <ma-scripting-editor name="script" ng-model="editor.eventHandler.script"></ma-scripting-editor>
+            <ma-scripting-editor 
+                name="script" 
+                context="editor.eventHandler.scriptContext" 
+                ng-model="editor.eventHandler.script"
+            ></ma-scripting-editor>
         </div>
     </md-tab-body>
 </md-tab>
