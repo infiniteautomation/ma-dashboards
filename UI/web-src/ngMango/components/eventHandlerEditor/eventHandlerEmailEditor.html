@@ -56,6 +56,11 @@
 
 <ma-email-recipients ng-if="editor.eventHandler.sendInactive && editor.eventHandler.inactiveOverride" type-property="recipientType" name="inactiveRecipients" ng-model="editor.eventHandler.inactiveRecipients"></ma-email-recipients>
 
+<h3 ma-tr="dsEdit.script.scriptContext"></h3>
+<div flex="100" >
+    <ma-script-context ng-model="editor.eventHandler.scriptContext"></ma-script-context>
+</div>
+
 <md-tab>
     <md-tab-label>
         <span ma-tr="eventHandlers.customTemplate"></span>
