@@ -1,37 +1,19 @@
-<div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
-    <md-card flex-gt-md="25" layout="column">
-        <md-toolbar class="md-hue-3">
-            <div class="md-toolbar-tools">
-                <span ma-tr="ui.app.virtualSerialPort.select"></span>
-            </div>
-        </md-toolbar>
-
-        <md-card-content flex ng-if="!$ctrl.$mdMedia('gt-md')">
-            <ma-virtual-serial-port-select flex layout on-select="$ctrl.itemSelected($item)" deleted-item="$ctrl.deletedItem" updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
-            <md-button class="md-raised md-primary" ng-click="$ctrl.newItem()">
-                <md-icon>add</md-icon> <span ma-tr="ui.app.virtualSerialPort.create"></span>
-            </md-button>
-        </md-card-content>
-
-        <md-card-content flex layout layout-align="start start" class="ma-no-padding ma-scroll-parent full-height" ng-if="$ctrl.$mdMedia('gt-md')">
-            <ma-virtual-serial-port-list class="ma-scroll-child" flex layout on-select="$ctrl.itemSelected($item)" deleted-item="$ctrl.deletedItem" updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-list>
-        </md-card-content>
-    
-    </md-card>
-
-    <div flex>
-        <md-card>
-            <md-toolbar class="md-hue-3">
-                <div class="md-toolbar-tools">
-                    <span ng-if="!$ctrl.selected.isNew()" ma-tr="ui.app.virtualSerialPort.setup" ma-tr-args="[$ctrl.selected.portName]"></span>
-                    <span ng-if="$ctrl.selected.isNew()" ma-tr="ui.app.virtualSerialPort.create"></span>
-                </div>
-            </md-toolbar>
-
-            <md-card-content>
-                <ma-virtual-serial-port-setup item-deleted="$ctrl.itemDeleted($item)" item-updated="$ctrl.itemUpdated($item)" ng-model="$ctrl.selected"></ma-virtual-serial-port-setup> 
-            </md-card-content>
-        </md-card>
+<div layout="column" layout-gt-lg="row" flex="noshrink">
+    <div class="md-padding">
+        <ma-virtual-serial-port-select flex layout on-select="$ctrl.itemSelected($item)" deleted-item="$ctrl.deletedItem" updated-item="$ctrl.updatedItem" ng-model="$ctrl.selected"></ma-virtual-serial-port-select>
+        <md-button class="md-raised md-primary" ng-click="$ctrl.newItem()">
+            <md-icon>add</md-icon> <span ma-tr="ui.app.virtualSerialPort.create"></span>
+        </md-button>
     </div>
-    
+
+    <div class="md-padding">
+        <div class="ma-margin-bottom">
+            <h3 ng-if="!$ctrl.selected.isNew()" ma-tr="ui.app.virtualSerialPort.setup" ma-tr-args="[$ctrl.selected.portName]"></h3>
+            <h3 ng-if="$ctrl.selected.isNew()" ma-tr="ui.app.virtualSerialPort.create"></h3>
+        </div>
+
+        <div>
+            <ma-virtual-serial-port-setup item-deleted="$ctrl.itemDeleted($item)" item-updated="$ctrl.itemUpdated($item)" ng-model="$ctrl.selected"></ma-virtual-serial-port-setup> 
+        </div>
+    </div>
 </div>
