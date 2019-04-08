@@ -738,7 +738,9 @@ export default [
         },
         menuTr: 'ui.app.autoLoginSettings',
         menuIcon: 'face',
-        permission: 'superadmin'
+        permission: 'superadmin',
+        menuHidden: true,
+        showInUtilities: true
     },
     {
         url: '/ui-settings',
