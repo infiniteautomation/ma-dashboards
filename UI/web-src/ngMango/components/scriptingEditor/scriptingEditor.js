@@ -30,7 +30,6 @@ class scriptingEditorController {
         this.$scope.$watch('$ctrl.scriptData.script', (script) => {
             this.clearAnnotations();
             this.clearHighLightLines();
-            this.clearErrors();
         });
     }
 
@@ -160,6 +159,12 @@ class scriptingEditorController {
         }, error => {
             this.scriptErrors = error.data.result.messages;
         });
+    }
+
+    hideOutput() {
+        this.scriptOutput = null;
+        this.scriptErrors = null;
+        this.scriptActions = null;
     }
 
 }
