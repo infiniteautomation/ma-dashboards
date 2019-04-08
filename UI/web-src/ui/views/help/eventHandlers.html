@@ -38,6 +38,14 @@
 </p>
 
 <p>
+    The <strong>Subject line</strong> can be configured to display the name of the event handler or the message for the event that 
+    is generating the email.  The standard subject line looks like this:
+    "AlarmLevel - name or event message (notification type) - id:event id" Where AlarmLevel is the level of the raised alarm (Critical, Urgent, ...), 
+    the name or event message is defined by this setting, the notification type is (active, inactive, escalation) and the id part is the id of the event in the 
+    database and is not present on Do Not Log level alarms.
+</p>
+
+<p>
   Including the system information is optional.  It will include a list of all Work Items currently scheduled in Mango.
   They are separated into 3 Groups, High, Medium and Low priority.  This is only included for diagnosing a 'sick' Mango.  It could be 
   problematic if your system has hundreds of thousands or millions of work items, so be aware when using this feature. 
