@@ -1,19 +1,32 @@
 <h3 ma-tr="eventHandlers.emailSettings"></h3>
-<div layout layout-align="start center" layout-wrap>
-    <div flex="100" flex-gt-md="33">
+<div layout layout-align="start center" layout-wrap class="ma-form-layout">
+    <div flex="100" flex-gt-md="50">
         <md-checkbox name="includeSystemInfo" ng-model="editor.eventHandler.includeSystemInfo"><span ma-tr="eventHandlers.includeSystemInfo"></span></md-checkbox>
     </div>
     
-    <div flex="100" flex-gt-md="33">
+    <div flex="100" flex-gt-md="50">
         <md-checkbox name="includeLogfile" ng-model="editor.eventHandler.includeLogfile"><span ma-tr="eventHandlers.includeLogfile"></span></md-checkbox>
     </div>
     
-    <md-input-container flex="100" flex-gt-md="33">
+    <md-input-container flex="100" flex-gt-md="50">
         <label ma-tr="eventHandlers.includePointValueCount"></label>
-        <input name="includePointValueCount" ng-model="editor.eventHandler.includePointValueCount" min="0" step="1">
+        <input name="includePointValueCount" ng-model="editor.eventHandler.includePointValueCount" min="0" step="1" type="number">
         <div ng-messages="editor.form.includePointValueCount.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="validationMessage" ng-bind="editor.form.includePointValueCount.validationMessage"></div>
+            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="::[0]"></div>
+            <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+        </div>
+    </md-input-container>
+    
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="eventHandlers.subjectLine"></label>
+        <md-select name="subject" ng-model="editor.eventHandler.subject" required>
+            <md-option value="INCLUDE_NAME"><span ma-tr="eventHandlers.includeName"></span></md-option>
+            <md-option value="INCLUDE_EVENT_MESSAGE"><span ma-tr="eventHandlers.includeEventMessage"></span></md-option>
+        </md-select>
+        <div ng-messages="editor.form.subject.$error">
+            <div ng-message="validationMessage" ng-bind="editor.form.subject.validationMessage"></div>
         </div>
     </md-input-container>
 </div>
