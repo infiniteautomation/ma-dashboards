@@ -79,7 +79,8 @@ function eventHandlerProvider() {
             includeSystemInfo: false,
             scriptContext: [],
             activeAction: 'NONE',
-            inactiveAction: 'NONE'
+            inactiveAction: 'NONE',
+            subject: 'INCLUDE_EVENT_MESSAGE'
     	};
     	
         class EventHandler extends RestResource {
