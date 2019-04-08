@@ -1,5 +1,3 @@
 ma-virtual-serial-port .full-height {
     height: calc(100vh - 200px);
 }
-
-md-card.ma-ui-system-settings-main md-card-actions { display: none }
