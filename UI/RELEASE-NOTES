@@ -1,5 +1,50 @@
 *Version 3.6.0*
 * Upgraded to work with core version 3.6.x
+* Add 'Data sources' page for creating/updating/deleting data sources and data points. Note: not all data source types supported yet.
+* Update 'Bulk data point edit' page to use same data point editor dialog as "Data sources" page
+* Add 'Event handlers' page for creating/updating/deleting event handlers
+* Add dialog for for creating/updating/deleting event detectors (opened from 'Data point details' or 'Data sources' page)
+* Clean up menu, moved some menu items to 'Utilities' section of 'Admin home'
+* Add more help pages and update existing help content
+* Ability to open sidebar help in new window
+* Add HTTP server system settings
+* Ability to set session expiration per user on the 'Users' page
+* Better feedback when saving system settings
+* Add ma-data-point-editor component for creating/updating/deleting data points
+* Add ma-data-source-editor component for creating/updating/deleting data sources
+* Add ma-data-point-tags-editor component for editing tags on data points
+* Add ma-color-picker component for showing a color preview and color picker dialog
+* Add ma-duration-editor component for editing durations in REST models
+* Add ma-email-recipients component for editing lists of emails recipients in REST models
+* Add ma-data-source-status component for displaying data source status information
+* Add ma-event-handler-checklist component for displaying and selecting event handlers
+* Add ma-event-handler-list component for displaying a list of event handlers
+* Add ma-event-handler-select component for displaying a drop down list of event handlers
+* Add ma-event-type-list component for displaying a tree view of event types
+* Add ma-mailing-list-list component for displaying a list of mailing lists
+* Add ma-mailing-list-select component for displaying a drop down of mailing lists
+* Add ma-mailing-list-setup component for creating/updating/deleting mailing lists
+* Add ma-purge-point-values component for purging point values
+* Add ma-script-context component editing scripting contexts
+* Add ma-scriping-editor component for editing backend JS scripts
+* Add ma-tree-view component for displaying arbitrary tree views
+* Add ma-unit-list component for displaying drop down of units which are available for data points
+* Add ma-virtual-serial-port-list component for displaying a list of virtual serial ports
+* Add ma-virtual-serial-port-select component for displaying a drop down of virtual serial ports
+* Add ma-dialog component for easily creating pop-up dialogs from the markup
+* Remove constants from ngMango module - MA_INSERT_CSS, MA_ROLLUP_TYPES, MA_DATE_TIME_FORMATS, MA_TIME_PERIOD_TYPES, MA_CHART_TYPES, MA_EVENT_LINK_INFO, and MA_RELATIVE_DATE_TYPES
+* Remove constant from ngMangoServices module - MA_EVENT_HANDLER_TYPES
+* Add constants to ngMangoServices module - MA_DATE_TIME_FORMATS, MA_TIME_PERIOD_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, and MA_EVENT_LINK_INFO
+* Data point on 'Data point details' is kept up to date via WebSocket
+* Update data source drop down menus via WebSocket
+* Add 'LED indicator' example
+* Update license page, add checkboxes for checking for upgrades and sending usage information
+* Fix bugs in cron expression component
+* Replace uses of jQuery find() with maFind()
+* Replace uses of jQuery extend() with maUtil.deepMerge()
+* Update JavaScript libraries to latest versions
+* Remove plot.ly JS library and component
+* Various bug fixes and improvements
 
 *Version 3.5.2*
 * Work around for incorrect event count
