@@ -171,16 +171,30 @@ class DataPointEditorController {
             this.DialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
+
+        const savingMultiple = Array.isArray(this.points);
         
-        this.errorMessages = [];
-        this.validationMessages = [];
-        
-        if (Array.isArray(this.points)) {
-            this.saveMultiple();
-            return;
-        }
-        
-        this.savePromise = this.dataPoint.save().then(item => {
+        this.savePromise = this.$q.resolve().then(() => {
+            if (this.dataPoint.templateXid != null) {
+                const trKey = savingMultiple ? 'ui.app.templateWillBeRemovedPlural' : 'ui.app.templateWillBeRemoved';
+                return this.DialogHelper.confirm(event, trKey);
+            }
+        }).then(() => {
+            this.errorMessages = [];
+            this.validationMessages = [];
+            
+            this.dataPoint.templateXid = null;
+            
+            if (savingMultiple) {
+                return this.saveMultiple();
+            } else {
+                return this.savePoint();
+            }
+        }).finally(() => delete this.savePromise);
+    }
+    
+    savePoint() {
+        return this.dataPoint.save().then(item => {
             this.setViewValue();
             this.render();
             this.DialogHelper.toast(['ui.components.dataPointSaved', this.dataPoint.name || this.dataPoint.xid]);
@@ -195,7 +209,7 @@ class DataPointEditorController {
             this.errorMessages.push(statusText);
             
             this.DialogHelper.errorToast(['ui.components.dataPointSaveError', statusText]);
-        }).finally(() => delete this.savePromise);
+        });
     }
     
     saveMultiple() {
@@ -216,7 +230,7 @@ class DataPointEditorController {
             })
         });
         
-        this.savePromise = this.bulkTask.start(this.$scope).then(resource => {
+        return this.bulkTask.start(this.$scope).then(resource => {
             this.saveMultipleComplete(resource, newPoints);
         }, error => {
             this.notifyBulkEditError(error);
@@ -224,7 +238,6 @@ class DataPointEditorController {
             // progress
         }).finally(() => {
             delete this.bulkTask;
-            delete this.savePromise;
         });
     }
     
