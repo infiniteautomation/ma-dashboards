@@ -162,9 +162,9 @@ class scriptingEditorController {
     }
 
     hideOutput() {
-        this.scriptOutput = null;
-        this.scriptErrors = null;
-        this.scriptActions = null;
+        this.clearErrors();
+        this.clearAnnotations();
+        this.clearHighLightLines();
     }
 
 }

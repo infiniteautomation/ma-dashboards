@@ -8,7 +8,7 @@
 </div>
 <div layout="column" layout-gt-sm="row" layout-wrap layout-align="space-between start" class="ma-margin-bottom">
     
-    <div flex ng-if="$ctrl.scriptOutput || $ctrl.scriptErrors || $ctrl.scriptActions" class="ma-scripting-editor-help-container">
+    <div flex ng-if="$ctrl.scriptOutput || $ctrl.scriptErrors || $ctrl.scriptActions">
         <div ng-if="$ctrl.scriptOutput" flex class="ma-script-output" md-colors="::{background: 'background'}">
             <pre>{{ $ctrl.scriptOutput }}</pre>
         </div>
@@ -28,15 +28,17 @@
                 <span ng-if="action.level !== 'warning' && action.level !== 'error'">{{ action.message }}</span>
             </li>
         </ul>
-        <md-button class="md-icon-button" ng-click="$ctrl.hideOutput()">
-            <md-icon>close</md-icon>
-        </md-button>
     </div>
     <div flex="100" flex-gt-sm="50" ng-if="!$ctrl.scriptOutput && !$ctrl.scriptErrors && !$ctrl.scriptActions"></div>
     
-    <md-button class="md-raised md-primary" ng-disabled="$ctrl.disabled" ng-click="$ctrl.validate($event)">
-        <md-icon>done</md-icon> <span ma-tr="scriptingEditor.ui.validate"></span>
-    </md-button>
+    <div layout="row" layout-gt-sm="column">
+        <md-button class="md-raised md-primary" ng-disabled="$ctrl.disabled" ng-click="$ctrl.validate($event)">
+            <md-icon>done</md-icon> <span ma-tr="scriptingEditor.ui.validate"></span>
+        </md-button>
+        <md-button class="md-raised md-primary" ng-disabled="$ctrl.disabled" ng-click="$ctrl.hideOutput()" ng-if="$ctrl.scriptOutput || $ctrl.scriptErrors || $ctrl.scriptActions">
+            <md-icon>close</md-icon> <span ma-tr="common.close"></span>
+        </md-button>
+    </div>
 </div>
 
 <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
