@@ -2311,4 +2311,14 @@ export default [
         },
         menuTr: 'ui.dox.freeMarker'
     },
+    {
+        name: 'ui.help.dataPointTemplate',
+        menuTr: 'dox.template.dataPointTemplate',
+        url: '/data-point-template',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "eager" */ './views/help/dataPointTemplate.html');
+            }
+        }
+    }
 ];

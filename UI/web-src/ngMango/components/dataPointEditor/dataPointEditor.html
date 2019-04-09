@@ -367,6 +367,10 @@
     <div ng-if="$ctrl.dataPoint.templateXid != null" class="md-padding" md-colors="::{color: 'warn-A700'}">
         <span ng-if="!$ctrl.points.length" ma-tr="ui.app.templateWillBeRemoved"></span>
         <span ng-if="$ctrl.points.length" ma-tr="ui.app.templateWillBeRemovedPlural"></span>
+        <md-button ui-sref="ui.help.dataPointTemplate" class="md-icon-button md-small-button">
+            <md-icon>help</md-icon>
+            <md-tooltip><span ma-tr="dox.template.dataPointTemplate"></span></md-tooltip>
+        </md-button>
     </div>
 
     <div ng-if="!$ctrl.bulkTask && !$ctrl.disabled" class="md-padding ma-action-buttons">
