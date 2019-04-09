@@ -89,9 +89,11 @@ import angular from 'angular';
 *
 */
 
-EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', 'maUser'];
-function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
+EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', 'maUser', '$window', '$injector'];
+function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser, $window, $injector) {
 
+    const $state = $injector.has('$state') && $injector.get('$state');
+    
 	//const READY_STATE_CONNECTING = 0;
 	const READY_STATE_OPEN = 1;
 	//const READY_STATE_CLOSING = 2;
@@ -109,10 +111,22 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser) {
 
 	    angular.extend(this, options);
 
+	    let unloadPending = false;
+        $window.addEventListener('beforeunload', event => {
+            // if a beforeunload event occurs on the login page do not try and open the WebSocket
+            if ($state && $state.includes('login')) {
+                unloadPending = true;
+            }
+        });
+
 	    $rootScope.$on('maWatchdog', (event, current, previous) => {
 	        if (current.status === 'LOGGED_IN') {
                 // API is up and we are logged in
-                this.openSocket();
+	            
+	            // prevent opening WS connections which are closed immediately when maLoginRedirector sets window.location
+	            if (!unloadPending) {
+                    this.openSocket();
+	            }
 	        } else if (current.status === 'API_UP') {
 	            // API is up but we aren't logged in
                 this.closeSocket();
