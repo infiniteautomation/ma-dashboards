@@ -2,11 +2,11 @@
     <label ng-transclude="label">
       <span ma-tr="serialPort.select"></span>
     </label>
-    <md-select ng-if="$ctrl.selectMultiple" multiple="true" md-on-open="$ctrl.serialPortsPromise" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectChanged()" ng-model-options="{trackBy: '$value'}">
+    <md-select ng-if="$ctrl.selectMultiple" multiple="true" md-on-open="$ctrl.serialPortPromise" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectChanged()" ng-model-options="{trackBy: '$value'}">
       <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
       <md-option ng-repeat="serialPort in $ctrl.serialPorts track by $index" ng-value="serialPort"><span ng-bind="serialPort"></span></md-option>
     </md-select>
-    <md-select ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.serialPortsPromise" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectChanged()" ng-model-options="{trackBy: '$value'}">
+    <md-select ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.serialPortPromise" ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectChanged()" ng-model-options="{trackBy: '$value'}">
       <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
       <md-option ng-repeat="serialPort in $ctrl.serialPorts track by $index" ng-value="serialPort"><span ng-bind="serialPort"></span></md-option>
     </md-select>

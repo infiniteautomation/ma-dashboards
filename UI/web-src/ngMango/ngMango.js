@@ -154,6 +154,7 @@ import durationEditor from './components/durationEditor/durationEditor';
 import treeView from './components/treeView/treeView';
 import treeViewTransclude from './components/treeView/treeViewTransclude';
 import purgePointValues from './components/purgePointValues/purgePointValues';
+import serialPortSelect from './components/serialPortsSelect/serialPortSelect';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -321,6 +322,7 @@ ngMango.component('maEventDetectorLayout', eventDetectorLayout);
 ngMango.component('maDurationEditor', durationEditor);
 ngMango.component('maTreeView', treeView);
 ngMango.component('maPurgePointValues', purgePointValues);
+ngMango.component('maSerialPortSelect', serialPortSelect);
 
 ngMango.animation('.ma-slide-up', slideUp);
 
