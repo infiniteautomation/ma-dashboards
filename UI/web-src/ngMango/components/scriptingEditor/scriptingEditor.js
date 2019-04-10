@@ -171,6 +171,7 @@ class scriptingEditorController {
 
 export default {
     bindings: {
+        disableValidation: '<?',
         context: '<',
         resultDataType: '<?',
         wrapInFunction: '<?',
