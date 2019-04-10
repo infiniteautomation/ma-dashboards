@@ -30,6 +30,10 @@ class SerialPortSelectController {
             return serialPorts;
         });
     }
+
+    selectChanged() {
+        this.ngModelCtrl.$setViewValue(this.selected);
+    }
     
 }
 
@@ -40,6 +44,7 @@ export default {
         'ngModelCtrl': 'ngModel'
     },
     bindings: {
+        showIcon: '<?',
         showClear: '<?',
         selectMultiple: '<?',
         hideName: '<?'
