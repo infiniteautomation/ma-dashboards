@@ -22,6 +22,7 @@ const bootstrapUtil = Object.freeze({
             xhr.addEventListener('error', resolve);
             xhr.addEventListener('abort', resolve);
             xhr.open(options.method, options.url);
+            xhr.timeout = 30000;
             xhr.setRequestHeader('accept', 'application/json;charset=utf-8');
             
             if (options.method !== 'GET') {

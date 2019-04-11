@@ -7,14 +7,15 @@ import angular from 'angular';
 import interpolatedStyles from '../styles/interpolatedStyles.css';
 import defaultUiSettings from '../uiSettings.json';
 
-uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider'];
-function uiSettingsProvider($mdThemingProvider, pointValuesProvider) {
+uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider', 'MA_TIMEOUTS'];
+function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS) {
     
     // stores the initial merged settings (defaults merged with custom settings from store)
     const MA_UI_SETTINGS = {};
 
     this.setUiSettings = function setUiSettings(uiSettings) {
         Object.assign(MA_UI_SETTINGS, uiSettings);
+        Object.assign(MA_TIMEOUTS, uiSettings.timeouts);
         
         this.registerThemes();
         
@@ -128,7 +129,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider) {
                 return this.userSettingsStore.$save().then(store => {
                     angular.merge(this, defaultUiSettings);
                     angular.merge(this, store.jsonData);
-                    this.setPointValuesLimit();
+                    this.applyUiSettings();
                     return store;
                 });
             }
@@ -137,7 +138,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider) {
                 return this.userSettingsStore.$get().then(store => {
                     angular.merge(this, defaultUiSettings);
                     angular.merge(this, store.jsonData);
-                    this.setPointValuesLimit();
+                    this.applyUiSettings();
                     return store;
                 });
             }
@@ -146,7 +147,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider) {
             reset() {
                 angular.merge(this, defaultUiSettings);
                 angular.merge(this, this.userSettingsStore.jsonData);
-                this.setPointValuesLimit();
+                this.applyUiSettings();
                 this.generateTheme();
             }
             
@@ -155,6 +156,11 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider) {
                 return this.userSettingsStore.$save().then(store => {
                     this.reset();
                 });
+            }
+            
+            applyUiSettings() {
+                Object.assign(MA_TIMEOUTS, this.timeouts);
+                this.setPointValuesLimit();
             }
             
             setPointValuesLimit() {

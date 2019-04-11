@@ -145,10 +145,11 @@ ngMangoServices.factory('maSerialPort', serialPort);
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUT', 30000); // TODO Mango 4.0 remove
 ngMangoServices.constant('MA_TIMEOUTS', {
+    // NOTE: update uiSettings.json as well! These timeouts are overriden by the timeouts in the UI Settings
     xhr: 30000, // default XMLHttpRequest timeout
     websocket: 10000, // WebSocket connection timeout
     websocketRequest: 10000, // request made over WebSocket
-    pointsValues: 60000 // timeout for fetching points values
+    pointValues: 60000 // timeout for fetching points values
 });
 ngMangoServices.constant('MA_WATCHDOG_TIMEOUT', 10000);
 ngMangoServices.constant('MA_RECONNECT_DELAY', 5000);

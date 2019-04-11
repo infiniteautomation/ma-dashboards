@@ -114,5 +114,11 @@
     "CRITICAL": false,
     "LIFE_SAFETY": false,
     "DO_NOT_LOG": false
+  },
+  "timeouts": {
+    "xhr": 30000,
+    "websocket": 10000,
+    "websocketRequest": 10000,
+    "pointValues": 60000
   }
 }
