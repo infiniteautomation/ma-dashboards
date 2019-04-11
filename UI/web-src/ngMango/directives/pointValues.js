@@ -79,8 +79,8 @@ import noDataForPeriod from '../img/noDataForPeriod.svg';
 </ma-point-values>
  *
  */
-pointValues.$inject = ['$http', 'maPointEventManager', 'maPoint', '$q', 'MA_TIMEOUT', 'maUtil', 'maPointValues'];
-function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, pointValues) {
+pointValues.$inject = ['$http', 'maPointEventManager', 'maPoint', '$q', 'maUtil', 'maPointValues'];
+function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
     return {
         designerInfo: {
             translation: 'ui.components.pointValues',

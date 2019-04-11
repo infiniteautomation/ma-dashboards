@@ -14,8 +14,8 @@ function pointValuesProvider() {
 
     this.$get = pointValuesFactory;
     
-    pointValuesFactory.$inject = ['$http', '$q', 'maUtil', '$injector', 'maTemporaryRestResource'];
-    function pointValuesFactory($http, $q, Util, $injector, TemporaryRestResource) {
+    pointValuesFactory.$inject = ['$http', '$q', 'maUtil', '$injector', 'maTemporaryRestResource', 'MA_TIMEOUT_POINT_VALUES'];
+    function pointValuesFactory($http, $q, Util, $injector, TemporaryRestResource, MA_TIMEOUT_POINT_VALUES) {
         const pointValuesUrl = '/rest/v2/point-values';
         let maDialogHelper, lastToast;
         
@@ -159,7 +159,8 @@ function pointValuesProvider() {
                     }
         
                     const canceler = $q.defer();
-                    const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+                    const timeout = Number.isFinite(options.timeout) && options.timeout >= 0 ? options.timeout : MA_TIMEOUT_POINT_VALUES;
+                    const cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, timeout);
         
                     return $http.get(url, {
                         timeout: cancelOrTimeout,

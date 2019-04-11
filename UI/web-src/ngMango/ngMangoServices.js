@@ -144,6 +144,7 @@ ngMangoServices.factory('maSerialPort', serialPort);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUT', 30000);
+ngMangoServices.constant('MA_TIMEOUT_POINT_VALUES', 60000);
 ngMangoServices.constant('MA_WATCHDOG_TIMEOUT', 10000);
 ngMangoServices.constant('MA_RECONNECT_DELAY', 5000);
 

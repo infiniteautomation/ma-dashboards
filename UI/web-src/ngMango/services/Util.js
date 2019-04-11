@@ -594,7 +594,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         },
         
         cancelOrTimeout(cancelPromise, timeout) {
-            timeout = isFinite(timeout) ? timeout : mangoTimeout;
+            timeout = Number.isFinite(timeout) && timeout >= 0 ? timeout : mangoTimeout;
             if (timeout > 0) {
                 const timeoutPromise = $timeout(angular.noop, timeout, false);
                 return $q.race([cancelPromise, timeoutPromise]);
