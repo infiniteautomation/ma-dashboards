@@ -10,6 +10,7 @@ function parseValue($parse) {
     return {
         require: 'ngModel',
         restrict: 'A',
+        priority: 1,
         link: function($scope, $element, $attrs, ngModel) {
             if (!$attrs.maParseValue) return;
             
