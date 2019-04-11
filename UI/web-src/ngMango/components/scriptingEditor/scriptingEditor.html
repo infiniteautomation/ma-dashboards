@@ -20,7 +20,7 @@
                 <span ng-if="error.columnNumber == null" ma-tr="ui.components.errorOnLine" ma-tr-args="[error.message, error.lineNumber]"></span>
                 <span ng-if="error.columnNumber != null" ma-tr="ui.components.errorOnLineCol" ma-tr-args="[error.message, error.lineNumber, error.columnNumber]"></span>
             </li>
-            <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property && (error.lineNumber == null || error.columnNumber == null)">
+            <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property && error.lineNumber == null && error.columnNumber == null">
                 <span ng-bind="error.message"></span>
             </li>
         </ul>
