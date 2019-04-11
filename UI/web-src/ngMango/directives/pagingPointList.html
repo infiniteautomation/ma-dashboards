@@ -11,7 +11,9 @@
     md-floating-label="{{'ui.app.searchBy' | maTr:'points':'name or device'}}"
     md-delay="1000"
     md-autoselect="true"
-    md-match-case-insensitive="true">
+    md-match-case-insensitive="true"
+    ng-form="form"
+    ma-form-exclude>
       <md-item-template>
         <span md-highlight-text="searchText" md-highlight-flags="ig">{{pointLabel(item)}}</span>
       </md-item-template>

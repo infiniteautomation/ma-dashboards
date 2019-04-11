@@ -10,7 +10,9 @@
   md-delay="500"
   md-select-on-focus="true"
   md-escape-options="none"
-  md-clear-button="true">
+  md-clear-button="true"
+  ng-form="form"
+  ma-form-exclude>
 
     <md-item-template>
       <span md-highlight-text="$ctrl.searchText" md-highlight-flags="gi">{{folder[$ctrl.displayProp]}}</span>
