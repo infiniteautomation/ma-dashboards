@@ -21,8 +21,8 @@ import MultiMap from './MultiMap';
 * </pre>
 */
 
-UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUT', 'maRqlBuilder', '$window', '$injector', '$document'];
-function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout, RqlBuilder, $window, $injector, $document) {
+UtilFactory.$inject = ['MA_BASE_URL', 'MA_DATE_FORMATS', '$q', '$timeout', 'MA_TIMEOUTS', 'maRqlBuilder', '$window', '$injector', '$document'];
+function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, RqlBuilder, $window, $injector, $document) {
     
     const $stateParams = $injector.has('$stateParams') ? $injector.get('$stateParams') : null;
     const $state = $injector.has('$state') ? $injector.get('$state') : null;
@@ -594,7 +594,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout,
         },
         
         cancelOrTimeout(cancelPromise, timeout) {
-            timeout = Number.isFinite(timeout) && timeout >= 0 ? timeout : mangoTimeout;
+            timeout = Number.isFinite(timeout) && timeout >= 0 ? timeout : MA_TIMEOUTS.xhr;
             if (timeout > 0) {
                 const timeoutPromise = $timeout(angular.noop, timeout, false);
                 return $q.race([cancelPromise, timeoutPromise]);

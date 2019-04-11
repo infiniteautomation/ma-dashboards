@@ -14,8 +14,8 @@ function ExceptionHandlerProvider($httpProvider) {
     const xsrfCookieName = $httpProvider.defaults.xsrfCookieName;
     const messageTimeout = 10 * 60 * 1000; // 10 minutes
 
-    exceptionHandlerFactory.$inject = ['MA_BASE_URL', 'MA_TIMEOUT', '$log', '$cookies', '$window'];
-    function exceptionHandlerFactory(MA_BASE_URL, MA_TIMEOUT, $log, $cookies, $window) {
+    exceptionHandlerFactory.$inject = ['MA_BASE_URL', 'MA_TIMEOUTS', '$log', '$cookies', '$window'];
+    function exceptionHandlerFactory(MA_BASE_URL, MA_TIMEOUTS, $log, $cookies, $window) {
 
         const seenMessages = {};
         
@@ -57,7 +57,7 @@ function ExceptionHandlerProvider($httpProvider) {
                 
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', MA_BASE_URL + '/rest/v2/server/client-error', true);
-                xhr.timeout = MA_TIMEOUT;
+                xhr.timeout = MA_TIMEOUTS.xhr;
                 xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
                 xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');

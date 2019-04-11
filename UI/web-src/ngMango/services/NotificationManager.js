@@ -7,8 +7,8 @@
 import angular from 'angular';
 
 
-NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', '$q', '$timeout'];
-function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $timeout) {
+NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUTS', '$q', '$timeout'];
+function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $timeout) {
 
 	//const READY_STATE_CONNECTING = 0;
 	const READY_STATE_OPEN = 1;
@@ -77,7 +77,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             this.connectTimer = $timeout(() => {
                 socketDeferred.reject('Timeout opening socket');
                 this.closeSocket();
-            }, MA_TIMEOUT);
+            }, MA_TIMEOUTS.websocket);
             
             socket.onclose = () => {
                 socketDeferred.reject('Socket closed');
@@ -242,7 +242,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUT, $q, $ti
             }
         }
         
-        sendRequest(message, timeout = MA_TIMEOUT) {
+        sendRequest(message, timeout = MA_TIMEOUTS.websocketRequest) {
             if (this.socketConnected()) {
                 const deferred = $q.defer();
                 const timeoutPromise = $timeout(() => {

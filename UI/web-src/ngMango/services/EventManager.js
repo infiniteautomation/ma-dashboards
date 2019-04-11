@@ -89,8 +89,8 @@ import angular from 'angular';
 *
 */
 
-EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUT', 'maUser', '$window', '$injector'];
-function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser, $window, $injector) {
+EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUTS', 'maUser', '$window', '$injector'];
+function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $window, $injector) {
 
     const $state = $injector.has('$state') && $injector.get('$state');
     
@@ -168,7 +168,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, maUser, $wi
 
 	    this.connectTimer = setTimeout(() => {
 	    	this.closeSocket();
-	    }, mangoTimeout);
+	    }, MA_TIMEOUTS.websocket);
 
 	    socket.onclose = () => {
 	        this.closeSocket();

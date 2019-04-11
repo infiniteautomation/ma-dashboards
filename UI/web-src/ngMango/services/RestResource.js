@@ -5,8 +5,8 @@
 
 import angular from 'angular';
 
-restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUT'];
-function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUT) {
+restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUTS'];
+function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUTS) {
     
     const hasSymbol = typeof Symbol === 'function';
     const idProperty = 'xid';
@@ -37,7 +37,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         }
         
         static get timeout() {
-            return MA_TIMEOUT;
+            return MA_TIMEOUTS.xhr;
         }
         
         static createNotificationManager() {

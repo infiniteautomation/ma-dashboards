@@ -10,8 +10,8 @@
 * @description Automatically prepends the base url onto the http request's url. Formats a human readable error message for error responses.
 */
 
-mangoHttpInterceptorFactory.$inject = ['MA_BASE_URL', 'MA_TIMEOUT', '$q', '$injector'];
-function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) {
+mangoHttpInterceptorFactory.$inject = ['MA_BASE_URL', 'MA_TIMEOUTS', '$q', '$injector'];
+function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
 
     const isApiCall = function isApiCall(config) {
         if (('' + config.url).indexOf('/') === 0) {
@@ -42,7 +42,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q, $injector) 
     			config.url = mangoBaseUrl + config.url;
     		}
     		if (!config.timeout) {
-    			config.timeout = mangoTimeout;
+    			config.timeout = MA_TIMEOUTS.xhr;
     		}
     		return config;
     	},
