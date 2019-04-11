@@ -7,11 +7,11 @@ import serialPortSelectTemplate from './serialPortSelect.html';
 
 class SerialPortSelectController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maSerialPort', '$scope']; }
+    static get $inject() { return ['maSerialPort', 'maDialogHelper']; }
     
-    constructor(maSerialPort, $scope) {
+    constructor(maSerialPort, maDialogHelper) {
         this.maSerialPort = maSerialPort;
-        this.$scope = $scope;
+        this.maDialogHelper = maDialogHelper;
     }
     
     $onInit() {
@@ -24,10 +24,18 @@ class SerialPortSelectController {
         this.selected = this.ngModelCtrl.$viewValue;
     }
     
-    getSerialPorts() {
-        this.serialPortPromise = this.maSerialPort.list().then(serialPorts => {
+    getSerialPorts(params = {}) {
+        this.serialPortPromise = this.maSerialPort.list(params).then(serialPorts => {
             this.serialPorts = serialPorts;
             return serialPorts;
+        });
+
+        return this.serialPortPromise;
+    }
+
+    refreshList() {
+        this.getSerialPorts({ refresh: true }).then(response => {
+            this.maDialogHelper.toast('serialPort.portListRefreshed');
         });
     }
 
