@@ -78,22 +78,20 @@ function datePicker($injector, mangoDateFormats, $q) {
         
         $scope.$watch('format + timezone', function(newVal, oldVal) {
         	if (newVal === oldVal) return;
-            ngModel.$viewValue = modelToView(ngModel.$modelValue);
-            ngModel.$render();
+            ngModel.$processModelValue();
         });
         
         // formatter converts from Date ($modelValue) into String ($viewValue)
-        ngModel.$formatters.push(modelToView);
-
-        function modelToView(value) {
-            if (Object.prototype.toString.call(value) === '[object Date]' || moment.isMoment(value)) {
+        ngModel.$formatters.push(function(value) {
+            if (moment.isDate(value) || moment.isMoment(value)) {
                 const m = moment(value);
                 if ($scope.timezone) {
                     m.tz($scope.timezone);
                 }
                 return m.format($scope.getFormat());
             }
-        }
+            return value;
+        });
 
         // parser converts from String ($viewValue) into Date ($modelValue)
         ngModel.$parsers.push(function(value) {
@@ -121,6 +119,7 @@ function datePicker($injector, mangoDateFormats, $q) {
                 if (m.isValid())
                     return m.toDate();
             }
+            return value;
         });
 
         if ($injector.has('$mdpDatePicker')) {
