@@ -3,6 +3,8 @@
  * @author Jared Wiltshire
  */
 
+import moment from 'moment-timezone';
+
 formatValue.$inject = ['$parse'];
 function formatValue($parse) {
     return {
@@ -14,7 +16,7 @@ function formatValue($parse) {
             const expression = $parse($attrs.maFormatValue);
             
             ngModel.$formatters.push(value => {
-                const result = expression($scope, {$value: value});
+                const result = expression($scope, {$value: value, $Math: Math, $Number: Number, $moment: moment});
                 if (containerCtrl) {
                     // the mdInputContainer adds a formatter which runs before this one which sets the
                     // .md-input-has-value class, work around by setting it again

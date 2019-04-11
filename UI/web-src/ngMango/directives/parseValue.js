@@ -3,6 +3,8 @@
  * @author Jared Wiltshire
  */
 
+import moment from 'moment-timezone';
+
 parseValue.$inject = ['$parse'];
 function parseValue($parse) {
     return {
@@ -14,7 +16,7 @@ function parseValue($parse) {
             const expression = $parse($attrs.maParseValue);
 
             ngModel.$parsers.push(value => {
-                return expression($scope, {$value: value});
+                return expression($scope, {$value: value, $Math: Math, $Number: Number, $moment: moment});
             });
         }
     };
