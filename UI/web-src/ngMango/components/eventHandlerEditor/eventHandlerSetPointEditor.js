@@ -46,6 +46,18 @@ class eventHandlerSetPointEditorController {
         }
     }
 
+    clearActiveActionInputs() {
+        this.changeActivePoint();
+        this.$scope.editor.eventHandler.activeValueToSet = null;
+        this.$scope.editor.eventHandler.activeScript = null;
+    }
+
+    clearInactiveActionInputs() {
+        this.changeInactivePoint();
+        this.$scope.editor.eventHandler.inactiveValueToSet = null;
+        this.$scope.editor.eventHandler.inactiveScript = null;
+    }
+
 }
 
 export default {

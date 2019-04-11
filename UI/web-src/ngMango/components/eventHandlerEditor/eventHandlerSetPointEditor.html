@@ -20,7 +20,7 @@
         <div layout="row" flex layout-align="space-between center" class="md-padding ma-no-padding-bottom">
             <md-input-container flex="100" flex-gt-md="50">
                 <label ma-tr="eventHandlers.activeAction"></label>
-                <md-select name="activeAction" ng-model="editor.eventHandler.activeAction">
+                <md-select name="activeAction" ng-model="editor.eventHandler.activeAction" ng-change="$ctrl.clearActiveActionInputs()">
                     <md-option value="NONE"><span ma-tr="eventHandlers.action.none"></span></md-option>
                     <md-option value="POINT_VALUE"><span ma-tr="eventHandlers.action.point"></span></md-option>
                     <md-option value="STATIC_VALUE"><span ma-tr="eventHandlers.action.static"></span></md-option>
@@ -93,7 +93,7 @@
         <div layout="row" flex layout-align="space-between center" class="md-padding ma-no-padding-bottom">
             <md-input-container flex="100" flex-gt-md="50">
                 <label ma-tr="eventHandlers.inactiveAction"></label>
-                <md-select name="inactiveAction" ng-model="editor.eventHandler.inactiveAction">
+                <md-select name="inactiveAction" ng-model="editor.eventHandler.inactiveAction" ng-change="$ctrl.clearInactiveActionInputs()">
                     <md-option value="NONE"><span ma-tr="eventHandlers.action.none"></span></md-option>
                     <md-option value="POINT_VALUE"><span ma-tr="eventHandlers.action.point"></span></md-option>
                     <md-option value="STATIC_VALUE"><span ma-tr="eventHandlers.action.static"></span></md-option>
