@@ -75,8 +75,8 @@
                     required>
                 <div ng-messages="editor.form.activeValueToSet.$error">
                     <div ng-message="required" ma-tr="ui.app.required"></div>
-                    <div ng-message="min" ma-tr="ui.app.min"></div>
-                    <div ng-message="max" ma-tr="ui.app.max"></div>
+                    <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="{{$ctrl.targetPoint.pointLocator.min}}"></div>
+                    <div ng-message="max" ma-tr="ui.app.maxNumber" ma-tr-args="{{$ctrl.targetPoint.pointLocator.max}}"></div>
                     <div ng-message="validationMessage" ng-bind="editor.form.activeValueToSet.validationMessage"></div>
                 </div>
             </md-input-container>
@@ -158,8 +158,8 @@
                     ng-model="editor.eventHandler.inactiveValueToSet" 
                     required>
                 <div ng-messages="editor.form.inactiveValueToSet.$error">
-                    <div ng-message="min" ma-tr="ui.app.min"></div>
-                    <div ng-message="max" ma-tr="ui.app.max"></div>
+                    <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="{{$ctrl.targetPoint.pointLocator.min}}"></div>
+                    <div ng-message="max" ma-tr="ui.app.maxNumber" ma-tr-args="{{$ctrl.targetPoint.pointLocator.max}}"></div>
                     <div ng-message="required" ma-tr="ui.app.required"></div>
                     <div ng-message="validationMessage" ng-bind="editor.form.inactiveValueToSet.validationMessage"></div>
                 </div>
