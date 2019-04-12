@@ -18,9 +18,11 @@ class eventHandlerSetPointEditorController {
 
     $onInit() {
         this.dataTypes = {
-            'NUMERIC': 0,
-            'ALPHANUMERIC': 1,
-            'BINARY': 2,
+            'BINARY': 1,
+            'MULTISTATE': 2,
+            'NUMERIC': 3,
+            'ALPHANUMERIC': 4,
+            'IMAGE': 5
         };
 
         this.$scope.editor = this.editor;
