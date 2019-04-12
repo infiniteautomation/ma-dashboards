@@ -2,7 +2,14 @@
 
 <div layout="row" flex layout-align="space-between center">
     <div flex="100">
-        <ma-filtering-point-list auto-init="true" label="Target point" name="targetPointXid" point-xid="{{editor.eventHandler.targetPointXid}}" ng-change="$ctrl.changeTargetPoint()" ng-model="$ctrl.targetPoint"></ma-filtering-point-list>
+        <ma-filtering-point-list 
+            auto-init="true" 
+            label="Target point" 
+            name="targetPointXid" 
+            point-xid="{{editor.eventHandler.targetPointXid}}" 
+            ng-change="$ctrl.changeTargetPoint()" 
+            ng-model="$ctrl.targetPoint">
+        </ma-filtering-point-list>
         <div ng-messages="editor.form.targetPointXid.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="validationMessage" ng-bind="editor.form.targetPointXid.validationMessage"></div>
@@ -33,7 +40,15 @@
             </md-input-container> 
         
             <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'POINT_VALUE'">
-                <ma-filtering-point-list auto-init="false" label="Source point" name="activePointXid" point-xid="{{editor.eventHandler.activePointXid}}" ng-change="$ctrl.changeActivePoint()" ng-model="$ctrl.activePoint"></ma-filtering-point-list>
+                <ma-filtering-point-list 
+                    query="&eq(dataTypeId,{{ $ctrl.getDataTypeId() }})"
+                    auto-init="false" 
+                    label="Source point" 
+                    name="activePointXid" 
+                    point-xid="{{editor.eventHandler.activePointXid}}" 
+                    ng-change="$ctrl.changeActivePoint()" 
+                    ng-model="$ctrl.activePoint">
+                </ma-filtering-point-list>
                 <div ng-messages="editor.form.activePointXid.$error">
                     <div ng-message="required" ma-tr="ui.app.required"></div>
                     <div ng-message="validationMessage" ng-bind="editor.form.activePointXid.validationMessage"></div>
@@ -106,7 +121,15 @@
             </md-input-container> 
         
             <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'POINT_VALUE'">
-                <ma-filtering-point-list auto-init="false" label="Source point" name="inactivePointXid" point-xid="{{editor.eventHandler.inactivePointXid}}" ng-change="$ctrl.changeInactivePoint()" ng-model="$ctrl.inactivePoint"></ma-filtering-point-list>
+                <ma-filtering-point-list 
+                    query="&eq(dataTypeId,{{ $ctrl.getDataTypeId() }})"
+                    auto-init="false" 
+                    label="Source point" 
+                    name="inactivePointXid" 
+                    point-xid="{{editor.eventHandler.inactivePointXid}}" 
+                    ng-change="$ctrl.changeInactivePoint()" 
+                    ng-model="$ctrl.inactivePoint">
+                </ma-filtering-point-list>
                 <div ng-messages="editor.form.inactivePointXid.$error">
                     <div ng-message="required" ma-tr="ui.app.required"></div>
                     <div ng-message="validationMessage" ng-bind="editor.form.inactivePointXid.validationMessage"></div>

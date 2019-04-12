@@ -17,6 +17,12 @@ class eventHandlerSetPointEditorController {
     }
 
     $onInit() {
+        this.dataTypes = {
+            'NUMERIC': 0,
+            'ALPHANUMERIC': 1,
+            'BINARY': 2,
+        };
+
         this.$scope.editor = this.editor;
     }
 
@@ -44,6 +50,10 @@ class eventHandlerSetPointEditorController {
         } else {
             return dataType === 'ALPHANUMERIC';
         }
+    }
+
+    getDataTypeId() {
+        return this.dataTypes[this.targetPoint.dataType];
     }
 
     clearActiveActionInputs() {
