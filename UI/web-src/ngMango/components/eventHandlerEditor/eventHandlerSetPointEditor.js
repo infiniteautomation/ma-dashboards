@@ -48,7 +48,7 @@ class eventHandlerSetPointEditorController {
 
     targetPointIs(dataType) {
         if (this.targetPoint) {
-            return this.targetPoint.pointLocator.dataType === dataType;
+            return this.targetPoint.dataType === dataType;
         } else {
             return dataType === 'ALPHANUMERIC';
         }
