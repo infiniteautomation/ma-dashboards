@@ -55,6 +55,7 @@ class eventHandlerSetPointEditorController {
     }
 
     getDataTypeId() {
+        if (!this.targetPoint) { return; }
         return this.dataTypes[this.targetPoint.dataType];
     }
 
