@@ -72,6 +72,8 @@ function eventHandlerProvider() {
             escalationDelayType: 'HOURS',
             escalationRecipients: [],
             sendInactive: false,
+            activeProcessTimeout: 15,
+            inactiveProcessTimeout: 15,
             inactiveOverride: false,
             inactiveRecipients: [],
             includeLogfile: false,
