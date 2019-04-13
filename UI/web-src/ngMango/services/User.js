@@ -505,7 +505,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         Object.assign(User.prototype, {
             hasPermission() {
                 console.warn('The hasPermission() method is deprecated, please use hasAnyRole() instead');
-                return this.hasRole.apply(this, arguments);
+                return this.hasAnyRole.apply(this, arguments);
             },
             
             /**
