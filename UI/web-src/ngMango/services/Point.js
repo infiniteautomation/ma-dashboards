@@ -522,6 +522,14 @@ function dataPointProvider() {
                 }
                 return (this._textRenderer = TextRenderer.forPoint(this));
             },
+            
+            getRenderedText(value) {
+                return this.getTextRenderer().render(value).text;
+            },
+            
+            getRenderedColor(value) {
+                return this.getTextRenderer().render(value).color;
+            },
 
             websocketHandler(payload) {
                 if (payload.xid !== this.xid) return;
