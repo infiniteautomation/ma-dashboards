@@ -155,7 +155,7 @@ class DataSourceEditorController {
                 this.setViewValue();
                 this.render();
             }, error => {
-                this.maDialogHelper.toast(['ui.components.dataSourceDeleteError', error.mangoStatusText]);
+                this.maDialogHelper.errorToast(['ui.components.dataSourceDeleteError', error.mangoStatusText]);
             });
         }, angular.noop);
     }
