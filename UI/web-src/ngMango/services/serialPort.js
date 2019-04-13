@@ -9,10 +9,11 @@ function serialPortFactory($http) {
     const baseUrl = '/rest/v2/server/serial-ports';
     
     class SerialPort {
-        static list() {
+        static list(params = {}) {
             return $http({
                 method: 'GET',
-                url: baseUrl
+                url: baseUrl,
+                params: params
             }).then(response => {
                 return response.data;
             });

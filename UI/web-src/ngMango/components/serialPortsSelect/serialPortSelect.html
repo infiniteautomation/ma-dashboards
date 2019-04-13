@@ -1,14 +1,20 @@
-<md-input-container flex="100">
-    <md-icon ng-if="$ctrl.showIcon">settings_input_component</md-icon>
-    <label ng-transclude="label">
-        <span ma-tr="serialPort.select"></span>
-    </label>
-    <md-select ng-if="$ctrl.selectMultiple" multiple="true" md-on-open="$ctrl.serialPortPromise" ng-model="$ctrl.selected" ng-change="$ctrl.selectChanged()" ng-model-options="{trackBy: '$value'}">
-        <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
-        <md-option ng-repeat="serialPort in $ctrl.serialPorts track by $index" ng-value="serialPort"><span ng-bind="serialPort"></span></md-option>
-    </md-select>
-    <md-select ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.serialPortPromise" ng-model="$ctrl.selected" ng-change="$ctrl.selectChanged()" ng-model-options="{trackBy: '$value'}">
-        <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
-        <md-option ng-repeat="serialPort in $ctrl.serialPorts track by $index" ng-value="serialPort"><span ng-bind="serialPort"></span></md-option>
-    </md-select>
-</md-input-container>
+<div flex layout="row" layout-align="space-between center">
+    <md-input-container flex="100">
+        <md-icon ng-if="$ctrl.showIcon">settings_input_component</md-icon>
+        <label ng-transclude="label">
+            <span ma-tr="serialPort.select"></span>
+        </label>
+        <md-select ng-if="$ctrl.selectMultiple" multiple="true" md-on-open="$ctrl.serialPortPromise" ng-model="$ctrl.selected" ng-change="$ctrl.selectChanged()" ng-model-options="{trackBy: '$value'}">
+            <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
+            <md-option ng-repeat="serialPort in $ctrl.serialPorts track by $index" ng-value="serialPort"><span ng-bind="serialPort"></span></md-option>
+        </md-select>
+        <md-select ng-if="!$ctrl.selectMultiple" md-on-open="$ctrl.serialPortPromise" ng-model="$ctrl.selected" ng-change="$ctrl.selectChanged()" ng-model-options="{trackBy: '$value'}">
+            <md-option ng-if="$ctrl.showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
+            <md-option ng-repeat="serialPort in $ctrl.serialPorts track by $index" ng-value="serialPort"><span ng-bind="serialPort"></span></md-option>
+        </md-select>
+    </md-input-container>
+    <md-button class="md-icon-button" ng-click="$ctrl.refreshList()">
+        <md-tooltip md-direction="left" ma-tr="common.refresh"></md-tooltip>
+        <md-icon>refresh</md-icon>
+    </md-button>
+</div>
