@@ -200,15 +200,6 @@ function dataSourceProvider() {
                     response: Util.arrayResponseInterceptor
                 }
             },
-            rql: {
-            	url: '/rest/v2/data-sources?:query',
-                method: 'GET',
-                isArray: true,
-                transformResponse: Util.transformArrayResponse,
-                interceptor: {
-                    response: Util.arrayResponseInterceptor
-                }
-            },
             getById: {
                 url: '/rest/v2/data-sources/by-id/:id',
                 method: 'GET',
