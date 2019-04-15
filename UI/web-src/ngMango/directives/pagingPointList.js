@@ -21,7 +21,7 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
             $scope.dynamicItems = new DynamicItems({service: Point});
 
             if ($scope.autoInit) {
-                Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
+                Point.buildQuery().limit(1).query().then(function(item) {
                     $scope.ngModel = item[0];
                 });
             }
@@ -41,8 +41,8 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicIte
                 } else {
                     query += '&sort(deviceName,name)&limit(' + ($scope.limit || 200) +')';
                 }
-                return Point.rql({
-                    query: query
+                return Point.query({
+                    rqlQuery: query
                 }).$promise.then(null, function() {
                     return [];
                 });

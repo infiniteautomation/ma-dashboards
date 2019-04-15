@@ -221,15 +221,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     response: Util.arrayResponseInterceptor
                 }
             },
-            rql: {
-                url: '/rest/v1/users?:query',
-                method: 'GET',
-                isArray: true,
-                transformResponse: Util.transformArrayResponse,
-                interceptor: {
-                    response: Util.arrayResponseInterceptor
-                }
-            },
             getById: {
                 url: '/rest/v1/users/by-id/:id',
                 method: 'GET',

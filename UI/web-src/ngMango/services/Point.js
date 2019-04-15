@@ -21,7 +21,7 @@
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-*  Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
+*  Point.query({rqlQuery: 'limit(1)'}).$promise.then(function(item) {
     $scope.ngModel = item[0];
 });
 * </pre>
@@ -269,15 +269,6 @@ function dataPointProvider() {
                 xid: data => data && (data.originalId || data.xid)
         	}, {
             query: {
-                method: 'GET',
-                isArray: true,
-                transformResponse: Util.transformArrayResponse,
-                interceptor: {
-                    response: Util.arrayResponseInterceptor
-                }
-            },
-            rql: {
-            	url: '/rest/v2/data-points?:query',
                 method: 'GET',
                 isArray: true,
                 transformResponse: Util.transformArrayResponse,

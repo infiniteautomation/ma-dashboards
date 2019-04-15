@@ -109,7 +109,7 @@ class MailingListSetupController {
     }
 
     getUsers() {
-        this.maUser.rql('').$promise.then(users => {
+        this.maUser.list().$promise.then(users => {
             this.users = users;
         });
     }
