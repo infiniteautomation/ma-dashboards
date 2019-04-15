@@ -130,12 +130,14 @@ class DataPointEditorController {
         this.errorMessages = [];
         this.validationMessages = [];
         this.points = null;
+        this.dataTypes = null;
         
         const viewValue = this.prevViewValue = this.ngModelCtrl.$viewValue;
         
         if (Array.isArray(viewValue) && viewValue.length) {
             this.points = viewValue;
             this.dataPoint = this.MultipleValues.fromArray(this.points);
+            this.dataTypes = this.points.map(dp => dp.dataType);
         } else if (viewValue instanceof this.Point) {
             this.dataPoint = viewValue.copy();
         } else if (viewValue) {
@@ -143,6 +145,8 @@ class DataPointEditorController {
         } else {
             this.dataPoint = null;
         }
+
+        this.dataType = this.dataPoint ? this.dataPoint.dataType : null;
         
         if (this.dataPoint && this.dataPoint.isNew()) {
             this.activeTab = 0;
@@ -160,6 +164,27 @@ class DataPointEditorController {
     setViewValue(viewValue = this.dataPoint) {
         this.ngModelCtrl.$setViewValue(viewValue);
     }
+    
+    confirmDataTypeChange(event) {
+        if (Array.isArray(this.points)) {
+            let newTypes;
+            if (this.dataPoint.dataType instanceof this.MultipleValues) {
+                newTypes = this.dataPoint.dataType.values;
+            } else {
+                newTypes = Array(this.points.length).fill(this.dataPoint.dataType);
+            }
+            
+            const changed = this.points.filter((dp, i) => !dp.isNew() && newTypes[i] !== this.dataTypes[i]);
+            if (changed.length > 0) {
+                return this.DialogHelper.confirm(event, ['ui.app.changeDataTypePlural', changed.length]);
+            }
+        } else {
+            const dataTypeChanged = !this.dataPoint.isNew() && this.dataPoint.dataType !== this.dataType;
+            if (dataTypeChanged) {
+                return this.DialogHelper.confirm(event, 'ui.app.changeDataType');
+            }
+        }
+    }
 
     saveItem(event) {
         this.MultipleValues.checkFormValidity(this.form);
@@ -175,6 +200,8 @@ class DataPointEditorController {
         const savingMultiple = Array.isArray(this.points);
         
         this.savePromise = this.$q.resolve().then(() => {
+            return this.confirmDataTypeChange(event);
+        }).then(() => {
             if (this.dataPoint.templateXid != null) {
                 const trKey = savingMultiple ? 'ui.app.templateWillBeRemovedPlural' : 'ui.app.templateWillBeRemoved';
                 return this.DialogHelper.confirm(event, trKey);
@@ -190,7 +217,7 @@ class DataPointEditorController {
             } else {
                 return this.savePoint();
             }
-        }).finally(() => delete this.savePromise);
+        }).catch(error => null).finally(() => delete this.savePromise);
     }
     
     savePoint() {
@@ -229,7 +256,7 @@ class DataPointEditorController {
                 return request;
             })
         });
-        
+
         return this.bulkTask.start(this.$scope).then(resource => {
             this.saveMultipleComplete(resource, newPoints);
         }, error => {
