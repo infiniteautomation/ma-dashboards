@@ -41,7 +41,7 @@
         
             <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'POINT_VALUE'">
                 <ma-filtering-point-list 
-                    query="&eq(dataTypeId,{{ $ctrl.getDataTypeId() }})"
+                    data-type="$ctrl.targetPoint.dataType"
                     auto-init="false" 
                     label="Source point" 
                     name="activePointXid" 
@@ -121,7 +121,7 @@
         
             <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'POINT_VALUE'">
                 <ma-filtering-point-list 
-                    query="&eq(dataTypeId,{{ $ctrl.getDataTypeId() }})"
+                    data-type="$ctrl.targetPoint.dataType"
                     auto-init="false" 
                     label="Source point" 
                     name="inactivePointXid" 

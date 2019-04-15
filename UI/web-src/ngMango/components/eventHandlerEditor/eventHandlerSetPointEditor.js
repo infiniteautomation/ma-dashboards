@@ -17,14 +17,6 @@ class eventHandlerSetPointEditorController {
     }
 
     $onInit() {
-        this.dataTypes = {
-            'BINARY': 1,
-            'MULTISTATE': 2,
-            'NUMERIC': 3,
-            'ALPHANUMERIC': 4,
-            'IMAGE': 5
-        };
-
         this.$scope.editor = this.editor;
     }
 
@@ -52,11 +44,6 @@ class eventHandlerSetPointEditorController {
         } else {
             return dataType === 'ALPHANUMERIC';
         }
-    }
-
-    getDataTypeId() {
-        if (!this.targetPoint) { return; }
-        return this.dataTypes[this.targetPoint.dataType];
     }
 
     clearActiveActionInputs() {
