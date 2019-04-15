@@ -354,11 +354,11 @@ function dataPointProvider() {
             },
             
             dataTypes: Object.freeze([
-                {key: 'BINARY', translation: 'common.dataTypes.binary'},
-                {key: 'MULTISTATE', translation: 'common.dataTypes.multistate'},
-                {key: 'NUMERIC', translation: 'common.dataTypes.numeric'},
-                {key: 'ALPHANUMERIC', translation: 'common.dataTypes.alphanumeric'},
-                {key: 'IMAGE', translation: 'common.dataTypes.image'}
+                {key: 'BINARY', translation: 'common.dataTypes.binary', value: 1},
+                {key: 'MULTISTATE', translation: 'common.dataTypes.multistate', value: 2},
+                {key: 'NUMERIC', translation: 'common.dataTypes.numeric', value: 3},
+                {key: 'ALPHANUMERIC', translation: 'common.dataTypes.alphanumeric', value: 4},
+                {key: 'IMAGE', translation: 'common.dataTypes.image', value: 5}
             ]),
             
             loggingTypes: Object.freeze([
