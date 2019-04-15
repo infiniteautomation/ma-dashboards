@@ -65,7 +65,7 @@ class FilteringPointListController {
         
         if (this.autoInit) {
             if (!this.pointXid && !(this.pointId || this.pointId === 0)) {
-                this.Point.rql({query: 'limit(1)'}).$promise.then(items => {
+                this.Point.buildQuery().limit(1).query().then(items => {
                     if (items.length) {
                         this.setViewValue(items[0]);
                     }
@@ -127,7 +127,7 @@ class FilteringPointListController {
     }
 
     querySearch(inputText) {
-        let rqlQuery, queryString = '';
+        const rqlQuery = new query.Query();
         
         this.highlight = '';
         
@@ -152,38 +152,43 @@ class FilteringPointListController {
             const nameQuery = new query.Query({name: 'like', args: ['name', '*' + nameLike + '*']});
             const deviceNameQuery = new query.Query({name: 'like', args: ['deviceName', '*' + deviceNameLike + '*']});
 
-            rqlQuery = new query.Query();
+            const searchQuery = new query.Query();
+            rqlQuery.push(searchQuery);
             
             if (nameLike) {
-                rqlQuery.push(nameQuery);
+                searchQuery.push(nameQuery);
             }
             if (deviceNameLike) {
-                rqlQuery.push(deviceNameQuery);
+                searchQuery.push(deviceNameQuery);
             }
             if (!searchByDeviceAndName && this.getByXid) {
                 const xidEquals = new query.Query({name: 'eq', args: ['xid', inputText]});
-                rqlQuery.push(xidEquals);
+                searchQuery.push(xidEquals);
             }
             
-            rqlQuery.name = searchByDeviceAndName ? 'and' : 'or';
+            searchQuery.name = searchByDeviceAndName ? 'and' : 'or';
+        }
+        
+        if (this.dataType) {
+            if (Array.isArray(this.dataType)) {
+                rqlQuery.push(new query.Query({name: 'in', args: ['dataTypeId', this.dataType]}));
+            } else {
+                rqlQuery.push(new query.Query({name: 'eq', args: ['dataTypeId', this.dataType]}));
+            }
         }
 
+        let queryString;
         if (this.query) {
-            if (rqlQuery) {
-                queryString = rqlQuery.toString();
-            }
-            queryString = queryString + this.query;
+            const userQuery = this.query.replace(/^[?&]/, '');
+            const q = rqlQuery.toString();
+            queryString = q.length ? q + '&' + userQuery : userQuery;
         } else {
-            const q = new query.Query();
-            if (rqlQuery)
-                q.push(rqlQuery);
-
-            queryString = q.sort('deviceName', 'name')
+            queryString = rqlQuery.sort('deviceName', 'name')
                 .limit(this.limit || 150)
                 .toString();
         }
         
-        return this.Point.rql({
+        return this.Point.query({
             rqlQuery: queryString
         }).$promise.then(result => {
             if (this.clientSideFilter) {
@@ -232,7 +237,8 @@ function filteringPointList() {
             getByXid: '<?',
             allowClear: '<?',
             required: '@?',
-            disabled: '@?'
+            disabled: '@?',
+            dataType: '<?type'
         },
         require: {
             ngModelCtrl: 'ngModel'
