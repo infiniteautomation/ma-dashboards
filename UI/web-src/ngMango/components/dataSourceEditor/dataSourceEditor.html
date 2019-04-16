@@ -180,7 +180,7 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.pointsTabActive = true; $ctrl.hideSaveButtons = true" md-on-deselect="$ctrl.pointsTabActive = false; $ctrl.hideSaveButtons = false">
+        <md-tab ng-if="!$ctrl.dataSource.isNew() && $ctrl.dataSourceType && !$ctrl.dataSourceType.hidePointsTab" md-on-select="$ctrl.pointsTabActive = true; $ctrl.hideSaveButtons = true" md-on-deselect="$ctrl.pointsTabActive = false; $ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="ui.app.dataPoints"></span>
             </md-tab-label>
