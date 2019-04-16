@@ -41,7 +41,7 @@
         
             <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'POINT_VALUE'">
                 <ma-filtering-point-list 
-                    query="&eq(dataTypeId,{{ $ctrl.getDataTypeId() }})"
+                    data-type="$ctrl.targetPoint.dataType"
                     auto-init="false" 
                     label="Source point" 
                     name="activePointXid" 
@@ -64,34 +64,19 @@
                 </div>
             </md-input-container>
         
-            <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'STATIC_VALUE' && $ctrl.targetPointIs('NUMERIC')">
+            <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'STATIC_VALUE' && ($ctrl.targetPointIs('NUMERIC') || $ctrl.targetPointIs('MULTISTATE'))">
                 <label ma-tr="eventHandlers.valueToSet"></label>
                 <input 
                     type="number" 
-                    min="{{$ctrl.targetPoint.pointLocator.min}}" 
-                    max="{{$ctrl.targetPoint.pointLocator.max}}" 
                     name="activeValueToSet" 
                     ng-model="editor.eventHandler.activeValueToSet" 
                     required>
                 <div ng-messages="editor.form.activeValueToSet.$error">
                     <div ng-message="required" ma-tr="ui.app.required"></div>
-                    <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="{{$ctrl.targetPoint.pointLocator.min}}"></div>
-                    <div ng-message="max" ma-tr="ui.app.maxNumber" ma-tr-args="{{$ctrl.targetPoint.pointLocator.max}}"></div>
                     <div ng-message="validationMessage" ng-bind="editor.form.activeValueToSet.validationMessage"></div>
                 </div>
             </md-input-container>
 
-            <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'STATIC_VALUE' && $ctrl.targetPointIs('MULTISTATE')">
-                <label ma-tr="eventHandlers.valueToSet"></label>
-                <md-select name="activeValueToSet" ng-model="editor.eventHandler.activeValueToSet">
-                    <md-option ng-repeat="item in $ctrl.targetPoint.pointLocator.values" ng-value="item"><span ng-bind="item"></span></md-option>
-                </md-select> 
-                <div ng-messages="editor.form.activeValueToSet.$error">
-                    <div ng-message="required" ma-tr="ui.app.required"></div>
-                    <div ng-message="validationMessage" ng-bind="editor.form.activeValueToSet.validationMessage"></div>
-                </div>
-            </md-input-container>
-        
             <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'STATIC_VALUE' && $ctrl.targetPointIs('BINARY')">
                 <label ma-tr="eventHandlers.valueToSet"></label>
                 <md-select name="activeValueToSet" ng-model="editor.eventHandler.activeValueToSet">
@@ -136,7 +121,7 @@
         
             <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'POINT_VALUE'">
                 <ma-filtering-point-list 
-                    query="&eq(dataTypeId,{{ $ctrl.getDataTypeId() }})"
+                    data-type="$ctrl.targetPoint.dataType"
                     auto-init="false" 
                     label="Source point" 
                     name="inactivePointXid" 
@@ -159,34 +144,19 @@
                 </div>
             </md-input-container>
         
-            <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'STATIC_VALUE' && $ctrl.targetPointIs('NUMERIC')">
+            <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'STATIC_VALUE' && ($ctrl.targetPointIs('NUMERIC') || $ctrl.targetPointIs('MULTISTATE'))">
                 <label ma-tr="eventHandlers.valueToSet"></label>
                 <input 
                     type="number" 
-                    min="{{$ctrl.targetPoint.pointLocator.min}}" 
-                    max="{{$ctrl.targetPoint.pointLocator.max}}" 
                     name="inactiveValueToSet" 
                     ng-model="editor.eventHandler.inactiveValueToSet" 
                     required>
                 <div ng-messages="editor.form.inactiveValueToSet.$error">
-                    <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="{{$ctrl.targetPoint.pointLocator.min}}"></div>
-                    <div ng-message="max" ma-tr="ui.app.maxNumber" ma-tr-args="{{$ctrl.targetPoint.pointLocator.max}}"></div>
                     <div ng-message="required" ma-tr="ui.app.required"></div>
                     <div ng-message="validationMessage" ng-bind="editor.form.inactiveValueToSet.validationMessage"></div>
                 </div>
             </md-input-container>
 
-            <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'STATIC_VALUE' && $ctrl.targetPointIs('MULTISTATE')">
-                <label ma-tr="eventHandlers.valueToSet"></label>
-                <md-select name="inactiveValueToSet" ng-model="editor.eventHandler.inactiveValueToSet">
-                    <md-option ng-repeat="item in $ctrl.targetPoint.pointLocator.values" ng-value="item"><span ng-bind="item"></span></md-option>
-                </md-select> 
-                <div ng-messages="editor.form.inactiveValueToSet.$error">
-                    <div ng-message="required" ma-tr="ui.app.required"></div>
-                    <div ng-message="validationMessage" ng-bind="editor.form.inactiveValueToSet.validationMessage"></div>
-                </div>
-            </md-input-container>
-        
             <md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'STATIC_VALUE' && $ctrl.targetPointIs('BINARY')">
                 <label ma-tr="eventHandlers.valueToSet"></label>
                 <md-select name="inactiveValueToSet" ng-model="editor.eventHandler.inactiveValueToSet">
