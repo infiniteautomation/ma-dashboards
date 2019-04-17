@@ -155,6 +155,8 @@ class WatchListBuilderController {
     }
     
     save() {
+        this.watchListForm.$setSubmitted();
+        
         // reset all server error messages to allow saving
         Object.keys(this.watchListForm).forEach(key => {
             if (key.indexOf('$') !== 0) {
