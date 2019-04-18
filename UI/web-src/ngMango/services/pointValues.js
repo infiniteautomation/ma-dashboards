@@ -118,6 +118,9 @@ function pointValuesProvider() {
                 if (options.annotation || options.annotation == null) {
                     body.fields.push('ANNOTATION');
                 }
+                if (body.bookend) {
+                    body.fields.push('BOOKEND');
+                }
             }
 
             if (options.useCache != null) {
