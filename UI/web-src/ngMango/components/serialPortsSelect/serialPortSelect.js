@@ -15,15 +15,9 @@ class SerialPortSelectController {
     }
     
     $onInit() {
-        this.ngModelCtrl.$render = () => this.render();
-        
         this.getSerialPorts();
     }
-    
-    render() {
-        this.selected = this.ngModelCtrl.$viewValue;
-    }
-    
+
     getSerialPorts(params = {}) {
         this.serialPortPromise = this.maSerialPort.list(params).then(serialPorts => {
             this.serialPorts = serialPorts;
@@ -35,27 +29,22 @@ class SerialPortSelectController {
 
     refreshList() {
         this.getSerialPorts({ refresh: true }).then(response => {
-            this.maDialogHelper.toast('serialPort.portListRefreshed');
+            this.maDialogHelper.toast('ui.app.serialPort.portListRefreshed');
         });
     }
-
-    selectChanged() {
-        this.ngModelCtrl.$setViewValue(this.selected);
-    }
-    
 }
 
 export default {
     controller: SerialPortSelectController,
     template: serialPortSelectTemplate,
     require: {
-        'ngModelCtrl': 'ngModel'
+        ngModelCtrl: 'ngModel'
     },
     bindings: {
         showIcon: '<?',
         showClear: '<?',
-        selectMultiple: '<?',
-        hideName: '<?'
+        disabled: '@?',
+        required: '@?'
     },
     transclude: {
         label: '?maLabel'
