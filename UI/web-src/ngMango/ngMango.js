@@ -156,6 +156,7 @@ import treeView from './components/treeView/treeView';
 import treeViewTransclude from './components/treeView/treeViewTransclude';
 import purgePointValues from './components/purgePointValues/purgePointValues';
 import serialPortSelect from './components/serialPortsSelect/serialPortSelect';
+import heatMap from './components/heatMap/heatMap';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -325,6 +326,7 @@ ngMango.component('maDurationEditor', durationEditor);
 ngMango.component('maTreeView', treeView);
 ngMango.component('maPurgePointValues', purgePointValues);
 ngMango.component('maSerialPortSelect', serialPortSelect);
+ngMango.component('maHeatMap', heatMap);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

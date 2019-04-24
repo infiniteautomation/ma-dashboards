@@ -1,0 +1,77 @@
+ma-heat-map {
+	display: block;
+	position: relative;
+}
+
+ma-heat-map > .ma-heat-map-container {
+	height: 100%;
+	display: flex;
+}
+
+ma-heat-map > .ma-heat-map-container > .ma-heat-map-column {
+	flex-grow: 1;
+	position: relative;
+}
+
+ma-heat-map > .ma-heat-map-container > .ma-heat-map-column > .ma-heat-map-row {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+}
+
+ma-heat-map > .ma-heat-map-container > .ma-heat-map-column > .ma-heat-map-row:hover {
+	outline: 1px solid currentColor;
+	z-index: 1;
+}
+
+ma-heat-map > .ma-heat-map-legend {
+	position: absolute;
+	width: 220px;
+	height: 20px;
+	top: calc(100% + 20px);
+	left: calc(50% - 110px);
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+ma-heat-map > .ma-heat-map-legend > .ma-heat-map-legend-cell {
+	flex-grow: 1;
+}
+
+ma-heat-map.ma-heat-map-legend-right > .ma-heat-map-legend {
+	width: 20px;
+	height: 220px;
+	top: calc(50% - 110px);
+	left: calc(100% + 20px);
+	flex-direction: column;
+}
+
+ma-heat-map > .ma-heat-map-container > .ma-heat-map-x-axis {
+	position: absolute;
+	bottom: 100%;
+	width: 100%;
+}
+
+ma-heat-map > .ma-heat-map-container > .ma-heat-map-x-axis > .ma-heat-map-axis-label {
+	position: absolute;
+	bottom: 0;
+	transform: rotate(-45deg);
+	transform-origin: top left;
+}
+
+ma-heat-map > .ma-heat-map-container > .ma-heat-map-y-axis {
+	position: absolute;
+	right: calc(100% + 5px);
+	height: 100%;
+}
+
+ma-heat-map > .ma-heat-map-container > .ma-heat-map-y-axis > .ma-heat-map-axis-label {
+	position: absolute;
+	right: 0;
+}
+
+ma-heat-map .ma-heat-map-axis-label {
+	font-size: 1.2rem;
+	white-space: nowrap;
+}
