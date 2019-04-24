@@ -65,7 +65,8 @@ const exposedVendorModules = {
     'mathjs': () => import(/* webpackMode: "eager" */ 'mathjs'),
     'simplify-js': () => import(/* webpackMode: "eager" */ 'simplify-js'),
     'jszip': () => import(/* webpackMode: "eager" */ 'jszip'),
-    'stacktrace': () => import(/* webpackMode: "eager" */ 'stacktrace-js')
+    'stacktrace': () => import(/* webpackMode: "eager" */ 'stacktrace-js'),
+    'd3': () => import(/* webpackMode: "lazy", webpackChunkName: "d3" */ 'd3')
 };
 
 // maps a defined AMD name to the import plugin which loads the resource using ES6/webpack async import()
@@ -118,7 +119,7 @@ define('webpackImport', [], () => {
             }
 
             importFn().then(module => {
-                onload(module.default);
+                onload(module.default != null ? module.default : module);
             }, error => {
                 onload.error(error);
             });
