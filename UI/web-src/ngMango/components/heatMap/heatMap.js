@@ -4,21 +4,29 @@
  */
 
 import moment from 'moment-timezone';
-import heatMapTemplate from './heatMap.html';
 import './heatMap.css';
 
 class HeatMapController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return []; }
+    static get $inject() { return ['$scope', '$element']; }
     
-    constructor() {
+    constructor($scope, $element) {
+        this.$scope = $scope;
+        this.$element = $element;
+        
+        // jshint unused:false
+        let d3Promise = import(/* webpackMode: "lazy", webpackChunkName: "d3" */ 'd3').then(d3 => {
+            $scope.$apply(() => {
+                this.d3 = d3;
+                if (Array.isArray(this.pointValues)) {
+                    this.createGraph();
+                }
+            });
+        });
+
         this.minValue = 0;
         this.maxValue = 100;
         this.groupBy = 'day';
-        
-        this.showLegend = true;
-        this.legend = Array(11).fill().map((v, i) => 1 - i * 0.1);
-        this.fixedUtcOffset = moment().utcOffset();
     }
     
     $onChanges(changes) {
@@ -33,7 +41,9 @@ class HeatMapController {
         }
         
         if (changes.pointValues || changes.groupBy) {
-            this.calcRowsAndCols();
+            if (Array.isArray(this.pointValues) && !this.svg && this.d3) {
+                this.createGraph();
+            }
         }
     }
     
@@ -47,145 +57,97 @@ class HeatMapController {
         }
         return m;
     }
-    
-    calcRowsAndCols() {
-        if (!Array.isArray(this.pointValues) || !this.pointValues.length || typeof this.groupBy !== 'string' || !Number.isFinite(this.rows) || this.rows <= 0) {
-            this.columns = [];
-            return;
-        }
+
+    createGraph() {
+        const bbox = this.$element[0].getBoundingClientRect();
+        const margins = {top: 0, right: 30, bottom: 60, left: 50};
+        const width = bbox.width;
+        const height = bbox.height;
+
+        const d3 = this.d3;
+        const svg = this.svg = d3.select(this.$element[0])
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('shape-rendering', 'optimizeSpeed');
+
+        const graphWidth = width - (margins.left + margins.right);
+        const graphHeight = height - (margins.top + margins.bottom);
+        const graph = svg.append('g')
+            .attr('class', 'ma-heat-map-graph')
+            .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
         const from = this.setTimezone(moment(this.pointValues[0].timestamp)).startOf(this.groupBy);
         const to = this.setTimezone(moment(this.pointValues[this.pointValues.length - 1].timestamp));
         const numColumns = Math.ceil(to.diff(from, this.groupBy, true));
         
-        // TODO use a UTC offset to prevent DST issues here
-        const timePerGroup = moment(from).add(1, this.groupBy) - from;
-        const timePerRow = timePerGroup / this.rows;
-        this.yAxis = Array(this.rows).fill().map((v, i) => {
-            const mod = this.groupBy.startsWith('day') ? 6 : 1;
-            const time = moment(from + timePerRow * i);
-            
-            const top = (time - from) / timePerGroup * 100;
-            
-            let label;
-            if (i % mod === 0) {
-                label = time.format('LT');
-            }
-            
-            return {
-                label,
-                timestamp: time.valueOf(),
-                style: {
-                    top: `${top}%`
-                }
-            };
-        });
-        
-        this.columns = Array(numColumns).fill().map((v, i) => {
+        const xDomain = Array(numColumns).fill().map((v, i) => {
             const startTime = moment(from).add(i, this.groupBy).startOf(this.groupBy);
-            const endTime = moment(from).add(i + 1, this.groupBy).startOf(this.groupBy);
-            
-            const utcOffset = startTime.utcOffset();
-            const startTimeNomalized = moment(startTime).utc().utcOffset(utcOffset);
-            const endTimeNomalized = moment(startTimeNomalized).add(1, this.groupBy);
-            
-            const rowTimes = {};
-
-            const rows = this.pointValues.filter(pv => pv.timestamp >= startTime && pv.timestamp < endTime)
-                .map(pv => {
-                    const height = 100 / this.rows;
-                    
-                    const rowTime = this.setTimezone(moment(pv.timestamp));
-                    
-                    // set the top percentage for each cell
-                    // results in a gap in the chart for DST jump-forward periods
-                    const rowTimeNormalized = moment(rowTime).utcOffset(utcOffset, true);
-                    const top = (rowTimeNormalized - startTimeNomalized) / (endTimeNomalized - startTimeNomalized) * 100;
-
-                    let title;
-                    if (typeof this.getTitleExp === 'function') {
-                        title = this.getTitleExp({$value: pv, $pointValueTime: rowTime});
-                    } else {
-                        title = rowTime.format('l LT Z') + ' \u2014 ' + pv.rendered;
-                    }
-                    
-                    const row = {
-                        pointValue: pv,
-                        style: {
-                            'background-color': this.getColor(pv.value),
-                            height: `${height}%`,
-                            top: `${top}%`
-                        },
-                        title
-                    };
-                    
-                    const existingRow = rowTimes[rowTimeNormalized.valueOf()];
-                    if (existingRow) {
-                        // DST overlap
-                        // Set the overlapping cells to 50% width and put the second period on the right
-                        row.style.left = row.style.width = existingRow.style.width = '50%';
-                    }
-                    rowTimes[rowTimeNormalized.valueOf()] = row;
-                    
-                    return row;
-                });
-
-            const left = i / numColumns * 100;
-            const label = this.colHeader(startTime, i);
-            
-            return {
-                timestamp: startTime.valueOf(),
-                rows,
-                style: {
-                    left: `${left}%`
-                },
-                label
-            };
-        });
-    }
-    
-    colHeader(startTime, i) {
-        const mod = this.groupBy.startsWith('day') ? 7 : 4;
-        if (i % mod === 0) {
             return startTime.format('l');
-        }
-    }
+        });
 
-    /**
-     * Scale value to the interval [0,1]
-     */
-    scaleValue(value) {
-        if (typeof this.scaleValueExp === 'function') {
-            return this.scaleValueExp({$value: value});
-        }
+        const yStart = moment(0).utc().utcOffset(0).startOf(this.groupBy);
+        const yEnd = moment(yStart).add(1, this.groupBy);
+        const yDomain = Array(this.rows).fill().map((v, i) => {
+            const ms = (yEnd - yStart) / this.rows * i;
+            return moment(yStart + ms).utc().utcOffset(0).format('LT');
+        });
+        
+        const xScale = d3.scaleBand()
+            .domain(xDomain)
+            .range([0, graphWidth]);
+        
+        svg.append('g')
+            .attr('transform', `translate(${margins.left}, ${margins.top + graphHeight})`)
+            .attr('class', 'ma-heat-map-x-axis')
+            .call(d3.axisBottom(xScale).tickSizeOuter(0))
+        .selectAll('text')
+            .style('text-anchor', 'start')
+            .style('transform-origin', '0 1em')
+            .style('transform', 'rotate(45deg)');
 
-        const scaled = (value - this.minValue) / (this.maxValue - this.minValue);
-        return Math.min(Math.max(scaled, 0), 1);
+        const yScale = d3.scaleBand()
+            .domain(yDomain)
+            .range([0, graphHeight]);
+
+        svg.append('g')
+            .attr('transform', `translate(${margins.left}, ${margins.top})`)
+            .attr('class', 'ma-heat-map-y-axis')
+            .call(d3.axisLeft(yScale).tickSizeOuter(0));
+        
+        const colorScale = d3.scaleSequential(d3.interpolateSpectral)
+            .domain([this.maxValue, this.minValue]);
+
+        const xBandWidth = xScale.bandwidth();
+        const yBandWidth = yScale.bandwidth();
+        
+        graph.selectAll()
+            .data(this.pointValues, pv => pv.timestamp)
+            .enter()
+            .append('rect')
+            .attr('transform', pv => {
+                const time = this.setTimezone(moment(pv.timestamp));
+                const x = xScale(time.format('l'));
+                const y = yScale(time.format('LT'));
+                return `translate(${x}, ${y})`;
+            })
+            .attr('width', xBandWidth)
+            .attr('height', yBandWidth)
+            .style('fill', pv => colorScale(pv.value));
     }
     
-    /**
-     * Returns a color for a point value
-     */
-    getColor(value) {
-        const scaled = this.scaleValue(value);
-        
-        if (typeof this.getColorExp === 'function') {
-            return this.getColorExp({$value: value, $scaled: scaled});
+    updateGraph() {
+        if (!this.svg) {
+            
         }
-        
-        return this.getColorScaled(scaled);
     }
     
-    /**
-     * Returns a color for a value in the interval [0,1]
-     */
-    getColorScaled(scaled) {
-        return `hsl(${240 - Math.floor(scaled * 240)}, 100%, 50%)`;
+    getXDomain() {
+        
     }
 }
 
 export default {
-    template: heatMapTemplate,
     controller: HeatMapController,
     bindings: {
         timezone: '@?',
@@ -195,10 +157,6 @@ export default {
         autoScale: '<?',
         pointValues: '<',
         minValue: '<?',
-        maxValue: '<?',
-        scaleValueExp: '&?scaleValue',
-        getColorExp: '&?getColor',
-        getTitleExp: '&?getTitle',
-        showLegend: '<?'
+        maxValue: '<?'
     }
 };
