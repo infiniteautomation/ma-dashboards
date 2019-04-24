@@ -18,9 +18,7 @@ class HeatMapController {
         let d3Promise = import(/* webpackMode: "lazy", webpackChunkName: "d3" */ 'd3').then(d3 => {
             $scope.$apply(() => {
                 this.d3 = d3;
-                if (Array.isArray(this.pointValues)) {
-                    this.createGraph();
-                }
+                this.createGraph();
             });
         });
 
@@ -30,19 +28,25 @@ class HeatMapController {
     }
     
     $onChanges(changes) {
+        let minMaxChanged = changes.minValue || changes.maxValue;
+        
         if (changes.pointValues && this.autoScale) {
             if (Array.isArray(this.pointValues) && this.pointValues.length) {
                 this.minValue = this.pointValues.reduce((min, v) => v.value < min ? v.value : min, Number.POSITIVE_INFINITY);
                 this.maxValue = this.pointValues.reduce((max, v) => v.value > max ? v.value : max, Number.NEGATIVE_INFINITY);
-            } else {
-                this.minValue = 0;
-                this.maxValue = 100;
+                minMaxChanged = true;
             }
         }
         
-        if (changes.pointValues || changes.groupBy) {
-            if (Array.isArray(this.pointValues) && !this.svg && this.d3) {
-                this.createGraph();
+        // graph already created
+        if (this.svg) {
+            if (minMaxChanged) {
+                this.updateColorScale();
+            }
+            
+            if (changes.pointValues || changes.groupBy) {
+                this.updateAxis();
+                this.updateGraph();
             }
         }
     }
@@ -73,19 +77,57 @@ class HeatMapController {
 
         const graphWidth = width - (margins.left + margins.right);
         const graphHeight = height - (margins.top + margins.bottom);
-        const graph = svg.append('g')
+        
+        this.graph = svg.append('g')
             .attr('class', 'ma-heat-map-graph')
             .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
-        const from = this.setTimezone(moment(this.pointValues[0].timestamp)).startOf(this.groupBy);
-        const to = this.setTimezone(moment(this.pointValues[this.pointValues.length - 1].timestamp));
-        const numColumns = Math.ceil(to.diff(from, this.groupBy, true));
+        this.xScale = d3.scaleBand()
+            .range([0, graphWidth]);
         
+        this.xAxis = svg.append('g')
+            .attr('transform', `translate(${margins.left}, ${margins.top + graphHeight})`)
+            .attr('class', 'ma-heat-map-x-axis');
+
+        this.yScale = d3.scaleBand()
+            .range([0, graphHeight]);
+
+        this.yAxis = svg.append('g')
+            .attr('transform', `translate(${margins.left}, ${margins.top})`)
+            .attr('class', 'ma-heat-map-y-axis');
+
+        this.updateColorScale();
+        this.updateAxis();
+        this.updateGraph();
+    }
+    
+    updateColorScale() {
+        const d3 = this.d3;
+        this.colorScale = d3.scaleSequential(d3.interpolateSpectral)
+            .domain([this.maxValue, this.minValue])
+            .clamp(true);
+    }
+    
+    updateAxis() {
+        const d3 = this.d3;
+
+        let from, to;
+        if (Array.isArray(this.pointValues) && this.pointValues.length) {
+            from = this.setTimezone(moment(this.pointValues[0].timestamp)).startOf(this.groupBy);
+            to = this.setTimezone(moment(this.pointValues[this.pointValues.length - 1].timestamp));
+        } else {
+            from = to = moment(0);
+        }
+        
+        const numColumns = Math.ceil(to.diff(from, this.groupBy, true));
         const xDomain = Array(numColumns).fill().map((v, i) => {
             const startTime = moment(from).add(i, this.groupBy).startOf(this.groupBy);
             return startTime.format('l');
         });
-
+        
+        this.xScale.domain(xDomain);
+        this.xAxis.call(d3.axisBottom(this.xScale).tickSizeOuter(0));
+        
         const yStart = moment(0).utc().utcOffset(0).startOf(this.groupBy);
         const yEnd = moment(yStart).add(1, this.groupBy);
         const yDomain = Array(this.rows).fill().map((v, i) => {
@@ -93,57 +135,35 @@ class HeatMapController {
             return moment(yStart + ms).utc().utcOffset(0).format('LT');
         });
         
-        const xScale = d3.scaleBand()
-            .domain(xDomain)
-            .range([0, graphWidth]);
+        this.yScale.domain(yDomain);
+        this.yAxis.call(d3.axisLeft(this.yScale).tickSizeOuter(0));
+    }
+    
+    updateGraph() {
+        const pointValues = Array.isArray(this.pointValues) ? this.pointValues : [];
         
-        svg.append('g')
-            .attr('transform', `translate(${margins.left}, ${margins.top + graphHeight})`)
-            .attr('class', 'ma-heat-map-x-axis')
-            .call(d3.axisBottom(xScale).tickSizeOuter(0))
-        .selectAll('text')
-            .style('text-anchor', 'start')
-            .style('transform-origin', '0 1em')
-            .style('transform', 'rotate(45deg)');
-
-        const yScale = d3.scaleBand()
-            .domain(yDomain)
-            .range([0, graphHeight]);
-
-        svg.append('g')
-            .attr('transform', `translate(${margins.left}, ${margins.top})`)
-            .attr('class', 'ma-heat-map-y-axis')
-            .call(d3.axisLeft(yScale).tickSizeOuter(0));
+        const rects = this.graph.selectAll('rect')
+            .data(pointValues, pv => pv.timestamp);
         
-        const colorScale = d3.scaleSequential(d3.interpolateSpectral)
-            .domain([this.maxValue, this.minValue]);
+        rects.exit().remove();
 
-        const xBandWidth = xScale.bandwidth();
-        const yBandWidth = yScale.bandwidth();
-        
-        graph.selectAll()
-            .data(this.pointValues, pv => pv.timestamp)
-            .enter()
-            .append('rect')
+        const newRects = rects.enter()
+            .append('rect');
+
+        const xBandWidth = this.xScale.bandwidth();
+        const yBandWidth = this.yScale.bandwidth();
+
+        // can split this up into updates just for value or just for scale updates
+        rects.merge(newRects)
             .attr('transform', pv => {
                 const time = this.setTimezone(moment(pv.timestamp));
-                const x = xScale(time.format('l'));
-                const y = yScale(time.format('LT'));
+                const x = this.xScale(time.format('l'));
+                const y = this.yScale(time.format('LT'));
                 return `translate(${x}, ${y})`;
             })
             .attr('width', xBandWidth)
             .attr('height', yBandWidth)
-            .style('fill', pv => colorScale(pv.value));
-    }
-    
-    updateGraph() {
-        if (!this.svg) {
-            
-        }
-    }
-    
-    getXDomain() {
-        
+            .style('fill', pv => this.colorScale(pv.value));
     }
 }
 

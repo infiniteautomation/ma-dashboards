@@ -14,3 +14,9 @@ ma-heat-map .ma-heat-map-x-axis > g:nth-of-type(7n + 1) {
 ma-heat-map .ma-heat-map-y-axis > g:nth-of-type(6n + 1) {
 	opacity: 1;
 }
+
+ma-heat-map .ma-heat-map-x-axis > g > text {
+	text-anchor: start;
+	transform-origin: 0 1em;
+	transform: rotate(45deg);
+}
