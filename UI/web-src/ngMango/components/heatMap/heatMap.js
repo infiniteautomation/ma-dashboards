@@ -113,8 +113,7 @@ class HeatMapController {
         const svg = this.svg = d3.select(this.$element[0])
             .append('svg')
             .attr('width', width)
-            .attr('height', height)
-            .attr('shape-rendering', 'crispEdges');
+            .attr('height', height);
 
         const graphWidth = width - (margins.left + margins.right);
         const graphHeight = height - (margins.top + margins.bottom);
@@ -239,10 +238,11 @@ class HeatMapController {
         rects.exit().remove();
 
         const newRects = rects.enter()
-            .append('rect');
+            .append('rect')
+            .attr('shape-rendering', 'crispEdges');
 
-        const xBandWidth = this.xScale.bandwidth();
-        const yBandWidth = this.yScale.bandwidth();
+        const xBandWidth = this.xScale.bandwidth() * 1.03;
+        const yBandWidth = this.yScale.bandwidth() * 1.03;
 
         // can split this up into updates just for value or just for scale updates
         rects.merge(newRects)
