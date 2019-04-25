@@ -109,6 +109,20 @@ class HeatMapController {
             .clamp(true);
     }
     
+    formatX(value) {
+        if (typeof this.axisFormatX === 'function') {
+            return this.axisFormatX({$value: value});
+        }
+        return value.format('l');
+    }
+    
+    formatY(value) {
+        if (typeof this.axisFormatY === 'function') {
+            return this.axisFormatY({$value: value});
+        }
+        return value.format(this.groupBy.startsWith('day') ? 'LT' : 'l LT');
+    }
+    
     updateAxis() {
         const d3 = this.d3;
 
@@ -123,7 +137,7 @@ class HeatMapController {
         const numColumns = Math.ceil(to.diff(from, this.groupBy, true));
         const xDomain = Array(numColumns).fill().map((v, i) => {
             const startTime = moment(from).add(i, this.groupBy).startOf(this.groupBy);
-            return startTime.format('l');
+            return this.formatX(startTime);
         });
         
         this.xScale.domain(xDomain);
@@ -133,7 +147,7 @@ class HeatMapController {
         const yEnd = moment(yStart).add(1, this.groupBy);
         const yDomain = Array(this.rows).fill().map((v, i) => {
             const ms = (yEnd - yStart) / this.rows * i;
-            return moment(yStart + ms).utc().utcOffset(0).format('LT');
+            return this.formatY(moment(yStart + ms).utc().utcOffset(0));
         });
         
         this.yScale.domain(yDomain);
@@ -158,8 +172,8 @@ class HeatMapController {
         rects.merge(newRects)
             .attr('transform', pv => {
                 const time = this.setTimezone(moment(pv.timestamp));
-                const x = this.xScale(time.format('l'));
-                const y = this.yScale(time.format('LT'));
+                const x = this.xScale(this.formatX(time));
+                const y = this.yScale(this.formatY(time));
                 return `translate(${x}, ${y})`;
             })
             .attr('width', xBandWidth)
@@ -181,6 +195,8 @@ export default {
         pointValues: '<',
         minValue: '<?',
         maxValue: '<?',
-        transitionDuration: '<?'
+        transitionDuration: '<?',
+        axisFormatX: '&?',
+        axisFormatY: '&?'
     }
 };
