@@ -272,6 +272,8 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
 
             		if (singlePoint) {
             			$scope.values = values[points[0].xid];
+                        if ($scope.onValuesUpdated)
+                            $scope.onValuesUpdated({$values: $scope.values});
             		} else {
             			combineValues();
             		}
