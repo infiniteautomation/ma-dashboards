@@ -85,7 +85,7 @@ class HeatMapController {
 
     createGraph() {
         const bbox = this.$element[0].getBoundingClientRect();
-        const margins = Object.assign({top: 10, right: 30, bottom: 60, left: 100}, this.margins);
+        const margins = Object.assign({top: 20, right: 20, bottom: 0, left: 60}, this.margins);
         const width = bbox.width;
         const height = bbox.height;
 
@@ -94,7 +94,7 @@ class HeatMapController {
             .append('svg')
             .attr('width', width)
             .attr('height', height)
-            .attr('shape-rendering', 'optimizeSpeed');
+            .attr('shape-rendering', 'crispEdges');
 
         const graphWidth = width - (margins.left + margins.right);
         const graphHeight = height - (margins.top + margins.bottom);
@@ -107,7 +107,7 @@ class HeatMapController {
             .range([0, graphWidth]);
         
         this.xAxis = svg.append('g')
-            .attr('transform', `translate(${margins.left}, ${margins.top + graphHeight})`)
+            .attr('transform', `translate(${margins.left}, ${margins.top})`)
             .attr('class', 'ma-heat-map-x-axis');
 
         this.yScale = d3.scaleBand()
@@ -163,7 +163,7 @@ class HeatMapController {
         });
 
         this.xScale.domain(xDomain);
-        this.xAxis.call(d3.axisBottom(this.xScale).tickSizeOuter(0));
+        this.xAxis.call(d3.axisTop(this.xScale).tickSizeOuter(0));
         
         // setup the Y axis
         
