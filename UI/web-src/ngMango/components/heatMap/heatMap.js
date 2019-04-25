@@ -136,6 +136,34 @@ class HeatMapController {
             .attr('transform', `translate(${margins.left}, ${margins.top})`)
             .attr('class', 'ma-heat-map-y-axis');
 
+        this.tooltip = svg.append('g')
+            .attr('class', 'ma-heat-map-tooltip')
+            .style('opacity', 0)
+            .style('pointer-events', 'none');
+        
+        this.tooltip.append('rect')
+            .attr('fill', 'black')
+            .attr('width', 100)
+            .attr('height', 50)
+            .attr('rx', 5)
+            .attr('ry', 5)
+            .attr('x', 10)
+            .attr('y', 10)
+            .attr('stroke', 'currentColor');
+        
+        const text = this.tooltip.append('text')
+            .attr('fill', 'currentColor')
+            .attr('y', 15);
+
+        text.append('tspan')
+            .attr('class', 'ma-heat-map-tooltip-time')
+            .attr('x', 15)
+            .attr('dy', '1em');
+        text.append('tspan')
+            .attr('class', 'ma-heat-map-tooltip-value')
+            .attr('x', 15)
+            .attr('dy', '1em');
+        
         this.updateColorScale();
         this.updateAxis();
         this.updateGraph();
@@ -230,6 +258,8 @@ class HeatMapController {
     }
     
     updateGraph() {
+        const d3 = this.d3;
+        
         const pointValues = Array.isArray(this.pointValues) ? this.pointValues : [];
         
         const rects = this.graph.selectAll('rect')
@@ -237,9 +267,41 @@ class HeatMapController {
         
         rects.exit().remove();
 
+        const svgElement = this.svg.node();
+
         const newRects = rects.enter()
             .append('rect')
-            .attr('shape-rendering', 'crispEdges');
+            .attr('shape-rendering', 'crispEdges')
+            .on('mouseover', (pv, i, rects) => {
+                d3.select(rects[i])
+                    .attr('stroke', 'currentColor')
+                    .raise();
+
+                const value = pv[this.valueKey];
+                const rendered = this.valueKey !== 'value' ? pv[this.valueKey + '_rendered'] : pv.rendered;
+                const time = this.setTimezone(moment(pv.timestamp));
+                
+                this.tooltip.style('opacity', 1);
+                
+                this.tooltip.select('tspan.ma-heat-map-tooltip-time')
+                    .text(time.format('ll LT'));
+                this.tooltip.select('tspan.ma-heat-map-tooltip-value')
+                    .text(rendered);
+                
+                const dims = this.tooltip.select('text').node().getBoundingClientRect();
+                this.tooltip.select('rect')
+                    .attr('width', dims.width + 10)
+                    .attr('height', dims.height + 10);
+            })
+            .on('mousemove', (pv, i, rects) => {
+                const [x, y] = d3.mouse(svgElement);
+                this.tooltip.style('transform', `translate(${x}px, ${y}px)`);
+            })
+            .on('mouseleave', (pv, i, rects) => {
+                d3.select(rects[i])
+                    .attr('stroke', null);
+                this.tooltip.style('opacity', 0);
+            });
 
         const xBandWidth = this.xScale.bandwidth() * 1.03;
         const yBandWidth = this.yScale.bandwidth() * 1.03;
