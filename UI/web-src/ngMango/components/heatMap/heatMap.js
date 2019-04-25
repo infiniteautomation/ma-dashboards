@@ -26,6 +26,7 @@ class HeatMapController {
         this.maxValue = 100;
         this.groupBy = 'day';
         this.transitionDuration = 1000;
+        this.valueKey = 'value';
     }
     
     $onChanges(changes) {
@@ -33,8 +34,8 @@ class HeatMapController {
         
         if (changes.pointValues && this.autoScale) {
             if (Array.isArray(this.pointValues) && this.pointValues.length) {
-                this.minValue = this.pointValues.reduce((min, v) => v.value < min ? v.value : min, Number.POSITIVE_INFINITY);
-                this.maxValue = this.pointValues.reduce((max, v) => v.value > max ? v.value : max, Number.NEGATIVE_INFINITY);
+                this.minValue = this.pointValues.reduce((min, v) => v[this.valueKey] < min ? v[this.valueKey] : min, Number.POSITIVE_INFINITY);
+                this.maxValue = this.pointValues.reduce((max, v) => v[this.valueKey] > max ? v[this.valueKey] : max, Number.NEGATIVE_INFINITY);
                 minMaxChanged = true;
             }
         }
@@ -126,6 +127,8 @@ class HeatMapController {
     updateAxis() {
         const d3 = this.d3;
 
+        // setup the X axis
+        
         let from, to;
         if (Array.isArray(this.pointValues) && this.pointValues.length) {
             from = this.setTimezone(moment(this.pointValues[0].timestamp)).startOf(this.groupBy);
@@ -143,10 +146,31 @@ class HeatMapController {
         this.xScale.domain(xDomain);
         this.xAxis.call(d3.axisBottom(this.xScale).tickSizeOuter(0));
         
+        // setup the Y axis
+        
         const yStart = moment(0).utc().utcOffset(0).startOf(this.groupBy);
         const yEnd = moment(yStart).add(1, this.groupBy);
-        const yDomain = Array(this.rows).fill().map((v, i) => {
-            const ms = (yEnd - yStart) / this.rows * i;
+        const yDuration = yEnd - yStart;
+
+        let numRows = 48;
+        if (this.rows) {
+            numRows = this.rows;
+        } else if (Array.isArray(this.pointValues) && this.pointValues.$options && this.pointValues.$options.rollupInterval) {
+            // automatically set the number of rows based on the rollup interval used
+            const rollupInterval = this.pointValues.$options.rollupInterval;
+            try {
+                const [interval, units] = rollupInterval.trim().split(/\s+/);
+                const rollupDuration = moment.duration(Number.parseInt(interval, 10), units);
+                numRows = Math.floor(yDuration / rollupDuration);
+            } catch (e) {}
+        } else if (Array.isArray(this.pointValues) && this.pointValues.length > 1) {
+            // automatically set the number of rows based on the time difference between two point values
+            const diff = this.pointValues[1].timestamp - this.pointValues[0].timestamp;
+            numRows = Math.floor(yDuration / diff);
+        }
+        
+        const yDomain = Array(numRows).fill().map((v, i) => {
+            const ms = yDuration / numRows * i;
             return this.formatY(moment(yStart + ms).utc().utcOffset(0));
         });
         
@@ -180,7 +204,7 @@ class HeatMapController {
             .attr('height', yBandWidth)
             .transition()
                 .duration(this.transitionDuration)
-                .style('fill', pv => this.colorScale(pv.value));
+                .style('fill', pv => this.colorScale(pv[this.valueKey]));
     }
 }
 
@@ -197,6 +221,7 @@ export default {
         maxValue: '<?',
         transitionDuration: '<?',
         axisFormatX: '&?',
-        axisFormatY: '&?'
+        axisFormatY: '&?',
+        valueKey: '@?'
     }
 };
