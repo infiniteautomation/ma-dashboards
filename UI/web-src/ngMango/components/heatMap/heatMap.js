@@ -25,6 +25,7 @@ class HeatMapController {
         this.minValue = 0;
         this.maxValue = 100;
         this.groupBy = 'day';
+        this.transitionDuration = 1000;
     }
     
     $onChanges(changes) {
@@ -163,7 +164,9 @@ class HeatMapController {
             })
             .attr('width', xBandWidth)
             .attr('height', yBandWidth)
-            .style('fill', pv => this.colorScale(pv.value));
+            .transition()
+                .duration(this.transitionDuration)
+                .style('fill', pv => this.colorScale(pv.value));
     }
 }
 
@@ -177,6 +180,7 @@ export default {
         autoScale: '<?',
         pointValues: '<',
         minValue: '<?',
-        maxValue: '<?'
+        maxValue: '<?',
+        transitionDuration: '<?'
     }
 };
