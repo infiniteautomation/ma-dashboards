@@ -196,6 +196,8 @@ function pointValuesProvider() {
                                 });
                             }
                         }
+
+                        values.$options = options;
                         
                         return values;
                     }).setCancel(canceler.resolve);
@@ -254,6 +256,7 @@ function pointValuesProvider() {
                                 dataByXid[xid].reverse();
                             }
                         }
+                        
                         return dataByXid;
                     }).setCancel(canceler.resolve);
                 } catch (error) {
@@ -308,6 +311,9 @@ function pointValuesProvider() {
                         if (reverseData) {
                             values.reverse();
                         }
+                        
+                        values.$options = options;
+                        
                         return values;
                     }).setCancel(canceler.resolve);
                 } catch (error) {
