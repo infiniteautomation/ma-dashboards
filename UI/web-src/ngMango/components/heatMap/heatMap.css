@@ -7,11 +7,19 @@ ma-heat-map .ma-heat-map-y-axis > g {
 	opacity: 0;
 }
 
-ma-heat-map .ma-heat-map-x-axis > g:nth-of-type(7n + 1) {
+ma-heat-map.ma-heat-map-daily .ma-heat-map-x-axis > g:nth-of-type(7n + 1) {
 	opacity: 1;
 }
 
-ma-heat-map .ma-heat-map-y-axis > g:nth-of-type(6n + 1) {
+ma-heat-map.ma-heat-map-daily .ma-heat-map-y-axis > g:nth-of-type(6n + 1) {
+	opacity: 1;
+}
+
+ma-heat-map.ma-heat-map-weekly .ma-heat-map-x-axis > g {
+	opacity: 1;
+}
+
+ma-heat-map.ma-heat-map-weekly .ma-heat-map-y-axis > g:nth-of-type(48n + 1) {
 	opacity: 1;
 }
 

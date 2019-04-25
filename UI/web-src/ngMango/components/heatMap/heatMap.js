@@ -25,6 +25,7 @@ class HeatMapController {
         this.minValue = 0;
         this.maxValue = 100;
         this.groupBy = 'day';
+        this.$element[0].classList.add('ma-heat-map-daily');
         this.transitionDuration = 1000;
         this.valueKey = 'value';
     }
@@ -51,6 +52,24 @@ class HeatMapController {
                 this.updateGraph();
             }
         }
+        
+        if (changes.groupBy) {
+            switch (this.groupBy.toLowerCase()) {
+            case 'day':
+            case 'days':
+                this.$element[0].classList.remove('ma-heat-map-weekly');
+                this.$element[0].classList.add('ma-heat-map-daily');
+                break;
+            case 'week':
+            case 'weeks':
+                this.$element[0].classList.remove('ma-heat-map-daily');
+                this.$element[0].classList.add('ma-heat-map-weekly');
+                break;
+            default:
+                this.$element[0].classList.remove('ma-heat-map-daily');
+                this.$element[0].classList.remove('ma-heat-map-weekly');
+            }
+        }
     }
     
     setTimezone(m) {
@@ -66,7 +85,7 @@ class HeatMapController {
 
     createGraph() {
         const bbox = this.$element[0].getBoundingClientRect();
-        const margins = {top: 0, right: 30, bottom: 60, left: 50};
+        const margins = Object.assign({top: 10, right: 30, bottom: 60, left: 100}, this.margins);
         const width = bbox.width;
         const height = bbox.height;
 
@@ -214,7 +233,7 @@ export default {
         timezone: '@?',
         utcOffset: '<?',
         groupBy: '@?',
-        rows: '<',
+        rows: '<?',
         autoScale: '<?',
         pointValues: '<',
         minValue: '<?',
@@ -222,6 +241,7 @@ export default {
         transitionDuration: '<?',
         axisFormatX: '&?',
         axisFormatY: '&?',
-        valueKey: '@?'
+        valueKey: '@?',
+        margins: '<?'
     }
 };
