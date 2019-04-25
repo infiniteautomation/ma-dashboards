@@ -114,14 +114,14 @@ class HeatMapController {
         if (typeof this.axisFormatX === 'function') {
             return this.axisFormatX({$value: value});
         }
-        return value.format('l');
+        return value.format(this.groupBy.startsWith('day') ? 'l' : 'YYYY-w');
     }
     
     formatY(value) {
         if (typeof this.axisFormatY === 'function') {
             return this.axisFormatY({$value: value});
         }
-        return value.format(this.groupBy.startsWith('day') ? 'LT' : 'l LT');
+        return value.format(this.groupBy.startsWith('day') ? 'LT' : 'ddd LT');
     }
     
     updateAxis() {
@@ -136,13 +136,13 @@ class HeatMapController {
         } else {
             from = to = moment(0);
         }
-        
+
         const numColumns = Math.ceil(to.diff(from, this.groupBy, true));
         const xDomain = Array(numColumns).fill().map((v, i) => {
             const startTime = moment(from).add(i, this.groupBy).startOf(this.groupBy);
             return this.formatX(startTime);
         });
-        
+
         this.xScale.domain(xDomain);
         this.xAxis.call(d3.axisBottom(this.xScale).tickSizeOuter(0));
         
