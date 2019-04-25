@@ -31,24 +31,39 @@ class HeatMapController {
     }
     
     $onChanges(changes) {
-        let minMaxChanged = changes.minValue || changes.maxValue;
+        let minMaxChanged = changes.minValueAttr || changes.maxValueAttr || changes.autoScale;
+        if (minMaxChanged) {
+            if (this.autoScale) {
+                if (Array.isArray(this.pointValues) && this.pointValues.length) {
+                    this.autoScaleMinMax();
+                } else {
+                    this.minValue = 0;
+                    this.maxValue = 0;
+                }
+            } else {
+                this.minValue = this.minValueAttr;
+                this.maxValue = this.maxValueAttr;
+            }
+        }
         
-        if (changes.pointValues && this.autoScale) {
+        if (!minMaxChanged && changes.pointValues && this.autoScale) {
             if (Array.isArray(this.pointValues) && this.pointValues.length) {
-                this.minValue = this.pointValues.reduce((min, v) => v[this.valueKey] < min ? v[this.valueKey] : min, Number.POSITIVE_INFINITY);
-                this.maxValue = this.pointValues.reduce((max, v) => v[this.valueKey] > max ? v[this.valueKey] : max, Number.NEGATIVE_INFINITY);
+                this.autoScaleMinMax();
                 minMaxChanged = true;
             }
         }
         
+        const colorsChanged = minMaxChanged || changes.colors;
+        
         // graph already created
         if (this.svg) {
-            if (minMaxChanged) {
+            if (colorsChanged) {
                 this.updateColorScale();
             }
-            
             if (changes.pointValues || changes.groupBy) {
                 this.updateAxis();
+            }
+            if (colorsChanged || changes.pointValues || changes.groupBy) {
                 this.updateGraph();
             }
         }
@@ -70,6 +85,11 @@ class HeatMapController {
                 this.$element[0].classList.remove('ma-heat-map-weekly');
             }
         }
+    }
+    
+    autoScaleMinMax() {
+        this.minValue = this.pointValues.reduce((min, v) => v[this.valueKey] < min ? v[this.valueKey] : min, Number.POSITIVE_INFINITY);
+        this.maxValue = this.pointValues.reduce((max, v) => v[this.valueKey] > max ? v[this.valueKey] : max, Number.NEGATIVE_INFINITY);
     }
     
     setTimezone(m) {
@@ -124,9 +144,22 @@ class HeatMapController {
     
     updateColorScale() {
         const d3 = this.d3;
-        this.colorScale = d3.scaleSequential(d3.interpolateSpectral)
-            .domain([this.maxValue, this.minValue])
-            .clamp(true);
+        
+        if (typeof this.colorScaleExp === 'function') {
+            this.colorScale = this.colorScaleExp({$d3: d3})
+                .domain([this.maxValue, this.minValue]);
+        } else if (Array.isArray(this.colors) && this.colors.length > 1) {
+            const increment = (this.maxValue - this.minValue) / (this.colors.length - 1);
+            const domain = this.colors.map((v, i) => this.minValue + i * increment);
+            this.colorScale = d3.scaleLinear()
+                .domain(domain)
+                .range(this.colors)
+                .clamp(true);
+        } else {
+            this.colorScale = d3.scaleSequential(d3.interpolateSpectral)
+                .domain([this.maxValue, this.minValue])
+                .clamp(true);
+        }
     }
     
     formatX(value) {
@@ -236,12 +269,14 @@ export default {
         rows: '<?',
         autoScale: '<?',
         pointValues: '<',
-        minValue: '<?',
-        maxValue: '<?',
+        minValueAttr: '<?minValue',
+        maxValueAttr: '<?maxValue',
         transitionDuration: '<?',
         axisFormatX: '&?',
         axisFormatY: '&?',
         valueKey: '@?',
-        margins: '<?'
+        margins: '<?',
+        colors: '<?',
+        colorScaleExp: '&?colorScale'
     }
 };
