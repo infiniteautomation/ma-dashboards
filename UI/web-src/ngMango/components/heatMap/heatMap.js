@@ -4,6 +4,7 @@
  */
 
 import moment from 'moment-timezone';
+import heatMapTemplate from './heatMap.html';
 import './heatMap.css';
 
 class HeatMapController {
@@ -18,7 +19,7 @@ class HeatMapController {
         let d3Promise = import(/* webpackMode: "lazy", webpackChunkName: "d3" */ 'd3').then(d3 => {
             $scope.$apply(() => {
                 this.d3 = d3;
-                this.createGraph();
+                this.updateSvg();
             });
         });
 
@@ -86,6 +87,12 @@ class HeatMapController {
             }
         }
     }
+
+    $onDestroy() {
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
+    }
     
     autoScaleMinMax() {
         this.minValue = this.pointValues.reduce((min, v) => v[this.valueKey] < min ? v[this.valueKey] : min, Number.POSITIVE_INFINITY);
@@ -103,7 +110,7 @@ class HeatMapController {
         return m;
     }
 
-    createGraph() {
+    updateSvg() {
         const bbox = this.$element[0].getBoundingClientRect();
         const margins = Object.assign({top: 20, right: 20, bottom: 0, left: 60}, this.margins);
         const width = bbox.width;
@@ -111,62 +118,55 @@ class HeatMapController {
 
         const d3 = this.d3;
         const svg = this.svg = d3.select(this.$element[0])
-            .append('svg')
+            .select('svg')
             .attr('width', width)
             .attr('height', height);
 
         const graphWidth = width - (margins.left + margins.right);
         const graphHeight = height - (margins.top + margins.bottom);
         
-        this.graph = svg.append('g')
-            .attr('class', 'ma-heat-map-graph')
+        this.graph = svg.select('g.ma-heat-map-graph')
             .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
         this.xScale = d3.scaleBand()
             .range([0, graphWidth]);
         
-        this.xAxis = svg.append('g')
-            .attr('transform', `translate(${margins.left}, ${margins.top})`)
-            .attr('class', 'ma-heat-map-x-axis');
+        this.xAxis = svg.select('g.ma-heat-map-x-axis')
+            .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
         this.yScale = d3.scaleBand()
             .range([0, graphHeight]);
 
-        this.yAxis = svg.append('g')
-            .attr('transform', `translate(${margins.left}, ${margins.top})`)
-            .attr('class', 'ma-heat-map-y-axis');
+        this.yAxis = svg.select('g.ma-heat-map-y-axis')
+            .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
-        this.tooltip = svg.append('g')
-            .attr('class', 'ma-heat-map-tooltip')
-            .style('opacity', 0)
-            .style('pointer-events', 'none');
-        
-        this.tooltip.append('rect')
-            .attr('fill', 'black')
-            .attr('width', 100)
-            .attr('height', 50)
-            .attr('rx', 5)
-            .attr('ry', 5)
-            .attr('x', 10)
-            .attr('y', 10)
-            .attr('stroke', 'currentColor');
-        
-        const text = this.tooltip.append('text')
-            .attr('fill', 'currentColor')
-            .attr('y', 15);
+        this.tooltip = svg.select('g.ma-heat-map-tooltip');
 
-        text.append('tspan')
-            .attr('class', 'ma-heat-map-tooltip-time')
-            .attr('x', 15)
-            .attr('dy', '1em');
-        text.append('tspan')
-            .attr('class', 'ma-heat-map-tooltip-value')
-            .attr('x', 15)
-            .attr('dy', '1em');
-        
         this.updateColorScale();
         this.updateAxis();
         this.updateGraph();
+        
+        this.watchForResize();
+    }
+    
+    watchForResize() {
+        // already setup
+        if (this.resizeObserver) return;
+        
+        if (typeof ResizeObserver === 'function') {
+            /* globals ResizeObserver */
+            this.resizeObserver = new ResizeObserver(entries => {
+                if (this.pendingResize) {
+                    clearTimeout(this.pendingResize);
+                }
+                this.pendingResize = setTimeout(() => {
+                    delete this.pendingResize;
+                    this.updateSvg();
+                }, 500);
+            });
+            
+            this.resizeObserver.observe(this.$element[0]);
+        }
     }
     
     updateColorScale() {
@@ -339,6 +339,7 @@ class HeatMapController {
 
 export default {
     controller: HeatMapController,
+    template: heatMapTemplate,
     bindings: {
         timezone: '@?',
         utcOffset: '<?',
