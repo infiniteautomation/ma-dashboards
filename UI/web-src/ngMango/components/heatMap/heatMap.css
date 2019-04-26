@@ -1,6 +1,7 @@
 ma-heat-map {
 	display: block;
 	position: relative;
+	overflow: hidden;
 }
 
 ma-heat-map .ma-heat-map-x-axis > g,

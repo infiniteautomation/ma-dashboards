@@ -101,6 +101,9 @@ class HeatMapController {
         if (this.resizeObserver) {
             this.resizeObserver.disconnect();
         }
+        if (this.resizeInterval) {
+            clearInterval(this.resizeInterval);
+        }
     }
     
     updateTooltip() {
@@ -142,11 +145,17 @@ class HeatMapController {
         return m;
     }
 
-    updateSvg() {
-        const bbox = this.$element[0].getBoundingClientRect();
+    updateSvg(width, height) {
+        if (width == null || height == null) {
+            const bbox = this.$element[0].getBoundingClientRect();
+            width = bbox.width;
+            height = bbox.height;
+        }
+        
+        this.width = width;
+        this.height = height;
+        
         const margins = Object.assign({top: 20, right: 20, bottom: 0, left: 60}, this.margins);
-        const width = bbox.width;
-        const height = bbox.height;
 
         const d3 = this.d3;
         const svg = this.svg = d3.select(this.$element[0])
@@ -181,21 +190,30 @@ class HeatMapController {
     
     watchForResize() {
         // already setup
-        if (this.resizeObserver) return;
-        
+        if (this.resizeObserver || this.resizeInterval) return;
+
+        /* globals ResizeObserver */
         if (typeof ResizeObserver === 'function') {
-            /* globals ResizeObserver */
             this.resizeObserver = new ResizeObserver(entries => {
+                console.log(entries);
                 if (this.pendingResize) {
                     clearTimeout(this.pendingResize);
                 }
                 this.pendingResize = setTimeout(() => {
                     delete this.pendingResize;
-                    this.updateSvg();
+                    const contentRect = entries[0].contentRect;
+                    this.updateSvg(contentRect.width, contentRect.height);
                 }, 500);
             });
             
             this.resizeObserver.observe(this.$element[0]);
+        } else {
+            this.resizeInterval = setInterval(() => {
+                const bbox = this.$element[0].getBoundingClientRect();
+                if (bbox.width !== this.width || bbox.height !== this.height) {
+                    this.updateSvg(bbox.width, bbox.height);
+                }
+            }, 1000);
         }
     }
     
