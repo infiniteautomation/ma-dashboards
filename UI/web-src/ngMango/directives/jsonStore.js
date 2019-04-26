@@ -63,7 +63,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             	    if (invalidPath) return;
             	}
 
-            	const storeItem = new JsonStore({xid: newXid, dataPath: newPath});
+            	const storeItem = new JsonStore({xid: newXid, name: newXid, dataPath: newPath});
             	storeItem.$get().then(null, function(response) {
             	    if (response.status === 404) {
             	        storeItem.jsonData = $scope.value || {};
