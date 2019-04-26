@@ -268,12 +268,19 @@ class HeatMapController {
         rects.exit().remove();
 
         const svgElement = this.svg.node();
+        
+        const elementPositions = new WeakMap();
 
         const newRects = rects.enter()
             .append('rect')
             .attr('shape-rendering', 'crispEdges')
             .on('mouseover', (pv, i, rects) => {
-                d3.select(rects[i])
+                const rectElement = rects[i];
+                if (rectElement.nextSibling) {
+                    elementPositions.set(rectElement, rectElement.nextSibling);
+                }
+                
+                d3.select(rectElement)
                     .attr('stroke', 'currentColor')
                     .raise();
 
@@ -298,7 +305,15 @@ class HeatMapController {
                 this.tooltip.style('transform', `translate(${x}px, ${y}px)`);
             })
             .on('mouseleave', (pv, i, rects) => {
-                d3.select(rects[i])
+                const rectElement = rects[i];
+                
+                // move the element back to its previous location
+                const prevPosition = elementPositions.get(rectElement);
+                if (prevPosition) {
+                    rectElement.parentNode.insertBefore(rectElement, prevPosition);
+                }
+                
+                d3.select(rectElement)
                     .attr('stroke', null);
                 this.tooltip.style('opacity', 0);
             });
