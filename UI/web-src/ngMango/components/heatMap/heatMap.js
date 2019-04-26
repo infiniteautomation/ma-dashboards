@@ -32,7 +32,7 @@ class HeatMapController {
         this.$element[0].classList.add('ma-heat-map-daily');
         this.transitionDuration = 1000;
         this.valueKey = 'value';
-        this.showTooltip = true;
+        this.showTooltipAttr = true;
     }
     
     $onChanges(changes) {
@@ -107,7 +107,7 @@ class HeatMapController {
     }
     
     updateTooltip() {
-        if (this.showTooltip && !this.tooltipElement) {
+        if (this.showTooltipAttr && !this.tooltipElement) {
             const linkFn = ($element, $scope) => {
                 $element.css('visibility', 'hidden');
                 $element.addClass('ma-heat-map-tooltip');
@@ -121,11 +121,15 @@ class HeatMapController {
             } else {
                 this.$compile(heatMapTooltip)(this.$scope.$new(), linkFn);
             }
-        } else if (!this.showTooltip && this.tooltipElement) {
+        } else if (!this.showTooltipAttr && this.tooltipElement) {
             this.tooltipElement.remove();
             this.tooltipScope.$destroy();
             delete this.tooltipElement;
             delete this.tooltipScope;
+        }
+        
+        if (this.tooltipElement && this.showTooltipAttr === 'static') {
+            this.tooltipElement.css('transform', '');
         }
     }
     
@@ -195,7 +199,6 @@ class HeatMapController {
         /* globals ResizeObserver */
         if (typeof ResizeObserver === 'function') {
             this.resizeObserver = new ResizeObserver(entries => {
-                console.log(entries);
                 if (this.pendingResize) {
                     clearTimeout(this.pendingResize);
                 }
@@ -320,7 +323,7 @@ class HeatMapController {
         const newRects = rects.enter()
             .append('rect')
             .attr('shape-rendering', 'crispEdges')
-            .on('mouseover', (pv, i, rects) => {
+            .on('mouseover', (pointValue, i, rects) => {
                 const rectElement = rects[i];
                 if (rectElement.nextSibling) {
                     elementPositions.set(rectElement, rectElement.nextSibling);
@@ -330,30 +333,12 @@ class HeatMapController {
                     .attr('stroke', 'currentColor')
                     .raise();
 
-                if (this.tooltipElement) {
-                    const value = pv[this.valueKey];
-                    const rendered = this.valueKey !== 'value' ? pv[this.valueKey + '_rendered'] : pv.rendered;
-                    const time = this.setTimezone(moment(pv.timestamp));
-                    
-                    this.tooltipScope.$applyAsync(() => {
-                        Object.assign(this.tooltipScope, {
-                            $pointValue: pv,
-                            $value: value,
-                            $rendered: rendered,
-                            $time: time
-                        });
-                    });
-                    
-                    this.tooltipElement.css('visibility', 'visible');
-                }
+                this.showTooltip(pointValue, rects[i]);
             })
-            .on('mousemove', (pv, i, rects) => {
-                if (this.tooltipElement) {
-                    const [x, y] = d3.mouse(this.$element[0]);
-                    this.tooltipElement.css('transform', `translate(${x}px, ${y}px)`);
-                }
+            .on('mousemove', (pointValue, i, rects) => {
+                this.moveTooltip(pointValue, rects[i]);
             })
-            .on('mouseleave', (pv, i, rects) => {
+            .on('mouseleave', (pointValue, i, rects) => {
                 const rectElement = rects[i];
                 
                 // move the element back to its previous location
@@ -364,12 +349,11 @@ class HeatMapController {
                 
                 d3.select(rectElement)
                     .attr('stroke', null);
-                
-                if (this.tooltipElement) {
-                    this.tooltipElement.css('visibility', 'hidden');
-                }
+
+                this.hideTooltip(pointValue, rects[i]);
             });
 
+        // increase the size a little for a bit of overlap, stops black banding
         const xBandWidth = this.xScale.bandwidth() * 1.03;
         const yBandWidth = this.yScale.bandwidth() * 1.03;
 
@@ -386,6 +370,59 @@ class HeatMapController {
             .transition()
                 .duration(this.transitionDuration)
                 .style('fill', pv => this.colorScale(pv[this.valueKey]));
+    }
+    
+    showTooltip(pointValue, rect) {
+        if (!this.tooltipElement) return;
+
+        const value = pointValue[this.valueKey];
+        const rendered = this.valueKey !== 'value' ? pointValue[this.valueKey + '_rendered'] : pointValue.rendered;
+        const time = this.setTimezone(moment(pointValue.timestamp));
+        
+        this.tooltipScope.$applyAsync(() => {
+            Object.assign(this.tooltipScope, {
+                $pointValue: pointValue,
+                $value: value,
+                $rendered: rendered,
+                $time: time
+            });
+        });
+
+        this.moveTooltip(pointValue, rect);
+        this.tooltipElement.css('visibility', 'visible');
+    }
+    
+    hideTooltip(pointValue, rect) {
+        if (!this.tooltipElement) return;
+        
+        this.tooltipElement.css('visibility', 'hidden');
+    }
+    
+    moveTooltip(pointValue, rect) {
+        if (!this.tooltipElement || this.showTooltipAttr === 'static') return;
+        
+        let [containerX, containerY] = this.d3.mouse(this.$element[0]);
+        let [rectX, rectY] = this.d3.mouse(rect);
+        let x = containerX - rectX;
+        let y = containerY - rectY;
+        const additionalOffset = 5;
+        
+        const tooltipBox = this.tooltipElement[0].getBoundingClientRect();
+        const rectBox = rect.getBoundingClientRect();
+
+        if (x < this.width / 2) {
+            x += rectBox.width + additionalOffset;
+        } else {
+            x -= tooltipBox.width + additionalOffset;
+        }
+
+        if (y < this.height / 2) {
+            y += rectBox.height + additionalOffset;
+        } else {
+            y -= tooltipBox.height + additionalOffset;
+        }
+        
+        this.tooltipElement.css('transform', `translate(${x}px, ${y}px)`);
     }
 }
 
@@ -411,6 +448,6 @@ export default {
         margins: '<?',
         colors: '<?',
         colorScaleExp: '&?colorScale',
-        showTooltip: '<?'
+        showTooltipAttr: '<?showTooltip'
     }
 };
