@@ -5,15 +5,18 @@
 
 import moment from 'moment-timezone';
 import heatMapTemplate from './heatMap.html';
+import heatMapTooltip from './heatMapTooltip.html';
 import './heatMap.css';
 
 class HeatMapController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element']; }
+    static get $inject() { return ['$scope', '$element', '$transclude', '$compile']; }
     
-    constructor($scope, $element) {
+    constructor($scope, $element, $transclude, $compile) {
         this.$scope = $scope;
         this.$element = $element;
+        this.$transclude = $transclude;
+        this.$compile = $compile;
         
         // jshint unused:false
         let d3Promise = import(/* webpackMode: "lazy", webpackChunkName: "d3" */ 'd3').then(d3 => {
@@ -29,6 +32,7 @@ class HeatMapController {
         this.$element[0].classList.add('ma-heat-map-daily');
         this.transitionDuration = 1000;
         this.valueKey = 'value';
+        this.showTooltip = true;
     }
     
     $onChanges(changes) {
@@ -55,6 +59,8 @@ class HeatMapController {
         }
         
         const colorsChanged = minMaxChanged || changes.colors;
+        
+        this.updateTooltip();
         
         // graph already created
         if (this.svg) {
@@ -87,10 +93,36 @@ class HeatMapController {
             }
         }
     }
+    
+    $onInit() {
+    }
 
     $onDestroy() {
         if (this.resizeObserver) {
             this.resizeObserver.disconnect();
+        }
+    }
+    
+    updateTooltip() {
+        if (this.showTooltip && !this.tooltipElement) {
+            const linkFn = ($element, $scope) => {
+                $element.css('visibility', 'hidden');
+                $element.addClass('ma-heat-map-tooltip');
+                this.$element.append($element);
+                this.tooltipElement = $element;
+                this.tooltipScope = $scope;
+            };
+            
+            if (this.$transclude.isSlotFilled('tooltipSlot')) {
+                this.$transclude(linkFn, this.$element, 'tooltipSlot');
+            } else {
+                this.$compile(heatMapTooltip)(this.$scope.$new(), linkFn);
+            }
+        } else if (!this.showTooltip && this.tooltipElement) {
+            this.tooltipElement.remove();
+            this.tooltipScope.$destroy();
+            delete this.tooltipElement;
+            delete this.tooltipScope;
         }
     }
     
@@ -139,8 +171,6 @@ class HeatMapController {
 
         this.yAxis = svg.select('g.ma-heat-map-y-axis')
             .attr('transform', `translate(${margins.left}, ${margins.top})`);
-
-        this.tooltip = svg.select('g.ma-heat-map-tooltip');
 
         this.updateColorScale();
         this.updateAxis();
@@ -267,8 +297,6 @@ class HeatMapController {
         
         rects.exit().remove();
 
-        const svgElement = this.svg.node();
-        
         const elementPositions = new WeakMap();
 
         const newRects = rects.enter()
@@ -284,25 +312,28 @@ class HeatMapController {
                     .attr('stroke', 'currentColor')
                     .raise();
 
-                const value = pv[this.valueKey];
-                const rendered = this.valueKey !== 'value' ? pv[this.valueKey + '_rendered'] : pv.rendered;
-                const time = this.setTimezone(moment(pv.timestamp));
-                
-                this.tooltip.style('opacity', 1);
-                
-                this.tooltip.select('tspan.ma-heat-map-tooltip-time')
-                    .text(time.format('ll LT'));
-                this.tooltip.select('tspan.ma-heat-map-tooltip-value')
-                    .text(rendered);
-                
-                const dims = this.tooltip.select('text').node().getBoundingClientRect();
-                this.tooltip.select('rect')
-                    .attr('width', dims.width + 10)
-                    .attr('height', dims.height + 10);
+                if (this.tooltipElement) {
+                    const value = pv[this.valueKey];
+                    const rendered = this.valueKey !== 'value' ? pv[this.valueKey + '_rendered'] : pv.rendered;
+                    const time = this.setTimezone(moment(pv.timestamp));
+                    
+                    this.tooltipScope.$applyAsync(() => {
+                        Object.assign(this.tooltipScope, {
+                            $pointValue: pv,
+                            $value: value,
+                            $rendered: rendered,
+                            $time: time
+                        });
+                    });
+                    
+                    this.tooltipElement.css('visibility', 'visible');
+                }
             })
             .on('mousemove', (pv, i, rects) => {
-                const [x, y] = d3.mouse(svgElement);
-                this.tooltip.style('transform', `translate(${x}px, ${y}px)`);
+                if (this.tooltipElement) {
+                    const [x, y] = d3.mouse(this.$element[0]);
+                    this.tooltipElement.css('transform', `translate(${x}px, ${y}px)`);
+                }
             })
             .on('mouseleave', (pv, i, rects) => {
                 const rectElement = rects[i];
@@ -315,7 +346,10 @@ class HeatMapController {
                 
                 d3.select(rectElement)
                     .attr('stroke', null);
-                this.tooltip.style('opacity', 0);
+                
+                if (this.tooltipElement) {
+                    this.tooltipElement.css('visibility', 'hidden');
+                }
             });
 
         const xBandWidth = this.xScale.bandwidth() * 1.03;
@@ -340,6 +374,9 @@ class HeatMapController {
 export default {
     controller: HeatMapController,
     template: heatMapTemplate,
+    transclude: {
+        tooltipSlot: '?maHeatMapTooltip'
+    },
     bindings: {
         timezone: '@?',
         utcOffset: '<?',
@@ -355,6 +392,7 @@ export default {
         valueKey: '@?',
         margins: '<?',
         colors: '<?',
-        colorScaleExp: '&?colorScale'
+        colorScaleExp: '&?colorScale',
+        showTooltip: '<?'
     }
 };

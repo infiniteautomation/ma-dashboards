@@ -1,5 +1,6 @@
 ma-heat-map {
 	display: block;
+	position: relative;
 }
 
 ma-heat-map .ma-heat-map-x-axis > g,
@@ -21,4 +22,17 @@ ma-heat-map.ma-heat-map-weekly .ma-heat-map-x-axis > g {
 
 ma-heat-map.ma-heat-map-weekly .ma-heat-map-y-axis > g:nth-of-type(48n + 1) {
 	opacity: 1;
+}
+
+ma-heat-map > .ma-heat-map-tooltip {
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+ma-heat-map > .ma-heat-map-tooltip-builtin {
+	padding: 8px;
+	border: 1px solid currentColor;
+	border-radius: 8px;
 }
