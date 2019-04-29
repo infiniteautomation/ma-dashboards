@@ -190,7 +190,7 @@ function pointValuesProvider() {
                             if (!lastToast || (now - lastToast) > 10000) {
                                 lastToast = now;
                                 maDialogHelper.toastOptions({
-                                    textTr: ['ui.app.pointValuesLimited', [data.limit || pointValuesLimit]],
+                                    textTr: ['ui.app.pointValuesLimited', (data.limit || pointValuesLimit)],
                                     hideDelay: 10000,
                                     classes: 'md-warn'
                                 });
