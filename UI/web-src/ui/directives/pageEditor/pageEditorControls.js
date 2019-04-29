@@ -20,11 +20,11 @@ class PageEditorControlsController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', 'maUiPages', 'maJsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
         'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION',
-        '$templateRequest', '$document', 'maDialogHelper', 'maRevisionHistoryDialog']; }
+        '$templateRequest', 'maDialogHelper', 'maRevisionHistoryDialog']; }
     
     constructor($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
             localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION,
-            $templateRequest, $document, maDialogHelper, maRevisionHistoryDialog) {
+            $templateRequest, maDialogHelper, maRevisionHistoryDialog) {
         this.$scope = $scope;
         this.maUiPages = maUiPages;
         this.jsonStoreEventManager = jsonStoreEventManager;
@@ -41,7 +41,7 @@ class PageEditorControlsController {
         this.$q = $q;
         this.MA_UI_EDIT_MENUS_PERMISSION = MA_UI_EDIT_MENUS_PERMISSION; // used in template
         this.$templateRequest = $templateRequest;
-        this.$document = $document;
+        this.$window = $window;
         this.maDialogHelper = maDialogHelper;
         this.maRevisionHistoryDialog = maRevisionHistoryDialog;
         
@@ -51,7 +51,6 @@ class PageEditorControlsController {
     $onInit() {
         const Translate = this.Translate;
         const $window = this.$window;
-        const $document = this.$document;
         
         this.jsonStoreEventManager.smartSubscribe(this.$scope, this.MA_UI_PAGES_XID, ['add', 'update'], (event, payload) => {
             this.pageSummaryStore.jsonData = payload.object.jsonData;
@@ -78,11 +77,11 @@ class PageEditorControlsController {
         };
     
         const keyDownHandler = this.keyDownHandler.bind(this);
-        $document.on('keydown', keyDownHandler);
-    
+        angular.element($window).on('keydown', keyDownHandler);
+
         this.$scope.$on('$destroy', function() {
             $window.onbeforeunload = oldUnload;
-            $document.off('keydown', keyDownHandler);
+            angular.element($window).off('keydown', keyDownHandler);
         });
 
         this.maUiPages.getPages().then(pageSummaryStore => {
