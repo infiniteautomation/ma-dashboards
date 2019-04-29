@@ -533,15 +533,20 @@ class FileStoreBrowserController {
     }
     
     saveEditFile(event) {
-        if (this.editHash === sha512.sha512(this.editText)) {
+        const currentHash = sha512.sha512(this.editText);
+        if (this.editHash === currentHash) {
             this.maDialogHelper.toast(['ui.fileBrowser.fileNotChanged', this.editFile.filename]);
             return this.$q.resolve();
         }
         
     	const files = [this.editFile.createFile(this.editText)];
     	return this.maFileStore.uploadFiles(this.path, files, true).then(uploaded => {
-    		const index = this.files.indexOf(this.editFile);
-    		this.files.splice(index, 1, uploaded[0]);
+            const index = this.files.indexOf(this.editFile);
+            
+    	    this.editHash = currentHash;
+    	    this.editFile = uploaded[0];
+    	    
+    		this.files.splice(index, 1, this.editFile);
             this.filterAndReorderFiles();
     		
     		this.maDialogHelper.toast(['ui.fileBrowser.savedSuccessfully', this.editFile.filename]);
