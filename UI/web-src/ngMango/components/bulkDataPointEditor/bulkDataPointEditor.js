@@ -151,6 +151,8 @@ class BulkDataPointEditorController {
         this.sortedPoints = [];
         this.slicedPoints = [];
         this.selectedPoints = new Map();
+        this.checkboxEvents = new Map();
+        this.prevPoint = null;
         
         if (typeof this.selectedPointsAttr === 'function') {
             this.selectedPointsAttr({$selected: this.selectedPoints});
@@ -282,6 +284,8 @@ class BulkDataPointEditorController {
     slicePoints() {
         const start = (this.pageNumber - 1) * this.numberOfRows;
         this.slicedPoints = this.sortedPoints.slice(start, start + this.numberOfRows);
+        this.checkboxEvents.clear();
+        this.prevPoint = null;
     }
 
     addTagToAvailable(tagKey) {
@@ -418,10 +422,6 @@ class BulkDataPointEditorController {
             this.selectTag(option);
         });
         this.prevSelectedTags = this.selectedTags.slice();
-    }
-
-    pointSelectedChanged(point) {
-        this.updateSelectAllStatus();
     }
 
     updateSelectAllStatus() {
@@ -714,12 +714,35 @@ class BulkDataPointEditorController {
                 return this.selectedPoints.has(point.id);
             }
             
-            if (val) {
-                this.selectedPoints.set(point.id, point);
+            const event = this.checkboxEvents.get(point);
+            const pointIndex = this.slicedPoints.indexOf(point);
+            const prevPointIndex = this.slicedPoints.indexOf(this.prevPoint);
+            
+            if (event && event.shiftKey && pointIndex >= 0 && prevPointIndex >= 0 && pointIndex !== prevPointIndex) {
+                const minIndex = Math.min(pointIndex, prevPointIndex);
+                const maxIndex = Math.max(pointIndex, prevPointIndex);
+                this.slicedPoints.slice(minIndex, maxIndex + 1).forEach(pt => {
+                    if (val) {
+                        this.selectedPoints.set(pt.id, pt);
+                    } else {
+                        this.selectedPoints.delete(pt.id);
+                    }
+                });
             } else {
-                this.selectedPoints.delete(point.id);
+                this.prevPoint = point;
+                if (val) {
+                    this.selectedPoints.set(point.id, point);
+                } else {
+                    this.selectedPoints.delete(point.id);
+                }
             }
+            
+            this.updateSelectAllStatus();
         };
+    }
+    
+    checkBoxClicked(point, event) {
+        this.checkboxEvents.set(point, event);
     }
 
     getCellValue(point, property) {

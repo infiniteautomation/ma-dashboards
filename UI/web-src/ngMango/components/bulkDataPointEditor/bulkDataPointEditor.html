@@ -122,7 +122,8 @@
             <tbody md-body>
                 <tr md-row ng-repeat="point in $ctrl.slicedPoints track by point.xid" ng-init="pointSelected = $ctrl.pointSelected(point)">
                     <td md-cell class="ma-checkbox-column">
-                        <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="pointSelected" ng-model-options="{getterSetter: true}" ng-change="$ctrl.pointSelectedChanged(point)"
+                        <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="pointSelected" ng-model-options="{getterSetter: true}"
+                            ng-click="$ctrl.checkBoxClicked(point, $event)"
                             ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                         </md-checkbox>
                     </td>
