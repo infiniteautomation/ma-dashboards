@@ -50,7 +50,7 @@
 <div flex layout="row" layout-xs="column" layout-sm="column" ng-if="!$ctrl.editFile"
         ma-dropzone ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)"
         ng-class="{'ma-drag-over': dragOver}"
-        ng-keydown="$ctrl.keyDown($event)">
+        ng-keydown="$ctrl.selectionKeyDown($event)">
 	<md-content flex class="ma-file-store-browser-files">
 		<md-table-container>
 		  <table md-table md-row-select="false">

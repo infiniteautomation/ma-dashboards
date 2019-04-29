@@ -12,14 +12,15 @@ const localStorageKey = 'fileStoreBrowser';
 class FileStoreBrowserController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector', 'localStorageService']; }
-    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService) {
+    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector', 'localStorageService', '$scope']; }
+    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService, $scope) {
         this.maFileStore = maFileStore;
         this.$element = $element;
         this.maDialogHelper = maDialogHelper;
         this.$q = $q;
         this.$filter = $filter;
         this.localStorageService = localStorageService;
+        this.$scope = $scope;
         
         if ($injector.has('$state')) {
             this.$state = $injector.get('$state');
@@ -30,6 +31,8 @@ class FileStoreBrowserController {
         this.filterAndReorderFilesBound = (...args) => {
             return this.filterAndReorderFiles(...args);
         };
+        
+        $element.on('keydown', event => this.keyDownHandler(event));
     }
 
     $onInit() {
@@ -38,7 +41,7 @@ class FileStoreBrowserController {
             return this.render(...args);
         };
     }
-    
+
     $onChanges(changes) {
     	if (changes.mimeTypes) {
     		const mimeTypeMap = this.mimeTypeMap = {};
@@ -620,7 +623,7 @@ class FileStoreBrowserController {
     	});
     }
     
-    keyDown(event) {
+    selectionKeyDown(event) {
         if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey || ![38, 40].includes(event.keyCode)) return;
         if (this.selectedFiles.length > 1) return;
 
@@ -643,6 +646,16 @@ class FileStoreBrowserController {
             this.previewFile = newSelectedFile;
             this.setSelection([newSelectedFile]);
             this.setViewValueToSelection();
+        }
+    }
+    
+    keyDownHandler(event) {
+        // ctrl-s
+        if (this.editFile && (event.ctrlKey || event.metaKey) && event.which === 83) {
+            event.preventDefault();
+            this.$scope.$apply(() => {
+                this.saveEditFile(event);
+            });
         }
     }
 }
