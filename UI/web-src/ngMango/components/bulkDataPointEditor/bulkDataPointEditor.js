@@ -109,6 +109,7 @@ class BulkDataPointEditorController {
                 
                 if (changeMade) {
                     this.$scope.$apply(() => {
+                        this.checkAvailableTags();
                         this.filterPoints();
                     });
                 }
