@@ -76,7 +76,10 @@ Eg: `update-interval="10 minutes"`
        update-interval="5 seconds"></ma-date-range-picker>
   </md-input-container>
  */
-function dateRangePicker($injector) {
+
+dateRangePicker.$inject = ['$injector', 'MA_DATE_RANGE_PRESETS'];
+function dateRangePicker($injector, MA_DATE_RANGE_PRESETS) {
+
     return {
         restrict: 'E',
         controllerAs: '$ctrl',
@@ -98,31 +101,25 @@ function dateRangePicker($injector) {
             category: 'timeAndDate',
             attributes: {
                 preset: {
-                    options: [
-                        'LAST_5_MINUTES','LAST_15_MINUTES','LAST_30_MINUTES',
-                        'LAST_1_HOURS','LAST_3_HOURS','LAST_6_HOURS','LAST_12_HOURS',
-                        'LAST_1_DAYS',
-                        'LAST_1_WEEKS','LAST_2_WEEKS',
-                        'LAST_1_MONTHS','LAST_3_MONTHS','LAST_6_MONTHS',
-                        'LAST_1_YEARS','LAST_2_YEARS',
-                        'DAY_SO_FAR','WEEK_SO_FAR','MONTH_SO_FAR','YEAR_SO_FAR',
-                        'PREVIOUS_DAY','PREVIOUS_WEEK','PREVIOUS_MONTH','PREVIOUS_YEAR'
-                    ]
+                    options: MA_DATE_RANGE_PRESETS.map(preset => preset.type)
                 }
             }
         },
         template: function(element, attrs) {
             if ($injector.has('$mdUtil')) {
-                return '<md-select ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)" ' +
-                    'ma-tr="ui.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">' +
-                '<md-option ng-value="p.type" ng-repeat="p in $ctrl.presets track by p.type">{{p.label}}</md-option>' +
-                '</md-select>';
+                return `<md-select ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)"
+                        ma-tr="ui.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">
+                    <md-option ng-value="p.type" ng-repeat="p in $ctrl.presets track by p.type">
+                        <span ma-tr="{{p.translation}}" ma-tr-args="p.translationArgs"></span>
+                    </md-option>
+                </md-select>`;
             }
 
-            return '<select ng-options="p.type as p.label for p in $ctrl.presets" ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)"></select>';
+            return `<select ng-options="p.type as $ctrl.formatLabel(p) for p in $ctrl.presets"
+                ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)"></select>`;
         },
-        controller: ['$attrs', '$parse', '$scope', '$interval', 'maUtil', 'MA_DATE_RANGE_PRESETS', 'MA_DATE_FORMATS',
-                     function($attrs, $parse, $scope, $interval, Util, MA_DATE_RANGE_PRESETS, mangoDateFormats) {
+        controller: ['$attrs', '$parse', '$scope', '$interval', 'maUtil', 'MA_DATE_FORMATS', 'maTranslate',
+                     function($attrs, $parse, $scope, $interval, Util, mangoDateFormats, Translate) {
             
         	const fromExpression = $parse($attrs.from);
         	const toExpression = $parse($attrs.to);
@@ -251,12 +248,12 @@ function dateRangePicker($injector) {
 
                 this.timerPromise = $interval(this.doUpdate, millis);
             };
+            
+            this.formatLabel = function (preset) {
+                return Translate.trSync(preset.translation, preset.translationArgs);
+            };
         }]
     };
 }
 
-dateRangePicker.$inject = ['$injector'];
-
 export default dateRangePicker;
-
-
