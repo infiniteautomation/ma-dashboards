@@ -120,7 +120,7 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
         }
         
         valueChangeHandler(isPointChange) {
-            if (!this.point || this.point.enabled) {
+            if (!this.point || this.point.running) {
                 this.$element.removeClass('ma-point-disabled');
             } else {
                 this.$element.addClass('ma-point-disabled');

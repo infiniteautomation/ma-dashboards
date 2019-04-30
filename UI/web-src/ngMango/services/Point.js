@@ -529,7 +529,9 @@ function dataPointProvider() {
                 if (this.lastPayload === payload) return;
                 this.lastPayload = payload;
                 
-                this.enabled = !!payload.enabled;
+                this.enabled = !!payload.pointEnabled;
+                this.running = !!payload.enabled;
+
                 if (payload.value != null) {
                     const rendered = this.getTextRenderer().render(payload.value.value);
 
