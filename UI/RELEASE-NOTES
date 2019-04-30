@@ -1,5 +1,6 @@
 *Version 3.6.0*
 * Upgraded to work with core version 3.6.x
+* Added Spanish translation file
 * Add 'Data sources' page for creating/updating/deleting data sources and data points. Note: not all data source types supported yet.
 * Update 'Bulk data point edit' page to use same data point editor dialog as "Data sources" page
 * Add 'Event handlers' page for creating/updating/deleting event handlers
@@ -32,6 +33,7 @@
 * Add ma-virtual-serial-port-list component for displaying a list of virtual serial ports
 * Add ma-virtual-serial-port-select component for displaying a drop down of virtual serial ports
 * Add ma-dialog component for easily creating pop-up dialogs from the markup
+* Add ma-heat-map component for displaying a heat map chart for points values
 * Remove constants from ngMango module - MA_INSERT_CSS, MA_ROLLUP_TYPES, MA_DATE_TIME_FORMATS, MA_TIME_PERIOD_TYPES, MA_CHART_TYPES, MA_EVENT_LINK_INFO, and MA_RELATIVE_DATE_TYPES
 * Remove constant from ngMangoServices module - MA_EVENT_HANDLER_TYPES
 * Add constants to ngMangoServices module - MA_DATE_TIME_FORMATS, MA_TIME_PERIOD_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, and MA_EVENT_LINK_INFO
