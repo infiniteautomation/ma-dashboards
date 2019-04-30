@@ -168,7 +168,8 @@ function dataSourceScrollList($injector) {
             onQuery: '&?',
             showNew: '<?',
             filter: '<?',
-            showEnableSwitch: '<?'
+            showEnableSwitch: '<?',
+            disableSwitchOnSelect: '<?'
         },
         template: function() {
             if ($injector.has('$mdUtil')) {
