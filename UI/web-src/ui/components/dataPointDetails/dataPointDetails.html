@@ -57,7 +57,9 @@
                         </div>
                         
                         <label flex="35"><span ma-tr="ui.app.dataSource"></span>:</label>
-                        <div flex="65" ng-bind="$ctrl.dataPoint.dataSourceName"></div>
+                        <div flex="65">
+                            <a ng-bind="$ctrl.dataPoint.dataSourceName" ui-state="'ui.settings.dataSources'" ui-state-params="{xid: $ctrl.dataPoint.dataSourceXid}"></a>
+                        </div>
                         
                         <label flex="35" ng-if="$ctrl.hasEditPermission()"><span ma-tr="pointEdit.detectors.eventDetectors"></span>:</label>
                         <div flex="65" ng-if="$ctrl.hasEditPermission()"><a ng-if="$ctrl.eventDetectors != null"
