@@ -71,6 +71,8 @@ class scriptingEditorController {
         if (this.scriptErrors && this.scriptErrors.length > 0) {
             let annotations = [];
 
+            console.log(this.scriptErrors);
+
             this.scriptErrors.forEach(error => {
                 annotations.push({
                     row: error.lineNumber - 1,
@@ -157,7 +159,15 @@ class scriptingEditorController {
                 });
             }
         }, error => {
-            this.scriptErrors = error.data.result.messages;
+            if(error.data.result) {
+                this.scriptErrors = error.data.result.messages;
+            } else {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['scriptingEditor.ui.scriptValidationError', error.data.localizedMessage],
+                    hideDelay: 5000,
+                    classes: 'md-warn'
+                });
+            }
         });
     }
 
