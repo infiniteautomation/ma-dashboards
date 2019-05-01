@@ -29,21 +29,33 @@ Promise.resolve().then(() => {
         const customSettings = preLoginData.uiSettings && preLoginData.uiSettings.jsonData;
         return angular.merge(uiSettings, customSettings);
     });
-    
+
+//    const bundlePromise = new Promise((resolve, reject) => {
+//        requirejs(['/rest/v1/modules/angularjs-modules/bundle'], result => {
+//            resolve(result);
+//        }, error => {
+//            console.log('Failed to load bundle', arguments);
+//            resolve();
+//        });
+//    });
+
     const modulesPromise = Promise.all([preLoginDataPromise, uiSettingsPromise]).then(([preLoginData, uiSettings]) => {
-        const moduleUrls = preLoginData.angularJsModules && preLoginData.angularJsModules.urls;
-        const moduleNames = moduleUrls.map(url => {
-            return url.replace(/^\/modules\/(.*?)\/web\/(.*?).js(?:\?v=(.*))?$/, (match, module, filename, version) => {
-                amdConfiguration.moduleVersions[module] = version;
-                return `modules/${module}/web/${filename}`;
-            });
+        const modules = preLoginData.angularJsModules.modules;
+        const amdModuleNames = modules.filter(m => !m.supportsBundling).map(m => {
+            amdConfiguration.moduleVersions[m.name] = m.version;
+            return m.url.replace(/\.js$/, '');
+        });
+
+        if (uiSettings.userModule) {
+            amdModuleNames.push(uiSettings.userModule);
+        }
+        
+        modules.filter(m => m.supportsBundling).forEach(m => {
+            const amd = m.amdModuleNames;
+            amdModuleNames.push(...amd);
         });
     
-        if (uiSettings.userModule) {
-            moduleNames.push(uiSettings.userModule);
-        }
-    
-        const modulePromises = moduleNames.map(moduleName => {
+        const modulePromises = amdModuleNames.map(moduleName => {
             return new Promise((resolve, reject) => {
                 requirejs([moduleName], module => {
                     resolve(module);
@@ -53,7 +65,7 @@ Promise.resolve().then(() => {
                 });
             });
         });
-    
+        
         return Promise.all(modulePromises);
     });
     
@@ -89,6 +101,15 @@ Promise.resolve().then(() => {
     
     uiSettings.mangoModuleNames = [];
     const angularJsModuleNames = ['maUiApp'];
+    
+    preLoginData.angularJsModules.modules.filter(m => m.supportsBundling).forEach(m => {
+        m.angularJsModuleNames.forEach(n => {
+            try {
+                angularModules.push(angular.module(n));
+            } catch (e) {}
+        });
+    });
+    
     angularModules.forEach((angularModule, index, array) => {
         if (angularModule && angularModule.name) {
             if (Array.isArray(angularModule.optionalRequires)) {
