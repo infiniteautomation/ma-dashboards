@@ -552,7 +552,7 @@ export default [
     },
     {
         url: '/logging',
-        name: 'ui.help.logging',
+        name: 'ui.help.loggingProperties',
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
@@ -585,7 +585,7 @@ export default [
     },
     {
         url: '/chartRenderer',
-        name: 'ui.help.chartRenderer',
+        name: 'ui.help.chartRendererProperties',
         resolve: {
             viewTemplate: function() {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.help" */
