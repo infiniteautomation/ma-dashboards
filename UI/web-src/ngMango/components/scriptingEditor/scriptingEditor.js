@@ -190,6 +190,7 @@ export default {
         logLevel: '=?',
         logCount: '=?',
         logSize: '=?',
+        logFilePath: '<?',
         contextVarXidName: '<?',
         showLogFileInputs: '<?'
     },
