@@ -71,8 +71,6 @@ class scriptingEditorController {
         if (this.scriptErrors && this.scriptErrors.length > 0) {
             let annotations = [];
 
-            console.log(this.scriptErrors);
-
             this.scriptErrors.forEach(error => {
                 annotations.push({
                     row: error.lineNumber - 1,
