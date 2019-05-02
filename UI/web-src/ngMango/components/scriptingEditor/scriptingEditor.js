@@ -105,6 +105,7 @@ class scriptingEditorController {
         this.scriptErrors = null;
         this.scriptActions = null;
         this.scriptOutput = null;
+        this.scriptResult = null;
     }
 
     validate() {
@@ -139,6 +140,7 @@ class scriptingEditorController {
             this.scriptErrors = response.errors;
             this.scriptActions = response.actions;
             this.scriptOutput = response.scriptOutput;
+            this.scriptResult = response.result;
 
             this.getHighlightLines();
             this.setHighlightLines();
