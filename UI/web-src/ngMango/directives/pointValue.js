@@ -224,7 +224,7 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             enablePopup: '@?',
             hideEventIndicator: '<?',
             quickInfo: '<?',
-            dataPointDetails: '<?',
+            dataPointDetails: '<?pointDetails',
             disableEventPopup: '<?'
         },
         designerInfo: {
