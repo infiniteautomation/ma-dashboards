@@ -19,9 +19,9 @@
             <h3 ng-bind="item.name"></h3>
             <p><span ng-bind="item.description"></span> &mdash; <span ng-bind="item.connectionDescription"></span></p>
         </div>
-        <md-switch ng-if="$ctrl.showEnableSwitch" class="md-secondary" ng-model="item.isEnabled"
+        <md-switch ng-if="$ctrl.showEnableSwitch && !($ctrl.hideSwitchOnSelected && $ctrl.selected.xid === item.xid)" class="md-secondary" ng-model="item.isEnabled"
             ng-class="{'ma-throb-opacity': item.$enableToggling}"
-            ng-disabled="($ctrl.disableSwitchOnSelect && $ctrl.selected.xid === item.xid) || item.$enableToggling">
+            ng-disabled="item.$enableToggling">
         </md-switch>
     </md-list-item>
     
