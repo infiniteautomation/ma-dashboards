@@ -72,7 +72,7 @@
                 <!-- Duration column -->
                 <td md-cell class="ma-medium-column">
                     <span ng-if="event.returnToNormalTimestamp === 0 && !event.active" ma-tr="ui.app.na"></span>
-                    <span ng-if="event.returnToNormalTimestamp !== 0 || event.active" ng-bind="event.duration | maDuration: 'humanize'"></span>
+                    <span ng-if="event.returnToNormalTimestamp !== 0 || event.active" ng-bind="$ctrl.formatDuration(event.duration)"></span>
                 </td>
                 
                 <td md-cell class="ma-narrow-column ma-text-centered" ng-init="handlerCount = $ctrl.handlersForType.count(event.eventType); handlerLink = $ctrl.linkInfo.EVENT_HANDLERS_LINK; handlerParams = handlerLink.stateParams(event);">

@@ -52,8 +52,10 @@ import moment from 'moment-timezone';
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
 
-eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout', 'maEventHandler'];
-function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout, EventHandler) {
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout',
+    'maEventHandler', 'maTranslate'];
+function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout,
+        EventHandler, Translate) {
 
     const ANY_KEYWORD = 'any';
 
@@ -451,6 +453,17 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 eventDescription: event.description,
                 eventTypeId: event.typeId
             };
+        }
+        
+        formatDuration(duration) {
+            if (duration < 1000) {
+                return Translate.trSync('ui.time.milliseconds', [duration]);
+            } else if (duration < 5000) {
+                return Translate.trSync('ui.time.seconds', [Math.round(duration / 100) / 10]);
+            } else if (duration < 60000) {
+                return Translate.trSync('ui.time.seconds', [Math.round(duration / 1000)]);
+            }
+            return moment.duration(duration).humanize();
         }
     }
     
