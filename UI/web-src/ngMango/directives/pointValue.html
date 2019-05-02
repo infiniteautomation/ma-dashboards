@@ -51,7 +51,7 @@
             <md-icon>timeline</md-icon>
         </md-button>
         <md-button class="md-icon-button md-primary md-raised" ng-if="::$ctrl.point.pointLocator.settable" md-no-ink="true"
-                   ng-click="$ctrl.showSetPointDialog($event, $ctrl.point)">
+                   ng-click="$ctrl.showSetPointDialog($event, $ctrl.point, {step: $ctrl.step})">
             <md-tooltip md-direction="{{::$ctrl.enablePopup === 'up' || $ctrl.enablePopup === 'down' ? 'right' : 'top'}}">
                 <span ma-tr="ui.components.setPoint"></span>
             </md-tooltip>
