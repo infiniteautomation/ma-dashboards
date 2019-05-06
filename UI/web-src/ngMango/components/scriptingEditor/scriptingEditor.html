@@ -19,7 +19,7 @@
                 <span ma-tr="ui.components.errorOnProperty" ma-tr-args="[error.message, error.property]"></span>
             </li>
             <li ng-repeat="error in $ctrl.scriptErrors" ng-if="!error.property">
-                <span ng-bind="error.message"></span>
+                <pre ng-bind="error.message"></pre>
             </li>
         </ul>
         <ul ng-if="$ctrl.scriptActions" class="md-padding ma-script-actions">
