@@ -73,7 +73,6 @@ class scriptContextController {
         });
         
         this.setViewValue();
-        this.contextPoint = null;
     }
 
     deleteContextPoint(point) {

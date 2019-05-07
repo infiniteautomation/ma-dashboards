@@ -105,6 +105,7 @@ class scriptingEditorController {
         this.scriptErrors = null;
         this.scriptActions = null;
         this.scriptOutput = null;
+        this.scriptResult = null;
     }
 
     validate() {
@@ -139,6 +140,7 @@ class scriptingEditorController {
             this.scriptErrors = response.errors;
             this.scriptActions = response.actions;
             this.scriptOutput = response.scriptOutput;
+            this.scriptResult = response.result;
 
             this.getHighlightLines();
             this.setHighlightLines();
@@ -157,7 +159,15 @@ class scriptingEditorController {
                 });
             }
         }, error => {
-            this.scriptErrors = error.data.result.messages;
+            if(error.data.result) {
+                this.scriptErrors = error.data.result.messages;
+            } else {
+                this.maDialogHelper.toastOptions({
+                    textTr: ['scriptingEditor.ui.scriptValidationError', error.data.localizedMessage],
+                    hideDelay: 5000,
+                    classes: 'md-warn'
+                });
+            }
         });
     }
 
@@ -182,6 +192,7 @@ export default {
         logLevel: '=?',
         logCount: '=?',
         logSize: '=?',
+        logFilePath: '<?',
         contextVarXidName: '<?',
         showLogFileInputs: '<?'
     },
