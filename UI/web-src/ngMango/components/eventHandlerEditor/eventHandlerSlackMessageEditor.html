@@ -1,0 +1,19 @@
+<div layout="row" flex layout-align="space-between center">
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="eventHandlers.botKey"></label>
+        <input name="botKey" ng-model="editor.eventHandler.botKey" required>
+        <div ng-messages="editor.form.botKey.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="editor.form.botKey.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="eventHandlers.channel"></label>
+        <input name="channel" ng-model="editor.eventHandler.channel" required>
+        <div ng-messages="editor.form.channel.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="editor.form.channel.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>

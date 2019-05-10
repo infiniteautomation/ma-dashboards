@@ -21,6 +21,11 @@ function eventHandlerProvider() {
             type: 'SET_POINT',
             description: 'eventHandlers.type.setPoint',
             template: `<ma-event-handler-set-point-editor></ma-event-handler-set-point-editor>`
+        },
+        {
+            type: 'SLACK_MESSAGE',
+            description: 'eventHandlers.type.slackMessage',
+            template: `<ma-event-handler-slack-message-editor></ma-event-handler-slack-message-editor>`
         }
     ];
     
