@@ -71,7 +71,7 @@ SystemSettingsPageController.prototype.actions = {
 	purgeAllEvents: {
 		confirmTr: 'systemSettings.purgeAllEventsConfirm',
 		descriptionTr: 'ui.app.eventPurge',
-		resultsTr: 'systemSettings.excelreports.purgeSuccess'
+		resultsTr: 'ui.app.eventPurgeSuccess'
 	},
 	backupConfiguration: {
 		confirmTr: 'systemSettings.backupNow',
