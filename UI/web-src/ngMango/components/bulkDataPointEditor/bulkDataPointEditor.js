@@ -130,8 +130,8 @@ class BulkDataPointEditorController {
                 this.getPoints();
             }
         }
-        if (changes.addDataPoints) {
-            this.addPointsFromAttr();
+        if (changes.editDataPoints) {
+            this.editPointsFromAttr();
         }
     }
     
@@ -789,23 +789,23 @@ class BulkDataPointEditorController {
         this.showPurgeDialogObj = {};
     }
     
-    addPointsFromAttr() {
-        const pointsToAdd = this.addDataPoints;
+    editPointsFromAttr() {
+        const pointsToEdit = this.editDataPoints;
         
-        if (!Array.isArray(pointsToAdd) || this.editTarget || this.csvFile) {
+        if (!Array.isArray(pointsToEdit) || this.editTarget || this.csvFile) {
             return;
         }
         
         if (this.dataSource) {
-            if (pointsToAdd.some(dp => dp.dataSourceXid !== this.dataSource.xid)) {
+            if (pointsToEdit.some(dp => dp.dataSourceXid !== this.dataSource.xid)) {
                 return;
             }
         }
         
-        if (pointsToAdd.length === 1) {
-            this.editTarget = pointsToAdd[0];
+        if (pointsToEdit.length === 1) {
+            this.editTarget = pointsToEdit[0];
         } else {
-            this.editTarget = pointsToAdd;
+            this.editTarget = pointsToEdit;
         }
         this.showPointDialog = {};
     }
@@ -822,6 +822,6 @@ export default {
         refresh: '<?',
         queryingDisabled: '<?',
         selectedPointsAttr: '&?selectedPoints',
-        addDataPoints: '<?'
+        editDataPoints: '<?'
     }
 };

@@ -84,7 +84,7 @@ class DataSourceEditorController {
             return;
         }
         
-        delete this.addDataPointsArray;
+        delete this.editDataPointsArray;
         
         this.validationMessages = [];
         
@@ -194,9 +194,9 @@ class DataSourceEditorController {
         return false;
     }
     
-    addDataPoints(points) {
+    editDataPoints(points) {
         //this.activeTab = 3;
-        this.addDataPointsArray = points;
+        this.editDataPointsArray = points;
     }
 }
 
