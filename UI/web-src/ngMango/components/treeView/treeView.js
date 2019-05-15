@@ -14,6 +14,7 @@ class Context {
         this.$q = $ctrl.$q;
         this.$timeout = $ctrl.$timeout;
         this.$ctrl = $ctrl;
+        this.loadCount = 0;
         
         if (item) {
             this.hasChildren = $ctrl.hasChildren(item);
@@ -23,8 +24,6 @@ class Context {
                 this.toggleChildren();
             }
         }
-        
-        this.loadCount = 0;
     }
 
     loadChildren() {
