@@ -135,7 +135,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             return listenerCancelled;
         }
         
-        cancelListener(promise) {
+        static cancelListener(promise) {
             const deregisterAndCancelTimeout = listeners.get(promise);
             if (deregisterAndCancelTimeout) {
                 deregisterAndCancelTimeout();
