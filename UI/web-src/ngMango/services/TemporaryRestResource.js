@@ -12,6 +12,10 @@ import angular from 'angular';
 temporaryRestResourceFactory.$inject = ['maRestResource', '$q', '$timeout'];
 function temporaryRestResourceFactory(RestResource, $q, $timeout) {
 
+    const listenerCancelled = typeof Symbol === 'function' ? Symbol('listenerCancelled') : {listenerCancelled: true};
+    const listeners = new Map();
+    const noop = () => null;
+    
     class TemporaryRestResource extends RestResource {
         static get idProperty() {
             return 'id';
@@ -35,15 +39,29 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
         isComplete() {
             return !(this.status === 'VIRGIN' || this.status === 'SCHEDULED' || this.status === 'RUNNING');
         }
-
-        start($scope, opts) {
+        
+        listen($scope, onOpenAction) {
             const tmpResourceDeferred = $q.defer();
             let lastSeenVersion = -1;
             let timeoutPromise;
             let pollPeriod = this.constructor.pollPeriodOpenSocket || 10000;
-            let startTimeout = () => null;
-            let deregister = () => null;
+            let startTimeout = noop;
+            let deregister = noop;
             let wsCache = [];
+            let scopeDestroyDeregister = noop;
+            
+            const deregisterAndCancelTimeout = () => {
+                // no effect if already completed
+                tmpResourceDeferred.reject(listenerCancelled);
+                scopeDestroyDeregister();
+                listeners.delete(tmpResourceDeferred.promise);
+                deregister();
+                $timeout.cancel(timeoutPromise);
+            };
+            
+            if ($scope) {
+                scopeDestroyDeregister = $scope.$on('$destroy', deregisterAndCancelTimeout);
+            }
 
             const gotUpdate = (item) => {
                 if (item) {
@@ -55,8 +73,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                     
                     if (this.isComplete()) {
                         tmpResourceDeferred.resolve(this);
-                        deregister();
-                        $timeout.cancel(timeoutPromise);
+                        deregisterAndCancelTimeout();
                     } else {
                         // cancel and restart the timer every time we get an update
                         startTimeout();
@@ -94,7 +111,10 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
                 // set the poll period faster if the websocket cant be opened
                 pollPeriod = this.constructor.pollPeriod || 1000;
             }).then(() => {
-                return this.save(opts);
+                if (typeof onOpenAction === 'function') {
+                    return onOpenAction(this);
+                }
+                return this;
             }).then(item => {
                 gotUpdate();
                 // we tend to get updates over websocket before this save callback is triggered
@@ -103,11 +123,29 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             }, error => {
                 // couldn't start the temporary resource
                 tmpResourceDeferred.reject(error);
-                deregister();
-                $timeout.cancel(timeoutPromise);
+                deregisterAndCancelTimeout();
             }).finally(() => wsCache = null);
             
+            listeners.set(tmpResourceDeferred.promise, deregisterAndCancelTimeout);
+            
             return tmpResourceDeferred.promise;
+        }
+        
+        static get listenerCancelled() {
+            return listenerCancelled;
+        }
+        
+        cancelListener(promise) {
+            const deregisterAndCancelTimeout = listeners.get(promise);
+            if (deregisterAndCancelTimeout) {
+                deregisterAndCancelTimeout();
+            }
+        }
+
+        start($scope, opts) {
+            return this.listen($scope, () => {
+                return this.save(opts);
+            });
         }
         
         cancel(opts = {}) {
