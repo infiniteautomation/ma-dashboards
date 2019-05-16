@@ -83,9 +83,10 @@ class DataSourceEditorController {
             this.setViewValue();
             return;
         }
-        
+
         delete this.editDataPointsArray;
-        
+
+        this.selectedPoints = new Map();
         this.validationMessages = [];
         
         const viewValue = this.ngModelCtrl.$viewValue;
