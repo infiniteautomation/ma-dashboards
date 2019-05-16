@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
  * Replaces the old maTemporaryResource service. This is used for bulk data point and tag operations. 
  */
@@ -152,7 +150,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             const originalId = this.getOriginalId();
             
             return this.constructor.http({
-                url: this.constructor.baseUrl + '/' + angular.$$encodeUriSegment(originalId),
+                url: this.constructor.baseUrl + '/' + this.constructor.encodeUriSegment(originalId),
                 method: 'PUT',
                 data: {
                     status: 'CANCELLED'
