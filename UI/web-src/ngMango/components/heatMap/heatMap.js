@@ -43,7 +43,6 @@ class HeatMapController {
         this.transitionDuration = 1000;
         this.valueKey = 'value';
         this.showTooltipAttr = true;
-        this.showLegend = true;
     }
     
     $onChanges(changes) {
@@ -75,14 +74,18 @@ class HeatMapController {
         
         // graph already created
         if (this.svg) {
-            if (colorsChanged) {
-                this.updateColorScale();
-            }
-            if (changes.pointValues || changes.groupBy) {
-                this.updateAxis();
-            }
-            if (colorsChanged || changes.pointValues || changes.groupBy) {
-                this.updateGraph();
+            if (changes.legend) {
+                this.updateSvg();
+            } else {
+                if (colorsChanged) {
+                    this.updateColorScale();
+                }
+                if (changes.pointValues || changes.groupBy) {
+                    this.updateAxis();
+                }
+                if (colorsChanged || changes.pointValues || changes.groupBy) {
+                    this.updateGraph();
+                }
             }
         }
         
@@ -170,11 +173,24 @@ class HeatMapController {
         this.width = width;
         this.height = height;
 
-        const legend = Object.assign({height: 20, width: '50%'}, this.legend);
+        const defaultLegend = {height: 20, width: '50%', position: 'bottom', ticks: 10};
+        if (this.legend) {
+            if (this.legend.position === 'right') {
+                defaultLegend.height = '50%';
+                defaultLegend.width = 20;
+            }
+        }
+        
+        const legend = this.legendOpts = Object.assign(defaultLegend, this.legend);
         const legendWidthPx = this.parsePercentage(legend.width, width);
         const legendHeightPx = this.parsePercentage(legend.height, height);
         
         const defaultMargins = {top: 20, right: 20, bottom: legendHeightPx + 40, left: 60};
+        if (legend.position === 'right') {
+            defaultMargins.bottom = 0;
+            defaultMargins.right = legendWidthPx + 50;
+        }
+        
         const margins = Object.assign(defaultMargins, this.margins);
 
         const d3 = this.d3;
@@ -201,17 +217,39 @@ class HeatMapController {
         svg.select('g.ma-heat-map-y-axis')
             .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
-        this.legendAxisScale = d3.scaleLinear()
-            .range([0, legendWidthPx]);
+        if (legend.position === 'right') {
+            legend.x = width - legendWidthPx - 30;
+            legend.y = height / 2 - legendHeightPx / 2;
+            legend.axisX = legendWidthPx;
+            legend.axisY = 0;
+            legend.axisRange = [0, legendHeightPx];
+            legend.gradientX = '0';
+            legend.gradientY = '100%';
+        } else {
+            // bottom
+            legend.x = width / 2 - legendWidthPx / 2;
+            legend.y = height - legendHeightPx - 20;
+            legend.axisX = 0;
+            legend.axisY = legendHeightPx;
+            legend.axisRange = [0, legendWidthPx];
+            legend.gradientX = '100%';
+            legend.gradientY = '0';
+        }
+        
+        this.legendAxisScale = d3.scaleLinear().range(legend.axisRange);
 
         svg.select('g.ma-heat-map-legend')
-            .attr('transform', `translate(${width / 2 - legendWidthPx / 2}, ${height - legendHeightPx - 20})`)
+            .attr('transform', `translate(${legend.x}, ${legend.y})`)
             .select('rect')
                 .attr('width', legend.width)
                 .attr('height', legend.height);
         
         svg.select('g.ma-heat-map-legend-axis')
-            .attr('transform', `translate(0, ${legendHeightPx})`);
+            .attr('transform', `translate(${legend.axisX}, ${legend.axisY})`);
+
+        svg.select('#ma-heat-map-legend-gradient')
+            .attr('x2', legend.gradientX)
+            .attr('y2', legend.gradientY);
 
         this.updateColorScale();
         this.updateAxis();
@@ -303,8 +341,14 @@ class HeatMapController {
         
         this.legendAxisScale.domain([this.minValue, this.maxValue]);
         
-        const legendAxis = this.d3.axisBottom(this.legendAxisScale)
-            .ticks(10);
+        let legendAxis;
+        if (this.legendOpts.position === 'right') {
+            legendAxis = this.d3.axisRight(this.legendAxisScale);
+        } else {
+            // bottom
+            legendAxis = this.d3.axisBottom(this.legendAxisScale);
+        }
+        legendAxis.ticks(this.legendOpts.ticks);
         
         this.svg.select('g.ma-heat-map-legend-axis')
             .call(legendAxis);
