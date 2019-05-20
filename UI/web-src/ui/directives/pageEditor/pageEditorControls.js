@@ -132,8 +132,7 @@ class PageEditorControlsController {
         if (!this.search) {
             return pages;
         }
-        const regex = new RegExp(this.search, 'gi');
-        return pages.filter(p => regex.test(p.name));
+        return pages.filter(p => (new RegExp(this.search, 'gi')).test(p.name));
     }
     
     createNewPage(markup) {
