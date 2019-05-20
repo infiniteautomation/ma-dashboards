@@ -16,3 +16,7 @@ ma-heat-map > .ma-heat-map-tooltip-builtin {
 	border: 1px solid currentColor;
 	border-radius: 8px;
 }
+
+ma-heat-map .ma-heat-map-legend > rect {
+	fill: url(#ma-heat-map-legend-gradient);
+}
