@@ -162,6 +162,46 @@ class HeatMapController {
         }
         return m;
     }
+    
+    createLegendOptions() {
+        const legend = {ticks: 10};
+        legend.position = this.legend && this.legend.position || 'bottom';
+        
+        if (legend.position === 'left' || legend.position === 'right') {
+            legend.width = 20;
+            legend.height = '50%';
+        } else if (legend.position === 'top' || legend.position === 'bottom') {
+            legend.width = '50%';
+            legend.height = 20;
+        }
+        
+        Object.assign(legend, this.legend);
+
+        const legendWidthPx = this.parsePercentage(legend.width, this.width);
+        const legendHeightPx = this.parsePercentage(legend.height, this.height);
+        
+        if (legend.position === 'left' || legend.position === 'right') {
+            legend.extraMargin = legendWidthPx + 50;
+            legend.x = legend.position === 'left' ? 30 : this.width - legendWidthPx - 30;
+            legend.y = this.height / 2 - legendHeightPx / 2;
+            legend.axisX = legend.position === 'left' ? 0 : legendWidthPx;
+            legend.axisY = 0;
+            legend.axisRange = [0, legendHeightPx];
+            legend.gradientX = '0';
+            legend.gradientY = '100%';
+        } else if (legend.position === 'top' || legend.position === 'bottom') {
+            legend.extraMargin = legendHeightPx + 40;
+            legend.x = this.width / 2 - legendWidthPx / 2;
+            legend.y = legend.position === 'top' ? 20 : this.height - legendHeightPx - 20;
+            legend.axisX = 0;
+            legend.axisY = legend.position === 'top' ? 0 : legendHeightPx;
+            legend.axisRange = [0, legendWidthPx];
+            legend.gradientX = '100%';
+            legend.gradientY = '0';
+        }
+        
+        return legend;
+    }
 
     updateSvg(width, height) {
         if (width == null || height == null) {
@@ -173,22 +213,11 @@ class HeatMapController {
         this.width = width;
         this.height = height;
 
-        const defaultLegend = {height: 20, width: '50%', position: 'bottom', ticks: 10};
-        if (this.legend) {
-            if (this.legend.position === 'right') {
-                defaultLegend.height = '50%';
-                defaultLegend.width = 20;
-            }
-        }
-        
-        const legend = this.legendOpts = Object.assign(defaultLegend, this.legend);
-        const legendWidthPx = this.parsePercentage(legend.width, width);
-        const legendHeightPx = this.parsePercentage(legend.height, height);
-        
-        const defaultMargins = {top: 20, right: 20, bottom: legendHeightPx + 40, left: 60};
-        if (legend.position === 'right') {
-            defaultMargins.bottom = 0;
-            defaultMargins.right = legendWidthPx + 50;
+        const legend = this.legendOpts = Object.assign(this.createLegendOptions(), this.legend);
+
+        const defaultMargins = {top: 20, right: 0, bottom: 0, left: 60};
+        if (legend.position && legend.position !== 'none') {
+            defaultMargins[legend.position] += legend.extraMargin;
         }
         
         const margins = Object.assign(defaultMargins, this.margins);
@@ -217,39 +246,37 @@ class HeatMapController {
         svg.select('g.ma-heat-map-y-axis')
             .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
-        if (legend.position === 'right') {
-            legend.x = width - legendWidthPx - 30;
-            legend.y = height / 2 - legendHeightPx / 2;
-            legend.axisX = legendWidthPx;
-            legend.axisY = 0;
-            legend.axisRange = [0, legendHeightPx];
-            legend.gradientX = '0';
-            legend.gradientY = '100%';
-        } else {
-            // bottom
-            legend.x = width / 2 - legendWidthPx / 2;
-            legend.y = height - legendHeightPx - 20;
-            legend.axisX = 0;
-            legend.axisY = legendHeightPx;
-            legend.axisRange = [0, legendWidthPx];
-            legend.gradientX = '100%';
-            legend.gradientY = '0';
+        // setup legend
+        
+        const legendGroup = svg.select('g.ma-heat-map-legend');
+        const legends = [];
+
+        if (legend.position && legend.position !== 'none') {
+            legends.push(legend);
+            
+            this.legendAxisScale = d3.scaleLinear().range(legend.axisRange);
+    
+            legendGroup
+                .attr('transform', `translate(${legend.x}, ${legend.y})`)
+                .select('g.ma-heat-map-legend-axis')
+                    .attr('transform', `translate(${legend.axisX}, ${legend.axisY})`);
+    
+            svg.select('#ma-heat-map-legend-gradient')
+                .attr('x2', legend.gradientX)
+                .attr('y2', legend.gradientY);
         }
         
-        this.legendAxisScale = d3.scaleLinear().range(legend.axisRange);
-
-        svg.select('g.ma-heat-map-legend')
-            .attr('transform', `translate(${legend.x}, ${legend.y})`)
-            .select('rect')
-                .attr('width', legend.width)
-                .attr('height', legend.height);
+        const legendRects = legendGroup.selectAll('rect')
+            .data(legends);
         
-        svg.select('g.ma-heat-map-legend-axis')
-            .attr('transform', `translate(${legend.axisX}, ${legend.axisY})`);
-
-        svg.select('#ma-heat-map-legend-gradient')
-            .attr('x2', legend.gradientX)
-            .attr('y2', legend.gradientY);
+        legendRects.exit().remove();
+        
+        legendRects.enter().append('rect')
+            .style('fill', 'url(#ma-heat-map-legend-gradient)')
+            .lower() // put it behind the axis
+            .merge(legendRects)
+                .attr('width', l => l.width)
+                .attr('height', l => l.height);
 
         this.updateColorScale();
         this.updateAxis();
@@ -331,27 +358,29 @@ class HeatMapController {
             .data(stopsData);
 
         stops.exit().remove();
-        const newStops = stops.enter().append('stop');
         
-        stops.merge(newStops)
-            .attr('offset', d => `${d * 100}%`)
-            .attr('stop-color', d => this.colorScale(legendScale(d)));
+        stops.enter().append('stop')
+            .merge(stops)
+                .attr('offset', d => `${d * 100}%`)
+                .attr('stop-color', d => this.colorScale(legendScale(d)));
         
         // setup the legend axis
         
         this.legendAxisScale.domain([this.minValue, this.maxValue]);
+
+        // remove old axis elements
+        this.svg.selectAll('g.ma-heat-map-legend-axis > *').remove();
         
-        let legendAxis;
-        if (this.legendOpts.position === 'right') {
-            legendAxis = this.d3.axisRight(this.legendAxisScale);
-        } else {
-            // bottom
-            legendAxis = this.d3.axisBottom(this.legendAxisScale);
+        const position = this.legendOpts.position;
+        if (position && position !== 'none') {
+            const axisFn = 'axis' + position.charAt(0).toUpperCase() + position.slice(1);
+            
+            const legendAxis = this.d3[axisFn](this.legendAxisScale)
+                .ticks(this.legendOpts.ticks);
+            
+            this.svg.select('g.ma-heat-map-legend-axis')
+                .call(legendAxis);
         }
-        legendAxis.ticks(this.legendOpts.ticks);
-        
-        this.svg.select('g.ma-heat-map-legend-axis')
-            .call(legendAxis);
     }
     
     formatX(value, index) {
