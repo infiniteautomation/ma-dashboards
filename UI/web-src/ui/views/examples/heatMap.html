@@ -12,7 +12,7 @@ A rollup of 15 minutes, 30 minutes or 1 hour should be used when obtaining point
 
 <ma-ui-dual-pane-editor>
 
-<ma-filtering-point-list limit="200" ng-model="point1" data-type="NUMERIC" auto-init="true"></ma-filtering-point-list>
+<ma-filtering-point-list ng-model="point1" data-type="NUMERIC" auto-init="true"></ma-filtering-point-list>
 
 <ma-point-values point="point1" values="point1Values" from="dateBar.from" to="dateBar.to" rollup="AVERAGE" rollup-interval="1 hours" rendered="true">
 </ma-point-values>

@@ -16,13 +16,7 @@
 </p>
 
 <ma-ui-dual-pane-editor>
-
-    <div layout="row">
-        <md-input-container flex>
-            <label>Choose a numeric point</label>
-            <ma-point-list limit="200" ng-model="point1"></ma-point-list>
-        </md-input-container>
-    </div>
+    <ma-filtering-point-list flex ng-model="point1" data-type="NUMERIC" auto-init="true"></ma-filtering-point-list>
 
     <ma-point-values point="point1" values="point1Values"
                      from="dateBar.from" to="dateBar.to"

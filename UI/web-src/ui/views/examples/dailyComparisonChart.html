@@ -22,12 +22,7 @@
 
 <div ng-init="page={rollup:'15 minutes', rollupType:'AVERAGE', week:0, values:{}}"></div>
 
-<div layout="row">
-    <md-input-container flex="">
-        <label>Choose a numeric point</label>
-        <ma-point-list limit="200" ng-model="page.point"></ma-point-list>
-    </md-input-container>
-</div>
+<ma-filtering-point-list flex ng-model="page.point" data-type="NUMERIC" auto-init="true"></ma-filtering-point-list>
 
 <div layout="row">
     <md-input-container flex>
