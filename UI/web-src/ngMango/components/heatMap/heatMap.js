@@ -18,6 +18,44 @@ const arrayReduceToMap = function(fn) {
     }, new Map());
 };
 
+/**
+ * @ngdoc directive
+ * @name ngMango.directive:maHeatMap
+ * @restrict 'E'
+ * @scope
+ *
+ * @description Displays a heat map of data point values, useful for visualizing trends in point values over a large period of time.
+ * A rollup of 15 minutes, 30 minutes or 1 hour should be used when obtaining point values for use with this component. 
+ *
+ * @param {pointValue[]} point-values Array of point values to display. Should be obtained with a rollup of 15 min, 30 min or 1 hr, typically averaged
+ * @param {boolean=} [auto-scale=false] Automatically determine the minimum and maximum values for the color scale
+ * @param {number=} min-value Minimum value for the color scale
+ * @param {number=} max-value Maximum value for the color scale
+ * * @param {object=} margins Object containing top, bottom, left, right properties to set the margins around the graph in px.
+ * e.g. <code>margins="{top: 100, bottom: 0, left: 50, right: 0}"</code>
+ * @param {object=} legend Object to control legend creation. Properties include position ('top', 'bottom', 'left', 'right', or 'none'),
+ * width (px or percentage string), and height (px or percentage string).
+ * e.g. <code>legend="{position: 'right', width: 50, height: '80%'}"</code>
+ * @param {string[]=} colors Array of colors to use for the color scale, from lowest (min value) to highest (max value).
+ * e.g. <code>colors="['red', '#fff', 'rgb(0,255,0)']"</code>
+ * @param {expression=} axis-format-x Expression to render the x axis labels.
+ * Available locals are $value (moment.js object), $index (column index) and $columns.
+ * e.g. <code>axis-format-x="$value.format('YYYY-MM-DD')"</code>
+ * @param {expression=} axis-format-y Expression to render the y axis labels.
+ * Available locals are $value (moment.js object), $index (row index) and $rows.
+ * e.g. <code>axis-format-y="$value.format('HH:mm')"</code>
+ * @param {expression=} color-scale Expression that returns a d3 color scale. Takes precedence over the colors attribute. Available locals are $d3 (d3 library).
+ * e.g. <code>color-scale="$d3.scaleSequential($d3.interpolateRainbow).clamp(true)"</code>
+ * @param {boolean=} [show-tooltip=true] Controls if the tool tip is shown when hovering over a rectangle
+ * @param {number=} rows Number of rows per column, usually automatically determined from the rollup
+ * @param {string=} timezone Timezone to use when rendering time, determining the day of the week, start of the day etc
+ * @param {number=} utc-offset UTC offset in minutes to use when rendering time
+ * @param {string=} [group-by=day] Controls how the point values are grouped into columns, can choose day or week
+ * @param {number=} [transition-duration=1000] Duration for the color fade transition, set to 0 to disable
+ * @param {string=} [value-key=value] Name of property from which to extract the value from a point value object
+ * 
+ **/
+
 class HeatMapController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', '$element', '$transclude', '$compile']; }
@@ -616,22 +654,34 @@ export default {
         tooltipSlot: '?maHeatMapTooltip'
     },
     bindings: {
-        timezone: '@?',
-        utcOffset: '<?',
-        groupBy: '@?',
-        rowsAttr: '<?rows',
-        autoScale: '<?',
         pointValues: '<',
+        autoScale: '<?',
         minValueAttr: '<?minValue',
         maxValueAttr: '<?maxValue',
-        transitionDuration: '<?',
-        axisFormatX: '&?',
-        axisFormatY: '&?',
-        valueKey: '@?',
         margins: '<?',
         legend: '<?',
         colors: '<?',
         colorScaleExp: '&?colorScale',
-        showTooltipAttr: '<?showTooltip'
+        showTooltipAttr: '<?showTooltip',
+        transitionDuration: '<?',
+        axisFormatX: '&?',
+        axisFormatY: '&?',
+        valueKey: '@?',
+        groupBy: '@?',
+        rowsAttr: '<?rows',
+        timezone: '@?',
+        utcOffset: '<?'
+    },
+    designerInfo: {
+        translation: 'ui.components.maHeatMap',
+        icon: 'view_module',
+        category: 'pointValuesAndCharts',
+        attributes: {
+            autoScale: {type: 'boolean'}
+        },
+        size: {
+            width: '600px',
+            height: '400px'
+        }
     }
 };
