@@ -21,12 +21,7 @@
 
 <ma-ui-dual-pane-editor>
 
-<div layout="row">
-    <md-input-container flex>
-        <label>Choose a point</label>
-        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
-    </md-input-container>
-</div>
+<ma-filtering-point-list ng-model="myPoint" auto-init="true" data-type="NUMERIC"></ma-filtering-point-list>
 
 <ma-point-statistics point="myPoint" from="dateBar.from" to="dateBar.to" statistics="statsObj"></ma-point-statistics>
 

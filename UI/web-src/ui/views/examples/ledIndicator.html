@@ -25,12 +25,7 @@
 
 <ma-ui-dual-pane-editor>
 
-<div layout>
-    <md-input-container flex>
-        <label>Choose a binary point</label>
-        <ma-point-list limit="200" ng-model="binaryPoint" query="{dataTypeId: 1, $exact: true}"></ma-point-list>
-    </md-input-container>
-</div>
+<ma-filtering-point-list ng-model="binaryPoint" data-type="BINARY" auto-init="true"></ma-filtering-point-list>
 
 <div>
     <ma-point-value point="binaryPoint" label="Point value:"></ma-point-value>

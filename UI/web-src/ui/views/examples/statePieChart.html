@@ -15,13 +15,7 @@
 <ma-ui-dual-pane-editor>
 
 <h3>Select a multistate data point:</h3>
-<div layout="row">
-    <md-input-container flex>
-        <label>Choose a point</label>
-        <ma-point-list limit="200" ng-model="myPoint" query="{dataTypeId: 2, $exact: true}"></ma-point-list>
-    </md-input-container>
-</div>
-
+<ma-filtering-point-list ng-model="myPoint" auto-init="true" data-type="MULTISTATE"></ma-filtering-point-list>
 
 <ma-point-statistics point="myPoint" from="dateBar.from" to="dateBar.to" statistics="statsObj"></ma-point-statistics>
 

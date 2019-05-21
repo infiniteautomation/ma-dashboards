@@ -32,10 +32,7 @@
     }
 </style>
 
-<md-input-container>
-    <label>Choose a point</label>
-    <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
-</md-input-container>
+<ma-filtering-point-list ng-model="myPoint" auto-init="true" data-type="NUMERIC"></ma-filtering-point-list>
 
 <h3>CSS class based on range (numeric points)</h3>
 <div class="default"

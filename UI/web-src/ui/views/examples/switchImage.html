@@ -14,12 +14,7 @@
 <ma-ui-dual-pane-editor>
 
 <h3>Select binary/multi-state point:</h3>
-<div layout="row">
-    <md-input-container flex>
-        <label>Choose a point</label>
-        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
-    </md-input-container>
-</div>
+<ma-filtering-point-list ng-model="myPoint" data-types="['BINARY', 'MULTISTATE']" auto-init="true"></ma-filtering-point-list>
 
 <p>
     Point Value: <ma-point-value point="myPoint"></ma-point-value>

@@ -15,10 +15,7 @@
 
 <h3>Select numeric point and max value:</h3>
 <div layout="row">
-    <md-input-container flex="75">
-        <label>Choose a point</label>
-        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
-    </md-input-container>
+    <ma-filtering-point-list flex="75" ng-model="myPoint" data-type="NUMERIC" auto-init="true"></ma-filtering-point-list>
     <md-input-container flex="25">
         <label>Maximum value</label>
         <input type="number" ng-model="max" ng-init="max=1000">

@@ -19,10 +19,7 @@
 <ma-ui-dual-pane-editor>
 
 <h3>Select multi-state point:</h3>
-<md-input-container>
-    <label>Choose a point</label>
-    <ma-point-list limit="200" ng-model="myPoint" query="{dataTypeId: 2, $exact: true}"></ma-point-list>
-</md-input-container>
+<ma-filtering-point-list ng-model="myPoint" data-type="MULTISTATE" auto-init="true"></ma-filtering-point-list>
 
 <p>
     <strong>Point value:</strong>

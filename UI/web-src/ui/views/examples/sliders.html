@@ -15,10 +15,7 @@
 <ma-ui-dual-pane-editor>
 
 <div layout="column">
-    <md-input-container>
-        <label>Choose a point</label>
-        <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
-    </md-input-container>
+    <ma-filtering-point-list ng-model="myPoint" data-type="NUMERIC" auto-init="true"></ma-filtering-point-list>
 
     <ma-point-value point="myPoint"></ma-point-value>
 
