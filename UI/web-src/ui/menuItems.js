@@ -1854,6 +1854,17 @@ export default [
         menuTr: 'ui.dox.lineChart'
     },
     {
+        name: 'ui.examples.charts.heatMap',
+        resolve: {
+            viewTemplate: function() {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.examples" */
+                        './views/examples/heatMap.html');
+            }
+        },
+        url: '/heat-map',
+        menuTr: 'ui.dox.heatMap'
+    },
+    {
         name: 'ui.examples.charts.barChart',
         resolve: {
             viewTemplate: function() {
