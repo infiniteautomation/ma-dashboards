@@ -65,7 +65,19 @@ class FilteringPointListController {
         
         if (this.autoInit) {
             if (!this.pointXid && !(this.pointId || this.pointId === 0)) {
-                this.Point.buildQuery().limit(1).query().then(items => {
+                const queryBuilder = this.Point.buildQuery();
+                
+                if (this.dataType || this.dataTypes) {
+                    let queryArg = this.dataType || this.dataTypes;
+                    
+                    if (Array.isArray(queryArg)) {
+                        queryBuilder.in('dataTypeId', ...queryArg);
+                    } else {
+                        queryBuilder.eq('dataTypeId', queryArg);
+                    }
+                }
+                
+                queryBuilder.limit(1).query().then(items => {
                     if (items.length) {
                         this.setViewValue(items[0]);
                     }
@@ -169,16 +181,14 @@ class FilteringPointListController {
             searchQuery.name = searchByDeviceAndName ? 'and' : 'or';
         }
         
-        if (this.dataType || this.dataTypeId) {
-            let queryName = 'eq';
-            let queryArg = this.dataType || this.dataTypeId;
+        if (this.dataType || this.dataTypes) {
+            let queryArg = this.dataType || this.dataTypes;
             
             if (Array.isArray(queryArg)) {
-                queryName = 'in';
-                queryArg = queryArg.map(dt => this.Point.dataTypeId(dt));
+                rqlQuery.push(new query.Query({name: 'in', args: ['dataTypeId', ...queryArg]}));
+            } else {
+                rqlQuery.push(new query.Query({name: 'eq', args: ['dataTypeId', queryArg]}));
             }
-
-            rqlQuery.push(new query.Query({name: queryName, args: ['dataTypeId', queryArg]}));
         }
 
         let queryString;
@@ -243,7 +253,7 @@ function filteringPointList() {
             required: '@?',
             disabled: '@?',
             dataType: '@?type',
-            dataTypeId: '<?typeId'
+            dataTypes: '<?types'
         },
         require: {
             ngModelCtrl: 'ngModel'
