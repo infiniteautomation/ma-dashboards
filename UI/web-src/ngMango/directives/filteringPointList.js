@@ -169,12 +169,16 @@ class FilteringPointListController {
             searchQuery.name = searchByDeviceAndName ? 'and' : 'or';
         }
         
-        if (this.dataType) {
-            if (Array.isArray(this.dataType)) {
-                rqlQuery.push(new query.Query({name: 'in', args: ['dataTypeId', this.dataType]}));
-            } else {
-                rqlQuery.push(new query.Query({name: 'eq', args: ['dataTypeId', this.dataType]}));
+        if (this.dataType || this.dataTypeId) {
+            let queryName = 'eq';
+            let queryArg = this.dataType || this.dataTypeId;
+            
+            if (Array.isArray(queryArg)) {
+                queryName = 'in';
+                queryArg = queryArg.map(dt => this.Point.dataTypeId(dt));
             }
+
+            rqlQuery.push(new query.Query({name: queryName, args: ['dataTypeId', queryArg]}));
         }
 
         let queryString;
@@ -238,7 +242,8 @@ function filteringPointList() {
             allowClear: '<?',
             required: '@?',
             disabled: '@?',
-            dataType: '<?type'
+            dataType: '@?type',
+            dataTypeId: '<?typeId'
         },
         require: {
             ngModelCtrl: 'ngModel'

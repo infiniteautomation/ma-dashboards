@@ -352,6 +352,17 @@ function dataPointProvider() {
                 {key: 'IMAGE', translation: 'common.dataTypes.image', value: 5}
             ]),
             
+            dataTypeId(stringValue) {
+                if (typeof stringValue !== 'string') {
+                    return stringValue;
+                }
+                
+                const type = this.dataTypes.find(dt => dt.key === stringValue);
+                if (type) {
+                    return type.value;
+                }
+            },
+
             loggingTypes: Object.freeze([
                 {type: 'ON_CHANGE', translation: 'pointEdit.logging.type.change'},
                 {type: 'ALL', translation: 'pointEdit.logging.type.all'},
