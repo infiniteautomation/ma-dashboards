@@ -4,6 +4,7 @@
             <tr md-row>
                 <th md-column ma-tr="common.deviceName"></th>
                 <th md-column ma-tr="common.pointName"></th>
+                <th md-column ma-tr="ui.app.tags"></th>
                 <th md-column ma-tr="pointEdit.template.dataType"></th>
                 <th md-column ma-tr="pointEdit.text.key"></th>
                 <th ng-if="$ctrl.updatesContext" md-column ma-tr="scriptingEditor.ui.updatesContext"></th>
@@ -14,6 +15,7 @@
             <tr md-row ng-repeat="item in $ctrl.contextTable">
                 <td md-cell>{{ item.point.deviceName }}</td>
                 <td md-cell>{{ item.point.name }}</td>
+                <td md-cell>{{ item.point.formatTags() }}</td>
                 <td md-cell>{{ item.point.pointLocator.dataType }}</td>
                 <td md-cell>
                     <md-input-container flex="100">
