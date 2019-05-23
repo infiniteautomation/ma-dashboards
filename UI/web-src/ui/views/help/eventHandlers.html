@@ -11,13 +11,14 @@
 </p>
 
 <ul>
-    <li><strong>Email:</strong> send email to an address, user or mailing list</li>
-    <li><strong>Set point:</strong> write values ​​in data points (which must be configured as settable)</li>
-    <li><strong>Process:</strong> run a command on the server</li>
-    <li><strong>Report:</strong> run a report</li>
+    <li><a href="#email"><strong>Email:</strong> </a>send email to an address, user or mailing list.</li>
+    <li><a href="#setPoint"><strong>Set point:</strong></a> write values ​​in data points (which must be configured as settable).</li>
+    <li><a href="#process"><strong>Process:</strong></a> run a command on the server.</li>
+    <li><a href="#report"><strong>Report:</strong></a> run a report.</li>
+    <li><a href="#slack"><strong>Slack Message.</strong></a></li>
 </ul>
 
-<h2>Editing Email Event Handlers</h2>
+<h2 id="email">Editing Email Event Handlers</h2>
 
 <p>
     To add a mailing list to a list of recipients, select it from the list of add recipients and click. To add a user, 
@@ -134,7 +135,7 @@
     Describing how to use all of the data within the model is not within the scope of this document, for examples please see the existing templates in the ftl folder.
 </p>
 
-<h2>Editing Set Point Event Handlers</h2>
+<h2 id="setPoint">Editing Set Point Event Handlers</h2>
 
 <p>
     When an event is triggered, this handler will write the value at a given data point. The target is the data point that 
@@ -149,7 +150,7 @@
   point is disabled it will simply not be added to the context, so typeof(disabledVariableName) === "undefined"
 </p>
 
-<h2>Editing process handlers</h2>
+<h2 id="process">Editing process handlers</h2>
 <p>
   This handler will execute a local process, or shell command, optionally when an event is raised or deactivated. 
   The respective commands can be any shell command appropriate to the host. Commands should be specified as they would
@@ -162,5 +163,11 @@
   Also, processes will be terminated if they run for longer than 15 seconds. Non-empty standard output from the process 
   will be written to the Mango log at an "information" level. Non-empty error output will be written to the Mango log
   at an "error" level.
+</p>
+
+<h2 id="slack">Slack Message Handlers</h2>
+<p>
+	This handler will send an event message to a slack channel of your choice.  The slack workspace which the channel is in 
+	will need to have a app and bot user installed.  To view a detailed tutorial on how this is setup see <a href="https://help.infiniteautomation.com/slack-event-handler" target="slack-page">here.</a>
 </p>
 </div>
