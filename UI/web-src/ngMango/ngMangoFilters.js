@@ -77,11 +77,35 @@ ngMangoFilters.filter('maSumColumn', function() {
 	};
 });
 
+const zeros = '0000000000';
+const pad = function(input, padding) {
+    if (input == null) return input;
+    return (zeros + input).slice(-padding);
+};
+
 ngMangoFilters.filter('maPad', function() {
-	  const zeros = '0000000000';
-	  return function(a, b) {
-		  return (zeros + a).slice(-b);
-	  };
+    return pad;
+});
+
+ngMangoFilters.filter('maHex', function() {
+    return function(input, padding = null, displayOx = true, uppercase = true) {
+        if (typeof input !== 'number') return input;
+        
+        let result = input.toString(16);
+        if (padding != null) {
+            result = pad(result, padding);
+        }
+        
+        if (uppercase) {
+            result = result.toUpperCase();
+        }
+        
+        if (displayOx) {
+            return '0x' + result;
+        }
+        
+        return result;
+    };
 });
 
 ngMangoFilters.filter('maFirst', function() {
