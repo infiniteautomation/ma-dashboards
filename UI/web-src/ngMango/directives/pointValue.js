@@ -114,37 +114,23 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             this.updateText();
             
             if (isPointChange) {
-                this.activeEvents = 0;
+                const oldDeregister = this.eventsDeregister;
+
                 if (!this.hideEventIndicator && this.point) {
-                    this.getActiveEvents();
+                    this.eventsDeregister = this.point.subscribeToEvents(this.$scope);
+                }
+                
+                // deregister old subscription after registering the new one to prevent closing and opening websocket
+                if (oldDeregister) {
+                    oldDeregister();
                 }
             }
         }
-    
-        getActiveEvents() {
-            maEvents.buildQuery()
-                .eq('dataPointId', this.point.id)
-                .eq('active', true)
-                .limit(0)
-                .query().then(result => {
-                    this.activeEvents += result.$total;
-                });
-            
-            if (!this.deregisterWebsocket) {
-                this.deregisterWebsocket = maEvents.notificationManager.subscribe((event, mangoEvent) => {
-                    if (!this.point || mangoEvent.eventType.dataPointId !== this.point.id) return;
-                    
-                    // DEACTIVATED occurs when the data point/data source is disabled etc
-                    if (event.name === 'RAISED' && mangoEvent.active) {
-                        this.activeEvents += 1;
-                    } else if (event.name === 'RETURN_TO_NORMAL' || event.name === 'DEACTIVATED') {
-                        this.activeEvents -= 1;
-                    }
-                    
-                }, this.$scope, ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
-            }
+        
+        get activeEvents() {
+            return this.point && this.point.activeEvents && this.point.activeEvents.length;
         }
-    
+
         updateText() {
             delete this.valueStyle.color;
 

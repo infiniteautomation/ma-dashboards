@@ -211,9 +211,9 @@ function dataPointProvider() {
      * Provides service for getting list of points and create, update, delete
      */
     dataPointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource', 'maRqlBuilder', 'maRestResource',
-        '$templateCache', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES'];
+        '$templateCache', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', '$injector', '$rootScope'];
     function dataPointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource, RqlBuilder, RestResource,
-            $templateCache, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES) {
+            $templateCache, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, $injector, $rootScope) {
 
         types.forEach(type => {
             // put the templates in the template cache so we can ng-include them
@@ -657,6 +657,62 @@ function dataPointProvider() {
             
             hasSetPermission(user) {
                 return user && (this.hasEditPermission(user) || user.hasAnyRole(this.setPermission, true));
+            },
+            
+            subscribeToEvents($scope) {
+                if (!this.eventListenerScopes) {
+                    this.eventListenerScopes = new Set();
+                }
+                if (!this.eventListenerScopes.size) {
+                    // prevents a circular dependency
+                    const Events = $injector.get('maEvents');
+                    this.activeEvents = [];
+                    
+                    Events.buildQuery()
+                        .eq('dataPointId', this.id)
+                        .eq('active', true)
+                        .query().then(events => {
+                            this.activeEvents.push(...events);
+                        });
+
+                    this.eventListenerDeregister = Events.notificationManager.subscribe((event, mangoEvent) => {
+                        if (mangoEvent.eventType.dataPointId !== this.id) return;
+
+                        $rootScope.$apply(() => {
+                            const eventIndex = this.activeEvents.findIndex(e => e.id === mangoEvent.id);
+                            
+                            // DEACTIVATED occurs when the data point/data source is disabled etc
+                            if (event.name === 'RAISED' && mangoEvent.active) {
+                                if (eventIndex < 0) {
+                                    this.activeEvents.push(mangoEvent);
+                                }
+                            } else if (event.name === 'RETURN_TO_NORMAL' || event.name === 'DEACTIVATED') {
+                                if (eventIndex >= 0) {
+                                    this.activeEvents.splice(eventIndex, 1);
+                                }
+                            }
+                        });
+                    }, null, ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
+                }
+                this.eventListenerScopes.add($scope);
+
+                let deregisterScopeOnDestroy;
+                const destroy = () => {
+                    deregisterScopeOnDestroy();
+                    
+                    if (this.eventListenerScopes) {
+                        this.eventListenerScopes.delete($scope);
+                        if (!this.eventListenerScopes.size) {
+                            this.eventListenerDeregister();
+                            delete this.eventListenerDeregister;
+                            delete this.activeEvents;
+                            delete this.eventListenerScopes;
+                        }
+                    }
+                };
+                
+                deregisterScopeOnDestroy = $scope.$on('$destroy', destroy);
+                return destroy;
             }
         });
 
