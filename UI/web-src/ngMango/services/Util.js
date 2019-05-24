@@ -993,6 +993,11 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
         
         get MultiMap() {
             return MultiMap;
+        },
+        
+        freezeAll(array) {
+            array.forEach(a => Object.freeze(a));
+            return Object.freeze(array);
         }
     };
 
