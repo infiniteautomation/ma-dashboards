@@ -17,6 +17,7 @@ import smoothnessTemplate from '../components/eventDetectorEditor/detectorTypes/
 import stateChangeCountTemplate from '../components/eventDetectorEditor/detectorTypes/stateChangeCount.html';
 import noUpdate from '../components/eventDetectorEditor/detectorTypes/noUpdate.html';
 import noChange from '../components/eventDetectorEditor/detectorTypes/noChange.html';
+import rateOfChangeTemplate from '../components/eventDetectorEditor/detectorTypes/rateOfChange.html';
 
 function eventDetectorProvider() {
     const eventDetectorTypes = [
@@ -140,6 +141,17 @@ function eventDetectorProvider() {
             template: stateChangeCountTemplate,
             pointEventDetector: true,
             dataTypes: new Set(['BINARY', 'MULTISTATE', 'ALPHANUMERIC'])
+        },
+        {
+            type: 'RATE_OF_CHANGE',
+            description: 'pointEdit.detectors.rateOfChange',
+            template: rateOfChangeTemplate,
+            pointEventDetector: true,
+            dataTypes: new Set(['NUMERIC']),
+            defaultProperties: {
+                calculationMode: 'INSTANTANEOUS',
+                comparisonMode: 'GREATER_THAN_OR_EQUALS'
+            }
         }
     ];
     
