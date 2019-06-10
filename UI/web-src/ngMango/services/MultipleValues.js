@@ -51,6 +51,18 @@ function multipleValuesFactory() {
             return true;
         }
         
+        has(v) {
+            return this.values.includes(v);
+        }
+        
+        hasAny(values) {
+            return values.some(v => this.values.includes(v));
+        }
+        
+        hasEvery(values) {
+            return values.every(v => this.values.includes(v));
+        }
+        
         isAllEqual() {
             //const first = this.first();
             //return this.values.every((v, i, arr) => arr.hasOwnProperty(i) && v === first);
