@@ -209,7 +209,11 @@ class BulkDataPointEditorController {
         let p;
         if (this.watchList) {
             p = this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
-            this.queryObj = this.watchList.getQuery(this.watchListParams);
+            if (this.watchList.type === 'static') {
+                delete this.queryObj;
+            } else {
+                this.queryObj = this.watchList.getQuery(this.watchListParams);
+            }
         } else {
             this.queryObj = this.query;
             if (this.dataSource) {
