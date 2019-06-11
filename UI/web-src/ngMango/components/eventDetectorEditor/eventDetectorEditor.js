@@ -37,6 +37,7 @@ class EventDetectorEditorController {
         }
 
         this.alarmLevels = maEvents.levels.slice();
+        this.timePeriodTypes = MA_TIME_PERIOD_TYPES.slice();
     }
     
     $onInit() {
