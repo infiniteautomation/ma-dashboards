@@ -17,22 +17,33 @@
 </div>
 
 <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+    <!-- rate of change threshold -->
     <md-input-container flex="100" flex-gt-md="50">
         <label ma-tr="pointEdit.detectors.threshold"></label>
-        <input name="limit" ng-model="$ctrl.eventDetector.rateOfChangeThreshold" type="number" required>
+        <input name="rateOfChangeThreshold" ng-model="$ctrl.eventDetector.rateOfChangeThreshold" type="number" required>
         <div ng-messages="$ctrl.form.rateOfChangeThreshold.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.rateOfChangeThreshold.validationMessage"></div>
         </div>
     </md-input-container>
-    <ma-duration-editor flex="100" flex-gt-md="50" name="duration" ng-model="$ctrl.eventDetector.duration"
-            allowed-types="::['SECONDS', 'MINUTES', 'HOURS', 'DAYS']">
-        <ma-periods-label ma-tr="pointEdit.detectors.duration"></ma-periods-label>
-        <ma-type-label ma-tr="pointEdit.detectors.durationUnit"></ma-type-label>
-    </ma-duration-editor>
+    
+    <!-- rate of change threshold units -->
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="pointEdit.detectors.thresholdUnit"></label>
+        <md-select name="rateOfChangeThresholdUnit" ng-model="$ctrl.eventDetector.rateOfChangeThresholdUnit" required>
+            <md-option ng-repeat="type in $ctrl.timePeriodTypes track by type.type" ng-value="type.type">
+                <span ma-tr="{{type.perTranslation}}"></span>
+            </md-option>
+        </md-select>
+        <div ng-messages="$ctrl.form.rateOfChangeThresholdUnit.$error">
+            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.rateOfChangeThresholdUnit.validationMessage"></div>
+        </div>
+    </md-input-container>
+    
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.eventDetector.useResetThreshold">
         <label ma-tr="pointEdit.detectors.resetThreshold"></label>
-        <input name="resetLimit" ng-model="$ctrl.eventDetector.resetThreshold" type="number" required>
+        <input name="resetThreshold" ng-model="$ctrl.eventDetector.resetThreshold" type="number" required>
         <div ng-messages="$ctrl.form.resetThreshold.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.resetThreshold.validationMessage"></div>
@@ -59,3 +70,10 @@
             <ma-type-label ma-tr="pointEdit.detectors.averagePeriodUnit"></ma-type-label>
     </ma-duration-editor>
 </div>
+    
+<!-- part of TimeoutDetectorModel -->
+<ma-duration-editor name="duration" ng-model="$ctrl.eventDetector.duration"
+        allowed-types="::['SECONDS', 'MINUTES', 'HOURS', 'DAYS']">
+    <ma-periods-label ma-tr="pointEdit.detectors.duration"></ma-periods-label>
+    <ma-type-label ma-tr="pointEdit.detectors.durationUnit"></ma-type-label>
+</ma-duration-editor>

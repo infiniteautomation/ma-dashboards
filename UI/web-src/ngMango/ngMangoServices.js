@@ -207,14 +207,14 @@ ngMangoServices.constant('MA_DATE_TIME_FORMATS', [
 ]);
 
 ngMangoServices.constant('MA_TIME_PERIOD_TYPES', [
-    {type: 'MILLISECONDS', label: 'Milliseconds', translation: 'dateAndTime.milliseconds'},
-    {type: 'SECONDS', label: 'Seconds', translation: 'dateAndTime.seconds'},
-    {type: 'MINUTES', label: 'Minutes', translation: 'dateAndTime.minutes'},
-    {type: 'HOURS', label: 'Hours', translation: 'dateAndTime.hours'},
-    {type: 'DAYS', label: 'Days', translation: 'dateAndTime.days', showByDefault: true},
-    {type: 'WEEKS', label: 'Weeks', translation: 'dateAndTime.weeks', showByDefault: true},
-    {type: 'MONTHS', label: 'Months', translation: 'dateAndTime.months', showByDefault: true},
-    {type: 'YEARS', label: 'Years', translation: 'dateAndTime.years', showByDefault: true}
+    {type: 'MILLISECONDS', label: 'Milliseconds', translation: 'dateAndTime.milliseconds', perTranslation: 'dateAndTime.millisecond.per'},
+    {type: 'SECONDS', label: 'Seconds', translation: 'dateAndTime.seconds', perTranslation: 'dateAndTime.second.per'},
+    {type: 'MINUTES', label: 'Minutes', translation: 'dateAndTime.minutes', perTranslation: 'dateAndTime.minute.per'},
+    {type: 'HOURS', label: 'Hours', translation: 'dateAndTime.hours', perTranslation: 'dateAndTime.hour.per'},
+    {type: 'DAYS', label: 'Days', translation: 'dateAndTime.days', perTranslation: 'dateAndTime.day.per', showByDefault: true},
+    {type: 'WEEKS', label: 'Weeks', translation: 'dateAndTime.weeks', perTranslation: 'dateAndTime.week.per', showByDefault: true},
+    {type: 'MONTHS', label: 'Months', translation: 'dateAndTime.months', perTranslation: 'dateAndTime.month.per', showByDefault: true},
+    {type: 'YEARS', label: 'Years', translation: 'dateAndTime.years', perTranslation: 'dateAndTime.year.per', showByDefault: true}
 ]);
 
 ngMangoServices.constant('MA_CHART_TYPES', [
