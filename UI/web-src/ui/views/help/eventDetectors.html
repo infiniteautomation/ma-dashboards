@@ -1,0 +1,11 @@
+<h2 ma-tr="dox.eventDetectors"></h2>
+<p>This is the general event detector help</p>
+
+<ma-get-service service-name="maUiMenu" service="menu = $service"></ma-get-service>
+
+<h3 ma-tr="js.help.related"></h3>
+<ul>
+    <li ng-repeat="child in menu.menuItemsByName['ui.help.eventDetectors'].children | orderBy:['weight', 'name'] track by child.name">
+        <a ui-sref="{{child.name}}" ma-tr="{{child.menuTr}}"></a>
+    </li>
+</ul>

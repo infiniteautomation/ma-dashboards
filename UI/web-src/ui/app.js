@@ -1,5 +1,5 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -196,11 +196,9 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
                 name: 'ui.docs.' + moduleName + '.' + name,
                 url: '/' + dashCaseUrl,
                 menuText: name,
-                resolve: {
-                    viewTemplate: () => {
-                        return import(/* webpackMode: "lazy-once", webpackChunkName: "ui.docs" */
-                                '../docs/ngMango/partials/api/' + templateUrl + '.html');
-                    }
+                templatePromise() {
+                    return import(/* webpackMode: "lazy-once", webpackChunkName: "ui.docs" */
+                            '../docs/ngMango/partials/api/' + templateUrl + '.html');
                 }
             };
             apiDocsMenuItems.push(menuItem);
@@ -238,10 +236,11 @@ uiApp.run([
     '$exceptionHandler',
     'maUiLoginRedirector',
     '$anchorScroll',
+    '$injector',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
-        $anchorScroll) {
+        $anchorScroll, $injector) {
 
     if (uiSettings.googleAnalyticsPropertyId) {
         webAnalytics.enableGoogleAnalytics(uiSettings.googleAnalyticsPropertyId);
@@ -259,6 +258,48 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.pageOpts = {};
     $rootScope.$log = $log;
 
+    // This function basically does what Angular UI router does and resolves the promises in the resolve object
+    // then invokes templateProvider to get the template and put it in the $templateCache.
+    // One exception - it doesn't resolve the parents' resolve objects
+    // If we run into problems, consider using $resolve.resolve() function from UI router
+    const getTemplateUrl = function(view, templateName = view.name, locals = {}) {
+        return Promise.resolve().then(() => {
+            if (typeof view.resolve !== 'object') {
+                return locals;
+            }
+            
+            const promises = Object.keys(view.resolve).map(k => {
+                const fn = view.resolve[k];
+                return Promise.resolve($injector.invoke(fn, null, locals)).then(r => {
+                    locals[k] = r;
+                });
+            });
+            
+            return Promise.all(promises);
+        }).then(() => {
+            if (view.templateUrl) {
+                return view.templateUrl;
+            }
+            
+            let template;
+            if (typeof view.template === 'string') {
+                template = view.template;
+            } else if (view.templateProvider) {
+                // UI router includes parameters as locals, not doing that as we don't have a need for them in help (yet)
+                template = $injector.invoke(view.templateProvider, null, locals);
+            } else if (typeof view.views === 'object' && Object.values(view.views).length) {
+                return getTemplateUrl(Object.values(view.views)[0], `${templateName}_view0`, locals);
+            } else {
+                throw new Error('No template defined');
+            }
+
+            const templateUrl = `${templateName}.tmpl.html`;
+            $templateCache.put(templateUrl, template);
+
+            return templateUrl;
+        });
+    };
+
     $rootScope.openHelp = function(helpPageState) {
         if (!helpPageState && $state.params.helpPage) {
             helpPageState = $state.get($state.params.helpPage);
@@ -270,36 +311,14 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
         
         $rootScope.pageOpts.newWindowHelpUrl = $state.href(helpPageState);
-        
-        if (helpPageState.templateUrl) {
-            this.pageOpts.helpUrl = helpPageState.templateUrl;
-        } else if (helpPageState.template) {
-            this.pageOpts.helpUrl = getTemplateUrl(helpPageState, helpPageState.template);
-        } else if (helpPageState.resolve && helpPageState.resolve.viewTemplate) {
-            // load the view template via the resolve promise
-            helpPageState.resolve.viewTemplate().then((viewTemplate) => {
-                // resolve promise is a ES6 promise not AngularJS $q promise, call $apply
-                $rootScope.$apply(() => {
-                    // put the template in the cache and then set the help url
-                    this.pageOpts.helpUrl = getTemplateUrl(helpPageState, viewTemplate.default);
-                });
+
+        // put the template in the cache and then set the help url
+        getTemplateUrl(helpPageState).then(templateUrl => {
+            // getTemplateUrl returns ES6 promise not AngularJS $q promise, call $scope.$apply
+            $rootScope.$apply(() => {
+                this.pageOpts.helpUrl = templateUrl;
             });
-        }
-        
-        function getTemplateUrl(state, template) {
-            const templateUrl = `${state.name}.tmpl.html`;
-            
-            if (!$templateCache.get(templateUrl)) {
-                $templateCache.put(templateUrl, template);
-            }
-            
-            delete state.template;
-            if (state.resolve) {
-                delete state.resolve.viewTemplate;
-            }
-            
-            return (state.templateUrl = templateUrl);
-        }
+        });
     };
     
     $rootScope.closeHelp = function() {

@@ -1,14 +1,96 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
 import angular from 'angular';
 
 MenuProvider.$inject = ['$stateProvider', 'MA_UI_MENU_ITEMS'];
-function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
+function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
+
     const registeredStates = {};
+
+    // converts a templatePromise function on a state / view to a templateProvider by
+    // adding the function (which returns a promise) to the resolve object of the state then injecting the
+    // result into the provider
+    const templatePromiseToProvider = function(menuItem) {
+        const views = [menuItem];
+        if (typeof menuItem.views === 'object') {
+            views.push(...Object.values(menuItem.views));
+        }
+        views.filter(v => !!v.templatePromise).forEach((view, i) => {
+            if (!menuItem.resolve) {
+                menuItem.resolve = {};
+            }
+            
+            const resolveName = `template_${i}`;
+            menuItem.resolve[resolveName] = view.templatePromise;
+            delete view.templatePromise;
+
+            if (!view.template && !view.templateUrl && !view.templateProvider) {
+                view.templateProvider = [resolveName, t => {
+                    // check if promise returned a ES6/Webpack module instead of a template string
+                    if (typeof t === 'object' && typeof t.default === 'string') {
+                        return t.default;
+                    }
+                    return t;
+                }];
+            }
+        });
+    };
     
+    const registerStates = function(menuItems) {
+        menuItems.forEach(menuItem => {
+            if (!menuItem.name || registeredStates[menuItem.name]) return;
+
+            templatePromiseToProvider(menuItem);
+
+            if (menuItem.linkToPage) {
+                delete menuItem.templateUrl;
+                menuItem.template = '<ma-ui-page-view xid="' + menuItem.pageXid + '" flex layout="column"></ma-ui-page-view>';
+            }
+
+            if (menuItem.templateUrl) {
+                delete menuItem.template;
+                delete menuItem.templateProvider;
+            }
+
+            if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href) {
+                menuItem.template = '<div ui-view flex="noshrink" layout="column"></div>';
+                menuItem.abstract = true;
+            }
+
+            if (Array.isArray(menuItem.requiredTranslations)) {
+                if (!menuItem.resolve) menuItem.resolve = {};
+
+                menuItem.resolve.requiredTranslations = function(maTranslate) {
+                    return maTranslate.loadNamespaces(menuItem.requiredTranslations);
+                };
+                menuItem.resolve.requiredTranslations.$inject = ['maTranslate'];
+            }
+            
+            if (menuItem.name.indexOf('ui.examples.') === 0) {
+                if (!menuItem.params) menuItem.params = {};
+                menuItem.params.dateBar = {
+                    rollupControls: true
+                };
+            }
+
+            try {
+                $stateProvider.state(menuItem);
+                registeredStates[menuItem.name] = true;
+            } catch (error) {
+                const endsWith = 'is already defined';
+                if (error.message && error.message.substr(-endsWith.length) === endsWith) {
+                    // state already exists, this happens during normal operation
+                    //console.log(error);
+                } else {
+                    console.error(error);
+                }
+            }
+        });
+    };
+
     // register the built in MA_UI_MENU_ITEMS
     registerStates(MA_UI_MENU_ITEMS);
 
@@ -42,75 +124,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS) {
         registerCustomMenuItems(store.jsonData.menuItems);
     };
 
-    function registerStates(menuItems) {
-        menuItems.forEach(menuItem => {
-            if (!menuItem.name || registeredStates[menuItem.name]) return;
-
-            if (menuItem.linkToPage) {
-                delete menuItem.templateUrl;
-                menuItem.template = '<ma-ui-page-view xid="' + menuItem.pageXid + '" flex layout="column"></ma-ui-page-view>';
-            }
-
-            if (menuItem.templateUrl) {
-                delete menuItem.template;
-                delete menuItem.templateProvider;
-            }
-
-            if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href) {
-                if (menuItem.resolve && menuItem.resolve.viewTemplate) {
-                    menuItem.templateProvider = ['viewTemplate', '$templateCache', function(viewTemplate, $templateCache) {
-                        const templateUrl = menuItem.name + '.tmpl.html';
-                        const template = viewTemplate.default;
-                                                
-                        $templateCache.put(templateUrl, template);
-                        
-                        menuItem.templateUrl = templateUrl;
-                        delete menuItem.templateProvider;
-                        delete menuItem.resolve.viewTemplate;
-                        
-                        return template;
-                    }];
-                } else {
-                    menuItem.template = '<div ui-view flex="noshrink" layout="column"></div>';
-                    menuItem.abstract = true;
-                }
-            }
-
-            if (Array.isArray(menuItem.requiredTranslations)) {
-                if (!menuItem.resolve) menuItem.resolve = {};
-
-                menuItem.resolve.requiredTranslations = function(maTranslate) {
-                    return maTranslate.loadNamespaces(menuItem.requiredTranslations);
-                };
-                menuItem.resolve.requiredTranslations.$inject = ['maTranslate'];
-            }
-            
-            if (menuItem.name.indexOf('ui.examples.') === 0) {
-                if (!menuItem.params) menuItem.params = {};
-                menuItem.params.dateBar = {
-                    rollupControls: true
-                };
-            }
-
-            try {
-                $stateProvider.state(menuItem);
-                registeredStates[menuItem.name] = true;
-            } catch (error) {
-                const endsWith = 'is already defined';
-                if (error.message && error.message.substr(-endsWith.length) === endsWith) {
-                    // state already exists, this happens during normal operation
-                    //console.log(error);
-                } else {
-                    console.error(error);
-                }
-            }
-        });
-    }
-
     this.$get = MenuFactory;
 
-    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maJsonStoreEventManager', 'MA_UI_EDIT_MENUS_PERMISSION'];
-    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION) {
+    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maJsonStoreEventManager', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateCache'];
+    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION, $templateCache) {
 
         const SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
 
