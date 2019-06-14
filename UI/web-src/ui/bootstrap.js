@@ -59,8 +59,8 @@ Promise.resolve().then(() => {
             return new Promise((resolve, reject) => {
                 requirejs([moduleName], module => {
                     resolve(module);
-                }, () => {
-                    console.log('Failed to load AngularJS module', arguments);
+                }, e => {
+                    console.error('Failed to load AngularJS module', e);
                     resolve();
                 });
             });
