@@ -10,10 +10,16 @@ function ServerFactory($http, $q) {
     function Server() {
     }
     
-    Server.prototype.restart = function() {
+    Server.prototype.restart = function(delay) {
+        const params = {};
+        if (Number.isFinite(delay) && delay >= 0) {
+            params.delay = delay;
+        }
+        
         return $http({
             method: 'PUT',
-            url: serverUrl + '/restart'
+            url: serverUrl + '/restart',
+            params
         }).then(function(response) {
             return response.data;
         });
