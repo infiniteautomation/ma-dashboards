@@ -56,8 +56,11 @@ class EventAudioController {
     }
 
     eventRaised(mangoEvent) {
-        const file = this.audioFiles && (this.audioFiles[mangoEvent.alarmLevel] || this.audioFiles.DEFAULT);
-        const readAloud = this.readAloud && (this.readAloud[mangoEvent.alarmLevel] || this.readAloud.DEFAULT);
+        const audioFiles = this.audioFiles || {};
+        const readAloudBools = this.readAloud || {};
+        
+        const file = audioFiles[mangoEvent.alarmLevel] != null ? audioFiles[mangoEvent.alarmLevel] : audioFiles.DEFAULT;
+        const readAloud = readAloudBools[mangoEvent.alarmLevel] != null ? readAloudBools[mangoEvent.alarmLevel] : readAloudBools.DEFAULT;
         
         if ((file || readAloud) && this.isCurrentAudioPlayer()) {
             if (this.currentAudio) {

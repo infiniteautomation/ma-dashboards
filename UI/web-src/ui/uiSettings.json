@@ -115,6 +115,16 @@
     "LIFE_SAFETY": false,
     "DO_NOT_LOG": false
   },
+  "eventNotify": {
+  	"NONE": false,
+  	"INFORMATION": false,
+  	"IMPORTANT": false,
+  	"WARNING": false,
+    "URGENT": true,
+    "CRITICAL": true,
+    "LIFE_SAFETY": true,
+    "DO_NOT_LOG": false
+  },
   "timeouts": {
     "xhr": 30000,
     "websocket": 10000,

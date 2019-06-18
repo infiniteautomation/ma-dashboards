@@ -1250,3 +1250,16 @@ md-icon {
 [href] md-icon {
 	cursor: pointer;
 }
+
+/* acknowledge button */
+
+.ma-acknowledged-checkbox,
+.ma-acknowledged-checkbox.material-icons,
+.md-button[disabled] .ma-acknowledged-checkbox.material-icons {
+    color: #8BC34A;
+}
+
+.ma-acknowledged-checkbox.ma-acknowledged {
+    cursor: default;
+}
+

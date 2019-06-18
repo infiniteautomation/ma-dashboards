@@ -1,0 +1,19 @@
+<md-toast role="alert">
+    <span class="md-toast-text" ng-click="$ctrl.showEvent($event, mangoEvent)" layout layout-align="start center">
+        <md-icon class="ma-alarm-flag ma-margin-right" ng-class="$ctrl.levelInfo[mangoEvent.alarmLevel].materialClasses">
+            {{$ctrl.levelInfo[mangoEvent.alarmLevel].materialIcon}}
+        </md-icon>
+        <span>
+            <span ng-bind="mangoEvent.message"></span>
+            <span ng-if="mangoEvent.status">&mdash;
+                <span ng-bind="mangoEvent.status"></span>
+            </span>
+        </span>
+    </span>
+    <md-button ng-click="$ctrl.acknowledgeEvent($event, mangoEvent)" ng-disabled="mangoEvent.acknowledged">
+        <md-icon class="ma-acknowledged-checkbox" ng-class="{'ma-acknowledged': mangoEvent.acknowledged}">{{mangoEvent.acknowledged ? 'check_circle' : 'done'}}</md-icon>
+    </md-button>
+    <md-button ng-click="$ctrl.hide($event, mangoEvent)">
+        <span ma-tr="login.hide"></span>
+    </md-button>
+</md-toast>
