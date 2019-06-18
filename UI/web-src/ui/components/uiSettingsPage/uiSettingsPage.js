@@ -8,13 +8,15 @@ import uiSettingsPageTemplate from './uiSettingsPage.html';
 
 class UiSettingsPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper']; }
-    constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper) {
+    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper', 'maEvents']; }
+    constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper, Events) {
         this.uiSettings = maUiSettings;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
         this.maDialogHelper = maDialogHelper;
+        
+        this.eventLevels = Events.levels.filter(l => l.key !== 'NONE' && l.key !== 'IGNORE');
     }
     
     $onInit() {
