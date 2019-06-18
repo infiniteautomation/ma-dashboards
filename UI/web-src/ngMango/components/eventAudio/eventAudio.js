@@ -91,19 +91,23 @@ class EventAudioController {
                 delete this.currentAudio;
             }
             
-            let promise;
-            if (file) {
-                const audio = new Audio(file);
-                promise = audio.play().then(() => {
-                    this.currentAudio = audio;
-                }, () => {
-                    delete this.currentAudio;
-                    return Promise.resolve();
+            const promise = Promise.resolve().then(() => {
+                if (!file) return;
+                
+                const audio = this.currentAudio = new Audio(file);
+                
+                const finished = new Promise((resolve, reject) => {
+                    audio.addEventListener('ended', resolve);
+                    audio.addEventListener('error', reject);
                 });
-            } else {
-                promise = Promise.resolve();
-            }
-            
+                
+                audio.play();
+                
+                return finished;
+            }).then(null, error => {
+                console.error('Error playing event audio', error);
+            });
+
             if (readAloud && this.$window.speechSynthesis && this.$window.SpeechSynthesisUtterance) {
                 promise.then(() => {
                     const utterance = new this.$window.SpeechSynthesisUtterance(mangoEvent.message);
