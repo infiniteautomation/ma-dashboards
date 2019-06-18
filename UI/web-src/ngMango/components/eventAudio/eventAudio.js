@@ -28,31 +28,54 @@ class EventAudioController {
         this.$window = $window;
         this.localStorageService = localStorageService;
         this.maUtil = maUtil;
+        
+        this.unload = event => {
+            this.relinquishAudio();
+        };
     }
     
     $onInit() {
         this.id = this.maUtil.uuid();
-        this.localStorageService.set(localStorageKey, this.id);
+        this.takeControlOfAudio();
         
-        this.$scope.$on('$destroy', () => {
-            if (this.isCurrentAudioPlayer()) {
-                // relinquish control
-                this.localStorageService.remove(localStorageKey);
-            }
-        });
-        
+        this.$window.addEventListener('unload', this.unload);
+
         this.maEvents.notificationManager.subscribe((event, mangoEvent) => {
             this.eventRaised(mangoEvent);
         }, this.$scope, ['RAISED']);
     }
     
-    isCurrentAudioPlayer() {
-        const activeId = this.localStorageService.get(localStorageKey);
-        if (activeId == null) {
-            this.localStorageService.set(localStorageKey, this.id);
-            return true;
+    $onDestroy() {
+        this.$window.removeEventListener('unload', this.unload);
+        this.relinquishAudio();
+    }
+    
+    getAudioIds() {
+        let ids = this.localStorageService.get(localStorageKey);
+        if (!Array.isArray(ids)) {
+            ids = [];
         }
-        return activeId === this.id;
+        return ids;
+    }
+    
+    takeControlOfAudio() {
+        let ids = this.getAudioIds();
+        ids.unshift(this.id);
+        
+        // prevent list growing to more than 10 ids
+        ids = ids.slice(0, 10);
+        
+        this.localStorageService.set(localStorageKey, ids);
+    }
+    
+    relinquishAudio() {
+        const ids = this.getAudioIds().filter(id => id !== this.id);
+        this.localStorageService.set(localStorageKey, ids);
+    }
+    
+    isCurrentAudioPlayer() {
+        const ids = this.getAudioIds();
+        return ids[0] === this.id;
     }
 
     eventRaised(mangoEvent) {
