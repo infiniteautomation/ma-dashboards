@@ -1,39 +1,62 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Will Geller
+ * @author Jared Wiltshire
  */
 
 import eventsPageTemplate from './eventsPage.html';
 
-const paramNames = ['eventType', 'alarmLevel', 'activeStatus', 'acknowledged', 'dateFilter'];
+const paramNames = {
+    eventType: {
+        defaultValue: 'any'
+    },
+    alarmLevel: {
+        defaultValue: 'any'
+    },
+    activeStatus: {
+        defaultValue: 'any'
+    },
+    acknowledged: {
+        defaultValue: 'any'
+    },
+    dateFilter: {
+        defaultValue: false
+    }
+};
 
-EventsPageController.$inject = ['$mdMedia', '$state', 'localStorageService', 'maUiDateBar'];
-function EventsPageController($mdMedia, $state, localStorageService, maUiDateBar) {
+const storageKey = 'eventsPageSettings';
 
-    this.$mdMedia = $mdMedia;
-    this.dateBar = maUiDateBar;
+class EventsPageController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['$mdMedia', '$state', 'localStorageService', 'maUiDateBar', 'maEventTypeInfo']; }
     
-    this.sort = '-activeTimestamp';
-    this.params = $state.params;
-
-    this.$onInit = function() {
-        const params = this.params;
+    constructor($mdMedia, $state, localStorageService, maUiDateBar, EventTypeInfo) {
+        this.$mdMedia = $mdMedia;
+        this.$state = $state;
+        this.localStorageService = localStorageService;
+        this.dateBar = maUiDateBar;
+        this.EventTypeInfo = EventTypeInfo;
         
-        paramNames.forEach(prop => {
-            const storageKey = 'lastEvent-' + prop;
+        this.sort = '-activeTimestamp';
+        this.params = Object.assign({}, $state.params);
+    }
+
+    $onInit() {
+        const storedValues = this.localStorageService.get(storageKey) || {};
+        
+        Object.keys(paramNames).forEach(paramName => {
+            const defaultValue = paramNames[paramName].defaultValue;
+            const paramValue = this.params[paramName];
+            const storedValue = storedValues[paramName];
             
-            const paramValue = params[prop];
-            const filterValue = paramValue != null ? paramValue : localStorageService.get(storageKey);
-            const normalized = this.normalizeFilter(filterValue, prop === 'dateFilter' ? false : 'any');
-
-            params[prop] = normalized;
-            localStorageService.set(storageKey, normalized);
+            const normalized = this.normalizeFilter(paramValue || storedValue, defaultValue);
+            this.params[paramName] = normalized;
         });
-        
-        $state.go('.', params, {location: 'replace', notify: false});
-    };
-    
-    this.normalizeFilter = function(value, defaultValue) {
+
+        this.$state.go('.', this.params, {location: 'replace', notify: false});
+    }
+
+    normalizeFilter(value, defaultValue) {
         if (typeof value === 'string') {
             const lower = value.trim().toLowerCase();
             if (lower === 'true') {
@@ -50,15 +73,15 @@ function EventsPageController($mdMedia, $state, localStorageService, maUiDateBar
             return defaultValue;
         }
         return value;
-    };
+    }
 
-    this.storeState = function(type) {
-        const filterValue = this.params[type];
-        const storageKey = 'lastEvent-' + type;
+    storeState(type) {
+        this.$state.go('.', this.params, {location: 'replace', notify: false});
 
-        $state.go('.', this.params, {location: 'replace', notify: false});
-        localStorageService.set(storageKey, filterValue);
-    };
+        const storedValues = this.localStorageService.get(storageKey) || {};
+        storedValues[type] = this.params[type];
+        this.localStorageService.set(storageKey, storedValues);
+    }
 }
 
 export default {
