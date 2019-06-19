@@ -27,8 +27,8 @@
             </ma-event-handler-select>
         </md-card-content>
     
-        <md-card-content flex class="ma-no-padding" ng-if="$ctrl.$mdMedia('gt-md')">
-            <ma-event-handler-list flex layout="column" ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerChanged()"
+        <md-card-content flex class="ma-no-padding ma-scroll-parent" ng-if="$ctrl.$mdMedia('gt-md')">
+            <ma-event-handler-list class="ma-scroll-child" flex layout="column" ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerChanged()"
                 event="$ctrl.$state.params.event">
             </ma-event-handler-list>
         </md-card-content>
