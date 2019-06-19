@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import uiSettingsPageTemplate from './uiSettingsPage.html';
+import './uiSettingsPage.css';
 
 class UiSettingsPageController {
     static get $$ngIsClass() { return true; }

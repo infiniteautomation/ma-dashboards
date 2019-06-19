@@ -1,0 +1,13 @@
+ma-ui-settings-page table.md-table td.md-cell {
+	border: none;
+}
+
+ma-ui-settings-page table.md-table td.md-cell md-input-container {
+	margin-top: 8px;
+	margin-bottom: 8px;
+	display: flex;
+}
+
+ma-ui-settings-page table.md-table td.md-cell md-switch {
+	display: inline;
+}
