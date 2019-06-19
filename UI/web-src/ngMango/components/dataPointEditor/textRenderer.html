@@ -163,8 +163,9 @@
         </md-input-container>
         <md-input-container flex>
             <label ma-tr="pointEdit.text.text"></label>
-            <input name="{{$i}}.text" ng-model="value.text" ma-get-ctrl="text = $ngModel">
+            <input name="{{$i}}.text" ng-model="value.text" ma-get-ctrl="text = $ngModel" required>
             <div ng-messages="text.$error">
+                <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="validationMessage" ng-bind="text.validationMessage"></div>
             </div>
         </md-input-container>
