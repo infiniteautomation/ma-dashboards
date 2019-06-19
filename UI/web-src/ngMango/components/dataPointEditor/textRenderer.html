@@ -154,7 +154,7 @@
         </md-button>
         <md-input-container flex>
             <label ma-tr="pointEdit.text.key"></label>
-            <input name="[{{$i}}].key" ng-model="value.key" type="number" step="1" required ma-get-ctrl="key = $ngModel" ng-model-options="{updateOn: 'blur'}" ma-flatten-values="$values.firstNonEmpty()">
+            <input name="{{$i}}.key" ng-model="value.key" type="number" step="1" required ma-get-ctrl="key = $ngModel" ng-model-options="{updateOn: 'blur'}" ma-flatten-values="$values.firstNonEmpty()">
             <div ng-messages="key.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
@@ -163,7 +163,7 @@
         </md-input-container>
         <md-input-container flex>
             <label ma-tr="pointEdit.text.text"></label>
-            <input name="[{{$i}}].text" ng-model="value.text" ma-get-ctrl="text = $ngModel">
+            <input name="{{$i}}.text" ng-model="value.text" ma-get-ctrl="text = $ngModel">
             <div ng-messages="text.$error">
                 <div ng-message="validationMessage" ng-bind="text.validationMessage"></div>
             </div>
@@ -172,7 +172,7 @@
             <ma-color-picker ng-model="value.colour" ma-flatten-values="$values.firstNonEmpty()"></ma-color-picker>
             <md-input-container flex>
                 <label ma-tr="pointEdit.text.colour"></label>
-                <input name="[{{$i}}].colour" ng-model="value.colour" ma-get-ctrl="colour = $ngModel">
+                <input name="{{$i}}.colour" ng-model="value.colour" ma-get-ctrl="colour = $ngModel">
                 <div ng-messages="colour.$error">
                     <div ng-message="validationMessage" ng-bind="colour.validationMessage"></div>
                 </div>

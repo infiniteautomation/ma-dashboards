@@ -898,7 +898,15 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
 
         findInputElement(name, control, parentPath = null) {
             const isRootControl = !parentPath;
-            const path = isRootControl ? [] : parentPath.concat(this.splitPropertyName(control.$name, true));
+            let path;
+            
+            if (isRootControl) {
+                // convert xyz[0] to xyz.0
+                name = this.splitPropertyName(name).join('.');
+                path = [];
+            } else {
+                path = parentPath.concat(this.splitPropertyName(control.$name, true));
+            }
             
             let fullControlName;
             if (path.length) {
