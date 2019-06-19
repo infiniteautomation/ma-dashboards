@@ -44,6 +44,11 @@ class EventTypeFilterController {
             this.referenceId1 = 0;
             this.referenceId2 = 0;
         }
+
+        delete this.eventTypeInfo;
+        delete this.subTypeInfo;
+        delete this.referenceId1Info;
+        delete this.referenceId2Info;
         
         Promise.resolve().then(() => {
             if (this.eventType) {
@@ -89,6 +94,8 @@ class EventTypeFilterController {
     eventTypeChanged() {
         this.eventTypeInfo = this.eventTypes.find(info => info.type.eventType === this.eventType);
         this.subTypeInfo = this.eventTypeInfo;
+        delete this.referenceId1Info;
+        delete this.referenceId2Info;
 
         this.subType = null;
         this.referenceId1 = 0;
@@ -99,6 +106,8 @@ class EventTypeFilterController {
     
     subTypeChanged() {
         this.subTypeInfo = this.subTypes.find(info => info.type.subType === this.subType);
+        delete this.referenceId1Info;
+        delete this.referenceId2Info;
         
         this.referenceId1 = 0;
         this.referenceId2 = 0;
@@ -108,6 +117,7 @@ class EventTypeFilterController {
     
     referenceId1Changed() {
         this.referenceId1Info = this.referenceId1s.find(info => info.type.referenceId1 === this.referenceId1);
+        delete this.referenceId2Info;
         
         this.referenceId2 = 0;
 
