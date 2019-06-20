@@ -317,12 +317,15 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             // getTemplateUrl returns ES6 promise not AngularJS $q promise, call $scope.$apply
             $rootScope.$apply(() => {
                 this.pageOpts.helpUrl = templateUrl;
+                $state.go('.', {helpOpen: true}, {location: 'replace', notify: false});
             });
         });
     };
     
     $rootScope.closeHelp = function() {
         $rootScope.pageOpts.helpUrl = null;
+        
+        $state.go('.', {helpOpen: null}, {location: 'replace', notify: false});
     };
     
     $rootScope.scrollHelp = function() {

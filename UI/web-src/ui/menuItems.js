@@ -147,6 +147,7 @@ export default [
     },
     {
         name: 'ui',
+        url: '?helpOpen',
         'abstract': true,
         menuHidden: true,
         menuTr: 'ui.app.ui',
@@ -537,8 +538,7 @@ export default [
         menuTr: 'ui.dox.home',
         menuIcon: 'home',
         params: {
-            helpPage: 'ui.help.gettingStarted',
-            helpOpen: null
+            helpPage: 'ui.help.gettingStarted'
         },
         controller: ['$scope', 'maUiPages', '$injector', 'maUiMenu', function ($scope, maUiPages, $injector, maUiMenu) {
             maUiPages.getPages().then(function(store) {
