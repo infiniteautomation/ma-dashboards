@@ -326,7 +326,7 @@ export default [
     },
     {
         name: 'ui.events',
-        url: '/events?eventType&alarmLevel&activeStatus&acknowledged&dateFilter',
+        url: '/events?eventType&subType&referenceId1&referenceId2&alarmLevel&activeStatus&acknowledged&dateFilter',
         template: '<ma-ui-events-page></ma-ui-events-page>',
         menuTr: 'ui.app.events',
         menuIcon: 'alarm',

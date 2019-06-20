@@ -218,9 +218,16 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 queryBuilder.addToRql('eventType', 'eq', 'DATA_SOURCE');
                 queryBuilder.addToRql('referenceId1', 'eq', this.sourceId);
             } else {
-                queryBuilder.addToRql('eventType', 'eq', this.eventType);
-                queryBuilder.addToRql('referenceId1', 'eq', this.referenceId1);
-                queryBuilder.addToRql('referenceId2', 'eq', this.referenceId2);
+                const {eventType, subType, referenceId1, referenceId2} = this.eventTypeObject || this;
+                
+                queryBuilder.addToRql('eventType', 'eq', eventType);
+                queryBuilder.addToRql('subtypeName', 'eq', subType);
+                if (!Number.isFinite(referenceId1) || referenceId1 > 0) {
+                    queryBuilder.addToRql('referenceId1', 'eq', referenceId1);
+                }
+                if (!Number.isFinite(referenceId2) || referenceId2 > 0) {
+                    queryBuilder.addToRql('referenceId2', 'eq', referenceId2);
+                }
             }
             
             if (this.activeStatus === 'active') {
@@ -478,7 +485,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             pointIds: '<?',
             eventId: '<?',
             alarmLevel: '<?',
-            eventType:'<?',
+            eventTypeObject: '<?',
+            eventType: '<?',
+            subType: '<?',
+            referenceId1: '<?',
+            referenceId2: '<?',
             acknowledged: '<?',
             activeStatus: '<?',
             limit: '<?',
@@ -489,8 +500,6 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             timezone: '@',
             hideLink: '@?',
             hideAckButton: '<?',
-            referenceId1: '<?',
-            referenceId2: '<?',
             hideCsvButton: '<?',
             sourceId: '<?'
         },

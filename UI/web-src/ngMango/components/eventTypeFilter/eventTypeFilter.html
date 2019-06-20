@@ -1,6 +1,5 @@
-<md-input-container flex="100" flex-gt-sm="50" flex-gt-md="25">
-    <label ma-tr="ui.app.eventType.eventType"></label>
-    <md-select ng-model="$ctrl.eventType" md-on-open="$ctrl.getEventTypes()" ng-change="$ctrl.eventTypeChanged()">
+<md-input-container flex="100" flex-gt-sm="50" flex-gt-md="25" md-no-float="true">
+    <md-select ng-model="$ctrl.eventType" md-on-open="$ctrl.getEventTypes()" ng-change="$ctrl.eventTypeChanged()" ma-tr="ui.app.eventType.eventType">
         <md-option ng-value="null">
             <em ma-tr="ui.app.any"></em>
         </md-option>
@@ -10,9 +9,8 @@
     </md-select>
 </md-input-container>
 
-<md-input-container flex="100" flex-gt-sm="50" flex-gt-md="25" ng-if="$ctrl.eventType && $ctrl.eventTypeInfo.supportsSubtype">
-    <label ma-tr="ui.app.eventType.subType"></label>
-    <md-select ng-model="$ctrl.subType" md-on-open="$ctrl.getSubTypes()" ng-change="$ctrl.subTypeChanged()">
+<md-input-container flex="100" flex-gt-sm="50" flex-gt-md="25" ng-if="$ctrl.eventType && $ctrl.eventTypeInfo.supportsSubtype" md-no-float="true">
+    <md-select ng-model="$ctrl.subType" md-on-open="$ctrl.getSubTypes()" ng-change="$ctrl.subTypeChanged()" ma-tr="ui.app.eventType.subType">
         <md-option ng-value="null">
             <em ma-tr="ui.app.any"></em>
         </md-option>
@@ -22,9 +20,8 @@
     </md-select>
 </md-input-container>
 
-<md-input-container flex="100" flex-gt-sm="50" flex-gt-md="25" ng-if="($ctrl.subType || !$ctrl.eventTypeInfo.supportsSubtype) && $ctrl.subTypeInfo.supportsReferenceId1">
-    <label ma-tr="ui.app.eventType.reference1"></label>
-    <md-select ng-model="$ctrl.referenceId1" md-on-open="$ctrl.getReferenceId1s()" ng-change="$ctrl.referenceId1Changed()">
+<md-input-container flex="100" flex-gt-sm="50" flex-gt-md="25" ng-if="($ctrl.subType || !$ctrl.eventTypeInfo.supportsSubtype) && $ctrl.subTypeInfo.supportsReferenceId1" md-no-float="true">
+    <md-select ng-model="$ctrl.referenceId1" md-on-open="$ctrl.getReferenceId1s()" ng-change="$ctrl.referenceId1Changed()" ma-tr="ui.app.eventType.reference1">
         <md-option ng-value="0">
             <em ma-tr="ui.app.any"></em>
         </md-option>
@@ -34,9 +31,8 @@
     </md-select>
 </md-input-container>
 
-<md-input-container flex="100" flex-gt-sm="50" flex-gt-md="25" ng-if="$ctrl.referenceId1 && $ctrl.referenceId1Info.supportsReferenceId2">
-    <label ma-tr="ui.app.eventType.reference2"></label>
-    <md-select ng-model="$ctrl.referenceId2" md-on-open="$ctrl.getReferenceId2s()" ng-change="$ctrl.referenceId2Changed()">
+<md-input-container flex="100" flex-gt-sm="50" flex-gt-md="25" ng-if="$ctrl.referenceId1 && $ctrl.referenceId1Info.supportsReferenceId2" md-no-float="true">
+    <md-select ng-model="$ctrl.referenceId2" md-on-open="$ctrl.getReferenceId2s()" ng-change="$ctrl.referenceId2Changed()" ma-tr="ui.app.eventType.reference2">
         <md-option ng-value="0">
             <em ma-tr="ui.app.any"></em>
         </md-option>

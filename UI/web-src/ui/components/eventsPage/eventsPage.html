@@ -1,66 +1,83 @@
-<md-card class="events-page">
-      <md-toolbar class="md-whiteframe-1dp md-hue-3">
-            <div class="md-toolbar-tools">
-                  <h2 flex>
-                    <span ma-tr="ui.app.eventsTable"></span>
-                  </h2>
-                  
-                  <h2 style="padding-right: 5px;" ng-if="$ctrl.$mdMedia('gt-xs')">
-                        <span><span ma-tr="ui.app.dateFilter"></span>: </span>
-                  </h2>
-                  <md-switch ng-model="$ctrl.params.dateFilter" aria-label="{{'ui.app.dateFilter' | maTr}}" ng-change="$ctrl.storeState('dateFilter')"></md-switch>
 
-                    <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'any' }"
-                            ng-click="$ctrl.params.eventType='any'; $ctrl.storeState('eventType')" ma-tr="ui.app.any">
-                    </md-button>
-                    <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'DATA_POINT' }"
-                            ng-click="$ctrl.params.eventType='DATA_POINT'; $ctrl.storeState('eventType')">
-                        <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
-                        <span ma-tr="ui.app.point"></span>
-                    </md-button>
-                    <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'DATA_SOURCE' }"
-                            ng-click="$ctrl.params.eventType='DATA_SOURCE'; $ctrl.storeState('eventType')">
-                        <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
-                        <span ma-tr="ui.app.source"></span>
-                    </md-button>
-                    <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.params.eventType === 'SYSTEM' }"
-                            ng-click="$ctrl.params.eventType='SYSTEM'; $ctrl.storeState('eventType')" ma-tr="ui.app.system">
-                    </md-button>
-            </div>
-      </md-toolbar>
-      <md-card-actions layout="row" layout-align="start center" layout-wrap>
-            <md-input-container flex>
-                  <label ma-tr="ui.app.alarmLvl"></label>
-                  <md-select ng-model="$ctrl.params.alarmLevel" ng-change="$ctrl.storeState('alarmLevel')">
-                        <md-option value="any"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-all"></md-icon><span ma-tr="ui.app.any"></span></md-option>
-                        <md-option value="NONE"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none"></md-icon><span ma-tr="ui.app.none"></span></md-option>
-                        <md-option value="INFORMATION"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information"></md-icon><span ma-tr="ui.app.information"></span></md-option>
-                        <md-option value="IMPORTANT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important"></md-icon><span ma-tr="ui.app.important"></span></md-option>
-						<md-option value="WARNING"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning"></md-icon><span ma-tr="ui.app.warning"></span></md-option>
-                        <md-option value="URGENT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent"></md-icon><span ma-tr="ui.app.urgent"></span></md-option>
-                        <md-option value="CRITICAL"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical"></md-icon><span ma-tr="ui.app.critical"></span></md-option>
-                        <md-option value="LIFE_SAFETY"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety"></md-icon><span ma-tr="ui.app.safety"></span></md-option>
-                  </md-select>
-            </md-input-container>
-            <md-input-container flex>
-                  <label ma-tr="ui.app.activeStatus"></label>
-                  <md-select ng-model="$ctrl.params.activeStatus" ng-change="$ctrl.storeState('activeStatus')">
-                        <md-option value="any"><span ma-tr="ui.app.any"></span></md-option>
-                        <md-option value="active"><span ma-tr="ui.app.active"></span></md-option>
-                        <md-option value="noRtn"><span ma-tr="ui.app.noRtn"></span></md-option>
-                        <md-option value="normal"><span ma-tr="ui.app.returnedToNormal"></span></md-option>
-                  </md-select>
-            </md-input-container>
-            <md-input-container flex>
-                  <label ma-tr="ui.app.acknowledgedStatus"></label>
-                  <md-select ng-model="$ctrl.params.acknowledged" ng-change="$ctrl.storeState('acknowledged')">
-                        <md-option ng-value="'any'"><span ma-tr="ui.app.any"></span></md-option>
-                        <md-option ng-value="true"><span ma-tr="ui.app.acknowledged"></span></md-option>
-                        <md-option ng-value="false"><span ma-tr="ui.app.unAcknowledged"></span></md-option>
-                  </md-select>
-            </md-input-container>
-      </md-card-actions>
-      <ma-events-table event-type="$ctrl.params.eventType" alarm-level="$ctrl.params.alarmLevel" acknowledged="$ctrl.params.acknowledged"
-        event-id="eventId" active-status="$ctrl.params.activeStatus" date-filter="$ctrl.params.dateFilter"
-        from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" limit="50" sort="$ctrl.sort"></ma-events-table>
+
+<md-card class="events-page">
+    <md-toolbar class="md-whiteframe-1dp md-hue-3">
+        <div class="md-toolbar-tools">
+            <h2 flex>
+                <span ma-tr="ui.app.eventsTable"></span>
+            </h2>
+            
+            <h2 style="padding-right: 5px;" ng-if="$ctrl.$mdMedia('gt-xs')">
+                <span><span ma-tr="ui.app.dateFilter"></span>: </span>
+            </h2>
+            <md-switch ng-model="$ctrl.values.dateFilter" aria-label="{{'ui.app.dateFilter' | maTr}}" ng-change="$ctrl.inputChanged('dateFilter')"></md-switch>
+
+            <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.values.eventType === 'any' }"
+                    ng-click="$ctrl.values.eventType='any'; $ctrl.inputChanged('eventType')" ma-tr="ui.app.any">
+            </md-button>
+            <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.values.eventType === 'DATA_POINT' }"
+                    ng-click="$ctrl.values.eventType='DATA_POINT'; $ctrl.inputChanged('eventType')">
+                <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
+                <span ma-tr="ui.app.point"></span>
+            </md-button>
+            <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.values.eventType === 'DATA_SOURCE' }"
+                    ng-click="$ctrl.values.eventType='DATA_SOURCE'; $ctrl.inputChanged('eventType')">
+                <span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="ui.app.data"></span>
+                <span ma-tr="ui.app.source"></span>
+            </md-button>
+            <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.values.eventType === 'SYSTEM' }"
+                    ng-click="$ctrl.values.eventType='SYSTEM'; $ctrl.inputChanged('eventType')" ma-tr="ui.app.system">
+            </md-button>
+            
+            <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.toggleAdvancedOptions()">
+                <md-icon>{{$ctrl.advancedOptionsOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+                <md-tooltip>
+                    <span ma-tr="ui.app.moreOptions"></span>
+                </md-tooltip>
+            </md-button>
+        </div>
+    </md-toolbar>
+      
+    <md-toolbar class="md-hue-2" ng-if="$ctrl.advancedOptionsOpen">
+        <div class="md-toolbar-tools" layout>
+            <ma-event-type-filter flex ng-model="$ctrl.eventType" ng-change="$ctrl.eventTypeChanged()"></ma-event-type-filter>
+        </div>
+    </md-toolbar>
+
+    <md-card-actions layout="row" layout-align="start center" layout-wrap>
+        <md-input-container flex>
+            <label ma-tr="ui.app.alarmLvl"></label>
+            <md-select ng-model="$ctrl.values.alarmLevel" ng-change="$ctrl.inputChanged('alarmLevel')">
+                <md-option value="any"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-all"></md-icon><span ma-tr="ui.app.any"></span></md-option>
+                <md-option value="NONE"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none"></md-icon><span ma-tr="ui.app.none"></span></md-option>
+                <md-option value="INFORMATION"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information"></md-icon><span ma-tr="ui.app.information"></span></md-option>
+                <md-option value="IMPORTANT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important"></md-icon><span ma-tr="ui.app.important"></span></md-option>
+            	<md-option value="WARNING"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning"></md-icon><span ma-tr="ui.app.warning"></span></md-option>
+                <md-option value="URGENT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent"></md-icon><span ma-tr="ui.app.urgent"></span></md-option>
+                <md-option value="CRITICAL"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical"></md-icon><span ma-tr="ui.app.critical"></span></md-option>
+                <md-option value="LIFE_SAFETY"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety"></md-icon><span ma-tr="ui.app.safety"></span></md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="ui.app.activeStatus"></label>
+            <md-select ng-model="$ctrl.values.activeStatus" ng-change="$ctrl.inputChanged('activeStatus')">
+                <md-option value="any"><span ma-tr="ui.app.any"></span></md-option>
+                <md-option value="active"><span ma-tr="ui.app.active"></span></md-option>
+                <md-option value="noRtn"><span ma-tr="ui.app.noRtn"></span></md-option>
+                <md-option value="normal"><span ma-tr="ui.app.returnedToNormal"></span></md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex>
+            <label ma-tr="ui.app.acknowledgedStatus"></label>
+            <md-select ng-model="$ctrl.values.acknowledged" ng-change="$ctrl.inputChanged('acknowledged')">
+                <md-option ng-value="'any'"><span ma-tr="ui.app.any"></span></md-option>
+                <md-option ng-value="true"><span ma-tr="ui.app.acknowledged"></span></md-option>
+                <md-option ng-value="false"><span ma-tr="ui.app.unAcknowledged"></span></md-option>
+            </md-select>
+        </md-input-container>
+    </md-card-actions>
+    <ma-events-table event-type-object="$ctrl.eventType" alarm-level="$ctrl.values.alarmLevel" acknowledged="$ctrl.values.acknowledged"
+        event-id="eventId" active-status="$ctrl.values.activeStatus" date-filter="$ctrl.values.dateFilter"
+        from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" limit="50" sort="$ctrl.sort">
+    </ma-events-table>
 </md-card>
