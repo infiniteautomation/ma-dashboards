@@ -450,7 +450,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 name: originalItem.name
             };
             
-            ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText', 'permission'].forEach(property => {
+            ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText', 'permission', 'requiredPermission'].forEach(property => {
                 propertyDiff(property, newItem, originalItem, difference);
             });
             

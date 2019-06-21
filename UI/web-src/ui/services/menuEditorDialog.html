@@ -43,20 +43,35 @@
             <div class="hint"><span ma-tr="ui.app.menuIconNameHint1"></span> <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> <span ma-tr="ui.app.menuIconNameHint2"></span>
               <a href="https://design.google.com/icons/" target="_blank">Material Icon</a> <span ma-tr="ui.app.menuIconNameHint3"></span></div>
         </md-input-container>
-        
-        <md-input-container class="has-hints" flex>
-            <label ma-tr="ui.app.permissionRequired"></label>
-            <input name="permission" ng-model="$ctrl.item.permission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
-            <div class="hint" ng-hide="$ctrl.menuItemEditForm.permission.$invalid && ($ctrl.menuItemEditForm.permission.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.permissionRequiredHint"></div>
-            <div ng-messages="$ctrl.menuItemEditForm.permission.$error">
-              <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
-            </div>
-            <ma-permissions-menu ng-model="$ctrl.item.permission"></ma-permissions-menu>
-        </md-input-container>
 
         <md-switch ng-model="$ctrl.item.showOnMenu" aria-label="{{'ui.app.showMenuItem'|maTr}}">
           <span ma-tr="ui.app.showMenuItem"></span>
         </md-switch>
+      </div>
+      
+      <div layout>
+        
+        <md-input-container class="has-hints" flex>
+            <label ma-tr=ui.app.roleRequired></label>
+            <md-icon>group</md-icon>
+            <input name="permission" ng-model="$ctrl.item.permission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+            <div class="hint" ng-hide="$ctrl.menuItemEditForm.permission.$invalid && ($ctrl.menuItemEditForm.permission.$touched || $ctrl.menuItemEditForm.$submitted)"
+                ma-tr="ui.app.roleRequiredHint"></div>
+            <div ng-messages="$ctrl.menuItemEditForm.permission.$error">
+              <div ng-message="pattern" ma-tr="ui.app.invalidRoles"></div>
+            </div>
+            <ma-permissions-menu ng-model="$ctrl.item.permission"></ma-permissions-menu>
+        </md-input-container>
+        <md-input-container class="has-hints" flex>
+            <label ma-tr=ui.app.permissionRequired></label>
+            <md-icon>vpn_key</md-icon>
+            <input name="requiredPermission" ng-model="$ctrl.item.requiredPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+            <div class="hint" ng-hide="$ctrl.menuItemEditForm.requiredPermission.$invalid && ($ctrl.menuItemEditForm.requiredPermission.$touched || $ctrl.menuItemEditForm.$submitted)"
+                ma-tr="ui.app.permissionRequiredHint"></div>
+            <div ng-messages="$ctrl.menuItemEditForm.requiredPermission.$error">
+              <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+            </div>
+        </md-input-container>
       </div>
 
       <div layout="column" ng-show="!$ctrl.item.builtIn">
