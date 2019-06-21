@@ -8,7 +8,8 @@
             name="targetPointXid" 
             point-xid="{{editor.eventHandler.targetPointXid}}" 
             ng-change="$ctrl.changeTargetPoint()" 
-            ng-model="$ctrl.targetPoint">
+            ng-model="$ctrl.targetPoint"
+            settable="true">
         </ma-filtering-point-list>
         <div ng-messages="editor.form.targetPointXid.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>

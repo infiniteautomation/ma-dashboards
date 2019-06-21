@@ -190,6 +190,10 @@ class FilteringPointListController {
                 rqlQuery.push(new query.Query({name: 'eq', args: ['dataTypeId', queryArg]}));
             }
         }
+        
+        if (this.settable != null) {
+            rqlQuery.push(new query.Query({name: 'eq', args: ['settable', !!this.settable]}));
+        }
 
         let queryString;
         if (this.query) {
@@ -253,7 +257,8 @@ function filteringPointList() {
             required: '@?',
             disabled: '@?',
             dataType: '@?type',
-            dataTypes: '<?types'
+            dataTypes: '<?types',
+            settable: '<?'
         },
         require: {
             ngModelCtrl: 'ngModel'
