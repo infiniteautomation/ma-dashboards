@@ -1,4 +1,5 @@
 {
+  "titleSuffix": "Mango v3",
   "logoSrc": "/modules/mangoUI/web/img/logo.svg",
   "defaultTheme": "mangoDark",
   "codeTheme": "monokai",
