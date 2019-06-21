@@ -8,12 +8,13 @@ import './dataSourcePage.css';
 
 class DataSourcePageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maDataSource', '$state', '$mdMedia']; }
+    static get $inject() { return ['maDataSource', '$state', '$mdMedia', 'maUser']; }
     
-    constructor(maDataSource, $state, $mdMedia) {
+    constructor(maDataSource, $state, $mdMedia, User) {
         this.maDataSource = maDataSource;
         this.$state = $state;
         this.$mdMedia = $mdMedia;
+        this.User = User;
     }
     
     $onInit() {
@@ -38,6 +39,10 @@ class DataSourcePageController {
     }
     
     newDataSource() {
+        if (!this.User.current.hasAnyPermission('permissionDatasource')) {
+            return;
+        }
+        
         const dsTypes = this.maDataSource.types;
         if (dsTypes.length) {
             this.dataSource = dsTypes[0].createDataSource();

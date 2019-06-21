@@ -13,12 +13,13 @@ function dataSourceScrollList($injector) {
 
     class DataSourceScrollListController {
         static get $$ngIsClass() { return true; }
-        static get $inject() { return ['$scope', 'maDataSource', '$filter']; }
+        static get $inject() { return ['$scope', 'maDataSource', '$filter', 'maUser']; }
         
-        constructor($scope, DataSource, $filter) {
+        constructor($scope, DataSource, $filter, User) {
             this.$scope = $scope;
             this.DataSource = DataSource;
             this.$filter = $filter;
+            this.User = User;
         }
         
         $onInit() {

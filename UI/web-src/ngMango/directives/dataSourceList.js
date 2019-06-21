@@ -36,8 +36,8 @@
  <p>You have chosen data source "{{myDataSource.name}}". It is {{myDataSource.enabled ? 'enabled' : 'disabled'}} and has an XID of {{myDataSource.xid}}.</p>
  
  */
-dataSourceList.$inject = ['maDataSource', '$injector', '$filter'];
-function dataSourceList(DataSource, $injector, $filter) {
+dataSourceList.$inject = ['maDataSource', '$injector', '$filter', 'maUser'];
+function dataSourceList(DataSource, $injector, $filter, User) {
     const DEFAULT_SORT = ['name'];
 
     return {
@@ -62,7 +62,8 @@ function dataSourceList(DataSource, $injector, $filter) {
             if ($injector.has('$mdUtil')) {
                 return `<md-select md-on-open="onOpen()" ng-model-options="{trackBy: '$value.xid'}">
                     <md-option ng-if="showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
-                    <md-option ng-if="showNew" ng-value="newValue"><em ma-tr="dsList.createDataSource"></em></md-option>
+                    <md-option ng-if="showNew && User.current.hasAnyPermission('permissionDatasource')"
+                        ng-value="newValue"><em ma-tr="dsList.createDataSource"></em></md-option>
                     <md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.xid">
                     <span ng-bind="dataSourceLabel(dataSource)"></span>
                 </md-option></md-select>`;
@@ -71,6 +72,8 @@ function dataSourceList(DataSource, $injector, $filter) {
         },
         replace: true,
         link: function ($scope, $element, attrs, ngModelCtrl) {
+            $scope.User = User;
+            
             DataSource.notificationManager.subscribe((event, item, attributes) => {
                 if (Array.isArray($scope.dataSources) && !$scope.query && $scope.start == null && $scope.limit == null) {
                     attributes.updateArray($scope.dataSources);
