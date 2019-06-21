@@ -451,17 +451,6 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             }, true);
         }
         
-        eventHandlerState() {
-            return 'ui.settings.eventHandlers';
-        }
-        
-        eventHandlerStateParams(event) {
-            return {
-                eventDescription: event.description,
-                eventTypeId: event.typeId
-            };
-        }
-        
         formatDuration(duration) {
             if (duration < 1000) {
                 return Translate.trSync('ui.time.milliseconds', [duration]);

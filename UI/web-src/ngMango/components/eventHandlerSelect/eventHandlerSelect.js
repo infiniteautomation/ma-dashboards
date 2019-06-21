@@ -31,13 +31,13 @@ class EventHandlerSelectController {
         this.maEventHandler.subscribe({
             scope: this.$scope,
             handler: (event, item, attributes) => {
-                attributes.updateArray(this.eventHandlers, item => !this.event || item.hasEventType(this.event.typeId));
+                attributes.updateArray(this.eventHandlers, item => !this.eventType || item.hasEventType(this.eventType.typeId));
             }
         });
     }
     
     $onChanges(changes) {
-        if (changes.event && !changes.event.isFirstChange()) {
+        if (changes.eventType && !changes.eventType.isFirstChange()) {
             this.doQuery();
         }
     }
@@ -46,8 +46,8 @@ class EventHandlerSelectController {
         const queryBuilder = this.maEventHandler.buildQuery();
         queryBuilder.limit(10000);
         return queryBuilder.query().then(eventHandlers => {
-            if (this.event) {
-                const eventTypeId = this.event.typeId;
+            if (this.eventType) {
+                const eventTypeId = this.eventType.typeId;
                 this.eventHandlers = eventHandlers.filter(eh => eh.hasEventType(eventTypeId));
             } else {
                 this.eventHandlers = eventHandlers;
@@ -67,8 +67,8 @@ class EventHandlerSelectController {
     selectEventHandler() {
         if (this.selected === this.newValue) {
             this.selected = new this.maEventHandler();
-            if (this.event) {
-                this.selected.addEventType(this.event.getEventType());
+            if (this.eventType) {
+                this.selected.addEventType(this.eventType);
             }
         }
         this.setViewValue();
@@ -82,7 +82,7 @@ export default {
         labelSlot: '?maLabel'
     },
     bindings: {
-        event: '<?',
+        eventType: '<?',
         showNewOption: '<?'
     },
     require: {

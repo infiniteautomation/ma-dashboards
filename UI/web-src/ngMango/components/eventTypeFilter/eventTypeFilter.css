@@ -3,3 +3,8 @@ ma-event-type-filter {
 	flex-wrap: wrap;
 	align-items: center;
 }
+
+ma-event-type-filter md-input-container {
+	margin-top: 0;
+	margin-bottom: 0;
+}

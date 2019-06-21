@@ -1,12 +1,4 @@
-<div ng-if="$ctrl.$state.params.event" class="ma-margin-bottom" layout layout-align="center center">
-    <div md-colors="::{background: 'accent-hue-1'}" class="md-padding">
-        <span ma-tr="ui.app.eventHandlersFiltered" ma-tr-args="[$ctrl.$state.params.event.message]"></span>
-        <md-button class="md-icon-button ma-small-button ma-no-margin-right" ng-click="$ctrl.clearEventState()">
-            <md-icon>clear</md-icon>
-            <md-tooltip ma-tr="ui.app.showAllEventHandlers"></md-tooltip>
-        </md-button>
-    </div>
-</div>
+<ma-event-type-filter ng-model="$ctrl.eventType" ng-change="$ctrl.eventTypeChanged()"></ma-event-type-filter>
 
 <div layout="column" layout-gt-md="row" layout-gt-lg="row" flex="noshrink">
     <md-card flex-gt-md="25" flex-gt-lg="20" layout="column">
@@ -23,13 +15,13 @@
     
         <md-card-content flex layout layout-align="start center" ng-if="!$ctrl.$mdMedia('gt-md')">
             <ma-event-handler-select flex layout ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerChanged()"
-                show-new-option="true" event="$ctrl.$state.params.event">
+                show-new-option="true" event-type="$ctrl.eventType">
             </ma-event-handler-select>
         </md-card-content>
     
         <md-card-content flex class="ma-no-padding ma-scroll-parent" ng-if="$ctrl.$mdMedia('gt-md')">
             <ma-event-handler-list class="ma-scroll-child" flex layout="column" ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerChanged()"
-                event="$ctrl.$state.params.event">
+                event-type="$ctrl.eventType">
             </ma-event-handler-list>
         </md-card-content>
     </md-card>
