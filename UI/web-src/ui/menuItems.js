@@ -1256,6 +1256,36 @@ export default [
         menuTr: 'ui.app.eventHandlers'
     },
     {
+        name: 'ui.help.eventHandlers.email',
+        menuTr: 'ui.dox.eventHandlers.email',
+        url: '/email-event-handler',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('emailEventHandler.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventHandlers.setPoint',
+        menuTr: 'ui.dox.eventHandlers.setPoint',
+        url: '/setPoint-event-handler',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('setPointEventHandler.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventHandlers.process',
+        menuTr: 'ui.dox.eventHandlers.process',
+        url: '/process-event-handler',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('processEventHandler.html')
+            }
+        }
+    },
+    {
         name: 'ui.examples',
         url: '/examples',
         menuTr: 'ui.dox.examples',

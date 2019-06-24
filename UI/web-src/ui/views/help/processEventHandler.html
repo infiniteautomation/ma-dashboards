@@ -1,0 +1,23 @@
+<div class="ma-help-doc-container">
+<h2 ma-tr="ui.dox.eventHandlers.process"></h2>
+
+<p>
+  This handler will execute a local process, or shell command, optionally when an event is raised or deactivated. 
+  The respective commands can be any shell command appropriate to the host. Commands should be specified as they would
+  be from a terminal command prompt. For very complex commands, you may find it convenient to write a shell script, 
+  and then call the script from Mango.
+</p>
+
+<p>
+  If a process fails to initiate for any reason, a system event will be raised providing the failure description. 
+  Also, processes will be terminated if they run for longer than 15 seconds. Non-empty standard output from the process 
+  will be written to the Mango log at an "information" level. Non-empty error output will be written to the Mango log
+  at an "error" level.
+</p>
+<h3 ma-tr="js.help.related"></h3>
+<ul>
+    <li>
+        <a ui-sref="ui.help.eventHandlers" ma-tr="ui.dox.eventHandlers"></a>
+    </li>
+</ul>
+</div>

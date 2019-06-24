@@ -1,0 +1,22 @@
+<div class="ma-help-doc-container">
+<h2 ma-tr="ui.dox.eventHandlers.setPoint"></h2>
+
+<p>
+    When an event is triggered, this handler will write the value at a given data point. The target is the data point that 
+    will have its value changed. Optionally, the data point can be set with the value that changed the event, but this is only 
+    possible if the event was triggered by a value changer, and the path data type is the same as the source data type. To set 
+    the path to the source value, select the Use source value field. Or, enter the value you want to write in the Value to set field.
+</p>
+
+<p>
+  It is also possible to use a script to compute the value to set to the target point. Set point scripts can have
+  data points added into the context of the event, and the target point is always added under the key "target". If a
+  point is disabled it will simply not be added to the context, so typeof(disabledVariableName) === "undefined"
+</p>
+<h3 ma-tr="js.help.related"></h3>
+<ul>
+    <li>
+        <a ui-sref="ui.help.eventHandlers" ma-tr="ui.dox.eventHandlers"></a>
+    </li>
+</ul>
+</div>
