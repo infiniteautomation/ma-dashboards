@@ -417,13 +417,15 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         if (toState.name.indexOf('ui.help.') === 0 || toState.name.indexOf('ui.docs.') === 0) {
             const linkBetweenPages = toState.name.indexOf('ui.help.') === 0 && $state.includes('ui.help') ||
                 toState.name.indexOf('ui.docs.') === 0 && $state.includes('ui.docs');
+            const initialPageLoad = !fromState.name;
 
             const openInSidebar = $state.includes('ui') && (toParams.sidebar != null ? toParams.sidebar : !linkBetweenPages);
             if (openInSidebar) {
                 // stay on current page and load help page into sidebar
                 event.preventDefault();
                 $rootScope.openHelp(toState);
-            } else {
+            } else if (!initialPageLoad) { // don't attempt closing help if this is the initial page load
+                // close help when navigating to a help page when sidebar is already open
                 $rootScope.closeHelp();
             }
         }
