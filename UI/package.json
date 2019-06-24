@@ -73,7 +73,8 @@
     "**/angular-material": "1.1.17",
     "**/moment": "^2.22.2",
     "**/moment-timezone": "^0.5.17",
-    "**/cldrjs": "^0.5.0"
+    "**/cldrjs": "^0.5.0",
+    "**/natives": "1.1.6"
   },
   "scripts": {
     "prewebpack": "gulp build-docs",
