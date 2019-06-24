@@ -1,16 +1,33 @@
 *Version 3.6.0*
 * Upgraded to work with core version 3.6.x
-* Added Spanish translation file
 * Add 'Data sources' page for creating/updating/deleting data sources and data points. Note: not all data source types supported yet.
+* Added Spanish translation file
 * Update 'Bulk data point edit' page to use same data point editor dialog as "Data sources" page
 * Add 'Event handlers' page for creating/updating/deleting event handlers
 * Add dialog for for creating/updating/deleting event detectors (opened from 'Data point details' or 'Data sources' page)
 * Clean up menu, moved some menu items to 'Utilities' section of 'Admin home'
 * Add more help pages and update existing help content
-* Ability to open sidebar help in new window
 * Add HTTP server system settings
 * Ability to set session expiration per user on the 'Users' page
 * Better feedback when saving system settings
+* Display event durations more accurately
+* Ability to filter events table more specifically using advanced options toolbar
+* Ability to require a role or a permission (configured via system settings) to show a menu item
+* Use v2 REST API for statistics
+* Data point on 'Data point details' is kept up to date via WebSocket
+* Update data source drop down menus via WebSocket
+* Add 'LED indicator' example
+* Update license page, add checkboxes for checking for upgrades and sending usage information
+* Fix bugs in cron expression component
+* Enable searching for page in page editor and Dashboard Designer
+* Enable restricting ma-filtering-point list to a certain data type or settable data points
+* Print better error if loading a module's JavaScript fails
+* Add system setting for configuring restart delay
+* Ability to display events of a certain level as popup notifications (toasts)
+* Ability to read event messages of a certain level out loud using browser speech synthesis
+* Ability to open sidebar help in new window
+* Ability to open help sidebar by setting ?helpOpen=true in the URL
+* Add maHex filter for displaying numbers as hexadecimal
 * Add ma-data-point-editor component for creating/updating/deleting data points
 * Add ma-data-source-editor component for creating/updating/deleting data sources
 * Add ma-data-point-tags-editor component for editing tags on data points
@@ -37,11 +54,6 @@
 * Remove constants from ngMango module - MA_INSERT_CSS, MA_ROLLUP_TYPES, MA_DATE_TIME_FORMATS, MA_TIME_PERIOD_TYPES, MA_CHART_TYPES, MA_EVENT_LINK_INFO, and MA_RELATIVE_DATE_TYPES
 * Remove constant from ngMangoServices module - MA_EVENT_HANDLER_TYPES
 * Add constants to ngMangoServices module - MA_DATE_TIME_FORMATS, MA_TIME_PERIOD_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, and MA_EVENT_LINK_INFO
-* Data point on 'Data point details' is kept up to date via WebSocket
-* Update data source drop down menus via WebSocket
-* Add 'LED indicator' example
-* Update license page, add checkboxes for checking for upgrades and sending usage information
-* Fix bugs in cron expression component
 * Replace uses of jQuery find() with maFind()
 * Replace uses of jQuery extend() with maUtil.deepMerge()
 * Update JavaScript libraries to latest versions
