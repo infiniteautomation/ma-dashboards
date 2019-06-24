@@ -1,5 +1,23 @@
 <h2 ma-tr="dox.eventDetectors"></h2>
-<p>This is the general event detector help</p>
+
+<p>
+  An event detector's purpose is to determine if the value of a point satisfies one or more related conditions, and if 
+  so, to become "active" and raise an event that can be appropriately handled. A point can have an unlimited number of 
+  event detectors. The ways in which events can be detected depend upon the data type of point, and so only the event 
+  detectors that apply to the current point's data type are listed in the <b>Type</b> selection.
+</p>
+<p>
+  A point may have as many detectors as necessary, and can have multiple detectors of the same type. (i.e. multiple 
+  high limit or low limit detectors.)
+</p>
+<p>
+  To add a new detector select the <b>Type</b> from the list and give the event a name.  The event name will be used to 
+  identify the event when assigning an event handler to the event. 
+</p>
+<p>
+  Each detector type has an <b>Alarm level</b> attribute. This determines whether the detector raises an alarm when 
+  active, and if so the severity of the alarm. See the general help page for information on Alarms.
+</p>
 
 <ma-get-service service-name="maUiMenu" service="menu = $service"></ma-get-service>
 
