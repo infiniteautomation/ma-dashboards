@@ -151,6 +151,14 @@
                                 </md-button>
                                 <md-menu-content width="3" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
                                     <md-menu-item>
+                                        <md-button class="ma-no-padding-right" href ui-state="'ui.dataPointDetails'" ui-state-params="{pointXid: point.xid}">
+                                            <div layout="row" flex>
+                                                <div flex ma-tr="ui.app.dataPointDetails"></div>
+                                                <md-icon md-menu-align-target>timeline</md-icon>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
                                         <md-button class="ma-no-padding-right" ng-click="$ctrl.editDataPoint($event, point)">
                                             <div layout="row" flex>
                                                 <div flex ma-tr="common.edit"></div>
