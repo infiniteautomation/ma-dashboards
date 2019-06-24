@@ -1256,6 +1256,36 @@ export default [
         menuTr: 'ui.app.eventHandlers'
     },
     {
+        name: 'ui.help.eventHandlers.email',
+        menuTr: 'ui.dox.eventHandlers.email',
+        url: '/email-event-handler',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('emailEventHandler.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventHandlers.setPoint',
+        menuTr: 'ui.dox.eventHandlers.setPoint',
+        url: '/setPoint-event-handler',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('setPointEventHandler.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventHandlers.process',
+        menuTr: 'ui.dox.eventHandlers.process',
+        url: '/process-event-handler',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('processEventHandler.html')
+            }
+        }
+    },
+    {
         name: 'ui.examples',
         url: '/examples',
         menuTr: 'ui.dox.examples',
@@ -1724,6 +1754,126 @@ export default [
         views: {
             '@ui.help': {
                 templatePromise: helpTemplate('rateOfChange.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.change',
+        menuTr: 'dox.eventDetectors.change',
+        url: '/change',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('change.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.noChange',
+        menuTr: 'dox.eventDetectors.noChange',
+        url: '/no-change',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('noChange.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.noUpdate',
+        menuTr: 'dox.eventDetectors.noUpdate',
+        url: '/no-update',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('noUpdate.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.state',
+        menuTr: 'dox.eventDetectors.state',
+        url: '/state',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('state.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.stateChangeCount',
+        menuTr: 'dox.eventDetectors.stateChangeCount',
+        url: '/state-change-count',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('stateChangeCount.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.highLimit',
+        menuTr: 'dox.eventDetectors.highLimit',
+        url: '/high-limit',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('highLimit.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.lowLimit',
+        menuTr: 'dox.eventDetectors.lowLimit',
+        url: '/low-limit',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('lowLimit.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.analogChange',
+        menuTr: 'dox.eventDetectors.analogChange',
+        url: '/analog-change',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('analogChange.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.range',
+        menuTr: 'dox.eventDetectors.range',
+        url: '/range',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('range.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.positiveCusum',
+        menuTr: 'dox.eventDetectors.positiveCusum',
+        url: '/positive-cusum',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('positiveCusum.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.negativeCusum',
+        menuTr: 'dox.eventDetectors.negativeCusum',
+        url: '/negative-cusum',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('negativeCusum.html')
+            }
+        }
+    },
+    {
+        name: 'ui.help.eventDetectors.smoothness',
+        menuTr: 'dox.eventDetectors.smoothness',
+        url: '/smoothness',
+        views: {
+            '@ui.help': {
+                templatePromise: helpTemplate('smoothness.html')
             }
         }
     }

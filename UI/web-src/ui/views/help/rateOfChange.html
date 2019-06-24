@@ -1,10 +1,35 @@
+<div class="ma-help-doc-container">
 <h2 ma-tr="dox.eventDetectors.rateOfChange"></h2>
 
-<p>This is the rate of change help</p>
+<p>The Rate Of Change detector only applies to Numeric points. This
+	detector is able to raise events when the rate of change of the point
+	crosses its rate of change threshold. The comparison option describes
+	how the computed rate of change is compared to the rate of change
+	threshold. An event will be raised whenever the comparison between the
+	rate of change threshold and the computed rate of change is true.
+</p>
+<p>If the value is increases or decreasing there will be a positive or negative 
+	rate of change respectively.  Checking <b> Use absolute value </b> 
+	ensures that the comparison is done to the absolute value of the computed rate of change.
+	Meaning the event will trigger whether the values increases or decreases. 
+</p>
+<p>Checking <b>Use reset threshold </b> will allow you to configure a reset threshold.
+    If the reset threshold is crossed, the event will return to normal.  If no reset threshold
+    is configured then the event will stay active and only return to normal when the comparison 
+    is no longer true.
+</p>
 
+<p> <b>Instantaneous mode </b>compares the point value changes in real time against the threshold
+</p>
+
+<p> <b>Average mode</b> will compute the average change over the selected period of time to compare
+ to the threshold. The rate of change for a point is computed based on how much change occurs within
+  the averaging period settings, this must be greater than 0.
+ </p>
+ 
 <h3 ma-tr="js.help.related"></h3>
 <ul>
-    <li>
-        <a ui-sref="ui.help.eventDetectors" ma-tr="dox.eventDetectors.general"></a>
-    </li>
+	<li><a ui-sref="ui.help.eventDetectors"
+		ma-tr="dox.eventDetectors.general"></a></li>
 </ul>
+</div>

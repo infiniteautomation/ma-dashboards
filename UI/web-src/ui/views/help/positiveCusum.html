@@ -1,0 +1,18 @@
+<div class="ma-help-doc-container">
+<h2 ma-tr="dox.eventDetectors.positiveCusum"></h2>
+
+<p>
+  This detector applies only to Numeric points. The <b>Positive limit</b> is the CUSUM above which the detector becomes 
+  active, and the <b>Weight</b> is the constant weight value to use for CUSUM calculation. The detector may optionally 
+  be configured with a <b>Duration</b>; the CUSUM must stay above the limit for at least the given duration before the 
+  detector becomes active. Events raised by this detector will automatically return to normal when the condition is no 
+  longer satisfied.
+</p>
+
+<h3 ma-tr="js.help.related"></h3>
+<ul>
+    <li>
+        <a ui-sref="ui.help.eventDetectors" ma-tr="dox.eventDetectors.general"></a>
+    </li>
+</ul>
+</div>

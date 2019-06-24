@@ -1,0 +1,18 @@
+<div class="ma-help-doc-container">
+<h2 ma-tr="dox.eventDetectors.range"></h2>
+
+<p>
+  This detector applies only to Numeric points. The <b>Low range limit</b> and <b>High range limit</b> define the range which the detector becomes 
+  active. The detector may optionally be configured with a <b>Duration</b>, the point's value must stay within the
+  range for at least the given duration before the detector becomes active. Events raised by this detector will 
+  automatically return to normal when the condition is no longer satisfied. The range is inclusive of the limits, 
+  meaning that if the value is exactly the low or high range limit the detector will fire an event.
+</p>
+
+<h3 ma-tr="js.help.related"></h3>
+<ul>
+    <li>
+        <a ui-sref="ui.help.eventDetectors" ma-tr="dox.eventDetectors.general"></a>
+    </li>
+</ul>
+</div>
