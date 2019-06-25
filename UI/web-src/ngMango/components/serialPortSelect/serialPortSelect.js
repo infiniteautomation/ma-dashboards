@@ -4,6 +4,7 @@
  */
 
 import serialPortSelectTemplate from './serialPortSelect.html';
+import './serialPortSelect.css';
 
 class SerialPortSelectController {
     static get $$ngIsClass() { return true; }
@@ -12,6 +13,8 @@ class SerialPortSelectController {
     constructor(maSerialPort, maDialogHelper) {
         this.maSerialPort = maSerialPort;
         this.maDialogHelper = maDialogHelper;
+        
+        this.showClear = true;
     }
     
     $onInit() {
@@ -28,9 +31,15 @@ class SerialPortSelectController {
     }
 
     refreshList() {
-        this.getSerialPorts({ refresh: true }).then(response => {
+        this.getSerialPorts({refresh: true}).then(response => {
             this.maDialogHelper.toast('ui.app.serialPort.portListRefreshed');
         });
+    }
+    
+    setValue(value) {
+        this.ngModelCtrl.$setViewValue(value);
+        this.ngModelCtrl.$setTouched(value);
+        this.ngModelCtrl.$render();
     }
 }
 
