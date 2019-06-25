@@ -440,21 +440,24 @@ class WatchListBuilderController {
     }
 
     hierarchySelectionChanged() {
-        const updateSelection = points => {
+        this.$q.resolve().then(() => {
+            const pointXidsToGet = this.hierarchySelection.map(item => item.xid);
+            if (!pointXidsToGet.length) {
+                return [];
+            }
+
+            // fetch full points
+            return this.Point.buildPostQuery()
+                .in('xid', pointXidsToGet)
+                .limit(pointXidsToGet.length)
+                .query();
+            
+        }).then(points => {
             this.watchlist.points = points.slice();
             this.updateSelections(true, false);
             this.resetSort();
             this.sortAndLimit();
-        };
-        
-        const pointXidsToGet = this.hierarchySelection.map(item => item.xid);
-        if (pointXidsToGet.length) {
-            // fetch full points
-            const ptQuery = new query.Query({name: 'in', args: ['xid'].concat(pointXidsToGet)});
-            this.Point.query({rqlQuery: ptQuery.toString()}).$promise.then(updateSelection);
-        } else {
-            updateSelection([]);
-        }
+        });
     }
 
     updateWatchListFolderIds() {

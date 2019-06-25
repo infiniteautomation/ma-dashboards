@@ -332,6 +332,28 @@ function dataPointProvider() {
                     return items;
                 });
             },
+
+            buildPostQuery() {
+                const builder = new RqlBuilder();
+                builder.queryFunction = (queryObj, opts) => {
+                    return this.postQuery(queryObj.root, opts);
+                };
+                return builder;
+            },
+            
+            postQuery(queryObject, opts = {}) {
+                return $http({
+                    url: '/rest/v2/data-points/query',
+                    method: 'POST',
+                    data: queryObject
+                }).then(response => {
+                    const items = response.data.items.map(item => {
+                        return new this(item);
+                    });
+                    items.$total = response.data.total;
+                    return items;
+                });
+            },
             
             bulk: BulkDataPointTemporaryResource,
             restResource: DataPointRestResource,
