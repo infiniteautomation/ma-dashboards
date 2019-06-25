@@ -1,3 +1,7 @@
+*Version 3.6.1*
+* Fix bug that prevented adding more than 100 data points to static watch list via point hierarchy
+* Allow free text input for ma-serial-port-select port component
+
 *Version 3.6.0*
 * Upgraded to work with core version 3.6.x
 * Add 'Data sources' page for creating/updating/deleting data sources and data points. Note: not all data source types supported yet.
