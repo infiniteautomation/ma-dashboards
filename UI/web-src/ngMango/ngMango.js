@@ -156,7 +156,7 @@ import durationEditor from './components/durationEditor/durationEditor';
 import treeView from './components/treeView/treeView';
 import treeViewTransclude from './components/treeView/treeViewTransclude';
 import purgePointValues from './components/purgePointValues/purgePointValues';
-import serialPortSelect from './components/serialPortsSelect/serialPortSelect';
+import serialPortSelect from './components/serialPortSelect/serialPortSelect';
 import heatMap from './components/heatMap/heatMap';
 import eventTypeFilter from './components/eventTypeFilter/eventTypeFilter';
 import 'ngmap';
