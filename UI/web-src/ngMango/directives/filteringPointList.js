@@ -209,11 +209,25 @@ class FilteringPointListController {
         return this.Point.query({
             rqlQuery: queryString
         }).$promise.then(result => {
+            let filtered = result;
+            
             if (this.clientSideFilter) {
-                return this.$filter('filter')(result, this.clientSideFilter);
-            } else {
-                return result;
+                filtered = this.$filter('filter')(filtered, this.clientSideFilter);
             }
+            
+            if (Array.isArray(this.filterPoints)) {
+                const xids = this.filterPoints.reduce((xids, dp) => {
+                    xids.add(typeof dp === 'object' ? dp.xid : dp);
+                    return xids;
+                }, new Set());
+                filtered = filtered.filter(dp => !xids.has(dp.xid));
+            }
+            
+            if (typeof this.filterExpression === 'function') {
+                filtered = filtered.filter((dp, i) => this.filterExpression({$index: i, $point: dp}));
+            }
+            
+            return filtered;
         }, () => []);
     }
 
@@ -258,7 +272,9 @@ function filteringPointList() {
             disabled: '@?',
             dataType: '@?type',
             dataTypes: '<?types',
-            settable: '<?'
+            settable: '<?',
+            filterPoints: '<?filterPoints',
+            filterExpression: '&?'
         },
         require: {
             ngModelCtrl: 'ngModel'
