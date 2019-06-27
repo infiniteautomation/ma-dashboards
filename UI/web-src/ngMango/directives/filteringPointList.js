@@ -27,6 +27,10 @@ import query from 'rql/query';
  * @param {expression=} display-text Expression is evaluated and the resulting string is used as the display text label.
  * @param {object=} client-side-filter Uses the {@link https://docs.angularjs.org/api/ng/filter/filter AngularJS filter} to filter results
  *     returned from the REST API. The expression argument in the AngularJS documentation describes the object passed to this attribute.
+ * @param {object[]|string[]=} filter-points Filter out points from the available options using an array of points or xids, any point
+ *     which is present in this array will not appear in the drop down list.
+ * @param {expression=} filter-expression Filter out points from the available options using an expression, if the expression returns a truthy value
+ *     then the point will not appear in the drop down list. Available locals for the expression are $point and $index.
 
  *
  * @usage
