@@ -14,8 +14,7 @@
   ng-blur="$ctrl.blurred($event)"
   ng-required="$ctrl.required"
   ng-disabled="$ctrl.disabled"
-  ng-form="form"
-  ma-form-exclude>
+  md-input-name="{{$ctrl.ngModelCtrl.$name}}">
 
     <md-item-template>
       <span md-highlight-text="$ctrl.highlight" md-highlight-flags="gi">{{$ctrl.listText({$point: item})}}</span>
@@ -24,8 +23,11 @@
     <md-not-found>
       <span ma-tr="ui.app.noPointsFound" ma-tr-args="[$ctrl.searchText]"></span>
     </md-not-found>
-
+    
+    
     <div ng-messages="$ctrl.ngModelCtrl.$error">
         <div ng-message="required" ma-tr="ui.app.required"></div>
+        <div ng-message="validationMessage" ng-bind="$ctrl.ngModelCtrl.validationMessage"></div>
     </div>
+
 </md-autocomplete>
