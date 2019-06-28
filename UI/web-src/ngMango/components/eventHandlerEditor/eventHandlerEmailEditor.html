@@ -97,7 +97,7 @@
     <md-tab-body>
         <div layout="row" class="md-padding ma-no-padding-bottom">
             <md-input-container flex="100" flex-gt-md="50">
-                <label ma-tr="users.permissions"></label>
+                <label ma-tr="ui.app.scriptRoles"></label>
                 <input name="scriptPermissions" ng-model="editor.eventHandler.scriptPermissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
                 <div ng-messages="editor.form.scriptPermissions.$error">
                     <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
