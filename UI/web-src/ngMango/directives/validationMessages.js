@@ -17,10 +17,15 @@ function validationMessages(Util) {
             // use a validator that always returns true so that when a user changes the input the error is always cleared
             const allwaysValidate = () => true;
 
+            // convenience methods added to ngFormController
             this.ngFormCtrl.activateTabWithClientError = () => {
                 this.activateTabWithClientError();
             };
+            this.ngFormCtrl.setValidationMessageValidity = validity => {
+                this.setValidationMessageValidity(validity);
+            };
             
+            // add validators to every control in this form so that when the input is changed validationMessage gets set to valid
             this.ngFormCtrl.$getControls().forEach(control => {
                 if (control.$validators) {
                     control.$validators.validationMessage = allwaysValidate;
@@ -130,6 +135,16 @@ function validationMessages(Util) {
                 if (!isForm) {
                     control.$setValidity('validationMessage', true);
                 }
+            }
+        }
+        
+        setValidationMessageValidity(validity, control = this.ngFormCtrl) {
+            if (typeof control.$getControls === 'function') {
+                control.$getControls().forEach(child => {
+                    this.setValidationMessageValidity(validity, child);
+                });
+            } else {
+                control.$setValidity('validationMessage', validity);
             }
         }
     }
