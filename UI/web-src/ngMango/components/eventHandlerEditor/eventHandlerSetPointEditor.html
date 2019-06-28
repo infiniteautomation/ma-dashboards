@@ -9,12 +9,9 @@
             point-xid="{{editor.eventHandler.targetPointXid}}" 
             ng-change="$ctrl.changeTargetPoint()" 
             ng-model="$ctrl.targetPoint"
-            settable="true">
+            settable="true"
+            ng-required="true">
         </ma-filtering-point-list>
-        <div ng-messages="editor.form.targetPointId.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="validationMessage" ng-bind="editor.form.targetPointId.validationMessage"></div>
-        </div>
     </div>
 </div>
 
