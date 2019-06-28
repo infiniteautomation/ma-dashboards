@@ -100,6 +100,9 @@ class EventHandlerEditorController {
     saveItem(event) {
         this.form.$setSubmitted();
         
+        // allow resubmitting a form with validationMessage errors by setting them all back to valid
+        this.form.setValidationMessageValidity(true);
+        
         if (!this.form.$valid) {
             this.form.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
