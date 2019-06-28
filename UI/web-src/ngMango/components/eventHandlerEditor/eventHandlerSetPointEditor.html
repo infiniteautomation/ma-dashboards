@@ -5,15 +5,15 @@
         <ma-filtering-point-list 
             auto-init="true" 
             label="{{'eventHandlers.targetPoint' | maTr}}" 
-            name="targetPointXid" 
+            name="targetPointId" 
             point-xid="{{editor.eventHandler.targetPointXid}}" 
             ng-change="$ctrl.changeTargetPoint()" 
             ng-model="$ctrl.targetPoint"
             settable="true">
         </ma-filtering-point-list>
-        <div ng-messages="editor.form.targetPointXid.$error">
+        <div ng-messages="editor.form.targetPointId.$error">
             <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="validationMessage" ng-bind="editor.form.targetPointXid.validationMessage"></div>
+            <div ng-message="validationMessage" ng-bind="editor.form.targetPointId.validationMessage"></div>
         </div>
     </div>
 </div>
@@ -45,14 +45,14 @@
                     data-types="[$ctrl.targetPoint.dataType]"
                     auto-init="false" 
                     label="{{'eventHandlers.sourcePoint' | maTr}}"
-                    name="activePointXid" 
+                    name="activePointId" 
                     point-xid="{{editor.eventHandler.activePointXid}}" 
                     ng-change="$ctrl.changeActivePoint()" 
                     ng-model="$ctrl.activePoint">
                 </ma-filtering-point-list>
-                <div ng-messages="editor.form.activePointXid.$error">
+                <div ng-messages="editor.form.activePointId.$error">
                     <div ng-message="required" ma-tr="ui.app.required"></div>
-                    <div ng-message="validationMessage" ng-bind="editor.form.activePointXid.validationMessage"></div>
+                    <div ng-message="validationMessage" ng-bind="editor.form.activePointId.validationMessage"></div>
                 </div>
             </div>
         
@@ -125,14 +125,14 @@
                     data-types="[$ctrl.targetPoint.dataType]"
                     auto-init="false" 
                     label="{{'eventHandlers.sourcePoint' | maTr}}"
-                    name="inactivePointXid" 
+                    name="inactivePointId" 
                     point-xid="{{editor.eventHandler.inactivePointXid}}" 
                     ng-change="$ctrl.changeInactivePoint()" 
                     ng-model="$ctrl.inactivePoint">
                 </ma-filtering-point-list>
-                <div ng-messages="editor.form.inactivePointXid.$error">
+                <div ng-messages="editor.form.inactivePointId.$error">
                     <div ng-message="required" ma-tr="ui.app.required"></div>
-                    <div ng-message="validationMessage" ng-bind="editor.form.inactivePointXid.validationMessage"></div>
+                    <div ng-message="validationMessage" ng-bind="editor.form.inactivePointId.validationMessage"></div>
                 </div>
             </div>
         
