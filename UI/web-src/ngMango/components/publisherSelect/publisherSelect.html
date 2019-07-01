@@ -1,0 +1,13 @@
+<md-input-container flex>
+    <label ng-transclude="labelSlot">
+        <span ma-tr="ui.publisher.select"></span>
+    </label>
+    <md-select ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectPublisher()" ng-model-options="{trackBy: '$value.xid'}">
+        <md-option ng-if="$ctrl.showNewOption" ng-value="$ctrl.newValue" md-option-empty>
+            <em ma-tr="ui.publisher.create"></em>
+        </md-option>
+        <md-option ng-repeat="publisher in $ctrl.publishers | orderBy:'name' track by publisher.xid" ng-value="publisher">
+            <span ng-bind="publisher.name || publisher.xid"></span>
+        </md-option>
+    </md-select>
+</md-input-container>

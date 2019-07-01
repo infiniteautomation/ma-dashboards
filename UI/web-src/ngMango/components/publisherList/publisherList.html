@@ -1,0 +1,20 @@
+<md-list class="ma-no-padding ma-no-text-overflow">
+    <md-list-item class="md-2-line" ng-click="$ctrl.newPublisher($event)" md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3 ma-tr="ui.app.new"></h3>
+            <p ma-tr="ui.publisher.create"></p>
+        </div>
+        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.newPublisher($event)">
+            <md-icon>add</md-icon>
+        </md-button>
+    </md-list-item>
+    
+    <md-list-item ng-repeat="publisher in $ctrl.publishers | orderBy:'name' track by publisher.xid" ng-click="$ctrl.selectPublisher(publisher)" class="md-2-line"
+            ng-class="{'ma-list-selected': $ctrl.selected.xid === publisher.xid}"
+            md-colors="{'background': $ctrl.selected.xid === publisher.xid ? 'accent-hue-1' : 'background-hue-1'}">
+        <div class="md-list-item-text">
+            <h3 ng-bind="publisher.name"></h3>
+            <p ng-bind="publisher.xid"></p>
+        </div>
+    </md-list-item>
+</md-list>

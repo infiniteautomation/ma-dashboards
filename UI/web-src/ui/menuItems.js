@@ -445,6 +445,12 @@ export default [
         menuTr: 'header.dataSources'
     },
     {
+        url: '/publishers',
+        name: 'ui.help.publishers',
+        templatePromise: helpTemplate('publishers.html'),
+        menuTr: 'header.publishers'
+    },
+    {
         url: '/purge-now',
         name: 'ui.help.purgeNow',
         templatePromise: helpTemplate('purgeNow.html'),
@@ -572,6 +578,26 @@ export default [
         },
         params: {
             helpPage: 'ui.help.dataSources'
+        }
+    },
+    {
+        name: 'ui.settings.publishers',
+        url: '/publishers/{xid}',
+        template: '<ma-ui-publisher-page flex="noshrink" layout="column"><ma-ui-publisher-page>',
+        menuTr: 'header.publishers',
+        menuIcon: 'router',
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/publisherPage/publisherPage').then(publisherPage => {
+                    angular.module('maPublisherPage', [])
+                        .component('maUiPublisherPage', publisherPage.default);
+                    $injector.loadNewModules(['maPublisherPage']);
+                });
+            }]
+        },
+        params: {
+            helpPage: 'ui.help.publishers'
         }
     },
     {
