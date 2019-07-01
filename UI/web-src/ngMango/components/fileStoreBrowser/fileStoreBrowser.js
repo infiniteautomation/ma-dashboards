@@ -36,7 +36,7 @@ class FileStoreBrowserController {
     }
 
     $onInit() {
-    	this.path = [this.restrictToStore || 'default'];
+    	this.path = [this.restrictToStore || this.defaultStore || 'default'];
         this.ngModelCtrl.$render = (...args) => {
             return this.render(...args);
         };
@@ -85,23 +85,20 @@ class FileStoreBrowserController {
     		urls = urls ? [urls] : [];
     	}
     
-    	this.path = [this.restrictToStore || 'default'];
+    	const defaultStore = this.restrictToStore || this.defaultStore || 'default';
+    	this.path = [defaultStore];
     	
     	const settings = this.localStorageService.get(localStorageKey) || {};
-    	if (settings.fileStore === null) {
-    	    this.path = [];
-    	} else if (settings.fileStore) {
-    	    if (!this.restrictToStore || this.restrictToStore === settings.fileStore) {
-                this.path = Array.isArray(settings.folderPath) ? settings.folderPath : [];
-                this.path.unshift(settings.fileStore);
-            }
-    	}
+	    if (settings.fileStore === defaultStore) {
+            this.path = Array.isArray(settings.folderPath) ? settings.folderPath : [];
+            this.path.unshift(settings.fileStore);
+	    }
     	
         if (this.$stateParams) {
             const fileStore = this.$stateParams.fileStore;
             const folderPath = this.$stateParams.folderPath ? this.$stateParams.folderPath.split('/') : [];
             
-            if (fileStore && (!this.restrictToStore || this.restrictToStore === fileStore)) {
+            if (fileStore === defaultStore) {
                 folderPath.unshift(fileStore);
                 this.path = folderPath;
             }
@@ -156,7 +153,7 @@ class FileStoreBrowserController {
     		this.selectedFiles = [];
     		delete this.lastIndex;
     
-    		const defaultStore = this.restrictToStore || 'default';
+    		const defaultStore = this.restrictToStore || this.defaultStore || 'default';
     		if (!(this.path.length === 1 && this.path[0] === defaultStore)) {
     			this.path = [defaultStore];
     			return this.listFiles();
@@ -673,6 +670,7 @@ const fileStoreBrowser = {
     },
     bindings: {
         restrictToStore: '@?store',
+        defaultStore: '@?',
         selectDirectories: '<?',
         mimeTypes: '@?',
         extensions: '@?',

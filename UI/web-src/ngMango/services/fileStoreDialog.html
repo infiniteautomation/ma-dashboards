@@ -12,6 +12,7 @@
 	<md-dialog-content layout="column" class="md-padding" flex>
 		<ma-file-store-browser flex ng-model="$ctrl.path"
 			store="{{$ctrl.options.store}}"
+            default-store="{{$ctrl.options.defaultStore}}"
 			select-directories="$ctrl.options.selectDirectories"
 			mime-types="{{$ctrl.options.mimeTypes}}"
 			extensions="{{$ctrl.options.extensions}}"
