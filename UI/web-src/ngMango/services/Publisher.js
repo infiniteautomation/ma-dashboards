@@ -69,8 +69,33 @@ function publisherProvider() {
             static publisherTypesByName() {
                 return publisherTypesByName;
             }
+            
+            enable(enabled = true, restart = false) {
+                this.$enableToggling = true;
+                
+                return this.constructor.http({
+                    url: this.constructor.baseUrl + '/enable-disable/' + this.constructor.encodeUriSegment(this.getOriginalId()),
+                    method: 'PUT',
+                    params: {
+                        enabled: !!enabled,
+                        restart
+                    }
+                }).then(() => {
+                    this.enabled = enabled;
+                }).finally(() => {
+                    delete this.$enableToggling;
+                });
+            }
+            
+            get isEnabled() {
+                return this.enabled;
+            }
+            
+            set isEnabled(value) {
+                this.enable(value);
+            }
         }
-    
+
         return Publisher;
     }
 }

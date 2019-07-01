@@ -16,5 +16,9 @@
             <h3 ng-bind="publisher.name"></h3>
             <p ng-bind="publisher.xid"></p>
         </div>
+        <md-switch ng-if="$ctrl.showEnableSwitch && !($ctrl.hideSwitchOnSelected && $ctrl.selected.xid === publisher.xid)" class="md-secondary" ng-model="publisher.isEnabled"
+            ng-class="{'ma-throb-opacity': publisher.$enableToggling}"
+            ng-disabled="publisher.$enableToggling">
+        </md-switch>
     </md-list-item>
 </md-list>

@@ -75,6 +75,8 @@ export default {
     template: publisherListTemplate,
     controller: PublisherListController,
     bindings: {
+        showEnableSwitch: '<?',
+        hideSwitchOnSelected: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

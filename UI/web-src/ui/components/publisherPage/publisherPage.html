@@ -17,7 +17,8 @@
         </md-card-content>
     
         <md-card-content flex class="ma-no-padding ma-scroll-parent" ng-if="$ctrl.$mdMedia('gt-md')">
-            <ma-publisher-list class="ma-scroll-child" flex layout="column" ng-model="$ctrl.publisher" ng-change="$ctrl.publisherChanged()">
+            <ma-publisher-list class="ma-scroll-child" flex layout="column" ng-model="$ctrl.publisher" ng-change="$ctrl.publisherChanged()"
+                show-enable-switch="true" hide-switch-on-selected="true">
             </ma-publisher-list>
         </md-card-content>
     </md-card>
