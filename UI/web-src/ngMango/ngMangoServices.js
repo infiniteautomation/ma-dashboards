@@ -142,7 +142,7 @@ ngMangoServices.factory('maMultipleValues', multipleValuesFactory);
 ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 ngMangoServices.factory('maSerialPort', serialPort);
-ngMangoServices.factory('maPublisher', Publisher);
+ngMangoServices.provider('maPublisher', Publisher);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUT', 30000); // TODO Mango 4.0 remove
