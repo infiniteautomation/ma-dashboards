@@ -101,8 +101,10 @@ function multipleValuesFactory() {
             const combined = arr.reduce((combined, item, i) => {
                 return this.combineInto(combined, item, i);
             }, null);
-
-            return this.replaceEqualValues(combined);
+            
+            if (combined != null) {
+                return this.replaceEqualValues(combined);
+            }
         }
         
         static toArray(obj, length, removeEmptyObjects = true) {
