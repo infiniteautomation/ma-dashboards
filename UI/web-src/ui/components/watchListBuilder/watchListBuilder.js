@@ -60,6 +60,7 @@ class WatchListBuilderController {
         this.sortAndLimitBound = (...args) => this.sortAndLimit(...args);
         this.onPaginateOrSortBound = (...args) => this.onPaginateOrSort(...args);
         this.tableSelectionChangedBound = (...args) => this.tableSelectionChanged(...args);
+        this.dragAndDropBound = (...args) => this.dragAndDrop(...args);
     }
 
     newWatchlist(name) {
