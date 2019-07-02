@@ -21,7 +21,7 @@
                         </md-input-container>
 
                         <div flex="100" flex-gt-md="50">
-                            <md-switch name="enabled" ng-model="$ctrl.dataSource.enabled">
+                            <md-switch name="enabled" ng-model="$ctrl.publisher.enabled">
                                 <span ma-tr="common.enabled"></span>
                                 <em class="ma-small-text">(<span ma-tr="ui.app.doesNotTakeEffectUntilSaved"></span>)</em>
                             </md-switch>
@@ -54,6 +54,39 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom" ng-include="$ctrl.publisherTypesByName[$ctrl.publisher.modelType].templateUrl"></div>
+            </md-tab-body>
+        </md-tab>
+        
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="dsEdit.events.alarmLevels"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding ma-no-padding-bottom">
+                    <h3>
+                        <span ma-tr="ui.dox.alarms"></span>
+                        <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.alarms">
+                            <md-icon>help</md-icon>
+                        </md-button>
+                    </h3>
+                </div>
+                <div class="md-padding ma-no-padding-bottom">
+                    <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+                        <md-input-container flex="100" flex-gt-md="50" ng-repeat="entry in $ctrl.publisher.eventAlarmLevels track by entry.eventType">
+                            <label ma-tr="{{entry.descriptionKey}}"></label>
+                            <md-select name="alarmLevels[{{$index}}]" ng-model="entry.level" required ma-get-ctrl="modelCtrl = $ngModel">
+                                <md-option ng-repeat="level in $ctrl.eventLevels track by level.key" ng-value="level.key">
+                                    <md-icon class="fa fa-lg ma-alarm-flag" ng-class="level.classes"></md-icon>
+                                    <span ma-tr="{{level.translation}}"></span>
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="modelCtrl.$error">
+                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="validationMessage" ng-bind="modelCtrl.validationMessage"></div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
             </md-tab-body>
         </md-tab>
     </md-tabs>

@@ -16,15 +16,17 @@ import './publisherEditor.css';
 
 class PublisherEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPublisher', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse']; }
+    static get $inject() { return ['maPublisher', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse', 'maEvents']; }
     
-    constructor(maPublisher, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse) {
+    constructor(maPublisher, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse, Events) {
         this.maPublisher = maPublisher;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
+        
+        this.eventLevels = Events.levels;
         
         this.publisherTypes = maPublisher.publisherTypes();
         this.publisherTypesByName = maPublisher.publisherTypesByName();
