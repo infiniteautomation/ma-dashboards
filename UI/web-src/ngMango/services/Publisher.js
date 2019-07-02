@@ -22,7 +22,7 @@ function publisherProvider() {
     publisherFactory.$inject = ['maRestResource', '$templateCache'];
     function publisherFactory(RestResource, $templateCache) {
 
-        const publisherBaseUrl = '/rest/v2/publishers';
+        const publisherBaseUrl = '/rest/v2/publishers-v2';
         const publisherWebSocketUrl = '/rest/v2/websocket/publishers';
         const publisherXidPrefix = 'PUB_';
 
