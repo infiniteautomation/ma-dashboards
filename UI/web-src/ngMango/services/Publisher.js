@@ -6,6 +6,25 @@
 publisherProvider.$inject = [];
 function publisherProvider() {
     
+    const publishTypeCodes = Object.freeze([
+        {
+            value: 'ALL',
+            translationKey: 'publisherEdit.publishType.all'
+        },
+        {
+            value: 'CHANGES_ONLY',
+            translationKey: 'publisherEdit.publishType.changesOnly'
+        },
+        {
+            value: 'LOGGED_ONLY',
+            translationKey: 'publisherEdit.publishType.loggedOnly'
+        },
+        {
+            value: 'NONE',
+            translationKey: 'publisherEdit.publishType.none'
+        }
+    ]);
+    
     const publisherTypes = [];
     
     this.registerPublisherType = function(type) {
@@ -93,6 +112,10 @@ function publisherProvider() {
             
             set isEnabled(value) {
                 this.enable(value);
+            }
+            
+            static get publishTypeCodes() {
+                return publishTypeCodes;
             }
         }
 

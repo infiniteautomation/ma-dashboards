@@ -27,6 +27,7 @@ class PublisherEditorController {
         this.maTranslate = maTranslate;
         
         this.eventLevels = Events.levels;
+        this.publishTypeCodes = maPublisher.publishTypeCodes;
         
         this.publisherTypes = maPublisher.publisherTypes();
         this.publisherTypesByName = maPublisher.publisherTypesByName();
