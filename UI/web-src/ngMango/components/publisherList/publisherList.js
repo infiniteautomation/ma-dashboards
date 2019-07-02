@@ -12,13 +12,16 @@ import publisherListTemplate from './publisherList.html';
  * @description Displays a list of publishers
  */
 
+const DEFAULT_SORT = ['name'];
+
 class PublisherListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPublisher', '$scope']; }
+    static get $inject() { return ['maPublisher', '$scope', '$filter']; }
     
-    constructor(maPublisher, $scope) {
+    constructor(maPublisher, $scope, $filter) {
         this.maPublisher = maPublisher;
         this.$scope = $scope;
+        this.$filter = $filter;
     }
     
     $onInit() {
@@ -29,20 +32,34 @@ class PublisherListController {
         this.maPublisher.subscribe({
             scope: this.$scope,
             handler: (event, item, attributes) => {
-                attributes.updateArray(this.publishers);
+                if (Array.isArray(this.preFilterItems)) {
+                    attributes.updateArray(this.preFilterItems);
+                    this.filterList();
+                }
             }
         });
     }
 
     $onChanges(changes) {
+        if (changes.filter && !changes.filter.isFirstChange() || changes.sort && !changes.sort.isFirstChange()) {
+            this.filterList();
+        }
     }
     
     doQuery() {
-        const queryBuilder = this.maPublisher.buildQuery();
-        queryBuilder.limit(10000);
-        return queryBuilder.query().then(publishers => {
-            return (this.publishers = publishers);
-        });
+        const queryPromise = this.maPublisher.buildQuery()
+            .limit(10000)
+            .query()
+            .then(items => {
+                this.preFilterItems = items;
+                return this.filterList();
+            }).finally(() => {
+                if (this.queryPromise === queryPromise) {
+                    delete this.queryPromise;
+                }
+            });
+        
+        return (this.queryPromise = queryPromise);
     }
     
     setViewValue() {
@@ -69,14 +86,45 @@ class PublisherListController {
         this.selected = new this.maPublisher();
         this.setViewValue();
     }
+
+    filterList() {
+        if (!Array.isArray(this.preFilterItems)) {
+            return;
+        }
+        
+        let items = this.preFilterItems.filter(this.createFilter());
+        items = this.$filter('orderBy')(items, this.sort || DEFAULT_SORT);
+        return (this.items = items);
+    }
+    
+    createFilter() {
+        if (!this.filter) return (item) => true;
+
+        let filter = this.filter.toLowerCase();
+        if (!filter.startsWith('*')) {
+            filter = '*' + filter;
+        }
+        if (!filter.endsWith('*')) {
+            filter = filter + '*';
+        }
+        filter = filter.replace(/\*/g, '.*');
+        const regex = new RegExp(filter, 'i');
+        
+        return (item) => {
+            return regex.test(item.name) || regex.test(item.description) || regex.test(item.connectionDescription);
+        };
+    }
 }
 
 export default {
     template: publisherListTemplate,
     controller: PublisherListController,
     bindings: {
+        showNew: '<?',
         showEnableSwitch: '<?',
-        hideSwitchOnSelected: '<?'
+        hideSwitchOnSelected: '<?',
+        sort: '<?',
+        filter: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

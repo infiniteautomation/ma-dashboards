@@ -90,7 +90,6 @@ function dataSourceScrollList($injector) {
         
         doFilterQuery() {
             const queryPromise = this.DataSource.buildQuery()
-                .sort(this.sort || 'name')
                 .limit(1000)
                 .query()
                 .then(items => {
@@ -107,11 +106,11 @@ function dataSourceScrollList($injector) {
         
         filterList() {
             if (!Array.isArray(this.preFilterItems)) {
-                this.items = [];
+                return;
             }
             
             let items = this.preFilterItems.filter(this.createFilter());
-            items = this.$filter('orderBy')(items, this.sort || 'name');
+            items = this.$filter('orderBy')(items, this.sort || DEFAULT_SORT);
             return (this.items = items);
         }
         

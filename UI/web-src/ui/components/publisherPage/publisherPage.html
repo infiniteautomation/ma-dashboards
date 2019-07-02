@@ -12,13 +12,20 @@
         </md-toolbar>
     
         <md-card-content flex layout layout-align="start center" ng-if="!$ctrl.$mdMedia('gt-md')">
-            <ma-publisher-select flex layout ng-model="$ctrl.publisher" ng-change="$ctrl.publisherChanged()" show-new-option="true">
+            <ma-publisher-select flex layout ng-model="$ctrl.publisher" ng-change="$ctrl.publisherChanged()" show-new-option="::true">
             </ma-publisher-select>
         </md-card-content>
+        
+        <md-input-container class="ma-filter" md-no-float ng-if-start="$ctrl.$mdMedia('gt-md')">
+            <input ng-model="$ctrl.filter" ng-model-options="{debounce: 500}" ma-tr="ui.app.filter">
+            <md-button class="ma-input-button md-icon-button" ng-click="$ctrl.filter = ''">
+                <md-icon>clear</md-icon>
+            </md-button>
+        </md-input-container>
     
-        <md-card-content flex class="ma-no-padding ma-scroll-parent" ng-if="$ctrl.$mdMedia('gt-md')">
+        <md-card-content flex class="ma-no-padding ma-scroll-parent" ng-if-end>
             <ma-publisher-list class="ma-scroll-child" flex layout="column" ng-model="$ctrl.publisher" ng-change="$ctrl.publisherChanged()"
-                show-enable-switch="true" hide-switch-on-selected="true">
+                show-enable-switch="::true" hide-switch-on-selected="::true" show-new="::true" filter="$ctrl.filter">
             </ma-publisher-list>
         </md-card-content>
     </md-card>
@@ -31,7 +38,7 @@
                     <span ng-if="$ctrl.publisher.isNew()" ma-tr="ui.publisher.create"></span>
                 </div>
             </md-toolbar>
-            <ma-publisher-editor ng-model="$ctrl.publisher" ng-change="$ctrl.publisherSaved()" confirm-discard="true"></ma-publisher-editor>
+            <ma-publisher-editor ng-model="$ctrl.publisher" ng-change="$ctrl.publisherSaved()" confirm-discard="::true"></ma-publisher-editor>
         </md-card>
     </div>
 </div>

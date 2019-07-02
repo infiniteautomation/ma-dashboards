@@ -1,7 +1,8 @@
 <md-progress-linear ng-if="$ctrl.queryPromise"></md-progress-linear>
 
 <md-list class="ma-no-padding ma-no-text-overflow">
-    <md-list-item ng-if="$ctrl.showNew && !$ctrl.filter && $ctrl.User.current.hasAnyPermission('permissionDatasource')" class="md-2-line" ng-click="$ctrl.createNew($event)" md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
+    <md-list-item ng-if="$ctrl.showNew && !$ctrl.filter && $ctrl.User.current.hasAnyPermission('permissionDatasource')" class="md-2-line"
+            ng-click="$ctrl.createNew($event)" md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
         <div class="md-list-item-text">
             <h3 ma-tr="ui.app.new"></h3>
             <p ma-tr="dsList.createDataSource"></p>
@@ -11,7 +12,7 @@
         </md-button>
     </md-list-item>
 
-    <md-list-item class="md-2-line" ng-repeat="item in $ctrl.items track by item.xid | orderBy:'name'"
+    <md-list-item class="md-2-line" ng-repeat="item in $ctrl.items track by item.xid"
             ng-class="{'ma-list-selected': $ctrl.selected.xid === item.xid}"
             md-colors="{'background': $ctrl.selected.xid === item.xid ? 'accent-hue-1' : 'background-hue-1'}"
             ng-click="$ctrl.setViewValue(item)">
@@ -26,6 +27,6 @@
     </md-list-item>
     
     <md-list-item ng-if="!$ctrl.items.length && !$ctrl.queryPromise">
-        <span ma-tr="dsList.emptyList"></span>
+        <em ma-tr="dsList.emptyList"></em>
     </md-list-item>
 </md-list>
