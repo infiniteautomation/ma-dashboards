@@ -14,8 +14,9 @@
             md-colors="{'background': $ctrl.selected.xid === publisher.xid ? 'accent-hue-1' : 'background-hue-1'}">
         <div class="md-list-item-text">
             <h3 ng-bind="publisher.name"></h3>
-            <p ng-bind="publisher.xid"></p>
+            <p><span ng-bind="publisher.description"></span><span ng-if="publisher.connectionDescription"> &mdash; <span ng-bind="publisher.connectionDescription"></span></span></p>
         </div>
+
         <md-switch ng-if="$ctrl.showEnableSwitch && !($ctrl.hideSwitchOnSelected && $ctrl.selected.xid === publisher.xid)" class="md-secondary" ng-model="publisher.isEnabled"
             ng-class="{'ma-throb-opacity': publisher.$enableToggling}"
             ng-disabled="publisher.$enableToggling">

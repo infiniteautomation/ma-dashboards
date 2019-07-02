@@ -17,7 +17,7 @@
             ng-click="$ctrl.setViewValue(item)">
         <div class="md-list-item-text">
             <h3 ng-bind="item.name"></h3>
-            <p><span ng-bind="item.description"></span> &mdash; <span ng-bind="item.connectionDescription"></span></p>
+            <p><span ng-bind="item.description"></span><span ng-if="item.connectionDescription"> &mdash; <span ng-bind="item.connectionDescription"></span></span></p>
         </div>
         <md-switch ng-if="$ctrl.showEnableSwitch && !($ctrl.hideSwitchOnSelected && $ctrl.selected.xid === item.xid)" class="md-secondary" ng-model="item.isEnabled"
             ng-class="{'ma-throb-opacity': item.$enableToggling}"
