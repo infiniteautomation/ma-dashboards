@@ -50,9 +50,9 @@ function publisherProvider() {
 
         // rest of the defaults are set by first registered type
     	const defaultProperties = {
+    	    name: '',
+	        xid: '',
 	        enabled: false,
-	        eventAlarmLevels: [],
-	        points: [],
 	        publishType: 'ALL',
 	        cacheWarningSize: 100,
 	        cacheDiscardSize: 1000,
@@ -63,7 +63,7 @@ function publisherProvider() {
 	        },
 	        publishAttributeChanges: false
     	};
-    	
+
         class Publisher extends RestResource {
             
             constructor(properties) {
@@ -73,6 +73,13 @@ function publisherProvider() {
                     properties.modelType = type.type;
                 }
                 super(properties);
+                
+                if (!this.points) {
+                    this.points = [];
+                }
+                if (!this.eventAlarmLevels) {
+                    this.eventAlarmLevels = [];
+                }
             }
 
             static get defaultProperties() {
@@ -126,6 +133,15 @@ function publisherProvider() {
             
             set isEnabled(value) {
                 this.enable(value);
+            }
+            
+            changeType(type = this.modelType) {
+                const newPublisher = this.constructor.typesByName[type].createPublisher();
+                
+                // copy only a select set of properties over
+                Object.keys(defaultProperties).forEach(k => newPublisher[k] = this[k]);
+                
+                return newPublisher;
             }
         }
 

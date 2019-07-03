@@ -159,6 +159,10 @@ class PublisherEditorController {
         }
         return true;
     }
+    
+    typeChanged() {
+        this.publisher = this.publisher.changeType();
+    }
 }
 
 export default {
