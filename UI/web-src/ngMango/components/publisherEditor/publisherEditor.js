@@ -28,9 +28,8 @@ class PublisherEditorController {
         
         this.eventLevels = Events.levels;
         this.publishTypeCodes = maPublisher.publishTypeCodes;
-        
-        this.publisherTypes = maPublisher.publisherTypes();
-        this.publisherTypesByName = maPublisher.publisherTypesByName();
+        this.publisherTypes = maPublisher.types;
+        this.publisherTypesByName = maPublisher.typesByName;
         
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {

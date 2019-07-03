@@ -992,11 +992,14 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
             return bytes.reduce((key, byte) => key + ('0' + byte.toString(16)).slice(-2), '');
         },
         
-        createMapObject(array, keyProperty) {
+        createMapObject(array, keyProperty, map = Object.create(null)) {
+            // clear the map object in case user passed it in
+            Object.keys(map).forEach(k => delete map[k]);
+            
             return array.reduce((map, item) => {
                 map[item[keyProperty]] = item;
                 return map;
-            }, Object.create(null));
+            }, map);
         },
         
         get MultiMap() {

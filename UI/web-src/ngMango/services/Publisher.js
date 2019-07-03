@@ -3,10 +3,12 @@
  * @author Jared Wiltshire
  */
 
+import angular from 'angular';
+
 publisherProvider.$inject = [];
 function publisherProvider() {
     
-    const publishTypeCodes = Object.freeze([
+    const publishTypeCodes = [
         {
             value: 'ALL',
             translationKey: 'publisherEdit.publishType.all'
@@ -23,9 +25,10 @@ function publisherProvider() {
             value: 'NONE',
             translationKey: 'publisherEdit.publishType.none'
         }
-    ]);
+    ];
     
     const publisherTypes = [];
+    const publisherTypesByName = Object.create(null);
     
     this.registerPublisherType = function(type) {
         const existing = publisherTypes.find(t => t.type === type.type);
@@ -38,33 +41,40 @@ function publisherProvider() {
     
     this.$get = publisherFactory;
     
-    publisherFactory.$inject = ['maRestResource', '$templateCache'];
-    function publisherFactory(RestResource, $templateCache) {
+    publisherFactory.$inject = ['maRestResource', '$templateCache', 'maUtil'];
+    function publisherFactory(RestResource, $templateCache, Util) {
 
         const publisherBaseUrl = '/rest/v2/publishers-v2';
         const publisherWebSocketUrl = '/rest/v2/websocket/publishers';
         const publisherXidPrefix = 'PUB_';
 
-        const publisherTypesByName = Object.create(null);
-        publisherTypes.forEach(publisherType => {
-            publisherTypesByName[publisherType.type] = publisherType;
-            
-            // put the templates in the template cache so we can ng-include them
-            if (publisherType.template && !publisherType.templateUrl) {
-                publisherType.templateUrl = `publishers.${publisherType.type}.html`;
-                $templateCache.put(publisherType.templateUrl, publisherType.template);
-            }
-            
-            Object.freeze(publisherType);
-        });
-        
-        Object.freeze(publisherTypes);
-        Object.freeze(publisherTypesByName);
-        
+        // rest of the defaults are set by first registered type
     	const defaultProperties = {
+	        enabled: false,
+	        eventAlarmLevels: [],
+	        points: [],
+	        publishType: 'ALL',
+	        cacheWarningSize: 100,
+	        cacheDiscardSize: 1000,
+	        sendSnapshot: false,
+	        snapshotSendPeriod: {
+	            periods: 5,
+	            type: 'MINUTES'
+	        },
+	        publishAttributeChanges: false
     	};
     	
         class Publisher extends RestResource {
+            
+            constructor(properties) {
+                if (!properties && publisherTypes.length) {
+                    const type = publisherTypes[0];
+                    properties = angular.copy(type.defaultPublisher) || {};
+                    properties.modelType = type.type;
+                }
+                super(properties);
+            }
+
             static get defaultProperties() {
                 return defaultProperties;
             }
@@ -81,14 +91,18 @@ function publisherProvider() {
                 return publisherXidPrefix;
             }
             
-            static publisherTypes() {
+            static get types() {
                 return publisherTypes;
             }
             
-            static publisherTypesByName() {
+            static get typesByName() {
                 return publisherTypesByName;
             }
             
+            static get publishTypeCodes() {
+                return publishTypeCodes;
+            }
+
             enable(enabled = true, restart = false) {
                 this.$enableToggling = true;
                 
@@ -113,11 +127,38 @@ function publisherProvider() {
             set isEnabled(value) {
                 this.enable(value);
             }
+        }
+
+        class PublisherType {
+            constructor(defaults = {}) {
+                Object.assign(this, defaults);
+
+                // put the templates in the template cache so we can ng-include them
+                if (this.template && !this.templateUrl) {
+                    this.templateUrl = `publisherEditor.${this.type}.html`;
+                    $templateCache.put(this.templateUrl, this.template);
+                }
+            }
             
-            static get publishTypeCodes() {
-                return publishTypeCodes;
+            createPublisher() {
+                const publisher = new Publisher(angular.copy(this.defaultPublisher));
+                publisher.modelType = this.type;
+                return publisher;
+            }
+            
+            createPublisherPoint() {
+                return angular.copy(this.defaultPublisherPoint || {});
             }
         }
+
+        publisherTypes.forEach((type, i) => {
+            publisherTypes[i] = Object.freeze(new PublisherType(type));
+        });
+        
+        Util.createMapObject(publisherTypes, 'type', publisherTypesByName);
+        
+        Object.freeze(publisherTypes);
+        Object.freeze(publisherTypesByName);
 
         return Publisher;
     }
