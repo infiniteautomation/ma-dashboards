@@ -444,12 +444,12 @@ export default [
         templatePromise: helpTemplate('dataSources.html'),
         menuTr: 'header.dataSources'
     },
-//    {
-//        url: '/publishers',
-//        name: 'ui.help.publishers',
-//        templatePromise: helpTemplate('publishers.html'),
-//        menuTr: 'header.publishers'
-//    },
+    {
+        url: '/publishers',
+        name: 'ui.help.publishers',
+        templatePromise: helpTemplate('publishers.html'),
+        menuTr: 'header.publishers'
+    },
     {
         url: '/purge-now',
         name: 'ui.help.purgeNow',
@@ -580,26 +580,26 @@ export default [
             helpPage: 'ui.help.dataSources'
         }
     },
-//    {
-//        name: 'ui.settings.publishers',
-//        url: '/publishers/{xid}',
-//        template: '<ma-ui-publisher-page flex="noshrink" layout="column"><ma-ui-publisher-page>',
-//        menuTr: 'header.publishers',
-//        menuIcon: 'router',
-//        resolve: {
-//            loadMyDirectives: ['$injector', function($injector) {
-//                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
-//                        './components/publisherPage/publisherPage').then(publisherPage => {
-//                    angular.module('maPublisherPage', [])
-//                        .component('maUiPublisherPage', publisherPage.default);
-//                    $injector.loadNewModules(['maPublisherPage']);
-//                });
-//            }]
-//        },
-//        params: {
-//            helpPage: 'ui.help.publishers'
-//        }
-//    },
+    {
+        name: 'ui.settings.publishers',
+        url: '/publishers/{xid}',
+        template: '<ma-ui-publisher-page flex="noshrink" layout="column"><ma-ui-publisher-page>',
+        menuTr: 'header.publishers',
+        menuIcon: 'router',
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/publisherPage/publisherPage').then(publisherPage => {
+                    angular.module('maPublisherPage', [])
+                        .component('maUiPublisherPage', publisherPage.default);
+                    $injector.loadNewModules(['maPublisherPage']);
+                });
+            }]
+        },
+        params: {
+            helpPage: 'ui.help.publishers'
+        }
+    },
     {
         url: '/edit-pages/{pageXid}',
         name: 'ui.settings.editPages',
