@@ -11,7 +11,7 @@
 <p>If the value is increasing or decreasing there will be a positive or negative 
 	rate of change respectively.  Checking <b> Use absolute value </b> 
 	ensures that the comparison is done to the absolute value of the computed rate of change.
-	Meaning the event will trigger whether the values increases or decreases. 
+	Meaning the event will trigger whether the values increase or decrease. 
 </p>
 <p>Checking <b>Use reset threshold </b> will allow you to configure a reset threshold.
     If the reset threshold is crossed, the event will return to normal.  If no reset threshold
@@ -39,30 +39,31 @@ The comparison then takes place:
 
 <b>Instantaneous Mode</b>
 <ul>
-<li><b>Latest Value</b> the current point value</li>
-<li><b>Period Start Value</b> the current value at or before the time the point starts, after this is always the previous point value to the latest value</li>
-<li><b>RoC Period Length</b> the time between samples</li>
+<li>Latest Value the current point value</li>
+<li>Period Start Value the current value at or before the time the point starts, after this is always the previous point value to the latest value</li>
+<li>RoC Period Length the time between samples</li>
 </ul>
 <p>
 In this mode the RoC is computed only when a point value is set, at that time the latest value becomes the period start value and the latest value is the point’s current value (I.e. the one just set).  If 2 new values are set at the same timestamp then the RoC is assumed to be 0.
 </p>
+<b>Using a Duration</b>
 <p>
-Using a duration on an instantaneous detector could mean any size of change could appear in the period without raising an alarm, so long as no contiguous set of samples for the duration all after an offending change have an alarming rate of change. For instance, if a point was configured for greater than or equal to 10 per hour with a duration of at least 10 seconds, if at five seconds the value skyrockets several thousand, the timer for the duration would start. If it samples again and is still the same skyrocketed value, then the RoC is zero and the timer to raise the event about the change is cancelled. This setup should be thoroughly understood before used.
+Using a duration on an instantaneous detector could mean any size of change could appear in the period without raising an alarm, so long as no contiguous set of samples for the duration after an offending change all have an alarming rate of change. For instance, if a point was configured for greater than or equal to 10 per hour with a duration of at least 10 seconds, if at five seconds the value skyrockets several thousand, the timer for the duration would start. If it samples again and is still the same skyrocketed value, then the RoC is zero and the timer to raise the event about the change is cancelled. This setup should be thoroughly understood before used.
 </p>
 
 <b>Averaging Mode</b>
 <ul>
-<li><b>Latest Value</b> the current point value</li>
-<li><b>Period Start Value</b> the value at or before the period start time.</li>
-<li><b>RoC Period Length</b> the length of the averaging period</li>
+<li>Latest Value the current point value</li>
+<li>Period Start Value the value at or before the period start time.</li>
+<li>RoC Period Length the length of the averaging period</li>
 </ul>
 <p>
-The period slides at 2 potential times.  When a point value is set the period is computed to be the duration of the Averaging Period prior to but inclusive of the time of the latest point value set.  Second if the point's source is a Polling data source using a poll period then every poll the period will slide forward.  If using a cron pattern or an event driven data source then every averaging period/10 or 5ms whichever is slower.
+The period slides at 2 potential times.  When a point value is set the period is computed to be the duration of the Averaging Period prior to but inclusive of the time of the latest point value set.  Second when time elapses such that there is new Period Start Value.
 </p>
 
 <b>Using a Duration</b>
 <p>
-Using a duration allows for delaying the event until the Comparison result has been true for some amount of time.  Once the threshold has been breached a timer is set that will be cancelled if a new values is set that does not cause an RoC breach before it expires and raises the event. This is the same with the averaging detector with a duration. Every time a new value is sampled, the rate of change is computed. If this computation does not result in an alarming rate of change, the timer to raise the event is cancelled. This means with a duration greater than the averaging period then the point value could change by an arbitrary amount and not raise the event 
+Using a duration allows for delaying the event until the Comparison result has been true for some amount of time.  Once the threshold has been breached a timer is set that will be cancelled if a new value is set that does not cause an RoC breach before it expires and raises the event. This is the same with the averaging detector with a duration. Every time a new value is sampled, the rate of change is computed. If this computation does not result in an alarming rate of change, the timer to raise the event is cancelled. This means the point's value could change by an arbitrary amount and not raise the event 
 </p>
 
  
