@@ -159,9 +159,9 @@ import purgePointValues from './components/purgePointValues/purgePointValues';
 import serialPortSelect from './components/serialPortSelect/serialPortSelect';
 import heatMap from './components/heatMap/heatMap';
 import eventTypeFilter from './components/eventTypeFilter/eventTypeFilter';
-import publisherList from './components/publisherList/publisherList';
-import publisherSelect from './components/publisherSelect/publisherSelect';
-import publisherEditor from './components/publisherEditor/publisherEditor';
+//import publisherList from './components/publisherList/publisherList';
+//import publisherSelect from './components/publisherSelect/publisherSelect';
+//import publisherEditor from './components/publisherEditor/publisherEditor';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -334,9 +334,9 @@ ngMango.component('maPurgePointValues', purgePointValues);
 ngMango.component('maSerialPortSelect', serialPortSelect);
 ngMango.component('maHeatMap', heatMap);
 ngMango.component('maEventTypeFilter', eventTypeFilter);
-ngMango.component('maPublisherList', publisherList);
-ngMango.component('maPublisherSelect', publisherSelect);
-ngMango.component('maPublisherEditor', publisherEditor);
+//ngMango.component('maPublisherList', publisherList);
+//ngMango.component('maPublisherSelect', publisherSelect);
+//ngMango.component('maPublisherEditor', publisherEditor);
 
 ngMango.animation('.ma-slide-up', slideUp);
 
