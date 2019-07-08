@@ -1,3 +1,7 @@
+*Version 3.6.2*
+* Add inputs for script permissions to event handlers
+* Redirect to password reset page when a token is present in the URL
+
 *Version 3.6.1*
 * Fix bug that prevented adding more than 100 data points to static watch list via point hierarchy
 * Allow free text input for ma-serial-port-select port component
