@@ -19,14 +19,58 @@
     is no longer true.
 </p>
 
-<p> <b>Instantaneous mode </b>compares the point value changes in real time against the threshold
+
+<h2>RoC Computation Understanding</h2>
+<p>
+There are 3 values used to compute RoC.  Period start value which is the value at or before the period for which the RoC is computed, the latest value of the point (current value at time of computation) and the RoC Period Length.  The 2 modes determine these values differently but the computation is always the same:
+</p>
+<p>
+If there is no period start value then we will not compute RoC.  If there is only a period start value then RoC is 0.  Otherwise:
+</p>
+<pre>
+RoC = (Latest Value - Period Start Value)/RoC Period Length
+</pre>
+<p>
+This results in a RoC per unit time.
+
+The comparison then takes place:
+ RoC [Comparison] Threshold = boolean value
 </p>
 
-<p> <b>Average mode</b> will compute the average change over the selected period of time to compare
- to the threshold. The rate of change for a point is computed based on how much change occurs within
-  the averaging period settings, this must be greater than 0.
- </p>
+<b>Instantaneous Mode</b>
+<ul>
+<li><b>Latest Value</b> the current point value</li>
+<li><b>Period Start Value</b> the current value at or before the time the point starts, after this is always the previous point value to the latest value</li>
+<li><b>RoC Period Length</b> the time between samples</li>
+</ul>
+<p>
+In this mode the RoC is computed only when a point value is set, at that time the latest value becomes the period start value and the latest value is the point’s current value (I.e. the one just set).  If 2 new values are set at the same timestamp then the RoC is assumed to be 0.
+</p>
+<p>
+Using a duration on an instantaneous detector could mean any size of change could appear in the period without raising an alarm, so long as no contiguous set of samples for the duration all after an offending change have an alarming rate of change. For instance, if a point was configured for greater than or equal to 10 per hour with a duration of at least 10 seconds, if at five seconds the value skyrockets several thousand, the timer for the duration would start. If it samples again and is still the same skyrocketed value, then the RoC is zero and the timer to raise the event about the change is cancelled. This setup should be thoroughly understood before used.
+</p>
+
+<b>Averaging Mode</b>
+<ul>
+<li><b>Latest Value</b> the current point value</li>
+<li><b>Period Start Value</b> the value at or before the period start time.</li>
+<li><b>RoC Period Length</b> the length of the averaging period</li>
+</ul>
+<p>
+The period slides at 2 potential times.  When a point value is set the period is computed to be the duration of the Averaging Period prior to but inclusive of the time of the latest point value set.  Second if the point's source is a Polling data source using a poll period then every poll the period will slide forward.  If using a cron pattern or an event driven data source then every averaging period/10 or 5ms whichever is slower.
+</p>
+
+<b>Using a Duration</b>
+<p>
+Using a duration allows for delaying the event until the Comparison result has been true for some amount of time.  Once the threshold has been breached a timer is set that will be cancelled if a new values is set that does not cause an RoC breach before it expires and raises the event. This is the same with the averaging detector with a duration. Every time a new value is sampled, the rate of change is computed. If this computation does not result in an alarming rate of change, the timer to raise the event is cancelled. This means with a duration greater than the averaging period then the point value could change by an arbitrary amount and not raise the event 
+</p>
+
  
+<h2>Examples</h2>
+<p>
+If we wanted to detect if a point had changed by 10 or more within 30 minutes, we would use the following settings: threshhold = 20 per hour, averaging mode with an averaging period of 30 minutes, no duration, and a comparison of greater than or equal to
+</p>
+
 <h3 ma-tr="js.help.related"></h3>
 <ul>
 	<li><a ui-sref="ui.help.eventDetectors"
