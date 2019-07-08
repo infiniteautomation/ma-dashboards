@@ -413,6 +413,11 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             event.preventDefault();
             $state.go('ui.settings.systemStatus.loggingConsole', toParams);
         }
+        
+        if (toState.name === 'changePassword' && toParams.resetToken) {
+            event.preventDefault();
+            $state.go('resetPassword', toParams);
+        }
 
         if (toState.name.indexOf('ui.help.') === 0 || toState.name.indexOf('ui.docs.') === 0) {
             const linkBetweenPages = toState.name.indexOf('ui.help.') === 0 && $state.includes('ui.help') ||

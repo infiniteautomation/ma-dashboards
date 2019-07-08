@@ -96,7 +96,7 @@ export default [
     },
     {
         name: 'changePassword',
-        url: '/change-password?username',
+        url: '/change-password?username&resetToken',
         menuHidden: true,
         menuIcon: 'vpn_key',
         menuTr: 'header.changePasword',
