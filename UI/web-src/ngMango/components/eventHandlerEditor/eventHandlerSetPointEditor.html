@@ -36,7 +36,15 @@
                     <div ng-message="validationMessage" ng-bind="editor.form.activeAction.validationMessage"></div>
                 </div>
             </md-input-container> 
-        
+        	<md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'SCRIPT_VALUE'">
+                <label ma-tr="ui.app.scriptRoles"></label>
+                <input name="scriptPermissions" ng-model="editor.eventHandler.scriptPermissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
+                <div ng-messages="editor.form.scriptPermissions.$error">
+                    <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                    <div ng-message="validationMessage" ng-bind="editor.form.permissions.validationMessage"></div>
+                </div>
+                <ma-permissions-menu ng-model="editor.eventHandler.scriptPermissions" ma-array-input></ma-permissions-menu>
+            </md-input-container>
             <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.activeAction == 'POINT_VALUE'">
                 <ma-filtering-point-list 
                     data-types="[$ctrl.targetPoint.dataType]"
@@ -89,7 +97,13 @@
         </div>
         
         <div flex="100" class="md-padding ma-no-padding-top ma-no-padding-bottom" ng-if="editor.eventHandler.activeAction == 'SCRIPT_VALUE'">
-            <ma-scripting-editor name="activeScript" wrap-in-function="true" context="editor.eventHandler.scriptContext" ng-model="editor.eventHandler.activeScript"></ma-scripting-editor>
+            <ma-scripting-editor               
+                 name="activeScript"
+                 wrap-in-function="true" 
+                 context="editor.eventHandler.scriptContext" 
+                 ng-model="editor.eventHandler.activeScript"
+                 permissions="editor.eventHandler.scriptPermissions"
+                 ></ma-scripting-editor>
             <div ng-messages="editor.form.activeScript.$error" md-colors="::{color: 'warn'}">
                 <div ng-message="validationMessage" ng-bind="editor.form.activeScript.validationMessage"></div>
             </div>
@@ -116,7 +130,17 @@
                     <div ng-message="validationMessage" ng-bind="editor.form.inactiveAction.validationMessage"></div>
                 </div>
             </md-input-container> 
-        
+        	
+        	<md-input-container flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'SCRIPT_VALUE'">
+                <label ma-tr="ui.app.scriptRoles"></label>
+                <input name="scriptPermissions" ng-model="editor.eventHandler.scriptPermissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
+                <div ng-messages="editor.form.scriptPermissions.$error">
+                    <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                    <div ng-message="validationMessage" ng-bind="editor.form.permissions.validationMessage"></div>
+                </div>
+                <ma-permissions-menu ng-model="editor.eventHandler.scriptPermissions" ma-array-input></ma-permissions-menu>
+            </md-input-container>
+            
             <div flex="100" flex-gt-md="50" ng-if="editor.eventHandler.inactiveAction == 'POINT_VALUE'">
                 <ma-filtering-point-list 
                     data-types="[$ctrl.targetPoint.dataType]"
@@ -169,7 +193,13 @@
         </div>
         
         <div flex="100" class="md-padding ma-no-padding-top ma-no-padding-bottom" ng-if="editor.eventHandler.inactiveAction == 'SCRIPT_VALUE'">
-            <ma-scripting-editor name="inactiveScript" wrap-in-function="true" context="editor.eventHandler.scriptContext" ng-model="editor.eventHandler.inactiveScript"></ma-scripting-editor>
+            <ma-scripting-editor 
+               name="inactiveScript"
+               wrap-in-function="true"
+               context="editor.eventHandler.scriptContext"
+               ng-model="editor.eventHandler.inactiveScript"
+               permissions="editor.eventHandler.scriptPermissions"
+               ></ma-scripting-editor>
             <div ng-messages="editor.form.inactiveScript.$error" md-colors="::{color: 'warn'}">
                 <div ng-message="validationMessage" ng-bind="editor.form.inactiveScript.validationMessage"></div>
             </div>
