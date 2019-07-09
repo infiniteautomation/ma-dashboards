@@ -163,6 +163,22 @@ class PublisherEditorController {
     typeChanged() {
         this.publisher = this.publisher.changeType();
     }
+    
+    pointsToPublisherPoints(points) {
+        if (Array.isArray(points)) {
+            return points.map(pt => ({
+                dataPointXid: pt.xid
+            }));
+        }
+    }
+    
+    publisherPointsToPoints(points) {
+        if (Array.isArray(points)) {
+            return points.map(pt => ({
+                xid: pt.dataPointXid
+            }));
+        }
+    }
 }
 
 export default {

@@ -36,6 +36,9 @@ function publisherProvider() {
             console.error('Tried to register publisher type twice', type);
             return;
         }
+        if (typeof type.addPoint !== 'function') {
+            type.addPoint = () => ({});
+        }
         publisherTypes.push(type);
     };
     
@@ -133,6 +136,19 @@ function publisherProvider() {
             
             set isEnabled(value) {
                 this.enable(value);
+            }
+            
+            addPoint(point) {
+                if (!point || this.points.find(pt => pt.dataPointXid === point.xid)) {
+                    return;
+                }
+                
+                const type = this.constructor.typesByName[this.modelType];
+                const publisherPoint = type.addPoint(point);
+                publisherPoint.dataPointXid = point.xid;
+                this.points.push(publisherPoint);
+                
+                return true;
             }
             
             changeType(type = this.modelType) {

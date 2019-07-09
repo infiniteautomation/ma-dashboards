@@ -155,7 +155,12 @@
                 <span ma-tr="publisherEdit.points"></span>
             </md-tab-label>
             <md-tab-body>
-                <h1 ma-tr="publisherEdit.points"></h1>
+                <div class="md-padding">
+                    <ma-filtering-point-list ng-model="point" ng-change="$ctrl.publisher.addPoint(point); point = null"></ma-filtering-point-list>
+                    
+                    <ma-data-point-selector ng-model="$ctrl.publisher.points" ma-format-value="$ctrl.publisherPointsToPoints($value)"
+                        ma-parse-value="$ctrl.pointsToPublisherPoints($value)"></ma-data-point-selector>
+                </div>
             </md-tab-body>
         </md-tab>
         
