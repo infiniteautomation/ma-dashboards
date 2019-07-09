@@ -1,0 +1,99 @@
+<div flex="noshrink" ng-form="dataPointSelector" ma-form-exclude>
+    <span ng-if="!$ctrl.bulkTask" ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.size]"></span>
+    
+    <md-input-container md-no-float="true">
+        <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns"
+                ng-change="$ctrl.selectedColumnsChanged()"
+                ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+            <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
+        </md-select>
+    </md-input-container>
+    
+    <md-input-container md-no-float="true">
+        <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags"
+                ng-change="$ctrl.selectedTagsChanged()"
+                ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+            <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-button class="md-icon-button" ng-click="$ctrl.filterButtonClicked($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" ng-class="{'md-accent': $ctrl.showFilters}">
+        <md-icon>filter_list</md-icon>
+        <md-tooltip ma-tr="ui.app.filterDataPoints"></md-tooltip>
+    </md-button>
+    
+    <md-table-container>
+        <table md-table md-progress="$ctrl.pointsPromise">
+            <thead md-head md-order="$ctrl.sortString" md-on-reorder="$ctrl.sortStringChangedBound">
+                <tr md-row>
+                    <th md-column class="ma-checkbox-column">
+                        <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()"
+                            md-no-ink="true"
+                            ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise || !$ctrl.totalPoints" md-indeterminate="$ctrl.selectAllIndeterminate">
+                        </md-checkbox>
+                    </th>
+                    <th md-column ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
+                            md-order-by="{{column.disableSort ? '' : column.name}}" ng-if="column.name !== 'value'">
+                        <span ma-tr="{{column.label}}"></span>
+                    </th>
+                    <th md-column ng-repeat="tag in $ctrl.selectedTags track by tag.name"
+                            md-order-by="tags.{{tag.name}}">
+                        <span ng-bind="tag.label"></span>
+                    </th>
+                    <th ma-tr="ui.app.pointValue" ng-if="$ctrl.showPointValueColumn"></th>
+                </tr>
+            </thead>
+            <thead ng-if="$ctrl.showFilters" class="ma-filter-header">
+                <tr>
+                    <th><!-- Spacer for checkbox column --></th>
+                    <th ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-if="column.name !== 'value'">
+                        <md-input-container md-no-float="true">
+                            <input ng-model="column.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                            <md-button ng-show="!!column.filter" class="ma-input-button md-icon-button" ng-click="column.filter = null; $ctrl.filterChanged()">
+                                <md-icon>clear</md-icon>
+                            </md-button>
+                        </md-input-container>
+                    </th>
+
+                    <th ng-repeat="tag in $ctrl.selectedTags track by tag.name">
+                        <md-input-container md-no-float="true">
+                            <input ng-model="tag.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                            <md-button ng-show="!!tag.filter" class="ma-input-button md-icon-button" ng-click="tag.filter = null; $ctrl.filterChanged()">
+                                <md-icon>clear</md-icon>
+                            </md-button>
+                        </md-input-container>
+                    </th>
+                    <th ng-if="$ctrl.showPointValueColumn"><!-- Spacer for point value column --></th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="point in $ctrl.pointsArray track by point.xid" ng-init="pointSelected = $ctrl.pointSelected(point)">
+                    <td md-cell class="ma-checkbox-column">
+                        <md-checkbox aria-label="{{'ui.app.selectAll' | maTr}}" ng-model="pointSelected" ng-model-options="{getterSetter: true}"
+                            md-no-ink="true"
+                            ng-click="$ctrl.checkBoxClicked(point, $event)"
+                            ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                        </md-checkbox>
+                    </td>
+
+                    <td ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" md-cell ng-if="column.name !== 'value'">
+                        <span ng-class="{'ma-empty-null': $ctrl.getCellValue(point, column.property) == null}" ng-bind="$ctrl.getCellValue(point, column.property) | maDisplayNull"></span>
+                    </td>
+                    
+                    <td ng-repeat="tag in $ctrl.selectedTags track by tag.name" md-cell>
+                        <span ng-class="{'ma-empty-null': point.tags[tag.name] == null}" ng-bind="point.tags[tag.name] | maDisplayNull"></span>
+                    </td>
+                    
+                    <td md-cell class="ma-point-value" ng-if="$ctrl.showPointValueColumn">
+                        <ma-point-value point="point"></ma-point-value>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div ng-if="$ctrl.totalPoints === 0" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
+        <div ng-if="!$ctrl.pointsArray.length && $ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.loadingPoints"></div>
+    </md-table-container>
+
+    <md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100]" md-page="$ctrl.pageNumber"
+            md-page-select md-total="{{$ctrl.totalPoints}}" md-on-paginate="$ctrl.getPointsBound"></md-table-pagination>
+</div>
