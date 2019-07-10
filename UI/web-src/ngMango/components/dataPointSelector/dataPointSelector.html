@@ -5,7 +5,7 @@
         <md-input-container md-no-float="true">
             <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns"
                     ng-change="$ctrl.selectedColumnsChanged()"
-                    ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                    ng-model-options="{trackBy: '$value.name'}">
                 <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
             </md-select>
         </md-input-container>
@@ -13,12 +13,12 @@
         <md-input-container md-no-float="true">
             <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags"
                     ng-change="$ctrl.selectedTagsChanged()"
-                    ng-model-options="{trackBy: '$value.name'}" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                    ng-model-options="{trackBy: '$value.name'}">
                 <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
             </md-select>
         </md-input-container>
     
-        <md-button class="md-icon-button" ng-click="$ctrl.filterButtonClicked($event)" ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise" ng-class="{'md-accent': $ctrl.showFilters}">
+        <md-button class="md-icon-button" ng-click="$ctrl.filterButtonClicked($event)" ng-class="{'md-accent': $ctrl.showFilters}">
             <md-icon>filter_list</md-icon>
             <md-tooltip ma-tr="ui.app.filterDataPoints"></md-tooltip>
         </md-button>
@@ -58,12 +58,11 @@
             <div ng-if="$ctrl.showPointValueColumn"><!-- Spacer for point value column --></div>
         </div>
         <md-progress-linear ng-show="$ctrl.pointsPromise" md-mode="indeterminate"></md-progress-linear>
+        <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
             <div class="ma-virtual-repeat-table-row" md-virtual-repeat="point in $ctrl" md-on-demand ng-class="{'ma-row-loading': point == null}">
                 <div class="ma-checkbox-column">
-                    <md-checkbox ng-model="$ctrl.getModel(point, $index).value"
-                        md-no-ink="true"
-                        ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                    <md-checkbox ng-model="$ctrl.getModel(point, $index).value" md-no-ink="true">
                     </md-checkbox>
                 </div>
     
@@ -109,7 +108,7 @@
                         <md-checkbox ng-model="$ctrl.getModel(point).value"
                             md-no-ink="true"
                             ng-click="$ctrl.checkBoxClicked(point, $event)"
-                            ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
+                            ng-disabled="$ctrl.pointsPromise">
                         </md-checkbox>
                     </td>
 
