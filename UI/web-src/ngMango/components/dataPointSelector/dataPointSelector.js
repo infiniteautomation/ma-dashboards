@@ -53,6 +53,7 @@ class DataPointSelectorController {
         this.sortStringChangedBound = (...args) => this.sortStringChanged(...args);
 
         this.pageSize = 25;
+        this.cachedPages = 10;
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
@@ -60,7 +61,6 @@ class DataPointSelectorController {
         this.manuallySelectedTags = [];
 
         this.selectedPoints = new Map();
-        this.checkboxEvents = new Map();
         this.models = new WeakMap();
 
         this.sortString = 'deviceName';
@@ -71,23 +71,20 @@ class DataPointSelectorController {
     }
     
     getItemAtIndex(index) {
-        console.log(`getItemAtIndex(${index})`);
-        
-        const point = this.points[index];
-        if (point) {
-            if (typeof point.then !== 'function') {
-                return point;
+        const startIndex = index - index % this.pageSize;
+        const page = this.pages.get(startIndex);
+        if (page) {
+            if (page.points) {
+                return page.points[index - startIndex];
             }
-        } else if (this.points.$total == null || index < this.points.$total) {
-            this.getPoints('page', index);
+        } else {
+            this.getPoints('page', startIndex);
         }
-        
         return null;
     }
     
     getLength() {
-        console.log('getLength()');
-        return this.points.$total;
+        return this.pages.$total;
     }
 
     $onInit() {
@@ -195,16 +192,13 @@ class DataPointSelectorController {
 
     getPoints(reason, startIndex = 0) {
         if (reason === 'query' || reason === 'sort') {
-            this.points = [];
-            if (reason === 'query') {
-                this.points.$total = null;
+            const total = this.pages && this.pages.$total || null;
+            this.pages = new Map();
+
+            if (reason === 'sort') {
+                this.pages.$total = total;
             }
         }
-
-        //this.cancelGetPoints();
-        // TODO dont want to clear these on a page?
-        this.checkboxEvents.clear();
-        this.prevPoint = null;
 
         this.queryObj = this.maPoint.buildQuery();
         
@@ -224,42 +218,31 @@ class DataPointSelectorController {
             }
         });
 
-        // query might change, don't want to update the new points array with the results from the old query
-        const points = this.points;
-        const pageSize = this.pageSize;
+        // query might change, don't want to update the pages with the results from the old query
+        const pages = this.pages;
 
+        // TODO copy it before adding sort and limit? so we can use it to filter WS updates
         this.queryObj.sort(...this.sortArray)
-            .limit(pageSize, startIndex);
+            .limit(this.pageSize, startIndex);
 
         const pointsPromise = this.pointsPromise = this.queryObj.query();
         
-        for (let i = 0; i < pageSize; i++) {
-            this.points[startIndex + i] = pointsPromise;
+        const page = {
+            startIndex,
+            promise: pointsPromise
+        };
+
+        pages.set(page.startIndex, page);
+        if (pages.size > this.cachedPages) {
+            const [firstKey] = this.pages.keys();
+            this.pages.delete(firstKey);
         }
-        
+
         pointsPromise.then(result => {
-            points.$total = result.$total;
-            
-            for (let i = 0; i < pageSize; i++) {
-                if (this.points[startIndex + i] === pointsPromise) {
-                    const point = result[i];
-                    if (point) {
-                        this.points[startIndex + i] = point;
-                    } else {
-                        delete this.points[startIndex + i];
-                    }
-                }
-            }
-            
-            result.forEach((point, i) => {
-                points[startIndex + i] = point;
-            });
+            pages.$total = result.$total;
+            page.points = result;
         }).catch(error => {
-            for (let i = 0; i < pageSize; i++) {
-                if (this.points[startIndex + i] === pointsPromise) {
-                    delete this.points[startIndex + i];
-                }
-            }
+            pages.delete(startIndex);
             
             if (error.status === -1 && error.resource && error.resource.cancelled) {
                 // request cancelled, ignore error
@@ -438,33 +421,16 @@ class DataPointSelectorController {
         return Object.defineProperty({}, 'value', {
             get: () => this.selectedPoints.has(point.xid),
             set: val => {
-                const event = this.checkboxEvents.get(point);
-                const pointIndex = this.points.indexOf(point);
-                const prevPointIndex = this.points.indexOf(this.prevPoint);
-                
-                if (event && event.shiftKey && pointIndex >= 0 && prevPointIndex >= 0 && pointIndex !== prevPointIndex) {
-                    const minIndex = Math.min(pointIndex, prevPointIndex);
-                    const maxIndex = Math.max(pointIndex, prevPointIndex);
-                    this.points.slice(minIndex, maxIndex + 1).forEach(pt => {
-                        if (val) {
-                            this.selectedPoints.set(pt.xid, pt);
-                        } else {
-                            this.selectedPoints.delete(pt.xid);
-                        }
-                    });
+                if (val) {
+                    this.selectedPoints.set(point.xid, point);
                 } else {
-                    this.prevPoint = point;
-                    if (val) {
-                        this.selectedPoints.set(point.xid, point);
-                    } else {
-                        this.selectedPoints.delete(point.xid);
-                    }
+                    this.selectedPoints.delete(point.xid);
                 }
             }
         });
     }
     
-    getModel(point) {
+    getModel(point, index) {
         if (point == null) return;
         
         let model = this.models.get(point);
@@ -473,10 +439,6 @@ class DataPointSelectorController {
             this.models.set(point, model);
         }
         return model;
-    }
-    
-    checkBoxClicked(point, event) {
-        this.checkboxEvents.set(point, event);
     }
 
     getCellValue(point, property) {

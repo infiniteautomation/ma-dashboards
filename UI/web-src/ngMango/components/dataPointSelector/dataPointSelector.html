@@ -61,9 +61,8 @@
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
             <div class="ma-virtual-repeat-table-row" md-virtual-repeat="point in $ctrl" md-on-demand ng-class="{'ma-row-loading': point == null}">
                 <div class="ma-checkbox-column">
-                    <md-checkbox ng-model="$ctrl.getModel(point).value"
+                    <md-checkbox ng-model="$ctrl.getModel(point, $index).value"
                         md-no-ink="true"
-                        ng-click="$ctrl.checkBoxClicked(point, $event)"
                         ng-disabled="$ctrl.bulkTaskPromise || $ctrl.pointsPromise">
                     </md-checkbox>
                 </div>
@@ -128,6 +127,6 @@
                 </tr>
             </tbody>
         </table>
-        <div ng-if="$ctrl.points.$total === 0 && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
+        <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
     </md-table-container>
 </div>
