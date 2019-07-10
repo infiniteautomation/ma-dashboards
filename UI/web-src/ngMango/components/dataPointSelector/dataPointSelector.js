@@ -9,11 +9,11 @@ import dataPointSelectorTemplate from './dataPointSelector.html';
 import './dataPointSelector.css';
 
 const defaultColumns = [
-    {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false},
-    {name: 'dataSourceName', label: 'ui.app.dataSource', selectedByDefault: false},
+    {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false, useLike: true},
+    {name: 'dataSourceName', label: 'ui.app.dataSource', selectedByDefault: false, useLike: true},
     {name: 'dataType', label: 'dsEdit.pointDataType', selectedByDefault: false},
-    {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
-    {name: 'name', label: 'common.name', selectedByDefault: true},
+    {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true, useLike: true},
+    {name: 'name', label: 'common.name', selectedByDefault: true, useLike: true},
     {name: 'enabled', label: 'common.enabled', selectedByDefault: false},
     {name: 'readPermission', label: 'pointEdit.props.permission.read', selectedByDefault: false},
     {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: false},
@@ -27,7 +27,7 @@ const defaultColumns = [
     {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
     {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', selectedByDefault: false},
     {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false},
-    {name: 'value', label: 'ui.app.pointValue', selectedByDefault: true}
+    {name: 'value', label: 'ui.app.pointValue', selectedByDefault: false}
 ];
 
 class DataPointSelectorController {
@@ -51,30 +51,43 @@ class DataPointSelectorController {
         this.$interval = $interval;
 
         this.sortStringChangedBound = (...args) => this.sortStringChanged(...args);
-        this.getPointsBound = (...args) => this.getPoints(...args);
 
-        this.numberOfRows = 15;
+        this.pageSize = 25;
         this.availableTagsByKey = {};
         this.availableTags = [];
         this.selectedTags = [];
         this.prevSelectedTags = [];
         this.manuallySelectedTags = [];
 
-        this.points = new Map();
-        this.pointsArray = [];
-        
         this.selectedPoints = new Map();
         this.checkboxEvents = new Map();
+        this.models = new WeakMap();
 
-        this.pageNumber = 1;
         this.sortString = 'deviceName';
         this.sortArray = ['deviceName', 'name'];
-        
-        this.selectAll = false;
-        this.selectAllIndeterminate = false;
 
         this.loadSettings();
         this.resetColumns();
+    }
+    
+    getItemAtIndex(index) {
+        console.log(`getItemAtIndex(${index})`);
+        
+        const point = this.points[index];
+        if (point) {
+            if (typeof point.then !== 'function') {
+                return point;
+            }
+        } else if (this.points.$total == null || index < this.points.$total) {
+            this.getPoints('page', index);
+        }
+        
+        return null;
+    }
+    
+    getLength() {
+        console.log('getLength()');
+        return this.points.$total;
     }
 
     $onInit() {
@@ -113,17 +126,17 @@ class DataPointSelectorController {
                 
                 if (changeMade) {
                     this.$scope.$apply(() => {
-                        this.checkAvailableTags();
-                        this.filterPoints();
+                        // TODO need anything here?
+                        //this.checkAvailableTags();
+                        //this.filterPoints();
                     });
                 }
             }
             
             this.prevUpdateQueueSize = this.updateQueue.length;
         }, 500, null, false);
-        
-        this.getPoints();
-        
+
+        this.getPoints('query');
         this.ngModelCtrl.$render = () => this.render();
     }
     
@@ -142,8 +155,6 @@ class DataPointSelectorController {
         points.forEach(point => {
             this.selectedPoints.set(point.xid, point);
         });
-        
-        this.updateSelectAllStatus();
     }
     
     loadSettings() {
@@ -182,8 +193,16 @@ class DataPointSelectorController {
         this.columns.forEach(column => delete column.filter);
     }
 
-    getPoints() {
-        this.cancelGetPoints();
+    getPoints(reason, startIndex = 0) {
+        if (reason === 'query' || reason === 'sort') {
+            this.points = [];
+            if (reason === 'query') {
+                this.points.$total = null;
+            }
+        }
+
+        //this.cancelGetPoints();
+        // TODO dont want to clear these on a page?
         this.checkboxEvents.clear();
         this.prevPoint = null;
 
@@ -191,7 +210,11 @@ class DataPointSelectorController {
         
         this.selectedColumns.forEach(col => {
             if (col.filter) {
-                this.queryObj.like(col.name, `*${col.filter}*`);
+                if (col.useLike) {
+                    this.queryObj.like(col.name, `*${col.filter}*`);
+                } else {
+                    this.queryObj.eq(col.name, col.filter);
+                }
             }
         });
         
@@ -200,20 +223,44 @@ class DataPointSelectorController {
                 this.queryObj.like(`tags.${tag.name}`, `*${tag.filter}*`);
             }
         });
-        
+
+        // query might change, don't want to update the new points array with the results from the old query
+        const points = this.points;
+        const pageSize = this.pageSize;
+
         this.queryObj.sort(...this.sortArray)
-            .limit(this.numberOfRows, (this.pageNumber - 1) * this.numberOfRows);
+            .limit(pageSize, startIndex);
 
-        const p = this.pointsPromiseQuery = this.queryObj.query();
-
-        const pointsPromise = this.pointsPromise = p.then(points => {
-            this.points = points.reduce((map, p) => (map.set(p.xid, p), map), new Map());
-            this.pointsArray = Array.from(this.points.values());
-            this.totalPoints = points.$total;
-            this.updateSelectAllStatus();
-            this.checkAvailableTags();
-            return this.points;
+        const pointsPromise = this.pointsPromise = this.queryObj.query();
+        
+        for (let i = 0; i < pageSize; i++) {
+            this.points[startIndex + i] = pointsPromise;
+        }
+        
+        pointsPromise.then(result => {
+            points.$total = result.$total;
+            
+            for (let i = 0; i < pageSize; i++) {
+                if (this.points[startIndex + i] === pointsPromise) {
+                    const point = result[i];
+                    if (point) {
+                        this.points[startIndex + i] = point;
+                    } else {
+                        delete this.points[startIndex + i];
+                    }
+                }
+            }
+            
+            result.forEach((point, i) => {
+                points[startIndex + i] = point;
+            });
         }).catch(error => {
+            for (let i = 0; i < pageSize; i++) {
+                if (this.points[startIndex + i] === pointsPromise) {
+                    delete this.points[startIndex + i];
+                }
+            }
+            
             if (error.status === -1 && error.resource && error.resource.cancelled) {
                 // request cancelled, ignore error
                 return;
@@ -227,13 +274,11 @@ class DataPointSelectorController {
                 delete this.pointsPromise;
             }
         });
-        
-        return this.pointsPromise;
     }
     
     cancelGetPoints() {
-        if (this.pointsPromiseQuery) {
-            this.maPoint.cancelRequest(this.pointsPromiseQuery);
+        if (this.pointsPromise) {
+            this.maPoint.cancelRequest(this.pointsPromise);
         }
     }
 
@@ -250,8 +295,8 @@ class DataPointSelectorController {
         if (this.sortArray.length > 3) {
             this.sortArray.pop();
         }
-        
-        this.getPoints();
+
+        this.getPoints('sort');
     }
 
     addTagToAvailable(tagKey) {
@@ -300,41 +345,6 @@ class DataPointSelectorController {
         this.prevSelectedTags = this.selectedTags.slice();
     }
 
-    updateSelectAllStatus() {
-        const selectedFiltered = this.pointsArray.filter(pt => this.selectedPoints.has(pt.xid));
-        
-        if (selectedFiltered.length === this.pointsArray.length) {
-            this.selectAllIndeterminate = false;
-            // seems to be a bug changing md-checkbox indeterminate and checked at same time
-            const selectAll = selectedFiltered.length > 0;
-            this.$timeout(() => {
-                this.$scope.$apply(() => {
-                    this.selectAll = selectAll;
-                });
-            }, 0, false);
-        } else {
-            this.selectAll = false;
-            this.selectAllIndeterminate = selectedFiltered.length > 0;
-        }
-    }
-    
-    selectAllChanged() {
-        if (this.selectAllIndeterminate) {
-            this.selectAll = false;
-        }
-        this.selectAllIndeterminate = false;
-        
-        if (this.selectAll) {
-            this.pointsArray.forEach(pt => {
-                this.selectedPoints.set(pt.xid, pt);
-            });
-        } else {
-            this.pointsArray.forEach(pt => {
-                this.selectedPoints.delete(pt.xid);
-            });
-        }
-    }
-
     selectedColumnsChanged() {
         this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
         
@@ -375,14 +385,15 @@ class DataPointSelectorController {
     }
 
     pointAdded(point) {
+        // TODO not possible to add points?
         if (this.pointMatchesQuery(point)) {
-            this.points.set(point.xid, point);
+            //this.points.set(point.xid, point);
             return true;
         }
     }
     
     pointUpdated(point) {
-        const found = this.points.get(point.xid);
+        const found = this.points.find(p => p.xid === point.xid);
         if (found) {
             angular.copy(point, found);
             return true;
@@ -390,10 +401,16 @@ class DataPointSelectorController {
     }
     
     pointDeleted(point) {
-        const inPoints = this.points.delete(point.xid);
+        // TODO this might cause issues...
+        const inPoints = this.points.findIndex(p => p.xid === point.xid);
         const inSelected = this.selectedPoints.delete(point.xid);
 
-        if (inPoints || inSelected) {
+        if (inPoints >= 0) {
+            this.points.splice(inPoints, 1);
+            return true;
+        }
+        
+        if (inSelected) {
             return true;
         }
     }
@@ -411,43 +428,51 @@ class DataPointSelectorController {
     }
     
     filterChanged() {
-        this.getPoints();
+        this.getPoints('query');
     }
     
     /**
-     * Getter / setter for the checkbox model
+     * Creates a getter / setter model for the selected checkbox
      */
-    pointSelected(point) {
-        return (val) => {
-            if (val === undefined) {
-                return this.selectedPoints.has(point.xid);
-            }
-            
-            const event = this.checkboxEvents.get(point);
-            const pointIndex = this.pointsArray.indexOf(point);
-            const prevPointIndex = this.pointsArray.indexOf(this.prevPoint);
-            
-            if (event && event.shiftKey && pointIndex >= 0 && prevPointIndex >= 0 && pointIndex !== prevPointIndex) {
-                const minIndex = Math.min(pointIndex, prevPointIndex);
-                const maxIndex = Math.max(pointIndex, prevPointIndex);
-                this.pointsArray.slice(minIndex, maxIndex + 1).forEach(pt => {
-                    if (val) {
-                        this.selectedPoints.set(pt.xid, pt);
-                    } else {
-                        this.selectedPoints.delete(pt.xid);
-                    }
-                });
-            } else {
-                this.prevPoint = point;
-                if (val) {
-                    this.selectedPoints.set(point.xid, point);
+    createModel(point) {
+        return Object.defineProperty({}, 'value', {
+            get: () => this.selectedPoints.has(point.xid),
+            set: val => {
+                const event = this.checkboxEvents.get(point);
+                const pointIndex = this.points.indexOf(point);
+                const prevPointIndex = this.points.indexOf(this.prevPoint);
+                
+                if (event && event.shiftKey && pointIndex >= 0 && prevPointIndex >= 0 && pointIndex !== prevPointIndex) {
+                    const minIndex = Math.min(pointIndex, prevPointIndex);
+                    const maxIndex = Math.max(pointIndex, prevPointIndex);
+                    this.points.slice(minIndex, maxIndex + 1).forEach(pt => {
+                        if (val) {
+                            this.selectedPoints.set(pt.xid, pt);
+                        } else {
+                            this.selectedPoints.delete(pt.xid);
+                        }
+                    });
                 } else {
-                    this.selectedPoints.delete(point.xid);
+                    this.prevPoint = point;
+                    if (val) {
+                        this.selectedPoints.set(point.xid, point);
+                    } else {
+                        this.selectedPoints.delete(point.xid);
+                    }
                 }
             }
-            
-            this.updateSelectAllStatus();
-        };
+        });
+    }
+    
+    getModel(point) {
+        if (point == null) return;
+        
+        let model = this.models.get(point);
+        if (!model) {
+            model = this.createModel(point);
+            this.models.set(point, model);
+        }
+        return model;
     }
     
     checkBoxClicked(point, event) {
@@ -457,7 +482,7 @@ class DataPointSelectorController {
     getCellValue(point, property) {
         let result = point;
         for (let i = 0; i < property.length; i++) {
-            if (typeof result !== 'object') {
+            if (result == null || typeof result !== 'object') {
                 return;
             }
             result = result[property[i]];

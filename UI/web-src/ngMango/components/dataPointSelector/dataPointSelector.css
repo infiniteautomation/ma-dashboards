@@ -1,3 +1,8 @@
+ma-data-point-selector {
+	display: flex;
+	min-height: 400px;
+}
+
 ma-data-point-selector table.md-table .ma-empty-null {
 	opacity: 0.5;
 	font-style: italic;
@@ -45,6 +50,10 @@ ma-data-point-selector table.md-table tbody tr td:nth-child(1n+2) {
 	white-space: nowrap;
 }
 
+ma-data-point-selector table.md-table tbody tr.ma-row-loading {
+	visibility: hidden;
+}
+
 ma-data-point-selector .ma-no-points-found {
 	font-style: italic;
 	text-align: center;
@@ -54,4 +63,48 @@ ma-data-point-selector .ma-no-points-found {
 ma-data-point-selector thead.ma-filter-header > tr > th > md-input-container {
 	width: 100%;
     margin: 0;
+}
+
+ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
+	flex: 0 0 30px;
+}
+
+.ma-virtual-repeat-table md-progress-linear.ng-hide:not(.ng-hide-animate) {
+	display: block !important;
+	visibility: hidden !important;
+}
+
+.ma-virtual-repeat-table md-progress-linear {
+	margin-top: 5px;
+}
+
+.ma-virtual-repeat-table md-progress-linear,
+.ma-virtual-repeat-table md-progress-linear .md-container,
+.ma-virtual-repeat-table md-progress-linear .md-container .md-bar {
+	height: 3px;
+}
+
+.ma-virtual-repeat-table,
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header,
+.ma-virtual-repeat-table .ma-virtual-repeat-table-row {
+	display: flex;
+}
+
+.ma-virtual-repeat-table,
+.ma-virtual-repeat-table .ma-virtual-repeat-table-body {
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header > *,
+.ma-virtual-repeat-table .ma-virtual-repeat-table-row > * {
+	flex: 1 1 0;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header {
+	font-weight: bold;
+}
+
+.ma-virtual-repeat-table .ma-row-loading {
+	visibility: hidden;
 }
