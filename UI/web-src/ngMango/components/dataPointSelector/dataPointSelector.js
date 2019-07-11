@@ -101,8 +101,6 @@ class DataPointSelectorController {
         this.selectedPoints = new Map();
         this.models = new WeakMap();
 
-        this.sortArray = [{columnName: 'deviceName'}, {columnName: 'name'}];
-
         this.loadSettings();
         this.resetColumns();
     }
@@ -193,12 +191,16 @@ class DataPointSelectorController {
     
     loadSettings() {
         this.settings = this.localStorageService.get(this.localStorageKey || defaultLocalStorageKey) || {};
+        
         if (this.settings.hasOwnProperty('showFilters')) {
             this.showFilters = !!this.settings.showFilters;
         }
+
+        this.sort = this.settings.sort || [{columnName: 'deviceName'}, {columnName: 'name'}];
     }
     
     saveSettings() {
+        this.settings.sort = this.sort;
         this.localStorageService.set(this.localStorageKey || defaultLocalStorageKey, this.settings);
     }
 
@@ -241,7 +243,7 @@ class DataPointSelectorController {
         // query might change, don't want to update the pages with the results from the old query
         const pages = this.pages;
 
-        const sortArray = this.sortArray.map(item => item.descending ? `-${item.columnName}` : item.columnName);
+        const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
         
         // TODO copy it before adding sort and limit? so we can use it to filter WS updates
         this.queryObj.sort(...sortArray)
@@ -288,20 +290,19 @@ class DataPointSelectorController {
     }
     
     sortBy(column) {
-        const firstSort = this.sortArray[0];
+        const firstSort = this.sort[0];
         if (firstSort && firstSort.columnName === column.columnName) {
             firstSort.descending = !firstSort.descending;
-            this.getPoints('sort');
-            return;
+        } else {
+            this.sort = this.sort.filter(item => item.columnName !== column.columnName);
+            
+            this.sort.unshift({columnName: column.columnName});
+            if (this.sort.length > 3) {
+                this.sort.pop();
+            }
         }
 
-        this.sortArray = this.sortArray.filter(item => item.columnName !== column.columnName);
-        
-        this.sortArray.unshift({columnName: column.columnName});
-        if (this.sortArray.length > 3) {
-            this.sortArray.pop();
-        }
-
+        this.saveSettings();
         this.getPoints('sort');
     }
 

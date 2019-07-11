@@ -30,11 +30,11 @@
                 <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-click="$ctrl.sortBy(column)" ng-if="column.name !== 'value'">
                     <span ma-tr="{{column.label}}"></span>
-                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="$ctrl.sortArray[0].columnName === column.columnName" ng-class="{'ma-sort-descending': $ctrl.sortArray[0].descending}">arrow_upward</md-icon>
+                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="$ctrl.sort[0].columnName === column.columnName" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>
                 </div>
                 <div ng-repeat="tag in $ctrl.selectedTags track by tag.name" ng-click="$ctrl.sortBy(tag)">
                     <span ma-tr="{{tag.label}}" ma-tr-args="tag.labelArgs"></span>
-                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="$ctrl.sortArray[0].columnName === tag.columnName" ng-class="{'ma-sort-descending': $ctrl.sortArray[0].descending}">arrow_upward</md-icon>
+                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="$ctrl.sort[0].columnName === tag.columnName" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>
                 </div>
                 <div ma-tr="ui.app.pointValue" ng-if="$ctrl.showPointValueColumn"></div>
             </div>
