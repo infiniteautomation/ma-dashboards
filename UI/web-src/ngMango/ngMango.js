@@ -392,6 +392,15 @@ ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDa
     };
 }]);
 
+ngMango.config(['$animateProvider', function($animateProvider) {
+    $animateProvider.customFilter(function(node, event, options) {
+        if (node.classList.contains('ma-disable-animate')) {
+            return false;
+        }
+        return true;
+    });
+}]);
+
 ngMango.run([
     '$rootScope',
     'maWatchdog',
