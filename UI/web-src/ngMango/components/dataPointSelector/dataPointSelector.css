@@ -84,19 +84,20 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
 	height: 3px;
 }
 
-.ma-virtual-repeat-table,
-.ma-virtual-repeat-table .ma-virtual-repeat-table-header,
+.ma-virtual-repeat-table {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-body {
+	flex-grow: 1;
+}
+
 .ma-virtual-repeat-table .ma-virtual-repeat-table-row {
 	display: flex;
 }
 
-.ma-virtual-repeat-table,
-.ma-virtual-repeat-table .ma-virtual-repeat-table-body {
-	flex-direction: column;
-	flex-grow: 1;
-}
-
-.ma-virtual-repeat-table .ma-virtual-repeat-table-header > *,
 .ma-virtual-repeat-table .ma-virtual-repeat-table-row > * {
 	flex: 1 1 0;
 }
@@ -105,15 +106,22 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
 	font-weight: bold;
 }
 
+/* adds a scrollbar width element to make the row width the same as rows in the body */
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-virtual-repeat-table-row:after {
+	content: '';
+	overflow-y: scroll;
+	visibility: hidden;
+	height: 0;
+}
+
 .ma-virtual-repeat-table .md-virtual-repeat-scroller {
 	scroll-snap-type: y mandatory;
-	scroll-behavior: auto;
 }
 
 .ma-virtual-repeat-table .ma-virtual-repeat-table-row {
 	scroll-snap-align: start;
 }
 
-.ma-virtual-repeat-table .ma-virtual-repeat-table-row > .ma-row-loading {
+.ma-virtual-repeat-table .ma-row-loading {
 	visibility: hidden;
 }

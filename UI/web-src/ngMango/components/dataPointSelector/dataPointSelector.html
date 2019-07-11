@@ -26,38 +26,40 @@
     
     <div class="ma-virtual-repeat-table">
         <div class="ma-virtual-repeat-table-header">
-            <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
-            <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
-                    md-order-by="{{column.disableSort ? '' : column.name}}" ng-if="column.name !== 'value'">
-                <span ma-tr="{{column.label}}"></span>
+            <div class="ma-virtual-repeat-table-row">
+                <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
+                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
+                        md-order-by="{{column.disableSort ? '' : column.name}}" ng-if="column.name !== 'value'">
+                    <span ma-tr="{{column.label}}"></span>
+                </div>
+                <div ng-repeat="tag in $ctrl.selectedTags track by tag.name"
+                        md-order-by="tags.{{tag.name}}">
+                    <span ng-bind="tag.label"></span>
+                </div>
+                <div ma-tr="ui.app.pointValue" ng-if="$ctrl.showPointValueColumn"></div>
             </div>
-            <div ng-repeat="tag in $ctrl.selectedTags track by tag.name"
-                    md-order-by="tags.{{tag.name}}">
-                <span ng-bind="tag.label"></span>
+            <div class="ma-virtual-repeat-table-row" ng-if="$ctrl.showFilters" class="ma-filter-header">
+                <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
+                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-if="column.name !== 'value'">
+                    <md-input-container md-no-float="true">
+                        <input ng-model="column.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                        <md-button ng-show="!!column.filter" class="ma-input-button md-icon-button" ng-click="column.filter = null; $ctrl.filterChanged()">
+                            <md-icon>clear</md-icon>
+                        </md-button>
+                    </md-input-container>
+                </div>
+                <div ng-repeat="tag in $ctrl.selectedTags track by tag.name">
+                    <md-input-container md-no-float="true">
+                        <input ng-model="tag.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
+                        <md-button ng-show="!!tag.filter" class="ma-input-button md-icon-button" ng-click="tag.filter = null; $ctrl.filterChanged()">
+                            <md-icon>clear</md-icon>
+                        </md-button>
+                    </md-input-container>
+                </div>
+                <div ng-if="$ctrl.showPointValueColumn"><!-- Spacer for point value column --></div>
             </div>
-            <div ma-tr="ui.app.pointValue" ng-if="$ctrl.showPointValueColumn"></div>
+            <md-progress-linear ng-show="$ctrl.pointsPromise" md-mode="indeterminate"></md-progress-linear>
         </div>
-        <div class="ma-virtual-repeat-table-header" ng-if="$ctrl.showFilters" class="ma-filter-header">
-            <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
-            <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-if="column.name !== 'value'">
-                <md-input-container md-no-float="true">
-                    <input ng-model="column.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
-                    <md-button ng-show="!!column.filter" class="ma-input-button md-icon-button" ng-click="column.filter = null; $ctrl.filterChanged()">
-                        <md-icon>clear</md-icon>
-                    </md-button>
-                </md-input-container>
-            </div>
-            <div ng-repeat="tag in $ctrl.selectedTags track by tag.name">
-                <md-input-container md-no-float="true">
-                    <input ng-model="tag.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
-                    <md-button ng-show="!!tag.filter" class="ma-input-button md-icon-button" ng-click="tag.filter = null; $ctrl.filterChanged()">
-                        <md-icon>clear</md-icon>
-                    </md-button>
-                </md-input-container>
-            </div>
-            <div ng-if="$ctrl.showPointValueColumn"><!-- Spacer for point value column --></div>
-        </div>
-        <md-progress-linear ng-show="$ctrl.pointsPromise" md-mode="indeterminate"></md-progress-linear>
         <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
             <div class="ma-virtual-repeat-table-row" md-virtual-repeat="point in $ctrl" md-on-demand ng-class="{'ma-row-loading': point == null}">
