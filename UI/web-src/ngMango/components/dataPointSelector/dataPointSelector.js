@@ -30,6 +30,8 @@ const defaultColumns = [
     {name: 'value', label: 'ui.app.pointValue', selectedByDefault: false}
 ];
 
+const defaultLocalStorageKey = 'dataPointSelector';
+
 class DataPointSelectorController {
     static get $$ngIsClass() { return true; }
     
@@ -155,20 +157,14 @@ class DataPointSelectorController {
     }
     
     loadSettings() {
-        if (this.localStorageKey) {
-            this.settings = this.localStorageService.get(this.localStorageKey) || {};
-            if (this.settings.hasOwnProperty('showFilters')) {
-                this.showFilters = !!this.settings.showFilters;
-            }
-        } else {
-            this.settings = {};
+        this.settings = this.localStorageService.get(this.localStorageKey || defaultLocalStorageKey) || {};
+        if (this.settings.hasOwnProperty('showFilters')) {
+            this.showFilters = !!this.settings.showFilters;
         }
     }
     
     saveSettings() {
-        if (this.localStorageKey) {
-            this.localStorageService.set(this.localStorageKey, this.settings);
-        }
+        this.localStorageService.set(this.localStorageKey || defaultLocalStorageKey, this.settings);
     }
 
     resetColumns() {
