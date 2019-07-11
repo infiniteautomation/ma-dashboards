@@ -67,14 +67,6 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column md-checkbox 
 	height: 0;
 }
 
-.ma-virtual-repeat-table .md-virtual-repeat-scroller {
-	scroll-snap-type: y mandatory;
-}
-
-.ma-virtual-repeat-table .ma-virtual-repeat-table-row {
-	scroll-snap-align: start;
-}
-
 .ma-virtual-repeat-table .ma-row-loading {
 	visibility: hidden;
 }
@@ -89,4 +81,16 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column md-checkbox 
 .ma-virtual-repeat-table md-progress-linear .md-container,
 .ma-virtual-repeat-table md-progress-linear .md-container .md-bar {
 	height: 3px;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-virtual-repeat-table-row > :focus {
+	outline: none;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-sort-icon {
+	transition: transform .5s ease-out;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-sort-icon.ma-sort-descending {
+	transform: rotate(180deg);
 }

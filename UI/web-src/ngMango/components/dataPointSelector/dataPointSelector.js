@@ -92,8 +92,7 @@ class DataPointSelectorController {
         this.selectedPoints = new Map();
         this.models = new WeakMap();
 
-        this.sortString = 'deviceName';
-        this.sortArray = ['deviceName', 'name'];
+        this.sortArray = [{columnName: 'deviceName'}, {columnName: 'name'}];
 
         this.loadSettings();
         this.resetColumns();
@@ -233,8 +232,10 @@ class DataPointSelectorController {
         // query might change, don't want to update the pages with the results from the old query
         const pages = this.pages;
 
+        const sortArray = this.sortArray.map(item => item.descending ? `-${item.columnName}` : item.columnName);
+        
         // TODO copy it before adding sort and limit? so we can use it to filter WS updates
-        this.queryObj.sort(...this.sortArray)
+        this.queryObj.sort(...sortArray)
             .limit(this.pageSize, startIndex);
 
         const pointsPromise = this.pointsPromise = this.queryObj.query();
@@ -276,17 +277,18 @@ class DataPointSelectorController {
             this.maPoint.cancelRequest(this.pointsPromise);
         }
     }
+    
+    sortBy(column) {
+        const firstSort = this.sortArray[0];
+        if (firstSort && firstSort.columnName === column.columnName) {
+            firstSort.descending = !firstSort.descending;
+            this.getPoints('sort');
+            return;
+        }
 
-    sortStringChanged() {
-        const newSort = this.sortString;
-        const property = newSort.startsWith('-') ? newSort.slice(1) : newSort;
+        this.sortArray = this.sortArray.filter(item => item.columnName !== column.columnName);
         
-        this.sortArray = this.sortArray.filter(sort => {
-            const prevProperty = sort.startsWith('-') ? sort.slice(1) : sort;
-            return prevProperty !== property;
-        });
-
-        this.sortArray.unshift(newSort);
+        this.sortArray.unshift({columnName: column.columnName});
         if (this.sortArray.length > 3) {
             this.sortArray.pop();
         }
@@ -307,7 +309,8 @@ class DataPointSelectorController {
         const option = {
             name: tagKey,
             columnName: `tags.${tagKey}`,
-            label: this.maTranslate.trSync('ui.app.tag', [tagKey]),
+            label: 'ui.app.tag',
+            labelArgs: [tagKey],
             applyFilter,
             useLike: true
         };
