@@ -9,25 +9,25 @@ import dataPointSelectorTemplate from './dataPointSelector.html';
 import './dataPointSelector.css';
 
 const defaultColumns = [
-    {name: 'xid', label: 'ui.app.xidShort', selectedByDefault: false, useLike: true},
-    {name: 'dataSourceName', label: 'ui.app.dataSource', selectedByDefault: false, useLike: true},
-    {name: 'dataType', label: 'dsEdit.pointDataType', selectedByDefault: false},
-    {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true, useLike: true},
-    {name: 'name', label: 'common.name', selectedByDefault: true, useLike: true},
-    {name: 'enabled', label: 'common.enabled', selectedByDefault: false},
-    {name: 'readPermission', label: 'pointEdit.props.permission.read', selectedByDefault: false},
-    {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: false},
-    {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: false},
-    {name: 'chartColour', label: 'pointEdit.props.chartColour', selectedByDefault: false},
-    {name: 'plotType', label: 'pointEdit.plotType', selectedByDefault: false},
-    {name: 'rollup', label: 'common.rollup', selectedByDefault: false},
-    {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: false},
-    {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
-    {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', selectedByDefault: false},
-    {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
-    {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', selectedByDefault: false},
-    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false},
-    {name: 'value', label: 'ui.app.pointValue', selectedByDefault: false}
+    {name: 'xid', label: 'ui.app.xidShort'},
+    {name: 'dataSourceName', label: 'ui.app.dataSource'},
+    {name: 'dataType', label: 'dsEdit.pointDataType', exact: true},
+    {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
+    {name: 'name', label: 'common.name', selectedByDefault: true},
+    {name: 'enabled', label: 'common.enabled', boolean: true},
+    {name: 'readPermission', label: 'pointEdit.props.permission.read'},
+    {name: 'setPermission', label: 'pointEdit.props.permission.set'},
+    {name: 'unit', label: 'pointEdit.props.unit'},
+    {name: 'chartColour', label: 'pointEdit.props.chartColour'},
+    {name: 'plotType', label: 'pointEdit.plotType'},
+    {name: 'rollup', label: 'common.rollup'},
+    {name: 'templateXid', label: 'ui.app.templateXid'},
+    {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
+    {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', numeric: true},
+    {name: 'simplifyType', label: 'pointEdit.props.simplifyType'},
+    {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', numeric: true},
+    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', numeric: true},
+    {name: 'value', label: 'ui.app.pointValue'}
 ];
 
 const applyFilter = function(queryBuilder) {
@@ -47,9 +47,18 @@ const applyFilter = function(queryBuilder) {
             filter = filter.slice(1);
         }
         
-        if (!exact && filter.includes('*')) {
+        if (this.numeric) {
+            let numericValue = null;
+            try {
+                numericValue = Number.parseFloat(filter);
+            } catch (e) {}
+            queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, numericValue);
+        } else if (this.boolean) {
+            const booleanValue = ['true','y', '1'].includes(filter.toLowerCase());
+            queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, booleanValue);
+        } else if (!exact && filter.includes('*')) {
             queryBuilder[isNot ? 'nlike' : 'like'](this.columnName, filter);
-        } else if (!exact && this.useLike) {
+        } else if (!exact && !this.exact) {
             queryBuilder[isNot ? 'nlike' : 'like'](this.columnName, `*${filter}*`);
         } else {
             queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, filter);
@@ -311,8 +320,7 @@ class DataPointSelectorController {
             columnName: `tags.${tagKey}`,
             label: 'ui.app.tag',
             labelArgs: [tagKey],
-            applyFilter,
-            useLike: true
+            applyFilter
         };
         
         this.availableTags.push(option);

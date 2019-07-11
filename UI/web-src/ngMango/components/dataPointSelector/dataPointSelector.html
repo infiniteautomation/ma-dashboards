@@ -14,7 +14,7 @@
             <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags"
                     ng-change="$ctrl.selectedTagsChanged()"
                     ng-model-options="{trackBy: '$value.name'}">
-                <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ng-bind="tag.label"></span></md-option>
+                <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ma-tr="{{tag.label}}" ma-tr-args="tag.labelArgs"></span></md-option>
             </md-select>
         </md-input-container>
     
