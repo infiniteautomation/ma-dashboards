@@ -105,6 +105,15 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
 	font-weight: bold;
 }
 
-.ma-virtual-repeat-table .ma-row-loading {
+.ma-virtual-repeat-table .md-virtual-repeat-scroller {
+	scroll-snap-type: y mandatory;
+	scroll-behavior: auto;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-row {
+	scroll-snap-align: start;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-row > .ma-row-loading {
 	visibility: hidden;
 }
