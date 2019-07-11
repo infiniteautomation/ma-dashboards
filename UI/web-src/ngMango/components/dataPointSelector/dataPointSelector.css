@@ -1,57 +1,11 @@
 ma-data-point-selector {
 	display: flex;
-	min-height: 400px;
+	min-height: 200px;
 }
 
-ma-data-point-selector table.md-table .ma-empty-null {
+ma-data-point-selector .ma-empty-null {
 	opacity: 0.5;
 	font-style: italic;
-}
-
-ma-data-point-selector table.md-table td.md-cell md-checkbox,
-ma-data-point-selector table.md-table th.md-column md-checkbox {
-	margin: 4px;
-}
-
-ma-data-point-selector table.md-table md-checkbox .md-container:after {
-	top: -4px;
-	right: -4px;
-	bottom: -4px;
-	left: -4px;
-}
-
-ma-data-point-selector table.md-table thead.md-table-progress md-progress-linear {
-	top: -3px;
-}
-
-ma-data-point-selector table.md-table thead tr th {
-	text-align: left;
-	padding: 0 20px 8px 0;
-}
-
-ma-data-point-selector table.md-table:not(.md-row-select) td.md-cell:first-child,
-ma-data-point-selector table.md-table:not(.md-row-select) th.md-column:first-child {
-    width: 20px;
-    padding-right: 16px;
-    padding-left: 16px;
-}
-
-ma-data-point-selector table.md-table td.md-cell:last-child,
-ma-data-point-selector table.md-table th.md-column:last-child {
-	padding-right: 0;
-}
-
-ma-data-point-selector table.md-table thead tr th.ma-checkbox-column > md-checkbox {
-    width: 20px;
-}
-
-ma-data-point-selector table.md-table thead tr th:nth-child(1n+2),
-ma-data-point-selector table.md-table tbody tr td:nth-child(1n+2) {
-	white-space: nowrap;
-}
-
-ma-data-point-selector table.md-table tbody tr.ma-row-loading {
-	visibility: hidden;
 }
 
 ma-data-point-selector .ma-no-points-found {
@@ -60,34 +14,28 @@ ma-data-point-selector .ma-no-points-found {
 	padding: 16px 0;
 }
 
-ma-data-point-selector thead.ma-filter-header > tr > th > md-input-container {
+ma-data-point-selector .ma-virtual-repeat-table-header md-input-container {
 	width: 100%;
     margin: 0;
+    padding: 0;
 }
 
 ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
-	flex: 0 0 30px;
+	flex: 0 0 28px;
 }
 
-.ma-virtual-repeat-table md-progress-linear.ng-hide:not(.ng-hide-animate) {
-	display: block !important;
-	visibility: hidden !important;
+ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column md-checkbox {
+	width: 20px;
+	margin: 0;
 }
 
-.ma-virtual-repeat-table md-progress-linear {
-	margin-top: 5px;
-}
-
-.ma-virtual-repeat-table md-progress-linear,
-.ma-virtual-repeat-table md-progress-linear .md-container,
-.ma-virtual-repeat-table md-progress-linear .md-container .md-bar {
-	height: 3px;
-}
+/* Virtual repeat table */
 
 .ma-virtual-repeat-table {
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
+	font-size: 1.3rem;
 }
 
 .ma-virtual-repeat-table .ma-virtual-repeat-table-body {
@@ -96,10 +44,15 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
 
 .ma-virtual-repeat-table .ma-virtual-repeat-table-row {
 	display: flex;
+	align-items: center;
 }
 
 .ma-virtual-repeat-table .ma-virtual-repeat-table-row > * {
 	flex: 1 1 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 4px;
 }
 
 .ma-virtual-repeat-table .ma-virtual-repeat-table-header {
@@ -124,4 +77,16 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
 
 .ma-virtual-repeat-table .ma-row-loading {
 	visibility: hidden;
+}
+
+/* want the progress bar to always take up space */
+.ma-virtual-repeat-table md-progress-linear.ng-hide:not(.ng-hide-animate) {
+	display: block !important;
+	visibility: hidden !important;
+}
+
+.ma-virtual-repeat-table md-progress-linear,
+.ma-virtual-repeat-table md-progress-linear .md-container,
+.ma-virtual-repeat-table md-progress-linear .md-container .md-bar {
+	height: 3px;
 }
