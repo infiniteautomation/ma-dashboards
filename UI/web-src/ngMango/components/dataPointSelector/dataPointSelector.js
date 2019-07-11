@@ -30,6 +30,33 @@ const defaultColumns = [
     {name: 'value', label: 'ui.app.pointValue', selectedByDefault: false}
 ];
 
+const applyFilter = function(queryBuilder) {
+    if (this.filter === '!' || this.filter === '!*') {
+        queryBuilder.eq(this.columnName, null);
+    } else if (this.filter === '*') {
+        queryBuilder.ne(this.columnName, null);
+    } else if (this.filter) {
+        let filter = this.filter;
+        
+        const isNot = filter.startsWith('!');
+        if (isNot) {
+            filter = filter.slice(1);
+        }
+        const exact = filter.startsWith('=');
+        if (exact) {
+            filter = filter.slice(1);
+        }
+        
+        if (!exact && filter.includes('*')) {
+            queryBuilder[isNot ? 'nlike' : 'like'](this.columnName, filter);
+        } else if (!exact && this.useLike) {
+            queryBuilder[isNot ? 'nlike' : 'like'](this.columnName, `*${filter}*`);
+        } else {
+            queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, filter);
+        }
+    }
+};
+
 const defaultLocalStorageKey = 'dataPointSelector';
 
 class DataPointSelectorController {
@@ -171,7 +198,9 @@ class DataPointSelectorController {
         this.columns = defaultColumns.map((column, i) => {
             return Object.assign({}, column, {
                 order: i,
-                property: column.name.split('.')
+                property: column.name.split('.'),
+                columnName: column.name,
+                applyFilter
             });
         });
 
@@ -198,21 +227,8 @@ class DataPointSelectorController {
 
         this.queryObj = this.maPoint.buildQuery();
         
-        this.selectedColumns.forEach(col => {
-            if (col.filter) {
-                if (col.useLike) {
-                    this.queryObj.like(col.name, `*${col.filter}*`);
-                } else {
-                    this.queryObj.eq(col.name, col.filter);
-                }
-            }
-        });
-        
-        this.selectedTags.forEach(tag => {
-            if (tag.filter) {
-                this.queryObj.like(`tags.${tag.name}`, `*${tag.filter}*`);
-            }
-        });
+        this.selectedColumns.forEach(col => col.applyFilter(this.queryObj));
+        this.selectedTags.forEach(tag => tag.applyFilter(this.queryObj));
 
         // query might change, don't want to update the pages with the results from the old query
         const pages = this.pages;
@@ -290,7 +306,10 @@ class DataPointSelectorController {
         
         const option = {
             name: tagKey,
-            label: this.maTranslate.trSync('ui.app.tag', [tagKey])
+            columnName: `tags.${tagKey}`,
+            label: this.maTranslate.trSync('ui.app.tag', [tagKey]),
+            applyFilter,
+            useLike: true
         };
         
         this.availableTags.push(option);
