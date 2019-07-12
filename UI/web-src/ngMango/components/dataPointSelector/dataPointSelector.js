@@ -33,7 +33,7 @@ const defaultColumns = [
     {name: 'setPermission', label: 'pointEdit.props.permission.set'},
     {name: 'unit', label: 'pointEdit.props.unit'},
     {name: 'chartColour', label: 'pointEdit.props.chartColour'},
-    {name: 'plotType', label: 'pointEdit.plotType'},
+    {name: 'plotType', label: 'pointEdit.plotType', exact: true},
     {name: 'rollup', label: 'common.rollup'},
     {name: 'templateXid', label: 'ui.app.templateXid'},
     {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
@@ -102,15 +102,10 @@ class DataPointSelectorController {
         this.$scope = $scope;
         this.$interval = $interval;
 
-        this.sortStringChangedBound = (...args) => this.sortStringChanged(...args);
-
         this.pageSize = 25;
         this.cachedPages = 10;
-        this.availableTagsByKey = {};
-        this.availableTags = [];
-        this.selectedTags = [];
-        this.prevSelectedTags = [];
-        this.manuallySelectedTags = [];
+        
+        this.tags = new Map();
 
         this.selectedPoints = new Map();
         this.models = new WeakMap();
@@ -120,28 +115,28 @@ class DataPointSelectorController {
     }
     
     getItemAtIndex(index) {
-        const startIndex = index - index % this.pageSize;
-        const page = this.pages.get(startIndex);
-        if (page) {
-            if (page.points) {
-                return page.points[index - startIndex];
+        if (this.pages) {
+            const startIndex = index - index % this.pageSize;
+            const page = this.pages.get(startIndex);
+            if (page) {
+                if (page.points) {
+                    return page.points[index - startIndex];
+                }
+            } else {
+                this.getPoints('page', startIndex);
             }
-        } else {
-            this.getPoints('page', startIndex);
+            return null;
         }
-        return null;
     }
     
     getLength() {
-        return this.pages.$total;
+        if (this.pages) {
+            return this.pages.$total;
+        }
     }
 
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        
-        this.maDataPointTags.keys().then(keys => {
-            keys.forEach(tagKey => this.addTagToAvailable(tagKey));
-        });
 
         this.updateQueue = [];
         this.deregister = this.maPoint.notificationManager.subscribe((event, point) => {
@@ -183,8 +178,11 @@ class DataPointSelectorController {
             
             this.prevUpdateQueueSize = this.updateQueue.length;
         }, 500, null, false);
-
-        this.getPoints('query');
+        
+        this.maDataPointTags.keys().then(keys => {
+            this.updateAvailableTags(keys);
+            this.getPoints('query');
+        });
     }
     
     $onDestroy() {
@@ -216,15 +214,27 @@ class DataPointSelectorController {
     
     saveSettings() {
         this.settings.sort = this.sort;
+
+        this.settings.showFilters = this.showFilters;
+        this.settings.filters = {};
+        this.selectedColumns.concat(this.selectedTags).forEach(c => {
+            if (c.filter) {
+                this.settings.filters[c.columnName] = c.filter;
+            }
+        });
+        
         this.localStorageService.set(this.localStorageKey || defaultLocalStorageKey, this.settings);
     }
 
     resetColumns() {
+        const filters = this.settings.filters || {};
+        
         this.columns = defaultColumns.map((column, i) => {
             return Object.assign({}, column, {
                 order: i,
                 property: column.name.split('.'),
                 columnName: column.name,
+                filter: filters[column.name] || null,
                 applyFilter
             });
         });
@@ -235,9 +245,28 @@ class DataPointSelectorController {
         
         this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
     }
+    
+    updateAvailableTags(keys) {
+        const filters = this.settings.filters || {};
+        
+        keys.forEach(k => {
+            if (!this.tags.has(k)) {
+                const columnName = `tags.${k}`;
+                this.tags.set(k, {
+                    name: k,
+                    columnName,
+                    label: 'ui.app.tag',
+                    labelArgs: [k],
+                    filter: filters[columnName] || null,
+                    applyFilter
+                });
+            }
+        });
 
-    clearFilters() {
-        this.columns.forEach(column => delete column.filter);
+        this.availableTags = Array.from(this.tags.values());
+        this.selectedTags = (this.settings.selectedTags || [])
+            .map(k => this.tags.get(k))
+            .filter(item => item != null);
     }
 
     getPoints(reason, startIndex = 0) {
@@ -266,10 +295,10 @@ class DataPointSelectorController {
         const pages = this.pages;
 
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
-        
-        // TODO copy it before adding sort and limit? so we can use it to filter WS updates
-        this.queryObj.sort(...sortArray)
-            .limit(this.pageSize, startIndex);
+        if (sortArray.length) {
+            this.queryObj.sort(...sortArray);
+        }
+        this.queryObj.limit(this.pageSize, startIndex);
 
         const pointsPromise = this.pointsPromise = this.queryObj.query();
         
@@ -322,55 +351,6 @@ class DataPointSelectorController {
         this.getPoints('sort');
     }
 
-    addTagToAvailable(tagKey) {
-        if (tagKey === 'device' || tagKey === 'name') {
-            return;
-        }
-        
-        const existingOption = this.availableTagsByKey[tagKey];
-        if (existingOption) {
-            return existingOption;
-        }
-        
-        const option = {
-            name: tagKey,
-            columnName: `tags.${tagKey}`,
-            label: 'ui.app.tag',
-            labelArgs: [tagKey],
-            applyFilter
-        };
-        
-        this.availableTags.push(option);
-        this.availableTagsByKey[tagKey] = option;
-
-        return option;
-    }
-    
-    selectTag(option) {
-        if (option && !this.selectedTags.includes(option)) {
-            this.selectedTags.push(option);
-        }
-    }
-
-    checkAvailableTags() {
-        const seenTagKeys = {};
-        
-        for (let pt of this.points.values()) {
-            if (pt.tags) {
-                for (let key of Object.keys(pt.tags)) {
-                    seenTagKeys[key] = true;
-                }
-            }
-        }
-        
-        this.selectedTags = this.manuallySelectedTags.slice();
-        Object.keys(seenTagKeys).forEach(tagKey => {
-            const option = this.addTagToAvailable(tagKey);
-            this.selectTag(option);
-        });
-        this.prevSelectedTags = this.selectedTags.slice();
-    }
-
     selectedColumnsChanged() {
         this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
         
@@ -381,28 +361,49 @@ class DataPointSelectorController {
         this.settings.selectedColumns = this.selectedColumns
             .filter(c => !c.selectedByDefault)
             .map(c => c.name);
-        
+
+        const nonSelected = this.setDifference(this.columns, this.selectedColumns);
+        this.columnsDeselected(nonSelected);
         this.saveSettings();
     }
     
     selectedTagsChanged() {
-        const removed = this.prevSelectedTags.filter(t => !this.selectedTags.includes(t));
-        const added = this.selectedTags.filter(t => !this.prevSelectedTags.includes(t));
-        
-        removed.forEach(option => {
-            const index = this.manuallySelectedTags.indexOf(option);
+        this.settings.selectedTags = this.selectedTags.map(t => t.name);
+
+        const nonSelected = this.setDifference(this.availableTags, this.selectedTags);
+        this.columnsDeselected(nonSelected);
+        this.saveSettings();
+    }
+    
+    /**
+     * Removes non selected columns from the sort and filtering
+     */
+    columnsDeselected(nonSelected) {
+        let queryType;
+
+        nonSelected.forEach(c => {
+            const index = this.sort.findIndex(s => s.columnName === c.columnName);
             if (index >= 0) {
-                this.manuallySelectedTags.splice(index, 1);
+                this.sort.splice(index, 1);
+                queryType = 'sort';
+            }
+            if (c.filter) {
+                c.filter = null;
+                queryType = 'query';
             }
         });
         
-        added.forEach(option => {
-            if (!this.manuallySelectedTags.includes(option)) {
-                this.manuallySelectedTags.push(option);
-            }
-        });
-        
-        this.prevSelectedTags = this.selectedTags.slice();
+        if (queryType) {
+            this.getPoints(queryType);
+        }
+    }
+    
+    setDifference(a, b) {
+        const diff = new Set(a);
+        for (let o of b) {
+            diff.delete(o);
+        }
+        return diff;
     }
 
     pointMatchesQuery(point) {
@@ -444,16 +445,17 @@ class DataPointSelectorController {
     filterButtonClicked() {
         this.showFilters = !this.showFilters;
 
-        this.settings.showFilters = this.showFilters;
-        this.saveSettings();
-        
         if (!this.showFilters) {
-            this.clearFilters();
-            this.filterChanged();
+            this.columns.forEach(column => column.filter = null);
+            this.availableTags.forEach(column => column.filter = null);
+            this.getPoints('query');
         }
+        
+        this.saveSettings();
     }
     
     filterChanged() {
+        this.saveSettings();
         this.getPoints('query');
     }
     
