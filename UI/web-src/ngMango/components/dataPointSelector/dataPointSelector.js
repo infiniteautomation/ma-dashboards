@@ -5,8 +5,22 @@
 
 import angular from 'angular';
 import dataPointSelectorTemplate from './dataPointSelector.html';
-
 import './dataPointSelector.css';
+
+/*
+ * TODO
+fixed column widths / weight per column? make configurable and store in settings
+store filters in settings
+store tags in settings
+re-instate the shift click
+select rows rather than use checkboxes
+touch behavior / check mobile layout
+click and drag to select multiple?
+button to select all / clear selection
+refresh button
+check WS update behavior
+Single select mode
+*/
 
 const defaultColumns = [
     {name: 'xid', label: 'ui.app.xidShort'},
@@ -123,6 +137,8 @@ class DataPointSelectorController {
     }
 
     $onInit() {
+        this.ngModelCtrl.$render = () => this.render();
+        
         this.maDataPointTags.keys().then(keys => {
             keys.forEach(tagKey => this.addTagToAvailable(tagKey));
         });
@@ -169,7 +185,6 @@ class DataPointSelectorController {
         }, 500, null, false);
 
         this.getPoints('query');
-        this.ngModelCtrl.$render = () => this.render();
     }
     
     $onDestroy() {
@@ -227,9 +242,16 @@ class DataPointSelectorController {
 
     getPoints(reason, startIndex = 0) {
         if (reason === 'query' || reason === 'sort') {
+            if (this.pages) {
+                for (let page of this.pages.values()) {
+                    this.maPoint.cancelRequest(page.promise);
+                }
+            }
+            
             const total = this.pages && this.pages.$total || null;
             this.pages = new Map();
 
+            // sorting doesn't change the total
             if (reason === 'sort') {
                 this.pages.$total = total;
             }
@@ -282,13 +304,7 @@ class DataPointSelectorController {
             }
         });
     }
-    
-    cancelGetPoints() {
-        if (this.pointsPromise) {
-            this.maPoint.cancelRequest(this.pointsPromise);
-        }
-    }
-    
+
     sortBy(column) {
         const firstSort = this.sort[0];
         if (firstSort && firstSort.columnName === column.columnName) {
