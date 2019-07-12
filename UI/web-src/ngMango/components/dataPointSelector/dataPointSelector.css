@@ -67,6 +67,11 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column md-checkbox 
 	height: 0;
 }
 
+/* make the scroller always have a scrollbar so the body rows always have the same width */
+.ma-virtual-repeat-table .md-virtual-repeat-container .md-virtual-repeat-scroller {
+	overflow-y: scroll;
+}
+
 .ma-virtual-repeat-table .ma-row-loading {
 	visibility: hidden;
 }
