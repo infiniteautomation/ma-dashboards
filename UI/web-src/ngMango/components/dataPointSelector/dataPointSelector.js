@@ -218,7 +218,7 @@ class DataPointSelectorController {
         this.settings.showFilters = this.showFilters;
         this.settings.filters = {};
         this.selectedColumns.concat(this.selectedTags).forEach(c => {
-            if (c.filter) {
+            if (c.filter != null) {
                 this.settings.filters[c.columnName] = c.filter;
             }
         });
@@ -387,7 +387,7 @@ class DataPointSelectorController {
                 this.sort.splice(index, 1);
                 queryType = 'sort';
             }
-            if (c.filter) {
+            if (c.filter != null) {
                 c.filter = null;
                 queryType = 'query';
             }
@@ -446,9 +446,18 @@ class DataPointSelectorController {
         this.showFilters = !this.showFilters;
 
         if (!this.showFilters) {
-            this.columns.forEach(column => column.filter = null);
-            this.availableTags.forEach(column => column.filter = null);
-            this.getPoints('query');
+            let filtersChanged = false;
+            
+            this.columns.concat(this.availableTags).forEach(c => {
+                if (c.filter != null) {
+                    c.filter = null;
+                    filtersChanged = true;
+                }
+            });
+
+            if (filtersChanged) {
+                this.getPoints('query');
+            }
         }
         
         this.saveSettings();
