@@ -1,6 +1,6 @@
 <div flex="noshrink" layout="column" ng-form="dataPointSelector" ma-form-exclude>
     <div>
-        <span ng-if="!$ctrl.bulkTask" ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.size]"></span>
+        <span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.size]"></span>
         
         <md-input-container md-no-float="true">
             <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns"
@@ -27,7 +27,32 @@
     <div class="ma-virtual-repeat-table">
         <div class="ma-virtual-repeat-table-header">
             <div class="ma-virtual-repeat-table-row">
-                <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
+                <div class="ma-checkbox-column">
+                    <md-menu md-position-mode="target-left bottom" md-offset="0 0" ng-if="!$ctrl.dataSource.isNew()">
+                        <md-button class="md-icon-button ma-small-button ma-no-margin" ng-click="$mdMenu.open($event)">
+                            <md-icon md-menu-origin>more_vert</md-icon>
+                            <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
+                        </md-button>
+                        <md-menu-content width="3" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
+                            <md-menu-item>
+                                <md-button class="ma-no-padding-right" ng-click="$ctrl.selectAll()">
+                                    <div layout="row" flex>
+                                        <md-icon md-menu-align-target>check_box</md-icon>
+                                        <div flex ma-tr="ui.app.selectAll"></div>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button class="ma-no-padding-right" ng-click="$ctrl.deselectAll()">
+                                    <div layout="row" flex>
+                                        <md-icon md-menu-align-target>indeterminate_check_box</md-icon>
+                                        <div flex ma-tr="ui.app.deselectAll"></div>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-click="$ctrl.sortBy(column)" ng-if="column.name !== 'value'">
                     <span ma-tr="{{column.label}}"></span>
                     <md-icon class="ma-sort-icon ma-disable-animate" ng-if="$ctrl.sort[0].columnName === column.columnName" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>

@@ -165,6 +165,10 @@ class DataPointSelectorController {
         });
     }
     
+    setViewValue() {
+        this.ngModelCtrl.$setViewValue(Array.from(this.selectedPoints.values()));
+    }
+    
     loadSettings() {
         this.settings = this.localStorageService.get(this.localStorageKey || defaultLocalStorageKey) || {};
         
@@ -258,28 +262,28 @@ class DataPointSelectorController {
     getPoints(reason, startIndex = 0) {
         // tags and columns must be available.
         if (!this.selectedColumns || !this.selectedTags) {
-            return;
+            return this.$q.reject('Tags or columns not available yet');
         }
         
         if (reason === 'query' || reason === 'sort') {
             this.clearPagesCache(reason !== 'query');
         }
 
-        this.queryObj = this.maPoint.buildQuery();
+        const queryBuilder = this.maPoint.buildQuery();
         
-        this.selectedColumns.forEach(col => col.applyFilter(this.queryObj));
-        this.selectedTags.forEach(tag => tag.applyFilter(this.queryObj));
+        this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
+        this.selectedTags.forEach(tag => tag.applyFilter(queryBuilder));
 
         // query might change, don't want to update the pages with the results from the old query
         const pages = this.pages;
 
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
         if (sortArray.length) {
-            this.queryObj.sort(...sortArray);
+            queryBuilder.sort(...sortArray);
         }
-        this.queryObj.limit(this.pageSize, startIndex);
+        queryBuilder.limit(this.pageSize, startIndex);
 
-        const pointsPromise = this.pointsPromise = this.queryObj.query();
+        const pointsPromise = this.pointsPromise = queryBuilder.query();
 
         // reuse the existing page, preserving its points array for the meantime
         const page = pages.get(startIndex) || {startIndex};
@@ -292,7 +296,7 @@ class DataPointSelectorController {
             this.pages.delete(firstKey);
         }
 
-        pointsPromise.then(result => {
+        return pointsPromise.then(result => {
             pages.$total = result.$total;
             page.points = result;
         }).catch(error => {
@@ -305,6 +309,8 @@ class DataPointSelectorController {
             
             const message = error.mangoStatusText || (error + '');
             this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
+            
+            return this.$q.reject(error);
         }).finally(() => {
             // check we are deleting our own promise, not one for a new query
             if (this.pointsPromise === pointsPromise) {
@@ -435,6 +441,7 @@ class DataPointSelectorController {
                 } else {
                     this.selectedPoints.delete(point.xid);
                 }
+                this.setViewValue();
             }
         });
     }
@@ -512,6 +519,49 @@ class DataPointSelectorController {
      */
     getLength() {
         return this.pages.$total;
+    }
+    
+    selectAll() {
+        // tags and columns must be available.
+        if (!this.selectedColumns || !this.selectedTags) {
+            return this.$q.reject('Tags or columns not available yet');
+        }
+
+        const query = (startIndex = 0, pageSize = 100) => {
+            const queryBuilder = this.maPoint.buildQuery();
+            
+            this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
+            this.selectedTags.forEach(tag => tag.applyFilter(queryBuilder));
+
+            queryBuilder.limit(100, startIndex);
+
+            return queryBuilder.query().then(result => {
+                result.forEach(point => this.selectedPoints.set(point.xid, point));
+                
+                if (result.$total > startIndex + pageSize) {
+                    return query(startIndex + pageSize);
+                }
+            });
+        };
+        
+        return query().then(() => {
+            this.setViewValue();
+        }, error => {
+            if (error.status === -1 && error.resource && error.resource.cancelled) {
+                // request cancelled, ignore error
+                return;
+            }
+            
+            const message = error.mangoStatusText || (error + '');
+            this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
+            
+            return this.$q.reject(error);
+        });
+    }
+    
+    deselectAll() {
+        this.selectedPoints.clear();
+        this.setViewValue();
     }
 }
 
