@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import dataPointSelectorTemplate from './dataPointSelector.html';
 import './dataPointSelector.css';
 
@@ -20,6 +19,7 @@ button to select all / clear selection
 refresh button
 check WS update behavior
 Single select mode
+combined menu for selecting columns and tags
 */
 
 const defaultColumns = [
@@ -102,6 +102,7 @@ class DataPointSelectorController {
         this.$scope = $scope;
         this.$interval = $interval;
 
+        this.pages = new Map();
         this.pageSize = 25;
         this.cachedPages = 10;
         
@@ -113,72 +114,34 @@ class DataPointSelectorController {
         this.loadSettings();
         this.resetColumns();
     }
-    
-    getItemAtIndex(index) {
-        if (this.pages) {
-            const startIndex = index - index % this.pageSize;
-            const page = this.pages.get(startIndex);
-            if (page) {
-                if (page.points) {
-                    return page.points[index - startIndex];
-                }
-            } else {
-                this.getPoints('page', startIndex);
-            }
-            return null;
-        }
-    }
-    
-    getLength() {
-        if (this.pages) {
-            return this.pages.$total;
-        }
-    }
 
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
 
         this.updateQueue = [];
         this.deregister = this.maPoint.notificationManager.subscribe((event, point) => {
+            // we queue up the updates and process them in batches to prevent continuous $scope.$apply() when large numbers of
+            // points are being edited
             this.updateQueue.push({
                 eventName: event.name,
                 point
             });
         });
 
-        this.ticks = 0;
-        this.prevUpdateQueueSize = 0;
+        let intervalTicks = 0;
+        let updateQueueLength = 0;
         this.intervalPromise = this.$interval(() => {
-            if (!this.updateQueue.length) return;
-            
-            this.ticks++;
-            if (this.ticks >= 20 || this.updateQueue.length === this.prevUpdateQueueSize) {
-                this.ticks = 0;
-                
-                let changeMade = false;
-                let update;
-                while ((update = this.updateQueue.shift()) != null) {
-                    if (update.eventName === 'create') {
-                        changeMade |= this.pointAdded(update.point);
-                    } else if (update.eventName === 'update') {
-                        changeMade |= this.pointUpdated(update.point);
-                    } else if (update.eventName === 'delete') {
-                        changeMade |= this.pointDeleted(update.point);
-                    }
+            if (this.updateQueue.length) {
+                // we only process the queue of updates every 20 ticks of the interval if the queue is being continuously updated
+                // or if the queue length does not change between ticks
+                if (++intervalTicks >= 20 || this.updateQueue.length === updateQueueLength) {
+                    intervalTicks = 0;
+                    this.processUpdateQueue();
                 }
-                
-                if (changeMade) {
-                    this.$scope.$apply(() => {
-                        // TODO need anything here?
-                        //this.checkAvailableTags();
-                        //this.filterPoints();
-                    });
-                }
+                updateQueueLength = this.updateQueue.length;
             }
-            
-            this.prevUpdateQueueSize = this.updateQueue.length;
         }, 500, null, false);
-        
+
         this.maDataPointTags.keys().then(keys => {
             this.updateAvailableTags(keys);
             this.getPoints('query');
@@ -207,6 +170,10 @@ class DataPointSelectorController {
         
         if (this.settings.hasOwnProperty('showFilters')) {
             this.showFilters = !!this.settings.showFilters;
+        }
+        
+        if (!this.settings.filters) {
+            this.settings.filters = {};
         }
 
         this.sort = this.settings.sort || [{columnName: 'deviceName'}, {columnName: 'name'}];
@@ -247,8 +214,6 @@ class DataPointSelectorController {
     }
     
     updateAvailableTags(keys) {
-        const filters = this.settings.filters || {};
-        
         keys.forEach(k => {
             if (!this.tags.has(k)) {
                 const columnName = `tags.${k}`;
@@ -257,7 +222,7 @@ class DataPointSelectorController {
                     columnName,
                     label: 'ui.app.tag',
                     labelArgs: [k],
-                    filter: filters[columnName] || null,
+                    filter: this.settings.filters[columnName] || null,
                     applyFilter
                 });
             }
@@ -268,22 +233,36 @@ class DataPointSelectorController {
             .map(k => this.tags.get(k))
             .filter(item => item != null);
     }
+    
+    reloadPages() {
+        for (let page of this.pages.values()) {
+            this.maPoint.cancelRequest(page.promise);
+            page.reload = true;
+        }
+    }
 
+    clearPagesCache(preserveTotal = true, reloadOnly = false) {
+        for (let page of this.pages.values()) {
+            this.maPoint.cancelRequest(page.promise);
+        }
+        
+        const total = this.pages.$total;
+        this.pages = new Map();
+
+        // sorting doesn't change the total
+        if (preserveTotal) {
+            this.pages.$total = total;
+        }
+    }
+    
     getPoints(reason, startIndex = 0) {
+        // tags and columns must be available.
+        if (!this.selectedColumns || !this.selectedTags) {
+            return;
+        }
+        
         if (reason === 'query' || reason === 'sort') {
-            if (this.pages) {
-                for (let page of this.pages.values()) {
-                    this.maPoint.cancelRequest(page.promise);
-                }
-            }
-            
-            const total = this.pages && this.pages.$total || null;
-            this.pages = new Map();
-
-            // sorting doesn't change the total
-            if (reason === 'sort') {
-                this.pages.$total = total;
-            }
+            this.clearPagesCache(reason !== 'query');
         }
 
         this.queryObj = this.maPoint.buildQuery();
@@ -301,13 +280,13 @@ class DataPointSelectorController {
         this.queryObj.limit(this.pageSize, startIndex);
 
         const pointsPromise = this.pointsPromise = this.queryObj.query();
-        
-        const page = {
-            startIndex,
-            promise: pointsPromise
-        };
 
-        pages.set(page.startIndex, page);
+        // reuse the existing page, preserving its points array for the meantime
+        const page = pages.get(startIndex) || {startIndex};
+        delete page.reload;
+        page.promise = pointsPromise;
+        
+        pages.set(startIndex, page);
         if (pages.size > this.cachedPages) {
             const [firstKey] = this.pages.keys();
             this.pages.delete(firstKey);
@@ -335,10 +314,22 @@ class DataPointSelectorController {
     }
 
     sortBy(column) {
+        // sort order goes from
+        // a) ascending
+        // b) descending
+        // c) no sort
+        
         const firstSort = this.sort[0];
         if (firstSort && firstSort.columnName === column.columnName) {
-            firstSort.descending = !firstSort.descending;
+            if (!firstSort.descending) {
+                // second click
+                firstSort.descending = true;
+            } else {
+                // third click
+                this.sort.shift();
+            }
         } else {
+            // first click
             this.sort = this.sort.filter(item => item.columnName !== column.columnName);
             
             this.sort.unshift({columnName: column.columnName});
@@ -406,42 +397,6 @@ class DataPointSelectorController {
         return diff;
     }
 
-    pointMatchesQuery(point) {
-        // TODO check the point matches this.queryObj
-        return false;
-    }
-
-    pointAdded(point) {
-        // TODO not possible to add points?
-        if (this.pointMatchesQuery(point)) {
-            //this.points.set(point.xid, point);
-            return true;
-        }
-    }
-    
-    pointUpdated(point) {
-        const found = this.points.find(p => p.xid === point.xid);
-        if (found) {
-            angular.copy(point, found);
-            return true;
-        }
-    }
-    
-    pointDeleted(point) {
-        // TODO this might cause issues...
-        const inPoints = this.points.findIndex(p => p.xid === point.xid);
-        const inSelected = this.selectedPoints.delete(point.xid);
-
-        if (inPoints >= 0) {
-            this.points.splice(inPoints, 1);
-            return true;
-        }
-        
-        if (inSelected) {
-            return true;
-        }
-    }
-
     filterButtonClicked() {
         this.showFilters = !this.showFilters;
 
@@ -504,6 +459,59 @@ class DataPointSelectorController {
             result = result[property[i]];
         }
         return result;
+    }
+    
+    processUpdateQueue() {
+        let changeMade = false;
+
+        /*
+        while (this.updateQueue.length) {
+            const update = this.updateQueue.shift();
+            if (update.eventName === 'create') {
+                changeMade |= this.pointAdded(update.point);
+            } else if (update.eventName === 'update') {
+                changeMade |= this.pointUpdated(update.point);
+            } else if (update.eventName === 'delete') {
+                changeMade |= this.pointDeleted(update.point);
+            }
+        }
+        */
+
+        // TODO we currently have no good way to know if the updated point matches our current query
+        // just mark all of our pages as needing a reload
+        changeMade = true;
+        this.updateQueue.length = 0;
+        
+        if (changeMade) {
+            this.$scope.$apply(() => {
+                this.reloadPages();
+            });
+        }
+    }
+
+    /**
+     * md-virtual-repeat with md-on-demand interface
+     */
+    getItemAtIndex(index) {
+        const startIndex = index - index % this.pageSize;
+        const page = this.pages.get(startIndex);
+        
+        if (!page || page.reload) {
+            this.getPoints('page', startIndex);
+        }
+        
+        if (page.points) {
+            return page.points[index - startIndex];
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * md-virtual-repeat with md-on-demand interface
+     */
+    getLength() {
+        return this.pages.$total;
     }
 }
 
