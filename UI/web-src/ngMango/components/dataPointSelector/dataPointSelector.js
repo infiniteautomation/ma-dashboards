@@ -500,7 +500,7 @@ class DataPointSelectorController {
             this.getPoints('page', startIndex);
         }
         
-        if (page.points) {
+        if (page && page.points) {
             return page.points[index - startIndex];
         } else {
             return null;
