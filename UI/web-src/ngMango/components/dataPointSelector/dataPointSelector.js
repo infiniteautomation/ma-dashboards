@@ -521,7 +521,7 @@ class DataPointSelectorController {
         return this.pages.$total;
     }
     
-    selectAll() {
+    selectAll(deselect = false) {
         // tags and columns must be available.
         if (!this.selectedColumns || !this.selectedTags) {
             return this.$q.reject('Tags or columns not available yet');
@@ -536,7 +536,13 @@ class DataPointSelectorController {
             queryBuilder.limit(100, startIndex);
 
             return queryBuilder.query().then(result => {
-                result.forEach(point => this.selectedPoints.set(point.xid, point));
+                result.forEach(point => {
+                    if (deselect) {
+                        this.selectedPoints.delete(point.xid);
+                    } else {
+                        this.selectedPoints.set(point.xid, point);
+                    }
+                });
                 
                 if (result.$total > startIndex + pageSize) {
                     return query(startIndex + pageSize);
@@ -560,6 +566,10 @@ class DataPointSelectorController {
     }
     
     deselectAll() {
+        return this.selectAll(true);
+    }
+    
+    clearSelection() {
         this.selectedPoints.clear();
         this.setViewValue();
     }
