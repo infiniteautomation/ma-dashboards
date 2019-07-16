@@ -18,8 +18,10 @@ click and drag to select multiple?
 button to select all / clear selection
 refresh button
 check WS update behavior
+WS should modify points in existing selection
 Single select mode
 combined menu for selecting columns and tags
+horizontal scroll bar
 */
 
 const defaultColumns = [
@@ -403,9 +405,7 @@ class DataPointSelectorController {
         return diff;
     }
 
-    filterButtonClicked() {
-        this.showFilters = !this.showFilters;
-
+    showFiltersChanged() {
         if (!this.showFilters) {
             let filtersChanged = false;
             
@@ -428,30 +428,13 @@ class DataPointSelectorController {
         this.saveSettings();
         this.getPoints('query');
     }
-    
-    /**
-     * Creates a getter / setter model for the selected checkbox
-     */
-    createModel(point) {
-        return Object.defineProperty({}, 'value', {
-            get: () => this.selectedPoints.has(point.xid),
-            set: val => {
-                if (val) {
-                    this.selectedPoints.set(point.xid, point);
-                } else {
-                    this.selectedPoints.delete(point.xid);
-                }
-                this.setViewValue();
-            }
-        });
-    }
-    
+
     getModel(point, index) {
         if (point == null) return;
         
         let model = this.models.get(point);
         if (!model) {
-            model = this.createModel(point);
+            model = this.maUtil.createBooleanModel(this.selectedPoints, point, 'xid');
             this.models.set(point, model);
         }
         return model;
@@ -572,6 +555,19 @@ class DataPointSelectorController {
     clearSelection() {
         this.selectedPoints.clear();
         this.setViewValue();
+    }
+    
+    getSelectedColumnsModel(column) {
+        return this.maUtil.createBooleanModel(this.selectedColumns, column, a => a.name);
+    }
+    
+    getSelectedTagsModel(tag) {
+        return this.maUtil.createBooleanModel(this.selectedTags, tag, a => a.name);
+    }
+    
+    clickHandler(event) {
+        console.log(event);
+        event.stopPropagation();
     }
 }
 

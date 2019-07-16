@@ -1009,6 +1009,61 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
         freezeAll(array) {
             array.forEach(a => Object.freeze(a));
             return Object.freeze(array);
+        },
+        
+        /**
+         * Creates a boolean model for adding/removing an item from a collection (Supports Arrays, Maps, and Sets).
+         */
+        createBooleanModel(collection, item, getId) {
+            if (typeof getId === 'string') {
+                const propertyName = getId;
+                getId = (a) => a[propertyName];
+            } else if (getId == null) {
+                // identity function
+                getId = (a) => a;
+            }
+            
+            const id = getId(item);
+            
+            if (Array.isArray(collection)) {
+                return Object.defineProperty({}, 'value', {
+                    get: () => !!collection.find(a => getId(a) === id),
+                    set: value => {
+                        const index = collection.findIndex(a => getId(a) === id);
+                        if (value) {
+                            if (index < 0) {
+                                collection.push(item);
+                            }
+                        } else {
+                            if (index >= 0) {
+                                collection.splice(index, 1);
+                            }
+                        }
+                    }
+                });
+            } else if (collection instanceof Set) {
+                return Object.defineProperty({}, 'value', {
+                    get: () => collection.has(id),
+                    set: value => {
+                        if (value) {
+                            collection.add(id);
+                        } else {
+                            collection.delete(id);
+                        }
+                    }
+                });
+            } else if (collection instanceof Map) {
+                return Object.defineProperty({}, 'value', {
+                    get: () => collection.has(id),
+                    set: value => {
+                        if (value) {
+                            collection.set(id, item);
+                        } else {
+                            collection.delete(id);
+                        }
+                    }
+                });
+            }
         }
     };
 

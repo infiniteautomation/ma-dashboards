@@ -22,10 +22,25 @@ ma-data-point-selector .ma-virtual-repeat-table-header md-input-container {
 
 ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
 	flex: 0 0 32px;
+	display: flex;
+	justify-content: center;
 }
 
 ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column md-checkbox {
 	width: 20px;
+	margin: 0;
+}
+
+ma-data-point-selector md-menu-bar {
+	width: 32px;
+	padding: 0;
+}
+
+md-menu-content.md-menu-bar-menu.md-dense.ma-data-point-selector {
+	padding: 8px 0;
+}
+
+md-menu-content.md-menu-bar-menu.ma-checkbox-menu md-checkbox {
 	margin: 0;
 }
 

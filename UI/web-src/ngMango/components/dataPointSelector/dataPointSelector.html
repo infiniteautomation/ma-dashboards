@@ -3,67 +3,93 @@
         <div class="ma-virtual-repeat-table-header">
             <div class="ma-virtual-repeat-table-row">
                 <div class="ma-checkbox-column">
-                    <md-menu md-position-mode="target-left bottom" md-offset="0 10" ng-if="!$ctrl.dataSource.isNew()">
-                        <md-button class="md-icon-button ma-small-button ma-no-margin" ng-click="$mdMenu.open($event)">
-                            <md-icon md-menu-origin>more_vert</md-icon>
-                            <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
-                        </md-button>
-                        <md-menu-content width="3" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
-                            <md-menu-item>
-                                <span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.size]"></span>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-input-container md-no-float="true">
-                                    <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true" ng-model="$ctrl.selectedColumns"
-                                            ng-change="$ctrl.selectedColumnsChanged()"
-                                            ng-model-options="{trackBy: '$value.name'}">
-                                        <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-input-container md-no-float="true">
-                                    <md-select md-selected-text="'ui.app.selectTags' | maTr" multiple="true" ng-model="$ctrl.selectedTags"
-                                            ng-change="$ctrl.selectedTagsChanged()"
-                                            ng-model-options="{trackBy: '$value.name'}">
-                                        <md-option ng-repeat="tag in $ctrl.availableTags track by tag.name" ng-value="tag"><span ma-tr="{{tag.label}}" ma-tr-args="tag.labelArgs"></span></md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button class="ma-no-padding-right" ng-click="$ctrl.filterButtonClicked($event)" ng-class="{'md-accent': $ctrl.showFilters}">
-                                    <div layout="row" flex>
-                                        <md-icon md-menu-align-target>filter_list</md-icon>
-                                        <div flex ma-tr="ui.app.filterDataPoints"></div>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button class="ma-no-padding-right" ng-click="$ctrl.selectAll()">
-                                    <div layout="row" flex>
-                                        <md-icon md-menu-align-target>check_box</md-icon>
-                                        <div flex ma-tr="ui.app.selectAll"></div>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button class="ma-no-padding-right" ng-click="$ctrl.deselectAll()">
-                                    <div layout="row" flex>
-                                        <md-icon md-menu-align-target>indeterminate_check_box</md-icon>
-                                        <div flex ma-tr="ui.app.deselectAll"></div>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button class="ma-no-padding-right" ng-click="$ctrl.clearSelection()">
-                                    <div layout="row" flex>
-                                        <md-icon md-menu-align-target>clear</md-icon>
-                                        <div flex ma-tr="ui.app.clearSelection"></div>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
+                    <md-menu-bar>
+                        <md-menu md-offset="-4 4">
+                            <md-button class="md-icon-button ma-small-button ma-no-margin" ng-click="$mdMenu.open($event)">
+                                <md-icon md-menu-origin>more_vert</md-icon>
+                                <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
+                            </md-button>
+                            <md-menu-content width="3" class="ma-data-point-selector" md-colors="::{background: 'background-hue-2'}">
+                                <md-menu-item>
+                                    <md-button ng-disabled="true">
+                                        <span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.size]"></span>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-divider></md-menu-divider>
+
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.selectAll()">
+                                        <div layout="row" flex>
+                                            <md-icon md-menu-align-target>check_box</md-icon>
+                                            <div flex ma-tr="ui.app.selectAll"></div>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.deselectAll()">
+                                        <div layout="row" flex>
+                                            <md-icon md-menu-align-target>check_box_outline_blank</md-icon>
+                                            <div flex ma-tr="ui.app.deselectAll"></div>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.clearSelection()">
+                                        <div layout="row" flex>
+                                            <md-icon md-menu-align-target>clear</md-icon>
+                                            <div flex ma-tr="ui.app.clearSelection"></div>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-divider></md-menu-divider>
+
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters; $ctrl.showFiltersChanged()">
+                                        <md-checkbox ng-click="$event.stopPropagation()" ng-model="$ctrl.showFilters" ng-change="$ctrl.showFiltersChanged()">
+                                            <span ma-tr="ui.app.filterDataPoints"></span>
+                                        </md-checkbox>
+                                    </md-button>
+                                </md-menu-item>
+                                
+                                <md-menu-item>
+                                    <md-menu>
+                                        <md-button ng-click="$mdMenu.open($event)"><span ma-tr="ui.app.selectColumns"></span></md-button>
+                                        <md-menu-content width="3" class="ma-data-point-selector ma-checkbox-menu" md-colors="::{background: 'background-hue-2'}">
+                                            <md-menu-item ng-repeat="column in $ctrl.columns track by column.name">
+                                                <md-button ng-init="model = $ctrl.getSelectedColumnsModel(column)"
+                                                        ng-click="model.value = !model.value; $ctrl.selectedColumnsChanged()" md-prevent-menu-close>
+                                                    <md-checkbox ng-click="$event.stopPropagation()" md-prevent-menu-close ng-model="model.value" ng-change="$ctrl.selectedColumnsChanged()" md-no-ink="true">
+                                                        <span ma-tr="{{column.label}}"></span>
+                                                    </md-checkbox>
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-menu>
+                                        <md-button ng-click="$mdMenu.open($event)"><span ma-tr="ui.app.selectTags"></span></md-button>
+                                        <md-menu-content width="3" class="ma-data-point-selector" md-colors="::{background: 'background-hue-2'}">
+                                            <md-menu-item ng-repeat="tag in $ctrl.availableTags track by tag.name">
+                                                <md-button ng-init="model = $ctrl.getSelectedTagsModel(tag)"
+                                                        ng-click="model.value = !model.value; $ctrl.selectedTagsChanged()" md-prevent-menu-close>
+                                                    <md-checkbox ng-click="$event.stopPropagation()" md-prevent-menu-close ng-model="model.value" ng-change="$ctrl.selectedTagsChanged()" md-no-ink="true">
+                                                        <span ng-bind="tag.name"></span>
+                                                    </md-checkbox>
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </md-menu-bar>
+
                 </div>
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-click="$ctrl.sortBy(column)" ng-if="column.name !== 'value'">
                     <span ma-tr="{{column.label}}"></span>
@@ -101,7 +127,7 @@
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
             <div class="ma-virtual-repeat-table-row" md-virtual-repeat="point in $ctrl" md-on-demand ng-class="{'ma-row-loading': point == null}">
                 <div class="ma-checkbox-column">
-                    <md-checkbox ng-model="$ctrl.getModel(point, $index).value" md-no-ink="true">
+                    <md-checkbox ng-model="$ctrl.getModel(point, $index).value" ng-change="$ctrl.setViewValue()" md-no-ink="true">
                     </md-checkbox>
                 </div>
     
