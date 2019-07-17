@@ -50,6 +50,10 @@ class SystemSettingEditorController {
     }
     
     valueChanged() {
+        if (this.nullOnEmpty && (this.systemSetting.value == null || this.systemSetting.value === '')) {
+            this.systemSetting.value = null;
+        }
+        
         if (this.onValueChanged) {
             this.onValueChanged({$value: this.systemSetting.value, $initial: false});
         }
@@ -115,7 +119,8 @@ export default {
         disabled: '<?ngDisabled',
         saveOnChange: '<?',
         onInit: '&?',
-        availableOptions: '<?'
+        availableOptions: '<?',
+        nullOnEmpty: '<?'
     },
     transclude: {
         options: '?mdOption'
