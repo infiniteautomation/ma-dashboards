@@ -9,8 +9,6 @@ import './dataPointSelector.css';
 /*
  * TODO
 fixed column widths / weight per column? make configurable and store in settings
-store filters in settings
-store tags in settings
 re-instate the shift click
 select rows rather than use checkboxes
 touch behavior / check mobile layout
@@ -105,7 +103,7 @@ class DataPointSelectorController {
         this.$interval = $interval;
 
         this.pages = new Map();
-        this.pageSize = 25;
+        this.pageSize = 100;
         this.cachedPages = 10;
         
         this.tags = new Map();
@@ -268,6 +266,7 @@ class DataPointSelectorController {
         }
         
         if (reason === 'query' || reason === 'sort') {
+            this.cancelSelect();
             this.clearPagesCache(reason !== 'query');
         }
 
@@ -281,7 +280,7 @@ class DataPointSelectorController {
 
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
         if (sortArray.length) {
-            queryBuilder.sort(...sortArray);
+            queryBuilder.sort(...sortArray, 'id');
         }
         queryBuilder.limit(this.pageSize, startIndex);
 
@@ -435,6 +434,7 @@ class DataPointSelectorController {
         let model = this.models.get(point);
         if (!model) {
             model = this.maUtil.createBooleanModel(this.selectedPoints, point, 'xid');
+            model.index = index;
             this.models.set(point, model);
         }
         return model;
@@ -504,36 +504,19 @@ class DataPointSelectorController {
         return this.pages.$total;
     }
     
-    selectAll(deselect = false) {
+    selectAll(deselect = false, startIndex = 0, endIndex = -1) {
         // tags and columns must be available.
         if (!this.selectedColumns || !this.selectedTags) {
             return this.$q.reject('Tags or columns not available yet');
         }
 
-        const query = (startIndex = 0, pageSize = 100) => {
-            const queryBuilder = this.maPoint.buildQuery();
-            
-            this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
-            this.selectedTags.forEach(tag => tag.applyFilter(queryBuilder));
-
-            queryBuilder.limit(100, startIndex);
-
-            return queryBuilder.query().then(result => {
-                result.forEach(point => {
-                    if (deselect) {
-                        this.selectedPoints.delete(point.xid);
-                    } else {
-                        this.selectedPoints.set(point.xid, point);
-                    }
-                });
-                
-                if (result.$total > startIndex + pageSize) {
-                    return query(startIndex + pageSize);
-                }
-            });
-        };
-        
-        return query().then(() => {
+        return this.pagedQuery(point => {
+            if (deselect) {
+                this.selectedPoints.delete(point.xid);
+            } else {
+                this.selectedPoints.set(point.xid, point);
+            }
+        }, startIndex, endIndex).then(() => {
             this.setViewValue();
         }, error => {
             if (error.status === -1 && error.resource && error.resource.cancelled) {
@@ -545,6 +528,34 @@ class DataPointSelectorController {
             this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
             
             return this.$q.reject(error);
+        });
+    }
+    
+    pagedQuery(callback, startIndex = 0, endIndex = -1, pageSize = this.pageSize) {
+        const queryBuilder = this.maPoint.buildQuery();
+        
+        this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
+        this.selectedTags.forEach(tag => tag.applyFilter(queryBuilder));
+
+        const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
+        if (sortArray.length) {
+            queryBuilder.sort(...sortArray, 'id');
+        }
+        
+        const limit = endIndex >= 0 ? Math.min(pageSize, endIndex - startIndex) : pageSize;
+        queryBuilder.limit(limit, startIndex);
+
+        return queryBuilder.query().then(result => {
+            result.forEach(point => {
+                callback(point);
+            });
+
+            const hasMore = result.$total > startIndex + limit;
+            const wantMore = endIndex < 0 || endIndex > startIndex + pageSize;
+            
+            if (hasMore && wantMore) {
+                return this.pagedQuery(callback, startIndex + pageSize, endIndex, pageSize);
+            }
         });
     }
     
@@ -565,9 +576,29 @@ class DataPointSelectorController {
         return this.maUtil.createBooleanModel(this.selectedTags, tag, a => a.name);
     }
     
-    clickHandler(event) {
-        console.log(event);
-        event.stopPropagation();
+    selectMouseDown(point, index) {
+        this.selectMouseDownData = {point, index};
+    }
+
+    selectMouseUp(point, index) {
+        if (!this.selectMouseDownData) {
+            return;
+        }
+        
+        const select = this.selectedPoints.has(this.selectMouseDownData.point.xid);
+        const mouseDownIndex = this.selectMouseDownData.index;
+        delete this.selectMouseDownData;
+        
+        const fromIndex = Math.min(index, mouseDownIndex);
+        const toIndex = Math.max(index, mouseDownIndex);
+
+        if (toIndex > fromIndex) {
+            this.selectAll(select, fromIndex, toIndex + 1);
+        }
+    }
+    
+    cancelSelect() {
+        delete this.selectMouseDownData;
     }
 }
 
