@@ -23,7 +23,7 @@ function MailingListFactory(RestResource) {
             []
         ],
         name: '',
-        readPermisions: [],
+        readPermissions: [],
         receiveAlarmEmails: 'IGNORE',
     };
 
