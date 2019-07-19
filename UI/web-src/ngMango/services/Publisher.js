@@ -36,9 +36,6 @@ function publisherProvider() {
             console.error('Tried to register publisher type twice', type);
             return;
         }
-        if (typeof type.addPoint !== 'function') {
-            type.addPoint = () => ({});
-        }
         publisherTypes.push(type);
     };
     
@@ -138,19 +135,6 @@ function publisherProvider() {
                 this.enable(value);
             }
             
-            addPoint(point) {
-                if (!point || this.points.find(pt => pt.dataPointXid === point.xid)) {
-                    return;
-                }
-                
-                const type = this.constructor.typesByName[this.modelType];
-                const publisherPoint = type.addPoint(point);
-                publisherPoint.dataPointXid = point.xid;
-                this.points.push(publisherPoint);
-                
-                return true;
-            }
-            
             changeType(type = this.modelType) {
                 const newPublisher = this.constructor.typesByName[type].createPublisher();
                 
@@ -158,6 +142,14 @@ function publisherProvider() {
                 Object.keys(defaultProperties).forEach(k => newPublisher[k] = this[k]);
                 
                 return newPublisher;
+            }
+            
+            createPublisherPoint(point) {
+                const type = this.constructor.typesByName[this.modelType];
+                const publisherPoint = type.createPublisherPoint(point);
+                publisherPoint.dataPointXid = point.xid;
+                publisherPoint.modelType = type.type;
+                return publisherPoint;
             }
         }
 
@@ -178,7 +170,7 @@ function publisherProvider() {
                 return publisher;
             }
             
-            createPublisherPoint() {
+            createPublisherPoint(point) {
                 return angular.copy(this.defaultPublisherPoint || {});
             }
         }

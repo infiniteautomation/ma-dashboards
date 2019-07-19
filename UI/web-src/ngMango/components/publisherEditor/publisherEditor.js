@@ -166,13 +166,12 @@ class PublisherEditorController {
     
     pointsToPublisherPoints(points) {
         if (Array.isArray(points)) {
-            return points.map(pt => ({
-                dataPointXid: pt.xid
-            }));
+            return points.map(pt => this.publisher.createPublisherPoint(pt));
         }
     }
     
     publisherPointsToPoints(points) {
+        // TODO should we get all the actual data points by XID?
         if (Array.isArray(points)) {
             return points.map(pt => ({
                 xid: pt.dataPointXid
