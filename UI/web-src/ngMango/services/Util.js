@@ -6,6 +6,7 @@
 import angular from 'angular';
 import moment from 'moment-timezone';
 import MultiMap from './MultiMap';
+import BoundedMap from './BoundedMap';
 
 /**
 * @ngdoc service
@@ -1004,6 +1005,10 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
         
         get MultiMap() {
             return MultiMap;
+        },
+        
+        get BoundedMap() {
+            return BoundedMap;
         },
         
         freezeAll(array) {

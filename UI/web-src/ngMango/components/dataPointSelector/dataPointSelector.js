@@ -102,9 +102,9 @@ class DataPointSelectorController {
         this.$scope = $scope;
         this.$interval = $interval;
 
-        this.pages = new Map();
-        this.pageSize = 100;
-        this.cachedPages = 10;
+        this.pageSize = 25;
+        this.cacheSize = 10;
+        this.pages = new maUtil.BoundedMap(this.cacheSize);
         
         this.tags = new Map();
 
@@ -144,7 +144,7 @@ class DataPointSelectorController {
 
         this.maDataPointTags.keys().then(keys => {
             this.updateAvailableTags(keys);
-            this.getPoints('query');
+            this.getPoints();
         });
     }
     
@@ -238,69 +238,65 @@ class DataPointSelectorController {
             .filter(item => item != null);
     }
     
-    reloadPages() {
+    markCacheAsStale() {
         for (let page of this.pages.values()) {
-            this.maPoint.cancelRequest(page.promise);
-            page.reload = true;
+            if (page.queryPromise) {
+                this.maPoint.cancelRequest(page.queryPromise);
+            }
+            page.stale = true;
         }
     }
 
-    clearPagesCache(preserveTotal = true, reloadOnly = false) {
-        for (let page of this.pages.values()) {
-            this.maPoint.cancelRequest(page.promise);
-        }
+    clearCache(preserveTotal = true) {
+        this.markCacheAsStale();
         
         const total = this.pages.$total;
-        this.pages = new Map();
-
+        this.pages = new this.maUtil.BoundedMap(this.cacheSize);
+        
         // sorting doesn't change the total
         if (preserveTotal) {
             this.pages.$total = total;
         }
     }
-    
-    getPoints(reason, startIndex = 0) {
-        // tags and columns must be available.
-        if (!this.selectedColumns || !this.selectedTags) {
-            return this.$q.reject('Tags or columns not available yet');
-        }
-        
-        if (reason === 'query' || reason === 'sort') {
-            this.cancelSelect();
-            this.clearPagesCache(reason !== 'query');
-        }
 
+    createQueryBuilder() {
         const queryBuilder = this.maPoint.buildQuery();
         
         this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
         this.selectedTags.forEach(tag => tag.applyFilter(queryBuilder));
 
-        // query might change, don't want to update the pages with the results from the old query
-        const pages = this.pages;
-
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
         if (sortArray.length) {
             queryBuilder.sort(...sortArray, 'id');
         }
-        queryBuilder.limit(this.pageSize, startIndex);
+        
+        return queryBuilder;
+    }
 
-        const pointsPromise = this.pointsPromise = queryBuilder.query();
+    getPage(startIndex = 0, evictCache = true) {
+        // keep a reference to pages, don't want to update a new pages map with the results from an old query
+        const pages = this.pages;
 
         // reuse the existing page, preserving its points array for the meantime
         const page = pages.get(startIndex) || {startIndex};
-        delete page.reload;
-        page.promise = pointsPromise;
-        
-        pages.set(startIndex, page);
-        if (pages.size > this.cachedPages) {
-            const [firstKey] = this.pages.keys();
-            this.pages.delete(firstKey);
+        if (page.points && !page.stale) {
+            return this.$q.resolve(page.points);
+        } else if (page.promise) {
+            return page.promise;
         }
+        pages.set(startIndex, page, evictCache);
 
-        return pointsPromise.then(result => {
+        const queryBuilder = this.createQueryBuilder();
+        queryBuilder.limit(this.pageSize, startIndex);
+        
+        page.queryPromise = queryBuilder.query();
+        
+        page.promise = page.queryPromise.then(result => {
             pages.$total = result.$total;
+            delete page.stale;
             page.points = result;
-        }).catch(error => {
+            return result;
+        }, error => {
             pages.delete(startIndex);
             
             if (error.status === -1 && error.resource && error.resource.cancelled) {
@@ -313,11 +309,52 @@ class DataPointSelectorController {
             
             return this.$q.reject(error);
         }).finally(() => {
+            delete page.queryPromise;
+            delete page.promise;
+        });
+        
+        return page.promise;
+    }
+
+    getPoints(startIndex = 0) {
+        const pointsPromise = this.pointsPromise = this.getPage(startIndex);
+        
+        this.pointsPromise.finally(() => {
             // check we are deleting our own promise, not one for a new query
             if (this.pointsPromise === pointsPromise) {
                 delete this.pointsPromise;
             }
         });
+    }
+    
+    selectAll(startIndex = 0, endIndex = undefined, deselect = false) {
+        this.getPage(startIndex, false).then(points => {
+            
+            points.every((point, i) => {
+                if (endIndex == null || i < endIndex - startIndex) {
+                    if (deselect) {
+                        this.selectedPoints.delete(point.xid);
+                    } else {
+                        this.selectedPoints.set(point.xid, point);
+                    }
+                    return true;
+                }
+            });
+
+            const nextPageIndex = startIndex + this.pageSize;
+            const hasMore = points.$total > nextPageIndex;
+            const wantMore = endIndex == null || endIndex > nextPageIndex;
+            
+            if (wantMore && hasMore) {
+                this.selectAll(nextPageIndex, endIndex, deselect);
+            } else {
+                this.setViewValue();
+            }
+        });
+    }
+    
+    deselectAll(startIndex = 0, endIndex = undefined) {
+        return this.selectAll(startIndex, endIndex, true);
     }
 
     sortBy(column) {
@@ -346,7 +383,8 @@ class DataPointSelectorController {
         }
 
         this.saveSettings();
-        this.getPoints('sort');
+        this.clearCache();
+        this.getPoints();
     }
 
     selectedColumnsChanged() {
@@ -377,22 +415,23 @@ class DataPointSelectorController {
      * Removes non selected columns from the sort and filtering
      */
     columnsDeselected(nonSelected) {
-        let queryType;
+        let queryChanged;
 
         nonSelected.forEach(c => {
             const index = this.sort.findIndex(s => s.columnName === c.columnName);
             if (index >= 0) {
                 this.sort.splice(index, 1);
-                queryType = 'sort';
+                queryChanged = true;
             }
             if (c.filter != null) {
                 c.filter = null;
-                queryType = 'query';
+                queryChanged = true;
             }
         });
         
-        if (queryType) {
-            this.getPoints(queryType);
+        if (queryChanged) {
+            this.clearCache();
+            this.getPoints();
         }
     }
     
@@ -416,7 +455,8 @@ class DataPointSelectorController {
             });
 
             if (filtersChanged) {
-                this.getPoints('query');
+                this.clearCache();
+                this.getPoints();
             }
         }
         
@@ -425,7 +465,8 @@ class DataPointSelectorController {
     
     filterChanged() {
         this.saveSettings();
-        this.getPoints('query');
+        this.clearCache();
+        this.getPoints();
     }
 
     getModel(point, index) {
@@ -474,7 +515,7 @@ class DataPointSelectorController {
         
         if (changeMade) {
             this.$scope.$apply(() => {
-                this.reloadPages();
+                this.markCacheAsStale();
             });
         }
     }
@@ -486,8 +527,8 @@ class DataPointSelectorController {
         const startIndex = index - index % this.pageSize;
         const page = this.pages.get(startIndex);
         
-        if (!page || page.reload) {
-            this.getPoints('page', startIndex);
+        if (!page || page.stale) {
+            this.getPoints(startIndex);
         }
         
         if (page && page.points) {
@@ -503,66 +544,7 @@ class DataPointSelectorController {
     getLength() {
         return this.pages.$total;
     }
-    
-    selectAll(deselect = false, startIndex = 0, endIndex = -1) {
-        // tags and columns must be available.
-        if (!this.selectedColumns || !this.selectedTags) {
-            return this.$q.reject('Tags or columns not available yet');
-        }
 
-        return this.pagedQuery(point => {
-            if (deselect) {
-                this.selectedPoints.delete(point.xid);
-            } else {
-                this.selectedPoints.set(point.xid, point);
-            }
-        }, startIndex, endIndex).then(() => {
-            this.setViewValue();
-        }, error => {
-            if (error.status === -1 && error.resource && error.resource.cancelled) {
-                // request cancelled, ignore error
-                return;
-            }
-            
-            const message = error.mangoStatusText || (error + '');
-            this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
-            
-            return this.$q.reject(error);
-        });
-    }
-    
-    pagedQuery(callback, startIndex = 0, endIndex = -1, pageSize = this.pageSize) {
-        const queryBuilder = this.maPoint.buildQuery();
-        
-        this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
-        this.selectedTags.forEach(tag => tag.applyFilter(queryBuilder));
-
-        const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
-        if (sortArray.length) {
-            queryBuilder.sort(...sortArray, 'id');
-        }
-        
-        const limit = endIndex >= 0 ? Math.min(pageSize, endIndex - startIndex) : pageSize;
-        queryBuilder.limit(limit, startIndex);
-
-        return queryBuilder.query().then(result => {
-            result.forEach(point => {
-                callback(point);
-            });
-
-            const hasMore = result.$total > startIndex + limit;
-            const wantMore = endIndex < 0 || endIndex > startIndex + pageSize;
-            
-            if (hasMore && wantMore) {
-                return this.pagedQuery(callback, startIndex + pageSize, endIndex, pageSize);
-            }
-        });
-    }
-    
-    deselectAll() {
-        return this.selectAll(true);
-    }
-    
     clearSelection() {
         this.selectedPoints.clear();
         this.setViewValue();
@@ -577,28 +559,28 @@ class DataPointSelectorController {
     }
     
     selectMouseDown(point, index) {
-        this.selectMouseDownData = {point, index};
+        this.pages.mouseDown = {point, index};
     }
 
     selectMouseUp(point, index) {
-        if (!this.selectMouseDownData) {
+        if (!this.pages.mouseDown) {
             return;
         }
         
-        const select = this.selectedPoints.has(this.selectMouseDownData.point.xid);
-        const mouseDownIndex = this.selectMouseDownData.index;
-        delete this.selectMouseDownData;
+        const deselect = this.selectedPoints.has(this.pages.mouseDown.point.xid);
+        const mouseDownIndex = this.pages.mouseDown.index;
+        delete this.pages.mouseDown;
         
         const fromIndex = Math.min(index, mouseDownIndex);
         const toIndex = Math.max(index, mouseDownIndex);
 
         if (toIndex > fromIndex) {
-            this.selectAll(select, fromIndex, toIndex + 1);
+            this.selectAll(fromIndex, toIndex + 1, deselect);
         }
     }
     
     cancelSelect() {
-        delete this.selectMouseDownData;
+        delete this.pages.mouseDown;
     }
 }
 
