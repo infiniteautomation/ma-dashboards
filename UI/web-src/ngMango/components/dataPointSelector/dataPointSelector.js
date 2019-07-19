@@ -13,9 +13,6 @@ re-instate the shift click
 select rows rather than use checkboxes
 touch behavior / check mobile layout
 click and drag to select multiple?
-refresh button
-check WS update behavior
-WS should modify points in existing selection
 Single select mode
 horizontal scroll bar
 */
@@ -491,31 +488,35 @@ class DataPointSelectorController {
     }
     
     processUpdateQueue() {
-        let changeMade = false;
-
-        /*
+        // TODO we currently have no good way to know if the updated point matches our current query
+        // just mark all of our pages as being stale and needing a reload
+        
+        let setViewValue = false;
+        
         while (this.updateQueue.length) {
             const update = this.updateQueue.shift();
+            
             if (update.eventName === 'create') {
-                changeMade |= this.pointAdded(update.point);
+                // ignore
             } else if (update.eventName === 'update') {
-                changeMade |= this.pointUpdated(update.point);
+                const existing = this.selectedPoints.get(update.point.xid);
+                if (existing) {
+                    Object.assign(existing, update.point);
+                    setViewValue = true;
+                }
             } else if (update.eventName === 'delete') {
-                changeMade |= this.pointDeleted(update.point);
+                const deleted = this.selectedPoints.delete(update.point.xid);
+                if (deleted) {
+                    setViewValue = true;
+                }
             }
         }
-        */
-
-        // TODO we currently have no good way to know if the updated point matches our current query
-        // just mark all of our pages as needing a reload
-        changeMade = true;
-        this.updateQueue.length = 0;
-        
-        if (changeMade) {
-            this.$scope.$apply(() => {
-                this.markCacheAsStale();
-            });
-        }
+        this.$scope.$apply(() => {
+            if (setViewValue) {
+                this.setViewValue();
+            }
+            this.markCacheAsStale();
+        });
     }
 
     /**
