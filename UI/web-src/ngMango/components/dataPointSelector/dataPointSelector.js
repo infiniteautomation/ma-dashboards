@@ -13,12 +13,10 @@ re-instate the shift click
 select rows rather than use checkboxes
 touch behavior / check mobile layout
 click and drag to select multiple?
-button to select all / clear selection
 refresh button
 check WS update behavior
 WS should modify points in existing selection
 Single select mode
-combined menu for selecting columns and tags
 horizontal scroll bar
 */
 

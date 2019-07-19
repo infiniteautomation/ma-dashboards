@@ -19,6 +19,15 @@
                                 <md-menu-divider></md-menu-divider>
 
                                 <md-menu-item>
+                                    <md-button ng-click="$ctrl.markCacheAsStale()">
+                                        <div layout="row" flex>
+                                            <md-icon md-menu-align-target>refresh</md-icon>
+                                            <div flex ma-tr="ui.app.refreshTable"></div>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
                                     <md-button ng-click="$ctrl.selectAll()">
                                         <div layout="row" flex>
                                             <md-icon md-menu-align-target>check_box</md-icon>
