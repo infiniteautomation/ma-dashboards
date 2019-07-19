@@ -46,7 +46,13 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
                 this.valueChangeHandler();
             }
             if (changes.point && !(!changes.point.currentValue && changes.point.isFirstChange())) {
-                this.setPoint();
+                const oldXid = changes.point.previousValue && changes.point.previousValue.xid;
+                const newXid = changes.point.currentValue && changes.point.currentValue.xid;
+                
+                // don't un-subscribe and re-subscribe if point is the same one
+                if (!(oldXid && oldXid === newXid)) {
+                    this.setPoint();
+                }
             }
             if (changes.pointXid && !(!changes.pointXid.currentValue && changes.pointXid.isFirstChange())) {
                 this.getPointByXid();

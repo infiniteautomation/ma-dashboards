@@ -162,6 +162,7 @@ import eventTypeFilter from './components/eventTypeFilter/eventTypeFilter';
 import publisherList from './components/publisherList/publisherList';
 import publisherSelect from './components/publisherSelect/publisherSelect';
 import publisherEditor from './components/publisherEditor/publisherEditor';
+import dataPointSelector from './components/dataPointSelector/dataPointSelector';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -337,6 +338,7 @@ ngMango.component('maEventTypeFilter', eventTypeFilter);
 ngMango.component('maPublisherList', publisherList);
 ngMango.component('maPublisherSelect', publisherSelect);
 ngMango.component('maPublisherEditor', publisherEditor);
+ngMango.component('maDataPointSelector', dataPointSelector);
 
 ngMango.animation('.ma-slide-up', slideUp);
 
@@ -388,6 +390,15 @@ ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDa
         ],
         categoryBalloon: mangoDateFormats.shortDateTimeSeconds
     };
+}]);
+
+ngMango.config(['$animateProvider', function($animateProvider) {
+    $animateProvider.customFilter(function(node, event, options) {
+        if (node.classList.contains('ma-disable-animate')) {
+            return false;
+        }
+        return true;
+    });
 }]);
 
 ngMango.run([

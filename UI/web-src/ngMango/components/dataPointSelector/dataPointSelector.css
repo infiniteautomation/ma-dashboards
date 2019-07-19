@@ -1,0 +1,116 @@
+ma-data-point-selector {
+	display: flex;
+	min-height: 400px;
+}
+
+ma-data-point-selector .ma-empty-null {
+	opacity: 0.5;
+	font-style: italic;
+}
+
+ma-data-point-selector .ma-no-points-found {
+	font-style: italic;
+	text-align: center;
+	padding: 16px 0;
+}
+
+ma-data-point-selector .ma-virtual-repeat-table-header md-input-container {
+	width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column {
+	flex: 0 0 32px;
+	display: flex;
+	justify-content: center;
+}
+
+ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column md-checkbox {
+	width: 20px;
+	margin: 0;
+}
+
+ma-data-point-selector md-menu-bar {
+	width: 32px;
+	padding: 0;
+}
+
+md-menu-content.md-menu-bar-menu.md-dense.ma-data-point-selector {
+	padding: 8px 0;
+}
+
+md-menu-content.md-menu-bar-menu.ma-checkbox-menu md-checkbox {
+	margin: 0;
+}
+
+/* Virtual repeat table */
+
+.ma-virtual-repeat-table {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	font-size: 1.3rem;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-body {
+	flex-grow: 1;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-row {
+	display: flex;
+	align-items: center;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-row > * {
+	flex: 1 1 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 4px;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header {
+	font-weight: bold;
+}
+
+/* adds a scrollbar width element to make the row width the same as rows in the body */
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-virtual-repeat-table-row:after {
+	content: '';
+	overflow-y: scroll;
+	visibility: hidden;
+	height: 0;
+}
+
+/* make the scroller always have a scrollbar so the body rows always have the same width */
+.ma-virtual-repeat-table .md-virtual-repeat-container .md-virtual-repeat-scroller {
+	overflow-y: scroll;
+}
+
+.ma-virtual-repeat-table .ma-row-loading {
+	visibility: hidden;
+}
+
+/* want the progress bar to always take up space */
+.ma-virtual-repeat-table md-progress-linear.ng-hide:not(.ng-hide-animate) {
+	display: block !important;
+	visibility: hidden !important;
+}
+
+.ma-virtual-repeat-table md-progress-linear,
+.ma-virtual-repeat-table md-progress-linear .md-container,
+.ma-virtual-repeat-table md-progress-linear .md-container .md-bar {
+	height: 3px;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-virtual-repeat-table-row > :focus {
+	outline: none;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-sort-icon {
+	transition: transform .5s ease-out;
+}
+
+.ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-sort-icon.ma-sort-descending {
+	transform: rotate(180deg);
+}

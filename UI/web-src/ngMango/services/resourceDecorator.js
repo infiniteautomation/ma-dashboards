@@ -59,18 +59,14 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
             objQuery: maUtil.objQuery,
             
             // maps request promises to resources
-            requests: new Map(),
+            requests: new WeakMap(),
 
             buildQuery() {
                 const builder = new RqlBuilder();
                 builder.queryFunction = (queryObj, opts) => {
                     const resource = this.query({rqlQuery: queryObj.toString()});
-                    const promise = resource.$promise;
-                    
-                    this.requests.set(promise, resource);
-                    promise.catch(e => null).finally(() => this.requests.delete(promise));
-
-                    return promise;
+                    this.requests.set(resource.$promise, resource);
+                    return resource.$promise;
                 };
                 return builder;
             },
