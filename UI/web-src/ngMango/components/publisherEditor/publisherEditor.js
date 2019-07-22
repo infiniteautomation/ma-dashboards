@@ -178,6 +178,32 @@ class PublisherEditorController {
             }));
         }
     }
+    
+    showPointSelector(event) {
+        const rect = event.target.getBoundingClientRect();
+        
+        this.showPointSelectorOptions = {
+            targetEvent: event,
+            fullscreen: false,
+            onShowing: (scope, element) => {
+                const dialogContainer = element[0];
+                
+                // trigger the virtual repeat directive to scroll back to the top
+                dialogContainer.querySelectorAll('.md-virtual-repeat-scroller').forEach(e => {
+                    e.scroll(0, 0);
+                    e.dispatchEvent(new CustomEvent('scroll'));
+                });
+                
+
+                const dialog = dialogContainer.querySelector('md-dialog');
+                dialog.style.position = 'fixed';
+                dialog.style.top = `${rect.top + rect.height}px`;
+                dialog.style.left = `${rect.left}px`;
+                dialog.style.width = `${rect.width}px`;
+            },
+            hasBackdrop: false
+        };
+    }
 }
 
 export default {

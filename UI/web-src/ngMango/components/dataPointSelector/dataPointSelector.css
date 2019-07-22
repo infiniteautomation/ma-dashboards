@@ -1,6 +1,5 @@
 ma-data-point-selector {
 	display: flex;
-	min-height: 400px;
 }
 
 ma-data-point-selector .ma-empty-null {
