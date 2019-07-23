@@ -14,9 +14,10 @@
  * TODO
  * Additional way to define other elements which maintain the focus
  * (better) Way to disable animation
- * Promise callbacks for show/hide
  * Position above / below depending on position of element
  * Set height according to position of element
+ * Set focus inside dropdown when opening
+ * Add input button with blue line styling
  */
 
 import './dropDown.css';
@@ -86,6 +87,10 @@ function dropDown($parse, $document, $injector, $animate) {
                 delete this.transcludeScope;
             }
         }
+        
+        isOpen() {
+            return !!this.$dropDown && !!this.$dropDown.parent().length;
+        }
 
         open(options = {}) {
             if (!this.$dropDown) {
@@ -114,30 +119,58 @@ function dropDown($parse, $document, $injector, $animate) {
             dropDownEl.style.left = `${rect.left}px`;
             dropDownEl.style.width = `${rect.width}px`;
             
-            if (!this.$dropDown.parent().length) {
+            if (!this.isOpen()) {
                 $body.append(this.$dropDown);
-                $animate.addClass(this.$dropDown, 'ma-open');
+                this.onOpen({$dropDown: this});
+                
+                $animate.addClass(this.$dropDown, 'ma-open').then(() => {
+                    this.focus();
+                    this.onOpened({$dropDown: this});
+                });
             }
         }
         
         close() {
-            if (this.destroyOnClose) {
-                this.destroyElement();
-            } else {
+            if (this.isOpen()) {
+                this.onClose({$dropDown: this});
+                
                 // cant use $animate.leave as it removes the element (instead of detach), destroying its event handlers
                 $animate.removeClass(this.$dropDown, 'ma-open').then(() => {
-                    this.$dropDown.detach();
+                    if (this.destroyOnClose) {
+                        this.destroyElement();
+                    } else {
+                        this.$dropDown.detach();
+                    }
+                    this.onClosed({$dropDown: this});
                 });
             }
         }
         
         focusListener(event) {
-            if (this.$dropDown && this.$dropDown.parent().length) {
-                if (!(this.$dropDown.maHasFocus() || $body.find('md-menu-content').maHasFocus())) {
-                    this.$scope.$apply(() => {
-                        this.close();
-                    });
-                }
+            if (this.isOpen() && !(this.$dropDown.maHasFocus() || $body.find('md-menu-content').maHasFocus())) {
+                this.$scope.$apply(() => {
+                    this.close();
+                });
+            }
+        }
+        
+        focus() {
+            const autofocus = this.$dropDown.maFind('[autofocus]');
+            if (autofocus.length) {
+                autofocus[0].focus();
+                return;
+            }
+
+            const focusable = this.$dropDown.maFind('button, [href], input, select, textarea, [tabindex]');
+            const sorted = Array.from(focusable).filter(e => {
+                // offsetParent is null if element is not visible
+                return e.tabIndex >= 0 && e.offsetParent;
+            }).sort((e1, e2) => {
+                return e1.tabIndex - e2.tabIndex;
+            });
+            if (sorted.length) {
+                sorted[0].focus();
+                return;
             }
         }
     }
@@ -152,7 +185,11 @@ function dropDown($parse, $document, $injector, $animate) {
         bindToController: {
             openOptions: '<openDropDown',
             createOnInit: '<?',
-            destroyOnClose: '<?'
+            destroyOnClose: '<?',
+            onOpen: '&',
+            onOpened: '&',
+            onClose: '&',
+            onClosed: '&'
         }
     };
 }

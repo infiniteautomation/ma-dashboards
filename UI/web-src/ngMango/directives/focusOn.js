@@ -3,9 +3,6 @@
  * @author Jared Wiltshire
  */
 
-
-
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maFocusOn
@@ -38,5 +35,3 @@ function focusOn($timeout) {
 }
 
 export default focusOn;
-
-
