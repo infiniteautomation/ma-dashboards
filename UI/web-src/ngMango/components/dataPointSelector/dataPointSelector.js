@@ -14,7 +14,6 @@ select rows rather than use checkboxes
 touch behavior / check mobile layout
 click and drag to select multiple?
 Single select mode
-horizontal scroll bar
 */
 
 const defaultColumns = [

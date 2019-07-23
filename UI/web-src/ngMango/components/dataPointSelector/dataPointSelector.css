@@ -1,6 +1,7 @@
 ma-data-point-selector {
 	display: flex;
 	flex-grow: 1;
+	min-height: 100px;
 	overflow-x: auto;
 }
 

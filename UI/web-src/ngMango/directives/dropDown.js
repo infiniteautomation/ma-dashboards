@@ -16,14 +16,13 @@
  * (better) Way to disable animation
  * Position above / below depending on position of element
  * Set height according to position of element
- * Set focus inside dropdown when opening
  * Add input button with blue line styling
  */
 
 import './dropDown.css';
 
-dropDown.$inject = ['$parse', '$document', '$injector', '$animate'];
-function dropDown($parse, $document, $injector, $animate) {
+dropDown.$inject = ['$parse', '$document', '$injector', '$animate', '$window'];
+function dropDown($parse, $document, $injector, $animate, $window) {
     
     const $body = $document.maFind('body');
     const $mdColors = $injector.has('$mdColors') && $injector.get('$mdColors');
@@ -41,28 +40,31 @@ function dropDown($parse, $document, $injector, $animate) {
             this.createOnInit = true;
             this.destroyOnClose = false;
             this.focusListener = this.focusListener.bind(this);
+            this.resizeListener = this.resizeListener.bind(this);
         }
         
         $onChanges(changes) {
             if (changes.openOptions && !changes.openOptions.isFirstChange() && this.openOptions) {
-                this.open(this.openOptions);
+                this.open();
             }
         }
         
         $onInit() {
             $body[0].addEventListener('focus', this.focusListener, true);
+            $window.addEventListener('resize', this.resizeListener, true);
 
             if (this.createOnInit) {
                 this.createElement();
             }
             
             if (this.openOptions) {
-                this.open(this.openOptions);
+                this.open();
             }
         }
         
         $destroy() {
             $body[0].removeEventListener('focus', this.focusListener, true);
+            $window.removeEventListener('resize', this.resizeListener, true);
             this.destroyElement();
         }
 
@@ -92,18 +94,14 @@ function dropDown($parse, $document, $injector, $animate) {
             return !!this.$dropDown && !!this.$dropDown.parent().length;
         }
 
-        open(options = {}) {
+        open() {
+            const options = Object.assign({}, this.openOptions);
+            
             if (!this.$dropDown) {
                 this.createElement();
             }
             
             const dropDownEl = this.$dropDown[0];
-
-            // trigger any virtual repeat directives to scroll back to the top
-            dropDownEl.querySelectorAll('.md-virtual-repeat-scroller').forEach(e => {
-                e.scroll(0, 0);
-                e.dispatchEvent(new CustomEvent('scroll'));
-            });
 
             let targetElement;
             if (options.targetElement) {
@@ -115,12 +113,33 @@ function dropDown($parse, $document, $injector, $animate) {
             }
             
             const rect = targetElement.getBoundingClientRect();
-            dropDownEl.style.top = `${rect.top + rect.height}px`;
             dropDownEl.style.left = `${rect.left}px`;
             dropDownEl.style.width = `${rect.width}px`;
             
+            const spaceAbove = rect.top;
+            const spaceBelow = window.innerHeight - rect.bottom;
+            if (spaceBelow > spaceAbove) {
+                dropDownEl.style.top = `${spaceAbove + rect.height}px`;
+                dropDownEl.style.bottom = null;
+                dropDownEl.style.maxHeight = `${spaceBelow - 8}px`;
+                dropDownEl.style.transformOrigin = '0 0';
+            } else {
+                dropDownEl.style.top = null;
+                dropDownEl.style.bottom = `${spaceBelow + rect.height}px`;
+                dropDownEl.style.maxHeight = `${spaceAbove - 8}px`;
+                dropDownEl.style.transformOrigin = '0 100%';
+            }
+            console.log(spaceAbove, spaceBelow);
+            
             if (!this.isOpen()) {
                 $body.append(this.$dropDown);
+                
+                // trigger any virtual repeat directives to scroll back to the top
+                dropDownEl.querySelectorAll('.md-virtual-repeat-scroller').forEach(e => {
+                    e.scroll(0, 0);
+                    e.dispatchEvent(new CustomEvent('scroll'));
+                });
+                
                 this.onOpen({$dropDown: this});
                 
                 $animate.addClass(this.$dropDown, 'ma-open').then(() => {
@@ -151,6 +170,12 @@ function dropDown($parse, $document, $injector, $animate) {
                 this.$scope.$apply(() => {
                     this.close();
                 });
+            }
+        }
+        
+        resizeListener(event) {
+            if (this.isOpen()) {
+                this.open();
             }
         }
         
