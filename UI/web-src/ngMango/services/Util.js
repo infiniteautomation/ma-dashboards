@@ -59,7 +59,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
     jQuery.fn.maFind = function maFind(selector) {
         const elements = Array.from(this.maMatch(selector));
         for (let e of this) {
-            if (e instanceof Element) {
+            if (e instanceof Element || e instanceof Document) {
                 const matches = e.querySelectorAll(selector); 
                 elements.push(...matches);
             }
