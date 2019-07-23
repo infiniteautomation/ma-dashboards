@@ -156,7 +156,11 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding">
-                    <div ng-click="$ctrl.showPointSelector($event)">{{$ctrl.publisher.points.length}} points selected</div>
+                    <div ng-click="$ctrl.showPointSelectorOptions = {targetEvent: $event}">{{$ctrl.publisher.points.length}} points selected</div>
+                    <ma-drop-down open-drop-down="$ctrl.showPointSelectorOptions" create-on-init="false" class="ma-slide-down">
+                        <ma-data-point-selector class="ma-publisher-editor" ng-model="$ctrl.publisher.points" ma-format-value="$ctrl.publisherPointsToPoints($value)"
+                                ma-parse-value="$ctrl.pointsToPublisherPoints($value)"></ma-data-point-selector>
+                    </ma-drop-down>
                 </div>
             </md-tab-body>
         </md-tab>
@@ -188,12 +192,3 @@
         </md-button>
     </div>
 </div>
-
-<ma-dialog show-dialog="$ctrl.showPointSelectorOptions">
-    <md-dialog class="ma-publisher-editor-point-selector">
-        <md-dialog-content flex layout="column">
-            <ma-data-point-selector ng-if="$ctrl.showPointSelectorOptions" class="ma-publisher-editor" ng-model="$ctrl.publisher.points" ma-format-value="$ctrl.publisherPointsToPoints($value)"
-            ma-parse-value="$ctrl.pointsToPublisherPoints($value)"></ma-data-point-selector>
-        </md-dialog-content>
-    </md-dialog>
-</ma-dialog>

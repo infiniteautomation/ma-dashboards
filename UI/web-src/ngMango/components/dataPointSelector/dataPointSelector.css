@@ -1,5 +1,6 @@
 ma-data-point-selector {
 	display: flex;
+	flex-grow: 1;
 }
 
 ma-data-point-selector .ma-empty-null {
