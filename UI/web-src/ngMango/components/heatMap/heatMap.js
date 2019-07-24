@@ -58,13 +58,14 @@ const arrayReduceToMap = function(fn) {
 
 class HeatMapController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element', '$transclude', '$compile']; }
+    static get $inject() { return ['$scope', '$element', '$transclude', '$compile', 'maResizeObserver']; }
     
-    constructor($scope, $element, $transclude, $compile) {
+    constructor($scope, $element, $transclude, $compile, maResizeObserver) {
         this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
         this.$compile = $compile;
+        this.maResizeObserver = maResizeObserver;
         
         // jshint unused:false
         let d3Promise = import(/* webpackMode: "lazy", webpackChunkName: "d3" */ 'd3').then(d3 => {
@@ -152,9 +153,6 @@ class HeatMapController {
     $onDestroy() {
         if (this.resizeObserver) {
             this.resizeObserver.disconnect();
-        }
-        if (this.resizeInterval) {
-            clearInterval(this.resizeInterval);
         }
     }
     
@@ -336,30 +334,13 @@ class HeatMapController {
     
     watchForResize() {
         // already setup
-        if (this.resizeObserver || this.resizeInterval) return;
+        if (this.resizeObserver) return;
 
-        /* globals ResizeObserver */
-        if (typeof ResizeObserver === 'function') {
-            this.resizeObserver = new ResizeObserver(entries => {
-                if (this.pendingResize) {
-                    clearTimeout(this.pendingResize);
-                }
-                this.pendingResize = setTimeout(() => {
-                    delete this.pendingResize;
-                    const contentRect = entries[0].contentRect;
-                    this.updateSvg(contentRect.width, contentRect.height);
-                }, 500);
-            });
-            
-            this.resizeObserver.observe(this.$element[0]);
-        } else {
-            this.resizeInterval = setInterval(() => {
-                const bbox = this.$element[0].getBoundingClientRect();
-                if (bbox.width !== this.width || bbox.height !== this.height) {
-                    this.updateSvg(bbox.width, bbox.height);
-                }
-            }, 1000);
-        }
+        this.resizeObserver = new this.maResizeObserver(this.$element[0], rect => {
+            this.updateSvg(rect.width, rect.height);
+        }, this.$scope);
+        
+        this.resizeObserver.observe();
     }
     
     updateColorScale() {
