@@ -1,5 +1,6 @@
 *Version 3.6.3*
 * Add inputs for mailing list edit and read roles
+* Send test email to selected user
 
 *Version 3.6.2*
 * Add inputs for script permissions to event handlers
