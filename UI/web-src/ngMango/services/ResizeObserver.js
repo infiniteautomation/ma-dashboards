@@ -7,49 +7,64 @@ ResizeObserverFactory.$inject = ['$rootScope'];
 function ResizeObserverFactory($rootScope) {
 
     class MangoResizeObserver {
-        constructor(element, resizeCallback, $scope = $rootScope, debounce = 500) {
+        constructor(element, resizeCallback, $scope = $rootScope, debounce = 500, interval = 500) {
             this.element = element;
             this.resizeCallback = resizeCallback;
             this.$scope = $scope;
             this.debounce = debounce;
+            this.interval = interval;
         }
 
-        observe() {
+        observe(immediateCallback = true) {
             // already setup
             if (this.resizeObserver || this.resizeInterval) return;
+            
+            const rect = this.element.getBoundingClientRect();
+            this.width = rect.width;
+            this.height = rect.height;
+            if (immediateCallback) {
+                this.resizeCallback(rect);
+            }
 
             /* globals ResizeObserver */
             if (typeof ResizeObserver === 'function') {
                 this.resizeObserver = new ResizeObserver(entries => {
-                    const rect = entries[0].contentRect;
-                    this.triggerCallback(rect);
+                    this.debounceCheck();
                 });
                 this.resizeObserver.observe(this.element);
             } else {
                 this.resizeInterval = setInterval(() => {
-                    const rect = this.element.getBoundingClientRect();
-                    if (rect.width !== this.width || rect.height !== this.height) {
-                        this.triggerCallback(rect);
-                    }
-                    this.width = rect.width;
-                    this.height = rect.height;
-                }, this.debounce);
+                    this.doCheck();
+                }, this.interval);
             }
         }
         
-        triggerCallback(rect) {
+        debounceCheck() {
             if (this.pendingResize) {
                 clearTimeout(this.pendingResize);
             }
             this.pendingResize = setTimeout(() => {
                 delete this.pendingResize;
-                this.$scope.$applyAsync(() => {
-                    this.resizeCallback(rect);
-                });
+                this.doCheck();
             }, this.debounce);
         }
 
+        doCheck() {
+            const rect = this.element.getBoundingClientRect();
+            if (rect.width !== this.width || rect.height !== this.height) {
+                this.$scope.$applyAsync(() => {
+                    this.resizeCallback(rect);
+                });
+            }
+            this.width = rect.width;
+            this.height = rect.height;
+        }
+
         disconnect() {
+            if (this.pendingResize) {
+                clearTimeout(this.pendingResize);
+                delete this.pendingResize;
+            }
             if (this.resizeObserver) {
                 this.resizeObserver.disconnect();
                 delete this.resizeObserver;
