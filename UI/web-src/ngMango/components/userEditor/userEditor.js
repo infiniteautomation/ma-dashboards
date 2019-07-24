@@ -113,10 +113,10 @@ class UserEditorController {
     
     sendTestEmail() {
         this.sendingEmail = true;
-        this.User.current.sendTestEmail().then(response => {
+        this.originalUser.sendTestEmail().then(response => {
             this.maDialogHelper.toastOptions({text: response.data});
         }, error => {
-            this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', this.User.current.email, error.mangoStatusText]);
+            this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', this.originalUser.email, error.mangoStatusText]);
         }).finally(() => {
             delete this.sendingEmail;
         });
