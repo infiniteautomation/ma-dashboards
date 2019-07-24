@@ -21,8 +21,8 @@
 
 import './dropDown.css';
 
-dropDown.$inject = ['$parse', '$document', '$injector', '$animate', '$window'];
-function dropDown($parse, $document, $injector, $animate, $window) {
+dropDown.$inject = ['$parse', '$document', '$injector', '$animate', '$window', 'maResizeObserver'];
+function dropDown($parse, $document, $injector, $animate, $window, MangoResizeObserver) {
     
     const $body = $document.maFind('body');
     const $mdColors = $injector.has('$mdColors') && $injector.get('$mdColors');
@@ -40,7 +40,6 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             this.createOnInit = true;
             this.destroyOnClose = false;
             this.focusListener = this.focusListener.bind(this);
-            this.resizeListener = this.resizeListener.bind(this);
         }
         
         $onChanges(changes) {
@@ -51,7 +50,6 @@ function dropDown($parse, $document, $injector, $animate, $window) {
         
         $onInit() {
             $body[0].addEventListener('focus', this.focusListener, true);
-            $window.addEventListener('resize', this.resizeListener, true);
 
             if (this.createOnInit) {
                 this.createElement();
@@ -63,8 +61,11 @@ function dropDown($parse, $document, $injector, $animate, $window) {
         }
         
         $destroy() {
+            this.cancelAnimations();
+            if (this.resizeObserver) {
+                this.resizeObserver.disconnect();
+            }
             $body[0].removeEventListener('focus', this.focusListener, true);
-            $window.removeEventListener('resize', this.resizeListener, true);
             this.destroyElement();
         }
 
@@ -89,9 +90,9 @@ function dropDown($parse, $document, $injector, $animate, $window) {
                 delete this.transcludeScope;
             }
         }
-        
+
         isOpen() {
-            return !!this.$dropDown && !!this.$dropDown.parent().length;
+            return !!this.openAnimation;
         }
 
         open() {
@@ -104,6 +105,7 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             const dropDownEl = this.$dropDown[0];
 
             let targetElement;
+            
             if (options.targetElement) {
                 targetElement = options.targetElement;
             } else if (options.targetEvent) {
@@ -111,8 +113,79 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             } else {
                 targetElement = this.$element.parent()[0];
             }
+
+            if (this.resizeObserver) {
+                this.resizeObserver.disconnect();
+            }
+
+            this.resizeObserver = new MangoResizeObserver(targetElement, rect => {
+                this.resizeDropDown(rect);
+            }, this.$scope, 50);
             
-            const rect = targetElement.getBoundingClientRect();
+            this.resizeObserver.observe();
+            
+            if (!this.isOpen()) {
+                this.cancelAnimations();
+
+                $body.append(this.$dropDown);
+                
+                // trigger any virtual repeat directives to scroll back to the top
+                dropDownEl.querySelectorAll('.md-virtual-repeat-scroller').forEach(e => {
+                    e.scroll(0, 0);
+                    e.dispatchEvent(new CustomEvent('scroll'));
+                });
+                
+                this.onOpen({$dropDown: this});
+                
+                this.openAnimation = $animate.addClass(this.$dropDown, 'ma-open');
+                
+                this.openAnimation.then(() => {
+                    this.focus();
+                    this.onOpened({$dropDown: this});
+                }, error => {
+                    // cancelled, dont care
+                });
+            }
+        }
+        
+        close() {
+            if (this.isOpen()) {
+                this.cancelAnimations();
+                this.onClose({$dropDown: this});
+                
+                this.resizeObserver.disconnect();
+                delete this.resizeObserver;
+                
+                // cant use $animate.leave as it removes the element (instead of detach), destroying its event handlers
+                this.closeAnimation = $animate.removeClass(this.$dropDown, 'ma-open');
+                
+                this.closeAnimation.then(() => {
+                    if (this.destroyOnClose) {
+                        this.destroyElement();
+                    } else {
+                        this.$dropDown.detach();
+                    }
+                    this.onClosed({$dropDown: this});
+                }, error => {
+                    // cancelled, dont care
+                });
+            }
+        }
+        
+        cancelAnimations() {
+            if (this.openAnimation) {
+                $animate.cancel(this.openAnimation);
+                delete this.openAnimation;
+            }
+            if (this.closeAnimation) {
+                $animate.cancel(this.closeAnimation);
+                delete this.closeAnimation;
+            }
+        }
+        
+        resizeDropDown(rect) {
+            const dropDownEl = this.$dropDown[0];
+
             dropDownEl.style.left = `${rect.left}px`;
             dropDownEl.style.width = `${rect.width}px`;
             
@@ -129,56 +202,21 @@ function dropDown($parse, $document, $injector, $animate, $window) {
                 dropDownEl.style.maxHeight = `${spaceAbove - 8}px`;
                 dropDownEl.style.transformOrigin = '0 100%';
             }
-            console.log(spaceAbove, spaceBelow);
-            
-            if (!this.isOpen()) {
-                $body.append(this.$dropDown);
-                
-                // trigger any virtual repeat directives to scroll back to the top
-                dropDownEl.querySelectorAll('.md-virtual-repeat-scroller').forEach(e => {
-                    e.scroll(0, 0);
-                    e.dispatchEvent(new CustomEvent('scroll'));
-                });
-                
-                this.onOpen({$dropDown: this});
-                
-                $animate.addClass(this.$dropDown, 'ma-open').then(() => {
-                    this.focus();
-                    this.onOpened({$dropDown: this});
-                });
-            }
-        }
-        
-        close() {
-            if (this.isOpen()) {
-                this.onClose({$dropDown: this});
-                
-                // cant use $animate.leave as it removes the element (instead of detach), destroying its event handlers
-                $animate.removeClass(this.$dropDown, 'ma-open').then(() => {
-                    if (this.destroyOnClose) {
-                        this.destroyElement();
-                    } else {
-                        this.$dropDown.detach();
-                    }
-                    this.onClosed({$dropDown: this});
-                });
-            }
         }
         
         focusListener(event) {
             if (this.isOpen() && !(this.$dropDown.maHasFocus() || $body.find('md-menu-content').maHasFocus())) {
-                this.$scope.$apply(() => {
+                // getting $digest already in progress errors due to AngularJS material triggering a focus event inside the $digest cycle
+                if (this.$scope.$root.$$phase != null) {
                     this.close();
-                });
+                } else {
+                  this.$scope.$apply(() => {
+                      this.close();
+                  });
+                }
             }
         }
-        
-        resizeListener(event) {
-            if (this.isOpen()) {
-                this.open();
-            }
-        }
-        
+
         focus() {
             const autofocus = this.$dropDown.maFind('[autofocus]');
             if (autofocus.length) {
