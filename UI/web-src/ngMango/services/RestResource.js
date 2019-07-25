@@ -178,6 +178,7 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
 
             if (createWithNewId) {
                 copy[this.constructor.idProperty] = (this.constructor.xidPrefix || '') + maUtil.uuid();
+                delete copy.id;
             } else if (!this.isNew()) {
                 copy[originalIdProperty] = this.getOriginalId();
             }
