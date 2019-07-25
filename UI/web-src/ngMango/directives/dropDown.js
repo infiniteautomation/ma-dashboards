@@ -21,8 +21,8 @@
 
 import './dropDown.css';
 
-dropDown.$inject = ['$parse', '$document', '$injector', '$animate', '$window', 'maResizeObserver'];
-function dropDown($parse, $document, $injector, $animate, $window, MangoResizeObserver) {
+dropDown.$inject = ['$parse', '$document', '$injector', '$animate', '$window'];
+function dropDown($parse, $document, $injector, $animate, $window) {
     
     const $body = $document.maFind('body');
     const $mdColors = $injector.has('$mdColors') && $injector.get('$mdColors');
@@ -40,6 +40,7 @@ function dropDown($parse, $document, $injector, $animate, $window, MangoResizeOb
             this.createOnInit = true;
             this.destroyOnClose = false;
             this.focusListener = this.focusListener.bind(this);
+            this.resizeListener = this.resizeListener.bind(this);
         }
         
         $onChanges(changes) {
@@ -50,6 +51,7 @@ function dropDown($parse, $document, $injector, $animate, $window, MangoResizeOb
         
         $onInit() {
             $body[0].addEventListener('focus', this.focusListener, true);
+            $window.addEventListener('resize', this.resizeListener, true);
 
             if (this.createOnInit) {
                 this.createElement();
@@ -62,10 +64,8 @@ function dropDown($parse, $document, $injector, $animate, $window, MangoResizeOb
         
         $destroy() {
             this.cancelAnimations();
-            if (this.resizeObserver) {
-                this.resizeObserver.disconnect();
-            }
             $body[0].removeEventListener('focus', this.focusListener, true);
+            $window.removeEventListener('resize', this.resizeListener, true);
             this.destroyElement();
         }
 
@@ -104,26 +104,15 @@ function dropDown($parse, $document, $injector, $animate, $window, MangoResizeOb
             
             const dropDownEl = this.$dropDown[0];
 
-            let targetElement;
-            
             if (options.targetElement) {
-                targetElement = options.targetElement;
+                this.targetElement = options.targetElement;
             } else if (options.targetEvent) {
-                targetElement = options.targetEvent.target;
+                this.targetElement = options.targetEvent.target;
             } else {
-                targetElement = this.$element.parent()[0];
+                this.targetElement = this.$element.parent()[0];
             }
+            this.resizeDropDown();
 
-            if (this.resizeObserver) {
-                this.resizeObserver.disconnect();
-            }
-
-            this.resizeObserver = new MangoResizeObserver(targetElement, rect => {
-                this.resizeDropDown(rect);
-            }, this.$scope, 50);
-            
-            this.resizeObserver.observe();
-            
             if (!this.isOpen()) {
                 this.cancelAnimations();
 
@@ -152,10 +141,7 @@ function dropDown($parse, $document, $injector, $animate, $window, MangoResizeOb
             if (this.isOpen()) {
                 this.cancelAnimations();
                 this.onClose({$dropDown: this});
-                
-                this.resizeObserver.disconnect();
-                delete this.resizeObserver;
-                
+
                 // cant use $animate.leave as it removes the element (instead of detach), destroying its event handlers
                 this.closeAnimation = $animate.removeClass(this.$dropDown, 'ma-open');
                 
@@ -183,7 +169,10 @@ function dropDown($parse, $document, $injector, $animate, $window, MangoResizeOb
             }
         }
         
-        resizeDropDown(rect) {
+        resizeDropDown() {
+            if (!this.targetElement || !this.$dropDown) return;
+            
+            const rect = this.targetElement.getBoundingClientRect();
             const dropDownEl = this.$dropDown[0];
 
             dropDownEl.style.left = `${rect.left}px`;
@@ -215,6 +204,13 @@ function dropDown($parse, $document, $injector, $animate, $window, MangoResizeOb
                   });
                 }
             }
+        }
+        
+        resizeListener(event) {
+            clearTimeout(this.resizeDebounceTimeout);
+            this.resizeDebounceTimeout = setTimeout(() => {
+                this.resizeDropDown();
+            }, 200);
         }
 
         focus() {
