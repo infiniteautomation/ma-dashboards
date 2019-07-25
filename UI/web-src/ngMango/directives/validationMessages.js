@@ -33,12 +33,15 @@ function validationMessages(Util) {
             });
             
             const addControl = this.ngFormCtrl.$addControl;
-            this.ngFormCtrl.$addControl = function(control) {
+            const newAddControl = function(control) {
                 if (control.$validators) {
                     control.$validators.validationMessage = allwaysValidate;
+                } else if (typeof control.$getControls === 'function') {
+                    control.$addControl = newAddControl;
                 }
                 return addControl.apply(this, arguments);
             };
+            this.ngFormCtrl.$addControl = newAddControl;
             
             this.checkMessages();
         }
