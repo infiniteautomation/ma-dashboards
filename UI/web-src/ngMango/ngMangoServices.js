@@ -61,7 +61,6 @@ import scriptingEditorFactory from './services/scriptingEditor';
 import multipleValuesFactory from './services/MultipleValues';
 import serialPort from './services/serialPort';
 import Publisher from './services/Publisher';
-import MangoResizeObserver from './services/ResizeObserver';
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -144,7 +143,6 @@ ngMangoServices.filter('maDate', dateFilterFactory);
 ngMangoServices.filter('maTr', trFilterFactory);
 ngMangoServices.factory('maSerialPort', serialPort);
 ngMangoServices.provider('maPublisher', Publisher);
-ngMangoServices.factory('maResizeObserver', MangoResizeObserver);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUT', 30000); // TODO Mango 4.0 remove

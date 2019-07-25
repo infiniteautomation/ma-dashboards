@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@infinite-automation/mango-module-tools": "~1.2.0",
+    "@juggle/resize-observer": "^2.2.1",
     "del": "^3.0.0",
     "exports-loader": "^0.7.0",
     "gulp": "^3.9.1",

@@ -4,6 +4,7 @@
  */
 
 import moment from 'moment-timezone';
+import ResizeObserver from '@juggle/resize-observer';
 import heatMapTemplate from './heatMap.html';
 import heatMapTooltip from './heatMapTooltip.html';
 import './heatMap.css';
@@ -58,20 +59,19 @@ const arrayReduceToMap = function(fn) {
 
 class HeatMapController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element', '$transclude', '$compile', 'maResizeObserver']; }
+    static get $inject() { return ['$scope', '$element', '$transclude', '$compile']; }
     
-    constructor($scope, $element, $transclude, $compile, maResizeObserver) {
+    constructor($scope, $element, $transclude, $compile) {
         this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
         this.$compile = $compile;
-        this.maResizeObserver = maResizeObserver;
         
         // jshint unused:false
         let d3Promise = import(/* webpackMode: "lazy", webpackChunkName: "d3" */ 'd3').then(d3 => {
             $scope.$apply(() => {
                 this.d3 = d3;
-                this.updateSvg();
+                this.watchForResize();
             });
         });
 
@@ -239,16 +239,7 @@ class HeatMapController {
         return legend;
     }
 
-    updateSvg(width, height) {
-        if (width == null || height == null) {
-            const bbox = this.$element[0].getBoundingClientRect();
-            width = bbox.width;
-            height = bbox.height;
-        }
-        
-        this.width = width;
-        this.height = height;
-
+    updateSvg() {
         const legend = this.legendOpts = Object.assign(this.createLegendOptions(), this.legend);
 
         const defaultMargins = {top: 20, right: 0, bottom: 0, left: 60};
@@ -261,11 +252,11 @@ class HeatMapController {
         const d3 = this.d3;
         const svg = this.svg = d3.select(this.$element[0])
             .select('svg')
-            .attr('width', width)
-            .attr('height', height);
+            .attr('width', this.width)
+            .attr('height', this.height);
 
-        const graphWidth = width - (margins.left + margins.right);
-        const graphHeight = height - (margins.top + margins.bottom);
+        const graphWidth = this.width - (margins.left + margins.right);
+        const graphHeight = this.height - (margins.top + margins.bottom);
         
         this.graph = svg.select('g.ma-heat-map-graph')
             .attr('transform', `translate(${margins.left}, ${margins.top})`);
@@ -317,8 +308,6 @@ class HeatMapController {
         this.updateColorScale();
         this.updateAxis();
         this.updateGraph();
-        
-        this.watchForResize();
     }
     
     parsePercentage(value, relativeTo) {
@@ -333,14 +322,26 @@ class HeatMapController {
     }
     
     watchForResize() {
-        // already setup
-        if (this.resizeObserver) return;
-
-        this.resizeObserver = new this.maResizeObserver(this.$element[0], rect => {
-            this.updateSvg(rect.width, rect.height);
-        }, this.$scope);
+        let timeout;
+        this.resizeObserver = new ResizeObserver(entries => {
+            const entry = entries[entries.length - 1];
+            const noDimensions = this.width == null || this.height == null;
+            
+            this.width = entry.contentBoxSize.inlineSize;
+            this.height = entry.contentBoxSize.blockSize;
+            
+            // update the SVG immediately on first run
+            if (noDimensions) {
+                this.updateSvg();
+            } else {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    this.updateSvg();
+                }, 200);
+            }
+        });
         
-        this.resizeObserver.observe();
+        this.resizeObserver.observe(this.$element[0]);
     }
     
     updateColorScale() {
