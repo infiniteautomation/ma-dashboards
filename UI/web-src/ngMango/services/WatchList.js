@@ -139,7 +139,11 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                     cache: false,
                     transformResponse: maUtil.transformArrayResponse
                 }).then(response => {
-                    this.points = response.data.map(pt => Object.assign(Object.create(Point.prototype), pt));
+                    this.points = response.data.map(item => {
+                        const pt = Object.assign(Object.create(Point.prototype), item);
+                        pt.originalId = pt.xid;
+                        return pt;
+                    });
                     return this.points;
                 });
             } else {
