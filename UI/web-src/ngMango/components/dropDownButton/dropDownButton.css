@@ -23,6 +23,10 @@ ma-drop-down-button:not([disabled]) > md-icon {
 	cursor: pointer;
 }
 
+ma-drop-down-button > md-icon {
+	transition: transform 0.3s ease-in-out;
+}
+
 ma-drop-down-button.ma-drop-down-open > md-icon {
-	transform: rotate(180deg);
+	transform: rotate(-180deg);
 }

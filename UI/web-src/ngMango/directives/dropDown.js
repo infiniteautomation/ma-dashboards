@@ -14,9 +14,10 @@
  * TODO
  * Additional way to define other elements which maintain the focus
  * (better) Way to disable animation
- * Position above / below depending on position of element
  * Set height according to position of element
- * Add input button with blue line styling
+ * 
+ * window resizing is not resizing the drop down correctly
+ * toggle is not working correctly due to focus being incorrect
  */
 
 import angular from 'angular';

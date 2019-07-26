@@ -18,7 +18,7 @@ ma-drop-down.ma-slide-down.ma-open {
 }
 
 ma-drop-down.ma-slide-down.ma-open.ma-open-add {
-	transition: transform 0.2s ease-in-out;
+	transition: transform 0.3s ease-in-out;
 	transform: scaleY(0);
 }
 
@@ -27,7 +27,7 @@ ma-drop-down.ma-slide-down.ma-open.ma-open-add-active {
 }
 
 ma-drop-down.ma-slide-down.ma-open-remove {
-	transition: transform 0.2s ease-in-out;
+	transition: transform 0.3s ease-in-out;
 	transform: scaleY(1);
 }
 
