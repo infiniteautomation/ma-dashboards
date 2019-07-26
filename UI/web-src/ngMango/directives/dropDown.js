@@ -19,6 +19,7 @@
  * Add input button with blue line styling
  */
 
+import angular from 'angular';
 import './dropDown.css';
 
 dropDown.$inject = ['$parse', '$document', '$injector', '$animate', '$window'];
@@ -45,7 +46,7 @@ function dropDown($parse, $document, $injector, $animate, $window) {
         
         $onChanges(changes) {
             if (changes.openOptions && !changes.openOptions.isFirstChange() && this.openOptions) {
-                this.open();
+                this.open(this.openOptions);
             }
         }
         
@@ -58,7 +59,11 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             }
             
             if (this.openOptions) {
-                this.open();
+                this.open(this.openOptions);
+            }
+            
+            if (this.dropDownButton) {
+                this.dropDownButton.register(this);
             }
         }
         
@@ -67,6 +72,10 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             $body[0].removeEventListener('focus', this.focusListener, true);
             $window.removeEventListener('resize', this.resizeListener, true);
             this.destroyElement();
+            
+            if (this.dropDownButton) {
+                this.dropDownButton.deregister(this);
+            }
         }
 
         createElement() {
@@ -95,8 +104,8 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             return !!this.openAnimation;
         }
 
-        open() {
-            const options = Object.assign({}, this.openOptions);
+        open(options = {}) {
+            this.openOptions = options;
             
             if (!this.$dropDown) {
                 this.createElement();
@@ -158,6 +167,14 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             }
         }
         
+        toggleOpen(options) {
+            if (this.isOpen()) {
+                this.close();
+            } else {
+                this.open(options);
+            }
+        }
+        
         cancelAnimations() {
             if (this.openAnimation) {
                 $animate.cancel(this.openAnimation);
@@ -194,7 +211,8 @@ function dropDown($parse, $document, $injector, $animate, $window) {
         }
         
         focusListener(event) {
-            if (this.isOpen() && !(this.$dropDown.maHasFocus() || $body.find('md-menu-content').maHasFocus())) {
+            if (this.isOpen() && !(this.$dropDown.maHasFocus() || $body.find('md-menu-content').maHasFocus() ||
+                    angular.element(this.targetElement).maHasFocus())) {
                 // getting $digest already in progress errors due to AngularJS material triggering a focus event inside the $digest cycle
                 if (this.$scope.$root.$$phase != null) {
                     this.close();
@@ -249,6 +267,9 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             onOpened: '&',
             onClose: '&',
             onClosed: '&'
+        },
+        require: {
+            dropDownButton: '^?maDropDownButton'
         }
     };
 }
