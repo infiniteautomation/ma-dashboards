@@ -1,0 +1,28 @@
+ma-drop-down-button {
+	display: flex;
+	padding-bottom: 1px;
+	border-bottom: 1px solid currentColor;
+}
+
+ma-drop-down-button[disabled] {
+	border-bottom-style: dashed;
+}
+
+ma-drop-down-button:active:not([disabled]),
+ma-drop-down-button.ma-drop-down-open:not([disabled]) {
+	padding-bottom: 0;
+	border-bottom-width: 2px;
+}
+
+ma-drop-down-button > div {
+	flex-grow: 1;
+}
+
+ma-drop-down-button:not([disabled]),
+ma-drop-down-button:not([disabled]) > md-icon {
+	cursor: pointer;
+}
+
+ma-drop-down-button.ma-drop-down-open > md-icon {
+	transform: rotate(180deg);
+}
