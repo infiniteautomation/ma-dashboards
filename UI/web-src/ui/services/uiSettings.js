@@ -4,7 +4,7 @@
  */
 
 import angular from 'angular';
-import interpolatedStyles from '../styles/interpolatedStyles.css';
+import interpolatedStyles from '!!raw-loader!../styles/interpolatedStyles.css';
 import defaultUiSettings from '../uiSettings.json';
 
 uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider', 'MA_TIMEOUTS'];

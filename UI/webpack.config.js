@@ -45,10 +45,6 @@ module.exports = readPom().then(pom => {
                     }]
                 },
                 {
-                    test: /\interpolatedStyles\.css$/,
-                    use: ['raw-loader']
-                },
-                {
                     test: /\.css$/,
                     exclude: [/[\\/]preBoot\.css$/, /interpolatedStyles\.css$/],
                     use: [
