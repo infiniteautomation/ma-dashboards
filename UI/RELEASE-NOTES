@@ -4,6 +4,7 @@
 * Fix cron pattern for every x months
 * Delete the id field when copying a resource
 * ma-validation-messages directive - Replace addControl method on child forms too
+* Fix for editing/updating points from static watchlist
 
 *Version 3.6.2*
 * Add inputs for script permissions to event handlers
