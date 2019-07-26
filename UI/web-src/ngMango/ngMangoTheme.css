@@ -1,0 +1,18 @@
+ma-drop-down-button.md-THEME_NAME-theme {
+	color: '{{foreground-3}}';
+	border-bottom-color: '{{foreground-3}}';
+}
+
+ma-drop-down-button.md-THEME_NAME-theme:active:not([disabled]),
+ma-drop-down-button.md-THEME_NAME-theme.ma-drop-down-open:not([disabled]) {
+	color: '{{primary-color}}';
+	border-bottom-color: '{{primary-color}}';
+}
+
+ma-drop-down-button.md-THEME_NAME-theme:not([disabled]) > div {
+	color: '{{foreground-1}}';
+}
+
+ma-drop-down-button.md-THEME_NAME-theme > md-icon {
+	color: inherit;
+}
