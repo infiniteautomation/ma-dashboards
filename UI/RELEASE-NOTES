@@ -7,7 +7,7 @@
 * Fix for editing/updating points from static watchlist
 * Fix for being unable to remove all tags from a data point
 * Add option to display tags on point value directive label
-* Add options for displaying data point labels to ma-switch, ma-gauge-chart, ma-bar-display
+* Add options for displaying data point labels to ma-switch, ma-gauge-chart, ma-bar-display, ma-switch-img, and ma-indicator
 * Add attribute for setting bar color to ma-bar-display
 * Add option to show value on ma-bar-display
 
