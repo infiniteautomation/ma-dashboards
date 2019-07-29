@@ -17,7 +17,10 @@
  * @param {number=} [minimum=0] The minimum value for the bar
  * @param {number=} value Instead of displaying a point value you can pass any number to this attribute for display
  * on a bar graph.
- *
+ * @param {string} label Displays a label next to the point value. Three special options are available:
+ *      NAME, DEVICE_AND_NAME, and DEVICE_AND_NAME_WITH_TAGS
+ * @param {expression=} label-expression Expression that is evaluated to set the label. Gives more control for formatting the label.
+ *     Takes precedence over the label attribute. Available locals are $point (Data point object).
  */
 
 barDisplay.$inject = ['maPointValueController'];
@@ -33,7 +36,7 @@ function barDisplay(PointValueController) {
         $onChanges(changes) {
             super.$onChanges(...arguments);
             
-            if (changes.maximum || changes.minimum || changes.direction) {
+            if (changes.maximum || changes.minimum || changes.direction || changes.barColor) {
                 this.updateBar();
             }
         }
@@ -50,7 +53,7 @@ function barDisplay(PointValueController) {
             const maximum = this.maximum || 100;
             const minimum = this.minimum || 0;
             const range = maximum - minimum;
-            const percent = ((value - minimum) / range * 100) + '%';
+            const percent = Math.min(((value - minimum) / range * 100), 100) + '%';
             
             delete this.style.top;
             delete this.style.bottom;
@@ -73,12 +76,17 @@ function barDisplay(PointValueController) {
                 this.style.width = percent;
                 this.style.height = '100%';
             }
+            
+            if (this.barColor) {
+                this.style.color = this.barColor;
+            }
         }
     }
     
     return {
         restrict: 'E',
-        template: '<div class="bar-display-fill" ng-style="$ctrl.style"></div>',
+        template: `<div class="bar-display-fill" ng-style="$ctrl.style"></div>
+<div ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></div>`,
         scope: {},
         controller: BarDisplayController,
         controllerAs: '$ctrl',
@@ -89,7 +97,10 @@ function barDisplay(PointValueController) {
             maximum: '<?',
             minimum: '<?',
             value: '<?',
-            renderValue: '&?'
+            renderValue: '&?',
+            labelAttr: '@?label',
+            labelExpression: '&?',
+            barColor: '@?'
         },
         designerInfo: {
             translation: 'ui.components.barDisplay',
@@ -100,7 +111,9 @@ function barDisplay(PointValueController) {
                 pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid'},
                 direction: {
                     options: ['left-to-right', 'bottom-to-top', 'right-to-left', 'top-to-bottom']
-                }
+                },
+                label: {options: ['NAME', 'DEVICE_AND_NAME', 'DEVICE_AND_NAME_WITH_TAGS']},
+                barColor: {type: 'color'}
             },
             size: {
                 width: '200px',

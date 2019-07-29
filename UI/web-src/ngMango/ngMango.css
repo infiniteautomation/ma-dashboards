@@ -82,9 +82,8 @@ img.ma-live-value.ma-point-disabled {
  */
 
 ma-bar-display {
-  display: block;
-  position: relative;
-  overflow: hidden;
+	display: block;
+	position: relative;
 }
 
 ma-bar-display .bar-display-fill {
@@ -92,6 +91,14 @@ ma-bar-display .bar-display-fill {
     width: 100%;
     background-color: currentColor;
     position: absolute;
+}
+
+ma-bar-display .ma-point-value-label {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	text-align: center;
 }
 
 .bar-display {
@@ -456,7 +463,7 @@ ma-gauge-chart {
 ma-gauge-chart .ma-point-value-label {
 	text-align: center;
 	position: absolute;
-	bottom: 0;
+	top: 100%;
 	left: 0;
 	right: 0;
 }
