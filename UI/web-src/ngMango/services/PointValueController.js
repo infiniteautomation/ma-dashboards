@@ -64,6 +64,14 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
                     this.$element.removeClass('ma-flash-on-change');
                 }
             }
+
+            if (changes.labelAttr || changes.labelExpression) {
+                if (this.labelExpression) {
+                    this.label = this.labelExpression({$point: this.point});
+                } else {
+                    this.updateLabel();
+                }
+            }
         }
         
         setPoint(point) {
@@ -169,8 +177,15 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
                 delete this.previousPointValue;
                 $element.removeClass('ma-point-value-time-changed');
                 $element.removeClass('ma-point-value-changed');
+                
+
+                if (typeof this.labelExpression === 'function') {
+                    this.label = this.labelExpression({$point: this.point});
+                } else {
+                    this.updateLabel();
+                }
             }
-            
+
             if (this.onValueUpdated) {
                 this.onValueUpdated({point: this.point, value: this.value});
             }
@@ -198,7 +213,18 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
                 this.setPoint(null);
             });
         }
-    
+        
+        updateLabel() {
+            if (this.labelAttr === 'NAME') {
+                this.label = this.point && (this.point.name);
+            } else if (this.labelAttr === 'DEVICE_AND_NAME') {
+                this.label = this.point && (this.point.formatLabel(false));
+            } else if (this.labelAttr === 'DEVICE_AND_NAME_WITH_TAGS') {
+                this.label = this.point && (this.point.formatLabel());
+            } else {
+                this.label = this.labelAttr;
+            }
+        }
     }
     
     return PointValueController;

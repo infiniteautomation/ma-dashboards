@@ -1,21 +1,24 @@
 <md-switch ng-if="$ctrl.displayType === 'switch'" ng-model="$ctrl.inputValue" ng-model-options="{getterSetter: true}"
-    ng-disabled="!$ctrl.point.pointLocator.settable">
-  <ma-point-value point="$ctrl.point"></ma-point-value>
+        ng-disabled="!$ctrl.point.pointLocator.settable">
+        <div ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></div>
+        <ma-point-value ng-if="$ctrl.showValue" point="$ctrl.point"></ma-point-value>
 </md-switch>
 
 <md-checkbox ng-if="$ctrl.displayType === 'checkbox'" ng-model="$ctrl.inputValue" ng-model-options="{getterSetter: true}"
-    ng-disabled="!$ctrl.point.pointLocator.settable">
-  <ma-point-value point="$ctrl.point"></ma-point-value>
+        ng-disabled="!$ctrl.point.pointLocator.settable">
+    <span ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></span>
+    <ma-point-value ng-if="$ctrl.showValue" point="$ctrl.point"></ma-point-value>
 </md-checkbox>
 
+<span ng-if="$ctrl.displayType === 'radio' && $ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></span>
 <md-radio-group ng-if="$ctrl.displayType === 'radio'" ng-model="$ctrl.inputValue" ng-model-options="{getterSetter: true}"
     ng-disabled="!$ctrl.point.pointLocator.settable">
   <md-radio-button ng-value="true">
-    <span ng-if="$ctrl.trueText" ng-bind="$ctrl.trueText"></span>
-    <span ng-if="!$ctrl.trueText" ma-tr="common.true"></span>
+    <span ng-if="$ctrl.trueText" ng-bind="$ctrl.trueText" ng-style="$ctrl.trueStyle"></span>
+    <span ng-if="!$ctrl.trueText" ma-tr="common.true" ng-style="$ctrl.trueStyle"></span>
   </md-radio-button>
   <md-radio-button ng-value="false">
-    <span ng-if="$ctrl.falseText" ng-bind="$ctrl.falseText"></span>
-    <span ng-if="!$ctrl.falseText" ma-tr="common.false"></span>
+    <span ng-if="$ctrl.falseText" ng-bind="$ctrl.falseText" ng-style="$ctrl.falseStyle"></span>
+    <span ng-if="!$ctrl.falseText" ma-tr="common.false" ng-style="$ctrl.falseStyle"></span>
   </md-radio-button>
 </md-radio-group>

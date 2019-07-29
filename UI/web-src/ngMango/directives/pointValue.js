@@ -88,31 +88,10 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
                 }
             }
         }
-    
-        updateLabel() {
-            if (this.labelAttr === 'NAME') {
-                this.label = this.point && (this.point.name + ':');
-            } else if (this.labelAttr === 'DEVICE_AND_NAME') {
-                this.label = this.point && (this.point.formatLabel(false) + ':');
-            } else if (this.labelAttr === 'DEVICE_AND_NAME_WITH_TAGS') {
-                this.label = this.point && (this.point.formatLabel() + ':');
-            } else {
-                this.label = this.labelAttr;
-            }
-        }
-    
+
         valueChangeHandler(isPointChange) {
             super.valueChangeHandler(...arguments);
-            
-            if (isPointChange) {
-                this.updateLabel();
-                if (this.labelExpression) {
-                    this.label = this.labelExpression({$point: this.point});
-                } else {
-                    this.updateLabel();
-                }
-            }
-            
+
             this.updateText();
             
             if (isPointChange) {

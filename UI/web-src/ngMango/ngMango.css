@@ -40,6 +40,10 @@ ma-switch .ma-disabled-text {
   display: none;
 }
 
+ma-switch md-switch {
+	line-height: inherit;
+}
+
 .ma-point-disabled .ma-point-value-no-value,
 .ma-point-disabled .ma-point-value-empty-value {
 	display: none;

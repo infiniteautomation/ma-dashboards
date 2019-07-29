@@ -1,4 +1,4 @@
-<label ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></label>
+<label ng-if="$ctrl.label" class="ma-point-value-label"><span ng-bind="$ctrl.label"></span>:&nbsp;</label>
 <span ng-if="$ctrl.resolvedDisplayType !== 'image'" ng-style="$ctrl.valueStyle" ng-class="$ctrl.valueClasses" class="ma-point-value-value">
     <span ng-if="$ctrl.noValue" ma-tr="ui.app.noValue"></span>
     <span ng-if="$ctrl.emptyValue" ma-tr="ui.app.emptyValue"></span>

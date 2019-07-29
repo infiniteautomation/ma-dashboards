@@ -25,6 +25,11 @@ switchDirective.$inject = ['maPointValueController'];
 function switchDirective(PointValueController) {
 
     class SwitchController extends PointValueController {
+        
+        constructor() {
+            super(...arguments);
+            this.showValue = true;
+        }
 
         $onInit() {
             if (!this.displayType) {
@@ -34,7 +39,7 @@ function switchDirective(PointValueController) {
     
         valueChangeHandler() {
             super.valueChangeHandler(...arguments);
-    
+
             this.currentValue = this.getValue();
             
             if (this.point) {
@@ -72,9 +77,12 @@ function switchDirective(PointValueController) {
         controller: SwitchController,
         controllerAs: '$ctrl',
         bindToController: {
+            showValue: '<?',
             point: '<?',
             pointXid: '@?',
-            displayType: '@?'
+            displayType: '@?',
+            labelAttr: '@?label',
+            labelExpression: '&?'
         },
         designerInfo: {
             translation: 'ui.components.switch',
@@ -83,7 +91,8 @@ function switchDirective(PointValueController) {
             attributes: {
                 point: {nameTr: 'ui.app.dataPoint', type: 'datapoint', pointType: 'BINARY'},
                 pointXid: {nameTr: 'ui.components.dataPointXid', type: 'datapoint-xid', pointType: 'BINARY'},
-                displayType: {options: ['switch', 'checkbox', 'radio']}
+                displayType: {options: ['switch', 'checkbox', 'radio']},
+                label: {options: ['NAME', 'DEVICE_AND_NAME', 'DEVICE_AND_NAME_WITH_TAGS']}
             }
         }
     };
