@@ -1,4 +1,4 @@
-<div flex="noshrink" layout="column" ng-form="dataPointSelector" ma-form-exclude ng-mouseup="$ctrl.cancelSelect()">
+<div flex="noshrink" layout="column" ng-form="dataPointSelector" ma-form-exclude>
     <div class="ma-virtual-repeat-table">
         <div class="ma-virtual-repeat-table-header">
             <div class="ma-virtual-repeat-table-row">
@@ -27,7 +27,7 @@
                                     </md-button>
                                 </md-menu-item>
 
-                                <md-menu-item>
+                                <md-menu-item ng-if="$ctrl.selectMultiple">
                                     <md-button ng-click="$ctrl.selectAll()">
                                         <div layout="row" flex>
                                             <md-icon md-menu-align-target>check_box</md-icon>
@@ -36,7 +36,7 @@
                                     </md-button>
                                 </md-menu-item>
 
-                                <md-menu-item>
+                                <md-menu-item ng-if="$ctrl.selectMultiple">
                                     <md-button ng-click="$ctrl.deselectAll()">
                                         <div layout="row" flex>
                                             <md-icon md-menu-align-target>check_box_outline_blank</md-icon>
@@ -134,11 +134,11 @@
         </div>
         <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
-            <div class="ma-virtual-repeat-table-row" md-virtual-repeat="point in $ctrl" md-on-demand ng-class="{'ma-row-loading': point == null}">
+            <div class="ma-virtual-repeat-table-row ma-data-point-row" md-virtual-repeat="point in $ctrl" md-on-demand
+                    ng-class="{'ma-row-loading': point == null, 'ma-point-selected': $ctrl.selectedPoints.has(point.xid)}"
+                    ng-click="$ctrl.rowClicked($event, point, $index)">
                 <div class="ma-checkbox-column">
-                    <md-checkbox ng-model="$ctrl.getModel(point, $index).value" ng-change="$ctrl.setViewValue()" md-no-ink="true"
-                        ng-mousedown="$ctrl.selectMouseDown(point, $index)" ng-mouseup="$ctrl.selectMouseUp(point, $index)">
-                    </md-checkbox>
+                    <md-checkbox tabindex="-1" ng-checked="$ctrl.selectedPoints.has(point.xid)" md-no-ink="true"></md-checkbox>
                 </div>
     
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-if="column.name !== 'value'">

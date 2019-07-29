@@ -80,10 +80,10 @@ class DataPointSelectorController {
     static get $$ngIsClass() { return true; }
     
     static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout',
-            'localStorageService', 'maUtil', '$q', '$scope', '$interval']; }
+            'localStorageService', 'maUtil', '$q', '$scope', '$interval', '$injector', '$element']; }
     
     constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate, $timeout,
-            localStorageService, maUtil, $q, $scope, $interval) {
+            localStorageService, maUtil, $q, $scope, $interval, $injector, $element) {
 
         this.maPoint = maPoint;
         this.maDataPointTags = maDataPointTags;
@@ -101,9 +101,11 @@ class DataPointSelectorController {
         this.pages = new maUtil.BoundedMap(this.cacheSize);
         
         this.tags = new Map();
-
         this.selectedPoints = new Map();
-        this.models = new WeakMap();
+        
+        if ($injector.has('$mdTheming')) {
+            $injector.get('$mdTheming')($element);
+        }
 
         this.loadSettings();
         this.resetColumns();
@@ -151,7 +153,12 @@ class DataPointSelectorController {
     }
     
     render() {
-        const points = Array.isArray(this.ngModelCtrl.$viewValue) ? this.ngModelCtrl.$viewValue : [];
+        let points;
+        if (this.selectMultiple) {
+            points = Array.isArray(this.ngModelCtrl.$viewValue) ? this.ngModelCtrl.$viewValue : [];
+        } else {
+            points = this.ngModelCtrl.$viewValue ? [this.ngModelCtrl.$viewValue] : [];
+        }
 
         this.selectedPoints.clear();
         points.forEach(point => {
@@ -160,7 +167,12 @@ class DataPointSelectorController {
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(Array.from(this.selectedPoints.values()));
+        if (this.selectMultiple) {
+            this.ngModelCtrl.$setViewValue(Array.from(this.selectedPoints.values()));
+        } else {
+            const [first] = this.selectedPoints.values();
+            this.ngModelCtrl.$setViewValue(first || null);
+        }
     }
     
     loadSettings() {
@@ -463,18 +475,6 @@ class DataPointSelectorController {
         this.getPoints();
     }
 
-    getModel(point, index) {
-        if (point == null) return;
-        
-        let model = this.models.get(point);
-        if (!model) {
-            model = this.maUtil.createBooleanModel(this.selectedPoints, point, 'xid');
-            model.index = index;
-            this.models.set(point, model);
-        }
-        return model;
-    }
-
     getCellValue(point, property) {
         let result = point;
         for (let i = 0; i < property.length; i++) {
@@ -555,30 +555,38 @@ class DataPointSelectorController {
     getSelectedTagsModel(tag) {
         return this.maUtil.createBooleanModel(this.selectedTags, tag, a => a.name);
     }
-    
-    selectMouseDown(point, index) {
-        this.pages.mouseDown = {point, index};
-    }
 
-    selectMouseUp(point, index) {
-        if (!this.pages.mouseDown) {
-            return;
-        }
-        
-        const deselect = this.selectedPoints.has(this.pages.mouseDown.point.xid);
-        const mouseDownIndex = this.pages.mouseDown.index;
-        delete this.pages.mouseDown;
-        
-        const fromIndex = Math.min(index, mouseDownIndex);
-        const toIndex = Math.max(index, mouseDownIndex);
-
-        if (toIndex > fromIndex) {
-            this.selectAll(fromIndex, toIndex + 1, deselect);
-        }
-    }
-    
     cancelSelect() {
         delete this.pages.mouseDown;
+    }
+
+    rowClicked(event, point, index) {
+        const deselect = this.selectedPoints.has(point.xid);
+        const lastClick = this.pages.mouseDown;
+        this.pages.mouseDown = {point, index, deselect};
+
+        // TODO add allow deselect attribute
+        if (!this.selectMultiple) {
+            this.selectedPoints.clear();
+        }
+        
+        if (deselect) {
+            this.selectedPoints.delete(point.xid);
+        } else {
+            this.selectedPoints.set(point.xid, point);
+        }
+
+        if (this.selectMultiple && event.shiftKey && lastClick) {
+            const fromIndex = Math.min(index, lastClick.index);
+            const toIndex = Math.max(index, lastClick.index);
+
+            if (toIndex > fromIndex) {
+                this.selectAll(fromIndex, toIndex + 1, deselect);
+                return; // dont setViewValue() yet
+            }
+        }
+        
+        this.setViewValue();
     }
 }
 
@@ -589,6 +597,7 @@ export default {
         ngModelCtrl: 'ngModel'
     },
     bindings: {
-        localStorageKey: '<?'
+        localStorageKey: '<?',
+        selectMultiple: '<?'
     }
 };

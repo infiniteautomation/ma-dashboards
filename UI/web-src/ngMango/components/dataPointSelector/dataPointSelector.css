@@ -33,6 +33,14 @@ ma-data-point-selector .ma-virtual-repeat-table .ma-checkbox-column md-checkbox 
 	margin: 0;
 }
 
+ma-data-point-selector .ma-data-point-row {
+	user-select: none;
+}
+
+ma-data-point-selector .ma-virtual-repeat-table-row md-checkbox {
+	pointer-events: none;
+}
+
 ma-data-point-selector md-menu-bar {
 	width: 32px;
 	padding: 0;

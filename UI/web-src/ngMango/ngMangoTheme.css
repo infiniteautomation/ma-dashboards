@@ -16,3 +16,9 @@ ma-drop-down-button.md-THEME_NAME-theme:not([disabled]) > div {
 ma-drop-down-button.md-THEME_NAME-theme > md-icon {
 	color: inherit;
 }
+
+ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:hover,
+ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:focus {
+	background-color: '{{foreground-4}}';
+	outline: none;
+}
