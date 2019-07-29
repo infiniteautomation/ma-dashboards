@@ -623,17 +623,26 @@ function dataPointProvider() {
                 return !!Object.keys(this.tags || {}).length;
             },
             
-            formatTags(includeDeviceAndName = false) {
-                const tags = includeDeviceAndName ? this.getTags() : (this.tags || {});
-                return Object.keys(tags).map(key => {
+            formatTags(tagsToInclude) {
+                const tags = tagsToInclude ? this.getTags() : (this.tags || {});
+
+                let tagKeys = Object.keys(tags);
+                if (Array.isArray(tagsToInclude)) {
+                    tagKeys = tagKeys.filter(k => tagsToInclude.includes(k));
+                } else if (tagsToInclude && typeof tagsToInclude === 'object') {
+                    tagKeys = tagKeys.filter(k => tagsToInclude[k]);
+                }
+                
+                return tagKeys.map(key => {
                     return `${key}=${tags[key]}`;
                 }).join(', ');
             },
             
-            formatLabel(includeTags = true, includeDeviceAndName = false) {
+            formatLabel(includeTags = true) {
                 let label = `${this.deviceName} \u2014 ${this.name}`;
                 if (includeTags && this.hasTags()) {
-                    label += ` [${this.formatTags(includeDeviceAndName)}]`;
+                    const tagsString = this.formatTags(typeof includeTags === 'object' ? includeTags : undefined);
+                    label += ` [${tagsString}]`;
                 }
                 return label;
             },

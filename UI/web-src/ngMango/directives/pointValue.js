@@ -93,7 +93,9 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             if (this.labelAttr === 'NAME') {
                 this.label = this.point && (this.point.name + ':');
             } else if (this.labelAttr === 'DEVICE_AND_NAME') {
-                this.label = this.point && (this.point.deviceName + ' \u2014 ' + this.point.name + ':');
+                this.label = this.point && (this.point.formatLabel(false) + ':');
+            } else if (this.labelAttr === 'DEVICE_AND_NAME_WITH_TAGS') {
+                this.label = this.point && (this.point.formatLabel() + ':');
             } else {
                 this.label = this.labelAttr;
             }
@@ -225,7 +227,7 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
                 flashOnChange: {type: 'boolean'},
                 dateTimeFormat: {options: dateOptions},
                 sameDayDateTimeFormat: {options: dateOptions},
-                label: {options: ['NAME', 'DEVICE_AND_NAME']},
+                label: {options: ['NAME', 'DEVICE_AND_NAME', 'DEVICE_AND_NAME_WITH_TAGS']},
                 enablePopup: {type: 'string', defaultValue: 'hide', options: ['hide', 'right', 'left', 'up', 'down']},
                 hideEventIndicator: {type: 'boolean', default: false},
                 quickInfo: {type: 'boolean', default: true},
