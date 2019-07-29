@@ -22,6 +22,10 @@
  For strings with spaces replace the spaces in the point value with dashes in attribute name. *Not to be used with `src-map` attribute.
  * @param {*=} value Alternatively to passing in a point you can use the `value` attribute to pass in a raw value.
  * @param {boolean=} toggle-on-click Set to true to enable click to toggle. *Only works with binary data points.
+ * @param {string} label Displays a label next to the point value. Three special options are available:
+ *      NAME, DEVICE_AND_NAME, and DEVICE_AND_NAME_WITH_TAGS
+ * @param {expression=} label-expression Expression that is evaluated to set the label. Gives more control for formatting the label.
+ *     Takes precedence over the label attribute. Available locals are $point (Data point object).
  *
  * @usage
  <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
@@ -100,7 +104,8 @@ function switchImg(PointValueController, maUtil) {
 
     return {
         restrict: 'E',
-        template: '<img ng-src="{{$ctrl.src}}">',
+        template: `<img ng-src="{{$ctrl.src}}">
+<div ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></div>`,
         scope: {},
         controller: SwitchImgController,
         controllerAs: '$ctrl',
@@ -116,7 +121,10 @@ function switchImg(PointValueController, maUtil) {
             src2: '@?',
             src3: '@?',
             value: '<?',
-            toggleOnClick: '<?'
+            renderValue: '&?',
+            toggleOnClick: '<?',
+            labelAttr: '@?label',
+            labelExpression: '&?'
         },
         designerInfo: {
             translation: 'ui.components.switchImg',
@@ -134,7 +142,8 @@ function switchImg(PointValueController, maUtil) {
                 src1: {type: 'choosefile', optional: true},
                 src2: {type: 'choosefile', optional: true},
                 src3: {type: 'choosefile', optional: true},
-                value: {type: 'string'}
+                value: {type: 'string'},
+                label: {options: ['NAME', 'DEVICE_AND_NAME', 'DEVICE_AND_NAME_WITH_TAGS']}
             }
         }
     };
