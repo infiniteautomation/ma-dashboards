@@ -5,7 +5,7 @@
 
 statisticsFactory.$inject = ['$http', '$q', 'maUtil'];
 function statisticsFactory($http, $q, Util) {
-    const pointValuesUrl = '/rest/v2/point-values/';
+    const pointValuesUrl = '/rest/v2/point-values';
 
     class Statistics {
         static getStatisticsForXid(xid, options) {
