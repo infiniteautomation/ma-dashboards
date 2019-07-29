@@ -458,11 +458,17 @@ ma-tank-level .amchart {
   height: 100%;
 }
 
-ma-gauge-chart {
+ma-gauge-chart,
+ma-indicator {
 	position: relative;
 }
 
-ma-gauge-chart .ma-point-value-label {
+.ma-point-value-label {
+	white-space: nowrap;
+}
+
+ma-gauge-chart .ma-point-value-label,
+ma-indicator .ma-point-value-label {
 	text-align: center;
 	position: absolute;
 	top: 100%;

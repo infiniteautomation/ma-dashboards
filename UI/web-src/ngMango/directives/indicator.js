@@ -24,6 +24,10 @@
  * @param {string=} color-5 The color to use when the point value is `5`.
  * @param {boolean=} [toggle-on-click=false] For binary data points only. When you click the component it will set the point
  * value to the opposite of what it is currently. e.g. if the point value is currently false it will set the point value to true.
+ * @param {string} label Displays a label next to the point value. Three special options are available:
+ *      NAME, DEVICE_AND_NAME, and DEVICE_AND_NAME_WITH_TAGS
+ * @param {expression=} label-expression Expression that is evaluated to set the label. Gives more control for formatting the label.
+ *     Takes precedence over the label attribute. Available locals are $point (Data point object).
  */
 indicator.$inject = ['maPointValueController', 'maUtil'];
 function indicator(PointValueController, maUtil) {
@@ -88,12 +92,16 @@ function indicator(PointValueController, maUtil) {
         restrict: 'E',
         scope: {},
         controller: IndicatorController,
+        controllerAs: '$ctrl',
+        template: '<div ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></div>',
         bindToController: {
             toggleOnClick: '<?',
             point: '<?',
             pointXid: '@?',
             value: '<?',
-            renderValue: '&?'
+            renderValue: '&?',
+            labelAttr: '@?label',
+            labelExpression: '&?'
         },
         designerInfo: {
             translation: 'ui.components.indicator',
@@ -126,7 +134,8 @@ function indicator(PointValueController, maUtil) {
                 },
                 defaultColor: {
                     type: 'color'
-                }
+                },
+                label: {options: ['NAME', 'DEVICE_AND_NAME', 'DEVICE_AND_NAME_WITH_TAGS']}
             },
             size: {
                 width: '30px',

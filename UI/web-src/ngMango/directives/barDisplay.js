@@ -99,6 +99,7 @@ function barDisplay(PointValueController) {
             maximum: '<?',
             minimum: '<?',
             value: '<?',
+            renderValue: '&?',
             labelAttr: '@?label',
             labelExpression: '&?',
             barColor: '@?',
