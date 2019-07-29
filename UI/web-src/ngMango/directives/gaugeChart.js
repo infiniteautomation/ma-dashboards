@@ -47,7 +47,10 @@ import gaugeChartTemplate from './gaugeChart.html';
  * @param {number=} arrow-alpha Opacity of the arrow and the arrow ring. Ranges 0-1 as a decimal. (default: 1)
  * @param {number=} axis-alpha Opacity of the circular axis. Ranges 0-1 as a decimal. (default: 0.5)
  * @param {object=} options Extend [amCharts](https://www.amcharts.com/demos/angular-gauge/) configuration object for customizing design of the gauge.
- 
+ * @param {string} label Displays a label next to the point value. Three special options are available:
+ *      NAME, DEVICE_AND_NAME, and DEVICE_AND_NAME_WITH_TAGS
+ * @param {expression=} label-expression Expression that is evaluated to set the label. Gives more control for formatting the label.
+ *     Takes precedence over the label attribute. Available locals are $point (Data point object).
  *
  * @usage
  * 
@@ -335,7 +338,9 @@ function gaugeChart(PointValueController, maUtil) {
           axisAlpha: '<?',
           options: '<?',
           value: '<?',
-          renderValue: '&?'
+          renderValue: '&?',
+          labelAttr: '@?label',
+          labelExpression: '&?'
         },
         designerInfo: {
             translation: 'ui.components.gaugeChart',
@@ -352,7 +357,8 @@ function gaugeChart(PointValueController, maUtil) {
                 band2Color: {type: 'color'},
                 band3Color: {type: 'color'},
                 autoStart: {type: 'boolean'},
-                autoEnd: {type: 'boolean'}
+                autoEnd: {type: 'boolean'},
+                label: {options: ['NAME', 'DEVICE_AND_NAME', 'DEVICE_AND_NAME_WITH_TAGS']}
             }
         }
     };

@@ -30,6 +30,10 @@ import moment from 'moment-timezone';
  * @param {string} [enable-popup="hide"] Set to one of the following values to enable shortcut icons to open stats or set point
  * dialog box for the selected point. Options are: `right`, `left`, `up`, or `down` to set the direction the icons
  * will open in. Shortcut icons will be shown on mouse over. Stats dialog will use date range from the date bar.
+ * @param {string} label Displays a label next to the point value. Three special options are available:
+ *      NAME, DEVICE_AND_NAME, and DEVICE_AND_NAME_WITH_TAGS
+ * @param {expression=} label-expression Expression that is evaluated to set the label. Gives more control for formatting the label.
+ *     Takes precedence over the label attribute. Available locals are $point (Data point object).
  *
  * @usage
  *

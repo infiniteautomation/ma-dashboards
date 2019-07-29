@@ -1,4 +1,5 @@
 <div ng-class="classes" class="amchart amchart-loading"></div>
+<div ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></div>
 
 <ma-point-statistics ng-if="$ctrl.autoStart || $ctrl.autoEnd" point="$ctrl.point" point-xid="{{$ctrl.pointXid}}"
     from="from" to="to" statistics="$ctrl.pointStats" rendered="false">
