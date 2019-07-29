@@ -5,6 +5,7 @@
 * Delete the id field when copying a resource
 * ma-validation-messages directive - Replace addControl method on child forms too
 * Fix for editing/updating points from static watchlist
+* Fix for being unable to remove all tags from a data point
 
 *Version 3.6.2*
 * Add inputs for script permissions to event handlers

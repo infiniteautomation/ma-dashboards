@@ -107,6 +107,11 @@ function multipleValuesFactory() {
             }
         }
         
+        /**
+         * The option removeEmptyObjects was added so we didn't send an empty purgePeriod object which caused validation to fail.
+         * However this also strips the tags object from data points so it is impossible to remove all tags from a data point.
+         * We add an empty tags object back to the data points in dataPointEditor.js saveMultiple().
+         */
         static toArray(obj, length, removeEmptyObjects = true) {
             return Array(length).fill().map((v, i) => {
                 return this.splitCombined(obj, i, removeEmptyObjects);

@@ -242,14 +242,21 @@ class DataPointEditorController {
     saveMultiple() {
         const newPoints = this.MultipleValues.toArray(this.dataPoint, this.points.length);
         const action = this.points.every(dp => dp.isNew()) ? 'CREATE' : 'UPDATE';
-        
+
         this.bulkTask = new this.Point.bulk({
             action,
             requests: newPoints.map(pt => {
+                // MultipleValues.toArray() strips empty objects from the data points.
+                // Add an empty tags object back in so we can remove tags from a data point.
+                if (!pt.tags) {
+                    pt.tags = {};
+                }
+                
                 const request = {
                     xid: pt.originalId,
                     body: pt
                 };
+                
                 if (action !== 'CREATE' && pt.isNew()) {
                     request.action = 'CREATE';
                 }
