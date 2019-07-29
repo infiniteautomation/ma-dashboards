@@ -132,12 +132,14 @@ ma-bar-display .ma-point-value-label {
     bottom: 0;
 }
 
+ma-bar-display .bar-display-text,
 .bar-display .bar-display-text {
     position: absolute;
     font-weight: bold;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    white-space: nowrap;
 }
 
 .bar-display.bar-display-vertical .bar-display-text {

@@ -8,6 +8,8 @@
 * Fix for being unable to remove all tags from a data point
 * Add option to display tags on point value directive label
 * Add options for displaying data point labels to ma-switch, ma-gauge-chart, ma-bar-display
+* Add attribute for setting bar color to ma-bar-display
+* Add option to show value on ma-bar-display
 
 *Version 3.6.2*
 * Add inputs for script permissions to event handlers

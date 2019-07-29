@@ -31,6 +31,7 @@ function barDisplay(PointValueController) {
             super(...arguments); 
             
             this.style = {};
+            this.showValue = true;
         }
         
         $onChanges(changes) {
@@ -86,6 +87,7 @@ function barDisplay(PointValueController) {
     return {
         restrict: 'E',
         template: `<div class="bar-display-fill" ng-style="$ctrl.style"></div>
+<div ng-if="$ctrl.showValue" class="bar-display-text">{{$ctrl.getTextValue()}}</div>
 <div ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></div>`,
         scope: {},
         controller: BarDisplayController,
@@ -97,10 +99,10 @@ function barDisplay(PointValueController) {
             maximum: '<?',
             minimum: '<?',
             value: '<?',
-            renderValue: '&?',
             labelAttr: '@?label',
             labelExpression: '&?',
-            barColor: '@?'
+            barColor: '@?',
+            showValue: '<?'
         },
         designerInfo: {
             translation: 'ui.components.barDisplay',
