@@ -159,23 +159,43 @@
                     <ma-drop-down-button>
                         <span ma-tr="ui.publisher.pointsSelected" ma-tr-args="[$ctrl.publisher.points.length]"></span>
                         <ma-drop-down open-drop-down="$ctrl.showPointSelectorOptions" create-on-init="false" class="ma-slide-down">
-                            <ma-data-point-selector select-multiple="true" class="ma-publisher-editor" ng-model="$ctrl.publisher.points"
+                            <ma-data-point-selector select-multiple="true" class="ma-publisher-editor" ng-model="$ctrl.publisher.points" ng-change="$ctrl.pointsChanged()"
                                 ma-format-value="$ctrl.publisherPointsToPoints($value)" ma-parse-value="$ctrl.pointsToPublisherPoints($value)">
                             </ma-data-point-selector>
                         </ma-drop-down>
                     </ma-drop-down-button>
+                    
+                    <div class="ma-virtual-repeat-table">
+                        <div class="ma-virtual-repeat-table-header">
+                            <div class="ma-virtual-repeat-table-row">
+                                <div class="ma-buttons-column"></div>
+                                <div ma-tr="ui.app.xid"></div>
+                            </div>
+                        </div>
+                        
+                        <div ng-if="!$ctrl.publisher.points.length" class="ma-no-items-to-list" ma-tr="ui.publisher.noPointsSelected"></div>
+                        
+                        <div ng-if="$ctrl.publisher.points.length" class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
+                            <div class="ma-virtual-repeat-table-row" md-virtual-repeat="point in $ctrl.publisher.points">
+                                <div class="ma-buttons-column">
+                                    <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.removePoint($index)"><md-icon>delete</md-icon></md-button>
+                                </div>
+                                <div ng-bind="point.dataPointXid"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </md-tab-body>
         </md-tab>
         
-        <md-tab>
+        <!--<md-tab>
             <md-tab-label>
                 <span ma-tr="publisherEdit.point.status"></span>
             </md-tab-label>
             <md-tab-body>
                 <h1 ma-tr="publisherEdit.point.status"></h1>
             </md-tab-body>
-        </md-tab>
+        </md-tab>-->
     </md-tabs>
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>

@@ -178,6 +178,17 @@ class PublisherEditorController {
             }));
         }
     }
+    
+    pointsChanged() {
+        // ma-data-point-selector is not part of the form as it is in a drop down dialog, have to manually set the form dirty
+        this.form.$setDirty();
+    }
+    
+    removePoint(index) {
+        this.publisher.points.splice(index, 1);
+        this.publisher.points = this.publisher.points.slice();
+        this.form.$setDirty();
+    }
 }
 
 export default {

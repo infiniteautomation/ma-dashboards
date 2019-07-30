@@ -1370,3 +1370,9 @@ md-input-container.ma-filter {
 .ma-virtual-repeat-table .ma-virtual-repeat-table-header .ma-sort-icon.ma-sort-descending {
 	transform: rotate(180deg);
 }
+
+.ma-virtual-repeat-table .ma-no-items-to-list {
+	font-style: italic;
+	text-align: center;
+	padding: 16px 0;
+}

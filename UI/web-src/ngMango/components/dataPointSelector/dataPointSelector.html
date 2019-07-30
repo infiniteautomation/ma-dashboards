@@ -132,7 +132,7 @@
             </div>
             <md-progress-linear ng-show="$ctrl.pointsPromise" md-mode="indeterminate"></md-progress-linear>
         </div>
-        <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
+        <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.pointsPromise" class="ma-no-items-to-list" ma-tr="ui.app.noPointsToDisplay"></div>
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
             <div class="ma-virtual-repeat-table-row ma-data-point-row" md-virtual-repeat="point in $ctrl" md-on-demand
                     ng-class="{'ma-row-loading': point == null, 'ma-data-point-selected': $ctrl.selectedPoints.has(point.xid)}"
