@@ -1,3 +1,29 @@
+/**
+ * Taken from AngularJS Material documentation -
+ *
+ * Some Example Valid Theming Expressions
+ * =======================================
+ *
+ * Intention group expansion: (valid for primary, accent, warn, background)
+ *
+ * {{primary-100}} - grab shade 100 from the primary palette
+ * {{primary-100-0.7}} - grab shade 100, apply opacity of 0.7
+ * {{primary-100-contrast}} - grab shade 100's contrast color
+ * {{primary-hue-1}} - grab the shade assigned to hue-1 from the primary palette
+ * {{primary-hue-1-0.7}} - apply 0.7 opacity to primary-hue-1
+ * {{primary-color}} - Generates .md-hue-1, .md-hue-2, .md-hue-3 with configured shades set for each hue
+ * {{primary-color-0.7}} - Apply 0.7 opacity to each of the above rules
+ * {{primary-contrast}} - Generates .md-hue-1, .md-hue-2, .md-hue-3 with configured contrast (ie. text) color shades set for each hue
+ * {{primary-contrast-0.7}} - Apply 0.7 opacity to each of the above rules
+ *
+ * Foreground expansion: Applies rgba to black/white foreground text
+ *
+ * {{foreground-1}} - used for primary text
+ * {{foreground-2}} - used for secondary text/divider
+ * {{foreground-3}} - used for disabled text
+ * {{foreground-4}} - used for dividers
+ */
+
 ma-drop-down-button.md-THEME_NAME-theme {
 	color: '{{foreground-3}}';
 	border-bottom-color: '{{foreground-3}}';
@@ -19,6 +45,7 @@ ma-drop-down-button.md-THEME_NAME-theme > md-icon {
 
 ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:hover,
 ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:focus {
-	background-color: '{{foreground-4}}';
+	background-color: '{{background-hue-2}}';
+	color: '{{background-hue-2-contrast}}';
 	outline: none;
 }

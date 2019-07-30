@@ -6,16 +6,6 @@
 import dataPointSelectorTemplate from './dataPointSelector.html';
 import './dataPointSelector.css';
 
-/*
- * TODO
-fixed column widths / weight per column? make configurable and store in settings
-re-instate the shift click
-select rows rather than use checkboxes
-touch behavior / check mobile layout
-click and drag to select multiple?
-Single select mode
-*/
-
 const defaultColumns = [
     {name: 'xid', label: 'ui.app.xidShort'},
     {name: 'dataSourceName', label: 'ui.app.dataSource'},

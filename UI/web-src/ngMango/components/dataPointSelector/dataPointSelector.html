@@ -135,7 +135,7 @@
         <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.pointsPromise" class="ma-no-points-found" ma-tr="ui.app.noPointsToDisplay"></div>
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
             <div class="ma-virtual-repeat-table-row ma-data-point-row" md-virtual-repeat="point in $ctrl" md-on-demand
-                    ng-class="{'ma-row-loading': point == null, 'ma-point-selected': $ctrl.selectedPoints.has(point.xid)}"
+                    ng-class="{'ma-row-loading': point == null, 'ma-data-point-selected': $ctrl.selectedPoints.has(point.xid)}"
                     ng-click="$ctrl.rowClicked($event, point, $index)">
                 <div class="ma-checkbox-column">
                     <md-checkbox tabindex="-1" ng-checked="$ctrl.selectedPoints.has(point.xid)" md-no-ink="true"></md-checkbox>
