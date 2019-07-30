@@ -157,7 +157,7 @@
             <md-tab-body>
                 <div class="md-padding">
                     <ma-drop-down-button>
-                        {{$ctrl.publisher.points.length}} points selected
+                        <span ma-tr="ui.publisher.pointsSelected" ma-tr-args="[$ctrl.publisher.points.length]"></span>
                         <ma-drop-down open-drop-down="$ctrl.showPointSelectorOptions" create-on-init="false" class="ma-slide-down">
                             <ma-data-point-selector select-multiple="true" class="ma-publisher-editor" ng-model="$ctrl.publisher.points"
                                 ma-format-value="$ctrl.publisherPointsToPoints($value)" ma-parse-value="$ctrl.pointsToPublisherPoints($value)">
