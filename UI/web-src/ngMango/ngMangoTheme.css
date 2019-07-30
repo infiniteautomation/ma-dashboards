@@ -29,6 +29,7 @@ ma-drop-down-button.md-THEME_NAME-theme {
 	border-bottom-color: '{{foreground-3}}';
 }
 
+ma-drop-down-button.md-THEME_NAME-theme:focus:not([disabled]),
 ma-drop-down-button.md-THEME_NAME-theme:active:not([disabled]),
 ma-drop-down-button.md-THEME_NAME-theme.ma-drop-down-open:not([disabled]) {
 	color: '{{primary-color}}';

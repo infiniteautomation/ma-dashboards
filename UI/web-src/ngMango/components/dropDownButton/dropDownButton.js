@@ -17,11 +17,15 @@ class DropDownButtonController {
             $injector.get('$mdTheming')($element);
         }
         
-        $element.on('click', event => {
-            $scope.$apply(() => {
-                this.buttonClicked(event);
-            });
+        $element.on('click keypress', event => {
+            if (event.type === 'click' || [13, 32].includes(event.which)) {
+                $scope.$apply(() => {
+                    this.buttonClicked(event);
+                });
+            }
         });
+        
+        $element.attr('tabindex', 0);
     }
     
     $doCheck() {

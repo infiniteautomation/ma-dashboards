@@ -212,7 +212,7 @@ function dropDown($parse, $document, $injector, $animate, $window) {
         }
         
         focusListener(event) {
-            if (this.isOpen() && !(this.$dropDown.maHasFocus() || $body.find('md-menu-content').maHasFocus() ||
+            if (this.isOpen() && !(this.$dropDown.maHasFocus() || $body.maFind('.md-open-menu-container').maHasFocus() ||
                     angular.element(this.targetElement).maHasFocus())) {
                 // getting $digest already in progress errors due to AngularJS material triggering a focus event inside the $digest cycle
                 if (this.$scope.$root.$$phase != null) {

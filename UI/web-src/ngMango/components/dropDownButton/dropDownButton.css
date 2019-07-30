@@ -4,10 +4,16 @@ ma-drop-down-button {
 	border-bottom: 1px solid currentColor;
 }
 
+ma-drop-down-button:active,
+ma-drop-down-button:focus {
+	outline: none;
+}
+
 ma-drop-down-button[disabled] {
 	border-bottom-style: dashed;
 }
 
+ma-drop-down-button:focus:not([disabled]),
 ma-drop-down-button:active:not([disabled]),
 ma-drop-down-button.ma-drop-down-open:not([disabled]) {
 	padding-bottom: 0;
