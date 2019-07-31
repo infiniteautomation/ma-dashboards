@@ -33,10 +33,18 @@ indicator.$inject = ['maPointValueController', 'maUtil'];
 function indicator(PointValueController, maUtil) {
     
     class IndicatorController extends PointValueController {
+        
+        static get $inject() { return PointValueController.$inject.concat(['$transclude']); }
+        
         constructor() {
             super(...arguments);
 
             this.$element.css('background-color', this.$attrs.defaultColor || '');
+
+            const $transclude = arguments[this.constructor.$inject.indexOf('$transclude')];
+            $transclude((clone, scope) => {
+                this.$element.append(clone);
+            });
         }
 
         $onChanges(changes) {
@@ -94,6 +102,7 @@ function indicator(PointValueController, maUtil) {
         controller: IndicatorController,
         controllerAs: '$ctrl',
         template: '<div ng-if="$ctrl.label" ng-bind="$ctrl.label" class="ma-point-value-label"></div>',
+        transclude: true,
         bindToController: {
             toggleOnClick: '<?',
             point: '<?',
