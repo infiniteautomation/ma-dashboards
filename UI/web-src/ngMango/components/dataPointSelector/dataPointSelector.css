@@ -1,7 +1,7 @@
 ma-data-point-selector {
 	display: flex;
 	flex-grow: 1;
-	min-height: 100px;
+	min-height: 400px;
 	overflow-x: auto;
 }
 
@@ -44,6 +44,6 @@ md-menu-content.md-menu-bar-menu.md-dense.ma-data-point-selector {
 	padding: 8px 0;
 }
 
-md-menu-content.md-menu-bar-menu.ma-checkbox-menu md-checkbox {
+md-menu-content.md-menu-bar-menu.ma-data-point-selector.ma-checkbox-menu md-checkbox {
 	margin: 0;
 }

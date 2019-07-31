@@ -158,8 +158,8 @@
                 <div class="md-padding">
                     <ma-drop-down-button>
                         <span ma-tr="ui.publisher.pointsSelected" ma-tr-args="[$ctrl.publisher.points.length]"></span>
-                        <ma-drop-down open-drop-down="$ctrl.showPointSelectorOptions" create-on-init="false" class="ma-slide-down">
-                            <ma-data-point-selector select-multiple="true" class="ma-publisher-editor" ng-model="$ctrl.publisher.points" ng-change="$ctrl.pointsChanged()"
+                        <ma-drop-down create-on-init="false" class="ma-slide-down">
+                            <ma-data-point-selector select-multiple="::true" class="ma-publisher-editor" ng-model="$ctrl.publisher.points" ng-change="$ctrl.pointsChanged()"
                                 ma-format-value="$ctrl.publisherPointsToPoints($value)" ma-parse-value="$ctrl.pointsToPublisherPoints($value)">
                             </ma-data-point-selector>
                         </ma-drop-down>
