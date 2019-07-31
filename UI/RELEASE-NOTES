@@ -1,3 +1,6 @@
+*Version 3.6.4*
+* Transclude content of indicator into template
+
 *Version 3.6.3*
 * Add inputs for mailing list edit and read roles
 * Send test email to selected user
