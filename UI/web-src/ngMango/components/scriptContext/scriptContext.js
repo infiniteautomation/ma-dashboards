@@ -39,6 +39,7 @@ class scriptContextController {
 
         this.maPoint.buildPostQuery()
             .in('xid', xids)
+            .limit(xids.length)
             .query().then(points => {
                 points.forEach(point => {
                     const contextPoint = xidToContextPoint[point.xid];

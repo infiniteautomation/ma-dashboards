@@ -169,18 +169,24 @@
                         <div class="ma-virtual-repeat-table-header">
                             <div class="ma-virtual-repeat-table-row">
                                 <div class="ma-buttons-column"></div>
-                                <div ma-tr="ui.app.xid"></div>
+                                <!--<div ma-tr="ui.app.xid"></div>-->
+                                <div ma-tr="common.deviceName"></div>
+                                <div ma-tr="common.name"></div>
+                                <div ma-tr="ui.app.tags"></div>
                             </div>
                         </div>
                         
                         <div ng-if="!$ctrl.publisher.points.length" class="ma-no-items-to-list" ma-tr="ui.publisher.noPointsSelected"></div>
                         
                         <div ng-if="$ctrl.publisher.points.length" class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
-                            <div class="ma-virtual-repeat-table-row" md-virtual-repeat="point in $ctrl.publisher.points">
+                            <div class="ma-virtual-repeat-table-row" md-virtual-repeat="publisherPoint in $ctrl.publisher.points">
                                 <div class="ma-buttons-column">
                                     <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.removePoint($index)"><md-icon>delete</md-icon></md-button>
                                 </div>
-                                <div ng-bind="point.dataPointXid"></div>
+                                <!--<div ng-bind="$ctrl.getPoint(publisherPoint).xid"></div>-->
+                                <div ng-bind="$ctrl.getPoint(publisherPoint).deviceName"></div>
+                                <div ng-bind="$ctrl.getPoint(publisherPoint).name"></div>
+                                <div ng-bind="$ctrl.getPoint(publisherPoint).formatTags()"></div>
                             </div>
                         </div>
                     </div>

@@ -16,20 +16,27 @@ import './publisherEditor.css';
 
 class PublisherEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPublisher', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse', 'maEvents']; }
+    static get $inject() { return ['maPublisher', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse', 'maEvents',
+        'maPoint', 'maUtil']; }
     
-    constructor(maPublisher, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse, Events) {
+    constructor(maPublisher, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse, Events,
+            maPoint, maUtil) {
+        
         this.maPublisher = maPublisher;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
+        this.maUtil = maUtil;
+        this.maPoint = maPoint;
         
         this.eventLevels = Events.levels;
         this.publishTypeCodes = maPublisher.publishTypeCodes;
         this.publisherTypes = maPublisher.types;
         this.publisherTypesByName = maPublisher.typesByName;
+        
+        this.points = new WeakMap();
         
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
@@ -84,6 +91,8 @@ class PublisherEditorController {
         } else {
             this.publisher = null;
         }
+        
+        this.renderPoints();
 
         if (this.publisher && this.publisher.isNew()) {
             this.activeTab = 0;
@@ -93,6 +102,32 @@ class PublisherEditorController {
             this.form.$setPristine();
             this.form.$setUntouched();
         }
+    }
+
+    renderPoints() {
+        if (!this.publisher) {
+            return;
+        }
+
+        if (!this.publisher.points.length) {
+            return;
+        }
+        
+        const xidToPublisherPoint = this.maUtil.createMapObject(this.publisher.points, 'dataPointXid');
+        const xids = Object.keys(xidToPublisherPoint);
+
+        this.maPoint.buildPostQuery()
+            .in('xid', xids)
+            .limit(xids.length)
+            .query().then(points => {
+                points.forEach(point => {
+                    const publisherPoint = xidToPublisherPoint[point.xid];
+                    this.points.set(publisherPoint, point);
+                });
+                this.publisher.points = this.publisher.points.slice();
+            }, error => {
+                this.publisher.points = this.publisher.points.slice();
+            });
     }
     
     setViewValue() {
@@ -166,16 +201,21 @@ class PublisherEditorController {
     
     pointsToPublisherPoints(points) {
         if (Array.isArray(points)) {
-            return points.map(pt => this.publisher.createPublisherPoint(pt));
+            return points.map(point => {
+                const publisherPoint = this.publisher.createPublisherPoint(point);
+                this.points.set(publisherPoint, point);
+                return publisherPoint;
+            });
         }
     }
     
-    publisherPointsToPoints(points) {
-        // TODO should we get all the actual data points by XID?
-        if (Array.isArray(points)) {
-            return points.map(pt => ({
-                xid: pt.dataPointXid
-            }));
+    publisherPointsToPoints(publisherPoints) {
+        if (Array.isArray(publisherPoints)) {
+            return publisherPoints.map(publisherPoint => {
+                return this.points.get(publisherPoint) || {
+                    xid: publisherPoint.dataPointXid
+                };
+            });
         }
     }
     
@@ -188,6 +228,10 @@ class PublisherEditorController {
         this.publisher.points.splice(index, 1);
         this.publisher.points = this.publisher.points.slice();
         this.form.$setDirty();
+    }
+    
+    getPoint(publisherPoint) {
+        return this.points.get(publisherPoint);
     }
 }
 
