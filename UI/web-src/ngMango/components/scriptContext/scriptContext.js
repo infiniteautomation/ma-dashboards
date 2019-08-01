@@ -1,94 +1,88 @@
 /**
  * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Luis Güette
+ * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import componentTemplate from './scriptContext.html';
-
-const $inject = Object.freeze(['$scope', 'maPoint']);
 
 class scriptContextController {
 
-    static get $inject() { return $inject; }
+    static get $inject() { return ['maPoint', 'maUtil']; }
     static get $$ngIsClass() { return true; }
 
-    constructor($scope, maPoint) {
-        this.$scope = $scope;
+    constructor(maPoint, maUtil) {
         this.maPoint = maPoint;
+        this.maUtil = maUtil;
+        
+        this.xidProp = 'xid';
+        
+        this.contextPoints = [];
+        this.points = new WeakMap();
+    }
+    
+    $onChanges(changes) {
+        if (changes && changes.contextVarXidName && this.contextVarXidName) {
+            this.xidProp = this.contextVarXidName;
+        }
     }
 
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        this.contextTable = [];
     }
 
     render() {
-        this.contextPoints = this.ngModelCtrl.$viewValue;
+        const contextPoints = Array.isArray(this.ngModelCtrl.$viewValue) ? this.ngModelCtrl.$viewValue : [];
         
-        if (!Array.isArray(this.contextPoints) || !this.contextPoints.length) {
-            this.contextTable = [];
-        } else {
-            this.getPoints();
-        }
-    }
+        const xidToContextPoint = this.maUtil.createMapObject(contextPoints, this.xidProp);
+        const xids = Object.keys(xidToContextPoint);
 
-    setViewValue() {
-        this.contextPoints = angular.copy(this.contextTable);
-        this.contextPoints.forEach(point => delete point.point);
-
-        this.ngModelCtrl.$setViewValue(this.contextPoints);
-    }
-
-    getPoints() {
-        this.contextTable = angular.copy(this.contextPoints);
-        
-        const xidProp = this.getContextVarXidName();
-        
-        return this.maPoint.buildQuery()
-            .in('xid', this.contextPoints.map(p => p[xidProp]))
-            .query()
-            .then(points => {
-                this.contextTable.forEach(item => {
-                    item.point = points.find(point =>  point.xid === item[xidProp]);
+        this.maPoint.buildPostQuery()
+            .in('xid', xids)
+            .query().then(points => {
+                points.forEach(point => {
+                    const contextPoint = xidToContextPoint[point.xid];
+                    this.points.set(contextPoint, point);
                 });
+                this.contextPoints = contextPoints;
+            }, error => {
+                this.contextPoints = contextPoints;
             });
     }
 
-    selectContextPoint() {
-        const addedPoint = this.contextPoint;
-        const xidProp = this.getContextVarXidName();
-        
-        // dont allow duplicate xids in table
-        if (!addedPoint || this.contextTable.some(c => c[xidProp] === addedPoint.xid)) {
-            this.contextPoint = null;
-            return;
-        }
+    setViewValue() {
+        this.ngModelCtrl.$setViewValue(this.contextPoints.slice());
+    }
 
-        this.contextTable.push({
-            point: this.contextPoint,
-            variableName: '',
-            contextUpdate: false,
-            [xidProp]: addedPoint.xid
+    deleteContextPoint(index) {
+        this.contextPoints.splice(index, 1);
+        this.contextPoints = this.contextPoints.slice();
+        this.setViewValue();
+    }
+
+    contextPointsToPoints(contextPoints) {
+        return contextPoints.map(contextPoint => {
+            return this.points.get(contextPoint) || {
+                xid: contextPoint[this.xidProp]
+            };
         });
-        
-        this.setViewValue();
     }
 
-    deleteContextPoint(point) {
-        const index = this.contextTable.indexOf(point);
-
-        if (index > -1) {
-            this.contextTable.splice(index, 1);
-        }
-
-        this.setViewValue();
+    pointsToContextPoints(points) {
+        return points.map(point => {
+            const contextPoint = {
+                variableName: '',
+                contextUpdate: false,
+                [this.xidProp]: point.xid
+            };
+            this.points.set(contextPoint, point);
+            return contextPoint;
+        });
     }
-
-    getContextVarXidName() {
-        return this.contextVarXidName ? this.contextVarXidName : 'xid';
+    
+    getPoint(contextPoint) {
+        return this.points.get(contextPoint);
     }
-
 }
 
 export default {

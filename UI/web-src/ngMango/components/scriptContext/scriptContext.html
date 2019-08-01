@@ -1,4 +1,13 @@
-<md-table-container flex="100" ng-if="$ctrl.contextTable.length > 0">
+<ma-drop-down-button flex="100">
+    <div><span ma-tr="ui.app.scriptContext"></span> (<span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.contextPoints.length]"></span>)</div>
+    <ma-drop-down create-on-init="false" class="ma-slide-down">
+        <ma-data-point-selector select-multiple="::true" ng-model="$ctrl.contextPoints" ng-change="$ctrl.setViewValue()"
+            ma-format-value="$ctrl.contextPointsToPoints($value)" ma-parse-value="$ctrl.pointsToContextPoints($value)">
+        </ma-data-point-selector>
+    </ma-drop-down>
+</ma-drop-down-button>
+
+<md-table-container flex="100" ng-if="$ctrl.contextPoints.length > 0">
     <table md-table>
         <thead md-head>
             <tr md-row>
@@ -12,33 +21,27 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="item in $ctrl.contextTable">
-                <td md-cell>{{ item.point.deviceName }}</td>
-                <td md-cell>{{ item.point.name }}</td>
-                <td md-cell>{{ item.point.formatTags() }}</td>
-                <td md-cell>{{ item.point.pointLocator.dataType }}</td>
+            <tr md-row ng-repeat="contextPoint in $ctrl.contextPoints track by contextPoint[$ctrl.xidProp]">
+                <td md-cell ng-bind="$ctrl.getPoint(contextPoint).deviceName"></td>
+                <td md-cell ng-bind="$ctrl.getPoint(contextPoint).name"></td>
+                <td md-cell ng-bind="$ctrl.getPoint(contextPoint).formatTags()"></td>
+                <td md-cell ng-bind="$ctrl.getPoint(contextPoint).dataType"></td>
                 <td md-cell>
                     <md-input-container flex="100">
                         <label ma-tr="pointEdit.text.key"></label>
-                        <input name="variableName" ng-model="item.variableName" ng-change="$ctrl.setViewValue()" required>
+                        <input name="variableName" ng-model="contextPoint.variableName" ng-change="$ctrl.setViewValue()" required>
                     </md-input-container>
                 </td>
                 <td md-cell ng-if="$ctrl.updatesContext">
-                    <md-input-container flex="100" flex-gt-md="50">
-                        <md-checkbox ng-model="item.contextUpdate" ng-change="$ctrl.setViewValue()"></md-checkbox>
-                    </md-input-container>
+                    <md-checkbox ng-model="contextPoint.contextUpdate" ng-change="$ctrl.setViewValue()"></md-checkbox>
                 </td>
                 <td md-cell>
-                    <md-button class="md-icon-button" aria-label="Delete Template" ng-click="$ctrl.deleteContextPoint(item)">
-                        <md-tooltip md-direction="bottom" ma-tr="excelreports.ui.deleteTemplate"></md-tooltip>
-                        <md-icon>delete</md-icon>
+                    <md-button class="md-icon-button" ng-click="$ctrl.deleteContextPoint($index)">
+                        <md-tooltip ma-tr="common.remove"></md-tooltip>
+                        <md-icon>clear</md-icon>
                     </md-button>
                 </td>
             </tr>
         </tbody>
     </table>
 </md-table-container>
-
-<div flex="100">
-    <ma-filtering-point-list auto-init="false" label="{{'ui.app.scriptContext' | maTr}}" name="contextPoint" ng-change="$ctrl.selectContextPoint()" ng-model="$ctrl.contextPoint"></ma-filtering-point-list>
-</div>
