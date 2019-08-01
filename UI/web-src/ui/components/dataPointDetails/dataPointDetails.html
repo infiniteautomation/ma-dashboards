@@ -26,7 +26,8 @@
                     <ma-drop-down-button>
                         <span ng-bind="$ctrl.dataPoint.formatLabel()"></span>
                         <ma-drop-down create-on-init="false" class="ma-slide-down">
-                            <ma-data-point-selector select-multiple="::false" ng-model="$ctrl.dataPoint" ng-change="$ctrl.pointChanged(); $dropDown.close()">
+                            <ma-data-point-selector select-multiple="::false" ng-model="$ctrl.dataPoint" ng-change="$ctrl.pointChanged(); $dropDown.close()"
+                                show-clear="false">
                             </ma-data-point-selector>
                         </ma-drop-down>
                     </ma-drop-down-button>
