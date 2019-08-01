@@ -41,6 +41,7 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             
             this.createOnInit = true;
             this.destroyOnClose = false;
+            this.scrollListener = this.scrollListener.bind(this);
             this.focusListener = this.focusListener.bind(this);
             this.resizeListener = this.resizeListener.bind(this);
         }
@@ -54,6 +55,7 @@ function dropDown($parse, $document, $injector, $animate, $window) {
         $onInit() {
             $body[0].addEventListener('focus', this.focusListener, true);
             $window.addEventListener('resize', this.resizeListener, true);
+            $window.addEventListener('scroll', this.scrollListener, true);
 
             if (this.createOnInit) {
                 this.createElement();
@@ -72,6 +74,8 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             this.cancelAnimations();
             $body[0].removeEventListener('focus', this.focusListener, true);
             $window.removeEventListener('resize', this.resizeListener, true);
+            $window.removeEventListener('scroll', this.scrollListener, true);
+            
             this.destroyElement();
             
             if (this.dropDownButton) {
@@ -211,9 +215,13 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             }
         }
         
+        hasFocus() {
+            return this.$dropDown.maHasFocus() || $body.maFind('.md-open-menu-container').maHasFocus() ||
+                angular.element(this.targetElement).maHasFocus();
+        }
+        
         focusListener(event) {
-            if (this.isOpen() && !(this.$dropDown.maHasFocus() || $body.maFind('.md-open-menu-container').maHasFocus() ||
-                    angular.element(this.targetElement).maHasFocus())) {
+            if (this.isOpen() && !this.hasFocus()) {
                 // getting $digest already in progress errors due to AngularJS material triggering a focus event inside the $digest cycle
                 if (this.$scope.$root.$$phase != null) {
                     this.close();
@@ -230,6 +238,15 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             this.resizeDebounceTimeout = setTimeout(() => {
                 this.resizeDropDown();
             }, 200);
+        }
+        
+        scrollListener(event) {
+            if (this.isOpen() && !this.$dropDown[0].contains(event.target)) {
+                //this.resizeDropDown();
+                this.$scope.$apply(() => {
+                    this.close();
+                });
+            }
         }
 
         focus() {
