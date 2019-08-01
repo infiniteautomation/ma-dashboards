@@ -10,7 +10,7 @@
                                 <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
                             </md-button>
                             <md-menu-content width="3" class="ma-data-point-selector" md-colors="::{background: 'background-hue-2'}">
-                                <md-menu-item>
+                                <md-menu-item ng-if-start="$ctrl.selectMultiple">
                                     <md-button ng-disabled="true">
                                         <span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.size]"></span>
                                     </md-button>
@@ -19,15 +19,6 @@
                                 <md-menu-divider></md-menu-divider>
 
                                 <md-menu-item>
-                                    <md-button ng-click="$ctrl.markCacheAsStale()">
-                                        <div layout="row" flex>
-                                            <md-icon md-menu-align-target>refresh</md-icon>
-                                            <div flex ma-tr="ui.app.refreshTable"></div>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-
-                                <md-menu-item ng-if="$ctrl.selectMultiple">
                                     <md-button ng-click="$ctrl.selectAll()">
                                         <div layout="row" flex>
                                             <md-icon md-menu-align-target>check_box</md-icon>
@@ -36,7 +27,7 @@
                                     </md-button>
                                 </md-menu-item>
 
-                                <md-menu-item ng-if="$ctrl.selectMultiple">
+                                <md-menu-item>
                                     <md-button ng-click="$ctrl.deselectAll()">
                                         <div layout="row" flex>
                                             <md-icon md-menu-align-target>check_box_outline_blank</md-icon>
@@ -45,7 +36,9 @@
                                     </md-button>
                                 </md-menu-item>
 
-                                <md-menu-item>
+                                <md-menu-divider ng-if-end></md-menu-divider>
+
+                                <md-menu-item ng-if-start="$ctrl.showClear">
                                     <md-button ng-click="$ctrl.clearSelection()">
                                         <div layout="row" flex>
                                             <md-icon md-menu-align-target>clear</md-icon>
@@ -54,7 +47,7 @@
                                     </md-button>
                                 </md-menu-item>
 
-                                <md-menu-divider></md-menu-divider>
+                                <md-menu-divider ng-if-end></md-menu-divider>
 
                                 <md-menu-item>
                                     <md-button ng-click="$ctrl.showFilters = !$ctrl.showFilters; $ctrl.showFiltersChanged()">

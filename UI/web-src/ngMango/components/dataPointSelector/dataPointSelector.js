@@ -86,6 +86,7 @@ class DataPointSelectorController {
         this.$scope = $scope;
         this.$interval = $interval;
 
+        this.showClear = true;
         this.pageSize = 25;
         this.cacheSize = 10;
         this.pages = new maUtil.BoundedMap(this.cacheSize);
@@ -588,6 +589,7 @@ export default {
     },
     bindings: {
         localStorageKey: '<?',
-        selectMultiple: '<?'
+        selectMultiple: '<?',
+        showClear: '<?'
     }
 };
