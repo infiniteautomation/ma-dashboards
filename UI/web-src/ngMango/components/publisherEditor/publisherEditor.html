@@ -108,12 +108,12 @@
                 </div>
             </md-tab-body>
         </md-tab>
-        <md-tab ng-if="$ctrl.publisherTypesByName[$ctrl.publisher.modelType]">
+        <md-tab ng-if="$ctrl.publisherType">
             <md-tab-label>
-                <span ma-tr="{{$ctrl.publisherTypesByName[$ctrl.publisher.modelType].description}}"></span>
+                <span ma-tr="{{$ctrl.publisherType.description}}"></span>
             </md-tab-label>
             <md-tab-body>
-                <div class="md-padding ma-no-padding-bottom" ng-include="$ctrl.publisherTypesByName[$ctrl.publisher.modelType].templateUrl"></div>
+                <div class="md-padding ma-no-padding-bottom" ng-include="$ctrl.publisherType.templateUrl"></div>
             </md-tab-body>
         </md-tab>
         
@@ -173,6 +173,7 @@
                                 <div ma-tr="common.deviceName"></div>
                                 <div ma-tr="common.name"></div>
                                 <div ma-tr="ui.app.tags"></div>
+                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name" ma-tr="{{pointProperty.translationKey}}"></div>
                             </div>
                         </div>
                         
@@ -187,6 +188,11 @@
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).deviceName"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).name"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).formatTags()"></div>
+                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name">
+                                    <md-input-container>
+                                        <input ng-model="publisherPoint[pointProperty.name]">
+                                    </md-input-container>
+                                </div>
                             </div>
                         </div>
                     </div>

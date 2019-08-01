@@ -88,8 +88,10 @@ class PublisherEditorController {
             } else {
                 this.publisher = new this.maPublisher(viewValue);
             }
+            this.publisherType = this.publisherTypesByName[this.publisher.modelType];
         } else {
             this.publisher = null;
+            this.publisherType = null;
         }
         
         this.renderPoints();
@@ -197,6 +199,7 @@ class PublisherEditorController {
     
     typeChanged() {
         this.publisher = this.publisher.changeType();
+        this.publisherType = this.publisherTypesByName[this.publisher.modelType];
     }
     
     pointsToPublisherPoints(points) {
