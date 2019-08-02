@@ -165,7 +165,7 @@
                         </ma-drop-down>
                     </ma-drop-down-button>
                     
-                    <div class="ma-virtual-repeat-table">
+                    <div class="ma-virtual-repeat-table ma-publisher-points-table">
                         <div class="ma-virtual-repeat-table-header">
                             <div class="ma-virtual-repeat-table-row">
                                 <div class="ma-buttons-column"></div>
@@ -188,11 +188,7 @@
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).deviceName"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).name"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).formatTags()"></div>
-                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name">
-                                    <md-input-container>
-                                        <input ng-model="publisherPoint[pointProperty.name]">
-                                    </md-input-container>
-                                </div>
+                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name" ng-include="pointProperty.editorTemplateUrl"></div>
                             </div>
                         </div>
                     </div>

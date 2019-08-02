@@ -17,3 +17,11 @@ ma-publisher-editor .ma-virtual-repeat-table .ma-buttons-column {
 	display: flex;
 	justify-content: center;
 }
+
+ma-publisher-editor .ma-publisher-points-table .ma-virtual-repeat-table-body .ma-virtual-repeat-table-row > div {
+	display: flex;
+}
+
+ma-publisher-editor .ma-publisher-points-table .ma-virtual-repeat-table-body .ma-virtual-repeat-table-row > div > md-input-container {
+	flex-grow: 1;
+}
