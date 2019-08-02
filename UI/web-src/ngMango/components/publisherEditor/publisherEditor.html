@@ -165,7 +165,7 @@
                         </ma-drop-down>
                     </ma-drop-down-button>
                     
-                    <div class="ma-virtual-repeat-table ma-publisher-points-table">
+                    <div class="ma-virtual-repeat-table ma-publisher-points-table" ng-class="'ma-publisher-points-table-' + $ctrl.publisherType.type">
                         <div class="ma-virtual-repeat-table-header">
                             <div class="ma-virtual-repeat-table-row">
                                 <div class="ma-buttons-column"></div>
@@ -173,7 +173,8 @@
                                 <div ma-tr="common.deviceName"></div>
                                 <div ma-tr="common.name"></div>
                                 <div ma-tr="ui.app.tags"></div>
-                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name" ma-tr="{{pointProperty.translationKey}}"></div>
+                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name"
+                                    ma-tr="{{pointProperty.translationKey}}" ng-class="'ma-publisher-point-' + pointProperty.name"></div>
                             </div>
                         </div>
                         
@@ -188,7 +189,8 @@
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).deviceName"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).name"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).formatTags()"></div>
-                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name" layout ng-include="pointProperty.editorTemplateUrl"></div>
+                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name" layout
+                                    ng-class="'ma-publisher-point-' + pointProperty.name" ng-include="pointProperty.editorTemplateUrl"></div>
                             </div>
                         </div>
                     </div>
