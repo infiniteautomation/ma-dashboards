@@ -188,7 +188,7 @@
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).deviceName"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).name"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).formatTags()"></div>
-                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name" ng-include="pointProperty.editorTemplateUrl"></div>
+                                <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name" layout ng-include="pointProperty.editorTemplateUrl"></div>
                             </div>
                         </div>
                     </div>

@@ -41,8 +41,8 @@ function publisherProvider() {
     
     this.$get = publisherFactory;
     
-    publisherFactory.$inject = ['maRestResource', '$templateCache', 'maUtil'];
-    function publisherFactory(RestResource, $templateCache, Util) {
+    publisherFactory.$inject = ['maRestResource', '$templateCache', 'maUtil', '$injector'];
+    function publisherFactory(RestResource, $templateCache, Util, $injector) {
 
         const publisherBaseUrl = '/rest/v2/publishers-v2';
         const publisherWebSocketUrl = '/rest/v2/websocket/publishers';
@@ -171,6 +171,10 @@ function publisherProvider() {
                         pp.editorTemplateUrl = `publisherEditor.${this.type}.${pp.name}.html`;
                         $templateCache.put(pp.editorTemplateUrl, pp.editorTemplate);
                     });
+                }
+                
+                if (typeof this.initialize === 'function') {
+                    this.initialize($injector);
                 }
             }
             
