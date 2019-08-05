@@ -166,7 +166,7 @@ function publisherProvider() {
                 if (Array.isArray(this.pointProperties)) {
                     this.pointProperties.forEach(pp => {
                         if (!pp.editorTemplate) {
-                            pp.editorTemplate = `<md-input-container><input ng-model="publisherPoint[pointProperty.name]"></md-input-container>`;
+                            pp.editorTemplate = `<md-input-container flex><input ng-model="publisherPoint[pointProperty.name]"></md-input-container>`;
                         }
                         pp.editorTemplateUrl = `publisherEditor.${this.type}.${pp.name}.html`;
                         $templateCache.put(pp.editorTemplateUrl, pp.editorTemplate);
