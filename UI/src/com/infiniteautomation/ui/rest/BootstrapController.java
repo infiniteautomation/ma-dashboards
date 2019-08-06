@@ -3,6 +3,7 @@
  */
 package com.infiniteautomation.ui.rest;
 
+import java.io.IOException;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.infiniteautomation.mango.spring.CreateModulesService;
 import com.infiniteautomation.ui.UILifecycle;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
@@ -45,11 +47,13 @@ public class BootstrapController {
 
     private final JsonDataDao jsonDataDao;
     private final SystemSettingsDao systemSettingsDao;
+    private final CreateModulesService createModulesService;
 
     @Autowired
-    public BootstrapController(JsonDataDao jsonDataDao) {
+    public BootstrapController(JsonDataDao jsonDataDao, CreateModulesService createModulesService) {
         this.jsonDataDao = jsonDataDao;
         this.systemSettingsDao = SystemSettingsDao.instance;
+        this.createModulesService = createModulesService;
     }
 
     @ApiOperation(value = "Get the data needed before logging in")
@@ -101,6 +105,12 @@ public class BootstrapController {
         data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, user.getLocaleObject()));
 
         return data;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/recreate-bundle")
+    @PreAuthorize("isAuthenticated()")
+    public void recreateBundle(@AuthenticationPrincipal User user) throws IOException {
+        this.createModulesService.createBundle();
     }
 
     public static class PreLoginData {

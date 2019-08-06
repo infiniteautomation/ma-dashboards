@@ -30,14 +30,14 @@ Promise.resolve().then(() => {
         return angular.merge(uiSettings, customSettings);
     });
 
-//    const bundlePromise = new Promise((resolve, reject) => {
-//        requirejs(['/rest/v1/modules/angularjs-modules/bundle'], result => {
-//            resolve(result);
-//        }, error => {
-//            console.log('Failed to load bundle', arguments);
-//            resolve();
-//        });
-//    });
+    const bundlePromise = new Promise((resolve, reject) => {
+        requirejs(['/modules/mangoUI/web/modules_bundle.js'], module => {
+            resolve(module);
+        }, e => {
+            console.error('Failed to load AngularJS modules bundle', e);
+            resolve();
+        });
+    });
 
     const modulesPromise = Promise.all([preLoginDataPromise, uiSettingsPromise]).then(([preLoginData, uiSettings]) => {
         const modules = preLoginData.angularJsModules.modules;
@@ -60,9 +60,10 @@ Promise.resolve().then(() => {
                 requirejs([moduleName], module => {
                     resolve(module);
                 }, e => {
-                    console.error('Failed to load AngularJS module', e);
-                    resolve();
+                    reject(e);
                 });
+            }).catch(e => {
+                console.error(`Failed to load AMD module ${moduleName}`, e);
             });
         });
         
@@ -94,9 +95,9 @@ Promise.resolve().then(() => {
         });
     });
 
-    return Promise.all([uiSettingsPromise, modulesPromise, userPromise, preLoginDataPromise, postLoginDataPromise]);
-}).then(([uiSettings, angularModules, user, preLoginData, postLoginData]) => {
-    
+    return Promise.all([uiSettingsPromise, modulesPromise, userPromise, preLoginDataPromise, postLoginDataPromise, bundlePromise]);
+}).then(([uiSettings, angularModules, user, preLoginData, postLoginData, bundle]) => {
+
     amdConfiguration.defaultVersion = preLoginData.lastUpgradeTime;
     
     uiSettings.mangoModuleNames = [];
