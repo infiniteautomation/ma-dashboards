@@ -166,6 +166,8 @@ import publisherSelect from './components/publisherSelect/publisherSelect';
 import publisherEditor from './components/publisherEditor/publisherEditor';
 import dataPointSelector from './components/dataPointSelector/dataPointSelector';
 import dropDownButton from './components/dropDownButton/dropDownButton';
+import tileMap from './components/tileMap/tileMap';
+import tileMapMarker from './components/tileMap/tileMapMarker';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -345,6 +347,8 @@ ngMango.component('maPublisherSelect', publisherSelect);
 ngMango.component('maPublisherEditor', publisherEditor);
 ngMango.component('maDataPointSelector', dataPointSelector);
 ngMango.component('maDropDownButton', dropDownButton);
+ngMango.component('maTileMap', tileMap);
+ngMango.directive('maTileMapMarker', tileMapMarker);
 
 ngMango.animation('.ma-slide-up', slideUp);
 
