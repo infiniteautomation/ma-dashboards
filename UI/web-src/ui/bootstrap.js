@@ -60,9 +60,10 @@ Promise.resolve().then(() => {
                 requirejs([moduleName], module => {
                     resolve(module);
                 }, e => {
-                    console.error('Failed to load AngularJS module', e);
-                    resolve();
+                    reject(e);
                 });
+            }).catch(e => {
+                console.error(`Failed to load AMD module ${moduleName}`, e);
             });
         });
         
