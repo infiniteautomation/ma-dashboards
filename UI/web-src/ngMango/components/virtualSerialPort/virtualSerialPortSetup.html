@@ -41,8 +41,8 @@
 
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between" ng-if="$ctrl.selected.portType === 'SERIAL_SERVER_SOCKET_BRIDGE'">
             <label ma-tr="systemSettings.comm.virtual.serialServerSocketBridgeSettings.bufferSize"></label>
-            <input name="port" ng-model="$ctrl.selected.bufferSize" type="number" required>
-            <div ng-messages="$ctrl.form.port.$error">
+            <input name="bufferSize" ng-model="$ctrl.selected.bufferSize" type="number" required>
+            <div ng-messages="$ctrl.form.bufferSize.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.bufferSize.validationMessage"></div>
             </div>
@@ -59,10 +59,22 @@
 
         <md-input-container flex="100" flex-gt-sm="45" class="ma-input-space-between">
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.timeout"></label>
-            <input name="port" ng-model="$ctrl.selected.timeout" type="number" required>
-            <div ng-messages="$ctrl.form.port.$error">
+            <input name="timeout" ng-model="$ctrl.selected.timeout" type="number" required>
+            <div ng-messages="$ctrl.form.timeout.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.timeout.validationMessage"></div>
+            </div>
+        </md-input-container>
+
+        <md-input-container flex="100">
+            <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.ipWhiteList"></label>
+            <md-chips ng-model="$ctrl.selected.ipWhiteList" name="ipWhiteList" readonly="false" md-removable="true">
+                <md-chip-template>
+                    <strong>{{$chip}}</strong>
+                </md-chip-template>
+            </md-chips>
+            <div ng-messages="$ctrl.form.ipWhiteList.$error" md-colors="{color: 'warn'}">
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.ipWhiteList.validationMessage"></div>
             </div>
         </md-input-container>
     </div>

@@ -11,8 +11,9 @@ function VirtualSerialPortFactory(RestResource) {
     const xidPrefix = 'VSP_';
 
     const defaultProperties = {
-        portName: '',
         address: 'localhost',
+        ipWhiteList: ['*.*.*.*'],
+        portName: '',
         port: 9000,
         timeout: 0,
         portType: 'SERIAL_SOCKET_BRIDGE',
