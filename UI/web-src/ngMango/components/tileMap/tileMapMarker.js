@@ -13,7 +13,8 @@
  * as a popup that is opened when the marker is clicked.
  * 
  * @param {number[]|string} coordinates Coordinates (latitude/longitude) of the marker
- * @param {object=} options Options for the Leaflet marker instance, see <a href="https://leafletjs.com/reference-1.5.0.html#marker-option">documentation</a>
+ * @param {object=} options Options for the Leaflet marker instance,
+ * see <a href="https://leafletjs.com/reference-1.5.0.html#marker-option" target="_blank">documentation</a>
  */
 
 class TileMapMarkerController {
@@ -41,7 +42,8 @@ class TileMapMarkerController {
     $onInit() {
         const L = this.leaflet;
 
-        this.marker = L.marker(this.mapCtrl.parseLatLong(this.coordinates), this.options)
+        const options = this.options && this.options({$leaflet: L, $map: this.map});
+        this.marker = L.marker(this.mapCtrl.parseLatLong(this.coordinates), options)
             .addTo(this.map);
 
         this.$transclude(($clone, $scope) => {
@@ -52,9 +54,6 @@ class TileMapMarkerController {
                 $scope.$marker = this.marker;
                 $scope.$markerCtrl = this;
                 this.marker.bindPopup(this.$element[0]);
-                if (this.openPopup) {
-                    this.marker.openPopup();
-                }
             }
         });
     }
@@ -69,7 +68,7 @@ function openMarkMarkerDirective() {
         scope: false,
         bindToController: {
             coordinates: '<?',
-            options: '<?'
+            options: '&?'
         },
         transclude: true,
         controller: TileMapMarkerController

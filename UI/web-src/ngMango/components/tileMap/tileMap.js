@@ -23,6 +23,8 @@
  * Available locals are <code>$leaflet</code> and <code>$map</code>.
  * @param {string=} mapbox-access-token Access token for the Mapbox API, if not supplied only OpenStreetMap will be available. Can also
  * be specified on the UI settings page.
+ * @param {object=} options Options for the Leaflet map instance,
+ * see <a href="https://leafletjs.com/reference-1.5.0.html#map-option" target="_blank">documentation</a>
  */
 
 class TileMapController {
@@ -83,7 +85,8 @@ class TileMapController {
     
     renderMap() {
         const L = this.leaflet;
-        const map = this.map = L.map(this.$element[0]).setView(this.parseLatLong(this.center), this.zoom);
+        const options = this.options && this.options({$leaflet: L});
+        const map = this.map = L.map(this.$element[0], options).setView(this.parseLatLong(this.center), this.zoom);
 
         let tileLayers;
         if (typeof this.tileLayers === 'function') {
@@ -153,7 +156,8 @@ export default {
         center: '<?',
         zoom: '<?zoom',
         tileLayers: '&?',
-        mapboxAccessToken: '@?'
+        mapboxAccessToken: '@?',
+        options: '&?'
     },
     transclude: true,
     designerInfo: {
