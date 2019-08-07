@@ -12,10 +12,11 @@
  *
  * @description Displays a tile map provided by <a href="https://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> or
  * <a href="https://www.mapbox.com/" target="_blank">Mapbox</a> using <a href="https://leafletjs.com/" target="_blank">Leaflet</a>.
+ * Include <a ui-sref="ui.docs.ngMango.maTileMapMarker">maTileMapMarkers</a> inside the content to add markers to the map.
  * 
  * @param {number[]|string} center Coordinates (latitude/longitude) of the center of the map
  * @param {number=} [zoom=13] Zoom level (0-18)
- * @param {string[]|object[]=} tile-layers List of tile layers. Defaults to <code>['mapbox.streets', 'mapbox.satellite']</code>
+ * @param {string[]|object[]=} tile-layers Array of tile layers. Defaults to <code>['mapbox.streets', 'mapbox.satellite']</code>
  * if a Mapbox access token is available, or <code>['openstreetmap']</code> if not.
  * Can be an array of ids such as <code>mapbox.satellite</code>, objects containing <code>id</code> and <code>url</code> properties
  * along with any other Leaflet <code>L.tileLayer</code> options, or full Leaflet <code>L.tileLayer</code> instances.

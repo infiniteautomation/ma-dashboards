@@ -3,6 +3,18 @@
  * @author Jared Wiltshire
  */
 
+/**
+ * @ngdoc directive
+ * @name ngMango.directive:maTileMapMarker
+ * @restrict 'E'
+ * @scope
+ *
+ * @description Adds a marker to a <a ui-sref="ui.docs.ngMango.maTileMap">maTileMap</a>. If content is supplied, it will be added to the map
+ * as a popup that is opened when the marker is clicked.
+ * 
+ * @param {number[]|string} coordinates Coordinates (latitude/longitude) of the marker
+ */
+
 class TileMapMarkerController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', '$element', '$transclude']; }
