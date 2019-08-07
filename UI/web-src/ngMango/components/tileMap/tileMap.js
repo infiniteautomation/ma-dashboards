@@ -47,9 +47,24 @@ class TileMapController {
     
     loadLeaflet() {
         this.leafletPromise = import(/* webpackMode: "lazy", webpackChunkName: "leaflet" */ 'leaflet/dist/leaflet.css').then(() => {
-            return import(/* webpackMode: "lazy", webpackChunkName: "leaflet" */ 'leaflet');
-        }).then(leaflet => {
+            const leaflet = import(/* webpackMode: "lazy", webpackChunkName: "leaflet" */ 'leaflet');
+            const marker = import(/* webpackMode: "lazy", webpackChunkName: "leaflet" */ 'leaflet/dist/images/marker-icon.png');
+            const marker2x = import(/* webpackMode: "lazy", webpackChunkName: "leaflet" */ 'leaflet/dist/images/marker-icon-2x.png');
+            const markerShadow = import(/* webpackMode: "lazy", webpackChunkName: "leaflet" */ 'leaflet/dist/images/marker-shadow.png');
+            return Promise.all([leaflet, marker, marker2x, markerShadow]);
+        }).then(([leaflet, marker, marker2x, markerShadow]) => {
             this.leaflet = leaflet;
+
+            // workaround https://github.com/Leaflet/Leaflet/issues/4849
+            delete this.leaflet.Icon.Default.prototype._getIconUrl;
+
+            this.leaflet.Icon.Default.mergeOptions({
+                //imagePath: '/modules/mangoUI/web/img/',
+                iconRetinaUrl: marker2x.default,
+                iconUrl: marker.default,
+                shadowUrl: markerShadow.default
+            });
+            
             this.renderMap();
         });
     }
