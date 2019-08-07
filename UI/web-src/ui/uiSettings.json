@@ -4,6 +4,7 @@
   "defaultTheme": "mangoDark",
   "codeTheme": "monokai",
   "googleMapsApiKey": "",
+  "mapboxAccessToken": "",
   "googleAnalyticsPropertyId": "",
   "palettes": {
     "mango-orange": {

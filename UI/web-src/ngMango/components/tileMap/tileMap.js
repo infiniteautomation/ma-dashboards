@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maTileMap
@@ -22,15 +21,21 @@
  * along with any other Leaflet <code>L.tileLayer</code> options, or full Leaflet <code>L.tileLayer</code> instances.
  * The <code>name</code> option is used to set the name of the layer in the controls.
  * Available locals are <code>$leaflet</code> and <code>$map</code>.
+ * @param {string=} mapbox-access-token Access token for the Mapbox API, if not supplied only OpenStreetMap will be available. Can also
+ * be specified on the UI settings page.
  */
 
 class TileMapController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element', '$transclude']; }
+    static get $inject() { return ['$scope', '$element', '$transclude', '$injector']; }
     
-    constructor($scope, $element, $transclude) {
+    constructor($scope, $element, $transclude, $injector) {
         this.$element = $element;
         this.$transclude = $transclude;
+        
+        if ($injector.has('maUiSettings')) {
+            this.uiSettings = $injector.get('maUiSettings');
+        }
         
         this.center = [0, 0];
         this.zoom = 13;
@@ -83,7 +88,7 @@ class TileMapController {
         let tileLayers;
         if (typeof this.tileLayers === 'function') {
             tileLayers = this.tileLayers({$leaflet: L, $map: this.map}) || [];
-        } else if (this.mapboxAccessToken) {
+        } else if (this.mapboxAccessToken || this.uiSettings && this.uiSettings.mapboxAccessToken) {
             tileLayers = ['mapbox.streets', 'mapbox.satellite'];
         } else {
             tileLayers = ['openstreetmap'];
@@ -128,7 +133,7 @@ class TileMapController {
                 attribution: `Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,
                     <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>`,
                 name,
-                accessToken: this.mapboxAccessToken
+                accessToken: this.mapboxAccessToken || this.uiSettings && this.uiSettings.mapboxAccessToken || ''
             }, options);
         } else {
             options = Object.assign({
