@@ -68,9 +68,9 @@ class TileMapController {
         }
     }
     
-    parseLatLong(center) {
-        if (typeof center === 'string') {
-            return center.split(',').map(str => {
+    parseLatLong(coordinates) {
+        if (typeof coordinates === 'string') {
+            return coordinates.split(',').map(str => {
                 try {
                     return Number.parseFloat(str, 10);
                 } catch (e) {
@@ -78,7 +78,7 @@ class TileMapController {
                 }
             }).filter(v => v != null);
         }
-        return this.center;
+        return coordinates;
     }
     
     renderMap() {

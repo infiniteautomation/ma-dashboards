@@ -33,7 +33,7 @@ class TileMapMarkerController {
         if (!this.marker) return;
         
         if (changes.coordinates && this.coordinates) {
-            this.setCoordinates();
+            this.marker.setLatLng(this.mapCtrl.parseLatLong(this.coordinates));
         }
     }
 
@@ -60,10 +60,6 @@ class TileMapMarkerController {
     
     $onDestroy() {
         this.marker.remove();
-    }
-    
-    setCoordinates() {
-        this.marker.setLatLng(this.mapCtrl.parseLatLong(this.coordinates));
     }
 }
 
