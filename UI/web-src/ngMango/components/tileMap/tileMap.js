@@ -103,6 +103,10 @@ class TileMapController {
         const options = this.options && this.options({$leaflet: L});
         const map = this.map = L.map(this.$element[0], options).setView(this.parseLatLong(this.center), this.zoom);
 
+        if (this.$element.hasClass('ma-designer-element')) {
+            this.map._handlers.forEach(h => h.disable());
+        }
+
         let tileLayers;
         if (typeof this.tileLayers === 'function') {
             tileLayers = this.tileLayers({$leaflet: L, $map: this.map}) || [];
@@ -136,7 +140,7 @@ class TileMapController {
             this.transcludedContent = $clone;
         });
     }
-    
+
     createTileLayer(options) {
         if (typeof options === 'string') {
             options = {id: options};
