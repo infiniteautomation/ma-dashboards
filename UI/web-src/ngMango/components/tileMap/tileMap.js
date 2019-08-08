@@ -109,6 +109,10 @@ class TileMapController {
         const map = this.map = L.map(this.$element[0], options).setView(this.parseLatLong(this.center), this.zoom);
 
         this.map.on('zoomend moveend', event => {
+            // calls to setView() in $onChanges cause this event to fire, resulting in a $rootScope:inprog error
+            // dont want these events anyway
+            if (this.$scope.$root.$$phase != null) return;
+            
             this.$scope.$apply(() => {
                 if (event.type === 'zoomend' && this.onZoom) {
                     this.onZoom({$leaflet: L, $map: this.map, $event: event, $center: this.map.getCenter(), $zoom: this.map.getZoom()});
