@@ -14,6 +14,11 @@
  * 
  * @param {number[]|string} coordinates Coordinates (latitude/longitude) of the marker
  * @param {string=} tooltip Text to display in the marker tooltip
+ * @param {expression=} on-drag Expression is evaluated when the marker been dragged (only once, when dragging has stopped).
+ * You must specify <code>draggable: true</code> in the options to make the marker draggable.
+ * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$marker</code>, <code>$event</code>, and <code>$coordinates</code>.
+ * @param {expression=} on-click Expression is evaluated when the marker is clicked.
+ * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$marker</code>, <code>$event</code>, and <code>$coordinates</code>.
  * @param {object=} options Options for the Leaflet marker instance,
  * see <a href="https://leafletjs.com/reference-1.5.0.html#marker-option" target="_blank">documentation</a>
  */
@@ -54,6 +59,16 @@ class TileMapMarkerController {
         if (this.tooltip) {
             this.marker.bindTooltip(this.tooltip);
         }
+        
+        this.marker.on('dragend click', event => {
+            this.$scope.$apply(() => {
+                if (event.type === 'dragend' && this.onDrag) {
+                    this.onDrag({$leaflet: L, $map: this.map, $marker: this.marker, $event: event, $coordinates: this.marker.getLatLng()});
+                } else if (event.type === 'click' && this.onClick) {
+                    this.onClick({$leaflet: L, $map: this.map, $marker: this.marker, $event: event, $coordinates: this.marker.getLatLng()});
+                }
+            });
+        });
 
         this.$transclude(($clone, $scope) => {
             if ($clone.length) {
@@ -78,7 +93,9 @@ function openMarkMarkerDirective() {
         bindToController: {
             coordinates: '<?',
             options: '&?',
-            tooltip: '@?'
+            tooltip: '@?',
+            onDrag: '&?',
+            onClick: '&?'
         },
         transclude: true,
         controller: TileMapMarkerController

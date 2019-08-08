@@ -21,9 +21,9 @@
  * along with any other Leaflet <code>L.tileLayer</code> options, or full Leaflet <code>L.tileLayer</code> instances.
  * The <code>name</code> option is used to set the name of the layer in the controls.
  * Available locals are <code>$leaflet</code> and <code>$map</code>.
- * @param {expression} on-move Expression is evaluated when the map has finished moving (only once, when panning has stopped).
+ * @param {expression=} on-move Expression is evaluated when the map has finished moving (only once, when panning has stopped).
  * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$event</code>, <code>$center</code>, and <code>$zoom</code>.
- * @param {expression} on-zoom Expression is evaluated when the map has finished zooming (only once, when zooming has stopped).
+ * @param {expression=} on-zoom Expression is evaluated when the map has finished zooming (only once, when zooming has stopped).
  * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$event</code>, <code>$center</code>, and <code>$zoom</code>.
  * @param {string=} mapbox-access-token Access token for the Mapbox API, if not supplied only OpenStreetMap will be available. Can also
  * be specified on the UI settings page.
