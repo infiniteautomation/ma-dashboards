@@ -21,6 +21,10 @@
  * along with any other Leaflet <code>L.tileLayer</code> options, or full Leaflet <code>L.tileLayer</code> instances.
  * The <code>name</code> option is used to set the name of the layer in the controls.
  * Available locals are <code>$leaflet</code> and <code>$map</code>.
+ * @param {expression} on-move Expression is evaluated when the map has finished moving (only once, when panning has stopped).
+ * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$event</code>, <code>$center</code>, and <code>$zoom</code>.
+ * @param {expression} on-zoom Expression is evaluated when the map has finished zooming (only once, when zooming has stopped).
+ * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$event</code>, <code>$center</code>, and <code>$zoom</code>.
  * @param {string=} mapbox-access-token Access token for the Mapbox API, if not supplied only OpenStreetMap will be available. Can also
  * be specified on the UI settings page.
  * @param {object=} options Options for the Leaflet map instance,
@@ -32,6 +36,7 @@ class TileMapController {
     static get $inject() { return ['$scope', '$element', '$transclude', '$injector']; }
     
     constructor($scope, $element, $transclude, $injector) {
+        this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
         
@@ -102,6 +107,16 @@ class TileMapController {
         const L = this.leaflet;
         const options = this.options && this.options({$leaflet: L});
         const map = this.map = L.map(this.$element[0], options).setView(this.parseLatLong(this.center), this.zoom);
+
+        this.map.on('zoomend moveend', event => {
+            this.$scope.$apply(() => {
+                if (event.type === 'zoomend' && this.onZoom) {
+                    this.onZoom({$leaflet: L, $map: this.map, $event: event, $center: this.map.getCenter(), $zoom: this.map.getZoom()});
+                } else if (event.type === 'moveend' && this.onMove) {
+                    this.onMove({$leaflet: L, $map: this.map, $event: event, $center: this.map.getCenter(), $zoom: this.map.getZoom()});
+                }
+            });
+        });
 
         if (this.$element.hasClass('ma-designer-element')) {
             this.map._handlers.forEach(h => h.disable());
@@ -176,7 +191,9 @@ export default {
         zoom: '<?zoom',
         tileLayers: '&?',
         mapboxAccessToken: '@?',
-        options: '&?'
+        options: '&?',
+        onZoom: '&?',
+        onMove: '&?'
     },
     transclude: true,
     designerInfo: {
