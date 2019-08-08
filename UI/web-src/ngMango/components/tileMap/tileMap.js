@@ -187,7 +187,8 @@ export default {
         },
         size: {
             width: '600px',
-            height: '400px'
+            height: '400px',
+            zIndex: 1
         }
     }
 };
