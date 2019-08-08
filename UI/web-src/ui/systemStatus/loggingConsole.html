@@ -15,7 +15,7 @@
     </div>
 
     <md-list flex class="md-dense">
-        <div ng-repeat="logFileMeta in $ctrl.logFilesList">
+        <div ng-repeat="logFileMeta in $ctrl.logFilesList  | orderBy : '-lastModified'">
             <md-list-item>
                 <span>
                     <strong>{{logFileMeta.filename}}</strong>
