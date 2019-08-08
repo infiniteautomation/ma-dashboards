@@ -84,23 +84,35 @@ class TileMapController {
     
     $onChanges(changes) {
         if (!this.map) return;
-        
-        if ((changes.center || changes.zoom) && this.center && this.zoom != null) {
-            this.map.setView(this.parseLatLong(this.center), this.zoom);
+
+        if (changes.center || changes.zoom) {
+            const currentCenter = this.map.getCenter();
+            const currentZoom = this.map.getZoom();
+            
+            const center = this.parseLatLong(this.center) || currentCenter;
+            const zoom = this.zoom != null ? this.zoom : currentZoom;
+            
+            if (!center.equals(currentCenter) || zoom !== currentZoom) {
+                this.map.setView(center, zoom);
+            }
         }
     }
-    
+
     parseLatLong(coordinates) {
-        if (typeof coordinates === 'string') {
-            return coordinates.split(',').map(str => {
-                try {
-                    return Number.parseFloat(str, 10);
-                } catch (e) {
-                    return null;
-                }
-            }).filter(v => v != null);
+        try {
+            if (typeof coordinates === 'string') {
+                coordinates = coordinates.split(',').map(str => {
+                    try {
+                        return Number.parseFloat(str, 10);
+                    } catch (e) {
+                        return null;
+                    }
+                }).filter(v => v != null);
+            }
+            return this.leaflet.latLng(coordinates);
+        } catch (e) {
+            return null;
         }
-        return coordinates;
     }
     
     renderMap() {
