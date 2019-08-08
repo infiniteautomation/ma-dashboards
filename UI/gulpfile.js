@@ -9,7 +9,7 @@ const MA_HOME = process.env.MA_HOME;
 
 gulp.task('default', ['build-docs']);
 
-gulp.task('build-docs', ['clean-docs'], function() {
+const buildDocs = function() {
     const gulpDocs = require('gulp-ngdocs');
 
     console.log('Compiling docs into web-src/docs/ngMango');
@@ -22,7 +22,10 @@ gulp.task('build-docs', ['clean-docs'], function() {
     return gulp.src('web-src/ngMango/**/*.js')
         .pipe(gulpDocs.process(options))
         .pipe(gulp.dest('web-src/docs/ngMango'));
-});
+}
+
+gulp.task('build-docs', ['clean-docs'], buildDocs);
+gulp.task('build-docs-no-clean', buildDocs);
 
 gulp.task('clean-docs', function() {
     console.log('Cleaning docs');
