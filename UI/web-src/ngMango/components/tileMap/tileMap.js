@@ -113,6 +113,10 @@ class TileMapController {
             // dont want these events anyway
             if (this.$scope.$root.$$phase != null) return;
             
+            // worth noting that there is some sort of rounding / math going on with the coordinates
+            // e.g. if you call setView() with latitude 40.05 it fires the event telling us we have moved to 40.0499567754414
+            // if you then use feed this back through to the center attribute you can get multiple events fired
+
             this.$scope.$apply(() => {
                 if (event.type === 'zoomend' && this.onZoom) {
                     this.onZoom({$leaflet: L, $map: this.map, $event: event, $center: this.map.getCenter(), $zoom: this.map.getZoom()});
