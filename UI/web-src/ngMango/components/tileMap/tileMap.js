@@ -11,18 +11,26 @@
  *
  * @description Displays a tile map provided by <a href="https://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> or
  * <a href="https://www.mapbox.com/" target="_blank">Mapbox</a> using <a href="https://leafletjs.com/" target="_blank">Leaflet</a>.
- * Include <a ui-sref="ui.docs.ngMango.maTileMapMarker">maTileMapMarkers</a> inside the content to add markers to the map.
+ * 
+ * By default the component displays map tiles from OpenStreetMap. If a Mapbox access token is supplied via the attribute or via the
+ * <a ui-sref="'ui.settings.uiSettings'">UI settings</a> page then the component will automatically add a Mapbox street and satellite layer.
+ * 
+ * Add the following components into the element contents to add add items to the map.
+ * <ul>
+ *   <li><a ui-sref="ui.docs.ngMango.maTileMapTileLayer">maTileMapTileLayer</a> &mdash; adds a tile base layer</li>
+ *   <li><a ui-sref="ui.docs.ngMango.maTileMapMarker">maTileMapMarker</a> &mdash; adds a marker with an icon</li>
+ *   <li><a ui-sref="ui.docs.ngMango.maTileMapCircle">maTileMapCircle</a> &mdash; adds circle</li>
+ *   <li><a ui-sref="ui.docs.ngMango.maTileMapRectangle">maTileMapRectangle</a> &mdash; adds a rectangle</li>
+ *   <li><a ui-sref="ui.docs.ngMango.maTileMapPolygon">maTileMapPolygon</a> &mdash; adds a polygon</li>
+ *   <li><a ui-sref="ui.docs.ngMango.maTileMapPolyline">maTileMapPolyline</a> &mdash; adds a line</li>
+ * </ul>
+ * 
  * Local scope variables that are available inside the content are
  * <code>$leaflet</code>, <code>$map</code>, and <code>$mapCtrl</code>.
  * 
  * @param {number[]|string} center Coordinates (latitude/longitude) of the center of the map
  * @param {number=} [zoom=13] Zoom level (0-18)
- * @param {string[]|object[]=} tile-layers Array of tile layers. Defaults to <code>['mapbox.streets', 'mapbox.satellite']</code>
- * if a Mapbox access token is available, or <code>['openstreetmap']</code> if not.
- * Can be an array of ids such as <code>mapbox.satellite</code>, objects containing <code>id</code> and <code>url</code> properties
- * along with any other Leaflet <code>L.tileLayer</code> options, or full Leaflet <code>L.tileLayer</code> instances.
- * The <code>name</code> option is used to set the name of the layer in the controls.
- * Available locals are <code>$leaflet</code> and <code>$map</code>.
+ * @param {boolean=} [automatic-tile-layers=true] Enables/disables the automatic adding of tile layers
  * @param {expression=} on-move Expression is evaluated when the map has finished moving/zooming (only once, when panning/zooming has stopped).
  * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$event</code>, <code>$center</code>, and <code>$zoom</code>.
  * @param {string=} mapbox-access-token Access token for the Mapbox API, if not supplied only OpenStreetMap will be available. Can also
@@ -44,8 +52,10 @@ class TileMapController {
             this.uiSettings = $injector.get('maUiSettings');
         }
         
+        this.automaticTileLayers = true;
         this.center = [0, 0];
         this.zoom = 13;
+        this.tileLayers = new Set();
         
         this.loadLeaflet();
     }
@@ -123,6 +133,11 @@ class TileMapController {
         const L = this.leaflet;
         const options = this.options && this.options({$leaflet: L});
         const map = this.map = L.map(this.$element[0], options);
+        
+        // leaflet link doesn't have target _blank
+        map.attributionControl.setPrefix();
+        
+        this.layerControl = L.control.layers();
 
         this.map.on('moveend', event => {
             // calls to setView() in $onChanges cause this event to fire, resulting in a $rootScope:inprog error
@@ -169,31 +184,6 @@ class TileMapController {
             this.map._handlers.forEach(h => h.disable());
         }
 
-        let tileLayers;
-        if (typeof this.tileLayers === 'function') {
-            tileLayers = this.tileLayers({$leaflet: L, $map: this.map}) || [];
-        } else if (this.mapboxAccessToken || this.uiSettings && this.uiSettings.mapboxAccessToken) {
-            tileLayers = ['mapbox.streets', 'mapbox.satellite'];
-        } else {
-            tileLayers = ['openstreetmap'];
-        }
-        
-        tileLayers = tileLayers.map(layer => {
-            if (layer instanceof L.TileLayer) {
-                return layer;
-            }
-            return this.createTileLayer(layer);
-        });
-
-        if (tileLayers.length) {
-            tileLayers[0].addTo(map);
-        }
-        
-        if (tileLayers.length > 1) {
-            const layerMap = tileLayers.reduce((map, layer) => (map[layer.options.name] = layer, map), {});
-            L.control.layers(layerMap).addTo(map);
-        }
-
         this.$transclude(($clone, $scope) => {
             $scope.$map = this.map;
             $scope.$mapCtrl = this;
@@ -201,6 +191,12 @@ class TileMapController {
 
             this.$element.append($clone);
         });
+        
+        if (!this.tileLayers.size && this.automaticTileLayers) {
+            this.autoAddTileLayers();
+        }
+        const firstLayer = this.tileLayers.values().next().value;
+        firstLayer.addTo(this.map);
     }
     
     locate(options = this.showLocation) {
@@ -209,32 +205,76 @@ class TileMapController {
         }
         this.map.locate(options);
     }
-
-    createTileLayer(options) {
-        if (typeof options === 'string') {
-            options = {id: options};
+    
+    autoAddTileLayers() {
+        if (this.getMapboxAccessToken()) {
+            this.addTileLayer(this.createTileLayer('mapbox.streets'), 'Streets');
+            this.addTileLayer(this.createTileLayer('mapbox.satellite'), 'Satellite');
+        } else {
+            this.addTileLayer(this.createTileLayer('openstreetmap'), 'Streets');
         }
+    }
+    
+    addTileLayer(layer, name) {
+        // add it to our set
+        this.tileLayers.add(layer);
+        
+        // add it to the layer controls
+        this.layerControl.addBaseLayer(layer, name);
+        
+        // add the layer controls to the map
+        if (this.tileLayers.size > 1) {
+            this.layerControl.addTo(this.map);
+        }
+    }
+    
+    removeTileLayer(layer) {
+        // remove the layer from the controls
+        this.layerControl.removeLayer(layer);
+        
+        // remove it from our set
+        this.tileLayers.delete(layer);
+        
+        // if the removed layer is the active layer, set the active layer to one of the other ones
+        if (this.map.hasLayer(layer) && this.tileLayers.size) {
+            const firstLayer = this.tileLayers.values().next().value;
+            firstLayer.addTo(this.map);
+        }
+        
+        // hide the layer controls
+        if (this.tileLayers.size <= 1) {
+            this.layerControl.remove();
+        }
+    }
 
-        if (options.id && options.id.startsWith('mapbox.')) {
-            let name = options.id.slice('mapbox.'.length).split(/[-.]/).join(' ');
-            name = name.charAt(0).toUpperCase() + name.slice(1);
-            
-            options = Object.assign({
-                url: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
+    createTileLayer(id, url, options) {
+        let defaultOptions;
+        
+        if (id && id.startsWith('mapbox.')) {
+            if (!url) {
+                url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={mapboxAccessToken}';
+            }
+            defaultOptions = {
+                id,
                 attribution: `Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,
                     <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>`,
-                name,
-                accessToken: this.mapboxAccessToken || this.uiSettings && this.uiSettings.mapboxAccessToken || ''
-            }, options);
+                mapboxAccessToken: this.getMapboxAccessToken()
+            };
         } else {
-            options = Object.assign({
-                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                name: 'OpenStreetMap'
-            }, options);
+            if (!url) {
+                url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            }
+            defaultOptions = {
+                id,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            };
         }
 
-        return this.leaflet.tileLayer(options.url, options);
+        return this.leaflet.tileLayer(url, Object.assign(defaultOptions, options));
+    }
+    
+    getMapboxAccessToken() {
+        return this.mapboxAccessToken || this.uiSettings && this.uiSettings.mapboxAccessToken || '';
     }
 }
 
@@ -243,11 +283,11 @@ export default {
     bindings: {
         center: '<?',
         zoom: '<?zoom',
-        tileLayers: '&?',
         mapboxAccessToken: '@?',
         options: '&?',
         onMove: '&?',
-        showLocation: '<?'
+        showLocation: '<?',
+        automaticTileLayers: '<?'
     },
     transclude: true,
     designerInfo: {

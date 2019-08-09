@@ -1,0 +1,81 @@
+/**
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @author Jared Wiltshire
+ */
+
+/**
+ * @ngdoc directive
+ * @name ngMango.directive:maTileMapTileLayer
+ * @restrict 'E'
+ * @scope
+ *
+ * @description Adds a tile layer to a <a ui-sref="ui.docs.ngMango.maTileMap">maTileMap</a>. If content is supplied, it will be added as
+ * attribution text.
+ * 
+ * @param {string} tileLayerId ID of the layer, if you can specify <code>openstreetmap</code>
+ * @param {string=} tooltip Text to display in the tileLayer tooltip
+ * @param {expression=} on-click Expression is evaluated when the tileLayer is clicked.
+ * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$tileLayer</code>, <code>$event</code>, and <code>$coordinates</code>.
+ * @param {object=} options Options for the Leaflet tileLayer instance,
+ * see <a href="https://leafletjs.com/reference-1.5.0.html#tileLayer-option" target="_blank">documentation</a>
+ */
+
+class TileMapTileLayerController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['$scope', '$element', '$transclude']; }
+    
+    constructor($scope, $element, $transclude) {
+        this.$scope = $scope;
+        this.$element = $element;
+        this.$transclude = $transclude;
+    }
+    
+    $onChanges(changes) {
+        if (!this.tileLayer) return;
+        
+        if (changes.url && this.url) {
+            this.tileLayer.setUrl(this.url);
+        }
+    }
+
+    $onInit() {
+        this.map = this.mapCtrl.map;
+        this.leaflet = this.mapCtrl.leaflet;
+
+        this.$transclude(($clone, $scope) => {
+            const options = Object.assign({}, this.options);
+
+            if ($clone.contents().length) {
+                options.attribution = $clone[0].innerHTML;
+            }
+            $scope.$destroy();
+            
+            this.tileLayer = this.mapCtrl.createTileLayer(this.tileLayerId, this.url, options);
+            this.mapCtrl.addTileLayer(this.tileLayer, this.name);
+        });
+    }
+    
+    $onDestroy() {
+        this.mapCtrl.removeTileLayer(this.tileLayer);
+        this.tileLayer.remove();
+    }
+}
+
+function tileMapTileLayerDirective() {
+    return {
+        scope: false,
+        bindToController: {
+            tileLayerId: '@',
+            name: '@',
+            url: '@?',
+            options: '<?'
+        },
+        transclude: 'element',
+        controller: TileMapTileLayerController,
+        require: {
+            mapCtrl: '^maTileMap'
+        }
+    };
+}
+
+export default tileMapTileLayerDirective;
