@@ -168,6 +168,9 @@ import dataPointSelector from './components/dataPointSelector/dataPointSelector'
 import dropDownButton from './components/dropDownButton/dropDownButton';
 import tileMap from './components/tileMap/tileMap';
 import tileMapMarker from './components/tileMap/tileMapMarker';
+import tileMapCircle from './components/tileMap/tileMapCircle';
+import tileMapRectangle from './components/tileMap/tileMapRectangle';
+import tileMapPolygon from './components/tileMap/tileMapPolygon';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -272,6 +275,10 @@ ngMango.directive('maParseArray', parseArray);
 ngMango.directive('maTreeViewTransclude', treeViewTransclude);
 ngMango.directive('maInheritNgModel', inheritNgModel);
 ngMango.directive('maResizeObserver', resizeObserver);
+ngMango.directive('maTileMapMarker', tileMapMarker);
+ngMango.directive('maTileMapCircle', tileMapCircle);
+ngMango.directive('maTileMapRectangle', tileMapRectangle);
+ngMango.directive('maTileMapPolygon', tileMapPolygon);
 ngMango.component('maQueryBuilder', queryBuilder);
 ngMango.component('maQueryGroup', queryGroup);
 ngMango.component('maQueryPredicate', queryPredicate);
@@ -348,7 +355,6 @@ ngMango.component('maPublisherEditor', publisherEditor);
 ngMango.component('maDataPointSelector', dataPointSelector);
 ngMango.component('maDropDownButton', dropDownButton);
 ngMango.component('maTileMap', tileMap);
-ngMango.directive('maTileMapMarker', tileMapMarker);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

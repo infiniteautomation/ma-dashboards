@@ -13,7 +13,7 @@
  * as a popup that is opened when the marker is clicked. Local scope variables that are available inside the marker popup are
  * <code>$leaflet</code>, <code>$map</code>, <code>$mapCtrl</code>, <code>$marker</code>, and <code>$markerCtrl</code>.
  * 
- * @param {number[]|string} coordinates Coordinates (latitude/longitude) of the marker
+ * @param {LatLng|number[]|string} coordinates Coordinates (latitude/longitude) of the marker
  * @param {string=} tooltip Text to display in the marker tooltip
  * @param {expression=} on-drag Expression is evaluated when the marker been dragged (only once, when dragging has stopped).
  * You must specify <code>draggable: true</code> in the options to make the marker draggable.
@@ -40,7 +40,7 @@ class TileMapMarkerController {
         if (changes.coordinates && this.coordinates) {
             this.marker.setLatLng(this.mapCtrl.parseLatLong(this.coordinates));
         }
-        
+
         if (changes.tooltip && this.tooltip) {
             this.marker.bindTooltip(this.tooltip);
         }
@@ -50,8 +50,7 @@ class TileMapMarkerController {
         this.map = this.mapCtrl.map;
         const L = this.leaflet = this.mapCtrl.leaflet;
 
-        const options = this.options && this.options({$leaflet: L, $map: this.map});
-        this.marker = L.marker(this.mapCtrl.parseLatLong(this.coordinates), options)
+        this.marker = L.marker(this.mapCtrl.parseLatLong(this.coordinates), this.options)
             .addTo(this.map);
 
         if (this.tooltip) {
@@ -85,12 +84,12 @@ class TileMapMarkerController {
     }
 }
 
-function openMarkMarkerDirective() {
+function tileMapMarkerDirective() {
     return {
         scope: false,
         bindToController: {
-            coordinates: '<?',
-            options: '&?',
+            coordinates: '<',
+            options: '<?',
             tooltip: '@?',
             onDrag: '&?',
             onClick: '&?'
@@ -103,4 +102,4 @@ function openMarkMarkerDirective() {
     };
 }
 
-export default openMarkMarkerDirective;
+export default tileMapMarkerDirective;
