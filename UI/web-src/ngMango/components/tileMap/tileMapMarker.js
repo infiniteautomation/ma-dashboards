@@ -31,10 +31,6 @@ class TileMapMarkerController {
         this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
-        
-        this.mapCtrl = this.$scope.$mapCtrl;
-        this.map = this.mapCtrl.map;
-        this.leaflet = this.mapCtrl.leaflet;
     }
     
     $onChanges(changes) {
@@ -50,7 +46,8 @@ class TileMapMarkerController {
     }
 
     $onInit() {
-        const L = this.leaflet;
+        this.map = this.mapCtrl.map;
+        const L = this.leaflet = this.mapCtrl.leaflet;
 
         const options = this.options && this.options({$leaflet: L, $map: this.map});
         this.marker = L.marker(this.mapCtrl.parseLatLong(this.coordinates), options)
@@ -72,13 +69,12 @@ class TileMapMarkerController {
         });
 
         this.$transclude(($clone, $scope) => {
-            if ($clone.length) {
-                this.transcludedContent = $clone;
-                this.$element.append($clone);
-
+            if ($clone.contents().length) {
                 $scope.$marker = this.marker;
                 $scope.$markerCtrl = this;
-                this.marker.bindPopup(this.$element[0]);
+                this.marker.bindPopup($clone[0]);
+            } else {
+                $scope.$destroy();
             }
         });
     }
@@ -98,8 +94,11 @@ function openMarkMarkerDirective() {
             onDrag: '&?',
             onClick: '&?'
         },
-        transclude: true,
-        controller: TileMapMarkerController
+        transclude: 'element',
+        controller: TileMapMarkerController,
+        require: {
+            mapCtrl: '^maTileMap'
+        }
     };
 }
 

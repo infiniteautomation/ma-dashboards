@@ -196,8 +196,8 @@ class TileMapController {
             $scope.$map = this.map;
             $scope.$mapCtrl = this;
             $scope.$leaflet = this.leaflet;
-            
-            this.transcludedContent = $clone;
+
+            this.$element.append($clone);
         });
     }
     
