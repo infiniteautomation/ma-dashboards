@@ -12,12 +12,12 @@
  * @description Adds a tile layer to a <a ui-sref="ui.docs.ngMango.maTileMap">maTileMap</a>. If content is supplied, it will be added as
  * attribution text.
  * 
- * @param {string} tileLayerId ID of the layer, if you can specify <code>openstreetmap</code>
- * @param {string=} tooltip Text to display in the tileLayer tooltip
- * @param {expression=} on-click Expression is evaluated when the tileLayer is clicked.
- * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$tileLayer</code>, <code>$event</code>, and <code>$coordinates</code>.
+ * @param {string} tileLayerId ID of the layer, if you specify <code>openstreetmap</code>, <code>mapbox.satellite</code>, or <code>mapbox.streets</code>
+ * the URL and options will be automatically configured.
+ * @param {string} name Name of the layer, used as the label in the layer controls
+ * @param {string=} url URL template for requesting tiles. Defaults to <code>https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png</code>
  * @param {object=} options Options for the Leaflet tileLayer instance,
- * see <a href="https://leafletjs.com/reference-1.5.0.html#tileLayer-option" target="_blank">documentation</a>
+ * see <a href="https://leafletjs.com/reference-1.5.0.html#tilelayer-option" target="_blank">documentation</a>
  */
 
 class TileMapTileLayerController {

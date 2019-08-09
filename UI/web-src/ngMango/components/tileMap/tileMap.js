@@ -13,7 +13,7 @@
  * <a href="https://www.mapbox.com/" target="_blank">Mapbox</a> using <a href="https://leafletjs.com/" target="_blank">Leaflet</a>.
  * 
  * By default the component displays map tiles from OpenStreetMap. If a Mapbox access token is supplied via the attribute or via the
- * <a ui-sref="'ui.settings.uiSettings'">UI settings</a> page then the component will automatically add a Mapbox street and satellite layer.
+ * <a ui-sref="ui.settings.uiSettings">UI settings</a> page then the component will automatically add a Mapbox street and satellite layer.
  * 
  * Add the following components into the element contents to add add items to the map.
  * <ul>
