@@ -10,7 +10,8 @@
  * @scope
  *
  * @description Adds a marker to a <a ui-sref="ui.docs.ngMango.maTileMap">maTileMap</a>. If content is supplied, it will be added to the map
- * as a popup that is opened when the marker is clicked.
+ * as a popup that is opened when the marker is clicked. Local scope variables that are available inside the marker popup are
+ * <code>$leaflet</code>, <code>$map</code>, <code>$mapCtrl</code>, <code>$marker</code>, and <code>$markerCtrl</code>.
  * 
  * @param {number[]|string} coordinates Coordinates (latitude/longitude) of the marker
  * @param {string=} tooltip Text to display in the marker tooltip
