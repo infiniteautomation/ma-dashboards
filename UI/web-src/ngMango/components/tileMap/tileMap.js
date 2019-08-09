@@ -18,6 +18,7 @@
  * Add the following components into the element contents to add add items to the map.
  * <ul>
  *   <li><a ui-sref="ui.docs.ngMango.maTileMapTileLayer">maTileMapTileLayer</a> &mdash; adds a tile base layer</li>
+ *   <li><a ui-sref="ui.docs.ngMango.maTileMapLayer">maTileMapLayer</a> &mdash; adds an overlay layer</li>
  *   <li><a ui-sref="ui.docs.ngMango.maTileMapMarker">maTileMapMarker</a> &mdash; adds a marker with an icon</li>
  *   <li><a ui-sref="ui.docs.ngMango.maTileMapCircle">maTileMapCircle</a> &mdash; adds circle</li>
  *   <li><a ui-sref="ui.docs.ngMango.maTileMapRectangle">maTileMapRectangle</a> &mdash; adds a rectangle</li>
@@ -56,6 +57,7 @@ class TileMapController {
         this.center = [0, 0];
         this.zoom = 13;
         this.tileLayers = new Set();
+        this.layers = new Set();
         
         this.loadLeaflet();
     }
@@ -229,11 +231,11 @@ class TileMapController {
     }
     
     removeTileLayer(layer) {
-        // remove the layer from the controls
-        this.layerControl.removeLayer(layer);
-        
         // remove it from our set
         this.tileLayers.delete(layer);
+        
+        // remove the layer from the controls
+        this.layerControl.removeLayer(layer);
         
         // if the removed layer is the active layer, set the active layer to one of the other ones
         if (this.map.hasLayer(layer) && this.tileLayers.size) {
@@ -242,7 +244,31 @@ class TileMapController {
         }
         
         // hide the layer controls
-        if (this.tileLayers.size <= 1) {
+        if (this.tileLayers.size <= 1 && !this.layers.size) {
+            this.layerControl.remove();
+        }
+    }
+    
+    addLayer(layer, name) {
+        // add it to our set
+        this.layers.add(layer);
+        
+        // add it to the layer controls
+        this.layerControl.addOverlay(layer, name);
+        
+        // add the layer controls to the map
+        this.layerControl.addTo(this.map);
+    }
+    
+    removeLayer(layer) {
+        // remove it from our set
+        this.tileLayers.delete(layer);
+        
+        // remove the layer from the controls
+        this.layerControl.removeLayer(layer);
+        
+        // hide the layer controls
+        if (this.tileLayers.size <= 1 && !this.layers.size) {
             this.layerControl.remove();
         }
     }

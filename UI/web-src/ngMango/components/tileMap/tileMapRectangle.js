@@ -50,10 +50,13 @@ class TileMapRectangleController {
 
     $onInit() {
         this.map = this.mapCtrl.map;
+        if (this.layerCtrl) {
+            this.layer = this.layerCtrl.layer;
+        }
         const L = this.leaflet = this.mapCtrl.leaflet;
 
         this.rectangle = L.rectangle(this.getBounds(), this.options)
-            .addTo(this.map);
+            .addTo(this.layer || this.map);
 
         if (this.tooltip) {
             this.rectangle.bindTooltip(this.tooltip);
@@ -104,7 +107,8 @@ function tileMapRectangleDirective() {
         transclude: 'element',
         controller: TileMapRectangleController,
         require: {
-            mapCtrl: '^maTileMap'
+            mapCtrl: '^maTileMap',
+            layerCtrl: '^?maTileMapLayer'
         }
     };
 }

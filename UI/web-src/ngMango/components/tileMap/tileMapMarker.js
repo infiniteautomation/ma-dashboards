@@ -48,10 +48,13 @@ class TileMapMarkerController {
 
     $onInit() {
         this.map = this.mapCtrl.map;
+        if (this.layerCtrl) {
+            this.layer = this.layerCtrl.layer;
+        }
         const L = this.leaflet = this.mapCtrl.leaflet;
 
         this.marker = L.marker(this.mapCtrl.parseLatLong(this.coordinates), this.options)
-            .addTo(this.map);
+            .addTo(this.layer || this.map);
 
         if (this.tooltip) {
             this.marker.bindTooltip(this.tooltip);
@@ -97,7 +100,8 @@ function tileMapMarkerDirective() {
         transclude: 'element',
         controller: TileMapMarkerController,
         require: {
-            mapCtrl: '^maTileMap'
+            mapCtrl: '^maTileMap',
+            layerCtrl: '^?maTileMapLayer'
         }
     };
 }

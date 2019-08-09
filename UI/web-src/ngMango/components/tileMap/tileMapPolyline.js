@@ -51,10 +51,13 @@ class TileMapPolylineController {
 
     $onInit() {
         this.map = this.mapCtrl.map;
+        if (this.layerCtrl) {
+            this.layer = this.layerCtrl.layer;
+        }
         const L = this.leaflet = this.mapCtrl.leaflet;
 
         this.polyline = L.polyline(this.getCoordinates(), this.options)
-            .addTo(this.map);
+            .addTo(this.layer || this.map);
 
         if (this.tooltip) {
             this.polyline.bindTooltip(this.tooltip);
@@ -105,7 +108,8 @@ function tileMapPolylineDirective() {
         transclude: 'element',
         controller: TileMapPolylineController,
         require: {
-            mapCtrl: '^maTileMap'
+            mapCtrl: '^maTileMap',
+            layerCtrl: '^?maTileMapLayer'
         }
     };
 }

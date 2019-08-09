@@ -49,10 +49,13 @@ class TileMapCircleController {
 
     $onInit() {
         this.map = this.mapCtrl.map;
+        if (this.layerCtrl) {
+            this.layer = this.layerCtrl.layer;
+        }
         const L = this.leaflet = this.mapCtrl.leaflet;
 
         this.circle = L.circle(this.mapCtrl.parseLatLong(this.coordinates), this.options)
-            .addTo(this.map);
+            .addTo(this.layer || this.map);
 
         if (this.tooltip) {
             this.circle.bindTooltip(this.tooltip);
@@ -95,7 +98,8 @@ function tileMapCircleDirective() {
         transclude: 'element',
         controller: TileMapCircleController,
         require: {
-            mapCtrl: '^maTileMap'
+            mapCtrl: '^maTileMap',
+            layerCtrl: '^?maTileMapLayer'
         }
     };
 }

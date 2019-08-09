@@ -51,10 +51,13 @@ class TileMapPolygonController {
 
     $onInit() {
         this.map = this.mapCtrl.map;
+        if (this.layerCtrl) {
+            this.layer = this.layerCtrl.layer;
+        }
         const L = this.leaflet = this.mapCtrl.leaflet;
 
         this.polygon = L.polygon(this.getCoordinates(), this.options)
-            .addTo(this.map);
+            .addTo(this.layer || this.map);
 
         if (this.tooltip) {
             this.polygon.bindTooltip(this.tooltip);
@@ -105,7 +108,8 @@ function tileMapPolygonDirective() {
         transclude: 'element',
         controller: TileMapPolygonController,
         require: {
-            mapCtrl: '^maTileMap'
+            mapCtrl: '^maTileMap',
+            layerCtrl: '^?maTileMapLayer'
         }
     };
 }
