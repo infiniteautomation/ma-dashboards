@@ -21,9 +21,7 @@
  * along with any other Leaflet <code>L.tileLayer</code> options, or full Leaflet <code>L.tileLayer</code> instances.
  * The <code>name</code> option is used to set the name of the layer in the controls.
  * Available locals are <code>$leaflet</code> and <code>$map</code>.
- * @param {expression=} on-move Expression is evaluated when the map has finished moving (only once, when panning has stopped).
- * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$event</code>, <code>$center</code>, and <code>$zoom</code>.
- * @param {expression=} on-zoom Expression is evaluated when the map has finished zooming (only once, when zooming has stopped).
+ * @param {expression=} on-move Expression is evaluated when the map has finished moving/zooming (only once, when panning/zooming has stopped).
  * Available locals are <code>$leaflet</code>, <code>$map</code>, <code>$event</code>, <code>$center</code>, and <code>$zoom</code>.
  * @param {string=} mapbox-access-token Access token for the Mapbox API, if not supplied only OpenStreetMap will be available. Can also
  * be specified on the UI settings page.
@@ -86,14 +84,18 @@ class TileMapController {
         if (!this.map) return;
 
         if (changes.center || changes.zoom) {
-            const currentCenter = this.map.getCenter();
-            const currentZoom = this.map.getZoom();
-            
-            const center = this.parseLatLong(this.center) || currentCenter;
-            const zoom = this.zoom != null ? this.zoom : currentZoom;
-            
-            if (!center.equals(currentCenter) || zoom !== currentZoom) {
-                this.map.setView(center, zoom);
+            const center = this.parseLatLong(this.center) || this.map.getCenter();
+            const zoom = this.zoom != null ? this.zoom : this.map.getZoom();
+
+            this.map.setView(center, zoom);
+        }
+        
+        if (changes.showLocation) {
+            if (this.showLocation) {
+                this.locate();
+            } else if (this.locationCircle) {
+                this.locationCircle.remove();
+                delete this.locationCircle;
             }
         }
     }
@@ -118,25 +120,48 @@ class TileMapController {
     renderMap() {
         const L = this.leaflet;
         const options = this.options && this.options({$leaflet: L});
-        const map = this.map = L.map(this.$element[0], options).setView(this.parseLatLong(this.center), this.zoom);
+        const map = this.map = L.map(this.$element[0], options);
 
-        this.map.on('zoomend moveend', event => {
+        this.map.on('moveend', event => {
             // calls to setView() in $onChanges cause this event to fire, resulting in a $rootScope:inprog error
             // dont want these events anyway
             if (this.$scope.$root.$$phase != null) return;
-            
-            // worth noting that there is some sort of rounding / math going on with the coordinates
-            // e.g. if you call setView() with latitude 40.05 it fires the event telling us we have moved to 40.0499567754414
-            // if you then use feed this back through to the center attribute you can get multiple events fired
 
-            this.$scope.$apply(() => {
-                if (event.type === 'zoomend' && this.onZoom) {
-                    this.onZoom({$leaflet: L, $map: this.map, $event: event, $center: this.map.getCenter(), $zoom: this.map.getZoom()});
-                } else if (event.type === 'moveend' && this.onMove) {
-                    this.onMove({$leaflet: L, $map: this.map, $event: event, $center: this.map.getCenter(), $zoom: this.map.getZoom()});
-                }
-            });
+            // worth noting that there is some sort of rounding / math going on with the coordinates
+            // e.g. if you call setView() with latitude 40.05 it fires the moveend event telling us we have moved to 40.0499567754414
+            // if you then use feed this back through to the center attribute you can get multiple moveend events fired
+            
+            const currentCenter = this.map.getCenter();
+            const currentZoom = this.map.getZoom();
+            const center = this.parseLatLong(this.center) || currentCenter;
+            const zoom = this.zoom != null ? this.zoom : currentZoom;
+            if (!center.equals(currentCenter) || zoom !== currentZoom) {
+                const locals = {$leaflet: L, $map: this.map, $event: event, $center: currentCenter, $zoom: currentZoom};
+                this.$scope.$apply(() => {
+                    if (event.type === 'moveend' && this.onMove) {
+                        this.onMove(locals);
+                    }
+                });
+            }
         });
+        
+        map.on('locationfound', event => {
+            if (!this.locationCircle) {
+                this.locationCircle = L.circle(event.latlng, event.accuracy);
+                this.locationCircle.addTo(map);
+            } else {
+                this.locationCircle.setLatLng(event.latlng);
+                this.locationCircle.setRadius(event.accuracy);
+            }
+        });
+
+        const center = this.parseLatLong(this.center);
+        if (center) {
+            map.setView(this.parseLatLong(this.center), this.zoom);
+        }
+        if (this.showLocation) {
+            this.locate();
+        }
 
         if (this.$element.hasClass('ma-designer-element')) {
             this.map._handlers.forEach(h => h.disable());
@@ -175,6 +200,13 @@ class TileMapController {
             this.transcludedContent = $clone;
         });
     }
+    
+    locate(options = this.showLocation) {
+        if (typeof options !== 'object') {
+            options = {setView: true, maxZoom: 16};
+        }
+        this.map.locate(options);
+    }
 
     createTileLayer(options) {
         if (typeof options === 'string') {
@@ -212,8 +244,8 @@ export default {
         tileLayers: '&?',
         mapboxAccessToken: '@?',
         options: '&?',
-        onZoom: '&?',
-        onMove: '&?'
+        onMove: '&?',
+        showLocation: '<?'
     },
     transclude: true,
     designerInfo: {

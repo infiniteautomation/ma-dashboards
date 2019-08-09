@@ -61,11 +61,12 @@ class TileMapMarkerController {
         }
         
         this.marker.on('dragend click', event => {
+            const locals = {$leaflet: L, $map: this.map, $marker: this.marker, $event: event, $coordinates: this.marker.getLatLng()};
             this.$scope.$apply(() => {
                 if (event.type === 'dragend' && this.onDrag) {
-                    this.onDrag({$leaflet: L, $map: this.map, $marker: this.marker, $event: event, $coordinates: this.marker.getLatLng()});
+                    this.onDrag(locals);
                 } else if (event.type === 'click' && this.onClick) {
-                    this.onClick({$leaflet: L, $map: this.map, $marker: this.marker, $event: event, $coordinates: this.marker.getLatLng()});
+                    this.onClick(locals);
                 }
             });
         });
