@@ -107,9 +107,12 @@ class TileMapController {
         if (changes.showLocation) {
             if (this.showLocation) {
                 this.locate();
-            } else if (this.locationCircle) {
-                this.locationCircle.remove();
-                delete this.locationCircle;
+            } else {
+                this.map.stopLocate();
+                if (this.locationCircle) {
+                    this.locationCircle.remove();
+                    delete this.locationCircle;
+                }
             }
         }
     }
