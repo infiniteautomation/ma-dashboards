@@ -31,6 +31,8 @@ class TileMapPolygonController {
         this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
+        
+        this.mapCtrl = $scope.$mapCtrl;
     }
     
     $onChanges(changes) {
@@ -50,27 +52,22 @@ class TileMapPolygonController {
     }
 
     $onInit() {
-        this.map = this.mapCtrl.map;
-        if (this.layerCtrl) {
-            this.layer = this.layerCtrl.layer;
-        }
-        const L = this.leaflet = this.mapCtrl.leaflet;
-
-        this.polygon = L.polygon(this.getCoordinates(), this.options)
-            .addTo(this.layer || this.map);
+        this.polygon = this.mapCtrl.leaflet.polygon(this.getCoordinates(), this.options)
+            .addTo(this.$scope.$layer);
 
         if (this.tooltip) {
             this.polygon.bindTooltip(this.tooltip);
         }
+
         
-        this.polygon.on('click', event => {
-            const locals = {$leaflet: L, $map: this.map, $polygon: this.polygon, $event: event, $coordinates: this.polygon.getLatLngs()};
-            this.$scope.$apply(() => {
-                if (event.type === 'click' && this.onClick) {
+        if (typeof this.onClick === 'function') {
+            this.polygon.on('click', event => {
+                const locals = {$polygon: this.polygon, $event: event, $coordinates: this.polygon.getLatLngs()};
+                this.$scope.$apply(() => {
                     this.onClick(locals);
-                }
+                });
             });
-        });
+        }
 
         this.$transclude(($clone, $scope) => {
             if ($clone.contents().length) {
@@ -78,6 +75,7 @@ class TileMapPolygonController {
                 $scope.$polygonCtrl = this;
                 this.polygon.bindPopup($clone[0]);
             } else {
+                $clone.remove();
                 $scope.$destroy();
             }
         });
@@ -106,11 +104,7 @@ function tileMapPolygonDirective() {
             onClick: '&?'
         },
         transclude: 'element',
-        controller: TileMapPolygonController,
-        require: {
-            mapCtrl: '^maTileMap',
-            layerCtrl: '^?maTileMapLayer'
-        }
+        controller: TileMapPolygonController
     };
 }
 

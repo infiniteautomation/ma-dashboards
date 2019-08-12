@@ -32,6 +32,8 @@ class TileMapMarkerController {
         this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
+        
+        this.mapCtrl = $scope.$mapCtrl;
     }
     
     $onChanges(changes) {
@@ -47,29 +49,30 @@ class TileMapMarkerController {
     }
 
     $onInit() {
-        this.map = this.mapCtrl.map;
-        if (this.layerCtrl) {
-            this.layer = this.layerCtrl.layer;
-        }
-        const L = this.leaflet = this.mapCtrl.leaflet;
-
-        this.marker = L.marker(this.mapCtrl.parseLatLong(this.coordinates), this.options)
-            .addTo(this.layer || this.map);
+        this.marker = this.mapCtrl.leaflet.marker(this.mapCtrl.parseLatLong(this.coordinates), this.options)
+            .addTo(this.$scope.$layer);
 
         if (this.tooltip) {
             this.marker.bindTooltip(this.tooltip);
         }
         
-        this.marker.on('dragend click', event => {
-            const locals = {$leaflet: L, $map: this.map, $marker: this.marker, $event: event, $coordinates: this.marker.getLatLng()};
-            this.$scope.$apply(() => {
-                if (event.type === 'dragend' && this.onDrag) {
+        if (typeof this.onDrag === 'function') {
+            this.marker.on('dragend', event => {
+                const locals = {$marker: this.marker, $event: event, $coordinates: this.marker.getLatLng()};
+                this.$scope.$apply(() => {
                     this.onDrag(locals);
-                } else if (event.type === 'click' && this.onClick) {
-                    this.onClick(locals);
-                }
+                });
             });
-        });
+        }
+        
+        if (typeof this.onClick === 'function') {
+            this.marker.on('click', event => {
+                const locals = {$marker: this.marker, $event: event, $coordinates: this.marker.getLatLng()};
+                this.$scope.$apply(() => {
+                    this.onClick(locals);
+                });
+            });
+        }
 
         this.$transclude(($clone, $scope) => {
             if ($clone.contents().length) {
@@ -77,6 +80,7 @@ class TileMapMarkerController {
                 $scope.$markerCtrl = this;
                 this.marker.bindPopup($clone[0]);
             } else {
+                $clone.remove();
                 $scope.$destroy();
             }
         });
@@ -98,11 +102,7 @@ function tileMapMarkerDirective() {
             onClick: '&?'
         },
         transclude: 'element',
-        controller: TileMapMarkerController,
-        require: {
-            mapCtrl: '^maTileMap',
-            layerCtrl: '^?maTileMapLayer'
-        }
+        controller: TileMapMarkerController
     };
 }
 

@@ -12,6 +12,7 @@
  * @description Adds a overlay layer to a <a ui-sref="ui.docs.ngMango.maTileMap">maTileMap</a> or another maTileMapLayer.
  * Any components which can be added to a maTileMap can be added to a maTileMapLayer.
  * 
+ * @param {boolean=} [enabled=false] Adds/removes the tile layer from the parent map/layer
  * @param {string} name Name of the layer, used as the label in the layer controls
  * @param {boolean=} [enabled=true] Adds or removes the layer from the map/parent layer
  * @param {object=} options Options for the Leaflet layer instance,
@@ -27,7 +28,7 @@ class TileMapLayerController {
         this.$element = $element;
         this.$transclude = $transclude;
         
-        this.enabled = true;
+        this.mapCtrl = $scope.$mapCtrl;
     }
     
     $onChanges(changes) {
@@ -35,7 +36,7 @@ class TileMapLayerController {
         
         if (changes.enabled) {
             if (this.enabled) {
-                this.layer.addTo(this.parentLayer || this.map);
+                this.layer.addTo(this.$scope.$layer);
             } else {
                 this.layer.remove();
             }
@@ -43,28 +44,26 @@ class TileMapLayerController {
     }
 
     $onInit() {
-        this.map = this.mapCtrl.map;
-        if (this.layerCtrl) {
-            this.parentLayer = this.layerCtrl.layer;
-        }
-        this.leaflet = this.mapCtrl.leaflet;
-
         this.$transclude(($clone, $scope) => {
-            this.$element.append($clone);
+            this.contents = $clone;
 
-            this.layer = this.leaflet.layerGroup([], this.options);
-            if (!this.parentLayer) {
+            this.layer = this.mapCtrl.leaflet.layerGroup([], this.options);
+            $scope.$layer = this.layer;
+            
+            // add the layer to the map controls if the parent layer is the map layer
+            if (this.$scope.$layer === this.mapCtrl.map) {
                 this.mapCtrl.addLayer(this.layer, this.name);
             }
             
             if (this.enabled) {
-                this.layer.addTo(this.parentLayer || this.map);
+                this.layer.addTo(this.$scope.$layer);
             }
         });
     }
     
     $onDestroy() {
-        if (!this.parentLayer) {
+        // remove the layer from the map controls if the parent layer is the map layer
+        if (this.$scope.$layer === this.mapCtrl.map) {
             this.mapCtrl.removeLayer(this.layer);
         }
         this.layer.remove();
@@ -79,12 +78,8 @@ function tileMapLayerDirective() {
             options: '<?',
             enabled: '<?'
         },
-        transclude: true,
-        controller: TileMapLayerController,
-        require: {
-            mapCtrl: '^maTileMap',
-            layerCtrl: '^?maTileMapLayer'
-        }
+        transclude: 'element',
+        controller: TileMapLayerController
     };
 }
 

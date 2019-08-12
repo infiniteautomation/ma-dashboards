@@ -190,8 +190,9 @@ class TileMapController {
         }
 
         this.$transclude(($clone, $scope) => {
-            $scope.$map = this.map;
             $scope.$mapCtrl = this;
+            $scope.$map = this.map;
+            $scope.$layer = this.map;
             $scope.$leaflet = this.leaflet;
 
             this.$element.append($clone);
@@ -200,8 +201,12 @@ class TileMapController {
         if (!this.tileLayers.size && this.automaticTileLayers) {
             this.autoAddTileLayers();
         }
-        const firstLayer = this.tileLayers.values().next().value;
-        firstLayer.addTo(this.map);
+        
+        // add the first tile layer to the map if none are already added
+        const tileLayersArray = Array.from(this.tileLayers.values());
+        if (tileLayersArray.length && !tileLayersArray.some(l => this.map.hasLayer(l))) {
+            tileLayersArray[0].addTo(this.map);
+        }
     }
     
     locate(options = this.showLocation) {

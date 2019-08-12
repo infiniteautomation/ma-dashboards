@@ -31,6 +31,8 @@ class TileMapPolylineController {
         this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
+        
+        this.mapCtrl = $scope.$mapCtrl;
     }
     
     $onChanges(changes) {
@@ -50,27 +52,21 @@ class TileMapPolylineController {
     }
 
     $onInit() {
-        this.map = this.mapCtrl.map;
-        if (this.layerCtrl) {
-            this.layer = this.layerCtrl.layer;
-        }
-        const L = this.leaflet = this.mapCtrl.leaflet;
-
-        this.polyline = L.polyline(this.getCoordinates(), this.options)
-            .addTo(this.layer || this.map);
+        this.polyline = this.mapCtrl.leaflet.polyline(this.getCoordinates(), this.options)
+            .addTo(this.$scope.$layer);
 
         if (this.tooltip) {
             this.polyline.bindTooltip(this.tooltip);
         }
-        
-        this.polyline.on('click', event => {
-            const locals = {$leaflet: L, $map: this.map, $polyline: this.polyline, $event: event, $coordinates: this.polyline.getLatLngs()};
-            this.$scope.$apply(() => {
-                if (event.type === 'click' && this.onClick) {
+
+        if (typeof this.onClick === 'function') {
+            this.polyline.on('click', event => {
+                const locals = {$polyline: this.polyline, $event: event, $coordinates: this.polyline.getLatLngs()};
+                this.$scope.$apply(() => {
                     this.onClick(locals);
-                }
+                });
             });
-        });
+        }
 
         this.$transclude(($clone, $scope) => {
             if ($clone.contents().length) {
@@ -78,6 +74,7 @@ class TileMapPolylineController {
                 $scope.$polylineCtrl = this;
                 this.polyline.bindPopup($clone[0]);
             } else {
+                $clone.remove();
                 $scope.$destroy();
             }
         });
@@ -106,11 +103,7 @@ function tileMapPolylineDirective() {
             onClick: '&?'
         },
         transclude: 'element',
-        controller: TileMapPolylineController,
-        require: {
-            mapCtrl: '^maTileMap',
-            layerCtrl: '^?maTileMapLayer'
-        }
+        controller: TileMapPolylineController
     };
 }
 

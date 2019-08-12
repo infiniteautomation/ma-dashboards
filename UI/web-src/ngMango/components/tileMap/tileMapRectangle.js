@@ -30,6 +30,8 @@ class TileMapRectangleController {
         this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
+        
+        this.mapCtrl = $scope.$mapCtrl;
     }
     
     $onChanges(changes) {
@@ -49,27 +51,21 @@ class TileMapRectangleController {
     }
 
     $onInit() {
-        this.map = this.mapCtrl.map;
-        if (this.layerCtrl) {
-            this.layer = this.layerCtrl.layer;
-        }
-        const L = this.leaflet = this.mapCtrl.leaflet;
-
-        this.rectangle = L.rectangle(this.getBounds(), this.options)
-            .addTo(this.layer || this.map);
+        this.rectangle = this.mapCtrl.leaflet.rectangle(this.getBounds(), this.options)
+            .addTo(this.$scope.$layer);
 
         if (this.tooltip) {
             this.rectangle.bindTooltip(this.tooltip);
         }
-        
-        this.rectangle.on('click', event => {
-            const locals = {$leaflet: L, $map: this.map, $rectangle: this.rectangle, $event: event, $bounds: this.rectangle.getBounds()};
-            this.$scope.$apply(() => {
-                if (event.type === 'click' && this.onClick) {
+
+        if (typeof this.onClick === 'function') {
+            this.rectangle.on('click', event => {
+                const locals = {$rectangle: this.rectangle, $event: event, $bounds: this.rectangle.getBounds()};
+                this.$scope.$apply(() => {
                     this.onClick(locals);
-                }
+                });
             });
-        });
+        }
 
         this.$transclude(($clone, $scope) => {
             if ($clone.contents().length) {
@@ -77,6 +73,7 @@ class TileMapRectangleController {
                 $scope.$rectangleCtrl = this;
                 this.rectangle.bindPopup($clone[0]);
             } else {
+                $clone.remove();
                 $scope.$destroy();
             }
         });
@@ -105,11 +102,7 @@ function tileMapRectangleDirective() {
             onClick: '&?'
         },
         transclude: 'element',
-        controller: TileMapRectangleController,
-        require: {
-            mapCtrl: '^maTileMap',
-            layerCtrl: '^?maTileMapLayer'
-        }
+        controller: TileMapRectangleController
     };
 }
 

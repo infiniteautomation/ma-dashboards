@@ -29,6 +29,8 @@ class TileMapCircleController {
         this.$scope = $scope;
         this.$element = $element;
         this.$transclude = $transclude;
+        
+        this.mapCtrl = $scope.$mapCtrl;
     }
     
     $onChanges(changes) {
@@ -48,27 +50,21 @@ class TileMapCircleController {
     }
 
     $onInit() {
-        this.map = this.mapCtrl.map;
-        if (this.layerCtrl) {
-            this.layer = this.layerCtrl.layer;
-        }
-        const L = this.leaflet = this.mapCtrl.leaflet;
-
-        this.circle = L.circle(this.mapCtrl.parseLatLong(this.coordinates), this.options)
-            .addTo(this.layer || this.map);
+        this.circle = this.mapCtrl.leaflet.circle(this.mapCtrl.parseLatLong(this.coordinates), this.options)
+            .addTo(this.$scope.$layer);
 
         if (this.tooltip) {
             this.circle.bindTooltip(this.tooltip);
         }
-        
-        this.circle.on('click', event => {
-            const locals = {$leaflet: L, $map: this.map, $circle: this.circle, $event: event, $coordinates: this.circle.getLatLng()};
-            this.$scope.$apply(() => {
-                if (event.type === 'click' && this.onClick) {
+
+        if (typeof this.onClick === 'function') {
+            this.circle.on('click', event => {
+                const locals = {$circle: this.circle, $event: event, $coordinates: this.circle.getLatLng()};
+                this.$scope.$apply(() => {
                     this.onClick(locals);
-                }
+                });
             });
-        });
+        }
 
         this.$transclude(($clone, $scope) => {
             if ($clone.contents().length) {
@@ -76,6 +72,7 @@ class TileMapCircleController {
                 $scope.$circleCtrl = this;
                 this.circle.bindPopup($clone[0]);
             } else {
+                $clone.remove();
                 $scope.$destroy();
             }
         });
@@ -96,11 +93,7 @@ function tileMapCircleDirective() {
             onClick: '&?'
         },
         transclude: 'element',
-        controller: TileMapCircleController,
-        require: {
-            mapCtrl: '^maTileMap',
-            layerCtrl: '^?maTileMapLayer'
-        }
+        controller: TileMapCircleController
     };
 }
 
