@@ -46,6 +46,10 @@ class TileMapMarkerController {
         if (changes.tooltip && this.tooltip) {
             this.marker.bindTooltip(this.tooltip);
         }
+        
+        if (changes.icon) {
+            this.updateIcon();
+        }
     }
 
     $onInit() {
@@ -55,6 +59,8 @@ class TileMapMarkerController {
         if (this.tooltip) {
             this.marker.bindTooltip(this.tooltip);
         }
+        
+        this.updateIcon();
         
         if (typeof this.onDrag === 'function') {
             this.marker.on('dragend', event => {
@@ -89,6 +95,22 @@ class TileMapMarkerController {
     $onDestroy() {
         this.marker.remove();
     }
+    
+    updateIcon() {
+        let icon;
+        if (this.icon instanceof this.mapCtrl.leaflet.Icon) {
+            icon = this.icon;
+        } else if (typeof this.icon === 'string') {
+            icon = this.mapCtrl.leaflet.icon({
+                iconUrl: this.icon
+            });
+        } else if (this.icon && typeof this.icon === 'object') {
+            icon = this.mapCtrl.leaflet.icon(this.icon);
+        } else {
+            icon = this.mapCtrl.leaflet.Marker.prototype.options.icon;
+        }
+        this.marker.setIcon(icon);
+    }
 }
 
 function tileMapMarkerDirective() {
@@ -99,7 +121,8 @@ function tileMapMarkerDirective() {
             options: '<?',
             tooltip: '@?',
             onDrag: '&?',
-            onClick: '&?'
+            onClick: '&?',
+            icon: '<?'
         },
         transclude: 'element',
         controller: TileMapMarkerController
