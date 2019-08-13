@@ -1,3 +1,11 @@
+*Version 3.6.5*
+* Add page and component (ma-publisher-editor) for editing publishers (beta)
+* Add new component for selecting data points (ma-data-point-selector)
+* Use ma-data-point-selector for selecting points on the data point details page, script context points and publisher points
+* Add button to install Mango UI as an app to login screen
+* Add ma-tile-map component for displaying OpenStreetMap or Mapbox maps
+* Order log files by date on server status page
+
 *Version 3.6.4*
 * Transclude content of indicator into template
 
