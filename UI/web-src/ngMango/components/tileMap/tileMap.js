@@ -190,12 +190,12 @@ class TileMapController {
         }
 
         this.$transclude(($clone, $scope) => {
+            this.contents = $clone;
+            
             $scope.$mapCtrl = this;
             $scope.$map = this.map;
             $scope.$layer = this.map;
             $scope.$leaflet = this.leaflet;
-
-            this.$element.append($clone);
         });
         
         if (!this.tileLayers.size && this.automaticTileLayers) {
