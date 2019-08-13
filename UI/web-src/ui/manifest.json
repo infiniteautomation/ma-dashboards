@@ -1,6 +1,6 @@
 {
-    "name": "Mango v3",
-    "short_name": "Mango v3",
+    "name": "Mango UI",
+    "short_name": "Mango UI",
     "start_url": "/ui/",
     "display": "standalone",
     "icons": [

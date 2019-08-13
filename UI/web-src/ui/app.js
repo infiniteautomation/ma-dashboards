@@ -90,6 +90,19 @@ uiApp.constant('MA_EVENT_LINK_INFO', {
     }
 });
 
+uiApp.constant('MA_UI_INSTALL_PROMPT', {
+    canPrompt() {
+        return !!this.event;
+    },
+    
+    prompt(userEvent) {
+        this.event.prompt();
+        return this.event.userChoice.then(choice => {
+            delete this.event;
+        });
+    }
+});
+
 uiApp.config([
     'MA_UI_NG_DOCS',
     '$urlRouterProvider',

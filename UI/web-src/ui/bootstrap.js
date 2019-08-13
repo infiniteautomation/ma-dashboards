@@ -11,6 +11,12 @@ import amdConfiguration from '../shims/exportAMD.js';
 import util from './bootstrapUtil.js';
 import serviceWorkerLocation from './serviceWorker';
 
+let beforeinstallpromptEvent;
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    beforeinstallpromptEvent = e;
+});
+
 /**
  * This service worker currently does nothing. It was only added to meet the criteria for prompting to install the application.
  * https://developers.google.com/web/fundamentals/app-install-banners/#criteria 
@@ -153,8 +159,8 @@ Promise.resolve().then(() => {
     const maUiBootstrap = angular.module('maUiBootstrap', angularJsModuleNames);
 
     // configure the the providers using data retrieved before bootstrap
-    maUiBootstrap.config(['maUserProvider', 'maUiSettingsProvider', 'maUiServerInfoProvider',
-            (UserProvider, maUiSettingsProvider, maUiServerInfoProvider) => {
+    maUiBootstrap.config(['maUserProvider', 'maUiSettingsProvider', 'maUiServerInfoProvider', 'MA_UI_INSTALL_PROMPT',
+            (UserProvider, maUiSettingsProvider, maUiServerInfoProvider, installPrompt) => {
 
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
@@ -164,6 +170,13 @@ Promise.resolve().then(() => {
         if (postLoginData) {
             maUiServerInfoProvider.setPostLoginData(postLoginData);
         }
+        
+        Object.defineProperty(installPrompt, 'event', {
+            configurable: true,
+            get() {
+                return beforeinstallpromptEvent;
+            }
+        });
     }]);
 
     // promise resolves when DOM loaded
