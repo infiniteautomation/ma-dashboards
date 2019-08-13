@@ -81,6 +81,15 @@ module.exports = readPom().then(pom => {
                     }]
                 },
                 {
+                    test: /[\\/]serviceWorker\.js$/,
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: 'ui/[name].[ext]?v=[hash]'
+                        }
+                    }]
+                },
+                {
                     test: /[\\/]preBoot\.css$/,
                     use: [{
                         loader: 'file-loader',

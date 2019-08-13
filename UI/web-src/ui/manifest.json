@@ -39,6 +39,12 @@
             "sizes": "192x192",
             "type": "image/png",
             "density": 4.0
+        },
+        {
+            "src": "/modules/mangoUI/web/img/icon512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "density": 5.0
         }
     ]
 }

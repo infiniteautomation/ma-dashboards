@@ -9,6 +9,21 @@ import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
 import amdConfiguration from '../shims/exportAMD.js';
 import util from './bootstrapUtil.js';
+import serviceWorkerLocation from './serviceWorker';
+
+/**
+ * This service worker currently does nothing. It was only added to meet the criteria for prompting to install the application.
+ * https://developers.google.com/web/fundamentals/app-install-banners/#criteria 
+ */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register(serviceWorkerLocation.replace('/modules/mangoUI/web/ui/', '/ui/')).then(registration => {
+            // all good
+        }, error => {
+            console.log('ServiceWorker registration failed', error);
+        });
+    });
+}
 
 Promise.resolve().then(() => {
     // clear the autologin credentials if the url parameter is set

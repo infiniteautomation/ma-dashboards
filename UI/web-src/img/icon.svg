@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -7,96 +7,53 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="70"
-   height="70"
-   viewBox="0 0 69.999996 69.999999"
-   id="svg2"
    version="1.1"
+   id="Layer_1_xA0_Image_1_"
+   x="0px"
+   y="0px"
+   viewBox="0 0 112 112"
+   enable-background="new 0 0 424.8 187.2"
+   xml:space="preserve"
    inkscape:version="0.91 r13725"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="C:\workspace-mango27\ma-dashboards\Custom Dashboards\web\img\icon128.png"
-   inkscape:export-xdpi="164.57143"
-   inkscape:export-ydpi="164.57143">
-  <defs
-     id="defs4">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient4144">
-      <stop
-         style="stop-color:#ff8400;stop-opacity:1;"
-         offset="0"
-         id="stop4146" />
-      <stop
-         style="stop-color:#ff8400;stop-opacity:0;"
-         offset="1"
-         id="stop4148" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4144"
-       id="linearGradient4150"
-       x1="150.57156"
-       y1="329.99722"
-       x2="461.15485"
-       y2="329.99722"
-       gradientUnits="userSpaceOnUse" />
-  </defs>
-  <sodipodi:namedview
-     id="base"
+   width="112"
+   height="112"
+   inkscape:export-filename="C:\Users\Jared\mango-main\ma-dashboards\UI\web-src\img\icon512.png"
+   inkscape:export-xdpi="411.42856"
+   inkscape:export-ydpi="411.42856"><metadata
+     id="metadata8"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs6" /><sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="-52.588852"
-     inkscape:cy="-36.378472"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:window-width="3072"
+     inkscape:window-height="1665"
+     id="namedview4"
      showgrid="false"
+     inkscape:zoom="1.9375525"
+     inkscape:cx="101.30111"
+     inkscape:cy="21.490983"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="text4136"
      fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
-     inkscape:window-width="1920"
-     inkscape:window-height="1028"
-     inkscape:window-x="-30080"
-     inkscape:window-y="-32000"
-     inkscape:window-maximized="0"
-     units="px" />
-  <metadata
-     id="metadata7">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(-264.40274,-282.36221)">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:90px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:-3px;word-spacing:0px;text-anchor:middle;fill:#ff8400;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.66666667"
-       x="299.49063"
-       y="349.3544"
-       id="text4136"
-       sodipodi:linespacing="125%"
-       inkscape:export-xdpi="100"
-       inkscape:export-ydpi="100"><tspan
-         sodipodi:role="line"
-         id="tspan4138"
-         x="297.99063"
-         y="349.3544"
-         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:90px;line-height:125%;font-family:Roboto;-inkscape-font-specification:'Roboto Heavy';text-align:center;letter-spacing:-3px;writing-mode:lr-tb;text-anchor:middle;fill:#ff8400;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.66666667">M</tspan></text>
-  </g>
-</svg>
+     fit-margin-left="11"
+     fit-margin-right="11"
+     fit-margin-bottom="0" /><g
+     style="font-style:normal;font-weight:normal;font-size:90px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff8500;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     id="text4136"
+     transform="translate(11,0.32617188)"><path
+       d="m 89.298828,0.5 0,110.67383 -25.15625,0 0,-74.716799 -10.048828,74.716799 -17.841797,0 -10.595703,-73.007814 0,73.007814 -25.15625048,0 0,-110.67383 37.25585948,0 q 1.640625,9.980469 3.486328,23.515625 L 45.207031,52.179687 51.769531,0.5 l 37.529297,0 z"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:140px;font-family:Impact;-inkscape-font-specification:'Impact Condensed';fill:#ff8500;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="path4180"
+       inkscape:connector-curvature="0" /></g></svg>
