@@ -88,7 +88,7 @@ class DataPointSelectorController {
 
         this.showFilters = true;
         this.showClear = true;
-        this.pageSize = 25;
+        this.pageSize = 50;
         this.cacheSize = 10;
         this.pages = new maUtil.BoundedMap(this.cacheSize);
         
@@ -297,15 +297,21 @@ class DataPointSelectorController {
             page.points = result;
             return result;
         }, error => {
-            pages.delete(startIndex);
+            page.error = error;
             
             if (error.status === -1 && error.resource && error.resource.cancelled) {
                 // request cancelled, ignore error
+                pages.delete(startIndex);
                 return;
             }
-            
+
             const message = error.mangoStatusText || (error + '');
             this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
+            
+            // dont remove the page from the cache for 1 minute, stops repetitive requests with errors
+            this.$timeout(() => {
+                pages.delete(startIndex);
+            }, 60 * 1000);
             
             return this.$q.reject(error);
         }).finally(() => {
