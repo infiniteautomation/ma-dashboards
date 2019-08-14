@@ -86,6 +86,7 @@ class DataPointSelectorController {
         this.$scope = $scope;
         this.$interval = $interval;
 
+        this.showFilters = true;
         this.showClear = true;
         this.pageSize = 25;
         this.cacheSize = 10;

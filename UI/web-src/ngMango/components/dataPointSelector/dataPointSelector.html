@@ -63,8 +63,11 @@
                                         <md-menu-content width="3" class="ma-data-point-selector ma-checkbox-menu" md-colors="::{background: 'background-hue-2'}">
                                             <md-menu-item ng-repeat="column in $ctrl.columns track by column.name">
                                                 <md-button ng-init="model = $ctrl.getSelectedColumnsModel(column)"
-                                                        ng-click="model.value = !model.value; $ctrl.selectedColumnsChanged()" md-prevent-menu-close>
-                                                    <md-checkbox ng-click="$event.stopPropagation()" md-prevent-menu-close ng-model="model.value" ng-change="$ctrl.selectedColumnsChanged()" md-no-ink="true">
+                                                        ng-click="model.value = !model.value; $ctrl.selectedColumnsChanged()" md-prevent-menu-close
+                                                        ng-disabled="model.value && $ctrl.selectedColumns.length === 1 && $ctrl.selectedTags.length === 0">
+                                                    <md-checkbox ng-click="$event.stopPropagation()" md-prevent-menu-close md-no-ink="true"
+                                                            ng-model="model.value" ng-change="$ctrl.selectedColumnsChanged()"
+                                                            ng-disabled="model.value && $ctrl.selectedColumns.length === 1 && $ctrl.selectedTags.length === 0">
                                                         <span ma-tr="{{column.label}}"></span>
                                                     </md-checkbox>
                                                 </md-button>
@@ -79,8 +82,11 @@
                                         <md-menu-content width="3" class="ma-data-point-selector" md-colors="::{background: 'background-hue-2'}">
                                             <md-menu-item ng-repeat="tag in $ctrl.availableTags track by tag.name">
                                                 <md-button ng-init="model = $ctrl.getSelectedTagsModel(tag)"
-                                                        ng-click="model.value = !model.value; $ctrl.selectedTagsChanged()" md-prevent-menu-close>
-                                                    <md-checkbox ng-click="$event.stopPropagation()" md-prevent-menu-close ng-model="model.value" ng-change="$ctrl.selectedTagsChanged()" md-no-ink="true">
+                                                        ng-click="model.value = !model.value; $ctrl.selectedTagsChanged()" md-prevent-menu-close
+                                                        ng-disabled="model.value && $ctrl.selectedColumns.length === 0 && $ctrl.selectedTags.length === 1">
+                                                    <md-checkbox ng-click="$event.stopPropagation()" md-prevent-menu-close md-no-ink="true"
+                                                            ng-model="model.value" ng-change="$ctrl.selectedTagsChanged()"
+                                                            ng-disabled="model.value && $ctrl.selectedColumns.length === 0 && $ctrl.selectedTags.length === 1">
                                                         <span ng-bind="tag.name"></span>
                                                     </md-checkbox>
                                                 </md-button>
