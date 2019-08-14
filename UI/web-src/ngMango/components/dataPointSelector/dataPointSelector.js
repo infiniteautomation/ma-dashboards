@@ -15,17 +15,17 @@ const defaultColumns = [
     {name: 'enabled', label: 'common.enabled', boolean: true},
     {name: 'readPermission', label: 'pointEdit.props.permission.read'},
     {name: 'setPermission', label: 'pointEdit.props.permission.set'},
-    {name: 'unit', label: 'pointEdit.props.unit'},
-    {name: 'chartColour', label: 'pointEdit.props.chartColour'},
-    {name: 'plotType', label: 'pointEdit.plotType', exact: true},
-    {name: 'rollup', label: 'common.rollup'},
+    {name: 'unit', label: 'pointEdit.props.unit', filterable: false, sortable: false},
+    {name: 'chartColour', label: 'pointEdit.props.chartColour', filterable: false, sortable: false},
+    {name: 'plotType', label: 'pointEdit.plotType', filterable: false, sortable: false},
+    {name: 'rollup', label: 'common.rollup', exact: true},
     {name: 'templateXid', label: 'ui.app.templateXid'},
-    {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
+    {name: 'integralUnit', label: 'pointEdit.props.integralUnit', filterable: false, sortable: false},
     {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', numeric: true},
-    {name: 'simplifyType', label: 'pointEdit.props.simplifyType'},
-    {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', numeric: true},
-    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', numeric: true},
-    {name: 'value', label: 'ui.app.pointValue'}
+    {name: 'simplifyType', label: 'pointEdit.props.simplifyType', filterable: false, sortable: false},
+    {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', numeric: true, filterable: false, sortable: false},
+    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', numeric: true, filterable: false, sortable: false},
+    {name: 'value', label: 'ui.app.pointValue', filterable: false, sortable: false}
 ];
 
 const applyFilter = function(queryBuilder) {
@@ -204,7 +204,9 @@ class DataPointSelectorController {
                 property: column.name.split('.'),
                 columnName: column.name,
                 filter: filters[column.name] || null,
-                applyFilter
+                applyFilter,
+                filterable: column.hasOwnProperty('filterable') ? !!column.filterable : true,
+                sortable: column.hasOwnProperty('sortable') ? !!column.sortable : true
             });
         });
 

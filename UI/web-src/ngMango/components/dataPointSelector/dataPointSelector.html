@@ -99,9 +99,9 @@
                     </md-menu-bar>
 
                 </div>
-                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-click="$ctrl.sortBy(column)" ng-if="column.name !== 'value'" tabindex="1">
+                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-click="column.sortable && $ctrl.sortBy(column)" ng-if="column.name !== 'value'" tabindex="1">
                     <span ma-tr="{{column.label}}"></span>
-                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="$ctrl.sort[0].columnName === column.columnName" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>
+                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="column.sortable && $ctrl.sort[0].columnName === column.columnName" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>
                 </div>
                 <div ng-repeat="tag in $ctrl.selectedTags track by tag.name" ng-click="$ctrl.sortBy(tag)" tabindex="1">
                     <span ma-tr="{{tag.label}}" ma-tr-args="tag.labelArgs"></span>
@@ -112,7 +112,7 @@
             <div class="ma-virtual-repeat-table-row" ng-if="$ctrl.showFilters" class="ma-filter-header">
                 <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-if="column.name !== 'value'">
-                    <md-input-container md-no-float="true">
+                    <md-input-container md-no-float="true" ng-if="column.filterable">
                         <input ng-model="column.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
                         <md-button ng-show="!!column.filter" class="ma-input-button md-icon-button" ng-click="column.filter = null; $ctrl.filterChanged()">
                             <md-icon>clear</md-icon>
