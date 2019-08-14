@@ -3,6 +3,7 @@
     "short_name": "Mango UI",
     "start_url": "/ui/",
     "display": "standalone",
+    "background_color": "#303030",
     "icons": [
         {
             "src": "/modules/mangoUI/web/img/icon36.png",
