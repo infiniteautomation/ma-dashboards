@@ -62,23 +62,28 @@ class scriptContextController {
     }
 
     contextPointsToPoints(contextPoints) {
-        return contextPoints.map(contextPoint => {
-            return this.points.get(contextPoint) || {
-                xid: contextPoint[this.xidProp]
-            };
-        });
+        if (Array.isArray(contextPoints)) {
+            return contextPoints.map(contextPoint => {
+                return this.points.get(contextPoint) || {
+                    xid: contextPoint[this.xidProp]
+                };
+            });
+        }
     }
 
     pointsToContextPoints(points) {
-        return points.map(point => {
-            const contextPoint = {
-                variableName: '',
-                contextUpdate: false,
-                [this.xidProp]: point.xid
-            };
-            this.points.set(contextPoint, point);
-            return contextPoint;
-        });
+        if (Array.isArray(points)) {
+            const xidToContextPoint = this.maUtil.createMapObject(this.contextPoints, this.xidProp);
+            return points.map(point => {
+                const contextPoint = xidToContextPoint[point.xid] || {
+                    variableName: '',
+                    contextUpdate: false,
+                    [this.xidProp]: point.xid
+                };
+                this.points.set(contextPoint, point);
+                return contextPoint;
+            });
+        }
     }
     
     getPoint(contextPoint) {
