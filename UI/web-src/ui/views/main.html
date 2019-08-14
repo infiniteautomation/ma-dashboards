@@ -28,6 +28,12 @@
                 <span ma-tr="ui.app.userProfile"></span>
               </md-button>
             </md-menu-item>
+            <md-menu-item ng-if="installPrompt.canPrompt()">
+                <md-button ng-click="installPrompt.prompt($event)">
+                    <md-icon>add_to_home_screen</md-icon>
+                    <span ma-tr="login.ui.installApp"></span>
+                </md-button>
+            </md-menu-item>
             <md-menu-item>
               <md-button aria-label="{{'header.logout'|maTr}}" ui-sref="logout">
                 <md-icon md-menu-align-target>power_settings_new</md-icon>

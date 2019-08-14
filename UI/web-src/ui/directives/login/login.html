@@ -34,13 +34,7 @@
 	</md-card-content>
 	<md-card-actions layout="row" layout-align="start center">
         <a ui-sref="forgotPassword({username: username})" tabindex="4" ma-tr="login.forgotYourPassword"></a>
-        
         <div flex></div>
-        
-        <md-button ng-if="installPrompt.canPrompt()" class="md-icon-button" ng-click="installPrompt.prompt($event)">
-            <md-icon>add_to_home_screen</md-icon>
-            <md-tooltip><span ma-tr="login.ui.installApp"></span></md-tooltip>
-        </md-button>
 	   <md-button type="submit" ng-click="doLogin()" tabindex="3" ma-tr="login.loginButton" class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}"></md-button>
     </md-card-actions>
     </form>

@@ -98,7 +98,9 @@ uiApp.constant('MA_UI_INSTALL_PROMPT', {
     prompt(userEvent) {
         this.event.prompt();
         return this.event.userChoice.then(choice => {
-            delete this.event;
+            if (choice.outcome === 'accepted') {
+                delete this.event;
+            }
         });
     }
 });
@@ -257,11 +259,12 @@ uiApp.run([
     '$exceptionHandler',
     'maUiLoginRedirector',
     '$anchorScroll',
+    'MA_UI_INSTALL_PROMPT',
     '$injector',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
-        $anchorScroll, $injector) {
+        $anchorScroll, installPrompt, $injector) {
 
     if (uiSettings.googleAnalyticsPropertyId) {
         webAnalytics.enableGoogleAnalytics(uiSettings.googleAnalyticsPropertyId);
@@ -278,6 +281,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.$state = $state;
     $rootScope.pageOpts = {};
     $rootScope.$log = $log;
+    $rootScope.installPrompt = installPrompt;
 
     // This function basically does what Angular UI router does and resolves the promises in the resolve object
     // then invokes templateProvider to get the template and put it in the $templateCache.

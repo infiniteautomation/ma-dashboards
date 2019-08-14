@@ -5,4 +5,10 @@
   <div layout layout-align="center center">
     <ma-ui-login flex="100" flex-gt-xs="65" flex-gt-sm="50" flex-gt-md="30" flex-gt-lg="25"></ma-ui-login>
   </div>
+  <div layout layout-align="center center">
+    <md-button ng-if="installPrompt.canPrompt()" ng-click="installPrompt.prompt($event)">
+        <md-icon>add_to_home_screen</md-icon>
+        <span ma-tr="login.ui.installApp"></span>
+    </md-button>
+  </div>
 </div>
