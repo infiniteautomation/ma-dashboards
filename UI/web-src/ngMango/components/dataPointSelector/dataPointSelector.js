@@ -217,7 +217,7 @@ class DataPointSelectorController {
     
     updateAvailableTags(keys) {
         keys.forEach(k => {
-            if (!this.tags.has(k)) {
+            if (!this.tags.has(k) && k !== 'name' && k !== 'device') {
                 const columnName = `tags.${k}`;
                 this.tags.set(k, {
                     name: k,
