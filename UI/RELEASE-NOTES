@@ -5,6 +5,8 @@
 * Add button to install Mango UI as an app to login screen and user menu
 * Add ma-tile-map component for displaying OpenStreetMap or Mapbox maps
 * Order log files by date on server status page
+* Un-authenticated users are redirected to /ui instead of /ui/login, ensures auto login users get redirected to their home URL
+* Add help page name that is open in sidebar to url parameter
 
 *Version 3.6.4*
 * Transclude content of indicator into template
