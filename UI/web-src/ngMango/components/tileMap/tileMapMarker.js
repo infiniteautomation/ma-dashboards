@@ -86,7 +86,7 @@ class TileMapMarkerController {
             if ($clone.contents().length) {
                 $scope.$marker = this.marker;
                 $scope.$markerCtrl = this;
-                this.marker.bindPopup($clone[0]);
+                this.marker.bindPopup($clone[0], this.popupOptions);
             } else {
                 $clone.remove();
                 $scope.$destroy();
@@ -130,6 +130,7 @@ function tileMapMarkerDirective() {
         bindToController: {
             coordinates: '<',
             options: '<?',
+            popupOptions: '<?',
             tooltip: '@?',
             onDrag: '&?',
             onClick: '&?',

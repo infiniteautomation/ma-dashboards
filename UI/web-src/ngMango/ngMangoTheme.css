@@ -51,7 +51,7 @@ ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:focus {
 	outline: none;
 }
 
-ma-tile-map.md-THEME_NAME-theme.leaflet-container .leaflet-popup-content-wrapper a {
+ma-tile-map.md-THEME_NAME-theme.leaflet-container .leaflet-popup-content-wrapper a:not(.md-button) {
 	color: '{{accent-500}}';
 }
 

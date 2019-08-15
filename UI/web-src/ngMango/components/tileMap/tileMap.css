@@ -4,6 +4,21 @@ ma-tile-map {
 	z-index: 1;
 }
 
+ma-tile-map.leaflet-container a {
+	color: inherit;
+}
+
+ma-tile-map.leaflet-container .leaflet-bar a,
+ma-tile-map.leaflet-container .leaflet-bar a:hover {
+	color: black;
+}
+
+ma-tile-map.leaflet-container {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
 ma-tile-map.leaflet-container .leaflet-popup-content-wrapper,
 ma-tile-map.leaflet-container .leaflet-popup-tip,
 ma-tile-map.leaflet-container .leaflet-tooltip {
