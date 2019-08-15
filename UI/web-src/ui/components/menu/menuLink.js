@@ -18,7 +18,7 @@ function MenuLinkController($state, Translate) {
                 this.href = this.item.href;
                 this.target = this.item.target || '_self';
             } else {
-                this.href = $state.href(this.item.name);
+                this.href = $state.href(this.item.name, {helpOpen: null});
                 this.target = '_self';
             }
             

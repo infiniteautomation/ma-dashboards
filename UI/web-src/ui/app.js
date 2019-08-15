@@ -326,6 +326,9 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     };
 
     $rootScope.openHelp = function(helpPageState) {
+        if (!helpPageState && $state.params.helpOpen) {
+            helpPageState = $state.get($state.params.helpOpen);
+        }
         if (!helpPageState && $state.params.helpPage) {
             helpPageState = $state.get($state.params.helpPage);
         }
@@ -335,14 +338,14 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             return;
         }
         
-        $rootScope.pageOpts.newWindowHelpUrl = $state.href(helpPageState);
+        $rootScope.pageOpts.newWindowHelpUrl = $state.href(helpPageState, {helpOpen: null});
 
         // put the template in the cache and then set the help url
         getTemplateUrl(helpPageState).then(templateUrl => {
             // getTemplateUrl returns ES6 promise not AngularJS $q promise, call $scope.$apply
             $rootScope.$apply(() => {
                 this.pageOpts.helpUrl = templateUrl;
-                $state.go('.', {helpOpen: true}, {location: 'replace', notify: false});
+                $state.go('.', {helpOpen: helpPageState.name}, {location: 'replace', notify: false});
             });
         });
     };
