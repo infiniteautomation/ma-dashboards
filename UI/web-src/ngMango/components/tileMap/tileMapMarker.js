@@ -97,6 +97,8 @@ class TileMapMarkerController {
     }
     
     updateIcon() {
+        const defaultIcon = this.mapCtrl.leaflet.Marker.prototype.options.icon;
+        
         let icon;
         if (this.icon instanceof this.mapCtrl.leaflet.Icon) {
             icon = this.icon;
@@ -107,8 +109,15 @@ class TileMapMarkerController {
         } else if (this.icon && typeof this.icon === 'object') {
             icon = this.mapCtrl.leaflet.icon(this.icon);
         } else {
-            icon = this.mapCtrl.leaflet.Marker.prototype.options.icon;
+            icon = defaultIcon;
         }
+        
+        if (!('shadowUrl' in icon.options)) {
+            icon.options.shadowUrl = defaultIcon.options.shadowUrl;
+            icon.options.shadowSize = defaultIcon.options.shadowSize;
+            icon.options.shadowAnchor = defaultIcon.options.shadowAnchor || defaultIcon.options.iconAnchor;
+        }
+        
         this.marker.setIcon(icon);
     }
 }
