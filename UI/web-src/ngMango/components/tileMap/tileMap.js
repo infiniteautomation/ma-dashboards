@@ -40,6 +40,8 @@
  * see <a href="https://leafletjs.com/reference-1.5.0.html#map-option" target="_blank">documentation</a>
  */
 
+import './tileMap.css';
+
 class TileMapController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', '$element', '$transclude', '$injector']; }
