@@ -139,12 +139,14 @@ function dropDown($parse, $document, $injector, $animate, $window) {
                 });
                 
                 this.onOpen({$dropDown: this});
+                this.transcludeScope.$broadcast('maDropDownOpen');
                 
                 this.openAnimation = $animate.addClass(this.$dropDown, 'ma-open');
                 
                 this.openAnimation.then(() => {
                     this.focus();
                     this.onOpened({$dropDown: this});
+                    this.transcludeScope.$broadcast('maDropDownOpened');
                 }, error => {
                     // cancelled, dont care
                 });
@@ -155,16 +157,19 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             if (this.isOpen()) {
                 this.cancelAnimations();
                 this.onClose({$dropDown: this});
+                this.transcludeScope.$broadcast('maDropDownClose');
 
                 // cant use $animate.leave as it removes the element (instead of detach), destroying its event handlers
                 this.closeAnimation = $animate.removeClass(this.$dropDown, 'ma-open');
                 
                 this.closeAnimation.then(() => {
+                    const tScope = this.transcludeScope;
                     if (this.destroyOnClose) {
                         this.destroyElement();
                     } else {
                         this.$dropDown.detach();
                     }
+                    tScope.$broadcast('maDropDownClosed');
                     this.onClosed({$dropDown: this});
                 }, error => {
                     // cancelled, dont care

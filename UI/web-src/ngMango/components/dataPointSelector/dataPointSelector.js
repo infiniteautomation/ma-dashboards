@@ -134,6 +134,12 @@ class DataPointSelectorController {
             this.updateAvailableTags(keys);
             this.getPoints();
         });
+        
+        this.$scope.$on('maDropDownClose', event => {
+            if (this.mdMenuCtrl) {
+                this.mdMenuCtrl.close(false, {closeAll: true});
+            }
+        });
     }
     
     $onDestroy() {
@@ -587,6 +593,11 @@ class DataPointSelectorController {
         }
         
         this.setViewValue();
+    }
+    
+    openMenu(event, mdMenuCtrl) {
+        this.mdMenuCtrl = mdMenuCtrl;
+        this.mdMenuCtrl.open(event);
     }
 }
 
