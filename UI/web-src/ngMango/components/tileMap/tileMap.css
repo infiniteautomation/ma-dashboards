@@ -1,4 +1,11 @@
 ma-tile-map {
 	display: block;
 	height: 600px;
+	z-index: 1;
+}
+
+ma-tile-map.leaflet-container .leaflet-popup-content-wrapper,
+ma-tile-map.leaflet-container .leaflet-popup-tip,
+ma-tile-map.leaflet-container .leaflet-tooltip {
+	border-color: currentColor;
 }

@@ -50,3 +50,14 @@ ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:focus {
 	color: '{{background-hue-2-contrast}}';
 	outline: none;
 }
+
+ma-tile-map.md-THEME_NAME-theme.leaflet-container .leaflet-popup-content-wrapper a {
+	color: '{{accent-500}}';
+}
+
+ma-tile-map.md-THEME_NAME-theme.leaflet-container .leaflet-popup-content-wrapper,
+ma-tile-map.md-THEME_NAME-theme.leaflet-container .leaflet-popup-tip,
+ma-tile-map.md-THEME_NAME-theme.leaflet-container .leaflet-tooltip {
+	background-color: '{{background-default}}';
+	color: '{{background-contrast}}';
+}

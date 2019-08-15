@@ -54,6 +54,9 @@ class TileMapController {
         if ($injector.has('maUiSettings')) {
             this.uiSettings = $injector.get('maUiSettings');
         }
+        if ($injector.has('$mdTheming')) {
+            $injector.get('$mdTheming')($element);
+        }
         
         this.automaticTileLayers = true;
         this.center = [0, 0];

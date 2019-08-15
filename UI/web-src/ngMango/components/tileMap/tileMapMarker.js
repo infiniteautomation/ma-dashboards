@@ -40,7 +40,8 @@ class TileMapMarkerController {
         if (!this.marker) return;
         
         if (changes.coordinates && this.coordinates) {
-            this.marker.setLatLng(this.mapCtrl.parseLatLong(this.coordinates));
+            const coords = this.mapCtrl.parseLatLong(this.coordinates) || [0, 0];
+            this.marker.setLatLng(coords);
         }
 
         if (changes.tooltip && this.tooltip) {
@@ -53,7 +54,8 @@ class TileMapMarkerController {
     }
 
     $onInit() {
-        this.marker = this.mapCtrl.leaflet.marker(this.mapCtrl.parseLatLong(this.coordinates), this.options)
+        const coords = this.mapCtrl.parseLatLong(this.coordinates) || [0, 0];
+        this.marker = this.mapCtrl.leaflet.marker(coords, this.options)
             .addTo(this.$scope.$layer);
 
         if (this.tooltip) {
