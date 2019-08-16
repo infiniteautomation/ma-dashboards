@@ -69,8 +69,8 @@ import noDataForPeriod from '../img/noDataForPeriod.svg';
  * @param {boolean=} [auto-rollup-interval=false] If set to `true` the rollup interval will automatically be set based on the
  *     to-from duration and rollup type.  `DELTA` rollup type will have a more chunked rollup interval.
  *     If turned on the manually set `rollup-interval` value will be ignored.
- * @param {number=} simplifyTolerance Only used if rollup is set to SIMPLIFY. Sets the tolerance for the simplify algorithm.
- * @param {number=} [simplifyTarget=1000] Only used if rollup is set to SIMPLIFY and simplifyTolerance is not set.
+ * @param {number=} simplify-tolerance Only used if rollup is set to SIMPLIFY. Sets the tolerance for the simplify algorithm.
+ * @param {number=} [simplify-target=1000] Only used if rollup is set to SIMPLIFY and simplifyTolerance is not set.
  *     Sets the target number of values for the simplify algorithm.
  * @param {boolean=} [bookend=true] Insert bookend values at the start and end of the time range for ease of charting.
  * @usage
