@@ -152,6 +152,10 @@ function dialog($compile, $parse, $q) {
             });
         }
         
+        isOpen() {
+            return !!this.dialogPromise;
+        }
+        
         hide(result) {
             $q.resolve(this.canHide ? this.canHide(result) : true).then(shouldHide => {
                 if (shouldHide) {
