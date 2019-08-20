@@ -55,7 +55,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 delete menuItem.templateProvider;
             }
 
-            if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href) {
+            if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href && !menuItem.redirectTo) {
                 menuItem.template = '<div ui-view flex="noshrink" layout="column"></div>';
                 menuItem.abstract = true;
             }

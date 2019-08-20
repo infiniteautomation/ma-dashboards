@@ -412,6 +412,12 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             return;
         }
         
+        if (toState.redirectTo) {
+            event.preventDefault();
+            $state.go(toState.redirectTo, toParams);
+            return;
+        }
+        
         if ($state.includes('ui') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }
