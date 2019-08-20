@@ -148,11 +148,14 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
         
             const $element = this.$element;
             
+            let previousValue = null;
+            let valueChanged = false;
+            
             // manually add and remove classes rather than using ng-class as point values can
             // change rapidly and result in huge slow downs / heaps of digest loops
             if (!isPointChange && this.point) {
-                const valueChanged = this.previousPointValue != null && this.point.value !== this.previousPointValue;
-                this.previousPointValue = this.point.value;
+                valueChanged = this.previousPointValue != null && this.point.value !== this.previousPointValue;
+                previousValue = this.previousPointValue = this.point.value;
                 
                 $element.addClass('ma-point-value-time-changed');
                 if (valueChanged) {
@@ -187,7 +190,14 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
             }
 
             if (this.onValueUpdated) {
-                this.onValueUpdated({point: this.point, value: this.value});
+                this.onValueUpdated({
+                    point: this.point, // TODO Mango 3.7 deprecate
+                    value: this.value, // TODO Mango 3.7 deprecate
+                    $point: this.point,
+                    $value: this.value,
+                    $pointChanged: isPointChange,
+                    $valueChanged: valueChanged
+                });
             }
         }
         
