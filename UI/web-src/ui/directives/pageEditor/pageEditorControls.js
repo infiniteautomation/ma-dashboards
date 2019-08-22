@@ -102,8 +102,8 @@ class PageEditorControlsController {
         if (this.$state.params.pageXid) {
             this.loadPage(this.$state.params.pageXid);
         } else if (this.$state.params.templateUrl) {
-            this.$templateRequest(this.$state.params.templateUrl).then(() => {
-                this.createNewPage();
+            this.$templateRequest(this.$state.params.templateUrl).then(markup => {
+                this.createNewPage(markup);
             });
         } else if (this.$state.params.markup) {
             this.createNewPage(this.$state.params.markup);
