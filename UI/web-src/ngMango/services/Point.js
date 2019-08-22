@@ -456,32 +456,38 @@ function dataPointProvider() {
             },
             
             setValue(value, options) {
-            	options = options || {};
-            	
-            	const dataType = this.pointLocator.dataType;
-            	let unitConversion = false;
-            	
-            	if (!value.value) {
-            		if (dataType === 'NUMERIC') {
-            			value = Number(value);
-            			unitConversion = true;
-            		} else if (dataType === 'MULTISTATE') {
-            			if (/^\d+$/.test(value)) {
-            				value = parseInt(value, 10);
-            			}
-            		}
-            		value = {
-            		    value: value,
-            		    dataType: dataType,
-                        annotation: 'Set from web by user: ' + User.current.username
-            		};
+                const params = {};
+                const data = {};
+                
+            	if (value != null && typeof value === 'object') {
+            	    Object.assign(data, value);
+            	} else {
+            	    data.value = value;
             	}
-        
-            	const url = '/rest/v1/point-values/' + encodeURIComponent(this.xid) + '?unitConversion=' + !!unitConversion;
-            	return $http.put(url, value, {
-            		params: {
-            			'unitConversion': options.converted
-            		}
+            	
+            	if (!data.dataType) {
+            	    data.dataType = this.dataType;
+            	}
+                if (!data.annotation) {
+                    data.annotation = `Set from web by user: ${User.current.username}`;
+                }
+
+            	if (data.dataType === 'NUMERIC') {
+                    if (typeof data.value === 'string') {
+                        data.value = Number(data.value);
+                    }
+                    params.unitConversion = options && 'unitConversion' in options ? !!options.unitConversion : true;
+                } else if (data.dataType === 'MULTISTATE') {
+                    if (typeof data.value === 'string' && /^\d+$/.test(data.value)) {
+                        data.value = Number.parseInt(data.value, 10);
+                    }
+                }
+
+            	return $http({
+            	    method: 'PUT',
+            	    url: `/rest/v1/point-values/${encodeURIComponent(this.xid)}`,
+            	    data,
+            	    params
             	});
             },
         
