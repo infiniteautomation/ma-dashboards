@@ -476,7 +476,7 @@ function dataPointProvider() {
                     if (typeof data.value === 'string') {
                         data.value = Number(data.value);
                     }
-                    params.unitConversion = options && 'unitConversion' in options ? !!options.unitConversion : true;
+                    params.unitConversion = options && 'converted' in options ? !!options.converted : true;
                 } else if (data.dataType === 'MULTISTATE') {
                     if (typeof data.value === 'string' && /^\d+$/.test(data.value)) {
                         data.value = Number.parseInt(data.value, 10);
