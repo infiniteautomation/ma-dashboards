@@ -1,10 +1,35 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
 import angular from 'angular';
 
+/**
+ * @ngdoc directive
+ * @name ngMango.directive:maSvg
+ * @restrict E
+ * @description
+ * Used to load a SVG into the page and apply AngularJS directives to elements inside the SVG without modifying the SVG file.
+ * You should use <a href="https://docs.angularjs.org/api/ng/directive/ngInclude" target="_blank">ngInclude</a> to specify the URL of the SVG file. 
+ * To apply AngularJS directives (or any other attributes) to elements inside the SVG file you must add child elements inside the <code>ma-svg</code> element.
+ * We recommend using <code>div</code> elements, although it should not matter which element type you use.
+ * These child elements must have a <code>ma-selector</code> attribute which is set to a
+ * <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors" target="_blank">CSS selector</a> string.
+ * This selector is used to locate elements inside the SVG file, any other attribute on the <code>div</code> element will be applied to the located
+ * SVG elements.
+ * 
+ * @param {string} ng-include URL of the SVG file to load.
+ * 
+ * @usage
+ * <ma-svg ng-include="'/path/to/my/image.svg'">
+ *     <!-- Find the SVG element with id 'indicator' and add ng-style to it -->
+ *     <div ma-selector="#indicator" ng-style="{fill: $ctrl.fillColor}"></div>
+ *     
+ *     <!-- Find every SVG rect with class 'spinner' and add ng-class to them -->
+ *     <div ma-selector="rect.spinner" ng-class="{'ma-spin-counterclockwise': $ctrl.spin}"></div>
+ * </ma-svg>
+ */
 
 svg.$inject = ['$document', '$templateCache'];
 function svg($document, $templateCache) {

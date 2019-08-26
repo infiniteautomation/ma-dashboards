@@ -50,7 +50,7 @@
 
 <ma-svg ng-include="'/modules/mangoUI/web/img/status-panel.svg'">
     <div ma-selector="#indicator" ng-style="{'fill': indicatorStatus.value === 1 ? 'salmon' : indicatorStatus.value === 2 ? 'turquoise' : 'none'}"></div>
-    <div ma-selector="#spinner" ng-class="{'ma-spin-counterclockwise': !page.spin, 'ma-spin-clockwise': page.spin}"></div>
+    <div ma-selector="#spinner" ng-style="{'transform-origin': '150px 300px'}" ng-class="{'ma-spin-counterclockwise': !page.spin, 'ma-spin-clockwise': page.spin}"></div>
 </ma-svg>
 
 </ma-ui-dual-pane-editor>
