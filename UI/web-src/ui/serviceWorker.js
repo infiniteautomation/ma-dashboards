@@ -3,13 +3,31 @@
  * @author Jared Wiltshire
  */
 
-/**
- * This service worker currently does nothing. It was only added to meet the criteria for prompting to install the application.
- * https://developers.google.com/web/fundamentals/app-install-banners/#criteria 
- */
+/* global self, workbox */
 
-/* global self */
+workbox.core.skipWaiting();
+workbox.core.clientsClaim();
 
-self.addEventListener('fetch', event => {
-    // do nothing
+//workbox.routing.registerRoute(
+//    new RegExp('/rest/v2/ui-bootstrap/(pre|post)-login$'),
+//    new workbox.strategies.NetworkFirst()
+//);
+//
+//workbox.routing.registerRoute(
+//    new RegExp('/rest/v1/translations/.*'),
+//    new workbox.strategies.NetworkFirst()
+//);
+
+workbox.routing.registerRoute(
+    /\/modules\/[\w-]+\/web\/.*\?v=.+/,
+    new workbox.strategies.CacheFirst()
+);
+
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {
+    directoryIndex: null,
+    cleanUrls: false
 });
+
+workbox.routing.registerNavigationRoute(
+    workbox.precaching.getCacheKeyForURL('/ui/index.html')
+);

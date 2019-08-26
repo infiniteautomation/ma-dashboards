@@ -9,7 +9,6 @@ import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
 import amdConfiguration from '../shims/exportAMD.js';
 import util from './bootstrapUtil.js';
-import serviceWorkerLocation from './serviceWorker';
 
 let beforeinstallpromptEvent;
 window.addEventListener('beforeinstallprompt', e => {
@@ -23,7 +22,7 @@ window.addEventListener('beforeinstallprompt', e => {
  */
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register(serviceWorkerLocation.replace('/modules/mangoUI/web/ui/', '/ui/')).then(registration => {
+        navigator.serviceWorker.register('/ui/serviceWorker.js').then(registration => {
             // all good
         }, error => {
             console.log('ServiceWorker registration failed', error);

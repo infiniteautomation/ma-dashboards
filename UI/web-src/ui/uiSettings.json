@@ -1,6 +1,6 @@
 {
   "titleSuffix": "Mango v3",
-  "logoSrc": "/modules/mangoUI/web/img/logo.svg",
+  "logoSrc": "/ui/img/logo.svg",
   "defaultTheme": "mangoDark",
   "codeTheme": "monokai",
   "googleMapsApiKey": "",

@@ -10,6 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const readPom = require('@infinite-automation/mango-module-tools/readPom');
 const updatePackage = require('@infinite-automation/mango-module-tools/updatePackage');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = readPom().then(pom => {
     return updatePackage(pom);
@@ -76,16 +77,7 @@ module.exports = readPom().then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: 'ui/[name].[ext]?v=[hash]'
-                        }
-                    }]
-                },
-                {
-                    test: /[\\/]serviceWorker\.js$/,
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: 'ui/[name].[ext]?v=[hash]'
+                            name: '[name].[ext]?v=[hash]'
                         }
                     }]
                 },
@@ -94,7 +86,7 @@ module.exports = readPom().then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: 'ui/styles/[name].[ext]?v=[hash]'
+                            name: 'styles/[name].[ext]?v=[hash]'
                         }
                     }]
                 },
@@ -273,7 +265,7 @@ module.exports = readPom().then(pom => {
             new CleanWebpackPlugin(['web']),
             new HtmlWebpackPlugin({
                 template: 'web-src/ui/index.html',
-                filename: 'ui/index.html',
+                filename: 'index.html',
                 chunks: ['mangoUi~ngMango~ngMangoServices', 'mangoUi~ngMango', 'mangoUi']
             }),
             new CopyWebpackPlugin([{
@@ -281,26 +273,32 @@ module.exports = readPom().then(pom => {
                 from: 'vendor/amcharts/+(images|patterns)/**/*'
             }]),
             new CopyWebpackPlugin([{
-                context: 'web-src',
-                from: 'ui/img/**/*'
+                context: 'web-src/ui',
+                from: 'img/**/*'
             }]),
             new CopyWebpackPlugin([{
                 context: 'web-src',
                 from: 'img/**/**'
             }]),
             new CopyWebpackPlugin([{
-                context: 'web-src',
-                from: 'ui/views/examples/layouts/*.html'
+                context: 'web-src/ui',
+                from: 'views/examples/layouts/*.html'
             }]),
             new CopyWebpackPlugin([{
                 context: 'web-src',
                 from: 'configs/**/*'
-            }])
+            }]),
+            new WorkboxPlugin.InjectManifest({
+                swSrc: 'web-src/ui/serviceWorker.js',
+                swDest: 'serviceWorker.js',
+                importWorkboxFrom: 'local',
+                importsDirectory: 'vendor'
+            })
         ],
         output: {
             filename: '[name].js?v=[chunkhash]',
             path: path.resolve(__dirname, 'web'),
-            publicPath: `/modules/${moduleName}/web/`,
+            publicPath: '/ui/',
             libraryTarget: 'umd',
             // the library name is used when exporting the library using UMD, it also is appended to the
             // jsonp callback name (unless overridden as below)
