@@ -19,7 +19,7 @@ class DeleteOutdatedVersions {
         if (mode === 'write') {
             return caches.open(this.cacheName).then(cache => {
                 // delete all requests with matching URL from cache, ignoring the ?v= search parameter
-                return cache.delete(request, {ignoreSearch: true});
+                return cache.delete(request, {ignoreVary: true, ignoreSearch: true});
             }).then(() => request);
         }
         return Promise.resolve(request);
@@ -30,6 +30,9 @@ const moduleResourcesCacheName = 'module-resources';
 
 const moduleResourcesStrategy = new workbox.strategies.CacheFirst({
     cacheName: moduleResourcesCacheName,
+    matchOptions: {
+        ignoreVary: true
+    },
     plugins: [
         new DeleteOutdatedVersions(moduleResourcesCacheName)
     ]
