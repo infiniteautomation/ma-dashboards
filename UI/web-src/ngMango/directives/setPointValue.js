@@ -27,13 +27,14 @@ import setPointValueTemplate from './setPointValue.html';
  * @param {string} [enable-popup="hide"] Set to one of the following values to enable shortcut icons to open stats dialog box
  * for details on the selected point. Options are: `right`, `left`, `up`, or `down` to set the direction the icons will open
  * in. Shortcut icons will be shown on mouse over. Stats dialog will use date range from the date bar.
+ * @param {boolean} [confirm-set=false] If true a confirmation dialog will be presented to the user before setting the point value
  * @usage
  * <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
  <ma-set-point-value point="myPoint"></ma-set-point-value>
  *
  */
-setPointValue.$inject = ['maPointValueController', 'maTranslate', '$q', '$injector'];
-function setPointValue(PointValueController, maTranslate, $q, $injector) {
+setPointValue.$inject = ['maPointValueController', 'maTranslate', '$q', '$injector', 'maDialogHelper'];
+function setPointValue(PointValueController, maTranslate, $q, $injector, maDialogHelper) {
     
     class SetPointValueController extends PointValueController {
         constructor() {
@@ -111,8 +112,9 @@ function setPointValue(PointValueController, maTranslate, $q, $injector) {
         }
     
         selectChanged() {
-            if (this.setOnChange || !this.showButton)
-                this.result = this.point.setValueResult(this.inputValue);
+            if (this.setOnChange || !this.showButton) {
+                this.doSetValue();
+            }
         }
 
         convertRendered() {
@@ -203,6 +205,20 @@ function setPointValue(PointValueController, maTranslate, $q, $injector) {
                 }
             }
         }
+        
+        doSetValue(event) {
+            const value = this.inputValue;
+            const optionSelected = Array.isArray(this.options) && this.options.find(o => o.id === this.inputValue);
+            const optionLabel = optionSelected && optionSelected.label;
+
+            if (true || this.confirmSet) {
+                maDialogHelper.confirm(event, ['ui.app.confirmSetValue', '' + (optionLabel || value)]).then(() => {
+                    this.result = this.point.setValueResult(value);
+                }, e => null);
+            } else {
+                this.result = this.point.setValueResult(value);
+            }
+        }
     }
     
     return {
@@ -225,7 +241,8 @@ function setPointValue(PointValueController, maTranslate, $q, $injector) {
             setOnChange: '<?',
             enablePopup: '@?',
             showRelinquish: '<?',
-            customStep: '<?step'
+            customStep: '<?step',
+            confirmSet: '<?'
         },
         designerInfo: {
             translation: 'ui.components.setPointValue',

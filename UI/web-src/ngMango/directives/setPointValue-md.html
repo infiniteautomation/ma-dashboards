@@ -18,7 +18,7 @@
             </md-select>
 
             <md-button type="submit" class="md-raised md-accent" ng-show="$ctrl.showButton"
-                       ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.result.pending || !$ctrl.point.enabled" ng-click="$ctrl.result=$ctrl.point.setValueResult($ctrl.inputValue)"
+                       ng-disabled="!$ctrl.point.pointLocator.settable || $ctrl.result.pending || !$ctrl.point.enabled" ng-click="$ctrl.doSetValue($event)"
                        ng-class="{'set-pending': $ctrl.result.pending, 'set-success': $ctrl.result.success, 'set-error': $ctrl.result.error, 'md-warn': $ctrl.result.error}"
                        aria-label="{{'common.set' | maTr}}">
                 <div layout="row" layout-align="center center">
