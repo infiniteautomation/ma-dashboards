@@ -42,7 +42,7 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
         }
         
         $onChanges(changes) {
-            if (changes.value && !(!changes.value.currentValue && changes.value.isFirstChange())) {
+            if (changes.value && !(changes.value.currentValue === undefined && changes.value.isFirstChange())) {
                 this.valueChangeHandler();
             }
             if (changes.point && !(!changes.point.currentValue && changes.point.isFirstChange())) {
