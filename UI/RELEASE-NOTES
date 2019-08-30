@@ -1,3 +1,15 @@
+*Version 3.6.6*
+* Fixes for ma-tile-map theming
+* Ability for menu items to redirect to another state
+* Add additional information to point value PointValueController on-value-updated callback
+* Fix PointValueController on-value-updated not being fired for falsy value attributes
+* Don't require setting all fields when sending point value object to maPoint.setValue()
+* Fix creating new pages from examples
+* Add more documentation for ma-svg
+* Add option to confirm setting point value from ma-set-point-value
+* Change folder structure and load all resources from /ui/
+* Pre-cache module resources using service worker
+
 *Version 3.6.5*
 * Add page and component (ma-publisher-editor) for editing publishers (beta)
 * Add new component for selecting data points (ma-data-point-selector)
