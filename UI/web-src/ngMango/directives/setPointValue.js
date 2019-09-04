@@ -211,7 +211,7 @@ function setPointValue(PointValueController, maTranslate, $q, $injector, maDialo
             const optionSelected = Array.isArray(this.options) && this.options.find(o => o.id === this.inputValue);
             const optionLabel = optionSelected && optionSelected.label;
 
-            if (true || this.confirmSet) {
+            if (this.confirmSet) {
                 maDialogHelper.confirm(event, ['ui.app.confirmSetValue', '' + (optionLabel || value)]).then(() => {
                     this.result = this.point.setValueResult(value);
                 }, e => null);
