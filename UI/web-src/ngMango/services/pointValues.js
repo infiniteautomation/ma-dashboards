@@ -14,8 +14,10 @@ function pointValuesProvider() {
 
     this.$get = pointValuesFactory;
     
-    pointValuesFactory.$inject = ['$http', '$q', 'maUtil', '$injector', 'maTemporaryRestResource', 'MA_TIMEOUTS'];
-    function pointValuesFactory($http, $q, Util, $injector, TemporaryRestResource, MA_TIMEOUTS) {
+    pointValuesFactory.$inject = ['$http', '$q', 'maUtil', '$injector', 'maTemporaryRestResource', 'MA_TIMEOUTS', '$cacheFactory'];
+    function pointValuesFactory($http, $q, Util, $injector, TemporaryRestResource, MA_TIMEOUTS, $cacheFactory) {
+        const pointValuesCache = $cacheFactory('maPointValues', {capacity: 25});
+        
         const pointValuesUrl = '/rest/v2/point-values';
         let maDialogHelper, lastToast;
         
@@ -171,7 +173,7 @@ function pointValuesProvider() {
                             'Accept': options.mimeType || 'application/json'
                         },
                         responseType: options.responseType,
-                        cache: !options.latest,
+                        cache: !options.latest ? pointValuesCache : false,
                         params: data
                     }).then(response => {
                         if (options.responseType) {
