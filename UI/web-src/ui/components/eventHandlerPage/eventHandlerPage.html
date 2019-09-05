@@ -4,11 +4,11 @@
     <md-card flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-toolbar class="md-hue-3">
             <div class="md-toolbar-tools">
-                <span ma-tr="events.selectEventHandler"></span>
+                <span ma-tr="ui.eventHandlers.selectEventHandler"></span>
                 <div flex></div>
                 <md-button class="md-raised" ng-click="$ctrl.newEventHandler($event)" ng-if="!$ctrl.$mdMedia('gt-md')">
                     <md-icon>add</md-icon> <span ma-tr="ui.app.new"></span>
-                    <md-tooltip><span ma-tr="events.createEventHandler"></span></md-tooltip>
+                    <md-tooltip><span ma-tr="ui.eventHandlers.createEventHandler"></span></md-tooltip>
                 </md-button>
             </div>
         </md-toolbar>
@@ -31,7 +31,7 @@
             <md-toolbar class="md-hue-3">
                 <div class="md-toolbar-tools">
                     <span ng-if="!$ctrl.eventHandler.isNew()" ma-tr="events.editEventHandler"></span>
-                    <span ng-if="$ctrl.eventHandler.isNew()" ma-tr="events.createEventHandler"></span>
+                    <span ng-if="$ctrl.eventHandler.isNew()" ma-tr="ui.eventHandlers.createEventHandler"></span>
                 </div>
             </md-toolbar>
             <ma-event-handler-editor ng-model="$ctrl.eventHandler" ng-change="$ctrl.eventHandlerSaved()" confirm-discard="true"></ma-event-handler-editor>

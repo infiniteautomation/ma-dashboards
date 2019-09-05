@@ -41,11 +41,11 @@ class eventHandlerProcessEditorController {
 
         this.maEventHandler.runCommand(command, timeout).then(
             response => {
-                this.maDialogHelper.toast(['eventHandlers.commandExcuted']);
+                this.maDialogHelper.toast(['ui.eventHandlers.commandExcuted']);
                 this.commandResponse = response;
         }, error => {
             this.maDialogHelper.toastOptions({
-                textTr: ['eventHandlers.commandError', error.data.cause],
+                textTr: ['ui.eventHandlers.commandError', error.data.cause],
                 classes: 'md-warn'
             }); 
         });
