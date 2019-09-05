@@ -148,12 +148,12 @@ class scriptingEditorController {
 
             if (!this.scriptErrors) {
                 this.maDialogHelper.toastOptions({
-                    textTr: ['scriptingEditor.ui.scriptValidated'],
+                    textTr: ['ui.scriptingEditor.scriptValidated'],
                     hideDelay: 5000
                 });
             } else {
                 this.maDialogHelper.toastOptions({
-                    textTr: ['scriptingEditor.ui.scriptError'],
+                    textTr: ['ui.scriptingEditor.scriptError'],
                     hideDelay: 5000,
                     classes: 'md-warn'
                 });
@@ -163,7 +163,7 @@ class scriptingEditorController {
                 this.scriptErrors = error.data.result.messages;
             } else {
                 this.maDialogHelper.toastOptions({
-                    textTr: ['scriptingEditor.ui.scriptValidationError', error.data.localizedMessage],
+                    textTr: ['ui.scriptingEditor.scriptValidationError', error.data.localizedMessage],
                     hideDelay: 5000,
                     classes: 'md-warn'
                 });
