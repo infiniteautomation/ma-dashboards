@@ -4,7 +4,7 @@
     <md-toolbar class="md-tall md-primary md-hue-1 ma-ui-sidebar-header md-whiteframe-glow-z1">
       <ma-now update-interval="1 MINUTES" output="currentTime"></ma-now>
       <div flex layout="row">
-        <img ng-src="{{uiSettings.logoSrc}}" ng-attr-title="{{::serverInfo.instanceDescription}}" ng-attr-alt="{{::serverInfo.instanceDescription}}">
+        <img ng-src="{{uiSettings.getLogoSrc()}}" ng-attr-title="{{::serverInfo.instanceDescription}}" ng-attr-alt="{{::serverInfo.instanceDescription}}">
         <div flex layout="column" layout-align="start end" class="ma-ui-user-datetime">
           <span ng-bind="currentTime.format('LT')" class="ma-ui-user-time"></span>
           <span ng-bind="currentTime.format('ddd ll')" class="ma-ui-user-date"></span>

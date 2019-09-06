@@ -6,6 +6,7 @@
 import angular from 'angular';
 import interpolatedStyles from '!!raw-loader!../styles/interpolatedStyles.css';
 import defaultUiSettings from '../uiSettings.json';
+import defaultLogo from '../../img/logo.svg';
 
 uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider', 'MA_TIMEOUTS'];
 function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS) {
@@ -244,6 +245,13 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     });
                     maCssInjector.injectStyle(result, 'interpolatedStyles', 'meta[name="user-styles-after-here"]', true, true);
                 }
+            }
+            
+            getLogoSrc() {
+                if (this.logoSrc === defaultUiSettings.logoSrc) {
+                    return defaultLogo;
+                }
+                return this.logoSrc;
             }
         }
         
