@@ -92,7 +92,7 @@ module.exports = readPom().then(pom => {
                         {
                             loader: jsonUrlLoader,
                             options: {
-                                targets: data => ['/logoSrc'],
+                                targets: ['/logoSrc'],
                                 publicPath
                             }
                         }

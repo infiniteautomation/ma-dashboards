@@ -50,7 +50,7 @@ const jsonUrlLoader = function(content, map, meta) {
     const options = Object.assign({}, defaultOptions, loaderUtils.getOptions(this));
 
     const parsed = options.parse(content);
-    const targets = options.targets(parsed, ptr);
+    const targets = typeof options.targets === 'function' ? options.targets(parsed) : options.targets;
     
     const promises = targets.map(p => {
         const pointer = ptr.create(p);
