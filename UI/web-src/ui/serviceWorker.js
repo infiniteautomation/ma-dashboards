@@ -49,7 +49,10 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {
 
 // reply to navigation requests with our index.html from the precache
 workbox.routing.registerNavigationRoute(
-    workbox.precaching.getCacheKeyForURL('/ui/index.html')
+    workbox.precaching.getCacheKeyForURL('/ui/index.html'),
+    {
+        whitelist: [/\/[\w-]*(\?|$)/]
+    }
 );
 
 const moduleForUrl = (url) => {
