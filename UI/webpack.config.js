@@ -12,6 +12,8 @@ const updatePackage = require('@infinite-automation/mango-module-tools/updatePac
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const jsonUrlLoader = require.resolve('./jsonUrlLoader.js');
 
+const publicPath = '/ui/';
+
 module.exports = readPom().then(pom => {
     return updatePackage(pom);
 }).then(packageJson => {
@@ -64,7 +66,7 @@ module.exports = readPom().then(pom => {
                     }]
                 },
                 {
-                    test: /[\\/]manifest\.json$/,
+                    test: /[\\/]ui[\\/]manifest\.json$/,
                     type: 'javascript/auto',
                     use: [
                         {
@@ -77,7 +79,21 @@ module.exports = readPom().then(pom => {
                             loader: jsonUrlLoader,
                             options: {
                                 targets: data => data.icons.map((icon, i) => `/icons/${i}/src`),
-                                publicPath: '/ui/'
+                                publicPath,
+                                exportAsJs: false
+                            }
+                        }
+                    ]
+                },
+                {
+                    test: /[\\/]ui[\\/]uiSettings\.json$/,
+                    type: 'javascript/auto',
+                    use: [
+                        {
+                            loader: jsonUrlLoader,
+                            options: {
+                                targets: data => ['/logoSrc'],
+                                publicPath
                             }
                         }
                     ]
@@ -299,7 +315,7 @@ module.exports = readPom().then(pom => {
         output: {
             filename: '[name].js?v=[chunkhash]',
             path: path.resolve(__dirname, 'web'),
-            publicPath: '/ui/',
+            publicPath,
             libraryTarget: 'umd',
             // the library name is used when exporting the library using UMD, it also is appended to the
             // jsonp callback name (unless overridden as below)
