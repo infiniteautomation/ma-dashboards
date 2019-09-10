@@ -1,20 +1,21 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
 const path = require('path');
-const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const readPom = require('@infinite-automation/mango-module-tools/readPom');
 const updatePackage = require('@infinite-automation/mango-module-tools/updatePackage');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const jsonUrlLoader = require.resolve('./jsonUrlLoader.js');
 
 module.exports = readPom().then(pom => {
     return updatePackage(pom);
 }).then(packageJson => {
+    /*jshint camelcase: false */
     const moduleName = packageJson.com_infiniteautomation.moduleName;
     return {
         // Shim files are a workaround for a bug in webpack (Cannot read property 'call' of undefined - https://github.com/webpack/webpack/issues/959)
@@ -28,16 +29,6 @@ module.exports = readPom().then(pom => {
             rules: [
                 {
                     test: /\.html$/,
-                    exclude: /[\\/]index\.html$/,
-                    use: [{
-                        loader: 'html-loader',
-                        options: {
-                            attrs: ['img:src', 'link:href']
-                        }
-                    }]
-                },
-                {
-                    test: /[\\/]index\.html$/,
                     use: [{
                         loader: 'html-loader',
                         options: {
@@ -64,6 +55,7 @@ module.exports = readPom().then(pom => {
                 },
                 {
                     test: /\.(png|svg|jpg|jpeg|gif)$/,
+                    exclude: /-webfont\.svg$/,
                     use: [{
                         loader: 'file-loader',
                         options: {
@@ -74,12 +66,21 @@ module.exports = readPom().then(pom => {
                 {
                     test: /[\\/]manifest\.json$/,
                     type: 'javascript/auto',
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]?v=[hash]'
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name].[ext]?v=[hash]'
+                            }
+                        },
+                        {
+                            loader: jsonUrlLoader,
+                            options: {
+                                targets: data => data.icons.map((icon, i) => `/icons/${i}/src`),
+                                publicPath: '/ui/'
+                            }
                         }
-                    }]
+                    ]
                 },
                 {
                     test: /[\\/]preBoot\.css$/,
@@ -91,7 +92,7 @@ module.exports = readPom().then(pom => {
                     }]
                 },
                 {
-                    test: /\.(woff|woff2|eot|ttf|otf)$/,
+                    test: /(-webfont\.svg|\.woff|\.woff2|\.eot|\.ttf|\.otf)$/,
                     use: [{
                         loader: 'file-loader',
                         options: {
