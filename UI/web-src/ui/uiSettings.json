@@ -152,6 +152,7 @@
         }
     ]
   },
+  "pwaUseThemeColors": true,
   "pwaAutomaticName": "AUTO",
   "pwaAutomaticNamePrefix": "Mango"
 }

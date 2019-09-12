@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.infiniteautomation.mango.spring.MangoRuntimeContextConfiguration;
@@ -66,6 +67,11 @@ public class BootstrapController {
         this.servletContext = servletContext;
     }
 
+    private void merge(ObjectNode dest, ObjectNode src) throws IOException {
+        ObjectReader updater = objectMapper.readerForUpdating(dest);
+        updater.readValue(src);
+    }
+
     @ApiOperation(value = "Get the PWA (Progressive Web App) manifest")
     @RequestMapping(method = RequestMethod.GET, path = "/pwa-manifest")
     public ObjectNode manifest(@AuthenticationPrincipal User user, UriComponentsBuilder builder) throws IOException {
@@ -81,7 +87,7 @@ public class BootstrapController {
         if (uiSettingsVo != null) {
             Object uiSettingsData = uiSettingsVo.getJsonData();
             if (uiSettingsData instanceof ObjectNode) {
-                uiSettings.setAll((ObjectNode) uiSettingsData);
+                merge(uiSettings, (ObjectNode) uiSettingsData);
             }
         }
 
