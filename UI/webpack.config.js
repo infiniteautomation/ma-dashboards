@@ -66,35 +66,41 @@ module.exports = readPom().then(pom => {
                     }]
                 },
                 {
-                    test: /[\\/]ui[\\/]manifest\.json$/,
-                    type: 'javascript/auto',
-                    use: [
-                        {
-                            loader: 'file-loader',
-                            options: {
-                                name: '[name].[ext]?v=[hash]'
-                            }
-                        },
-                        {
-                            loader: jsonUrlLoader,
-                            options: {
-                                targets: data => data.icons.map((icon, i) => `/icons/${i}/src`),
-                                publicPath,
-                                exportAsJs: false
-                            }
-                        }
-                    ]
-                },
-                {
                     test: /[\\/]ui[\\/]uiSettings\.json$/,
                     type: 'javascript/auto',
-                    use: [
+                    rules: [
                         {
-                            loader: jsonUrlLoader,
-                            options: {
-                                targets: ['/logoSrc'],
-                                publicPath
-                            }
+                            oneOf: [
+                                {
+                                    resourceQuery: /fileLoader/,
+                                    use: [
+                                        {
+                                            loader: 'file-loader',
+                                            options: {
+                                                name: '[name].[ext]?v=[hash]'
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    type: 'json'
+                                }
+                            ]
+                        },
+                        {
+                            use: [
+                                {
+                                    loader: 'json-url-loader',
+                                    options: {
+                                        targets: data => {
+                                            const targets = data.pwaManifest.icons.map((icon, i) => `/pwaManifest/icons/${i}/src`);
+                                            targets.push('/logoSrc');
+                                            return targets;
+                                        },
+                                        publicPath
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },
@@ -255,6 +261,11 @@ module.exports = readPom().then(pom => {
                 requirejs: 'requirejs/require',
                 ace: path.join(__dirname, 'web-src/shims/ace'),
                 angularLocaleCache: path.join(__dirname, 'web-src/shims/angularLocaleCache')
+            }
+        },
+        resolveLoader: {
+            alias: {
+                'json-url-loader': jsonUrlLoader
             }
         },
         //devtool: 'eval',

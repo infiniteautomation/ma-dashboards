@@ -71,13 +71,10 @@ public class BootstrapController {
     public ObjectNode manifest(@AuthenticationPrincipal User user, UriComponentsBuilder builder) throws IOException {
 
         JsonNodeFactory nodeFactory = objectMapper.getNodeFactory();
-        ObjectNode manifest;
-        ObjectNode uiSettings = nodeFactory.objectNode();
-        uiSettings.set("pwaAutomaticName", nodeFactory.textNode("AUTO"));
-        uiSettings.set("pwaAutomaticNamePrefix", nodeFactory.textNode("Mango"));
 
-        try (InputStream in = servletContext.getResourceAsStream("/modules/mangoUI/web/manifest.json")) {
-            manifest = (ObjectNode) objectMapper.readTree(in);
+        ObjectNode uiSettings;
+        try (InputStream in = servletContext.getResourceAsStream("/modules/mangoUI/web/uiSettings.json")) {
+            uiSettings = (ObjectNode) objectMapper.readTree(in);
         }
 
         JsonDataVO uiSettingsVo = this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID);
@@ -88,10 +85,7 @@ public class BootstrapController {
             }
         }
 
-        if (uiSettings.hasNonNull("pwaManifest")) {
-            ObjectNode pwaData = (ObjectNode) uiSettings.get("pwaManifest");
-            manifest.setAll(pwaData);
-        }
+        ObjectNode manifest = (ObjectNode) uiSettings.get("pwaManifest");
 
         if (uiSettings.hasNonNull("pwaAutomaticName")) {
             String mode = uiSettings.get("pwaAutomaticName").textValue();

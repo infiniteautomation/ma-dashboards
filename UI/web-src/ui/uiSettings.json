@@ -134,6 +134,23 @@
     "pointValues": 60000
   },
   "pwaManifest": {
+    "name": "Mango UI",
+    "start_url": "/ui/",
+    "display": "standalone",
+    "theme_color": "#006b93",
+    "background_color": "#303030",
+    "icons": [
+        {
+            "src": "../img/icon192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "../img/icon512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
   },
   "pwaAutomaticName": "AUTO",
   "pwaAutomaticNamePrefix": "Mango"

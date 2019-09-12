@@ -9,7 +9,6 @@ const ptr = require('json-ptr');
 const defaultOptions = {
     parse: content => JSON.parse(content),
     serialize: content => JSON.stringify(content),
-    exportAsJs: true,
     publicPath: '',
     targets: data => []
 };
@@ -64,8 +63,7 @@ const jsonUrlLoader = function(content, map, meta) {
     
     Promise.all(promises).then(() => {
         const serialized = options.serialize(parsed);
-        const result = options.exportAsJs ? `module.exports = ${serialized};` : serialized;
-        callback(null, result, map, meta);
+        callback(null, serialized, map, meta);
     }, error => {
         callback(error);
     });
