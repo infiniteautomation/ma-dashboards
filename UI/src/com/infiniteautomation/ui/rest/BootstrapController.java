@@ -117,8 +117,9 @@ public class BootstrapController {
             }
 
             if (autoName != null) {
-                if (uiSettings.hasNonNull("pwaAutomaticNamePrefix")) {
-                    String prefix = uiSettings.get("pwaAutomaticNamePrefix").asText();
+                String prefix = uiSettings.hasNonNull("pwaAutomaticNamePrefix") ? uiSettings.get("pwaAutomaticNamePrefix").asText() : null;
+
+                if (prefix != null && !prefix.isEmpty()) {
                     manifest.set("name", nodeFactory.textNode(prefix + " (" + autoName + ")"));
                 } else {
                     manifest.set("name", nodeFactory.textNode(autoName));
