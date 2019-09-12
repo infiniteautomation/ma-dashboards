@@ -3,15 +3,25 @@
  */
 package com.infiniteautomation.ui.rest;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.TimeZone;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.infiniteautomation.mango.spring.MangoRuntimeContextConfiguration;
 import com.infiniteautomation.ui.UILifecycle;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
@@ -45,11 +55,78 @@ public class BootstrapController {
 
     private final JsonDataDao jsonDataDao;
     private final SystemSettingsDao systemSettingsDao;
+    private final ObjectMapper objectMapper;
+    private final ServletContext servletContext;
 
     @Autowired
-    public BootstrapController(JsonDataDao jsonDataDao) {
+    public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper, ServletContext servletContext) {
         this.jsonDataDao = jsonDataDao;
         this.systemSettingsDao = SystemSettingsDao.instance;
+        this.objectMapper = objectMapper;
+        this.servletContext = servletContext;
+    }
+
+    @ApiOperation(value = "Get the PWA (Progressive Web App) manifest")
+    @RequestMapping(method = RequestMethod.GET, path = "/pwa-manifest")
+    public ObjectNode manifest(@AuthenticationPrincipal User user, UriComponentsBuilder builder) throws IOException {
+
+        JsonNodeFactory nodeFactory = objectMapper.getNodeFactory();
+        ObjectNode manifest;
+        ObjectNode uiSettings = nodeFactory.objectNode();
+        uiSettings.set("pwaAutomaticName", nodeFactory.textNode("AUTO"));
+        uiSettings.set("pwaAutomaticNamePrefix", nodeFactory.textNode("Mango"));
+
+        try (InputStream in = servletContext.getResourceAsStream("/modules/mangoUI/web/manifest.json")) {
+            manifest = (ObjectNode) objectMapper.readTree(in);
+        }
+
+        JsonDataVO uiSettingsVo = this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID);
+        if (uiSettingsVo != null) {
+            Object uiSettingsData = uiSettingsVo.getJsonData();
+            if (uiSettingsData instanceof ObjectNode) {
+                uiSettings.setAll((ObjectNode) uiSettingsData);
+            }
+        }
+
+        if (uiSettings.hasNonNull("pwaManifest")) {
+            ObjectNode pwaData = (ObjectNode) uiSettings.get("pwaManifest");
+            manifest.setAll(pwaData);
+        }
+
+        if (uiSettings.hasNonNull("pwaAutomaticName")) {
+            String mode = uiSettings.get("pwaAutomaticName").textValue();
+
+            String autoName = null;
+            String instanceDescription = systemSettingsDao.getValue(SystemSettingsDao.INSTANCE_DESCRIPTION);
+            String baseUrl = systemSettingsDao.getValue(SystemSettingsDao.PUBLICLY_RESOLVABLE_BASE_URL);
+            if (baseUrl != null && !baseUrl.isEmpty()) {
+                builder = UriComponentsBuilder.fromHttpUrl(baseUrl);
+            }
+            String host = builder.build().getHost();
+
+            if ("AUTO".equals(mode)) {
+                if (user == null) {
+                    autoName = host;
+                } else {
+                    autoName = instanceDescription;
+                }
+            } else if ("INSTANCE_DESCRIPTION".equals(mode)) {
+                autoName = instanceDescription;
+            } else if ("HOST".equals(mode)) {
+                autoName = host;
+            }
+
+            if (autoName != null) {
+                if (uiSettings.hasNonNull("pwaAutomaticNamePrefix")) {
+                    String prefix = uiSettings.get("pwaAutomaticNamePrefix").asText();
+                    manifest.set("name", nodeFactory.textNode(prefix + " (" + autoName + ")"));
+                } else {
+                    manifest.set("name", nodeFactory.textNode(autoName));
+                }
+            }
+        }
+
+        return manifest;
     }
 
     @ApiOperation(value = "Get the data needed before logging in")

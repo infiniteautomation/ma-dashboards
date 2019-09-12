@@ -132,5 +132,9 @@
     "websocket": 10000,
     "websocketRequest": 10000,
     "pointValues": 60000
-  }
+  },
+  "pwaManifest": {
+  },
+  "pwaAutomaticName": "AUTO",
+  "pwaAutomaticNamePrefix": "Mango"
 }

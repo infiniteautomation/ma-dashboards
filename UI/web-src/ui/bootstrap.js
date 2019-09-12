@@ -9,6 +9,8 @@ import defaultUiSettings from './uiSettings.json';
 import {require as requirejs} from 'requirejs';
 import amdConfiguration from '../shims/exportAMD.js';
 import util from './bootstrapUtil.js';
+// needs to be in web directory for REST controller to read
+import './manifest.json';
 
 let beforeinstallpromptEvent;
 window.addEventListener('beforeinstallprompt', e => {
@@ -129,7 +131,7 @@ Promise.resolve().then(() => {
 }).then(([uiSettings, angularModules, user, preLoginData, postLoginData]) => {
     
     amdConfiguration.defaultVersion = preLoginData.lastUpgradeTime;
-    
+
     uiSettings.mangoModuleNames = [];
     const angularJsModuleNames = ['maUiApp'];
     

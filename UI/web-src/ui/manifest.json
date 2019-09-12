@@ -1,6 +1,5 @@
 {
     "name": "Mango UI",
-    "short_name": "Mango UI",
     "start_url": "/ui/",
     "display": "standalone",
     "theme_color": "#006b93",
