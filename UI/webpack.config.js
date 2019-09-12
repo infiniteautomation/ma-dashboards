@@ -56,7 +56,7 @@ module.exports = readPom().then(pom => {
                     ]
                 },
                 {
-                    test: /\.(png|svg|jpg|jpeg|gif)$/,
+                    test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
                     exclude: /-webfont\.svg$/,
                     use: [{
                         loader: 'file-loader',
