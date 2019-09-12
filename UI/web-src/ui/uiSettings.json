@@ -137,8 +137,8 @@
     "name": "Mango UI",
     "start_url": "/ui/",
     "display": "standalone",
-    "theme_color": "#006b93",
-    "background_color": "#303030",
+    "theme_color": "rgba(0, 107, 147, 1)",
+    "background_color": "rgba(48, 48, 48, 1)",
     "icons": [
         {
             "src": "../img/icon192.png",

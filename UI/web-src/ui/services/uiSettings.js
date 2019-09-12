@@ -124,6 +124,12 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             }
 
             save() {
+                if (this.pwaUseThemeColors) {
+                    /* jshint camelcase: false */
+                    this.pwaManifest.theme_color = $mdColors.getThemeColor('primary-800');
+                    this.pwaManifest.background_color = $mdColors.getThemeColor('background');
+                }
+                
                 const differences = deepDiff(this, defaultUiSettings, excludeProperties);
                 this.userSettingsStore.jsonData = differences;
                 return this.userSettingsStore.$save().then(store => {
