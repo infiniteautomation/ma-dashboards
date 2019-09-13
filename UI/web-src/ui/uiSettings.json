@@ -1,5 +1,5 @@
 {
-  "titleSuffix": "Mango UI",
+  "titleSuffix": "Mango",
   "logoSrc": "../img/logo.svg",
   "defaultTheme": "mangoDark",
   "codeTheme": "monokai",
@@ -134,7 +134,7 @@
     "pointValues": 60000
   },
   "pwaManifest": {
-    "name": "Mango UI",
+    "name": "Mango",
     "start_url": "/ui/",
     "display": "standalone",
     "theme_color": "rgba(0, 107, 147, 1)",
