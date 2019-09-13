@@ -3,14 +3,17 @@
  * @author Jared Wiltshire
  */
 
-/* global self, workbox, caches */
+/* global self, workbox, caches, Response */
 
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
 
-// used to delete outdated versions from a cache whenever a new version is written
-// Needed as the cleanUpModules() function only runs when the UI module is updated and service worker is installed
-class DeleteOutdatedVersions {
+/**
+ * Used to delete out-dated versions of resources from the cache whenever a new version is written.
+ * The cleanUpModules() function will only run when the service worker is installed, and this will not occur unless
+ * the UI module has been updated. We still want to clean up the cache if we get a new version of a resource belonging to any other Mango module.
+ */
+class DeleteOutdatedVersionsPlugin {
     constructor(cacheName) {
         this.cacheName = cacheName;
     }
@@ -26,7 +29,39 @@ class DeleteOutdatedVersions {
     }
 }
 
+/**
+ * Throws an error when the response is not a 2xx status code, causes NetworkFirst strategy to fall back to cache.
+ */
+class ThrowOnErrorPlugin {
+    fetchDidSucceed({request, response}) {
+        if (response.ok) {
+            return response;
+        }
+        throw new Error(`${response.status} ${response.statusText}`);
+    }
+}
+
+/**
+ * Removes the user from the pre-login response before caching.
+ */
+class DontCacheUserPlugin {
+    cacheWillUpdate({request, response, event}) {
+        if (/\/rest\/v2\/ui-bootstrap\/pre-login/.test(request.url)) {
+            return response.json().then(preLoginData => {
+                preLoginData.user = null;
+                return new Response(JSON.stringify(preLoginData), {
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: response.headers
+                });
+            });
+        }
+        return response;
+    }
+}
+
 const moduleResourcesCacheName = 'module-resources';
+const uiBootstrapCacheName = 'ui-bootstrap';
 
 const moduleResourcesStrategy = new workbox.strategies.CacheFirst({
     cacheName: moduleResourcesCacheName,
@@ -34,12 +69,24 @@ const moduleResourcesStrategy = new workbox.strategies.CacheFirst({
         ignoreVary: true
     },
     plugins: [
-        new DeleteOutdatedVersions(moduleResourcesCacheName)
+        new DeleteOutdatedVersionsPlugin(moduleResourcesCacheName)
     ]
 });
 
 // register a route for any versioned resources under /modules/xxx/web
 workbox.routing.registerRoute(/\/modules\/[\w-]+\/web\/.*\?v=.+/, moduleResourcesStrategy);
+
+workbox.routing.registerRoute(/\/rest\/v2\/ui-bootstrap\//, new workbox.strategies.NetworkFirst({
+    cacheName: uiBootstrapCacheName,
+    matchOptions: {
+        ignoreVary: true
+    },
+    networkTimeoutSeconds: 5,
+    plugins: [
+        new ThrowOnErrorPlugin(),
+        new DontCacheUserPlugin()
+    ]
+}));
 
 // precache files from webpack manifest
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {
