@@ -314,7 +314,6 @@
         <md-card-content>
             <p class="ma-default-font">
                 <span ma-tr="ui.app.pwaSettings.information"></span><br>
-                <span ma-tr="ui.app.pwaSettings.warning" md-colors="::{color: 'warn'}"></span>
             </p>
             <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
                 <md-input-container flex="100" flex-gt-md="50">
@@ -327,7 +326,7 @@
                     </md-select>
                 </md-input-container>
                 <div flex="100" flex-gt-md="50">
-                    <md-checkbox ng-model="$ctrl.uiSettings.pwaUseThemeColors" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"><span ma-tr="ui.app.pwaSettings.useThemeColors"></span></md-checkbox>
+                    <md-checkbox class="ma-input-container-height" ng-model="$ctrl.uiSettings.pwaUseThemeColors" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"><span ma-tr="ui.app.pwaSettings.useThemeColors"></span></md-checkbox>
                 </div>
                 <md-input-container ng-if-start="!$ctrl.uiSettings.pwaAutomaticName" flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.pwaSettings.name"></label>
@@ -352,6 +351,9 @@
                     </md-input-container>
                 </div>
             </div>
+            <p class="ma-no-margin-top ma-default-font">
+                <span ma-tr="ui.app.pwaSettings.warning" md-colors="::{color: 'warn'}"></span>
+            </p>
         </md-card-content>
     </md-card>
     
