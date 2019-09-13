@@ -57,9 +57,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
         $mdThemingProvider.setDefaultTheme(defaultTheme);
         $mdThemingProvider.alwaysWatchTheme(true);
         $mdThemingProvider.generateThemesOnDemand(true);
-        $mdThemingProvider.enableBrowserColor({
-            theme: defaultTheme
-        });
     };
     
     this.$get = uiSettingsFactory;
@@ -208,9 +205,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 $mdTheming.generateTheme(themeName);
                 this.activeTheme = dynamicThemeName || themeName;
                 $mdThemingProvider.setDefaultTheme(this.activeTheme);
-                $mdTheming.setBrowserColor({
-                    theme: this.activeTheme
-                });
                 this.activeThemeObj = $mdTheming.THEMES[this.activeTheme];
                 this.generateCustomStyles();
             }
