@@ -339,20 +339,20 @@
 
             <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
                 <div flex="100">
-                    <md-checkbox ng-model="$ctrl.uiSettings.pwaUseThemeColors"><span ma-tr="ui.app.pwaSettings.useThemeColors"></span></md-checkbox>
+                    <md-checkbox ng-model="$ctrl.uiSettings.pwaUseThemeColors" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"><span ma-tr="ui.app.pwaSettings.useThemeColors"></span></md-checkbox>
                 </div>
                 <div ng-if-start="!$ctrl.uiSettings.pwaUseThemeColors" flex="100" flex-gt-md="50" layout layout-align="start center">
-                    <ma-color-picker ng-model="$ctrl.uiSettings.pwaManifest.theme_color"></ma-color-picker> 
+                    <ma-color-picker ng-model="$ctrl.uiSettings.pwaManifest.theme_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"></ma-color-picker> 
                     <md-input-container flex>
                         <label ma-tr="ui.app.pwaSettings.themeColor"></label>
-                        <input ng-model="$ctrl.uiSettings.pwaManifest.theme_color">
+                        <input ng-model="$ctrl.uiSettings.pwaManifest.theme_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()">
                     </md-input-container>
                 </div>
                 <div ng-if-end flex="100" flex-gt-md="50" layout layout-align="start center">
-                    <ma-color-picker ng-model="$ctrl.uiSettings.pwaManifest.background_color"></ma-color-picker> 
+                    <ma-color-picker ng-model="$ctrl.uiSettings.pwaManifest.background_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"></ma-color-picker> 
                     <md-input-container flex>
                         <label ma-tr="ui.app.pwaSettings.backgroundColor"></label>
-                        <input ng-model="$ctrl.uiSettings.pwaManifest.background_color">
+                        <input ng-model="$ctrl.uiSettings.pwaManifest.background_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()">
                     </md-input-container>
                 </div>
             </div>
