@@ -57,9 +57,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
         $mdThemingProvider.setDefaultTheme(defaultTheme);
         $mdThemingProvider.alwaysWatchTheme(true);
         $mdThemingProvider.generateThemesOnDemand(true);
-        $mdThemingProvider.enableBrowserColor({
-            theme: defaultTheme
-        });
     };
     
     this.$get = uiSettingsFactory;
@@ -124,6 +121,12 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             }
 
             save() {
+                if (this.pwaUseThemeColors) {
+                    /* jshint camelcase: false */
+                    this.pwaManifest.theme_color = $mdColors.getThemeColor('primary-800');
+                    this.pwaManifest.background_color = $mdColors.getThemeColor('background');
+                }
+                
                 const differences = deepDiff(this, defaultUiSettings, excludeProperties);
                 this.userSettingsStore.jsonData = differences;
                 return this.userSettingsStore.$save().then(store => {
@@ -202,11 +205,9 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 $mdTheming.generateTheme(themeName);
                 this.activeTheme = dynamicThemeName || themeName;
                 $mdThemingProvider.setDefaultTheme(this.activeTheme);
-                $mdTheming.setBrowserColor({
-                    theme: this.activeTheme
-                });
                 this.activeThemeObj = $mdTheming.THEMES[this.activeTheme];
                 this.generateCustomStyles();
+                this.addThemeColorMetaTags();
             }
             
             themeFromSettings(themeName, themeSettings) {
@@ -244,6 +245,30 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     });
                     maCssInjector.injectStyle(result, 'interpolatedStyles', 'meta[name="user-styles-after-here"]', true, true);
                 }
+            }
+            
+            setMetaTag(name, content) {
+                const head = $window.document.querySelector('head');
+                let metaTagElement = head.querySelector(`meta[name="${name}"]`);
+                if (!metaTagElement) {
+                    metaTagElement = $window.document.createElement('meta');
+                    metaTagElement.setAttribute('name', name);
+                    head.appendChild(metaTagElement);
+                }
+                metaTagElement.setAttribute('content', content);
+            }
+            
+            addThemeColorMetaTags() {
+                /* jshint camelcase: false */
+                let themeColor = this.pwaManifest.theme_color;
+                let backgroundColor = this.pwaManifest.background_color;
+                if (this.pwaUseThemeColors) {
+                    themeColor = $mdColors.getThemeColor('primary-800');
+                    backgroundColor = $mdColors.getThemeColor('background');
+                }
+                
+                this.setMetaTag('theme-color', themeColor);
+                this.setMetaTag('msapplication-navbutton-color', themeColor);
             }
         }
         

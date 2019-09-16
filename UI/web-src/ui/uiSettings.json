@@ -1,6 +1,6 @@
 {
-  "titleSuffix": "Mango v3",
-  "logoSrc": "/ui/img/logo.svg",
+  "titleSuffix": "Mango",
+  "logoSrc": "../img/logo.svg",
   "defaultTheme": "mangoDark",
   "codeTheme": "monokai",
   "googleMapsApiKey": "",
@@ -132,5 +132,27 @@
     "websocket": 10000,
     "websocketRequest": 10000,
     "pointValues": 60000
-  }
+  },
+  "pwaManifest": {
+    "name": "Mango",
+    "start_url": "/ui/",
+    "display": "standalone",
+    "theme_color": "rgba(0, 107, 147, 1)",
+    "background_color": "rgba(48, 48, 48, 1)",
+    "icons": [
+        {
+            "src": "../img/icon192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "../img/icon512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+  },
+  "pwaUseThemeColors": true,
+  "pwaAutomaticName": "AUTO",
+  "pwaAutomaticNamePrefix": "Mango"
 }

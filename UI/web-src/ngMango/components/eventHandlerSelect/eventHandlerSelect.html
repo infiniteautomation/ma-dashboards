@@ -1,10 +1,10 @@
 <md-input-container flex>
     <label ng-transclude="labelSlot">
-        <span ma-tr="events.selectEventHandler"></span>
+        <span ma-tr="ui.eventHandlers.selectEventHandler"></span>
     </label>
     <md-select ma-form-exclude ng-model="$ctrl.selected" ng-change="$ctrl.selectEventHandler()" ng-model-options="{trackBy: '$value.xid'}">
         <md-option ng-if="$ctrl.showNewOption" ng-value="$ctrl.newValue" md-option-empty>
-            <em ma-tr="events.createEventHandler"></em>
+            <em ma-tr="ui.eventHandlers.createEventHandler"></em>
         </md-option>
         <md-option ng-repeat="eventHandler in $ctrl.eventHandlers | orderBy:'name' track by eventHandler.xid" ng-value="eventHandler">
             <span ng-bind="eventHandler.name || eventHandler.xid"></span>

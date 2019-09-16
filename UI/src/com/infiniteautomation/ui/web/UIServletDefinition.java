@@ -18,7 +18,7 @@ public class UIServletDefinition extends ServletDefinition {
 
     @Override
     public HttpServlet getServlet() {
-        return new ForwardingServlet(FORWARD_FROM_PATH, FORDWARD_TO_PATH, "/index.html", false);
+        return new UIServlet(FORWARD_FROM_PATH, FORDWARD_TO_PATH, "/index.html");
     }
 
     @Override

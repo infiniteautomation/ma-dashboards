@@ -1,20 +1,23 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
 const path = require('path');
-const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const readPom = require('@infinite-automation/mango-module-tools/readPom');
 const updatePackage = require('@infinite-automation/mango-module-tools/updatePackage');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const jsonUrlLoader = require.resolve('./jsonUrlLoader.js');
+
+const publicPath = '/ui/';
 
 module.exports = readPom().then(pom => {
     return updatePackage(pom);
 }).then(packageJson => {
+    /*jshint camelcase: false */
     const moduleName = packageJson.com_infiniteautomation.moduleName;
     return {
         // Shim files are a workaround for a bug in webpack (Cannot read property 'call' of undefined - https://github.com/webpack/webpack/issues/959)
@@ -28,16 +31,6 @@ module.exports = readPom().then(pom => {
             rules: [
                 {
                     test: /\.html$/,
-                    exclude: /[\\/]index\.html$/,
-                    use: [{
-                        loader: 'html-loader',
-                        options: {
-                            attrs: ['img:src', 'link:href']
-                        }
-                    }]
-                },
-                {
-                    test: /[\\/]index\.html$/,
                     use: [{
                         loader: 'html-loader',
                         options: {
@@ -63,7 +56,8 @@ module.exports = readPom().then(pom => {
                     ]
                 },
                 {
-                    test: /\.(png|svg|jpg|jpeg|gif)$/,
+                    test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+                    exclude: /-webfont\.svg$/,
                     use: [{
                         loader: 'file-loader',
                         options: {
@@ -72,14 +66,43 @@ module.exports = readPom().then(pom => {
                     }]
                 },
                 {
-                    test: /[\\/]manifest\.json$/,
+                    test: /[\\/]ui[\\/]uiSettings\.json$/,
                     type: 'javascript/auto',
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]?v=[hash]'
+                    rules: [
+                        {
+                            oneOf: [
+                                {
+                                    resourceQuery: /fileLoader/,
+                                    use: [
+                                        {
+                                            loader: 'file-loader',
+                                            options: {
+                                                name: '[name].[ext]?v=[hash]'
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    type: 'json'
+                                }
+                            ]
+                        },
+                        {
+                            use: [
+                                {
+                                    loader: 'json-url-loader',
+                                    options: {
+                                        targets: data => {
+                                            const targets = data.pwaManifest.icons.map((icon, i) => `/pwaManifest/icons/${i}/src`);
+                                            targets.push('/logoSrc');
+                                            return targets;
+                                        },
+                                        publicPath
+                                    }
+                                }
+                            ]
                         }
-                    }]
+                    ]
                 },
                 {
                     test: /[\\/]preBoot\.css$/,
@@ -91,7 +114,7 @@ module.exports = readPom().then(pom => {
                     }]
                 },
                 {
-                    test: /\.(woff|woff2|eot|ttf|otf)$/,
+                    test: /(-webfont\.svg|\.woff|\.woff2|\.eot|\.ttf|\.otf)$/,
                     use: [{
                         loader: 'file-loader',
                         options: {
@@ -240,6 +263,11 @@ module.exports = readPom().then(pom => {
                 angularLocaleCache: path.join(__dirname, 'web-src/shims/angularLocaleCache')
             }
         },
+        resolveLoader: {
+            alias: {
+                'json-url-loader': jsonUrlLoader
+            }
+        },
         //devtool: 'eval',
         optimization: {
             //minimize: false,
@@ -298,7 +326,7 @@ module.exports = readPom().then(pom => {
         output: {
             filename: '[name].js?v=[chunkhash]',
             path: path.resolve(__dirname, 'web'),
-            publicPath: '/ui/',
+            publicPath,
             libraryTarget: 'umd',
             // the library name is used when exporting the library using UMD, it also is appended to the
             // jsonp callback name (unless overridden as below)

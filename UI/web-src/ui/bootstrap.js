@@ -10,6 +10,9 @@ import {require as requirejs} from 'requirejs';
 import amdConfiguration from '../shims/exportAMD.js';
 import util from './bootstrapUtil.js';
 
+//needs to be in web directory for REST controller to read
+import './uiSettings.json?fileLoader';
+
 let beforeinstallpromptEvent;
 window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault();
@@ -17,15 +20,25 @@ window.addEventListener('beforeinstallprompt', e => {
 });
 
 /**
- * This service worker currently does nothing. It was only added to meet the criteria for prompting to install the application.
+ * Service worker uses workbox to precache files from the webpack build and also cache module resources
+ * on the fly.
+ * 
+ * Criteria for prompting to install the application -
  * https://developers.google.com/web/fundamentals/app-install-banners/#criteria 
  */
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/ui/serviceWorker.js').then(registration => {
-            // all good
+        navigator.serviceWorker.register('/ui/serviceWorker.js', {
+            // allow getting imported files from disk cache since our webpack manifest hash will always change
+            // and the workbox version will change too
+            updateViaCache: 'imports'
+        }).then(registration => {
+            // setup an hourly check for a new service worker
+            setInterval(() => {
+                registration.update();
+            }, 60 * 60 * 1000);
         }, error => {
-            console.log('ServiceWorker registration failed', error);
+            console.error('ServiceWorker registration failed', error);
         });
     });
 }
@@ -119,7 +132,7 @@ Promise.resolve().then(() => {
 }).then(([uiSettings, angularModules, user, preLoginData, postLoginData]) => {
     
     amdConfiguration.defaultVersion = preLoginData.lastUpgradeTime;
-    
+
     uiSettings.mangoModuleNames = [];
     const angularJsModuleNames = ['maUiApp'];
     

@@ -1,10 +1,10 @@
-<h3 ma-tr="eventHandlers.setPointSettings"></h3>
+<h3 ma-tr="ui.eventHandlers.setPointSettings"></h3>
 
 <div layout="row" flex layout-align="space-between center">
     <div flex="100">
         <ma-filtering-point-list 
             auto-init="true" 
-            label="{{'eventHandlers.targetPoint' | maTr}}" 
+            label="{{'ui.eventHandlers.targetPoint' | maTr}}" 
             name="targetPointId" 
             point-xid="{{editor.eventHandler.targetPointXid}}" 
             ng-change="$ctrl.changeTargetPoint()" 
@@ -49,7 +49,7 @@
                 <ma-filtering-point-list 
                     data-types="[$ctrl.targetPoint.dataType]"
                     auto-init="false" 
-                    label="{{'eventHandlers.sourcePoint' | maTr}}"
+                    label="{{'ui.eventHandlers.sourcePoint' | maTr}}"
                     name="activePointId" 
                     point-xid="{{editor.eventHandler.activePointXid}}" 
                     ng-change="$ctrl.changeActivePoint()" 
@@ -145,7 +145,7 @@
                 <ma-filtering-point-list 
                     data-types="[$ctrl.targetPoint.dataType]"
                     auto-init="false" 
-                    label="{{'eventHandlers.sourcePoint' | maTr}}"
+                    label="{{'ui.eventHandlers.sourcePoint' | maTr}}"
                     name="inactivePointId" 
                     point-xid="{{editor.eventHandler.inactivePointXid}}" 
                     ng-change="$ctrl.changeInactivePoint()" 

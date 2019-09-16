@@ -50,7 +50,7 @@
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
-            <p ma-tr="ui.app.chooseUserToEditPalettes"></p>
+            <p class="ma-default-font" ma-tr="ui.app.chooseUserToEditPalettes"></p>
             <md-checkbox ng-model="showAllHues"><span ma-tr="ui.app.showAllHues"></span></md-checkbox>
             
             <div layout layout-wrap>
@@ -116,11 +116,7 @@
             </div>
         </md-card-content>
     </md-card>
-    
-    </md-card-content>
-    </md-card>
-    
-    
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -312,11 +308,63 @@
     <md-card>
         <md-card-title>
             <md-card-title-text>
+                <span class="md-headline" ma-tr="ui.app.pwaSettings"></span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <p class="ma-default-font">
+                <span ma-tr="ui.app.pwaSettings.information"></span><br>
+            </p>
+            <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.app.pwaSettings.automaticName"></label>
+                    <md-select ng-model="$ctrl.uiSettings.pwaAutomaticName">
+                        <md-option ng-value="::null" ma-tr="ui.app.pwaSettings.automaticName.disable"></md-option>
+                        <md-option ng-value="::'AUTO'" ma-tr="ui.app.pwaSettings.automaticName.auto"></md-option>
+                        <md-option ng-value="::'INSTANCE_DESCRIPTION'" ma-tr="ui.app.pwaSettings.automaticName.instanceDescription"></md-option>
+                        <md-option ng-value="::'HOST'" ma-tr="ui.app.pwaSettings.automaticName.host"></md-option>
+                    </md-select>
+                </md-input-container>
+                <div flex="100" flex-gt-md="50">
+                    <md-checkbox class="ma-input-container-height" ng-model="$ctrl.uiSettings.pwaUseThemeColors" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"><span ma-tr="ui.app.pwaSettings.useThemeColors"></span></md-checkbox>
+                </div>
+                <md-input-container ng-if-start="!$ctrl.uiSettings.pwaAutomaticName" flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.app.pwaSettings.name"></label>
+                    <input ng-model="$ctrl.uiSettings.pwaManifest.name">
+                </md-input-container>
+                <md-input-container ng-if-end flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.app.pwaSettings.shortName"></label>
+                    <input ng-model="$ctrl.uiSettings.pwaManifest.short_name">
+                </md-input-container>
+                <div ng-if-start="!$ctrl.uiSettings.pwaUseThemeColors" flex="100" flex-gt-md="50" layout layout-align="start center">
+                    <ma-color-picker ng-model="$ctrl.uiSettings.pwaManifest.theme_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"></ma-color-picker> 
+                    <md-input-container flex>
+                        <label ma-tr="ui.app.pwaSettings.themeColor"></label>
+                        <input ng-model="$ctrl.uiSettings.pwaManifest.theme_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()">
+                    </md-input-container>
+                </div>
+                <div ng-if-end flex="100" flex-gt-md="50" layout layout-align="start center">
+                    <ma-color-picker ng-model="$ctrl.uiSettings.pwaManifest.background_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"></ma-color-picker> 
+                    <md-input-container flex>
+                        <label ma-tr="ui.app.pwaSettings.backgroundColor"></label>
+                        <input ng-model="$ctrl.uiSettings.pwaManifest.background_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()">
+                    </md-input-container>
+                </div>
+            </div>
+            <p class="ma-no-margin-top ma-default-font">
+                <span ma-tr="ui.app.pwaSettings.warning" md-colors="::{color: 'warn'}"></span>
+            </p>
+        </md-card-content>
+    </md-card>
+    
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
                 <span class="md-headline" ma-tr="ui.app.autoLoginSettingsAll"></span>
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
-            <div class="md-padding ma-margin-bottom" md-colors="{background: 'warn'}">
+            <div class="md-padding ma-margin-bottom" md-colors="::{background: 'warn'}">
                 <div><strong ma-tr="ui.app.autoLoginWarning"></strong></div>
                 <div ma-tr="ui.app.autoLoginNoteUI"></div>
             </div>
@@ -333,8 +381,7 @@
         	<div><em ma-tr="ui.app.autoLoginTestManually"></em></div>
         </md-card-content>
     </md-card>
-    
-    
+
     <div layout layout-align="start end" layout-wrap>
       <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
       <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
