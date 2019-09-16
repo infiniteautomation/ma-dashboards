@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.infiniteautomation.mango.spring.MangoRuntimeContextConfiguration;
+import com.infiniteautomation.mango.spring.components.PublicUrlService;
 import com.infiniteautomation.ui.UILifecycle;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
@@ -58,13 +59,15 @@ public class BootstrapController {
     private final SystemSettingsDao systemSettingsDao;
     private final ObjectMapper objectMapper;
     private final ServletContext servletContext;
+    private final PublicUrlService publicUrlService;
 
     @Autowired
-    public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper, ServletContext servletContext) {
+    public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper, ServletContext servletContext, PublicUrlService publicUrlService) {
         this.jsonDataDao = jsonDataDao;
         this.systemSettingsDao = SystemSettingsDao.instance;
         this.objectMapper = objectMapper;
         this.servletContext = servletContext;
+        this.publicUrlService = publicUrlService;
     }
 
     private void merge(ObjectNode dest, ObjectNode src) throws IOException {
@@ -98,10 +101,8 @@ public class BootstrapController {
 
             String autoName = null;
             String instanceDescription = systemSettingsDao.getValue(SystemSettingsDao.INSTANCE_DESCRIPTION);
-            String baseUrl = systemSettingsDao.getValue(SystemSettingsDao.PUBLICLY_RESOLVABLE_BASE_URL);
-            if (baseUrl != null && !baseUrl.isEmpty()) {
-                builder = UriComponentsBuilder.fromHttpUrl(baseUrl);
-            }
+
+            builder = publicUrlService.getUriComponentsBuilder(builder);
             String host = builder.build().getHost();
 
             if ("AUTO".equals(mode)) {
