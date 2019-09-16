@@ -1,3 +1,14 @@
+*Version 3.6.7*
+* Fix bug introduced in v3.6.6 where you have to confirm every time you set a point's value
+* Fix bug where every point value response is cached in the browser resulting in excessive memory usage
+* Update web font versions
+* Fix cache control headers for resources under /ui path
+* Reduce variants of icon in PWA manifest
+* Add specific icon for Apple IOS
+* Generate PWA manifest dynamically
+* Ability to set PWA name and colors in UI settings
+* Better offline behavior
+
 *Version 3.6.6*
 * Fixes for ma-tile-map theming
 * Ability for menu items to redirect to another state
