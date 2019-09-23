@@ -120,6 +120,59 @@ export default [
         }
     },
     {
+        name: 'verifyEmail',
+        url: '/verify-email',
+        menuHidden: true,
+        menuIcon: 'email',
+        menuTr: 'login.emailVerification.verifyEmail',
+        templatePromise() {
+            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                    './views/verifyEmail.html');
+        },
+        resolve: {
+            deps: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                        './components/verifyEmail/verifyEmail').then(verifyEmail => {
+                    angular.module('maUiVerifyEmailState', [])
+                        .component('maUiVerifyEmail', verifyEmail.default);
+                    $injector.loadNewModules(['maUiVerifyEmailState']);
+                });
+            }]
+        }
+    },
+    {
+        name: 'verifyEmailToken',
+        url: '/verify-email-token?emailAddressVerificationToken',
+        menuHidden: true,
+        menuIcon: 'email',
+        menuTr: 'login.emailVerification.verifyEmail',
+        templatePromise() {
+            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                    './views/verifyEmailToken.html');
+        },
+        resolve: {
+            deps: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                        './components/verifyEmailToken/verifyEmailToken').then(verifyEmailToken => {
+                    angular.module('maUiVerifyEmailTokenState', [])
+                        .component('maUiVerifyEmailToken', verifyEmailToken.default);
+                    $injector.loadNewModules(['maUiVerifyEmailTokenState']);
+                });
+            }]
+        }
+    },
+    {
+        name: 'registerNewUser',
+        url: '/register-new-user',
+        menuHidden: true,
+        menuIcon: 'user',
+        menuTr: 'login.registerNewUser',
+        templatePromise() {
+            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+                    './views/registerNewUser.html');
+        }
+    },
+    {
         name: 'logout',
         url: '/logout',
         menuHidden: true,

@@ -1,0 +1,41 @@
+<md-card>
+	<form name="$ctrl.form" novalidate>
+    	<md-card-title>
+    	  <md-card-title-text>
+    	    <span class="md-headline" ma-tr="login.emailVerification.verifyEmail"></span>
+    	  </md-card-title-text>
+    	</md-card-title>
+    	<md-card-content layout="column">
+            <md-input-container class="md-icon-float md-block">
+                <label ma-tr="login.emailVerification.token"></label>
+                <md-icon>code</md-icon>
+                <input name="token" ng-model="$ctrl.token" autofocus ma-autofocus tabindex="1"
+                    required md-no-asterisk ng-change="$ctrl.parseToken()" ma-jwt-input="{typ: 'emailverify'}">
+                <div ng-messages="$ctrl.form.token.$error">
+                    <div ng-message="required" ma-tr="login.emailVerification.validation.tokenRequired"></div>
+                    <div ng-message="jwtClaims" ma-tr="login.emailVerification.validation.invalidToken"></div>
+                    <div ng-message="jwtExpired" ma-tr="login.emailVerification.validation.expiredToken"></div>
+                    <div ng-message="serverValid" ma-tr="login.emailVerification.validation.invalidToken"></div>
+                </div>
+            </md-input-container>
+        
+            <md-input-container class="md-icon-float md-block">
+                <md-icon>email</md-icon>
+                <label ma-tr="login.email"></label>
+                <input type="email" name="email" ng-model="$ctrl.email" disabled
+                    required md-no-asterisk ng-change="$ctrl.resetServerErrors()">
+                <div ng-messages="$ctrl.form.email.$error">
+                    <div ng-message="required" ma-tr="login.validation.noEmail"></div>
+                    <div ng-message="email" ma-tr="login.validation.invalidEmail"></div>
+                </div>
+            </md-input-container>
+    	</md-card-content>
+    	<md-card-actions layout="row" layout-align="start center">
+          <a ui-sref="login" ma-tr="login.loginPage" tabindex="3"></a>
+          <div flex></div>
+          <md-button type="submit" ng-click="$ctrl.verifyToken()" tabindex="2"
+                ma-tr=login.emailVerification.verifyToken class="md-accent md-raised" ng-disabled="$ctrl.disableButton">
+          </md-button>
+        </md-card-actions>
+    </form>
+</md-card>

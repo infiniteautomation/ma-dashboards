@@ -38,8 +38,13 @@ class ResetPasswordController {
             this.resetForm.resetToken.$setValidity('serverValid', true);
         }
 
-        this.claims = this.maUtil.parseJwt(this.resetToken) || null;
-        this.username = this.claims && this.claims.sub || null;
+        try {
+            this.claims = this.maUtil.parseJwt(this.resetToken);
+            this.username = this.claims.sub;
+        } catch (e) {
+            this.claims = null;
+            this.username = null;
+        }
     }
     
     doLogin() {

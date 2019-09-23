@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-jwtInput.$inject = ['$parse'];
-function jwtInput($parse) {
+jwtInput.$inject = ['$parse', 'maUtil'];
+function jwtInput($parse, maUtil) {
     return {
         require: 'ngModel',
         restrict: 'A',
@@ -16,7 +16,7 @@ function jwtInput($parse) {
                 const value = modelValue || viewValue;
                 
                 try {
-                    const claims = parseJwt(value);
+                    const claims = maUtil.parseJwt(value);
                     return claims.exp * 1000 - Date.now() >= 0;
                 } catch (e) {
                     return false;
@@ -27,7 +27,7 @@ function jwtInput($parse) {
                 const value = modelValue || viewValue;
                 
                 try {
-                    const claims = parseJwt(value);
+                    const claims = maUtil.parseJwt(value);
                     
                     if ($attrs.maJwtInput) {
                         const expectedClaims = $parse($attrs.maJwtInput)($scope);
@@ -45,13 +45,6 @@ function jwtInput($parse) {
                     return false;
                 }
             };
-            
-            function parseJwt(token) {
-                const parts = token.split('.');
-                const claimsStr = parts[1];
-                const jsonStr = atob(claimsStr);
-                return JSON.parse(jsonStr);
-            }
         }
     };
 }

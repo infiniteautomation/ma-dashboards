@@ -193,6 +193,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         let cachedUser, angularLocaleDeferred;
         const authTokenBaseUrl = '/rest/v2/auth-tokens';
         const passwordResetUrl = '/rest/v2/password-reset';
+        const emailVerificationUrl = '/rest/v2/email-verification';
         const defaultProperties = {
             username: '',
             name: '',
@@ -482,6 +483,16 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     method: 'POST'
                 }).then(response => {
                     return response.data;
+                });
+            },
+            
+            publicVerifyEmail(email) {
+                return $http({
+                    url: `${emailVerificationUrl}/public/send-email`,
+                    method: 'POST',
+                    data: {
+                        emailAddress: email
+                    }
                 });
             }
         });

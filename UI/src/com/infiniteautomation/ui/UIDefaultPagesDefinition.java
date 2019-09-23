@@ -119,4 +119,15 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
     public String getStartupPageUri(HttpServletRequest request, HttpServletResponse response) {
         return null; //TODO Configure this as a hard URL when ready.  This cannot get info from the DB since the DB will not be ready yet
     }
+
+    @Override
+    public String getEmailVerificationPageUri() {
+        String uri = SystemSettingsDao.instance.getValue(UICommon.UI_EMAIL_VERIFICATION_PAGE);
+
+        if (uri != null && !uri.isEmpty()) {
+            return uri;
+        }
+
+        return null;
+    }
 }

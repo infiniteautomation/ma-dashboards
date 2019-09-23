@@ -44,6 +44,7 @@ public class UISystemSettingsDefinition extends SystemSettingsDefinition {
         defaults.put(UICommon.UI_UNAUTHORIZED_PAGE, UICommon.DEFAULT_UI_UNAUTHORIZED_PAGE);
         defaults.put(UICommon.UI_NOT_FOUND_PAGE, UICommon.DEFAULT_UI_NOT_FOUND_PAGE);
         defaults.put(UICommon.UI_ERROR_PAGE, UICommon.DEFAULT_UI_ERROR_PAGE);
+        defaults.put(UICommon.UI_EMAIL_VERIFICATION_PAGE, UICommon.DEFAULT_UI_EMAIL_VERIFICATION_PAGE);
         return defaults;
     }
 

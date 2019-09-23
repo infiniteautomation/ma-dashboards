@@ -1083,14 +1083,10 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
          * Warning: Only parses the token, does not verify the signature
          */
         parseJwt(token) {
-            try {
-                const parts = token.split('.');
-                const claims = parts[1];
-                const jsonStr = atob(claims);
-                return JSON.parse(jsonStr);
-            } catch (e) {
-                return null;
-            }
+            const parts = token.split('.');
+            const claims = parts[1];
+            const jsonStr = atob(claims);
+            return JSON.parse(jsonStr);
         }
     };
 

@@ -15,6 +15,7 @@ public class UICommon {
     public static final String UI_UNAUTHORIZED_PAGE = "ui.unauthorized.page";
     public static final String UI_NOT_FOUND_PAGE = "ui.notFound.page";
     public static final String UI_ERROR_PAGE = "ui.error.page";
+    public static final String UI_EMAIL_VERIFICATION_PAGE = "ui.emailVerification.page";
 
     public static final String DEFAULT_UI_LOGIN_PAGE = "/ui/";
     public static final String DEFAULT_UI_PASSWORD_RESET_PAGE = "/ui/change-password";
@@ -24,4 +25,5 @@ public class UICommon {
     public static final String DEFAULT_UI_UNAUTHORIZED_PAGE = "/ui/unauthorized";
     public static final String DEFAULT_UI_NOT_FOUND_PAGE = "/ui/not-found";
     public static final String DEFAULT_UI_ERROR_PAGE = "/ui/server-error";
+    public static final String DEFAULT_UI_EMAIL_VERIFICATION_PAGE = "/ui/verify-email-token";
 }
