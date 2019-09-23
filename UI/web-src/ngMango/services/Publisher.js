@@ -143,10 +143,10 @@ function publisherProvider() {
                 
                 return newPublisher;
             }
-            
+
             createPublisherPoint(point) {
                 const type = this.constructor.typesByName[this.modelType];
-                const publisherPoint = type.createPublisherPoint(point);
+                const publisherPoint = type.createPublisherPoint(point, this);
                 publisherPoint.dataPointXid = point.xid;
                 publisherPoint.modelType = type.type;
                 return publisherPoint;
@@ -186,7 +186,7 @@ function publisherProvider() {
                 return publisher;
             }
             
-            createPublisherPoint(point) {
+            createPublisherPoint(point, publisher) {
                 return angular.copy(this.defaultPublisherPoint || {});
             }
         }

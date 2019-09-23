@@ -204,12 +204,19 @@ class PublisherEditorController {
     
     pointsToPublisherPoints(points) {
         if (Array.isArray(points)) {
+            this.publisher.points = this.publisher.points.slice();
             const xidToPublisherPoint = this.maUtil.createMapObject(this.publisher.points, 'dataPointXid');
-            return points.map(point => {
-                const publisherPoint = xidToPublisherPoint[point.xid] || this.publisher.createPublisherPoint(point);
+
+            points.forEach(point => {
+                let publisherPoint = xidToPublisherPoint[point.xid];
+                if (!publisherPoint) {
+                    publisherPoint = this.publisher.createPublisherPoint(point);
+                    this.publisher.points.push(publisherPoint);
+                }
                 this.points.set(publisherPoint, point);
-                return publisherPoint;
             });
+            
+            return this.publisher.points;
         }
     }
     
