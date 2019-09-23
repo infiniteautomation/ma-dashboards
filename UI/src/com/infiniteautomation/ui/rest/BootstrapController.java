@@ -146,6 +146,7 @@ public class BootstrapController {
         data.setServerTimezone(TimeZone.getDefault().getID());
         data.setServerLocale(Common.getLocale().toLanguageTag());
         data.setLastUpgradeTime(Common.getLastUpgradeTime());
+        data.setPublicRegistrationEnabled(systemSettingsDao.getBooleanValue(SystemSettingsDao.USERS_PUBLIC_REGISTRATION_ENABLED));
 
         if (user != null) {
             data.setUser(new UserModel(user));
@@ -190,6 +191,7 @@ public class BootstrapController {
         private TranslationsModel translations;
         private int lastUpgradeTime;
         private UserModel user;
+        private boolean publicRegistrationEnabled;
 
         public TranslationsModel getTranslations() {
             return translations;
@@ -232,6 +234,12 @@ public class BootstrapController {
         }
         public void setUiSettings(JsonDataModel uiSettings) {
             this.uiSettings = uiSettings;
+        }
+        public boolean isPublicRegistrationEnabled() {
+            return publicRegistrationEnabled;
+        }
+        public void setPublicRegistrationEnabled(boolean publicRegistrationEnabled) {
+            this.publicRegistrationEnabled = publicRegistrationEnabled;
         }
     }
 

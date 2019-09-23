@@ -7,14 +7,15 @@ import resetPasswordTemplate from './resetPassword.html';
 
 class ResetPasswordController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', 'maUiLoginRedirector', '$stateParams', '$timeout', 'maDialogHelper']; }
+    static get $inject() { return ['maUser', 'maUiLoginRedirector', '$stateParams', '$timeout', 'maDialogHelper', 'maUtil']; }
     
-    constructor(maUser, maUiLoginRedirector, $stateParams, $timeout, maDialogHelper) {
+    constructor(maUser, maUiLoginRedirector, $stateParams, $timeout, maDialogHelper, maUtil) {
         this.maUser = maUser;
         this.maUiLoginRedirector = maUiLoginRedirector;
         this.$stateParams = $stateParams;
         this.$timeout = $timeout;
         this.maDialogHelper = maDialogHelper;
+        this.maUtil = maUtil;
     }
     
     $onInit() {
@@ -36,18 +37,9 @@ class ResetPasswordController {
         if (this.resetForm && this.resetForm.resetToken) {
             this.resetForm.resetToken.$setValidity('serverValid', true);
         }
-        
-        this.claims = null;
-        this.username = null;
-        
-        try {
-            const parts = this.resetToken.split('.');
-            const claims = parts[1];
-            const jsonStr = atob(claims);
-            this.claims = JSON.parse(jsonStr);
-            this.username = this.claims.sub;
-        } catch (e) {
-        }
+
+        this.claims = this.maUtil.parseJwt(this.resetToken) || null;
+        this.username = this.claims && this.claims.sub || null;
     }
     
     doLogin() {

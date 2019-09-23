@@ -5,14 +5,15 @@
 
 import loginTemplate from './login.html';
 
-loginFactory.$inject = ['maUser', 'maUtil', '$cookies', '$http', 'maUiLoginRedirector', '$state'];
-function loginFactory(User, maUtil, $cookies, $http, maUiLoginRedirector, $state) {
+loginFactory.$inject = ['maUser', 'maUtil', '$cookies', '$http', 'maUiLoginRedirector', '$state', 'maUiServerInfo'];
+function loginFactory(User, maUtil, $cookies, $http, maUiLoginRedirector, $state, serverInfo) {
     return {
         template: loginTemplate,
         scope: {},
         link: function($scope, $element, attrs) {
             $scope.User = User;
             $scope.errors = {};
+            $scope.serverInfo = serverInfo;
             
             $scope.$watchGroup(['username', 'password'], () => {
                 delete $scope.errors.invalidLogin;

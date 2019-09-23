@@ -73,6 +73,7 @@ class ServerInfoProvider {
                 this.lastUpgradeTime = data.lastUpgradeTime;
                 this.serverLocale = data.serverLocale;
                 this.serverTimezone = data.serverTimezone;
+                this.publicRegistrationEnabled = data.publicRegistrationEnabled;
 
                 // translations already loaded during config phase
                 if (!data.config) {

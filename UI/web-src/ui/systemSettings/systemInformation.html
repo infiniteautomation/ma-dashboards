@@ -1,7 +1,11 @@
+<div>
+    <ma-system-setting-editor label-tr="users.publicRegistration.systemSetting" key="users.publicRegistration.enabled" type="BOOLEAN" input-type="checkbox"></ma-system-setting-editor>
+</div>
+
 <div layout layout-wrap>
-  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.instanceDescription" key="instanceDescription"></ma-system-setting-editor>
-  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="ui.settings.publiclyResolvableBaseUrl" key="publiclyResolvableBaseUrl" null-on-empty="true"></ma-system-setting-editor>
-  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.restartDelay" key="restart.delay" type="INTEGER" input-type="number" min="0"></ma-system-setting-editor>
+    <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.instanceDescription" key="instanceDescription"></ma-system-setting-editor>
+    <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="ui.settings.publiclyResolvableBaseUrl" key="publiclyResolvableBaseUrl" null-on-empty="true"></ma-system-setting-editor>
+    <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.restartDelay" key="restart.delay" type="INTEGER" input-type="number" min="0"></ma-system-setting-editor>
 </div>
 
 <div>
@@ -10,20 +14,20 @@
 </div>
 
 <div layout layout-wrap>
-  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.upgradeVersionState" key="upgradeVersionState" type="INTEGER" input-type="select" ng-disabled="!upgradeChecksEnabled">
-    <md-option ng-value="0"><span ma-tr="systemSettings.upgradeState.development"></span></md-option>
-    <md-option ng-value="1"><span ma-tr="systemSettings.upgradeState.alpha"></span></md-option>
-    <md-option ng-value="2"><span ma-tr="systemSettings.upgradeState.beta"></span></md-option>
-    <md-option ng-value="3"><span ma-tr="systemSettings.upgradeState.releaseCandidate"></span></md-option>
-    <md-option ng-value="4"><span ma-tr="systemSettings.upgradeState.production"></span></md-option>
-  </ma-system-setting-editor>
-  <div flex="100" flex-gt-md="50" layout layout-align="start center">
-	  <ma-system-setting-editor flex label-tr="systemSettings.lastUpgrade" key="lastUpgrade" type="INTEGER" input-type="date" ng-disabled="true"
-	  		on-init="lastUpgradeSetting = $ctrl">
-	  </ma-system-setting-editor>
-	  <md-button class="md-raised" ng-click="lastUpgradeSetting.setValue($ctrl.currentTime())">
-	  	<span ma-tr="ui.app.bustCache"></span>
-	  	<md-tooltip auto-hide="true" ma-tr="ui.app.setLastUpgradeToNow"></md-tooltip>
-	  </md-button>
-  </div>
+    <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="systemSettings.upgradeVersionState" key="upgradeVersionState" type="INTEGER" input-type="select" ng-disabled="!upgradeChecksEnabled">
+        <md-option ng-value="0"><span ma-tr="systemSettings.upgradeState.development"></span></md-option>
+        <md-option ng-value="1"><span ma-tr="systemSettings.upgradeState.alpha"></span></md-option>
+        <md-option ng-value="2"><span ma-tr="systemSettings.upgradeState.beta"></span></md-option>
+        <md-option ng-value="3"><span ma-tr="systemSettings.upgradeState.releaseCandidate"></span></md-option>
+        <md-option ng-value="4"><span ma-tr="systemSettings.upgradeState.production"></span></md-option>
+    </ma-system-setting-editor>
+    <div flex="100" flex-gt-md="50" layout layout-align="start center">
+        <ma-system-setting-editor flex label-tr="systemSettings.lastUpgrade" key="lastUpgrade" type="INTEGER" input-type="date" ng-disabled="true"
+        	on-init="lastUpgradeSetting = $ctrl">
+        </ma-system-setting-editor>
+        <md-button class="md-raised" ng-click="lastUpgradeSetting.setValue($ctrl.currentTime())">
+            <span ma-tr="ui.app.bustCache"></span>
+            <md-tooltip auto-hide="true" ma-tr="ui.app.setLastUpgradeToNow"></md-tooltip>
+        </md-button>
+    </div>
 </div>
