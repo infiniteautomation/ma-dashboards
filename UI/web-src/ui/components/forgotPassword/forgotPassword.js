@@ -7,13 +7,13 @@ import forgotPasswordTemplate from './forgotPassword.html';
 
 class ForgotPasswordController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$state']; }
+    static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$injector']; }
     
-    constructor(maUser, $stateParams, maDialogHelper, $state) {
+    constructor(maUser, $stateParams, maDialogHelper, $injector) {
         this.maUser = maUser;
         this.$stateParams = $stateParams;
         this.maDialogHelper = maDialogHelper;
-        this.$state = $state;
+        this.$state = $injector.has('$state') && $injector.get('$state');
     }
     
     $onInit() {
@@ -37,7 +37,11 @@ class ForgotPasswordController {
                 textTr: ['login.emailSent', this.email],
                 hideDelay: 10000
             });
-            this.$state.go('resetPassword');
+            if (typeof this.onSuccess === 'function') {
+                this.onSuccess({$emailAddress: this.email, $username: this.username, $response: response, $state: this.$state});
+            } else if (this.$state) {
+                this.$state.go('resetPassword');
+            }
         }, error => {
             this.disableButton = false;
 
@@ -52,13 +56,21 @@ class ForgotPasswordController {
                     classes: 'md-warn'
                 });
             }
+            if (typeof this.onError === 'function') {
+                this.onError({$emailAddress: this.email, $username: this.username, $error: error, $state: this.$state});
+            }
         });
     }
 }
 
 export default {
     controller: ForgotPasswordController,
-    template: forgotPasswordTemplate
+    template: forgotPasswordTemplate,
+    bindings: {
+        onSuccess: '&?',
+        onError: '&?'
+    },
+    transclude: {
+        links: '?a'
+    }
 };
-
-
