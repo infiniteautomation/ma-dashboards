@@ -7,13 +7,13 @@ import verifyEmailTemplate from './verifyEmail.html';
 
 class VerifyEmailController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$state']; }
+    static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$injector']; }
     
-    constructor(maUser, $stateParams, maDialogHelper, $state) {
+    constructor(maUser, $stateParams, maDialogHelper, $injector) {
         this.maUser = maUser;
         this.$stateParams = $stateParams;
         this.maDialogHelper = maDialogHelper;
-        this.$state = $state;
+        this.$state = $injector.has('$state') && $injector.get('$state');
     }
     
     $onInit() {
@@ -32,13 +32,20 @@ class VerifyEmailController {
                 textTr: ['login.emailVerification.emailSent', this.email],
                 hideDelay: 10000
             });
-            this.$state.go('verifyEmailToken');
+            if (typeof this.onSuccess === 'function') {
+                this.onSuccess({$emailAddress: this.email, $response: response, $state: this.$state});
+            } else if (this.$state) {
+                this.$state.go('verifyEmailToken');
+            }
         }, error => {
             this.maDialogHelper.toastOptions({
                 textTr: ['login.emailVerification.errorSendingEmail', error.mangoStatusText],
                 hideDelay: 10000,
                 classes: 'md-warn'
             });
+            if (typeof this.onError === 'function') {
+                this.onError({$emailAddress: this.email, $error: error, $state: this.$state});
+            }
         }).finally(() => {
             this.disableButton = false;
         });
@@ -47,5 +54,12 @@ class VerifyEmailController {
 
 export default {
     controller: VerifyEmailController,
-    template: verifyEmailTemplate
+    template: verifyEmailTemplate,
+    bindings: {
+        onSuccess: '&?',
+        onError: '&?'
+    },
+    transclude: {
+        links: '?a'
+    }
 };

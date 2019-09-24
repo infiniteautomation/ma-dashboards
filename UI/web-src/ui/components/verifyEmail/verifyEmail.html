@@ -1,29 +1,24 @@
-<md-card>
-	<form name="$ctrl.form" novalidate>
-    	<md-card-title>
-    	  <md-card-title-text>
-    	    <span class="md-headline" ma-tr="login.emailVerification.verifyEmail"></span>
-    	  </md-card-title-text>
-    	</md-card-title>
-    	<md-card-content layout="column">
-            <md-input-container class="md-icon-float md-block">
-                <md-icon>email</md-icon>
-                <label ma-tr="login.email"></label>
-                <input type="email" name="email" ng-model="$ctrl.email" tabindex="1" autofocus ma-autofocus
-                    required md-no-asterisk aria-label="{{'login.email'|maTr}}" ng-change="$ctrl.resetServerErrors()">
-                <div ng-messages="$ctrl.form.email.$error">
-                    <div ng-message="required" ma-tr="login.validation.noEmail"></div>
-                    <div ng-message="email" ma-tr="login.validation.invalidEmail"></div>
-                </div>
-            </md-input-container>
-            <p ma-tr="login.emailVerification.registrationHelp" class="ma-default-font"></p>
-    	</md-card-content>
-    	<md-card-actions layout="row" layout-align="start center">
-          <a ui-sref="verifyEmailToken" ma-tr="login.emailVerification.alreadyHaveToken" tabindex="3"></a>
-          <div flex></div>
-          <md-button type="submit" ng-click="$ctrl.sendEmail()" tabindex="2"
-                ma-tr="login.emailVerification.sendEmail" class="md-accent md-raised" ng-disabled="$ctrl.disableButton">
-          </md-button>
-        </md-card-actions>
-    </form>
-</md-card>
+<form name="$ctrl.form" novalidate>
+    <div>
+        <md-input-container class="md-icon-float md-block">
+            <md-icon>email</md-icon>
+            <label ma-tr="login.email"></label>
+            <input type="email" name="email" ng-model="$ctrl.email" tabindex="1" autofocus ma-autofocus
+                required md-no-asterisk aria-label="{{'login.email'|maTr}}" ng-change="$ctrl.resetServerErrors()">
+            <div ng-messages="$ctrl.form.email.$error">
+                <div ng-message="required" ma-tr="login.validation.noEmail"></div>
+                <div ng-message="email" ma-tr="login.validation.invalidEmail"></div>
+            </div>
+        </md-input-container>
+        <p ma-tr="login.emailVerification.registrationHelp" class="ma-default-font"></p>
+    </div>
+    <div layout="row" layout-align="start center">
+        <div ng-transclude="links" layout="column">
+            <a ui-sref="verifyEmailToken" ma-tr="login.emailVerification.alreadyHaveToken" tabindex="3"></a>
+        </div>
+        <div flex></div>
+        <md-button type="submit" ng-click="$ctrl.sendEmail()" tabindex="2"
+            ma-tr="login.emailVerification.sendEmail" class="md-accent md-raised" ng-disabled="$ctrl.disableButton">
+        </md-button>
+    </div>
+</form>
