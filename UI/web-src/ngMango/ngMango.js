@@ -180,6 +180,7 @@ import login from './components/login/login';
 import resetPassword from './components/resetPassword/resetPassword';
 import verifyEmail from './components/verifyEmail/verifyEmail';
 import verifyEmailToken from './components/verifyEmailToken/verifyEmailToken';
+import registerUser from './components/registerUser/registerUser';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -373,6 +374,7 @@ ngMango.component('maLogin', login);
 ngMango.component('maResetPassword', resetPassword);
 ngMango.component('maVerifyEmail', verifyEmail);
 ngMango.component('maVerifyEmailToken', verifyEmailToken);
+ngMango.component('maRegisterUser', registerUser);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

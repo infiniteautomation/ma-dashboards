@@ -29,7 +29,11 @@ class UserEditorController {
     
     $onChanges(changes) {
         if (changes.originalUser && this.originalUser) {
-            this.user = angular.copy(this.originalUser);
+            if (this.registerMode) {
+                this.user = this.originalUser;
+            } else {
+                this.user = angular.copy(this.originalUser);
+            }
             this.resetForm();
         }
         
@@ -55,11 +59,7 @@ class UserEditorController {
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
-        
-        if (this.password) {
-            this.user.password = this.password;
-        }
-        
+
         this.user.save().then(user => {
             const previous = angular.copy(this.originalUser);
             angular.merge(this.originalUser, user);
@@ -141,6 +141,14 @@ class UserEditorController {
     regExpEscape(s) {
         return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
     }
+
+    passwordChanged() {
+        if (this.password && this.password === this.confirmPassword) {
+            this.user.password = this.password;
+        } else {
+            delete this.user.password;
+        }
+    }
 }
 
 export default {
@@ -150,7 +158,8 @@ export default {
         originalUser: '<?user',
         onSave: '&?',
         onDelete: '&?',
-        disabledAttr: '@?disabled'
+        disabledAttr: '@?disabled',
+        registerMode: '<?'
     },
     designerInfo: {
         hideFromMenu: true

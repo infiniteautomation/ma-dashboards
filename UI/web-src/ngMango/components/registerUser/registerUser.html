@@ -1,0 +1,36 @@
+<div ng-form="$ctrl.form" ma-enter="$ctrl.registerUser()">
+    <div layout="column">
+        <md-input-container class="md-icon-float md-block">
+            <md-icon>code</md-icon>
+            <label ma-tr="login.emailVerification.token"></label>
+            <input name="token" ng-model="$ctrl.token" autofocus ma-autofocus tabindex="1"
+                required md-no-asterisk ng-change="$ctrl.parseToken()" ma-jwt-input="{typ: 'emailverify'}">
+            <div ng-messages="$ctrl.form.token.$error">
+                <div ng-message="required" ma-tr="login.emailVerification.validation.tokenRequired"></div>
+                <div ng-message="jwtParse" ma-tr="login.emailVerification.validation.unparsableToken"></div>
+                <div ng-message="jwtClaims" ma-tr="login.emailVerification.validation.invalidToken"></div>
+                <div ng-message="jwtExpired" ma-tr="login.emailVerification.validation.expiredToken"></div>
+                <div ng-message="serverValid" ma-tr="login.emailVerification.validation.invalidToken"></div>
+                <div ng-message="server" ma-tr="login.emailVerification.validation.invalidToken" ma-tr-args="[$ctrl.serverErrors.invalidToken]"></div>
+            </div>
+        </md-input-container>
+        
+        <p class="ma-default-font" ng-if="$ctrl.claims" ma-tr="login.userRegistration.tokenMessage" ma-tr-args="[$ctrl.expiration, $ctrl.expirationDuration]"></p>
+        <ma-now update-interval="1 SECONDS" on-change="$ctrl.updateExpiry($value)"></ma-now>
+        
+        <ma-user-editor user="$ctrl.user" register-mode="::true"></ma-user-editor>
+
+        <div md-colors="::{color: 'warn-A700'}" ng-messages="$ctrl.serverErrors">
+            <div ng-message="other" ma-tr="login.emailVerification.errorVerifying" ma-tr-args="[$ctrl.serverErrors.other]"></div>
+        </div>
+    </div>
+    <div layout="row" layout-align="start center" class="ma-action-buttons">
+        <div ng-transclude="links" layout="column">
+            <a ui-sref="login" ma-tr="login.loginPage"></a>
+        </div>
+        <div flex></div>
+        <md-button type="submit" ng-click="$ctrl.registerUser()"
+            ma-tr=login.userRegistration.register class="md-accent md-raised" ng-disabled="$ctrl.disableButton">
+        </md-button>
+    </div>
+</div>

@@ -516,6 +516,18 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 }).then(response => response.data);
             },
             
+            publicRegisterUser(token, user) {
+                return $http({
+                    url: `${emailVerificationUrl}/public/register`,
+                    method: 'POST',
+                    data: {
+                        token, user
+                    }
+                }).then(response => {
+                    return Object.assign(Object.create(this.prototype), response.data);
+                });
+            },
+            
             ensureXsrfToken() {
                 // ensures there is a CSRF protection cookie set before logging in
                 const xsrfCookie = $cookies.get($http.defaults.xsrfCookieName);
