@@ -1,5 +1,6 @@
 <form name="$ctrl.form" novalidate>
     <div layout="column">
+        <p ma-tr="login.emailVerification.registrationHelp" class="ma-default-font"></p>
         <md-input-container class="md-icon-float md-block">
             <md-icon>email</md-icon>
             <label ma-tr="login.email"></label>
@@ -10,7 +11,6 @@
                 <div ng-message="email" ma-tr="login.validation.invalidEmail"></div>
             </div>
         </md-input-container>
-        <p ma-tr="login.emailVerification.registrationHelp" class="ma-default-font"></p>
     </div>
     <div layout="row" layout-align="start center" class="ma-action-buttons">
         <div ng-transclude="links" layout="column">

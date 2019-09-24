@@ -7,26 +7,28 @@ import changePasswordTemplate from './changePassword.html';
 
 class ChangePasswordController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$state', 'maUtil', 'maUiLoginRedirector']; }
+    static get $inject() { return ['maUser', 'maDialogHelper', 'maUtil', '$injector']; }
     
-    constructor(maUser, $stateParams, maDialogHelper, $state, maUtil, maUiLoginRedirector) {
+    constructor(maUser, maDialogHelper, maUtil, $injector) {
         this.maUser = maUser;
-        this.$stateParams = $stateParams;
         this.maDialogHelper = maDialogHelper;
-        this.$state = $state;
         this.maUtil = maUtil;
-        this.maUiLoginRedirector = maUiLoginRedirector;
+        this.$state = $injector.has('$state') && $injector.get('$state');
+        this.$stateParams = $injector.has('$stateParams') && $injector.get('$stateParams');
+        this.maUiLoginRedirector = $injector.has('maUiLoginRedirector') && $injector.get('maUiLoginRedirector');
     }
     
     $onInit() {
-        if (this.$stateParams.credentialsExpired) {
-            this.credentialsExpired = true;
-        }
-        if (this.$stateParams.username) {
-            this.username = this.$stateParams.username;
-        }
-        if (this.$stateParams.password) {
-            this.password = this.$stateParams.password;
+        if (this.$stateParams) {
+            if (this.$stateParams.credentialsExpired) {
+                this.credentialsExpired = true;
+            }
+            if (this.$stateParams.username) {
+                this.username = this.$stateParams.username;
+            }
+            if (this.$stateParams.password) {
+                this.password = this.$stateParams.password;
+            }
         }
     }
     
@@ -57,8 +59,12 @@ class ChangePasswordController {
                 textTr: ['login.passwordChanged', this.username],
                 hideDelay: 10000
             });
-            
-            return this.maUiLoginRedirector.redirect(user);
+
+            if (typeof this.onSuccess === 'function') {
+                this.onSuccess({$user: this.user, $state: this.$state});
+            } else if (this.maUiLoginRedirector) {
+                return this.maUiLoginRedirector.redirect(user);
+            }
         }, error => {
             this.disableButton = false;
             
@@ -80,13 +86,22 @@ class ChangePasswordController {
                     classes: 'md-warn'
                 });
             }
+            
+            if (typeof this.onError === 'function') {
+                this.onError({$username: this.username, $error: error, $state: this.$state});
+            }
         });
     }
 }
 
 export default {
     controller: ChangePasswordController,
-    template: changePasswordTemplate
+    template: changePasswordTemplate,
+    bindings: {
+        onSuccess: '&?',
+        onError: '&?'
+    },
+    transclude: {
+        links: '?a'
+    }
 };
-
-

@@ -124,7 +124,7 @@ export default [
         url: '/verify-email',
         menuHidden: true,
         menuIcon: 'email',
-        menuTr: 'login.emailVerification.verifyEmail',
+        menuTr: 'login.emailVerification.verifyEmailForNewAccount',
         templatePromise() {
             return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
                     './views/verifyEmail.html');

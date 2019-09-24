@@ -7,19 +7,20 @@ import resetPasswordTemplate from './resetPassword.html';
 
 class ResetPasswordController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', 'maUiLoginRedirector', '$stateParams', '$timeout', 'maDialogHelper', 'maUtil']; }
+    static get $inject() { return ['maUser', '$timeout', 'maDialogHelper', 'maUtil', '$injector']; }
     
-    constructor(maUser, maUiLoginRedirector, $stateParams, $timeout, maDialogHelper, maUtil) {
+    constructor(maUser, $timeout, maDialogHelper, maUtil, $injector) {
         this.maUser = maUser;
-        this.maUiLoginRedirector = maUiLoginRedirector;
-        this.$stateParams = $stateParams;
         this.$timeout = $timeout;
         this.maDialogHelper = maDialogHelper;
         this.maUtil = maUtil;
+        this.$state = $injector.has('$state') && $injector.get('$state');
+        this.$stateParams = $injector.has('$stateParams') && $injector.get('$stateParams');
+        this.maUiLoginRedirector = $injector.has('maUiLoginRedirector') && $injector.get('maUiLoginRedirector');
     }
     
     $onInit() {
-        if (this.$stateParams.resetToken) {
+        if (this.$stateParams && this.$stateParams.resetToken) {
             this.resetToken = this.$stateParams.resetToken;
             this.parseToken();
             
@@ -52,7 +53,11 @@ class ResetPasswordController {
             username: this.username,
             password: this.newPassword
         }).$promise.then(user => {
-            return this.maUiLoginRedirector.redirect(user);
+            if (typeof this.onSuccess === 'function') {
+                this.onSuccess({$user: this.user, $state: this.$state});
+            } else if (this.maUiLoginRedirector) {
+                this.maUiLoginRedirector.redirect(user);
+            }
         }, error => {
             this.disableButton = false;
             this.showTokenInput = true;
@@ -61,6 +66,10 @@ class ResetPasswordController {
                 hideDelay: 10000,
                 classes: 'md-warn'
             });
+            
+            if (typeof this.onError === 'function') {
+                this.onError({$token: this.resetToken, $claims: this.claims, $username: this.username, $error: error, $state: this.$state});
+            }
         });
     }
 
@@ -72,8 +81,12 @@ class ResetPasswordController {
         if (this.resetForm.$invalid) return;
 
         this.disableButton = true;
-        return this.maUser.passwordReset(this.resetToken, this.newPassword).then(response => {
-            this.doLogin();
+        this.maUser.passwordReset(this.resetToken, this.newPassword).then(response => {
+            if (typeof this.onReset === 'function') {
+                this.onReset({$response: this.response, $state: this.$state});
+            } else {
+                this.doLogin();
+            }
         }, error => {
             this.disableButton = false;
             this.showTokenInput = true;
@@ -87,6 +100,10 @@ class ResetPasswordController {
                     classes: 'md-warn'
                 });
             }
+            
+            if (typeof this.onError === 'function') {
+                this.onError({$resetError: true, $token: this.resetToken, $claims: this.claims, $username: this.username, $error: error, $state: this.$state});
+            }
         });
     }
 
@@ -97,7 +114,15 @@ class ResetPasswordController {
 
 export default {
     controller: ResetPasswordController,
-    template: resetPasswordTemplate
+    template: resetPasswordTemplate,
+    bindings: {
+        onReset: '&?',
+        onSuccess: '&?',
+        onError: '&?'
+    },
+    transclude: {
+        links: '?a'
+    }
 };
 
 
