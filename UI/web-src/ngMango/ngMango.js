@@ -174,6 +174,12 @@ import tileMapPolygon from './components/tileMap/tileMapPolygon';
 import tileMapPolyline from './components/tileMap/tileMapPolyline';
 import tileMapTileLayer from './components/tileMap/tileMapTileLayer';
 import tileMapLayer from './components/tileMap/tileMapLayer';
+import changePassword from './components/changePassword/changePassword';
+import forgotPassword from './components/forgotPassword/forgotPassword';
+import login from './components/login/login';
+import resetPassword from './components/resetPassword/resetPassword';
+import verifyEmail from './components/verifyEmail/verifyEmail';
+import verifyEmailToken from './components/verifyEmailToken/verifyEmailToken';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -361,6 +367,12 @@ ngMango.component('maPublisherEditor', publisherEditor);
 ngMango.component('maDataPointSelector', dataPointSelector);
 ngMango.component('maDropDownButton', dropDownButton);
 ngMango.component('maTileMap', tileMap);
+ngMango.component('maChangePassword', changePassword);
+ngMango.component('maForgotPassword', forgotPassword);
+ngMango.component('maLogin', login);
+ngMango.component('maResetPassword', resetPassword);
+ngMango.component('maVerifyEmail', verifyEmail);
+ngMango.component('maVerifyEmailToken', verifyEmailToken);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

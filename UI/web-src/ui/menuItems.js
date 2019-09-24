@@ -38,18 +38,8 @@ export default [
         menuIcon: 'exit_to_app',
         menuTr: 'header.login',
         templatePromise() {
-            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+            return import(/* webpackMode: "eager" */
                     './views/login.html');
-        },
-        resolve: {
-            deps: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
-                        './components/login/login').then(login => {
-                    angular.module('maUiLoginState', [])
-                        .component('maUiLogin', login.default);
-                    $injector.loadNewModules(['maUiLoginState']);
-                });
-            }]
         }
     },
     {
@@ -59,18 +49,8 @@ export default [
         menuIcon: 'code',
         menuTr: 'header.resetPassword',
         templatePromise() {
-            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+            return import(/* webpackMode: "eager" */
                     './views/resetPassword.html');
-        },
-        resolve: {
-            deps: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
-                        './components/resetPassword/resetPassword').then(resetPassword => {
-                    angular.module('maUiResetPasswordState', [])
-                        .component('maUiResetPassword', resetPassword.default);
-                    $injector.loadNewModules(['maUiResetPasswordState']);
-                });
-            }]
         }
     },
     {
@@ -80,18 +60,8 @@ export default [
         menuIcon: 'live_help',
         menuTr: 'header.forgotPassword',
         templatePromise() {
-            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+            return import(/* webpackMode: "eager" */
                 './views/forgotPassword.html');
-        },
-        resolve: {
-            deps: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
-                        './components/forgotPassword/forgotPassword').then(forgotPassword => {
-                    angular.module('maUiForgotPasswordState', [])
-                        .component('maUiForgotPassword', forgotPassword.default);
-                    $injector.loadNewModules(['maUiForgotPasswordState']);
-                });
-            }]
         }
     },
     {
@@ -101,18 +71,8 @@ export default [
         menuIcon: 'vpn_key',
         menuTr: 'header.changePasword',
         templatePromise() {
-            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+            return import(/* webpackMode: "eager" */
                     './views/changePassword.html');
-        },
-        resolve: {
-            deps: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
-                        './components/changePassword/changePassword').then(changePassword => {
-                    angular.module('maUiChangePasswordState', [])
-                        .component('maUiChangePassword', changePassword.default);
-                    $injector.loadNewModules(['maUiChangePasswordState']);
-                });
-            }]
         },
         params: {
             credentialsExpired: null,
@@ -126,18 +86,8 @@ export default [
         menuIcon: 'email',
         menuTr: 'login.emailVerification.verifyEmailForNewAccount',
         templatePromise() {
-            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+            return import(/* webpackMode: "eager" */
                     './views/verifyEmail.html');
-        },
-        resolve: {
-            deps: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
-                        './components/verifyEmail/verifyEmail').then(verifyEmail => {
-                    angular.module('maUiVerifyEmailState', [])
-                        .component('maUiVerifyEmail', verifyEmail.default);
-                    $injector.loadNewModules(['maUiVerifyEmailState']);
-                });
-            }]
         }
     },
     {
@@ -147,18 +97,8 @@ export default [
         menuIcon: 'email',
         menuTr: 'login.emailVerification.verifyEmail',
         templatePromise() {
-            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+            return import(/* webpackMode: "eager" */
                     './views/verifyEmailToken.html');
-        },
-        resolve: {
-            deps: ['$injector', function($injector) {
-                return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
-                        './components/verifyEmailToken/verifyEmailToken').then(verifyEmailToken => {
-                    angular.module('maUiVerifyEmailTokenState', [])
-                        .component('maUiVerifyEmailToken', verifyEmailToken.default);
-                    $injector.loadNewModules(['maUiVerifyEmailTokenState']);
-                });
-            }]
         }
     },
     {
@@ -168,7 +108,7 @@ export default [
         menuIcon: 'user',
         menuTr: 'login.registerNewUser',
         templatePromise() {
-            return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
+            return import(/* webpackMode: "eager" */
                     './views/registerNewUser.html');
         }
     },
