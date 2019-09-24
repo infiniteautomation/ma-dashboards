@@ -187,8 +187,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector'];
-    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector) {
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector', '$cookies'];
+    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector, $cookies) {
         
         let cachedUser, angularLocaleDeferred;
         const authTokenBaseUrl = '/rest/v2/auth-tokens';
@@ -494,8 +494,22 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         emailAddress: email
                     }
                 });
+            },
+            
+            ensureXsrfToken() {
+                // ensures there is a CSRF protection cookie set before logging in
+                const xsrfCookie = $cookies.get($http.defaults.xsrfCookieName);
+                if (!xsrfCookie) {
+                    $cookies.put($http.defaults.xsrfCookieName, Util.uuid(), {path: '/'});
+                }
             }
         });
+        
+        const login = User.login;
+        User.login = function() {
+            this.ensureXsrfToken();
+            return login.apply(this, arguments);
+        };
 
         Object.defineProperty(User, 'current', {
             get: function() {

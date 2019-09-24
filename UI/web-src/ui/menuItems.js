@@ -44,9 +44,9 @@ export default [
         resolve: {
             deps: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.login" */
-                        './directives/login/login').then(login => {
+                        './components/login/login').then(login => {
                     angular.module('maUiLoginState', [])
-                        .directive('maUiLogin', login.default);
+                        .component('maUiLogin', login.default);
                     $injector.loadNewModules(['maUiLoginState']);
                 });
             }]

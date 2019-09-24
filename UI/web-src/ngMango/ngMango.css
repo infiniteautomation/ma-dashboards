@@ -1376,3 +1376,11 @@ md-input-container.ma-filter {
 	text-align: center;
 	padding: 16px 0;
 }
+
+.ma-action-buttons {
+	margin-top: 24px;
+}
+
+.ma-action-buttons > .md-button:last-child {
+	margin-right: 0;
+}
