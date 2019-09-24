@@ -33,6 +33,7 @@
             <a ui-sref="forgotPassword({username: username})" tabindex="4" ma-tr="login.forgotYourPassword"></a>
         </div>
         <div flex></div>
-       <md-button type="submit" ng-click="$ctrl.doLogin()" tabindex="3" ma-tr="login.loginButton" class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}"></md-button>
+        <md-button type="submit" ng-click="$ctrl.doLogin()" ng-disabled="$ctrl.loggingIn" tabindex="3"
+                ma-tr="login.loginButton" class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}"></md-button>
     </div>
 </form>
