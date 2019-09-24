@@ -7,13 +7,13 @@ import verifyEmailTokenTemplate from './verifyEmailToken.html';
 
 class VerifyEmailTokenController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$state', 'maUtil']; }
+    static get $inject() { return ['maUser', '$stateParams', 'maDialogHelper', '$injector', 'maUtil']; }
     
-    constructor(maUser, $stateParams, maDialogHelper, $state, maUtil) {
+    constructor(maUser, $stateParams, maDialogHelper, $injector, maUtil) {
         this.maUser = maUser;
         this.$stateParams = $stateParams;
         this.maDialogHelper = maDialogHelper;
-        this.$state = $state;
+        this.$state = $injector.has('$state') && $injector.get('$state');
         this.maUtil = maUtil;
     }
     
@@ -47,13 +47,20 @@ class VerifyEmailTokenController {
                 textTr: ['login.emailVerification.userEmailVerified', response.data.email, response.data.username],
                 hideDelay: 10000
             });
-            this.$state.go('login');
+            if (typeof this.onSuccess === 'function') {
+                this.onSuccess({$emailAddress: this.email, $response: response, $state: this.$state});
+            } else if (this.$state) {
+                this.$state.go('login');
+            }
         }, error => {
             this.maDialogHelper.toastOptions({
                 textTr: ['login.emailVerification.errorVerifying', error.mangoStatusText],
                 hideDelay: 10000,
                 classes: 'md-warn'
             });
+            if (typeof this.onError === 'function') {
+                this.onError({$emailAddress: this.email, $error: error, $state: this.$state});
+            }
         }).finally(() => {
             this.disableButton = false;
         });
@@ -62,5 +69,12 @@ class VerifyEmailTokenController {
 
 export default {
     controller: VerifyEmailTokenController,
-    template: verifyEmailTokenTemplate
+    template: verifyEmailTokenTemplate,
+    bindings: {
+        onSuccess: '&?',
+        onError: '&?'
+    },
+    transclude: {
+        links: '?a'
+    }
 };
