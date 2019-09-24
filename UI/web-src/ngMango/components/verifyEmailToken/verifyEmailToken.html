@@ -12,9 +12,10 @@
                 <div ng-message="jwtExpired" ma-tr="login.emailVerification.validation.expiredToken"></div>
                 <div ng-message="server" ma-tr="login.emailVerification.validation.invalidToken" ma-tr-args="[$ctrl.serverErrors.invalidToken]"></div>
             </div>
+            <div ng-if="$ctrl.claims" class="ma-input-container-note" ma-tr="login.tokenExpiryMessage" ma-tr-args="[$ctrl.expiration, $ctrl.expirationDuration]"></div>
         </md-input-container>
         
-        <p class="ma-default-font" ng-if="$ctrl.claims" ma-tr="login.emailVerification.updateMessage" ma-tr-args="[$ctrl.claims.id || '', $ctrl.claims.sub, $ctrl.expiration, $ctrl.expirationDuration]"></p>
+        <p class="ma-default-font" ng-if="$ctrl.claims" ma-tr="login.emailVerification.updateMessage" ma-tr-args="[$ctrl.claims.id || '', $ctrl.claims.sub]"></p>
         <ma-now update-interval="1 SECONDS" on-change="$ctrl.updateExpiry($value)"></ma-now>
 
         <div md-colors="::{color: 'warn-A700'}" ng-messages="$ctrl.serverErrors">

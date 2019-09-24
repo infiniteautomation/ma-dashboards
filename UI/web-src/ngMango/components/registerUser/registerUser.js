@@ -40,6 +40,7 @@ class RegisterUserController {
         try {
             this.claims = this.maUtil.parseJwt(this.token);
             this.user.email = this.claims.sub;
+            this.updateExpiry();
         } catch (e) {
             this.claims = null;
         }
@@ -87,7 +88,7 @@ class RegisterUserController {
         });
     }
     
-    updateExpiry(timeNow) {
+    updateExpiry(timeNow = moment()) {
         const expiration = moment(this.claims && this.claims.exp * 1000);
         this.expiration = expiration.format('LT z');
         this.expirationDuration = moment.duration(expiration.diff(timeNow)).humanize(true);
