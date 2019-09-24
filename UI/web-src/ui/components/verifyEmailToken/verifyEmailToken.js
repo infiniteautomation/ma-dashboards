@@ -48,7 +48,7 @@ class VerifyEmailTokenController {
                 hideDelay: 10000
             });
             if (typeof this.onSuccess === 'function') {
-                this.onSuccess({$emailAddress: this.email, $response: response, $state: this.$state});
+                this.onSuccess({$token: this.token, $claims: this.claims, $email: this.email, $response: response, $state: this.$state});
             } else if (this.$state) {
                 this.$state.go('login');
             }
@@ -59,7 +59,7 @@ class VerifyEmailTokenController {
                 classes: 'md-warn'
             });
             if (typeof this.onError === 'function') {
-                this.onError({$emailAddress: this.email, $error: error, $state: this.$state});
+                this.onError({$token: this.token, $claims: this.claims, $email: this.email, $error: error, $state: this.$state});
             }
         }).finally(() => {
             this.disableButton = false;
