@@ -503,7 +503,17 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     data: {
                         token
                     }
+                }).then(response => {
+                    return Object.assign(Object.create(this.prototype), response.data);
                 });
+            },
+            
+            createEmailVerificationToken(data) {
+                return $http({
+                    url: `${emailVerificationUrl}/create-token`,
+                    method: 'POST',
+                    data
+                }).then(response => response.data);
             },
             
             ensureXsrfToken() {

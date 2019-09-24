@@ -15,6 +15,7 @@ class VerifyEmailTokenController {
         this.$stateParams = $stateParams;
         this.maDialogHelper = maDialogHelper;
         this.$state = $injector.has('$state') && $injector.get('$state');
+        this.maUiLoginRedirector = $injector.has('maUiLoginRedirector') && $injector.get('maUiLoginRedirector');
         this.maUtil = maUtil;
         this.$timeout = $timeout;
         
@@ -30,7 +31,7 @@ class VerifyEmailTokenController {
                 if (typeof this.onUserToken === 'function') {
                     this.onUserToken({$token: this.token, $claims: this.claims});
                 } else if (this.$state) {
-                    this.$state.go('registerUser');
+                    this.$state.go('registerUser', {emailAddressVerificationToken: this.token});
                 }
             }
             
@@ -67,16 +68,15 @@ class VerifyEmailTokenController {
         if (this.form.$invalid) return;
 
         this.disableButton = true;
-        return this.maUser.publicUpdateEmail(this.token).then(response => {
+        return this.maUser.publicUpdateEmail(this.token).then(user => {
             this.maDialogHelper.toastOptions({
-                textTr: ['login.emailVerification.userEmailVerified', response.data.email, response.data.username],
+                textTr: ['login.emailVerification.userEmailVerified', user.email, user.username],
                 hideDelay: 10000
             });
             if (typeof this.onSuccess === 'function') {
-                this.onSuccess({$token: this.token, $claims: this.claims, $email: this.email, $response: response, $state: this.$state});
-            } else if (this.$state) {
-                console.log('do login redirect?');
-                this.$state.go('login');
+                this.onSuccess({$token: this.token, $claims: this.claims, $email: this.email, $user: user, $state: this.$state});
+            } else if (this.maUiLoginRedirector) {
+                this.maUiLoginRedirector.redirect(user);
             }
         }, error => {
             if (error.status === 400) {
