@@ -10,8 +10,6 @@ function jwtInput($parse, maUtil) {
         restrict: 'A',
         scope: false,
         link: function($scope, $element, $attrs, ngModel) {
-            
-            
             ngModel.$validators.jwtExpired = function(modelValue, viewValue) {
                 const value = modelValue || viewValue;
                 
@@ -40,6 +38,17 @@ function jwtInput($parse, maUtil) {
                         }
                     }
                     
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            };
+            
+            ngModel.$validators.jwtParse = function(modelValue, viewValue) {
+                const value = modelValue || viewValue;
+                
+                try {
+                    maUtil.parseJwt(value);
                     return true;
                 } catch (e) {
                     return false;

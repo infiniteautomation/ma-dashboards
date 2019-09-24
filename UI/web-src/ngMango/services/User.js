@@ -496,6 +496,16 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 });
             },
             
+            publicUpdateEmail(token) {
+                return $http({
+                    url: `${emailVerificationUrl}/public/update-email`,
+                    method: 'POST',
+                    data: {
+                        token
+                    }
+                });
+            },
+            
             ensureXsrfToken() {
                 // ensures there is a CSRF protection cookie set before logging in
                 const xsrfCookie = $cookies.get($http.defaults.xsrfCookieName);

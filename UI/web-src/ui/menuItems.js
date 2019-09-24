@@ -102,14 +102,14 @@ export default [
         }
     },
     {
-        name: 'registerNewUser',
-        url: '/register-new-user',
+        name: 'registerUser',
+        url: '/register-user',
         menuHidden: true,
         menuIcon: 'user',
-        menuTr: 'login.registerNewUser',
+        menuTr: 'login.emailVerification.registerUser',
         templatePromise() {
             return import(/* webpackMode: "eager" */
-                    './views/registerNewUser.html');
+                    './views/registerUser.html');
         }
     },
     {
