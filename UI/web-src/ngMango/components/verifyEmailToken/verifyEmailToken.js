@@ -33,14 +33,19 @@ class VerifyEmailTokenController {
                 } else if (this.$state) {
                     this.$state.go('registerUser', {emailAddressVerificationToken: this.token});
                 }
-            }
-            
-            this.$timeout(() => {
-                // causes the error state to show
-                if (this.form && this.form.token) {
-                    this.form.token.$setTouched(true);
+            } else {
+                this.$timeout(() => {
+                    // causes the error state to show
+                    if (this.form && this.form.token) {
+                        this.form.token.$setTouched(true);
+                    }
+                }, 500);
+                
+                // auto submit the token
+                if (this.claims && this.claims.typ === 'emailverify') {
+                    this.verifyToken();
                 }
-            }, 500);
+            }
         }
     }
     
@@ -65,8 +70,10 @@ class VerifyEmailTokenController {
     }
 
     verifyToken() {
-        this.form.$setSubmitted();
-        if (this.form.$invalid) return;
+        if (this.form) {
+            this.form.$setSubmitted();
+            if (this.form.$invalid) return;
+        }
 
         this.disableButton = true;
         return this.maUser.publicUpdateEmail(this.token).then(user => {
