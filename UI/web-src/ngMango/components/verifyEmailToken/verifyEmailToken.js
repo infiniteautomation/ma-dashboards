@@ -27,23 +27,24 @@ class VerifyEmailTokenController {
             this.token = this.$stateParams.emailAddressVerificationToken;
             this.parseToken();
             
-            if (this.claims && this.claims.typ === 'emailverify' && this.claims.id == null) {
-                if (typeof this.onUserToken === 'function') {
-                    this.onUserToken({$token: this.token, $claims: this.claims});
-                } else if (this.$state) {
-                    this.$state.go('registerUser', {emailAddressVerificationToken: this.token});
-                }
-            } else {
-                this.$timeout(() => {
-                    // causes the error state to show
-                    if (this.form && this.form.token) {
-                        this.form.token.$setTouched(true);
+            if (this.claims && this.claims.typ === 'emailverify') {
+                if (this.claims.id == null) {
+                    if (typeof this.onUserToken === 'function') {
+                        this.onUserToken({$token: this.token, $claims: this.claims});
+                    } else if (this.$state) {
+                        this.$state.go('registerUser', {emailAddressVerificationToken: this.token});
                     }
-                }, 500);
-                
-                // auto submit the token
-                if (this.claims && this.claims.typ === 'emailverify') {
-                    this.verifyToken();
+                } else {
+                    this.autoVerifying = true;
+                    this.$timeout(() => {
+                        // causes the error state to show
+                        if (this.form && this.form.token) {
+                            this.form.token.$setTouched(true);
+                        }
+                        
+                        // auto submit the token
+                        this.verifyToken();
+                    }, 500);
                 }
             }
         }
@@ -72,7 +73,7 @@ class VerifyEmailTokenController {
     verifyToken() {
         if (this.form) {
             this.form.$setSubmitted();
-            if (this.form.$invalid) return;
+            if (!this.autoVerifying && this.form.$invalid) return;
         }
 
         this.disableButton = true;
@@ -87,6 +88,7 @@ class VerifyEmailTokenController {
                 this.maUiLoginRedirector.redirect(user);
             }
         }, error => {
+            delete this.autoVerifying;
             if (error.status === 400) {
                 this.serverErrors.invalidToken = error.mangoStatusText;
                 if (this.form && this.form.token) {
@@ -104,7 +106,7 @@ class VerifyEmailTokenController {
                 this.onError({$token: this.token, $claims: this.claims, $email: this.email, $error: error, $state: this.$state});
             }
         }).finally(() => {
-            this.disableButton = false;
+            delete this.disableButton;
         });
     }
     
