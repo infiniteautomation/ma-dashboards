@@ -55,6 +55,7 @@ class UserEditorController {
     }
     
     save() {
+        this.userForm.$setSubmitted();
         if (!this.userForm.$valid) {
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
@@ -148,6 +149,17 @@ class UserEditorController {
         } else {
             delete this.user.password;
         }
+    }
+    
+    sendEmailVerification(event) {
+        this.sendingEmailVerification = true;
+        this.user.sendEmailVerification().then(response => {
+            this.maDialogHelper.toast(['ui.components.emailSent', this.user.email]);
+        }, error => {
+            this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', this.user.email, error.mangoStatusText]);
+        }).finally(() => {
+            delete this.sendingEmailVerification;
+        });
     }
 }
 

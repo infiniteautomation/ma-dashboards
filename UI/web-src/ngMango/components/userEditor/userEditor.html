@@ -1,9 +1,9 @@
-<div ng-form="$ctrl.userForm" ma-validation-messages="$ctrl.validationMessages">
+<div ng-form="$ctrl.userForm" ma-validation-messages="$ctrl.validationMessages" ma-enter="$ctrl.save($event)">
     <div layout layout-align="space-between start" layout-wrap class="ma-inputs-container">
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>label</md-icon>
             <label ma-tr="users.username"></label>
-            <input name="username" ng-model="$ctrl.user.username" required maxlength="40">
+            <input name="username" ng-model="$ctrl.user.username" required maxlength="40" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.username.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.username.$viewValue.length]"></div>
@@ -13,7 +13,7 @@
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>person</md-icon>
             <label ma-tr="users.name"></label>
-            <input name="name" ng-model="$ctrl.user.name" required maxlength="255">
+            <input name="name" ng-model="$ctrl.user.name" required maxlength="255" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.name.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.name.$viewValue.length]"></div>
@@ -21,20 +21,29 @@
             </div>
         </md-input-container>
         <md-input-container flex="100" flex-gt-md="50">
-            <md-icon>email</md-icon>
+            <md-icon>{{$ctrl.user.emailVerified ? 'verified_user' : 'email'}}</md-icon>
             <label ma-tr="users.email"></label>
-            <input type="email" name="email" ng-model="$ctrl.user.email" required maxlength="255" ng-disabled="$ctrl.registerMode">
+            <input type="email" name="email" ng-model="$ctrl.user.email" required maxlength="255" ng-disabled="$ctrl.registerMode || $ctrl.disabled">
             <div ng-messages="$ctrl.userForm.email.$error">
                 <div ng-message="required" ma-tr="ui.app.required"></div>
                 <div ng-message="email" ma-tr="ui.app.invalidEmail"></div>
                 <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.email.validationMessage"></div>
             </div>
+            <md-button class="md-icon-button ma-input-button" ng-if="!$ctrl.user.isNew()" ng-class="{'ma-throb-opacity': $ctrl.sendingEmailVerification}"
+                    ng-click="$ctrl.sendEmailVerification($event)" ng-disabled="$ctrl.sendingEmailVerification || $ctrl.disabled">
+                <md-icon>send</md-icon>
+                <md-tooltip><span ma-tr="users.sendVerificationEmail"></span></md-tooltip>
+            </md-button>
+            <div class="ma-input-container-note" ng-if="!$ctrl.user.isNew()">
+                <span ng-if="$ctrl.user.emailVerified" ma-tr="users.emailVerified" ma-tr-args="[($ctrl.user.emailVerified | maMoment:'format':'l LT')]"></span>
+                <span ng-if="!$ctrl.user.emailVerified" ma-tr="users.emailNotVerified"></span>
+            </div>
         </md-input-container>
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>phone</md-icon>
             <label ma-tr="users.phone"></label>
-            <input type="tel" name="phone" ng-model="$ctrl.user.phone" pattern="^(?:\+?[0-9]{1,3}[ -]?)?(?:\([0-9 ]+\)[ -]?)?[0-9]+(?:[ -][0-9]+)*$" maxlength="40">
+            <input type="tel" name="phone" ng-model="$ctrl.user.phone" pattern="^(?:\+?[0-9]{1,3}[ -]?)?(?:\([0-9 ]+\)[ -]?)?[0-9]+(?:[ -][0-9]+)*$" maxlength="40" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.phone.$error">
                 <div ng-message="pattern" ma-tr="ui.app.invalidPhone"></div>
                 <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.phone.$viewValue.length]"></div>
@@ -44,7 +53,7 @@
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>location_city</md-icon>
             <label ma-tr="users.organization"></label>
-            <input name="organization" ng-model="$ctrl.user.organization" maxlength="80">
+            <input name="organization" ng-model="$ctrl.user.organization" maxlength="80" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.organization.$error">
                 <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[80, $ctrl.userForm.organization.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.organization.validationMessage"></div>
@@ -53,7 +62,7 @@
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>work</md-icon>
             <label ma-tr="users.organizationalRole"></label>
-            <input name="phone" ng-model="$ctrl.user.organizationalRole" maxlength="80">
+            <input name="phone" ng-model="$ctrl.user.organizationalRole" maxlength="80" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.organizationalRole.$error">
                 <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[80, $ctrl.userForm.organizationalRole.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.organizationalRole.validationMessage"></div>
@@ -63,7 +72,7 @@
             <md-input-container>
                 <md-icon>vpn_key</md-icon>
                 <label ma-tr="users.newPassword"></label>
-                <input type="password" name="password" ng-model="$ctrl.password" minlength="8" ng-required="$ctrl.user.isNew()" ng-change="$ctrl.passwordChanged()">
+                <input type="password" name="password" ng-model="$ctrl.password" minlength="8" ng-required="$ctrl.user.isNew()" ng-change="$ctrl.passwordChanged()" ng-disabled="$ctrl.disabled">
                 <div ng-messages="$ctrl.userForm.password.$error">
                     <div ng-message="required" ma-tr="ui.app.required"></div>
                     <div ng-message="minlength" ma-tr="ui.app.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
@@ -74,7 +83,7 @@
                 <md-icon>vpn_key</md-icon>
                 <label ma-tr="users.confirmNewPassword"></label>
                 <input type="password" name="confirmPassword" ng-model="$ctrl.confirmPassword" ng-pattern="$ctrl.regExpEscape($ctrl.password)" ng-required="!!$ctrl.password"
-                    ng-change="$ctrl.passwordChanged()">
+                    ng-change="$ctrl.passwordChanged()" ng-disabled="$ctrl.disabled">
                 <div ng-messages="$ctrl.userForm.confirmPassword.$error">
                     <div ng-message="required" ma-tr="ui.app.required"></div>
                     <div ng-message="pattern" ma-tr="ui.app.passwordsDoNotMatch"></div>
@@ -84,13 +93,13 @@
         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode">
             <md-icon>group</md-icon>
             <label ma-tr="users.permissions"></label>
-            <input name="permissions" ng-disabled="!$ctrl.User.current.hasAnyRole('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
+            <input name="permissions" ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
             <div ng-messages="$ctrl.userForm.permissions.$error">
                 <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
             </div>
             <div class="ma-input-container-note" ma-tr="ui.app.userRoleNotice"></div>
-            <ma-permissions-menu ng-if="$ctrl.User.current.hasAnyRole('superadmin')" ng-model="$ctrl.user.permissions"></ma-permissions-menu>
+            <ma-permissions-menu ng-if="!$ctrl.disabled && $ctrl.User.current.hasAnyRole('superadmin')" ng-model="$ctrl.user.permissions"></ma-permissions-menu>
         </md-input-container>
         
         <md-input-container flex="100" flex-gt-md="50">
@@ -115,7 +124,7 @@
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>home</md-icon>
             <label ma-tr="users.homeURL"></label>
-            <input name="homeUrl" ng-model="$ctrl.user.homeUrl" pattern="^\/(?!\/).*">
+            <input name="homeUrl" ng-model="$ctrl.user.homeUrl" pattern="^\/(?!\/).*" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.homeUrl.$error">
                 <div ng-message="pattern" ma-tr="ui.app.mustBeAbsolutePath"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.homeUrl.validationMessage"></div>
@@ -144,7 +153,7 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.timezone.validationMessage"></div>
             </div>
         </md-input-container>
-        <ma-duration-editor ng-if="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled"
+        <ma-duration-editor ng-if="$ctrl.User.current.hasAnyRole('superadmin') && $ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled"
                 flex="100" flex-gt-md="50" name="sessionExpirationPeriod" ng-model="$ctrl.user.sessionExpirationPeriod"
                 allowed-types="::['MINUTES', 'HOURS', 'DAYS', 'MONTHS', 'YEARS']" required>
             <ma-periods-label ma-tr="users.sessionExpirationPeriod"></ma-periods-label>
@@ -162,7 +171,7 @@
         <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.receiveOwnAuditEvents"></span>
         </md-checkbox>
-        <md-checkbox name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled">
+        <md-checkbox ng-if="$ctrl.User.current.hasAnyRole('superadmin')" name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.sessionExpirationOverride"></span>
         </md-checkbox>
     </div>
@@ -174,6 +183,8 @@
             ma-tr-args="[($ctrl.user.lastLogin | maMoment:'format':'ll LT'), $ctrl.user.lastLoginDuration().humanize(true)]"></div>
         <div ma-tr="ui.app.lastPasswordChange"
             ma-tr-args="[($ctrl.user.lastPasswordChange | maMoment:'format':'ll LT'), $ctrl.user.lastPasswordChangeDuration().humanize(true)]"></div>
+        <div ma-tr="users.created"
+            ma-tr-args="[($ctrl.user.created | maMoment:'format':'ll LT'), $ctrl.user.lastPasswordChangeDuration().humanize(true)]"></div>
     </div>
 
     <div ng-if="!$ctrl.disabled && !$ctrl.registerMode">
@@ -189,8 +200,8 @@
     </div>
 </div>
 
-<div ng-if="$ctrl.User.current.hasAnyRole('superadmin') && !$ctrl.registerMode">
-    <md-button class="md-raised" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.userForm.email.$invalid || $ctrl.sendingEmail" ng-class="{'ma-throb-opacity': $ctrl.sendingEmail}">
+<div ng-if="$ctrl.User.current.hasAnyRole('superadmin') && !$ctrl.registerMode && !$ctrl.disabled">
+    <md-button class="md-raised" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.sendingEmail" ng-class="{'ma-throb-opacity': $ctrl.sendingEmail}">
         <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
     </md-button>
     <md-button class="md-raised" ng-if="!$ctrl.user.isNew() && $ctrl.User.current.id !== $ctrl.originalUser.id" ng-click="$ctrl.switchUser($event)">

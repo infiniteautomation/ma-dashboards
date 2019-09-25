@@ -508,6 +508,14 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 });
             },
             
+            sendEmailVerification(data) {
+                return $http({
+                    url: `${emailVerificationUrl}/send-email`,
+                    method: 'POST',
+                    data
+                });
+            },
+            
             createEmailVerificationToken(data) {
                 return $http({
                     url: `${emailVerificationUrl}/create-token`,
@@ -617,6 +625,20 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 const nowM = moment(now);
                 const lastPasswordChange = moment(this.lastPasswordChange);
                 return moment.duration(lastPasswordChange.diff(nowM));
+            },
+            
+            sendEmailVerification(emailAddress = this.email) {
+                return this.constructor.sendEmailVerification({
+                    username: this.username,
+                    emailAddress
+                });
+            },
+            
+            createEmailVerificationToken(emailAddress = this.email) {
+                return this.constructor.createEmailVerificationToken({
+                    username: this.username,
+                    emailAddress
+                });
             }
         });
 
