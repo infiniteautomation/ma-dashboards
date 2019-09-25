@@ -52,8 +52,6 @@ public class UIServlet extends DefaultServlet {
 
         if ("/serviceWorker.js".equals(relativePath) || "/".equals(relativePath)) {
             // always re-validate cache for serviceWorker.js and index.html
-            // Override the Cache-Control header
-            //TODO This seems to set the cache control on requests like /ui/login which I'm not sure you want here as that is a resource request eventually right?
             req.setAttribute(MangoCacheControlHeaderFilter.CACHE_OVERRIDE_SETTING, CacheControlLevel.DEFAULT);
         }
 
