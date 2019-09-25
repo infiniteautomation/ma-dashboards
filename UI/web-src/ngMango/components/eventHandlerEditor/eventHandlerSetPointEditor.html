@@ -199,6 +199,7 @@
                context="editor.eventHandler.scriptContext"
                ng-model="editor.eventHandler.inactiveScript"
                permissions="editor.eventHandler.scriptPermissions"
+               url="/rest/v2/event-handlers/validate-email-handler-script"
                ></ma-scripting-editor>
             <div ng-messages="editor.form.inactiveScript.$error" md-colors="::{color: 'warn'}">
                 <div ng-message="validationMessage" ng-bind="editor.form.inactiveScript.validationMessage"></div>
