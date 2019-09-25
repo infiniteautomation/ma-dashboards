@@ -1,20 +1,16 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import userListTemplate from './userList.html';
-
-const UPDATE_TYPES = ['add', 'update', 'delete'];
 
 class UserListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', 'maUserEventManager', '$scope']; }
+    static get $inject() { return ['maUser', '$scope']; }
 
-    constructor(User, UserEventManager, $scope) {
+    constructor(User, $scope) {
         this.User = User;
-        this.UserEventManager = UserEventManager;
         this.$scope = $scope;
     }
     
@@ -22,7 +18,10 @@ class UserListController {
         this.ngModelCtrl.$render = () => this.selectedUser = this.ngModelCtrl.$viewValue;
         
         this.query();
-        this.UserEventManager.smartSubscribe(this.$scope, null, UPDATE_TYPES, this.updateHandler.bind(this));
+        
+        this.User.notificationManager.subscribe((event, item, attributes) => {
+            attributes.updateArray(this.users);
+        }, this.$scope);
     }
     
     $onChanges(changes) {
@@ -61,23 +60,6 @@ class UserListController {
     selectUser(user) {
         this.selectedUser = user;
         this.ngModelCtrl.$setViewValue(user);
-    }
-    
-    updateHandler(event, update) {
-        this.usersPromise.then(users => {
-            const userIndex = users.findIndex(u => u.id === update.object.id);
-    
-            if (update.action === 'add' || update.action === 'update') {
-                const user = userIndex >= 0 && users[userIndex];
-                if (user) {
-                    angular.merge(user, update.object);
-                } else if (this.filterMatches(update.object)) {
-                    users.push(update.object);
-                }
-            } else if (update.action === 'delete' && userIndex >= 0) {
-                users.splice(userIndex, 1);
-            }
-        });
     }
     
     filterMatches(user) {
