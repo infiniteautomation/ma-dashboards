@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.servlet.DefaultServlet;
-import org.springframework.http.HttpHeaders;
 
 import com.serotonin.m2m2.web.filter.MangoCacheControlHeaderFilter;
+import com.serotonin.m2m2.web.filter.MangoCacheControlHeaderFilter.CacheControlLevel;
 import com.serotonin.m2m2.web.mvc.spring.security.BrowserRequestMatcher;
 
 /**
@@ -52,8 +52,9 @@ public class UIServlet extends DefaultServlet {
 
         if ("/serviceWorker.js".equals(relativePath) || "/".equals(relativePath)) {
             // always re-validate cache for serviceWorker.js and index.html
-            // Override the Cache-Control header that was set by the EtagHeaderFilter
-            resp.setHeader(HttpHeaders.CACHE_CONTROL, String.format(MangoCacheControlHeaderFilter.MAX_AGE_TEMPLATE, 0));
+            // Override the Cache-Control header
+            //TODO This seems to set the cache control on requests like /ui/login which I'm not sure you want here as that is a resource request eventually right?
+            req.setAttribute(MangoCacheControlHeaderFilter.CACHE_OVERRIDE_SETTING, CacheControlLevel.DEFAULT);
         }
 
         getServletContext().getRequestDispatcher(FORDWARD_TO_PATH + relativePath).forward(req, resp);
