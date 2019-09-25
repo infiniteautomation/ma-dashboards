@@ -10,9 +10,9 @@ import moment from 'moment-timezone';
 
 class UserEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$http', '$mdDialog', 'maTranslate', 'maLocales', '$window', '$injector', 'maDialogHelper']; }
+    static get $inject() { return ['maUser', '$http', '$mdDialog', 'maTranslate', 'maLocales', '$window', '$injector', 'maDialogHelper', '$element']; }
     
-    constructor(User, $http, $mdDialog, Translate, maLocales, $window, $injector, maDialogHelper) {
+    constructor(User, $http, $mdDialog, Translate, maLocales, $window, $injector, maDialogHelper, $element) {
         this.User = User;
         this.$http = $http;
         this.timezones = moment.tz.names();
@@ -21,6 +21,12 @@ class UserEditorController {
         this.$window = $window;
         this.$state = $injector.has('$state') && $injector.get('$state');
         this.maDialogHelper = maDialogHelper;
+        
+        if ($injector.has('$mdTheming')) {
+            $injector.get('$mdTheming')($element);
+        }
+        
+        this.showStatus = true;
         
         maLocales.get().then(locales => {
             this.locales = locales;
@@ -171,7 +177,8 @@ export default {
         onSave: '&?',
         onDelete: '&?',
         disabledAttr: '@?disabled',
-        registerMode: '<?'
+        registerMode: '<?',
+        showStatus: '<?'
     },
     designerInfo: {
         hideFromMenu: true

@@ -1,4 +1,5 @@
 <div ng-form="$ctrl.userForm" ma-validation-messages="$ctrl.validationMessages" ma-enter="$ctrl.save($event)">
+
     <div layout layout-align="space-between start" layout-wrap class="ma-inputs-container">
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>label</md-icon>
@@ -161,31 +162,65 @@
         </ma-duration-editor>
     </div>
 
-    <div layout layout-align="start start" layout-wrap class="ma-user-checkboxes" ng-if="!$ctrl.registerMode">
-        <md-checkbox name="muted" ng-model="$ctrl.user.muted" ng-disabled="$ctrl.disabled">
-            <span ma-tr="users.muted"></span>
-        </md-checkbox>
-        <md-checkbox name="disabled" ng-model="$ctrl.user.disabled" ng-disabled="$ctrl.User.current.username === $ctrl.originalUser.username || $ctrl.disabled">
-            <span ma-tr="common.disabled"></span>
-        </md-checkbox>
-        <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents" ng-disabled="$ctrl.disabled">
-            <span ma-tr="users.receiveOwnAuditEvents"></span>
-        </md-checkbox>
-        <md-checkbox ng-if="$ctrl.User.current.hasAnyRole('superadmin')" name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled">
-            <span ma-tr="users.sessionExpirationOverride"></span>
-        </md-checkbox>
+    <div layout layout-wrap class="ma-margin-top">
+        <div flex="100" flex-gt-md="50" layout="column" layout-align="start start" class="ma-user-checkboxes" ng-if="!$ctrl.registerMode">
+            <md-checkbox name="muted" ng-model="$ctrl.user.muted" ng-disabled="$ctrl.disabled">
+                <span ma-tr="users.muted"></span>
+            </md-checkbox>
+            <md-checkbox name="disabled" ng-model="$ctrl.user.disabled" ng-disabled="$ctrl.User.current.username === $ctrl.originalUser.username || $ctrl.disabled">
+                <span ma-tr="common.disabled"></span>
+            </md-checkbox>
+            <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents" ng-disabled="$ctrl.disabled">
+                <span ma-tr="users.receiveOwnAuditEvents"></span>
+            </md-checkbox>
+            <md-checkbox ng-if="$ctrl.User.current.hasAnyRole('superadmin')" name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled">
+                <span ma-tr="users.sessionExpirationOverride"></span>
+            </md-checkbox>
+        </div>
+        <table flex="100" flex-gt-md="50" class="ma-user-status-table" ng-if="!$ctrl.user.isNew() && $ctrl.showStatus">
+            <thead>
+                <tr>
+                    <td ma-tr="ui.app.userProperty"></td>
+                    <td ma-tr="ui.app.date"></td>
+                    <td ma-tr="ui.app.relativeTime"></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td ma-tr="ui.app.userCreated"></td>
+                    <td ng-bind="$ctrl.user.created | maMoment:'format':'ll LT'"></td>
+                    <td ng-bind="$ctrl.user.createdDuration().humanize(true)"></td>
+                </tr>
+                <tr>
+                    <td ma-tr="ui.app.lastLoginStatic"></td>
+                    <td>
+                        <span ng-if="$ctrl.user.lastLogin === null" ma-tr="ui.app.neverLoggedIn"></span>
+                        <span ng-if="$ctrl.user.lastLogin !== null" ng-bind="$ctrl.user.lastLogin | maMoment:'format':'ll LT'"></span>
+                    </td>
+                    <td>
+                        <span ng-if="$ctrl.user.lastLogin !== null" ng-bind="$ctrl.user.lastLoginDuration().humanize(true)"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td ma-tr="ui.app.lastPasswordChangeStatic"></td>
+                    <td ng-bind="$ctrl.user.lastPasswordChange | maMoment:'format':'ll LT'"></td>
+                    <td ng-bind="$ctrl.user.lastPasswordChangeDuration().humanize(true)"></td>
+                </tr>
+                <tr>
+                    <td ma-tr="ui.app.userEmailVerified"></td>
+                    <td>
+                        <span ng-if="$ctrl.user.emailVerified === null" ma-tr="users.emailNotVerified"></span>
+                        <span ng-if="$ctrl.user.emailVerified !== null" ng-bind="$ctrl.user.emailVerified | maMoment:'format':'ll LT'"></span>
+                    </td>
+                    <td>
+                        <span ng-if="$ctrl.user.emailVerified !== null" ng-bind="$ctrl.user.emailVerifiedDuration().humanize(true)"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <div class="ma-user-status" ng-if="!$ctrl.user.isNew()">
-        <div md-colors="::{color: 'warn'}" ng-if="$ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></div>
-        <div ng-if="$ctrl.user.lastLogin === null" ma-tr="ui.app.neverLoggedIn"></div>
-        <div ng-if="$ctrl.user.lastLogin !== null" ma-tr="ui.app.lastLogin"
-            ma-tr-args="[($ctrl.user.lastLogin | maMoment:'format':'ll LT'), $ctrl.user.lastLoginDuration().humanize(true)]"></div>
-        <div ma-tr="ui.app.lastPasswordChange"
-            ma-tr-args="[($ctrl.user.lastPasswordChange | maMoment:'format':'ll LT'), $ctrl.user.lastPasswordChangeDuration().humanize(true)]"></div>
-        <div ma-tr="users.created"
-            ma-tr-args="[($ctrl.user.created | maMoment:'format':'ll LT'), $ctrl.user.lastPasswordChangeDuration().humanize(true)]"></div>
-    </div>
+    <div class="ma-user-status" md-colors="::{color: 'warn'}" ng-if="!$ctrl.user.isNew() && $ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></div>
 
     <div ng-if="!$ctrl.disabled && !$ctrl.registerMode">
         <md-button class="md-raised md-primary" type="submit" ng-click="$ctrl.save($event)">
@@ -198,13 +233,4 @@
             <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
         </md-button>
     </div>
-</div>
-
-<div ng-if="$ctrl.User.current.hasAnyRole('superadmin') && !$ctrl.registerMode && !$ctrl.disabled">
-    <md-button class="md-raised" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.sendingEmail" ng-class="{'ma-throb-opacity': $ctrl.sendingEmail}">
-        <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
-    </md-button>
-    <md-button class="md-raised" ng-if="!$ctrl.user.isNew() && $ctrl.User.current.id !== $ctrl.originalUser.id" ng-click="$ctrl.switchUser($event)">
-        <md-icon>swap_horiz</md-icon> <span ma-tr="users.su"></span>
-    </md-button>
 </div>

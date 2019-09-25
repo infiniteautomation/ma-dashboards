@@ -4,7 +4,7 @@ ma-user-editor .ma-user-checkboxes {
 }
 
 ma-user-editor .ma-user-checkboxes > md-checkbox {
-	margin-bottom: 0;
+	margin-bottom: 8px;
 }
 
 ma-user-editor .ma-user-status {
@@ -12,8 +12,17 @@ ma-user-editor .ma-user-status {
 	margin-bottom: 16px;
 }
 
-ma-user-editor fieldset {
-	margin: 0;
-	border: 0;
-	padding: 0;
+ma-user-editor table.ma-user-status-table {
+	border-collapse: collapse;
+	font-size: 1.4rem;
+	width: 100%;
+}
+
+ma-user-editor table.ma-user-status-table td {
+	padding: 4px 16px 4px 16px;
+	border-bottom: 1px solid currentColor;
+}
+
+ma-user-editor table.ma-user-status-table thead {
+	font-weight: bold;
 }

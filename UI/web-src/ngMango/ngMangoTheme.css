@@ -61,3 +61,7 @@ ma-tile-map.md-THEME_NAME-theme.leaflet-container .leaflet-tooltip {
 	background-color: '{{background-default}}';
 	color: '{{background-contrast}}';
 }
+
+ma-user-editor.md-THEME_NAME-theme table.ma-user-status-table td {
+	border-bottom-color: '{{background-hue-3-0.25}}';
+}

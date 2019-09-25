@@ -615,6 +615,18 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 return this.constructor.revokeAuthTokens();
             },
             
+            createdDuration(now = new Date()) {
+                const nowM = moment(now);
+                const created = moment(this.created);
+                return moment.duration(created.diff(nowM));
+            },
+            
+            emailVerifiedDuration(now = new Date()) {
+                const nowM = moment(now);
+                const emailVerified = moment(this.emailVerified);
+                return moment.duration(emailVerified.diff(nowM));
+            },
+            
             lastLoginDuration(now = new Date()) {
                 const nowM = moment(now);
                 const lastLogin = moment(this.lastLogin);
