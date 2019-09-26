@@ -10,9 +10,9 @@ import moment from 'moment-timezone';
 
 class UserEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$http', '$mdDialog', 'maTranslate', 'maLocales', '$window', '$injector', 'maDialogHelper', '$element']; }
+    static get $inject() { return ['maUser', '$http', '$mdDialog', 'maTranslate', 'maLocales', '$window', '$injector', 'maDialogHelper', '$scope']; }
     
-    constructor(User, $http, $mdDialog, Translate, maLocales, $window, $injector, maDialogHelper, $element) {
+    constructor(User, $http, $mdDialog, Translate, maLocales, $window, $injector, maDialogHelper, $scope) {
         this.User = User;
         this.$http = $http;
         this.timezones = moment.tz.names();
@@ -21,31 +21,46 @@ class UserEditorController {
         this.$window = $window;
         this.$state = $injector.has('$state') && $injector.get('$state');
         this.maDialogHelper = maDialogHelper;
-        
-        if ($injector.has('$mdTheming')) {
-            $injector.get('$mdTheming')($element);
-        }
-        
+        this.$scope = $scope;
+
         this.showStatus = true;
         
         maLocales.get().then(locales => {
             this.locales = locales;
         });
+
+        /* Cannot get this to work effectively until we have some sort of version / updated property
+        if (this.User.current) {
+            this.User.notificationManager.subscribe((event, item, attributes) => {
+                if (this.originalUser && !this.originalUser.isNew() && this.originalUser.username === item.username) {
+                    this.updatedUserEvent = event.name;
+                    this.updatedUser = item;
+                }
+            }, this.$scope);
+        }
+        */
     }
     
     $onChanges(changes) {
         if (changes.originalUser && this.originalUser) {
-            if (this.registerMode) {
-                this.user = this.originalUser;
-            } else {
-                this.user = angular.copy(this.originalUser);
-            }
-            this.resetForm();
+            this.render();
         }
         
         if (changes.disabledAttr) {
-            this.disabled = this.disabledAttr || !this.User.current.hasAnyPermission('permissions.user.editSelf');
+            this.disabled = this.disabledAttr || !this.registerMode && !this.User.current.hasAnyPermission('permissions.user.editSelf');
         }
+    }
+    
+    render(user = this.originalUser) {
+        delete this.updatedUserEvent;
+        delete this.updatedUser;
+        
+        if (this.registerMode) {
+            this.user = user;
+        } else {
+            this.user = angular.copy(user);
+        }
+        this.resetForm();
     }
 
     resetForm() {
@@ -67,7 +82,11 @@ class UserEditorController {
             return;
         }
 
+        console.log('save()', this.user);
+        this.saving = true;
+        
         this.user.save().then(user => {
+            console.log('save().then()', user);
             const previous = angular.copy(this.originalUser);
             angular.merge(this.originalUser, user);
             
@@ -79,22 +98,23 @@ class UserEditorController {
             this.maDialogHelper.toast(['ui.components.userSaved', user.username]);
             
             this.onSave({$user: this.originalUser, $previous: previous});
-            this.resetForm();
+            this.render();
         }, error => {
             if (error.data && error.data.validationMessages) {
                 this.validationMessages = error.data.validationMessages;
             }
     
             this.maDialogHelper.errorToast(['ui.components.errorSavingUser', this.user.username, error.mangoStatusText]);
-        });
+        }).finally(() => delete this.saving);
     }
     
     revert() {
-        this.user = angular.copy(this.originalUser);
-        this.resetForm();
+        this.render(this.updatedUser);
     }
     
     remove(event) {
+        this.deleting = true;
+        
         const confirm = this.$mdDialog.confirm()
             .title(this.Translate.trSync('ui.app.areYouSure'))
             .textContent(this.Translate.trSync('ui.components.confirmDeleteUser'))
@@ -115,7 +135,7 @@ class UserEditorController {
             }, error => {
                 this.maDialogHelper.errorToast(['ui.components.errorDeletingUser', username, error.mangoStatusText]);
             });
-        });
+        }).catch(e => null).finally(() => delete this.deleting);
     }
 
     regExpEscape(s) {

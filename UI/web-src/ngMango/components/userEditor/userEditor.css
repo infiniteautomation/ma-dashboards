@@ -7,7 +7,6 @@ ma-user-editor .ma-user-checkboxes > md-checkbox {
 	margin-bottom: 0;
 }
 
-ma-user-editor .ma-user-status {
+ma-user-editor .ma-action-buttons {
 	margin-top: 16px;
-	margin-bottom: 16px;
 }

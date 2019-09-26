@@ -1,5 +1,4 @@
 <div ng-form="$ctrl.userForm" ma-validation-messages="$ctrl.validationMessages" ma-enter="$ctrl.save($event)">
-
     <div layout layout-align="space-between start" layout-wrap class="ma-inputs-container">
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>label</md-icon>
@@ -134,7 +133,7 @@
                 <md-option ng-repeat="locale in $ctrl.locales track by locale.id" ng-value="locale.id"><span ng-bind="locale.name"></span> &mdash; <span ng-bind="locale.native"></span></md-option>
             </md-select>
             <div ng-messages="$ctrl.userForm.locale.$error">
-            	<div ng-message="validationMessage" ng-bind="$ctrl.userForm.locale.validationMessage"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.locale.validationMessage"></div>
             </div>
         </md-input-container>
         <md-input-container flex="100" flex-gt-md="50">
@@ -172,16 +171,21 @@
         </md-checkbox>
     </div>
 
-    <div class="ma-user-status" md-colors="::{color: 'warn'}" ng-if="!$ctrl.user.isNew() && $ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></div>
+    <ul class="ma-user-status" md-colors="::{color: 'warn'}">
+        <li ng-if="!$ctrl.user.isNew() && $ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></li>
+        <li ng-if="$ctrl.updatedUserEvent === 'delete'">The user you are editing was deleted.</li>
+        <li ng-if="$ctrl.updatedUserEvent === 'update'">The user you are editing was modified elsewhere. Saving may overwrite someone else's changes.</li>
+    </ul>
 
     <div ng-if="!$ctrl.disabled && !$ctrl.registerMode" class="ma-action-buttons">
-        <md-button class="md-raised md-primary" type="submit" ng-click="$ctrl.save($event)">
+        <md-button class="md-raised md-primary" type="submit" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.saving || $ctrl.deleting">
             <md-icon>save</md-icon> <span ma-tr="common.save"></span>
         </md-button>
-        <md-button class="md-raised" ng-click="$ctrl.revert($event)">
+        <md-button class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="!($ctrl.userForm.$dirty || $ctrl.updatedUser)">
             <md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span>
         </md-button>
-        <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew() || $ctrl.User.current.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">
+        <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew() || $ctrl.User.current.username === $ctrl.originalUser.username || $ctrl.saving || $ctrl.deleting"
+                ng-click="$ctrl.remove($event)">
             <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
         </md-button>
     </div>
