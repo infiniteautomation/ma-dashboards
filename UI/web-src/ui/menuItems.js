@@ -103,7 +103,7 @@ export default [
     },
     {
         name: 'registerUser',
-        url: '/register-user',
+        url: '/register-user?emailAddressVerificationToken',
         menuHidden: true,
         menuIcon: 'user',
         menuTr: 'login.emailVerification.registerUser',
