@@ -6,47 +6,51 @@
 import usersPageTemplate from './usersPage.html';
 import './usersPage.css';
 
-UsersPageController.$inject = ['maUser', '$state', '$mdMedia'];
-function UsersPageController(User, $state, $mdMedia) {
-    this.User = User;
-    this.$state = $state;
-    this.$mdMedia = $mdMedia;
-}
+class UsersPageController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['maUser', '$state', '$mdMedia']; }
 
-UsersPageController.prototype.$onInit = function() {
-    if (this.$state.params.username) {
-        this.User.get({username: this.$state.params.username}).$promise.then(function(user) {
-            // causes a stack overflow when we try and deep merge this object later
-            delete user.$promise;
-            this.user = user;
-        }.bind(this), function() {
+    constructor(User, $state, $mdMedia) {
+        this.User = User;
+        this.$state = $state;
+        this.$mdMedia = $mdMedia;
+    }
+
+    $onInit() {
+        if (this.$state.params.username) {
+            this.User.get({username: this.$state.params.username}).$promise.then(user => {
+                // causes a stack overflow when we try and deep merge this object later
+                delete user.$promise;
+                this.user = user;
+            }, () => {
+                this.user = this.User.current;
+                this.updateUrl();
+            });
+        } else {
             this.user = this.User.current;
             this.updateUrl();
-        }.bind(this));
-    } else {
-        this.user = this.User.current;
+        }
+    }
+    
+    updateUrl() {
+        this.$state.params.username = this.user && !this.user.isNew() && this.user.username || null;
+        this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
+    }
+    
+    userDeleted(user) {
+        this.addUser();
+    }
+    
+    userSaved(user, prevUser) {
+        // username might have been updated
         this.updateUrl();
     }
-};
-
-UsersPageController.prototype.updateUrl = function() {
-    this.$state.params.username = this.user && !this.user.isNew() && this.user.username || null;
-    this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
-};
-
-UsersPageController.prototype.userDeleted = function(user) {
-    this.addUser();
-};
-
-UsersPageController.prototype.userSaved = function(user, prevUser) {
-    // username might have been updated
-    this.updateUrl();
-};
-
-UsersPageController.prototype.addUser = function($event) {
-    this.user = new this.User();
-    this.updateUrl();
-};
+    
+    addUser($event) {
+        this.user = new this.User();
+        this.updateUrl();
+    }
+}
 
 export default {
     controller: UsersPageController,
