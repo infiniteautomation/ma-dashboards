@@ -38,7 +38,7 @@
                     <span ng-if="!$ctrl.user.isNew()" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
                     <span ng-if="$ctrl.user.isNew()" ma-tr="ui.app.editNewUser"></span>
                     <div flex></div>
-                    <ma-user-actions-menu user="$ctrl.user"></ma-user-actions-menu>
+                    <ma-user-actions-menu user="$ctrl.user" on-copy="$ctrl.user = $user; $ctrl.updateUrl()"></ma-user-actions-menu>
                 </div>
             </md-toolbar>
 

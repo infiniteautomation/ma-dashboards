@@ -28,5 +28,13 @@
                 </div>
             </md-button>
         </md-menu-item>
+        <md-menu-item ng-if="$ctrl.onCopy && $ctrl.User.current.hasAnyRole('superadmin')">
+            <md-button class="ma-no-padding-right" ng-click="$ctrl.copyUser($event)">
+                <div layout="row" flex>
+                    <div flex ma-tr="common.copy"></div>
+                    <md-icon md-menu-align-target>content_copy</md-icon>
+                </div>
+            </md-button>
+        </md-menu-item>
     </md-menu-content>
 </md-menu>

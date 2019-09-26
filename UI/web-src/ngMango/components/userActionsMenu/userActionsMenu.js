@@ -56,12 +56,20 @@ class UserActionsMenuController {
             delete this.sendingEmailVerification;
         });
     }
+    
+    copyUser(event) {
+        const copy = this.user.copy(true);
+        if (typeof this.onCopy === 'function') {
+            this.onCopy({$event: event, $user: copy});
+        }
+    }
 }
 
 export default {
     controller: UserActionsMenuController,
     template: componentTemplate,
     bindings: {
-        user: '<?'
+        user: '<?',
+        onCopy: '&?'
     }
 };
