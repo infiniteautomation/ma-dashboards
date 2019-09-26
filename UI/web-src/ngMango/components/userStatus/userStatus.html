@@ -1,0 +1,41 @@
+<table class="ma-material-table" md-themable>
+    <thead>
+        <tr>
+            <td ma-tr="ui.app.userProperty"></td>
+            <td ma-tr="ui.app.date"></td>
+            <td ma-tr="ui.app.relativeTime"></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td ma-tr="ui.app.userCreated"></td>
+            <td ng-bind="$ctrl.user.created | maMoment:'format':'ll LT'"></td>
+            <td ng-bind="$ctrl.user.createdDuration().humanize(true)"></td>
+        </tr>
+        <tr>
+            <td ma-tr="ui.app.lastLoginStatic"></td>
+            <td>
+                <span ng-if="$ctrl.user.lastLogin === null" ma-tr="ui.app.neverLoggedIn"></span>
+                <span ng-if="$ctrl.user.lastLogin !== null" ng-bind="$ctrl.user.lastLogin | maMoment:'format':'ll LT'"></span>
+            </td>
+            <td>
+                <span ng-if="$ctrl.user.lastLogin !== null" ng-bind="$ctrl.user.lastLoginDuration().humanize(true)"></span>
+            </td>
+        </tr>
+        <tr>
+            <td ma-tr="ui.app.lastPasswordChangeStatic"></td>
+            <td ng-bind="$ctrl.user.lastPasswordChange | maMoment:'format':'ll LT'"></td>
+            <td ng-bind="$ctrl.user.lastPasswordChangeDuration().humanize(true)"></td>
+        </tr>
+        <tr>
+            <td ma-tr="ui.app.userEmailVerified"></td>
+            <td>
+                <span ng-if="$ctrl.user.emailVerified === null" ma-tr="users.emailNotVerified"></span>
+                <span ng-if="$ctrl.user.emailVerified !== null" ng-bind="$ctrl.user.emailVerified | maMoment:'format':'ll LT'"></span>
+            </td>
+            <td>
+                <span ng-if="$ctrl.user.emailVerified !== null" ng-bind="$ctrl.user.emailVerifiedDuration().humanize(true)"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

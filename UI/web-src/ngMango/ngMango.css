@@ -1381,6 +1381,27 @@ md-input-container.ma-filter {
 	margin-top: 24px;
 }
 
+.ma-action-buttons > .md-button:first-child {
+	margin-left: 0;
+}
+
 .ma-action-buttons > .md-button:last-child {
 	margin-right: 0;
+}
+
+/* basic material table */
+table.ma-material-table {
+	border-collapse: collapse;
+	font-size: 1.4rem;
+	width: 100%;
+}
+
+table.ma-material-table td {
+	padding: 4px 16px 4px 16px;
+	/* color override in ngMangoTheme.css */
+	border-bottom: 1px solid currentColor;
+}
+
+table.ma-material-table thead {
+	font-weight: bold;
 }

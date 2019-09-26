@@ -54,6 +54,16 @@
                 </md-tab>
                 <md-tab ng-if="!$ctrl.user.isNew()">
                     <md-tab-label>
+                        <span ma-tr="ui.app.status"></span>
+                    </md-tab-label>
+                    <md-tab-body>
+                        <div class="md-padding">
+                            <ma-user-status user="$ctrl.user"></ma-user-status>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab ng-if="!$ctrl.user.isNew()">
+                    <md-tab-label>
                         <span ma-tr="ui.app.authTokens"></span>
                     </md-tab-label>
                     <md-tab-body>
