@@ -27,25 +27,17 @@ class VerifyEmailTokenController {
             this.token = this.$stateParams.emailAddressVerificationToken;
             this.parseToken();
             
-            if (this.claims && this.claims.typ === 'emailverify') {
-                if (this.claims.id == null) {
-                    if (typeof this.onUserToken === 'function') {
-                        this.onUserToken({$token: this.token, $claims: this.claims});
-                    } else if (this.$state) {
-                        this.$state.go('registerUser', {emailAddressVerificationToken: this.token});
+            if (this.claims && this.claims.typ === 'emailverify' && this.claims.id != null) {
+                this.autoVerifying = true;
+                this.$timeout(() => {
+                    // causes the error state to show
+                    if (this.form && this.form.token) {
+                        this.form.token.$setTouched(true);
                     }
-                } else {
-                    this.autoVerifying = true;
-                    this.$timeout(() => {
-                        // causes the error state to show
-                        if (this.form && this.form.token) {
-                            this.form.token.$setTouched(true);
-                        }
-                        
-                        // auto submit the token
-                        this.verifyToken();
-                    }, 500);
-                }
+                    
+                    // auto submit the token
+                    this.verifyToken();
+                }, 500);
             }
         }
     }
@@ -64,9 +56,20 @@ class VerifyEmailTokenController {
             this.claims = this.maUtil.parseJwt(this.token);
             this.email = this.claims.sub;
             this.updateExpiry();
+            this.checkForRegistrationToken();
         } catch (e) {
             this.claims = null;
             this.email = null;
+        }
+    }
+    
+    checkForRegistrationToken() {
+        if (this.claims && this.claims.typ === 'emailverify' && this.claims.id == null) {
+            if (typeof this.onUserToken === 'function') {
+                this.onUserToken({$token: this.token, $claims: this.claims});
+            } else if (this.$state) {
+                this.$state.go('registerUser', {emailAddressVerificationToken: this.token});
+            }
         }
     }
 
