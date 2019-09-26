@@ -1407,3 +1407,7 @@ table.ma-material-table td {
 table.ma-material-table thead {
 	font-weight: bold;
 }
+
+.ma-larger-font {
+	font-size: 1.8rem;
+}

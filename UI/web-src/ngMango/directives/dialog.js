@@ -136,7 +136,13 @@ function dialog($compile, $parse, $q) {
                 this.onShow(options);
             }
             
-            this.dialogPromise = this.$mdDialog.show(options).then(result => {
+            const showPromise = this.$mdDialog.show(options);
+            
+            if (options.hidePromise) {
+                options.hidePromise.then(r => this.hide(r), e => this.cancel(e));
+            }
+            
+            this.dialogPromise = showPromise.then(result => {
                 if (this.onHide) {
                     this.onHide(result);
                 }

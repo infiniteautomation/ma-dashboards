@@ -17,14 +17,15 @@ class UserActionsMenuController {
     }
 
     sendTestEmail(event) {
-        this.sendingEmail = true;
-        this.user.sendTestEmail().then(response => {
+        const p = this.user.sendTestEmail().then(response => {
             this.maDialogHelper.toastOptions({text: response.data});
         }, error => {
             this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', this.user.email, error.mangoStatusText]);
         }).finally(() => {
             delete this.sendingEmail;
         });
+        
+        this.sendingEmail = {hidePromise: p};
     }
     
     switchUser(event) {
@@ -49,7 +50,6 @@ class UserActionsMenuController {
     sendEmailVerification(event) {
         this.sendingEmailVerification = true;
 
-        //prompt(event, shortTr, longTr, placeHolderTr, initialValue) {
         this.maDialogHelper.prompt({
             event,
             shortTr: 'login.emailVerification.enterEmailAddress',
