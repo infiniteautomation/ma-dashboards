@@ -48,10 +48,23 @@ class UserActionsMenuController {
     
     sendEmailVerification(event) {
         this.sendingEmailVerification = true;
-        this.user.sendEmailVerification().then(response => {
+
+        //prompt(event, shortTr, longTr, placeHolderTr, initialValue) {
+        this.maDialogHelper.prompt({
+            event,
+            shortTr: 'login.emailVerification.enterEmailAddress',
+            longTr: 'login.emailVerification.enterEmailAddressLong',
+            placeHolderTr: 'login.email',
+            initialValue: this.user.email,
+            rejectWithCancelled: true
+        }).then(emailAddress => {
+            return this.user.sendEmailVerification(emailAddress);
+        }).then(response => {
             this.maDialogHelper.toast(['ui.components.emailSent', this.user.email]);
         }, error => {
-            this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', this.user.email, error.mangoStatusText]);
+            if (!this.maDialogHelper.isCancelled(error)) {
+                this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', this.user.email, error.mangoStatusText]);
+            }
         }).finally(() => {
             delete this.sendingEmailVerification;
         });

@@ -3,6 +3,7 @@
  * @author Jared Wiltshire
  */
 
+import angular from 'angular';
 import basicDialogTemplate from './basicDialog.html';
 import configImportDialogContainerTemplate from '../components/configImportDialog/configImportDialogContainer.html';
 
@@ -11,6 +12,8 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
     
     const noop = function() {};
     
+    class CancelledError extends Error {}
+
     let $mdDialog, $mdMedia, $mdToast;
     if ($injector.has('$mdDialog')) {
         $mdDialog = $injector.get('$mdDialog');
@@ -79,7 +82,19 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
             });
         }
 
-        prompt(event, shortTr, longTr, placeHolderTr, initialValue) {
+        prompt(optionsOrEvent, shortTr, longTr, placeHolderTr, initialValue) {
+            let event = optionsOrEvent;
+            let rejectWithCancelled = false;
+            if (!(optionsOrEvent instanceof Event || optionsOrEvent instanceof angular.element.Event)) {
+                const options = optionsOrEvent || {};
+                event = options.event;
+                shortTr = options.shortTr;
+                longTr = options.longTr;
+                placeHolderTr = options.placeHolderTr;
+                initialValue = options.initialValue;
+                rejectWithCancelled = options.rejectWithCancelled;
+            }
+
             return maTranslate.trAll({
                 shortText: shortTr,
                 longText: longTr,
@@ -107,8 +122,14 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
                     prompt.initialValue(initialValue);
                 }
 
-                return $mdDialog.show(prompt);
+                return $mdDialog.show(prompt).catch(e => {
+                    return $q.reject(rejectWithCancelled ? new CancelledError('Prompt cancelled') : e);
+                });
             });
+        }
+        
+        isCancelled(error) {
+            return error instanceof CancelledError;
         }
         
         toast(translation, classes) {
