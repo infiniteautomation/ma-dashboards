@@ -182,6 +182,7 @@ import verifyEmail from './components/verifyEmail/verifyEmail';
 import verifyEmailToken from './components/verifyEmailToken/verifyEmailToken';
 import registerUser from './components/registerUser/registerUser';
 import userStatus from './components/userStatus/userStatus';
+import userActionsMenu from './components/userActionsMenu/userActionsMenu';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -377,6 +378,7 @@ ngMango.component('maVerifyEmail', verifyEmail);
 ngMango.component('maVerifyEmailToken', verifyEmailToken);
 ngMango.component('maRegisterUser', registerUser);
 ngMango.component('maUserStatus', userStatus);
+ngMango.component('maUserActionsMenu', userActionsMenu);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

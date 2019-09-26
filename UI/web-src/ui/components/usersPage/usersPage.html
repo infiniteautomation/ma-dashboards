@@ -34,12 +34,14 @@
     <div flex>
         <md-card>
             <md-toolbar class="md-hue-3">
-                <div class="md-toolbar-tools">
+                <div class="md-toolbar-tools ma-no-padding-right">
                     <span ng-if="!$ctrl.user.isNew()" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
                     <span ng-if="$ctrl.user.isNew()" ma-tr="ui.app.editNewUser"></span>
+                    <div flex></div>
+                    <ma-user-actions-menu user="$ctrl.user"></ma-user-actions-menu>
                 </div>
             </md-toolbar>
-            
+
             <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false">
                 <md-tab>
                     <md-tab-label>

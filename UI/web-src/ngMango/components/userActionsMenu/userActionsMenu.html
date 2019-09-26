@@ -1,0 +1,32 @@
+<md-menu md-position-mode="target-right bottom" md-offset="0 9" ng-if="$ctrl.user && !$ctrl.user.isNew()">
+    <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+        <md-icon md-menu-origin>more_vert</md-icon>
+        <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
+    </md-button>
+    <md-menu-content width="4" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
+        <md-menu-item ng-if="$ctrl.User.current.hasAnyRole('superadmin') && $ctrl.User.current.id !== $ctrl.user.id">
+            <md-button class="ma-no-padding-right" ng-click="$ctrl.switchUser($event)" ng-disabled="$ctrl.switchingUser">
+                <div layout="row" flex>
+                    <div flex ma-tr="users.su"></div>
+                    <md-icon md-menu-align-target>swap_horiz</md-icon>
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="$ctrl.User.current.hasAnyRole('superadmin')">
+            <md-button class="ma-no-padding-right" ng-click="$ctrl.sendTestEmail($event)" ng-disabled="$ctrl.sendingEmail">
+                <div layout="row" flex>
+                    <div flex ma-tr="common.sendTestEmail"></div>
+                    <md-icon md-menu-align-target>email</md-icon>
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="$ctrl.User.current.hasAnyPermission('permissions.user.editSelf')">
+            <md-button class="ma-no-padding-right" ng-click="$ctrl.sendEmailVerification($event)" ng-disabled="$ctrl.sendingEmailVerification">
+                <div layout="row" flex>
+                    <div flex ma-tr="users.sendVerificationEmail"></div>
+                    <md-icon md-menu-align-target>send</md-icon>
+                </div>
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

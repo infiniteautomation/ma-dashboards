@@ -685,11 +685,13 @@ md-card md-card-content.ma-no-padding-bottom {
 }
 
 .ma-no-padding-right,
+.md-toolbar-tools.ma-no-padding-right,
 md-menu-item > .md-button.ma-no-padding-right {
 	padding-right: 0;	
 }
 
 .ma-no-padding-left,
+.md-toolbar-tools.ma-no-padding-left,
 md-menu-item > .md-button.ma-no-padding-left {
 	padding-left: 0;	
 }

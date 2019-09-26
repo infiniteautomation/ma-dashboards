@@ -117,34 +117,7 @@ class UserEditorController {
             });
         });
     }
-    
-    sendTestEmail() {
-        this.sendingEmail = true;
-        this.originalUser.sendTestEmail().then(response => {
-            this.maDialogHelper.toastOptions({text: response.data});
-        }, error => {
-            this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', this.originalUser.email, error.mangoStatusText]);
-        }).finally(() => {
-            delete this.sendingEmail;
-        });
-    }
-    
-    switchUser(event) {
-        const username = this.originalUser.username;
-        this.User.switchUser({username}).$promise.then(response => {
-            this.maDialogHelper.toast(['ui.components.switchedUser', username]);
-    
-            if (this.$state) {
-                // reload the resolves and views of this state and its parents
-                this.$state.go('.', null, {reload: true});
-            } else {
-                this.$window.location.reload();
-            }
-        }, error => {
-            this.maDialogHelper.errorToast(['ui.components.errorSwitchingUser', username, error.mangoStatusText]);
-        });
-    }
-    
+
     regExpEscape(s) {
         return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
     }
@@ -155,17 +128,6 @@ class UserEditorController {
         } else {
             delete this.user.password;
         }
-    }
-    
-    sendEmailVerification(event) {
-        this.sendingEmailVerification = true;
-        this.user.sendEmailVerification().then(response => {
-            this.maDialogHelper.toast(['ui.components.emailSent', this.user.email]);
-        }, error => {
-            this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', this.user.email, error.mangoStatusText]);
-        }).finally(() => {
-            delete this.sendingEmailVerification;
-        });
     }
 }
 

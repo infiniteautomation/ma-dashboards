@@ -31,11 +31,6 @@
                 <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.email.validationMessage"></div>
             </div>
-            <md-button class="md-icon-button ma-input-button" ng-if="!$ctrl.user.isNew()" ng-class="{'ma-throb-opacity': $ctrl.sendingEmailVerification}"
-                    ng-click="$ctrl.sendEmailVerification($event)" ng-disabled="$ctrl.sendingEmailVerification || $ctrl.disabled">
-                <md-icon>send</md-icon>
-                <md-tooltip><span ma-tr="users.sendVerificationEmail"></span></md-tooltip>
-            </md-button>
             <div class="ma-input-container-note" ng-if="!$ctrl.user.isNew()">
                 <span ng-if="$ctrl.user.emailVerified" ma-tr="users.emailVerified" ma-tr-args="[($ctrl.user.emailVerified | maMoment:'format':'l LT')]"></span>
                 <span ng-if="!$ctrl.user.emailVerified" ma-tr="users.emailNotVerified"></span>
