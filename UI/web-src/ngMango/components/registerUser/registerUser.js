@@ -49,7 +49,8 @@ class RegisterUserController {
     registerUser() {
         this.form.$setSubmitted();
         if (this.form.$invalid) return;
-
+        
+        delete this.validationMessages;
         this.disableButton = true;
         
         // registration uses V2 model
@@ -72,6 +73,9 @@ class RegisterUserController {
                 if (this.form && this.form.token) {
                     this.form.token.$setValidity('server', false);
                 }
+            } else if (error.status === 422) {
+                this.serverErrors.other = error.mangoStatusText;
+                this.validationMessages = error.data.result.messages;
             } else {
                 this.serverErrors.other = error.mangoStatusText;
             }

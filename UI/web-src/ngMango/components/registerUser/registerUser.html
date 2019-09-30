@@ -1,4 +1,4 @@
-<div ng-form="$ctrl.form" ma-enter="$ctrl.registerUser()">
+<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" ma-enter="$ctrl.registerUser()">
     <div layout="column">
         <md-input-container class="md-icon-float md-block">
             <md-icon>code</md-icon>
@@ -18,10 +18,11 @@
 
         <ma-now update-interval="1 SECONDS" on-change="$ctrl.updateExpiry($value)"></ma-now>
         
-        <ma-user-editor user="$ctrl.user" register-mode="::true"></ma-user-editor>
+        <ma-user-editor user="$ctrl.user" name="user" register-mode="::true"></ma-user-editor>
 
         <div md-colors="::{color: 'warn-A700'}" ng-messages="$ctrl.serverErrors">
-            <div ng-message="other" ma-tr="login.emailVerification.errorVerifying" ma-tr-args="[$ctrl.serverErrors.other]"></div>
+            <div ng-message="invalidToken" ma-tr="login.emailVerification.errorVerifying" ma-tr-args="[$ctrl.serverErrors.invalidToken]"></div>
+            <div ng-message="other" ma-tr="login.userRegistration.error" ma-tr-args="[$ctrl.serverErrors.other]"></div>
         </div>
     </div>
     <div layout="row" layout-align="start center" class="ma-action-buttons">

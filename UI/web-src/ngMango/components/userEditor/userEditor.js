@@ -23,6 +23,7 @@ class UserEditorController {
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
 
+        this.formName = '';
         this.showStatus = true;
         
         maLocales.get().then(locales => {
@@ -160,7 +161,8 @@ export default {
         onDelete: '&?',
         disabledAttr: '@?disabled',
         registerMode: '<?',
-        showStatus: '<?'
+        showStatus: '<?',
+        formName: '@?name'
     },
     designerInfo: {
         hideFromMenu: true
