@@ -110,7 +110,7 @@ function validationMessages(Util) {
         }
         
         checkControls(control = this.ngFormCtrl, parentPath = null) {
-            const path = !parentPath ? [] : parentPath.concat(Util.splitPropertyName(control.$name, true));
+            const path = !parentPath ? [] : parentPath.concat(Util.splitControlName(control));
             
             const isForm = typeof control.$getControls === 'function';
             if (isForm) {

@@ -888,13 +888,21 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
                 }
             }
             
-            return propArray;
+            return propArray.filter(p => !!p);
+        },
+        
+        splitControlName(control) {
+            return this.splitPropertyName(this.controlName(control), true);
         },
         
         propertyNameToSelector(name) {
             return this.splitPropertyName(name).map(n => {
                 return `[name='${n}']`;
             }).join(' ');
+        },
+        
+        controlName(control) {
+            return control.hasOwnProperty('$maName') ? control.$maName : control.$name;
         },
 
         findInputElement(name, control, parentPath = null) {
@@ -906,7 +914,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
                 name = this.splitPropertyName(name).join('.');
                 path = [];
             } else {
-                path = parentPath.concat(this.splitPropertyName(control.$name, true));
+                path = parentPath.concat(this.splitControlName(control));
             }
             
             let fullControlName;
