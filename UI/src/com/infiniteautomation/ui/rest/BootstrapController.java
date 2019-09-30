@@ -52,7 +52,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/ui-bootstrap")
 public class BootstrapController {
 
-    private static final String[] PUBLIC_TRANSLATIONS = new String[] {"login", "header", "users"};
+    private static final String[] PUBLIC_TRANSLATIONS = new String[] {"login", "header", "users", "validate"};
     private static final String[] PRIVATE_TRANSLATIONS = new String[] {"ui", "common", "pointEdit", "rest", "footer", "dateAndTime"};
 
     private final JsonDataDao jsonDataDao;
