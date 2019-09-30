@@ -10,7 +10,7 @@
       <label ma-tr="common.name"></label>
       <input name="name" ng-model="$ctrl.watchlist.name" required>
       <div ng-messages="$ctrl.watchListForm.name.$error">
-        <div ng-message="required" ma-tr="ui.app.required"></div>
+        <div ng-message="required" ma-tr="validate.required"></div>
       </div>
     </md-input-container>
     <md-input-container flex="100" flex-gt-md="50">
@@ -25,7 +25,7 @@
       <label ma-tr="ui.app.readPermission"></label>
       <input ng-model="$ctrl.watchlist.readPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
       <div ng-messages="$ctrl.watchListForm.readPermission.$error">
-        <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+        <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
       </div>
       <ma-permissions-menu ng-model="$ctrl.watchlist.readPermission"></ma-permissions-menu>
     </md-input-container>
@@ -33,7 +33,7 @@
       <label ma-tr="ui.app.editPermission"></label>
       <input name="editPermission" ng-model="$ctrl.watchlist.editPermission" ng-change="$ctrl.watchListForm.editPermission.$setValidity('server-error', true)" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
       <div ng-messages="$ctrl.watchListForm.editPermission.$error">
-        <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+        <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
         <div ng-message="server-error" ng-bind="$ctrl.watchListForm.editPermission.serverErrorMessage"></div>
       </div>
       <ma-permissions-menu ng-model="$ctrl.watchlist.editPermission"></ma-permissions-menu>

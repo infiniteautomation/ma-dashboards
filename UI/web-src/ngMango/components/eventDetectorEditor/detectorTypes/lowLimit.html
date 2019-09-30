@@ -5,7 +5,7 @@
 </md-radio-group>   
  
 <div ng-messages="$ctrl.form.notLower.$error" class="ma-small-text" md-colors="::{color: 'warn-A700'}">
-    <div ng-message="required" ma-tr="ui.app.required"></div>
+    <div ng-message="required" ma-tr="validate.required"></div>
     <div ng-message="validationMessage" ng-bind="$ctrl.form.notLower.validationMessage"></div>
 </div>
 
@@ -14,7 +14,7 @@
         <label ma-tr="pointEdit.detectors.lowLimit"></label>
         <input name="limit" ng-model="$ctrl.eventDetector.limit" type="number" required>
         <div ng-messages="$ctrl.form.limit.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.limit.validationMessage"></div>
         </div>
     </md-input-container>
@@ -22,7 +22,7 @@
         <label ma-tr="pointEdit.detectors.resetLimit"></label>
         <input name="resetLimit" ng-model="$ctrl.eventDetector.resetLimit" type="number" required>
         <div ng-messages="$ctrl.form.resetLimit.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.resetLimit.validationMessage"></div>
         </div>
     </md-input-container>

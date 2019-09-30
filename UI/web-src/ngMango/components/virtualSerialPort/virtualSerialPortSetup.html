@@ -4,7 +4,7 @@
             <label ma-tr="common.xid"></label>
             <input name="xid" ng-model="$ctrl.selected.xid" required>
             <div ng-messages="$ctrl.form.xid.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
             </div>
         </md-input-container>
@@ -13,7 +13,7 @@
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.commPortId"></label>
             <input name="portName" ng-model="$ctrl.selected.portName" required>
             <div ng-messages="$ctrl.form.portName.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.portName.validationMessage"></div>
             </div>
         </md-input-container>
@@ -25,7 +25,7 @@
                 <md-option value="SERIAL_SERVER_SOCKET_BRIDGE" ma-tr="systemSettings.comm.virtual.serialPorts.types.serialServerSocketBridge"></md-option>
             </md-select>
             <div ng-messages="$ctrl.interfaceForm.ipv4AddressingType[$index].$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.portType.validationMessage"></div>
             </div>
         </md-input-container>
@@ -34,7 +34,7 @@
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.address"></label>
             <input name="address" ng-model="$ctrl.selected.address" required>
             <div ng-messages="$ctrl.form.address.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.address.validationMessage"></div>
             </div>
         </md-input-container>
@@ -43,7 +43,7 @@
             <label ma-tr="systemSettings.comm.virtual.serialServerSocketBridgeSettings.bufferSize"></label>
             <input name="bufferSize" ng-model="$ctrl.selected.bufferSize" type="number" required>
             <div ng-messages="$ctrl.form.bufferSize.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.bufferSize.validationMessage"></div>
             </div>
         </md-input-container>
@@ -52,7 +52,7 @@
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.port"></label>
             <input name="port" ng-model="$ctrl.selected.port" type="number" required>
             <div ng-messages="$ctrl.form.port.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.port.validationMessage"></div>
             </div>
         </md-input-container>
@@ -61,7 +61,7 @@
             <label ma-tr="systemSettings.comm.virtual.serialClientSocketBridgeSettings.timeout"></label>
             <input name="timeout" ng-model="$ctrl.selected.timeout" type="number" required>
             <div ng-messages="$ctrl.form.timeout.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.timeout.validationMessage"></div>
             </div>
         </md-input-container>

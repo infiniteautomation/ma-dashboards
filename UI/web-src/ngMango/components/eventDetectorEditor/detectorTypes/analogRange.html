@@ -5,7 +5,7 @@
 </md-radio-group>
 
 <div ng-messages="$ctrl.form.withinRange.$error" class="ma-small-text" md-colors="::{color: 'warn-A700'}">
-    <div ng-message="required" ma-tr="ui.app.required"></div>
+    <div ng-message="required" ma-tr="validate.required"></div>
     <div ng-message="validationMessage" ng-bind="$ctrl.form.withinRange.validationMessage"></div>
 </div>
 
@@ -14,7 +14,7 @@
         <label ma-tr="pointEdit.detectors.rangeLow"></label>
         <input name="low" ng-model="$ctrl.eventDetector.low" type="number" required>
         <div ng-messages="$ctrl.form.low.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.low.validationMessage"></div>
         </div>
     </md-input-container>
@@ -22,7 +22,7 @@
         <label ma-tr="pointEdit.detectors.rangeHigh"></label>
         <input name="high" ng-model="$ctrl.eventDetector.high" type="number" required>
         <div ng-messages="$ctrl.form.high.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.high.validationMessage"></div>
         </div>
     </md-input-container>

@@ -82,7 +82,7 @@
                 <input name="pageName" required ng-model="$ctrl.selectedPage.name">
                 <div ng-show="$ctrl.pageEditorForm.pageName.$invalid && ($ctrl.pageEditorForm.pageName.$touched || $ctrl.pageEditorForm.$submitted)">
                   <div ng-messages="$ctrl.pageEditorForm.pageName.$error">
-                    <div ng-message="required" ma-tr="ui.app.required"></div>
+                    <div ng-message="required" ma-tr="validate.required"></div>
                   </div>
                 </div>
             </md-input-container>
@@ -91,14 +91,14 @@
                 <label ma-tr="common.xid"></label>
                 <input name="xid" required ng-model="$ctrl.selectedPage.xid" disabled>
                 <div ng-messages="$ctrl.pageEditorForm.xid.$error">
-                  <div ng-message="required" ma-tr="ui.app.required"></div>
+                  <div ng-message="required" ma-tr="validate.required"></div>
                 </div>
             </md-input-container> -->
             <md-input-container flex>
                 <label ma-tr="ui.app.readPermission"></label>
                 <input name="readPermission" ng-model="$ctrl.selectedPage.readPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
                 <div ng-messages="$ctrl.pageEditorForm.readPermission.$error">
-                  <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                  <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                 </div>
                 <ma-permissions-menu ng-model="$ctrl.selectedPage.readPermission"></ma-permissions-menu>
             </md-input-container>
@@ -107,7 +107,7 @@
                 <label ma-tr="ui.app.editPermission"></label>
                 <input name="editPermission" ng-model="$ctrl.selectedPage.editPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
                 <div ng-messages="$ctrl.pageEditorForm.editPermission.$error">
-                  <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                  <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                 </div>
                 <ma-permissions-menu ng-model="$ctrl.selectedPage.editPermission"></ma-permissions-menu>
             </md-input-container>

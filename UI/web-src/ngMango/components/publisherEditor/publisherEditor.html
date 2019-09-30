@@ -16,7 +16,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="$ctrl.form.modelType.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.modelType.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -33,7 +33,7 @@
                             <label ma-tr="common.name"></label>
                             <input name="name" ng-model="$ctrl.publisher.name" required>
                             <div ng-messages="$ctrl.form.name.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -43,7 +43,7 @@
                             <label ma-tr="common.xid"></label>
                             <input name="xid" ng-model="$ctrl.publisher.xid" required>
                             <div ng-messages="$ctrl.form.xid.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -57,7 +57,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="$ctrl.form.publishType.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.publishType.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -68,10 +68,10 @@
                             <label ma-tr="publisherEdit.cacheWarning"></label>
                             <input name="cacheWarningSize" ng-model="$ctrl.publisher.cacheWarningSize" required type="number" min="1" step="1">
                             <div ng-messages="$ctrl.form.cacheWarningSize.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
-                                <div ng-message="number" ma-tr="ui.app.mustBeNumber"></div>
-                                <div ng-message="min" ma-tr="ui.app.minNumber"></div>
-                                <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
+                                <div ng-message="number" ma-tr="validate.mustBeNumber"></div>
+                                <div ng-message="min" ma-tr="validate.minNumber"></div>
+                                <div ng-message="step" ma-tr="validate.wholeNumber"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.cacheWarningSize.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -81,10 +81,10 @@
                             <label ma-tr="publisherEdit.cacheDiscard"></label>
                             <input name="cacheDiscardSize" ng-model="$ctrl.publisher.cacheDiscardSize" required type="number" ng-min="$ctrl.publisher.cacheWarningSize + 1" step="1">
                             <div ng-messages="$ctrl.form.cacheDiscardSize.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
-                                <div ng-message="number" ma-tr="ui.app.mustBeNumber"></div>
-                                <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[$ctrl.publisher.cacheWarningSize + 1]"></div>
-                                <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
+                                <div ng-message="number" ma-tr="validate.mustBeNumber"></div>
+                                <div ng-message="min" ma-tr="validate.minNumber" ma-tr-args="[$ctrl.publisher.cacheWarningSize + 1]"></div>
+                                <div ng-message="step" ma-tr="validate.wholeNumber"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.cacheDiscardSize.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -141,7 +141,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="modelCtrl.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="modelCtrl.validationMessage"></div>
                             </div>
                         </md-input-container>

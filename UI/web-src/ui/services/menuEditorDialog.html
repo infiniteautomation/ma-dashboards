@@ -18,7 +18,7 @@
             <input name="menuText" ng-model="$ctrl.item.menuText" ng-change="$ctrl.menuTextChanged()" ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuTr">
             <div class="hint" ng-hide="$ctrl.menuItemEditForm.menuText.$invalid && ($ctrl.menuItemEditForm.menuText.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.menuTextHint"></div>
             <div ng-messages="$ctrl.menuItemEditForm.menuText.$error">
-              <div ng-message="required" ma-tr="ui.app.required"></div>
+              <div ng-message="required" ma-tr="validate.required"></div>
             </div>
         </md-input-container>
         
@@ -29,7 +29,7 @@
                 ma-tr="ui.app.previewX" ma-tr-args="[($ctrl.item.menuTr | maTr)]">
           </div>
           <div ng-messages="$ctrl.menuItemEditForm.menuTr.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
           </div>
         </md-input-container>
       </div>
@@ -58,7 +58,7 @@
             <div class="hint" ng-hide="$ctrl.menuItemEditForm.permission.$invalid && ($ctrl.menuItemEditForm.permission.$touched || $ctrl.menuItemEditForm.$submitted)"
                 ma-tr="ui.app.roleRequiredHint"></div>
             <div ng-messages="$ctrl.menuItemEditForm.permission.$error">
-              <div ng-message="pattern" ma-tr="ui.app.invalidRoles"></div>
+              <div ng-message="pattern" ma-tr="validate.invalidRoles"></div>
             </div>
             <ma-permissions-menu ng-model="$ctrl.item.permission"></ma-permissions-menu>
         </md-input-container>
@@ -69,7 +69,7 @@
             <div class="hint" ng-hide="$ctrl.menuItemEditForm.requiredPermission.$invalid && ($ctrl.menuItemEditForm.requiredPermission.$touched || $ctrl.menuItemEditForm.$submitted)"
                 ma-tr="ui.app.permissionRequiredHint"></div>
             <div ng-messages="$ctrl.menuItemEditForm.requiredPermission.$error">
-              <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+              <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
             </div>
         </md-input-container>
       </div>
@@ -97,8 +97,8 @@
                 <div class="hint" ng-hide="$ctrl.menuItemEditForm.stateName.$invalid && ($ctrl.menuItemEditForm.stateName.$touched || $ctrl.menuItemEditForm.$submitted)"
                     ma-tr="ui.app.stateNameHint" ma-tr-args="[$ctrl.item.name]"></div>
                 <div ng-messages="$ctrl.menuItemEditForm.stateName.$error">
-                  <div ng-message="required" ma-tr="ui.app.required"></div>
-                  <div ng-message="pattern" ma-tr="ui.app.statePattern"></div>
+                  <div ng-message="required" ma-tr="validate.required"></div>
+                  <div ng-message="pattern" ma-tr="validate.statePattern"></div>
                   <div ng-message="stateExists" ma-tr="ui.app.stateExists"></div>
                   <div ng-message="stateNameMustBeginWithParent" ma-tr="ui.app.stateNameMustBeginWithParent"></div>
                 </div>
@@ -110,8 +110,8 @@
                     ng-model="$ctrl.item.url" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.urlChanged()">
                 <div class="hint" ng-hide="$ctrl.menuItemEditForm.url.$invalid && ($ctrl.menuItemEditForm.url.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.stateUrlHint"></div>
                 <div ng-messages="$ctrl.menuItemEditForm.url.$error">
-                  <div ng-message="required" ma-tr="ui.app.required"></div>
-                  <div ng-message="pattern" ma-tr="ui.app.invalidUrl"></div>
+                  <div ng-message="required" ma-tr="validate.required"></div>
+                  <div ng-message="pattern" ma-tr="validate.invalidUrl"></div>
                   <div ng-message="urlExists" ma-tr="ui.app.urlPathExists"></div>
                 </div>
             </md-input-container>
@@ -140,7 +140,7 @@
               <md-option ng-repeat="page in $ctrl.pages" ng-value="page.xid" ng-bind="page.name"></md-option>
             </md-select>
             <div ng-messages="$ctrl.menuItemEditForm.pageXid.$error">
-              <div ng-message="required" ma-tr="ui.app.required"></div>
+              <div ng-message="required" ma-tr="validate.required"></div>
             </div>
           </md-input-container>
 
@@ -149,7 +149,7 @@
               <input name="templateUrl" required ng-model="$ctrl.item.templateUrl" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
               <div class="hint" ma-tr="ui.app.templateUrlHint" ng-hide="$ctrl.menuItemEditForm.templateUrl.$invalid && ($ctrl.menuItemEditForm.templateUrl.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
               <div ng-messages="$ctrl.menuItemEditForm.templateUrl.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
               </div>
           </md-input-container>
           
@@ -159,7 +159,7 @@
               <input name="href" required ng-model="$ctrl.item.href" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
               <div class="hint" ng-hide="$ctrl.menuItemEditForm.href.$invalid && ($ctrl.menuItemEditForm.href.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
               <div ng-messages="$ctrl.menuItemEditForm.href.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
               </div>
             </md-input-container>
             <md-input-container flex="50">
@@ -171,7 +171,7 @@
               </md-select>
               <div class="hint" ng-hide="$ctrl.menuItemEditForm.target.$invalid && ($ctrl.menuItemEditForm.target.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
               <div ng-messages="$ctrl.menuItemEditForm.target.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
               </div>
             </md-input-container>
           </div>

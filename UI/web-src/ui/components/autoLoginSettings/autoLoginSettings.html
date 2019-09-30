@@ -10,7 +10,7 @@
       <label ma-tr="login.userId"></label>
       <input required name="username" ng-model="$ctrl.username" ng-change="$ctrl.checkUser()" ng-model-options="{debounce: 1000}">
       <div ng-messages="autoLoginSettings.username.$error">
-        <div ng-message="required" ma-tr="ui.app.required"></div>
+        <div ng-message="required" ma-tr="validate.required"></div>
         <div ng-message="adminUser" ma-tr="ui.app.cantBeAdminUser"></div>
         <div ng-message="notFound" ma-tr="ui.app.userNotFound"></div>
       </div>
@@ -20,7 +20,7 @@
       <label ma-tr="login.password"></label>
       <input required name="password" ng-model="$ctrl.password">
       <div ng-messages="autoLoginSettings.password.$error">
-        <div ng-message="required" ma-tr="ui.app.required"></div>
+        <div ng-message="required" ma-tr="validate.required"></div>
       </div>
     </md-input-container>
     

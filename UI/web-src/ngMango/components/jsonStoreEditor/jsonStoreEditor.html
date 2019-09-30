@@ -4,7 +4,7 @@
             <label ma-tr="common.name"></label>
             <input name="name" ng-model="$ctrl.storeItem.name" required>
             <div ng-messages="$ctrl.form.name.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
             </div>
         </md-input-container>
@@ -13,7 +13,7 @@
             <label ma-tr="common.xid"></label>
             <input name="xid" ng-model="$ctrl.storeItem.xid" required ng-disabled="!$ctrl.storeItem.isNew()">
             <div ng-messages="$ctrl.form.xid.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
             </div>
         </md-input-container>

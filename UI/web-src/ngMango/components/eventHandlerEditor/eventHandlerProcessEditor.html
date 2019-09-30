@@ -4,7 +4,7 @@
             <label ma-tr="eventHandlers.activeCommand"></label>
             <input name="activeProcessCommand" ng-model="editor.eventHandler.activeProcessCommand">
             <div ng-messages="editor.form.activeProcessCommand.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="editor.form.activeProcessCommand.validationMessage"></div>
             </div>
         </md-input-container>
@@ -17,7 +17,7 @@
         <label ma-tr="eventHandlers.activeTimeout"></label>
         <input name="activeProcessTimeout" type="number" ng-model="editor.eventHandler.activeProcessTimeout">
         <div ng-messages="editor.form.activeProcessTimeout.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="editor.form.activeProcessTimeout.validationMessage"></div>
         </div>
     </md-input-container>
@@ -29,7 +29,7 @@
             <label ma-tr="eventHandlers.inactiveCommand"></label>
             <input name="inactiveProcessCommand" ng-model="editor.eventHandler.inactiveProcessCommand">
             <div ng-messages="editor.form.inactiveProcessCommand.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="editor.form.inactiveProcessCommand.validationMessage"></div>
             </div>
         </md-input-container>
@@ -42,7 +42,7 @@
         <label ma-tr="eventHandlers.inactiveTimeout"></label>
         <input name="inactiveProcessTimeout" type="number" ng-model="editor.eventHandler.inactiveProcessTimeout">
         <div ng-messages="editor.form.inactiveProcessTimeout.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="editor.form.inactiveProcessTimeout.validationMessage"></div>
         </div>
     </md-input-container>

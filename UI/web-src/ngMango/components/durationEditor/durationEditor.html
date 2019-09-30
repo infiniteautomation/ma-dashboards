@@ -7,9 +7,9 @@
             ng-required="$ctrl.required" type="number" step="1" ng-attr-min="{{$ctrl.min}}" ng-disabled="$ctrl.disabled"
             ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="periods.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
-            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[$ctrl.min]"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
+            <div ng-message="step" ma-tr="validate.wholeNumber"></div>
+            <div ng-message="min" ma-tr="validate.minNumber" ma-tr-args="[$ctrl.min]"></div>
             <div ng-message="validationMessage" ng-bind="periods.validationMessage"></div>
         </div>
     </md-input-container>
@@ -26,7 +26,7 @@
             </md-option>
         </md-select>
         <div ng-messages="type.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="type.validationMessage"></div>
         </div>
     </md-input-container>
@@ -34,6 +34,6 @@
 
 <!--  TODO replace with component -->
 <div ng-messages="$ctrl.ngModelCtrl.$error" class="ma-small-text" role="alert" md-colors="::{color: 'warn-A700'}">
-    <div ng-message="required" ma-tr="ui.app.required"></div>
+    <div ng-message="required" ma-tr="validate.required"></div>
     <div ng-message="validationMessage" ng-bind="$ctrl.ngModelCtrl.validationMessage"></div>
 </div>

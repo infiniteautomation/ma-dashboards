@@ -23,7 +23,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="$ctrl.form.dataSourceTypeName.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.dataSourceTypeName.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -40,7 +40,7 @@
                             <label ma-tr="common.xid"></label>
                             <input name="xid" ng-model="$ctrl.dataPoint.xid" required ng-disabled="$ctrl.dataPoint.xid.hasMultipleValues()">
                             <div ng-messages="$ctrl.form.xid.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -59,7 +59,7 @@
                             <label ma-tr="common.name"></label>
                             <input name="name" ng-model="$ctrl.dataPoint.name" required>
                             <div ng-messages="$ctrl.form.name.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -69,7 +69,7 @@
                             <label ma-tr="pointEdit.props.permission.read"></label>
                             <input name="readPermission" ng-model="$ctrl.dataPoint.readPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
                             <div ng-messages="$ctrl.form.readPermission.$error">
-                                <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                                <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.readPermission.validationMessage"></div>
                             </div>
                             <ma-permissions-menu ng-model="$ctrl.dataPoint.readPermission" ma-flatten-values="null" ng-disabled="$ctrl.dataPoint.readPermission.hasMultipleValues()"></ma-permissions-menu>
@@ -80,7 +80,7 @@
                             <label ma-tr="pointEdit.props.permission.set"></label>
                             <input name="setPermission" ng-model="$ctrl.dataPoint.setPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
                             <div ng-messages="$ctrl.form.setPermission.$error">
-                                <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                                <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.setPermission.validationMessage"></div>
                             </div>
                             <ma-permissions-menu ng-model="$ctrl.dataPoint.setPermission" ma-flatten-values="null" ng-disabled="$ctrl.dataPoint.setPermission.hasMultipleValues()"></ma-permissions-menu>
@@ -209,7 +209,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="$ctrl.form.plotType.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.plotType.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -226,7 +226,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="$ctrl.form.simplifyType.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.simplifyType.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -236,9 +236,9 @@
                             <label ma-tr="pointEdit.props.simplifyTarget"></label>
                             <input name="simplifyTarget" ng-model="$ctrl.dataPoint.simplifyTarget" type="number" required min="1" step="1" ma-flatten-values="$values.firstNonEmpty()">
                             <div ng-messages="$ctrl.form.simplifyTarget.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
-                                <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[1]"></div>
-                                <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
+                                <div ng-message="min" ma-tr="validate.minNumber" ma-tr-args="[1]"></div>
+                                <div ng-message="step" ma-tr="validate.wholeNumber"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.simplifyTarget.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -249,8 +249,8 @@
                             <input name="simplifyTolerance" ng-model="$ctrl.dataPoint.simplifyTolerance" type="number" required ma-greater-than="0"
                                 ma-format-value="$value === 'NaN' ? null : $value" ma-flatten-values="$values.firstNonEmpty()">
                             <div ng-messages="$ctrl.form.simplifyTolerance.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
-                                <div ng-message="greaterThan" ma-tr="ui.app.greaterThan" ma-tr-args="[0]"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
+                                <div ng-message="greaterThan" ma-tr="validate.greaterThan" ma-tr-args="[0]"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.simplifyTolerance.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -269,8 +269,8 @@
                             <input name="setExtremeLowLimit" ng-model="$ctrl.dataPoint.setExtremeLowLimit" type="number" required
                                     ma-less-than="{{$ctrl.dataPoint.setExtremeHighLimit}}" ma-flatten-values="$values.firstNonEmpty()">
                             <div ng-messages="$ctrl.form.setExtremeLowLimit.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
-                                <div ng-message="lessThan" ma-tr="ui.app.lessThan" ma-tr-args="[$ctrl.dataPoint.setExtremeHighLimit]"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
+                                <div ng-message="lessThan" ma-tr="validate.lessThan" ma-tr-args="[$ctrl.dataPoint.setExtremeHighLimit]"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.setExtremeLowLimit.validationMessage"></div>
                             </div>
                         </md-input-container>
@@ -280,8 +280,8 @@
                             <input name="setExtremeHighLimit" ng-model="$ctrl.dataPoint.setExtremeHighLimit" type="number" required
                                     ma-greater-than="{{$ctrl.dataPoint.setExtremeLowLimit}}" ma-flatten-values="$values.firstNonEmpty()">
                             <div ng-messages="$ctrl.form.setExtremeHighLimit.$error">
-                                <div ng-message="required" ma-tr="ui.app.required"></div>
-                                <div ng-message="greaterThan" ma-tr="ui.app.greaterThan" ma-tr-args="[$ctrl.dataPoint.setExtremeLowLimit]"></div>
+                                <div ng-message="required" ma-tr="validate.required"></div>
+                                <div ng-message="greaterThan" ma-tr="validate.greaterThan" ma-tr-args="[$ctrl.dataPoint.setExtremeLowLimit]"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.setExtremeHighLimit.validationMessage"></div>
                             </div>
                         </md-input-container>

@@ -5,8 +5,8 @@
             <label ma-tr="users.username"></label>
             <input name="username" ng-model="$ctrl.user.username" required maxlength="40" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.username.$error">
-                <div ng-message="required" ma-tr="users.required"></div>
-                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.username.$viewValue.length]"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="maxlength" ma-tr="validate.maxLength" ma-tr-args="[40, $ctrl.userForm.username.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.username.validationMessage"></div>
             </div>
         </md-input-container>
@@ -15,8 +15,8 @@
             <label ma-tr="users.name"></label>
             <input name="name" ng-model="$ctrl.user.name" required maxlength="255" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.name.$error">
-                <div ng-message="required" ma-tr="users.required"></div>
-                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.name.$viewValue.length]"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="maxlength" ma-tr="validate.maxLength" ma-tr-args="[255, $ctrl.userForm.name.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.name.validationMessage"></div>
             </div>
         </md-input-container>
@@ -25,9 +25,9 @@
             <label ma-tr="users.email"></label>
             <input type="email" name="email" ng-model="$ctrl.user.email" required maxlength="255" ng-disabled="$ctrl.registerMode || $ctrl.disabled">
             <div ng-messages="$ctrl.userForm.email.$error">
-                <div ng-message="required" ma-tr="users.required"></div>
-                <div ng-message="email" ma-tr="ui.app.invalidEmail"></div>
-                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="email" ma-tr="validate.invalidEmail"></div>
+                <div ng-message="maxlength" ma-tr="validate.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.email.validationMessage"></div>
             </div>
             <div class="ma-input-container-note" ng-if="!$ctrl.user.isNew()">
@@ -40,8 +40,8 @@
             <label ma-tr="users.phone"></label>
             <input type="tel" name="phone" ng-model="$ctrl.user.phone" pattern="^(?:\+?[0-9]{1,3}[ -]?)?(?:\([0-9 ]+\)[ -]?)?[0-9]+(?:[ -][0-9]+)*$" maxlength="40" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.phone.$error">
-                <div ng-message="pattern" ma-tr="ui.app.invalidPhone"></div>
-                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[40, $ctrl.userForm.phone.$viewValue.length]"></div>
+                <div ng-message="pattern" ma-tr="validate.invalidPhone"></div>
+                <div ng-message="maxlength" ma-tr="validate.maxLength" ma-tr-args="[40, $ctrl.userForm.phone.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.phone.validationMessage"></div>
             </div>
         </md-input-container>
@@ -50,7 +50,7 @@
             <label ma-tr="users.organization"></label>
             <input name="organization" ng-model="$ctrl.user.organization" maxlength="80" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.organization.$error">
-                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[80, $ctrl.userForm.organization.$viewValue.length]"></div>
+                <div ng-message="maxlength" ma-tr="validate.maxLength" ma-tr-args="[80, $ctrl.userForm.organization.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.organization.validationMessage"></div>
             </div>
         </md-input-container>
@@ -59,7 +59,7 @@
             <label ma-tr="users.organizationalRole"></label>
             <input name="phone" ng-model="$ctrl.user.organizationalRole" maxlength="80" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.organizationalRole.$error">
-                <div ng-message="maxlength" ma-tr="ui.app.maxLength" ma-tr-args="[80, $ctrl.userForm.organizationalRole.$viewValue.length]"></div>
+                <div ng-message="maxlength" ma-tr="validate.maxLength" ma-tr-args="[80, $ctrl.userForm.organizationalRole.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.organizationalRole.validationMessage"></div>
             </div>
         </md-input-container>
@@ -68,8 +68,8 @@
             <label ma-tr="users.newPassword"></label>
             <input type="password" name="password" ng-model="$ctrl.password" minlength="8" ng-required="$ctrl.user.isNew()" ng-change="$ctrl.passwordChanged()" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.password.$error">
-                <div ng-message="required" ma-tr="users.required"></div>
-                <div ng-message="minlength" ma-tr="ui.app.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="minlength" ma-tr="validate.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.password.validationMessage"></div>
             </div>
         </md-input-container>
@@ -79,8 +79,8 @@
             <input type="password" name="confirmPassword" ng-model="$ctrl.confirmPassword" ng-pattern="$ctrl.regExpEscape($ctrl.password)" ng-required="!!$ctrl.password"
                 ng-change="$ctrl.passwordChanged()" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.confirmPassword.$error">
-                <div ng-message="required" ma-tr="users.required"></div>
-                <div ng-message="pattern" ma-tr="ui.app.passwordsDoNotMatch"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="pattern" ma-tr="validate.passwordsDoNotMatch"></div>
             </div>
         </md-input-container>
         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode">
@@ -88,7 +88,7 @@
             <label ma-tr="users.permissions"></label>
             <input name="permissions" ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
             <div ng-messages="$ctrl.userForm.permissions.$error">
-                <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
             </div>
             <div class="ma-input-container-note" ma-tr="ui.app.userRoleNotice"></div>
@@ -110,7 +110,7 @@
                 <md-option value="IGNORE" ma-tr="common.alarmLevel.ignore"></md-option>
             </md-select>
             <div ng-messages="$ctrl.userForm.receiveAlarmEmails.$error">
-                <div ng-message="required" ma-tr="users.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.receiveAlarmEmails.validationMessage"></div>
             </div>
         </md-input-container>
@@ -119,7 +119,7 @@
             <label ma-tr="users.homeURL"></label>
             <input name="homeUrl" ng-model="$ctrl.user.homeUrl" pattern="^\/(?!\/).*" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.homeUrl.$error">
-                <div ng-message="pattern" ma-tr="ui.app.mustBeAbsolutePath"></div>
+                <div ng-message="pattern" ma-tr="validate.mustBeAbsolutePath"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.homeUrl.validationMessage"></div>
             </div>
         </md-input-container>
@@ -142,7 +142,7 @@
                 <md-option ng-repeat="zone in $ctrl.timezones" ng-value="zone" ng-bind="zone"></md-option>
             </md-select>
             <div ng-messages="$ctrl.userForm.timezone.$error">
-                <div ng-message="pattern" ma-tr="ui.app.invalidTimezone"></div>
+                <div ng-message="pattern" ma-tr="validate.invalidTimezone"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.timezone.validationMessage"></div>
             </div>
         </md-input-container>

@@ -17,7 +17,7 @@
             </md-option>
         </md-select>
         <div ng-messages="textRenderer.type.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="textRenderer.type.validationMessage"></div>
         </div>
     </md-input-container>
@@ -42,7 +42,7 @@
         <label ma-tr="pointEdit.text.format"></label>
         <input name="format" ng-model="$ctrl.dataPoint.textRenderer.format" required>
         <div ng-messages="textRenderer.format.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="textRenderer.format.validationMessage"></div>
         </div>
     </md-input-container>
@@ -68,7 +68,7 @@
             <label ma-tr="pointEdit.text.from"></label>
             <input name="[{{$i}}].from" ng-model="rangeValue.from" type="number" required ma-get-ctrl="from = $ngModel" ng-model-options="{updateOn: 'blur'}" ma-flatten-values="$values.firstNonEmpty()">
             <div ng-messages="from.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="from.validationMessage"></div>
             </div>
         </md-input-container>
@@ -76,8 +76,8 @@
             <label ma-tr="pointEdit.text.to"></label>
             <input name="[{{$i}}].to" ng-model="rangeValue.to" type="number" required ng-min="rangeValue.from" ma-get-ctrl="to = $ngModel" ma-flatten-values="$values.firstNonEmpty()">
             <div ng-messages="to.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[rangeValue.from]"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="min" ma-tr="validate.minNumber" ma-tr-args="[rangeValue.from]"></div>
                 <div ng-message="validationMessage" ng-bind="to.validationMessage"></div>
             </div>
         </md-input-container>
@@ -156,8 +156,8 @@
             <label ma-tr="pointEdit.text.key"></label>
             <input name="{{$i}}.key" ng-model="value.key" type="number" step="1" required ma-get-ctrl="key = $ngModel" ng-model-options="{updateOn: 'blur'}" ma-flatten-values="$values.firstNonEmpty()">
             <div ng-messages="key.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
-                <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="step" ma-tr="validate.wholeNumber"></div>
                 <div ng-message="validationMessage" ng-bind="key.validationMessage"></div>
             </div>
         </md-input-container>
@@ -165,7 +165,7 @@
             <label ma-tr="pointEdit.text.text"></label>
             <input name="{{$i}}.text" ng-model="value.text" ma-get-ctrl="text = $ngModel" required>
             <div ng-messages="text.$error">
-                <div ng-message="required" ma-tr="ui.app.required"></div>
+                <div ng-message="required" ma-tr="validate.required"></div>
                 <div ng-message="validationMessage" ng-bind="text.validationMessage"></div>
             </div>
         </md-input-container>

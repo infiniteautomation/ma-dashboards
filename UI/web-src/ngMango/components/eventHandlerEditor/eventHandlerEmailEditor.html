@@ -12,10 +12,10 @@
         <label ma-tr="eventHandlers.includePointValueCount"></label>
         <input name="includePointValueCount" ng-model="editor.eventHandler.includePointValueCount" min="0" step="1" type="number">
         <div ng-messages="editor.form.includePointValueCount.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="editor.form.includePointValueCount.validationMessage"></div>
-            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="::[0]"></div>
-            <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
+            <div ng-message="min" ma-tr="validate.minNumber" ma-tr-args="::[0]"></div>
+            <div ng-message="step" ma-tr="validate.wholeNumber"></div>
         </div>
     </md-input-container>
     
@@ -100,7 +100,7 @@
                 <label ma-tr="ui.app.scriptRoles"></label>
                 <input name="scriptPermissions" ng-model="editor.eventHandler.scriptPermissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
                 <div ng-messages="editor.form.scriptPermissions.$error">
-                    <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                    <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                     <div ng-message="validationMessage" ng-bind="editor.form.permissions.validationMessage"></div>
                 </div>
                 <ma-permissions-menu ng-model="editor.eventHandler.scriptPermissions" ma-array-input></ma-permissions-menu>

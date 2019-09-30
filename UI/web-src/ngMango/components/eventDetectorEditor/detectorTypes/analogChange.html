@@ -7,7 +7,7 @@
             <md-option value="DECREASE"><span ma-tr="pointEdit.detectors.analogChange.decrease"></span></md-option>
         </md-select>
         <div ng-messages="$ctrl.form.checkIncrease.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.checkIncrease.validationMessage"></div>
         </div>
     </md-input-container>
@@ -18,7 +18,7 @@
             <md-option value="LOGGED_ONLY"><span ma-tr="publisherEdit.publishType.loggedOnly"></span></md-option>
         </md-select>
         <div ng-messages="$ctrl.form.updateEvent.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.updateEvent.validationMessage"></div>
         </div>
     </md-input-container>
@@ -26,8 +26,8 @@
         <label ma-tr="pointEdit.detectors.analogChangeLimit"></label>
         <input name="limit" ng-model="$ctrl.eventDetector.limit" type="number" required min="0">
         <div ng-messages="$ctrl.form.limit.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="::[0]"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
+            <div ng-message="min" ma-tr="validate.minNumber" ma-tr-args="::[0]"></div>
             <div ng-message="validationMessage" ng-bind="$ctrl.form.limit.validationMessage"></div>
         </div>
     </md-input-container>

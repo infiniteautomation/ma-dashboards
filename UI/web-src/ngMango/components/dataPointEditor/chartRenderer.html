@@ -17,7 +17,7 @@
             </md-option>
         </md-select>
         <div ng-messages="chartRenderer.type.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
             <div ng-message="validationMessage" ng-bind="chartRenderer.type.validationMessage"></div>
         </div>
     </md-input-container>
@@ -27,10 +27,10 @@
         <label ma-tr="pointEdit.chart.limit"></label>
         <input name="limit" ng-model="$ctrl.dataPoint.chartRenderer.limit" type="number" step="1" min="2" max="50" required ma-flatten-values="$values.firstNonEmpty()">
         <div ng-messages="chartRenderer.limit.$error">
-            <div ng-message="required" ma-tr="ui.app.required"></div>
-            <div ng-message="step" ma-tr="ui.app.wholeNumber"></div>
-            <div ng-message="min" ma-tr="ui.app.minNumber" ma-tr-args="[2]"></div>
-            <div ng-message="max" ma-tr="ui.app.maxNumber" ma-tr-args="[50]"></div>
+            <div ng-message="required" ma-tr="validate.required"></div>
+            <div ng-message="step" ma-tr="validate.wholeNumber"></div>
+            <div ng-message="min" ma-tr="validate.minNumber" ma-tr-args="[2]"></div>
+            <div ng-message="max" ma-tr="validate.maxNumber" ma-tr-args="[50]"></div>
             <div ng-message="validationMessage" ng-bind="chartRenderer.limit.validationMessage"></div>
         </div>
     </md-input-container>

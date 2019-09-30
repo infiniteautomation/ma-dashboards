@@ -28,7 +28,7 @@
                     <label ma-tr="common.name"></label>
                     <input name="name" ng-model="$ctrl.list.name" required>
                     <div ng-messages="$ctrl.form.name.$error">
-                        <div ng-message="required" ma-tr="ui.app.required"></div>
+                        <div ng-message="required" ma-tr="validate.required"></div>
                     </div>
                 </md-input-container>
 
@@ -37,7 +37,7 @@
                     <label ma-tr="common.xid"></label>
                     <input name="xid" ng-model="$ctrl.list.xid" required>
                     <div ng-messages="$ctrl.form.xid.$error">
-                        <div ng-message="required" ma-tr="ui.app.required"></div>
+                        <div ng-message="required" ma-tr="validate.required"></div>
                     </div>
                 </md-input-container>
                 
@@ -46,7 +46,7 @@
                     <label ma-tr="ui.permissions.readRoles"></label>
                     <input name="readPermissions" ng-model="$ctrl.list.readPermissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
                     <div ng-messages="$ctrl.form.readPermissions.$error">
-                        <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                        <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                         <div ng-message="validationMessage" ng-bind="$ctrl.form.readPermissions.validationMessage"></div>
                     </div>
                     <ma-permissions-menu ng-model="$ctrl.list.readPermissions" ma-array-input></ma-permissions-menu>
@@ -57,7 +57,7 @@
                     <label ma-tr="ui.permissions.editRoles"></label>
                     <input name="editPermissions" ng-model="$ctrl.list.editPermissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
                     <div ng-messages="$ctrl.form.editPermissions.$error">
-                        <div ng-message="pattern" ma-tr="ui.app.invalidPermissions"></div>
+                        <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                         <div ng-message="validationMessage" ng-bind="$ctrl.form.editPermissions.validationMessage"></div>
                     </div>
                     <ma-permissions-menu ng-model="$ctrl.list.editPermissions" ma-array-input></ma-permissions-menu>
