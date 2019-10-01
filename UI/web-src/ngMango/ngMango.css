@@ -849,6 +849,11 @@ ma-config-import .ma-import-dropzone {
 
 .ma-config-import-dialog {
   height: 90%;
+  overflow: hidden;
+}
+
+ma-config-import-dialog {
+	height: 100%;
 }
 
 .ma-config-import-messages {
