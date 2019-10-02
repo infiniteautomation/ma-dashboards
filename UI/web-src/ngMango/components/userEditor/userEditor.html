@@ -20,7 +20,7 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.name.validationMessage"></div>
             </div>
         </md-input-container>
-        <md-input-container flex="100" flex-gt-md="50">
+        <md-input-container flex="100" flex-gt-md="50" class="ma-has-hint">
             <md-icon>{{$ctrl.user.emailVerified ? 'verified_user' : 'email'}}</md-icon>
             <label ma-tr="users.email"></label>
             <input type="email" name="email" ng-model="$ctrl.user.email" required maxlength="255" ng-disabled="$ctrl.registerMode || $ctrl.disabled">
@@ -30,7 +30,7 @@
                 <div ng-message="maxlength" ma-tr="validate.maxLength" ma-tr-args="[255, $ctrl.userForm.email.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.email.validationMessage"></div>
             </div>
-            <div class="ma-input-container-note" ng-if="!$ctrl.user.isNew()">
+            <div class="ma-hint">
                 <span ng-if="$ctrl.user.emailVerified" ma-tr="users.emailVerified" ma-tr-args="[($ctrl.user.emailVerified | maMoment:'format':'l LT')]"></span>
                 <span ng-if="!$ctrl.user.emailVerified" ma-tr="users.emailNotVerified"></span>
             </div>
@@ -83,7 +83,7 @@
                 <div ng-message="pattern" ma-tr="validate.passwordsDoNotMatch"></div>
             </div>
         </md-input-container>
-        <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode">
+        <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode" class="ma-has-hint">
             <md-icon>group</md-icon>
             <label ma-tr="users.permissions"></label>
             <input name="permissions" ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')" ng-model="$ctrl.user.permissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
@@ -91,7 +91,7 @@
                 <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
             </div>
-            <div class="ma-input-container-note" ma-tr="ui.app.userRoleNotice"></div>
+            <div class="ma-hint" ma-tr="ui.app.userRoleNotice"></div>
             <ma-permissions-menu ng-if="!$ctrl.disabled && $ctrl.User.current.hasAnyRole('superadmin')" ng-model="$ctrl.user.permissions"></ma-permissions-menu>
         </md-input-container>
         

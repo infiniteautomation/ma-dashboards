@@ -65,3 +65,7 @@ ma-tile-map.md-THEME_NAME-theme.leaflet-container .leaflet-tooltip {
 .md-THEME_NAME-theme .ma-material-table td {
 	border-bottom-color: '{{background-hue-3-0.12}}';
 }
+
+md-input-container.md-THEME_NAME-theme .ma-hint {
+	color: '{{background-contrast-0.7}}';
+}

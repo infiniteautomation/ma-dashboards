@@ -1,6 +1,6 @@
 <div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" ma-enter="$ctrl.registerUser()">
-    <div layout="column">
-        <md-input-container class="md-icon-float md-block">
+    <div layout="column" class="ma-login-form-container">
+        <md-input-container class="ma-has-hint">
             <md-icon>code</md-icon>
             <label ma-tr="login.emailVerification.token"></label>
             <input name="token" ng-model="$ctrl.token" autofocus ma-autofocus tabindex="1"
@@ -13,7 +13,7 @@
                 <div ng-message="serverValid" ma-tr="login.emailVerification.validation.invalidToken"></div>
                 <div ng-message="server" ma-tr="login.emailVerification.validation.invalidToken" ma-tr-args="[$ctrl.serverErrors.invalidToken]"></div>
             </div>
-            <div ng-if="$ctrl.claims" class="ma-input-container-note" ma-tr="login.tokenExpiryMessage" ma-tr-args="[$ctrl.expiration, $ctrl.expirationDuration]"></div>
+            <div ng-if="$ctrl.claims" class="ma-hint" ma-tr="login.tokenExpiryMessage" ma-tr-args="[$ctrl.expiration, $ctrl.expirationDuration]"></div>
         </md-input-container>
 
         <ma-now update-interval="1 SECONDS" on-change="$ctrl.updateExpiry($value)"></ma-now>

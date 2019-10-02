@@ -1,5 +1,5 @@
 <form name="$ctrl.form" novalidate>
-    <div layout="column">
+    <div layout="column" class="ma-login-form-container">
         <div class="already-logged-in" ng-if="!$ctrl.loggingIn && $ctrl.maUser.current" ng-transclude="loggedIn">
             <span ma-tr="login.aleadyLoggedIn" ma-tr-args="[$ctrl.maUser.current.username]"></span>
             <a ui-sref="ui.dataPointDetails" ma-tr="login.ui.goToUI"></a>

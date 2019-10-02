@@ -1273,12 +1273,12 @@ table.md-table.ma-no-wrap tbody tr td {
 	font-size: 1.2rem;
 }
 
-/* for displaying a message under a input container input */
-md-input-container > .ma-input-container-note {
-	font-size: 1.2rem;
-	font-style: italic;
-	padding-top: 8px;
-	clear: left;
+.ma-larger-font {
+	font-size: 1.8rem;
+}
+
+.ma-text-center {
+	text-align: center;
 }
 
 md-icon {
@@ -1413,6 +1413,42 @@ table.ma-material-table thead {
 	font-weight: bold;
 }
 
-.ma-larger-font {
-	font-size: 1.8rem;
+
+/* Input hints / notes */
+
+md-input-container .ma-hint {
+	font-size: 1.2rem;
+	line-height: 1.4rem;
+	overflow: hidden;
+	padding: 5px 5px 0 0;
+	position: absolute;
+	top: 32px;
+}
+
+/* 
+ * Hide the hint when the error message is active
+ * (when input is invalid and the form has been submitted or the input touched)
+ */
+ 
+/* This doesnt work as the div has .ng-active on first load when input is invalid
+.md-input-messages-animation.ng-active ~ .ma-hint {
+	display: none;
+}*/
+
+/* Alternative method to above. */
+.ng-submitted md-input-container.md-input-invalid .ma-hint,
+md-input-container.md-input-invalid .ng-touched ~ .ma-hint {
+	display: none;
+}
+
+md-input-container:not(.ma-has-hint) .md-errors-spacer {
+    display: none;
+}
+
+.ma-login-form-container md-input-container {
+	margin: 12px 0;
+}
+
+.ma-login-form-container md-input-container:not(.ma-has-hint) .md-errors-spacer {
+	display: block;
 }

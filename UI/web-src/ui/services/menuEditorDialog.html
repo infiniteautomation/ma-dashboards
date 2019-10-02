@@ -13,21 +13,19 @@
     <div class="md-padding" layout="column">
       <h3 ma-tr="ui.app.menuTextAndIcon"></h3>
       <div layout>
-        <md-input-container class="has-hints" flex>
+        <md-input-container flex class="ma-has-hint">
             <label ma-tr="ui.app.menuText"></label>
             <input name="menuText" ng-model="$ctrl.item.menuText" ng-change="$ctrl.menuTextChanged()" ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuTr">
-            <div class="hint" ng-hide="$ctrl.menuItemEditForm.menuText.$invalid && ($ctrl.menuItemEditForm.menuText.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.menuTextHint"></div>
+            <div class="ma-hint" ma-tr="ui.app.menuTextHint"></div>
             <div ng-messages="$ctrl.menuItemEditForm.menuText.$error">
               <div ng-message="required" ma-tr="validate.required"></div>
             </div>
         </md-input-container>
         
-        <md-input-container class="has-hints" flex>
+        <md-input-container flex class="ma-has-hint">
+          <div class="ma-hint" ng-if="$ctrl.item.menuTr" ma-tr="ui.app.previewX" ma-tr-args="[($ctrl.item.menuTr | maTr)]"></div>
           <label ma-tr="ui.app.menuTextTranslationKey"></label>
           <input name="menuTr" ng-model="$ctrl.item.menuTr" ng-change="translation = ($ctrl.item.menuTr | maTr)"  ng-required="!$ctrl.item.menuHidden && !$ctrl.item.menuText">
-          <div class="hint" ng-hide="!$ctrl.item.menuTr || $ctrl.menuItemEditForm.menuTr.$invalid && ($ctrl.menuItemEditForm.menuTr.$touched || $ctrl.menuItemEditForm.$submitted)"
-                ma-tr="ui.app.previewX" ma-tr-args="[($ctrl.item.menuTr | maTr)]">
-          </div>
           <div ng-messages="$ctrl.menuItemEditForm.menuTr.$error">
             <div ng-message="required" ma-tr="validate.required"></div>
           </div>
@@ -35,12 +33,12 @@
       </div>
       
       <div layout>
-        <md-input-container class="has-hints" flex>
+        <md-input-container flex class="ma-has-hint">
             <label ma-tr="ui.app.menuIconName"></label>
             <md-icon ng-class="$ctrl.item.menuIcon.indexOf('fa-') === 0 ? 'fa fa-fw ' + $ctrl.item.menuIcon : ''" class="menu-icon"
                 style="pointer-events: none">{{$ctrl.item.menuIcon.indexOf('fa-') !== 0 ? $ctrl.item.menuIcon : ''}}</md-icon>
             <input name="menuIcon" ng-model="$ctrl.item.menuIcon">
-            <div class="hint"><span ma-tr="ui.app.menuIconNameHint1"></span> <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> <span ma-tr="ui.app.menuIconNameHint2"></span>
+            <div class="ma-hint"><span ma-tr="ui.app.menuIconNameHint1"></span> <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> <span ma-tr="ui.app.menuIconNameHint2"></span>
               <a href="https://design.google.com/icons/" target="_blank">Material Icon</a> <span ma-tr="ui.app.menuIconNameHint3"></span></div>
         </md-input-container>
 
@@ -51,23 +49,21 @@
       
       <div layout>
         
-        <md-input-container class="has-hints" flex>
+        <md-input-container flex class="ma-has-hint">
             <label ma-tr=ui.app.roleRequired></label>
             <md-icon>group</md-icon>
             <input name="permission" ng-model="$ctrl.item.permission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
-            <div class="hint" ng-hide="$ctrl.menuItemEditForm.permission.$invalid && ($ctrl.menuItemEditForm.permission.$touched || $ctrl.menuItemEditForm.$submitted)"
-                ma-tr="ui.app.roleRequiredHint"></div>
+            <div class="ma-hint" ma-tr="ui.app.roleRequiredHint"></div>
             <div ng-messages="$ctrl.menuItemEditForm.permission.$error">
               <div ng-message="pattern" ma-tr="validate.invalidRoles"></div>
             </div>
             <ma-permissions-menu ng-model="$ctrl.item.permission"></ma-permissions-menu>
         </md-input-container>
-        <md-input-container class="has-hints" flex>
+        <md-input-container flex class="ma-has-hint">
             <label ma-tr=ui.app.permissionRequired></label>
             <md-icon>vpn_key</md-icon>
             <input name="requiredPermission" ng-model="$ctrl.item.requiredPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
-            <div class="hint" ng-hide="$ctrl.menuItemEditForm.requiredPermission.$invalid && ($ctrl.menuItemEditForm.requiredPermission.$touched || $ctrl.menuItemEditForm.$submitted)"
-                ma-tr="ui.app.permissionRequiredHint"></div>
+            <div class="ma-hint" ma-tr="ui.app.permissionRequiredHint"></div>
             <div ng-messages="$ctrl.menuItemEditForm.requiredPermission.$error">
               <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
             </div>
@@ -90,12 +86,11 @@
         </md-input-container>
         
         <div layout="row">
-            <md-input-container class="has-hints" flex>
+            <md-input-container flex class="ma-has-hint">
                 <label ma-tr="ui.app.stateName"></label>
                 <input name="stateName" required pattern="^\w+$"
                     ng-model="$ctrl.item.shortStateName" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.stateNameChanged()">
-                <div class="hint" ng-hide="$ctrl.menuItemEditForm.stateName.$invalid && ($ctrl.menuItemEditForm.stateName.$touched || $ctrl.menuItemEditForm.$submitted)"
-                    ma-tr="ui.app.stateNameHint" ma-tr-args="[$ctrl.item.name]"></div>
+                <div class="ma-hint" ma-tr="ui.app.stateNameHint" ma-tr-args="[$ctrl.item.name]"></div>
                 <div ng-messages="$ctrl.menuItemEditForm.stateName.$error">
                   <div ng-message="required" ma-tr="validate.required"></div>
                   <div ng-message="pattern" ma-tr="validate.statePattern"></div>
@@ -104,11 +99,11 @@
                 </div>
             </md-input-container>
             
-            <md-input-container class="has-hints" flex ng-if="$ctrl.item.templateType !== 'href'">
+            <md-input-container flex ng-if="$ctrl.item.templateType !== 'href'" class="ma-has-hint">
                 <label ma-tr="ui.app.urlPath"></label>
                 <input name="url" pattern="^\^?\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$" ng-required="!$ctrl.item.builtIn"
                     ng-model="$ctrl.item.url" ng-disabled="$ctrl.item.builtIn" ng-change="$ctrl.urlChanged()">
-                <div class="hint" ng-hide="$ctrl.menuItemEditForm.url.$invalid && ($ctrl.menuItemEditForm.url.$touched || $ctrl.menuItemEditForm.$submitted)" ma-tr="ui.app.stateUrlHint"></div>
+                <div class="ma-hint" ma-tr="ui.app.stateUrlHint"></div>
                 <div ng-messages="$ctrl.menuItemEditForm.url.$error">
                   <div ng-message="required" ma-tr="validate.required"></div>
                   <div ng-message="pattern" ma-tr="validate.invalidUrl"></div>
@@ -144,20 +139,20 @@
             </div>
           </md-input-container>
 
-          <md-input-container ng-if="$ctrl.item.templateType === 'templateUrl'" flex>
+          <md-input-container ng-if="$ctrl.item.templateType === 'templateUrl'" flex class="ma-has-hint">
               <label ma-tr="ui.app.templateUrl"></label>
               <input name="templateUrl" required ng-model="$ctrl.item.templateUrl" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
-              <div class="hint" ma-tr="ui.app.templateUrlHint" ng-hide="$ctrl.menuItemEditForm.templateUrl.$invalid && ($ctrl.menuItemEditForm.templateUrl.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
+              <div class="ma-hint" ma-tr="ui.app.templateUrlHint"></div>
               <div ng-messages="$ctrl.menuItemEditForm.templateUrl.$error">
                 <div ng-message="required" ma-tr="validate.required"></div>
               </div>
           </md-input-container>
           
-          <div ng-if="$ctrl.item.templateType === 'href'" flex layout>
+          <div ng-if="$ctrl.item.templateType === 'href'" flex layout class="ma-has-hint">
             <md-input-container flex="50">
               <label ma-tr="ui.app.externalLink"></label>
               <input name="href" required ng-model="$ctrl.item.href" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
-              <div class="hint" ng-hide="$ctrl.menuItemEditForm.href.$invalid && ($ctrl.menuItemEditForm.href.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
+              <div class="ma-hint"></div>
               <div ng-messages="$ctrl.menuItemEditForm.href.$error">
                 <div ng-message="required" ma-tr="validate.required"></div>
               </div>
@@ -169,7 +164,6 @@
                 <md-option value="_blank"><span ma-tr="ui.app.blankWindow"></span></md-option>
                 <md-option value="mango-legacy"><span ma-tr="ui.app.mangoLegacyWindow"></span></md-option>
               </md-select>
-              <div class="hint" ng-hide="$ctrl.menuItemEditForm.target.$invalid && ($ctrl.menuItemEditForm.target.$touched || $ctrl.menuItemEditForm.$submitted)"></div>
               <div ng-messages="$ctrl.menuItemEditForm.target.$error">
                 <div ng-message="required" ma-tr="validate.required"></div>
               </div>
