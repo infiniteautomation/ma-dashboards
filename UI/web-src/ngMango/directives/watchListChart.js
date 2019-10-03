@@ -25,7 +25,8 @@ import watchListChartTemplate from './watchListChart.html';
   * @param {boolean=} edit-mode Set to `true` to display chart customization controls. (Defaults to `false`).
   * @param {boolean=} stats-tab Set to `true` to display stats tab. (Defaults to `false`_.
   * @param {boolean=} export Set to `true` to display chart export and annotation options. Defaults to `false`.
-  *
+  * @param {object=} options extend AmCharts configuration object for customizing design of the chart
+  *     (see [amCharts](https://docs.amcharts.com/3/javascriptcharts/AmSerialChart))
   * @param {boolean=} legend Set to false to hide the legend. (Defaults to `true`)
   * @param {boolean=} balloon  Set to false to hide the balloon. (Defaults to `true`)
   * @param {function=} on-values-updated Pass in a function or expression to be evaluated when the values update. (eg.
@@ -40,8 +41,8 @@ import watchListChartTemplate from './watchListChart.html';
   *
   */
 
-watchListChart.$inject = [];
-function watchListChart() {
+watchListChart.$inject = ['maUtil'];
+function watchListChart(Util) {
 
     class WatchListChartController {
         static get $$ngIsClass() { return true; }
@@ -139,6 +140,7 @@ function watchListChart() {
             if (anyMinOrMaxSet) {
                 this.chartOptions.synchronizeGrid = false;
             }
+            Util.deepMerge(this.chartOptions, this.options);
         }
     
         valuesUpdatedHandler(values) {
@@ -154,6 +156,7 @@ function watchListChart() {
         controller: WatchListChartController,
         controllerAs: '$ctrl',
         bindToController: {
+            options: '<?',
             watchList: '<',
             points: '<',
             'export': '<?',
