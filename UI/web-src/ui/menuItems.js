@@ -591,7 +591,8 @@ export default [
         },
         params: {
             helpPage: 'ui.help.publishers'
-        }
+        },
+        permission: 'superadmin'
     },
     {
         url: '/edit-pages/{pageXid}',
