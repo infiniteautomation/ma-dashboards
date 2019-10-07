@@ -22,6 +22,13 @@ class RegisterUserController {
     }
     
     $onInit() {
+        if (typeof this.customizeUser === 'function') {
+            const result = this.customizeUser({$user: this.user});
+            if (result instanceof this.maUser) {
+                this.user = result;
+            }
+        }
+        
         if (this.$stateParams.emailAddressVerificationToken) {
             this.token = this.$stateParams.emailAddressVerificationToken;
             this.parseToken();
@@ -104,7 +111,8 @@ export default {
     template: registerUserTemplate,
     bindings: {
         onSuccess: '&?',
-        onError: '&?'
+        onError: '&?',
+        customizeUser: '&?'
     },
     transclude: {
         links: '?a'
