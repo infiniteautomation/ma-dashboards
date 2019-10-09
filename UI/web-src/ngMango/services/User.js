@@ -283,8 +283,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         }, {
             idProperty: 'username',
             defaultProperties,
-            autoXid: false,
-            cancellable: true
+            autoXid: false
         });
 
         Object.assign(User.notificationManager, {

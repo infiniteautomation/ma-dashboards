@@ -209,8 +209,7 @@ function JsonStoreFactory($resource, Util, NotificationManager, $q) {
             }
         }
     }, {
-        defaultProperties,
-        cancellable: true
+        defaultProperties
     });
     
     Object.defineProperty(JsonStore.prototype, 'dataPathStr', {

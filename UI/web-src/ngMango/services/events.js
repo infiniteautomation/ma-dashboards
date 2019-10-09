@@ -132,8 +132,7 @@ function eventsFactory($resource, Util, EventTypeInfo) {
             transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
-            },
-            cancellable: true
+            }
         },
         acknowledge: {
             method: 'PUT',
@@ -151,8 +150,6 @@ function eventsFactory($resource, Util, EventTypeInfo) {
             method: 'GET',
             isArray: true
         }
-    }, {
-        cancellable: true
     });
 
     const subscriptionMessage = {

@@ -293,8 +293,7 @@ function dataPointProvider() {
             }
         }, {
             defaultProperties,
-            xidPrefix: 'DP_',
-            cancellable: true
+            xidPrefix: 'DP_'
         });
         
         Object.assign(Point.notificationManager, {

@@ -217,8 +217,7 @@ function dataSourceProvider() {
             }
         }, {
             defaultProperties,
-            xidPrefix: 'DS_',
-            cancellable: true
+            xidPrefix: 'DS_'
         });
         
         Object.assign(DataSource.notificationManager, {

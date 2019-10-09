@@ -51,8 +51,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
         }
     }, {
         defaultProperties,
-        xidPrefix: 'WL_',
-        cancellable: true
+        xidPrefix: 'WL_'
     });
 
     const saveMethod = WatchList.prototype.$save;

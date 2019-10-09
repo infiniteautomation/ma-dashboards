@@ -14,6 +14,10 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
         const xidPrefix = options.xidPrefix || '';
         const autoXid = options.autoXid == null || options.autoXid;
         
+        if (!options.hasOwnProperty('cancellable')) {
+            options.cancellable = true;
+        }
+        
         if (!actions.update) {
             actions.update = {
                 method: 'PUT'
