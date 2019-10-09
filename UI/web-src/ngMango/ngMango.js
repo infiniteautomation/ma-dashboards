@@ -174,6 +174,7 @@ import tileMapPolygon from './components/tileMap/tileMapPolygon';
 import tileMapPolyline from './components/tileMap/tileMapPolyline';
 import tileMapTileLayer from './components/tileMap/tileMapTileLayer';
 import tileMapLayer from './components/tileMap/tileMapLayer';
+import tagHierarchy from './components/tagHierarchy/tagHierarchy';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -361,6 +362,7 @@ ngMango.component('maPublisherEditor', publisherEditor);
 ngMango.component('maDataPointSelector', dataPointSelector);
 ngMango.component('maDropDownButton', dropDownButton);
 ngMango.component('maTileMap', tileMap);
+ngMango.component('maTagHierarchy', tagHierarchy);
 
 ngMango.animation('.ma-slide-up', slideUp);
 
