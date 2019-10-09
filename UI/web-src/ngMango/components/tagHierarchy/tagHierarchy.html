@@ -1,3 +1,5 @@
-<ma-tree-view items="$ctrl.rootPromise" item-id="$item.tagValue" item-children="$item.loadChildren()" item-has-children="$item.hasChildren" item-expanded="false">
-    <md-icon>folder</md-icon><span ng-bind="$item.tagValue"></span>
-</ma-tree-view>
+<ma-tree-view items="$ctrl.rootPromise" item-id="$item.tagValue" item-children="$item.loadChildren()" item-has-children="$item.hasChildren" item-expanded="!$item.selected && $item.childSelected"><!--
+--><md-checkbox ng-model="$item.selected" ng-click="$event.stopPropagation()" ng-disabled="$item.disabled"></md-checkbox><!--
+--><md-icon>folder</md-icon><!--
+--><span ng-bind="$item.tagValue"></span><!--
+--></ma-tree-view>
