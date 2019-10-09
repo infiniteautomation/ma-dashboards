@@ -1,0 +1,34 @@
+ma-tag-hierarchy {
+	display: block;
+}
+
+ma-tag-hierarchy md-icon {
+	margin-right: 8px;
+}
+
+/*
+ma-event-type-list md-list-item .md-list-item-inner > p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+ma-event-type-list md-list-item.ma-event-type-heading .md-list-item-inner p {
+	font-weight: bold;
+}
+
+ma-event-type-list md-list-item.ma-event-type-group-item .md-list-item-inner {
+	padding-left: 44px;
+}
+
+ma-event-type-list md-list-item md-icon.ma-alarm-flag,
+ma-event-type-list md-list-item md-icon.ma-event-type-group-icon {
+	margin-right: 4px;
+}
+
+ma-event-type-list md-list-item.ma-event-type-group > p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+*/
