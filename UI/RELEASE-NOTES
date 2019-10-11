@@ -8,6 +8,7 @@
 * Generate PWA manifest dynamically
 * Ability to set PWA name and colors in UI settings
 * Better offline behavior
+* Add ma-tag-hierarchy component
 
 *Version 3.6.6*
 * Fixes for ma-tile-map theming
