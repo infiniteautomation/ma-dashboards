@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.servlet.DefaultServlet;
 
-import com.serotonin.m2m2.web.filter.MangoCacheControlHeaderFilter;
-import com.serotonin.m2m2.web.filter.MangoCacheControlHeaderFilter.CacheControlLevel;
+import com.infiniteautomation.mango.webapp.filters.MangoCacheControlHeaderFilter;
+import com.infiniteautomation.mango.webapp.filters.MangoCacheControlHeaderFilter.CacheControlLevel;
 import com.serotonin.m2m2.web.mvc.spring.security.BrowserRequestMatcher;
 
 /**
