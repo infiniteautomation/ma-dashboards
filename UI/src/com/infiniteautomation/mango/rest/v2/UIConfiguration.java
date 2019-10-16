@@ -6,8 +6,6 @@ package com.infiniteautomation.mango.rest.v2;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import com.infiniteautomation.ui.rest.BootstrapController;
-
 /**
  * @author Jared Wiltshire
  */

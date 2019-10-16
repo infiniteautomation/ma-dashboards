@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2018 Infinite Automation Software. All rights reserved.
  */
-package com.infiniteautomation.ui.rest;
+package com.infiniteautomation.mango.rest.v2;
 
 import java.io.IOException;
 import java.io.InputStream;
