@@ -49,23 +49,22 @@ public class UserUIForwardingFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
         if (requestURI.startsWith(FORWARD_FROM_PATH)) {
             String relativePath = requestURI.substring(FORWARD_FROM_PATH.length());
-            URL resourceUrl = httpRequest.getServletContext().getResource(FORDWARD_TO_PATH + relativePath);
 
-            // if the resource is not an actual file we return the index.html file so the webapp can display a 404 not found message
-            // only redirect to the index.html file if it's a browser request
-            if (resourceUrl == null && BrowserRequestMatcher.INSTANCE.matches(httpRequest)) {
-                int nextSlash;
-                if ((nextSlash = relativePath.indexOf("/", 1)) >= 0) {
-                    relativePath = relativePath.substring(0, nextSlash + 1);
-                    httpRequest.setAttribute(MangoCacheControlHeaderFilter.CACHE_OVERRIDE_SETTING, CacheControlLevel.DEFAULT);
-                } else {
-                    relativePath = "/";
+            int nextSlash;
+            if ((nextSlash = relativePath.indexOf("/", 1)) >= 0) {
+                String appBase = relativePath.substring(0, nextSlash + 1);
+
+                URL resourceUrl = httpRequest.getServletContext().getResource(FORDWARD_TO_PATH + relativePath);
+                // if the resource is not an actual file we return the index.html file so the webapp can display a 404 not found message
+                // only redirect to the index.html file if it's a browser request
+                if (resourceUrl == null && BrowserRequestMatcher.INSTANCE.matches(httpRequest)) {
+                    relativePath = appBase;
                 }
-            }
 
-            if ("/".equals(relativePath)) {
-                // use max-age=0 for index.html
-                httpRequest.setAttribute(MangoCacheControlHeaderFilter.CACHE_OVERRIDE_SETTING, CacheControlLevel.DEFAULT);
+                if (appBase.equals(relativePath)) {
+                    // use max-age=0 for index.html
+                    httpRequest.setAttribute(MangoCacheControlHeaderFilter.CACHE_OVERRIDE_SETTING, CacheControlLevel.DEFAULT);
+                }
             }
 
             httpRequest.getRequestDispatcher(FORDWARD_TO_PATH + relativePath).forward(httpRequest, httpResponse);
