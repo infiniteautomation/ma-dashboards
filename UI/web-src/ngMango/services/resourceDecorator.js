@@ -48,7 +48,7 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
             }
         });
         
-        const Resource = $delegate.apply(this, arguments);
+        const Resource = $delegate.call(this, url, paramDefaults, actions, options);
 
         function ExtendedResource(value) {
             Resource.call(this, Object.assign({}, angular.copy(defaultProperties), value));
