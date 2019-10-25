@@ -260,11 +260,12 @@ uiApp.run([
     'maUiLoginRedirector',
     '$anchorScroll',
     'MA_UI_INSTALL_PROMPT',
+    'MA_DEVELOPMENT_CONFIG',
     '$injector',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
-        $anchorScroll, installPrompt, $injector) {
+        $anchorScroll, installPrompt, developmentConfig, $injector) {
 
     if (uiSettings.googleAnalyticsPropertyId) {
         webAnalytics.enableGoogleAnalytics(uiSettings.googleAnalyticsPropertyId);
@@ -663,6 +664,13 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $document.on('dragover drop', $event => false);
 
     $rootScope.appLoading = false;
+    
+    $rootScope.developmentConfig = developmentConfig;
+    $rootScope.clearTranslations = () => {
+        Translate.clearCache().then(() => {
+            $window.location.reload();
+        });
+    };
 }]);
 
 export default uiApp;

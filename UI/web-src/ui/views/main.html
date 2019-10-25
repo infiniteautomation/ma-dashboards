@@ -84,6 +84,10 @@
               </md-button>
             </div>
             
+            <md-button ng-if="developmentConfig.enabled" class="md-icon-button" ng-click="clearTranslations()">
+                <md-icon>restore_page</md-icon>
+            </md-button>
+            
             <div ng-if="::userActions" ng-include="userActions"></div>
             
             <md-button class="md-icon-button" ng-if="$state.params.helpPage" ui-state="$state.params.helpPage">

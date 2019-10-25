@@ -171,8 +171,8 @@ Promise.resolve().then(() => {
     const maUiBootstrap = angular.module('maUiBootstrap', angularJsModuleNames);
 
     // configure the the providers using data retrieved before bootstrap
-    maUiBootstrap.config(['maUserProvider', 'maUiSettingsProvider', 'maUiServerInfoProvider', 'MA_UI_INSTALL_PROMPT',
-            (UserProvider, maUiSettingsProvider, maUiServerInfoProvider, installPrompt) => {
+    maUiBootstrap.config(['maUserProvider', 'maUiSettingsProvider', 'maUiServerInfoProvider', 'MA_UI_INSTALL_PROMPT', 'MA_DEVELOPMENT_CONFIG',
+            (UserProvider, maUiSettingsProvider, maUiServerInfoProvider, installPrompt, developmentConfig) => {
 
         // store pre-bootstrap user into the User service
         UserProvider.setUser(user);
@@ -189,6 +189,8 @@ Promise.resolve().then(() => {
                 return beforeinstallpromptEvent;
             }
         });
+        
+        developmentConfig.enabled = !!preLoginData.devlopmentMode;
     }]);
 
     // promise resolves when DOM loaded

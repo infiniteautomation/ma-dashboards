@@ -236,6 +236,9 @@ ngMangoServices.constant('MA_EVENT_LINK_INFO', {});
 ngMangoServices.constant('MA_DEFAULT_TIMEZONE', '');
 ngMangoServices.constant('MA_DEFAULT_LOCALE', '');
 
+// development mode settings
+ngMangoServices.constant('MA_DEVELOPMENT_CONFIG', {enabled: false});
+
 ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provide',
         function(localStorageServiceProvider, $httpProvider, $provide) {
     localStorageServiceProvider
