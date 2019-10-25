@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,14 +61,17 @@ public class BootstrapController {
     private final ObjectMapper objectMapper;
     private final ServletContext servletContext;
     private final PublicUrlService publicUrlService;
+    private final Environment env;
 
     @Autowired
-    public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper, ServletContext servletContext, PublicUrlService publicUrlService) {
+    public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper,
+            ServletContext servletContext, PublicUrlService publicUrlService, Environment env) {
         this.jsonDataDao = jsonDataDao;
         this.systemSettingsDao = SystemSettingsDao.instance;
         this.objectMapper = objectMapper;
         this.servletContext = servletContext;
         this.publicUrlService = publicUrlService;
+        this.env = env;
     }
 
     private void merge(ObjectNode dest, ObjectNode src) throws IOException {
@@ -136,7 +140,8 @@ public class BootstrapController {
     public PreLoginData preLogin(@AuthenticationPrincipal User user) {
         PreLoginData data = new PreLoginData();
 
-        data.setAngularJsModules(ModulesRestController.getAngularJSModules());
+        boolean devEnabled = env.getProperty("development.enabled", Boolean.class, false);
+        data.setAngularJsModules(ModulesRestController.getAngularJSModules(devEnabled));
 
         JsonDataVO uiSettings = this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID);
         if (uiSettings != null) {
@@ -147,6 +152,7 @@ public class BootstrapController {
         data.setServerLocale(Common.getLocale().toLanguageTag());
         data.setLastUpgradeTime(Common.getLastUpgradeTime());
         data.setPublicRegistrationEnabled(systemSettingsDao.getBooleanValue(SystemSettingsDao.USERS_PUBLIC_REGISTRATION_ENABLED));
+        data.setDevlopmentMode(devEnabled);
 
         if (user != null) {
             data.setUser(new UserModel(user));
@@ -192,6 +198,7 @@ public class BootstrapController {
         private int lastUpgradeTime;
         private UserModel user;
         private boolean publicRegistrationEnabled;
+        private boolean devlopmentMode;
 
         public TranslationsModel getTranslations() {
             return translations;
@@ -240,6 +247,12 @@ public class BootstrapController {
         }
         public void setPublicRegistrationEnabled(boolean publicRegistrationEnabled) {
             this.publicRegistrationEnabled = publicRegistrationEnabled;
+        }
+        public boolean isDevlopmentMode() {
+            return devlopmentMode;
+        }
+        public void setDevlopmentMode(boolean devlopmentMode) {
+            this.devlopmentMode = devlopmentMode;
         }
     }
 
