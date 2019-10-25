@@ -14,7 +14,7 @@
     
     <md-chip-template>
         <strong><md-icon>{{$ctrl.iconForRecipient($chip)}}</md-icon>&nbsp;<span ng-bind="$chip.username || $chip.address || $chip.name || $chip.xid"></span>&nbsp;</strong>
-        <md-tooltip ma-tr="ui.components.emailRecipient.{{$chip.type}}"></md-tooltip>
+        <md-tooltip ma-tr="ui.components.emailRecipient.{{$chip[$ctrl.typeProp]}}"></md-tooltip>
     </md-chip-template>
 </md-chips>
 
