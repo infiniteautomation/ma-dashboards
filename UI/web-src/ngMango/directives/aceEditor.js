@@ -73,7 +73,7 @@ function AceEditor(maModuleLoader) {
                 useWrapMode : true,
                 showGutter: !!this.showGutter,
                 showPrintMargin: false,
-                theme: this.theme || (this.uiSettings && this.uiSettings.codeTheme),
+                theme: this.theme || (this.uiSettings && this.uiSettings.codeTheme) || 'tomorrow_night_bright',
                 mode: this.mode || 'html',
                 onLoad: this.aceLoaded.bind(this),
                 onChange: this.aceChanged.bind(this)

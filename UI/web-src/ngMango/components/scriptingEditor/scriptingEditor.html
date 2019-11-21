@@ -1,6 +1,7 @@
 <div layout="row" layout-wrap layout-align="space-between start">
     <div flex="100" class="ma-scripting-editor-help-container">
-        <ma-ace-editor flex="100" mode="javascript" options="$ctrl.options" editor-loaded="$ctrl.editor = $editor" show-gutter="true" theme="tomorrow_night_bright" ng-change="$ctrl.setViewValue()" ng-model="$ctrl.scriptData.script"></ma-ace-editor>
+        <ma-ace-editor flex="100" mode="javascript" options="$ctrl.options" editor-loaded="$ctrl.editor = $editor" show-gutter="true"
+            ng-change="$ctrl.setViewValue()" ng-model="$ctrl.scriptData.script"></ma-ace-editor>
         <md-button class="md-icon-button" ui-sref="ui.help.scriptingEditor">
             <md-icon>help</md-icon>
         </md-button>
