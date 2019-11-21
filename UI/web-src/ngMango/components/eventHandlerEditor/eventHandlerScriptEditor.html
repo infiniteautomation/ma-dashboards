@@ -1,0 +1,22 @@
+<h3 ma-tr="ui.eventHandlers.scriptSettings"></h3>
+<div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
+    <md-input-container flex="100">
+        <label ma-tr="script.engineName"></label>
+        <md-select name="engineName" ng-model="$ctrl.eventHandler.engineName" ng-change="$ctrl.updateEditMode()" required>
+            <md-option ng-repeat="engine in $ctrl.engines track by engine.engineName" ng-value="engine.names[0]">
+                <span ng-bind="engine.languageName"></span> &mdash; <span ng-bind="engine.languageVersion"></span> (<span ng-bind="engine.engineName"></span>)
+            </md-option>
+        </md-select>
+        <div ng-messages="editor.form.engineName.$error">
+            <div ng-message="required" ma-tr="validate.required"></div>
+            <div ng-message="validationMessage" ng-bind="editor.form.engineName.validationMessage"></div>
+        </div>
+    </md-input-container>
+</div>
+
+<ma-ace-editor mode="{{$ctrl.editMode}}" show-gutter="true" required name="script" ng-model="$ctrl.eventHandler.script"></ma-ace-editor>
+
+<div ng-if="editor.form.script.$error" ng-messages="editor.form.script.$error" role="alert" md-colors="::{color: 'warn'}">
+    <div ng-message="required" ma-tr="validate.required"></div>
+    <div ng-message="validationMessage" ng-bind="editor.form.script.validationMessage"></div>
+</div>

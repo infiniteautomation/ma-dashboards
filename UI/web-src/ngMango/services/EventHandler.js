@@ -21,6 +21,11 @@ function eventHandlerProvider() {
             type: 'SET_POINT',
             description: 'eventHandlers.type.setPoint',
             template: `<ma-event-handler-set-point-editor></ma-event-handler-set-point-editor>`
+        },
+        {
+            type: 'SCRIPT',
+            description: 'eventHandlers.type.script',
+            template: `<ma-event-handler-script-editor event-handler="$ctrl.eventHandler"></ma-event-handler-script-editor>`
         }
     ];
     
@@ -158,6 +163,14 @@ function eventHandlerProvider() {
 
             hasEventType(eventTypeId) {
                 return this.eventTypes.some(et => et.typeId === eventTypeId);
+            }
+            
+            static getScriptEngines() {
+                return this.http({
+                    url: '/rest/v2/script/engines'
+                }).then(response => {
+                    return response.data;
+                });
             }
         }
     
