@@ -11,7 +11,28 @@ fileStore.$inject = ['$http', 'maUtil', '$q'];
 function fileStore($http, maUtil, $q) {
 	const fileStoreUrl = '/rest/v2/file-stores';
 	const fileStoreUrlSplit = fileStoreUrl.split('/');
-	
+
+    const editModesByMime = {
+        'application/json': 'json',
+        'application/javascript': 'javascript',
+        'text/css': 'css',
+        'text/html': 'html',
+        'text/plain': 'text',
+        'image/svg+xml': 'svg',
+        'application/xml': 'xml'
+    };
+    
+    const editModesByExtension = {
+        'groovy': 'groovy',
+        'java': 'java',
+        'rb': 'ruby',
+        'properties': 'properties',
+        'py': 'python',
+        'r': 'r',
+        'kts': 'kotlin',
+        'js': 'javascript'
+    };
+
     function FileStore() {
     }
 
@@ -252,6 +273,23 @@ function fileStore($http, maUtil, $q) {
     FileStore.prototype.newFileStoreFile = function(...args) {
         return new FileStoreFile(...args);
     };
+    
+    FileStore.prototype.getEditMode = function(filename, mimeType) {
+        let editMode;
+        
+        if (filename) {
+            const matches = /\.(.+?)$/.exec(filename);
+            if (matches) {
+                editMode = editModesByExtension[matches[1]];
+            }
+        }
+        
+        if (!editMode && mimeType) {
+            editMode = editModesByMime[mimeType];
+        }
+        
+        return editMode;
+    };
 
     function FileStoreFile(fileStore, file) {
     	angular.extend(this, file);
@@ -264,34 +302,11 @@ function fileStore($http, maUtil, $q) {
     	urlArray.push(this.filename);
     	this.url = urlArray.join('/');
 
-        const matches = /\.(.+?)$/.exec(this.filename);
-        if (matches) {
-            this.editMode = this.editModesByExtension[matches[1]];
-        }
-    	
-    	if (!this.editMode) {
-            this.editMode = this.editModes[this.mimeType];
-    	}
+    	this.editMode = this.getEditMode();
     }
     
-    FileStoreFile.prototype.editModes = {
-    	'application/json': 'json',
-    	'application/javascript': 'javascript',
-    	'text/css': 'css',
-    	'text/html': 'html',
-    	'text/plain': 'text',
-    	'image/svg+xml': 'svg',
-        'application/xml': 'xml'
-	};
-    
-    FileStoreFile.prototype.editModesByExtension = {
-        'groovy': 'groovy',
-        'java': 'java',
-        'rb': 'ruby',
-        'properties': 'properties',
-        'py': 'python',
-        'r': 'r',
-        'kts': 'kotlin'
+    FileStoreFile.prototype.getEditMode = function() {
+        return FileStore.prototype.getEditMode(this.filename, this.mimeType);
     };
     
     FileStoreFile.prototype.createFile = function(content) {
