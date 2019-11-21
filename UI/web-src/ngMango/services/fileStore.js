@@ -263,8 +263,15 @@ function fileStore($http, maUtil, $q) {
     	}
     	urlArray.push(this.filename);
     	this.url = urlArray.join('/');
+
+        const matches = /\.(.+?)$/.exec(this.filename);
+        if (matches) {
+            this.editMode = this.editModesByExtension[matches[1]];
+        }
     	
-    	this.editMode = this.editModes[this.mimeType];
+    	if (!this.editMode) {
+            this.editMode = this.editModes[this.mimeType];
+    	}
     }
     
     FileStoreFile.prototype.editModes = {
@@ -273,8 +280,19 @@ function fileStore($http, maUtil, $q) {
     	'text/css': 'css',
     	'text/html': 'html',
     	'text/plain': 'text',
-    	'image/svg+xml': 'svg'
+    	'image/svg+xml': 'svg',
+        'application/xml': 'xml'
 	};
+    
+    FileStoreFile.prototype.editModesByExtension = {
+        'groovy': 'groovy',
+        'java': 'java',
+        'rb': 'ruby',
+        'properties': 'properties',
+        'py': 'python',
+        'r': 'r',
+        'kts': 'kotlin'
+    };
     
     FileStoreFile.prototype.createFile = function(content) {
     	return new File([content], this.filename, {
