@@ -73,7 +73,7 @@ function AceEditor(maModuleLoader) {
                 useWrapMode : true,
                 showGutter: !!this.showGutter,
                 showPrintMargin: false,
-                theme: this.theme || (this.uiSettings && this.uiSettings.codeTheme) || 'tomorrow_night_bright',
+                theme: this.theme || (this.uiSettings && this.uiSettings.codeTheme) || 'monokai',
                 mode: this.mode || 'html',
                 onLoad: this.aceLoaded.bind(this),
                 onChange: this.aceChanged.bind(this)
@@ -130,20 +130,30 @@ function AceEditor(maModuleLoader) {
         }
     
         setTheme() {
-            if (this.editor && this.theme) {
-                this.editor.setTheme('ace/theme/' + this.theme);
+            if (this.theme) {
+                if (this.editor) {
+                    this.editor.setTheme('ace/theme/' + this.theme);
+                } else if (this.aceConfig) {
+                    this.aceConfig.theme = this.theme;
+                }
             }
         }
     
         setMode() {
-            if (this.editor && this.mode) {
-                this.editor.getSession().setMode('ace/mode/' + this.mode);
+            if (this.mode) {
+                if (this.editor) {
+                    this.editor.getSession().setMode('ace/mode/' + this.mode);
+                } else if (this.aceConfig) {
+                    this.aceConfig.mode = this.mode;
+                }
             }
         }
     
         setShowGutter() {
             if (this.editor) {
                 this.editor.renderer.setShowGutter(!!this.showGutter);
+            } else if (this.aceConfig) {
+                this.aceConfig.showGutter = !!this.showGutter;
             }
         }
     }
