@@ -1,3 +1,12 @@
+*Version 3.7.1*
+* Update Spanish translations
+
+*Version 3.7.0*
+* Updated to work with Mango 3.7 Core
+* Fix email recipients tooltip
+* Add reload button to toolbar when development mode is turned on
+* Use user configured editor theme in scripting editor
+
 *Version 3.6.7*
 * Fix bug introduced in v3.6.6 where you have to confirm every time you set a point's value
 * Fix bug where every point value response is cached in the browser resulting in excessive memory usage
