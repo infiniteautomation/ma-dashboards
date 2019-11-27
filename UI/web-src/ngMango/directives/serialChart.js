@@ -430,7 +430,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout,
                 valueAxis: 'left',
                 clustered: false,
                 balloonFunction: function(dataItem, graph) {
-                    const valueForBalloon = dataItemToText(dataItem);
+                    const valueForBalloon = graph.title + ' \u2014 ' + dataItemToText(dataItem);
                     if ($scope.annotateMode) {
                         return dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] ?
                                 dataItem.dataContext[graph.xid + 'AnnotationBalloonText'] :
