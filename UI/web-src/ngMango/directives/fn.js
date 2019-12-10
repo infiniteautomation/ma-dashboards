@@ -3,52 +3,53 @@
  * @author Jared Wiltshire
  */
 
-
-
 /**
  * @ngdoc directive
  * @name ngMango.directive:maFn
  *
  * @description
- * `<ma-fn expression="" fn="myFunction" ready="" arg-names=""></ma-fn>`
- * - This directive allows you to evaluate an Angular expression and store the result in a variable.
- * - In the example below an array from the model is passed through a filter on the name property of objects in the array.
- *
- *
- * @param {expression} expression Expression to store as a function.
- * @param {object} fn Variable to hold the evaluated function.
- * @param {object=} ready doc
- * @param {object=} arg-names doc
+ * Parses an AngularJS expression and stores the result as a function which can then be used elsewhere on the page. This can be useful for example
+ * when calling Array prototype functions such as .map() and .filter() which require you to pass a function as an argument.
+ * 
+ * @param {expression} expression Expression to parse and store as a function
+ * @param {function} fn Variable to output the generated function to
+ * @param {object=} ready Set to true when the function is ready to use
+ * @param {string[]=} arg-names Array of argument names which will be made available to use in the expression. If the argument names
+ * are not supplied they will be given default names of arg0, arg1, arg2 etc.
+ * @param {boolean|number=} memoize Memorizes the inputs and returns a cached result for the function, useful for preventing digest loops.
+ * If set to a number sets the cache size.
  *
  * @usage
- * <ma-fn expression="" fn="myFunction" ready="" arg-names="">
- * </ma-fn>
+ * <ma-fn arg-names="::['item']" expression="item.id" fn="getId"></ma-fn>
+ * <ma-point-query query="{name: 'test'}" points-changed="page.pointIds = $points.map(getId)"></ma-point-query>
  */
-maFnDirective.$inject = ['$parse'];
-function maFnDirective($parse) {
+maFnDirective.$inject = ['$parse', 'maUtil'];
+function maFnDirective($parse, maUtil) {
     return {
         scope: {
             fn: '=',
             ready: '=?',
-            argNames: '=?'
+            argNames: '<?',
+            memoize: '<?'
         },
     	compile: function($element, attrs) {
     		const parsed = $parse(attrs.expression);
 
     		return function($scope, $element, attrs) {
-    			$scope.fn = argMatch.bind(null, parsed, $scope.$parent, $scope.argNames);
+    			const fn = function() {
+                    const overrides = {};
+                    
+                    for (let i = 0; i < arguments.length; i++) {
+                        const argName = Array.isArray($scope.argNames) && $scope.argNames[i] || 'arg' + i;
+                        overrides[argName] = arguments[i];
+                    }
+                    
+                    return parsed($scope.$parent, overrides);
+                };
+
+    			$scope.fn = $scope.memoize ? maUtil.memoize(fn, $scope.memoize) : fn;
     			$scope.ready = true;
             };
-
-            function argMatch(parsedFn, context, argNames) {
-                const overrides = {};
-                for (let i = 3; i < arguments.length; i++) {
-                    const argNumber = i - 3;
-                    const argName = argNames && argNames.length > argNumber && argNames[argNumber] || 'arg' + argNumber;
-                    overrides[argName] = arguments[i];
-                }
-                return parsedFn(context, overrides);
-            }
     	},
         designerInfo: {
             translation: 'ui.components.maFn',
@@ -58,5 +59,3 @@ function maFnDirective($parse) {
 }
 
 export default maFnDirective;
-
-

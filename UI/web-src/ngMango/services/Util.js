@@ -305,7 +305,9 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
         */
         memoize(fn, cacheSize) {
             const cache = [];
-            cacheSize = cacheSize || 10;
+            if (!Number.isFinite(cacheSize) || cacheSize <= 0) {
+                cacheSize = 10;
+            }
             do {
                 cache.push(undefined);
             } while (--cacheSize > 0);
