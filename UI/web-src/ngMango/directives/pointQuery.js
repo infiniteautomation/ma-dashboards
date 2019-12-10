@@ -44,7 +44,8 @@ function pointQuery(Point) {
             sort: '<?',
             points: '=?',
             promise: '=?',
-            clearOnQuery: '<?'
+            clearOnQuery: '<?',
+            pointsChanged: '&?'
         },
         designerInfo: {
             translation: 'ui.components.pointQuery',
@@ -67,9 +68,15 @@ function pointQuery(Point) {
                 if ($scope.clearOnQuery) {
                     $scope.points = newPoints;
                 } else {
-                    newPoints.$promise.then(function(pts) {
+                    newPoints.$promise.then(pts => {
                         $scope.points = newPoints;
-                    });
+                    }, e => null);
+                }
+                
+                if (typeof $scope.pointsChanged === 'function') {
+                    newPoints.$promise.then(pts => {
+                        $scope.pointsChanged({$points: pts});
+                    }, e => null);
                 }
             }, true);
         }
