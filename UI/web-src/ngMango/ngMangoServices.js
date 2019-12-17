@@ -148,6 +148,7 @@ ngMangoServices.constant('MA_TIMEOUTS', {
     // NOTE: update uiSettings.json as well! These timeouts are overriden by the timeouts in the UI Settings
     xhr: 30000, // default XMLHttpRequest timeout
     websocket: 10000, // WebSocket connection timeout
+    websocketReconnectDelay: 5000, // delay before attempting to reconnect to WebSocket after it was closed (usually due to an error)
     websocketRequest: 10000, // request made over WebSocket
     pointValues: 60000 // timeout for fetching points values
 });
