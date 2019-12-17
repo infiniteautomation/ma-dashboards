@@ -119,7 +119,11 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
             }
         });
 
+        this.loggedIn = !!maUser.current;
+        
 	    $rootScope.$on('maWatchdog', (event, current, previous) => {
+            this.loggedIn = current.status === 'LOGGED_IN';
+            
 	        if (current.status === 'LOGGED_IN') {
                 // API is up and we are logged in
 	            
@@ -137,11 +141,10 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
 	    this.openSocket();
 	}
 
+	
 	EventManager.prototype.openSocket = function() {
-	    // return if socket is already open or there is no authenticated user
-		if (this.socket || (!this.noAuthenticationRequired && !maUser.current)) {
-			return;
-		}
+	    // dont attempt to connect if we are already connected or not logged in
+		if (this.socket || !this.loggedIn) return;
 
 	    if (!('WebSocket' in window)) {
 	        throw new Error('WebSocket not supported');
@@ -198,7 +201,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
 	    return socket;
 	};
 
-	EventManager.prototype.closeSocket = function() {
+	EventManager.prototype.closeSocket = function(error) {
 	    if (this.connectTimer) {
 	        clearTimeout(this.connectTimer);
             delete this.connectTimer;
@@ -214,6 +217,13 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
 
 		this.activeEventTypesByXid = {};
         this.activeAllEventTypes = [];
+
+        // try to reopen the socket if we think we are logged in
+        if (this.loggedIn) {
+            setTimeout(() => {
+                this.openSocket();
+            }, MA_TIMEOUTS.websocketReconnectDelay);
+        }
 	};
 
 	EventManager.prototype.messageReceived = function(message) {

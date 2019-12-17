@@ -18,6 +18,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
 	const mapEventType = {
         add: 'create'
 	};
+	
 
     class NotificationManager {
         constructor(options) {
@@ -31,7 +32,12 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             this.pendingRequests = {};
             this.sequenceNumber = 0;
 
+            // assume true
+            this.loggedIn = true;
+            
             $rootScope.$on('maWatchdog', (event, current, previous) => {
+                this.loggedIn = current.status === 'LOGGED_IN';
+                
                 if (current.status === 'LOGGED_IN' && this.listeners > 0) {
                     // API is up and we are logged in
                     this.openSocket().catch(angular.noop);
@@ -79,17 +85,17 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 this.closeSocket();
             }, MA_TIMEOUTS.websocket);
             
-            socket.onclose = () => {
+            socket.onclose = event => {
                 socketDeferred.reject('Socket closed');
-                this.closeSocket();
+                this.closeSocket(event);
             };
             
-            socket.onerror = () => {
+            socket.onerror = event => {
                 socketDeferred.reject('Socket error');
-                this.closeSocket();
+                this.closeSocket(event);
             };
 
-            socket.onopen = () => {
+            socket.onopen = event => {
                 $timeout.cancel(this.connectTimer);
                 delete this.connectTimer;
                 
@@ -101,11 +107,11 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                     this.sendSubscription();
                     socketDeferred.resolve(this.socket);
                 }).then(null, error => {
-                    this.closeSocket();
+                    this.closeSocket(error);
                 });
             };
             
-            socket.onmessage = (event) => {
+            socket.onmessage = event => {
                 try {
                     const message = angular.fromJson(event.data);
                     
@@ -193,7 +199,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             }
         }
 
-        closeSocket() {
+        closeSocket(event) {
             if (this.socketDeferred) {
                 this.socketDeferred.reject('Socket closed');
                 delete this.socketDeferred;
@@ -218,6 +224,13 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             });
             this.pendingRequests = {};
             this.sequenceNumber = 0;
+            
+            // try to reopen the socket if we think we are logged in and we have listeners
+            if (this.loggedIn && this.listeners > 0) {
+                $timeout(() => {
+                    this.openSocket().catch(angular.noop);
+                }, MA_TIMEOUTS.websocketReconnectDelay);
+            }
         }
         
         socketConnected() {
@@ -279,7 +292,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             }
             
             if (!localOnly) {
-                const firstListener = this.listeners++ === 0;
+                this.listeners++;
 
                 let subscriptionChanged = false;
                 if (Array.isArray(xids)) {
@@ -296,11 +309,13 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 } else {
                     subscriptionChanged = this.subscribedToAllXidsCount++ === 0;
                 }
-    
-                if (firstListener) {
+                
+                if (this.socketConnected()) {
+                    if (subscriptionChanged) {
+                        this.sendSubscription();
+                    }
+                } else if (this.loggedIn) {
                     this.openSocket().catch(angular.noop);
-                } else if (subscriptionChanged) {
-                    this.sendSubscription();
                 }
             }
 
