@@ -20,11 +20,6 @@ public class UISystemSettingsDefinition extends SystemSettingsDefinition {
     }
 
     @Override
-    public String getSectionJspPath() {
-        return null;
-    }
-
-    @Override
     public Map<String, Object> getDefaultValues() {
         Map<String, Object> defaults = new HashMap<String, Object>();
         defaults.put(UICommon.UI_FIRST_USER_LOGIN_PAGE, UICommon.DEFAULT_UI_FIRST_USER_LOGIN_PAGE);
