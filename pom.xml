@@ -22,7 +22,6 @@
 		<tag>HEAD</tag>
 	</scm>
 	<modules>
-
 		<module>UI</module>
 	</modules>
 	<repositories>
