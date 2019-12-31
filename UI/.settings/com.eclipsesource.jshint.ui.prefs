@@ -1,3 +1,0 @@
-eclipse.preferences.version=1
-excluded=//*.min.js\://*.spec.js\:web-src/docs//*\:web-src/vendor//*
-included=jsonUrlLoader.js\:web-src//*.js\:webpack.config.js

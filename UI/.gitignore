@@ -6,3 +6,6 @@
 /bower_components/
 /web/
 /.vscode/
+.settings
+.classpath
+.project
