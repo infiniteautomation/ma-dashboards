@@ -710,22 +710,6 @@ export default [
         menuTr: 'systemSettings.systemInformation'
     },
     {
-        name: 'ui.settings.system.siteAnalytics',
-        params: {
-            helpPage: 'ui.help.siteAnalytics'
-        },
-        templatePromise: systemSettingsTemplate('analytics.html'),
-        url: '/site-analytics',
-        menuTr: 'systemSettings.siteAnalytics',
-        menuHidden: true
-    },
-    {
-        url: '/site-analytics',
-        name: 'ui.help.siteAnalytics',
-        templatePromise: helpTemplate('siteAnalytics.html'),
-        menuTr: 'systemSettings.siteAnalytics' 
-    },
-    {
         name: 'ui.settings.system.language',
         params: {
             helpPage: 'ui.help.language'
@@ -884,22 +868,6 @@ export default [
         name: 'ui.help.ui',
         templatePromise: helpTemplate('ui.html'),
         menuTr: 'ui.settings'
-    },
-    {
-        name: 'ui.settings.system.color',
-        params: {
-            helpPage: 'ui.help.color'
-        },
-        templatePromise: systemSettingsTemplate('color.html'),
-        url: '/color',
-        menuTr: 'systemSettings.colourSettings',
-        menuHidden: true
-    },
-    {
-        url: '/color',
-        name: 'ui.help.color',
-        templatePromise: helpTemplate('chartColor.html'),
-        menuTr: 'systemSettings.colourSettings'
     },
     {
         name: 'ui.settings.system.configBackup',
