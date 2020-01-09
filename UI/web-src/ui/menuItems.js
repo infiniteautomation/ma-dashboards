@@ -902,22 +902,6 @@ export default [
         menuTr: 'systemSettings.H2DatabaseBackupSettings'
     },
     {
-        name: 'ui.settings.system.chart',
-        params: {
-            helpPage: 'ui.help.chart'
-        },
-        templatePromise: systemSettingsTemplate('chart.html'),
-        url: '/chart',
-        menuTr: 'systemSettings.chartSettings',
-        menuHidden: true
-    },
-    {
-        url: '/chart',
-        name: 'ui.help.chart',
-        templatePromise: helpTemplate('chart.html'),
-        menuTr: 'systemSettings.chartSettings'
-    },
-    {
         name: 'ui.settings.system.permissions',
         params: {
             helpPage: 'ui.help.permissions'
