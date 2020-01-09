@@ -65,17 +65,6 @@
     </div>
     <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
-            <a href="/reports.shtm" target="mango-legacy" flex layout="column">
-                <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_reports" class="home-page-count"></ma-point-value>
-                    <md-icon>book</md-icon>
-                    <h3 ma-tr="ui.app.reports"></h3>
-                </md-card-content>
-            </a>
-        </md-card>
-    </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
-        <md-card flex layout="column">
             <a ui-sref="ui.settings.excelReports" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
                     <ma-point-value point-xid="internal_mango_num_excel_report_templates" class="home-page-count"></ma-point-value>
@@ -151,17 +140,6 @@
                         <md-icon class="badge">alarm</md-icon>
                     </div>
                     <h3 ma-tr="ui.app.systemEvents"></h3>
-                </md-card-content>
-            </a>
-        </md-card>
-    </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
-        <md-card flex layout="column">
-            <a href="/scheduled_events.shtm" target="mango-legacy" flex layout="column">
-                <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_scheduled_events" class="home-page-count"></ma-point-value>
-                    <md-icon>alarm</md-icon>
-                    <h3 ma-tr="ui.app.scheduledEvents"></h3>
                 </md-card-content>
             </a>
         </md-card>

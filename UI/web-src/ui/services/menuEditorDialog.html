@@ -162,7 +162,6 @@
               <md-select name="target" required ng-model="$ctrl.item.target" ng-disabled="$ctrl.item.builtIn || $ctrl.item.disableTemplateControls">
                 <md-option value="_self"><span ma-tr="ui.app.selfWindow"></span></md-option>
                 <md-option value="_blank"><span ma-tr="ui.app.blankWindow"></span></md-option>
-                <md-option value="mango-legacy"><span ma-tr="ui.app.mangoLegacyWindow"></span></md-option>
               </md-select>
               <div ng-messages="$ctrl.menuItemEditForm.target.$error">
                 <div ng-message="required" ma-tr="validate.required"></div>

@@ -359,13 +359,6 @@ export default [
         weight: 900
     },
     {
-        name: 'ui.help.legacy',
-        templatePromise: helpTemplate('legacy.html'),
-        url: '/legacy',
-        menuHidden: true,
-        menuTr: 'ui.dox.legacyHelp'
-    },
-    {
         url: '/watch-list',
         name: 'ui.help.watchList',
         templatePromise: helpTemplate('watchList.html'),
@@ -859,22 +852,6 @@ export default [
         name: 'ui.help.threadPools',
         templatePromise: helpTemplate('threadPools.html'),
         menuTr: 'systemSettings.threadPools'
-    },
-    {
-        name: 'ui.settings.system.uiPerformance',
-        params: {
-            helpPage: 'ui.help.uiPerformance'
-        },
-        templatePromise: systemSettingsTemplate('uiPerformance.html'),
-        url: '/ui-performance',
-        menuTr: 'systemSettings.uiPerformance',
-        menuHidden: true
-    },
-    {
-        url: '/ui-performance',
-        name: 'ui.help.uiPerformance',
-        templatePromise: helpTemplate('uiPerformance.html'),
-        menuTr: 'systemSettings.uiPerformance'
     },
     {
         name: 'ui.settings.system.purge',
