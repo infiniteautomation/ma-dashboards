@@ -7,14 +7,18 @@ import java.util.Collections;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.serotonin.ShouldNeverHappenException;
 import com.serotonin.m2m2.Common;
+import com.serotonin.m2m2.IMangoLifecycle;
 import com.serotonin.m2m2.db.dao.JsonDataDao;
 import com.serotonin.m2m2.db.dao.RoleDao;
 import com.serotonin.m2m2.i18n.TranslatableMessage;
 import com.serotonin.m2m2.module.ModuleElementDefinition;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
+import com.serotonin.m2m2.vo.permission.PermissionHolder;
 import com.serotonin.m2m2.vo.role.Role;
 import com.serotonin.m2m2.vo.role.RoleVO;
+import com.serotonin.provider.Providers;
 
 /**
  * @author Jared Wiltshire
@@ -28,7 +32,6 @@ public class UILifecycle extends ModuleElementDefinition {
     public static final String MA_UI_EDIT_MENUS_PERMISSION = "edit-ui-menus";
     public static final String MA_UI_EDIT_PAGES_PERMISSION = "edit-ui-pages";
     public static final String MA_UI_EDIT_SETTINGS_PERMISSION = "edit-ui-settings";
-    public static final String MA_UI_DEFAULT_READ_PERMISSION = "user";
 
     private JsonNodeFactory nodeFactory;
 
@@ -38,9 +41,15 @@ public class UILifecycle extends ModuleElementDefinition {
 
     @Override
     public void postInitialize(boolean install, boolean upgrade) {
-        installMenuData();
-        installPageData();
-        installSettingsData();
+
+        /**
+         * Add a startup task to run after the Audit system is ready
+         */
+        Providers.get(IMangoLifecycle.class).addStartupTask(() -> {
+            installMenuData();
+            installPageData();
+            installSettingsData();
+        });
     }
 
     public void installMenuData() {
@@ -122,11 +131,9 @@ public class UILifecycle extends ModuleElementDefinition {
 
     public Role getDefaultReadRole() {
         RoleDao dao = RoleDao.getInstance();
-        RoleVO uiDefaultReadRole = dao.getByXid(MA_UI_DEFAULT_READ_PERMISSION);
+        RoleVO uiDefaultReadRole = dao.getByXid(PermissionHolder.USER_ROLE_XID);
         if(uiDefaultReadRole == null) {
-            uiDefaultReadRole = new RoleVO(Common.NEW_ID, MA_UI_DEFAULT_READ_PERMISSION,
-                    new TranslatableMessage("ui.permissions.defaultReadRole").translate(Common.getTranslations()));
-            dao.insert(uiDefaultReadRole);
+            throw new ShouldNeverHappenException("Default role of 'user' not found!");
         }
         return uiDefaultReadRole.getRole();
     }
