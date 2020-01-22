@@ -295,9 +295,7 @@ module.exports = readPom().then(pom => {
         },
         plugins: [
             //new webpack.NamedModulesPlugin(),
-            new CleanWebpackPlugin({
-                cleanOnceBeforeBuildPatterns: ['web']
-            }),
+            new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: 'web-src/ui/index.html',
                 filename: 'index.html',
