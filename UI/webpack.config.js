@@ -4,11 +4,11 @@
  */
 
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const readPom = require('@infinite-automation/mango-module-tools/readPom');
-const updatePackage = require('@infinite-automation/mango-module-tools/updatePackage');
+const readPom = require('@infinite-automation/mango-module-tools/module-tools/readPom');
+const updatePackage = require('@infinite-automation/mango-module-tools/module-tools/updatePackage');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const jsonUrlLoader = require.resolve('./jsonUrlLoader.js');
 
@@ -45,8 +45,9 @@ module.exports = readPom().then(pom => {
                         {
                             loader: 'style-loader',
                             options: {
-                                insertAt: {
-                                    before: 'meta[name="user-styles-after-here"]'
+                                insert: function(style) {
+                                    const meta = document.querySelector('meta[name="user-styles-after-here"]');
+                                    meta.parentNode.insertBefore(style, meta);
                                 }
                             }
                         },
@@ -61,7 +62,8 @@ module.exports = readPom().then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: 'img/[name].[ext]?v=[hash]'
+                            name: 'img/[name].[ext]?v=[hash]',
+                            esModule: false
                         }
                     }]
                 },
@@ -77,7 +79,8 @@ module.exports = readPom().then(pom => {
                                         {
                                             loader: 'file-loader',
                                             options: {
-                                                name: '[name].[ext]?v=[hash]'
+                                                name: '[name].[ext]?v=[hash]',
+                                                esModule: false
                                             }
                                         }
                                     ]
@@ -109,7 +112,8 @@ module.exports = readPom().then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: 'styles/[name].[ext]?v=[hash]'
+                            name: 'styles/[name].[ext]?v=[hash]',
+                            esModule: false
                         }
                     }]
                 },
@@ -118,7 +122,8 @@ module.exports = readPom().then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: 'fonts/[name].[ext]?v=[hash]'
+                            name: 'fonts/[name].[ext]?v=[hash]',
+                            esModule: false
                         }
                     }]
                 },
@@ -290,7 +295,9 @@ module.exports = readPom().then(pom => {
         },
         plugins: [
             //new webpack.NamedModulesPlugin(),
-            new CleanWebpackPlugin(['web']),
+            new CleanWebpackPlugin({
+                cleanOnceBeforeBuildPatterns: ['web']
+            }),
             new HtmlWebpackPlugin({
                 template: 'web-src/ui/index.html',
                 filename: 'index.html',
