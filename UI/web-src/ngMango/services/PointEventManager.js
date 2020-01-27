@@ -11,7 +11,7 @@
 *
 * @description
 * Provides an <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> factory pointing to the point-value websocket
-* endpoint at `'/rest/v1/websocket/point-value'`
+* endpoint at `'/rest/v2/websocket/point-value'`
 * - All methods available to <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> are available.
 * - Used by <a ui-sref="ui.docs.ngMango.maGetPointValue">`<ma-get-point-value>`</a> directive.
 *
@@ -23,7 +23,7 @@
 */
 function PointEventManagerFactory(EventManager) {
     return new EventManager({
-    	url: '/rest/v1/websocket/point-value',
+    	url: '/rest/v2/websocket/point-value',
     	replayLastPayload: true
     });
 }

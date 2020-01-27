@@ -31,7 +31,7 @@
 * @name PointHierarchy#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/hierarchy/by-id/:id`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/hierarchy/by-id/:id`
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a point hierarchy object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -43,7 +43,7 @@
 * @name PointHierarchy#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/hierarchy/by-id/:id`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/hierarchy/by-id/:id`
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a point hierarchy object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -55,7 +55,7 @@
 * @name PointHierarchy#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/hierarchy/by-id/:id`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/hierarchy/by-id/:id`
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a point hierarchy object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -67,7 +67,7 @@
 * @name PointHierarchy#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/hierarchy/by-id/:id`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/hierarchy/by-id/:id`
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a point hierarchy object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -79,7 +79,7 @@
 * @name getRoot
 *
 * @description
-* Uses the http GET method to retrieve the full hierarchy at `/rest/v1/hierarchy/full`
+* Uses the http GET method to retrieve the full hierarchy at `/rest/v2/hierarchy/full`
 * @returns {object} Returns a point hierarchy object. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -90,7 +90,7 @@
 * @name byPath
 *
 * @description
-* Uses the http GET method to retrieve the hierarchy at the specifed path `/rest/v1/hierarchy/by-path/:path`
+* Uses the http GET method to retrieve the hierarchy at the specifed path `/rest/v2/hierarchy/by-path/:path`
 * @param {object} query Object containing a `path` property which will be used to narrow the hierarchy query to the specifed folder path.
 *   Additionally a `subfolders` property containing a boolean value can be passed via the query object. If set to `false`, `points`
 *   will only return points that are containeddirectly as children in the target folders.
@@ -107,7 +107,7 @@
 * @name byName
 *
 * @description
-* Uses the http GET method to retrieve the hierarchy at the specifed path `/rest/v1/hierarchy/by-name/:name`
+* Uses the http GET method to retrieve the hierarchy at the specifed path `/rest/v2/hierarchy/by-name/:name`
 * @param {object} query Object containing a `name` property which will be used to narrow the hierarchy query to the specifed folder name.
 *     Additionally a `subfolders` property containing a boolean value can be passed via the query object. If set to `false`,
 *     `points` will only return points that are contained directly as children in the target folders.
@@ -120,28 +120,28 @@
  */
 PointHierarchyFactory.$inject = ['$resource', 'maPoint'];
 function PointHierarchyFactory($resource, Point) {
-    const PointHierarchy = $resource('/rest/v1/hierarchy/by-id/:id', {
+    const PointHierarchy = $resource('/rest/v2/hierarchy/by-id/:id', {
     		id: '@id'
     	}, {
     	getRoot: {
     	    method: 'GET',
-            url: '/rest/v1/hierarchy/full',
+            url: '/rest/v2/hierarchy/full',
             isArray: false,
             timeout: 60000
     	},
         byPath: {
             method: 'GET',
-            url: '/rest/v1/hierarchy/by-path/:path',
+            url: '/rest/v2/hierarchy/by-path/:path',
             isArray: false
         },
         byName: {
             method: 'GET',
-            url: '/rest/v1/hierarchy/by-name/:name',
+            url: '/rest/v2/hierarchy/by-name/:name',
             isArray: false
         },
         pathByXid: {
             method: 'GET',
-            url: ' /rest/v1/hierarchy/path/:xid',
+            url: ' /rest/v2/hierarchy/path/:xid',
             isArray: true
         }
     });

@@ -22,7 +22,7 @@
 * @name UserNotes#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/comments`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/comments`
 * @returns {array} Returns an Array of User Note objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -33,7 +33,7 @@
 * @name UserNotes#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/comments`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/comments`
 * @returns {array} Returns an Array of User Note objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -44,7 +44,7 @@
 * @name UserNotes#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/comments`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/comments`
 * @returns {array} Returns an Array of User Note objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -55,7 +55,7 @@
 * @name UserNotes#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/comments`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/comments`
 * @param {object} query Object for the query, can have a `contains` property for querying User Notes that contain the given string.
 * @returns {array} Returns an Array of User Note objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
@@ -68,7 +68,7 @@
 * @name UserNotes#query
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/comments`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/comments`
 * @param {object} query Object for the query, can have a `contains` property for querying User Notes that contain the given string.
 * @returns {array} Returns an Array of User Note objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
@@ -77,7 +77,7 @@
 
 
 function UserNotesFactory($resource, Util, $mdDialog) {
-    const UserNotes = $resource('/rest/v1/comments', {}, {
+    const UserNotes = $resource('/rest/v2/comments', {}, {
         query: {
             method: 'GET',
             isArray: true,

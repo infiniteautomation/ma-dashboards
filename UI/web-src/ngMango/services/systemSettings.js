@@ -40,7 +40,7 @@ function SystemSettingsProvider() {
 
 SystemSettingsFactory.$inject = ['$http'];
 function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLevelSettings, $http) {
-    const systemSettingsUrl = '/rest/v1/system-settings';
+    const systemSettingsUrl = '/rest/v2/system-settings';
     const permissionsUrl = '/rest/v2/permissions';
     
     function SystemSettings(key, type, value) {

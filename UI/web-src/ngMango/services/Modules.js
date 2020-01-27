@@ -6,7 +6,7 @@ import angular from 'angular';
 
 ModulesFactory.$inject = ['$http', '$q', 'maServer', 'maNotificationManager', 'maSystemStatus', '$rootScope', '$interval', '$timeout'];
 function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus, $rootScope, $interval, $timeout) {
-    const modulesUrl = '/rest/v1/modules';
+    const modulesUrl = '/rest/v2/modules';
     const availableUpgradesMonitorId = 'com.serotonin.m2m2.rt.maint.UpgradeCheck.COUNT';
     let availableUpgrades = null;
     let availableUpgradesIntervalPromise = null;
@@ -49,7 +49,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
     const Modules = {};
     
     Modules.notificationManager = new NotificationManager({
-        webSocketUrl: '/rest/v1/websocket/modules',
+        webSocketUrl: '/rest/v2/websocket/modules',
         transformObject: (object) => {
             return new Module(object);
         }

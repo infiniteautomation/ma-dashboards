@@ -21,7 +21,7 @@
 * @name Events#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/events`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/events`
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -32,7 +32,7 @@
 * @name Events#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/events`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/events`
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -43,7 +43,7 @@
 * @name Events#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/events`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/events`
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -54,7 +54,7 @@
 * @name Events#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/events`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/events`
 * @param {object} query Object for the query, can have a `contains` property for querying events that contain the given string.
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
@@ -66,7 +66,7 @@
 * @name Events#query
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/events`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/events`
 * @param {object} query Object for the query, can have a `contains` property for querying events that contain the given string.
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
@@ -123,7 +123,7 @@
 
 eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo'];
 function eventsFactory($resource, Util, EventTypeInfo) {
-    const Events = $resource('/rest/v1/events', {
+    const Events = $resource('/rest/v2/events', {
         id: '@id'
     }, {
         query: {
@@ -136,17 +136,17 @@ function eventsFactory($resource, Util, EventTypeInfo) {
         },
         acknowledge: {
             method: 'PUT',
-            url: '/rest/v1/events/acknowledge/:id',
+            url: '/rest/v2/events/acknowledge/:id',
             transformRequest: (data, headersGetter) => {
                 return null;
             }
         },
         acknowledgeViaRql: {
             method: 'POST',
-            url: '/rest/v1/events/acknowledge'
+            url: '/rest/v2/events/acknowledge'
         },
         getActiveSummary: {
-        	url: '/rest/v1/events/active-summary',
+        	url: '/rest/v2/events/active-summary',
             method: 'GET',
             isArray: true
         }
@@ -158,7 +158,7 @@ function eventsFactory($resource, Util, EventTypeInfo) {
     };
     
     Object.assign(Events.notificationManager, {
-        webSocketUrl: '/rest/v1/websocket/events',
+        webSocketUrl: '/rest/v2/websocket/events',
         onOpen() {
             this.sendMessage(subscriptionMessage);
         },

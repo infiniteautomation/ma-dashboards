@@ -21,7 +21,7 @@ function SystemStatusPageController(systemStatus, $state, maUiMenu, $mdMedia, $m
     this.dateBar = maUiDateBar;
     this.RqlBuilder = RqlBuilder;
 
-    this.logByFileNameUrl = '/rest/v1/logging/view/';
+    this.logByFileNameUrl = '/rest/v2/logging/view/';
 
     this.boundAuditQuery = (...args) => this.updateAuditQuery(...args);
     

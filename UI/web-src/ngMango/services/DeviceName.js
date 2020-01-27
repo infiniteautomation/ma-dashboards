@@ -44,7 +44,7 @@
 * @name DeviceName#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/device-names`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/device-names`
 * @param {object} query Object for the query, can have a `contains` property for querying device names that contain the given string.
 * @returns {array} Returns an Array of device name objects matching the query. Objects will be of the resource class and have
 *     resource actions available to them.
@@ -57,7 +57,7 @@
 * @name DeviceName#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/device-names`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/device-names`
 * @param {object} query Object for the query, can have a `contains` property for querying device names that contain the given string.
 * @returns {array} Returns an Array of device name objects matching the query. Objects will be of the resource class and have
 *     resource actions available to them.
@@ -70,7 +70,7 @@
 * @name DeviceName#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/device-names`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/device-names`
 * @param {object} query Object for the query, can have a `contains` property for querying device names that contain the given string.
 * @returns {array} Returns an Array of device name objects matching the query. Objects will be of the resource class and have
 *     resource actions available to them.
@@ -83,7 +83,7 @@
 * @name DeviceName#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/device-names`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/device-names`
 * @param {object} query Object for the query, can have a `contains` property for querying device names that contain the given string.
 * @returns {array} Returns an Array of device name objects matching the query. Objects will be of the resource class and have
 *     resource actions available to them.
@@ -97,7 +97,7 @@
 * @name DeviceName#query
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/device-names`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/device-names`
 * @param {object} query Object for the query, can have a `contains` property for querying device names that contain the given string.
 * @returns {array} Returns an Array of device name objects matching the query. Objects will be of the resource class and have
 *     resource actions available to them.
@@ -112,7 +112,7 @@
 *
 * @description
 * Passed a object with the ID of the datasource that the device belongs to and returns a data source object.
-* Makes a http GET call to the rest endpoint `/rest/v1/device-names/by-data-source-id/:id'`
+* Makes a http GET call to the rest endpoint `/rest/v2/device-names/by-data-source-id/:id'`
 * @param {object} Query Object containing an `id` property.
 * @returns {array} Returns an Array of device name objects matching the query. Objects will be of the resource class and have
 *     resource actions available to them.
@@ -127,7 +127,7 @@
 *
 * @description
 * Passed an object with the XID of the datasource that the device belongs to and returns a data source object.
-* Makes a http GET call to the rest endpoint `/rest/v1/device-names/by-data-source-xid/:id'`
+* Makes a http GET call to the rest endpoint `/rest/v2/device-names/by-data-source-xid/:id'`
 * @param {object} Query Object containing an `xid` property.
 * @returns {array} Returns an Array of device name objects matching the query. Objects will be of the resource class and have
 *     resource actions available to them.
@@ -136,18 +136,18 @@
 
 
 function DeviceNameFactory($resource) {
-    const DeviceName = $resource('/rest/v1/device-names', {}, {
+    const DeviceName = $resource('/rest/v2/device-names', {}, {
         query: {
             method: 'GET',
             isArray: true
         },
         byDataSourceId: {
-        	url: '/rest/v1/device-names/by-data-source-id/:id',
+        	url: '/rest/v2/device-names/by-data-source-id/:id',
             method: 'GET',
             isArray: true
         },
         byDataSourceXid: {
-            url: '/rest/v1/device-names/by-data-source-xid/:xid',
+            url: '/rest/v2/device-names/by-data-source-xid/:xid',
             method: 'GET',
             isArray: true
         }

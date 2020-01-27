@@ -64,7 +64,7 @@ Promise.resolve().then(() => {
     });
 
 //    const bundlePromise = new Promise((resolve, reject) => {
-//        requirejs(['/rest/v1/modules/angularjs-modules/bundle'], result => {
+//        requirejs(['/rest/v2/modules/angularjs-modules/bundle'], result => {
 //            resolve(result);
 //        }, error => {
 //            console.log('Failed to load bundle', arguments);

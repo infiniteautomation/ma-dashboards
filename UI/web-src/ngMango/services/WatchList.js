@@ -27,7 +27,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
     *
     * @description Service for querying, getting and saving watch lists.
     */
-    const WatchList = $resource('/rest/v1/watch-lists/:xid', {
+    const WatchList = $resource('/rest/v2/watch-lists/:xid', {
         xid: data => data && (data.originalId || data.xid)
     }, {
         query: {
@@ -41,7 +41,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
         },
         save: {
             method: 'POST',
-            url: '/rest/v1/watch-lists/',
+            url: '/rest/v2/watch-lists/',
             params: {
                 xid: null
             }
@@ -134,7 +134,7 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
             if (this.type === 'static') {
                 return $http({
                     method: 'GET',
-                    url: `/rest/v1/watch-lists/${encodeURIComponent(this.xid)}/data-points`,
+                    url: `/rest/v2/watch-lists/${encodeURIComponent(this.xid)}/data-points`,
                     cache: false,
                     transformResponse: maUtil.transformArrayResponse
                 }).then(response => {

@@ -62,7 +62,7 @@ User.logout();
 * @name User#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/users/:username`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -74,7 +74,7 @@ User.logout();
 * @name User#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/users/:username`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/users/:username`
 * @param {object} query Object containing a `username` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -86,7 +86,7 @@ User.logout();
 * @name User#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/users/:username`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -98,7 +98,7 @@ User.logout();
 * @name User#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/users/:username`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -124,7 +124,7 @@ User.logout();
 * @name User#getById
 *
 * @description
-* Query the REST endpoint `/rest/v1/users/by-id/:id` with the `GET` method.
+* Query the REST endpoint `/rest/v2/users/by-id/:id` with the `GET` method.
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -136,7 +136,7 @@ User.logout();
 * @name User#getCurrent
 *
 * @description
-* Query the REST endpoint `/rest/v1/users/current` with the `GET` method to return the currently logged in user.
+* Query the REST endpoint `/rest/v2/users/current` with the `GET` method to return the currently logged in user.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -211,7 +211,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             receiveAlarmEmails: 'IGNORE'
         };
 
-        const User = $resource('/rest/v1/users/:username', {
+        const User = $resource('/rest/v2/users/:username', {
                 username: data => data && (data.originalId || data.username)
             }, {
             query: {
@@ -223,12 +223,12 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 }
             },
             getById: {
-                url: '/rest/v1/users/by-id/:id',
+                url: '/rest/v2/users/by-id/:id',
                 method: 'GET',
                 isArray: false
             },
             getCurrent: {
-                url: '/rest/v1/users/current',
+                url: '/rest/v2/users/current',
                 method: 'GET',
                 isArray: false,
                 interceptor: {
@@ -272,7 +272,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
             save: {
                 method: 'POST',
-                url: '/rest/v1/users/',
+                url: '/rest/v2/users/',
                 params: {
                     username: null
                 }
@@ -287,7 +287,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         });
 
         Object.assign(User.notificationManager, {
-            webSocketUrl: '/rest/v1/websocket/users'
+            webSocketUrl: '/rest/v2/websocket/users'
         });
 
         Object.assign(User, {

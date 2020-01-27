@@ -84,7 +84,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
     	doPing() {
     	    $http({
                 method: 'GET',
-                url: '/rest/v1/users/current',
+                url: '/rest/v2/users/current',
                 timeout: this.interval / 2
             }).then(response => {
                 return {

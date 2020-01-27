@@ -108,7 +108,7 @@ const moduleForUrl = (url) => {
 };
 
 const cleanUpModules = () => {
-    fetch('/rest/v1/modules/angularjs-modules/public').then(r => r.json()).then(modules => {
+    fetch('/rest/v2/modules/angularjs-modules/public').then(r => r.json()).then(modules => {
         return caches.open(moduleResourcesCacheName).then(cache => {
             const updatedModulesPromise = Promise.all(modules.urls.map(url => {
                 return cache.match(url).then(response => {

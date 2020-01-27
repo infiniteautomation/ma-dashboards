@@ -11,7 +11,7 @@
 *
 * @description
 * Provides an <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> factory pointing to the point-value
-* websocket endpoint at `'/rest/v1/websocket/watch-list'`
+* websocket endpoint at `'/rest/v2/websocket/watch-list'`
 * - All methods available to <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> are available.
 *
 * # Usage
@@ -24,7 +24,7 @@
 WatchListEventManagerFactory.$inject = ['maEventManager', 'maWatchList'];
 function WatchListEventManagerFactory(EventManager, WatchList) {
     return new EventManager({
-    	url: '/rest/v1/websocket/watch-lists',
+    	url: '/rest/v2/websocket/watch-lists',
     	transformPayload(payload) {
     	    if (payload.object) {
     	        payload.object = Object.assign(Object.create(WatchList.prototype), payload.object);

@@ -9,7 +9,7 @@
 *
 * @description
 * Provides an <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> factory pointing to the json-data websocket
-* endpoint at `'/rest/v1/websocket/json-data'`
+* endpoint at `'/rest/v2/websocket/json-data'`
 * - All methods available to <a ui-sref="ui.docs.ngMangoServices.EventManager">EventManager</a> are available.
 * - Used by <a ui-sref="ui.docs.ngMango.maJsonStore">`<ma-json-store>`</a> directive.
 *
@@ -23,7 +23,7 @@
 JsonStoreEventManagerFactory.$inject = ['maEventManager', 'maJsonStore'];
 function JsonStoreEventManagerFactory(EventManager, JsonStore) {
     return new EventManager({
-    	url: '/rest/v1/websocket/json-data',
+    	url: '/rest/v2/websocket/json-data',
         transformPayload(payload) {
             if (payload.object) {
                 payload.object = Object.assign(Object.create(JsonStore.prototype), payload.object);

@@ -249,7 +249,7 @@ function dataPointProvider() {
             
             static pointsForWatchList(xid, opts = {}) {
                 return this.http({
-                    url: `/rest/v1/watch-lists/${encodeURIComponent(xid)}/data-points`,
+                    url: `/rest/v2/watch-lists/${encodeURIComponent(xid)}/data-points`,
                     method: 'GET'
                 }, opts).then(response => {
                     if (opts.responseType != null) {
@@ -428,7 +428,7 @@ function dataPointProvider() {
         
         Object.assign(Point.prototype, {
             forceRead() {
-                const url = '/rest/v1/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
+                const url = '/rest/v2/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
                 return $http.put(url, null);
             },
         
@@ -484,7 +484,7 @@ function dataPointProvider() {
 
             	return $http({
             	    method: 'PUT',
-            	    url: `/rest/v1/point-values/${encodeURIComponent(this.xid)}`,
+            	    url: `/rest/v2/point-values/${encodeURIComponent(this.xid)}`,
             	    data,
             	    params
             	});
@@ -497,7 +497,7 @@ function dataPointProvider() {
             relinquish() {
                 const xid = encodeURIComponent(this.xid);
                 return $http({
-                    url: `/rest/v1/runtime-manager/relinquish/${xid}`,
+                    url: `/rest/v2/runtime-manager/relinquish/${xid}`,
                     method: 'POST',
                     
                 });
