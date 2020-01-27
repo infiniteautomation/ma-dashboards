@@ -705,14 +705,15 @@ function dataPointProvider() {
                     this.activeEvents = [];
                     
                     Events.buildQuery()
-                        .eq('dataPointId', this.id)
+                        .eq('eventType', 'DATA_POINT')
+                        .eq('referenceId1', this.id)
                         .eq('active', true)
                         .query().then(events => {
                             this.activeEvents.push(...events);
                         });
 
                     this.eventListenerDeregister = Events.notificationManager.subscribe((event, mangoEvent) => {
-                        if (mangoEvent.eventType.dataPointId !== this.id) return;
+                        if (mangoEvent.eventType.eventType !== 'DATA_POINT' || mangoEvent.eventType.referenceId1 !== this.id) return;
 
                         $rootScope.$apply(() => {
                             const eventIndex = this.activeEvents.findIndex(e => e.id === mangoEvent.id);

@@ -419,21 +419,31 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
 
         eventMatchesFilters(event, ignoreAckFilter) {
-            if (this.$attrs.hasOwnProperty('pointId') && this.pointId == null || this.$attrs.hasOwnProperty('sourceId') && this.sourceId == null) {
-                return false;
+            const tests = [];
+            
+            if (this.$attrs.hasOwnProperty('pointId')) {
+                if (this.pointId == null) {
+                    return false;
+                }
+                tests.push(new Equals(event.eventType.eventType, 'DATA_POINT'));
+            }
+            if (this.$attrs.hasOwnProperty('sourceId')) {
+                if (this.sourceId == null) {
+                    return false;
+                }
+                tests.push(new Equals(event.eventType.eventType, 'DATA_SOURCE'));
             }
             
-            const tests = [
+            tests.push(
                 new Equals(event.eventType.eventType, this.eventType),
                 new Equals(event.alarmLevel, this.alarmLevel),
                 new Equals(event.active, this.active),
-                new Equals(event.eventType.dataPointId, this.pointId),
-                new Equals(event.eventType.dataSourceId, this.sourceId),
-                new InArray(event.eventType.dataPointId, this.pointIds),
+                new Equals(event.eventType.referenceId1, this.pointId),
+                new Equals(event.eventType.referenceId1, this.sourceId),
+                new InArray(event.eventType.referenceId1, this.pointIds),
                 new Equals(event.id, this.eventId),
                 new Equals(event.eventType.referenceId1, this.referenceId1),
-                new Equals(event.eventType.referenceId2, this.referenceId2)
-            ];
+                new Equals(event.eventType.referenceId2, this.referenceId2));
             
             if (!ignoreAckFilter) {
                 tests.push(new Equals(event.acknowledged, this.acknowledged));

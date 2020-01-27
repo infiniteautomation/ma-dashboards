@@ -61,14 +61,14 @@ uiApp.constant('MA_EVENT_LINK_INFO', {
         tooltipTranslation: 'ui.app.dpd',
         stateName: 'ui.dataPointDetails',
         stateParams: event => {
-            return { pointId: event.eventType.dataPointId };
+            return { pointId: event.eventType.referenceId1 };
         }
     },
     DATA_SOURCE: {
         icon: 'device_hub',
         tooltipTranslation: 'header.dataSources',
         stateName: 'ui.settings.dataSources',
-        stateParams: event => ({dataSourceId: event.eventType.dataSourceId})
+        stateParams: event => ({dataSourceId: event.eventType.referenceId1})
     },
     LICENSE_CHECK: {
         icon: 'extension',
