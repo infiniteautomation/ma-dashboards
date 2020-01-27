@@ -34,7 +34,6 @@
           <md-option ng-value="'date'" ma-tr="ui.app.date"></md-option>
           <md-option ng-value="'deviceName'" ma-tr="common.deviceName"></md-option>
           <md-option ng-value="'dataSource'" ma-tr="ui.app.dataSource"></md-option>
-          <md-option ng-value="'pointHierarchy'" ma-tr="ui.app.pointHierarchy"></md-option>
           <md-option ng-value="'tagValue'" ma-tr="ui.app.dataPointTag"></md-option>
         </md-select>
       </md-input-container>
@@ -129,28 +128,6 @@
           <input ng-model="param.options.nameIsLike">
         </md-input-container>
         <md-checkbox ng-model="param.options.filtering"><span ma-tr="ui.app.filteringSelect"></span></md-checkbox>
-      </div>
-      <div ng-if="param.type === 'pointHierarchy'" layout="row" layout-align="end center">
-        <md-input-container>
-          <label ma-tr="ui.app.hierarchyPath"></label>
-          <input ng-model="param.options.path">
-        </md-input-container>
-        <md-input-container>
-          <label ma-tr="ui.app.nameMatches"></label>
-          <input ng-model="param.options.nameMatches">
-        </md-input-container>
-        <md-input-container>
-          <label ma-tr="ui.app.replaceName"></label>
-          <input ng-model="param.options.replaceName">
-        </md-input-container>
-        <md-input-container>
-          <label ma-tr="ui.app.maxDepth"></label>
-          <input ng-model="param.options.maxDepth" type="number" min="0">
-        </md-input-container>
-        <md-checkbox ng-model="param.options.uniqueNames"><span ma-tr="ui.app.uniqueNames"></span></md-checkbox>
-        <md-checkbox ng-model="param.options.multiple" ng-disabled="param.options.filtering"><span ma-tr="ui.app.selectMultiple"></span></md-checkbox>
-        <md-checkbox ng-model="param.options.subfoldersOnly"><span ma-tr="ui.app.subFoldersOnly"></span></md-checkbox>
-        <md-checkbox ng-model="param.options.filtering" ng-change="param.options.multiple = undefined"><span ma-tr="ui.app.filteringSelect"></span></md-checkbox>
       </div>
       <div ng-if="param.type === 'tagValue'">
         <div layout="row" layout-align="end center">

@@ -29,10 +29,6 @@ const queryProperties = [
         value: 'dataSourceXid'
     },
     {
-        labelTr: 'ui.components.queryProperty.pointFolderId',
-        value: 'pointFolderId'
-    },
-    {
         labelTr: 'common.enabled',
         value: 'enabled'
     },

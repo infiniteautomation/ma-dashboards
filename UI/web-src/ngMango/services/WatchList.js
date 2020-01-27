@@ -6,9 +6,9 @@
 import angular from 'angular';
 import query from 'rql/query';
 
-WatchListFactory.$inject = ['$resource', 'maUtil', '$http', 'maPoint', 'maPointHierarchy', '$q',
+WatchListFactory.$inject = ['$resource', 'maUtil', '$http', 'maPoint', '$q',
     '$interpolate', '$sce', '$parse', 'maRqlBuilder', 'maUser'];
-function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
+function WatchListFactory($resource, maUtil, $http, Point, $q,
         $interpolate, $sce, $parse, RqlBuilder, User) {
 
     const defaultProperties = {
@@ -79,15 +79,6 @@ function WatchListFactory($resource, maUtil, $http, Point, PointHierarchy, $q,
                 builder.in('xid', this.points.map(p => p.xid));
             } else if (this.type === 'query') {
                 return this.interpolateQuery(paramValues);
-            } else if (this.type === 'hierarchy') {
-                let folderIds = this.folderIds || [];
-                
-                if (this.hierarchyFolders) {
-                    folderIds = this.hierarchyFolders.map(folder => folder.id);
-                }
-
-                builder.in('pointFolderId', folderIds);
-                
             } else if (this.type === 'tags') {
                 this.params.filter(p => p.type === 'tagValue').forEach(param => {
                     const paramValue = paramValues[param.name];

@@ -6,18 +6,17 @@
 import angular from 'angular';
 import pointBrowserTemplate from './pointBrowser.html';
 
-const types = ['watchList', 'deviceName', 'dataSource', 'hierarchy', 'tags'];
+const types = ['watchList', 'deviceName', 'dataSource', 'tags'];
 
 class PointBrowserController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maTranslate', 'maRqlBuilder', 'maWatchList', 'maDataSource', 'maPointHierarchy', '$timeout']; }
-    constructor(maTranslate, maRqlBuilder, maWatchList, maDataSource, maPointHierarchy, $timeout) {
+    static get $inject() { return ['maTranslate', 'maRqlBuilder', 'maWatchList', 'maDataSource', '$timeout']; }
+    constructor(maTranslate, maRqlBuilder, maWatchList, maDataSource, $timeout) {
         this.maTranslate = maTranslate;
         this.maRqlBuilder = maRqlBuilder;
         this.maWatchList = maWatchList;
         this.maDataSource = maDataSource;
-        this.maPointHierarchy = maPointHierarchy;
         this.$timeout = $timeout;
 
         this.filter = null;
@@ -40,9 +39,6 @@ class PointBrowserController {
                 } else if (this.selected.type === 'tags' && this.selected.tags) {
                     this.listType = 'tags';
                     this.tags = this.selected.tags;
-                } else if (this.selected.type === 'hierarchy' && this.selected.hierarchyFolders) {
-                    this.listType = 'hierarchy';
-                    this.hierarchy = this.selected.hierarchyFolders;
                 } else if (this.selected.type === 'query' && this.selected.deviceName) {
                     this.listType = 'deviceName';
                     this.deviceName = this.selected.deviceName;
@@ -110,16 +106,6 @@ class PointBrowserController {
             this.tags = item.tags;
             this.listType = 'tags';
             this.itemSelected('tags');
-        } else if (item.hierarchyFolderId) {
-            this.listType = 'hierarchy';
-            this.maPointHierarchy.get({id: item.hierarchyFolderId, points: false}).$promise.then(folder => {
-                const folders = [];
-                this.maPointHierarchy.walkHierarchy(folder, function(folder, parent, index) {
-                    folders.push(folder);
-                });
-                this.hierarchy = folders;
-                this.itemSelected('hierarchy');
-            });
         } else {
             this.listType = 'watchList';
         }
@@ -135,9 +121,6 @@ class PointBrowserController {
         case 'watchList':
             this.selected = this.watchList;
             break;
-        case 'hierarchy':
-            this.createHierarchyWatchList();
-            break;
         case 'deviceName':
             this.createDeviceNameWatchList();
             break;
@@ -151,17 +134,7 @@ class PointBrowserController {
         
         this.setViewValue();
     }
-    
-    createHierarchyWatchList() {
-        const folderName = this.hierarchy.length ? this.hierarchy[0].name : '';
-        
-        this.selected = new this.maWatchList({
-            type: 'hierarchy',
-            name: this.maTranslate.trSync('ui.app.hierarchyFolderX', [folderName]),
-            hierarchyFolders: this.hierarchy
-        });
-    }
-    
+
     createDeviceNameWatchList() {
         const query = new this.maRqlBuilder()
             .eq('deviceName', this.deviceName)

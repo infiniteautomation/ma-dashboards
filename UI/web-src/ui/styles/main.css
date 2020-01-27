@@ -1035,19 +1035,6 @@ md-autocomplete md-autocomplete-wrap md-progress-linear.md-inline {
   bottom: 16px;
 }
 
-ma-point-hierarchy-folder {
-  margin-bottom: 5px;
-}
-
-ma-point-hierarchy-folder md-checkbox[role=checkbox] {
-  margin-bottom: 0px;
-  margin-right: -7px;
-}
-
-ma-point-hierarchy-folder .point-hierarchy-item {
-  margin-bottom: 6px;
-}
-
 /* Home page */
 .home-page > div {
   height: 160px;

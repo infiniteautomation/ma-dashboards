@@ -5,10 +5,6 @@
                 <span ma-tr="ui.app.lists"></span>
                 <md-tooltip ma-tr="ui.app.watchLists"></md-tooltip>
             </md-radio-button>
-            <md-radio-button value="hierarchy" class="md-primary">
-                <span ma-tr="ui.app.hierarchy"></span>
-                <md-tooltip ma-tr="ui.app.pointHierarchy"></md-tooltip>
-            </md-radio-button>
             <md-radio-button value="deviceName" class="md-primary">
                 <span ma-tr="ui.app.devices"></span>
                 <md-tooltip ma-tr="ui.app.deviceNames"></md-tooltip>
@@ -28,7 +24,7 @@
         <md-progress-linear ng-if="$ctrl.queryPromise" class="md-accent" md-mode="indeterminate"></md-progress-linear>
     </div>
     
-    <div layout="row" layout-align="center center" ng-if="$ctrl.listType !== 'hierarchy' && $ctrl.listType !== 'tags'" class="ma-point-browser-filter">
+    <div layout="row" layout-align="center center" ng-if="$ctrl.listType !== 'tags'" class="ma-point-browser-filter">
         <md-input-container flex md-no-float>
             <input ng-model="$ctrl.filter" ng-model-options="{debounce: 1000}" placeholder="{{'ui.app.filter' | maTr}}" ng-change="$ctrl.filterChanged()">
         </md-input-container>
@@ -63,13 +59,6 @@
         ng-model="$ctrl.dataSource" ng-change="$ctrl.itemSelected('dataSource')" select-first="false">
     </ma-data-source-scroll-list>
 
-    <div ng-if="$ctrl.listType === 'hierarchy'" flex layout="column" class="ma-scroll-parent">
-        <ma-point-hierarchy-browser expanded="1" select-subfolders="true" select-one-folder="true" class="md-padding ma-scroll-child"
-            ng-model="$ctrl.hierarchy" ng-change="$ctrl.itemSelected('hierarchy')" hide-folders-with-no-points="true"
-            on-query="$ctrl.queryChanged($promise)">
-        </ma-point-hierarchy-browser>
-    </div>
-    
     <div ng-if="$ctrl.listType === 'tags'" flex layout="column" class="ma-scroll-parent">
         <ma-data-point-tag-group layout="column" class="ma-scroll-child"
              ng-model="$ctrl.tags"

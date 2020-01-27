@@ -94,8 +94,7 @@ class WatchListPageController {
             {name: 'plotType', label: 'pointEdit.plotType'},
             {name: 'rollup', label: 'common.rollup'},
             {name: 'templateXid', label: 'ui.app.templateXid'},
-            {name: 'integralUnit', label: 'pointEdit.props.integralUnit'},
-            {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId'}
+            {name: 'integralUnit', label: 'pointEdit.props.integralUnit'}
         ];
         
         this.columns.forEach((c, i) => c.order = i);
@@ -110,18 +109,15 @@ class WatchListPageController {
         const localStorage = this.localStorageService.get('watchListPage') || {};
         const params = this.$state.params;
 
-        if (params.watchListXid || !(params.dataSourceXid || params.deviceName || params.hierarchyFolderId || params.tags) && localStorage.watchListXid) {
+        if (params.watchListXid || !(params.dataSourceXid || params.deviceName || params.tags) && localStorage.watchListXid) {
             const watchListXid = params.watchListXid || localStorage.watchListXid;
             this.pointBrowserLoadItem = {watchListXid};
-        } else if (params.dataSourceXid || !(params.deviceName || params.hierarchyFolderId || params.tags) && localStorage.dataSourceXid) {
+        } else if (params.dataSourceXid || !(params.deviceName || params.tags) && localStorage.dataSourceXid) {
             const dataSourceXid = params.dataSourceXid || localStorage.dataSourceXid;
             this.pointBrowserLoadItem = {dataSourceXid};
-        } else if (params.deviceName || !(params.hierarchyFolderId || params.tags) && localStorage.deviceName) {
+        } else if (params.deviceName || !params.tags && localStorage.deviceName) {
             const deviceName = params.deviceName || localStorage.deviceName;
             this.pointBrowserLoadItem = {deviceName};
-        } else if (params.hierarchyFolderId || !params.tags && localStorage.hierarchyFolderId) {
-            const hierarchyFolderId = params.hierarchyFolderId || localStorage.hierarchyFolderId;
-            this.pointBrowserLoadItem = {hierarchyFolderId};
         } else if (params.tags || localStorage.tags) {
             if (params.tags) {
                 this.pointBrowserLoadItem = {tags: this.parseTagsParam(params.tags)};
@@ -217,7 +213,7 @@ class WatchListPageController {
     updateState(state) {
         const localStorageParams = this.localStorageService.get('watchListPage') || {};
 
-        ['watchListXid', 'dataSourceXid', 'deviceName', 'hierarchyFolderId', 'tags'].forEach(key => {
+        ['watchListXid', 'dataSourceXid', 'deviceName', 'tags'].forEach(key => {
             const value = state[key];
             if (value) {
                 localStorageParams[key] = value; 
@@ -290,8 +286,6 @@ class WatchListPageController {
             stateUpdate.deviceName = this.watchList.deviceName;
         } else if (this.watchList.type === 'query' && this.watchList.dataSource) {
             stateUpdate.dataSourceXid = this.watchList.dataSource.xid;
-        } else if (this.watchList.type === 'hierarchy' && Array.isArray(this.watchList.hierarchyFolders) && this.watchList.hierarchyFolders.length) {
-            stateUpdate.hierarchyFolderId = this.watchList.hierarchyFolders[0].id;
         } else if (this.watchList.type === 'tags' && this.watchList.tags) {
             stateUpdate.tags = this.watchList.tags;
         }

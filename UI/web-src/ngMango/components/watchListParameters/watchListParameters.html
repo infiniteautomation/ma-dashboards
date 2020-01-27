@@ -82,39 +82,6 @@
       auto-init="false" query="$ctrl.getDsQuery(param)"
       label-text="param.label">
   </ma-filtering-data-source-list>
-  <md-input-container ng-if="param.type === 'pointHierarchy' && !param.options.filtering" flex>
-    <label ng-bind="param.label"></label>
-    <ma-point-hierarchy-select ng-if="!param.options.multiple" show-clear="true"
-        ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value.id'}"
-        path="$ctrl.getParamOption(param, 'path')"
-        subfolders-only="param.options.subfoldersOnly"
-        max-depth="param.options.maxDepth"
-        points="false"
-        name-matches="{{$ctrl.getParamOption(param, 'nameMatches')}}"
-        replace-name="{{$ctrl.getParamOption(param, 'replaceName')}}"
-        unique-names="param.options.uniqueNames"></ma-point-hierarchy-select>
-    <ma-point-hierarchy-select ng-if="param.options.multiple" multiple show-clear="true"
-        ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value.id'}"
-        path="$ctrl.getParamOption(param, 'path')"
-        subfolders-only="param.options.subfoldersOnly"
-        max-depth="param.options.maxDepth"
-        points="false"
-        name-matches="{{$ctrl.getParamOption(param, 'nameMatches')}}"
-        replace-name="{{$ctrl.getParamOption(param, 'replaceName')}}"
-        unique-names="param.options.uniqueNames"></ma-point-hierarchy-select>
-  </md-input-container>
-  <ma-filtering-point-hierarchy-select ng-if="param.type === 'pointHierarchy' && param.options.filtering" flex
-      ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="false"
-      path="$ctrl.getParamOption(param, 'path')"
-      subfolders-only="param.options.subfoldersOnly"
-      max-depth="param.options.maxDepth"
-      points="false"
-      name-matches="{{$ctrl.getParamOption(param, 'nameMatches')}}"
-      replace-name="{{$ctrl.getParamOption(param, 'replaceName')}}"
-      unique-names="param.options.uniqueNames"
-      label-text="param.label">
-  </ma-filtering-point-hierarchy-select>
   <ma-data-point-tag-select ng-if="param.type === 'tagValue'" flex
       ng-model="$ctrl.parameters[param.name]"
       ng-change="$ctrl.inputChanged()"

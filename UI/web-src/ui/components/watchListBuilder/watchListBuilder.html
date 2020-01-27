@@ -47,22 +47,10 @@
           <div ng-include="'watchListBuilder.queryPreview.html'"></div>
         </md-tab-body>
       </md-tab>
-      <md-tab id="watchlist-hierarchy" ng-if="$ctrl.watchlist.type === 'hierarchy'">
-        <md-tab-label><span ma-tr="ui.app.selectFolders"></span></md-tab-label>
-        <md-tab-body>
-          <div ng-include="'watchListBuilder.pointHierarchy.html'"></div>
-        </md-tab-body>
-      </md-tab>
       <md-tab id="watchlist-select-table" ng-if="$ctrl.watchlist.type === 'static'">
         <md-tab-label><span ma-tr="ui.app.selectFromTable"></span></md-tab-label>
         <md-tab-body>
           <div ng-include="'watchListBuilder.selectFromTable.html'"></div>
-        </md-tab-body>
-      </md-tab>
-      <md-tab id="watchlist-select-hierarchy" ng-if="$ctrl.watchlist.type === 'static'">
-        <md-tab-label><span ma-tr="ui.app.selectFromHierarchy"></span></md-tab-label>
-        <md-tab-body>
-          <div ng-include="'watchListBuilder.selectFromHierarchy.html'" ng-hide="$ctrl.selectedTab === 0"></div>
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-selected-points" ng-if="$ctrl.watchlist.type === 'static'">

@@ -307,12 +307,6 @@ ma-query-builder .query-sort-property .md-icon-button {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
 }
 
-/* Point hierarchy browser */
-ma-point-hierarchy-folder ul li {
-  list-style:none;
-  margin-left: 30px;
-}
-
 /* Watch list list */
 
 md-list-item.ma-list-selected .md-list-item-text h3 {

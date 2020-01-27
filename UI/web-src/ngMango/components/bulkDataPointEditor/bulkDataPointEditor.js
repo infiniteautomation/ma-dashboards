@@ -26,7 +26,6 @@ const defaultColumns = [
     {name: 'rollup', label: 'common.rollup', selectedByDefault: false},
     {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: false},
     {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
-    {name: 'pointFolderId', label: 'ui.app.hierarchyFolderId', selectedByDefault: false},
     {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
     {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', selectedByDefault: false},
     {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', selectedByDefault: false},

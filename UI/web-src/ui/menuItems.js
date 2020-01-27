@@ -273,7 +273,7 @@ export default [
     },
     {
         name: 'ui.watchList',
-        url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId&tags',
+        url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&tags',
         template: '<ma-ui-watch-list-page flex="noshrink" layout="column"></ma-ui-watch-list-page>',
         menuTr: 'ui.app.watchList',
         menuIcon: 'remove_red_eye',
@@ -918,22 +918,6 @@ export default [
         menuTr: 'systemSettings.systemPermissions'
     },
     {
-        name: 'ui.settings.system.pointHierarchy',
-        params: {
-            helpPage: 'ui.help.pointHierarchy'
-        },
-        templatePromise: systemSettingsTemplate('pointHierarchySettings.html'),
-        url: '/point-hierarchy',
-        menuTr: 'systemSettings.pointHierarchySettings',
-        menuHidden: true
-    },
-    {
-        url: '/pointHierarchy',
-        name: 'ui.help.pointHierarchy',
-        templatePromise: helpTemplate('pointHierarchy.html'),
-        menuTr: 'systemSettings.pointHierarchySettings'
-    },
-    {
         name: 'ui.settings.systemStatus',
         url: '/system-status',
         template: '<ma-ui-system-status-page flex="noshrink" layout="column"><ma-ui-system-status-page>',
@@ -1519,24 +1503,6 @@ export default [
         templatePromise: examplesTemplate('dataPointTable.html'),
         url: '/data-point-table',
         menuTr: 'ui.dox.dataPointTable'
-    },
-    {
-        name: 'ui.examples.pointHierarchy',
-        url: '/point-hierarchy',
-        menuTr: 'ui.dox.pointHierarchy',
-        menuIcon: 'fa-sitemap'
-    },
-    {
-        name: 'ui.examples.pointHierarchy.displayTree',
-        templatePromise: examplesTemplate('displayTree.html'),
-        url: '/display-tree',
-        menuTr: 'ui.dox.displayTree'
-    },
-    {
-        name: 'ui.examples.pointHierarchy.pointHierarchyLineChart',
-        templatePromise: examplesTemplate('pointHierarchyLineChart.html'),
-        url: '/line-chart',
-        menuTr: 'ui.dox.pointHierarchyLineChart'
     },
     {
         name: 'ui.examples.templates',

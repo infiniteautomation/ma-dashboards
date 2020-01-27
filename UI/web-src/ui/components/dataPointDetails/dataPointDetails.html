@@ -54,10 +54,7 @@
                         
                         <label flex="35"><span ma-tr="ui.app.xid"></span>:</label>
                         <div flex="65" ng-bind="$ctrl.dataPoint.xid"></div>
-                        
-            			<label flex="35"><span ma-tr="ui.app.path"></span>:</label>
-                        <div flex="65"><span ng-repeat="folder in $ctrl.path track by $index"><span ng-bind="folder"></span> <span ng-if="!$last"> &gt; </span></span></div>
-                        
+
                         <label flex="35"><span ma-tr="ui.app.tags"></span>:</label>
                         <div flex="65">
                             <div ng-repeat="(key, value) in $ctrl.dataPoint.tags"><span ng-bind="key"></span>=<span ng-bind="value"></span></div>

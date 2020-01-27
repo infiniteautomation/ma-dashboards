@@ -10,7 +10,6 @@ const defaultProperties = {
     deviceName: '',
     readPermission: '',
     setPermission: '',
-    pointFolderId: 0,
     purgeOverride: false,
     pointLocator: {},
     chartColour: '',

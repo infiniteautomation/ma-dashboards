@@ -10,15 +10,14 @@ import './dataPointDetails.css';
 
 class DataPointDetailsController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maPointHierarchy', 'maUiDateBar', 'maUser', 'maPoint',
+    static get $inject() { return ['$stateParams', '$state', 'localStorageService', 'maUiDateBar', 'maUser', 'maPoint',
         '$scope', 'maEventDetector']; }
     
-    constructor($stateParams, $state, localStorageService, PointHierarchy, maUiDateBar, User, Point,
+    constructor($stateParams, $state, localStorageService, maUiDateBar, User, Point,
             $scope, EventDetector) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.localStorageService = localStorageService;
-        this.PointHierarchy = PointHierarchy;
         this.dateBar = maUiDateBar;
         this.User = User;
         this.Point = Point;
@@ -117,7 +116,6 @@ class DataPointDetailsController {
             this.$state.params.pointXid = null;
             this.stateGo();
             this.localStorageService.set('lastDataPointDetailsItem', {xid: null});
-            this.path = [];
             return;
         }
 
@@ -131,11 +129,7 @@ class DataPointDetailsController {
         this.$state.params.pointXid = xid;
         this.stateGo();
         this.localStorageService.set('lastDataPointDetailsItem', {xid});
-        
-        this.PointHierarchy.pathByXid({xid}).$promise.then(response => {
-            this.path = response;
-        });
-        
+
         const pointType = this.dataPoint.pointLocator.dataType;
         this.dateBar.rollupTypesFilter = pointType === 'NUMERIC' ? {} : { nonNumeric: true };
 

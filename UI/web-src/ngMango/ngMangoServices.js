@@ -4,7 +4,6 @@
  */
 
 import Point from './services/Point';
-import PointHierarchy from './services/PointHierarchy';
 import UserProvider from './services/User';
 import PointEventManagerFactory from './services/PointEventManager';
 import translateProvider from './services/Translate';
@@ -87,7 +86,6 @@ rqlQuery.encodeValue = function(val) {
 const ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'ngSanitize', 'LocalStorageModule', 'ngLocale', 'ngCookies']);
 
 ngMangoServices.provider('maPoint', Point);
-ngMangoServices.factory('maPointHierarchy', PointHierarchy);
 ngMangoServices.provider('maUser', UserProvider);
 ngMangoServices.factory('maPointEventManager', PointEventManagerFactory);
 ngMangoServices.provider('maTranslate', translateProvider);

@@ -12,9 +12,7 @@ import parametersTemplate from './parameters.html';
 import queryTemplate from './query.html';
 import selectTagsTemplate from './selectTags.html';
 import queryPreviewTemplate from './queryPreview.html';
-import pointHierarchyTemplate from './pointHierarchy.html';
 import selectFromTableTemplate from './selectFromTable.html';
-import selectFromHierarchyTemplate from './selectFromHierarchy.html';
 import selectedPointsTemplate from './selectedPoints.html';
 
 import './watchListBuilder.css';
@@ -38,7 +36,6 @@ class WatchListBuilderController {
 
         this.total = defaultTotal;
         this.tableSelection = [];
-        this.hierarchySelection = [];
         this.staticSelected = [];
         this.allPoints = [];
         this.tableQuery = {
@@ -90,11 +87,10 @@ class WatchListBuilderController {
         if (!this.watchlist) return false;
         
         switch(this.watchlist.type) {
-        case 'static': return this.selectedTab === 3;
+        case 'static': return this.selectedTab === 2;
         case 'query':
             const lastTab = this.watchlist.params && this.watchlist.params.length ?  2 : 3;
             return this.selectedTab === lastTab;
-        case 'hierarchy': return this.selectedTab === 1;
         case 'tags': return this.selectedTab === 2;
         }
         return true;
@@ -316,7 +312,6 @@ class WatchListBuilderController {
         this.allPoints = [];
         this.total = defaultTotal;
         this.queryPromise = null;
-        this.folders = [];
 
         this.watchListParams = watchlist.defaultParamValues();
 
@@ -342,18 +337,6 @@ class WatchListBuilderController {
                 watchlist.query = 'sort(deviceName,name)&limit(200)';
             }
             this.queryChanged();
-        } else if (watchlist.type === 'hierarchy') {
-            // if a user is browsing a hierarchy folder on the watch list page
-            // the watchlist will have a hierarchyFolders property, set the folderIds property from this
-            if (watchlist.hierarchyFolders) {
-                this.folders = watchlist.hierarchyFolders;
-                this.updateWatchListFolderIds();
-            } else {
-                if (!watchlist.folderIds)
-                    watchlist.folderIds =[];
-                
-                this.folders = watchlist.folderIds.map(folderId => ({id: folderId}));
-            }
         } else if (watchlist.type === 'tags') {
             if (!watchlist.params) watchlist.params = [];
             if (!watchlist.data) watchlist.data = {};
@@ -440,31 +423,6 @@ class WatchListBuilderController {
         this.sortAndLimit();
     }
 
-    hierarchySelectionChanged() {
-        this.$q.resolve().then(() => {
-            const pointXidsToGet = this.hierarchySelection.map(item => item.xid);
-            if (!pointXidsToGet.length) {
-                return [];
-            }
-
-            // fetch full points
-            return this.Point.buildPostQuery()
-                .in('xid', pointXidsToGet)
-                .limit(pointXidsToGet.length)
-                .query();
-            
-        }).then(points => {
-            this.watchlist.points = points.slice();
-            this.updateSelections(true, false);
-            this.resetSort();
-            this.sortAndLimit();
-        });
-    }
-
-    updateWatchListFolderIds() {
-        this.watchlist.folderIds = this.folders.map(folder => folder.id);
-    }
-    
     resetSort() {
         delete this.staticTableQuery.order;
     }
@@ -513,7 +471,7 @@ class WatchListBuilderController {
         this.sortAndLimit();
     }
     
-    updateSelections(updateTable, updateHierarchy) {
+    updateSelections(updateTable) {
         if (updateTable) {
             // ensures that rows are re-rendered every time we update the table selections
             this.tableUpdateCount++;
@@ -534,9 +492,6 @@ class WatchListBuilderController {
             this.allPoints = this.allPoints.map((point, i) => {
                 return pointMap[point.xid] || point;
             });
-        }
-        if (updateHierarchy) {
-            this.hierarchySelection = this.watchlist.points.slice();
         }
     }
 
@@ -585,9 +540,7 @@ function watchListBuilderFactory($templateCache) {
     $templateCache.put('watchListBuilder.query.html', queryTemplate);
     $templateCache.put('watchListBuilder.selectTags.html', selectTagsTemplate);
     $templateCache.put('watchListBuilder.queryPreview.html', queryPreviewTemplate);
-    $templateCache.put('watchListBuilder.pointHierarchy.html', pointHierarchyTemplate);
     $templateCache.put('watchListBuilder.selectFromTable.html', selectFromTableTemplate);
-    $templateCache.put('watchListBuilder.selectFromHierarchy.html', selectFromHierarchyTemplate);
     $templateCache.put('watchListBuilder.selectedPoints.html', selectedPointsTemplate);
 
     return {
