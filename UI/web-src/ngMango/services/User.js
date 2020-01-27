@@ -204,7 +204,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             systemLocale: '',
             timezone: '',
             systemTimezone: '',
-            permissions: '',
+            permissions: [],
             muted: true,
             receiveOwnAuditEvents: false,
             disabled: false,
@@ -558,11 +558,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         });
         
         Object.assign(User.prototype, {
-            hasPermission() {
-                console.warn('The hasPermission() method is deprecated, please use hasAnyRole() instead');
-                return this.hasAnyRole.apply(this, arguments);
-            },
-            
             /**
              * returns true if user has any of the desired roles (can be an array or comma separated string)
              */
@@ -577,8 +572,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     roles = roles.split(/\s*\,\s*/);
                 }
 
-                const userRoles = this.permissions.split(/\s*\,\s*/).filter(r => !!r);
-                return roles.some(p => p === 'user' || userRoles.includes(p));
+                // this.permissions is an array of the user's roles
+                // every user implicitly belongs to the 'user' role
+                return roles.some(p => p === 'user' || this.permissions.includes(p));
             },
 
             /**
