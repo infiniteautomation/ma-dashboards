@@ -201,9 +201,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             phone: '',
             homeUrl: '',
             locale: '',
-            systemLocale: '',
             timezone: '',
-            systemTimezone: '',
             permissions: [],
             muted: true,
             receiveOwnAuditEvents: false,
@@ -296,8 +294,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     const firstChange = cachedUser === undefined;
                     
                     if (user) {
-                        systemLocale = user.systemLocale;
-                        systemTimezone = user.systemTimezone;
                         cachedUser = user instanceof User ? user : Object.assign(Object.create(User.prototype), user);
                     } else {
                         cachedUser = null;
