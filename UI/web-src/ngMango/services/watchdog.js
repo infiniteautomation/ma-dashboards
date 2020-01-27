@@ -85,30 +85,35 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
     	    $http({
                 method: 'GET',
                 url: '/rest/v2/users/current',
-                timeout: this.interval / 2
+                timeout: this.interval / 3
             }).then(response => {
                 return {
                     status: LOGGED_IN,
                     user: response.data
                 };
-            }, response => {
-                const startupState = response.headers('Mango-Startup-State');
-                const startupProgress = response.headers('Mango-Startup-Progress');
-                
-                if (response.status < 0) {
+            }, error => {
+                if (error.status < 0) {
                     return {status: API_DOWN};
-                } else if (response.status === 401) {
+                } else if (error.status === 401) {
                     return {status: API_UP};
-                } else if (response.status === 503 && startupState) {
-                    return {
-                        status: STARTING_UP,
-                        info: {
-                            startupState: startupState,
-                            startupProgress: startupProgress
-                        }
-                    };
+                } else if (error.status === 503) {
+                    return $http({
+                        method: 'GET',
+                        url: '/status',
+                        timeout: this.interval / 3
+                    }).then(statusResponse => {
+                        return {
+                            status: STARTING_UP,
+                            info: {
+                                startupState: statusResponse.data.state,
+                                startupProgress: statusResponse.data.startupProgress
+                            }
+                        };
+                    }, statusError => {
+                        return {status: API_ERROR, info:{responseStatus: statusError.status}};
+                    });
                 } else {
-                    return {status: API_ERROR, info:{responseStatus: response.status}};
+                    return {status: API_ERROR, info:{responseStatus: error.status}};
                 }
             }).then(this.setStatus.bind(this));
         }
