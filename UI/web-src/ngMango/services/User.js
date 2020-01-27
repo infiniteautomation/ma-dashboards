@@ -358,6 +358,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 if (cachedUser) {
                     return cachedUser.getLocale();
                 }
+                return this.getSystemLocale();
+            },
+            
+            getSystemLocale() {
                 return systemLocale || MA_DEFAULT_LOCALE || (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language;
             },
     
@@ -365,6 +369,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 if (cachedUser) {
                     return cachedUser.getTimezone();
                 }
+                return this.getSystemTimezone();
+            },
+            
+            getSystemTimezone() {
                 return systemTimezone || MA_DEFAULT_TIMEZONE || moment.tz.guess();
             },
 
@@ -587,7 +595,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
 
             getTimezone() {
-                return this.timezone || this.systemTimezone;
+                return this.timezone || this.constructor.getSystemTimezone();
             },
 
             sendTestEmail(toEmail, usernameInEmail) {
@@ -595,7 +603,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
             
             getLocale() {
-                return this.locale || this.systemLocale;
+                return this.locale || this.constructor.getSystemLocale();
             },
 
             createAuthToken(expiry) {
