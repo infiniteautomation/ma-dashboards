@@ -51,15 +51,6 @@ ma-ui-watch-list-builder .watchlist-selected-delete {
   top: 0;
 }
 
-ma-ui-watch-list-builder .watchlist-select-table > div.md-padding > md-input-container {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-ma-ui-watch-list-builder .watchlist-select-table > div.md-padding > .md-icon-button {
-  margin-left: -40px;
-}
-
 ma-ui-watch-list-builder .watchlist-parameter-row .md-icon-button {
   margin: 0;
 }

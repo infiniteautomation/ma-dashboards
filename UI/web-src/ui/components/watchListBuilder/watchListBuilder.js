@@ -21,10 +21,9 @@ const defaultTotal = '\u2026';
 
 class WatchListBuilderController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPoint', '$mdMedia', 'maWatchList','$state', '$mdDialog', 'maTranslate', '$mdToast', 'maUser', '$q']; }
+    static get $inject() { return ['$mdMedia', 'maWatchList','$state', '$mdDialog', 'maTranslate', '$mdToast', 'maUser', '$q']; }
 
-    constructor(Point, $mdMedia, WatchList, $state, $mdDialog, Translate, $mdToast, User, $q) {
-        this.Point = Point;
+    constructor($mdMedia, WatchList, $state, $mdDialog, Translate, $mdToast, User, $q) {
         this.$mdMedia = $mdMedia;
         this.WatchList = WatchList;
         this.$state = $state;
@@ -35,14 +34,7 @@ class WatchListBuilderController {
         this.$q = $q;
 
         this.total = defaultTotal;
-        this.tableSelection = [];
         this.staticSelected = [];
-        this.allPoints = [];
-        this.tableQuery = {
-            limit: 20,
-            page: 1,
-            order: 'deviceName'
-        };
         this.staticTableQuery = {
             limit: 20,
             page: 1
@@ -52,11 +44,7 @@ class WatchListBuilderController {
             page: 1
         };
         this.selectedTab = 0;
-        this.tableUpdateCount = 0;
         
-        this.sortAndLimitBound = (...args) => this.sortAndLimit(...args);
-        this.onPaginateOrSortBound = (...args) => this.onPaginateOrSort(...args);
-        this.tableSelectionChangedBound = (...args) => this.tableSelectionChanged(...args);
         this.dragAndDropBound = (...args) => this.dragAndDrop(...args);
     }
 
@@ -309,14 +297,11 @@ class WatchListBuilderController {
         this.$state.go('.', {watchListXid: watchlist.isNew() ? null : watchlist.xid}, {location: 'replace', notify: false});
         
         this.staticSelected = [];
-        this.allPoints = [];
         this.total = defaultTotal;
         this.queryPromise = null;
 
         this.watchListParams = watchlist.defaultParamValues();
 
-        this.clearSearch(false);
-        
         if (watchlist.type === 'static') {
             let pointsPromise;
             if (watchlist.isNew()) {
@@ -329,7 +314,6 @@ class WatchListBuilderController {
                 this.resetSort();
                 this.sortAndLimit();
             });
-            this.doPointQuery();
         } else if (watchlist.type === 'query') {
             if (!watchlist.data) watchlist.data = {};
             if (!watchlist.data.paramValues) watchlist.data.paramValues = {};
@@ -344,62 +328,6 @@ class WatchListBuilderController {
             this.rebuildSelectedTagKeys();
             this.queryChanged();
         }
-    }
-    
-    onPaginateOrSort() {
-        this.doPointQuery(true);
-    }
-
-    doPointQuery(isPaginateOrSort) {
-        if (this.queryPromise && typeof this.queryPromise.cancel === 'function') {
-            this.queryPromise.cancel();
-        }
-        
-        if (!isPaginateOrSort) {
-            this.total = defaultTotal;
-            this.allPoints = [];
-        }
-
-        let queryObj = new query.Query(angular.copy(this.tableQuery.rql));
-        if (queryObj.name !== 'and') {
-            if (!queryObj.args.length) {
-                queryObj = new query.Query();
-            } else {
-                queryObj = new query.Query({name: 'and', args: [queryObj]});
-            }
-        }
-        queryObj = queryObj.sort(this.tableQuery.order);
-        queryObj = queryObj.limit(this.tableQuery.limit, (this.tableQuery.page - 1) * this.tableQuery.limit);
-        
-        const pointQuery = this.Point.query({rqlQuery: queryObj.toString()});
-        pointQuery.$promise.setCancel(pointQuery.$cancelRequest);
-        this.queryPromise = pointQuery.$promise.then(null, response => []);
-        
-        this.$q.all([this.queryPromise, this.watchlistPointsPromise]).then(results => {
-            this.allPoints = results[0];
-            this.total = this.allPoints.$total || this.allPoints.length;
-            
-            this.updateSelections(true, true);
-        });
-        
-        return this.queryPromise;
-    }
-
-    doSearch() {
-        const props = ['name', 'deviceName', 'dataSourceName', 'xid'];
-        const args = [];
-        for (let i = 0; i < props.length; i++) {
-            args.push(new query.Query({name: 'like', args: [props[i], '*' + this.tableSearch + '*']}));
-        }
-        this.tableQuery.rql = new query.Query({name: 'or', args: args});
-        this.doPointQuery();
-    }
-    
-    clearSearch(doQuery) {
-        this.tableSearch = '';
-        this.tableQuery.rql = new query.Query();
-        if (doQuery || doQuery == null)
-            this.doPointQuery();
     }
     
     queryChanged() {
@@ -417,8 +345,6 @@ class WatchListBuilderController {
     }
 
     tableSelectionChanged() {
-        this.watchlist.points = this.tableSelection.slice();
-        this.updateSelections(false, true);
         this.resetSort();
         this.sortAndLimit();
     }
@@ -454,53 +380,19 @@ class WatchListBuilderController {
         const item = this.watchlist.points[from];
         this.watchlist.points.splice(from, 1);
         this.watchlist.points.splice(to, 0, item);
+        
+        // ensure the data point selector gets the new array order otherwise the order will be lost if we select more points
+        this.watchlist.points = this.watchlist.points.slice();
     }
     
     removeFromWatchlist() {
-        const map = {};
-        for (let i = 0; i < this.staticSelected.length; i++) {
-            map[this.staticSelected[i].xid] = true;
-        }
-        for (let i = 0; i < this.watchlist.points.length; i++) {
-            if (map[this.watchlist.points[i].xid]) {
-                this.watchlist.points.splice(i--, 1);
-            }
-        }
+        const selected = new Set(this.staticSelected);
+        this.watchlist.points = this.watchlist.points.filter(pt => !selected.has(pt));
+        
         this.staticSelected = [];
-        this.updateSelections(true, true);
         this.sortAndLimit();
     }
-    
-    updateSelections(updateTable) {
-        if (updateTable) {
-            // ensures that rows are re-rendered every time we update the table selections
-            this.tableUpdateCount++;
-            
-            // updates the table selection with a shallow copy of the watch list points
-            // so that md-data-table's $watchcollection detects a change for each point
-            this.tableSelection = this.watchlist.points.map(point => {
-                return angular.extend(Object.create(this.Point.prototype), point);
-            });
-            
-            const pointMap = {};
-            this.tableSelection.forEach(point => {
-                pointMap[point.xid] = point;
-            });
 
-            // replace the point in all points with the exact one from the table selection so the table is updated
-            // correctly
-            this.allPoints = this.allPoints.map((point, i) => {
-                return pointMap[point.xid] || point;
-            });
-        }
-    }
-
-    // track points in table by their xid and an incrementing count
-    // ensures that rows are re-rendered every time we update the table selections
-    pointTrack(point) {
-        return '' + this.tableUpdateCount + '_' + point.xid;
-    }
-    
     paramTypeChanged(param) {
         if (!param.options) {
             param.options = {};
