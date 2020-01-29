@@ -177,8 +177,7 @@ function eventsFactory($resource, Util, EventTypeInfo) {
             return this.sendRequest({
                 requestType: 'SUBSCRIPTION',
                 actions,
-                levels,
-                sendEventLevelSummaries: true
+                levels
             });
         }
     });
