@@ -76,6 +76,13 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
     }
     
+    class EqualsIgnoreZero extends Equals {
+        test() {
+            if (this.filter === 0) return true;
+            return super.test();
+        }
+    }
+    
     class GreaterThanEquals extends Equals {
         testOp() {
             return this.value >= this.filter;
@@ -434,16 +441,35 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 tests.push(new Equals(event.eventType.eventType, 'DATA_SOURCE'));
             }
             
+            const {eventType, subType, referenceId1, referenceId2} = this.eventTypeObject || this;
+            
+            let active, rtnApplicable;
+            switch(this.activeStatus) {
+            case 'noRtn':
+                rtnApplicable = false;
+                break;
+            case 'active':
+                rtnApplicable = true;
+                active = true;
+                break;
+            case 'normal':
+                rtnApplicable = true;
+                active = false;
+                break;
+            }
+
             tests.push(
-                new Equals(event.eventType.eventType, this.eventType),
+                new Equals(event.eventType.eventType, eventType),
+                new Equals(event.eventType.subType, subType),
+                new EqualsIgnoreZero(event.eventType.referenceId1, referenceId1),
+                new EqualsIgnoreZero(event.eventType.referenceId2, referenceId2),
                 new Equals(event.alarmLevel, this.alarmLevel),
-                new Equals(event.active, this.active),
+                new Equals(event.active, active),
+                new Equals(event.rtnApplicable, rtnApplicable),
                 new Equals(event.eventType.referenceId1, this.pointId),
                 new Equals(event.eventType.referenceId1, this.sourceId),
                 new InArray(event.eventType.referenceId1, this.pointIds),
-                new Equals(event.id, this.eventId),
-                new Equals(event.eventType.referenceId1, this.referenceId1),
-                new Equals(event.eventType.referenceId2, this.referenceId2));
+                new Equals(event.id, this.eventId));
             
             if (!ignoreAckFilter) {
                 tests.push(new Equals(event.acknowledged, this.acknowledged));

@@ -62,9 +62,9 @@
             <label ma-tr="ui.app.activeStatus"></label>
             <md-select ng-model="$ctrl.values.activeStatus" ng-change="$ctrl.inputChanged('activeStatus')">
                 <md-option value="any"><span ma-tr="ui.app.any"></span></md-option>
-                <md-option value="active"><span ma-tr="ui.app.active"></span></md-option>
-                <md-option value="noRtn"><span ma-tr="ui.app.noRtn"></span></md-option>
-                <md-option value="normal"><span ma-tr="ui.app.returnedToNormal"></span></md-option>
+                <md-option value="active"><span ma-tr="common.active"></span></md-option>
+                <md-option value="normal"><span ma-tr="common.rtn"></span></md-option>
+                <md-option value="noRtn"><span ma-tr="common.nortn"></span> (<span ma-tr="ui.app.instantaneous"></span>)</md-option>
             </md-select>
         </md-input-container>
         <md-input-container flex>

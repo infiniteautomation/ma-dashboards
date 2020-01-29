@@ -19,7 +19,7 @@
                 <th md-column md-order-by="alarmLevel" ma-tr="ui.app.alarmLvl" class="ma-narrow-column ma-text-centered"></th>
                 <th md-column md-order-by="activeTimestamp" ma-tr="ui.app.time" class="ma-medium-column"></th>
                 <th md-column md-order-by="message" ma-tr="ui.app.msg" class="ma-message-column"></th>
-                <th md-column md-order-by="activeRtn" ma-tr="ui.app.returnStatus" class="ma-medium-column"></th>
+                <th md-column md-order-by="activeRtn" ma-tr="ui.app.activeStatus" class="ma-medium-column"></th>
                 <th md-column ma-tr="ui.app.duration" class="ma-medium-column"></th>
                 <th md-column ma-tr="ui.app.eventHandlers" class="ma-narrow-column ma-text-centered"></th>
                 <th md-column md-order-by="acknowledgedTimestamp" ma-tr="ui.app.acknowledge" class="ma-narrow-column ma-text-centered"></th>
@@ -65,7 +65,7 @@
                 <!-- Status column -->
                 <td md-cell ng-switch="event.rtnApplicable">
                     <span ng-switch-when="true">
-                        <span ng-if="event.active" md-colors="::{color: 'accent-hue-2'}" class="ma-active-status" ma-tr="ui.app.active"></span>
+                        <span ng-if="event.active" md-colors="::{color: 'accent-hue-2'}" class="ma-active-status" ma-tr="common.active"></span>
                         <span ng-if="event.rtnTimestamp != null">
                             <span ng-bind="event.rtnMessage"></span> &mdash;
                             <span ng-bind="$ctrl.formatDate(event.rtnTimestamp)"></span>
