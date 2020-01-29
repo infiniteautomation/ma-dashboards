@@ -560,7 +560,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
             set: User.setUser
         });
-        
+
         Object.assign(User.prototype, {
             /**
              * returns true if user has any of the desired roles (can be an array or comma separated string)
@@ -570,15 +570,19 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     roles = ['superadmin'];
                 }
                 
-                if (this.admin || !roles || !roles.length) return true;
+                if (!roles || !roles.length) return true;
 
                 if (typeof roles === 'string') {
                     roles = roles.split(/\s*\,\s*/);
                 }
 
-                // this.permissions is an array of the user's roles
+                return roles.some(r => this.hasRole(r));
+            },
+            
+            hasRole(role) {
+                // this.permissions is actually an array of the user's roles
                 // every user implicitly belongs to the 'user' role
-                return roles.some(p => p === 'user' || this.permissions.includes(p));
+                return role === 'user' || this.permissions.includes(role);
             },
 
             /**

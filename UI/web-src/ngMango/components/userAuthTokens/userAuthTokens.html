@@ -40,7 +40,7 @@
     <md-button class="md-raised md-warn" ng-disabled="!$ctrl.user" ng-click="$ctrl.revokeAuthTokens($event)">
         <span ma-tr="ui.app.revokeAuthTokensForUser" ma-tr-args="[$ctrl.user.username]"></span>
     </md-button>
-    <md-button class="md-raised md-warn" ng-if="$ctrl.maUser.current.admin" ng-click="$ctrl.revokeAllAuthTokens($event)">
+    <md-button class="md-raised md-warn" ng-if="$ctrl.maUser.current.hasRole('superadmin')" ng-click="$ctrl.revokeAllAuthTokens($event)">
         <span ma-tr="ui.app.revokeAllAuthTokens"></span>
     </md-button>
 </div>

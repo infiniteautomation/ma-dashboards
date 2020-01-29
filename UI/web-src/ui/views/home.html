@@ -1,5 +1,5 @@
 <div class="home-page" layout="row" layout-align="start start" layout-wrap>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.dataSources" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -21,7 +21,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.dataSources" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -43,7 +43,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.users" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -54,7 +54,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <md-card-content flex layout="column" layout-align="center stretch">
                 <ma-point-value point-xid="internal_mango_num_active_user_sessions" class="home-page-count"></ma-point-value>
@@ -63,7 +63,7 @@
             </md-card-content>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.excelReports" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -74,7 +74,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.publishers" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -85,7 +85,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.importExport" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -96,7 +96,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <md-card-content flex layout="column" layout-align="center stretch">
                 <ma-point-value point-xid="internal_mango_num_event_detectors" class="home-page-count"></ma-point-value>
@@ -105,7 +105,7 @@
             </md-card-content>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.eventHandlers" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -116,7 +116,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.events({eventType: 'DATA_POINT'})" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -130,7 +130,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.events({eventType: 'SYSTEM'})" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -144,7 +144,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.mailingLists" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -155,7 +155,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="{{::hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -166,7 +166,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.modules" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -177,7 +177,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.system" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
@@ -188,7 +188,7 @@
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.admin" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.systemStatus" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">

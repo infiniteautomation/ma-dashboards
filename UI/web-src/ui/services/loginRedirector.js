@@ -55,7 +55,7 @@ function loginRedirectorProvider () {
                     } else {
                         if (redirectUrl) {
                             this.goToUrl(redirectUrl, reload);
-                        } else if (user.admin) {
+                        } else if (user.hasRole('superadmin')) {
                             this.goToState('ui.settings.home', {}, reload);
                         } else {
                             this.goToState('ui.dataPointDetails', {}, reload);
@@ -84,7 +84,7 @@ function loginRedirectorProvider () {
                     if (redirectUrl && redirectUrl.startsWith(basePath)) {
                         return redirectUrl.substr(basePath.length - 1); // strip basePath from start of URL
                     }
-                    return user.admin ? '/administration/home' : '/data-point-details/';
+                    return user.hasRole('superadmin') ? '/administration/home' : '/data-point-details/';
                 }
 
                 return '/not-found?path=' + encodeURIComponent(path);

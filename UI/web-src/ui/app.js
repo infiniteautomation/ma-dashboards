@@ -588,13 +588,13 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         }
     };
     
-    if (User.current && User.current.admin) {
+    if (User.current && User.current.hasRole('superadmin')) {
         maModules.startAvailableUpgradeCheck();
     }
     
     // TODO fix this firing first watchdog event occurs, mangoDefaultUri property is different
     User.notificationManager.subscribeLocal((event, user, first) => {
-        if (user && user.admin) {
+        if (user && user.hasRole('superadmin')) {
             if (!maModules.availableUpgradeCheckRunning()) {
                 maModules.startAvailableUpgradeCheck();
             }

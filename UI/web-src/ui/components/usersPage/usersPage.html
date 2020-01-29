@@ -1,5 +1,5 @@
 <div flex="noshrink" layout="column" layout-gt-md="row" layout-gt-lg="row">
-    <md-card layout="column" flex-gt-md="25" flex-gt-lg="20" ng-if="$ctrl.User.current.admin">
+    <md-card layout="column" flex-gt-md="25" flex-gt-lg="20" ng-if="$ctrl.User.current.hasRole('superadmin')">
         <md-toolbar class="md-hue-3">
             <div class="md-toolbar-tools">
                 <span ma-tr="users.selectUserToEdit"></span>
