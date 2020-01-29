@@ -30,12 +30,12 @@ class ActiveEventIconsController {
     }
     
     refreshCount() {
-        return this.maEvents.getActiveSummary().$promise.then((data) => {
+        return this.maEvents.getUnacknowledgedSummary().$promise.then((data) => {
             this.events = {totalCount: 0};
             
             data.forEach((item, index, array) => {
                 this.events[item.level] = item;
-                this.events.totalCount += item.unsilencedCount;
+                this.events.totalCount += item.count;
             });
             
             return this.events;
@@ -53,10 +53,10 @@ class ActiveEventIconsController {
                 return;
             }
 
-            this.events[payloadEvent.alarmLevel].unsilencedCount++;
+            this.events[payloadEvent.alarmLevel].count++;
             this.events.totalCount++;
         } else if (payloadType === 'ACKNOWLEDGED') {
-            this.events[payloadEvent.alarmLevel].unsilencedCount--;
+            this.events[payloadEvent.alarmLevel].count--;
             this.events.totalCount--;
         }
     }

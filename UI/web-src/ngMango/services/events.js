@@ -100,6 +100,18 @@
 /**
 * @ngdoc method
 * @methodOf ngMangoServices.maEvents
+* @name Events#getUnacknowledgedSummary
+*
+* @description
+* Returns a list of counts for all unacknowledged events by type and the most recent active alarm for each.
+
+* @returns {array} Returns an Array of counts for all unacknowledged events by type and the most recent active alarm for each.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf ngMangoServices.maEvents
 * @name Events#acknowledge
 *
 * @description
@@ -149,6 +161,11 @@ function eventsFactory($resource, Util, EventTypeInfo) {
         	url: '/rest/v2/events/active-summary',
             method: 'GET',
             isArray: true
+        },
+        getUnacknowledgedSummary: {
+            url: '/rest/v2/events/unacknowledged-summary',
+            method: 'GET',
+            isArray: true
         }
     });
 
@@ -160,7 +177,8 @@ function eventsFactory($resource, Util, EventTypeInfo) {
             return this.sendRequest({
                 requestType: 'SUBSCRIPTION',
                 actions,
-                levels
+                levels,
+                sendEventLevelSummaries: true
             });
         }
     });
