@@ -152,21 +152,16 @@ function eventsFactory($resource, Util, EventTypeInfo) {
         }
     });
 
-    const subscriptionMessage = {
-        eventTypes: ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED'],
-        levels: ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE']
-    };
-    
     Object.assign(Events.notificationManager, {
         webSocketUrl: '/rest/v2/websocket/events',
-        onOpen() {
-            this.sendMessage(subscriptionMessage);
-        },
-        notifyFromPayload(payload) {
-            if (payload.type && payload.event) {
-                const item = new Events(payload.event);
-                this.notify(payload.type, item);
-            }
+        sendSubscription(levels = ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE'],
+                actions = ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED']) {
+            
+            return this.sendRequest({
+                requestType: 'SUBSCRIPTION',
+                actions,
+                levels
+            });
         }
     });
 
@@ -195,14 +190,16 @@ function eventsFactory($resource, Util, EventTypeInfo) {
 
     Object.defineProperty(Events.prototype, 'duration', {
         get: function() {
-            if (this.returnToNormalTimestamp === 0) {
-                if (!this.active) return null;
+            if (!this.rtnApplicable) return null;
+            
+            if (this.rtnTimestamp != null) {
+                return this.rtnTimestamp - this.activeTimestamp;
+            } else {
+                // event is still active, return an ongoing duration
                 
                 // round to prevent infinite digests
                 const time = Math.floor(new Date().valueOf() / 1000) * 1000;
                 return time - this.activeTimestamp;
-            } else {
-                return this.returnToNormalTimestamp - this.activeTimestamp;
             }
         }
     });

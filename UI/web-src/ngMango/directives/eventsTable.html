@@ -19,10 +19,10 @@
                 <th md-column md-order-by="alarmLevel" ma-tr="ui.app.alarmLvl" class="ma-narrow-column ma-text-centered"></th>
                 <th md-column md-order-by="activeTimestamp" ma-tr="ui.app.time" class="ma-medium-column"></th>
                 <th md-column md-order-by="message" ma-tr="ui.app.msg" class="ma-message-column"></th>
-                <th md-column md-order-by="activeRtn" ma-tr="ui.app.status" class="ma-medium-column"></th>
+                <th md-column md-order-by="activeRtn" ma-tr="ui.app.returnStatus" class="ma-medium-column"></th>
                 <th md-column ma-tr="ui.app.duration" class="ma-medium-column"></th>
                 <th md-column ma-tr="ui.app.eventHandlers" class="ma-narrow-column ma-text-centered"></th>
-                <th md-column md-order-by="ackTs" ma-tr="ui.app.acknowledge" class="ma-narrow-column ma-text-centered"></th>
+                <th md-column md-order-by="acknowledgedTimestamp" ma-tr="ui.app.acknowledge" class="ma-narrow-column ma-text-centered"></th>
             </tr>
         </thead>
         <tbody md-body ng-hide="$ctrl.total">
@@ -63,16 +63,23 @@
                 </td>
                 
                 <!-- Status column -->
-                <td md-cell>
-                    <span ng-if="event.returnToNormalTimestamp !== 0"><span ng-bind="$ctrl.formatDate(event.returnToNormalTimestamp)"></span> - </span>
-                    <span ng-if="event.status" ng-bind="event.status"></span>
-                    <span ng-if="event.active" md-colors="::{color: 'accent-hue-2'}" class="ma-active-status" ma-tr="ui.app.active"></span>
+                <td md-cell ng-switch="event.rtnApplicable">
+                    <span ng-switch-when="true">
+                        <span ng-if="event.active" md-colors="::{color: 'accent-hue-2'}" class="ma-active-status" ma-tr="ui.app.active"></span>
+                        <span ng-if="event.rtnTimestamp != null">
+                            <span ng-bind="event.rtnMessage"></span> &mdash;
+                            <span ng-bind="$ctrl.formatDate(event.rtnTimestamp)"></span>
+                        </span>
+                    </span>
+                    <span ng-switch-default>
+                        <span ma-tr="common.nortn"></span>
+                    </span>
                 </td>
                 
                 <!-- Duration column -->
-                <td md-cell class="ma-medium-column">
-                    <span ng-if="event.returnToNormalTimestamp === 0 && !event.active" ma-tr="ui.app.na"></span>
-                    <span ng-if="event.returnToNormalTimestamp !== 0 || event.active" ng-bind="$ctrl.formatDuration(event.duration)"></span>
+                <td md-cell class="ma-medium-column" ng-switch="event.rtnApplicable">
+                    <span ng-switch-when="true" ng-bind="$ctrl.formatDuration(event.duration)"></span>
+                    <span ng-switch-default ma-tr="ui.app.instantaneous"></span>
                 </td>
                 
                 <td md-cell class="ma-narrow-column ma-text-centered" ng-init="handlerCount = $ctrl.handlersForType.count(event.eventType); handlerLink = $ctrl.linkInfo.EVENT_HANDLERS_LINK; handlerParams = handlerLink.stateParams(event);">

@@ -252,9 +252,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             queryBuilder.addToRql('acknowledged', 'eq', this.acknowledged);
             
             if (this.sort === 'activeRtn') {
-                queryBuilder.sort('rtnTs', 'rtnApplicable');
+                queryBuilder.sort('rtnTimestamp', 'rtnApplicable');
             } else if (this.sort === '-activeRtn') {
-                queryBuilder.sort('-rtnTs', '-rtnApplicable');
+                queryBuilder.sort('-rtnTimestamp', '-rtnApplicable');
             } else if (this.sort != null) {
                 if (Array.isArray(this.sort)) {
                     queryBuilder.sort(...this.sort);
