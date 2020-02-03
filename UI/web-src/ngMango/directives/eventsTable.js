@@ -304,16 +304,6 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 if (!this.hideAckButton) {
                     this.countUnacknowledged();
                 }
-
-                this.events.forEach(event => {
-                    event.hasNotes = event.comments && !!event.comments.length;
-                    if (event.hasNotes) {
-                        event.comments.forEach((note, index) => {
-                            const time = this.formatDate(note.timestamp);
-                            event.message += `<br><strong>${note.comment}</strong> (${note.username} &mdash; ${time})`;
-                        });
-                    }
-                });
             });
         }
 
@@ -342,13 +332,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
         
         addNote($event, event) {
-            const callback = (note, event) => {
-                event.hasNotes = true;
-                const time = this.formatDate(note.timestamp);
-                event.message += `<br><strong>${note.comment}</strong> (${note.username} &mdash; ${time})`;
-            };
-            
-            UserNotes.addNote($event, 'Event', event.id, callback , event);
+            return UserNotes.addNote($event, 'Event', event.id).then((note) => {
+                event.comments.push(note);
+            });
         }
 
         onPaginate(page, limit) {

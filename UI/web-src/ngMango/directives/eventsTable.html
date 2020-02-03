@@ -54,12 +54,18 @@
                         </md-icon>
                     </a>
 
-                    <md-icon ng-if="event.hasNotes">
+                    <md-icon ng-if="event.comments.length">
                         speaker_notes
                         <md-tooltip md-delay="250" md-direction="right" md-autohide ma-tr="ui.app.hasNotes"></md-tooltip>
                     </md-icon>
 
                     <span ng-bind-html="$ctrl.parseHTML(event.message)"></span>
+                    
+                    <div ng-if="toggle" class="ma-user-comments">
+                        <div ng-repeat="userComment in event.comments track by userComment.xid">
+                            <em>{{userComment.comment}}</em> ({{userComment.username}} &mdash; {{$ctrl.formatDate(userComment.timestamp)}})
+                        </div>
+                    </div>
                 </td>
                 
                 <!-- Status column -->
