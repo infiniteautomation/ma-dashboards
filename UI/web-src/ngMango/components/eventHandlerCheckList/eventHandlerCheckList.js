@@ -42,9 +42,12 @@ class EventHandlerCheckListController {
     doQuery() {
         const queryBuilder = this.maEventHandler.buildQuery();
         queryBuilder.limit(10000);
-        return queryBuilder.query().then(eventHandlers => {
+        this.queryPromise = queryBuilder.query().then(eventHandlers => {
             return (this.eventHandlers = eventHandlers);
+        }).finally(() => {
+            delete this.queryPromise;
         });
+        return this.queryPromise;
     }
     
     setViewValue() {

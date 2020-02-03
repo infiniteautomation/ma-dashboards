@@ -4,4 +4,7 @@
         <span ng-bind="eventHandler.name"></span>
         <md-checkbox class="md-secondary" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude></md-checkbox>
     </md-list-item>
+    <md-list-item ng-if="!$ctrl.eventHandlers.length && !$ctrl.queryPromise">
+        <span><em ma-tr="ui.components.noItemsToList"></em></span>
+    </md-list-item>
 </md-list>
