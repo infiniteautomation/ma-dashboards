@@ -156,7 +156,7 @@
                     <div class="md-toolbar-tools">
                         <h2><span ma-tr="ui.app.userComments"></span></h2>
                         <div flex></div>
-                        <md-button ng-hide="disabled" class="md-icon-button" ng-click="addNote($event)">
+                        <md-button ng-disabled="!$ctrl.dataPoint" class="md-icon-button" ng-click="addNote($event)">
                             <md-icon>add</md-icon>
                             <md-tooltip><span ma-tr="notes.addNote"></span></md-tooltip>
                         </md-button>
