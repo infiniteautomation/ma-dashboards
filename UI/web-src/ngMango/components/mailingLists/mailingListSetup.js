@@ -57,7 +57,6 @@ class MailingListSetupController {
             this.maDialogHelper.toastOptions({textTr: ['ui.app.mailingLists.saved']});
 
         }, (error) => {
-            console.log(this.list);
             if (error.status === 422) {
                 this.validationMessages = error.data.result.messages;
             }

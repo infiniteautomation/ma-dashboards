@@ -50,8 +50,8 @@ class PermissionsMenuController {
         }
         
         // undefined if invalid
-        if (Array.isArray(this.ngModelCtrl.$viewValue)) {
-            const array = this.ngModelCtrl.$viewValue;
+        if (this.ngModelCtrl.$viewValue) {
+            const array = this.ngModelCtrl.$viewValue.split(',');
             for (let i = 0; i < array.length; i++) {
                 const permName = array[i].trim();
                 if (!permName) continue;
@@ -75,7 +75,7 @@ class PermissionsMenuController {
                 permissionNames.push(permission.name);
             }
         }
-        this.ngModelCtrl.$setViewValue(permissionNames);
+        this.ngModelCtrl.$setViewValue(permissionNames.join(', '));
     }
 }
 
