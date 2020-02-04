@@ -83,11 +83,9 @@ class UserEditorController {
             return;
         }
 
-        console.log('save()', this.user);
         this.saving = true;
         
         this.user.save().then(user => {
-            console.log('save().then()', user);
             const previous = angular.copy(this.originalUser);
             angular.merge(this.originalUser, user);
             
