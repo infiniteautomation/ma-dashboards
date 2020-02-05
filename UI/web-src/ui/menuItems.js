@@ -523,25 +523,24 @@ export default [
     },
     {
         name: 'ui.settings.home',
-        templatePromise() {
-            return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */ './views/home.html');
-        },
         url: '/home',
+        template: '<ma-ui-admin-home-page></ma-ui-admin-home-page>',
         menuTr: 'ui.dox.home',
         menuIcon: 'home',
         params: {
+            dateBar: {rollupControls: true},
             helpPage: 'ui.help.gettingStarted'
         },
-        controller: ['$scope', 'maUiPages', '$injector', 'maUiMenu', function ($scope, maUiPages, $injector, maUiMenu) {
-            maUiPages.getPages().then(function(store) {
-                $scope.pageCount = store.jsonData.pages.length;
-            });
-            $scope.hasDashboardDesigner = !!$injector.modules.maDashboardDesignerMenuItem;
-            
-            maUiMenu.getMenu().then(menu => {
-                $scope.utilityMenuItems = menu.filter(item => item.showInUtilities);
-            });
-        }],
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/adminHomePage/adminHomePage').then(adminHomePage => {
+                    angular.module('maUiAdminHomePage', [])
+                        .component('maUiAdminHomePage', adminHomePage.default);
+                    $injector.loadNewModules(['maUiAdminHomePage']);
+                });
+            }]
+        },
         weight: 990,
         permission: 'superadmin'
     },

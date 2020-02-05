@@ -1,0 +1,37 @@
+ma-ui-admin-home-page .ma-ui-home-page-container > div {
+    height: 160px;
+}
+
+ma-ui-admin-home-page md-card md-card-content {
+    padding: 8px;
+}
+
+ma-ui-admin-home-page .ma-ui-home-page-container md-icon {
+    font-size: 50px;
+    color: currentColor;
+}
+
+ma-ui-admin-home-page .ma-ui-home-page-container md-icon.ma-ui-home-page-badge {
+    font-size: 25px;
+    margin: 0 0 40px 0;
+}
+
+ma-ui-admin-home-page .ma-ui-home-page-container md-icon.ma-ui-home-page-badged {
+    margin: 0 0 0 25px;
+}
+
+ma-ui-admin-home-page a:not(.md-button) {
+    color: inherit;
+}
+
+ma-ui-admin-home-page h3 {
+    font-size: 16px;
+    text-align: center;
+}
+
+ma-ui-admin-home-page .ma-ui-home-page-count {
+    font-weight: bold;
+    font-size: 18px;
+    text-align: right;
+    height: 25px;
+}

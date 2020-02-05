@@ -1,9 +1,9 @@
-<div class="home-page" layout="row" layout-align="start start" layout-wrap>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+<div class="ma-ui-home-page-container" layout="row" layout-align="start start" layout-wrap>
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.dataSources" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_data_sources" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_data_sources" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>device_hub</md-icon>
                     <h3 ma-tr="ui.app.dataSources"></h3>
                 </md-card-content>
@@ -14,18 +14,18 @@
         <md-card flex layout="column">
             <a ui-sref="ui.dataPointDetails" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_data_points" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_data_points" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>timeline</md-icon>
                     <h3 ma-tr="ui.app.dataPoints"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.dataSources" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_point_links" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_point_links" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>share</md-icon>
                     <h3 ma-tr="ui.app.pointLinks"></h3>
                 </md-card-content>
@@ -36,163 +36,163 @@
         <md-card flex layout="column">
             <a ui-sref="ui.watchList" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_watchlists" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_watchlists" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>remove_red_eye</md-icon>
                     <h3 ma-tr="ui.app.watchLists"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.users" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_users" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_users" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>people</md-icon>
                     <h3 ma-tr="ui.app.users"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <md-card-content flex layout="column" layout-align="center stretch">
-                <ma-point-value point-xid="internal_mango_num_active_user_sessions" class="home-page-count"></ma-point-value>
+                <ma-point-value point-xid="internal_mango_num_active_user_sessions" class="ma-ui-home-page-count"></ma-point-value>
                 <md-icon>face</md-icon>
                 <h3 ma-tr="ui.app.activeSessions"></h3>
             </md-card-content>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.excelReports" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_excel_report_templates" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_excel_report_templates" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>grid_on</md-icon>
                     <h3 ma-tr="ui.app.excelReports"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.publishers" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_publishers" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_publishers" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>publish</md-icon>
                     <h3 ma-tr="ui.app.publishers"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.importExport" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <div class="home-page-count"></div>
+                    <div class="ma-ui-home-page-count"></div>
                     <md-icon>import_export</md-icon>
                     <h3 ma-tr="header.emport"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <md-card-content flex layout="column" layout-align="center stretch">
-                <ma-point-value point-xid="internal_mango_num_event_detectors" class="home-page-count"></ma-point-value>
+                <ma-point-value point-xid="internal_mango_num_event_detectors" class="ma-ui-home-page-count"></ma-point-value>
                 <md-icon>find_in_page</md-icon>
                 <h3 ma-tr="ui.app.eventDetectors"></h3>
             </md-card-content>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.eventHandlers" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_event_handlers" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_event_handlers" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>change_history</md-icon>
                     <h3 ma-tr="ui.app.eventHandlers"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.events({eventType: 'DATA_POINT'})" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <div class="home-page-count"></div>
+                    <div class="ma-ui-home-page-count"></div>
                     <div layout layout-align="center center">
-                        <md-icon class="badged">timeline</md-icon>
-                        <md-icon class="badge">alarm</md-icon>
+                        <md-icon class="ma-ui-home-page-badged">timeline</md-icon>
+                        <md-icon class="ma-ui-home-page-badge">alarm</md-icon>
                     </div>
                     <h3 ma-tr="ui.app.dataPointEvents"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.events({eventType: 'SYSTEM'})" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <div class="home-page-count"></div>
+                    <div class="ma-ui-home-page-count"></div>
                     <div layout layout-align="center center">
-                        <md-icon class="badged">computer</md-icon>
-                        <md-icon class="badge">alarm</md-icon>
+                        <md-icon class="ma-ui-home-page-badged">computer</md-icon>
+                        <md-icon class="ma-ui-home-page-badge">alarm</md-icon>
                     </div>
                     <h3 ma-tr="ui.app.systemEvents"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.mailingLists" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_mailing_lists" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_mailing_lists" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>email</md-icon>
                     <h3 ma-tr="ui.app.mailingLists"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
-            <a ui-sref="{{::hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}" flex layout="column">
+            <a ui-sref="{{::$ctrl.hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <div class="home-page-count" ng-bind="pageCount"></div>
+                    <div class="ma-ui-home-page-count" ng-bind="$ctrl.pageCount"></div>
                     <md-icon>dashboard</md-icon>
                     <h3 ma-tr="ui.app.customPages"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.modules" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <ma-point-value point-xid="internal_mango_num_updates_available" class="home-page-count"></ma-point-value>
+                    <ma-point-value point-xid="internal_mango_num_updates_available" class="ma-ui-home-page-count"></ma-point-value>
                     <md-icon>extension</md-icon>
                     <h3 ma-tr="ui.app.modules"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.system" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <div class="home-page-count"></div>
+                    <div class="ma-ui-home-page-count"></div>
                     <md-icon>settings</md-icon>
                     <h3 ma-tr="ui.app.systemSettings"></h3>
                 </md-card-content>
             </a>
         </md-card>
     </div>
-    <div ng-if="User.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
+    <div ng-if="$ctrl.maUser.current.hasRole('superadmin')" flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="ui.settings.systemStatus" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <div class="home-page-count"></div>
+                    <div class="ma-ui-home-page-count"></div>
                     <md-icon>new_releases</md-icon>
                     <h3 ma-tr="ui.settings.systemStatus"></h3>
                 </md-card-content>
@@ -201,16 +201,16 @@
     </div>
 </div>
 
-<h2 ng-if="::utilityMenuItems.length" ma-tr="ui.app.utilities"></h2>
+<h2 ng-if="::$ctrl.utilityMenuItems.length" ma-tr="ui.app.utilities"></h2>
 
-<div class="home-page" layout="row" layout-align="start start" layout-wrap>
-    <div ng-repeat="item in ::utilityMenuItems track by item.name"
-            ng-if="User.current.hasAnyRole(item.permission)"
+<div class="ma-ui-home-page-container" layout="row" layout-align="start start" layout-wrap>
+    <div ng-repeat="item in ::$ctrl.utilityMenuItems track by item.name"
+            ng-if="$ctrl.maUser.current.hasAnyRole(item.permission)"
             flex="100" flex-gt-xs="50" flex-gt-sm="33" flex-gt-md="25" flex-gt-lg="20" layout="column">
         <md-card flex layout="column">
             <a ui-sref="{{item.name}}" flex layout="column">
                 <md-card-content flex layout="column" layout-align="center stretch">
-                    <div class="home-page-count"></div>
+                    <div class="ma-ui-home-page-count"></div>
                     <md-icon>{{item.menuIcon}}</md-icon>
                     <h3 ma-tr="{{item.menuTr}}"></h3>
                 </md-card-content>
