@@ -582,7 +582,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             hasRole(role) {
                 // this.permissions is actually an array of the user's roles
                 // every user implicitly belongs to the 'user' role
-                return role === 'user' || this.permissions.includes(role);
+                return role === 'user' || this.permissions.some(r -> r === 'superadmin' || r === role);
             },
 
             /**
