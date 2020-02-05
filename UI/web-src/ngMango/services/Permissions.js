@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-const uiModulePermissions = Object.freeze(['edit-ui-menus', 'edit-ui-pages', 'edit-ui-settings']);
-
 PermissionsFactory.$inject = ['$http'];
 function PermissionsFactory($http) {
     const allPermissionsUrl = '/rest/v2/users/permissions-groups';
@@ -20,10 +18,7 @@ function PermissionsFactory($http) {
                 'Accept': 'application/json'
             }
         }).then(function(response) {
-            const seen = {};
-            return response.data.concat(uiModulePermissions).filter((permission) => {
-                return seen[permission] ? false : (seen[permission] = true);
-            });
+            return response.data;
         });
     };
 
@@ -31,5 +26,3 @@ function PermissionsFactory($http) {
 }
 
 export default PermissionsFactory;
-
-
