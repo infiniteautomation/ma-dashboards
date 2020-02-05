@@ -8,12 +8,10 @@ import dataPointEditorTemplate from './dataPointEditor.html';
 import './dataPointEditor.css';
 import loggingPropertiesTemplate from './loggingProperties.html';
 import textRendererTemplate from './textRenderer.html';
-import chartRendererTemplate from './chartRenderer.html';
 
 const templates = {
     loggingProperties: loggingPropertiesTemplate,
-    textRenderer: textRendererTemplate,
-    chartRenderer: chartRendererTemplate
+    textRenderer: textRendererTemplate
 };
 
 /**
@@ -65,7 +63,6 @@ class DataPointEditorController {
         this.textRendererTypes = Point.textRendererTypes;
         this.suffixTextRenderers = new Set(this.textRendererTypes.filter(t => t.suffix).map(t => t.type));
         this.formatTextRenderers = new Set(this.textRendererTypes.filter(t => t.format).map(t => t.type));
-        this.chartRendererTypes = Point.chartRendererTypes;
 
         this.types = Point.types.map(t => {
             const item = angular.copy(t);

@@ -40,10 +40,6 @@
          "rollup":"NONE",
          "unit":"",
          "chartColour":"blue",
-         "chartRenderer":{
-            "type":"TABLE",
-            "limit":10
-         },
          "dataSourceXid":"SVG-Demo",
          "defaultCacheSize":1,
          "deviceName":"SVG-Demo",
@@ -96,10 +92,6 @@
          "rollup":"NONE",
          "unit":"",
          "chartColour":"",
-         "chartRenderer":{
-            "type":"TABLE",
-            "limit":10
-         },
          "dataSourceXid":"SVG-Demo",
          "defaultCacheSize":1,
          "deviceName":"SVG-Demo",
@@ -163,11 +155,6 @@
          "rollup":"NONE",
          "unit":"A",
          "chartColour":"",
-         "chartRenderer":{
-            "type":"IMAGE",
-            "timePeriodType":"DAYS",
-            "numberOfPeriods":1
-         },
          "dataSourceXid":"SVG-Demo",
          "defaultCacheSize":1,
          "deviceName":"SVG-Demo",

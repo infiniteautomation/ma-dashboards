@@ -485,12 +485,6 @@ export default [
         menuTr: 'ui.dox.pointProperties'
     },
     {
-        url: '/chartRenderer',
-        name: 'ui.help.chartRendererProperties',
-        templatePromise: helpTemplate('charRendererProperties.html'),
-        menuTr: 'ui.dox.chartRenderer'
-    },
-    {
         url: '/dataPointProperties',
         name: 'ui.help.dataPointProperties',
         templatePromise: helpTemplate('dataPointProperties.html'),

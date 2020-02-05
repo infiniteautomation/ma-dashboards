@@ -22,9 +22,6 @@ const defaultProperties = {
         type: 'textRendererPlain',
         suffix: ''
     },
-    chartRenderer: {
-        type: 'chartRendererNone'
-    },
     rollup: 'NONE',
     simplifyType: 'NONE',
     simplifyTolerance: 'NaN',
@@ -52,10 +49,6 @@ const defaultPropertiesForDataTypes = {
         textRenderer: {
             type: 'textRendererPlain',
             suffix: ''
-        },
-        chartRenderer: {
-            type: 'chartRendererTable',
-            limit: 10
         }
     },
     BINARY: {
@@ -78,10 +71,6 @@ const defaultPropertiesForDataTypes = {
             type: 'textRendererBinary',
             zeroColour: '#0000ff',
             zeroLabel: 'zero'
-        },
-        chartRenderer: {
-            type: 'chartRendererTable',
-            limit: 10
         }
     },
     MULTISTATE: {
@@ -101,10 +90,6 @@ const defaultPropertiesForDataTypes = {
         textRenderer: {
             type: 'textRendererPlain',
             suffix: ''
-        },
-        chartRenderer: {
-            type: 'chartRendererTable',
-            limit: 10
         }
     },
     NUMERIC: {
@@ -128,13 +113,6 @@ const defaultPropertiesForDataTypes = {
             format: '0.00',
             suffix: '',
             useUnitAsSuffix: false
-        },
-        chartRenderer: {
-            type: 'chartRendererImage',
-            timePeriod: {
-                periods: 1,
-                type: 'DAYS'
-            }
         }
     },
     IMAGE: {
@@ -154,9 +132,6 @@ const defaultPropertiesForDataTypes = {
         textRenderer: {
             type: 'textRendererNone',
             suffix: ''
-        },
-        chartRenderer: {
-            type: 'chartRendererNone'
         }
     }
 };

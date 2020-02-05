@@ -412,15 +412,6 @@ function dataPointProvider() {
                 {type: 'textRendererMultistate', translation: 'textRenderer.multistate', dataTypes: new Set(['MULTISTATE'])}
             ]),
 
-            chartRendererTypes: Object.freeze([
-                {type: 'chartRendererNone', translation: 'chartRenderer.none',
-                    dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC', 'IMAGE'])},
-                {type: 'chartRendererImageFlipbook', translation: 'chartRenderer.flipbook', dataTypes: new Set(['IMAGE'])},
-                {type: 'chartRendererTable', translation: 'chartRenderer.table', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])},
-                {type: 'chartRendererImage', translation: 'chartRenderer.image', dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC'])},
-                {type: 'chartRendererStats', translation: 'chartRenderer.statistics', dataTypes: new Set(['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC'])}
-            ]),
-            
             rollupTypes: MA_ROLLUP_TYPES,
             chartTypes: MA_CHART_TYPES,
             simplifyTypes: MA_SIMPLIFY_TYPES
@@ -674,13 +665,7 @@ function dataPointProvider() {
                 if (!textRendererTypeDef || !textRendererTypeDef.dataTypes.has(this.dataType)) {
                     this.textRenderer = angular.copy(dataTypeDefaults.textRenderer);
                 }
-                
-                const chartRendererType = this.chartRenderer && this.chartRenderer.type;
-                const chartRendererTypeDef = this.constructor.chartRendererTypes.find(t => t.type === chartRendererType);
-                if (!chartRendererTypeDef || !chartRendererTypeDef.dataTypes.has(this.dataType)) {
-                    this.chartRenderer = angular.copy(dataTypeDefaults.chartRenderer);
-                }
-                
+
                 this.loggingProperties = angular.copy(dataTypeDefaults.loggingProperties);
                 */
                 
