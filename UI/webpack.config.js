@@ -10,7 +10,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const readPom = require('@infinite-automation/mango-module-tools/module-tools/readPom');
 const updatePackage = require('@infinite-automation/mango-module-tools/module-tools/updatePackage');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-const jsonUrlLoader = require.resolve('./jsonUrlLoader.js');
 
 const publicPath = '/ui/';
 
@@ -270,7 +269,7 @@ module.exports = readPom().then(pom => {
         },
         resolveLoader: {
             alias: {
-                'json-url-loader': jsonUrlLoader
+                'json-url-loader': '@infinite-automation/mango-module-tools/json-url-loader/jsonUrlLoader'
             }
         },
         //devtool: 'eval',

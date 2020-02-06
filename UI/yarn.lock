@@ -52,19 +52,23 @@
     uuid "^3.1.0"
     ws ">=4 <7"
 
-"@infinite-automation/mango-module-tools@^2.1.0":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@infinite-automation/mango-module-tools/-/mango-module-tools-2.3.1.tgz#af727376d08077c9e9769672d0b1d57a74111a6b"
-  integrity sha512-S/CfJPR1igAFkYeDDo+hBHem02HLd1kvk5YObI7VJGs82WyX61EqqFw1zzzUoKTrgdSx5NVFC2VgqUx5GJN8BQ==
+"@infinite-automation/mango-module-tools@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@infinite-automation/mango-module-tools/-/mango-module-tools-2.4.1.tgz#75cb6fa85415a91d8a59ad12285c2b85850378d1"
+  integrity sha512-hkoMfY/iqANmJVujOHWHV34NbSwT4fGMFrEB1yyDDRUs7vT3oURTx9lbi8baGOFylDGixHRe0U7jAkucJmaojQ==
   dependencies:
     "@infinite-automation/mango-client" "^1.0.0"
     chai "^4.2.0"
     clean-webpack-plugin "^3.0.0"
     copy-webpack-plugin "^5.1.1"
     css-loader "^3.4.2"
+    exports-loader "^0.7.0"
     file-loader "^5.0.2"
     handlebars "^4.7.2"
     html-loader "^0.5.5"
+    imports-loader "^0.8.0"
+    json-ptr "^1.1.2"
+    loader-utils "^1.2.3"
     lodash "^4.17.11"
     mocha "^7.0.0"
     mocha-jenkins-reporter "^0.4.0"
