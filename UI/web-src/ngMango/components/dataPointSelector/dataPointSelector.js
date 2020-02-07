@@ -272,6 +272,7 @@ class DataPointSelectorController {
 
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
         if (sortArray.length) {
+            // ensure the order of the results are deterministic
             queryBuilder.sort(...sortArray, 'id');
         }
         
