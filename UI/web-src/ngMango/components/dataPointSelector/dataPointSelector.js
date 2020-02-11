@@ -51,12 +51,20 @@ const applyFilter = function(queryBuilder) {
             } catch (e) {}
             queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, numericValue);
         } else if (this.boolean) {
-            const booleanValue = ['true','y', '1'].includes(filter.toLowerCase());
+            const booleanValue = ['true', 'y', '1'].includes(filter.toLowerCase());
             queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, booleanValue);
         } else if (!exact && filter.includes('*')) {
-            queryBuilder[isNot ? 'nlike' : 'like'](this.columnName, filter);
+            if (isNot) {
+                queryBuilder.not().match(this.columnName, filter).up();
+            } else {
+                queryBuilder.match(this.columnName, filter);
+            }
         } else if (!exact && !this.exact) {
-            queryBuilder[isNot ? 'nlike' : 'like'](this.columnName, `*${filter}*`);
+            if (isNot) {
+                queryBuilder.not().match(this.columnName, `*${filter}*`).up();
+            } else {
+                queryBuilder.match(this.columnName, `*${filter}*`);
+            }
         } else {
             queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, filter);
         }

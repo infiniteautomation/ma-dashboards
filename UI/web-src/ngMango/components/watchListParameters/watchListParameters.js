@@ -128,13 +128,13 @@ WatchListParametersController.prototype.getDsQuery = function getDsQuery(param) 
     const interpolatedValue = new query.Query();
     if (param.options.nameIsLike) {
         interpolatedValue.push(new query.Query({
-            name: 'like',
+            name: 'match',
             args: ['name', this.getParamOption(param, 'nameIsLike')]
         }));
     }
     if (param.options.xidIsLike) {
         interpolatedValue.push(new query.Query({
-            name: 'like',
+            name: 'match',
             args: ['xid', this.getParamOption(param, 'xidIsLike')]
         }));
     }

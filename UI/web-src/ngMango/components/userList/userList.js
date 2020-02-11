@@ -44,8 +44,8 @@ class UserListController {
             }
             
             queryBuilder.or()
-                .like('username', filter)
-                .like('name', filter)
+                .match('username', filter)
+                .match('name', filter)
                 .up();
         }
 

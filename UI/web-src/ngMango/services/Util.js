@@ -497,7 +497,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
                                 rqlBuilder.in(key, ...value);
                             }
                         } else if (typeof value === 'string' && value.indexOf('=') < 0 && !exact) {
-                            rqlBuilder.like(key, '*' + value + '*');
+                            rqlBuilder.match(key, '*' + value + '*');
                         } else {
                             rqlBuilder.eq(key, value);
                         }

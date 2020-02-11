@@ -8,7 +8,7 @@ import queryPredicateTemplate from './queryPredicate.html';
 const queryPredicate = function queryPredicate() {
     this.operations = [
         { labelTr: 'ui.components.queryPredicate.eq', label: '==', value: 'eq' },
-        { labelTr: 'ui.components.queryPredicate.like', label: '~=', value: 'like' },
+        { labelTr: 'ui.components.queryPredicate.like', label: '~=', value: 'match' },
         { labelTr: 'ui.components.queryPredicate.gt', label: '>',  value: 'gt' },
         { labelTr: 'ui.components.queryPredicate.gte', label: '>=', value: 'ge' },
         { labelTr: 'ui.components.queryPredicate.lt', label: '<',  value: 'lt' },

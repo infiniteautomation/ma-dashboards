@@ -165,8 +165,8 @@ class FilteringPointListController {
                 this.highlight = inputText;
             }
             
-            const nameQuery = new query.Query({name: 'like', args: ['name', '*' + nameLike + '*']});
-            const deviceNameQuery = new query.Query({name: 'like', args: ['deviceName', '*' + deviceNameLike + '*']});
+            const nameQuery = new query.Query({name: 'match', args: ['name', '*' + nameLike + '*']});
+            const deviceNameQuery = new query.Query({name: 'match', args: ['deviceName', '*' + deviceNameLike + '*']});
 
             const searchQuery = new query.Query();
             rqlQuery.push(searchQuery);

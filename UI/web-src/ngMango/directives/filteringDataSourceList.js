@@ -36,7 +36,7 @@ function filteringDataSourceList($injector, DataSource) {
             $scope.queryDataSources = function() {
                 const q = $scope.query ? angular.copy($scope.query) : new query.Query();
                 if ($scope.searchText)
-                    q.push(new query.Query({name: 'like', args: ['name', '*' + $scope.searchText + '*']}));
+                    q.push(new query.Query({name: 'match', args: ['name', '*' + $scope.searchText + '*']}));
                 
                 return DataSource.objQuery({
                     query: q,
