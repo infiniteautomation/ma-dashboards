@@ -132,7 +132,8 @@ class EventTypeFilterController {
     
     getEventTypes() {
         this.eventTypesPromise = this.EventTypeInfo.list().then(eventTypes => {
-            return (this.eventTypes = eventTypes);
+            // cannot query audit events from the events endpoint, remove this option from the list
+            return (this.eventTypes = eventTypes.filter(info => info.type.eventType !== 'AUDIT'));
         });
         return this.eventTypesPromise;
     }
