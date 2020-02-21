@@ -199,16 +199,9 @@ class DataPointEditorController {
         this.savePromise = this.$q.resolve().then(() => {
             return this.confirmDataTypeChange(event);
         }).then(() => {
-            if (this.dataPoint.templateXid != null) {
-                const trKey = savingMultiple ? 'ui.app.templateWillBeRemovedPlural' : 'ui.app.templateWillBeRemoved';
-                return this.DialogHelper.confirm(event, trKey);
-            }
-        }).then(() => {
             this.errorMessages = [];
             this.validationMessages = [];
-            
-            this.dataPoint.templateXid = null;
-            
+
             if (savingMultiple) {
                 return this.saveMultiple();
             } else {

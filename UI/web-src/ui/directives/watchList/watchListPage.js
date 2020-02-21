@@ -93,7 +93,6 @@ class WatchListPageController {
             {name: 'chartColour', label: 'pointEdit.props.chartColour'},
             {name: 'plotType', label: 'pointEdit.plotType'},
             {name: 'rollup', label: 'common.rollup'},
-            {name: 'templateXid', label: 'ui.app.templateXid'},
             {name: 'integralUnit', label: 'pointEdit.props.integralUnit'}
         ];
         

@@ -24,7 +24,6 @@ const defaultColumns = [
     {name: 'chartColour', label: 'pointEdit.props.chartColour', selectedByDefault: false},
     {name: 'plotType', label: 'pointEdit.plotType', selectedByDefault: false},
     {name: 'rollup', label: 'common.rollup', selectedByDefault: false},
-    {name: 'templateXid', label: 'ui.app.templateXid', selectedByDefault: false, nullable: false},
     {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
     {name: 'simplifyType', label: 'pointEdit.props.simplifyType', selectedByDefault: false},
     {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', selectedByDefault: false},

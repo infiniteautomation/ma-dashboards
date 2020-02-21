@@ -19,7 +19,6 @@ const defaultColumns = [
     {name: 'chartColour', label: 'pointEdit.props.chartColour', filterable: false, sortable: false},
     {name: 'plotType', label: 'pointEdit.plotType', filterable: false, sortable: false},
     {name: 'rollup', label: 'common.rollup', exact: true},
-    {name: 'templateXid', label: 'ui.app.templateXid'},
     {name: 'integralUnit', label: 'pointEdit.props.integralUnit', filterable: false, sortable: false},
     {name: 'simplifyType', label: 'pointEdit.props.simplifyType', filterable: false, sortable: false},
     {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', numeric: true, filterable: false, sortable: false},

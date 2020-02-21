@@ -26,7 +26,6 @@ const defaultProperties = {
     simplifyType: 'NONE',
     simplifyTolerance: 'NaN',
     simplifyTarget: 1000,
-    templateXid: null,
     dataSourceXid: '',
     tags: {}
 };

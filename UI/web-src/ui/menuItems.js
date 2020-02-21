@@ -1644,12 +1644,6 @@ export default [
         menuTr: 'ui.dox.freeMarker'
     },
     {
-        name: 'ui.help.dataPointTemplate',
-        menuTr: 'dox.template.dataPointTemplate',
-        url: '/data-point-template',
-        templatePromise: helpTemplate('dataPointTemplate.html')
-    },
-    {
         name: 'ui.help.eventDetectors',
         menuTr: 'dox.eventDetectors',
         url: '/event-detectors',
