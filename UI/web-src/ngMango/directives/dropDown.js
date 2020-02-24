@@ -292,7 +292,7 @@ function dropDown($parse, $document, $injector, $animate, $window) {
             onClosed: '&'
         },
         require: {
-            dropDownButton: '^?maDropDownButton'
+            dropDownButton: '?^maDropDownButton'
         }
     };
 }

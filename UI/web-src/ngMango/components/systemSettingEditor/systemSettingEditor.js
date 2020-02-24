@@ -126,8 +126,8 @@ export default {
         options: '?mdOption'
     },
     require: {
-        settingsPageController: '^^?maUiSystemSettingsPage',
-        ngFormController: '^^?form'
+        settingsPageController: '?^^maUiSystemSettingsPage',
+        ngFormController: '?^^form'
     },
     designerInfo: {
         hideFromMenu: true
