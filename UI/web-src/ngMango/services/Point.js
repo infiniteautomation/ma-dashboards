@@ -635,6 +635,11 @@ function dataPointProvider() {
             },
             
             formatLabel(includeTags = true) {
+                // use the name formatted by the backend
+                if (includeTags) {
+                    return this.extendedName;
+                }
+                
                 let label = `${this.deviceName} \u2014 ${this.name}`;
                 if (includeTags && this.hasTags()) {
                     const tagsString = this.formatTags(typeof includeTags === 'object' ? includeTags : undefined);
