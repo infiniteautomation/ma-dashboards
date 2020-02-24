@@ -217,6 +217,7 @@ function setPointValue(PointValueController, maTranslate, $q, $injector, maDialo
                 }, e => null);
             } else {
                 this.result = this.point.setValueResult(value);
+                this.close()
             }
         }
     }
@@ -242,7 +243,8 @@ function setPointValue(PointValueController, maTranslate, $q, $injector, maDialo
             enablePopup: '@?',
             showRelinquish: '<?',
             customStep: '<?step',
-            confirmSet: '<?'
+            confirmSet: '<?',
+            close: '&isOpen'
         },
         designerInfo: {
             translation: 'ui.components.setPointValue',
