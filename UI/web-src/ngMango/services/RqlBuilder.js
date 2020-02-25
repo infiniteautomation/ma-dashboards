@@ -11,7 +11,7 @@ const Query = rqlQueryLib.Query;
 rqlBuilderFactory.$inject = [];
 function rqlBuilderFactory() {
     
-    const andOr = ['and', 'or', 'not'];
+    const andOr = ['and', 'or'];
     const sortLimit = ['sort', 'limit'];
     const operators = ['match', 'in', 'out', 'select', 'contains', 'excludes', 'values', 'distinct', 'recurse',
         'aggregate', 'between', 'sum', 'mean', 'max', 'min', 'count', 'first', 'one', 'eq', 'ne', 'le', 'ge', 'lt', 'gt',
@@ -97,6 +97,10 @@ function rqlBuilderFactory() {
             this.path.push(newCurrent);
             return this;
         }
+        
+        not(...args) {
+            return this.andOr('not', ...args);
+        }
 
         up() {
             if (this.path.length > 1) {
@@ -106,7 +110,7 @@ function rqlBuilderFactory() {
             }
             return this;
         }
-        
+
         op(name, ...args) {
             this.current.args.push(new Query({
                 name: name,
