@@ -45,7 +45,9 @@ ma-drop-down-button.md-THEME_NAME-theme > md-icon {
 }
 
 ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:hover,
-ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:focus {
+ma-data-point-selector.md-THEME_NAME-theme .ma-data-point-row:focus,
+.md-THEME_NAME-theme .ma-item-row:hover,
+.md-THEME_NAME-theme .ma-item-row:focus {
 	background-color: '{{background-hue-2}}';
 	color: '{{background-hue-2-contrast}}';
 	outline: none;

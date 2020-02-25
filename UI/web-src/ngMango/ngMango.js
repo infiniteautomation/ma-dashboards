@@ -179,6 +179,7 @@ import registerUser from './components/registerUser/registerUser';
 import userStatus from './components/userStatus/userStatus';
 import userActionsMenu from './components/userActionsMenu/userActionsMenu';
 import tagHierarchy from './components/tagHierarchy/tagHierarchy';
+import userTable from './components/userTable/userTable';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -371,6 +372,7 @@ ngMango.component('maRegisterUser', registerUser);
 ngMango.component('maUserStatus', userStatus);
 ngMango.component('maUserActionsMenu', userActionsMenu);
 ngMango.component('maTagHierarchy', tagHierarchy);
+ngMango.component('maUserTable', userTable);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

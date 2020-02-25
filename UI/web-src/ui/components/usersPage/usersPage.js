@@ -1,5 +1,5 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2020 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -8,12 +8,11 @@ import './usersPage.css';
 
 class UsersPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$state', '$mdMedia']; }
+    static get $inject() { return ['maUser', '$state']; }
 
-    constructor(User, $state, $mdMedia) {
+    constructor(User, $state) {
         this.User = User;
         this.$state = $state;
-        this.$mdMedia = $mdMedia;
     }
 
     $onInit() {
@@ -23,11 +22,11 @@ class UsersPageController {
                 delete user.$promise;
                 this.user = user;
             }, () => {
-                this.user = this.User.current;
+                this.user = null;
                 this.updateUrl();
             });
         } else {
-            this.user = this.User.current;
+            this.user = null;
             this.updateUrl();
         }
     }
@@ -37,17 +36,14 @@ class UsersPageController {
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
     
-    userDeleted(user) {
-        this.addUser();
-    }
-    
-    userSaved(user, prevUser) {
-        // username might have been updated
+    addUser($event) {
+        this.user = new this.User();
         this.updateUrl();
     }
     
-    addUser($event) {
-        this.user = new this.User();
+    userEditorClosed() {
+        this.user = null;
+        this.selectedTab = 0;
         this.updateUrl();
     }
 }

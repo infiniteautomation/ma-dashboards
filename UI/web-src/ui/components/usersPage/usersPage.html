@@ -1,48 +1,27 @@
-<div flex="noshrink" layout="column" layout-gt-md="row" layout-gt-lg="row">
-    <md-card layout="column" flex-gt-md="25" flex-gt-lg="20" ng-if="$ctrl.User.current.hasRole('superadmin')">
-        <md-toolbar class="md-hue-3">
+<div>
+    <md-button class="md-raised" ng-click="$ctrl.addUser($event)">
+        <md-icon>person_add</md-icon> <span ma-tr="users.add"></span>
+    </md-button>
+</div>
+
+<ma-user-table ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" show-clear="false"></ma-user-table>
+
+<ma-dialog show-dialog="$ctrl.user" on-hide="$ctrl.userEditorClosed()" on-cancel="$ctrl.userEditorClosed()">
+    <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
+        <md-toolbar>
             <div class="md-toolbar-tools">
-                <span ma-tr="users.selectUserToEdit"></span>
+                <span ng-if="!$ctrl.user.isNew()" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
+                <span ng-if="$ctrl.user.isNew()" ma-tr="ui.app.editNewUser"></span>
                 <div flex></div>
-                <md-button class="md-raised" ng-click="$ctrl.addUser($event)" ng-if="!$ctrl.$mdMedia('gt-md')">
-                    <md-icon>person_add</md-icon> <span ma-tr="users.add"></span>
+                <ma-user-actions-menu user="$ctrl.user" on-copy="$ctrl.user = $user; $ctrl.updateUrl()"></ma-user-actions-menu>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
                 </md-button>
             </div>
         </md-toolbar>
-        
-        <div class="md-padding" ng-if="!$ctrl.$mdMedia('gt-md')">
-            <ma-user-select ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()">
-                <ma-label ma-tr="users.selectUserToEdit"></ma-label>
-            </ma-user-select>
-        </div>
 
-        <md-input-container class="ma-username-filter" md-no-float ng-if="$ctrl.$mdMedia('gt-md')">
-            <input ng-model="$ctrl.filter" ng-model-options="{debounce: 1000}" ma-tr="ui.app.filter">
-            <md-button class="ma-input-button md-icon-button" ng-click="$ctrl.filter = ''">
-                <md-icon>clear</md-icon>
-            </md-button>
-        </md-input-container>
-
-        <div ng-if="$ctrl.$mdMedia('gt-md')" layout="column" flex="noshrink" class="ma-scroll-parent">
-            <ma-user-list ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" class="ma-scroll-child"
-                    show-new-button="true" new-button-clicked="$ctrl.addUser($event)" filter="$ctrl.filter">
-                <ma-label ma-tr="users.selectUserToEdit"></ma-label>
-            </ma-user-list>
-        </div>
-    </md-card>
-    
-    <div flex>
-        <md-card>
-            <md-toolbar class="md-hue-3">
-                <div class="md-toolbar-tools ma-no-padding-right">
-                    <span ng-if="!$ctrl.user.isNew()" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
-                    <span ng-if="$ctrl.user.isNew()" ma-tr="ui.app.editNewUser"></span>
-                    <div flex></div>
-                    <ma-user-actions-menu user="$ctrl.user" on-copy="$ctrl.user = $user; $ctrl.updateUrl()"></ma-user-actions-menu>
-                </div>
-            </md-toolbar>
-
-            <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false">
+        <md-dialog-content layout="column" flex>
+            <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.selectedTab">
                 <md-tab>
                     <md-tab-label>
                         <span ng-if="!$ctrl.user.isNew()" ma-tr="users.editUser"></span>
@@ -50,7 +29,7 @@
                     </md-tab-label>
                     <md-tab-body>
                         <div class="md-padding">
-                            <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
+                            <ma-user-editor user="$ctrl.user" on-delete="$dialog.cancel()" on-save="$dialog.hide()"></ma-user-editor>
                         </div>
                     </md-tab-body>
                 </md-tab>
@@ -75,6 +54,6 @@
                     </md-tab-body>
                 </md-tab>
             </md-tabs>
-        </md-card>
-    </div>
-</div>
+        </md-dialog-content>
+    </md-dialog>
+</ma-dialog>

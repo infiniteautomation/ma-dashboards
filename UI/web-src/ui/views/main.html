@@ -23,9 +23,9 @@
           
           <md-menu-content width="4" class="user-menu">
             <md-menu-item>
-              <md-button aria-label="{{'ui.app.userProfile'|maTr}}" ui-sref="ui.settings.users({username: User.current.username})">
+              <md-button aria-label="{{'header.userProfile'|maTr}}" ui-sref="ui.userProfile">
                 <md-icon md-menu-align-target>person</md-icon>
-                <span ma-tr="ui.app.userProfile"></span>
+                <span ma-tr="header.userProfile"></span>
               </md-button>
             </md-menu-item>
             <md-menu-item ng-if="installPrompt.canPrompt()">

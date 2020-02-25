@@ -341,6 +341,27 @@ export default [
         }
     },
     {
+        name: 'ui.userProfile',
+        url: '/user-profile',
+        template: '<ma-ui-user-profile-page flex="noshrink" layout="column"><ma-ui-user-profile-page>',
+        menuTr: 'header.userProfile',
+        menuIcon: 'person',
+        params: {
+            helpPage: 'ui.help.users'
+        },
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
+                        './components/userProfile/userProfile').then(userProfile => {
+                    angular.module('maUiUserProfileState', [])
+                        .component('maUiUserProfilePage', userProfile.default);
+                    $injector.loadNewModules(['maUiUserProfileState']);
+                });
+            }]
+        },
+        menuHidden: true
+    },
+    {
         name: 'ui.help',
         url: '/help',
         menuTr: 'header.help',

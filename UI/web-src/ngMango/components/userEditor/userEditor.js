@@ -160,7 +160,8 @@ export default {
         disabledAttr: '@?disabled',
         registerMode: '<?',
         showStatus: '<?',
-        formName: '@?name'
+        formName: '@?name',
+        profileMode: '<?'
     },
     designerInfo: {
         hideFromMenu: true

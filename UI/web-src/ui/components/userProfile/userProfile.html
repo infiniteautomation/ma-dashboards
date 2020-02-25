@@ -1,0 +1,42 @@
+<md-card>
+    <md-toolbar class="md-hue-3">
+        <div class="md-toolbar-tools ma-no-padding-right">
+            <span ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
+            <div flex></div>
+            <ma-user-actions-menu user="$ctrl.user"></ma-user-actions-menu>
+        </div>
+    </md-toolbar>
+
+    <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false">
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="users.editUser"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding">
+                    <ma-user-editor user="$ctrl.user" profile-mode="true"></ma-user-editor>
+                </div>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="ui.app.status"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding">
+                    <ma-user-status user="$ctrl.user"></ma-user-status>
+                </div>
+            </md-tab-body>
+        </md-tab>
+        <md-tab>
+            <md-tab-label>
+                <span ma-tr="ui.app.authTokens"></span>
+            </md-tab-label>
+            <md-tab-body>
+                <div class="md-padding">
+                    <ma-user-auth-tokens user="$ctrl.user"></ma-user-auth-tokens>
+                </div>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
+</md-card>
