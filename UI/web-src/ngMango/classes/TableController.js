@@ -41,6 +41,10 @@ class Column {
             } else if (this.boolean) {
                 const booleanValue = ['true', 'y', '1'].includes(filter.toLowerCase());
                 queryBuilder[isNot ? 'ne' : 'eq'](this.name, booleanValue);
+            } else if (this.array) {
+                if (isNot) queryBuilder.not();
+                queryBuilder.contains(this.name, filter);
+                if (isNot) queryBuilder.up();
             } else if (!exact && (filter.includes('*') || filter.includes('?'))) {
                 if (isNot) {
                     queryBuilder.not().match(this.name, filter).up();
