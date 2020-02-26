@@ -34,6 +34,7 @@ import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
 import com.serotonin.m2m2.db.dao.JsonDataDao;
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
+import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
 import com.serotonin.provider.Providers;
@@ -171,6 +172,7 @@ public class BootstrapController {
         data.setInstanceDescription(systemSettingsDao.getValue(SystemSettingsDao.INSTANCE_DESCRIPTION));
         data.setGuid(Providers.get(ICoreLicense.class).getGuid());
         data.setCoreVersion(Common.getVersion().toString());
+        data.setCoreLicenseType(ModuleRegistry.getModule(ModuleRegistry.CORE_MODULE_NAME).getLicenseType());
 
         JsonDataVO menuData = this.jsonDataDao.getByXid(UILifecycle.MA_UI_MENU_XID);
         JsonDataVO pageData = this.jsonDataDao.getByXid(UILifecycle.MA_UI_PAGES_XID);
@@ -258,6 +260,7 @@ public class BootstrapController {
         private String instanceDescription;
         private String guid;
         private String coreVersion;
+        private String coreLicenseType;
         private JsonDataModel menu;
         private JsonDataModel pages;
         private TranslationsModel translations;
@@ -297,6 +300,12 @@ public class BootstrapController {
         }
         public void setCoreVersion(String coreVersion) {
             this.coreVersion = coreVersion;
+        }
+        public String getCoreLicenseType() {
+            return coreLicenseType;
+        }
+        public void setCoreLicenseType(String coreLicenseType) {
+            this.coreLicenseType = coreLicenseType;
         }
 
     }

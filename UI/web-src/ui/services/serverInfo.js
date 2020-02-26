@@ -85,6 +85,7 @@ class ServerInfoProvider {
                 this.postLoginData = data;
                 
                 this.coreVersion = data.coreVersion;
+                this.coreLicenseType = data.coreLicenseType;
                 this.guid = data.guid;
                 this.instanceDescription = data.instanceDescription;
 
