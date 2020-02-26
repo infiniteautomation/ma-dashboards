@@ -10,9 +10,23 @@ import TableController from '../../classes/TableController';
 const defaultColumns = [
     {name: 'username', label: 'users.username', selectedByDefault: true},
     {name: 'name', label: 'users.name', selectedByDefault: true},
-    {name: 'email', label: 'users.email'},
+    {name: 'email', label: 'users.email', selectedByDefault: true},
     {name: 'phone', label: 'users.phone'},
-    {name: 'organization', label: 'users.organization', selectedByDefault: true}
+    {name: 'organization', label: 'users.organization'},
+    {name: 'organizationalRole', label: 'users.organizationalRole'},
+    {name: 'permissions', label: 'users.permissions', sortable: false},
+    {name: 'disabled', label: 'common.disabled', boolean: true},
+    {name: 'muted', label: 'users.muted', boolean: true},
+    {name: 'created', label: 'ui.app.userCreated'},
+    {name: 'emailVerified', label: 'ui.app.userEmailVerified'},
+    {name: 'lastLogin', label: 'ui.app.lastLoginStatic'},
+    {name: 'lastPasswordChange', label: 'ui.app.lastPasswordChangeStatic'},
+    {name: 'passwordLocked', label: 'users.passwordLocked', filterable: false, sortable: false},
+    {name: 'locale', label: 'users.locale'},
+    {name: 'timezone', label: 'users.timezone'},
+    {name: 'homeUrl', label: 'users.homeURL'},
+    {name: 'receiveAlarmEmails', label: 'users.receiveAlarmEmails', exact: true},
+    {name: 'receiveOwnAuditEvents', label: 'users.receiveOwnAuditEvents', boolean: true}
 ];
 
 class UserTableController extends TableController {
