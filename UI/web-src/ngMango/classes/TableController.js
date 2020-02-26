@@ -7,12 +7,9 @@ import BoundedMap from './BoundedMap';
 
 class Column {
     
-    constructor(options, index, filters) {
+    constructor(options) {
         Object.assign(this, options);
-        
-        this.order = index;
-        this.filter = filters && filters[this.name] || null;
-        
+
         this.property = this.name.split('.');
         this.columnName = this.name;
         this.filterable = options.hasOwnProperty('filterable') ? !!options.filterable : true;
@@ -194,8 +191,12 @@ class TableController {
     }
 
     resetColumns() {
+        const filters = this.settings.filters || {};
         this.columns = this.defaultColumns.map((column, i) => {
-            return new Column(column, i, this.settings.filters);
+            return new Column(Object.assign({
+                order: i,
+                filter: filters[column.name] || null
+            }, column));
         });
 
         const selected = Array.isArray(this.settings.selectedColumns) ? this.settings.selectedColumns : [];
