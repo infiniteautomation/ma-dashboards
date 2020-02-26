@@ -128,8 +128,8 @@
     
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
                     <span ng-if="column.name !== 'value'"
-                        ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column.property) == null}"
-                        ng-bind="$ctrl.getCellValue(item, column.property) | maDisplayNull"></span>
+                        ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column) == null}"
+                        ng-bind="$ctrl.getCellValue(item, column) | maDisplayNull"></span>
                     <ma-point-value ng-if="column.name === 'value'" point="item"></ma-point-value>
                 </div>
             </div>

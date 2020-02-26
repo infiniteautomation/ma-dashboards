@@ -108,7 +108,7 @@
                 </div>
     
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
-                    <span ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column.property) == null}" ng-bind="$ctrl.getCellValue(item, column.property) | maDisplayNull"></span>
+                    <span ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column) == null}" ng-bind="$ctrl.getCellValue(item, column) | maDisplayNull"></span>
                 </div>
             </div>
         </div>

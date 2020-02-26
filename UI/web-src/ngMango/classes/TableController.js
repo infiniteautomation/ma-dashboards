@@ -4,6 +4,7 @@
  */
 
 import BoundedMap from './BoundedMap';
+import moment from 'moment-timezone';
 
 class Column {
     
@@ -433,7 +434,8 @@ class TableController {
         this.getItems();
     }
 
-    getCellValue(item, property) {
+    getCellValue(item, column) {
+        const property = column.property;
         let result = item;
         for (let i = 0; i < property.length; i++) {
             if (result == null || typeof result !== 'object') {
@@ -441,6 +443,15 @@ class TableController {
             }
             result = result[property[i]];
         }
+        
+        if (result == null) {
+            return result;
+        }
+        
+        if (column.date) {
+            return moment(result).format('ll LT')
+        }
+        
         return result;
     }
     
