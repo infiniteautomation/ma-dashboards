@@ -1,125 +1,110 @@
 /**
- * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2020 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-import BoundedMap from '../../classes/BoundedMap';
-import dataPointSelectorTemplate from './dataPointSelector.html';
-import './dataPointSelector.css';
+import BoundedMap from './BoundedMap';
 
-const defaultColumns = [
-    {name: 'xid', label: 'ui.app.xidShort'},
-    {name: 'dataSourceName', label: 'ui.app.dataSource'},
-    {name: 'dataType', label: 'dsEdit.pointDataType', exact: true},
-    {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
-    {name: 'name', label: 'common.name', selectedByDefault: true},
-    {name: 'enabled', label: 'common.enabled', boolean: true},
-    {name: 'readPermission', label: 'pointEdit.props.permission.read'},
-    {name: 'setPermission', label: 'pointEdit.props.permission.set'},
-    {name: 'unit', label: 'pointEdit.props.unit', filterable: false, sortable: false},
-    {name: 'chartColour', label: 'pointEdit.props.chartColour', filterable: false, sortable: false},
-    {name: 'plotType', label: 'pointEdit.plotType', filterable: false, sortable: false},
-    {name: 'rollup', label: 'common.rollup', exact: true},
-    {name: 'integralUnit', label: 'pointEdit.props.integralUnit', filterable: false, sortable: false},
-    {name: 'simplifyType', label: 'pointEdit.props.simplifyType', filterable: false, sortable: false},
-    {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', numeric: true, filterable: false, sortable: false},
-    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', numeric: true, filterable: false, sortable: false},
-    {name: 'value', label: 'ui.app.pointValue', filterable: false, sortable: false}
-];
-
-const applyFilter = function(queryBuilder) {
-    if (this.filter === '!' || this.filter === '!*') {
-        queryBuilder.eq(this.columnName, null);
-    } else if (this.filter === '*') {
-        queryBuilder.ne(this.columnName, null);
-    } else if (this.filter) {
-        let filter = this.filter;
+class Column {
+    
+    constructor(options, index, filters) {
+        Object.assign(this, options);
         
-        const isNot = filter.startsWith('!');
-        if (isNot) {
-            filter = filter.slice(1);
-        }
-        const exact = filter.startsWith('=');
-        if (exact) {
-            filter = filter.slice(1);
-        }
+        this.order = index;
+        this.filter = filters && filters[this.name] || null;
         
-        if (this.numeric) {
-            let numericValue = null;
-            try {
-                numericValue = Number.parseFloat(filter);
-            } catch (e) {}
-            queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, numericValue);
-        } else if (this.boolean) {
-            const booleanValue = ['true', 'y', '1'].includes(filter.toLowerCase());
-            queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, booleanValue);
-        } else if (!exact && filter.includes('*')) {
+        this.property = this.name.split('.');
+        this.columnName = this.name;
+        this.filterable = options.hasOwnProperty('filterable') ? !!options.filterable : true;
+        this.sortable = options.hasOwnProperty('sortable') ? !!options.sortable : true;
+    }
+    
+    applyFilter(queryBuilder) {
+        if (this.filter === '!' || this.filter === '!*') {
+            queryBuilder.eq(this.columnName, null);
+        } else if (this.filter === '*') {
+            queryBuilder.ne(this.columnName, null);
+        } else if (this.filter) {
+            let filter = this.filter;
+            
+            const isNot = filter.startsWith('!');
             if (isNot) {
-                queryBuilder.not().match(this.columnName, filter).up();
-            } else {
-                queryBuilder.match(this.columnName, filter);
+                filter = filter.slice(1);
             }
-        } else if (!exact && !this.exact) {
-            if (isNot) {
-                queryBuilder.not().match(this.columnName, `*${filter}*`).up();
-            } else {
-                queryBuilder.match(this.columnName, `*${filter}*`);
+            const exact = filter.startsWith('=');
+            if (exact) {
+                filter = filter.slice(1);
             }
-        } else {
-            queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, filter);
+            
+            if (this.numeric) {
+                let numericValue = null;
+                try {
+                    numericValue = Number.parseFloat(filter);
+                } catch (e) {}
+                queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, numericValue);
+            } else if (this.boolean) {
+                const booleanValue = ['true', 'y', '1'].includes(filter.toLowerCase());
+                queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, booleanValue);
+            } else if (!exact && (filter.includes('*') || filter.includes('?'))) {
+                if (isNot) {
+                    queryBuilder.not().match(this.columnName, filter).up();
+                } else {
+                    queryBuilder.match(this.columnName, filter);
+                }
+            } else if (!exact && !this.exact) {
+                if (isNot) {
+                    queryBuilder.not().match(this.columnName, `*${filter}*`).up();
+                } else {
+                    queryBuilder.match(this.columnName, `*${filter}*`);
+                }
+            } else {
+                queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, filter);
+            }
         }
     }
-};
+}
 
-const defaultLocalStorageKey = 'dataPointSelector';
-
-class DataPointSelectorController {
+class TableController {
     static get $$ngIsClass() { return true; }
-    
-    static get $inject() { return ['maPoint', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout',
-            'localStorageService', 'maUtil', '$q', '$scope', '$interval', '$injector', '$element']; }
-    
-    constructor(maPoint, maDataPointTags, maDialogHelper, maTranslate, $timeout,
-            localStorageService, maUtil, $q, $scope, $interval, $injector, $element) {
 
-        this.maPoint = maPoint;
-        this.maDataPointTags = maDataPointTags;
-        this.maDialogHelper = maDialogHelper;
-        this.maTranslate = maTranslate;
-        this.$timeout = $timeout;
-        this.localStorageService = localStorageService;
-        this.maUtil = maUtil;
-        this.$q = $q;
-        this.$scope = $scope;
-        this.$interval = $interval;
+    constructor(options) {
+        Object.assign(this, options);
 
+        const $injector = this.$injector;
+        this.maDialogHelper = $injector.get('maDialogHelper');
+        this.$timeout = $injector.get('$timeout');
+        this.localStorageService = $injector.get('localStorageService');
+        this.maUtil = $injector.get('maUtil');
+        this.$q = $injector.get('$q');
+        this.$interval = $injector.get('$interval');
+        if ($injector.has('$mdTheming')) {
+            $injector.get('$mdTheming')(this.$element);
+        }
+
+        this.idProperty = this.resourceService.idProperty;
         this.showFilters = true;
         this.showClear = true;
         this.pageSize = 50;
         this.cacheSize = 10;
         this.pages = new BoundedMap(this.cacheSize);
-        
-        this.tags = new Map();
-        this.selectedPoints = new Map();
-        
-        if ($injector.has('$mdTheming')) {
-            $injector.get('$mdTheming')($element);
-        }
+        this.selectedItems = new Map();
 
         this.loadSettings();
         this.resetColumns();
     }
 
     $onInit() {
-        this.ngModelCtrl.$render = () => this.render();
+        if (this.ngModelCtrl) {
+            this.ngModelCtrl.$render = () => this.render();
+        }
 
         this.updateQueue = [];
-        this.deregister = this.maPoint.notificationManager.subscribe((event, point) => {
+        this.deregister = this.resourceService.notificationManager.subscribe((event, item) => {
             // we queue up the updates and process them in batches to prevent continuous $scope.$apply() when large numbers of
-            // points are being edited
+            // items are being edited
             this.updateQueue.push({
                 eventName: event.name,
-                point
+                item
             });
         });
 
@@ -137,11 +122,9 @@ class DataPointSelectorController {
             }
         }, 500, null, false);
 
-        this.maDataPointTags.keys().then(keys => {
-            this.updateAvailableTags(keys);
-            this.getPoints();
-        });
+        this.getItems();
         
+        // closes the options menu if this user table is encapsulated in a maDropDown and it closes
         this.$scope.$on('maDropDownClose', event => {
             if (this.mdMenuCtrl) {
                 this.mdMenuCtrl.close(false, {closeAll: true});
@@ -158,30 +141,32 @@ class DataPointSelectorController {
     }
     
     render() {
-        let points;
+        let items;
         if (this.selectMultiple) {
-            points = Array.isArray(this.ngModelCtrl.$viewValue) ? this.ngModelCtrl.$viewValue : [];
+            items = Array.isArray(this.ngModelCtrl.$viewValue) ? this.ngModelCtrl.$viewValue : [];
         } else {
-            points = this.ngModelCtrl.$viewValue ? [this.ngModelCtrl.$viewValue] : [];
+            items = this.ngModelCtrl.$viewValue ? [this.ngModelCtrl.$viewValue] : [];
         }
 
-        this.selectedPoints.clear();
-        points.forEach(point => {
-            this.selectedPoints.set(point.xid, point);
+        this.selectedItems.clear();
+        items.forEach(item => {
+            this.selectedItems.set(item[this.idProperty], item);
         });
     }
     
     setViewValue() {
-        if (this.selectMultiple) {
-            this.ngModelCtrl.$setViewValue(Array.from(this.selectedPoints.values()));
-        } else {
-            const [first] = this.selectedPoints.values();
-            this.ngModelCtrl.$setViewValue(first || null);
+        if (this.ngModelCtrl) {
+            if (this.selectMultiple) {
+                this.ngModelCtrl.$setViewValue(Array.from(this.selectedItems.values()));
+            } else {
+                const [first] = this.selectedItems.values();
+                this.ngModelCtrl.$setViewValue(first || null);
+            }
         }
     }
     
     loadSettings() {
-        this.settings = this.localStorageService.get(this.localStorageKey || defaultLocalStorageKey) || {};
+        this.settings = this.localStorageService.get(this.localStorageKey) || {};
         
         if (this.settings.hasOwnProperty('showFilters')) {
             this.showFilters = !!this.settings.showFilters;
@@ -191,7 +176,7 @@ class DataPointSelectorController {
             this.settings.filters = {};
         }
 
-        this.sort = this.settings.sort || [{columnName: 'deviceName'}, {columnName: 'name'}];
+        this.sort = this.settings.sort || this.defaultSort || [];
     }
     
     saveSettings() {
@@ -199,62 +184,29 @@ class DataPointSelectorController {
 
         this.settings.showFilters = this.showFilters;
         this.settings.filters = {};
-        this.selectedColumns.concat(this.selectedTags).forEach(c => {
+        this.selectedColumns.forEach(c => {
             if (c.filter != null) {
                 this.settings.filters[c.columnName] = c.filter;
             }
         });
         
-        this.localStorageService.set(this.localStorageKey || defaultLocalStorageKey, this.settings);
+        this.localStorageService.set(this.localStorageKey, this.settings);
     }
 
     resetColumns() {
-        const filters = this.settings.filters || {};
-        
-        this.columns = defaultColumns.map((column, i) => {
-            return Object.assign({}, column, {
-                order: i,
-                property: column.name.split('.'),
-                columnName: column.name,
-                filter: filters[column.name] || null,
-                applyFilter,
-                filterable: column.hasOwnProperty('filterable') ? !!column.filterable : true,
-                sortable: column.hasOwnProperty('sortable') ? !!column.sortable : true
-            });
+        this.columns = this.defaultColumns.map((column, i) => {
+            return new Column(column, i, this.settings.filters);
         });
 
         const selected = Array.isArray(this.settings.selectedColumns) ? this.settings.selectedColumns : [];
         const deselected = Array.isArray(this.settings.deselectedColumns) ? this.settings.deselectedColumns : [];
         this.selectedColumns = this.columns.filter(c => selected.includes(c.name) || c.selectedByDefault && !deselected.includes(c.name));
-        
-        this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
-    }
-    
-    updateAvailableTags(keys) {
-        keys.forEach(k => {
-            if (!this.tags.has(k) && k !== 'name' && k !== 'device') {
-                const columnName = `tags.${k}`;
-                this.tags.set(k, {
-                    name: k,
-                    columnName,
-                    label: 'ui.app.tag',
-                    labelArgs: [k],
-                    filter: this.settings.filters[columnName] || null,
-                    applyFilter
-                });
-            }
-        });
-
-        this.availableTags = Array.from(this.tags.values());
-        this.selectedTags = (this.settings.selectedTags || [])
-            .map(k => this.tags.get(k))
-            .filter(item => item != null);
     }
     
     markCacheAsStale() {
         for (let page of this.pages.values()) {
             if (page.queryPromise) {
-                this.maPoint.cancelRequest(page.queryPromise);
+                this.resourceService.cancelRequest(page.queryPromise);
             }
             page.stale = true;
         }
@@ -273,16 +225,13 @@ class DataPointSelectorController {
     }
 
     createQueryBuilder() {
-        const queryBuilder = this.maPoint.buildQuery();
+        const queryBuilder = this.resourceService.buildQuery();
         
         this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
-        this.selectedTags.forEach(tag => tag.applyFilter(queryBuilder));
 
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
-        if (sortArray.length) {
-            // ensure the order of the results are deterministic
-            queryBuilder.sort(...sortArray, 'id');
-        }
+        // ensure the order of the results are deterministic by adding sort on id
+        queryBuilder.sort(...sortArray, 'id');
         
         return queryBuilder;
     }
@@ -291,10 +240,10 @@ class DataPointSelectorController {
         // keep a reference to pages, don't want to update a new pages map with the results from an old query
         const pages = this.pages;
 
-        // reuse the existing page, preserving its points array for the meantime
+        // reuse the existing page, preserving its items array for the meantime
         const page = pages.get(startIndex) || {startIndex};
-        if (page.points && !page.stale) {
-            return this.$q.resolve(page.points);
+        if (page.items && !page.stale) {
+            return this.$q.resolve(page.items);
         } else if (page.promise) {
             return page.promise;
         }
@@ -308,7 +257,7 @@ class DataPointSelectorController {
         page.promise = page.queryPromise.then(result => {
             pages.$total = result.$total;
             delete page.stale;
-            page.points = result;
+            page.items = result;
             return result;
         }, error => {
             page.error = error;
@@ -320,7 +269,7 @@ class DataPointSelectorController {
             }
 
             const message = error.mangoStatusText || (error + '');
-            this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
+            this.maDialogHelper.errorToast(['ui.app.errorGettingItems', message]);
             
             // dont remove the page from the cache for 1 minute, stops repetitive requests with errors
             this.$timeout(() => {
@@ -336,33 +285,33 @@ class DataPointSelectorController {
         return page.promise;
     }
 
-    getPoints(startIndex = 0) {
-        const pointsPromise = this.pointsPromise = this.getPage(startIndex);
+    getItems(startIndex = 0) {
+        const itemsPromise = this.itemsPromise = this.getPage(startIndex);
         
-        this.pointsPromise.finally(() => {
+        this.itemsPromise.finally(() => {
             // check we are deleting our own promise, not one for a new query
-            if (this.pointsPromise === pointsPromise) {
-                delete this.pointsPromise;
+            if (this.itemsPromise === itemsPromise) {
+                delete this.itemsPromise;
             }
         });
     }
     
     selectAll(startIndex = 0, endIndex = undefined, deselect = false) {
-        this.getPage(startIndex, false).then(points => {
+        this.getPage(startIndex, false).then(items => {
             
-            points.every((point, i) => {
+            items.every((item, i) => {
                 if (endIndex == null || i < endIndex - startIndex) {
                     if (deselect) {
-                        this.selectedPoints.delete(point.xid);
+                        this.selectedItems.delete(item[this.idProperty]);
                     } else {
-                        this.selectedPoints.set(point.xid, point);
+                        this.selectedItems.set(item[this.idProperty], item);
                     }
                     return true;
                 }
             });
 
             const nextPageIndex = startIndex + this.pageSize;
-            const hasMore = points.$total > nextPageIndex;
+            const hasMore = items.$total > nextPageIndex;
             const wantMore = endIndex == null || endIndex > nextPageIndex;
             
             if (wantMore && hasMore) {
@@ -404,12 +353,10 @@ class DataPointSelectorController {
 
         this.saveSettings();
         this.clearCache();
-        this.getPoints();
+        this.getItems();
     }
 
     selectedColumnsChanged() {
-        this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
-        
         this.settings.deselectedColumns = this.columns
             .filter(c => c.selectedByDefault && !this.selectedColumns.includes(c))
             .map(c => c.name);
@@ -418,19 +365,11 @@ class DataPointSelectorController {
             .filter(c => !c.selectedByDefault)
             .map(c => c.name);
 
-        const nonSelected = this.setDifference(this.columns, this.selectedColumns);
+        const nonSelected = this.maUtil.setDifference(this.columns, this.selectedColumns);
         this.columnsDeselected(nonSelected);
         this.saveSettings();
     }
-    
-    selectedTagsChanged() {
-        this.settings.selectedTags = this.selectedTags.map(t => t.name);
 
-        const nonSelected = this.setDifference(this.availableTags, this.selectedTags);
-        this.columnsDeselected(nonSelected);
-        this.saveSettings();
-    }
-    
     /**
      * Removes non selected columns from the sort and filtering
      */
@@ -451,23 +390,16 @@ class DataPointSelectorController {
         
         if (queryChanged) {
             this.clearCache();
-            this.getPoints();
+            this.getItems();
         }
     }
-    
-    setDifference(a, b) {
-        const diff = new Set(a);
-        for (let o of b) {
-            diff.delete(o);
-        }
-        return diff;
-    }
+
 
     showFiltersChanged() {
         if (!this.showFilters) {
             let filtersChanged = false;
             
-            this.columns.concat(this.availableTags).forEach(c => {
+            this.columns.forEach(c => {
                 if (c.filter != null) {
                     c.filter = null;
                     filtersChanged = true;
@@ -476,7 +408,7 @@ class DataPointSelectorController {
 
             if (filtersChanged) {
                 this.clearCache();
-                this.getPoints();
+                this.getItems();
             }
         }
         
@@ -486,11 +418,11 @@ class DataPointSelectorController {
     filterChanged() {
         this.saveSettings();
         this.clearCache();
-        this.getPoints();
+        this.getItems();
     }
 
-    getCellValue(point, property) {
-        let result = point;
+    getCellValue(item, property) {
+        let result = item;
         for (let i = 0; i < property.length; i++) {
             if (result == null || typeof result !== 'object') {
                 return;
@@ -501,7 +433,7 @@ class DataPointSelectorController {
     }
     
     processUpdateQueue() {
-        // TODO we currently have no good way to know if the updated point matches our current query
+        // TODO we currently have no good way to know if the updated item matches our current query
         // just mark all of our pages as being stale and needing a reload
         
         let setViewValue = false;
@@ -512,13 +444,13 @@ class DataPointSelectorController {
             if (update.eventName === 'create') {
                 // ignore
             } else if (update.eventName === 'update') {
-                const existing = this.selectedPoints.get(update.point.xid);
+                const existing = this.selectedItems.get(update.item[this.idProperty]);
                 if (existing) {
-                    Object.assign(existing, update.point);
+                    Object.assign(existing, update.item);
                     setViewValue = true;
                 }
             } else if (update.eventName === 'delete') {
-                const deleted = this.selectedPoints.delete(update.point.xid);
+                const deleted = this.selectedItems.delete(update.item[this.idProperty]);
                 if (deleted) {
                     setViewValue = true;
                 }
@@ -540,11 +472,11 @@ class DataPointSelectorController {
         const page = this.pages.get(startIndex);
         
         if (!page || page.stale) {
-            this.getPoints(startIndex);
+            this.getItems(startIndex);
         }
         
-        if (page && page.points) {
-            return page.points[index - startIndex];
+        if (page && page.items) {
+            return page.items[index - startIndex];
         } else {
             return null;
         }
@@ -558,36 +490,33 @@ class DataPointSelectorController {
     }
 
     clearSelection() {
-        this.selectedPoints.clear();
+        this.selectedItems.clear();
         this.setViewValue();
     }
     
     getSelectedColumnsModel(column) {
         return this.maUtil.createBooleanModel(this.selectedColumns, column, a => a.name);
     }
-    
-    getSelectedTagsModel(tag) {
-        return this.maUtil.createBooleanModel(this.selectedTags, tag, a => a.name);
-    }
 
     cancelSelect() {
         delete this.pages.mouseDown;
     }
 
-    rowClicked(event, point, index) {
-        const deselect = this.selectedPoints.has(point.xid);
+    rowClicked(event, item, index) {
+        const itemId = item[this.idProperty];
+        const deselect = this.selectedItems.has(itemId);
         const lastClick = this.pages.mouseDown;
-        this.pages.mouseDown = {point, index, deselect};
+        this.pages.mouseDown = {item, index, deselect};
 
         // TODO add allow deselect attribute
         if (!this.selectMultiple) {
-            this.selectedPoints.clear();
+            this.selectedItems.clear();
         }
         
         if (deselect) {
-            this.selectedPoints.delete(point.xid);
+            this.selectedItems.delete(itemId);
         } else {
-            this.selectedPoints.set(point.xid, point);
+            this.selectedItems.set(itemId, item);
         }
 
         if (this.selectMultiple && event.shiftKey && lastClick) {
@@ -609,15 +538,4 @@ class DataPointSelectorController {
     }
 }
 
-export default {
-    template: dataPointSelectorTemplate,
-    controller: DataPointSelectorController,
-    require: {
-        ngModelCtrl: 'ngModel'
-    },
-    bindings: {
-        localStorageKey: '<?',
-        selectMultiple: '<?',
-        showClear: '<?'
-    }
-};
+export default TableController;

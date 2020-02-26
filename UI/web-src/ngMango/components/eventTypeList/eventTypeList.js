@@ -5,7 +5,7 @@
 
 import eventTypeListTemplate from './eventTypeList.html';
 import './eventTypeList.css';
-import MultiMap from '../../services/MultiMap';
+import MultiMap from '../../classes/MultiMap';
 
 // TODO collapse all by default when rendering?
 // TODO cache results for type and subtype

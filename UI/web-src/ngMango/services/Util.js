@@ -5,8 +5,6 @@
 
 import angular from 'angular';
 import moment from 'moment-timezone';
-import MultiMap from './MultiMap';
-import BoundedMap from './BoundedMap';
 
 /**
 * @ngdoc service
@@ -1020,15 +1018,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
                 return map.set(item[keyProperty], item), map;
             }, map);
         },
-        
-        get MultiMap() {
-            return MultiMap;
-        },
-        
-        get BoundedMap() {
-            return BoundedMap;
-        },
-        
+
         freezeAll(array) {
             array.forEach(a => Object.freeze(a));
             return Object.freeze(array);
@@ -1097,6 +1087,14 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
             const claims = parts[1];
             const jsonStr = atob(claims);
             return JSON.parse(jsonStr);
+        },
+
+        setDifference(a, b) {
+            const diff = new Set(a);
+            for (let o of b) {
+                diff.delete(o);
+            }
+            return diff;
         }
     };
 

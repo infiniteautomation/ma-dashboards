@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-import MultiMap from './MultiMap';
+import MultiMap from '../classes/MultiMap';
 
 eventTypeProvider.$inject = [];
 function eventTypeProvider() {
