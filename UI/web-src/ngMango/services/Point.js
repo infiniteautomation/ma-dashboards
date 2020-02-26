@@ -503,7 +503,7 @@ function dataPointProvider() {
                     pending: true
                 };
                 
-                action().then(data => {
+                result.promise = action().then(data => {
                     delete result.pending;
                     result.success = true;
                     result.data = data;
