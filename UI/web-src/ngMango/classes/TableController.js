@@ -11,16 +11,15 @@ class Column {
         Object.assign(this, options);
 
         this.property = this.name.split('.');
-        this.columnName = this.name;
         this.filterable = options.hasOwnProperty('filterable') ? !!options.filterable : true;
         this.sortable = options.hasOwnProperty('sortable') ? !!options.sortable : true;
     }
     
     applyFilter(queryBuilder) {
         if (this.filter === '!' || this.filter === '!*') {
-            queryBuilder.eq(this.columnName, null);
+            queryBuilder.eq(this.name, null);
         } else if (this.filter === '*') {
-            queryBuilder.ne(this.columnName, null);
+            queryBuilder.ne(this.name, null);
         } else if (this.filter) {
             let filter = this.filter;
             
@@ -38,24 +37,24 @@ class Column {
                 try {
                     numericValue = Number.parseFloat(filter);
                 } catch (e) {}
-                queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, numericValue);
+                queryBuilder[isNot ? 'ne' : 'eq'](this.name, numericValue);
             } else if (this.boolean) {
                 const booleanValue = ['true', 'y', '1'].includes(filter.toLowerCase());
-                queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, booleanValue);
+                queryBuilder[isNot ? 'ne' : 'eq'](this.name, booleanValue);
             } else if (!exact && (filter.includes('*') || filter.includes('?'))) {
                 if (isNot) {
-                    queryBuilder.not().match(this.columnName, filter).up();
+                    queryBuilder.not().match(this.name, filter).up();
                 } else {
-                    queryBuilder.match(this.columnName, filter);
+                    queryBuilder.match(this.name, filter);
                 }
             } else if (!exact && !this.exact) {
                 if (isNot) {
-                    queryBuilder.not().match(this.columnName, `*${filter}*`).up();
+                    queryBuilder.not().match(this.name, `*${filter}*`).up();
                 } else {
-                    queryBuilder.match(this.columnName, `*${filter}*`);
+                    queryBuilder.match(this.name, `*${filter}*`);
                 }
             } else {
-                queryBuilder[isNot ? 'ne' : 'eq'](this.columnName, filter);
+                queryBuilder[isNot ? 'ne' : 'eq'](this.name, filter);
             }
         }
     }
@@ -87,7 +86,6 @@ class TableController {
         this.selectedItems = new Map();
 
         this.loadSettings();
-        this.resetColumns();
     }
 
     $onInit() {
@@ -118,14 +116,19 @@ class TableController {
                 updateQueueLength = this.updateQueue.length;
             }
         }, 500, null, false);
-
-        this.getItems();
         
         // closes the options menu if this user table is encapsulated in a maDropDown and it closes
         this.$scope.$on('maDropDownClose', event => {
             if (this.mdMenuCtrl) {
                 this.mdMenuCtrl.close(false, {closeAll: true});
             }
+        });
+        
+        // have to load columns first as they may have saved filters which we need to apply before
+        // loading the items
+        this.loadColumns().then(() => {
+            this.selectColumns();
+            this.getItems();
         });
     }
     
@@ -183,22 +186,26 @@ class TableController {
         this.settings.filters = {};
         this.selectedColumns.forEach(c => {
             if (c.filter != null) {
-                this.settings.filters[c.columnName] = c.filter;
+                this.settings.filters[c.name] = c.filter;
             }
         });
         
         this.localStorageService.set(this.localStorageKey, this.settings);
     }
 
-    resetColumns() {
-        const filters = this.settings.filters || {};
-        this.columns = this.defaultColumns.map((column, i) => {
-            return new Column(Object.assign({
-                order: i,
-                filter: filters[column.name] || null
-            }, column));
+    loadColumns() {
+        return this.$q.resolve().then(() => {
+            const filters = this.settings.filters || {};
+            this.columns = this.defaultColumns.map((column, i) => {
+                return this.createColumn(Object.assign({
+                    order: i,
+                    filter: filters[column.name] || null
+                }, column));
+            });
         });
-
+    }
+    
+    selectColumns() {
         const selected = Array.isArray(this.settings.selectedColumns) ? this.settings.selectedColumns : [];
         const deselected = Array.isArray(this.settings.deselectedColumns) ? this.settings.deselectedColumns : [];
         this.selectedColumns = this.columns.filter(c => selected.includes(c.name) || c.selectedByDefault && !deselected.includes(c.name));
@@ -229,7 +236,7 @@ class TableController {
         const queryBuilder = this.resourceService.buildQuery();
         
         this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
-
+        
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
         // ensure the order of the results are deterministic by adding sort on id
         queryBuilder.sort(...sortArray, 'id');
@@ -334,7 +341,7 @@ class TableController {
         // c) no sort
         
         const firstSort = this.sort[0];
-        if (firstSort && firstSort.columnName === column.columnName) {
+        if (firstSort && firstSort.columnName === column.name) {
             if (!firstSort.descending) {
                 // second click
                 firstSort.descending = true;
@@ -344,9 +351,9 @@ class TableController {
             }
         } else {
             // first click
-            this.sort = this.sort.filter(item => item.columnName !== column.columnName);
+            this.sort = this.sort.filter(item => item.columnName !== column.name);
             
-            this.sort.unshift({columnName: column.columnName});
+            this.sort.unshift({columnName: column.name});
             if (this.sort.length > 3) {
                 this.sort.pop();
             }
@@ -378,7 +385,7 @@ class TableController {
         let queryChanged;
 
         nonSelected.forEach(c => {
-            const index = this.sort.findIndex(s => s.columnName === c.columnName);
+            const index = this.sort.findIndex(s => s.columnName === c.name);
             if (index >= 0) {
                 this.sort.splice(index, 1);
                 queryChanged = true;
@@ -496,7 +503,7 @@ class TableController {
     }
     
     getSelectedColumnsModel(column) {
-        return this.maUtil.createBooleanModel(this.selectedColumns, column, a => a.name);
+        return this.maUtil.createBooleanModel(this.selectedColumns, column, 'name');
     }
 
     cancelSelect() {
@@ -536,6 +543,10 @@ class TableController {
     openMenu(event, mdMenuCtrl) {
         this.mdMenuCtrl = mdMenuCtrl;
         this.mdMenuCtrl.open(event);
+    }
+    
+    createColumn(options) {
+        return new Column(options);
     }
 }
 

@@ -61,13 +61,13 @@
                                     <md-menu>
                                         <md-button ng-click="$mdMenu.open($event)"><span ma-tr="ui.app.selectColumns"></span></md-button>
                                         <md-menu-content width="3" class="ma-data-point-selector ma-checkbox-menu" md-colors="::{background: 'background-hue-2'}">
-                                            <md-menu-item ng-repeat="column in $ctrl.columns track by column.name">
+                                            <md-menu-item ng-repeat="column in $ctrl.nonTagColumns track by column.name">
                                                 <md-button ng-init="model = $ctrl.getSelectedColumnsModel(column)"
                                                         ng-click="model.value = !model.value; $ctrl.selectedColumnsChanged()" md-prevent-menu-close
-                                                        ng-disabled="model.value && $ctrl.selectedColumns.length === 1 && $ctrl.selectedTags.length === 0">
+                                                        ng-disabled="model.value && $ctrl.selectedColumns.length === 1">
                                                     <md-checkbox ng-click="$event.stopPropagation()" md-prevent-menu-close md-no-ink="true"
                                                             ng-model="model.value" ng-change="$ctrl.selectedColumnsChanged()"
-                                                            ng-disabled="model.value && $ctrl.selectedColumns.length === 1 && $ctrl.selectedTags.length === 0">
+                                                            ng-disabled="model.value && $ctrl.selectedColumns.length === 1">
                                                         <span ma-tr="{{column.label}}"></span>
                                                     </md-checkbox>
                                                 </md-button>
@@ -80,14 +80,14 @@
                                     <md-menu>
                                         <md-button ng-click="$mdMenu.open($event)"><span ma-tr="ui.app.selectTags"></span></md-button>
                                         <md-menu-content width="3" class="ma-data-point-selector" md-colors="::{background: 'background-hue-2'}">
-                                            <md-menu-item ng-repeat="tag in $ctrl.availableTags track by tag.name">
-                                                <md-button ng-init="model = $ctrl.getSelectedTagsModel(tag)"
-                                                        ng-click="model.value = !model.value; $ctrl.selectedTagsChanged()" md-prevent-menu-close
-                                                        ng-disabled="model.value && $ctrl.selectedColumns.length === 0 && $ctrl.selectedTags.length === 1">
+                                            <md-menu-item ng-repeat="column in $ctrl.tagColumns track by column.name">
+                                                <md-button ng-init="model = $ctrl.getSelectedColumnsModel(column)"
+                                                        ng-click="model.value = !model.value; $ctrl.selectedColumnsChanged()" md-prevent-menu-close
+                                                        ng-disabled="model.value && $ctrl.selectedColumns.length === 1">
                                                     <md-checkbox ng-click="$event.stopPropagation()" md-prevent-menu-close md-no-ink="true"
-                                                            ng-model="model.value" ng-change="$ctrl.selectedTagsChanged()"
-                                                            ng-disabled="model.value && $ctrl.selectedColumns.length === 0 && $ctrl.selectedTags.length === 1">
-                                                        <span ng-bind="tag.name"></span>
+                                                            ng-model="model.value" ng-change="$ctrl.selectedColumnsChanged()"
+                                                            ng-disabled="model.value && $ctrl.selectedColumns.length === 1">
+                                                        <span ng-bind="column.tagKey"></span>
                                                     </md-checkbox>
                                                 </md-button>
                                             </md-menu-item>
@@ -99,19 +99,14 @@
                     </md-menu-bar>
 
                 </div>
-                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-click="column.sortable && $ctrl.sortBy(column)" ng-if="column.name !== 'value'" tabindex="1">
-                    <span ma-tr="{{column.label}}"></span>
-                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="column.sortable && $ctrl.sort[0].columnName === column.columnName" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>
+                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-click="column.sortable && $ctrl.sortBy(column)" tabindex="1">
+                    <span ma-tr="{{column.label}}" ma-tr-args="column.labelArgs"></span>
+                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="column.sortable && $ctrl.sort[0].columnName === column.name" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>
                 </div>
-                <div ng-repeat="tag in $ctrl.selectedTags track by tag.name" ng-click="$ctrl.sortBy(tag)" tabindex="1">
-                    <span ma-tr="{{tag.label}}" ma-tr-args="tag.labelArgs"></span>
-                    <md-icon class="ma-sort-icon ma-disable-animate" ng-if="$ctrl.sort[0].columnName === tag.columnName" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>
-                </div>
-                <div ma-tr="ui.app.pointValue" ng-if="$ctrl.showPointValueColumn"></div>
             </div>
             <div class="ma-virtual-repeat-table-row" ng-if="$ctrl.showFilters" class="ma-filter-header">
                 <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
-                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-if="column.name !== 'value'">
+                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
                     <md-input-container md-no-float="true" ng-if="column.filterable">
                         <input ng-model="column.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
                         <md-button ng-show="!!column.filter" class="ma-input-button md-icon-button" ng-click="column.filter = null; $ctrl.filterChanged()">
@@ -119,37 +114,23 @@
                         </md-button>
                     </md-input-container>
                 </div>
-                <div ng-repeat="tag in $ctrl.selectedTags track by tag.name">
-                    <md-input-container md-no-float="true">
-                        <input ng-model="tag.filter" ng-model-options="{debounce: 1000}" ng-change="$ctrl.filterChanged()" ma-tr="ui.app.filter">
-                        <md-button ng-show="!!tag.filter" class="ma-input-button md-icon-button" ng-click="tag.filter = null; $ctrl.filterChanged()">
-                            <md-icon>clear</md-icon>
-                        </md-button>
-                    </md-input-container>
-                </div>
-                <div ng-if="$ctrl.showPointValueColumn"><!-- Spacer for point value column --></div>
             </div>
-            <md-progress-linear ng-show="$ctrl.pointsPromise" md-mode="indeterminate"></md-progress-linear>
+            <md-progress-linear ng-show="$ctrl.itemsPromise" md-mode="indeterminate"></md-progress-linear>
         </div>
-        <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.pointsPromise" class="ma-no-items-to-list" ma-tr="ui.app.noPointsToDisplay"></div>
+        <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.itemsPromise" class="ma-no-items-to-list" ma-tr="ui.app.noPointsToDisplay"></div>
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
-            <div class="ma-virtual-repeat-table-row ma-data-point-row" md-virtual-repeat="point in $ctrl" md-on-demand
-                    ng-class="{'ma-row-loading': point == null, 'ma-data-point-selected': $ctrl.selectedPoints.has(point.xid)}"
-                    ng-click="$ctrl.rowClicked($event, point, $index)">
+            <div class="ma-virtual-repeat-table-row ma-item-row" md-virtual-repeat="item in $ctrl" md-on-demand
+                    ng-class="{'ma-row-loading': item == null, 'ma-item-selected': $ctrl.selectedPoints.has(item.xid)}"
+                    ng-click="$ctrl.rowClicked($event, item, $index)">
                 <div class="ma-checkbox-column">
-                    <md-checkbox ng-if="$ctrl.selectMultiple" tabindex="-1" ng-checked="$ctrl.selectedPoints.has(point.xid)" md-no-ink="true"></md-checkbox>
+                    <md-checkbox ng-if="$ctrl.selectMultiple" tabindex="-1" ng-checked="$ctrl.selectedPoints.has(item.xid)" md-no-ink="true"></md-checkbox>
                 </div>
     
-                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name" ng-if="column.name !== 'value'">
-                    <span ng-class="{'ma-empty-null': $ctrl.getCellValue(point, column.property) == null}" ng-bind="$ctrl.getCellValue(point, column.property) | maDisplayNull"></span>
-                </div>
-                
-                <div ng-repeat="tag in $ctrl.selectedTags track by tag.name">
-                    <span ng-class="{'ma-empty-null': point.tags[tag.name] == null}" ng-bind="point.tags[tag.name] | maDisplayNull"></span>
-                </div>
-                
-                <div class="ma-point-value" ng-if="$ctrl.showPointValueColumn">
-                    <ma-point-value point="point"></ma-point-value>
+                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
+                    <span ng-if="column.name !== 'value'"
+                        ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column.property) == null}"
+                        ng-bind="$ctrl.getCellValue(item, column.property) | maDisplayNull"></span>
+                    <ma-point-value ng-if="column.name === 'value'" point="item"></ma-point-value>
                 </div>
             </div>
         </div>
