@@ -211,9 +211,9 @@ function dataPointProvider() {
      * Provides service for getting list of points and create, update, delete
      */
     dataPointFactory.$inject = ['$resource', '$http', '$timeout', 'maUtil', 'maUser', 'maTemporaryRestResource', 'maRqlBuilder', 'maRestResource',
-        '$templateCache', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', '$injector', '$rootScope'];
+        '$templateCache', 'MA_ROLLUP_TYPES', 'MA_CHART_TYPES', 'MA_SIMPLIFY_TYPES', '$injector', '$rootScope', '$q'];
     function dataPointFactory($resource, $http, $timeout, Util, User, TemporaryRestResource, RqlBuilder, RestResource,
-            $templateCache, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, $injector, $rootScope) {
+            $templateCache, MA_ROLLUP_TYPES, MA_CHART_TYPES, MA_SIMPLIFY_TYPES, $injector, $rootScope, $q) {
 
         types.forEach(type => {
             // put the templates in the template cache so we can ng-include them
@@ -511,6 +511,8 @@ function dataPointProvider() {
                     $timeout(() => {
                         delete result.success;
                     }, holdTimeout);
+                    
+                    return result;
                 }, data => {
                     delete result.pending;
                     result.error = data;
@@ -519,6 +521,8 @@ function dataPointProvider() {
                     $timeout(() => {
                         delete result.error;
                     }, holdTimeout);
+                    
+                    return $q.reject(result);
                 });
                 
                 return result;
