@@ -37,9 +37,14 @@ class UsersPageController {
         this.user = user;
         this.$state.params.username = this.user && !this.user.isNew() && this.user.username || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
+        
+        if (user != null && !this.showDialog) {
+            this.showDialog = {};
+        }
     }
     
     userEditorClosed() {
+        delete this.showDialog;
         this.editUser(null);
         this.selectedTab = 0;
     }

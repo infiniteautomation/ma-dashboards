@@ -7,17 +7,17 @@
     </md-button>
 </div>
 
-<ma-user-table ng-model="$ctrl.selectedUsers" ng-change="$ctrl.updateUrl()"
-    show-clear="false" select-multiple="true" row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
+<ma-user-table ng-model="$ctrl.selectedUsers" select-multiple="true"
+    row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
 
-<ma-dialog show-dialog="$ctrl.user" on-hide="$ctrl.userEditorClosed()" on-cancel="$ctrl.userEditorClosed()">
+<ma-dialog show-dialog="$ctrl.showDialog" on-hide="$ctrl.userEditorClosed()" on-cancel="$ctrl.userEditorClosed()">
     <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <span ng-if="!$ctrl.user.isNew()" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
                 <span ng-if="$ctrl.user.isNew()" ma-tr="ui.app.editNewUser"></span>
                 <div flex></div>
-                <ma-user-actions-menu user="$ctrl.user" on-copy="$ctrl.user = $user; $ctrl.updateUrl()"></ma-user-actions-menu>
+                <ma-user-actions-menu user="$ctrl.user" on-copy="$ctrl.editUser($user)"></ma-user-actions-menu>
                 <md-button class="md-icon-button" ng-click="$dialog.cancel()">
                     <md-icon>close</md-icon>
                 </md-button>
