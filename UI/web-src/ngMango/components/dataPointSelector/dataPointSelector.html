@@ -12,7 +12,7 @@
                             <md-menu-content width="3" class="ma-data-point-selector" md-colors="::{background: 'background-hue-2'}">
                                 <md-menu-item ng-if-start="$ctrl.selectMultiple">
                                     <md-button ng-disabled="true">
-                                        <span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedPoints.size]"></span>
+                                        <span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.selectedItems.size]"></span>
                                     </md-button>
                                 </md-menu-item>
 
@@ -120,10 +120,10 @@
         <div ng-if="$ctrl.pages.$total === 0 && !$ctrl.itemsPromise" class="ma-no-items-to-list" ma-tr="ui.app.noPointsToDisplay"></div>
         <div class="ma-virtual-repeat-table-body" md-virtual-repeat-container>
             <div class="ma-virtual-repeat-table-row ma-item-row" md-virtual-repeat="item in $ctrl" md-on-demand
-                    ng-class="{'ma-row-loading': item == null, 'ma-item-selected': $ctrl.selectedPoints.has(item.xid)}"
+                    ng-class="{'ma-row-loading': item == null, 'ma-item-selected': $ctrl.selectedItems.has(item.xid)}"
                     ng-click="$ctrl.rowClicked({$event: $event, $item: item, $index: $index, $tableCtrl: $ctrl})">
                 <div class="ma-checkbox-column">
-                    <md-checkbox ng-if="$ctrl.selectMultiple" tabindex="-1" ng-checked="$ctrl.selectedPoints.has(item.xid)" md-no-ink="true"></md-checkbox>
+                    <md-checkbox ng-if="$ctrl.selectMultiple" tabindex="-1" ng-checked="$ctrl.selectedItems.has(item.xid)" md-no-ink="true"></md-checkbox>
                 </div>
     
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
