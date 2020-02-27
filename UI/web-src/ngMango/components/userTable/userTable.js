@@ -57,6 +57,7 @@ export default {
         localStorageKey: '<?',
         selectMultiple: '<?',
         showClear: '<?',
-        dateFormat: '@?'
+        dateFormat: '@?',
+        rowClicked: '&?'
     }
 };

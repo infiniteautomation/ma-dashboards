@@ -550,8 +550,12 @@ class TableController {
     cancelSelect() {
         delete this.pages.mouseDown;
     }
+    
+    rowClicked({$event, $item, $index}) {
+        this.selectRow($event, $item, $index);
+    }
 
-    rowClicked(event, item, index) {
+    selectRow(event, item, index) {
         const itemId = item[this.idProperty];
         const deselect = this.selectedItems.has(itemId);
         const lastClick = this.pages.mouseDown;

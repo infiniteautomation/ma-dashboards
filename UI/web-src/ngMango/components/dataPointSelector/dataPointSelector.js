@@ -78,6 +78,7 @@ export default {
     bindings: {
         localStorageKey: '<?',
         selectMultiple: '<?',
-        showClear: '<?'
+        showClear: '<?',
+        rowClicked: '&?'
     }
 };
