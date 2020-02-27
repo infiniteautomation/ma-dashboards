@@ -13,7 +13,7 @@ const defaultColumns = [
     {name: 'dataType', label: 'dsEdit.pointDataType', exact: true},
     {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
     {name: 'name', label: 'common.name', selectedByDefault: true},
-    {name: 'enabled', label: 'common.enabled', boolean: true},
+    {name: 'enabled', label: 'common.enabled', type: 'boolean'},
     {name: 'readPermission', label: 'pointEdit.props.permission.read'},
     {name: 'setPermission', label: 'pointEdit.props.permission.set'},
     {name: 'unit', label: 'pointEdit.props.unit', filterable: false, sortable: false},
@@ -22,8 +22,8 @@ const defaultColumns = [
     {name: 'rollup', label: 'common.rollup', exact: true},
     {name: 'integralUnit', label: 'pointEdit.props.integralUnit', filterable: false, sortable: false},
     {name: 'simplifyType', label: 'pointEdit.props.simplifyType', filterable: false, sortable: false},
-    {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', numeric: true, filterable: false, sortable: false},
-    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', numeric: true, filterable: false, sortable: false},
+    {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', type: 'number', filterable: false, sortable: false},
+    {name: 'simplifyTarget', label: 'pointEdit.props.simplifyTarget', type: 'number', filterable: false, sortable: false},
     {name: 'value', label: 'ui.app.pointValue', filterable: false, sortable: false, order: 1000}
 ];
 
@@ -59,7 +59,8 @@ class DataPointSelectorController extends TableController {
                     label: 'ui.app.tag',
                     labelArgs: [k],
                     filter: filters[name] || null,
-                    order: 500 + i
+                    order: 500 + i,
+                    dateFormat: this.dateFormat
                 });
             })
             this.nonTagColumns = this.columns;

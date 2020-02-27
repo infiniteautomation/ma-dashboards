@@ -16,52 +16,70 @@ class Column {
         this.sortable = options.hasOwnProperty('sortable') ? !!options.sortable : true;
     }
     
+    parseBoolean(value) {
+        const lower = value.toLowerCase();
+        if (['true', 'y', '1'].includes(lower)) {
+            return true;
+        } else if (['false', 'n', '0'].includes(lower)) {
+            return false;
+        }
+        return value;
+    }
+    
     applyFilter(queryBuilder) {
-        if (this.filter === '!' || this.filter === '!*') {
-            queryBuilder.eq(this.name, null);
-        } else if (this.filter === '*') {
-            queryBuilder.ne(this.name, null);
-        } else if (this.filter) {
-            let filter = this.filter;
-            
-            const isNot = filter.startsWith('!');
-            if (isNot) {
-                filter = filter.slice(1);
-            }
-            const exact = filter.startsWith('=');
-            if (exact) {
-                filter = filter.slice(1);
-            }
-            
-            if (this.numeric) {
-                let numericValue = null;
-                try {
-                    numericValue = Number.parseFloat(filter);
-                } catch (e) {}
-                queryBuilder[isNot ? 'ne' : 'eq'](this.name, numericValue);
-            } else if (this.boolean) {
-                const booleanValue = ['true', 'y', '1'].includes(filter.toLowerCase());
-                queryBuilder[isNot ? 'ne' : 'eq'](this.name, booleanValue);
-            } else if (this.array) {
-                if (isNot) queryBuilder.not();
-                queryBuilder.contains(this.name, filter);
-                if (isNot) queryBuilder.up();
-            } else if (!exact && (filter.includes('*') || filter.includes('?'))) {
-                if (isNot) {
-                    queryBuilder.not().match(this.name, filter).up();
-                } else {
-                    queryBuilder.match(this.name, filter);
+        if (!this.filter) return;
+        
+        const match = /^(!)?(=|>=|<=|>|<)?(.*)$/.exec(this.filter);
+        let invert = !!match[1];
+        let op = match[2];
+        let value = match[3];
+        
+        if (value === 'null') {
+            value = null;
+        } else {
+            try {
+                switch(this.type) {
+                case 'number': value = Number.parseFloat(value); break;
+                case 'boolean': value = this.parseBoolean(value); break;
+                case 'date': value = moment(value, [this.dateFormat, moment.ISO_8601]).valueOf(); break;
                 }
-            } else if (!exact && !this.exact) {
-                if (isNot) {
-                    queryBuilder.not().match(this.name, `*${filter}*`).up();
-                } else {
-                    queryBuilder.match(this.name, `*${filter}*`);
-                }
-            } else {
-                queryBuilder[isNot ? 'ne' : 'eq'](this.name, filter);
+            } catch (e) {
             }
         }
+        
+        if (!op && this.exact) {
+            op = '=';
+        }
+        
+        switch(op) {
+        case  '>': op = 'gt'; break;
+        case '>=': op = 'ge'; break;
+        case  '<': op = 'lt'; break;
+        case '<=': op = 'le'; break;
+        case  '=': op = 'eq'; break;
+        default:
+            // no operator provided by user, fall back to default for type
+            if (this.type === 'array') {
+                op = 'contains';
+            } else if (value && (this.type === 'string' || !this.type)) {
+                op = 'match';
+                const hasWildcard = value.includes('*') || value.includes('?');
+                if (!hasWildcard) {
+                    value = `*${value}*`;
+                }
+            } else {
+                op = 'eq';
+            }
+        }
+        
+        if (invert && op === 'eq') {
+            op = 'ne';
+            invert = false;
+        }
+        
+        if (invert) queryBuilder.not();
+        queryBuilder[op](this.name, value);
+        if (invert) queryBuilder.up();
     }
 }
 
@@ -69,6 +87,8 @@ class TableController {
     static get $$ngIsClass() { return true; }
 
     constructor(options) {
+        this.dateFormat = 'lll';
+        
         Object.assign(this, options);
 
         const $injector = this.$injector;
@@ -204,7 +224,8 @@ class TableController {
             this.columns = this.defaultColumns.map((column, i) => {
                 return this.createColumn(Object.assign({
                     order: i,
-                    filter: filters[column.name] || null
+                    filter: filters[column.name] || null,
+                    dateFormat: this.dateFormat
                 }, column));
             });
         });
@@ -448,8 +469,8 @@ class TableController {
             return result;
         }
         
-        if (column.date) {
-            return moment(result).format('ll LT')
+        if (column.type === 'date') {
+            return moment(result).format(this.dateFormat)
         }
         
         return result;

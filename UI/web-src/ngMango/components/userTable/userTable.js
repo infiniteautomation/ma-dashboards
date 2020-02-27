@@ -14,19 +14,19 @@ const defaultColumns = [
     {name: 'phone', label: 'users.phone'},
     {name: 'organization', label: 'users.organization'},
     {name: 'organizationalRole', label: 'users.organizationalRole'},
-    {name: 'permissions', label: 'users.permissions', sortable: false, array: true},
-    {name: 'disabled', label: 'common.disabled', boolean: true},
-    {name: 'muted', label: 'users.muted', boolean: true},
-    {name: 'created', label: 'ui.app.userCreated', date: true, filterable: false},
-    {name: 'emailVerified', label: 'ui.app.userEmailVerified', date: true, filterable: false},
-    {name: 'lastLogin', label: 'ui.app.lastLoginStatic', date: true, filterable: false},
-    {name: 'lastPasswordChange', label: 'ui.app.lastPasswordChangeStatic', date: true, filterable: false},
-    {name: 'passwordLocked', label: 'users.passwordLocked', filterable: false, sortable: false},
+    {name: 'permissions', label: 'users.permissions', sortable: false, type: 'array'},
+    {name: 'disabled', label: 'common.disabled', type: 'boolean'},
+    {name: 'muted', label: 'users.muted', type: 'boolean'},
+    {name: 'created', label: 'ui.app.userCreated', type: 'date'},
+    {name: 'emailVerified', label: 'ui.app.userEmailVerified', type: 'date'},
+    {name: 'lastLogin', label: 'ui.app.lastLoginStatic', type: 'date'},
+    {name: 'lastPasswordChange', label: 'ui.app.lastPasswordChangeStatic', type: 'date'},
+    {name: 'passwordLocked', label: 'users.passwordLocked', filterable: false, sortable: false, type: 'boolean'},
     {name: 'locale', label: 'users.locale'},
     {name: 'timezone', label: 'users.timezone'},
     {name: 'homeUrl', label: 'users.homeURL'},
     {name: 'receiveAlarmEmails', label: 'users.receiveAlarmEmails', exact: true},
-    {name: 'receiveOwnAuditEvents', label: 'users.receiveOwnAuditEvents', boolean: true}
+    {name: 'receiveOwnAuditEvents', label: 'users.receiveOwnAuditEvents', type: 'boolean'}
 ];
 
 class UserTableController extends TableController {
@@ -56,6 +56,7 @@ export default {
     bindings: {
         localStorageKey: '<?',
         selectMultiple: '<?',
-        showClear: '<?'
+        showClear: '<?',
+        dateFormat: '@?'
     }
 };
