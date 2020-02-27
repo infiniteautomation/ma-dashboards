@@ -52,8 +52,8 @@ class UserActionsMenuController {
 
         this.maDialogHelper.prompt({
             event,
-            shortTr: 'login.emailVerification.enterEmailAddress',
-            longTr: 'login.emailVerification.enterEmailAddressLong',
+            shortTr: ['login.emailVerification.enterEmailAddress', this.user.username],
+            longTr: ['login.emailVerification.enterEmailAddressLong', this.user.username],
             placeHolderTr: 'login.email',
             initialValue: this.user.email,
             rejectWithCancelled: true
@@ -71,8 +71,8 @@ class UserActionsMenuController {
     }
     
     copyUser(event) {
-        const copy = this.user.copy(true);
         if (typeof this.onCopy === 'function') {
+            const copy = this.user.copy(true);
             this.onCopy({$event: event, $user: copy});
         }
     }
