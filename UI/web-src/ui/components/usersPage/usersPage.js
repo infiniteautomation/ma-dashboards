@@ -20,31 +20,40 @@ class UsersPageController {
             this.User.get({username: this.$state.params.username}).$promise.then(user => {
                 // causes a stack overflow when we try and deep merge this object later
                 delete user.$promise;
-                this.user = user;
+                this.editUser(user);
             }, () => {
-                this.user = null;
-                this.updateUrl();
+                this.editUser(null);
             });
         } else {
-            this.user = null;
-            this.updateUrl();
+            this.editUser(null);
         }
     }
+
+    addUser($event) {
+        this.editUser(new this.User());
+    }
     
-    updateUrl() {
+    editUser(user) {
+        this.user = user;
         this.$state.params.username = this.user && !this.user.isNew() && this.user.username || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
     }
     
-    addUser($event) {
-        this.user = new this.User();
-        this.updateUrl();
+    userEditorClosed() {
+        this.editUser(null);
+        this.selectedTab = 0;
     }
     
-    userEditorClosed() {
-        this.user = null;
-        this.selectedTab = 0;
-        this.updateUrl();
+    deleteUsers($event) {
+        
+    }
+    
+    rowClicked(event, item, index, tableCtrl) {
+        if (event.target.classList.contains('ma-checkbox-column')) {
+            tableCtrl.selectRow(event, item, index);
+        } else {
+            this.editUser(item);
+        }
     }
 }
 

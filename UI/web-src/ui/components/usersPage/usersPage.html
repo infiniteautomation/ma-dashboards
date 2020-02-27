@@ -1,10 +1,14 @@
-<div>
+<div class="ma-margin-bottom">
     <md-button class="md-raised" ng-click="$ctrl.addUser($event)">
-        <md-icon>person_add</md-icon> <span ma-tr="users.add"></span>
+        <md-icon>person_add</md-icon>&nbsp;<span ma-tr="users.add"></span>
+    </md-button>
+    <md-button class="md-raised md-warn" ng-click="$ctrl.deleteUsers($event)" ng-disabled="!$ctrl.selectedUsers.length">
+        <md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span>
     </md-button>
 </div>
 
-<ma-user-table ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()" show-clear="false"></ma-user-table>
+<ma-user-table ng-model="$ctrl.selectedUsers" ng-change="$ctrl.updateUrl()"
+    show-clear="false" select-multiple="true" row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
 
 <ma-dialog show-dialog="$ctrl.user" on-hide="$ctrl.userEditorClosed()" on-cancel="$ctrl.userEditorClosed()">
     <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
