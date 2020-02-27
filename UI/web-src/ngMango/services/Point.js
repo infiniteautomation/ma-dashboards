@@ -688,23 +688,32 @@ function dataPointProvider() {
             hasSetPermission(user) {
                 return user && (this.hasEditPermission(user) || user.hasAnyRole(this.setPermission, true));
             },
-            
+
             subscribeToEvents($scope) {
+                // prevents a circular dependency
+                const Events = $injector.get('maEvents');
+                
                 if (!this.eventListenerScopes) {
                     this.eventListenerScopes = new Set();
                 }
                 if (!this.eventListenerScopes.size) {
-                    // prevents a circular dependency
-                    const Events = $injector.get('maEvents');
                     this.activeEvents = [];
                     
-                    Events.buildQuery()
+                    this.activeEventsPromise = Events.buildQuery()
                         .eq('eventType', 'DATA_POINT')
                         .eq('referenceId1', this.id)
                         .eq('active', true)
-                        .query().then(events => {
-                            this.activeEvents.push(...events);
-                        });
+                        .query();
+                    
+                    this.activeEventsPromise.then(events => {
+                        this.activeEvents.push(...events);
+                    }, error => {
+                        if (error && error.xhrStatus === 'abort') {
+                            //cancelled request, ignore
+                        } else {
+                            return $q.reject(error);
+                        }
+                    });
 
                     this.eventListenerDeregister = Events.notificationManager.subscribe((event, mangoEvent) => {
                         if (mangoEvent.eventType.eventType !== 'DATA_POINT' || mangoEvent.eventType.referenceId1 !== this.id) return;
@@ -736,6 +745,12 @@ function dataPointProvider() {
                         if (!this.eventListenerScopes.size) {
                             this.eventListenerDeregister();
                             delete this.eventListenerDeregister;
+                            if (this.activeEventsPromise) {
+                                // prevents the query completing and attempting to push
+                                // to active events after it has been deleted
+                                Events.cancelRequest(this.activeEventsPromise);
+                                delete this.activeEventsPromise;
+                            }
                             delete this.activeEvents;
                             delete this.eventListenerScopes;
                         }
@@ -751,7 +766,7 @@ function dataPointProvider() {
             get() { return this.formatTags(); },
             set(value) { }
         });
-        
+
         Object.defineProperty(Point.prototype, 'isEnabled', {
             get() { return this.enabled; },
             set(value) { this.enable(value); }

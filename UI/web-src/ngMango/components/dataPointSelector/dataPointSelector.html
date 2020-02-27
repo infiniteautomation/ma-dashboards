@@ -130,7 +130,7 @@
                     <span ng-if="column.name !== 'value'"
                         ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column) == null}"
                         ng-bind="$ctrl.getCellValue(item, column) | maDisplayNull"></span>
-                    <ma-point-value ng-if="column.name === 'value'" point="item"></ma-point-value>
+                    <ma-point-value ng-if="column.name === 'value'" point="item" hide-event-indicator="true"></ma-point-value>
                 </div>
             </div>
         </div>
