@@ -26,6 +26,13 @@ class Column {
         return value;
     }
     
+    parseEnum(value) {
+        if (/^-?\d+$/.exec(value)) {
+            return Number.parseInt(value, 10);
+        }
+        return value;
+    }
+    
     applyFilter(queryBuilder) {
         if (!this.filter) return;
         
@@ -40,17 +47,15 @@ class Column {
             try {
                 switch(this.type) {
                 case 'number': value = Number.parseFloat(value); break;
+                case 'integer': value = Number.parseInt(value, 10); break;
                 case 'boolean': value = this.parseBoolean(value); break;
                 case 'date': value = moment(value, [this.dateFormat, moment.ISO_8601]).valueOf(); break;
+                case 'enum': value = this.parseEnum(value); break;
                 }
             } catch (e) {
             }
         }
-        
-        if (!op && this.exact) {
-            op = '=';
-        }
-        
+
         switch(op) {
         case  '>': op = 'gt'; break;
         case '>=': op = 'ge'; break;

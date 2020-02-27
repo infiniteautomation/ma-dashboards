@@ -10,7 +10,7 @@ import './dataPointSelector.css';
 const defaultColumns = [
     {name: 'xid', label: 'ui.app.xidShort'},
     {name: 'dataSourceName', label: 'ui.app.dataSource'},
-    {name: 'dataType', label: 'dsEdit.pointDataType', exact: true},
+    {name: 'dataType', label: 'dsEdit.pointDataType', type: 'enum'},
     {name: 'deviceName', label: 'common.deviceName', selectedByDefault: true},
     {name: 'name', label: 'common.name', selectedByDefault: true},
     {name: 'enabled', label: 'common.enabled', type: 'boolean'},
@@ -19,7 +19,7 @@ const defaultColumns = [
     {name: 'unit', label: 'pointEdit.props.unit', filterable: false, sortable: false},
     {name: 'chartColour', label: 'pointEdit.props.chartColour', filterable: false, sortable: false},
     {name: 'plotType', label: 'pointEdit.plotType', filterable: false, sortable: false},
-    {name: 'rollup', label: 'common.rollup', exact: true},
+    {name: 'rollup', label: 'common.rollup', type: 'enum'},
     {name: 'integralUnit', label: 'pointEdit.props.integralUnit', filterable: false, sortable: false},
     {name: 'simplifyType', label: 'pointEdit.props.simplifyType', filterable: false, sortable: false},
     {name: 'simplifyTolerance', label: 'pointEdit.props.simplifyTolerance', type: 'number', filterable: false, sortable: false},

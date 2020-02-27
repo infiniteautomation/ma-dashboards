@@ -25,7 +25,7 @@ const defaultColumns = [
     {name: 'locale', label: 'users.locale'},
     {name: 'timezone', label: 'users.timezone'},
     {name: 'homeUrl', label: 'users.homeURL'},
-    {name: 'receiveAlarmEmails', label: 'users.receiveAlarmEmails', exact: true},
+    {name: 'receiveAlarmEmails', label: 'users.receiveAlarmEmails', type: 'enum'},
     {name: 'receiveOwnAuditEvents', label: 'users.receiveOwnAuditEvents', type: 'boolean'}
 ];
 
