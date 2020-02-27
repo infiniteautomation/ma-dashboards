@@ -7,7 +7,7 @@
     </md-button>
 </div>
 
-<ma-user-table ng-model="$ctrl.selectedUsers" select-multiple="true"
+<ma-user-table ng-model="$ctrl.selectedUsers" select-multiple="true" show-actions="true" on-copy="$ctrl.editUser($user)"
     row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
 
 <ma-dialog show-dialog="$ctrl.showDialog" on-hide="$ctrl.userEditorClosed()" on-cancel="$ctrl.userEditorClosed()">
@@ -17,7 +17,6 @@
                 <span ng-if="!$ctrl.user.isNew()" ma-tr="ui.app.editUserX" ma-tr-args="[$ctrl.user.username]"></span>
                 <span ng-if="$ctrl.user.isNew()" ma-tr="ui.app.editNewUser"></span>
                 <div flex></div>
-                <ma-user-actions-menu user="$ctrl.user" on-copy="$ctrl.editUser($user)"></ma-user-actions-menu>
                 <md-button class="md-icon-button" ng-click="$dialog.cancel()">
                     <md-icon>close</md-icon>
                 </md-button>

@@ -84,6 +84,7 @@
                     <span ma-tr="{{column.label}}"></span>
                     <md-icon class="ma-sort-icon ma-disable-animate" ng-if="column.sortable && $ctrl.sort[0].columnName === column.name" ng-class="{'ma-sort-descending': $ctrl.sort[0].descending}">arrow_upward</md-icon>
                 </div>
+                <div ng-if="$ctrl.showActions" class="ma-actions-column"><!-- Spacer for action column --></div>
             </div>
             <div class="ma-virtual-repeat-table-row" ng-if="$ctrl.showFilters" class="ma-filter-header">
                 <div class="ma-checkbox-column"><!-- Spacer for checkbox column --></div>
@@ -95,6 +96,7 @@
                         </md-button>
                     </md-input-container>
                 </div>
+                <div ng-if="$ctrl.showActions" class="ma-actions-column"><!-- Spacer for action column --></div>
             </div>
             <md-progress-linear ng-show="$ctrl.itemsPromise" md-mode="indeterminate"></md-progress-linear>
         </div>
@@ -109,6 +111,10 @@
     
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
                     <span ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column) == null}" ng-bind="$ctrl.getCellValue(item, column) | maDisplayNull"></span>
+                </div>
+                
+                <div ng-if="$ctrl.showActions" class="ma-actions-column">
+                    <ma-user-actions-menu user="item" on-copy="$ctrl.onCopy({$event: $event, $user: $user})"></ma-user-actions-menu>
                 </div>
             </div>
         </div>

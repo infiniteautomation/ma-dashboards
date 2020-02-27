@@ -16,7 +16,8 @@ ma-user-table .ma-virtual-repeat-table-header md-input-container {
     padding: 0;
 }
 
-ma-user-table .ma-virtual-repeat-table .ma-checkbox-column {
+ma-user-table .ma-virtual-repeat-table .ma-checkbox-column,
+ma-user-table .ma-virtual-repeat-table .ma-actions-column {
 	flex: 0 0 32px;
 	display: flex;
 	justify-content: center;
