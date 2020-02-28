@@ -141,15 +141,7 @@ class WatchListBuilderController {
     
     save() {
         this.watchListForm.$setSubmitted();
-        
-        // reset all server error messages to allow saving
-        Object.keys(this.watchListForm).forEach(key => {
-            if (key.indexOf('$') !== 0) {
-                const item = this.watchListForm[key];
-                item.$setValidity('server-error', true);
-            }
-        });
-        
+
         if (this.watchListForm.$valid) {
             if (this.watchlist.type === 'query' || this.watchlist.type === 'tags') {
                 if (!this.watchlist.data) this.watchlist.data = {};
@@ -195,13 +187,9 @@ class WatchListBuilderController {
                 this.$mdToast.show(toast);
 
                 this.selectedTab = 0;
-                if (response.data && response.data.validationMessages) {
-                    response.data.validationMessages.forEach(info => {
-                        if (this.watchListForm[info.property]) {
-                            this.watchListForm[info.property].$setValidity('server-error', false);
-                            this.watchListForm[info.property].serverErrorMessage = info.message;
-                        }
-                    });
+
+                if (response.data && response.data.result && response.data.result.messages) {
+                    this.validationMessages = response.data.result.messages;
                 }
             });
         } else {
