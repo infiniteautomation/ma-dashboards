@@ -53,6 +53,10 @@ function dialog($compile, $parse, $q) {
                 const getter = $parse($attrs.onCancel);
                 this.onCancel = error => getter($scope.$parent, {$error: error});
             }
+            if ($attrs.hasOwnProperty('onClose')) {
+                const getter = $parse($attrs.onClose);
+                this.onClose = error => getter($scope.$parent, {});
+            }
         }
         
         $onChanges(changes) {
@@ -146,9 +150,15 @@ function dialog($compile, $parse, $q) {
                 if (this.onHide) {
                     this.onHide(result);
                 }
+                if (this.onClose) {
+                    this.onClose();
+                }
             }, error => {
                 if (this.onCancel) {
                     this.onCancel(error);
+                }
+                if (this.onClose) {
+                    this.onClose();
                 }
             }).finally(() => {
                 delete this.dialogPromise;

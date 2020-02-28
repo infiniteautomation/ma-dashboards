@@ -4,14 +4,16 @@
  */
 
 import componentTemplate from './testEmail.html';
+import './testEmail.css';
 
 class TestEmailController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', 'maDialogHelper']; }
+    static get $inject() { return ['maUser', 'maDialogHelper', '$q']; }
     
-    constructor(maUser, maDialogHelper) {
+    constructor(maUser, maDialogHelper, $q) {
         this.maUser = maUser;
         this.maDialogHelper = maDialogHelper;
+        this.$q = $q;
     }
 
     $onChanges(changes) {
@@ -22,15 +24,20 @@ class TestEmailController {
     
     sendTestEmail() {
         const user = this.user || this.maUser.current;
-        const p = user.sendTestEmail().then(response => {
-            this.maDialogHelper.toastOptions({text: response.data});
-        }, error => {
-            this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', user.email, error.mangoStatusText]);
-        }).finally(() => {
-            delete this.sendingEmail;
-        });
+        const hide = this.$q.defer();
+        const opts = this.sendingEmail = {hidePromise: hide.promise, user};
         
-        this.sendingEmail = {hidePromise: p};
+        user.sendTestEmail().then(response => {
+            this.maDialogHelper.toastOptions({text: response.data});
+            hide.resolve();
+        }, error => {
+            if (error.data.smtpSessionLog) {
+                opts.error = error;
+            } else {
+                this.maDialogHelper.errorToast(['ui.components.errorSendingEmail', user.email, error.mangoStatusText]);
+                hide.resolve();
+            }
+        });
     }
 }
 
