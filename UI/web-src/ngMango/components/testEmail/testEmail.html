@@ -1,0 +1,15 @@
+<div ng-if="!$ctrl.hideButton">
+    <md-button class="md-raised" ng-click="$ctrl.sendTestEmail()">
+        <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
+    </md-button>
+    <span class="ma-smaller-text" ma-tr="ui.app.sendTestEmailTooltip" ma-tr-args="[($ctrl.user || $ctrl.maUser.current).email]"></span>
+</div>
+
+<ma-dialog show-dialog="$ctrl.sendingEmail">
+    <md-dialog>
+        <md-dialog-content flex layout="column" layout-align="center center" class="md-padding">
+                <p class="ma-larger-font" ma-tr="common.sendingTestEmail"></p>
+                <md-progress-circular md-diameter="50" class="md-accent"></md-progress-circular>
+        </md-dialog-content>
+    </md-dialog>
+</ma-dialog>

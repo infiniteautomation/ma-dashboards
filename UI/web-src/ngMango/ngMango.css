@@ -1267,6 +1267,10 @@ table.md-table.ma-no-wrap tbody tr td {
 	font-size: 1.2rem;
 }
 
+.ma-smaller-text {
+	font-size: 1.4rem;
+}
+
 .ma-larger-font {
 	font-size: 1.8rem;
 }
