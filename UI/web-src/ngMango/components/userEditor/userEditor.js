@@ -99,8 +99,8 @@ class UserEditorController {
             this.onSave({$user: this.originalUser, $previous: previous});
             this.render();
         }, error => {
-            if (error.data && error.data.validationMessages) {
-                this.validationMessages = error.data.validationMessages;
+            if (error.data && error.data.result && error.data.result.messages) {
+                this.validationMessages = error.data.result.messages;
             }
     
             this.maDialogHelper.errorToast(['ui.components.errorSavingUser', this.user.username, error.mangoStatusText]);

@@ -66,10 +66,9 @@
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>vpn_key</md-icon>
             <label ma-tr="users.newPassword"></label>
-            <input type="password" name="password" ng-model="$ctrl.password" minlength="8" ng-required="$ctrl.user.isNew()" ng-change="$ctrl.passwordChanged()" ng-disabled="$ctrl.disabled">
+            <input type="password" name="password" ng-model="$ctrl.password" ng-required="$ctrl.user.isNew()" ng-change="$ctrl.passwordChanged()" ng-disabled="$ctrl.disabled">
             <div ng-messages="$ctrl.userForm.password.$error">
                 <div ng-message="required" ma-tr="validate.required"></div>
-                <div ng-message="minlength" ma-tr="validate.minLength" ma-tr-args="[8, $ctrl.userForm.password.$viewValue.length]"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.password.validationMessage"></div>
             </div>
         </md-input-container>
