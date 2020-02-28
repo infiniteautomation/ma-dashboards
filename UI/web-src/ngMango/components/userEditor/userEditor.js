@@ -99,7 +99,7 @@ class UserEditorController {
             this.onSave({$user: this.originalUser, $previous: previous});
             this.render();
         }, error => {
-            if (error.data && error.data.result && error.data.result.messages) {
+            if (error.status === 422 && error.data && error.data.result && error.data.result.messages) {
                 this.validationMessages = error.data.result.messages;
             }
     

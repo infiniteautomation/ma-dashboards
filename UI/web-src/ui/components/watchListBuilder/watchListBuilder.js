@@ -188,7 +188,7 @@ class WatchListBuilderController {
 
                 this.selectedTab = 0;
 
-                if (response.data && response.data.result && response.data.result.messages) {
+                if (response.status === 422 && response.data && response.data.result && response.data.result.messages) {
                     this.validationMessages = response.data.result.messages;
                 }
             });

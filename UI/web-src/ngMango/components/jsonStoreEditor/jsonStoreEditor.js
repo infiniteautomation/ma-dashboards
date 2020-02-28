@@ -100,8 +100,8 @@ class JsonStoreEditorController {
             this.render();
             this.maDialogHelper.toast(['ui.components.jsonStoreSaved', this.storeItem.name]);
         }, error => {
-            if (error.status === 422) {
-                this.validationMessages = error.data.validationMessages;
+            if (error.status === 422 && error.data && error.data.result && error.data.result.messages) {
+                this.validationMessages = error.data.result.messages;
             }
             this.maDialogHelper.errorToast(['ui.components.jsonStoreSaveError', error.mangoStatusText]);
         });
