@@ -214,10 +214,11 @@ function setPointValue(PointValueController, maTranslate, $q, $injector, maDialo
             if (this.confirmSet) {
                 maDialogHelper.confirm(event, ['ui.app.confirmSetValue', '' + (optionLabel || value)]).then(() => {
                     this.result = this.point.setValueResult(value);
+                    this.onSet()
                 }, e => null);
             } else {
                 this.result = this.point.setValueResult(value);
-                this.close()
+                this.onSet()
             }
         }
     }
@@ -244,7 +245,7 @@ function setPointValue(PointValueController, maTranslate, $q, $injector, maDialo
             showRelinquish: '<?',
             customStep: '<?step',
             confirmSet: '<?',
-            close: '&isOpen'
+            onSet: '&onSet'
         },
         designerInfo: {
             translation: 'ui.components.setPointValue',
