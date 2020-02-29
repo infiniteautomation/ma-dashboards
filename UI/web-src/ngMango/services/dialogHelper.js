@@ -244,8 +244,14 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
             }).then(finishedResult => {
                 const results = finishedResult.results;
                 if (results.failed) {
-                    const msg = results.exception ? results.exception.message : '';
-                    this.toastOptions({textTr: ['ui.app.systemAction.failed', description, msg], hideDelay: 10000, classes: 'md-warn'});
+                    let msg = results.exception ? results.exception.message : '';
+                    if (results.messages.length > 0) {
+                        results.messages.forEach(message => {
+                            this.toastOptions({textTr: ['ui.app.systemAction.failed', description, message.genericMessage], hideDelay: 10000, classes: 'md-warn'});
+                        })
+                    } else {
+                        this.toastOptions({textTr: ['ui.app.systemAction.failed', description, msg], hideDelay: 10000, classes: 'md-warn'});
+                    }
                 } else {
                     this.toastOptions({textTr: ['ui.app.systemAction.succeeded', description, [options.resultsTr, results]]});
                 }
