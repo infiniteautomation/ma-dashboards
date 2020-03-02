@@ -13,6 +13,14 @@
             </md-button>
         </md-menu-item>
         <md-menu-item ng-if="$ctrl.User.current.hasAnyRole('superadmin')">
+            <md-button class="ma-no-padding-right" ng-click="$ctrl.resettingPassword = {}" ng-disabled="$ctrl.resettingPassword">
+                <div layout="row" flex>
+                    <div flex ma-tr="header.resetPassword"></div>
+                    <md-icon md-menu-align-target>settings_backup_restore</md-icon>
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="$ctrl.User.current.hasAnyRole('superadmin')">
             <md-button class="ma-no-padding-right" ng-click="$ctrl.sendEmail = {}" ng-disabled="$ctrl.sendingEmail">
                 <div layout="row" flex>
                     <div flex ma-tr="common.sendTestEmail"></div>
@@ -40,3 +48,11 @@
 </md-menu>
 
 <ma-test-email hide-button="true" send-email="$ctrl.sendEmail" user="$ctrl.user"></ma-test-email>
+
+<ma-dialog show-dialog="$ctrl.resettingPassword" destroy-dialog="true" on-close="$ctrl.resettingPassword = null">
+    <md-dialog>
+        <md-dialog-content flex layout="column" layout-align="center center" class="md-padding">
+            <ma-reset-password-create-link user="$ctrl.user"></ma-reset-password-create-link>
+        </md-dialog-content>
+    </md-dialog>
+</ma-dialog>

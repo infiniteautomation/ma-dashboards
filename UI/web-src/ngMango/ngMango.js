@@ -181,6 +181,7 @@ import userActionsMenu from './components/userActionsMenu/userActionsMenu';
 import tagHierarchy from './components/tagHierarchy/tagHierarchy';
 import userTable from './components/userTable/userTable';
 import testEmail from './components/testEmail/testEmail';
+import resetPasswordCreateLink from './components/resetPasswordCreateLink/resetPasswordCreateLink';
 import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -375,6 +376,7 @@ ngMango.component('maUserActionsMenu', userActionsMenu);
 ngMango.component('maTagHierarchy', tagHierarchy);
 ngMango.component('maUserTable', userTable);
 ngMango.component('maTestEmail', testEmail);
+ngMango.component('maResetPasswordCreateLink', resetPasswordCreateLink);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

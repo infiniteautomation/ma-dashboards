@@ -441,6 +441,19 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 });
             },
             
+            createPasswordResetLink(username, lockPassword, sendEmail, expiry) {
+                return $http({
+                    url: `${passwordResetUrl}/create`,
+                    method: 'POST',
+                    data: {
+                        username,
+                        lockPassword,
+                        sendEmail,
+                        expiry
+                    }
+                }).then(response => response.data);
+            },
+            
             passwordReset(token, newPassword) {
                 return $http({
                     url: `${passwordResetUrl}/reset`,
