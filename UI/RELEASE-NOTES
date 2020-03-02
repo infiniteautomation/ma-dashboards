@@ -1,3 +1,6 @@
+*Version 3.7.3*
+* Redirect to configured login page when unauthenticated
+
 *Version 3.7.2*
 * Fix reconnection logic when WebSocket is closed due to error
 
