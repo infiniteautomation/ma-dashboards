@@ -11,8 +11,8 @@ function loginRedirectorProvider () {
     };
     this.$get = loginRedirectorFactory;
 
-    loginRedirectorFactory.$inject = ['$state', '$window', '$location', 'maUser', 'maUiMenu', '$q'];
-    function loginRedirectorFactory($state, $window, $location, maUser, maUiMenu, $q) {
+    loginRedirectorFactory.$inject = ['$state', '$window', '$location', 'maUser', 'maUiMenu', '$q', 'maUiServerInfo'];
+    function loginRedirectorFactory($state, $window, $location, maUser, maUiMenu, $q, maUiServerInfo) {
 
         const basePath = '/ui/';
         const dontSaveStates = new Set(['ui.error', 'ui.serverError']);
@@ -65,15 +65,25 @@ function loginRedirectorProvider () {
                     return user;
                 });
             }
+            
             handleUnknownPath(path) {
                 const user = maUser.current;
 
                 // prepend with basePath (stripping the leading /)
                 path = path ? basePath + path.substr(1) : basePath;
                 
+                // often the path is unknown because the user is not logged in
                 if (!user) {
                     this.saveUrl(path);
-                    return '/login';
+                    const url = this.getLoginUrl();
+                    
+                    if (url.startsWith(basePath)) {
+                        // strip the /ui 
+                        return url.substr(basePath.length - 1);
+                    } else {
+                        this.goToUrl(url);
+                        return '';
+                    }
                 }
                 
                 if (path === basePath) {
@@ -138,6 +148,15 @@ function loginRedirectorProvider () {
                 this.savedState = {
                     url
                 };
+            }
+            
+            getLoginUrl() {
+                return maUiServerInfo.preLoginData.loginUri;
+            }
+            
+            goToLogin(reload = false) {
+                const url = this.getLoginUrl();
+                this.goToUrl(url, reload);
             }
         }
 

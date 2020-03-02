@@ -396,7 +396,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         event.preventDefault();
         if (error && (error instanceof User.NoUserError || error.status === 401 || error.status === 403)) {
             maUiLoginRedirector.saveState(toState, toParams);
-            $state.go('login');
+            maUiLoginRedirector.goToLogin();
         } else {
             $exceptionHandler(error, 'Error transitioning to state ' + (toState && toState.name));
 
@@ -427,7 +427,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             event.preventDefault();
             // consume error
             User.logout().$promise.then(null, error => null).then(() => {
-                $state.go('login');
+                maUiLoginRedirector.goToLogin();
             });
         }
 
@@ -635,7 +635,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                     
                     // redirect to the login page if auto-login fails
                     maUiLoginRedirector.saveCurrentState();
-                    $state.go('login');
+                    maUiLoginRedirector.goToLogin();
                 });
             }
             break;
