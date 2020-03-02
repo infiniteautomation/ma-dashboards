@@ -151,7 +151,7 @@ function loginRedirectorProvider () {
             }
             
             getLoginUrl() {
-                return maUiServerInfo.preLoginData.loginUri;
+                return maUiServerInfo.preLoginData.loginUri || '/ui/login';
             }
             
             goToLogin(reload = false) {
