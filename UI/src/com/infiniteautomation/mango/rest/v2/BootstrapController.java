@@ -34,6 +34,7 @@ import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
 import com.serotonin.m2m2.db.dao.JsonDataDao;
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
+import com.serotonin.m2m2.module.DefaultPagesDefinition;
 import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
@@ -160,6 +161,14 @@ public class BootstrapController {
             data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, Common.getLocale()));
         }
 
+        try {
+            String loginUri = DefaultPagesDefinition.getLoginUri(null, null);
+            data.setLoginUri(loginUri);
+        } catch (NullPointerException e) {
+            // TODO fix this after https://github.com/infiniteautomation/ma-core-public/issues/1543
+            // is resolved
+        }
+
         return data;
     }
 
@@ -199,6 +208,7 @@ public class BootstrapController {
         private UserModel user;
         private boolean publicRegistrationEnabled;
         private boolean devlopmentMode;
+        private String loginUri;
 
         public TranslationsModel getTranslations() {
             return translations;
@@ -253,6 +263,12 @@ public class BootstrapController {
         }
         public void setDevlopmentMode(boolean devlopmentMode) {
             this.devlopmentMode = devlopmentMode;
+        }
+        public String getLoginUri() {
+            return loginUri;
+        }
+        public void setLoginUri(String loginUri) {
+            this.loginUri = loginUri;
         }
     }
 
