@@ -31,7 +31,7 @@ class LogFileTableController extends TableController {
             localStorageKey: 'logFileTable',
             defaultColumns,
             defaultSort: [{columnName: 'lastModified', descending: true}],
-            disableSortById: false
+            disableSortById: true
         });
     }
 }
