@@ -86,6 +86,38 @@ class Column {
         queryBuilder[op](this.name, value);
         if (invert) queryBuilder.up();
     }
+    
+    getValue(item) {
+        const property = this.property;
+        let result = item;
+        for (let i = 0; i < property.length; i++) {
+            if (result == null || typeof result !== 'object') {
+                return;
+            }
+            result = result[property[i]];
+        }
+        return result;
+    }
+
+    formatValue(value) {
+        let formatted;
+        if (value == null) {
+            formatted = null;
+        } else if (this.type === 'date') {
+            formatted = moment(value).format(this.dateFormat);
+        } else {
+            formatted = value;
+        }
+        return formatted;
+    }
+    
+    getValueAndFormat(item) {
+        const value = this.getValue(item);
+        if (value === undefined) {
+            return;
+        }
+        return this.formatValue(value);
+    }
 }
 
 class TableController {
@@ -230,7 +262,8 @@ class TableController {
                 return this.createColumn(Object.assign({
                     order: i,
                     filter: filters[column.name] || null,
-                    dateFormat: this.dateFormat
+                    dateFormat: this.dateFormat,
+                    tableCtrl: this
                 }, column));
             });
         });
@@ -269,8 +302,15 @@ class TableController {
         this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
         
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
-        // ensure the order of the results are deterministic by adding sort on id
-        queryBuilder.sort(...sortArray, 'id');
+        if (!this.disableSortById) {
+            // ensure the order of the results are deterministic by adding sort on id
+            if (!this.sort.find(s => s.columnName === 'id')) {
+                sortArray.push('id');
+            }
+        }
+        if (sortArray.length) {
+            queryBuilder.sort(...sortArray);
+        }
         
         return queryBuilder;
     }
@@ -461,24 +501,7 @@ class TableController {
     }
 
     getCellValue(item, column) {
-        const property = column.property;
-        let result = item;
-        for (let i = 0; i < property.length; i++) {
-            if (result == null || typeof result !== 'object') {
-                return;
-            }
-            result = result[property[i]];
-        }
-        
-        if (result == null) {
-            return result;
-        }
-        
-        if (column.type === 'date') {
-            return moment(result).format(this.dateFormat)
-        }
-        
-        return result;
+        return column.getValueAndFormat(item);
     }
     
     processUpdateQueue() {
