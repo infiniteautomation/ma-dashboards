@@ -1,0 +1,55 @@
+ma-log-file-table {
+	display: flex;
+	flex-grow: 1;
+	min-height: 400px;
+	overflow-x: auto;
+}
+
+ma-log-file-table .ma-empty-null {
+	opacity: 0.5;
+	font-style: italic;
+}
+
+ma-log-file-table .ma-virtual-repeat-table-header md-input-container {
+	width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+ma-log-file-table .ma-virtual-repeat-table .ma-checkbox-column {
+	flex: 0 0 32px;
+	display: flex;
+	justify-content: center;
+}
+
+ma-log-file-table .ma-virtual-repeat-table .ma-actions-column {
+	flex: 0 0 40px;
+	display: flex;
+	justify-content: center;
+}
+
+ma-log-file-table .ma-virtual-repeat-table .ma-checkbox-column md-checkbox {
+	width: 20px;
+	margin: 0;
+}
+
+ma-log-file-table .ma-item-row {
+	user-select: none;
+}
+
+ma-log-file-table .ma-virtual-repeat-table-row md-checkbox {
+	pointer-events: none;
+}
+
+ma-log-file-table md-menu-bar {
+	width: 32px;
+	padding: 0;
+}
+
+md-menu-content.md-menu-bar-menu.md-dense.ma-log-file-table {
+	padding: 8px 0;
+}
+
+md-menu-content.md-menu-bar-menu.ma-log-file-table.ma-checkbox-menu md-checkbox {
+	margin: 0;
+}
