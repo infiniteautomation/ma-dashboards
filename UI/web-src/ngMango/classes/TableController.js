@@ -254,10 +254,14 @@ class TableController {
         
         this.localStorageService.set(this.localStorageKey, this.settings);
     }
+    
+    getFilters() {
+        return this.settings.filters;
+    }
 
     loadColumns() {
         return this.$q.resolve().then(() => {
-            const filters = this.settings.filters || {};
+            const filters = this.getFilters();
             this.columns = this.defaultColumns.map((column, i) => {
                 return this.createColumn(Object.assign({
                     order: i,
@@ -473,25 +477,23 @@ class TableController {
         }
     }
 
-
     showFiltersChanged() {
+        let filtersChanged = false;
         if (!this.showFilters) {
-            let filtersChanged = false;
-            
             this.columns.forEach(c => {
                 if (c.filter != null) {
                     c.filter = null;
                     filtersChanged = true;
                 }
             });
-
-            if (filtersChanged) {
-                this.clearCache();
-                this.getItems();
-            }
         }
-        
-        this.saveSettings();
+
+        if (filtersChanged) {
+            this.filterChanged();
+        } else {
+            // still need to save showFilters
+            this.saveSettings();
+        }
     }
     
     filterChanged() {
