@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-logFileFactory.$inject = ['$resource', 'maUtil'];
-function logFileFactory($resource, maUtil) {
+logFileFactory.$inject = ['$resource', 'maUtil', '$http'];
+function logFileFactory($resource, maUtil, $http) {
 
     const LogFile = $resource('/rest/v2/logging/log-files/:filename', {
         filename: data => data && data.filename
@@ -24,6 +24,13 @@ function logFileFactory($resource, maUtil) {
     Object.assign(LogFile.prototype, {
         getDownloadUrl() {
             return `/rest/v2/logging/view/${encodeURIComponent(this.filename)}?download=true`;
+        },
+        
+        getContents() {
+            return $http({
+                method: 'GET',
+                url: `/rest/v2/logging/view/${encodeURIComponent(this.filename)}`
+            }).then(r => r.data);
         }
     });
     

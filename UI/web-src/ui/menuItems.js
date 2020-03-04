@@ -968,7 +968,7 @@ export default [
     {
         name: 'ui.settings.systemStatus.loggingConsole',
         templatePromise: systemStatusTemplate('loggingConsole.html'),
-        url: '/logging-console?logFileFilter&displayLogFile',
+        url: '/logging-console?filenameFilter&filename',
         menuTr: 'ui.settings.systemStatus.loggingConsole',
         menuHidden: true
     },

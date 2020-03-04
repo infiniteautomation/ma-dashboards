@@ -11,10 +11,10 @@ class SystemStatusPageController {
 
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maSystemStatus', '$state', 'maUiMenu', '$mdMedia', '$mdDialog', 'maTranslate',
-        'maDialogHelper', 'maUiDateBar', '$scope', 'maRqlBuilder']; }
+        'maDialogHelper', 'maUiDateBar', '$scope', 'maRqlBuilder', 'maLogFile']; }
 
     constructor(systemStatus, $state, maUiMenu, $mdMedia, $mdDialog, maTranslate,
-            maDialogHelper, maUiDateBar, $scope, RqlBuilder) {
+            maDialogHelper, maUiDateBar, $scope, RqlBuilder, maLogFile) {
         
         this.systemStatus = systemStatus;
         this.$state = $state;
@@ -26,6 +26,7 @@ class SystemStatusPageController {
         this.$mdDialog = $mdDialog;
         this.dateBar = maUiDateBar;
         this.RqlBuilder = RqlBuilder;
+        this.maLogFile = maLogFile;
     
         this.logByFileNameUrl = '/rest/v2/logging/view/';
     
@@ -40,6 +41,16 @@ class SystemStatusPageController {
         this.auditTableLimit = 25;
         this.auditTablePage = 1;
         this.auditTableOrder = '-ts';
+    }
+    
+    $onInit() {
+        if (this.$state.includes('ui.settings.systemStatus.loggingConsole')) {
+            if (this.$state.params.filename) {
+                const filename = this.$state.params.filename;
+                this.selectedLogFile = new this.maLogFile({filename});
+                this.displayLogFile();
+            }
+        }
     }
 
     pageChanged(name) {
@@ -119,14 +130,20 @@ class SystemStatusPageController {
     
     /** Server Info **/
 
-    displayLogFile(filename) {
-        this.selectedLogFile = filename;
+    displayLogFile() {
+        const filename = this.selectedLogFile.filename;
+
+        this.$state.params.filename = filename;
+        this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
+
+        this.selectedLogFile.getContents().then(contents => {
+            const title = this.maTranslate.trSync(['ui.settings.systemStatus.displayingLogFile', filename]);
     
-        this.systemStatus.getLogFile(filename).then((response) => {
-            let content = response.data;
-            let title = this.maTranslate.trSync('ui.settings.systemStatus.displayingLogFile', this.selectedLogFile);
-    
-            this.showTextAreaDialog(title, content);
+            this.showTextAreaDialog(title, contents).catch(e => null).finally(() => {
+                this.$state.params.filename = null;
+                this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
+                this.selectedLogFile = null;
+            });
         });
     }
     
@@ -202,7 +219,7 @@ class SystemStatusPageController {
 
     showTextAreaDialog(title, textContent) {
         let $this = this;
-        this.$mdDialog.show({
+        return this.$mdDialog.show({
             controller: function() {
                 this.title = title;
                 this.textContent = textContent;
