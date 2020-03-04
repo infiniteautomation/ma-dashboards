@@ -1095,6 +1095,15 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
                 diff.delete(o);
             }
             return diff;
+        },
+        
+        formatBytes(bytes, precision = 1) {
+            if (bytes === 0) return '0 B';
+            if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
+            const units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'],
+                number = Math.floor(Math.log(bytes) / Math.log(1024));
+            if (number === 0) precision = 0;
+            return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
         }
     };
 
