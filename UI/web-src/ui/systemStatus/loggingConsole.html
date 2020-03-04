@@ -1,41 +1,11 @@
-<div layout="column" ng-init="$ctrl.pageChanged('loggingConsole')">
-    <div layout layout-align="end">
-        <md-button ng-click="$ctrl.displayLogFile('ma.log')" class="md-raised md-primary">
-            <md-icon>
-                remove_red_eye
-            </md-icon>
-            <span ma-tr="ui.settings.systemStatus.viewCurrentMaLog"></span>
-        </md-button>
-        <md-button ng-click="$ctrl.getLogFilesList()" class="md-raised">
-            <md-icon>
-                refresh
-            </md-icon>
-            <span ma-tr="ui.app.refreshTable"></span>
-        </md-button>
-    </div>
-
-    <md-list flex class="md-dense">
-        <div ng-repeat="logFileMeta in $ctrl.logFilesList  | orderBy : '-lastModified'">
-            <md-list-item>
-                <span>
-                    <strong>{{logFileMeta.filename}}</strong>
-                    ({{logFileMeta.lastModified | maMoment:'format':'l LT'}} - {{logFileMeta.size | maBytes}})
-                </span>
-                <span flex></span>
-                <md-button ng-click="$ctrl.displayLogFile(logFileMeta.filename)">
-                    <md-icon>
-                        remove_red_eye
-                    </md-icon>
-                    <span ma-tr="ui.settings.systemStatus.view"></span>
-                </md-button>
-                <md-button href="{{$ctrl.getLogDownloadUrl(logFileMeta.filename)}}">
-                    <md-icon>
-                        file_download
-                    </md-icon>
-                    <span ma-tr="ui.settings.systemStatus.downloadLog"></span>
-                </md-button>
-            </md-list-item>
-            <md-divider></md-divider>
-        </div>
-    </md-list>
+<div layout layout-align="end">
+    <md-button ng-click="$ctrl.displayLogFile('ma.log')" class="md-raised md-primary">
+        <md-icon>
+            remove_red_eye
+        </md-icon>
+        <span ma-tr="ui.settings.systemStatus.viewCurrentMaLog"></span>
+    </md-button>
 </div>
+
+<ma-log-file-table ng-model="$ctrl.selectedLogFile" ng-change="$ctrl.displayLogFile($ctrl.selectedLogFile.filename)"
+    show-actions="true"></ma-log-file-table>

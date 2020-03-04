@@ -61,7 +61,6 @@ class SystemStatusPageController {
             break;
         }
         case 'internalMetrics': this.getInternalMetrics(); break;
-        case 'loggingConsole': this.getLogFilesList(); break;
         case 'workItems': this.getWorkItems(); break;
         case 'threads': this.getThreads(); break;
         case 'serverInfo': this.getSystemInfo(); break;
@@ -119,17 +118,7 @@ class SystemStatusPageController {
     }
     
     /** Server Info **/
-    
-    getLogFilesList() {
-        this.systemStatus.getLogFilesList().then((response) => {
-            this.logFilesList = response.data;
-        });
-    }
-    
-    getLogDownloadUrl(filename) {
-        return this.logByFileNameUrl + filename + '?download=true';
-    }
-    
+
     displayLogFile(filename) {
         this.selectedLogFile = filename;
     

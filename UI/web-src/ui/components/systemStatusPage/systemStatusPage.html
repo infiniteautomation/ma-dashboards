@@ -30,16 +30,7 @@
         </md-card>
     </div>
     
-    <div layout="column" flex>
-        <md-card>
-            <md-card-title ng-if="$ctrl.$mdMedia('gt-md')">
-              <md-card-title-text>
-                <div class="md-headline" ma-tr="{{$ctrl.$state.current.menuTr}}"></div>
-              </md-card-title-text>
-            </md-card-title>
-            <md-card-content>
-                <div ui-view></div>
-            </md-card-content>
-        </md-card>
-    </div>
+    <md-card flex="noshrink">
+        <div class="md-padding" ui-view layout="column" flex="noshrink"></div>
+    </md-card>
 </div>
