@@ -47,19 +47,30 @@
     <div flex="100" ng-if="$ctrl.showLogFileInputs && $ctrl.logLevel !== 'NONE'" class="ma-margin-bottom">
         <span ma-tr="ui.scriptingEditor.logFilePath" ma-tr-args="[$ctrl.logFilePath]"></span>
     </div>
-    <md-input-container flex="100" flex-gt-md="50">
-        <md-icon>error_outline</md-icon>
-        <label ma-tr="common.logging.logLevel"></label>
-        <md-select name="relativeDateType" ng-model="$ctrl.logLevel">
-            <md-option value="NONE" ma-tr="common.none"></md-option>
-            <md-option value="TRACE" ma-tr="common.logging.trace"></md-option>
-            <md-option value="DEBUG" ma-tr="common.logging.debug"></md-option>
-            <md-option value="INFO" ma-tr="common.logging.info"></md-option>
-            <md-option value="WARN" ma-tr="common.logging.warn"></md-option>
-            <md-option value="ERROR" ma-tr="common.logging.error"></md-option>
-            <md-option value="FATAL" ma-tr="common.logging.fatal"></md-option>
-        </md-select>
-    </md-input-container>
+    <div flex="100" flex-gt-md="50" layout>
+        <md-input-container flex>
+            <md-icon>error_outline</md-icon>
+            <label ma-tr="common.logging.logLevel"></label>
+            <md-select name="relativeDateType" ng-model="$ctrl.logLevel">
+                <md-option value="NONE" ma-tr="common.none"></md-option>
+                <md-option value="TRACE" ma-tr="common.logging.trace"></md-option>
+                <md-option value="DEBUG" ma-tr="common.logging.debug"></md-option>
+                <md-option value="INFO" ma-tr="common.logging.info"></md-option>
+                <md-option value="WARN" ma-tr="common.logging.warn"></md-option>
+                <md-option value="ERROR" ma-tr="common.logging.error"></md-option>
+                <md-option value="FATAL" ma-tr="common.logging.fatal"></md-option>
+            </md-select>
+        </md-input-container>
+        <div flex="15" ng-if="$ctrl.logLevel !=='NONE'">
+            <md-button layout-fill class="md-icon-button" ui-state="'ui.settings.systemStatus.loggingConsole'"
+                ui-state-params="{filename: $ctrl.logFilePath, filenameFilter: $ctrl.logFilePath}">
+                <md-tooltip md-direction="bottom">
+                    <span ma-tr="ui.components.viewLogs"></span>
+                </md-tooltip>
+                <md-icon>launch</md-icon>
+            </md-button>
+        </div>
+    </div>
 
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.showLogFileInputs && $ctrl.logLevel !== 'NONE'">
         <md-icon>photo_size_select_small</md-icon>
