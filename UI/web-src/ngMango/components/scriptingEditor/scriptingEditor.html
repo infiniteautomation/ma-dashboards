@@ -44,9 +44,6 @@
 </div>
 
 <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
-    <div flex="100" ng-if="$ctrl.showLogFileInputs && $ctrl.logLevel !== 'NONE'" class="ma-margin-bottom">
-        <span ma-tr="ui.scriptingEditor.logFilePath" ma-tr-args="[$ctrl.logFilePath]"></span>
-    </div>
     <div flex="100" flex-gt-md="50" layout>
         <md-input-container flex>
             <md-icon>error_outline</md-icon>
@@ -61,15 +58,7 @@
                 <md-option value="FATAL" ma-tr="common.logging.fatal"></md-option>
             </md-select>
         </md-input-container>
-        <div flex="15" ng-if="$ctrl.logLevel !=='NONE'">
-            <md-button layout-fill class="md-icon-button" ui-state="'ui.settings.systemStatus.loggingConsole'"
-                ui-state-params="{filename: $ctrl.logFilePath, filenameFilter: $ctrl.logFilePath}">
-                <md-tooltip md-direction="bottom">
-                    <span ma-tr="ui.components.viewLogs"></span>
-                </md-tooltip>
-                <md-icon>launch</md-icon>
-            </md-button>
-        </div>
+        <ma-log-file-view flex="15" ng-if="$ctrl.logLevel !=='NONE'" url="$ctrl.logFilePath"></ma-log-file-view>
     </div>
 
     <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.showLogFileInputs && $ctrl.logLevel !== 'NONE'">
