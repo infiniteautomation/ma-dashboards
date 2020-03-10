@@ -7,6 +7,7 @@ import java.util.Collections;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.zafarkhaja.semver.Version;
 import com.serotonin.ShouldNeverHappenException;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.IMangoLifecycle;
@@ -40,7 +41,7 @@ public class UILifecycle extends ModuleElementDefinition {
     }
 
     @Override
-    public void postInitialize(boolean install, boolean upgrade) {
+    public void postInitialize(Version previousVersion, Version curren) {
 
         /**
          * Add a startup task to run after the Audit system is ready
