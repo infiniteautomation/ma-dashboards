@@ -60,6 +60,7 @@ import multipleValuesFactory from './services/MultipleValues';
 import serialPort from './services/serialPort';
 import Publisher from './services/Publisher';
 import logFileFactory from './services/LogFile';
+import logFileViewFactory from './services/logFileView';
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -141,6 +142,7 @@ ngMangoServices.filter('maTr', trFilterFactory);
 ngMangoServices.factory('maSerialPort', serialPort);
 ngMangoServices.provider('maPublisher', Publisher);
 ngMangoServices.factory('maLogFile', logFileFactory);
+ngMangoServices.factory('maLogFileView', logFileViewFactory);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUT', 30000); // TODO Mango 4.0 remove
