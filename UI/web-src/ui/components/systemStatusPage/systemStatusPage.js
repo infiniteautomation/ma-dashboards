@@ -130,6 +130,11 @@ class SystemStatusPageController {
     
     /** Server Info **/
 
+    displayCurrentLogFile() {
+        this.selectedLogFile = new this.maLogFile({filename: 'ma.log'});
+        this.displayLogFile();
+    }
+    
     displayLogFile() {
         const filename = this.selectedLogFile.filename;
 
