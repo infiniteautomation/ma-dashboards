@@ -264,6 +264,9 @@ function dataPointProvider() {
                 });
             }
         }
+        
+        // stores an array of active events by point id
+        const activeEventsMap = new Map();
     
         const Point = $resource('/rest/v2/data-points/:xid', {
                 xid: data => data && (data.originalId || data.xid)
@@ -693,20 +696,26 @@ function dataPointProvider() {
                 // prevents a circular dependency
                 const Events = $injector.get('maEvents');
                 
-                if (!this.eventListenerScopes) {
-                    this.eventListenerScopes = new Set();
-                }
-                if (!this.eventListenerScopes.size) {
-                    this.activeEvents = [];
+                let activeEvents;
+                if (activeEventsMap.has(this.id)) {
+                    // already subscribed
+                    activeEvents = activeEventsMap.get(this.id);
+                    activeEvents.scopes.add($scope);
+                } else {
+                    // first subscription for this id
+                    activeEvents = [];
+                    activeEventsMap.set(this.id, activeEvents);
                     
-                    this.activeEventsPromise = Events.buildQuery()
+                    activeEvents.scopes = new Set([$scope]);
+                    
+                    activeEvents.promise = Events.buildQuery()
                         .eq('eventType', 'DATA_POINT')
                         .eq('referenceId1', this.id)
                         .eq('active', true)
                         .query();
                     
-                    this.activeEventsPromise.then(events => {
-                        this.activeEvents.push(...events);
+                    activeEvents.promise.then(events => {
+                        activeEvents.push(...events);
                     }, error => {
                         if (error && error.xhrStatus === 'abort') {
                             //cancelled request, ignore
@@ -714,52 +723,51 @@ function dataPointProvider() {
                             return $q.reject(error);
                         }
                     });
-
-                    this.eventListenerDeregister = Events.notificationManager.subscribe((event, mangoEvent) => {
+                    
+                    activeEvents.deregister = Events.notificationManager.subscribe((event, mangoEvent) => {
                         if (mangoEvent.eventType.eventType !== 'DATA_POINT' || mangoEvent.eventType.referenceId1 !== this.id) return;
 
                         $rootScope.$apply(() => {
-                            const eventIndex = this.activeEvents.findIndex(e => e.id === mangoEvent.id);
+                            const eventIndex = activeEvents.findIndex(e => e.id === mangoEvent.id);
                             
                             // DEACTIVATED occurs when the data point/data source is disabled etc
                             if (event.name === 'RAISED' && mangoEvent.active) {
                                 if (eventIndex < 0) {
-                                    this.activeEvents.push(mangoEvent);
+                                    activeEvents.push(mangoEvent);
                                 }
                             } else if (event.name === 'RETURN_TO_NORMAL' || event.name === 'DEACTIVATED') {
                                 if (eventIndex >= 0) {
-                                    this.activeEvents.splice(eventIndex, 1);
+                                    activeEvents.splice(eventIndex, 1);
                                 }
                             }
                         });
                     }, null, ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
                 }
-                this.eventListenerScopes.add($scope);
 
                 let deregisterScopeOnDestroy;
                 const destroy = () => {
                     deregisterScopeOnDestroy();
                     
-                    if (this.eventListenerScopes) {
-                        this.eventListenerScopes.delete($scope);
-                        if (!this.eventListenerScopes.size) {
-                            this.eventListenerDeregister();
-                            delete this.eventListenerDeregister;
-                            if (this.activeEventsPromise) {
-                                // prevents the query completing and attempting to push
-                                // to active events after it has been deleted
-                                Events.cancelRequest(this.activeEventsPromise);
-                                delete this.activeEventsPromise;
-                            }
-                            delete this.activeEvents;
-                            delete this.eventListenerScopes;
-                        }
+                    activeEvents.scopes.delete($scope);
+                    if (!activeEvents.scopes.size) {
+                        activeEvents.deregister();
+                        
+                        // prevents the query completing and attempting to push
+                        // to active events after it has been deleted
+                        Events.cancelRequest(activeEvents.promise);
+                        
+                        activeEventsMap.delete(this.id);
                     }
                 };
                 
                 deregisterScopeOnDestroy = $scope.$on('$destroy', destroy);
                 return destroy;
             }
+        });
+        
+        Object.defineProperty(Point.prototype, 'activeEvents', {
+            get() { return activeEventsMap.get(this.id); },
+            set(value) { }
         });
 
         Object.defineProperty(Point.prototype, 'tagsString', {
