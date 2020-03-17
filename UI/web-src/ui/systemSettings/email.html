@@ -1,4 +1,8 @@
-<div layout>
+<div layout="column" layout-align="start start">
+    <ma-system-setting-editor label-tr="systemSettings.emailDisabled" key="emailDisabled" type="BOOLEAN" input-type="checkbox" on-value-changed="emailDisabled = $value"></ma-system-setting-editor>
+</div>
+
+<div layout ng-if-start="!emailDisabled">
     <div flex="100" flex-gt-md="70" layout layout-wrap layout-align="start center">
       <ma-system-setting-editor label-tr="systemSettings.smtpHost" key="emailSmtpHost" flex="100" flex-gt-md="50"></ma-system-setting-editor>
       <ma-system-setting-editor label-tr="systemSettings.smtpPort" key="emailSmtpPort" flex="100" flex-gt-md="50"></ma-system-setting-editor>
@@ -34,4 +38,4 @@
     </div>
 </div>
 
-<ma-test-email></ma-test-email>
+<ma-test-email ng-if-end></ma-test-email>
