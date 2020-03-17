@@ -34,6 +34,10 @@ import moment from 'moment-timezone';
  *      NAME, DEVICE_AND_NAME, and DEVICE_AND_NAME_WITH_TAGS
  * @param {expression=} label-expression Expression that is evaluated to set the label. Gives more control for formatting the label.
  *     Takes precedence over the label attribute. Available locals are $point (Data point object).
+ * @param {boolean=} [hide-event-indicator=false] By default an event indicator is shown when an event/alarm is active for the data point. Set this attribute to true
+ *     to hide the event indicator.
+ * @param {boolean=} [disable-event-popup=false] Disables the ability to click an event indicator and open a popup showing the events.
+ * @param {string=} [min-event-level="NONE"] Set the minimum event level for which the event indicator is shown.
  *
  * @usage
  *
@@ -112,8 +116,16 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             }
         }
         
-        get activeEvents() {
-            return this.point && this.point.activeEvents && this.point.activeEvents.length;
+        activeEvents() {
+            if (!this.point || !Array.isArray(this.point.activeEvents)) {
+                return;
+            }
+
+            const activeEvents = this.point.activeEvents;
+            const minLevel = maEvents.levelsMap[this.minEventLevel] || maEvents.levelsMap['NONE'];
+            const minLevelValue = minLevel.value;
+            
+            return activeEvents.filter(e => e.getAlarmLevel().value >= minLevelValue);
         }
 
         updateText() {
@@ -193,11 +205,12 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             onValueUpdated: '&?',
             labelExpression: '&?',
             enablePopup: '@?',
-            hideEventIndicator: '<?',
             quickInfo: '<?',
             dataPointDetails: '<?pointDetails',
+            step: '<?',
             disableEventPopup: '<?',
-            step: '<?'
+            hideEventIndicator: '<?',
+            minEventLevel: '@?'
         },
         designerInfo: {
             translation: 'ui.components.pointValue',
@@ -212,9 +225,11 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
                 sameDayDateTimeFormat: {options: dateOptions},
                 label: {options: ['NAME', 'DEVICE_AND_NAME', 'DEVICE_AND_NAME_WITH_TAGS']},
                 enablePopup: {type: 'string', defaultValue: 'hide', options: ['hide', 'right', 'left', 'up', 'down']},
-                hideEventIndicator: {type: 'boolean', default: false},
                 quickInfo: {type: 'boolean', default: true},
-                dataPointDetails: {type: 'boolean', default: true}
+                dataPointDetails: {type: 'boolean', default: true},
+                disableEventPopup: {type: 'boolean', default: false},
+                hideEventIndicator: {type: 'boolean', default: false},
+                minEventLevel: {type: 'string', defaultValue: 'NONE', options: ['NONE', 'INFORMATION', 'IMPORTANT', 'WARNING', 'URGENT', 'CRITICAL', 'LIFE_SAFETY']},
             }
         }
     };

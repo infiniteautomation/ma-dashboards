@@ -182,27 +182,31 @@ function eventsFactory($resource, Util, EventTypeInfo) {
         }
     });
 
+    const levels = Util.freezeAll([
+        {key: 'NONE', classes: 'fa-flag ma-alarm-level-none', translation: 'common.alarmLevel.none',
+            materialIcon: 'flag', materialClasses: 'ma-alarm-level-none', value: 0},
+        {key: 'INFORMATION', classes: 'fa-flag ma-alarm-level-information', translation: 'common.alarmLevel.info',
+            materialIcon: 'flag', materialClasses: 'ma-alarm-level-information', value: 1},
+        {key: 'IMPORTANT', classes: 'fa-flag ma-alarm-level-important', translation: 'common.alarmLevel.important',
+            materialIcon: 'flag', materialClasses: 'ma-alarm-level-important', value: 2},
+        {key: 'WARNING', classes: 'fa-flag ma-alarm-level-warning', translation: 'common.alarmLevel.warning',
+            materialIcon: 'flag', materialClasses: 'ma-alarm-level-warning', value: 3},
+        {key: 'URGENT', classes: 'fa-flag ma-alarm-level-urgent', translation: 'common.alarmLevel.urgent',
+            materialIcon: 'flag', materialClasses: 'ma-alarm-level-urgent', value: 4},
+        {key: 'CRITICAL', classes: 'fa-flag ma-alarm-level-critical', translation: 'common.alarmLevel.critical',
+            materialIcon: 'flag', materialClasses: 'ma-alarm-level-critical', value: 5},
+        {key: 'LIFE_SAFETY', classes: 'fa-flag ma-alarm-level-life-safety', translation: 'common.alarmLevel.lifeSafety',
+            materialIcon: 'flag', materialClasses: 'ma-alarm-level-life-safety', value: 6},
+        {key: 'DO_NOT_LOG', classes: 'fa-times-circle ma-alarm-level-do-not-log', translation: 'common.alarmLevel.doNotLog',
+            materialIcon: 'cancel', materialClasses: 'ma-alarm-level-do-not-log', value: -2},
+        {key: 'IGNORE', classes: 'fa-times ma-alarm-level-ignore', translation: 'common.alarmLevel.ignore',
+            materialIcon: 'block', materialClasses: 'ma-alarm-level-ignore', value: -3}
+    ]);
+    const levelsMap = Object.freeze(Util.createMapObject(levels, 'key'));
+    
     Object.assign(Events, {
-        levels: Object.freeze([
-            {key: 'NONE', classes: 'fa-flag ma-alarm-level-none', translation: 'common.alarmLevel.none',
-                materialIcon: 'flag', materialClasses: 'ma-alarm-level-none'},
-            {key: 'INFORMATION', classes: 'fa-flag ma-alarm-level-information', translation: 'common.alarmLevel.info',
-                materialIcon: 'flag', materialClasses: 'ma-alarm-level-information'},
-            {key: 'IMPORTANT', classes: 'fa-flag ma-alarm-level-important', translation: 'common.alarmLevel.important',
-                materialIcon: 'flag', materialClasses: 'ma-alarm-level-important'},
-            {key: 'WARNING', classes: 'fa-flag ma-alarm-level-warning', translation: 'common.alarmLevel.warning',
-                materialIcon: 'flag', materialClasses: 'ma-alarm-level-warning'},
-            {key: 'URGENT', classes: 'fa-flag ma-alarm-level-urgent', translation: 'common.alarmLevel.urgent',
-                materialIcon: 'flag', materialClasses: 'ma-alarm-level-urgent'},
-            {key: 'CRITICAL', classes: 'fa-flag ma-alarm-level-critical', translation: 'common.alarmLevel.critical',
-                materialIcon: 'flag', materialClasses: 'ma-alarm-level-critical'},
-            {key: 'LIFE_SAFETY', classes: 'fa-flag ma-alarm-level-life-safety', translation: 'common.alarmLevel.lifeSafety',
-                materialIcon: 'flag', materialClasses: 'ma-alarm-level-life-safety'},
-            {key: 'DO_NOT_LOG', classes: 'fa-times-circle ma-alarm-level-do-not-log', translation: 'common.alarmLevel.doNotLog',
-                materialIcon: 'cancel', materialClasses: 'ma-alarm-level-do-not-log'},
-            {key: 'IGNORE', classes: 'fa-times ma-alarm-level-ignore', translation: 'common.alarmLevel.ignore',
-                materialIcon: 'block', materialClasses: 'ma-alarm-level-ignore'}
-        ])
+        levels,
+        levelsMap
     });
 
     Object.defineProperty(Events.prototype, 'duration', {
@@ -233,6 +237,10 @@ function eventsFactory($resource, Util, EventTypeInfo) {
                 this.eventType = new EventTypeInfo.EventType(this.eventType);
             }
             return this.eventType;
+        },
+        
+        getAlarmLevel() {
+            return levelsMap[this.alarmLevel];
         }
     });
 

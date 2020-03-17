@@ -14,7 +14,7 @@
     </md-tooltip>
 </span>
 
-<span ng-if="$ctrl.disableEventPopup && !$ctrl.hideEventIndicator && $ctrl.activeEvents > 0" class="ma-point-value-status-icon">
+<span ng-if="$ctrl.disableEventPopup && !$ctrl.hideEventIndicator && $ctrl.activeEvents().length" class="ma-point-value-status-icon">
     <md-icon class="md-warn">warning</md-icon>
     <md-tooltip md-direction="top">
         <span ma-tr="ui.components.hasActiveEvent"></span>
@@ -22,7 +22,7 @@
 </span>
 
 <md-button class="md-warn md-icon-button event-indicator" ng-click="$ctrl.showStatsDialog($event, $ctrl.point, 'events')"
-           md-no-ink="true" ng-if="!$ctrl.disableEventPopup && !$ctrl.hideEventIndicator && $ctrl.activeEvents > 0">
+           md-no-ink="true" ng-if="!$ctrl.disableEventPopup && !$ctrl.hideEventIndicator && $ctrl.activeEvents().length">
     <md-tooltip md-direction="top">
         <span ma-tr="ui.components.showEvents"></span>
     </md-tooltip>
