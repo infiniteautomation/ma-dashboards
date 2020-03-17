@@ -8,16 +8,22 @@ import './adminHomePage.css';
 
 class PageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUiPages', '$injector', 'maUiMenu', 'maUser']; }
+    static get $inject() { return ['$q','maSystemStatus', 'maUiDateBar', 'maUiPages', '$injector', 'maUiMenu', 'maUser', 'maEvents', 'maUiServerInfo']; }
     
-    constructor(maUiPages, $injector, maUiMenu, maUser) {
+    constructor($q, systemStatus, maUiDateBar,  maUiPages, $injector, maUiMenu, maUser, maEvents, maUiServerInfo) {
+        this.systemStatus = systemStatus
+        this.maUiDateBar = maUiDateBar
         this.maUiPages = maUiPages;
         this.$injector = $injector;
         this.maUiMenu = maUiMenu;
         this.maUser = maUser;
+        this.maEvents = maEvents
+        this.maUiServerInfo = maUiServerInfo
+        this.$q = $q
     }
-
+    
     $onInit() {
+        this.eventCounts = {}
         this.maUiPages.getPages().then(store => {
             this.pageCount = store.jsonData.pages.length;
         });
@@ -27,6 +33,34 @@ class PageController {
         this.maUiMenu.getMenu().then(menu => {
             this.utilityMenuItems = menu.filter(item => item.showInUtilities);
         });
+        this.systemStatus.getInternalMetrics().then((response) => {
+            this.internalMetrics = response.data;
+            console.log('response data',response.data);
+        });
+        this.getCounts()
+    }
+
+    getCounts() {
+        const promises = [
+            this.getCount('DATA_POINT'),
+            this.getCount('SYSTEM'),
+            this.getCount('ADVANCED_SCHEDULE')
+        ];
+        this.$q.all(promises).then(([count1, count2, count3]) => {
+            this.eventCounts.dataPoint = count1
+            this.eventCounts.system = count2
+            this.eventCounts.advancedSchedule = count3
+        });
+    }
+
+    getCount(eventType) {
+        return this.maEvents.buildQuery()
+            .eq('eventType', eventType)
+            .eq('active', true)
+            .limit(0)
+            .query().then(result => {
+                return result.$total;
+            });
     }
 }
 

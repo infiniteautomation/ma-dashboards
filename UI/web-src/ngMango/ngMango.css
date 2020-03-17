@@ -1598,3 +1598,11 @@ md-input-container:not(.ma-has-hint) .md-errors-spacer {
 [ng-messages] {
     color: var(--ma-warn-A700);
 }
+/* Sparkline chart */
+.ma-sparkline-chart .amcharts-value-axis,
+.ma-sparkline-chart .amcharts-category-axis,
+.ma-sparkline-chart .amcharts-axis-zero-grid,
+.ma-sparkline-chart .amcharts-value-axis > *,
+.ma-sparkline-chart .amcharts-category-axis > * {
+    visibility: hidden;
+}
