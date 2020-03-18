@@ -1,4 +1,4 @@
-<md-card>
+<!-- <md-card>
     <div class="ma-ui-home-page-header" md-colors="{'background-color': 'primary'}" layout="row">
         <i class="fa fa-server" aria-hidden="true"></i>
         <h2 class="ma-ui-home-page-header ma-ui-home-page-text" ma-tr="ui.adminHome.serverStatus"></h2>
@@ -46,24 +46,26 @@
                 </div>
             </div>
             <div class="ma-ui-home-page-dp">
-                <ma-svg ng-include="$ctrl.diskspaceSvg" md-colors="{'color': 'primary-200'}"
-                    class="ma-smaller-icon"></ma-svg>
+                <ma-svg ng-include="$ctrl.diskspaceSvg" md-colors="{'color': 'primary-200'}" class="ma-smaller-icon">
+                </ma-svg>
                 <div>
-                    <ma-get-point-value point-xid="internal_mango_disk_used_space" point="usedDiskSpace"></ma-get-point-value>
-                    <ma-get-point-value point-xid="internal_mango_disk_total_space" point="totalDiskSpace"></ma-get-point-value>
+                    <ma-get-point-value point-xid="internal_mango_disk_used_space" point="usedDiskSpace">
+                    </ma-get-point-value>
+                    <ma-get-point-value point-xid="internal_mango_disk_total_space" point="totalDiskSpace">
+                    </ma-get-point-value>
                     <div layout-gt-lg="row" layout-xs="row" layout="column">
                         <div class="ma-ui-home-page-text" ng-bind="usedDiskSpace.renderedValue"></div>
                         <div class="ma-ui-home-page-text" ng-bind="' / ' + totalDiskSpace.renderedValue"></div>
                     </div>
-                    <div class="ma-ui-home-page-sub-text" md-colors="{'color': 'primary-200'}" ma-tr="ui.adminHome.diskSpace"></div>
+                    <div class="ma-ui-home-page-sub-text" md-colors="{'color': 'primary-200'}"
+                        ma-tr="ui.adminHome.diskSpace"></div>
                 </div>
             </div>
         </div>
         <div class="ma-ui-home-page-section-3 ma-ui-home-page-server" md-colors="{'background-color': 'background-300'}"
             layout="row" layout-align="space-around center">
             <div class="ma-ui-home-page-dp">
-                <ma-svg ng-include="$ctrl.ramSvg" md-colors="{'color': 'primary-200'}"
-                    class="ma-bigger-icon"></ma-svg>
+                <ma-svg ng-include="$ctrl.ramSvg" md-colors="{'color': 'primary-200'}" class="ma-bigger-icon"></ma-svg>
                 <div>
                     <ma-point-value point-xid="internal_jvm_used_memory" class="ma-ui-home-page-text"></ma-point-value>
                     &#47;
@@ -73,8 +75,8 @@
                 </div>
             </div>
             <div class="ma-ui-home-page-dp">
-                <ma-svg ng-include="$ctrl.cpuloadSvg" md-colors="{'color': 'primary-200'}"
-                    class="ma-bigger-icon"></ma-svg>
+                <ma-svg ng-include="$ctrl.cpuloadSvg" md-colors="{'color': 'primary-200'}" class="ma-bigger-icon">
+                </ma-svg>
                 <div>
                     <ma-point-value point-xid="internal_cpu_process_load" class="ma-ui-home-page-text"></ma-point-value>
                     &#47;
@@ -94,14 +96,143 @@
                     to="$ctrl.maUiDateBar.to" rollup="{{$ctrl.maUiDateBar.rollupType}}"
                     rollup-interval="{{$ctrl.maUiDateBar.rollupIntervals}} {{$ctrl.maUiDateBar.rollupIntervalPeriod}}">
                 </ma-point-values>
-                <ma-serial-chart class="ma-sparkline-chart" style="height: 170px; width: 300px" series-1-values="cpuLoadValues"
-                    series-1-point="cpuLoad" series-1-type="smoothedLine" series-1-color="#6effa3"
-                    series-2-values="freeRamValues" series-2-point="freeRam" series-2-type="smoothedLine"
-                    series-2-color="#49abd0" series-2-axis="right" balloon="true" options="{autoMargins: false, categoryAxis:{labelsEnabled:false, gridAlpha: 0, axisAlpha: 0}}">
+                <ma-serial-chart class="ma-sparkline-chart" style="height: 170px; width: 300px"
+                    series-1-values="cpuLoadValues" series-1-point="cpuLoad" series-1-type="smoothedLine"
+                    series-1-color="#6effa3" series-2-values="freeRamValues" series-2-point="freeRam"
+                    series-2-type="smoothedLine" series-2-color="#49abd0" series-2-axis="right" balloon="true"
+                    options="{autoMargins: false, categoryAxis:{labelsEnabled:false, gridAlpha: 0, axisAlpha: 0}}">
                 </ma-serial-chart>
             </div>
         </div>
     </div>
+</md-card> -->
+
+<md-card>
+    <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
+        <span layout layout-align="center center">
+            <i class="fa fa-server fa-2x" aria-hidden="true" layout-padding></i>
+            <h3 ma-tr="ui.adminHome.serverStatus"></h3>
+        </span>
+        <md-button ma-tr="ui.app.moreDetails" ui-sref="ui.settings.systemStatus"
+            md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}"></md-button>
+    </md-card-header>
+    <span layout="column" layout-gt-sm="row" layout-wrap>
+        <md-card-content 
+            layout-xs="column" 
+            layout-sm="row"
+            layout="column"
+            layout-align="space-between stretch"
+            layout-align-gt-sm="start start"
+            layout-margin
+            md-colors="{'background-color': 'background-hue-1'}">
+            <div>
+                <div ng-bind="$ctrl.maUiServerInfo.serverTimezone"></div>
+                <div md-colors="{'color': 'primary-200'}" ma-tr="users.timezone"></div>
+            </div>
+            <div>
+                <ma-get-point-value point-xid="internal_mango_uptime_hrs" point="uptimePoint"></ma-get-point-value>
+                <div ng-bind="(uptimePoint.value * 3600000) | maDuration:'humanize'"></div>
+                <div md-colors="{'color': 'primary-200'}" ma-tr="ui.adminHome.uptime">
+                </div>
+            </div>
+            <div>
+                <div ng-bind="$ctrl.maUiServerInfo.coreLicenseType"></div>
+                <div md-colors="{'color': 'primary-200'}" ma-tr="modules.licenseType">
+                </div>
+            </div>
+        </md-card-content>
+        <md-card-content
+            layout-xs="column" 
+            layout="row"
+            layout-align="space-between stretch" 
+            layout-align-gt-sm="space-between center" 
+            flex
+            md-colors="{'background-color': 'background'}">
+            <div layout-margin>
+                <ma-svg ng-include="$ctrl.sqlSvg" md-colors="{'color': 'primary-200'}">
+                </ma-svg>
+                <div>
+                    <ma-point-value point-xid="internal_mango_sql_db_size"></ma-point-value>
+                    <div class="ma-ui-home-page-sub-text" md-colors="{'color': 'primary-200'}"
+                        ma-tr="systemInfo.databaseSizeDesc"></div>
+                </div>
+            </div>
+            <div layout-margin>
+                <ma-svg ng-include="$ctrl.noSqlSvg" md-colors="{'color': 'primary-200'}">
+                </ma-svg>
+                <div>
+                    <ma-point-value point-xid="internal_mango_no_sql_db_size" class="ma-ui-home-page-text">
+                    </ma-point-value>
+                    <div class="ma-ui-home-page-sub-text" md-colors="{'color': 'primary-200'}"
+                        ma-tr="systemSettings.noSqlDatabaseSize"></div>
+                </div>
+            </div>
+            <div layout-margin>
+                <ma-svg ng-include="$ctrl.diskspaceSvg" md-colors="{'color': 'primary-200'}" class="ma-smaller-icon">
+                </ma-svg>
+                <div>
+                    <ma-get-point-value point-xid="internal_mango_disk_used_space" point="usedDiskSpace">
+                    </ma-get-point-value>
+                    <ma-get-point-value point-xid="internal_mango_disk_total_space" point="totalDiskSpace">
+                    </ma-get-point-value>
+                    <div layout-gt-lg="row" layout-xs="row" layout="column">
+                        <div class="ma-ui-home-page-text" ng-bind="usedDiskSpace.renderedValue"></div>
+                        <div class="ma-ui-home-page-text" ng-bind="' / ' + totalDiskSpace.renderedValue"></div>
+                    </div>
+                    <div class="ma-ui-home-page-sub-text" md-colors="{'color': 'primary-200'}"
+                        ma-tr="ui.adminHome.diskSpace"></div>
+                </div>
+            </div>
+        </md-card-content>
+        <md-card-content
+            layout-xs="column" 
+            layout="row"
+            layout-align="space-between stretch" 
+            layout-align-gt-sm="space-between center" 
+            flex
+            flex-md="100"
+            md-colors="{'background-color': 'background-hue-2'}">
+            <div layout-margin>
+                <ma-svg ng-include="$ctrl.ramSvg" md-colors="{'color': 'primary-200'}" class="ma-bigger-icon"></ma-svg>
+                <div>
+                    <ma-point-value point-xid="internal_jvm_used_memory" class="ma-ui-home-page-text"></ma-point-value>
+                    &#47;
+                    <ma-point-value point-xid="internal_jvm_max_memory" class="ma-ui-home-page-text"></ma-point-value>
+                    <div class="ma-ui-home-page-sub-text" md-colors="{'color': 'primary-200'}"
+                        ma-tr="java.monitor.JAVA_FREE_MEMORY"></div>
+                </div>
+            </div>
+            <div layout-margin>
+                <ma-svg ng-include="$ctrl.cpuloadSvg" md-colors="{'color': 'primary-200'}" class="ma-bigger-icon">
+                </ma-svg>
+                <div>
+                    <ma-point-value point-xid="internal_cpu_process_load" class="ma-ui-home-page-text"></ma-point-value>
+                    &#47;
+                    <ma-point-value point-xid="internal_cpu_system_load" class="ma-ui-home-page-text"></ma-point-value>
+                    <div class="ma-ui-home-page-sub-text" md-colors="{'color': 'primary-200'}"
+                        ma-tr="ui.adminHome.cpuLoad"></div>
+                </div>
+            </div>
+            <div class="graph" layout-margin>
+                <ma-get-point-value point-xid="internal_cpu_system_load" point="cpuLoad"></ma-get-point-value>
+                <ma-get-point-value point-xid="internal_jvm_used_memory" point="freeRam"></ma-get-point-value>
+                <ma-point-values point="cpuLoad" values="cpuLoadValues" from="$ctrl.maUiDateBar.from"
+                    to="$ctrl.maUiDateBar.to" rollup="{{$ctrl.maUiDateBar.rollupType}}"
+                    rollup-interval="{{$ctrl.maUiDateBar.rollupIntervals}} {{$ctrl.maUiDateBar.rollupIntervalPeriod}}">
+                </ma-point-values>
+                <ma-point-values point="freeRam" values="freeRamValues" from="$ctrl.maUiDateBar.from"
+                    to="$ctrl.maUiDateBar.to" rollup="{{$ctrl.maUiDateBar.rollupType}}"
+                    rollup-interval="{{$ctrl.maUiDateBar.rollupIntervals}} {{$ctrl.maUiDateBar.rollupIntervalPeriod}}">
+                </ma-point-values>
+                <ma-serial-chart class="ma-sparkline-chart" style="height: 170px; width: 300px"
+                    series-1-values="cpuLoadValues" series-1-point="cpuLoad" series-1-type="smoothedLine"
+                    series-1-color="#6effa3" series-2-values="freeRamValues" series-2-point="freeRam"
+                    series-2-type="smoothedLine" series-2-color="#49abd0" series-2-axis="right" balloon="true"
+                    options="{autoMargins: false, categoryAxis:{labelsEnabled:false, gridAlpha: 0, axisAlpha: 0}}">
+                </ma-serial-chart>
+            </div>
+        </md-card-content>
+    </span>
 </md-card>
 
 <!-- missing -->
