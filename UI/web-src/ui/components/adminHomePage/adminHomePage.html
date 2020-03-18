@@ -47,7 +47,7 @@
             </div>
             <div class="ma-ui-home-page-dp">
                 <ma-svg ng-include="$ctrl.diskspaceSvg" md-colors="{'color': 'primary-200'}"
-                    class="smallerIcon"></ma-svg>
+                    class="ma-smaller-icon"></ma-svg>
                 <div>
                     <ma-get-point-value point-xid="internal_mango_disk_used_space" point="usedDiskSpace"></ma-get-point-value>
                     <ma-get-point-value point-xid="internal_mango_disk_total_space" point="totalDiskSpace"></ma-get-point-value>
@@ -63,7 +63,7 @@
             layout="row" layout-align="space-around center">
             <div class="ma-ui-home-page-dp">
                 <ma-svg ng-include="$ctrl.ramSvg" md-colors="{'color': 'primary-200'}"
-                    class="biggerIcon"></ma-svg>
+                    class="ma-bigger-icon"></ma-svg>
                 <div>
                     <ma-point-value point-xid="internal_jvm_used_memory" class="ma-ui-home-page-text"></ma-point-value>
                     &#47;
@@ -74,7 +74,7 @@
             </div>
             <div class="ma-ui-home-page-dp">
                 <ma-svg ng-include="$ctrl.cpuloadSvg" md-colors="{'color': 'primary-200'}"
-                    class="biggerIcon"></ma-svg>
+                    class="ma-bigger-icon"></ma-svg>
                 <div>
                     <ma-point-value point-xid="internal_cpu_process_load" class="ma-ui-home-page-text"></ma-point-value>
                     &#47;
@@ -225,7 +225,7 @@
                 </div>
             </div>
         </div>
-        <div class="ma-ui-home-page-watermark big">
+        <div class="ma-ui-home-page-watermark ma-big">
             <i class="material-icons">settings</i>
         </div>
     </md-card>
@@ -281,7 +281,7 @@
                 </div>
             </div>
         </div>
-        <div class="ma-ui-home-page-watermark big">
+        <div class="ma-ui-home-page-watermark ma-big">
             <i class="material-icons">people</i>
         </div>
     </md-card>
@@ -332,7 +332,7 @@
                 </div>
             </div>
         </div>
-        <div class="ma-ui-home-page-watermark big">
+        <div class="ma-ui-home-page-watermark ma-big">
             <i class="material-icons">alarm</i>
         </div>
     </md-card>
@@ -374,7 +374,7 @@
 
             </div>
         </div>
-        <div class="ma-ui-home-page-watermark big">
+        <div class="ma-ui-home-page-watermark ma-big">
             <i class="material-icons">book</i>
         </div>
     </md-card>

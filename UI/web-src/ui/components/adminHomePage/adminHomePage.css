@@ -130,10 +130,10 @@ ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > d
 ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > ma-svg {
     width: 48px;
 }
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > ma-svg.smallerIcon {
+ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > ma-svg.ma-smaller-icon {
     width: 36px;
 }
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > ma-svg.biggerIcon {
+ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > ma-svg.ma-bigger-icon {
     width: 54px;
 }
 ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > .ma-card-content {
@@ -294,7 +294,7 @@ ma-ui-admin-home-page .ma-ui-home-page-watermark {
 ma-ui-admin-home-page .ma-ui-home-page-watermark > i {
     font-size: 96px;
 }
-ma-ui-admin-home-page .ma-ui-home-page-watermark.big > i {
+ma-ui-admin-home-page .ma-ui-home-page-watermark.ma-big > i {
     font-size: 216px;
 }
 
