@@ -1,8 +1,31 @@
-ma-ui-admin-home-page .ma-ui-home-page-text {
-    font-size: 18px;
+ma-ui-admin-home-page md-card > md-card-header > .md-button{
+    border-radius: 20px;
+    border: solid 2px;
 }
 
-ma-ui-admin-home-page .ma-ui-home-page-sub-text {
+ma-ui-admin-home-page md-card > span > md-card-content > div ma-svg {
+    width: 48px;
+}
+
+ma-ui-admin-home-page md-card > span > md-card-content > div ma-svg {
+    width: 48px;
+}
+
+ma-ui-admin-home-page md-card > span > md-card-content > div > ma-svg.ma-smaller-icon {
+    width: 36px;
+}
+
+ma-ui-admin-home-page md-card > span > md-card-content > div > ma-svg.ma-bigger-icon {
+    width: 54px;
+}
+
+ma-ui-admin-home-page md-card > span > md-card-content > .graph{
+    overflow: auto;
+}
+
+/* Old css */
+ma-ui-admin-home-page .ma-ui-home-page-text {
+    font-size: 18px;
 }
 
 ma-ui-admin-home-page md-card {
