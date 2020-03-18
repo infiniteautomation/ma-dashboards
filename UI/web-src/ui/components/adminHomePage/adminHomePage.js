@@ -6,6 +6,12 @@
 import pageTemplate from './adminHomePage.html';
 import './adminHomePage.css';
 
+import sqlSvg from './svgs/sql-icon.svg'
+import noSqlSvg from './svgs/nosql-icon.svg'
+import diskspaceSvg from './svgs/diskspace-icon.svg'
+import ramSvg from './svgs/ram-icon.svg'
+import cpuloadSvg from './svgs/cpuload-icon.svg'
+
 class PageController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['$q','maSystemStatus', 'maUiDateBar', 'maUiPages', '$injector', 'maUiMenu', 'maUser', 'maEvents', 'maUiServerInfo']; }
@@ -20,6 +26,11 @@ class PageController {
         this.maEvents = maEvents
         this.maUiServerInfo = maUiServerInfo
         this.$q = $q
+        this.sqlSvg = sqlSvg
+        this.noSqlSvg = noSqlSvg
+        this.diskspaceSvg = diskspaceSvg
+        this.ramSvg = ramSvg
+        this.cpuloadSvg = cpuloadSvg
     }
     
     $onInit() {
@@ -35,7 +46,6 @@ class PageController {
         });
         this.systemStatus.getInternalMetrics().then((response) => {
             this.internalMetrics = response.data;
-            console.log('response data',response.data);
         });
         this.getCounts()
     }
