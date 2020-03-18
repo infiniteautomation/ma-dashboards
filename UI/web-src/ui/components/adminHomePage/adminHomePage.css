@@ -285,16 +285,16 @@ ma-ui-admin-home-page .ma-ui-home-page-grid {
     }
 }
 
-ma-ui-admin-home-page #ma-ui-home-page-watermark {
+ma-ui-admin-home-page .ma-ui-home-page-watermark {
     position: absolute;
     bottom: -11px;
     right: 0px;
     color: rgba(255, 255, 255, 0.02);
 }
-ma-ui-admin-home-page #ma-ui-home-page-watermark > i {
+ma-ui-admin-home-page .ma-ui-home-page-watermark > i {
     font-size: 96px;
 }
-ma-ui-admin-home-page #ma-ui-home-page-watermark.big > i {
+ma-ui-admin-home-page .ma-ui-home-page-watermark.big > i {
     font-size: 216px;
 }
 
