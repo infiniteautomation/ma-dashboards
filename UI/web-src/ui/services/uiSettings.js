@@ -87,7 +87,8 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             maPointValues) {
 
         if (MA_UI_SETTINGS.userCss) {
-            maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', 'meta[name="user-styles-after-here"]');
+            // inject after <meta name="user-styles-after-here">
+            maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', 'head > meta[name="user-styles-after-here"]');
         }
         
         // contains fix for https://github.com/angular/material/issues/10516
@@ -231,11 +232,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             generateCustomStyles() {
                 // inserts a style tag to style <a> tags with accent color
                 if (MD_THEME_CSS) {
-                    const oldStyles = $window.document.querySelector('head > style[tracking-name="interpolatedStyles"]');
-                    if (oldStyles) {
-                        oldStyles.parentNode.removeChild(oldStyles);
-                    }
-                    
                     const result = $interpolate(interpolatedStyles)({
                         getThemeColor: colorString => {
                             return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
@@ -243,7 +239,8 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                         uiSettings: this,
                         theme: this.activeThemeObj
                     });
-                    maCssInjector.injectStyle(result, 'interpolatedStyles', 'meta[name="user-styles-after-here"]', true, true);
+                    // inject before <meta name="user-styles-after-here">
+                    maCssInjector.injectStyle(result, 'interpolatedStyles', 'head > meta[name="user-styles-after-here"]', true);
                 }
             }
             

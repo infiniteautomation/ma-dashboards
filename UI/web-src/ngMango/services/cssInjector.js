@@ -3,8 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-
 /**
 * @ngdoc service
 * @name ngMangoServices.maCssInjector
@@ -80,65 +78,65 @@ cssInjector.injectLink('/path/to/myStyles.css', 'myStyles');
 *
 */
 
+cssInjectorFactory.$inject = ['$window'];
+function cssInjectorFactory($window) {
 
-function cssInjectorFactory() {
-    function CssInjector() {
-        this.injected = {};
-    }
-
-    CssInjector.prototype.isInjected = function(trackingName, set) {
-        if (trackingName) {
-            if (this.injected[trackingName]) {
-                return true;
-            }
-            if (set) this.injected[trackingName] = true;
+    const document = $window.document;
+    const head = document.head;
+    
+    class CssInjector {
+        isInjected(trackingName) {
+            return !!document.querySelector(`[ma-style-name="${trackingName}"]`);
         }
-        return false;
-    };
-
-    CssInjector.prototype.injectLink = function(href, trackingName, selector, insertBefore, alwaysInject) {
-        if (!alwaysInject && this.isInjected(trackingName, true)) return;
-
-        const linkElement = document.createElement('link');
-        linkElement.setAttribute('rel', 'stylesheet');
-        linkElement.setAttribute('href', href);
-        if (trackingName)
-            linkElement.setAttribute('tracking-name', trackingName);
-        insert(linkElement, selector, insertBefore);
-    };
-
-    CssInjector.prototype.injectStyle = function(content, trackingName, selector, insertBefore, alwaysInject) {
-        if (!alwaysInject && this.isInjected(trackingName, true)) return;
-
-        const styleElement = document.createElement('style');
-        if (trackingName)
-            styleElement.setAttribute('tracking-name', trackingName);
-        styleElement.appendChild(document.createTextNode(content));
-        insert(styleElement, selector, insertBefore);
-    };
-
-    function insert(element, selector, insertBefore) {
-        if (selector) {
-            const matches = document.head.querySelectorAll(selector);
-            if (matches.length) {
-                const last = angular.element(matches[matches.length - 1]);
-                if (insertBefore) {
-                    last.before(element);
-                } else {
-                    last.after(element);
-                }
-                return;
+        
+        removeStyles(trackingName) {
+            const found = document.querySelectorAll(`[ma-style-name="${trackingName}"]`);
+            for (let e of found) {
+                e.parentNode.removeChild(e);
+            }
+            return found;
+        }
+    
+        injectLink(href, trackingName, selector, insertBefore) {
+            if (trackingName) {
+                this.removeStyles(trackingName);
+            }
+    
+            const linkElement = document.createElement('link');
+            linkElement.setAttribute('rel', 'stylesheet');
+            linkElement.setAttribute('href', href);
+            if (trackingName) {
+                linkElement.setAttribute('ma-style-name', trackingName);
+            }
+            
+            this.insertElement(linkElement, selector, insertBefore);
+        }
+    
+        injectStyle(content, trackingName, selector, insertBefore) {
+            if (trackingName) {
+                this.removeStyles(trackingName);
+            }
+    
+            const styleElement = document.createElement('style');
+            if (trackingName) {
+                styleElement.setAttribute('ma-style-name', trackingName);
+            }
+            styleElement.appendChild(document.createTextNode(content));
+            
+            this.insertElement(styleElement, selector, insertBefore);
+        }
+        
+        insertElement(element, selector, insertBefore) {
+            const relativeTo = selector && document.querySelector(selector) || document.head.lastChild;
+            if (insertBefore) {
+                relativeTo.parentNode.insertBefore(element, relativeTo);
+            } else {
+                relativeTo.parentNode.insertBefore(element, relativeTo.nextSibling);
             }
         }
-
-        angular.element(document.head).prepend(element);
     }
 
 	return new CssInjector();
 }
 
-cssInjectorFactory.$inject = [];
-
 export default cssInjectorFactory;
-
-
