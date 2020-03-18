@@ -30,7 +30,7 @@ ma-ui-admin-home-page .ma-ui-home-page-header.ma-ui-home-page-text {
 ma-ui-admin-home-page md-card > .ma-ui-home-page-header > .ma-ui-home-page-header-action{
     margin-left: auto;
     border-radius: 20px;
-    border: solid 1px;
+    border: solid 2px;
     padding: 4px 8px;
 }
 
