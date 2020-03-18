@@ -47,7 +47,8 @@ module.exports = readPom().then(pom => {
                                 insert: function(style) {
                                     const meta = document.querySelector('meta[name="user-styles-after-here"]');
                                     meta.parentNode.insertBefore(style, meta);
-                                }
+                                },
+                                injectType: 'singletonStyleTag'
                             }
                         },
                         {
