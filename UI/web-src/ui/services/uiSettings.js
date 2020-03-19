@@ -216,10 +216,15 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 
                 $mdThemingProvider.setNonce(themeName);
                 $mdTheming.generateTheme(themeName);
+                
                 this.activeTheme = dynamicThemeName || themeName;
-                $mdThemingProvider.setDefaultTheme(this.activeTheme);
                 this.activeThemeObj = $mdTheming.THEMES[this.activeTheme];
-                this.generateCustomStyles();
+                
+                // setup the CSS variables for the theme
+                this.generateCssVariables();
+                
+                // activate our new theme
+                $mdThemingProvider.setDefaultTheme(this.activeTheme);
                 this.addThemeColorMetaTags();
             }
             
@@ -251,8 +256,8 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 return paletteObj[hue];
             }
             
-            generateCustomStyles() {
-                const theme = $mdTheming.defaultTheme();
+            generateCssVariables() {
+                const theme = this.activeTheme;
                 
                 const allColors = allHues.map(x => {
                     const color = this.getThemeColor(Object.assign({theme}, x));
