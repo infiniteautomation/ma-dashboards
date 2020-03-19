@@ -19,17 +19,19 @@ ma-ui-admin-home-page md-card > span > md-card-content > .graph{
     overflow: auto;
 }
 
-ma-ui-admin-home-page div > md-card.ma-info-card{
+ma-ui-admin-home-page div > md-card.ma-info-card,
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div.ma-hover {
     border: 2px solid transparent !important;
     cursor: pointer;
     position: relative;
 }
 
-ma-ui-admin-home-page div > md-card.ma-info-card:hover{
+ma-ui-admin-home-page div > md-card.ma-info-card:hover,
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div.ma-hover:hover {
     border: 2px solid currentColor !important;
 }
 
-ma-ui-admin-home-page div > md-card.ma-info-card md-icon, ma-ui-admin-home-page div > md-card.ma-detailed-info-card > md-card-header md-icon {
+ma-ui-admin-home-page div > md-card.ma-info-card md-icon{
     font-size: 48px;
 }
 
@@ -43,12 +45,26 @@ ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-add > md-icon {
     font-size: 36px;
 }
 
-ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-content > ma-point-value {
+ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-content > ma-point-value,
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div > div.ma-content > ma-point-value, 
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div > div.ma-content > div.ma-info-card-binded-value {
     font-size: 24px;
 }
 
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div {
+    padding: 0px 8px;
+}
+
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card > md-card-header md-icon {
+    font-size: 36px;
+}
+
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card>div {
+    position: relative;
+}
+
 ma-ui-admin-home-page .ma-watermark {
-    position: absolute;
+    position: absolute !important;
     bottom: 0px;
     right: 0px;
 }
@@ -56,317 +72,21 @@ ma-ui-admin-home-page .ma-watermark > md-icon {
     font-size: 96px !important;
 }
 
-ma-ui-admin-home-page .ma-watermark.ma-big > i {
-    font-size: 216px;
+ma-ui-admin-home-page .ma-watermark.ma-big > md-icon {
+    font-size: 216px !important;
 }
 
-ma-ui-admin-home-page .redirect {
-    margin: 8px;
-    padding: 8px;
+ma-ui-admin-home-page .ma-redirect {
     border-radius: 5px;
     border: 2px solid transparent !important;
-}
-ma-ui-admin-home-page .redirect:hover {
-    border: 2px solid currentColor !important;
-    cursor: pointer;
-}
-
-/* Old css */
-ma-ui-admin-home-page .ma-ui-home-page-text {
-    font-size: 18px;
-}
-
-ma-ui-admin-home-page md-card .small-card{
-    border-radius: 5px !important;
-    margin: 16px 8px;
-    position: relative;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-header{
-    padding: 8px 16px;
-    border-radius: 5px 5px 0px 0px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-header > i.fa{
-    padding: 8px;
-    font-size: 24px;
-    align-self: center;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-header > i.material-icons{
-    padding: 0px 8px;
-    line-height: unset;
-    align-self: center;
-}
-ma-ui-admin-home-page .ma-ui-home-page-header.ma-ui-home-page-text {
-    font-size: 20px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-header > .ma-ui-home-page-header-action{
-    margin-left: auto;
-    border-radius: 20px;
-    border: solid 2px;
-    padding: 4px 8px;
-}
-
-/* Section for top card */
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card {
-    display: grid;
-    grid-template-columns: 1fr 4fr 4fr;
-    grid-template-rows: 1fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card .ma-ui-home-page-section-1{
-    border-radius: 0px 0px 0px 5px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card .ma-ui-home-page-section-3.ma-ui-home-page-server{
-    border-radius: 0px 0px 5px 0px;
-}
-/* mobile devices */
-@media only screen and (max-width: 534px) {
-    ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card {
-        display: block;
-    }
-    ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card > .ma-ui-home-page-section-1, ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card > .ma-ui-home-page-section-2.ma-ui-home-page-server, ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card > .ma-ui-home-page-section-3.ma-ui-home-page-server {
-        display: block !important
-    }
-    ma-ui-admin-home-page md-card .ma-ui-home-page-section-1 .ma-ui-home-page-content {
-        min-width: unset;
-    }
-    ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card .ma-ui-home-page-section-3.ma-ui-home-page-server{
-        border-radius: 0px 0px 5px 5px;
-    }
-}
-@media only screen and (min-width: 535px) and (max-width: 619px) {
-    ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card {
-        display: block;
-    }
-    ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card > .ma-ui-home-page-section-1, ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card > .ma-ui-home-page-section-2.ma-ui-home-page-server, ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card > .ma-ui-home-page-section-3.ma-ui-home-page-server {
-        display: flex !important;
-        justify-content: space-between !important;
-        flex-direction: row
-    }
-    .ma-ui-home-page-section-1 > ma-ui-admin-home-page md-card > .ma-ui-home-page-content {
-        min-width: 125px;
-    }
-}
-/* laptops and tablets */
-@media only screen and (min-width: 620px) and (max-width: 1056px) {
-    ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card {
-        display: grid;
-        grid-template-columns: 1fr 3fr;
-        grid-template-rows: 2fr;
-    }
-    ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card > .ma-ui-home-page-section-3.ma-ui-home-page-server {
-        grid-area: 2 / 1 / 3 / 3;
-        border-radius: 0px 0px 5px 5px;
-    }
-}  
-
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content > .ma-ui-home-page-section-1 {
-    padding: 8px 16px;
-}
-
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content > .ma-ui-home-page-section-2{  
-    padding: 8px 16px;
-}
-
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content > .ma-ui-home-page-section-3{
-    padding: 8px 16px;   
-}
-
-ma-ui-admin-home-page md-card > .ma-ui-home-page-section-1.ma-ui-home-page-server-info > div {
-    margin: 8px 16px;
-}
-
-ma-ui-admin-home-page md-card > .ma-ui-home-page-server{
-    display: flex;
-    justify-content: space-evenly !important;
-    height: unset !important;
-    flex-direction: unset !important;    
-}
-
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content.ma-ui-home-page-server-info-card .ma-ui-home-page-dp {
-    margin:8px 16px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp {
-    margin:16px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > div{
-    margin-top:16px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > div.ma-ui-home-page-text{
-    margin-top: unset;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > div.ma-ui-home-page-sub-text{
-    margin-top: unset;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > ma-svg {
-    width: 48px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > ma-svg.ma-smaller-icon {
-    width: 36px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > ma-svg.ma-bigger-icon {
-    width: 54px;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-dp > .ma-card-content {
-    margin-top: 16px;
-}
-
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content .ma-ui-home-page-grid-cards{
-    /* TODO: Revise once all colors are in  */
-    background-color: inherit !important;
-    margin: unset;
-    padding: unset;
-}
-
-ma-ui-admin-home-page div.ma-ui-home-page-grid-cards > .ma-ui-home-page-info-card {
-    display: flex;
-    border-radius: 5px;
-    margin: 16px 8px;
-    padding: 8px;
-    position: relative;
-    border: 2px solid transparent;
-    position: relative;
     z-index: 1;
 }
-ma-ui-admin-home-page div.ma-ui-home-page-grid-cards > md-card > .ma-ui-home-page-content {
-    height: 100%;
+ma-ui-admin-home-page .ma-redirect > div > ma-point-value {
+    margin: 0px 8px;
 }
-/* TODO: Ask for review of this class */
-ma-ui-admin-home-page div.ma-ui-home-page-grid-cards > md-card > .ma-ui-home-page-content > .ma-ui-home-page-section-3 {
-    height: inherit;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content > .ma-ui-home-page-section-3 {
-    border-radius: 0px 0px 5px 5px;
-}
-ma-ui-admin-home-page div.ma-ui-home-page-grid-cards > .ma-ui-home-page-info-card.action{
-    border: 2px solid transparent !important;
-    cursor: pointer;
-}
-ma-ui-admin-home-page div.ma-ui-home-page-grid-cards > .ma-ui-home-page-info-card.action:hover{
-    border: 2px solid currentColor !important;
-}
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card {
-    padding: 0px 8px;
-    border-radius: 5px;
-    position: relative;
-    border: 2px solid transparent;
-    position: relative;
-    z-index: 1;
-}
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card.action{
-    border: 2px solid transparent !important;
-    cursor: pointer;
-}
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card.action:hover{
-    border: 2px solid currentColor !important;
-}
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card > .ma-ui-home-page-info-card-icon {
-    padding: 0px 8px;
-}
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card > .ma-ui-home-page-info-card-icon > i {
-    line-height: unset;
-    font-size: 48px;
-}
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card > .ma-card-content {
-    margin-left: 8px;
-}
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card > .ma-ui-home-page-info-card-content > .ma-ui-home-page-text{
-    font-size: 24px;
-    margin-right: auto;
-}
-
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card > .ma-ui-home-page-info-card-action {
-    margin-left: auto;
-    padding: 8px;
-}
-ma-ui-admin-home-page div > .ma-ui-home-page-info-card > .ma-ui-home-page-info-card-action > i {
-    border-radius: 50%;
-    border: 2px solid;
-    font-size: 20px;
-}
-
-ma-ui-admin-home-page md-card > .ma-ui-home-page-content > .ma-ui-home-page-utilities{
-    padding: 8px 16px;
-    border-radius: 0px 0px 5px 5px;
-}
-
-ma-ui-admin-home-page .ma-ui-home-page-list {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-ma-ui-admin-home-page .ma-ui-home-page-list > .ma-ui-home-page-list-item {
-    width: 100%;
-    position: relative;
-    z-index: 1;
-}
-
-ma-ui-admin-home-page .ma-ui-home-page-list-item {
-    margin: 8px;
-    padding: 8px;
-    border-radius: 5px;
-    border: 2px solid transparent !important;
-}
-ma-ui-admin-home-page .ma-ui-home-page-list-item.redirect:hover {
+ma-ui-admin-home-page .ma-redirect.ma-hover:hover {
     border: 2px solid currentColor !important;
     cursor: pointer;
-}
-ma-ui-admin-home-page .ma-ui-home-page-list-item > div, ma-ui-admin-home-page .ma-ui-home-page-list-item > md-icon {
-    margin: unset !important;
-}
-ma-ui-admin-home-page .ma-ui-home-page-list-item > md-icon.ma-info-list-item-icon{
-    margin-left: auto !important;
-}
-ma-ui-admin-home-page .ma-ui-home-page-list-item > ma-point-value.ma-info-list-item-value{
-    font-size: unset;
-    margin-right: 8px
-;}
-
-ma-ui-admin-home-page .ma-ui-home-page-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 2fr);
-    grid-column-gap: 16px;
-    grid-row-gap: 16px;
-}
-/*  GO FULL WIDTH BELOW 480 PIXELS */
-@media only screen and (max-width: 599px) {
-    ma-ui-admin-home-page .ma-ui-home-page-grid {
-        display: flex;
-        flex-direction: column;
-    }
-}
-/* tablet */
-@media only screen and (min-width: 600px) and (max-width: 959px) {
-    ma-ui-admin-home-page .ma-ui-home-page-grid {
-        grid-template-columns: repeat(2, 2fr);
-    }
-}
-/* laptops */
-@media only screen and (min-width: 960px) and (max-width: 1279px) {
-    ma-ui-admin-home-page .ma-ui-home-page-utilities > .ma-ui-home-page-grid {
-        grid-template-columns: repeat(3, 2fr);
-    }
-}
-@media only screen and (min-width: 820px) and (max-width: 1240px) {
-    ma-ui-admin-home-page .ma-ui-home-page-grid.ma-ui-home-page-grid-cards {
-        grid-template-columns: repeat(2, 2fr) !important;
-    }
-}
-
-ma-ui-admin-home-page .ma-ui-home-page-watermark {
-    position: absolute;
-    bottom: -11px;
-    right: 0px;
-    color: rgba(255, 255, 255, 0.02);
-}
-ma-ui-admin-home-page .ma-ui-home-page-watermark > i {
-    font-size: 96px;
-}
-ma-ui-admin-home-page .ma-ui-home-page-watermark.ma-big > i {
-    font-size: 216px;
 }
 
 ma-ui-admin-home-page .ma-sparkline-chart {
