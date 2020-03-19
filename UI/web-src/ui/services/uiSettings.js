@@ -4,7 +4,6 @@
  */
 
 import angular from 'angular';
-import interpolatedStyles from '!!raw-loader!../styles/interpolatedStyles.css';
 import defaultUiSettings from '../uiSettings.json';
 
 uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider', 'MA_TIMEOUTS'];
@@ -68,7 +67,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
         '$mdColors',
         'maCssInjector',
         '$templateRequest',
-        '$interpolate',
         'MA_UI_SETTINGS_XID',
         'MA_UI_EDIT_SETTINGS_PERMISSION',
         '$window',
@@ -80,7 +78,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             $mdColors,
             maCssInjector,
             $templateRequest,
-            $interpolate,
             MA_UI_SETTINGS_XID,
             MA_UI_EDIT_SETTINGS_PERMISSION,
             $window,
@@ -104,6 +101,21 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             'activeThemeObj'];
         let themeId = 0;
         let userThemeGenerated = false;
+        
+        const palettes = ['primary', 'accent', 'warn', 'background'];
+        const hues = ['default', 'hue-1', 'hue-2', 'hue-3', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
+        
+        const allHues = palettes.map(palette => {
+            return hues.map(hue => {
+                return {
+                    palette,
+                    hue,
+                    colorString: hue === 'default' ? palette : `${palette}-${hue}`
+                };
+            });
+        }).reduce((acc, h) => {
+            return acc.concat(h);
+        });
         
         class UiSettings {
             constructor() {
@@ -229,19 +241,44 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 return theme;
             }
             
-            generateCustomStyles() {
-                // inserts a style tag to style <a> tags with accent color
-                if (MD_THEME_CSS) {
-                    const result = $interpolate(interpolatedStyles)({
-                        getThemeColor: colorString => {
-                            return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
-                        },
-                        uiSettings: this,
-                        theme: this.activeThemeObj
-                    });
-                    // inject before <meta name="user-styles-after-here">
-                    maCssInjector.injectStyle(result, 'interpolatedStyles', 'head > meta[name="user-styles-after-here"]', true);
+            getThemeColor(options) {
+                let {theme, palette, hue} = options;
+                const scheme = $mdTheming.THEMES[theme].colors[palette];
+                if (scheme.hues[hue]) {
+                    hue = scheme.hues[hue];
                 }
+                const paletteObj = $mdTheming.PALETTES[scheme.name];
+                return paletteObj[hue];
+            }
+            
+            generateCustomStyles() {
+                const theme = $mdTheming.defaultTheme();
+                
+                const allColors = allHues.map(x => {
+                    const color = this.getThemeColor(Object.assign({theme}, x));
+                    return Object.assign({}, color, x);
+                });
+                
+                const colorVariables = allColors.map(color => {
+                    const colorValues = color.value.join(', ');
+                    return `--ma-color-${color.colorString}: ${colorValues};`;
+                });
+                const contrastVariables = allColors.map(color => {
+                    const colorValues = color.contrast.join(', ');
+                    return `--ma-color-${color.colorString}-contrast: ${colorValues};`;
+                });
+                
+                const variables = colorVariables.concat(contrastVariables);
+
+                variables.push(`--ma-font-default: ${this.fonts.default};`);
+                variables.push(`--ma-font-paragraph: ${this.fonts.paragraph};`);
+                variables.push(`--ma-font-heading: ${this.fonts.heading};`);
+                variables.push(`--ma-font-code: ${this.fonts.code};`);
+
+                variables.unshift(':root {');
+                variables.push('}');
+
+                maCssInjector.injectStyle(variables.join('\n'), 'ma-variables', 'head > :first-child', true);
             }
             
             setMetaTag(name, content) {
