@@ -1565,3 +1565,15 @@ md-input-container:not(.ma-has-hint) .md-errors-spacer {
 .ma-color-background.ma-color-hue-3 {
     color: var(--ma-background-hue-3);
 }
+.ma-color-foreground-1 {
+    color: var(--ma-foreground-1);
+}
+.ma-color-foreground-2 {
+    color: var(--ma-foreground-2);
+}
+.ma-color-foreground-3 {
+    color: var(--ma-foreground-3);
+}
+.ma-color-foreground-4 {
+    color: var(--ma-foreground-4);
+}

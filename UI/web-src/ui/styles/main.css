@@ -611,15 +611,12 @@ md-card md-toolbar .md-toolbar-tools > .md-button.md-icon-button:last-child {
 /* Data Tables */
 
 table.md-table.md-row-select tbody.md-body>tr.md-row.md-selected {
-  background-color: rgba(var(--ma-background-400-value), 0.4) !important;
+  background-color: rgba(var(--ma-background-400-value), 0.25) !important;
 }
 
-table.md-table.md-row-select tbody.md-body>tr.md-row:not([disabled]):hover {
-  background-color: rgba(var(--ma-background-400-value), 0.6) !important;
-}
-
+table.md-table.md-row-select tbody.md-body>tr.md-row:not([disabled]):hover,
 table.md-table tbody.md-body>tr.md-row.blocked-thread {
-  background-color: rgba(var(--ma-background-400-value), 0.6) !important;
+  background-color: rgba(var(--ma-background-400-value), 0.5) !important;
 }
 
 table.md-table tbody.md-body>tr.md-row,

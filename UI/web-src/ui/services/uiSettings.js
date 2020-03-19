@@ -104,6 +104,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
         
         const palettes = ['primary', 'accent', 'warn', 'background'];
         const hues = ['default', 'hue-1', 'hue-2', 'hue-3', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
+        const foregroundHues = ['1', '2', '3', '4'];
         
         const allHues = palettes.map(palette => {
             return hues.map(hue => {
@@ -248,6 +249,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             
             getThemeColor(options) {
                 let {theme, palette, hue} = options;
+
                 const scheme = $mdTheming.THEMES[theme].colors[palette];
                 if (scheme.hues[hue]) {
                     hue = scheme.hues[hue];
@@ -257,7 +259,12 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             }
             
             getCssVariables(theme) {
-                const properties = [];
+                const properties = [
+                    {name: '--ma-font-default', value: this.fonts.default},
+                    {name: '--ma-font-paragraph', value: this.fonts.paragraph},
+                    {name: '--ma-font-heading', value: this.fonts.heading},
+                    {name: '--ma-font-code', value: this.fonts.code}
+                ];
                 
                 allHues.map(x => {
                     const color = this.getThemeColor(Object.assign({theme}, x));
@@ -269,11 +276,10 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     properties.push({name: `--ma-${color.colorString}-contrast`, value: `rgba(${contrast})`});
                     properties.push({name: `--ma-${color.colorString}-value`, value: value});
                 });
-
-                properties.push({name: '--ma-font-default', value: this.fonts.default});
-                properties.push({name: '--ma-font-paragraph', value: this.fonts.paragraph});
-                properties.push({name: '--ma-font-heading', value: this.fonts.heading});
-                properties.push({name: '--ma-font-code', value: this.fonts.code});
+                
+                foregroundHues.forEach(hue => {
+                    properties.push({name: `--ma-foreground-${hue}`, value: $mdTheming.THEMES[theme].foregroundPalette[hue]});
+                });
                 
                 return properties;
             }
@@ -286,15 +292,18 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     });
                 } else {
                     // remove theme
+                    element.style.removeProperty('--ma-font-default');
+                    element.style.removeProperty('--ma-font-paragraph');
+                    element.style.removeProperty('--ma-font-heading');
+                    element.style.removeProperty('--ma-font-code');
                     allHues.forEach(x => {
                         element.style.removeProperty(`--ma-${x.colorString}`);
                         element.style.removeProperty(`--ma-${x.colorString}-contrast`);
                         element.style.removeProperty(`--ma-${x.colorString}-value`);
                     });
-                    element.style.removeProperty('--ma-font-default');
-                    element.style.removeProperty('--ma-font-paragraph');
-                    element.style.removeProperty('--ma-font-heading');
-                    element.style.removeProperty('--ma-font-code');
+                    foregroundHues.forEach(hue => {
+                        element.style.removeProperty(`--ma-foreground-${hue}`);
+                    });
                 }
             }
             
