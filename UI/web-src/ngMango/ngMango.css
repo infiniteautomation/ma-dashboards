@@ -546,6 +546,7 @@ ma-point-value.ma-flash-on-change {
 ma-point-value[display-type=dateTime].ma-flash-on-change.ma-point-value-time-changed,
 ma-point-value.ma-flash-on-change.ma-point-value-changed {
     color: rgb(255,133,0);
+    color: var(--ma-color-accent);
 }
 
 /* Popup Icons / Event Icon */
