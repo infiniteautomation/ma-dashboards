@@ -221,7 +221,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 this.activeThemeObj = $mdTheming.THEMES[this.activeTheme];
                 
                 // setup the CSS variables for the theme
-                this.generateCssVariables();
+                this.applyRootTheme();
                 
                 // activate our new theme
                 $mdThemingProvider.setDefaultTheme(this.activeTheme);
@@ -256,34 +256,54 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 return paletteObj[hue];
             }
             
-            generateCssVariables() {
-                const theme = this.activeTheme;
+            getCssVariables(theme) {
+                const properties = [];
                 
-                const allColors = allHues.map(x => {
+                allHues.map(x => {
                     const color = this.getThemeColor(Object.assign({theme}, x));
                     return Object.assign({}, color, x);
+                }).forEach(color => {
+                    const value = color.value.join(',');
+                    const contrast = color.contrast.join(',');
+                    properties.push({name: `--ma-color-${color.colorString}`, value: `rgb(${value})`});
+                    properties.push({name: `--ma-color-${color.colorString}-contrast`, value: `rgba(${contrast})`});
+                    properties.push({name: `--ma-color-${color.colorString}-value`, value: value});
+                    properties.push({name: `--ma-color-${color.colorString}-contrast-value`, value: contrast});
                 });
+
+                properties.push({name: '--ma-font-default', value: this.fonts.default});
+                properties.push({name: '--ma-font-paragraph', value: this.fonts.paragraph});
+                properties.push({name: '--ma-font-heading', value: this.fonts.heading});
+                properties.push({name: '--ma-font-code', value: this.fonts.code});
                 
-                const colorVariables = allColors.map(color => {
-                    const colorValues = color.value.join(', ');
-                    return `--ma-color-${color.colorString}: ${colorValues};`;
-                });
-                const contrastVariables = allColors.map(color => {
-                    const colorValues = color.contrast.join(', ');
-                    return `--ma-color-${color.colorString}-contrast: ${colorValues};`;
-                });
-                
-                const variables = colorVariables.concat(contrastVariables);
-
-                variables.push(`--ma-font-default: ${this.fonts.default};`);
-                variables.push(`--ma-font-paragraph: ${this.fonts.paragraph};`);
-                variables.push(`--ma-font-heading: ${this.fonts.heading};`);
-                variables.push(`--ma-font-code: ${this.fonts.code};`);
-
-                variables.unshift(':root {');
-                variables.push('}');
-
-                maCssInjector.injectStyle(variables.join('\n'), 'ma-variables', 'head > :first-child', true);
+                return properties;
+            }
+            
+            themeElement(element, theme = this.activeTheme) {
+                if (theme) {
+                    const properties = this.getCssVariables(theme);
+                    properties.forEach(property => {
+                        element.style.setProperty(property.name, property.value);
+                    });
+                } else {
+                    // remove theme
+                    allHues.forEach(x => {
+                        element.style.removeProperty(`--ma-color-${x.colorString}`);
+                        element.style.removeProperty(`--ma-color-${x.colorString}-contrast`);
+                        element.style.removeProperty(`--ma-color-${x.colorString}-value`);
+                        element.style.removeProperty(`--ma-color-${x.colorString}-contrast-value`);
+                    });
+                    element.style.removeProperty('--ma-font-default');
+                    element.style.removeProperty('--ma-font-paragraph');
+                    element.style.removeProperty('--ma-font-heading');
+                    element.style.removeProperty('--ma-font-code');
+                }
+            }
+            
+            applyRootTheme(theme = this.activeTheme) {
+                const properties = this.getCssVariables(theme);
+                const styles = ':root {\n' + properties.map(p => `${p.name}: ${p.value};`).join('\n') + '\n}';
+                maCssInjector.injectStyle(styles, 'ma-variables', 'head > :first-child', true);
             }
             
             setMetaTag(name, content) {

@@ -1450,3 +1450,117 @@ md-input-container:not(.ma-has-hint) .md-errors-spacer {
 .ma-login-form-container md-input-container:not(.ma-has-hint) .md-errors-spacer {
 	display: block;
 }
+
+/* Theme classes */
+.ma-background-primary {
+    background-color: var(--ma-color-primary);
+    color: var(--ma-color-primary-contrast);
+}
+.ma-background-primary.ma-background-hue-1 {
+    background-color: var(--ma-color-primary-hue-1);
+    color: var(--ma-color-primary-hue-1-contrast);
+}
+.ma-background-primary.ma-background-hue-2 {
+    background-color: var(--ma-color-primary-hue-2);
+    color: var(--ma-color-primary-hue-2-contrast);
+}
+.ma-background-primary.ma-background-hue-3 {
+    background-color: var(--ma-color-primary-hue-3);
+    color: var(--ma-color-primary-hue-3-contrast);
+}
+.ma-color-primary {
+    color: var(--ma-color-primary);
+}
+.ma-color-primary.ma-color-hue-1 {
+    color: var(--ma-color-primary-hue-1);
+}
+.ma-color-primary.ma-color-hue-2 {
+    color: var(--ma-color-primary-hue-2);
+}
+.ma-color-primary.ma-color-hue-3 {
+    color: var(--ma-color-primary-hue-3);
+}
+.ma-background-accent {
+    background-color: var(--ma-color-accent);
+    color: var(--ma-color-accent-contrast);
+}
+.ma-background-accent.ma-background-hue-1 {
+    background-color: var(--ma-color-accent-hue-1);
+    color: var(--ma-color-accent-hue-1-contrast);
+}
+.ma-background-accent.ma-background-hue-2 {
+    background-color: var(--ma-color-accent-hue-2);
+    color: var(--ma-color-accent-hue-2-contrast);
+}
+.ma-background-accent.ma-background-hue-3 {
+    background-color: var(--ma-color-accent-hue-3);
+    color: var(--ma-color-accent-hue-3-contrast);
+}
+.ma-color-accent {
+    color: var(--ma-color-accent);
+}
+.ma-color-accent.ma-color-hue-1 {
+    color: var(--ma-color-accent-hue-1);
+}
+.ma-color-accent.ma-color-hue-2 {
+    color: var(--ma-color-accent-hue-2);
+}
+.ma-color-accent.ma-color-hue-3 {
+    color: var(--ma-color-accent-hue-3);
+}
+.ma-background-warn {
+    background-color: var(--ma-color-warn);
+    color: var(--ma-color-warn-contrast);
+}
+.ma-background-warn.ma-background-hue-1 {
+    background-color: var(--ma-color-warn-hue-1);
+    color: var(--ma-color-warn-hue-1-contrast);
+}
+.ma-background-warn.ma-background-hue-2 {
+    background-color: var(--ma-color-warn-hue-2);
+    color: var(--ma-color-warn-hue-2-contrast);
+}
+.ma-background-warn.ma-background-hue-3 {
+    background-color: var(--ma-color-warn-hue-3);
+    color: var(--ma-color-warn-hue-3-contrast);
+}
+.ma-color-warn {
+    color: var(--ma-color-warn);
+}
+.ma-color-warn.ma-color-hue-1 {
+    color: var(--ma-color-warn-hue-1);
+}
+.ma-color-warn.ma-color-hue-2 {
+    color: var(--ma-color-warn-hue-2);
+}
+.ma-color-warn.ma-color-hue-3 {
+    color: var(--ma-color-warn-hue-3);
+}
+.ma-background-background {
+    background-color: var(--ma-color-background);
+    color: var(--ma-color-background-contrast);
+}
+.ma-background-background.ma-background-hue-1 {
+    background-color: var(--ma-color-background-hue-1);
+    color: var(--ma-color-background-hue-1-contrast);
+}
+.ma-background-background.ma-background-hue-2 {
+    background-color: var(--ma-color-background-hue-2);
+    color: var(--ma-color-background-hue-2-contrast);
+}
+.ma-background-background.ma-background-hue-3 {
+    background-color: var(--ma-color-background-hue-3);
+    color: var(--ma-color-background-hue-3-contrast);
+}
+.ma-color-background {
+    color: var(--ma-color-background);
+}
+.ma-color-background.ma-color-hue-1 {
+    color: var(--ma-color-background-hue-1);
+}
+.ma-color-background.ma-color-hue-2 {
+    color: var(--ma-color-background-hue-2);
+}
+.ma-color-background.ma-color-hue-3 {
+    color: var(--ma-color-background-hue-3);
+}
