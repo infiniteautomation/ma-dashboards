@@ -117,14 +117,8 @@
             md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}"></md-button>
     </md-card-header>
     <span layout="column" layout-gt-sm="row" layout-wrap>
-        <md-card-content 
-            layout-xs="column" 
-            layout-sm="row"
-            layout="column"
-            layout-align="space-between stretch"
-            layout-align-gt-sm="start start"
-            layout-margin
-            md-colors="{'background-color': 'background-hue-1'}">
+        <md-card-content layout-xs="column" layout-sm="row" layout="column" layout-align="space-between stretch"
+            layout-align-gt-sm="start start" layout-margin md-colors="{'background-color': 'background-hue-1'}">
             <div>
                 <div ng-bind="$ctrl.maUiServerInfo.serverTimezone"></div>
                 <div md-colors="{'color': 'primary-200'}" ma-tr="users.timezone"></div>
@@ -141,13 +135,8 @@
                 </div>
             </div>
         </md-card-content>
-        <md-card-content
-            layout-xs="column" 
-            layout="row"
-            layout-align="space-between stretch" 
-            layout-align-gt-sm="space-between center" 
-            flex
-            md-colors="{'background-color': 'background'}">
+        <md-card-content layout-xs="column" layout="row" layout-align="space-between stretch"
+            layout-align-gt-sm="space-between center" flex md-colors="{'background-color': 'background'}">
             <div layout-margin>
                 <ma-svg ng-include="$ctrl.sqlSvg" md-colors="{'color': 'primary-200'}">
                 </ma-svg>
@@ -184,13 +173,8 @@
                 </div>
             </div>
         </md-card-content>
-        <md-card-content
-            layout-xs="column" 
-            layout="row"
-            layout-align="space-between stretch" 
-            layout-align-gt-sm="space-between center" 
-            flex
-            flex-md="100"
+        <md-card-content layout-xs="column" layout="row" layout-align="space-between stretch"
+            layout-align-gt-sm="space-between center" flex flex-md="100"
             md-colors="{'background-color': 'background-hue-2'}">
             <div layout-margin>
                 <ma-svg ng-include="$ctrl.ramSvg" md-colors="{'color': 'primary-200'}" class="ma-bigger-icon"></ma-svg>
@@ -512,23 +496,26 @@
 </div>
 
 <md-card ng-if="::$ctrl.utilityMenuItems.length">
-    <div class="ma-ui-home-page-header" md-colors="{'background-color': 'primary'}" layout="row">
-        <i class="fa fa-cogs" aria-hidden="true"></i>
-        <h2 class="ma-ui-home-page-header ma-ui-home-page-text" ma-tr="ui.app.utilities"></h2>
-        <md-button class="ma-ui-home-page-header-action" ma-tr="ui.app.viewAll"
+    <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
+        <span layout layout-align="center center">
+            <i class="fa fa-cogs fa-2x" aria-hidden="true" layout-padding></i>
+            <h3 ma-tr="ui.app.utilities"></h3>
+        </span>
+        <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.systemStatus"
             md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}"></md-button>
-    </div>
-    <div class="ma-ui-home-page-content" layout="column">
-        <div class="ma-ui-home-page-utilities">
-            <div class="ma-ui-home-page-grid">
-                <div class="ma-ui-home-page-list-item redirect"
-                    md-colors="{'background-color': 'primary-300', 'border-color': 'primary-100'}" layout="row"
-                    layout-align="space-between center" ng-repeat="item in ::$ctrl.utilityMenuItems track by item.name"
-                    ng-if="$ctrl.maUser.current.hasAnyRole(item.permission)" ui-sref="{{item.name}}">
-                    <div md-colors="{'color': 'primary-200'}" ma-tr="{{item.menuTr}}"></div>
-                    <md-icon md-colors="{'color': 'primary-200'}">{{item.menuIcon}}</md-icon>
-                </div>
-            </div>
+    </md-card-header>
+    <md-card-content 
+        layout-xs="column"
+        layout
+        layout-wrap 
+        layout-align-gt-xs="space-between center">
+        <div class="ma-ui-home-page-list-item redirect"
+            md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}" layout="row"
+            layout-align="space-between center" flex-sm="45" flex-md="30" flex-gt-md="20"
+            ng-repeat="item in ::$ctrl.utilityMenuItems track by item.name"
+            ng-if="$ctrl.maUser.current.hasAnyRole(item.permission)" ui-sref="{{item.name}}">
+            <div md-colors="{'color': 'primary-50'}" ma-tr="{{item.menuTr}}"></div>
+            <md-icon md-colors="{'color': 'primary-50'}">{{item.menuIcon}}</md-icon>
         </div>
-    </div>
+    </md-card-content>
 </md-card>

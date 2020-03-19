@@ -28,7 +28,7 @@ ma-ui-admin-home-page .ma-ui-home-page-text {
     font-size: 18px;
 }
 
-ma-ui-admin-home-page md-card {
+ma-ui-admin-home-page md-card .small-card{
     border-radius: 5px !important;
     margin: 16px 8px;
     position: relative;
