@@ -3,6 +3,8 @@ ma-drop-down-button {
 	padding-bottom: 1px;
 	border-bottom: 1px solid currentColor;
 	margin: 8px 0;
+	color: var(--ma-foreground-3);
+	border-bottom-color: var(--ma-foreground-4);
 }
 
 ma-drop-down-button:active,
@@ -19,6 +21,8 @@ ma-drop-down-button:active:not([disabled]),
 ma-drop-down-button.ma-drop-down-open:not([disabled]) {
 	padding-bottom: 0;
 	border-bottom-width: 2px;
+	color: var(--ma-primary);
+	border-bottom-color: var(--ma-primary);
 }
 
 ma-drop-down-button > div {
@@ -30,8 +34,13 @@ ma-drop-down-button:not([disabled]) > md-icon {
 	cursor: pointer;
 }
 
-ma-drop-down-button > md-icon {
+ma-drop-down-button:not([disabled]) > div {
+	color: var(--ma-foreground-1);
+}
+
+ma-drop-down-button > md-icon.material-icons {
 	transition: transform 0.3s ease-in-out;
+	color: inherit;
 }
 
 ma-drop-down-button.ma-drop-down-open > md-icon {

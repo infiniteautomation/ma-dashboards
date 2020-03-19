@@ -20,8 +20,6 @@ import 'angular-material/angular-material.css';
 import 'angular-material-data-table/dist/md-data-table.css';
 import 'md-pickers/dist/mdPickers.css';
 
-import themeStyles from '!!raw-loader!./ngMangoTheme.css';
-
 const ngMangoMaterial = angular.module('ngMangoMaterial', ['ngMango', 'ngMaterial', 'mdPickers', 'md.data.table']);
 ngMangoMaterial.component('maColorPreview', colorPreview);
 ngMangoMaterial.factory('maDialogHelper', dialogHelperFactory);
@@ -30,7 +28,7 @@ ngMangoMaterial.factory('maStatsDialog', statsDialogFactory);
 ngMangoMaterial.factory('maSetPointDialog', setPointDialogFactory);
 
 
-ngMangoMaterial.config(['$provide', '$mdThemingProvider', function($provide, $mdThemingProvider) {
+ngMangoMaterial.config(['$provide', function($provide) {
     $provide.decorator('$mdDialog', ['$delegate', function($delegate) {
         const originalShow = $delegate.show;
         $delegate.show = function(options) {
@@ -41,8 +39,6 @@ ngMangoMaterial.config(['$provide', '$mdThemingProvider', function($provide, $md
         };
         return $delegate;
     }]);
-    
-    $mdThemingProvider.registerStyles(themeStyles);
 }]);
 
 export default ngMangoMaterial;

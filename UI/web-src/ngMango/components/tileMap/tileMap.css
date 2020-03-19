@@ -13,6 +13,10 @@ ma-tile-map.leaflet-container .leaflet-bar a:hover {
 	color: black;
 }
 
+ma-tile-map.leaflet-container .leaflet-popup-content-wrapper a:not(.md-button) {
+	color: var(--ma-accent-500);
+}
+
 ma-tile-map.leaflet-container {
 	font-family: inherit;
 	font-size: inherit;
@@ -22,5 +26,7 @@ ma-tile-map.leaflet-container {
 ma-tile-map.leaflet-container .leaflet-popup-content-wrapper,
 ma-tile-map.leaflet-container .leaflet-popup-tip,
 ma-tile-map.leaflet-container .leaflet-tooltip {
+	background-color: var(--ma-background);
+	color: var(--ma-background-contrast);
 	border-color: currentColor;
 }

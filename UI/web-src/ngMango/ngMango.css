@@ -1404,14 +1404,13 @@ table.ma-material-table {
 
 table.ma-material-table td {
 	padding: 4px 16px 4px 16px;
-	/* color override in ngMangoTheme.css */
 	border-bottom: 1px solid currentColor;
+	border-bottom-color: rgb(var(--ma-background-hue-3-value), 0.12);
 }
 
 table.ma-material-table thead {
 	font-weight: bold;
 }
-
 
 /* Input hints / notes */
 
@@ -1422,6 +1421,7 @@ md-input-container .ma-hint {
 	padding: 5px 5px 0 0;
 	position: absolute;
 	top: 32px;
+	color: var(--ma-foreground-2);
 }
 
 /* 
@@ -1450,6 +1450,14 @@ md-input-container:not(.ma-has-hint) .md-errors-spacer {
 
 .ma-login-form-container md-input-container:not(.ma-has-hint) .md-errors-spacer {
 	display: block;
+}
+
+/* Item row styles used in tables */
+.ma-item-row:hover,
+.ma-item-row:focus {
+	background-color: var(--ma-background-hue-2);
+	color: var(--ma-background-hue-2-contrast);
+	outline: none;
 }
 
 /* Theme classes */

@@ -310,7 +310,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             applyRootTheme(theme = this.activeTheme) {
                 const properties = this.getCssVariables(theme);
                 const styles = ':root {\n' + properties.map(p => `${p.name}: ${p.value};`).join('\n') + '\n}';
-                maCssInjector.injectStyle(styles, 'ma-variables', 'head > :first-child', true);
+                maCssInjector.injectStyle(styles, 'ma-variables', 'head > meta[name="user-styles-after-here"]', true);
             }
             
             setMetaTag(name, content) {
