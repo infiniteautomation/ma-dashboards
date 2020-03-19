@@ -311,14 +311,14 @@ a {
 }
 
 a:not(.md-button) {
-  color: var(--ma-color-accent-500);
-  border-bottom-color: rgba(var(--ma-color-accent-500-value), 0.3);
+  color: var(--ma-accent-500);
+  border-bottom-color: rgba(var(--ma-accent-500-value), 0.3);
 }
 
 a:not(.md-button):hover,
 a:not(.md-button):focus {
-  color: var(--ma-color-accent-700);
-  border-bottom-color: var(--ma-color-accent-700);
+  color: var(--ma-accent-700);
+  border-bottom-color: var(--ma-accent-700);
 }
 
 a.md-button, .md-button a {
@@ -435,7 +435,7 @@ pre > code.highlight {
 
 code {
   font-size: 1.4rem;
-  background: rgba(var(--ma-color-background-500-value), 0.15);
+  background: rgba(var(--ma-background-500-value), 0.15);
 }
 
 code.highlight {
@@ -476,7 +476,7 @@ code:not(.highlight) {
 }
 
 mdp-calendar .md-button.md-raised:not(.md-accent) {
-    background-color: rgba(var(--ma-color-background-100-value), 0.8) !important;
+    background-color: rgba(var(--ma-background-100-value), 0.8) !important;
 }
 
 .mdp-datepicker-date,
@@ -510,19 +510,19 @@ mdp-calendar .md-button.md-raised:not(.md-accent) {
 /* when hovering over a number on the clock */
 .mdp-clock .mdp-clock-container > .md-button.md-icon-button.md-raised:hover,
 .mdp-clock .mdp-clock-container > .md-button.md-icon-button.md-raised.md-primary:hover {
-	background-color: var(--ma-color-background-300);
-	color: rgba(var(--ma-color-background-A200-value), 0.87);
+	background-color: var(--ma-background-300);
+	color: rgba(var(--ma-background-A200-value), 0.87);
 }
 
 /* the selected number on the clock */
 .mdp-clock .mdp-clock-container > .md-button.md-icon-button.md-raised.md-primary {
-	background-color: var(--ma-color-accent);
-	color: rgba(var(--ma-color-background-A100-value), 0.87);
+	background-color: var(--ma-accent);
+	color: rgba(var(--ma-background-A100-value), 0.87);
 }
 
 /* the circle at the end of the clock pointer */
 .mdp-clock .mdp-clock-container > .mdp-pointer > .mdp-clock-selected {
-	background-color: var(--ma-color-primary);
+	background-color: var(--ma-primary);
 }
 
 .ma-ui-menu .md-button.ma-ui-menu-link a {
@@ -609,15 +609,15 @@ md-card md-toolbar .md-toolbar-tools > .md-button.md-icon-button:last-child {
 /* Data Tables */
 
 table.md-table.md-row-select tbody.md-body>tr.md-row.md-selected {
-  background-color: rgba(var(--ma-color-background-400-value), 0.4) !important;
+  background-color: rgba(var(--ma-background-400-value), 0.4) !important;
 }
 
 table.md-table.md-row-select tbody.md-body>tr.md-row:not([disabled]):hover {
-  background-color: rgba(var(--ma-color-background-400-value), 0.6) !important;
+  background-color: rgba(var(--ma-background-400-value), 0.6) !important;
 }
 
 table.md-table tbody.md-body>tr.md-row.blocked-thread {
-  background-color: rgba(var(--ma-color-background-400-value), 0.6) !important;
+  background-color: rgba(var(--ma-background-400-value), 0.6) !important;
 }
 
 table.md-table tbody.md-body>tr.md-row,
@@ -992,11 +992,11 @@ md-input-container md-select {
 }
 
 md-input-container:not(.md-input-invalid).md-input-focused md-icon.md-accent {
-  color: var(--ma-color-accent);
+  color: var(--ma-accent);
 }
 
 md-input-container:not(.md-input-invalid).md-input-focused md-icon.md-warn {
-  color: var(--ma-color-warn);
+  color: var(--ma-warn);
 }
 
 md-select {
@@ -1017,8 +1017,8 @@ md-icon {
 /* AmCharts styles */
 
 .amcharts-gauge-arrow, .amcharts-gauge-arrow-nail {
-    fill: var(--ma-color-accent);
-    stroke: var(--ma-color-accent);
+    fill: var(--ma-accent);
+    stroke: var(--ma-accent);
 }
 
 .amcharts-gauge-axis, .amcharts-value-axis, .amcharts-category-axis {
@@ -1220,7 +1220,7 @@ ma-ui-offline-upgrade-page div[ma-dropzone]:not(.ma-drag-over) {
 }
 
 .ma-drag-over {
-	border-color: var(--ma-color-accent);
+	border-color: var(--ma-accent);
 }
 
 ma-ui-upgrade-page .description-column,
@@ -1259,7 +1259,7 @@ ma-ui-upgrade-page .notes-column {
 /* data point details page */
 
 table.ma-point-values-table .ma-point-values-non-realtime tr.ma-point-value-cached {
-  color: var(--ma-color-warn)
+  color: var(--ma-warn)
 }
 
 ma-ui-data-point-details .amchart {
@@ -1338,30 +1338,30 @@ form:not(.ng-submitted) .ng-untouched ~ [ng-messages],
 /* Toast background color */
 md-toast._md .md-toast-content {
 	/*color: {{theme.isDark ? getThemeColor('background-A100-0.87') : getThemeColor('background-A200-0.87')}};*/
-	color: rgba(var(--ma-color-background-A100-value), 0.87);
-	background-color: var(--ma-color-background-hue-3);
+	color: rgba(var(--ma-background-A100-value), 0.87);
+	background-color: var(--ma-background-hue-3);
 }
 
 md-toast._md.md-warn .md-toast-content {
-	background-color: var(--ma-color-warn);
+	background-color: var(--ma-warn);
 }
 
 md-toast._md.md-primary .md-toast-content {
-	background-color: var(--ma-color-primary);
+	background-color: var(--ma-primary);
 }
 
 md-toast._md.md-accent .md-toast-content {
-	background-color: var(--ma-color-accent);
+	background-color: var(--ma-accent);
 }
 
 md-toast._md.md-warn .md-toast-content,
 md-toast._md.md-primary .md-toast-content,
 md-toast._md.md-accent .md-toast-content {
-	color: var(--ma-color-background-A100);
+	color: var(--ma-background-A100);
 }
 
 md-toast._md.md-warn .md-toast-content .md-button.md-highlight,
 md-toast._md.md-primary .md-toast-content .md-button.md-highlight,
 md-toast._md.md-accent .md-toast-content .md-button.md-highlight {
-	color: var(--ma-color-background-A100);
+	color: var(--ma-background-A100);
 }

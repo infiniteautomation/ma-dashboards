@@ -265,10 +265,9 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 }).forEach(color => {
                     const value = color.value.join(',');
                     const contrast = color.contrast.join(',');
-                    properties.push({name: `--ma-color-${color.colorString}`, value: `rgb(${value})`});
-                    properties.push({name: `--ma-color-${color.colorString}-contrast`, value: `rgba(${contrast})`});
-                    properties.push({name: `--ma-color-${color.colorString}-value`, value: value});
-                    properties.push({name: `--ma-color-${color.colorString}-contrast-value`, value: contrast});
+                    properties.push({name: `--ma-${color.colorString}`, value: `rgb(${value})`});
+                    properties.push({name: `--ma-${color.colorString}-contrast`, value: `rgba(${contrast})`});
+                    properties.push({name: `--ma-${color.colorString}-value`, value: value});
                 });
 
                 properties.push({name: '--ma-font-default', value: this.fonts.default});
@@ -288,10 +287,9 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 } else {
                     // remove theme
                     allHues.forEach(x => {
-                        element.style.removeProperty(`--ma-color-${x.colorString}`);
-                        element.style.removeProperty(`--ma-color-${x.colorString}-contrast`);
-                        element.style.removeProperty(`--ma-color-${x.colorString}-value`);
-                        element.style.removeProperty(`--ma-color-${x.colorString}-contrast-value`);
+                        element.style.removeProperty(`--ma-${x.colorString}`);
+                        element.style.removeProperty(`--ma-${x.colorString}-contrast`);
+                        element.style.removeProperty(`--ma-${x.colorString}-value`);
                     });
                     element.style.removeProperty('--ma-font-default');
                     element.style.removeProperty('--ma-font-paragraph');
