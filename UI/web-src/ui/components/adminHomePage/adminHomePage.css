@@ -16,7 +16,13 @@ ma-ui-admin-home-page md-card > span > md-card-content > div > ma-svg.ma-bigger-
 }
 
 ma-ui-admin-home-page md-card > span > md-card-content > .graph{
-    overflow: auto;
+    overflow: hidden;
+}
+
+ma-ui-admin-home-page .ma-sparkline-chart {
+    height: 170px;
+    width: 250px;
+    margin: -40px;
 }
 
 ma-ui-admin-home-page div > md-card.ma-info-card,
@@ -87,10 +93,4 @@ ma-ui-admin-home-page .ma-redirect > div > ma-point-value {
 ma-ui-admin-home-page .ma-redirect.ma-hover:hover {
     border: 2px solid currentColor !important;
     cursor: pointer;
-}
-
-ma-ui-admin-home-page .ma-sparkline-chart {
-    height: 170px;
-    width: 250px;
-    margin: -40px;
 }
