@@ -7,10 +7,6 @@ ma-ui-admin-home-page md-card > span > md-card-content > div ma-svg {
     width: 48px;
 }
 
-ma-ui-admin-home-page md-card > span > md-card-content > div ma-svg {
-    width: 48px;
-}
-
 ma-ui-admin-home-page md-card > span > md-card-content > div > ma-svg.ma-smaller-icon {
     width: 36px;
 }
@@ -21,6 +17,58 @@ ma-ui-admin-home-page md-card > span > md-card-content > div > ma-svg.ma-bigger-
 
 ma-ui-admin-home-page md-card > span > md-card-content > .graph{
     overflow: auto;
+}
+
+ma-ui-admin-home-page div > md-card.ma-info-card{
+    border: 2px solid transparent !important;
+    cursor: pointer;
+    position: relative;
+}
+
+ma-ui-admin-home-page div > md-card.ma-info-card:hover{
+    border: 2px solid currentColor !important;
+}
+
+ma-ui-admin-home-page div > md-card.ma-info-card md-icon, ma-ui-admin-home-page div > md-card.ma-detailed-info-card > md-card-header md-icon {
+    font-size: 48px;
+}
+
+ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-add {
+    margin-left: auto;
+    margin-bottom: auto;
+    z-index: 1;
+}
+
+ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-add > md-icon {
+    font-size: 36px;
+}
+
+ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-content > ma-point-value {
+    font-size: 24px;
+}
+
+ma-ui-admin-home-page .ma-watermark {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+ma-ui-admin-home-page .ma-watermark > md-icon {
+    font-size: 96px !important;
+}
+
+ma-ui-admin-home-page .ma-watermark.ma-big > i {
+    font-size: 216px;
+}
+
+ma-ui-admin-home-page .redirect {
+    margin: 8px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 2px solid transparent !important;
+}
+ma-ui-admin-home-page .redirect:hover {
+    border: 2px solid currentColor !important;
+    cursor: pointer;
 }
 
 /* Old css */
