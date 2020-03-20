@@ -12,8 +12,11 @@ ma-ui-admin-home-page md-card-header {
     font-size: 1.8rem;
 }
 
-ma-ui-admin-home-page md-card-header i.fa {
+ma-ui-admin-home-page md-card-header i.fa,
+ma-ui-admin-home-page md-card-header md-icon.material-icons {
+    margin: 10px;
     font-size: 2.6rem;
+    color: currentColor;
 }
 
 ma-ui-admin-home-page md-card-header > .md-button {
@@ -22,6 +25,7 @@ ma-ui-admin-home-page md-card-header > .md-button {
     text-transform: lowercase;
     min-height: 32px;
     line-height: 32px;
+    margin: 4px 8px;
 }
 
 ma-ui-admin-home-page .ma-ui-home-page-sub-text {
@@ -78,10 +82,6 @@ ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > 
 
 ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div {
     padding: 0px 8px;
-}
-
-ma-ui-admin-home-page div > md-card.ma-detailed-info-card > md-card-header md-icon {
-    font-size: 36px;
 }
 
 ma-ui-admin-home-page div > md-card.ma-detailed-info-card>div {
