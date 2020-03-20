@@ -6,9 +6,9 @@
         </span>
         <md-button ma-tr="ui.app.moreDetails" ui-sref="ui.settings.systemStatus"></md-button>
     </md-card-header>
-    <span layout="column" layout-gt-sm="row" layout-wrap>
+    <span layout="column" layout-gt-sm="row" layout-wrap class="ma-server-status-contents">
         <md-card-content layout-xs="column" layout-sm="row" layout="column" layout-align="space-between stretch"
-            layout-align-gt-sm="start start" md-colors="{'background-color': 'background-hue-1'}" class="ma-server-details">
+            layout-align-gt-sm="start start" class="ma-server-details">
             <div>
                 <div ng-bind="$ctrl.maUiServerInfo.serverTimezone"></div>
                 <div class="ma-ui-home-page-sub-text" ma-tr="users.timezone"></div>
@@ -25,7 +25,7 @@
             </div>
         </md-card-content>
         <md-card-content layout-xs="column" layout="row" layout-align="space-between stretch"
-            layout-align-gt-sm="space-between center" flex md-colors="{'background-color': 'background'}">
+            layout-align-gt-sm="space-between center" flex>
             <div>
                 <ma-svg ng-include="$ctrl.sqlSvg">
                 </ma-svg>
@@ -63,8 +63,7 @@
             </div>
         </md-card-content>
         <md-card-content layout-xs="column" layout="row" layout-align="space-between stretch"
-            layout-align-gt-sm="space-between center" flex flex-md="100"
-            md-colors="{'background-color': 'background-hue-2'}">
+            layout-align-gt-sm="space-between center" flex flex-md="100">
             <div>
                 <ma-svg ng-include="$ctrl.ramSvg"></ma-svg>
                 <div>
