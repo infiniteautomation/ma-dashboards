@@ -1,7 +1,7 @@
 <md-card class="ma-rounded-border">
     <md-card-header layout layout-align="space-between center" class="ma-rounded-border">
         <span layout layout-align="center center">
-            <i class="fa fa-server" aria-hidden="true" layout-padding></i>
+            <i class="fa fa-server" aria-hidden="true"></i>
             <span class="ma-card-title" ma-tr="ui.adminHome.serverStatus"></span>
         </span>
         <md-button ma-tr="ui.app.moreDetails" ui-sref="ui.settings.systemStatus"></md-button>
@@ -115,7 +115,7 @@
             ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.dataSources">
             <md-card-content layout layout-align="start center">
                 <div>
-                    <md-icon layout-padding md-colors="{'color': 'primary-700'}">device_hub</md-icon>
+                    <md-icon md-colors="{'color': 'primary-700'}">device_hub</md-icon>
                 </div>
                 <div class="ma-content" layout="column" layout-align="center start">
                     <ma-point-value point-xid="internal_mango_num_data_sources"></ma-point-value>
@@ -134,7 +134,7 @@
             ui-sref="ui.dataPointDetails">
             <md-card-content layout layout-align="start center">
                 <div>
-                    <md-icon layout-padding md-colors="{'color': 'primary-700'}">timeline</md-icon>
+                    <md-icon md-colors="{'color': 'primary-700'}">timeline</md-icon>
                 </div>
                 <div class="ma-content" layout="column" layout-align="center start">
                     <ma-point-value point-xid="internal_mango_num_data_points"></ma-point-value>
@@ -154,7 +154,7 @@
             ui-sref="ui.watchList">
             <md-card-content layout layout-align="start center">
                 <div>
-                    <md-icon layout-padding md-colors="{'color': 'primary-700'}">remove_red_eye</md-icon>
+                    <md-icon md-colors="{'color': 'primary-700'}">remove_red_eye</md-icon>
                 </div>
                 <div class="ma-content" layout="column" layout-align="center start">
                     <ma-point-value point-xid="internal_mango_num_watchlists"></ma-point-value>
@@ -172,7 +172,7 @@
             ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.publishers">
             <md-card-content layout layout-align="start center">
                 <div>
-                    <md-icon layout-padding md-colors="{'color': 'primary-700'}">publish</md-icon>
+                    <md-icon md-colors="{'color': 'primary-700'}">publish</md-icon>
                 </div>
                 <div class="ma-content" layout="column" layout-align="center start">
                     <ma-point-value point-xid="internal_mango_num_publishers"></ma-point-value>
@@ -196,10 +196,8 @@
             ng-if="$ctrl.maUser.current.hasRole('superadmin')">
             <md-card-header layout layout-align="space-between center">
                 <span layout layout-align="center center">
-                    <div>
-                        <md-icon layout-padding md-colors="{color: 'background-A100'}">settings</md-icon>
-                    </div>
-                    <h3 ma-tr="ui.app.system"></h3>
+                    <md-icon>settings</md-icon>
+                    <span ma-tr="ui.app.system"></span>
                 </span>
             </md-card-header>
             <div flex layout="column" layout-align="space-between stretch">
@@ -251,13 +249,10 @@
             ng-if="$ctrl.maUser.current.hasRole('superadmin')">
             <md-card-header layout layout-align="space-between center">
                 <span layout layout-align="center center">
-                    <div>
-                        <md-icon layout-padding md-colors="{color: 'background-A100'}">people</md-icon>
-                    </div>
-                    <h3 ma-tr="ui.app.users"></h3>
+                    <md-icon>people</md-icon>
+                    <span ma-tr="ui.app.users"></span>
                 </span>
-                <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.users"
-                    md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}"></md-button>
+                <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.users"></md-button>
             </md-card-header>
             <div flex layout="column" layout-align="space-between stretch">
                 <md-card-content md-colors="{'background-color': 'background-hue-1'}">
@@ -303,13 +298,10 @@
             ng-if="$ctrl.maUser.current.hasRole('superadmin')">
             <md-card-header layout layout-align="space-between center">
                 <span layout layout-align="center center">
-                    <div>
-                        <md-icon layout-padding md-colors="{color: 'background-A100'}">alarm</md-icon>
-                    </div>
-                    <h3 ma-tr="ui.app.events"></h3>
+                    <md-icon>alarm</md-icon>
+                    <span ma-tr="ui.app.events"></span>
                 </span>
-                <md-button ma-tr="ui.app.viewAll" md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}">
-                </md-button>
+                <md-button ma-tr="ui.app.viewAll"></md-button>
             </md-card-header>
             <div flex layout="column" layout-align="space-between stretch">
                 <md-card-content flex md-colors="{'background-color': 'background-hue-1'}">
@@ -358,13 +350,10 @@
             ng-if="$ctrl.maUser.current.hasRole('superadmin')">
             <md-card-header layout layout-align="space-between center">
                 <span layout layout-align="center center">
-                    <div>
-                        <md-icon layout-padding md-colors="{color: 'background-A100'}">book</md-icon>
-                    </div>
-                    <h3 ma-tr="ui.app.reports"></h3>
+                    <md-icon>book</md-icon>
+                    <span ma-tr="ui.app.reports"></span>
                 </span>
-                <md-button ma-tr="ui.app.viewAll" md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}">
-                </md-button>
+                <md-button ma-tr="ui.app.viewAll"></md-button>
             </md-card-header>
             <div flex layout="column" layout-align="space-between stretch">
                 <md-card-content flex md-colors="{'background-color': 'background-hue-1'}">
@@ -398,11 +387,10 @@
 <md-card ng-if="::$ctrl.utilityMenuItems.length" class="ma-rounded-border">
     <md-card-header layout layout-align="space-between center">
         <span layout layout-align="center center">
-            <i class="fa fa-cogs fa-2x" aria-hidden="true" layout-padding></i>
-            <h3 ma-tr="ui.app.utilities"></h3>
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <span ma-tr="ui.app.utilities"></span>
         </span>
-        <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.systemStatus"
-            md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}"></md-button>
+        <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.systemStatus"></md-button>
     </md-card-header>
     <md-card-content layout-xs="column" layout layout-wrap layout-align-gt-xs="space-between center">
         <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin flex-sm="45"
