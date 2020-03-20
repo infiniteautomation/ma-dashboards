@@ -96,8 +96,11 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
         String page = SystemSettingsDao.instance.getValue(UICommon.UI_NOT_FOUND_PAGE);
 
         if(!StringUtils.isEmpty(page)){
-            String requested = request.getRequestURI();
-            return UriComponentsBuilder.fromPath(page).queryParam("path", requested).toUriString();
+            if (request != null) {
+                String requested = request.getRequestURI();
+                return UriComponentsBuilder.fromPath(page).queryParam("path", requested).toUriString();
+            }
+            return page;
         }else{
             return null;
         }

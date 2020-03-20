@@ -75,15 +75,8 @@ function loginRedirectorProvider () {
                 // often the path is unknown because the user is not logged in
                 if (!user) {
                     this.saveUrl(path);
-                    const url = this.getLoginUrl();
-                    
-                    if (url.startsWith(basePath)) {
-                        // strip the /ui 
-                        return url.substr(basePath.length - 1);
-                    } else {
-                        this.goToUrl(url);
-                        return '';
-                    }
+                    const loginUrl = this.getLoginUrl();
+                    return this.stripBasePath(loginUrl);
                 }
                 
                 if (path === basePath) {
@@ -97,7 +90,25 @@ function loginRedirectorProvider () {
                     return user.hasRole('superadmin') ? '/administration/home' : '/data-point-details/';
                 }
 
-                return '/not-found?path=' + encodeURIComponent(path);
+                let notFoundUrl = this.getNotFoundUrl();
+                
+                // our not found URL was not found, use a known built in URL
+                if (path === notFoundUrl) {
+                    notFoundUrl = '/ui/not-found';
+                }
+                
+                notFoundUrl += `?path=${encodeURIComponent(path)}`;
+                return this.stripBasePath(notFoundUrl);
+            }
+            
+            stripBasePath(url) {
+                if (url.startsWith(basePath)) {
+                    // strip the /ui 
+                    return url.substr(basePath.length - 1);
+                } else {
+                    this.goToUrl(url);
+                    return '';
+                }
             }
             
             goToSavedState(reload = false) {
@@ -152,6 +163,10 @@ function loginRedirectorProvider () {
             
             getLoginUrl() {
                 return maUiServerInfo.preLoginData.loginUri || '/ui/login';
+            }
+            
+            getNotFoundUrl() {
+                return maUiServerInfo.preLoginData.notFoundUri || '/ui/not-found';
             }
             
             goToLogin(reload = false) {

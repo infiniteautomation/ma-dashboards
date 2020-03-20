@@ -162,8 +162,8 @@ public class BootstrapController {
         }
 
         try {
-            String loginUri = DefaultPagesDefinition.getLoginUri(null, null);
-            data.setLoginUri(loginUri);
+            data.setLoginUri(DefaultPagesDefinition.getLoginUri(null, null));
+            data.setNotFoundUri(DefaultPagesDefinition.getNotFoundUri(null, null));
         } catch (NullPointerException e) {
             // TODO fix this after https://github.com/infiniteautomation/ma-core-public/issues/1543
             // is resolved
@@ -209,6 +209,8 @@ public class BootstrapController {
         private boolean publicRegistrationEnabled;
         private boolean devlopmentMode;
         private String loginUri;
+        private String errorUri;
+        private String notFoundUri;
 
         public TranslationsModel getTranslations() {
             return translations;
@@ -269,6 +271,12 @@ public class BootstrapController {
         }
         public void setLoginUri(String loginUri) {
             this.loginUri = loginUri;
+        }
+        public String getNotFoundUri() {
+            return notFoundUri;
+        }
+        public void setNotFoundUri(String notFoundUri) {
+            this.notFoundUri = notFoundUri;
         }
     }
 
