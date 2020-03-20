@@ -110,278 +110,290 @@
 </md-card>
 
 <!-- missing -->
-<div layout-xs="column" layout layout-wrap layout-align-gt-xs="space-between stretch">
-    <md-card class="ma-info-card" flex-gt-xs="45" flex-gt-md="20" md-colors="{'background-color': 'background-hue-1'}"
-        ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.dataSources">
-        <md-card-content layout layout-align="start center">
-            <div>
-                <md-icon layout-padding md-colors="{'color': 'primary-700'}">device_hub</md-icon>
-            </div>
-            <div class="ma-content" layout="column" layout-align="center start">
-                <ma-point-value point-xid="internal_mango_num_data_sources"></ma-point-value>
-                <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.dataSources"></div>
-            </div>
-            <div class="ma-add">
-                <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
-            </div>
-            <div class="ma-watermark">
-                <md-icon md-colors="{'color': 'background-400-0.2'}">device_hub</md-icon>
-            </div>
-        </md-card-content>
-    </md-card>
-    <!-- 1/2 done, revise roles & permisions -->
-    <md-card class="ma-info-card" flex-gt-xs="45" flex-gt-md="20" md-colors="{'background-color': 'background-hue-1'}"
-        ui-sref="ui.dataPointDetails">
-        <md-card-content layout layout-align="start center">
-            <div>
-                <md-icon layout-padding md-colors="{'color': 'primary-700'}">timeline</md-icon>
-            </div>
-            <div class="ma-content" layout="column" layout-align="center start">
-                <ma-point-value point-xid="internal_mango_num_data_points"></ma-point-value>
-                <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.dataPoints"></div>
-            </div>
-            <div class="ma-add">
-                <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
-            </div>
-            <div class="ma-watermark">
-                <md-icon md-colors="{'color': 'background-400-0.2'}">timeline</md-icon>
-            </div>
-        </md-card-content>
-    </md-card>
-    <md-card class="ma-info-card" flex-gt-xs="45" flex-gt-md="20" md-colors="{'background-color': 'background-hue-1'}"
-        ui-sref="ui.watchList">
-        <md-card-content layout layout-align="start center">
-            <div>
-                <md-icon layout-padding md-colors="{'color': 'primary-700'}">remove_red_eye</md-icon>
-            </div>
-            <div class="ma-content" layout="column" layout-align="center start">
-                <ma-point-value point-xid="internal_mango_num_watchlists"></ma-point-value>
-                <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.watchLists"></div>
-            </div>
-            <div class="ma-add">
-                <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
-            </div>
-            <div class="ma-watermark">
-                <md-icon md-colors="{'color': 'background-400-0.2'}">remove_red_eye</md-icon>
-            </div>
-        </md-card-content>
-    </md-card>
-    <md-card class="ma-info-card" flex-gt-xs="45" flex-gt-md="20" md-colors="{'background-color': 'background-hue-1'}"
-        ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.publishers">
-        <md-card-content layout layout-align="start center">
-            <div>
-                <md-icon layout-padding md-colors="{'color': 'primary-700'}">publish</md-icon>
-            </div>
-            <div class="ma-content" layout="column" layout-align="center start">
-                <ma-point-value point-xid="internal_mango_num_publishers"></ma-point-value>
-                <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.publishers"></div>
-            </div>
-            <div class="ma-add">
-                <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
-            </div>
-            <div class="ma-watermark">
-                <md-icon md-colors="{'color': 'background-400-0.2'}">publish</md-icon>
-            </div>
-        </md-card-content>
-    </md-card>
-    <md-card class="ma-detailed-info-card" flex-gt-xs="45" flex-gt-md="20"
-        ng-if="$ctrl.maUser.current.hasRole('superadmin')">
-        <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
-            <span layout layout-align="center center">
+<div layout="column" layout-gt-md="row" layout-align-gt-md="space-between center" layout-align="space-between stretch">
+    <div layout layout-xs="column" flex>
+        <md-card class="ma-info-card" flex md-colors="{'background-color': 'background-hue-1'}"
+            ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.dataSources">
+            <md-card-content layout layout-align="start center">
                 <div>
-                    <md-icon layout-padding md-colors="{color: 'background-A100'}">settings</md-icon>
+                    <md-icon layout-padding md-colors="{'color': 'primary-700'}">device_hub</md-icon>
                 </div>
-                <h3 ma-tr="ui.app.system"></h3>
-            </span>
-        </md-card-header>
-        <div flex layout="column" layout-align="space-between stretch">
-            <md-card-content md-colors="{'background-color': 'background-hue-1'}">
-                <div class="ma-hover" flex layout layout-align="space-between center" ui-sref="ui.settings.modules">
-                    <div class="ma-content" layout="column" layout-align="center start">
-                        <ma-point-value point-xid="internal_mango_num_updates_available"></ma-point-value>
-                        <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.modules"></div>
-                    </div>
-                    <div class="ma-add">
-                        <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
-                    </div>
+                <div class="ma-content" layout="column" layout-align="center start">
+                    <ma-point-value point-xid="internal_mango_num_data_sources"></ma-point-value>
+                    <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.dataSources"></div>
+                </div>
+                <div class="ma-add">
+                    <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
+                </div>
+                <div class="ma-watermark">
+                    <md-icon md-colors="{'color': 'background-400-0.2'}">device_hub</md-icon>
                 </div>
             </md-card-content>
-            <md-card-content md-colors="{'background-color': 'background'}">
-                <div class="ma-hover" flex layout layout-align="space-between center"
-                    ui-sref="{{::$ctrl.hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}">
-                    <div class="ma-content" layout="column" layout-align="center start">
-                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.pageCount"></div>
-                        <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.customPages"></div>
-                    </div>
-                    <div class="ma-add">
-                        <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
-                    </div>
-                </div>
-            </md-card-content>
-            <md-card-content layout="column" layout-align="center stretch"
-                md-colors="{'background-color': 'background-hue-2'}">
-                <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
-                    md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}"
-                    ui-sref="ui.settings.system">
-                    <div md-colors="{'color': 'primary-50'}" ma-tr="ui.app.systemSettings"></div>
-                    <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
-                </div>
-                <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
-                    md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}"
-                    ui-sref="ui.settings.system">
-                    <div md-colors="{'color': 'primary-50'}" ma-tr="header.emport"></div>
-                    <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
-                </div>
-            </md-card-content>
-            <!-- <div class="ma-watermark ma-big">
-                <md-icon md-colors="{'color': 'background-400-0.2'}">settings</md-icon>
-            </div> -->
-        </div>
-    </md-card>
-    <!-- Missing roles and permisions link -->
-    <md-card class="ma-detailed-info-card" flex-gt-xs="45" flex-gt-md="20"
-        ng-if="$ctrl.maUser.current.hasRole('superadmin')">
-        <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
-            <span layout layout-align="center center">
+        </md-card>
+        <!-- 1/2 done, revise roles & permisions -->
+        <md-card class="ma-info-card" flex md-colors="{'background-color': 'background-hue-1'}"
+            ui-sref="ui.dataPointDetails">
+            <md-card-content layout layout-align="start center">
                 <div>
-                    <md-icon layout-padding md-colors="{color: 'background-A100'}">people</md-icon>
+                    <md-icon layout-padding md-colors="{'color': 'primary-700'}">timeline</md-icon>
                 </div>
-                <h3 ma-tr="ui.app.users"></h3>
-            </span>
-            <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.users"
-                md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}"></md-button>
-        </md-card-header>
-        <div flex layout="column" layout-align="space-between stretch">
-            <md-card-content md-colors="{'background-color': 'background-hue-1'}">
-                <div class="ma-hover" flex layout layout-align="space-between center" ui-sref="ui.settings.users">
-                    <div class="ma-content" layout="column" layout-align="center start">
-                        <ma-point-value point-xid="internal_mango_num_users"></ma-point-value>
-                        <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.users"></div>
-                    </div>
-                    <div class="ma-add">
-                        <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
-                    </div>
+                <div class="ma-content" layout="column" layout-align="center start">
+                    <ma-point-value point-xid="internal_mango_num_data_points"></ma-point-value>
+                    <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.dataPoints"></div>
+                </div>
+                <div class="ma-add">
+                    <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
+                </div>
+                <div class="ma-watermark">
+                    <md-icon md-colors="{'color': 'background-400-0.2'}">timeline</md-icon>
                 </div>
             </md-card-content>
-            <md-card-content flex md-colors="{'background-color': 'background'}">
-                <div flex layout layout-align="space-between center">
-                    <div class="ma-content" layout="column" layout-align="center start">
-                        <ma-point-value point-xid="internal_mango_num_active_user_sessions"></ma-point-value>
-                        <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.activeSessions"></div>
-                    </div>
-                </div>
-            </md-card-content>
-            <md-card-content layout="column" layout-align="center stretch"
-                md-colors="{'background-color': 'background-hue-2'}">
-                <!-- TODO: missing roles and permisions -->
-                <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
-                    md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}">
-                    <div md-colors="{'color': 'primary-50'}" ma-tr="ui.adminHome.rolesPermisions"></div>
-                    <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
-                </div>
-                <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
-                    md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}"
-                    ui-sref="ui.settings.autoLoginSettings">
-                    <div md-colors="{'color': 'primary-50'}" ma-tr="ui.app.autoLoginSettings"></div>
-                    <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
-                </div>
-            </md-card-content>
-        </div>
-    </md-card>
-    <!-- missing section 1 & 2 data point & missing section 3 full card-->
-    <md-card class="ma-detailed-info-card" flex-gt-xs="45" flex-gt-md="20"
-        ng-if="$ctrl.maUser.current.hasRole('superadmin')">
-        <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
-            <span layout layout-align="center center">
+        </md-card>
+    </div>
+    <div layout layout-xs="column" flex>
+        <md-card class="ma-info-card" flex md-colors="{'background-color': 'background-hue-1'}"
+            ui-sref="ui.watchList">
+            <md-card-content layout layout-align="start center">
                 <div>
-                    <md-icon layout-padding md-colors="{color: 'background-A100'}">alarm</md-icon>
+                    <md-icon layout-padding md-colors="{'color': 'primary-700'}">remove_red_eye</md-icon>
                 </div>
-                <h3 ma-tr="ui.app.events"></h3>
-            </span>
-            <md-button ma-tr="ui.app.viewAll" md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}">
-            </md-button>
-        </md-card-header>
-        <div flex layout="column" layout-align="space-between stretch">
-            <md-card-content flex md-colors="{'background-color': 'background-hue-1'}">
-                <div class="ma-hover" flex layout layout-align="space-between center"
-                    ui-sref="ui.events({eventType: 'DATA_POINT'})">
-                    <div class="ma-content" layout="column" layout-align="center start">
-                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.dataPoint"></div>
-                        <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.dataPointEvents"></div>
-                    </div>
+                <div class="ma-content" layout="column" layout-align="center start">
+                    <ma-point-value point-xid="internal_mango_num_watchlists"></ma-point-value>
+                    <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.watchLists"></div>
+                </div>
+                <div class="ma-add">
+                    <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
+                </div>
+                <div class="ma-watermark">
+                    <md-icon md-colors="{'color': 'background-400-0.2'}">remove_red_eye</md-icon>
                 </div>
             </md-card-content>
-            <md-card-content flex md-colors="{'background-color': 'background'}">
-                <div class="ma-hover" flex layout layout-align="space-between center"
-                    ui-sref="ui.events({eventType: 'SYSTEM'})">
-                    <div class="ma-content" layout="column" layout-align="center start">
-                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.system"></div>
-                        <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.systemEvents"></div>
-                    </div>
-                </div>
-            </md-card-content>
-            <md-card-content layout="column" layout-align="center stretch"
-                md-colors="{'background-color': 'background-hue-2'}">
-                <div class="ma-redirect" layout="row" layout-align="space-between center" layout-margin
-                    md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}">
-                    <div layout>
-                        <ma-point-value point-xid="internal_mango_num_event_detectors">
-                        </ma-point-value>
-                        <div md-colors="{'color': 'primary-50'}" ma-tr="ui.app.eventDetectors"></div>
-                    </div>
-                </div>
-                <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
-                    md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}"
-                    ui-sref="ui.settings.eventHandlers">
-                    <div layout>
-                        <ma-point-value point-xid="internal_mango_num_event_handlers">
-                        </ma-point-value>
-                        <div md-colors="{'color': 'primary-50'}" ma-tr="ui.app.eventHandlers"></div>
-                    </div>
-                    <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
-                </div>
-            </md-card-content>
-        </div>
-    </md-card>
-    <!-- missing section 1, test section 2 -->
-    <md-card class="ma-detailed-info-card" flex-gt-xs="45" flex-gt-md="20"
-        ng-if="$ctrl.maUser.current.hasRole('superadmin')">
-        <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
-            <span layout layout-align="center center">
+        </md-card>
+        <md-card class="ma-info-card" flex md-colors="{'background-color': 'background-hue-1'}"
+            ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.publishers">
+            <md-card-content layout layout-align="start center">
                 <div>
-                    <md-icon layout-padding md-colors="{color: 'background-A100'}">book</md-icon>
+                    <md-icon layout-padding md-colors="{'color': 'primary-700'}">publish</md-icon>
                 </div>
-                <h3 ma-tr="ui.app.reports"></h3>
-            </span>
-            <md-button ma-tr="ui.app.viewAll" md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}">
-            </md-button>
-        </md-card-header>
-        <div flex layout="column" layout-align="space-between stretch">
-            <md-card-content flex md-colors="{'background-color': 'background-hue-1'}">
-                <div flex layout layout-align="space-between center">
-                    <div class="ma-content" layout="column" layout-align="center start">
-                        <ma-point-value point-xid="internal_mango_num_mailing_lists"></ma-point-value>
-                        <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.mailingLists"></div>
+                <div class="ma-content" layout="column" layout-align="center start">
+                    <ma-point-value point-xid="internal_mango_num_publishers"></ma-point-value>
+                    <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.publishers"></div>
+                </div>
+                <div class="ma-add">
+                    <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
+                </div>
+                <div class="ma-watermark">
+                    <md-icon md-colors="{'color': 'background-400-0.2'}">publish</md-icon>
+                </div>
+            </md-card-content>
+        </md-card> 
+    </div>   
+</div>
+
+<!-- missing -->
+<div layout="column" layout-gt-md="row" layout-align-gt-xs="space-between stretch">
+    <div layout layout-xs="column" flex>
+        <md-card class="ma-detailed-info-card" flex
+            ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
+                <span layout layout-align="center center">
+                    <div>
+                        <md-icon layout-padding md-colors="{color: 'background-A100'}">settings</md-icon>
                     </div>
-                </div>
-            </md-card-content>
-            <md-card-content flex md-colors="{'background-color': 'background'}">
-                <div class="ma-hover" flex layout layout-align="space-between center"
-                    ui-sref="ui.settings.excelReports">
-                    <div class="ma-content" layout="column" layout-align="center start">
-                        <ma-get-point-value point-xid="internal_mango_num_excel_report_templates"
-                            point="excelReportTemplates"></ma-get-point-value>
-                        <div class="ma-info-card-binded-value"
-                            ng-bind="excelReportTemplates.value ?  excelReportTemplates.value : 0"></div>
-                        <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.excelReports"></div>
+                    <h3 ma-tr="ui.app.system"></h3>
+                </span>
+            </md-card-header>
+            <div flex layout="column" layout-align="space-between stretch">
+                <md-card-content md-colors="{'background-color': 'background-hue-1'}">
+                    <div class="ma-hover" flex layout layout-align="space-between center" ui-sref="ui.settings.modules">
+                        <div class="ma-content" layout="column" layout-align="center start">
+                            <ma-point-value point-xid="internal_mango_num_updates_available"></ma-point-value>
+                            <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.modules"></div>
+                        </div>
+                        <div class="ma-add">
+                            <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
+                        </div>
                     </div>
-                </div>
-            </md-card-content>
-            <md-card-content flex="45" layout="column" layout-align="center stretch"
-                md-colors="{'background-color': 'background-hue-2'}">
-            </md-card-content>
-        </div>
-    </md-card>
+                </md-card-content>
+                <md-card-content md-colors="{'background-color': 'background'}">
+                    <div class="ma-hover" flex layout layout-align="space-between center"
+                        ui-sref="{{::$ctrl.hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}">
+                        <div class="ma-content" layout="column" layout-align="center start">
+                            <div class="ma-info-card-binded-value" ng-bind="$ctrl.pageCount"></div>
+                            <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.customPages"></div>
+                        </div>
+                        <div class="ma-add">
+                            <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
+                        </div>
+                    </div>
+                </md-card-content>
+                <md-card-content layout="column" layout-align="center stretch"
+                    md-colors="{'background-color': 'background-hue-2'}">
+                    <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
+                        md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}"
+                        ui-sref="ui.settings.system">
+                        <div md-colors="{'color': 'primary-50'}" ma-tr="ui.app.systemSettings"></div>
+                        <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
+                    </div>
+                    <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
+                        md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}"
+                        ui-sref="ui.settings.system">
+                        <div md-colors="{'color': 'primary-50'}" ma-tr="header.emport"></div>
+                        <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
+                    </div>
+                </md-card-content>
+                <!-- <div class="ma-watermark ma-big">
+                    <md-icon md-colors="{'color': 'background-400-0.2'}">settings</md-icon>
+                </div> -->
+            </div>
+        </md-card>
+        <!-- Missing roles and permisions link -->
+        <md-card class="ma-detailed-info-card" flex
+            ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
+                <span layout layout-align="center center">
+                    <div>
+                        <md-icon layout-padding md-colors="{color: 'background-A100'}">people</md-icon>
+                    </div>
+                    <h3 ma-tr="ui.app.users"></h3>
+                </span>
+                <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.users"
+                    md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}"></md-button>
+            </md-card-header>
+            <div flex layout="column" layout-align="space-between stretch">
+                <md-card-content md-colors="{'background-color': 'background-hue-1'}">
+                    <div class="ma-hover" flex layout layout-align="space-between center" ui-sref="ui.settings.users">
+                        <div class="ma-content" layout="column" layout-align="center start">
+                            <ma-point-value point-xid="internal_mango_num_users"></ma-point-value>
+                            <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.users"></div>
+                        </div>
+                        <div class="ma-add">
+                            <md-icon md-colors="{'color': 'primary-700'}">add_circle_outline</md-icon>
+                        </div>
+                    </div>
+                </md-card-content>
+                <md-card-content flex md-colors="{'background-color': 'background'}">
+                    <div flex layout layout-align="space-between center">
+                        <div class="ma-content" layout="column" layout-align="center start">
+                            <ma-point-value point-xid="internal_mango_num_active_user_sessions"></ma-point-value>
+                            <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.activeSessions"></div>
+                        </div>
+                    </div>
+                </md-card-content>
+                <md-card-content layout="column" layout-align="center stretch"
+                    md-colors="{'background-color': 'background-hue-2'}">
+                    <!-- TODO: missing roles and permisions -->
+                    <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
+                        md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}">
+                        <div md-colors="{'color': 'primary-50'}" ma-tr="ui.adminHome.rolesPermisions"></div>
+                        <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
+                    </div>
+                    <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
+                        md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}"
+                        ui-sref="ui.settings.autoLoginSettings">
+                        <div md-colors="{'color': 'primary-50'}" ma-tr="ui.app.autoLoginSettings"></div>
+                        <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
+                    </div>
+                </md-card-content>
+            </div>
+        </md-card>
+    </div>
+    <div layout layout-xs="column" flex>
+        <!-- missing section 1 & 2 data point & missing section 3 full card-->
+        <md-card class="ma-detailed-info-card" flex
+            ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
+                <span layout layout-align="center center">
+                    <div>
+                        <md-icon layout-padding md-colors="{color: 'background-A100'}">alarm</md-icon>
+                    </div>
+                    <h3 ma-tr="ui.app.events"></h3>
+                </span>
+                <md-button ma-tr="ui.app.viewAll" md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}">
+                </md-button>
+            </md-card-header>
+            <div flex layout="column" layout-align="space-between stretch">
+                <md-card-content flex md-colors="{'background-color': 'background-hue-1'}">
+                    <div class="ma-hover" flex layout layout-align="space-between center"
+                        ui-sref="ui.events({eventType: 'DATA_POINT'})">
+                        <div class="ma-content" layout="column" layout-align="center start">
+                            <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.dataPoint"></div>
+                            <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.dataPointEvents"></div>
+                        </div>
+                    </div>
+                </md-card-content>
+                <md-card-content flex md-colors="{'background-color': 'background'}">
+                    <div class="ma-hover" flex layout layout-align="space-between center"
+                        ui-sref="ui.events({eventType: 'SYSTEM'})">
+                        <div class="ma-content" layout="column" layout-align="center start">
+                            <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.system"></div>
+                            <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.systemEvents"></div>
+                        </div>
+                    </div>
+                </md-card-content>
+                <md-card-content layout="column" layout-align="center stretch"
+                    md-colors="{'background-color': 'background-hue-2'}">
+                    <div class="ma-redirect" layout="row" layout-align="space-between center" layout-margin
+                        md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}">
+                        <div layout>
+                            <ma-point-value point-xid="internal_mango_num_event_detectors">
+                            </ma-point-value>
+                            <div md-colors="{'color': 'primary-50'}" ma-tr="ui.app.eventDetectors"></div>
+                        </div>
+                    </div>
+                    <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
+                        md-colors="{'background-color': 'primary-hue-2', 'border-color': 'primary-100'}"
+                        ui-sref="ui.settings.eventHandlers">
+                        <div layout>
+                            <ma-point-value point-xid="internal_mango_num_event_handlers">
+                            </ma-point-value>
+                            <div md-colors="{'color': 'primary-50'}" ma-tr="ui.app.eventHandlers"></div>
+                        </div>
+                        <md-icon md-colors="{'color': 'primary-50'}">subdirectory_arrow_right</md-icon>
+                    </div>
+                </md-card-content>
+            </div>
+        </md-card>
+        <!-- missing section 1, test section 2 -->
+        <md-card class="ma-detailed-info-card" flex
+            ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <md-card-header md-colors="{'background-color': 'primary'}" layout layout-align="space-between center">
+                <span layout layout-align="center center">
+                    <div>
+                        <md-icon layout-padding md-colors="{color: 'background-A100'}">book</md-icon>
+                    </div>
+                    <h3 ma-tr="ui.app.reports"></h3>
+                </span>
+                <md-button ma-tr="ui.app.viewAll" md-colors="{'color': 'primary-100', 'border-color': 'primary-100'}">
+                </md-button>
+            </md-card-header>
+            <div flex layout="column" layout-align="space-between stretch">
+                <md-card-content flex md-colors="{'background-color': 'background-hue-1'}">
+                    <div flex layout layout-align="space-between center">
+                        <div class="ma-content" layout="column" layout-align="center start">
+                            <ma-point-value point-xid="internal_mango_num_mailing_lists"></ma-point-value>
+                            <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.mailingLists"></div>
+                        </div>
+                    </div>
+                </md-card-content>
+                <md-card-content flex md-colors="{'background-color': 'background'}">
+                    <div class="ma-hover" flex layout layout-align="space-between center"
+                        ui-sref="ui.settings.excelReports">
+                        <div class="ma-content" layout="column" layout-align="center start">
+                            <ma-get-point-value point-xid="internal_mango_num_excel_report_templates"
+                                point="excelReportTemplates"></ma-get-point-value>
+                            <div class="ma-info-card-binded-value"
+                                ng-bind="excelReportTemplates.value ?  excelReportTemplates.value : 0"></div>
+                            <div md-colors="{'color': 'primary-700'}" ma-tr="ui.app.excelReports"></div>
+                        </div>
+                    </div>
+                </md-card-content>
+                <md-card-content flex="45" layout="column" layout-align="center stretch"
+                    md-colors="{'background-color': 'background-hue-2'}">
+                </md-card-content>
+            </div>
+        </md-card>
+    </div>
 </div>
 
 <md-card ng-if="::$ctrl.utilityMenuItems.length">
