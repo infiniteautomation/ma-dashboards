@@ -60,8 +60,9 @@ ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > 
     border: 2px solid currentColor !important;
 }
 
-ma-ui-admin-home-page div > md-card.ma-info-card md-icon{
+ma-ui-admin-home-page div > md-card.ma-info-card md-icon {
     font-size: 48px;
+    margin-right: 16px;
 }
 
 ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-add {
@@ -72,6 +73,10 @@ ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-add {
 
 ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-add > md-icon {
     font-size: 36px;
+}
+
+ma-ui-admin-home-page .ma-content > div:not(.ma-info-card-binded-value) {
+    color: var(--ma-foreground-3);
 }
 
 ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-content > ma-point-value,
@@ -92,11 +97,13 @@ ma-ui-admin-home-page .ma-watermark {
     position: absolute !important;
     bottom: 0px;
     right: 0px;
-    margin-right: -25px;
-    margin-bottom: -25px;
+    margin-right: -26px;
+    margin-bottom: -26px;
 }
-ma-ui-admin-home-page .ma-watermark > md-icon {
-    font-size: 96px !important;
+
+ma-ui-admin-home-page .ma-watermark > md-icon.material-icons {
+    font-size: 96px;
+    color: rgba(var(--ma-background-400-value), 0.1);
 }
 
 ma-ui-admin-home-page .ma-watermark.ma-big > md-icon {
@@ -107,7 +114,14 @@ ma-ui-admin-home-page .ma-redirect {
     border-radius: 5px;
     border: 2px solid transparent !important;
     z-index: 1;
+    background-color: var(--ma-primary-600);
+    color: var(--ma-primary-600-contrast);
 }
+
+ma-ui-admin-home-page .ma-redirect md-icon.material-icons {
+    color: inherit;
+}
+
 ma-ui-admin-home-page .ma-redirect > div > ma-point-value {
     margin: 0px 8px;
 }
@@ -116,9 +130,11 @@ ma-ui-admin-home-page .ma-redirect.ma-hover:hover {
     cursor: pointer;
 }
 
+ma-ui-admin-home-page .ma-detailed-info-card > div > md-card-content:nth-child(3),
 ma-ui-admin-home-page .ma-server-status-contents > md-card-content:nth-child(3) {
     background-color: rgba(var(--ma-background-hue-3-value), 0.2);
 }
+ma-ui-admin-home-page .ma-detailed-info-card > div > md-card-content:nth-child(2),
 ma-ui-admin-home-page .ma-server-status-contents > md-card-content:nth-child(2) {
     background-color: rgba(var(--ma-background-hue-3-value), 0.1);
 }
