@@ -1,4 +1,6 @@
-ma-ui-admin-home-page md-card.ma-rounded-border {
+ma-ui-admin-home-page md-card.ma-rounded-border,
+ma-ui-admin-home-page md-card.ma-info-card,
+ma-ui-admin-home-page md-card.ma-detailed-info-card {
     border-radius: 6px;
     overflow: hidden;
 }
