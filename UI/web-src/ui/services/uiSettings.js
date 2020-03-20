@@ -280,6 +280,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 foregroundHues.forEach(hue => {
                     properties.push({name: `--ma-foreground-${hue}`, value: $mdTheming.THEMES[theme].foregroundPalette[hue]});
                 });
+                properties.push({name: '--ma-foreground-value', value: $mdTheming.THEMES[theme].isDark ? '255,255,255' : '0,0,0'});
                 
                 return properties;
             }
@@ -304,6 +305,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     foregroundHues.forEach(hue => {
                         element.style.removeProperty(`--ma-foreground-${hue}`);
                     });
+                    element.style.removeProperty(`--ma-foreground-value`);
                 }
             }
             
