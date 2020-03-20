@@ -92,6 +92,8 @@ ma-ui-admin-home-page .ma-watermark {
     position: absolute !important;
     bottom: 0px;
     right: 0px;
+    margin-right: -25px;
+    margin-bottom: -25px;
 }
 ma-ui-admin-home-page .ma-watermark > md-icon {
     font-size: 96px !important;
