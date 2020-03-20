@@ -196,11 +196,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 let dynamicThemeName;
                 if (themeName === 'userTheme') {
                     if (userThemeGenerated) {
-                        if (themeId > 0) {
-                            const prevThemeName = 'dynamicTheme' + themeId;
-                            delete $mdTheming.THEMES[prevThemeName];
-                            angular.element('head > style[nonce="' + prevThemeName + '"]').remove();
-                        }
                         dynamicThemeName = 'dynamicTheme' + (++themeId);
                         
                         const dynamicTheme = this.themeFromSettings(dynamicThemeName, themeSettings);
@@ -220,6 +215,13 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 
                 this.activeTheme = dynamicThemeName || themeName;
                 this.activeThemeObj = $mdTheming.THEMES[this.activeTheme];
+                
+                for (let e of $window.document.querySelectorAll('head > style[nonce]')) {
+                    if (e.getAttribute('nonce') !== this.activeTheme) {
+                        e.parentNode.removeChild(e);
+                    }
+                }
+                
                 
                 // setup the CSS variables for the theme
                 this.applyRootTheme();
@@ -242,6 +244,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 }
                 if (themeSettings.backgroundPalette) {
                     theme.backgroundPalette(themeSettings.backgroundPalette, themeSettings.backgroundPaletteHues);
+                    theme.isDark = false;
                 }
                 theme.dark(!!themeSettings.dark);
                 return theme;
