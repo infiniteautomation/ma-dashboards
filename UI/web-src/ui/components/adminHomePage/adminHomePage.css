@@ -1,21 +1,25 @@
 ma-ui-admin-home-page md-card.ma-rounded-border {
     border-radius: 6px;
-}
-
-ma-ui-admin-home-page md-card.ma-rounded-border md-card-header {
-    border-radius: 6px 6px 0 0;
+    overflow: hidden;
 }
 
 ma-ui-admin-home-page md-card-header {
     background-color: var(--ma-primary-hue-2);
     color: var(--ma-primary-hue-2-contrast);
-    padding-top: 8px;
-    padding-bottom: 4px;
+    padding: 4px 8px;
+    font-size: 1.8rem;
+}
+
+ma-ui-admin-home-page md-card-header i.fa {
+    font-size: 2.6rem;
 }
 
 ma-ui-admin-home-page md-card-header > .md-button {
-    border-radius: 20px;
+    border-radius: 16px;
     border: solid 2px currentColor;
+    text-transform: lowercase;
+    min-height: 32px;
+    line-height: 32px;
 }
 
 ma-ui-admin-home-page .ma-ui-home-page-sub-text {
