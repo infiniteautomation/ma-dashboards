@@ -1,28 +1,41 @@
-ma-ui-admin-home-page md-card > md-card-header > .md-button{
+ma-ui-admin-home-page md-card.ma-rounded-border {
+    border-radius: 6px;
+}
+
+ma-ui-admin-home-page md-card.ma-rounded-border md-card-header {
+    border-radius: 6px 6px 0 0;
+}
+
+ma-ui-admin-home-page md-card-header {
+    background-color: var(--ma-primary-hue-2);
+    color: var(--ma-primary-hue-2-contrast);
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+
+ma-ui-admin-home-page md-card-header > .md-button {
     border-radius: 20px;
-    border: solid 2px;
+    border: solid 2px currentColor;
+}
+
+ma-ui-admin-home-page .ma-ui-home-page-sub-text {
+    color: var(--ma-foreground-3);
 }
 
 ma-ui-admin-home-page md-card > span > md-card-content > div ma-svg {
-    width: 48px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 12px;
 }
 
-ma-ui-admin-home-page md-card > span > md-card-content > div > ma-svg.ma-smaller-icon {
-    width: 36px;
-}
-
-ma-ui-admin-home-page md-card > span > md-card-content > div > ma-svg.ma-bigger-icon {
-    width: 54px;
-}
-
-ma-ui-admin-home-page md-card > span > md-card-content > .graph{
-    overflow: hidden;
+ma-ui-admin-home-page .ma-server-details > div:not(:last-child) {
+    margin-bottom: 12px;
 }
 
 ma-ui-admin-home-page .ma-sparkline-chart {
     height: 170px;
     width: 250px;
-    margin: -40px;
+    margin: -20px -10px;
 }
 
 ma-ui-admin-home-page div > md-card.ma-info-card,
