@@ -135,9 +135,6 @@ class TableController {
         this.maUtil = $injector.get('maUtil');
         this.$q = $injector.get('$q');
         this.$interval = $injector.get('$interval');
-        if ($injector.has('$mdTheming')) {
-            $injector.get('$mdTheming')(this.$element);
-        }
 
         this.idProperty = this.resourceService.idProperty;
         this.showFilters = true;

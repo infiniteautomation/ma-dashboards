@@ -8,15 +8,11 @@ import './dropDownButton.css';
 
 class DropDownButtonController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element', '$injector']; }
+    static get $inject() { return ['$scope', '$element']; }
     
-    constructor($scope, $element, $injector) {
+    constructor($scope, $element) {
         this.$element = $element;
-        
-        if ($injector.has('$mdTheming')) {
-            $injector.get('$mdTheming')($element);
-        }
-        
+
         $element.on('click keypress', event => {
             if (event.type === 'click' || [13, 32].includes(event.which)) {
                 $scope.$apply(() => {
