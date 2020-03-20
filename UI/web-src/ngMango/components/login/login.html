@@ -22,7 +22,7 @@
                 <div ng-message="required" ma-tr="login.validation.noPassword"></div>
             </div>
         </md-input-container>
-        <div ng-messages="$ctrl.errors" md-colors="{color: 'warn'}">
+        <div ng-messages="$ctrl.errors">
             <div ng-message="invalidLogin" ma-tr="login.ui.loginFailed" ma-tr-args="[$ctrl.invalidLoginMessage]"></div>
             <div ng-message="otherError" ma-tr="login.error" ma-tr-args="[$ctrl.errors.otherError]"></div>
         </div>
