@@ -193,7 +193,7 @@
         </md-tab>
     </md-tabs>
 
-    <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
+    <div class="md-padding ma-error-text" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert"></div>
 
     <div class="md-padding ma-action-buttons" ng-if="!$ctrl.hideSaveButtons">
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form || !$ctrl.dataSourceType">
@@ -208,7 +208,7 @@
             <md-icon>delete</md-icon>
             <span ma-tr="common.delete"></span>
         </md-button>
-        <em ng-if="!$ctrl.dataSourceType" md-colors="::{color: 'accent'}" ma-tr="ui.app.dataSourceTypeNotSupported"></em>
+        <em ng-if="!$ctrl.dataSourceType" class="ma-color-accent" ma-tr="ui.app.dataSourceTypeNotSupported"></em>
     </div>
 
     <ma-dialog show-dialog="$ctrl.showCronDialog">

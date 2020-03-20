@@ -20,7 +20,7 @@
         
         <ma-user-editor user="$ctrl.user" name="user" register-mode="::true"></ma-user-editor>
 
-        <div md-colors="::{color: 'warn-A700'}" ng-messages="$ctrl.serverErrors">
+        <div ng-messages="$ctrl.serverErrors">
             <div ng-message="invalidToken" ma-tr="login.emailVerification.errorVerifying" ma-tr-args="[$ctrl.serverErrors.invalidToken]"></div>
             <div ng-message="other" ma-tr="login.userRegistration.error" ma-tr-args="[$ctrl.serverErrors.other]"></div>
         </div>

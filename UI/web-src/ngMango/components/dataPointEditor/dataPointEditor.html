@@ -333,7 +333,7 @@
         </md-tab>
     </md-tabs>
 
-    <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" md-colors="::{color: 'warn'}"></div>
+    <div class="md-padding ma-error-text" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert"></div>
 
     <div ng-if="$ctrl.bulkTask" class="md-padding ma-action-buttons">
         <div layout layout-align="center">
@@ -351,7 +351,7 @@
     </div>
     
     <div ng-if="$ctrl.errorMessages.length" class="md-padding">
-        <em md-colors="::{color: 'warn-A700'}">
+        <em class="ma-error-text">
             <span ng-repeat="msg in $ctrl.errorMessages"><span ng-bind="msg"></span><span ng-if="!$last">, </span></span>
         </em>
     </div>

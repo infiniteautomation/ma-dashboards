@@ -14,7 +14,7 @@
       <label ma-tr="emport.indent"></label>
       <input ng-model="$ctrl.indent" type="number" min="0" max="10">
     </md-input-container>
-    <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="ui.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
+    <p class="ma-error-text" ng-if="$ctrl.downloadStatus.error" ma-tr="ui.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
   </md-card-content>
   <md-card-actions layout="row" layout-align="start center">
     <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport()" ng-disabled="$ctrl.downloadStatus.downloading || $ctrl.noSectionsSelected">

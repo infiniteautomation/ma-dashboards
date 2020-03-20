@@ -11,7 +11,7 @@
             <p ng-if-start="!$ctrl.sendingEmail.error" class="ma-larger-font" ma-tr="common.sendingTestEmail"></p>
             <md-progress-circular ng-if-end md-diameter="50" class="md-accent"></md-progress-circular>
             
-            <p ng-if-start="$ctrl.sendingEmail.error" ma-tr="ui.components.errorSendingEmail" md-colors="::{color: 'warn'}"
+            <p ng-if-start="$ctrl.sendingEmail.error" ma-tr="ui.components.errorSendingEmail" class="ma-error-text"
                 ma-tr-args="[$ctrl.sendingEmail.user.email, $ctrl.sendingEmail.error.mangoStatusText]"></p>
             
             <div class="ma-test-email-log" ng-if-end ng-bind="$ctrl.sendingEmail.error.data.smtpSessionLog"></div>

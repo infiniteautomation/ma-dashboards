@@ -169,7 +169,7 @@
         </md-checkbox>
     </div>
 
-    <ul class="ma-user-status" md-colors="::{color: 'warn'}">
+    <ul class="ma-user-status ma-error-text">
         <li ng-if="!$ctrl.user.isNew() && $ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></li>
         <li ng-if="$ctrl.updatedUserEvent === 'delete'">The user you are editing was deleted.</li>
         <li ng-if="$ctrl.updatedUserEvent === 'update'">The user you are editing was modified elsewhere. Saving may overwrite someone else's changes.</li>

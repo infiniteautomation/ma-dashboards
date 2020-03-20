@@ -40,7 +40,7 @@
     </div>
     
     <ma-ace-editor mode="json" name="jsonData" ng-model="$ctrl.storeItem.jsonData" ng-model-options="{debounce: 500}" ma-json-model ma-json-model-pretty="4"></ma-ace-editor>
-    <div ng-if="$ctrl.form.jsonData.$error.jsonParseError" md-colors="::{color: 'warn'}" ng-bind="$ctrl.form.jsonData.jsonParseError"></div>
+    <div ng-if="$ctrl.form.jsonData.$error.jsonParseError" class="ma-error-text" ng-bind="$ctrl.form.jsonData.jsonParseError"></div>
     
     <div layout>
         <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.storeItem.isNew() && $ctrl.form.$pristine">

@@ -2,7 +2,7 @@
 
 <script type="text/ng-template" id="maTreeView.listItems.html">
 	<li ng-if="!context.childrenPromise && !context.loadError && !context.children.length" class="ma-tree-view-no-items"><em ma-tr="ui.components.noItemsToList"></em></li>
-	<li ng-if="!context.childrenPromise && context.loadError" class="ma-tree-view-load-error" md-colors="::{color: 'warn-A700'}">
+	<li ng-if="!context.childrenPromise && context.loadError" class="ma-tree-view-load-error ma-error-text">
         <em ma-tr="ui.components.errorLoadingChildren" ma-tr-args="[context.loadError]"></em>
     </li>
 	<li ng-if="context.loading" class="ma-tree-view-loading"><em ma-tr="ui.components.loadingItems"></em></li>

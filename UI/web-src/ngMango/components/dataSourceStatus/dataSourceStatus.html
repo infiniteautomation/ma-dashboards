@@ -12,7 +12,7 @@
             <tr md-row ng-repeat="poll in $ctrl.status.latestPolls | orderBy:$ctrl.order track by $index">
                 <td md-cell ng-bind="poll.startTime | maMoment:'format':'l LTS'"></td>
                 <td md-cell ng-bind="poll.duration"></td>
-                <td md-cell><em ng-if="poll.aborted" ma-tr="event.ds.pollAborted" md-colors="::{color: 'warn'}"></em></td>
+                <td md-cell><em ng-if="poll.aborted" ma-tr="event.ds.pollAborted" class="ma-error-text"></em></td>
             </tr>
         </tbody>
     </table>
@@ -33,7 +33,7 @@
             <tr md-row ng-repeat="poll in $ctrl.status.latestAbortedPolls | orderBy:$ctrl.order track by $index">
                 <td md-cell ng-bind="poll.startTime"></td>
                 <td md-cell ng-bind="poll.duration"></td>
-                <td md-cell><em ng-if="poll.aborted" ma-tr="event.ds.pollAborted" md-colors="::{color: 'warn'}"></em></td>
+                <td md-cell><em ng-if="poll.aborted" ma-tr="event.ds.pollAborted" class="ma-error-text"></em></td>
             </tr>
         </tbody>
     </table>

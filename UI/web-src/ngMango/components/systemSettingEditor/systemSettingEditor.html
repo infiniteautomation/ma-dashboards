@@ -47,7 +47,7 @@
 <div ng-if="$ctrl.inputType === 'checkbox'">
     <md-checkbox ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-disabled="$ctrl.disabled"><span ma-tr="{{$ctrl.labelTr}}"></span></md-checkbox>
     <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button ma-margin-right" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
-    <div ng-if="$ctrl.messages.length" ng-messages="$ctrl.messages" md-colors="::{color: 'warn-A700'}" class="ma-margin-bottom-large">
+    <div ng-if="$ctrl.messages.length" ng-messages="$ctrl.messages" class="ma-margin-bottom-large">
         <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
     </div>
 </div>
@@ -68,7 +68,7 @@
     <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button ma-margin-right" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
     <div flex ng-show="$ctrl.saving"><em ma-tr="ui.app.savingSytemSetting"></em></div>
     <div flex ng-show="$ctrl.done"><em  ma-tr="ui.app.savedSytemSetting"></em></div>
-    <div flex ng-messages="$ctrl.messages" md-colors="::{color: 'warn-A700'}">
+    <div flex ng-messages="$ctrl.messages">
         <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
     </div>
 </div>

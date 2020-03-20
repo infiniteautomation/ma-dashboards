@@ -12,10 +12,10 @@
         <div ng-if="$ctrl.scriptResult" flex class="ma-script-output">
             <span ma-tr="ui.scriptingEditor.scriptResult" ma-tr-args="[$ctrl.scriptResult.value.toString()]"></span>
         </div>
-        <div ng-if="$ctrl.scriptOutput" flex class="ma-script-output" md-colors="::{background: 'background'}">
+        <div ng-if="$ctrl.scriptOutput" flex class="ma-script-output" class="ma-background-background">
             <pre>{{ $ctrl.scriptOutput }}</pre>
         </div>
-        <ul ng-if="$ctrl.scriptErrors" class="md-padding ma-script-errors" md-colors="::{color: 'warn'}">
+        <ul ng-if="$ctrl.scriptErrors" class="md-padding ma-script-errors ma-error-text">
             <li ng-repeat="error in $ctrl.scriptErrors" ng-if="error.property">
                 <span ma-tr="ui.components.errorOnProperty" ma-tr-args="[error.message, error.property]"></span>
             </li>
@@ -25,8 +25,8 @@
         </ul>
         <ul ng-if="$ctrl.scriptActions" class="md-padding ma-script-actions">
             <li ng-repeat="action in $ctrl.scriptActions">
-                <span ng-if="action.level === 'error'" md-colors="::{color: 'warn'}">{{ action.message }}</span>
-                <span ng-if="action.level === 'warning'" md-colors="::{color: 'accent'}">{{ action.message }}</span>
+                <span ng-if="action.level === 'error'" class="ma-error-text">{{ action.message }}</span>
+                <span ng-if="action.level === 'warning'" class="ma-color-accent">{{ action.message }}</span>
                 <span ng-if="action.level !== 'warning' && action.level !== 'error'">{{ action.message }}</span>
             </li>
         </ul>

@@ -13,7 +13,7 @@
   <md-progress-linear md-mode="determinate" value="{{$ctrl.progress}}"></md-progress-linear>
   <div flex class="ma-config-import-messages" tabindex="1">
     <div ng-repeat="msg in $ctrl.importStatus.genericMessages track by $index" ng-bind="msg"></div>
-    <div md-colors="::{color: 'warn'}" ng-repeat="msg in $ctrl.importStatus.validationMessages track by $index" ng-bind="msg.message"></div>
+    <div class="ma-error-text" ng-repeat="msg in $ctrl.importStatus.validationMessages track by $index" ng-bind="msg.message"></div>
     <div ng-if="$ctrl.error" ng-bind="$ctrl.error" md-colors="{color: 'warn'}"></div>
   </div>
 </md-dialog-content>

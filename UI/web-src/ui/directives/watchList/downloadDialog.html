@@ -74,6 +74,6 @@
       </md-button>
     </div>
     
-    <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="ui.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
+    <p class="ma-error-text" ng-if="$ctrl.downloadStatus.error" ma-tr="ui.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
   </md-dialog-content>
 </md-dialog>

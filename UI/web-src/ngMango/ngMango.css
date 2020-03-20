@@ -1593,3 +1593,8 @@ md-input-container:not(.ma-has-hint) .md-errors-spacer {
 .ma-color-foreground-4 {
     color: var(--ma-foreground-4);
 }
+
+.ma-error-text,
+[ng-messages] {
+    color: var(--ma-warn-A700);
+}
