@@ -115,3 +115,10 @@ ma-ui-admin-home-page .ma-redirect.ma-hover:hover {
     border: 2px solid currentColor !important;
     cursor: pointer;
 }
+
+ma-ui-admin-home-page .ma-server-status-contents > md-card-content:nth-child(3) {
+    background-color: rgba(var(--ma-background-hue-3-value), 0.2);
+}
+ma-ui-admin-home-page .ma-server-status-contents > md-card-content:nth-child(2) {
+    background-color: rgba(var(--ma-background-hue-3-value), 0.1);
+}
