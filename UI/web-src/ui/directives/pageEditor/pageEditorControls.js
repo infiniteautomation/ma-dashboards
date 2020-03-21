@@ -18,16 +18,15 @@ const pageToSummary = (input) => {
 
 class PageEditorControlsController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', 'maUiPages', 'maJsonStoreEventManager', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
+    static get $inject() { return ['$scope', 'maUiPages', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
         'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION',
-        '$templateRequest', 'maDialogHelper', 'maRevisionHistoryDialog']; }
+        '$templateRequest', 'maDialogHelper', 'maRevisionHistoryDialog', 'maJsonStore']; }
     
-    constructor($scope, maUiPages, jsonStoreEventManager, MA_UI_PAGES_XID, maUiMenuEditor, $state,
+    constructor($scope, maUiPages, MA_UI_PAGES_XID, maUiMenuEditor, $state,
             localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION,
-            $templateRequest, maDialogHelper, maRevisionHistoryDialog) {
+            $templateRequest, maDialogHelper, maRevisionHistoryDialog, maJsonStore) {
         this.$scope = $scope;
         this.maUiPages = maUiPages;
-        this.jsonStoreEventManager = jsonStoreEventManager;
         this.MA_UI_PAGES_XID = MA_UI_PAGES_XID;
         this.MenuEditor = maUiMenuEditor;
         this.$state = $state;
@@ -44,6 +43,7 @@ class PageEditorControlsController {
         this.$window = $window;
         this.maDialogHelper = maDialogHelper;
         this.maRevisionHistoryDialog = maRevisionHistoryDialog;
+        this.maJsonStore = maJsonStore;
         
         this.showInputs = false;
     }
@@ -52,9 +52,13 @@ class PageEditorControlsController {
         const Translate = this.Translate;
         const $window = this.$window;
         
-        this.jsonStoreEventManager.smartSubscribe(this.$scope, this.MA_UI_PAGES_XID, ['add', 'update'], (event, payload) => {
-            this.pageSummaryStore.jsonData = payload.object.jsonData;
-            this.filterPages();
+        this.maJsonStore.notificationManager.subscribe({
+            scope: this.$scope,
+            xids: [this.MA_UI_PAGES_XID],
+            handler: (event, item) => {
+                this.pageSummaryStore.jsonData = item.jsonData;
+                this.filterPages();
+            }
         });
         
         this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {

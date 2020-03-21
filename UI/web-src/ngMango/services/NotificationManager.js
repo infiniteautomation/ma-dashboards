@@ -320,6 +320,12 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             }
 
             const applyThenHandle = (...args) => {
+                // dont call handler if user supplied xids and this item doesnt match
+                const item = args[1];
+                if (Array.isArray(xids) && !xids.includes(item.xid)) {
+                    return;
+                }
+                
                 if ($scope) {
                     $scope.$applyAsync(() => {
                         handler(...args);
@@ -381,6 +387,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             return manualDeregister;
         }
         
+        // TODO remove
         subscribeToXids(xids, handler, $scope, eventTypes = ['create', 'update', 'delete']) {
             return this.subscribe((...args) => {
                 const item = args[1];

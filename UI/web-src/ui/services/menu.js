@@ -126,10 +126,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
 
     this.$get = MenuFactory;
 
-    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maJsonStoreEventManager', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateCache'];
-    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, jsonStoreEventManager, MA_UI_EDIT_MENUS_PERMISSION, $templateCache) {
-
-        const SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
+    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateCache'];
+    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, MA_UI_EDIT_MENUS_PERMISSION, $templateCache) {
 
         class Menu {
             constructor() {
@@ -151,7 +149,12 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 } else {
                     this.storeObject = this.defaultMenuStore();
                 }
-                jsonStoreEventManager.subscribe(MA_UI_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler.bind(this));
+                
+                JsonStore.notificationManager.subscribe({
+                    handler: this.updateHandler.bind(this),
+                    xids: [MA_UI_MENU_XID],
+                    scope: $rootScope
+                });
             }
     
             defaultMenuStore() {
@@ -169,21 +172,21 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 return storeObject;
             }
     
-            updateHandler(event, payload) {
+            updateHandler(event, item) {
                 let changed = false;
-                if (payload.action === 'delete') {
+                if (event.name === 'delete') {
                     this.storeObject.jsonData = {
                         menuItems: []
                     };
                     changed = true;
                 } else {
-                    if (!angular.equals(this.storeObject.jsonData, payload.object.jsonData)) {
-                        this.storeObject.jsonData = payload.object.jsonData;
+                    if (!angular.equals(this.storeObject.jsonData, item.jsonData)) {
+                        this.storeObject.jsonData = item.jsonData;
                         changed = true;
                     }
-                    this.storeObject.readPermission = payload.object.readPermission;
-                    this.storeObject.editPermission = payload.object.editPermission;
-                    this.storeObject.name = payload.object.name;
+                    this.storeObject.readPermission = item.readPermission;
+                    this.storeObject.editPermission = item.editPermission;
+                    this.storeObject.name = item.name;
                 }
                 
                 if (changed) {
@@ -197,7 +200,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
             refresh(forceRefresh, registerItems) {
                 // if the websocket is connected then we can assume we always have the latest menu items
                 // just return our current store item
-                if (!forceRefresh && this.storePromise && jsonStoreEventManager.isConnected()) {
+                if (!forceRefresh && this.storePromise && JsonStore.notificationManager.socketConnected()) {
                     return this.storePromise;
                 }
                 

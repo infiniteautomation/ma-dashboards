@@ -5,35 +5,43 @@
 
 import pageViewTemplate from './pageView.html';
 
-PageViewController.$inject = ['$scope', 'maUiPages', 'maUser', 'maJsonStoreEventManager'];
-function PageViewController($scope, maUiPages, User, jsonStoreEventManager) {
-    const SUBSCRIPTION_TYPES = ['add', 'update'];
+class PageViewController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['$scope', 'maUiPages', 'maJsonStore']; }
     
-    const $ctrl = this;
-    $ctrl.user = User;
-    let unsubscribe;
+    constructor($scope, maUiPages, maJsonStore) {
+        this.$scope = $scope;
+        this.maUiPages = maUiPages;
+        this.maJsonStore = maJsonStore;
+    }
 
-    this.$onChanges = function(changes) {
+    $onChanges(changes) {
         if (changes.xid) {
-            if (unsubscribe) {
-                unsubscribe();
-            }
+            delete this.page;
+            delete this.markup;
             
-            delete $ctrl.page;
-            delete $ctrl.markup;
-            
-            maUiPages.loadPage($ctrl.xid).then(function(page) {
-                $ctrl.page = page;
-                $ctrl.markup = page.jsonData.markup;
+            this.maUiPages.loadPage(this.xid).then((page) => {
+                this.page = page;
+                this.markup = page.jsonData.markup;
             });
     
-            unsubscribe = jsonStoreEventManager.smartSubscribe($scope, $ctrl.xid, SUBSCRIPTION_TYPES, this.updateHandler);
+            const prevUnsubscribe = this.unsubscribe;
+            
+            this.unsubscribe = this.maJsonStore.notificationManager.subscribe({
+                handler: this.updateHandler.bind(this),
+                xids: [this.xid],
+                scope: this.$scope
+            });
+            
+            if (prevUnsubscribe) {
+                prevUnsubscribe();
+            }
         }
-    };
+    }
     
-    this.updateHandler = function updateHandler(event, payload) {
-        $ctrl.markup = payload.object.jsonData.markup;
-    };
+    updateHandler(event, item) {
+        this.markup = item.jsonData.markup;
+    }
 }
 
 export default function pageView() {

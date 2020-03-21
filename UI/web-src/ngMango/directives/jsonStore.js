@@ -39,9 +39,9 @@ The 'user' permissions group is added to created Mango users by default.
 <p>Phone # from JSON store: {{myItem.jsonData.phone}}</p>
  *
  */
-function jsonStore(JsonStore, jsonStoreEventManager, $q) {
-	const SUBSCRIPTION_TYPES = ['update'];
 
+jsonStore.$inject = ['maJsonStore', '$q'];
+function jsonStore(JsonStore, $q) {
     return {
         scope: {
         	xid: '@',
@@ -52,6 +52,36 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             path: '<?'
         },
         link: function ($scope, $element, attr) {
+            let unsubscribe;
+            
+            const websocketHandler = (event, item) => {
+                const oldData = $scope.item.jsonData;
+                let newData = item.jsonData;
+                const path = $scope.path || null;
+
+                if (Array.isArray(path)) {
+                    path.some((prop) => {
+                        if (newData == null) {
+                            return true;
+                        }
+                        newData = newData[prop];
+                    });
+                }
+
+                angular.copy(item, $scope.item);
+                $scope.item.dataPath = path;
+                
+                // if the old data is the same, keep it
+                // stops updates because of new objects etc
+                if (angular.equals(newData, oldData)) {
+                    $scope.item.jsonData = oldData;
+                }
+
+                if ($scope.itemUpdated) {
+                    $scope.itemUpdated({$item: $scope.item, $firstLoad: false});
+                }
+            };
+            
             $scope.$watch('{xid: xid, path: path}', function(newValue, oldValue) {
                 const newXid = newValue.xid;
                 const oldXid = oldValue.xid;
@@ -64,13 +94,13 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             	}
 
             	const storeItem = new JsonStore({xid: newXid, name: newXid, dataPath: newPath});
-            	storeItem.$get().then(null, function(response) {
+            	storeItem.$get().then(null, (response) => {
             	    if (response.status === 404) {
             	        storeItem.jsonData = $scope.value || {};
                 		return angular.extend(storeItem, $scope.item);
             	    }
             		return $q.reject();
-            	}).then(function(item) {
+            	}).then((item) => {
             	    if ($scope.itemLoaded) {
             	        $scope.itemLoaded({$item: item});
             	    }
@@ -80,53 +110,24 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             		return ($scope.item = item);
             	});
 
-                jsonStoreEventManager.subscribe(newXid, SUBSCRIPTION_TYPES, websocketHandler);
-                if (oldXid && oldXid !== newXid) {
-                	jsonStoreEventManager.unsubscribe(oldXid, SUBSCRIPTION_TYPES, websocketHandler);
-                }
+            	const previousUnsubscribe = unsubscribe;
+            	
+            	unsubscribe = JsonStore.notificationManager.subscribe({
+            	    handler: websocketHandler,
+            	    xids: [newXid],
+            	    scope: $scope
+            	});
+            	
+            	if (previousUnsubscribe) {
+            	    previousUnsubscribe();
+            	}
             }, true);
 
-            $scope.$watch('item.jsonData', function(newData) {
+            $scope.$watch('item.jsonData', (newData) => {
             	if (newData) {
             		$scope.value = newData;
             	}
             });
-
-            $scope.$on('$destroy', function() {
-                if ($scope.item) {
-                	jsonStoreEventManager.unsubscribe($scope.item.xid, SUBSCRIPTION_TYPES, websocketHandler);
-                }
-            });
-
-            function websocketHandler(event, payload) {
-                $scope.$applyAsync(function() {
-                    const oldData = $scope.item.jsonData;
-                    let newData = payload.object.jsonData;
-                    const path = $scope.path || null;
-
-                    if (Array.isArray(path)) {
-                        path.some((prop) => {
-                            if (newData == null) {
-                                return true;
-                            }
-                            newData = newData[prop];
-                        });
-                    }
-
-                    angular.copy(payload.object, $scope.item);
-                    $scope.item.dataPath = path;
-                    
-                    // if the old data is the same, keep it
-                    // stops updates because of new objects etc
-                    if (angular.equals(newData, oldData)) {
-                        $scope.item.jsonData = oldData;
-                    }
-
-                    if ($scope.itemUpdated) {
-                        $scope.itemUpdated({$item: $scope.item, $firstLoad: false});
-                    }
-                });
-            }
         },
         designerInfo: {
             translation: 'ui.dox.jsonStore',
@@ -135,7 +136,4 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
     };
 }
 
-jsonStore.$inject = ['maJsonStore', 'maJsonStoreEventManager', '$q'];
 export default jsonStore;
-
-
