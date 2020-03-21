@@ -62,24 +62,27 @@ WatchListGetController.prototype.$onInit = function() {
 
 WatchListGetController.prototype.render = function() {
     WatchListSelectController.prototype.render.apply(this, arguments);
-    
-    if (this.unsubscribe) {
-        this.unsubscribe();
-        this.unsubscribe = null;
-    }
-    
+
+    const prevUnsubscribe = this.unsubscribe;
     this.subscribe();
+    if (prevUnsubscribe) {
+        prevUnsubscribe();
+    }
 };
 
 WatchListGetController.prototype.subscribe = function() {
     if (this.watchList) {
-        this.unsubscribe = this.WatchListEventManager.smartSubscribe(this.$scope, this.watchList.xid, 'update', this.updateHandler.bind(this));
+        this.unsubscribe = this.WatchList.notificationManager.subscribe({
+            scope: this.$scope,
+            handler: this.updateHandler.bind(this),
+            xids: [this.watchList.xid]
+        });
     }
 };
 
 WatchListGetController.prototype.updateHandler = function updateHandler(event, update) {
-    if (update.action === 'update' && update.object && this.watchList && update.object.xid === this.watchList.xid) {
-        this.setViewValue(update.object);
+    if (event.name === 'update' && this.watchList && item.xid === this.watchList.xid) {
+        this.setViewValue(item);
     }
 };
 

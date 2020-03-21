@@ -454,6 +454,18 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
             return selectedPoints;
         }
     });
+    
+    // TODO 
+    /*
+     * if (payload.object.xid) {
+                    payload.object.originalId = payload.object.xid;
+                }
+     */
+    
+    Object.assign(WatchList.notificationManager, {
+        webSocketUrl: '/rest/v2/websocket/watch-lists',
+        supportsSubscribe: true
+    });
 
     return WatchList;
 }

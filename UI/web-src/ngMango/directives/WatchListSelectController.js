@@ -6,15 +6,13 @@
 import angular from 'angular';
 
 const DEFAULT_SORT = ['name'];
-const UPDATE_TYPES = ['add', 'update', 'delete'];
 
-WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'maWatchList', 'maWatchListEventManager', 'maUtil'];
-function WatchListSelectController($scope, $element, $attrs, WatchList, WatchListEventManager, maUtil) {
+WatchListSelectController.$inject = ['$scope', '$element', '$attrs', 'maWatchList', 'maUtil'];
+function WatchListSelectController($scope, $element, $attrs, WatchList, maUtil) {
     this.$scope = $scope;
     this.$element = $element;
     this.$attrs = $attrs;
     this.WatchList = WatchList;
-    this.WatchListEventManager = WatchListEventManager;
     this.maUtil = maUtil;
 }
 
@@ -95,7 +93,10 @@ WatchListSelectController.prototype.render = function() {
 };
 
 WatchListSelectController.prototype.subscribe = function() {
-    this.WatchListEventManager.smartSubscribe(this.$scope, null, UPDATE_TYPES, this.updateHandler.bind(this));
+    this.WatchList.notificationManager.subscribe({
+        scope: this.$scope,
+        handler: this.updateHandler.bind(this)
+    });
 };
 
 WatchListSelectController.prototype.setWatchListByXid = function(xid) {
@@ -162,18 +163,16 @@ WatchListSelectController.prototype.doGetPoints = function() {
     }
 };
 
-WatchListSelectController.prototype.updateHandler = function updateHandler(event, update) {
-    const item = update.object;
-    
-    if (update.action === 'add') {
+WatchListSelectController.prototype.updateHandler = function updateHandler(event, item) {
+    if (event.name === 'add') {
         // TODO filter added points according to the current query somehow
         this.watchLists.push(item);
     } else {
         for (let i = 0; i < this.watchLists.length; i++) {
             if (this.watchLists[i].xid === item.xid) {
-                if (update.action === 'update') {
+                if (event.name === 'update') {
                     this.watchLists[i] = item;
-                } else if (update.action === 'delete') {
+                } else if (event.name === 'delete') {
                     this.watchLists.splice(i, 1);
                 }
                 break;
@@ -183,7 +182,7 @@ WatchListSelectController.prototype.updateHandler = function updateHandler(event
 
     if (this.watchList && this.watchList.xid === item.xid) {
         if (!angular.equals(this.watchList, item)) {
-            this.setViewValue(update.action === 'delete' ? null : item);
+            this.setViewValue(event.name === 'delete' ? null : item);
         }
     }
 };
