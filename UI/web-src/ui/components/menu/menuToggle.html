@@ -1,11 +1,11 @@
-<div ui-sref-active="menu-active" ng-class="{'ma-ui-menu-open': $ctrl.isOpen, 'ma-ui-menu-submenu': $ctrl.item.submenu}" class="ma-ui-menu-toggle">
+<div ui-sref-active="ma-ui-menu-active" ng-class="{'ma-ui-menu-open': $ctrl.isOpen, 'ma-ui-menu-submenu': $ctrl.item.submenu}" class="ma-ui-menu-toggle">
     <a ui-sref="{{$ctrl.item.name}}" style="display:none"></a>
     <md-button class="ma-ui-menu-toggle-button ma-ui-menu-indent" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.menuText}}">
       <div flex layout="row">
         <span>
-            <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') === 0" class="menu-icon fa fa-fw {{$ctrl.item.menuIcon}}"></md-icon>
-            <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') !== 0" class="menu-icon">{{$ctrl.item.menuIcon}}</md-icon>
-            <span class="menu-text">{{$ctrl.menuText}}</span>
+            <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') === 0" class="ma-ui-menu-icon fa fa-fw {{$ctrl.item.menuIcon}}"></md-icon>
+            <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') !== 0" class="ma-ui-menu-icon">{{$ctrl.item.menuIcon}}</md-icon>
+            <span class="ma-ui-menu-text">{{$ctrl.menuText}}</span>
         </span>
         <span flex></span>
         <span class="ma-ui-menu-toggle-icon" ng-if="!$ctrl.item.submenu">

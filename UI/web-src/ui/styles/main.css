@@ -206,7 +206,7 @@ md-menu-content.right-icons md-icon {
   padding-left: 32px;
 }
 
-.ma-ui-menu .menu-icon {
+.ma-ui-menu .ma-ui-menu-icon {
 	margin-right: 8px;
 }
 
@@ -528,21 +528,22 @@ mdp-calendar .md-button.md-raised:not(.md-accent) {
 }
 
 .ma-ui-menu .md-button.ma-ui-menu-link a {
-	color: currentColor;
+	color: inherit;
 	font-weight: inherit;
 }
 
-.ma-ui-menu .md-button.ma-ui-menu-link.menu-active {
-	background-color: currentColor;
+.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active {
+	background-color: var(--ma-accent);
+	color: var(--ma-accent-contrast);
 }
 
-.ma-ui-menu .md-button.ma-ui-menu-link.menu-active:hover {
+.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active:hover {
 	cursor: initial;
 }
 
-.ma-ui-menu .md-button.ma-ui-menu-link.menu-active .menu-text,
-.ma-ui-menu .md-button.ma-ui-menu-link.menu-active .menu-icon {
-	color: rgba(255,255,255,0.87);
+.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active .ma-ui-menu-text,
+.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active .ma-ui-menu-icon {
+	color: inherit;
 }
 
 /* md-toolbar inside of md-card */

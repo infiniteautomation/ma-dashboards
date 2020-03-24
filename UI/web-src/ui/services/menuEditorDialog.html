@@ -35,7 +35,7 @@
       <div layout>
         <md-input-container flex class="ma-has-hint">
             <label ma-tr="ui.app.menuIconName"></label>
-            <md-icon ng-class="$ctrl.item.menuIcon.indexOf('fa-') === 0 ? 'fa fa-fw ' + $ctrl.item.menuIcon : ''" class="menu-icon"
+            <md-icon ng-class="$ctrl.item.menuIcon.indexOf('fa-') === 0 ? 'fa fa-fw ' + $ctrl.item.menuIcon : ''" class="ma-ui-menu-icon"
                 style="pointer-events: none">{{$ctrl.item.menuIcon.indexOf('fa-') !== 0 ? $ctrl.item.menuIcon : ''}}</md-icon>
             <input name="menuIcon" ng-model="$ctrl.item.menuIcon">
             <div class="ma-hint"><span ma-tr="ui.app.menuIconNameHint1"></span> <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> <span ma-tr="ui.app.menuIconNameHint2"></span>
