@@ -28,6 +28,15 @@ ma-ui-admin-home-page md-card-header > .md-button {
     margin: 4px 8px;
 }
 
+ma-ui-admin-home-page md-card-header > .md-button:hover {
+    border: solid 2px;
+    border-color: var(--ma-accent) !important;
+    text-transform: lowercase;
+    min-height: 32px;
+    line-height: 32px;
+    margin: 4px 8px;
+}
+
 ma-ui-admin-home-page .ma-ui-home-page-sub-text {
     color: var(--ma-foreground-3);
 }
@@ -49,16 +58,25 @@ ma-ui-admin-home-page .ma-sparkline-chart {
 }
 
 ma-ui-admin-home-page div > md-card.ma-info-card,
-ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div.ma-hover {
-    border: 2px solid transparent !important;
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content.ma-hover {
+    border: 2px solid transparent;
     cursor: pointer;
     position: relative;
 }
 
 ma-ui-admin-home-page div > md-card.ma-info-card:hover,
-ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div.ma-hover:hover {
-    border: 2px solid currentColor !important;
+ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content.ma-hover:hover {
+    border: 2px solid  !important;
+    border-color: var(--ma-accent) !important;
 }
+
+ma-ui-admin-home-page div > md-card.ma-info-card:hover md-card-content > div:not(.ma-watermark) > md-icon,
+ma-ui-admin-home-page div > md-card.ma-info-card:hover .ma-content > ma-point-value, 
+ma-ui-admin-home-page div > md-card.ma-info-card:hover .ma-content div, 
+ma-ui-admin-home-page div > md-card.ma-info-card:hover .ma-add > md-icon {
+    color: var(--ma-accent);
+}
+
 
 ma-ui-admin-home-page div > md-card.ma-info-card md-icon {
     font-size: 48px;
@@ -126,7 +144,8 @@ ma-ui-admin-home-page .ma-redirect > div > ma-point-value {
     margin: 0px 8px;
 }
 ma-ui-admin-home-page .ma-redirect.ma-hover:hover {
-    border: 2px solid currentColor !important;
+    border: 2px solid !important;
+    border-color: var(--ma-accent) !important;
     cursor: pointer;
 }
 
