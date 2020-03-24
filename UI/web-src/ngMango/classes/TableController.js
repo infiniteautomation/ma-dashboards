@@ -30,7 +30,7 @@ class Column {
         if (/^-?\d+$/.exec(value)) {
             return Number.parseInt(value, 10);
         }
-        return value;
+        return value.toUpperCase();
     }
     
     applyFilter(queryBuilder) {
