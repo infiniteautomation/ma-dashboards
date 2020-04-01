@@ -1088,6 +1088,23 @@ md-icon {
   stroke-width: 2.0;
 }
 
+.amcharts-zoom-out-image > * {
+    fill: white !important;
+    stroke: white !important;
+}
+
+/* amcharts category axis balloon and vertial line */
+
+.amcharts-balloon-div.amcharts-balloon-div-categoryAxis > div {
+    color: var(--ma-accent-contrast) !important;
+}
+
+.amcharts-balloon-bg.amcharts-balloon-bg-categoryAxis,
+.amcharts-cursor-line.amcharts-cursor-line-vertical {
+    fill: var(--ma-accent);
+    stroke: var(--ma-accent);
+}
+
 /* reset amcharts export menu list style */
 .amcharts-export-menu li {
   margin: 0;
