@@ -1088,11 +1088,6 @@ md-icon {
   stroke-width: 2.0;
 }
 
-.amcharts-zoom-out-image > * {
-    fill: white !important;
-    stroke: white !important;
-}
-
 /* amcharts category axis balloon and vertial line */
 
 .amcharts-balloon-div.amcharts-balloon-div-categoryAxis > div {
