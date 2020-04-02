@@ -4,6 +4,7 @@
  */
 
 import dateBarTemplate from './dateBar.html';
+import './dateBar.css';
 import angular from 'angular';
 
 DateBarController.$inject = ['$mdMedia', '$stateParams', 'maUtil', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'maUiDateBar'];

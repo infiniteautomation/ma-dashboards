@@ -1,0 +1,121 @@
+.ma-ui-menu {
+	background-color: var(--ma-background-hue-2);
+	color: var(--ma-background-hue-2-contrast);
+}
+
+.ma-ui-menu .md-button:not([disabled]).md-focused,
+.ma-ui-menu .md-button:not([disabled]):hover {
+    background-color: var(--ma-foreground-4);
+}
+
+.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active {
+	background-color: var(--ma-accent);
+	color: var(--ma-accent-contrast);
+}
+
+.ma-ui-menu .md-button.ma-ui-menu-link a {
+	color: inherit;
+	font-weight: inherit;
+}
+
+.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active .ma-ui-menu-text,
+.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active .ma-ui-menu-icon {
+	color: inherit;
+}
+
+.ma-ui-menu-link md-icon,
+.ma-ui-menu-toggle md-icon {
+  min-height: 0;
+  height: auto;
+}
+
+.ma-ui-menu li {
+	margin: 0;
+}
+
+.ma-ui-menu > li:last-child {
+	border-bottom: none
+}
+
+.ma-ui-menu .md-button {
+  border-radius: 0;
+  display: block;
+  align-items: inherit;
+  line-height: 40px;
+  margin: 0;
+  max-height: 40px;
+  overflow: hidden;
+  padding: 0px 16px;
+  text-align: left;
+  text-decoration: none;
+  text-transform: none;
+  white-space: normal;
+  width: 100%;
+  font-size: 1.7rem;
+  font-weight: normal;
+}
+
+.ma-ui-menu .ma-ui-menu-link {
+	padding: 0;
+}
+
+.ma-ui-menu .ma-ui-menu-link a {
+  padding: 0px 16px;
+  display: block;
+  text-decoration: none;
+}
+
+.ma-ui-menu-toggle-icon {
+  display: block;
+  margin-left: auto;
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out;
+  -webkit-transition: -webkit-transform 0.3s ease-in-out;
+}
+
+.ma-ui-menu-open > .ma-ui-menu-toggle-button .ma-ui-menu-toggle-icon {
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+}
+
+.ma-ui-menu ul.ma-ui-menu-level-2 .ma-ui-menu-indent {
+  padding-left: 32px;
+}
+
+.ma-ui-menu .ma-ui-menu-submenu ul.ma-ui-menu-level-2 .ma-ui-menu-indent {
+  padding-left: 16px;
+}
+
+.ma-ui-menu ul.ma-ui-menu-level-3 .ma-ui-menu-indent {
+  padding-left: 48px;
+}
+
+.ma-ui-menu .ma-ui-menu-submenu ul.ma-ui-menu-level-3 .ma-ui-menu-indent {
+  padding-left: 32px;
+}
+
+.ma-ui-menu .ma-ui-menu-icon {
+	margin-right: 8px;
+}
+
+.ma-ui-menu .ma-ui-menu-toggle-list {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  -webkit-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  -webkit-transition-property: height;
+  -moz-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  -moz-transition-property: height;
+  transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  transition-property: height;
+}
+
+.ma-ui-menu .ma-ui-menu-toggle-list.ng-hide {
+	height: 0px !important;
+}
+
+.ma-ui-menu .ma-ui-menu-submenu.ma-ui-menu-open > .md-button {
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    font-weight: bold;
+}

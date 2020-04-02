@@ -325,6 +325,8 @@ ma-badge {
     border-radius: 8px;
     bottom: 2px;
     left: 22px;
+    background-color: var(--ma-accent);
+    color: var(--ma-accent-contrast);
 }
 .md-button.ma-badge {
    overflow: visible;

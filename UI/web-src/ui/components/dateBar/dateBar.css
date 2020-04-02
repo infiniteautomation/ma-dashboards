@@ -1,0 +1,68 @@
+ma-ui-date-bar md-toolbar.ma-ui-date-bar:not(.md-menu-toolbar) {
+    background-color: var(--ma-background-hue-1);
+    color: var(--ma-background-hue-1-contrast);
+}
+
+.date-preset ma-date-range-picker md-select {
+  margin: 0;
+}
+
+ma-ui-date-bar md-input-container .md-input:not([disabled]), ma-ui-date-bar md-input-container:not(.md-input-invalid).md-input-has-value label {
+    color: inherit !important;
+}
+
+ma-ui-date-bar md-checkbox:not(.md-checked) .md-icon, ma-ui-date-bar md-checkbox .md-ink-ripple {
+	border-color: inherit !important;
+	color: inherit !important;
+}
+
+md-toolbar.ma-ui-date-bar, md-toolbar.ma-ui-date-bar .md-toolbar-tools {
+  font-size: inherit;
+  height: 128px;
+  max-height: 128px;
+}
+
+md-toolbar.ma-ui-date-bar.three-rows, md-toolbar.ma-ui-date-bar.three-rows .md-toolbar-tools {
+  height: 192px;
+  max-height: 192px;
+}
+
+md-toolbar.ma-ui-date-bar.four-rows, md-toolbar.ma-ui-date-bar.four-rows .md-toolbar-tools {
+  height: 256px;
+  max-height: 256px;
+}
+
+md-toolbar.ma-ui-date-bar md-checkbox {
+  margin-bottom: 0;
+}
+
+md-toolbar.ma-ui-date-bar md-input-container {
+  margin-bottom: 0;
+}
+
+md-toolbar.ma-ui-date-bar {
+  transition: max-height 0.3s linear;
+  overflow: hidden;
+  min-height: 0;
+}
+
+ma-ui-date-bar.ng-hide md-toolbar.ma-ui-date-bar {
+  max-height: 0;
+}
+
+ma-ui-date-bar md-toolbar.ma-ui-date-bar.four-rows {
+	padding-top: 10px;
+}
+
+ma-ui-date-bar md-toolbar.ma-ui-date-bar:not(.four-rows) .update-and-rollup {
+	max-width: 400px;
+	margin-right: 20px;
+}
+
+ma-ui-date-bar md-toolbar.ma-ui-date-bar:not(.four-rows) .date-pickers {
+	max-width: 300px;
+}
+
+ma-ui-date-bar md-toolbar.ma-ui-date-bar .date-pickers .md-icon-button {
+	margin: 0;
+}

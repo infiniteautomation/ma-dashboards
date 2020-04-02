@@ -72,9 +72,11 @@ ma-ui-footer {
   border-top: 1px solid #ddd;
 }
 
-.ma-ui-sidebar-header {
+md-toolbar.md-tall.ma-ui-sidebar-header {
 	padding: 8px;
 	font-size: small;
+	background-color: var(--ma-primary-600);
+	color: var(--ma-primary-600-contrast);
 }
 
 .ma-ui-sidebar-header img {
@@ -127,110 +129,6 @@ md-menu-content.right-icons md-icon {
               0px 0px 5px 1px rgba(0, 0, 0, 0.084);
 }
 
-/* Dashboard menu */
-
-.ma-ui-menu-link md-icon,
-.ma-ui-menu-toggle md-icon {
-  min-height: 0;
-  height: auto;
-}
-
-.ma-ui-menu li {
-	margin: 0;
-}
-
-.ma-ui-menu > li,
-.ma-ui-menu-toggle.ma-ui-menu-submenu > ul > li {
-	border-bottom: 1px solid rgba(0,0,0,0.1);
-}
-
-.ma-ui-menu > li:last-child {
-	border-bottom: none
-}
-
-.ma-ui-menu .md-button {
-  border-radius: 0;
-  display: block;
-  align-items: inherit;
-  line-height: 40px;
-  margin: 0;
-  max-height: 40px;
-  overflow: hidden;
-  padding: 0px 16px;
-  text-align: left;
-  text-decoration: none;
-  text-transform: none;
-  white-space: normal;
-  width: 100%;
-  font-size: 1.7rem;
-  font-weight: normal;
-}
-
-.ma-ui-menu .ma-ui-menu-link {
-	padding: 0;
-}
-
-.ma-ui-menu .ma-ui-menu-link a {
-  padding: 0px 16px;
-  display: block;
-  text-decoration: none;
-}
-
-.ma-ui-menu-toggle-icon {
-  display: block;
-  margin-left: auto;
-  transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-  transition: transform 0.3s ease-in-out;
-  -webkit-transition: -webkit-transform 0.3s ease-in-out;
-}
-
-.ma-ui-menu-open > .ma-ui-menu-toggle-button .ma-ui-menu-toggle-icon {
-  transform: rotate(0deg);
-  -webkit-transform: rotate(0deg);
-}
-
-.ma-ui-menu ul.ma-ui-menu-level-2 .ma-ui-menu-indent {
-  padding-left: 32px;
-}
-
-.ma-ui-menu .ma-ui-menu-submenu ul.ma-ui-menu-level-2 .ma-ui-menu-indent {
-  padding-left: 16px;
-}
-
-.ma-ui-menu ul.ma-ui-menu-level-3 .ma-ui-menu-indent {
-  padding-left: 48px;
-}
-
-.ma-ui-menu .ma-ui-menu-submenu ul.ma-ui-menu-level-3 .ma-ui-menu-indent {
-  padding-left: 32px;
-}
-
-.ma-ui-menu .ma-ui-menu-icon {
-	margin-right: 8px;
-}
-
-.ma-ui-menu .ma-ui-menu-toggle-list {
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-  -webkit-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
-  -webkit-transition-property: height;
-  -moz-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
-  -moz-transition-property: height;
-  transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
-  transition-property: height;
-}
-
-.ma-ui-menu .ma-ui-menu-toggle-list.ng-hide {
-	height: 0px !important;
-}
-
-.ma-ui-menu .ma-ui-menu-submenu.ma-ui-menu-open > .md-button {
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-    font-weight: bold;
-}
-
 .no-transition {
   -webkit-transition: none !important;
   -moz-transition:    none !important;
@@ -240,6 +138,12 @@ md-menu-content.right-icons md-icon {
 }
 
 /* dont use display: none so we can calculate the height of toggle menus */
+
+md-sidenav.site-sidenav md-content {
+    background-color: var(--ma-background-hue-3);
+    color: var(--ma-background-hue-3-contrast);
+}
+
 md-sidenav.site-sidenav.md-closed {
   display: block;
   visibility: hidden;
@@ -525,25 +429,6 @@ mdp-calendar .md-button.md-raised:not(.md-accent) {
 /* the circle at the end of the clock pointer */
 .mdp-clock .mdp-clock-container > .mdp-pointer > .mdp-clock-selected {
 	background-color: var(--ma-primary);
-}
-
-.ma-ui-menu .md-button.ma-ui-menu-link a {
-	color: inherit;
-	font-weight: inherit;
-}
-
-.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active {
-	background-color: var(--ma-accent);
-	color: var(--ma-accent-contrast);
-}
-
-.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active:hover {
-	cursor: initial;
-}
-
-.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active .ma-ui-menu-text,
-.ma-ui-menu .md-button.ma-ui-menu-link.ma-ui-menu-active .ma-ui-menu-icon {
-	color: inherit;
 }
 
 /* md-toolbar inside of md-card */
@@ -854,72 +739,6 @@ li.md-nav-item:first-of-type {
 
 .ma-ui-main-toolbar md-select .md-select-value.md-select-placeholder {
     color: inherit !important;
-}
-
-/* Date bar */
-
-.date-preset ma-date-range-picker md-select {
-  margin: 0;
-}
-
-ma-ui-date-bar md-input-container .md-input:not([disabled]), ma-ui-date-bar md-input-container:not(.md-input-invalid).md-input-has-value label {
-    color: inherit !important;
-}
-
-ma-ui-date-bar md-checkbox:not(.md-checked) .md-icon, ma-ui-date-bar md-checkbox .md-ink-ripple {
-	border-color: inherit !important;
-	color: inherit !important;
-}
-
-md-toolbar.ma-ui-date-bar, md-toolbar.ma-ui-date-bar .md-toolbar-tools {
-  font-size: inherit;
-  height: 128px;
-  max-height: 128px;
-}
-
-md-toolbar.ma-ui-date-bar.three-rows, md-toolbar.ma-ui-date-bar.three-rows .md-toolbar-tools {
-  height: 192px;
-  max-height: 192px;
-}
-
-md-toolbar.ma-ui-date-bar.four-rows, md-toolbar.ma-ui-date-bar.four-rows .md-toolbar-tools {
-  height: 256px;
-  max-height: 256px;
-}
-
-md-toolbar.ma-ui-date-bar md-checkbox {
-  margin-bottom: 0;
-}
-
-md-toolbar.ma-ui-date-bar md-input-container {
-  margin-bottom: 0;
-}
-
-md-toolbar.ma-ui-date-bar {
-  transition: max-height 0.3s linear;
-  overflow: hidden;
-  min-height: 0;
-}
-
-ma-ui-date-bar.ng-hide md-toolbar.ma-ui-date-bar {
-  max-height: 0;
-}
-
-ma-ui-date-bar md-toolbar.ma-ui-date-bar.four-rows {
-	padding-top: 10px;
-}
-
-ma-ui-date-bar md-toolbar.ma-ui-date-bar:not(.four-rows) .update-and-rollup {
-	max-width: 400px;
-	margin-right: 20px;
-}
-
-ma-ui-date-bar md-toolbar.ma-ui-date-bar:not(.four-rows) .date-pickers {
-	max-width: 300px;
-}
-
-ma-ui-date-bar md-toolbar.ma-ui-date-bar .date-pickers .md-icon-button {
-	margin: 0;
 }
 
 /* checkbox with label at top */

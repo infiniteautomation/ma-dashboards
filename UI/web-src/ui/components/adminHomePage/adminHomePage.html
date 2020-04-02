@@ -6,7 +6,7 @@
         </span>
         <md-button ma-tr="ui.app.moreDetails" ui-sref="ui.settings.systemStatus"></md-button>
     </md-card-header>
-    <span layout="column" layout-gt-sm="row" layout-wrap class="ma-server-status-contents">
+    <div layout="column" layout-gt-sm="row" layout-wrap class="ma-server-status-contents">
         <md-card-content layout-xs="column" layout-sm="row" layout="column" layout-align="space-between stretch"
             layout-align-gt-sm="start start" class="ma-server-details">
             <div>
@@ -104,13 +104,13 @@
                 </ma-serial-chart>
             </div>
         </md-card-content>
-    </span>
+    </div>
 </md-card>
 
 <!-- missing -->
 <div layout="column" layout-gt-md="row" layout-align-gt-md="space-between center" layout-align="space-between stretch">
     <div layout layout-xs="column" flex>
-        <md-card class="ma-info-card" flex
+        <md-card class="ma-info-card ma-hover" flex
             ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.dataSources">
             <md-card-content layout layout-align="start center">
                 <div>
@@ -118,7 +118,7 @@
                 </div>
                 <div class="ma-content" layout="column" layout-align="center start">
                     <ma-point-value point-xid="internal_mango_num_data_sources"></ma-point-value>
-                    <div ma-tr="ui.app.dataSources"></div>
+                    <div class="ma-value-label" ma-tr="ui.app.dataSources"></div>
                 </div>
                 <div class="ma-add">
                     <md-icon>add_circle_outline</md-icon>
@@ -129,7 +129,7 @@
             </md-card-content>
         </md-card>
         <!-- 1/2 done, revise roles & permisions -->
-        <md-card class="ma-info-card" flex
+        <md-card class="ma-info-card ma-hover" flex
             ui-sref="ui.dataPointDetails">
             <md-card-content layout layout-align="start center">
                 <div>
@@ -137,7 +137,7 @@
                 </div>
                 <div class="ma-content" layout="column" layout-align="center start">
                     <ma-point-value point-xid="internal_mango_num_data_points"></ma-point-value>
-                    <div ma-tr="ui.app.dataPoints"></div>
+                    <div class="ma-value-label" ma-tr="ui.app.dataPoints"></div>
                 </div>
                 <div class="ma-add">
                     <md-icon>add_circle_outline</md-icon>
@@ -149,7 +149,7 @@
         </md-card>
     </div>
     <div layout layout-xs="column" flex>
-        <md-card class="ma-info-card" flex
+        <md-card class="ma-info-card ma-hover" flex
             ui-sref="ui.watchList">
             <md-card-content layout layout-align="start center">
                 <div>
@@ -157,7 +157,7 @@
                 </div>
                 <div class="ma-content" layout="column" layout-align="center start">
                     <ma-point-value point-xid="internal_mango_num_watchlists"></ma-point-value>
-                    <div ma-tr="ui.app.watchLists"></div>
+                    <div class="ma-value-label" ma-tr="ui.app.watchLists"></div>
                 </div>
                 <div class="ma-add">
                     <md-icon>add_circle_outline</md-icon>
@@ -167,7 +167,7 @@
                 </div>
             </md-card-content>
         </md-card>
-        <md-card class="ma-info-card" flex
+        <md-card class="ma-info-card ma-hover" flex
             ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.publishers">
             <md-card-content layout layout-align="start center">
                 <div>
@@ -175,7 +175,7 @@
                 </div>
                 <div class="ma-content" layout="column" layout-align="center start">
                     <ma-point-value point-xid="internal_mango_num_publishers"></ma-point-value>
-                    <div ma-tr="ui.app.publishers"></div>
+                    <div class="ma-value-label" ma-tr="ui.app.publishers"></div>
                 </div>
                 <div class="ma-add">
                     <md-icon>add_circle_outline</md-icon>
@@ -204,7 +204,7 @@
                     <div flex layout layout-align="space-between center" ui-sref="ui.settings.modules">
                         <div class="ma-content" layout="column" layout-align="center start">
                             <ma-point-value point-xid="internal_mango_num_updates_available"></ma-point-value>
-                            <div ma-tr="ui.app.modules"></div>
+                            <div class="ma-value-label" ma-tr="ui.app.modules"></div>
                         </div>
                         <div class="ma-add">
                             <md-icon>add_circle_outline</md-icon>
@@ -216,17 +216,15 @@
                         ui-sref="{{::$ctrl.hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}">
                         <div class="ma-content" layout="column" layout-align="center start">
                             <div class="ma-info-card-binded-value" ng-bind="$ctrl.pageCount"></div>
-                            <div ma-tr="ui.app.customPages"></div>
+                            <div class="ma-value-label" ma-tr="ui.app.customPages"></div>
                         </div>
                         <div class="ma-add">
                             <md-icon>add_circle_outline</md-icon>
                         </div>
                     </div>
                 </md-card-content>
-                <md-card-content layout="column" layout-align="center stretch"
-                    >
+                <md-card-content layout="column" layout-align="center stretch">
                     <div class="ma-redirect ma-hover" layout="row" layout-align="space-between center" layout-margin
-                        
                         ui-sref="ui.settings.system">
                         <div ma-tr="ui.app.systemSettings"></div>
                         <md-icon>subdirectory_arrow_right</md-icon>
@@ -258,7 +256,7 @@
                     <div flex layout layout-align="space-between center" ui-sref="ui.settings.users">
                         <div class="ma-content" layout="column" layout-align="center start">
                             <ma-point-value point-xid="internal_mango_num_users"></ma-point-value>
-                            <div ma-tr="ui.app.users"></div>
+                            <div class="ma-value-label" ma-tr="ui.app.users"></div>
                         </div>
                         <div class="ma-add">
                             <md-icon>add_circle_outline</md-icon>
@@ -269,7 +267,7 @@
                     <div flex layout layout-align="space-between center">
                         <div class="ma-content" layout="column" layout-align="center start">
                             <ma-point-value point-xid="internal_mango_num_active_user_sessions"></ma-point-value>
-                            <div ma-tr="ui.app.activeSessions"></div>
+                            <div class="ma-value-label" ma-tr="ui.app.activeSessions"></div>
                         </div>
                     </div>
                 </md-card-content>
@@ -306,7 +304,7 @@
                         ui-sref="ui.events({eventType: 'DATA_POINT'})">
                         <div class="ma-content" layout="column" layout-align="center start">
                             <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.dataPoint"></div>
-                            <div ma-tr="ui.app.dataPointEvents"></div>
+                            <div class="ma-value-label" ma-tr="ui.app.dataPointEvents"></div>
                         </div>
                     </div>
                 </md-card-content>
@@ -315,7 +313,7 @@
                         ui-sref="ui.events({eventType: 'SYSTEM'})">
                         <div class="ma-content" layout="column" layout-align="center start">
                             <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.system"></div>
-                            <div ma-tr="ui.app.systemEvents"></div>
+                            <div class="ma-value-label" ma-tr="ui.app.systemEvents"></div>
                         </div>
                     </div>
                 </md-card-content>
@@ -356,7 +354,7 @@
                     <div flex layout layout-align="space-between center">
                         <div class="ma-content" layout="column" layout-align="center start">
                             <ma-point-value point-xid="internal_mango_num_mailing_lists"></ma-point-value>
-                            <div ma-tr="ui.app.mailingLists"></div>
+                            <div class="ma-value-label" ma-tr="ui.app.mailingLists"></div>
                         </div>
                     </div>
                 </md-card-content>
@@ -368,7 +366,7 @@
                                 point="excelReportTemplates"></ma-get-point-value>
                             <div class="ma-info-card-binded-value"
                                 ng-bind="excelReportTemplates.value ?  excelReportTemplates.value : 0"></div>
-                            <div ma-tr="ui.app.excelReports"></div>
+                            <div class="ma-value-label" ma-tr="ui.app.excelReports"></div>
                         </div>
                     </div>
                 </md-card-content>
