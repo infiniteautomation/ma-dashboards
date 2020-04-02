@@ -70,6 +70,7 @@ ma-ui-admin-home-page .ma-hover {
     position: relative;
 }
 
+ma-ui-admin-home-page .ma-hover:hover,
 ma-ui-admin-home-page .ma-info-card.ma-hover:hover,
 ma-ui-admin-home-page .ma-detailed-info-card .ma-hover:hover {
     border-color: var(--ma-accent);
@@ -131,12 +132,16 @@ ma-ui-admin-home-page .ma-watermark.ma-big > md-icon {
     font-size: 216px !important;
 }
 
-ma-ui-admin-home-page .ma-redirect {
+ma-ui-admin-home-page .md-button.ma-redirect {
     border-radius: 5px;
-    border: 2px solid transparent !important;
-    z-index: 1;
-    background-color: var(--ma-primary);
-    color: var(--ma-primary-contrast);
+    padding: 0 8px;
+    text-transform: unset;
+    text-align: unset;
+    font-size: unset;
+}
+
+ma-ui-admin-home-page .md-button.ma-redirect > ma-point-value {
+    margin-right: 8px;
 }
 
 ma-ui-admin-home-page .ma-redirect md-icon.material-icons {
