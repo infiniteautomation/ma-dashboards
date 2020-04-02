@@ -110,14 +110,13 @@
 <!-- missing -->
 <div layout="column" layout-gt-md="row" layout-align-gt-md="space-between center" layout-align="space-between stretch">
     <div layout layout-xs="column" flex>
-        <md-card class="ma-info-card ma-hover" flex
-            ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.dataSources">
-            <md-card-content layout layout-align="start center">
-                <div>
+        <md-card class="ma-info-card ma-hover" flex ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <md-button class="ma-info-card-button" md-no-ink ui-sref="ui.settings.dataSources">
+                <div class="ma-button-icon">
                     <md-icon>device_hub</md-icon>
                 </div>
-                <div class="ma-content" layout="column" layout-align="center start">
-                    <ma-point-value point-xid="internal_mango_num_data_sources"></ma-point-value>
+                <div class="ma-content">
+                    <ma-point-value class="ma-button-value" point-xid="internal_mango_num_data_sources"></ma-point-value>
                     <div class="ma-value-label" ma-tr="ui.app.dataSources"></div>
                 </div>
                 <div class="ma-add">
@@ -126,17 +125,15 @@
                 <div class="ma-watermark">
                     <md-icon>device_hub</md-icon>
                 </div>
-            </md-card-content>
+            </md-button>
         </md-card>
-        <!-- 1/2 done, revise roles & permisions -->
-        <md-card class="ma-info-card ma-hover" flex
-            ui-sref="ui.dataPointDetails">
-            <md-card-content layout layout-align="start center">
-                <div>
+        <md-card class="ma-info-card ma-hover" flex>
+            <md-button class="ma-info-card-button" md-no-ink ui-sref="ui.dataPointDetails">
+                <div class="ma-button-icon">
                     <md-icon>timeline</md-icon>
                 </div>
-                <div class="ma-content" layout="column" layout-align="center start">
-                    <ma-point-value point-xid="internal_mango_num_data_points"></ma-point-value>
+                <div class="ma-content">
+                    <ma-point-value class="ma-button-value" point-xid="internal_mango_num_data_points"></ma-point-value>
                     <div class="ma-value-label" ma-tr="ui.app.dataPoints"></div>
                 </div>
                 <div class="ma-add">
@@ -145,18 +142,17 @@
                 <div class="ma-watermark">
                     <md-icon>timeline</md-icon>
                 </div>
-            </md-card-content>
+            </md-button>
         </md-card>
     </div>
     <div layout layout-xs="column" flex>
-        <md-card class="ma-info-card ma-hover" flex
-            ui-sref="ui.watchList">
-            <md-card-content layout layout-align="start center">
-                <div>
+        <md-card class="ma-info-card ma-hover" flex>
+            <md-button class="ma-info-card-button" md-no-ink ui-sref="ui.watchList">
+                <div class="ma-button-icon">
                     <md-icon>remove_red_eye</md-icon>
                 </div>
-                <div class="ma-content" layout="column" layout-align="center start">
-                    <ma-point-value point-xid="internal_mango_num_watchlists"></ma-point-value>
+                <div class="ma-content">
+                    <ma-point-value class="ma-button-value" point-xid="internal_mango_num_watchlists"></ma-point-value>
                     <div class="ma-value-label" ma-tr="ui.app.watchLists"></div>
                 </div>
                 <div class="ma-add">
@@ -165,16 +161,15 @@
                 <div class="ma-watermark">
                     <md-icon>remove_red_eye</md-icon>
                 </div>
-            </md-card-content>
+            </md-button>
         </md-card>
-        <md-card class="ma-info-card ma-hover" flex
-            ng-if="$ctrl.maUser.current.hasRole('superadmin')" ui-sref="ui.settings.publishers">
-            <md-card-content layout layout-align="start center">
-                <div>
+        <md-card class="ma-info-card ma-hover" flex ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <md-button class="ma-info-card-button" md-no-ink ui-sref="ui.settings.publishers">
+                <div class="ma-button-icon">
                     <md-icon>publish</md-icon>
                 </div>
-                <div class="ma-content" layout="column" layout-align="center start">
-                    <ma-point-value point-xid="internal_mango_num_publishers"></ma-point-value>
+                <div class="ma-content">
+                    <ma-point-value class="ma-button-value" point-xid="internal_mango_num_publishers"></ma-point-value>
                     <div class="ma-value-label" ma-tr="ui.app.publishers"></div>
                 </div>
                 <div class="ma-add">
@@ -183,9 +178,9 @@
                 <div class="ma-watermark">
                     <md-icon>publish</md-icon>
                 </div>
-            </md-card-content>
-        </md-card> 
-    </div>   
+            </md-button>
+        </md-card>
+    </div>
 </div>
 
 <!-- missing -->

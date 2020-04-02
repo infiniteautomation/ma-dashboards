@@ -82,41 +82,46 @@ ma-ui-admin-home-page .ma-hover:hover div:not(.ma-watermark) md-icon {
     color: var(--ma-accent);
 }
 
-ma-ui-admin-home-page div > md-card.ma-info-card md-icon {
-    font-size: 48px;
-    margin-right: 16px;
-}
-
-ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-add {
-    margin-left: auto;
-    margin-bottom: auto;
-    z-index: 1;
-}
-
-ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-add > md-icon {
-    font-size: 36px;
-}
-
 ma-ui-admin-home-page .ma-value-label {
     color: var(--ma-foreground-3);
 }
 
-ma-ui-admin-home-page div > md-card.ma-info-card  div.ma-content > ma-point-value,
-ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div > div.ma-content > ma-point-value, 
-ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div > div.ma-content > div.ma-info-card-binded-value {
+ma-ui-admin-home-page .md-button.ma-info-card-button {
+    text-transform: unset;
+    text-align: unset;
+    font-size: unset;
+    line-height: unset;
+    margin: 0;
+    padding: 16px;
+    display: flex;
+}
+
+ma-ui-admin-home-page .ma-info-card-button .ma-button-value {
     font-size: 24px;
 }
 
-ma-ui-admin-home-page div > md-card.ma-detailed-info-card div md-card-content > div {
-    padding: 0px 8px;
+ma-ui-admin-home-page .ma-info-card-button .ma-button-icon > md-icon {
+    font-size: 48px;
+    margin-right: 16px;
 }
 
-ma-ui-admin-home-page div > md-card.ma-detailed-info-card>div {
-    position: relative;
+ma-ui-admin-home-page .ma-info-card-button .ma-content {
+    display: flex;
+    flex-direction: column;
+}
+
+ma-ui-admin-home-page .ma-info-card-button  .ma-add {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+ma-ui-admin-home-page .ma-info-card-button  .ma-add > md-icon {
+    font-size: 36px;
 }
 
 ma-ui-admin-home-page .ma-watermark {
-    position: absolute !important;
+    position: absolute;
     bottom: 0px;
     right: 0px;
     margin-right: -26px;
@@ -134,7 +139,6 @@ ma-ui-admin-home-page .ma-watermark.ma-big > md-icon {
 
 ma-ui-admin-home-page .md-button.ma-redirect {
     border-radius: 5px;
-    padding: 0 8px;
     text-transform: unset;
     text-align: unset;
     font-size: unset;
