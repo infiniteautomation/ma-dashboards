@@ -70,7 +70,8 @@ ma-ui-admin-home-page .ma-hover {
     position: relative;
 }
 
-ma-ui-admin-home-page .ma-hover:hover {
+ma-ui-admin-home-page .ma-info-card.ma-hover:hover,
+ma-ui-admin-home-page .ma-detailed-info-card .ma-hover:hover {
     border-color: var(--ma-accent);
     color: var(--ma-accent);
 }
