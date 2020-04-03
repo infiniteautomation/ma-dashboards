@@ -90,6 +90,12 @@
 
             <md-divider></md-divider>
 
+            <div ng-if="!$ctrl.list.isNew()">
+                <ma-mailing-list-test-email mailing-list="$ctrl.list"></ma-mailing-list-test-email>
+
+                <md-divider></md-divider>
+            </div>
+
             <div layout="column" class="weekly-schedule-container">
                 <span class="md-headline">
                     <span ma-tr="ui.app.inactiveSchedule"></span>
