@@ -853,12 +853,8 @@ md-icon {
   font-family: inherit !important;
 }
 
-.amcharts-zoom-out-image {
-  /* cant change color of image inside svg? */
-}
-
 .amcharts-zoom-out-label {
-  fill: currentColor;
+    fill: currentColor;
 }
 
 .amcharts-axis-label, .amcharts-axis-bottom-label, .amcharts-axis-title {

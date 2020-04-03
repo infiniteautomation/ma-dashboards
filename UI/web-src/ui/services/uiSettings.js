@@ -221,8 +221,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                         e.parentNode.removeChild(e);
                     }
                 }
-                
-                
+
                 // setup the CSS variables for the theme
                 this.applyRootTheme();
                 
@@ -310,12 +309,24 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     });
                     element.style.removeProperty(`--ma-foreground-value`);
                 }
+                this.setThemeClasses(element, theme);
             }
             
             applyRootTheme(theme = this.activeTheme) {
                 const properties = this.getCssVariables(theme);
                 const styles = ':root {\n' + properties.map(p => `${p.name}: ${p.value};`).join('\n') + '\n}';
                 maCssInjector.injectStyle(styles, 'ma-variables', 'head > meta[name="user-styles-after-here"]', true);
+
+                this.setThemeClasses($window.document.body, theme);
+            }
+            
+            setThemeClasses(element, theme = this.activeTheme) {
+                element.classList.remove('ma-theme-dark');
+                element.classList.remove('ma-theme-light');
+                if (theme) {
+                    const themeObj = $mdTheming.THEMES[theme];
+                    element.classList.add(themeObj.isDark ? 'ma-theme-dark' : 'ma-theme-light');
+                }
             }
             
             setMetaTag(name, content) {
