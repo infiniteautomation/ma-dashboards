@@ -38,8 +38,8 @@ ma-ui-admin-home-page md-card-header > .md-button:hover {
     margin: 4px 8px;
 }
 
-ma-ui-admin-home-page .ma-detailed-info-card > div > md-card-content:nth-child(2n),
-ma-ui-admin-home-page .ma-server-status-contents > md-card-content:nth-child(2n) {
+ma-ui-admin-home-page .ma-detailed-info-card > div > :nth-child(2n),
+ma-ui-admin-home-page .ma-server-status-contents > :nth-child(2n) {
     background-color: var(--ma-background-hue-2);
     color: var(--ma-background-hue-2-contrast);
 }
@@ -96,7 +96,7 @@ ma-ui-admin-home-page .md-button.ma-info-card-button {
     display: flex;
 }
 
-ma-ui-admin-home-page .ma-info-card-button .ma-button-value {
+ma-ui-admin-home-page .ma-info-card .ma-info-card-button .ma-button-value {
     font-size: 24px;
 }
 
@@ -110,13 +110,13 @@ ma-ui-admin-home-page .ma-info-card-button .ma-content {
     flex-direction: column;
 }
 
-ma-ui-admin-home-page .ma-info-card-button  .ma-add {
+ma-ui-admin-home-page .ma-info-card-button .ma-add {
     position: absolute;
     top: 16px;
     right: 16px;
 }
 
-ma-ui-admin-home-page .ma-info-card-button  .ma-add > md-icon {
+ma-ui-admin-home-page .ma-info-card .ma-info-card-button .ma-add > md-icon {
     font-size: 36px;
 }
 

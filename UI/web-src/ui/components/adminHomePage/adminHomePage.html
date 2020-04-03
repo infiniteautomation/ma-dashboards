@@ -195,29 +195,18 @@
                 </span>
             </md-card-header>
             <div flex layout="column" layout-align="space-between stretch">
-                <md-card-content class="ma-hover">
-                    <div flex layout layout-align="space-between center" ui-sref="ui.settings.modules">
-                        <div class="ma-content" layout="column" layout-align="center start">
-                            <ma-point-value point-xid="internal_mango_num_updates_available"></ma-point-value>
-                            <div class="ma-value-label" ma-tr="ui.app.modules"></div>
-                        </div>
-                        <div class="ma-add">
-                            <md-icon>add_circle_outline</md-icon>
-                        </div>
+                <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="ui.settings.modules">
+                    <div class="ma-content">
+                        <ma-point-value class="ma-button-value" point-xid="internal_mango_num_updates_available"></ma-point-value>
+                        <div class="ma-value-label" ma-tr="ui.app.modules"></div>
                     </div>
-                </md-card-content>
-                <md-card-content class="ma-hover">
-                    <div flex layout layout-align="space-between center"
-                        ui-sref="{{::$ctrl.hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}">
-                        <div class="ma-content" layout="column" layout-align="center start">
-                            <div class="ma-info-card-binded-value" ng-bind="$ctrl.pageCount"></div>
-                            <div class="ma-value-label" ma-tr="ui.app.customPages"></div>
-                        </div>
-                        <div class="ma-add">
-                            <md-icon>add_circle_outline</md-icon>
-                        </div>
+                </md-button>
+                <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="{{::$ctrl.hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}">
+                    <div class="ma-content">
+                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.pageCount"></div>
+                        <div class="ma-value-label" ma-tr="ui.app.customPages"></div>
                     </div>
-                </md-card-content>
+                </md-button>
                 <md-card-content layout="column" layout-align="center stretch">
                     <md-button class="ma-redirect md-raised md-primary" ui-sref="ui.settings.system" layout="row">
                         <div ma-tr="ui.app.systemSettings" flex></div>
@@ -244,25 +233,18 @@
                 <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.users"></md-button>
             </md-card-header>
             <div flex layout="column" layout-align="space-between stretch">
-                <md-card-content class="ma-hover">
-                    <div flex layout layout-align="space-between center" ui-sref="ui.settings.users">
-                        <div class="ma-content" layout="column" layout-align="center start">
-                            <ma-point-value point-xid="internal_mango_num_users"></ma-point-value>
-                            <div class="ma-value-label" ma-tr="ui.app.users"></div>
-                        </div>
-                        <div class="ma-add">
-                            <md-icon>add_circle_outline</md-icon>
-                        </div>
+                <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="ui.settings.users">
+                    <div class="ma-content">
+                        <ma-point-value class="ma-button-value" point-xid="internal_mango_num_users"></ma-point-value>
+                        <div class="ma-value-label" ma-tr="ui.app.users"></div>
                     </div>
-                </md-card-content>
-                <md-card-content flex>
-                    <div flex layout layout-align="space-between center">
-                        <div class="ma-content" layout="column" layout-align="center start">
-                            <ma-point-value point-xid="internal_mango_num_active_user_sessions"></ma-point-value>
-                            <div class="ma-value-label" ma-tr="ui.app.activeSessions"></div>
-                        </div>
+                </md-button>
+                <md-button md-no-ink class="ma-info-card-button ma-hover">
+                    <div class="ma-content">
+                        <ma-point-value class="ma-button-value" point-xid="internal_mango_num_active_user_sessions"></ma-point-value>
+                        <div class="ma-value-label" ma-tr="ui.app.activeSessions"></div>
                     </div>
-                </md-card-content>
+                </md-button>
                 <md-card-content layout="column" layout-align="center stretch">
                     <!-- TODO: missing roles and permisions -->
                     <md-button class="ma-redirect md-raised md-primary" layout="row">
@@ -289,24 +271,18 @@
                 <md-button ma-tr="ui.app.viewAll" ui-sref="ui.events"></md-button>
             </md-card-header>
             <div flex layout="column" layout-align="space-between stretch">
-                <md-card-content class="ma-hover" flex>
-                    <div flex layout layout-align="space-between center"
-                        ui-sref="ui.events({eventType: 'DATA_POINT'})">
-                        <div class="ma-content" layout="column" layout-align="center start">
-                            <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.dataPoint"></div>
-                            <div class="ma-value-label" ma-tr="ui.app.dataPointEvents"></div>
-                        </div>
+                <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="ui.events({eventType: 'DATA_POINT'})">
+                    <div class="ma-content">
+                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.dataPoint"></div>
+                        <div class="ma-value-label" ma-tr="ui.app.dataPointEvents"></div>
                     </div>
-                </md-card-content>
-                <md-card-content class="ma-hover" flex>
-                    <div flex layout layout-align="space-between center"
-                        ui-sref="ui.events({eventType: 'SYSTEM'})">
-                        <div class="ma-content" layout="column" layout-align="center start">
-                            <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.system"></div>
-                            <div class="ma-value-label" ma-tr="ui.app.systemEvents"></div>
-                        </div>
+                </md-button>
+                <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="ui.events({eventType: 'SYSTEM'})">
+                    <div class="ma-content">
+                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.system"></div>
+                        <div class="ma-value-label" ma-tr="ui.app.systemEvents"></div>
                     </div>
-                </md-card-content>
+                </md-button>
                 <md-card-content layout="column" layout-align="center stretch">
                     <md-button class="ma-redirect md-raised md-primary" layout="row">
                         <ma-point-value point-xid="internal_mango_num_event_detectors"></ma-point-value>
@@ -331,28 +307,20 @@
                 <md-button ma-tr="ui.app.viewAll" ui-sref="ui.settings.excelReports"></md-button>
             </md-card-header>
             <div flex layout="column" layout-align="space-between stretch">
-                <md-card-content flex>
-                    <div flex layout layout-align="space-between center">
-                        <div class="ma-content" layout="column" layout-align="center start">
-                            <ma-point-value point-xid="internal_mango_num_mailing_lists"></ma-point-value>
-                            <div class="ma-value-label" ma-tr="ui.app.mailingLists"></div>
-                        </div>
+                <md-button md-no-ink class="ma-info-card-button ma-hover">
+                    <div class="ma-content">
+                        <ma-point-value class="ma-button-value" point-xid="internal_mango_num_mailing_lists"></ma-point-value>
+                        <div class="ma-value-label" ma-tr="ui.app.mailingLists"></div>
                     </div>
-                </md-card-content>
-                <md-card-content class="ma-hover" flex>
-                    <div flex layout layout-align="space-between center"
-                        ui-sref="ui.settings.excelReports">
-                        <div class="ma-content" layout="column" layout-align="center start">
-                            <ma-get-point-value point-xid="internal_mango_num_excel_report_templates"
-                                point="excelReportTemplates"></ma-get-point-value>
-                            <div class="ma-info-card-binded-value"
-                                ng-bind="excelReportTemplates.value ?  excelReportTemplates.value : 0"></div>
-                            <div class="ma-value-label" ma-tr="ui.app.excelReports"></div>
-                        </div>
+                </md-button>
+                <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="ui.settings.excelReports">
+                    <div class="ma-content">
+                        <ma-get-point-value point-xid="internal_mango_num_excel_report_templates" point="excelReportTemplates"></ma-get-point-value>
+                        <div class="ma-info-card-binded-value" ng-bind="excelReportTemplates.value ?  excelReportTemplates.value : 0"></div>
+                        <div class="ma-value-label" ma-tr="ui.app.excelReports"></div>
                     </div>
-                </md-card-content>
-                <md-card-content flex="45" layout="column" layout-align="center stretch">
-                </md-card-content>
+                </md-button>
+                <md-card-content flex></md-card-content>
             </div>
         </md-card>
     </div>
