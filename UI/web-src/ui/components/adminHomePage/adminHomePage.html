@@ -186,8 +186,10 @@
 <!-- missing -->
 <div layout="column" layout-gt-md="row" layout-align-gt-xs="space-between stretch">
     <div layout layout-xs="column" flex>
-        <md-card class="ma-detailed-info-card" flex
-            ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+        <md-card class="ma-detailed-info-card" flex ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <div class="ma-watermark ma-watermark-big">
+                <md-icon>settings</md-icon>
+            </div>
             <md-card-header layout layout-align="space-between center">
                 <span layout layout-align="center center">
                     <md-icon>settings</md-icon>
@@ -203,7 +205,7 @@
                 </md-button>
                 <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="{{::$ctrl.hasDashboardDesigner ? 'ui.settings.dashboardDesigner' : 'ui.settings.editPages'}}">
                     <div class="ma-content">
-                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.pageCount"></div>
+                        <div class="ma-button-value" ng-bind="$ctrl.pageCount"></div>
                         <div class="ma-value-label" ma-tr="ui.app.customPages"></div>
                     </div>
                 </md-button>
@@ -223,8 +225,10 @@
             </div>
         </md-card>
         <!-- Missing roles and permisions link -->
-        <md-card class="ma-detailed-info-card" flex
-            ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+        <md-card class="ma-detailed-info-card" flex ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <div class="ma-watermark ma-watermark-big">
+                <md-icon>people</md-icon>
+            </div>
             <md-card-header layout layout-align="space-between center">
                 <span layout layout-align="center center">
                     <md-icon>people</md-icon>
@@ -261,8 +265,10 @@
     </div>
     <div layout layout-xs="column" flex>
         <!-- missing section 1 & 2 data point & missing section 3 full card-->
-        <md-card class="ma-detailed-info-card" flex
-            ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+        <md-card class="ma-detailed-info-card" flex ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <div class="ma-watermark ma-watermark-big">
+                <md-icon>alarm</md-icon>
+            </div>
             <md-card-header layout layout-align="space-between center">
                 <span layout layout-align="center center">
                     <md-icon>alarm</md-icon>
@@ -273,13 +279,13 @@
             <div flex layout="column" layout-align="space-between stretch">
                 <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="ui.events({eventType: 'DATA_POINT'})">
                     <div class="ma-content">
-                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.dataPoint"></div>
+                        <div class="ma-button-value" ng-bind="$ctrl.eventCounts.dataPoint"></div>
                         <div class="ma-value-label" ma-tr="ui.app.dataPointEvents"></div>
                     </div>
                 </md-button>
                 <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="ui.events({eventType: 'SYSTEM'})">
                     <div class="ma-content">
-                        <div class="ma-info-card-binded-value" ng-bind="$ctrl.eventCounts.system"></div>
+                        <div class="ma-button-value" ng-bind="$ctrl.eventCounts.system"></div>
                         <div class="ma-value-label" ma-tr="ui.app.systemEvents"></div>
                     </div>
                 </md-button>
@@ -297,8 +303,10 @@
             </div>
         </md-card>
         <!-- missing section 1, test section 2 -->
-        <md-card class="ma-detailed-info-card" flex
-            ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+        <md-card class="ma-detailed-info-card" flex ng-if="$ctrl.maUser.current.hasRole('superadmin')">
+            <div class="ma-watermark ma-watermark-big">
+                <md-icon>book</md-icon>
+            </div>
             <md-card-header layout layout-align="space-between center">
                 <span layout layout-align="center center">
                     <md-icon>book</md-icon>
@@ -316,7 +324,7 @@
                 <md-button md-no-ink class="ma-info-card-button ma-hover" ui-sref="ui.settings.excelReports">
                     <div class="ma-content">
                         <ma-get-point-value point-xid="internal_mango_num_excel_report_templates" point="excelReportTemplates"></ma-get-point-value>
-                        <div class="ma-info-card-binded-value" ng-bind="excelReportTemplates.value ?  excelReportTemplates.value : 0"></div>
+                        <div class="ma-button-value" ng-bind="excelReportTemplates.value ?  excelReportTemplates.value : 0"></div>
                         <div class="ma-value-label" ma-tr="ui.app.excelReports"></div>
                     </div>
                 </md-button>

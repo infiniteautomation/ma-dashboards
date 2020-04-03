@@ -133,8 +133,17 @@ ma-ui-admin-home-page .ma-watermark > md-icon.material-icons {
     color: rgba(var(--ma-background-400-value), 0.1);
 }
 
-ma-ui-admin-home-page .ma-watermark.ma-big > md-icon {
-    font-size: 216px !important;
+ma-ui-admin-home-page .ma-detailed-info-card {
+    position: relative;
+}
+
+ma-ui-admin-home-page .ma-watermark.ma-watermark-big {
+    margin-right: -60px;
+    margin-bottom: -60px;
+}
+
+ma-ui-admin-home-page .ma-watermark.ma-watermark-big > md-icon.material-icons {
+    font-size: 192px;
 }
 
 ma-ui-admin-home-page .md-button.ma-redirect {
