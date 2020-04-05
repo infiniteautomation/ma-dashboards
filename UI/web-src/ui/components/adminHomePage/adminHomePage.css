@@ -58,9 +58,13 @@ ma-ui-admin-home-page .ma-server-details > div:not(:last-child) {
     margin-bottom: 12px;
 }
 
+ma-ui-admin-home-page .ma-server-details-graph > div:not(:last-child) {
+    margin-right: 12px;
+}
+
 ma-ui-admin-home-page .ma-sparkline-chart {
     height: 170px;
-    width: 250px;
+    width: 150px;
     margin: -20px -10px;
 }
 

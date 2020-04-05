@@ -25,7 +25,7 @@
             </div>
         </md-card-content>
         <md-card-content layout-xs="column" layout="row" layout-align="space-between stretch"
-            layout-align-gt-sm="space-between center" flex>
+            layout-align-gt-sm="space-between center" flex ng-class="{'ma-server-details': $ctrl.$mdMedia('xs')}">
             <div layout="column" layout-align="center center" layout-align-xs="center start">
                 <ma-svg ng-include="$ctrl.sqlSvg">
                 </ma-svg>
@@ -61,27 +61,27 @@
             </div>
         </md-card-content>
         <md-card-content layout-xs="column" layout="row" layout-align="space-between stretch"
-            layout-align-gt-sm="space-between center" flex flex-md="100">
-            <div>
+            layout-align-gt-sm="space-between center" flex flex-md="100" ng-class="{'ma-server-details': $ctrl.$mdMedia('xs'), 'ma-server-details-graph': $ctrl.$mdMedia('gt-xs')}">
+            <div layout="column" layout-align="center center" layout-align-xs="center start">
                 <ma-svg ng-include="$ctrl.ramSvg"></ma-svg>
                 <div>
                     <ma-point-value point-xid="internal_jvm_used_memory"></ma-point-value>
                     &#47;
                     <ma-point-value point-xid="internal_jvm_max_memory"></ma-point-value>
-                    <div class="ma-ui-home-page-sub-text"
-                        ma-tr="java.monitor.JAVA_FREE_MEMORY"></div>
                 </div>
+                <div class="ma-ui-home-page-sub-text"
+                    ma-tr="java.monitor.JAVA_FREE_MEMORY"></div>
             </div>
-            <div>
+            <div layout="column" layout-align="center center" layout-align-xs="center start">
                 <ma-svg ng-include="$ctrl.cpuloadSvg">
                 </ma-svg>
                 <div>
                     <ma-point-value point-xid="internal_cpu_process_load"></ma-point-value>
                     &#47;
                     <ma-point-value point-xid="internal_cpu_system_load"></ma-point-value>
-                    <div class="ma-ui-home-page-sub-text"
-                        ma-tr="ui.adminHome.cpuLoad"></div>
                 </div>
+                <div class="ma-ui-home-page-sub-text"
+                    ma-tr="ui.adminHome.cpuLoad"></div>
             </div>
             <div class="ma-ui-home-page-graph">
                 <ma-get-point-value point-xid="internal_cpu_system_load" point="cpuLoad"></ma-get-point-value>
@@ -94,7 +94,7 @@
                     to="$ctrl.maUiDateBar.to" rollup="{{$ctrl.maUiDateBar.rollupType}}"
                     rollup-interval="{{$ctrl.maUiDateBar.rollupIntervals}} {{$ctrl.maUiDateBar.rollupIntervalPeriod}}">
                 </ma-point-values>
-                <ma-serial-chart class="ma-sparkline-chart" style="height: 170px; width: 300px"
+                <ma-serial-chart class="ma-sparkline-chart"
                     series-1-values="cpuLoadValues" series-1-point="cpuLoad" series-1-type="smoothedLine"
                     series-1-color="#6effa3" series-2-values="freeRamValues" series-2-point="freeRam"
                     series-2-type="smoothedLine" series-2-color="#49abd0" series-2-axis="right" balloon="true"
