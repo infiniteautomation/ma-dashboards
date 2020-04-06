@@ -26,7 +26,6 @@ class MailingListSetupController {
 
     $onChanges(changes) {
         if (changes.mailingList && this.mailingList) {
-            console.log()
             this.maTranslate.trAll({
                 testEmail: ['ftl.userTestEmail', this.maUser.current.email],
                 subject: 'ftl.testEmail'
