@@ -6,25 +6,39 @@
 import angular from 'angular';
 import componentTemplate from './mailingListTestEmail.html';
 
-const $inject = Object.freeze(['maDialogHelper', 'maServer', 'maTranslate']);
+const $inject = Object.freeze(['maDialogHelper', 'maServer', 'maTranslate', 'maUser']);
 
 class MailingListSetupController {
 
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
 
-    constructor(maDialogHelper, maServer, maTranslate) {
+    constructor(maDialogHelper, maServer, maTranslate, maUser) {
         this.maDialogHelper = maDialogHelper;
         this.maServer = maServer;
         this.maTranslate = maTranslate;
+        this.maUser = maUser;
     }
 
     $onInit() {
-        this.email = {
-            subject: 'Test Email',
-            htmlContent: '<p>This a test email</p>',
-            plainContent: 'This a test email',
-            type: 'HTML_AND_TEXT'
+
+    }
+
+    $onChanges(changes) {
+        if (changes.mailingList && this.mailingList) {
+            console.log()
+            this.maTranslate.trAll({
+                testEmail: ['ftl.userTestEmail', this.maUser.current.email],
+                subject: 'ftl.testEmail'
+            }).then((tr) => {
+                this.initValues = {
+                    subject: tr.subject,
+                    htmlContent: `<p>${tr.testEmail}</p>`,
+                    plainContent: tr.testEmail,
+                    type: 'HTML_AND_TEXT'
+                };
+                this.email = angular.copy(this.initValues);
+            });
         }
     }
 
