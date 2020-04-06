@@ -1,0 +1,45 @@
+<div flex="100" layout="row" layout-wrap layout-align="space-between start" ng-form="$ctrl.form">
+    <div flex="100" layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-click="$ctrl.send()">
+            <md-icon>email</md-icon>
+            <span ng-if="!$ctrl.sendEmailButtonTitle" ma-tr="common.sendTestEmail"></span>
+            <span ng-if="$ctrl.sendEmailButtonTitle" ng-bind="$ctrl.sendEmailButtonTitle"></span>
+        </md-button>
+    </div>
+
+    <md-input-container flex="100" flex-gt-md="30">
+        <md-icon>line_weight</md-icon>
+        <label ma-tr="common.type"></label>
+        <md-select ng-model="$ctrl.email.type">
+            <md-option value="HTML_AND_TEXT" ma-tr="ui.app.mailingLists.sendEmailEncoding.HTML_AND_TEXT"></md-option>
+            <md-option value="HTML" ma-tr="ui.app.mailingLists.sendEmailEncoding.HTML"></md-option>
+            <md-option value="TEXT" ma-tr="ui.app.mailingLists.sendEmailEncoding.TEXT"></md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container flex="100" flex-gt-md="70">
+        <md-icon>label</md-icon>
+        <label ma-tr="ui.app.mailingLists.sendEmailSubject"></label>
+        <input name="subject" ng-model="$ctrl.email.subject" required>
+        <div ng-messages="$ctrl.form.name.$error">
+            <div ng-message="required" ma-tr="validate.required"></div>
+        </div>
+    </md-input-container>
+
+    <div flex="100" ng-if="$ctrl.email.type !== 'TEXT'">
+        <md-icon>code</md-icon>
+        <label ma-tr="ui.app.mailingLists.sendEmailHTMLContent"></label>
+        <ma-ace-editor
+                flex="100"
+                style="height: 300px; min-height: 100%;"
+                ng-model="$ctrl.email.htmlContent"
+                ng-model-options="{debounce: 1000}"
+        ></ma-ace-editor>
+    </div>
+
+    <md-input-container flex="100" class="md-block" ng-if="$ctrl.email.type !== 'HTML'">
+        <md-icon>view_headline</md-icon>
+        <label ma-tr="ui.app.mailingLists.sendEmailTextContent"></label>
+        <textarea ng-model="$ctrl.email.plainContent" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+    </md-input-container>
+</div>

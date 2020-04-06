@@ -50,6 +50,14 @@ function ServerFactory($http, $q) {
         });
     };
 
+    Server.prototype.sendEmailToMailingList = function (mailingListXid, data) {
+        return $http({
+            url: `${serverUrl}/email/mailing-list/${mailingListXid}`,
+            method: 'POST',
+            data: data
+        });
+    };
+
     return new Server();
 }
 

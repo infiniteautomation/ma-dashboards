@@ -6,18 +6,20 @@
 import componentTemplate from './mailingListSetup.html';
 import angular from 'angular';
 
-const $inject = Object.freeze(['$scope', 'maMailingList', 'maDialogHelper', 'maUser']);
+const $inject = Object.freeze(['$scope', 'maMailingList', 'maDialogHelper', 'maUser', 'maServer', 'maTranslate']);
 
 class MailingListSetupController {
 
     static get $inject() { return $inject; }
     static get $$ngIsClass() { return true; }
     
-    constructor($scope, maMailingList, maDialogHelper, maUser) {
+    constructor($scope, maMailingList, maDialogHelper, maUser, maServer, maTranslate) {
         this.$scope = $scope;
         this.maMailingList = maMailingList;
         this.maDialogHelper = maDialogHelper;
         this.maUser = maUser;
+        this.maServer = maServer;
+        this.maTranslate = maTranslate;
     }
 
     $onInit() {
@@ -69,17 +71,6 @@ class MailingListSetupController {
             
         });
 
-    }
-
-    checkError(property) {
-        if (!this.validationMessages || this.validationMessages.length === 0) {
-            return null;
-        }
-        return this.validationMessages.filter((item) => {
-            if (item.property) {
-                return item.property === property;
-            }
-        }, property)[0];
     }
 
     delete(event) {
