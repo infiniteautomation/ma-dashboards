@@ -184,7 +184,7 @@ import testEmail from './components/testEmail/testEmail';
 import resetPasswordCreateLink from './components/resetPasswordCreateLink/resetPasswordCreateLink';
 import logFileTable from './components/logFileTable/logFileTable';
 import logFileView from './components/logFileView/logFileView';
-import mailingListTestEmail from './components/mailingListTestEmail/mailingListTestEmail';
+import mailingListEmail from './components/mailingListEmail/mailingListEmail';
 
 import 'ngmap';
 import slideUp from './animations/slideUp';
@@ -383,7 +383,7 @@ ngMango.component('maTestEmail', testEmail);
 ngMango.component('maResetPasswordCreateLink', resetPasswordCreateLink);
 ngMango.component('maLogFileTable', logFileTable);
 ngMango.component('maLogFileView', logFileView);
-ngMango.component('maMailingListTestEmail', mailingListTestEmail);
+ngMango.component('maMailingListEmail', mailingListEmail);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

@@ -4,7 +4,7 @@
  */
 
 import angular from 'angular';
-import componentTemplate from './mailingListTestEmail.html';
+import componentTemplate from './mailingListEmail.html';
 
 const $inject = Object.freeze(['maDialogHelper', 'maServer', 'maTranslate', 'maUser']);
 
@@ -25,10 +25,10 @@ class MailingListSetupController {
     }
 
     $onChanges(changes) {
-        if (changes.mailingList && this.mailingList) {
+        if (this.mailingList) {
             this.maTranslate.trAll({
-                testEmail: ['ftl.userTestEmail', this.maUser.current.email],
-                subject: 'ftl.testEmail'
+                testEmail: ['ui.app.mailingLists.testEmail', this.mailingList.name],
+                subject: 'ui.app.mailingLists.testSubject'
             }).then((tr) => {
                 this.initValues = {
                     subject: tr.subject,
@@ -37,6 +37,10 @@ class MailingListSetupController {
                     type: 'HTML_AND_TEXT'
                 };
                 this.email = angular.copy(this.initValues);
+
+                if (this.defaultSubject) this.email.subject = this.defaultSubject;
+                if (this.defaultHtmlContent) this.email.htmlContent = this.defaultHtmlContent;
+                if (this.defaultTextContent) this.email.plainContent = this.defaultTextContent;
             });
         }
     }
@@ -61,7 +65,7 @@ class MailingListSetupController {
             if (error.status === 403) {
                 return this.maTranslate.tr('systemSettings.permissions.sendToMailingList').then(tr => {
                     this.maDialogHelper.errorToast([
-                        'ui.app.mailingList.sendTestEmailPermissionError',
+                        'ui.app.mailingLists.sendEmailPermissionError',
                         `\"${tr}\"`
                     ]);
                 })
@@ -74,7 +78,11 @@ class MailingListSetupController {
 
 export default {
     bindings: {
-        mailingList: '<'
+        mailingList: '<',
+        sendEmailButtonTitle: '@?',
+        defaultSubject: '@?',
+        defaultHtmlContent: '@?',
+        defaultTextContent: '@?'
     },
     controller: MailingListSetupController,
     template: componentTemplate

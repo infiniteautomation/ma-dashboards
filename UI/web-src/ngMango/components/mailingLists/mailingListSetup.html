@@ -90,8 +90,12 @@
 
             <md-divider></md-divider>
 
-            <div ng-if="!$ctrl.list.isNew()">
-                <ma-mailing-list-test-email mailing-list="$ctrl.list"></ma-mailing-list-test-email>
+            <div ng-if="!$ctrl.list.isNew()" class="ma-margin-top">
+                <span class="md-headline">
+                    <span ma-tr="ui.app.mailingLists.sendTestEmail"></span>
+                </span>
+
+                <ma-mailing-list-email mailing-list="$ctrl.list"></ma-mailing-list-email>
 
                 <md-divider></md-divider>
             </div>
