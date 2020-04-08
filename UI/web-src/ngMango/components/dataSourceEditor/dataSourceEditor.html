@@ -1,5 +1,7 @@
-<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" ma-activate-tab="$ctrl.activeTab = $index" flex="noshrink" layout="column">
-    <md-tabs flex="noshrink" layout="column" ng-attr-md-dynamic-height="{{$ctrl.dynamicHeight}}" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.activeTab">
+<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" ma-activate-tab="$ctrl.activeTab = $index"
+    flex="noshrink" layout="column">
+    <md-tabs flex="noshrink" layout="column" ng-attr-md-dynamic-height="{{$ctrl.dynamicHeight}}" md-border-bottom="true"
+        md-swipe-content="false" md-selected="$ctrl.activeTab">
         <md-tab md-on-select="$ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="ui.app.dataSource"></span>
@@ -10,21 +12,27 @@
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>settings</md-icon>
                             <label ma-tr="dsEdit.dataSourceType"></label>
-                            <md-select name="modelType" ng-model="$ctrl.dataSource.modelType" ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()" required>
-                                <md-option ng-repeat="type in $ctrl.types | orderBy:'descriptionTranslated' track by type.type" ng-value="type.type">
+                            <md-select name="modelType" ng-model="$ctrl.dataSource.modelType"
+                                ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()" required>
+                                <md-option
+                                    ng-repeat="type in $ctrl.types | orderBy:'descriptionTranslated' track by type.type"
+                                    ng-value="type.type">
                                     <span ng-bind="type.descriptionTranslated"></span>
                                 </md-option>
                             </md-select>
                             <div ng-messages="$ctrl.form.modelType.$error">
                                 <div ng-message="required" ma-tr="validate.required"></div>
-                                <div ng-message="validationMessage" ng-bind="$ctrl.form.modelType.validationMessage"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.modelType.validationMessage">
+                                </div>
                             </div>
                         </md-input-container>
-                        
+
                         <div flex="100" flex-gt-md="50">
-                            <md-checkbox class="ma-input-container-height" name="enabled" ng-model="$ctrl.dataSource.enabled">
+                            <md-checkbox class="ma-input-container-height" name="enabled"
+                                ng-model="$ctrl.dataSource.enabled">
                                 <span ma-tr="common.enabled"></span>
-                                <em class="ma-small-text">(<span ma-tr="ui.app.doesNotTakeEffectUntilSaved"></span>)</em>
+                                <em class="ma-small-text">(<span
+                                        ma-tr="ui.app.doesNotTakeEffectUntilSaved"></span>)</em>
                             </md-checkbox>
                         </div>
 
@@ -37,7 +45,7 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
                             </div>
                         </md-input-container>
-                        
+
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>label</md-icon>
                             <label ma-tr="common.xid"></label>
@@ -51,20 +59,36 @@
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>lock</md-icon>
                             <label ma-tr="dsEdit.permission.edit"></label>
-                            <input name="editPermission" ng-model="$ctrl.dataSource.editPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
+                            <input name="editPermission" ng-model="$ctrl.dataSource.editPermission"
+                                pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
                             <div ng-messages="$ctrl.form.editPermission.$error">
                                 <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
-                                <div ng-message="validationMessage" ng-bind="$ctrl.form.editPermission.validationMessage"></div>
+                                <div ng-message="validationMessage"
+                                    ng-bind="$ctrl.form.editPermission.validationMessage"></div>
                             </div>
-                            <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission" ma-array-input></ma-permissions-menu>
+                            <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission" ma-array-input>
+                            </ma-permissions-menu>
+                        </md-input-container>
+
+                        <md-input-container flex="100" flex-gt-md="50">
+                            <md-icon>lock</md-icon>
+                            <label ma-tr="ui.permissions.readRoles"></label>
+                            <input name="readPermission" ng-model="$ctrl.dataSource.readPermission"
+                                pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
+                            <div ng-messages="$ctrl.form.readPermission.$error">
+                                <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
+                                <div ng-message="validationMessage"
+                                    ng-bind="$ctrl.form.readPermission.validationMessage"></div>
+                            </div>
+                            <ma-permissions-menu ng-model="$ctrl.dataSource.readPermission" ma-array-input>
+                            </ma-permissions-menu>
                         </md-input-container>
 
                         <div style="display: none" ng-if-start="$ctrl.showPollingControls()"></div>
-                        
-                        <ma-duration-editor
-                                ng-if="!$ctrl.dataSource.useCron"
-                                flex="100" flex-gt-md="50" name="pollPeriod" ng-model="$ctrl.dataSource.pollPeriod"
-                                allowed-types="::['MILLISECONDS', 'SECONDS', 'MINUTES', 'HOURS']" required>
+
+                        <ma-duration-editor ng-if="!$ctrl.dataSource.useCron" flex="100" flex-gt-md="50"
+                            name="pollPeriod" ng-model="$ctrl.dataSource.pollPeriod"
+                            allowed-types="::['MILLISECONDS', 'SECONDS', 'MINUTES', 'HOURS']" required>
                             <ma-periods-label ma-tr="dsEdit.updatePeriod"></ma-periods-label>
                             <ma-type-label ma-tr="dsEdit.updatePeriod"></ma-type-label>
                         </ma-duration-editor>
@@ -75,7 +99,8 @@
                             <input name="cronPattern" ng-model="$ctrl.dataSource.cronPattern" required>
                             <div ng-messages="$ctrl.form.cronPattern.$error">
                                 <div ng-message="required" ma-tr="validate.required"></div>
-                                <div ng-message="validationMessage" ng-bind="$ctrl.form.cronPattern.validationMessage"></div>
+                                <div ng-message="validationMessage" ng-bind="$ctrl.form.cronPattern.validationMessage">
+                                </div>
                             </div>
                             <md-button class="md-icon-button ma-input-button" ng-click="$ctrl.showCronDialog = {}">
                                 <md-icon>open_in_new</md-icon>
@@ -83,10 +108,12 @@
                         </md-input-container>
 
                         <div flex="100" flex-gt-md="50" ng-if-end>
-                            <md-checkbox class="ma-input-container-height" name="quantize" ng-model="$ctrl.dataSource.quantize">
+                            <md-checkbox class="ma-input-container-height" name="quantize"
+                                ng-model="$ctrl.dataSource.quantize">
                                 <span ma-tr="dsEdit.quantize"></span>
                             </md-checkbox>
-                            <md-checkbox class="ma-input-container-height" name="useCron" ng-model="$ctrl.dataSource.useCron">
+                            <md-checkbox class="ma-input-container-height" name="useCron"
+                                ng-model="$ctrl.dataSource.useCron">
                                 <span ma-tr="dsEdit.useCron"></span>
                             </md-checkbox>
                         </div>
@@ -112,10 +139,13 @@
                 </div>
                 <div class="md-padding ma-no-padding-bottom">
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
-                        <md-input-container flex="100" flex-gt-md="50" ng-repeat="entry in $ctrl.dataSource.eventAlarmLevels track by entry.eventType">
+                        <md-input-container flex="100" flex-gt-md="50"
+                            ng-repeat="entry in $ctrl.dataSource.eventAlarmLevels track by entry.eventType">
                             <label ma-tr="{{entry.descriptionKey}}"></label>
-                            <md-select name="alarmLevels[{{$index}}]" ng-model="entry.level" required ma-get-ctrl="modelCtrl = $ngModel">
-                                <md-option ng-repeat="level in $ctrl.eventLevels track by level.key" ng-value="level.key">
+                            <md-select name="alarmLevels[{{$index}}]" ng-model="entry.level" required
+                                ma-get-ctrl="modelCtrl = $ngModel">
+                                <md-option ng-repeat="level in $ctrl.eventLevels track by level.key"
+                                    ng-value="level.key">
                                     <md-icon class="fa fa-lg ma-alarm-flag" ng-class="level.classes"></md-icon>
                                     <span ma-tr="{{level.translation}}"></span>
                                 </md-option>
@@ -136,67 +166,81 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
-                        <h3>
-                                <span ma-tr="ui.dox.dsPurgeOverride"></span>
-                                <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.dsPurgeOverride">
-                                    <md-icon>help</md-icon>
-                                </md-button>
-                            </h3>
+                    <h3>
+                        <span ma-tr="ui.dox.dsPurgeOverride"></span>
+                        <md-button class="md-icon-button ma-small-button ma-no-margin"
+                            ui-sref="ui.help.dsPurgeOverride">
+                            <md-icon>help</md-icon>
+                        </md-button>
+                    </h3>
                     <div>
-                        <md-checkbox name="purgeSettings.override" ng-model="$ctrl.dataSource.purgeSettings.override"><span ma-tr="dsEdit.logging.purgeOverride"></span></md-checkbox>
+                        <md-checkbox name="purgeSettings.override" ng-model="$ctrl.dataSource.purgeSettings.override">
+                            <span ma-tr="dsEdit.logging.purgeOverride"></span></md-checkbox>
                     </div>
-                    
+
                     <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataSource.purgeSettings.override">
-                        <ma-duration-editor flex="100" flex-gt-md="50" name="purgeSettings.frequency" ng-model="$ctrl.dataSource.purgeSettings.frequency"
-	                        allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" required>
+                        <ma-duration-editor flex="100" flex-gt-md="50" name="purgeSettings.frequency"
+                            ng-model="$ctrl.dataSource.purgeSettings.frequency"
+                            allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" required>
                             <ma-periods-label ma-tr="pointEdit.logging.after"></ma-periods-label>
                             <ma-type-label ma-tr="pointEdit.logging.after"></ma-type-label>
-	                    </ma-duration-editor>
+                        </ma-duration-editor>
                     </div>
                 </div>
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="!$ctrl.dataSource.isNew() && $ctrl.dataSourceType && !$ctrl.dataSourceType.hidePointsTab" md-on-select="$ctrl.pointsTabActive = true; $ctrl.hideSaveButtons = true" md-on-deselect="$ctrl.pointsTabActive = false; $ctrl.hideSaveButtons = false">
+        <md-tab ng-if="!$ctrl.dataSource.isNew() && $ctrl.dataSourceType && !$ctrl.dataSourceType.hidePointsTab"
+            md-on-select="$ctrl.pointsTabActive = true; $ctrl.hideSaveButtons = true"
+            md-on-deselect="$ctrl.pointsTabActive = false; $ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="ui.app.dataPoints"></span>
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
                     <ma-bulk-data-point-editor data-source="$ctrl.dataSource" querying-disabled="!$ctrl.pointsTabActive"
-                        selected-points="$ctrl.selectedPoints = $selected" edit-data-points="$ctrl.editDataPointsArray"></ma-bulk-data-point-editor>
+                        selected-points="$ctrl.selectedPoints = $selected" edit-data-points="$ctrl.editDataPointsArray">
+                    </ma-bulk-data-point-editor>
                 </div>
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.hideSaveButtons = true" md-on-deselect="$ctrl.hideSaveButtons = false">
+        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.hideSaveButtons = true"
+            md-on-deselect="$ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="dsEdit.currentAlarms"></span>
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding ma-no-padding-bottom">
-                    <ma-events-table data-source-id="$ctrl.dataSource.id" limit="15" sort="'-activeTimestamp'" hide-link="DATA_SOURCE"></ma-events-table>
+                    <ma-events-table data-source-id="$ctrl.dataSource.id" limit="15" sort="'-activeTimestamp'"
+                        hide-link="DATA_SOURCE"></ma-events-table>
                 </div>
             </md-tab-body>
         </md-tab>
 
-        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.refreshStatus = {}; $ctrl.hideSaveButtons = true" md-on-deselect="$ctrl.hideSaveButtons = false">
+        <md-tab ng-if="!$ctrl.dataSource.isNew()" md-on-select="$ctrl.refreshStatus = {}; $ctrl.hideSaveButtons = true"
+            md-on-deselect="$ctrl.hideSaveButtons = false">
             <md-tab-label>
                 <span ma-tr="dsEdit.rtStatus"></span>
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding">
-                    <md-button ng-click="$ctrl.refreshStatus = {}"><md-icon>refresh</md-icon>&nbsp;<span ma-tr="common.refresh"></span></md-button>
-                    <ma-data-source-status ng-if="!!$ctrl.refreshStatus" data-source="$ctrl.dataSource" refresh="$ctrl.refreshStatus"></ma-data-source-status>
+                    <md-button ng-click="$ctrl.refreshStatus = {}">
+                        <md-icon>refresh</md-icon>&nbsp;<span ma-tr="common.refresh"></span>
+                    </md-button>
+                    <ma-data-source-status ng-if="!!$ctrl.refreshStatus" data-source="$ctrl.dataSource"
+                        refresh="$ctrl.refreshStatus"></ma-data-source-status>
                 </div>
             </md-tab-body>
         </md-tab>
     </md-tabs>
 
-    <div class="md-padding ma-error-text" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert"></div>
+    <div class="md-padding ma-error-text" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage"
+        role="alert"></div>
 
     <div class="md-padding ma-action-buttons" ng-if="!$ctrl.hideSaveButtons">
-        <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)" ng-disabled="!$ctrl.form || !$ctrl.dataSourceType">
+        <md-button class="md-raised md-primary" ng-click="$ctrl.saveItem($event)"
+            ng-disabled="!$ctrl.form || !$ctrl.dataSourceType">
             <md-icon>save</md-icon>
             <span ma-tr="common.save"></span>
         </md-button>
@@ -224,7 +268,7 @@
                     </md-button>
                 </div>
             </md-toolbar>
-    
+
             <md-dialog-content layout="column" flex>
                 <div class="md-padding">
                     <ma-cron-pattern ng-model="$ctrl.dataSource.cronPattern"></ma-cron-pattern>
