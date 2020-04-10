@@ -43,7 +43,7 @@
       "contrastDefaultColor": "light",
       "contrastDarkColors": "50 100 200 300 A100"
     },
-    "mango-2020-blue": {
+    "mango-blue-2020": {
 		"50": "E8F0F5",
 		"100": "A6C5D7",
 		"200": "7AA9C3",
@@ -61,7 +61,7 @@
 		"contrastDefaultColor": "light",
 		"contrastDarkColors": "50 100 200 A100 A200"
     },
-    "mango-2020-orange": {
+    "mango-orange-2020": {
 		"50": "FAF1EE",
 		"100": "F2D6CD",
 		"200": "E5AD9B",
@@ -79,7 +79,7 @@
 		"contrastDefaultColor": "light",
 		"contrastDarkColors": "50 100 200 A100 A200"
     },
-    "mango-2020-background": {
+    "mango-background-2020": {
 		"50": "FAFDFF",
 		"100": "E3EBF0",
 		"200": "DDE4E8",
@@ -140,21 +140,21 @@
 	    "dark": false
     },
     "mangoDark2020": {
-      "primaryPalette": "mango-2020-blue",
+      "primaryPalette": "mango-blue-2020",
       "primaryPaletteHues": {
         "default": "500",
         "hue-1": "300",
         "hue-2": "600",
         "hue-3": "A100"
       },
-      "accentPalette": "mango-2020-orange",
+      "accentPalette": "mango-orange-2020",
       "accentPaletteHues": {
         "default": "500",
         "hue-1": "300",
         "hue-2": "800",
         "hue-3": "A100"
       },
-      "backgroundPalette": "mango-2020-background",
+      "backgroundPalette": "mango-background-2020",
       "backgroundPaletteHues": {
         "default": "A400",
         "hue-1": "800",
@@ -164,21 +164,21 @@
       "dark": true
     },
     "mangoLight2020": {
-      "primaryPalette": "mango-2020-blue",
+      "primaryPalette": "mango-blue-2020",
       "primaryPaletteHues": {
         "default": "500",
         "hue-1": "300",
         "hue-2": "600",
         "hue-3": "A100"
       },
-      "accentPalette": "mango-2020-orange",
+      "accentPalette": "mango-orange-2020",
       "accentPaletteHues": {
         "default": "500",
         "hue-1": "300",
         "hue-2": "800",
         "hue-3": "A100"
       },
-      "backgroundPalette": "mango-2020-background",
+      "backgroundPalette": "mango-background-2020",
       "backgroundPaletteHues": {
         "default": "50",
         "hue-1": "A100",
