@@ -20,6 +20,9 @@ class EventHandlerScriptEditorController {
         
         this.maEventHandler.getScriptEngines().then(engines => {
             this.engines = engines;
+            if (!this.eventHandler.engineName && engines.length) {
+                this.eventHandler.engineName = engines[0].engineName;
+            }
             this.updateEditMode();
         });
     }
