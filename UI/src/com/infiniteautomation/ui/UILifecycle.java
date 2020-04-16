@@ -3,11 +3,10 @@
  */
 package com.infiniteautomation.ui;
 
-import java.util.Collections;
-
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.zafarkhaja.semver.Version;
+import com.infiniteautomation.mango.permission.MangoPermission;
 import com.serotonin.ShouldNeverHappenException;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.IMangoLifecycle;
@@ -61,8 +60,8 @@ public class UILifecycle extends ModuleElementDefinition {
             menu.setXid(MA_UI_MENU_XID);
             menu.setName("UI Menu");
             menu.setPublicData(false);
-            menu.setReadRoles(Collections.singleton(getDefaultReadRole()));
-            menu.setEditRoles(Collections.singleton(getEditMenuRole()));
+            menu.setReadPermission(MangoPermission.createOrSet(getDefaultReadRole()));
+            menu.setEditPermission(MangoPermission.createOrSet(getEditMenuRole()));
             isNew = true;
         }
 
@@ -87,8 +86,8 @@ public class UILifecycle extends ModuleElementDefinition {
             pages.setXid(MA_UI_PAGES_XID);
             pages.setName("UI Pages");
             pages.setPublicData(false);
-            pages.setReadRoles(Collections.singleton(getDefaultReadRole()));
-            pages.setEditRoles(Collections.singleton(getEditPagesRole()));
+            pages.setReadPermission(MangoPermission.createOrSet(getDefaultReadRole()));
+            pages.setEditPermission(MangoPermission.createOrSet(getEditPagesRole()));
             isNew = true;
         }
 
@@ -113,8 +112,8 @@ public class UILifecycle extends ModuleElementDefinition {
             settings.setXid(MA_UI_SETTINGS_XID);
             settings.setName("UI Settings");
             settings.setPublicData(true);
-            settings.setReadRoles(Collections.singleton(getDefaultReadRole()));
-            settings.setEditRoles(Collections.singleton(getEditSettingsRole()));
+            settings.setReadPermission(MangoPermission.createOrSet(getDefaultReadRole()));
+            settings.setEditPermission(MangoPermission.createOrSet(getEditSettingsRole()));
             isNew = true;
         }
 
