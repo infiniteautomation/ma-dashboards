@@ -14,9 +14,9 @@ import cpuloadSvg from './svgs/cpuload-icon.svg'
 
 class PageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$q','maSystemStatus', 'maUiDateBar', 'maUiPages', '$injector', 'maUiMenu', 'maUser', 'maEvents', 'maUiServerInfo']; }
+    static get $inject() { return ['$q','$mdMedia','maSystemStatus', 'maUiDateBar', 'maUiPages', '$injector', 'maUiMenu', 'maUser', 'maEvents', 'maUiServerInfo']; }
     
-    constructor($q, systemStatus, maUiDateBar,  maUiPages, $injector, maUiMenu, maUser, maEvents, maUiServerInfo) {
+    constructor($q, $mdMedia, systemStatus, maUiDateBar,  maUiPages, $injector, maUiMenu, maUser, maEvents, maUiServerInfo) {
         this.systemStatus = systemStatus
         this.maUiDateBar = maUiDateBar
         this.maUiPages = maUiPages;
@@ -25,7 +25,8 @@ class PageController {
         this.maUser = maUser;
         this.maEvents = maEvents
         this.maUiServerInfo = maUiServerInfo
-        this.$q = $q
+        this.$q = $q;
+        this.$mdMedia = $mdMedia;
         this.sqlSvg = sqlSvg
         this.noSqlSvg = noSqlSvg
         this.diskspaceSvg = diskspaceSvg
