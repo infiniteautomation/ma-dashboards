@@ -1,3 +1,6 @@
+*Version 3.7.4*
+* Fix redirect to user configured not found page
+
 *Version 3.7.3*
 * Redirect to configured login page when unauthenticated
 
