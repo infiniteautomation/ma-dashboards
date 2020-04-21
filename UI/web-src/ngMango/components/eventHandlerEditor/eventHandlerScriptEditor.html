@@ -1,10 +1,10 @@
 <h3 ma-tr="ui.eventHandlers.scriptSettings"></h3>
 <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
     <md-input-container flex="100" flex-gt-md="50">
-        <label ma-tr="script.engineName"></label>
+        <label ma-tr="script.scriptEngine"></label>
         <md-select name="engineName" ng-model="$ctrl.eventHandler.engineName" ng-change="$ctrl.updateEditMode()" required>
             <md-option ng-repeat="engine in $ctrl.engines track by engine.engineName" ng-value="engine.engineName">
-                <span ng-bind="engine.languageName"></span> &mdash; <span ng-bind="engine.languageVersion"></span> (<span ng-bind="engine.engineName"></span>)
+                <span ng-bind="engine.engineName"></span> (<span ng-bind="engine.languageName"></span> &mdash; <span ng-bind="engine.languageVersion"></span>)
             </md-option>
         </md-select>
         <div ng-messages="editor.form.engineName.$error">

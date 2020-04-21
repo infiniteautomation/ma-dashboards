@@ -35,7 +35,7 @@ class EventHandlerScriptEditorController {
     
     updateEditMode() {
         if (Array.isArray(this.engines) && this.eventHandler && this.eventHandler.engineName) {
-            const engine = this.engines.find(e => e.names.includes(this.eventHandler.engineName));
+            const engine = this.engines.find(e => e.engineName === this.eventHandler.engineName);
             if (engine) {
                 this.editMode = engine.extensions.map(ext => this.maFileStore.getEditMode('.' + ext)).find(m => !!m) ||
                     engine.mimeTypes.map(mime => this.maFileStore.getEditMode(null, mime)).find(m => !!m);
