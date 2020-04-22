@@ -9,7 +9,7 @@ function ScriptFactory($http, $q) {
     
     class Script {
         static scriptEngines() {
-            return http({
+            return $http({
                 url: `${scriptUrl}/engines`
             }).then(response => {
                 return response.data;
