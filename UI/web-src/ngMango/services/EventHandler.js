@@ -164,14 +164,6 @@ function eventHandlerProvider() {
             hasEventType(eventTypeId) {
                 return this.eventTypes.some(et => et.typeId === eventTypeId);
             }
-            
-            static getScriptEngines() {
-                return this.http({
-                    url: '/rest/v2/script/engines'
-                }).then(response => {
-                    return response.data;
-                });
-            }
         }
     
         return EventHandler;

@@ -7,18 +7,19 @@ import eventHandlerScriptEditorTemplate from './eventHandlerScriptEditor.html';
 
 class EventHandlerScriptEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', 'maFileStore', 'maEventHandler']; }
+    static get $inject() { return ['$scope', 'maFileStore', 'maEventHandler', 'maScript']; }
     
-    constructor($scope, maFileStore, maEventHandler) {
+    constructor($scope, maFileStore, maEventHandler, maScript) {
         this.$scope = $scope;
         this.maFileStore = maFileStore;
         this.maEventHandler = maEventHandler;
+        this.maScript = maScript;
     }
     
     $onInit() {
         this.$scope.editor = this.editor;
         
-        this.maEventHandler.getScriptEngines().then(engines => {
+        this.maScript.scriptEngines().then(engines => {
             this.engines = engines;
             if (!this.eventHandler.engineName && engines.length) {
                 this.eventHandler.engineName = engines[0].engineName;
