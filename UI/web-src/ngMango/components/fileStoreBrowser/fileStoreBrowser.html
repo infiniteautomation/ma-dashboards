@@ -78,6 +78,10 @@
 		        <td md-cell ng-bind="file.mimeType"></td>
 		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
 		        <td md-cell layout layout-align="end center">
+                    <md-button ng-if="$ctrl.canEvalScript(file)" class="md-icon-button" ng-click="$ctrl.evalScript($event, file)">
+                        <md-icon>play_arrow</md-icon>
+                        <md-tooltip md-autohide ma-tr="script.evaluateScript"></md-tooltip>
+                    </md-button>
 		        	<md-button ng-if="!$ctrl.disableEdit && file.editMode" class="md-icon-button" ng-click="$ctrl.doEditFile($event, file)">
 		        		<md-icon>edit</md-icon>
 		        		<md-tooltip md-autohide ma-tr="common.edit"></md-tooltip>

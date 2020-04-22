@@ -12,8 +12,8 @@ const localStorageKey = 'fileStoreBrowser';
 class FileStoreBrowserController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector', 'localStorageService', '$scope']; }
-    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService, $scope) {
+    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector', 'localStorageService', '$scope', 'maScript']; }
+    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService, $scope, maScript) {
         this.maFileStore = maFileStore;
         this.$element = $element;
         this.maDialogHelper = maDialogHelper;
@@ -33,6 +33,16 @@ class FileStoreBrowserController {
         };
         
         $element.on('keydown', event => this.keyDownHandler(event));
+
+        this.scriptExtensions = new Set();
+        this.scriptMimes = new Set();
+        maScript.scriptEngines().then(engines => {
+            this.scriptEngines = engines;
+            engines.forEach(e => {
+                e.mimeTypes.forEach(m => this.scriptMimes.add(m));
+                e.extensions.forEach(e => this.scriptExtensions.add(e));
+            });
+        });
     }
 
     $onInit() {
@@ -659,6 +669,20 @@ class FileStoreBrowserController {
                 this.saveEditFile(event);
             });
         }
+    }
+    
+    evalScript(event, file) {
+        event.stopPropagation();
+
+        file.evalScript().then(result => {
+            
+        }, error => {
+            this.maDialogHelper.toast(['ui.fileBrowser.errorEvaluatingScript', file.filename, error.mangoStatusText], 'md-warn');
+        });
+    }
+    
+    canEvalScript(file) {
+        return file.mimeType != null && this.scriptMimes.has(file.mimeType) || file.extension != null && this.scriptExtensions.has(file.extension);
     }
 }
 

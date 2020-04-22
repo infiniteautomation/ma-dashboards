@@ -295,14 +295,20 @@ function fileStore($http, maUtil, $q) {
         	angular.extend(this, file);
         	this.fileStore = fileStore;
         	
-        	const urlArray = [fileStoreUrl, fileStore];
+        	const urlArray = [fileStore];
         	if (this.folderPath) {
         		urlArray.push(this.folderPath);
         	}
         	urlArray.push(this.filename);
-        	this.url = urlArray.join('/');
+
+            this.filePath = urlArray.join('/');
+        	this.url = [fileStoreUrl, this.filePath].join('/');
+            this.evalUrl = [fileStoreUrl, 'eval-script', this.filePath].join('/');
     
         	this.editMode = this.getEditMode();
+        	
+        	const lastDot = this.filename.lastIndexOf('.');
+        	this.extension = lastDot >=0 ? this.filename.substring(lastDot + 1) : null;
         }
         
         getEditMode() {
@@ -314,6 +320,18 @@ function fileStore($http, maUtil, $q) {
         		type: this.mimeType,
         		lastModified: moment(this.lastModified).valueOf()
         	});
+        }
+
+        evalScript() {
+            return $http({
+                method: 'POST',
+                url: this.evalUrl,
+                responseType: 'blob',
+                transformResponse: angular.identity,
+                timeout: 0
+            }).then(function(response) {
+                return response.data;
+            });
         }
     }
 
