@@ -41,7 +41,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
     		if (isApiCall(config)) {
     			config.url = mangoBaseUrl + config.url;
     		}
-    		if (!config.timeout) {
+    		if (config.timeout == null) {
     			config.timeout = MA_TIMEOUTS.xhr;
     		}
     		return config;
