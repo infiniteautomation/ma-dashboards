@@ -6,7 +6,6 @@
 import angular from 'angular';import moment from 'moment-timezone';
 import JSZip from 'jszip';
 
-
 fileStore.$inject = ['$http', 'maUtil', '$q'];
 function fileStore($http, maUtil, $q) {
 	const fileStoreUrl = '/rest/v2/file-stores';
@@ -303,7 +302,7 @@ function fileStore($http, maUtil, $q) {
 
             this.filePath = urlArray.join('/');
         	this.url = [fileStoreUrl, this.filePath].join('/');
-            this.evalUrl = [fileStoreUrl, 'eval-script', this.filePath].join('/');
+            this.evalUrl = ['/rest/v2/script', 'eval-file-store', this.filePath].join('/');
     
         	this.editMode = this.getEditMode();
         	
@@ -322,14 +321,16 @@ function fileStore($http, maUtil, $q) {
         	});
         }
 
-        evalScript() {
-            return $http({
+        evalScript(data, params, httpOptions) {
+            return $http(Object.assign({
                 method: 'POST',
                 url: this.evalUrl,
+                data,
+                params,
                 responseType: 'blob',
                 transformResponse: angular.identity,
                 timeout: 0
-            }).then(function(response) {
+            }, httpOptions)).then(response => {
                 return response.data;
             });
         }
@@ -339,5 +340,3 @@ function fileStore($http, maUtil, $q) {
 }
 
 export default fileStore;
-
-
