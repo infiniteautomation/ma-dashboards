@@ -558,7 +558,7 @@ function dataPointProvider() {
                 return this.getTextRenderer().render(value).color;
             },
 
-            websocketHandler(payload) {
+            websocketHandler(payload, eventType) {
                 if (payload.xid !== this.xid) return;
         
                 // short circuit, reduce processing if we get the same payload multiple times as we do currently
