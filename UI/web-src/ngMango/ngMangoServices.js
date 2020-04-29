@@ -143,7 +143,6 @@ ngMangoServices.factory('maLogFileView', logFileViewFactory);
 ngMangoServices.factory('maScript', scriptFactory);
 
 ngMangoServices.constant('MA_BASE_URL', '');
-ngMangoServices.constant('MA_TIMEOUT', 30000); // TODO Mango 4.0 remove
 ngMangoServices.constant('MA_TIMEOUTS', {
     // NOTE: update uiSettings.json as well! These timeouts are overriden by the timeouts in the UI Settings
     xhr: 30000, // default XMLHttpRequest timeout

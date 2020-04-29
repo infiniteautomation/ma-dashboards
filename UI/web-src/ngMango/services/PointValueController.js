@@ -191,8 +191,6 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
 
             if (this.onValueUpdated) {
                 this.onValueUpdated({
-                    point: this.point, // TODO Mango 3.7 deprecate
-                    value: this.value, // TODO Mango 3.7 deprecate
                     $point: this.point,
                     $value: this.value,
                     $pointChanged: isPointChange,
