@@ -11,33 +11,44 @@
 		<span ng-bind="$ctrl.editFile.filename"></span>
 	</span>
 	<span flex></span>
-    <div ng-if="!$ctrl.editFile">
+    
+    <md-input-container class="ma-engine-selector" ng-if-start="$ctrl.editFile && $ctrl.canEvalScript($ctrl.editFile)">
+        <md-select name="scriptEngine" ng-model="$ctrl.selectedEngine" required>
+            <md-option ng-repeat="engine in $ctrl.supportedEngines" ng-value="engine" ng-bind="engine.engineName"></md-option>
+        </md-select>
+    </md-input-container>
+    <md-button ng-if-end class="md-icon-button md-raised" ng-click="$ctrl.evalScript($event, $ctrl.editFile)">
+        <md-icon>play_arrow</md-icon>
+        <md-tooltip md-autohide ma-tr="script.evaluateScript"></md-tooltip>
+    </md-button>
+	<md-button ng-if-start="$ctrl.editFile" class="md-icon-button md-warn md-raised" ng-click="$ctrl.cancelEditFile($event)">
+		<md-icon>cancel</md-icon>
+		<md-tooltip md-autohide ma-tr="common.cancel"></md-tooltip>
+	</md-button>
+	<md-button ng-if-end class="md-icon-button md-primary md-raised" ng-click="$ctrl.saveEditFile($event)">
+		<md-icon>save</md-icon>
+		<md-tooltip md-autohide ma-tr="common.save"></md-tooltip>
+	</md-button>
+    
+    <div ng-if-start="!$ctrl.editFile">
         <md-checkbox ng-model="$ctrl.overwrite" class="checkbox-top-label checkbox-centered">
             <span ma-tr="ui.fileBrowser.overwrite"></span>
         </md-checkbox>
         <md-tooltip ma-tr="ui.fileBrowser.overwriteWhenUploading"></md-tooltip>
     </div>
-	<md-button ng-if="$ctrl.editFile" class="md-icon-button md-warn md-raised" ng-click="$ctrl.cancelEditFile($event)">
-		<md-icon>cancel</md-icon>
-		<md-tooltip md-autohide ma-tr="common.cancel"></md-tooltip>
-	</md-button>
-	<md-button ng-if="$ctrl.editFile" class="md-icon-button md-primary md-raised" ng-click="$ctrl.saveEditFile($event)">
-		<md-icon>save</md-icon>
-		<md-tooltip md-autohide ma-tr="common.save"></md-tooltip>
-	</md-button>
-	<md-button ng-if="!$ctrl.editFile" class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFolder($event)" ng-disabled="!$ctrl.path.length">
+	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFolder($event)" ng-disabled="!$ctrl.path.length">
 		<md-icon>create_new_folder</md-icon>
 		<md-tooltip md-autohide ma-tr="ui.app.createNewFolder"></md-tooltip>
 	</md-button>
-	<md-button ng-if="!$ctrl.editFile" class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFile($event)" ng-disabled="!$ctrl.path.length">
+	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFile($event)" ng-disabled="!$ctrl.path.length">
 		<md-icon>add</md-icon>
 		<md-tooltip md-autohide ma-tr="ui.app.createNewFile"></md-tooltip>
 	</md-button>
-	<md-button ng-if="!$ctrl.editFile" class="md-icon-button md-primary md-raised" ng-click="$ctrl.uploadFilesButtonClicked($event)" ng-disabled="!$ctrl.path.length">
+	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.uploadFilesButtonClicked($event)" ng-disabled="!$ctrl.path.length">
 		<md-icon>file_upload</md-icon>
 		<md-tooltip md-autohide ma-tr="ui.app.uploadFiles"></md-tooltip>
 	</md-button>
-    <md-button ng-if="!$ctrl.editFile" class="md-icon-button md-primary md-raised" ng-click="$ctrl.downloadFiles($event)" ng-disabled="!$ctrl.path.length || !$ctrl.filteredFiles.length || $ctrl.downloadPromise">
+    <md-button ng-if-end class="md-icon-button md-primary md-raised" ng-click="$ctrl.downloadFiles($event)" ng-disabled="!$ctrl.path.length || !$ctrl.filteredFiles.length || $ctrl.downloadPromise">
         <md-icon ng-if="!$ctrl.downloadPromise">archive</md-icon>
         <md-progress-circular ng-if="$ctrl.downloadPromise" md-mode="indeterminate" md-diameter="24"></md-progress-circular>
         <md-tooltip md-autohide ma-tr="ui.app.downloadFiles"></md-tooltip>
@@ -78,10 +89,6 @@
 		        <td md-cell ng-bind="file.mimeType"></td>
 		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
 		        <td md-cell layout layout-align="end center">
-                    <md-button ng-if="$ctrl.canEvalScript(file)" class="md-icon-button" ng-click="$ctrl.evalScript($event, file)">
-                        <md-icon>play_arrow</md-icon>
-                        <md-tooltip md-autohide ma-tr="script.evaluateScript"></md-tooltip>
-                    </md-button>
 		        	<md-button ng-if="!$ctrl.disableEdit && file.editMode" class="md-icon-button" ng-click="$ctrl.doEditFile($event, file)">
 		        		<md-icon>edit</md-icon>
 		        		<md-tooltip md-autohide ma-tr="common.edit"></md-tooltip>

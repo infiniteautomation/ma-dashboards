@@ -26,7 +26,7 @@ function discardCheckFactory($rootScope, $window, maTranslate) {
         
         stateChangeStart(event) {
             if (event.defaultPrevented) return;
-            if (this.isDirty() && !this.confirmDiscard()) {
+            if (!this.canDiscard()) {
                 event.preventDefault();
             }
         }
@@ -37,6 +37,10 @@ function discardCheckFactory($rootScope, $window, maTranslate) {
                 event.returnValue = text;
                 return text;
             }
+        }
+        
+        canDiscard() {
+            return !this.isDirty() || this.confirmDiscard();
         }
         
         confirmDiscard() {

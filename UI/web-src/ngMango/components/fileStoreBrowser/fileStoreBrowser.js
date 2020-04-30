@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import fileStoreBrowserTemplate from './fileStoreBrowser.html';
+import './fileStoreBrowser.css';
 import sha512 from 'js-sha512';
 
 const localStorageKey = 'fileStoreBrowser';
@@ -12,8 +13,8 @@ const localStorageKey = 'fileStoreBrowser';
 class FileStoreBrowserController {
     static get $$ngIsClass() { return true; }
     
-    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector', 'localStorageService', '$scope', 'maScript']; }
-    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService, $scope, maScript) {
+    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector', 'localStorageService', '$scope', 'maScript', 'maDiscardCheck']; }
+    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService, $scope, maScript, maDiscardCheck) {
         this.maFileStore = maFileStore;
         this.$element = $element;
         this.maDialogHelper = maDialogHelper;
@@ -21,6 +22,8 @@ class FileStoreBrowserController {
         this.$filter = $filter;
         this.localStorageService = localStorageService;
         this.$scope = $scope;
+        this.maScript = maScript;
+        this.maDiscardCheck = maDiscardCheck;
         
         if ($injector.has('$state')) {
             this.$state = $injector.get('$state');
@@ -31,25 +34,30 @@ class FileStoreBrowserController {
         this.filterAndReorderFilesBound = (...args) => {
             return this.filterAndReorderFiles(...args);
         };
-        
-        $element.on('keydown', event => this.keyDownHandler(event));
+    }
+
+    $onInit() {
+        this.$element.on('keydown', event => this.keyDownHandler(event));
 
         this.scriptExtensions = new Set();
         this.scriptMimes = new Set();
-        maScript.scriptEngines().then(engines => {
+        this.scriptEnginesPromise = this.maScript.scriptEngines().then(engines => {
             this.scriptEngines = engines;
             engines.forEach(e => {
                 e.mimeTypes.forEach(m => this.scriptMimes.add(m));
                 e.extensions.forEach(e => this.scriptExtensions.add(e));
             });
-        });
-    }
-
-    $onInit() {
+        }, error => this.scriptEngines = []);
+        
     	this.path = [this.restrictToStore || this.defaultStore || 'default'];
         this.ngModelCtrl.$render = (...args) => {
             return this.render(...args);
         };
+        
+        this.discardCheck = new this.maDiscardCheck({
+            $scope: this.$scope,
+            isDirty: () => this.editFile && this.editFileModified()
+        });
     }
 
     $onChanges(changes) {
@@ -151,6 +159,14 @@ class FileStoreBrowserController {
     				return true;
     			}
     		});
+
+            if (this.$stateParams) {
+        		const editFile = this.$stateParams && this.$stateParams.editFile;
+        		const foundFile = editFile && files.find(f => f.filename === editFile);
+        		if (foundFile) {
+        		    this.doEditFile(null, foundFile);
+        		}
+            }
     	});
     }
     
@@ -205,7 +221,7 @@ class FileStoreBrowserController {
     	const folderPath = this.path.slice();
     	const fileStore = folderPath.shift() || null;
     	
-    	if (this.$state && this.$stateParams) {
+    	if (this.$state) {
     	    const params = {
 	            fileStore,
 	            folderPath: folderPath.join('/')
@@ -518,13 +534,26 @@ class FileStoreBrowserController {
     }
     
     doEditFile(event, file) {
-    	event.stopPropagation();
-    	
+        if (event) {
+            event.stopPropagation();
+        }
+
     	this.maFileStore.downloadFile(file).then(textContent => {
     		this.editFile = file;
     		this.editText = textContent;
     		this.editHash = sha512.sha512(textContent);
     		
+            if (this.$state) {
+                this.$state.go('.', {editFile: file.filename}, {location: 'replace', notify: false});
+            }
+    		
+    		this.scriptEnginesPromise.then(() => {
+    		    this.supportedEngines = this.scriptEngines.filter(e => {
+    		        return e.mimeTypes.includes(file.mimeType) || e.extensions.includes(file.extension);
+    		    });
+    		    this.selectedEngine = this.supportedEngines[0];
+    		});
+
     		if (this.editingFile) {
     			this.editingFile({
     			    $file: this.editFile,
@@ -540,8 +569,7 @@ class FileStoreBrowserController {
     }
     
     saveEditFile(event) {
-        const currentHash = sha512.sha512(this.editText);
-        if (this.editHash === currentHash) {
+        if (!this.editFileModified()) {
             this.maDialogHelper.toast(['ui.fileBrowser.fileNotChanged', this.editFile.filename]);
             return this.$q.resolve();
         }
@@ -564,9 +592,19 @@ class FileStoreBrowserController {
     }
     
     cancelEditFile(event) {
+        if (!this.discardCheck.canDiscard()) {
+            return;
+        }
+        
     	this.editFile = null;
     	this.editText = null;
         this.editHash = null;
+        this.supportedEngines = [];
+        delete this.selectedEngine;
+        
+        if (this.$state) {
+            this.$state.go('.', {editFile: null}, {location: 'replace', notify: false});
+        }
         
     	if (this.editingFile) {
     		this.editingFile({$file: null, $save: null});
@@ -660,29 +698,46 @@ class FileStoreBrowserController {
             this.setViewValueToSelection();
         }
     }
-    
+
     keyDownHandler(event) {
-        // ctrl-s
-        if (this.editFile && (event.ctrlKey || event.metaKey) && event.which === 83) {
+        const ctrlKeyActions = {
+            83: () => this.saveEditFile(event), // ctrl-s
+            69: () => this.evalScript(event), // ctrl-e
+            67: () => this.cancelEditFile(event) // ctrl-c
+        };
+
+        if (this.editFile && (event.ctrlKey || event.metaKey) && event.which in ctrlKeyActions) {
             event.preventDefault();
             this.$scope.$apply(() => {
-                this.saveEditFile(event);
+                ctrlKeyActions[event.which]();
             });
         }
     }
     
-    evalScript(event, file) {
+    evalScript(event) {
         event.stopPropagation();
+        
+        if (this.editFileModified()) {
+            this.maDialogHelper.errorToast(['ui.fileBrowser.saveScriptBeforeEval']);
+            return;
+        }
 
-        file.evalScript().then(result => {
-            
+        this.evalPromise = this.editFile.evalScript(undefined, {
+            engineName: this.selectedEngine.engineName
+        }).then(result => {
+            console.log(result);
         }, error => {
-            this.maDialogHelper.toast(['ui.fileBrowser.errorEvaluatingScript', file.filename, error.mangoStatusText], 'md-warn');
-        });
+            this.maDialogHelper.toast(['ui.fileBrowser.errorEvaluatingScript', this.editFile.filename, error.mangoStatusText], 'md-warn');
+        }).finally(() => delete this.evalPromise);
     }
     
     canEvalScript(file) {
         return file.mimeType != null && this.scriptMimes.has(file.mimeType) || file.extension != null && this.scriptExtensions.has(file.extension);
+    }
+    
+    editFileModified() {
+        const currentHash = sha512.sha512(this.editText);
+        return this.editHash !== currentHash;
     }
 }
 

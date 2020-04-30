@@ -1119,7 +1119,7 @@ export default [
     },
     {
         name: 'ui.settings.fileStores',
-        url: '/file-stores?fileStore&folderPath',
+        url: '/file-stores?fileStore&folderPath&editFile',
         template: '<ma-file-store-browser flex preview="true" ng-model="tmp"><ma-file-store-browser>',
         menuTr: 'ui.app.fileStores',
         menuIcon: 'file_upload',
