@@ -731,13 +731,7 @@ class FileStoreBrowserController {
             engineName: this.selectedEngine.engineName
         }).then(result => {
             this.scriptResult.success = true;
-            this.scriptResult.outputBlob = result;
-            
-            if (result.type.indexOf('text/') === 0 || result.type === 'application/json') {
-                result.text().then(text => {
-                    this.scriptResult.outputText = text;
-                });
-            }
+            this.scriptResult.output = result;
         }, error => {
             this.scriptResult.error = error;
         }).finally(() => delete this.scriptResult.evalPromise);

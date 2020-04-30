@@ -128,8 +128,7 @@
 <ma-dialog show-dialog="$ctrl.scriptResult">
     <span class="ma-dialog-title">
         <span ng-if="$ctrl.scriptResult.evalPromise" ma-tr="ui.fileBrowser.scriptEvaluating" ma-tr-args="[$ctrl.scriptResult.file.filename]"></span>
-        <span ng-if="$ctrl.scriptResult.success" ma-tr="ui.fileBrowser.scriptSuccess"
-            ma-tr-args="[($ctrl.scriptResult.outputBlob.size | maBytes), $ctrl.scriptResult.outputBlob.type]"></span>
+        <span ng-if="$ctrl.scriptResult.success" ma-tr="ui.fileBrowser.scriptSuccess" ma-tr-args="[$ctrl.scriptResult.file.filename]"></span>
         <span ng-if="$ctrl.scriptResult.error" ma-tr="ui.fileBrowser.errorEvaluatingScript" ma-tr-args="[$ctrl.scriptResult.file.filename]"></span>
     </span>
     
@@ -138,7 +137,7 @@
     </div>
     
     <div ng-if="$ctrl.scriptResult.success">
-        <pre ng-bind="$ctrl.scriptResult.outputText"></pre>
+        <pre ng-bind="$ctrl.scriptResult.output"></pre>
     </div>
     
     <div ng-if="$ctrl.scriptResult.error">

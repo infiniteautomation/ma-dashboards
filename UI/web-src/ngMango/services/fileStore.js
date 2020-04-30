@@ -328,8 +328,6 @@ function fileStore($http, maUtil, $q) {
                 url: this.evalUrl,
                 data,
                 params,
-                responseType: 'blob',
-                transformResponse: angular.identity,
                 timeout: 0
             }, httpOptions)).then(response => {
                 return response.data;
