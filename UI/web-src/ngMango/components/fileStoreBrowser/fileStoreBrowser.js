@@ -569,7 +569,8 @@ class FileStoreBrowserController {
     }
     
     saveEditFile(event) {
-        if (!this.editFileModified()) {
+        const currentHash = sha512.sha512(this.editText);
+        if (this.editHash === currentHash) {
             this.maDialogHelper.toast(['ui.fileBrowser.fileNotChanged', this.editFile.filename]);
             return this.$q.resolve();
         }
@@ -721,14 +722,25 @@ class FileStoreBrowserController {
             this.maDialogHelper.errorToast(['ui.fileBrowser.saveScriptBeforeEval']);
             return;
         }
+        
+        this.scriptResult = {
+            file: this.editFile
+        };
 
-        this.evalPromise = this.editFile.evalScript(undefined, {
+        this.scriptResult.evalPromise = this.editFile.evalScript(undefined, {
             engineName: this.selectedEngine.engineName
         }).then(result => {
-            console.log(result);
+            this.scriptResult.success = true;
+            this.scriptResult.outputBlob = result;
+            
+            if (result.type.indexOf('text/') === 0 || result.type === 'application/json') {
+                result.text().then(text => {
+                    this.scriptResult.outputText = text;
+                });
+            }
         }, error => {
-            this.maDialogHelper.toast(['ui.fileBrowser.errorEvaluatingScript', this.editFile.filename, error.mangoStatusText], 'md-warn');
-        }).finally(() => delete this.evalPromise);
+            this.scriptResult.error = error;
+        }).finally(() => delete this.scriptResult.evalPromise);
     }
     
     canEvalScript(file) {
