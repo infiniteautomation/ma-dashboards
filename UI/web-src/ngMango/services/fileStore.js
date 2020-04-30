@@ -29,7 +29,8 @@ function fileStore($http, maUtil, $q) {
         'py': 'python',
         'r': 'r',
         'kts': 'kotlin',
-        'js': 'javascript'
+        'js': 'javascript',
+        'mjs': 'javascript'
     };
 
     class FileStore {
