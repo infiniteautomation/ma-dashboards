@@ -122,7 +122,7 @@
 </div>
 
 <div flex layout="column" ng-if="$ctrl.editFile">
-	<ma-ace-editor flex ng-model="$ctrl.editText" mode="{{$ctrl.editFile.editMode}}" show-gutter="true"></ma-ace-editor>
+	<ma-ace-editor flex ng-model="$ctrl.editText" mode="{{$ctrl.editFile.editMode}}" show-gutter="true" editor-loaded="$ctrl.aceEditor = $editor"></ma-ace-editor>
 </div>
 
 <ma-dialog show-dialog="$ctrl.scriptResult">

@@ -602,6 +602,7 @@ class FileStoreBrowserController {
         this.editHash = null;
         this.supportedEngines = [];
         delete this.selectedEngine;
+        delete this.aceEditor;
         
         if (this.$state) {
             this.$state.go('.', {editFile: null}, {location: 'replace', notify: false});
@@ -726,7 +727,11 @@ class FileStoreBrowserController {
         this.scriptResult = {
             file: this.editFile
         };
-
+        
+        if (this.aceEditor) {
+            this.aceEditor.session.clearAnnotations();
+        }
+        
         this.scriptResult.evalPromise = this.editFile.evalScript(undefined, {
             engineName: this.selectedEngine.engineName
         }).then(result => {
@@ -734,6 +739,15 @@ class FileStoreBrowserController {
             this.scriptResult.output = result;
         }, error => {
             this.scriptResult.error = error;
+            
+            if (this.aceEditor && error.data && error.data.lineNumber) {
+                this.aceEditor.session.setAnnotations([{
+                    row: error.data.lineNumber - 1,
+                    column: error.data.columnNumber,
+                    text: error.mangoStatusText,
+                    type: 'error'
+                }]);
+            }
         }).finally(() => delete this.scriptResult.evalPromise);
     }
     
