@@ -750,7 +750,11 @@ class FileStoreBrowserController {
             let filesMatch = false;
             if (error.data.fileName) {
                 const normalized = error.data.fileName.replace(/\\/g, '/');
-                filesMatch = normalized.endsWith(this.editFile.filePath)
+                if (normalized.indexOf('/') >= 0) {
+                    filesMatch = normalized.endsWith(this.editFile.filePath)
+                } else {
+                    filesMatch = error.data.fileName === this.editFile.filename;
+                }
             }
             
             if (this.aceEditor && error.data && error.data.lineNumber != null && filesMatch) {

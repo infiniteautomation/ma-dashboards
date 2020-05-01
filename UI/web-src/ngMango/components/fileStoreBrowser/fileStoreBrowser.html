@@ -140,7 +140,8 @@
         <pre ng-bind="$ctrl.scriptResult.output"></pre>
     </div>
     
-    <div ng-if="$ctrl.scriptResult.error">
-        <pre class="ma-color-warn" ng-bind="$ctrl.scriptResult.error.mangoStatusText"></pre>
+    <div ng-if="$ctrl.scriptResult.error" class="ma-color-warn">
+        <pre ng-bind="$ctrl.scriptResult.error.mangoStatusText"></pre>
+        <pre ng-bind="$ctrl.scriptResult.error.data.scriptStackTrace"></pre>
     </div>
 </ma-dialog>
