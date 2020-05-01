@@ -702,17 +702,24 @@ class FileStoreBrowserController {
     }
 
     keyDownHandler(event) {
-        const ctrlKeyActions = {
-            83: () => this.saveEditFile(event), // ctrl-s
-            69: () => this.evalScript(event), // ctrl-e
-            67: () => this.cancelEditFile(event) // ctrl-c
+        const keyActions = {
+            // Ctrl-s
+            83: {ctrl: true, action: () => this.saveEditFile(event)},
+            // Ctrl-e
+            69: {ctrl: true, action: () => this.evalScript(event)},
+            // ESC
+            27: {action: () => this.cancelEditFile(event)}
         };
 
-        if (this.editFile && (event.ctrlKey || event.metaKey) && event.which in ctrlKeyActions) {
-            event.preventDefault();
-            this.$scope.$apply(() => {
-                ctrlKeyActions[event.which]();
-            });
+        if (this.editFile && event.which in keyActions) {
+            const action = keyActions[event.which];
+            if (!action.ctrl || event.ctrlKey || event.metaKey) {
+                event.stopPropagation();
+                event.preventDefault();
+                this.$scope.$apply(() => {
+                    action.action();
+                })
+            };
         }
     }
     
