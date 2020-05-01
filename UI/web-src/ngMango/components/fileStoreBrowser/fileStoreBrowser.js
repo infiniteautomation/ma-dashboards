@@ -747,11 +747,17 @@ class FileStoreBrowserController {
         }, error => {
             this.scriptResult.error = error;
             
-            if (this.aceEditor && error.data && error.data.lineNumber) {
+            let filesMatch = false;
+            if (error.data.fileName) {
+                const normalized = error.data.fileName.replace(/\\/g, '/');
+                filesMatch = normalized.endsWith(this.editFile.filePath)
+            }
+            
+            if (this.aceEditor && error.data && error.data.lineNumber != null && filesMatch) {
                 this.aceEditor.session.setAnnotations([{
                     row: error.data.lineNumber - 1,
                     column: error.data.columnNumber,
-                    text: error.mangoStatusText,
+                    text: error.data.shortMessage || error.mangoStatusText,
                     type: 'error'
                 }]);
             }
