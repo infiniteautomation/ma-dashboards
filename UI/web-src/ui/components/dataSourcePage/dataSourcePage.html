@@ -56,7 +56,7 @@
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button class="ma-no-padding-right" ng-href="/rest/v2/data-sources/export/{{$ctrl.dataSource.originalId}}?includePoints=true" ng-attr-download="{{$ctrl.dataSource.name}}.json">
+                                <md-button class="ma-no-padding-right" ng-href="/rest/v2/data-sources/export-with-points?xid={{$ctrl.dataSource.originalId}}" ng-attr-download="{{$ctrl.dataSource.name}}.json">
                                     <div layout="row" flex>
                                         <div flex ma-tr="ui.app.exportWithPoints"></div>
                                         <md-icon md-menu-align-target>save_alt</md-icon>
