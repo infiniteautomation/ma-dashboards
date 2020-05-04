@@ -33,10 +33,17 @@ class MailingLists {
         });
     }
     
-    $onInit() {}
+    $onInit() {
+        this.getMailingList();
+    }
 
     newList() {
         this.selectedList = new this.maMailingList();
+        this.getMailingList();
+    }
+
+    getMailingList() {
+        this.maMailingList.list().then((list) => (this.mailingList = list));
     }
 }
 
