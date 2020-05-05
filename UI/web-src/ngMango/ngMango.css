@@ -1184,6 +1184,11 @@ md-list-item.md-2-line md-icon.md-avatar-icon {
 	margin-bottom: 16px;
 }
 
+.md-toolbar-tools .md-button md-icon,
+.md-toolbar-tools .md-button.md-icon-button md-icon {
+    color: inherit;
+}
+
 .ma-scroll-parent {
 	position: relative;
 }
