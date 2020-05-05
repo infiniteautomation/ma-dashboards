@@ -245,6 +245,34 @@
                         <span ma-tr="ui.eventDetectors.for" ma-tr-args="[$ctrl.eventDetectorPoint.formatLabel()]"></span>
                     </h2>
                     <span flex></span>
+                    <md-menu md-position-mode="target-right bottom" md-offset="0 9">
+                        <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                            <md-icon md-menu-origin>more_vert</md-icon>
+                            <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
+                        </md-button>
+                        <md-menu-content width="3" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
+                            <md-menu-item>
+                                <md-button class="ma-no-padding-right"
+                                    ng-href="/rest/v2/full-event-detectors/export"
+                                    ng-attr-download="event-detectors.json">
+                                    <div layout="row" flex>
+                                        <div flex ma-tr="ui.app.exportAll"></div>
+                                        <md-icon md-menu-align-target>save_alt</md-icon>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button class="ma-no-padding-right"
+                                    ng-href="/rest/v2/full-event-detectors/export?xid={{$ctrl.eventDetector.xid}}"
+                                    ng-attr-download="{{$ctrl.eventDetector.name}}.json">
+                                    <div layout="row" flex>
+                                        <div flex ma-tr="ui.app.exportSelected"></div>
+                                        <md-icon md-menu-align-target>save_alt</md-icon>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
                     <md-button class="md-icon-button" ui-sref="ui.help.eventDetectors">
                         <md-icon>help</md-icon>
                     </md-button>
@@ -253,7 +281,6 @@
                     </md-button>
                 </div>
             </md-toolbar>
-    
             <md-dialog-content class="ma-bulk-data-point-editor-event-detectors" flex layout="column">
                 <ma-event-detector-layout data-point="$ctrl.eventDetectorPoint" ng-model="$ctrl.eventDetector" on-query="$ctrl.gotDetectors($items)">
                 </ma-event-detector-layout>
