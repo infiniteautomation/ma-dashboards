@@ -73,11 +73,11 @@
 		"800": "5F3122",
 		"900": "391D14",
 		"A100": "F6E3DD",
-		"A200": "EDC8BC",
+		"A200": "D06A49",
 		"A400": "AB573C",
 		"A700": "723A28",
 		"contrastDefaultColor": "light",
-		"contrastDarkColors": "50 100 200 A100 A200"
+		"contrastDarkColors": "50 100 200 A100"
     },
     "mango-background-2020": {
 		"50": "FAFDFF",
@@ -85,7 +85,7 @@
 		"200": "DDE4E8",
 		"300": "CFDDE6",
 		"400": "C3D0D9",
-		"500": "13405E",
+		"500": "B8C4CC",
 		"600": "123D59",
 		"700": "113954",
 		"800": "1F4259",
@@ -95,7 +95,7 @@
 		"A400": "222C33",
 		"A700": "181F24",
 		"contrastDefaultColor": "light",
-		"contrastDarkColors": "50 100 200 300 400 A100"
+		"contrastDarkColors": "50 100 200 300 400 500 A100"
     }
   },
   "themes": {
