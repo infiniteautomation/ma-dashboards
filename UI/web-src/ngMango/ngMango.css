@@ -880,7 +880,7 @@ ma-file-store-browser .ma-file-selected {
 	font-size: 2.0rem;
 }
 
-.ma-file-store-browser-crumbs md-checkbox.checkbox-top-label {
+.ma-file-store-browser-crumbs md-checkbox.ma-checkbox-top-label {
 	margin: 16px 0 0 0;
 }
 

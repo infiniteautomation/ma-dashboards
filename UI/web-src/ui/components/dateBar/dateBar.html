@@ -5,7 +5,7 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
       <div layout="column" flex class="update-and-rollup">
         <div layout layout-align="start center" ng-if="$ctrl.params.preset">
             <div flex="70" layout layout-align="start center">
-                <md-checkbox name="autoUpdate" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.autoUpdate">
+                <md-checkbox name="autoUpdate" class="ma-checkbox-top-label ma-checkbox-centered" ng-model="$ctrl.params.autoUpdate">
                     <span ma-tr="ui.app.autoUpdate"></span>
                 </md-checkbox>
                 <md-input-container flex>
@@ -26,7 +26,7 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
         
         <div layout layout-align="start center" ng-if="$ctrl.stateParams.dateBar.rollupControls">
             <div ng-if="$ctrl.params.rollupType !== 'SIMPLIFY'" flex="70" layout layout-align="start center">
-                <md-checkbox name="autoRollup" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.autoRollup"
+                <md-checkbox name="autoRollup" class="ma-checkbox-top-label ma-checkbox-centered" ng-model="$ctrl.params.autoRollup"
                   ng-disabled="$ctrl.params.rollupType === 'NONE'">
                     <span ma-tr="ui.app.autoRollup"></span>
                 </md-checkbox>
@@ -46,7 +46,7 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
                 </md-input-container>
             </div>
             <div ng-if="$ctrl.params.rollupType === 'SIMPLIFY'" flex="70" layout layout-align="start center">
-                <md-checkbox name="autoTolerance" class="checkbox-top-label checkbox-centered"
+                <md-checkbox name="autoTolerance" class="ma-checkbox-top-label ma-checkbox-centered"
                         ng-model="$ctrl.autoSimplifyTolerance" ng-change="$ctrl.params.simplifyTolerance = $ctrl.autoSimplifyTolerance ? -1 : 0">
                     <span ma-tr="ui.app.autoSimplifyTolerance"></span>
                 </md-checkbox>

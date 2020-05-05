@@ -743,26 +743,26 @@ li.md-nav-item:first-of-type {
 
 /* checkbox with label at top */
 
-md-checkbox.checkbox-top-label {
+md-checkbox.ma-checkbox-top-label {
   margin-top: 16px;
   width: 60px;
   margin-right: 8px;
 }
 
-md-checkbox.checkbox-bottom-label {
+md-checkbox.ma-checkbox-bottom-label {
   margin-bottom: 16px;
   width: 60px;
   margin-right: 8px;
 }
 
-md-checkbox.checkbox-top-label.checkbox-centered .md-container,
-md-checkbox.checkbox-bottom-label.checkbox-centered .md-container {
+md-checkbox.ma-checkbox-top-label.ma-checkbox-centered .md-container,
+md-checkbox.ma-checkbox-bottom-label.ma-checkbox-centered .md-container {
   left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
 }
 
-md-checkbox.checkbox-top-label .md-label {
+md-checkbox.ma-checkbox-top-label .md-label {
     position: absolute;
     -webkit-transform: scale(.75);
     transform: scale(.75);
@@ -775,7 +775,7 @@ md-checkbox.checkbox-top-label .md-label {
     white-space: inherit;
 }
 
-md-checkbox.checkbox-bottom-label .md-label {
+md-checkbox.ma-checkbox-bottom-label .md-label {
     position: absolute;
     -webkit-transform: scale(.75);
     transform: scale(.75);
@@ -788,8 +788,8 @@ md-checkbox.checkbox-bottom-label .md-label {
     white-space: inherit;
 }
 
-md-checkbox.checkbox-top-label.checkbox-centered .md-label,
-md-checkbox.checkbox-bottom-label.checkbox-centered .md-label {
+md-checkbox.ma-checkbox-top-label.ma-checkbox-centered .md-label,
+md-checkbox.ma-checkbox-bottom-label.ma-checkbox-centered .md-label {
     -webkit-transform: scale(.75) translateX(-50%);
     transform: scale(.75) translateX(-50%);
     left: 50%;
