@@ -9,10 +9,27 @@ import pointBrowserTemplate from './pointBrowser.html';
 const types = ['watchList', 'deviceName', 'dataSource', 'tags'];
 
 class PointBrowserController {
-    static get $$ngIsClass() { return true; }
-    
-    static get $inject() { return ['maTranslate', 'maRqlBuilder', 'maWatchList', 'maDataSource', '$timeout']; }
-    constructor(maTranslate, maRqlBuilder, maWatchList, maDataSource, $timeout) {
+    static get $$ngIsClass() {
+        return true;
+    }
+
+    static get $inject() {
+        return [
+            'maTranslate',
+            'maRqlBuilder',
+            'maWatchList',
+            'maDataSource',
+            '$timeout',
+        ];
+    }
+
+    constructor(
+        maTranslate,
+        maRqlBuilder,
+        maWatchList,
+        maDataSource,
+        $timeout
+    ) {
         this.maTranslate = maTranslate;
         this.maRqlBuilder = maRqlBuilder;
         this.maWatchList = maWatchList;
@@ -26,78 +43,104 @@ class PointBrowserController {
         this.ngModelCtrl.$render = () => {
             if (this.ngModelCtrl.$viewValue !== undefined) {
                 this.selected = this.ngModelCtrl.$viewValue;
-                
-                types.forEach(name => {
+
+                types.forEach((name) => {
                     delete this[name];
                 });
 
                 if (!this.selected) return;
-                
+
                 if (!this.selected.isNew()) {
                     this.listType = 'watchList';
                     this.watchList = this.selected;
-                } else if (this.selected.type === 'tags' && this.selected.tags) {
+                } else if (
+                    this.selected.type === 'tags' &&
+                    this.selected.tags
+                ) {
                     this.listType = 'tags';
                     this.tags = this.selected.tags;
-                } else if (this.selected.type === 'query' && this.selected.deviceName) {
+                } else if (
+                    this.selected.type === 'query' &&
+                    this.selected.deviceName
+                ) {
                     this.listType = 'deviceName';
                     this.deviceName = this.selected.deviceName;
-                } else if (this.selected.type === 'query' && this.selected.dataSource) {
+                } else if (
+                    this.selected.type === 'query' &&
+                    this.selected.dataSource
+                ) {
                     this.listType = 'dataSource';
                     this.dataSource = this.selected.dataSource;
                 }
             }
         };
-        
+
         if (this.loadItem) {
             // setting the view value from $onInit doesn't seem to work, only affects the device name
             // watch list type as its the only type that doesn't do http request before setting view value
-            this.$timeout(() => {
-                this.createWatchListFromItem(this.loadItem);
-            }, 0, false);
+            this.$timeout(
+                () => {
+                    this.createWatchListFromItem(this.loadItem);
+                },
+                0,
+                false
+            );
         } else {
             this.listType = 'watchList';
         }
     }
-    
+
     $onChanges(changes) {
-        if (changes.loadItem && !changes.loadItem.isFirstChange() && this.loadItem) {
+        if (
+            changes.loadItem &&
+            !changes.loadItem.isFirstChange() &&
+            this.loadItem
+        ) {
             this.createWatchListFromItem(this.loadItem);
         }
     }
 
     filterChanged() {
-        this.nameQuery = this.filter ? {name: this.filter} : null;
+        this.nameQuery = this.filter ? { name: this.filter } : null;
+        this.filter
+            ? (this.downloadQuery = `match(name,*${this.filter}*)&sort(name)`)
+            : (this.downloadQuery = '');
     }
-    
+
     setViewValue() {
         this.ngModelCtrl.$setViewValue(this.selected);
     }
-    
+
     createWatchListFromItem(item) {
         if (item.firstWatchList) {
             this.listType = 'watchList';
-            this.maWatchList.objQuery({
-                limit: 1,
-                sort: 'name'
-            }).$promise.then(lists => {
-                if (lists.length) {
-                    this.watchList = lists[0];
-                    this.itemSelected('watchList');
-                }
-            });
+            this.maWatchList
+                .objQuery({
+                    limit: 1,
+                    sort: 'name',
+                })
+                .$promise.then((lists) => {
+                    if (lists.length) {
+                        this.watchList = lists[0];
+                        this.itemSelected('watchList');
+                    }
+                });
         } else if (item.watchListXid) {
             this.listType = 'watchList';
-            this.maWatchList.get({xid: item.watchListXid}).$promise.then(wl => {
-                this.watchList = wl;
-                this.itemSelected('watchList');
-            }, angular.noop);
+            this.maWatchList
+                .get({ xid: item.watchListXid })
+                .$promise.then((wl) => {
+                    this.watchList = wl;
+                    this.itemSelected('watchList');
+                }, angular.noop);
         } else if (item.dataSourceXid) {
             this.listType = 'dataSource';
-            this.maDataSource.get({xid: item.dataSourceXid}).$promise.then(ds => {
-                this.dataSource = ds;
-                this.itemSelected('dataSource');
-            }, angular.noop);
+            this.maDataSource
+                .get({ xid: item.dataSourceXid })
+                .$promise.then((ds) => {
+                    this.dataSource = ds;
+                    this.itemSelected('dataSource');
+                }, angular.noop);
         } else if (item.deviceName) {
             this.deviceName = item.deviceName;
             this.listType = 'deviceName';
@@ -110,28 +153,32 @@ class PointBrowserController {
             this.listType = 'watchList';
         }
     }
-    
+
     itemSelected(type) {
         // de-select other types
-        types.filter(prop => prop !== type).forEach(name => {
-            delete this[name];
-        });
-        
-        switch(type) {
-        case 'watchList':
-            this.selected = this.watchList;
-            break;
-        case 'deviceName':
-            this.createDeviceNameWatchList();
-            break;
-        case 'dataSource':
-            this.createDataSourceWatchList();
-            break;
-        case 'tags':
-            this.createTagsWatchList();
-            break;
+        types
+            .filter((prop) => prop !== type)
+            .forEach((name) => {
+                delete this[name];
+            });
+
+        switch (type) {
+            case 'watchList':
+                this.selected = this.watchList;
+                break;
+            case 'deviceName':
+                this.createDeviceNameWatchList();
+                break;
+            case 'dataSource':
+                this.createDataSourceWatchList();
+                break;
+            case 'tags':
+                this.createTagsWatchList();
+                break;
+            default:
+                break;
         }
-        
+
         this.setViewValue();
     }
 
@@ -144,12 +191,14 @@ class PointBrowserController {
 
         this.selected = new this.maWatchList({
             type: 'query',
-            name: this.maTranslate.trSync('ui.app.deviceNameX', [this.deviceName]),
+            name: this.maTranslate.trSync('ui.app.deviceNameX', [
+                this.deviceName,
+            ]),
             query,
-            deviceName: this.deviceName
+            deviceName: this.deviceName,
         });
     }
-    
+
     createDataSourceWatchList() {
         const query = new this.maRqlBuilder()
             .eq('dataSourceXid', this.dataSource.xid)
@@ -159,34 +208,38 @@ class PointBrowserController {
 
         this.selected = new this.maWatchList({
             type: 'query',
-            name: this.maTranslate.trSync('ui.app.dataSourceX', [this.dataSource.name]),
+            name: this.maTranslate.trSync('ui.app.dataSourceX', [
+                this.dataSource.name,
+            ]),
             query,
-            dataSource: this.dataSource
+            dataSource: this.dataSource,
         });
     }
-    
+
     createTagsWatchList() {
-        const params = Object.keys(this.tags).map(tagKey => {
-            const tagValues = this.tags[tagKey];
-            if (Array.isArray(tagValues) && tagValues.length) {
-                return {
-                    name: tagKey,
-                    type: 'tagValue',
-                    options: {
-                        multiple: true,
-                        fixedValue: tagValues,
-                        restrictions: {},
-                        tagKey
-                    }
-                };
-            }
-        }).filter(p => p != null);
-        
+        const params = Object.keys(this.tags)
+            .map((tagKey) => {
+                const tagValues = this.tags[tagKey];
+                if (Array.isArray(tagValues) && tagValues.length) {
+                    return {
+                        name: tagKey,
+                        type: 'tagValue',
+                        options: {
+                            multiple: true,
+                            fixedValue: tagValues,
+                            restrictions: {},
+                            tagKey,
+                        },
+                    };
+                }
+            })
+            .filter((p) => p != null);
+
         this.selected = new this.maWatchList({
             type: 'tags',
             name: this.maTranslate.trSync('ui.app.newTagWatchList'),
             params,
-            tags: this.tags
+            tags: this.tags,
         });
     }
 
@@ -201,11 +254,9 @@ export default {
     controller: PointBrowserController,
     bindings: {
         listType: '@?',
-        loadItem: '<?'
+        loadItem: '<?',
     },
     require: {
-        ngModelCtrl: 'ngModel'
-    }
+        ngModelCtrl: 'ngModel',
+    },
 };
-
-

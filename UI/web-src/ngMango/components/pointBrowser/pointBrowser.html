@@ -1,5 +1,5 @@
 <md-card layout="column" flex="100">
-    <md-toolbar class="md-hue-3 ma-point-browser-type-select">
+    <md-toolbar class="md-hue-3 ma-point-browser-type-select" layout layout-align="start center">
         <md-radio-group ng-model="$ctrl.listType" layout layout-wrap layout-align="start center">
             <md-radio-button value="watchList" class="md-primary">
                 <span ma-tr="ui.app.lists"></span>
@@ -18,6 +18,11 @@
                 <md-tooltip ma-tr="ui.app.tagsLong"></md-tooltip>
             </md-radio-button>
         </md-radio-group>
+        <md-button class="md-icon-button ma-small-button" ng-href="/rest/v2/watch-lists/export?{{$ctrl.downloadQuery}}"
+            ng-attr-download="watch-lists.json" ng-if="$ctrl.listType === 'watchList'">
+            <md-tooltip md-direction="bottom" ma-tr="ui.app.exportAll"></md-tooltip>
+            <md-icon md-menu-align-target>save_alt</md-icon>
+        </md-button>
     </md-toolbar>
 
     <div class="ma-point-browser-progress">
