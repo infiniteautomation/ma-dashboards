@@ -66,7 +66,13 @@
                 <md-icon>delete_forever</md-icon>
                 <md-tooltip><span ma-tr="ui.app.pointValuePurgeForSelectedPoints"></span></md-tooltip>
             </md-button>
-    
+
+            <md-button class="md-icon-button ma-small-button" ng-href="/rest/v2/data-points/export"
+                ng-attr-download="data-points.json">
+                <md-tooltip md-direction="bottom" ma-tr="ui.app.exportAll"></md-tooltip>
+                <md-icon md-menu-align-target>save_alt</md-icon>
+            </md-button>
+
             <input style="display:none" type="file" ng-model="dummyFileModel"
                 ma-change="$ctrl.csvFileInputChanged($event)" ng-attr-accept="text/csv,.csv">
         </div>
