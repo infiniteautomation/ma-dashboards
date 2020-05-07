@@ -7,6 +7,12 @@
                         <span class="md-headline">
                             <span ma-tr="ui.app.mailingLists.setup"></span>
                         </span>
+                        <md-button class="md-icon-button ma-small-button ma-no-padding-right"
+                            ng-href="/rest/v2/mailing-lists/export?xid={{$ctrl.list.xid}}"
+                            ng-attr-download="{{$ctrl.list.name}}.json" hide-xs hide-sm ng-if="!$ctrl.list.isNew()">
+                            <md-tooltip md-direction="bottom" ma-tr="emport.export"></md-tooltip>
+                            <md-icon md-menu-align-target>save_alt</md-icon>
+                        </md-button>
                     </div>
         
                     <div flex layout layout-align="end center" class="ma-margin-bottom">

@@ -16,9 +16,14 @@ import './mailingList.css';
 
 const $inject = Object.freeze(['$scope', '$mdMedia', 'maMailingList']);
 class MailingLists {
-    static get $inject() { return $inject; }
-    static get $$ngIsClass() { return true; }
-    
+    static get $inject() {
+        return $inject;
+    }
+
+    static get $$ngIsClass() {
+        return true;
+    }
+
     constructor($scope, $mdMedia, maMailingList) {
         this.$scope = $scope;
         this.$mdMedia = $mdMedia;
@@ -32,11 +37,18 @@ class MailingLists {
             this.$scope.$broadcast('addNewMailingList', true);
         });
     }
-    
-    $onInit() {}
+
+    $onInit() {
+        this.getMailingList();
+    }
 
     newList() {
         this.selectedList = new this.maMailingList();
+        this.getMailingList();
+    }
+
+    getMailingList() {
+        this.maMailingList.list().then((list) => (this.mailingList = list));
     }
 }
 
@@ -44,5 +56,5 @@ export default {
     template: componentTemplate,
     controller: MailingLists,
     bindings: {},
-    require: {}
+    require: {},
 };

@@ -5,6 +5,11 @@
     <md-button class="md-raised md-warn" ng-click="$ctrl.deleteUsers($event)" ng-disabled="!$ctrl.selectedUsers.length">
         <md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span>
     </md-button>
+    <md-button class="md-icon-button ma-small-button" ng-href="/rest/v2/users/export"
+        ng-attr-download="users.json">
+        <md-tooltip md-direction="right" ma-tr="emport.export"></md-tooltip>
+        <md-icon md-menu-align-target>save_alt</md-icon>
+    </md-button>
 </div>
 
 <ma-user-table ng-model="$ctrl.selectedUsers" select-multiple="true" show-actions="true" on-copy="$ctrl.editUser($user)"
