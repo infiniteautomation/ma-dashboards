@@ -738,12 +738,21 @@ class FileStoreBrowserController {
         if (this.aceEditor) {
             this.aceEditor.session.clearAnnotations();
         }
-        
+
         this.scriptResult.evalPromise = this.editFile.evalScript(undefined, {
             engineName: this.selectedEngine.engineName
+        }, {
+            responseType: 'blob',
+            transformResponse: data => data
         }).then(result => {
             this.scriptResult.success = true;
-            this.scriptResult.output = result;
+            this.scriptResult.outputBlob = result;
+            
+            if (result.type.indexOf('text/') === 0 || result.type === 'application/json') {
+                result.text().then(text => {
+                    this.scriptResult.output = text;
+                });
+            }
         }, error => {
             this.scriptResult.error = error;
             
