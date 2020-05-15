@@ -36,6 +36,57 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
         }
     };
     
+    const errorInterceptor = error => {
+        let message = error.data && typeof error.data === 'object' && (error.data.message || error.data.localizedMessage);
+        
+        // try the 'errors' header
+        if (!message) {
+            message = error.headers('errors');
+        }
+        
+        // try the status text
+        if (!message) {
+            message = error.statusText;
+        }
+        
+        // error.statusText is empty if its an XHR error
+        if (!message && error.xhrStatus !== 'complete') {
+            message = error.xhrStatus === 'abort' && safeTranslate('ui.app.xhrAborted', 'Request aborted') ||
+                error.xhrStatus === 'timeout' && safeTranslate('ui.app.xhrTimeout', 'Request timed out') ||
+                error.xhrStatus === 'error' && safeTranslate('ui.app.xhrError', 'Connection error');
+        }
+
+        // fallback to generic description of HTTP error code
+        if (!message) {
+            message = safeTranslate(`rest.httpStatus.${error.status}`, `HTTP error ${error.status}`);
+        }
+
+        error.mangoStatusText = message;
+        error.mangoStatusTextShort = message;
+        
+        if (error.status === 422) {
+            let messages = [];
+            if (error.data.result && Array.isArray(error.data.result.messages)) {
+                messages = error.data.result.messages;
+            } else if (Array.isArray(error.data.validationMessages)) {
+                messages = error.data.validationMessages;
+            }
+            
+            if (messages.length) {
+                const firstMsg = messages[0];
+                let trKeyArgs;
+                if (firstMsg.property) {
+                    trKeyArgs = ['ui.app.errorFirstValidationMsgWithProp', message, firstMsg.property, firstMsg.message];
+                } else {
+                    trKeyArgs = ['ui.app.errorFirstValidationMsg', message, firstMsg.message];
+                }
+                error.mangoStatusTextFirstValidationMsg = firstMsg.message;
+                error.mangoStatusText = safeTranslate(trKeyArgs, message);
+            }
+        }
+        return $q.reject(error);
+    };
+    
     return {
     	request: function(config) {
     		if (isApiCall(config)) {
@@ -48,55 +99,15 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
     	},
 
     	responseError: function(error) {
-    	    let message = error.data && typeof error.data === 'object' && (error.data.message || error.data.localizedMessage);
-    	    
-    	    // try the 'errors' header
-    	    if (!message) {
-                message = error.headers('errors');
+    	    if (error.data instanceof Blob && error.data.type === 'application/json') {
+                return $injector.get('maUtil').blobToJson(error.data).then(parsedData => {
+                    error.data = parsedData;
+                    return errorInterceptor(error);
+                }).catch(e => {
+                    return errorInterceptor(error);
+                });
             }
-            
-    	    // try the status text
-            if (!message) {
-                message = error.statusText;
-            }
-            
-    	    // error.statusText is empty if its an XHR error
-    	    if (!message && error.xhrStatus !== 'complete') {
-    	        message = error.xhrStatus === 'abort' && safeTranslate('ui.app.xhrAborted', 'Request aborted') ||
-                    error.xhrStatus === 'timeout' && safeTranslate('ui.app.xhrTimeout', 'Request timed out') ||
-                    error.xhrStatus === 'error' && safeTranslate('ui.app.xhrError', 'Connection error');
-    	    }
-
-            // fallback to generic description of HTTP error code
-            if (!message) {
-                message = safeTranslate(`rest.httpStatus.${error.status}`, `HTTP error ${error.status}`);
-            }
-
-            error.mangoStatusText = message;
-            error.mangoStatusTextShort = message;
-            
-    	    if (error.status === 422) {
-    	        let messages = [];
-    	        if (error.data.result && Array.isArray(error.data.result.messages)) {
-    	            messages = error.data.result.messages;
-    	        } else if (Array.isArray(error.data.validationMessages)) {
-    	            messages = error.data.validationMessages;
-    	        }
-    	        
-    	        if (messages.length) {
-    	            const firstMsg = messages[0];
-    	            let trKeyArgs;
-    	            if (firstMsg.property) {
-    	                trKeyArgs = ['ui.app.errorFirstValidationMsgWithProp', message, firstMsg.property, firstMsg.message];
-    	            } else {
-    	                trKeyArgs = ['ui.app.errorFirstValidationMsg', message, firstMsg.message];
-    	            }
-    	            error.mangoStatusTextFirstValidationMsg = firstMsg.message;
-                    error.mangoStatusText = safeTranslate(trKeyArgs, message);
-    	        }
-    	    }
-
-            return $q.reject(error);    
+            return errorInterceptor(error);
         }
     };
 }
