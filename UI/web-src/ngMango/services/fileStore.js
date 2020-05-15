@@ -330,7 +330,14 @@ function fileStore($http, maUtil, $q) {
                 params,
                 timeout: 0
             }, httpOptions)).then(response => {
-                return response.data;
+                const contentDisposition = response.headers('content-disposition');
+                if (contentDisposition) {
+                    const matches = /\bfilename="(.*)"/.exec(contentDisposition);
+                    if (matches) {
+                        response.filename = matches[1];
+                    }
+                }
+                return response;
             });
         }
     }
