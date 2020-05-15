@@ -137,7 +137,15 @@
     </div>
     
     <div ng-if="$ctrl.scriptResult.success">
-        <pre ng-bind="$ctrl.scriptResult.output"></pre>
+        <div layout layout-align="start center">
+            <md-button class="md-raised" ng-if="$ctrl.scriptResult.outputBlob.size"
+                    ng-href="{{$ctrl.scriptResult.outputBlobUrl}}"
+                    download="{{$ctrl.scriptResult.outputFilename}}">
+                <span ma-tr="common.download"></span>
+            </md-button>
+            <span ma-tr="script.responseSizeAndType" ma-tr-args="[$ctrl.scriptResult.outputBlob.type, ($ctrl.scriptResult.outputBlob.size | maBytes)]"></span>
+        </div>
+        <pre class="ma-script-response-text" ng-bind="$ctrl.scriptResult.output"></pre>
     </div>
     
     <div ng-if="$ctrl.scriptResult.error" class="ma-color-warn">

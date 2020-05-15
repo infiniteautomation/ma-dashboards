@@ -2,3 +2,12 @@ ma-file-store-browser md-input-container.ma-engine-selector {
     margin: 0;
     width: 200px;
 }
+
+pre.ma-script-response-text {
+    margin-top: 16px;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 400px;
+    background-color: var(--ma-background);
+    color: var(--ma-background-contrast);
+}

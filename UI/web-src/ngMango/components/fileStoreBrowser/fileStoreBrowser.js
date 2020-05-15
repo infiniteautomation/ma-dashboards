@@ -743,12 +743,35 @@ class FileStoreBrowserController {
             engineName: this.selectedEngine.engineName
         }, {
             responseType: 'blob',
-            transformResponse: data => data
-        }).then(result => {
+            transformResponse: blob => blob
+        }).then(response => {
+            const result = response.data;
+            
             this.scriptResult.success = true;
             this.scriptResult.outputBlob = result;
+            this.scriptResult.outputBlobUrl = URL.createObjectURL(result);
             
-            if (result.type.indexOf('text/') === 0 || result.type === 'application/json') {
+            const isText = result.type.indexOf('text/') === 0;
+            const isJson = result.type === 'application/json';
+            
+            if (response.filename) {
+                this.scriptResult.outputFilename = response.filename;
+            } else {
+                let outputFilename = this.scriptResult.file.filename;
+                const lastDot = outputFilename.lastIndexOf('.');
+                if (lastDot >= 0) {
+                    outputFilename = outputFilename.slice(0, lastDot);
+                }
+                outputFilename += '_response';
+                if (isText) {
+                    outputFilename += '.txt';
+                } else if (isJson) {
+                    outputFilename += '.json';
+                }
+                this.scriptResult.outputFilename = outputFilename;
+            }
+            
+            if (isText || isJson) {
                 result.text().then(text => {
                     this.scriptResult.output = text;
                 });
