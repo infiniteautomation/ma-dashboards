@@ -18,7 +18,8 @@ function fileStore($http, maUtil, $q) {
         'text/html': 'html',
         'text/plain': 'text',
         'image/svg+xml': 'svg',
-        'application/xml': 'xml'
+        'application/xml': 'xml',
+        'text/markdown': 'markdown'
     };
     
     const editModesByExtension = {
@@ -30,7 +31,8 @@ function fileStore($http, maUtil, $q) {
         'r': 'r',
         'kts': 'kotlin',
         'js': 'javascript',
-        'mjs': 'javascript'
+        'mjs': 'javascript',
+        'md': 'markdown'
     };
 
     class FileStore {
