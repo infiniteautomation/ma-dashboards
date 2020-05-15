@@ -12,23 +12,21 @@
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
-            <div layout>
-                <div flex="100" flex-gt-md="50" layout="column">
-                    <md-input-container>
-                        <label ma-tr="ui.app.chooseTheme"></label>
-                        <md-select ng-model="$ctrl.uiSettings.defaultTheme" ng-change="$ctrl.uiSettings.generateTheme()">
-                            <md-option ng-repeat="(name,theme) in $ctrl.uiSettings.theming.THEMES" ng-if="name.indexOf('dynamicTheme') !== 0" ng-value="name" ng-bind="name"></md-option>
-                        </md-select>
-                    </md-input-container>
-                    <div>
-                        <md-checkbox flex ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].dark"
-                          ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
-                            <span ma-tr="ui.app.darkTheme"></span>
-                        </md-checkbox>
-                    </div>
-                </div>
+            <div>
+                <md-checkbox name="usePreferredColorScheme" ng-model="$ctrl.uiSettings.usePreferredColorScheme">
+                    <span ma-tr="ui.app.usePreferredColorScheme"></span>
+                </md-checkbox>
+            </div>
+            
+            <div layout layout-wrap>
+                <md-input-container flex="100" flex-gt-md="50" layout="column" ng-if-start="!$ctrl.uiSettings.usePreferredColorScheme">
+                    <label ma-tr="ui.app.defaultColorScheme"></label>
+                    <md-select name="defaultTheme" ng-model="$ctrl.uiSettings.defaultTheme">
+                        <md-option ng-repeat="theme in $ctrl.themes" ng-value="theme.name" ng-bind="theme.name"></md-option>
+                    </md-select>
+                </md-input-container>
         
-                <md-input-container flex="100" flex-gt-md="50">
+                <md-input-container flex="100" flex-gt-md="50" ng-if-end>
                     <label ma-tr="ui.app.logoSource"></label>
                     <input name="logoSrc" ng-model="$ctrl.uiSettings.logoSrc" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
@@ -39,80 +37,50 @@
     				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
     				</md-button>
                 </md-input-container>
+ 
+                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.uiSettings.usePreferredColorScheme">
+                    <label ma-tr="ui.app.preferredDarkTheme"></label>
+                    <md-select name="darkTheme" ng-model="$ctrl.uiSettings.darkTheme">
+                        <md-option ng-repeat="theme in $ctrl.themes | filter:{dark:true}" ng-value="theme.name" ng-bind="theme.name"></md-option>
+                    </md-select>
+                </md-input-container>
+                        
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.app.darkLogoUrl"></label>
+                    <input name="darkLogo" ng-model="$ctrl.uiSettings.darkLogo" ma-empty-input ng-model-options="{debounce: 500}">
+                    <md-button class="ma-input-button md-icon-button"
+                            ma-choose-file="$ctrl.uiSettings.darkLogo = $url; $ctrl.form.darkLogo.$setDirty()"
+                            ma-choose-file-selected="$ctrl.uiSettings.darkLogo"
+                            ma-choose-file-options="{mimeTypes: 'image/*', extensions: 'png,jpg,jpeg,svg', preview:true, store:'public'}">
+                        <md-icon>attachment</md-icon>
+                        <md-tooltip ma-tr="common.chooseFile"></md-tooltip>
+                    </md-button>
+                </md-input-container>
+                
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.app.preferredLightTheme"></label>
+                    <md-select name="lightTheme" ng-model="$ctrl.uiSettings.lightTheme">
+                        <md-option ng-repeat="theme in $ctrl.themes | filter:{dark:false}" ng-value="theme.name" ng-bind="theme.name"></md-option>
+                    </md-select>
+                </md-input-container>
+                      
+                <md-input-container flex="100" flex-gt-md="50" ng-if-end>
+                    <label ma-tr="ui.app.lightLogoUrl"></label>
+                    <input name="lightLogo" ng-model="$ctrl.uiSettings.lightLogo" ma-empty-input ng-model-options="{debounce: 500}">
+                    <md-button class="ma-input-button md-icon-button"
+                            ma-choose-file="$ctrl.uiSettings.lightLogo = $url; $ctrl.form.lightLogo.$setDirty()"
+                            ma-choose-file-selected="$ctrl.uiSettings.lightLogo"
+                            ma-choose-file-options="{mimeTypes: 'image/*', extensions: 'png,jpg,jpeg,svg', preview:true, store:'public'}">
+                        <md-icon>attachment</md-icon>
+                        <md-tooltip ma-tr="common.chooseFile"></md-tooltip>
+                    </md-button>
+                </md-input-container>
             </div>
-        </md-card-content>
-    </md-card>
-    
-    <md-card>
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline" ma-tr="ui.app.themeHues"></span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content>
-            <p class="ma-default-font" ma-tr="ui.app.chooseUserToEditPalettes"></p>
-            <md-checkbox ng-model="showAllHues"><span ma-tr="ui.app.showAllHues"></span></md-checkbox>
             
-            <div layout layout-wrap>
-                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-                    <h4 layout="column" layout-align="start center" ma-tr="ui.app.primaryPalette"></h4>
-                    <md-input-container >
-                        <md-select ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].primaryPalette"
-                            ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
-                          <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
-                          <md-option ng-repeat="(name,palette) in $ctrl.uiSettings.theming.PALETTES" ng-value="name" ng-bind="name"></md-option>
-                        </md-select>
-                    </md-input-container>
-                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="primary"></ma-color-preview>
-                </div>
-                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-                    <h4 layout="column" layout-align="start center" ma-tr="ui.app.accentPalette"></h4>
-                    <md-input-container >
-                        <md-select ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].accentPalette"
-                            ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
-                          <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
-                          <md-option ng-repeat="(name,palette) in $ctrl.uiSettings.theming.PALETTES" ng-value="name" ng-bind="name"></md-option>
-                        </md-select>
-                    </md-input-container>
-                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="accent"></ma-color-preview>
-                </div>
-                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-                    <h4 layout="column" layout-align="start center" ma-tr="ui.app.warnPalette"></h4>
-                    <md-input-container >
-                        <md-select ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].warnPalette"
-                            ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
-                          <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
-                          <md-option ng-repeat="(name,palette) in $ctrl.uiSettings.theming.PALETTES" ng-value="name" ng-bind="name"></md-option>
-                        </md-select>
-                    </md-input-container>
-                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="warn"></ma-color-preview>
-                </div>
-                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-                    <h4 layout="column" layout-align="start center" ma-tr="ui.app.backgroundPalette"></h4>
-                    <md-input-container >
-                        <md-select ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].backgroundPalette"
-                            ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
-                          <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
-                          <md-option ng-repeat="(name,palette) in $ctrl.uiSettings.theming.PALETTES" ng-value="name" ng-bind="name"></md-option>
-                        </md-select>
-                    </md-input-container>
-                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="background"></ma-color-preview>
-                </div>
-            </div>
-    
-            <div layout layout-wrap ng-show="showAllHues">
-                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="primary" all-hues="true"></ma-color-preview>
-                </div>
-                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="accent" all-hues="true"></ma-color-preview>
-                </div>
-                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="warn" all-hues="true"></ma-color-preview>
-                </div>
-                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
-                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="background" all-hues="true"></ma-color-preview>
-                </div>
+            <div>
+                <md-button class="md-raised md-primary" ui-sref="ui.settings.themeEditor">
+                    <span ma-tr="ui.app.themeEditor"></span>
+                </md-button>
             </div>
         </md-card-content>
     </md-card>

@@ -271,7 +271,6 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         webAnalytics.enableGoogleAnalytics(uiSettings.googleAnalyticsPropertyId);
     }
 
-    uiSettings.generateTheme();
     $rootScope.stateParams = $stateParams;
     $rootScope.dateBar = maUiDateBar;
     $rootScope.uiSettings = uiSettings;

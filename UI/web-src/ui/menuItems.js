@@ -666,6 +666,25 @@ export default [
         }
     },
     {
+        url: '/theme-editor?theme',
+        name: 'ui.settings.themeEditor',
+        template: '<ma-ui-theme-editor></ma-ui-theme-editor>',
+        menuTr: 'ui.app.themeEditor',
+        menuIcon: 'colorize',
+        permission: 'edit-ui-settings',
+        menuHidden: true,
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/themeEditor/themeEditor').then(themeEditor => {
+                    angular.module('maUiThemeEditor', [])
+                        .component('maUiThemeEditor', themeEditor.default);
+                    $injector.loadNewModules(['maUiThemeEditor']);
+                });
+            }]
+        }
+    },
+    {
         name: 'ui.settings.users',
         url: '/users/{username}',
         template: '<ma-ui-users-page flex="noshrink" layout="column"><ma-ui-users-page>',

@@ -98,6 +98,8 @@ module.exports = readPom().then(pom => {
                                         targets: data => {
                                             const targets = data.pwaManifest.icons.map((icon, i) => `/pwaManifest/icons/${i}/src`);
                                             targets.push('/logoSrc');
+                                            targets.push('/darkLogo');
+                                            targets.push('/lightLogo');
                                             return targets;
                                         },
                                         publicPath

@@ -8,6 +8,11 @@ import defaultUiSettings from '../uiSettings.json';
 
 uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider', 'MA_TIMEOUTS'];
 function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS) {
+
+    // md-theme attribute on the body is still watched as it is a interpolated attribute
+    $mdThemingProvider.alwaysWatchTheme(false);
+    // register the themes but dont generate the style tags for them until they are used
+    $mdThemingProvider.generateThemesOnDemand(true);
     
     // stores the initial merged settings (defaults merged with custom settings from store)
     const MA_UI_SETTINGS = {};
@@ -22,7 +27,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             pointValuesProvider.setDefaultLimit(uiSettings.pointValuesLimit);
         }
     };
-    
+
     this.registerThemes = function registerThemes() {
         if (MA_UI_SETTINGS.palettes) {
             for (const paletteName in MA_UI_SETTINGS.palettes) {
@@ -51,13 +56,8 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 }
             }
         }
-
-        const defaultTheme = MA_UI_SETTINGS.defaultTheme || 'mangoDark';
-        $mdThemingProvider.setDefaultTheme(defaultTheme);
-        $mdThemingProvider.alwaysWatchTheme(true);
-        $mdThemingProvider.generateThemesOnDemand(true);
     };
-    
+
     this.$get = uiSettingsFactory;
 
     uiSettingsFactory.$inject = [
@@ -70,7 +70,9 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
         'MA_UI_SETTINGS_XID',
         'MA_UI_EDIT_SETTINGS_PERMISSION',
         '$window',
-        'maPointValues'];
+        'maPointValues',
+        '$rootScope',
+        'maUtil'];
     function uiSettingsFactory(
             JsonStore,
             $mdTheming,
@@ -81,7 +83,9 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             MA_UI_SETTINGS_XID,
             MA_UI_EDIT_SETTINGS_PERMISSION,
             $window,
-            maPointValues) {
+            maPointValues,
+            $rootScope,
+            maUtil) {
 
         if (MA_UI_SETTINGS.userCss) {
             // inject after <meta name="user-styles-after-here">
@@ -97,11 +101,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             const safariCss = import(/* webpackChunkName: "ui.safari" */ '../styles/safari.css');
         }
 
-        const excludeProperties = ['userSettingsStore', 'theming', 'activeTheme', 'userModuleName', 'mangoModuleNames',
-            'activeThemeObj'];
-        let themeId = 0;
-        let userThemeGenerated = false;
-        
+        const excludeProperties = ['userSettingsStore', 'activeTheme', 'userModuleName', 'mangoModuleNames', 'activeThemeObj', 'themeLogo'];
         const palettes = ['primary', 'accent', 'warn', 'background'];
         const hues = ['default', 'hue-1', 'hue-2', 'hue-3', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
         const foregroundHues = ['1', '2', '3', '4'];
@@ -121,10 +121,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
         class UiSettings {
             constructor() {
                 angular.extend(this, angular.copy(MA_UI_SETTINGS));
-                
-                // used on uiSettingsPage.html to display available themes and palettes
-                this.theming = $mdTheming;
-                
+
                 this.userSettingsStore = new JsonStore();
                 this.userSettingsStore.name = 'UI Settings';
                 this.userSettingsStore.xid = MA_UI_SETTINGS_XID;
@@ -132,6 +129,17 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 this.userSettingsStore.publicData = true;
                 this.userSettingsStore.readPermission = '';
                 this.userSettingsStore.editPermission = MA_UI_EDIT_SETTINGS_PERMISSION;
+                
+                // watch for changes to the user's preferred color scheme
+                if (typeof $window.matchMedia === 'function') {
+                    $window.matchMedia('(prefers-color-scheme: light), (prefers-color-scheme: no-preference)').addEventListener('change', event => {
+                        $rootScope.$apply(() => {
+                            this.applyUiSettings();
+                        });
+                    });
+                }
+                
+                this.applyUiSettings();
             }
 
             save() {
@@ -155,7 +163,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 return this.userSettingsStore.$get().then(store => {
                     angular.merge(this, defaultUiSettings);
                     angular.merge(this, store.jsonData);
-                    this.applyUiSettings();
                     return store;
                 });
             }
@@ -164,18 +171,19 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             reset() {
                 angular.merge(this, defaultUiSettings);
                 angular.merge(this, this.userSettingsStore.jsonData);
-                this.applyUiSettings();
-                this.generateTheme();
             }
             
             'delete'() {
                 this.userSettingsStore.jsonData = {};
                 return this.userSettingsStore.$save().then(store => {
                     this.reset();
+                    this.applyUiSettings();
                 });
             }
             
             applyUiSettings() {
+                this.applyPreferredColorScheme();
+                this.generateTheme();
                 Object.assign(MA_TIMEOUTS, this.timeouts);
                 this.setPointValuesLimit();
             }
@@ -185,39 +193,34 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     maPointValues.setDefaultLimit(this.pointValuesLimit);
                 }
             }
-            
+
             generateTheme() {
-                const themeName = this.defaultTheme;
-                const themeSettings = this.themes[themeName];
-
-                // we want to dynamically update the userTheme, $mdTheming.generateTheme() will not re-generate
-                // the style tags if it thinks it has already generated them though so work around it
-                // by creating a new theme everytime
-                let dynamicThemeName;
-                if (themeName === 'userTheme') {
-                    if (userThemeGenerated) {
-                        dynamicThemeName = 'dynamicTheme' + (++themeId);
-                        
-                        const dynamicTheme = this.themeFromSettings(dynamicThemeName, themeSettings);
-                        $mdTheming.THEMES[dynamicThemeName] = dynamicTheme;
-                        
-                        $mdThemingProvider.setNonce(dynamicThemeName);
-                        $mdTheming.generateTheme(dynamicThemeName);
-
-                        const theme = this.themeFromSettings('userTheme', themeSettings);
-                        $mdTheming.THEMES.userTheme = theme;
-                    }
-                    userThemeGenerated = true;
-                }
+                // cant modify the $mdTheming.THEMES object as it is a copy, the correct THEMES object is available here
+                const THEMES = $mdThemingProvider._THEMES;
+                const themeSettings = this.themes[this.activeTheme];
                 
-                $mdThemingProvider.setNonce(themeName);
-                $mdTheming.generateTheme(themeName);
+                // It is not possible to regenerate the styles for a theme once it is already registered.
+                // We generate a new theme with a temporary UUID name and then replace the UUID inside the styles with the
+                // actual theme name.
+                const tempName = maUtil.uuid();
+                // controls the nonce attribute on the inserted style tags
+                $mdThemingProvider.setNonce(tempName);
+                // generate the theme
+                this.activeThemeObj = this.themeFromSettings(tempName, themeSettings);
                 
-                this.activeTheme = dynamicThemeName || themeName;
-                this.activeThemeObj = $mdTheming.THEMES[this.activeTheme];
+                // change the temporary theme's name and put it in the correct spot
+                this.activeThemeObj.name = this.activeTheme;
+                delete THEMES[tempName];
+                THEMES[this.activeTheme] = this.activeThemeObj;
                 
-                for (let e of $window.document.querySelectorAll('head > style[nonce]')) {
-                    if (e.getAttribute('nonce') !== this.activeTheme) {
+                for (const e of $window.document.querySelectorAll('head > style[nonce]')) {
+                    const nonce = e.getAttribute('nonce');
+                    if (nonce === tempName) {
+                        // replace the temporary theme name in the style contents with the actual theme name
+                        e.textContent = e.textContent.replace(new RegExp(tempName, 'g'), this.activeTheme);
+                        e.setAttribute('nonce', this.activeTheme);
+                    } else if (nonce === this.activeTheme) {
+                        // remove old style tags from the same theme
                         e.parentNode.removeChild(e);
                     }
                 }
@@ -231,22 +234,18 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             }
             
             themeFromSettings(themeName, themeSettings) {
-                const theme = $mdThemingProvider.theme(themeName);
-                if (themeSettings.primaryPalette) {
-                    theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
-                }
-                if (themeSettings.accentPalette) {
-                    theme.accentPalette(themeSettings.accentPalette, themeSettings.accentPaletteHues);
-                }
-                if (themeSettings.warnPalette) {
-                    theme.warnPalette(themeSettings.warnPalette, themeSettings.warnPaletteHues);
-                }
-                if (themeSettings.backgroundPalette) {
-                    theme.backgroundPalette(themeSettings.backgroundPalette, themeSettings.backgroundPaletteHues);
-                    theme.isDark = false;
-                }
-                theme.dark(!!themeSettings.dark);
-                return theme;
+                $mdTheming.defineTheme(themeName, {
+                    primary: themeSettings.primaryPalette,
+                    primaryHues: themeSettings.primaryPaletteHues,
+                    accent: themeSettings.accentPalette,
+                    accentHues: themeSettings.accentPaletteHues,
+                    warn: themeSettings.warnPalette,
+                    warnHues: themeSettings.warnPaletteHues,
+                    background: themeSettings.backgroundPalette,
+                    backgroundHues: themeSettings.backgroundPaletteHues,
+                    dark: !!themeSettings.dark
+                });
+                return $mdTheming.THEMES[themeName];
             }
             
             getThemeColor(options) {
@@ -351,6 +350,20 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 
                 this.setMetaTag('theme-color', themeColor);
                 this.setMetaTag('msapplication-navbutton-color', themeColor);
+            }
+            
+            applyPreferredColorScheme() {
+                const usePreferred = this.usePreferredColorScheme && typeof $window.matchMedia === 'function';
+                if (usePreferred && $window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    this.themeLogo = this.darkLogo;
+                    this.activeTheme = this.darkTheme;
+                } else if (usePreferred && $window.matchMedia('(prefers-color-scheme: light)').matches) {
+                    this.themeLogo = this.lightLogo;
+                    this.activeTheme = this.lightTheme;
+                } else {
+                    this.themeLogo = this.logoSrc;
+                    this.activeTheme = this.defaultTheme;
+                }
             }
         }
         

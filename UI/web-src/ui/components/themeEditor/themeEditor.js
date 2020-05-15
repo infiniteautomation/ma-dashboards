@@ -4,12 +4,13 @@
  */
 
 import angular from 'angular';
-import uiSettingsPageTemplate from './uiSettingsPage.html';
-import './uiSettingsPage.css';
+import uiSettingsPageTemplate from './themeEditor.html';
+import './themeEditor.css';
 
 class UiSettingsPageController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper', 'maEvents']; }
+    
     constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper, Events) {
         this.uiSettings = maUiSettings;
         this.$scope = $scope;
@@ -45,10 +46,6 @@ class UiSettingsPageController {
         
         this.$scope.$on('$destroy', () => {
             this.$window.onbeforeunload = oldUnload;
-        });
-        
-        this.themes = Object.keys(this.uiSettings.themes).map(name => {
-            return Object.assign({name}, this.uiSettings.themes[name]);
         });
     }
     

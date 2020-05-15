@@ -1,0 +1,93 @@
+<form name="$ctrl.form">
+    <md-button class="md-raised" ui-sref="^.uiSettings">
+        <md-icon>arrow_back</md-icon>&nbsp;<span ma-tr="ui.app.backToUiSettings"></span>
+    </md-button>
+    
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline" ma-tr="ui.app.themeEditor"></span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <md-checkbox flex ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].dark"
+              ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
+                <span ma-tr="ui.app.darkTheme"></span>
+            </md-checkbox>
+            
+            <md-checkbox ng-model="showAllHues"><span ma-tr="ui.app.showAllHues"></span></md-checkbox>
+            <div layout layout-wrap>
+                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
+                    <h4 layout="column" layout-align="start center" ma-tr="ui.app.primaryPalette"></h4>
+                    <md-input-container>
+                        <md-select ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].primaryPalette"
+                            ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
+                          <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
+                          <md-option ng-repeat="(name,palette) in $ctrl.uiSettings.getPalettes()" ng-value="name" ng-bind="name"></md-option>
+                        </md-select>
+                    </md-input-container>
+                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="primary"></ma-color-preview>
+                </div>
+                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
+                    <h4 layout="column" layout-align="start center" ma-tr="ui.app.accentPalette"></h4>
+                    <md-input-container>
+                        <md-select ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].accentPalette"
+                            ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
+                          <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
+                          <md-option ng-repeat="(name,palette) in $ctrl.uiSettings.getPalettes()" ng-value="name" ng-bind="name"></md-option>
+                        </md-select>
+                    </md-input-container>
+                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="accent"></ma-color-preview>
+                </div>
+                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
+                    <h4 layout="column" layout-align="start center" ma-tr="ui.app.warnPalette"></h4>
+                    <md-input-container>
+                        <md-select ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].warnPalette"
+                            ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
+                          <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
+                          <md-option ng-repeat="(name,palette) in $ctrl.uiSettings.getPalettes()" ng-value="name" ng-bind="name"></md-option>
+                        </md-select>
+                    </md-input-container>
+                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="warn"></ma-color-preview>
+                </div>
+                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
+                    <h4 layout="column" layout-align="start center" ma-tr="ui.app.backgroundPalette"></h4>
+                    <md-input-container>
+                        <md-select ng-model="$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].backgroundPalette"
+                            ng-disabled="$ctrl.uiSettings.defaultTheme !== 'userTheme'" ng-change="$ctrl.uiSettings.generateTheme()">
+                          <md-option ng-value="undefined"><em ma-tr="ui.app.notSet"></em></md-option>
+                          <md-option ng-repeat="(name,palette) in $ctrl.uiSettings.getPalettes()" ng-value="name" ng-bind="name"></md-option>
+                        </md-select>
+                    </md-input-container>
+                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="background"></ma-color-preview>
+                </div>
+            </div>
+        
+            <div layout layout-wrap ng-show="showAllHues">
+                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
+                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="primary" all-hues="true"></ma-color-preview>
+                </div>
+                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
+                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="accent" all-hues="true"></ma-color-preview>
+                </div>
+                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
+                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="warn" all-hues="true"></ma-color-preview>
+                </div>
+                <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
+                    <ma-color-preview theme="{{$ctrl.uiSettings.defaultTheme}}" palette="background" all-hues="true"></ma-color-preview>
+                </div>
+            </div>
+        </md-card-content>
+        <md-card-actions>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.form.$pristine">
+                <md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span>
+            </md-button>
+            <md-button class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="$ctrl.form.$pristine">
+                <md-icon>undo</md-icon>&nbsp;<span ma-tr="ui.app.revert"></span>
+            </md-button>
+            <md-button class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.uiSettings.userSettingsStore.jsonData">
+                <md-icon>delete</md-icon>&nbsp;<span ma-tr="ui.app.resetToDefault"></span>
+            </md-button>
+        </md-card-actions>
+    </md-card>
+</form>
