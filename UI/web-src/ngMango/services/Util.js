@@ -1104,6 +1104,19 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
                 number = Math.floor(Math.log(bytes) / Math.log(1024));
             if (number === 0) precision = 0;
             return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
+        },
+        
+        blobToText(blob) {
+            return new $q((resolve, reject) => {
+                const reader = new FileReader();
+                reader.addEventListener('load', e => resolve(reader.result));
+                reader.addEventListener('error', e => resolve(reader.error));
+                reader.readAsText(blob);
+            });
+        },
+        
+        blobToJson(blob) {
+            return this.blobToText(blob).then(text => JSON.parse(text));
         }
     };
 
