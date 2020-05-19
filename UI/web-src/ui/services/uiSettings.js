@@ -63,29 +63,27 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
     uiSettingsFactory.$inject = [
         'maJsonStore',
         '$mdTheming',
-        '$MD_THEME_CSS',
         '$mdColors',
         'maCssInjector',
-        '$templateRequest',
         'MA_UI_SETTINGS_XID',
         'MA_UI_EDIT_SETTINGS_PERMISSION',
         '$window',
         'maPointValues',
         '$rootScope',
-        'maUtil'];
+        'maUtil',
+        'maTheming'];
     function uiSettingsFactory(
             JsonStore,
             $mdTheming,
-            MD_THEME_CSS,
             $mdColors,
             maCssInjector,
-            $templateRequest,
             MA_UI_SETTINGS_XID,
             MA_UI_EDIT_SETTINGS_PERMISSION,
             $window,
             maPointValues,
             $rootScope,
-            maUtil) {
+            maUtil,
+            maTheming) {
 
         if (MA_UI_SETTINGS.userCss) {
             // inject after <meta name="user-styles-after-here">
@@ -102,21 +100,6 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
         }
 
         const excludeProperties = ['userSettingsStore', 'activeTheme', 'userModuleName', 'mangoModuleNames', 'activeThemeObj', 'themeLogo'];
-        const palettes = ['primary', 'accent', 'warn', 'background'];
-        const hues = ['default', 'hue-1', 'hue-2', 'hue-3', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
-        const foregroundHues = ['1', '2', '3', '4'];
-        
-        const allHues = palettes.map(palette => {
-            return hues.map(hue => {
-                return {
-                    palette,
-                    hue,
-                    colorString: hue === 'default' ? palette : `${palette}-${hue}`
-                };
-            });
-        }).reduce((acc, h) => {
-            return acc.concat(h);
-        });
         
         class UiSettings {
             constructor() {
@@ -226,7 +209,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 }
 
                 // setup the CSS variables for the theme
-                this.applyRootTheme();
+                this.applyRootTheme(this.activeTheme);
                 
                 // activate our new theme
                 $mdThemingProvider.setDefaultTheme(this.activeTheme);
@@ -247,87 +230,22 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 });
                 return $mdTheming.THEMES[themeName];
             }
-            
-            getThemeColor(options) {
-                let {theme, palette, hue} = options;
 
-                const scheme = $mdTheming.THEMES[theme].colors[palette];
-                if (scheme.hues[hue]) {
-                    hue = scheme.hues[hue];
-                }
-                const paletteObj = $mdTheming.PALETTES[scheme.name];
-                return paletteObj[hue];
-            }
-            
-            getCssVariables(theme) {
-                const properties = [
+            applyRootTheme(theme) {
+                const properties = maTheming.getCssVariables(theme);
+                properties.push(
                     {name: '--ma-font-default', value: this.fonts.default},
                     {name: '--ma-font-paragraph', value: this.fonts.paragraph},
                     {name: '--ma-font-heading', value: this.fonts.heading},
                     {name: '--ma-font-code', value: this.fonts.code}
-                ];
+                );
                 
-                allHues.map(x => {
-                    const color = this.getThemeColor(Object.assign({theme}, x));
-                    return Object.assign({}, color, x);
-                }).forEach(color => {
-                    const value = color.value.join(',');
-                    const contrast = color.contrast.join(',');
-                    properties.push({name: `--ma-${color.colorString}`, value: `rgb(${value})`});
-                    properties.push({name: `--ma-${color.colorString}-contrast`, value: `rgba(${contrast})`});
-                    properties.push({name: `--ma-${color.colorString}-value`, value: value});
-                });
-                
-                foregroundHues.forEach(hue => {
-                    properties.push({name: `--ma-foreground-${hue}`, value: $mdTheming.THEMES[theme].foregroundPalette[hue]});
-                });
-                properties.push({name: '--ma-foreground-value', value: $mdTheming.THEMES[theme].isDark ? '255,255,255' : '0,0,0'});
-                
-                return properties;
-            }
-            
-            themeElement(element, theme = this.activeTheme) {
-                if (theme) {
-                    const properties = this.getCssVariables(theme);
-                    properties.forEach(property => {
-                        element.style.setProperty(property.name, property.value);
-                    });
-                } else {
-                    // remove theme
-                    element.style.removeProperty('--ma-font-default');
-                    element.style.removeProperty('--ma-font-paragraph');
-                    element.style.removeProperty('--ma-font-heading');
-                    element.style.removeProperty('--ma-font-code');
-                    allHues.forEach(x => {
-                        element.style.removeProperty(`--ma-${x.colorString}`);
-                        element.style.removeProperty(`--ma-${x.colorString}-contrast`);
-                        element.style.removeProperty(`--ma-${x.colorString}-value`);
-                    });
-                    foregroundHues.forEach(hue => {
-                        element.style.removeProperty(`--ma-foreground-${hue}`);
-                    });
-                    element.style.removeProperty(`--ma-foreground-value`);
-                }
-                this.setThemeClasses(element, theme);
-            }
-            
-            applyRootTheme(theme = this.activeTheme) {
-                const properties = this.getCssVariables(theme);
                 const styles = ':root {\n' + properties.map(p => `${p.name}: ${p.value};`).join('\n') + '\n}';
                 maCssInjector.injectStyle(styles, 'ma-variables', 'head > meta[name="user-styles-after-here"]', true);
+    
+                maTheming.setThemeClasses($window.document.body, theme);
+            }
 
-                this.setThemeClasses($window.document.body, theme);
-            }
-            
-            setThemeClasses(element, theme = this.activeTheme) {
-                element.classList.remove('ma-theme-dark');
-                element.classList.remove('ma-theme-light');
-                if (theme) {
-                    const themeObj = $mdTheming.THEMES[theme];
-                    element.classList.add(themeObj.isDark ? 'ma-theme-dark' : 'ma-theme-light');
-                }
-            }
-            
             setMetaTag(name, content) {
                 const head = $window.document.querySelector('head');
                 let metaTagElement = head.querySelector(`meta[name="${name}"]`);
@@ -338,7 +256,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 }
                 metaTagElement.setAttribute('content', content);
             }
-            
+
             addThemeColorMetaTags() {
                 /* jshint camelcase: false */
                 let themeColor = this.pwaManifest.theme_color;

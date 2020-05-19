@@ -10,16 +10,16 @@ const palettes = ['primary', 'accent', 'warn', 'background'];
 
 class ThemePreviewController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', 'maUiSettings']; }
+    static get $inject() { return ['$element', 'maTheming']; }
     
-    constructor($element, maUiSettings) {
+    constructor($element, maTheming) {
         this.$element = $element;
-        this.maUiSettings = maUiSettings;
+        this.maTheming = maTheming;
     }
     
     $onChanges(changes) {
         if (changes.theme && this.theme) {
-            this.maUiSettings.themeElement(this.$element[0], this.theme);
+            this.maTheming.themeElement(this.$element[0], this.theme);
         }
     }
 }
