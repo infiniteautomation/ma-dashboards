@@ -40,6 +40,7 @@ import moment from 'moment-timezone';
  * @param {expression=} to Should evaluate to a date, moment or time-stamp. To time used for filtering by date range.
  * @param {boolean=} [date-filter=false] Turn on date filtering of events. Set value to `true` and use with from/to attribute to use.
  * @param {string=} timezone Display the timestamps in this timezone
+ * @param {string=} date-format Moment.js format string used to format dates/times
 
  *
  * @usage
@@ -362,6 +363,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             if (this.timezone) {
                 m.tz(this.timezone);
             }
+            if (this.dateFormat) {
+                return m.format(this.dateFormat);
+            }
             return m.format(mangoDateFormats.shortDateTimeSeconds);
         }
 
@@ -490,7 +494,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             hideLink: '@?',
             hideAckButton: '<?',
             hideCsvButton: '<?',
-            sourceId: '<?'
+            sourceId: '<?',
+            dateFormat: '@?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',
