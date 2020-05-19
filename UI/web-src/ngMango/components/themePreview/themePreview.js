@@ -26,7 +26,7 @@ class ThemePreviewController {
 
 export default {
     bindings: {
-        theme: '<'
+        theme: '@'
     },
     controller: ThemePreviewController,
     template: themePreviewTemplate

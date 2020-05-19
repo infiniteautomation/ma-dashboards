@@ -25,7 +25,7 @@
                     <md-select name="defaultTheme" ng-model="$ctrl.uiSettings.defaultTheme" class="ma-theme-select">
                         <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes track by theme.name" ng-value="theme.name">
                             <span ng-bind="theme.name" flex></span>
-                            <ma-theme-preview theme="theme.name"></ma-theme-preview>
+                            <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
                         </md-option>
                     </md-select>
                 </md-input-container>
@@ -47,7 +47,7 @@
                     <md-select name="darkTheme" ng-model="$ctrl.uiSettings.darkTheme" class="ma-theme-select">
                         <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark:true} track by theme.name" ng-value="theme.name">
                             <span ng-bind="theme.name" flex></span>
-                            <ma-theme-preview theme="theme.name"></ma-theme-preview>
+                            <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
                         </md-option>
                     </md-select>
                 </md-input-container>
@@ -69,7 +69,7 @@
                     <md-select name="lightTheme" ng-model="$ctrl.uiSettings.lightTheme" class="ma-theme-select">
                         <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark:false} track by theme.name" ng-value="theme.name">
                             <span ng-bind="theme.name" flex></span>
-                            <ma-theme-preview theme="theme.name"></ma-theme-preview>
+                            <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
                         </md-option>
                     </md-select>
                 </md-input-container>
