@@ -118,7 +118,8 @@
         "hue-1": "A100",
         "hue-2": "A200",
         "hue-3": "A700"
-      }
+      },
+      "dark": false
     },
     "mangoDark": {
       "primaryPalette": "mango-blue",

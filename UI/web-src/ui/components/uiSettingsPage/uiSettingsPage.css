@@ -8,6 +8,8 @@ ma-ui-settings-page table.md-table td.md-cell md-input-container {
 	display: flex;
 }
 
-ma-ui-settings-page table.md-table td.md-cell md-switch {
-	display: inline;
+ma-ui-settings-page md-select.ma-theme-select .md-select-value .md-text,
+.ma-theme-select-option .md-text {
+    flex-grow: 1;
+    display: flex;
 }

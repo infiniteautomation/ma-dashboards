@@ -15,18 +15,22 @@
             <div>
                 <md-checkbox name="usePreferredColorScheme" ng-model="$ctrl.uiSettings.usePreferredColorScheme">
                     <span ma-tr="ui.app.usePreferredColorScheme"></span>
+                    <md-tooltip><span ma-tr="ui.app.usePreferredColorSchemeHint"></span></md-tooltip>
                 </md-checkbox>
             </div>
             
             <div layout layout-wrap>
-                <md-input-container flex="100" flex-gt-md="50" layout="column" ng-if-start="!$ctrl.uiSettings.usePreferredColorScheme">
+                <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.defaultColorScheme"></label>
-                    <md-select name="defaultTheme" ng-model="$ctrl.uiSettings.defaultTheme">
-                        <md-option ng-repeat="theme in $ctrl.themes" ng-value="theme.name" ng-bind="theme.name"></md-option>
+                    <md-select name="defaultTheme" ng-model="$ctrl.uiSettings.defaultTheme" class="ma-theme-select">
+                        <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes track by theme.name" ng-value="theme.name">
+                            <span ng-bind="theme.name" flex></span>
+                            <ma-theme-preview theme="theme.name"></ma-theme-preview>
+                        </md-option>
                     </md-select>
                 </md-input-container>
-        
-                <md-input-container flex="100" flex-gt-md="50" ng-if-end>
+
+                <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.logoSource"></label>
                     <input name="logoSrc" ng-model="$ctrl.uiSettings.logoSrc" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
@@ -38,15 +42,18 @@
     				</md-button>
                 </md-input-container>
  
-                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.uiSettings.usePreferredColorScheme">
-                    <label ma-tr="ui.app.preferredDarkTheme"></label>
-                    <md-select name="darkTheme" ng-model="$ctrl.uiSettings.darkTheme">
-                        <md-option ng-repeat="theme in $ctrl.themes | filter:{dark:true}" ng-value="theme.name" ng-bind="theme.name"></md-option>
+                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.uiSettings.usePreferredColorScheme && !$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].dark">
+                    <label ma-tr="ui.app.alternateThemeDark"></label>
+                    <md-select name="darkTheme" ng-model="$ctrl.uiSettings.darkTheme" class="ma-theme-select">
+                        <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark:true} track by theme.name" ng-value="theme.name">
+                            <span ng-bind="theme.name" flex></span>
+                            <ma-theme-preview theme="theme.name"></ma-theme-preview>
+                        </md-option>
                     </md-select>
                 </md-input-container>
                         
-                <md-input-container flex="100" flex-gt-md="50">
-                    <label ma-tr="ui.app.darkLogoUrl"></label>
+                <md-input-container flex="100" flex-gt-md="50" ng-if-end>
+                    <label ma-tr="ui.app.alternateLogoDark"></label>
                     <input name="darkLogo" ng-model="$ctrl.uiSettings.darkLogo" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
                             ma-choose-file="$ctrl.uiSettings.darkLogo = $url; $ctrl.form.darkLogo.$setDirty()"
@@ -57,15 +64,18 @@
                     </md-button>
                 </md-input-container>
                 
-                <md-input-container flex="100" flex-gt-md="50">
-                    <label ma-tr="ui.app.preferredLightTheme"></label>
-                    <md-select name="lightTheme" ng-model="$ctrl.uiSettings.lightTheme">
-                        <md-option ng-repeat="theme in $ctrl.themes | filter:{dark:false}" ng-value="theme.name" ng-bind="theme.name"></md-option>
+                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.uiSettings.usePreferredColorScheme && $ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].dark">
+                    <label ma-tr="ui.app.alternateThemeLight"></label>
+                    <md-select name="lightTheme" ng-model="$ctrl.uiSettings.lightTheme" class="ma-theme-select">
+                        <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark:false} track by theme.name" ng-value="theme.name">
+                            <span ng-bind="theme.name" flex></span>
+                            <ma-theme-preview theme="theme.name"></ma-theme-preview>
+                        </md-option>
                     </md-select>
                 </md-input-container>
                       
                 <md-input-container flex="100" flex-gt-md="50" ng-if-end>
-                    <label ma-tr="ui.app.lightLogoUrl"></label>
+                    <label ma-tr="ui.app.alternateLogoLight"></label>
                     <input name="lightLogo" ng-model="$ctrl.uiSettings.lightLogo" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
                             ma-choose-file="$ctrl.uiSettings.lightLogo = $url; $ctrl.form.lightLogo.$setDirty()"

@@ -29,6 +29,10 @@ ma-drop-down-button > div {
 	flex-grow: 1;
 }
 
+ma-drop-down-button > md-icon {
+    user-select: none;
+}
+
 ma-drop-down-button:not([disabled]),
 ma-drop-down-button:not([disabled]) > md-icon {
 	cursor: pointer;

@@ -1,0 +1,10 @@
+ma-theme-preview {
+    display: flex;
+    align-items: center;
+}
+
+ma-theme-preview .ma-theme-preview-color {
+    height: 1em;
+    width: 2em;
+    flex-grow: 1;
+}
