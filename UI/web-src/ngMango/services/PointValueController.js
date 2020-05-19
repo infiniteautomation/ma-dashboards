@@ -129,7 +129,7 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
             }
             
             // sets the value, convertedValue and renderedValue on the point from the websocket payload
-            this.point.websocketHandler(payload, event.type);
+            this.point.websocketHandler(payload, event && event.type);
             this.valueChangeHandler();
         }
         
