@@ -27,8 +27,8 @@ function discardCheckFactory($rootScope, $window, maTranslate) {
         stateChangeStart(event) {
             if (event.defaultPrevented) return;
             if (this.canDiscard()) {
-                if (typeof this.changesDiscarded === 'function') {
-                    this.changesDiscarded();
+                if (typeof this.onDiscard === 'function') {
+                    this.onDiscard();
                 }
             } else {
                 event.preventDefault();

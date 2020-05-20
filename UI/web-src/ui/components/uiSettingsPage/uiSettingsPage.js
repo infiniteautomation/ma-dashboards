@@ -25,11 +25,7 @@ class UiSettingsPageController {
             $scope: this.$scope,
             isDirty: () => this.form && this.form.$dirty
         });
-        
-        this.themes = Object.keys(this.uiSettings.themes).map(name => {
-            return Object.assign({name}, this.uiSettings.themes[name]);
-        });
-        
+
         this.get();
     }
     
@@ -41,12 +37,14 @@ class UiSettingsPageController {
         }, error => {
             this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
         }).finally(() => delete this.promise);
+        return this.promise;
     }
     
     get(event) {
         this.promise = this.uiSettings.getStore().then(store => {
             this.setStore(store);
         }).finally(() => delete this.promise);
+        return this.promise;
     }
 
     resetToDefault(event) {
@@ -58,12 +56,17 @@ class UiSettingsPageController {
                 this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
             });
         }, error => {}).finally(() => delete this.promise);
+        return this.promise;
     }
     
     setStore(store) {
         this.store = store;
         this.data = store.jsonData;
         this.form.$setPristine();
+
+        this.themes = Object.keys(this.data.themes).map(name => {
+            return Object.assign({name}, this.data.themes[name]);
+        });
     }
 }
 

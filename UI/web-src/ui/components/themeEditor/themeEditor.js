@@ -1,85 +1,96 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2020 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
-import uiSettingsPageTemplate from './themeEditor.html';
+import themeEditorTemplate from './themeEditor.html';
 import './themeEditor.css';
 
-class UiSettingsPageController {
+const palettes = ['primary', 'accent', 'warn', 'background'];
+
+class ThemeEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper', 'maEvents']; }
+    static get $inject() { return ['maUiSettings', '$scope', 'maDialogHelper', 'maDiscardCheck', '$state', '$stateParams', '$mdTheming']; }
     
-    constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper, Events) {
+    constructor(maUiSettings, $scope, maDialogHelper, maDiscardCheck, $state, $stateParams, $mdTheming) {
         this.uiSettings = maUiSettings;
         this.$scope = $scope;
-        this.$window = $window;
-        this.maTranslate = maTranslate;
         this.maDialogHelper = maDialogHelper;
+        this.maDiscardCheck = maDiscardCheck;
+        this.$state = $state;
+        this.$stateParams = $stateParams;
+        this.$mdTheming = $mdTheming;
         
-        this.eventLevels = Events.levels.filter(l => l.key !== 'NONE' && l.key !== 'IGNORE');
+        this.palettes = palettes;
     }
-    
-    $onInit() {
-        this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-            if (event.defaultPrevented) return;
-            
-            if (this.form.$dirty) {
-                if (!this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'))) {
-                    event.preventDefault();
-                    return;
-                }
-            }
-            
-            this.uiSettings.reset();
-        });
 
-        const oldUnload = this.$window.onbeforeunload;
-        this.$window.onbeforeunload = (event) => {
-            if (this.form.$dirty) {
-                const text = this.maTranslate.trSync('ui.app.discardUnsavedChanges');
-                event.returnValue = text;
-                return text;
-            }
-        };
+    $onInit() {
+        this.discardCheck = new this.maDiscardCheck({
+            $scope: this.$scope,
+            isDirty: () => this.form && this.form.$dirty,
+            onDiscard: () => this.onDiscard() // TODO
+        });
         
-        this.$scope.$on('$destroy', () => {
-            this.$window.onbeforeunload = oldUnload;
+        this.get().then(() => {
+            let theme = this.$stateParams.theme && this.themes.find(t => t.name === this.$stateParams.theme);
+            if (!theme) {
+                theme = this.themes[0];
+            }
+            this.editTheme(theme);
         });
     }
     
     save(event) {
-        this.uiSettings.save().then(() => {
-            this.form.$setPristine();
+        this.promise = this.uiSettings.saveStore(this.store).then(store => {
+            this.setStore(store);
 
             this.maDialogHelper.toast('ui.app.uiSettingsSaved');
         }, error => {
             this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
-        });
+        }).finally(() => delete this.promise);
+        return this.promise;
     }
     
-    revert(event) {
-        this.uiSettings.reset();
-        this.form.$setPristine();
+    get(event) {
+        this.promise = this.uiSettings.getStore().then(store => {
+            this.setStore(store);
+        }).finally(() => delete this.promise);
+        return this.promise;
     }
 
     resetToDefault(event) {
-        this.maDialogHelper.confirm(event, 'ui.app.confirmResetUiSettings').then(() => {
-            this.uiSettings.delete().then(() => {
-                this.form.$setPristine();
-                
+        this.promise = this.maDialogHelper.confirm(event, 'ui.app.confirmResetUiSettings').then(() => {
+            return this.uiSettings.deleteStore(this.store).then(store => {
+                this.setStore(store);
                 this.maDialogHelper.toast('ui.app.uiSettingsSaved');
             }, error => {
                 this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
             });
-        }, angular.noop);
+        }, error => {}).finally(() => delete this.promise);
+        return this.promise;
+    }
+    
+    setStore(store) {
+        this.store = store;
+        this.data = store.jsonData;
+        this.form.$setPristine();
+
+        this.themes = Object.keys(this.data.themes).map(name => {
+            return Object.assign({name}, this.data.themes[name]);
+        });
+    }
+    
+    editTheme(theme) {
+        this.theme = theme;
+        this.$state.go('.', {theme: theme.name}, {location: 'replace', notify: false});
+    }
+    
+    getPalettes() {
+        return this.$mdTheming.PALETTES;
     }
 }
 
 export default {
-    controller: UiSettingsPageController,
-    template: uiSettingsPageTemplate
+    controller: ThemeEditorController,
+    template: themeEditorTemplate
 };
-
-
