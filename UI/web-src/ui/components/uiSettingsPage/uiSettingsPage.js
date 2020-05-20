@@ -3,60 +3,39 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import uiSettingsPageTemplate from './uiSettingsPage.html';
 import './uiSettingsPage.css';
 
 class UiSettingsPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper', 'maEvents', 'MA_DATE_FORMATS']; }
-    constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper, Events, MA_DATE_FORMATS) {
+    static get $inject() { return ['maUiSettings', '$scope', 'maDialogHelper', 'maEvents', 'MA_DATE_FORMATS', 'maDiscardCheck']; }
+    constructor(maUiSettings, $scope, maDialogHelper, Events, MA_DATE_FORMATS, maDiscardCheck) {
         this.uiSettings = maUiSettings;
         this.$scope = $scope;
-        this.$window = $window;
-        this.maTranslate = maTranslate;
         this.maDialogHelper = maDialogHelper
+        this.maDiscardCheck = maDiscardCheck;
         
         this.dateFormats = Object.keys(MA_DATE_FORMATS).filter(k => k !== 'iso' && k !== 'isoUtc')
         this.eventLevels = Events.levels.filter(l => l.key !== 'NONE' && l.key !== 'IGNORE');
         this.initDate = new Date();
     }
     
-    $onInit() {
-        this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-            if (event.defaultPrevented) return;
-            
-            if (this.form.$dirty) {
-                if (!this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'))) {
-                    event.preventDefault();
-                    return;
-                }
-            }
-            
-            this.uiSettings.reset();
-        });
-
-        const oldUnload = this.$window.onbeforeunload;
-        this.$window.onbeforeunload = (event) => {
-            if (this.form.$dirty) {
-                const text = this.maTranslate.trSync('ui.app.discardUnsavedChanges');
-                event.returnValue = text;
-                return text;
-            }
-        };
-        
-        this.$scope.$on('$destroy', () => {
-            this.$window.onbeforeunload = oldUnload;
+    $onInit() {        
+        this.discardCheck = new this.maDiscardCheck({
+            $scope: this.$scope,
+            isDirty: () => this.form && this.form.$dirty
         });
         
         this.themes = Object.keys(this.uiSettings.themes).map(name => {
             return Object.assign({name}, this.uiSettings.themes[name]);
         });
+        
+        this.get();
     }
     
     save(event) {
-        this.uiSettings.save().then(() => {
-            this.form.$setPristine();
+        this.uiSettings.saveStore(this.store).then(store => {
+            this.setStore(store);
 
             this.maDialogHelper.toast('ui.app.uiSettingsSaved');
         }, error => {
@@ -64,21 +43,28 @@ class UiSettingsPageController {
         });
     }
     
-    revert(event) {
-        this.uiSettings.reset();
-        this.form.$setPristine();
+    get(event) {
+        this.uiSettings.getStore().then(store => {
+            this.setStore(store);
+        });
     }
 
     resetToDefault(event) {
         this.maDialogHelper.confirm(event, 'ui.app.confirmResetUiSettings').then(() => {
-            this.uiSettings.delete().then(() => {
-                this.form.$setPristine();
+            this.uiSettings.deleteStore(this.store).then(store => {
+                this.setStore(store);
                 
                 this.maDialogHelper.toast('ui.app.uiSettingsSaved');
             }, error => {
                 this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
             });
-        }, angular.noop);
+        }, error => {});
+    }
+    
+    setStore(store) {
+        this.store = store;
+        this.data = store.jsonData;
+        this.form.$setPristine();
     }
 }
 
@@ -86,5 +72,3 @@ export default {
     controller: UiSettingsPageController,
     template: uiSettingsPageTemplate
 };
-
-

@@ -101,15 +101,17 @@ function cssInjectorFactory($window) {
             if (trackingName) {
                 this.removeStyles(trackingName);
             }
-    
-            const linkElement = document.createElement('link');
-            linkElement.setAttribute('rel', 'stylesheet');
-            linkElement.setAttribute('href', href);
-            if (trackingName) {
-                linkElement.setAttribute('ma-style-name', trackingName);
-            }
             
-            this.insertElement(linkElement, selector, insertBefore);
+            if (href) {
+                const linkElement = document.createElement('link');
+                linkElement.setAttribute('rel', 'stylesheet');
+                linkElement.setAttribute('href', href);
+                if (trackingName) {
+                    linkElement.setAttribute('ma-style-name', trackingName);
+                }
+                
+                this.insertElement(linkElement, selector, insertBefore);
+            }
         }
     
         injectStyle(content, trackingName, selector, insertBefore) {
@@ -117,13 +119,15 @@ function cssInjectorFactory($window) {
                 this.removeStyles(trackingName);
             }
     
-            const styleElement = document.createElement('style');
-            if (trackingName) {
-                styleElement.setAttribute('ma-style-name', trackingName);
+            if (content) {
+                const styleElement = document.createElement('style');
+                if (trackingName) {
+                    styleElement.setAttribute('ma-style-name', trackingName);
+                }
+                styleElement.appendChild(document.createTextNode(content));
+                
+                this.insertElement(styleElement, selector, insertBefore);
             }
-            styleElement.appendChild(document.createTextNode(content));
-            
-            this.insertElement(styleElement, selector, insertBefore);
         }
         
         insertElement(element, selector, insertBefore) {

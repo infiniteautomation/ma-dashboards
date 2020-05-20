@@ -1,8 +1,8 @@
 <form name="$ctrl.form">
     <div layout layout-align="start end" layout-wrap>
-      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
-      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.uiSettings.userSettingsStore.jsonData"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="!$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
+      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="!$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
     
     <md-card>
@@ -13,7 +13,7 @@
         </md-card-title>
         <md-card-content>
             <div>
-                <md-checkbox name="usePreferredColorScheme" ng-model="$ctrl.uiSettings.usePreferredColorScheme">
+                <md-checkbox name="usePreferredColorScheme" ng-model="$ctrl.data.usePreferredColorScheme">
                     <span ma-tr="ui.app.usePreferredColorScheme"></span>
                     <md-tooltip><span ma-tr="ui.app.usePreferredColorSchemeHint"></span></md-tooltip>
                 </md-checkbox>
@@ -22,7 +22,7 @@
             <div layout layout-wrap>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.defaultColorScheme"></label>
-                    <md-select name="defaultTheme" ng-model="$ctrl.uiSettings.defaultTheme" class="ma-theme-select">
+                    <md-select name="defaultTheme" ng-model="$ctrl.data.defaultTheme" class="ma-theme-select">
                         <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes track by theme.name" ng-value="theme.name">
                             <span ng-bind="theme.name" flex></span>
                             <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
@@ -32,19 +32,19 @@
 
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.logoSource"></label>
-                    <input name="logoSrc" ng-model="$ctrl.uiSettings.logoSrc" ma-empty-input ng-model-options="{debounce: 500}">
+                    <input name="logoSrc" ng-model="$ctrl.data.logoSrc" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
-                    		ma-choose-file="$ctrl.uiSettings.logoSrc = $url; $ctrl.form.logoSrc.$setDirty()"
-                    		ma-choose-file-selected="$ctrl.uiSettings.logoSrc"
+                    		ma-choose-file="$ctrl.data.logoSrc = $url; $ctrl.form.logoSrc.$setDirty()"
+                    		ma-choose-file-selected="$ctrl.data.logoSrc"
                     		ma-choose-file-options="{mimeTypes: 'image/*', extensions: 'png,jpg,jpeg,svg', preview:true, store:'public'}">
     				  	<md-icon>attachment</md-icon>
     				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
     				</md-button>
                 </md-input-container>
  
-                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.uiSettings.usePreferredColorScheme && !$ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].dark">
+                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.data.usePreferredColorScheme && !$ctrl.data.themes[$ctrl.data.defaultTheme].dark">
                     <label ma-tr="ui.app.alternateThemeDark"></label>
-                    <md-select name="darkTheme" ng-model="$ctrl.uiSettings.darkTheme" class="ma-theme-select">
+                    <md-select name="darkTheme" ng-model="$ctrl.data.darkTheme" class="ma-theme-select">
                         <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark:true} track by theme.name" ng-value="theme.name">
                             <span ng-bind="theme.name" flex></span>
                             <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
@@ -54,19 +54,19 @@
                         
                 <md-input-container flex="100" flex-gt-md="50" ng-if-end>
                     <label ma-tr="ui.app.alternateLogoDark"></label>
-                    <input name="darkLogo" ng-model="$ctrl.uiSettings.darkLogo" ma-empty-input ng-model-options="{debounce: 500}">
+                    <input name="darkLogo" ng-model="$ctrl.data.darkLogo" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
-                            ma-choose-file="$ctrl.uiSettings.darkLogo = $url; $ctrl.form.darkLogo.$setDirty()"
-                            ma-choose-file-selected="$ctrl.uiSettings.darkLogo"
+                            ma-choose-file="$ctrl.data.darkLogo = $url; $ctrl.form.darkLogo.$setDirty()"
+                            ma-choose-file-selected="$ctrl.data.darkLogo"
                             ma-choose-file-options="{mimeTypes: 'image/*', extensions: 'png,jpg,jpeg,svg', preview:true, store:'public'}">
                         <md-icon>attachment</md-icon>
                         <md-tooltip ma-tr="common.chooseFile"></md-tooltip>
                     </md-button>
                 </md-input-container>
                 
-                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.uiSettings.usePreferredColorScheme && $ctrl.uiSettings.themes[$ctrl.uiSettings.defaultTheme].dark">
+                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.data.usePreferredColorScheme && $ctrl.data.themes[$ctrl.data.defaultTheme].dark">
                     <label ma-tr="ui.app.alternateThemeLight"></label>
-                    <md-select name="lightTheme" ng-model="$ctrl.uiSettings.lightTheme" class="ma-theme-select">
+                    <md-select name="lightTheme" ng-model="$ctrl.data.lightTheme" class="ma-theme-select">
                         <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark:false} track by theme.name" ng-value="theme.name">
                             <span ng-bind="theme.name" flex></span>
                             <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
@@ -76,10 +76,10 @@
 
                 <md-input-container flex="100" flex-gt-md="50" ng-if-end>
                     <label ma-tr="ui.app.alternateLogoLight"></label>
-                    <input name="lightLogo" ng-model="$ctrl.uiSettings.lightLogo" ma-empty-input ng-model-options="{debounce: 500}">
+                    <input name="lightLogo" ng-model="$ctrl.data.lightLogo" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
-                            ma-choose-file="$ctrl.uiSettings.lightLogo = $url; $ctrl.form.lightLogo.$setDirty()"
-                            ma-choose-file-selected="$ctrl.uiSettings.lightLogo"
+                            ma-choose-file="$ctrl.data.lightLogo = $url; $ctrl.form.lightLogo.$setDirty()"
+                            ma-choose-file-selected="$ctrl.data.lightLogo"
                             ma-choose-file-options="{mimeTypes: 'image/*', extensions: 'png,jpg,jpeg,svg', preview:true, store:'public'}">
                         <md-icon>attachment</md-icon>
                         <md-tooltip ma-tr="common.chooseFile"></md-tooltip>
@@ -106,7 +106,7 @@
                 <div layout>
             	<md-input-container flex="100" flex-gt-md="33">
                     <label ma-tr="ui.app.codeColoring"></label>
-                    <md-select ng-model="$ctrl.uiSettings.codeTheme">
+                    <md-select ng-model="$ctrl.data.codeTheme">
                         <md-option value="ambiance">Ambiance</md-option>
                         <md-option value="chaos">Chaos</md-option>
                         <md-option value="chrome">Chrome</md-option>
@@ -146,7 +146,7 @@
                 </div>
                 <ma-ace-editor style="height: 60px; min-height:60px;"
                     ng-model="codePreview" ng-init="codePreview='&lt;h1&gt;Code Coloring Preview&lt;/h1&gt;
-        &lt;ma-calc input=&quot;points | filter:{name:&lsquo;Real Power &lsquo; + phase + &lsquo; (kW)&lsquo;} | maFirst&quot; output=&quot;power&quot;&gt;&lt;/ma-calc&gt;'" theme="{{$ctrl.uiSettings.codeTheme}}"></ma-ace-editor>
+        &lt;ma-calc input=&quot;points | filter:{name:&lsquo;Real Power &lsquo; + phase + &lsquo; (kW)&lsquo;} | maFirst&quot; output=&quot;power&quot;&gt;&lt;/ma-calc&gt;'" theme="{{$ctrl.data.codeTheme}}"></ma-ace-editor>
             </div>
         </md-card-content>
     </md-card>
@@ -176,10 +176,10 @@
                             </td>
                             <td md-cell>
                                 <md-input-container md-no-float>
-                                    <input name="eventAudioFiles.{{level.key}}" ng-model="$ctrl.uiSettings.eventAudioFiles[level.key]" placeholder="{{'ui.app.audioFile' | maTr}}">
+                                    <input name="eventAudioFiles.{{level.key}}" ng-model="$ctrl.data.eventAudioFiles[level.key]" placeholder="{{'ui.app.audioFile' | maTr}}">
                                     <md-button class="ma-input-button md-icon-button"
-                                            ma-choose-file="$ctrl.uiSettings.eventAudioFiles[level.key] = $url; $ctrl.form['eventAudioFiles[level.key]'].$setDirty()"
-                                            ma-choose-file-selected="$ctrl.uiSettings.eventAudioFiles[level.key]"
+                                            ma-choose-file="$ctrl.data.eventAudioFiles[level.key] = $url; $ctrl.form['eventAudioFiles[level.key]'].$setDirty()"
+                                            ma-choose-file-selected="$ctrl.data.eventAudioFiles[level.key]"
                                             ma-choose-file-options="{mimeTypes: 'audio/*'}">
                                         <md-icon>attachment</md-icon>
                                         <md-tooltip ma-tr="common.chooseFile"></md-tooltip>
@@ -187,10 +187,10 @@
                                 </md-input-container>
                             </td>
                             <td md-cell>
-                                <md-switch ng-model="$ctrl.uiSettings.eventNotify[level.key]"></md-switch>
+                                <md-switch ng-model="$ctrl.data.eventNotify[level.key]"></md-switch>
                             </td>
                             <td md-cell>
-                                <md-switch ng-model="$ctrl.uiSettings.eventReadAloud[level.key]"></md-switch>
+                                <md-switch ng-model="$ctrl.data.eventReadAloud[level.key]"></md-switch>
                             </td>
                         </tr>
                     </tbody>
@@ -209,23 +209,23 @@
             <div layout layout-align="start center" layout-wrap>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.mapsApiKey"></label>
-                    <input ng-model="$ctrl.uiSettings.googleMapsApiKey" ma-empty-input>
+                    <input ng-model="$ctrl.data.googleMapsApiKey" ma-empty-input>
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.googleAnalyticsPropertyId"></label>
-                    <input ng-model="$ctrl.uiSettings.googleAnalyticsPropertyId" ma-empty-input>
+                    <input ng-model="$ctrl.data.googleAnalyticsPropertyId" ma-empty-input>
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.mapboxAccessToken"></label>
-                    <input ng-model="$ctrl.uiSettings.mapboxAccessToken" ma-empty-input>
+                    <input ng-model="$ctrl.data.mapboxAccessToken" ma-empty-input>
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.userModuleUrl"></label>
-                    <input name="userModule" ng-model="$ctrl.uiSettings.userModule" ma-empty-input>
+                    <input name="userModule" ng-model="$ctrl.data.userModule" ma-empty-input>
     
                     <md-button class="ma-input-button md-icon-button"
-                    		ma-choose-file="$ctrl.uiSettings.userModule = $url; $ctrl.form.userModule.$setDirty()"
-                    		ma-choose-file-selected="$ctrl.uiSettings.userModule"
+                    		ma-choose-file="$ctrl.data.userModule = $url; $ctrl.form.userModule.$setDirty()"
+                    		ma-choose-file-selected="$ctrl.data.userModule"
                     		ma-choose-file-options="{mimeTypes: 'application/javascript', extensions: 'js', store:'public'}">
     				  	<md-icon>attachment</md-icon>
     				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
@@ -233,11 +233,11 @@
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.userCssUrl"></label>
-                    <input name="userCss" ng-model="$ctrl.uiSettings.userCss" ma-empty-input>
+                    <input name="userCss" ng-model="$ctrl.data.userCss" ma-empty-input>
     
                     <md-button class="ma-input-button md-icon-button"
-                    		ma-choose-file="$ctrl.uiSettings.userCss = $url; $ctrl.form.userCss.$setDirty()"
-                    		ma-choose-file-selected="$ctrl.uiSettings.userCss"
+                    		ma-choose-file="$ctrl.data.userCss = $url; $ctrl.form.userCss.$setDirty()"
+                    		ma-choose-file-selected="$ctrl.data.userCss"
                     		ma-choose-file-options="{mimeTypes: 'text/css', extensions: 'css', store:'public'}">
     				  	<md-icon>attachment</md-icon>
     				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
@@ -245,7 +245,7 @@
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.pointValuesLimit"></label>
-                    <input ng-model="$ctrl.uiSettings.pointValuesLimit" type="number" min="100" max="100000" step="1">
+                    <input ng-model="$ctrl.data.pointValuesLimit" type="number" min="100" max="100000" step="1">
                 </md-input-container>
             </div>
         </md-card-content>
@@ -261,22 +261,22 @@
             <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.timeouts.xhr"></label>
-                    <input ng-model="$ctrl.uiSettings.timeouts.xhr" type="number" min="0" step="1"
+                    <input ng-model="$ctrl.data.timeouts.xhr" type="number" min="0" step="1"
                         ma-format-value="$Math.floor($value / 1000)" ma-parse-value="$value * 1000">
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.timeouts.pointValues"></label>
-                    <input ng-model="$ctrl.uiSettings.timeouts.pointValues" type="number" min="0" step="1"
+                    <input ng-model="$ctrl.data.timeouts.pointValues" type="number" min="0" step="1"
                         ma-format-value="$Math.floor($value / 1000)" ma-parse-value="$value * 1000">
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.timeouts.websocket"></label>
-                    <input ng-model="$ctrl.uiSettings.timeouts.websocket" type="number" min="0" step="1"
+                    <input ng-model="$ctrl.data.timeouts.websocket" type="number" min="0" step="1"
                         ma-format-value="$Math.floor($value / 1000)" ma-parse-value="$value * 1000">
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.timeouts.websocketRequest"></label>
-                    <input ng-model="$ctrl.uiSettings.timeouts.websocketRequest" type="number" min="0" step="1"
+                    <input ng-model="$ctrl.data.timeouts.websocketRequest" type="number" min="0" step="1"
                         ma-format-value="$Math.floor($value / 1000)" ma-parse-value="$value * 1000">
                 </md-input-container>
             </div>
@@ -297,8 +297,8 @@
             <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container ma-date-formats-container">
                 <md-input-container flex="100" flex-gt-md="50" ng-repeat="dateFormat in $ctrl.dateFormats track by dateFormat">
                     <label ma-tr="ui.settings.dateFormats.{{dateFormat}}"></label>
-                    <input name="dateFormats.{{dateFormat}}" ng-model="$ctrl.uiSettings.dateFormats[dateFormat]" required>
-                    <div class="ma-hint" ma-tr="ui.settings.dateFormatsExample" ma-tr-args="[($ctrl.initDate | maDate:$ctrl.uiSettings.dateFormats[dateFormat])]"></div>
+                    <input name="dateFormats.{{dateFormat}}" ng-model="$ctrl.data.dateFormats[dateFormat]" required>
+                    <div class="ma-hint" ma-tr="ui.settings.dateFormatsExample" ma-tr-args="[($ctrl.initDate | maDate:$ctrl.data.dateFormats[dateFormat])]"></div>
                     <div ng-messages="$ctrl.form['dateFormats.' + dateFormat].$error">
                         <div ng-message="required" ma-tr="validate.required"></div>
                     </div>
@@ -320,7 +320,7 @@
             <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.pwaSettings.automaticName"></label>
-                    <md-select ng-model="$ctrl.uiSettings.pwaAutomaticName">
+                    <md-select ng-model="$ctrl.data.pwaAutomaticName">
                         <md-option ng-value="::null" ma-tr="ui.app.pwaSettings.automaticName.disable"></md-option>
                         <md-option ng-value="::'AUTO'" ma-tr="ui.app.pwaSettings.automaticName.auto"></md-option>
                         <md-option ng-value="::'INSTANCE_DESCRIPTION'" ma-tr="ui.app.pwaSettings.automaticName.instanceDescription"></md-option>
@@ -328,28 +328,28 @@
                     </md-select>
                 </md-input-container>
                 <div flex="100" flex-gt-md="50">
-                    <md-checkbox class="ma-input-container-height" ng-model="$ctrl.uiSettings.pwaUseThemeColors" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"><span ma-tr="ui.app.pwaSettings.useThemeColors"></span></md-checkbox>
+                    <md-checkbox class="ma-input-container-height" ng-model="$ctrl.data.pwaUseThemeColors" ng-change="$ctrl.data.addThemeColorMetaTags()"><span ma-tr="ui.app.pwaSettings.useThemeColors"></span></md-checkbox>
                 </div>
-                <md-input-container ng-if-start="!$ctrl.uiSettings.pwaAutomaticName" flex="100" flex-gt-md="50">
+                <md-input-container ng-if-start="!$ctrl.data.pwaAutomaticName" flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.pwaSettings.name"></label>
-                    <input ng-model="$ctrl.uiSettings.pwaManifest.name">
+                    <input ng-model="$ctrl.data.pwaManifest.name">
                 </md-input-container>
                 <md-input-container ng-if-end flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.pwaSettings.shortName"></label>
-                    <input ng-model="$ctrl.uiSettings.pwaManifest.short_name">
+                    <input ng-model="$ctrl.data.pwaManifest.short_name">
                 </md-input-container>
-                <div ng-if-start="!$ctrl.uiSettings.pwaUseThemeColors" flex="100" flex-gt-md="50" layout layout-align="start center">
-                    <ma-color-picker ng-model="$ctrl.uiSettings.pwaManifest.theme_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"></ma-color-picker> 
+                <div ng-if-start="!$ctrl.data.pwaUseThemeColors" flex="100" flex-gt-md="50" layout layout-align="start center">
+                    <ma-color-picker ng-model="$ctrl.data.pwaManifest.theme_color" ng-change="$ctrl.data.addThemeColorMetaTags()"></ma-color-picker> 
                     <md-input-container flex>
                         <label ma-tr="ui.app.pwaSettings.themeColor"></label>
-                        <input ng-model="$ctrl.uiSettings.pwaManifest.theme_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()">
+                        <input ng-model="$ctrl.data.pwaManifest.theme_color" ng-change="$ctrl.data.addThemeColorMetaTags()">
                     </md-input-container>
                 </div>
                 <div ng-if-end flex="100" flex-gt-md="50" layout layout-align="start center">
-                    <ma-color-picker ng-model="$ctrl.uiSettings.pwaManifest.background_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()"></ma-color-picker> 
+                    <ma-color-picker ng-model="$ctrl.data.pwaManifest.background_color" ng-change="$ctrl.data.addThemeColorMetaTags()"></ma-color-picker> 
                     <md-input-container flex>
                         <label ma-tr="ui.app.pwaSettings.backgroundColor"></label>
-                        <input ng-model="$ctrl.uiSettings.pwaManifest.background_color" ng-change="$ctrl.uiSettings.addThemeColorMetaTags()">
+                        <input ng-model="$ctrl.data.pwaManifest.background_color" ng-change="$ctrl.data.addThemeColorMetaTags()">
                     </md-input-container>
                 </div>
             </div>
@@ -373,11 +373,11 @@
             <div layout layout-align="start center" layout-wrap>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="login.userId"></label>
-                    <input ng-model="$ctrl.uiSettings.autoLoginUsername" ma-empty-input>
+                    <input ng-model="$ctrl.data.autoLoginUsername" ma-empty-input>
                 </md-input-container>
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="login.password"></label>
-                    <input ng-model="$ctrl.uiSettings.autoLoginPassword" ma-empty-input>
+                    <input ng-model="$ctrl.data.autoLoginPassword" ma-empty-input>
                 </md-input-container>
             </div>
         	<div><em ma-tr="ui.app.autoLoginTestManually"></em></div>
@@ -385,8 +385,8 @@
     </md-card>
 
     <div layout layout-align="start end" layout-wrap>
-      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="$ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
-      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.uiSettings.userSettingsStore.jsonData"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="!$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
+      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="!$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
 </form>

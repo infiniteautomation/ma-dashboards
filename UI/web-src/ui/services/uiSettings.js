@@ -86,11 +86,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             maUtil,
             maTheming) {
 
-        if (MA_UI_SETTINGS.userCss) {
-            // inject after <meta name="user-styles-after-here">
-            maCssInjector.injectLink(MA_UI_SETTINGS.userCss, 'userCss', 'head > meta[name="user-styles-after-here"]');
-        }
-        
+        // TODO Mango 4.0 check if still needed
         // contains fix for https://github.com/angular/material/issues/10516
         const userAgent = $window.navigator.userAgent;
         if (userAgent.indexOf('Mac OS X') >= 0 && userAgent.indexOf('Safari/') >= 0 &&
@@ -100,20 +96,10 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             const safariCss = import(/* webpackChunkName: "ui.safari" */ '../styles/safari.css');
         }
 
-        const excludeProperties = ['userSettingsStore', 'activeTheme', 'userModuleName', 'mangoModuleNames', 'activeThemeObj', 'themeLogo'];
-        
         class UiSettings {
             constructor() {
                 angular.extend(this, angular.copy(MA_UI_SETTINGS));
 
-                this.userSettingsStore = new JsonStore();
-                this.userSettingsStore.name = 'UI Settings';
-                this.userSettingsStore.xid = MA_UI_SETTINGS_XID;
-                this.userSettingsStore.jsonData = deepDiff(this, defaultUiSettings, excludeProperties);
-                this.userSettingsStore.publicData = true;
-                this.userSettingsStore.readPermission = '';
-                this.userSettingsStore.editPermission = MA_UI_EDIT_SETTINGS_PERMISSION;
-                
                 // watch for changes to the user's preferred color scheme
                 if (typeof $window.matchMedia === 'function') {
                     $window.matchMedia('(prefers-color-scheme: light), (prefers-color-scheme: no-preference)').addEventListener('change', event => {
@@ -123,45 +109,52 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     });
                 }
                 
+                JsonStore.notificationManager.subscribeToXids([MA_UI_SETTINGS_XID], (event, item) => {
+                    // both of these conditions should always be true
+                    if (event.name === 'update' && item.xid === MA_UI_SETTINGS_XID) {
+                        this.applyJsonData(item.jsonData);
+                    }
+                }, $rootScope);
+                
+                this.applyUiSettings();
+            }
+            
+            applyJsonData(data) {
+                Object.assign(this, angular.copy(defaultUiSettings));
+                angular.merge(this, data);
                 this.applyUiSettings();
             }
 
-            save() {
-                if (this.pwaUseThemeColors) {
-                    /* jshint camelcase: false */
-                    this.pwaManifest.theme_color = $mdColors.getThemeColor('primary-800');
-                    this.pwaManifest.background_color = $mdColors.getThemeColor('background');
-                }
+            saveStore(store) {
+                const data = store.jsonData;
                 
-                const differences = deepDiff(this, defaultUiSettings, excludeProperties);
-                this.userSettingsStore.jsonData = differences;
-                return this.userSettingsStore.$save().then(store => {
-                    angular.merge(this, defaultUiSettings);
-                    angular.merge(this, store.jsonData);
-                    this.applyUiSettings();
+                if (data.pwaUseThemeColors) {
+                    /* jshint camelcase: false */
+                    data.pwaManifest.theme_color = $mdColors.getThemeColor('primary-800');
+                    data.pwaManifest.background_color = $mdColors.getThemeColor('background');
+                }
+
+                const copy = angular.copy(store);
+                copy.jsonData = deepDiff(data, defaultUiSettings);
+                return copy.$save().then(store => {
+                    store.jsonData = angular.merge(angular.copy(defaultUiSettings), store.jsonData);
                     return store;
                 });
             }
             
-            get() {
-                return this.userSettingsStore.$get().then(store => {
-                    angular.merge(this, defaultUiSettings);
-                    angular.merge(this, store.jsonData);
+            getStore() {
+                return JsonStore.get({xid: MA_UI_SETTINGS_XID}).$promise.then(store => {
+                    store.jsonData = angular.merge(angular.copy(defaultUiSettings), store.jsonData);
                     return store;
                 });
             }
             
-            // revert on ui settings page
-            reset() {
-                angular.merge(this, defaultUiSettings);
-                angular.merge(this, this.userSettingsStore.jsonData);
-            }
-            
-            'delete'() {
-                this.userSettingsStore.jsonData = {};
-                return this.userSettingsStore.$save().then(store => {
-                    this.reset();
-                    this.applyUiSettings();
+            deleteStore(store) {
+                const copy = angular.copy(store);
+                copy.jsonData = {};
+                return copy.$save().then(store => {
+                    store.jsonData = angular.merge(angular.copy(defaultUiSettings), store.jsonData);
+                    return store;
                 });
             }
             
@@ -171,6 +164,9 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 Object.assign(MA_TIMEOUTS, this.timeouts);
                 Object.assign(MA_DATE_FORMATS, this.dateFormats);
                 this.setPointValuesLimit();
+
+                // inject after <meta name="user-styles-after-here">
+                maCssInjector.injectLink(this.userCss, 'userCss', 'head > meta[name="user-styles-after-here"]');
             }
             
             setPointValuesLimit() {
@@ -287,12 +283,9 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             }
         }
         
-        function deepDiff(data, defaults, excludeFields) {
+        function deepDiff(data, defaults) {
             const differences = {};
             for (const key in data) {
-                if (excludeFields && excludeFields.indexOf(key) >= 0)
-                    continue;
-                
                 const fieldValue = data[key];
                 const defaultValue = defaults && defaults[key];
                 if (typeof fieldValue !== 'function' && !angular.equals(fieldValue, defaultValue)) {
