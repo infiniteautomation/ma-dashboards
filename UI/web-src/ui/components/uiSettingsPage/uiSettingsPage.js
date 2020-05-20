@@ -20,7 +20,7 @@ class UiSettingsPageController {
         this.initDate = new Date();
     }
     
-    $onInit() {        
+    $onInit() {
         this.discardCheck = new this.maDiscardCheck({
             $scope: this.$scope,
             isDirty: () => this.form && this.form.$dirty
@@ -34,31 +34,30 @@ class UiSettingsPageController {
     }
     
     save(event) {
-        this.uiSettings.saveStore(this.store).then(store => {
+        this.promise = this.uiSettings.saveStore(this.store).then(store => {
             this.setStore(store);
 
             this.maDialogHelper.toast('ui.app.uiSettingsSaved');
         }, error => {
             this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
-        });
+        }).finally(() => delete this.promise);
     }
     
     get(event) {
-        this.uiSettings.getStore().then(store => {
+        this.promise = this.uiSettings.getStore().then(store => {
             this.setStore(store);
-        });
+        }).finally(() => delete this.promise);
     }
 
     resetToDefault(event) {
-        this.maDialogHelper.confirm(event, 'ui.app.confirmResetUiSettings').then(() => {
-            this.uiSettings.deleteStore(this.store).then(store => {
+        this.promise = this.maDialogHelper.confirm(event, 'ui.app.confirmResetUiSettings').then(() => {
+            return this.uiSettings.deleteStore(this.store).then(store => {
                 this.setStore(store);
-                
                 this.maDialogHelper.toast('ui.app.uiSettingsSaved');
             }, error => {
                 this.maDialogHelper.errorToast(['ui.app.uiSettingsSaveError', error.mangoStatusText]);
             });
-        }, error => {});
+        }, error => {}).finally(() => delete this.promise);
     }
     
     setStore(store) {

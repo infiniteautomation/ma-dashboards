@@ -1,8 +1,8 @@
 <form name="$ctrl.form">
     <div layout layout-align="start end" layout-wrap>
-      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="!$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="!$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
-      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
+      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="$ctrl.promise || !$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
     
     <md-card>
@@ -385,8 +385,8 @@
     </md-card>
 
     <div layout layout-align="start end" layout-wrap>
-      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="!$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="!$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
-      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="!$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
+      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
+      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="$ctrl.promise || !$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
 </form>
