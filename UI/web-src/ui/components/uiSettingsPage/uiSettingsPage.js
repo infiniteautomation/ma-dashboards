@@ -19,6 +19,7 @@ class UiSettingsPageController {
         
         this.dateFormats = Object.keys(MA_DATE_FORMATS).filter(k => k !== 'iso' && k !== 'isoUtc')
         this.eventLevels = Events.levels.filter(l => l.key !== 'NONE' && l.key !== 'IGNORE');
+        this.initDate = new Date();
     }
     
     $onInit() {

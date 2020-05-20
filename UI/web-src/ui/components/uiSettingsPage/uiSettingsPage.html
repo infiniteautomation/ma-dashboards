@@ -298,7 +298,7 @@
                 <md-input-container flex="100" flex-gt-md="50" ng-repeat="dateFormat in $ctrl.dateFormats track by dateFormat">
                     <label ma-tr="ui.settings.dateFormats.{{dateFormat}}"></label>
                     <input name="dateFormats.{{dateFormat}}" ng-model="$ctrl.uiSettings.dateFormats[dateFormat]" required>
-                    <div class="ma-hint" ma-tr="ui.settings.dateFormatsExample" ma-tr-args="[('now' | maDate:$ctrl.uiSettings.dateFormats[dateFormat])]"></div>
+                    <div class="ma-hint" ma-tr="ui.settings.dateFormatsExample" ma-tr-args="[($ctrl.initDate | maDate:$ctrl.uiSettings.dateFormats[dateFormat])]"></div>
                     <div ng-messages="$ctrl.form['dateFormats.' + dateFormat].$error">
                         <div ng-message="required" ma-tr="validate.required"></div>
                     </div>
