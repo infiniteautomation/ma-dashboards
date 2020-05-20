@@ -1,3 +1,6 @@
+*Version 3.7.5*
+* Add attribute to events table that allows specifying the date format
+
 *Version 3.7.4*
 * Fix redirect to user configured not found page
 
