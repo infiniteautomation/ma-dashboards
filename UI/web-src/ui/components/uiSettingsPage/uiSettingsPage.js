@@ -9,14 +9,15 @@ import './uiSettingsPage.css';
 
 class UiSettingsPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper', 'maEvents']; }
-    constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper, Events) {
+    static get $inject() { return ['maUiSettings', '$scope', '$window', 'maTranslate', 'maDialogHelper', 'maEvents', 'MA_DATE_FORMATS']; }
+    constructor(maUiSettings, $scope, $window, maTranslate, maDialogHelper, Events, MA_DATE_FORMATS) {
         this.uiSettings = maUiSettings;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        this.maDialogHelper = maDialogHelper;
+        this.maDialogHelper = maDialogHelper
         
+        this.dateFormats = Object.keys(MA_DATE_FORMATS).filter(k => k !== 'iso' && k !== 'isoUtc')
         this.eventLevels = Events.levels.filter(l => l.key !== 'NONE' && l.key !== 'IGNORE');
     }
     

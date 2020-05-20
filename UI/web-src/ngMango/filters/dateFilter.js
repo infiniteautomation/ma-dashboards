@@ -5,12 +5,12 @@
 
 import moment from 'moment-timezone';
 
-
 /**
  * @ngdoc filter
  * @name ngMangoFilters.filter:maDate
  * @function
- * @param {string} formatString format string from list above
+ * @param {string} format Moment.js format string or one of the constants from list above
+ * @param {string} timezone The timezone to display the date/time in
  *
  * @description Formats a date via MA_DATE_FORMATS, available format strings and their values are:
 ```
@@ -25,24 +25,32 @@ timeSeconds: 'LTS',
 monthDay: 'MMM D',
 month: 'MMM',
 year: 'YYYY',
-iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
+iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
+isoUtc: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'
 ```
  */
 
 dateFilterFactory.$inject = ['MA_DATE_FORMATS'];
 function dateFilterFactory(mangoDateFormats) {
-    return function formatDate(date, format, timezone) {
+    return function formatDate(input, format, timezone) {
         if (format === 'isoUtc') {
             timezone = 'utc';
         } else if (format === 'iso' && timezone === 'utc') {
             format = 'isoUtc';
         }
+
+        let m;
+        if (input === '' || input == null || (typeof input === 'string' && input.toLowerCase().trim() === 'now')) {
+            m = moment().milliseconds(0);
+        } else {
+            m = moment(input);
+        }
         
-        const momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
-        const m = moment(date);
         if (timezone) {
             m.tz(timezone);
         }
+        
+        const momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
         return m.format(momentFormat);
     };
 }

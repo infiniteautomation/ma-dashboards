@@ -26,7 +26,7 @@ import moment from 'moment-timezone';
 function momentFilter(Util) {
     return Util.memoize(function(input, fnName) {
         let m;
-        if (!input || (typeof input === 'string' && input.toLowerCase().trim() === 'now')) {
+        if (input === '' || input == null || (typeof input === 'string' && input.toLowerCase().trim() === 'now')) {
             m = moment().milliseconds(0);
         } else {
             m = moment(input);

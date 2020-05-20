@@ -13,3 +13,7 @@ ma-ui-settings-page md-select.ma-theme-select .md-select-value .md-text,
     flex-grow: 1;
     display: flex;
 }
+
+ma-ui-settings-page .ma-date-formats-container > md-input-container {
+    margin-bottom: 32px;
+}

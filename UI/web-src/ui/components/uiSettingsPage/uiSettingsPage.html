@@ -73,7 +73,7 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-                      
+
                 <md-input-container flex="100" flex-gt-md="50" ng-if-end>
                     <label ma-tr="ui.app.alternateLogoLight"></label>
                     <input name="lightLogo" ng-model="$ctrl.uiSettings.lightLogo" ma-empty-input ng-model-options="{debounce: 500}">
@@ -278,6 +278,30 @@
                     <label ma-tr="ui.app.timeouts.websocketRequest"></label>
                     <input ng-model="$ctrl.uiSettings.timeouts.websocketRequest" type="number" min="0" step="1"
                         ma-format-value="$Math.floor($value / 1000)" ma-parse-value="$value * 1000">
+                </md-input-container>
+            </div>
+        </md-card-content>
+    </md-card>
+    
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline" ma-tr="ui.settings.dateFormats"></span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <p class="ma-default-font">
+                <span ma-tr="ui.settings.dateFormatsHelp"></span>
+                <a href="https://momentjs.com/docs/#/displaying/format/" target="_blank" ma-tr="ui.settings.dateFormatsHelpLink"></a>
+            </p>
+            <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container ma-date-formats-container">
+                <md-input-container flex="100" flex-gt-md="50" ng-repeat="dateFormat in $ctrl.dateFormats track by dateFormat">
+                    <label ma-tr="ui.settings.dateFormats.{{dateFormat}}"></label>
+                    <input name="dateFormats.{{dateFormat}}" ng-model="$ctrl.uiSettings.dateFormats[dateFormat]" required>
+                    <div class="ma-hint" ma-tr="ui.settings.dateFormatsExample" ma-tr-args="[('now' | maDate:$ctrl.uiSettings.dateFormats[dateFormat])]"></div>
+                    <div ng-messages="$ctrl.form['dateFormats.' + dateFormat].$error">
+                        <div ng-message="required" ma-tr="validate.required"></div>
+                    </div>
                 </md-input-container>
             </div>
         </md-card-content>
