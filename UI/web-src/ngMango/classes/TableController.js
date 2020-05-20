@@ -104,7 +104,7 @@ class Column {
         if (value == null) {
             formatted = null;
         } else if (this.type === 'date') {
-            formatted = moment(value).format(this.dateFormat);
+            formatted = this.maDateFormat(value, this.dateFormat);
         } else {
             formatted = value;
         }
@@ -124,7 +124,7 @@ class TableController {
     static get $$ngIsClass() { return true; }
 
     constructor(options) {
-        this.dateFormat = 'lll';
+        this.dateFormat = 'dateTime';
         
         Object.assign(this, options);
 
@@ -135,6 +135,7 @@ class TableController {
         this.maUtil = $injector.get('maUtil');
         this.$q = $injector.get('$q');
         this.$interval = $injector.get('$interval');
+        this.maDateFormat = $injector.get('$filter')('maDate');
 
         this.idProperty = this.resourceService.idProperty;
         this.showFilters = true;
@@ -264,6 +265,7 @@ class TableController {
                     order: i,
                     filter: filters[column.name] || null,
                     dateFormat: this.dateFormat,
+                    maDateFormat: this.maDateFormat,
                     tableCtrl: this
                 }, column));
             });

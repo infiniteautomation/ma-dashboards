@@ -104,7 +104,7 @@
                     </md-icon>
                     <md-icon class="ma-acknowledged-checkbox ma-acknowledged" ng-if="event.acknowledged">
                         check_circle
-                        <md-tooltip ma-tr="ui.app.acknowledgedByAt" ma-tr-args="[event.acknowledgedByUsername, (event.acknowledgedTimestamp | maMoment:'format':'l LT')]"></md-tooltip>
+                        <md-tooltip ma-tr="ui.app.acknowledgedByAt" ma-tr-args="[event.acknowledgedByUsername, (event.acknowledgedTimestamp | maDate:'shortDateTime')]"></md-tooltip>
                     </md-icon>
                 </td>
             </tr>

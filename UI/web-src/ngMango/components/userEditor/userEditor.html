@@ -31,7 +31,7 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.email.validationMessage"></div>
             </div>
             <div class="ma-hint">
-                <span ng-if="$ctrl.user.emailVerified" ma-tr="users.emailVerified" ma-tr-args="[($ctrl.user.emailVerified | maMoment:'format':'l LT')]"></span>
+                <span ng-if="$ctrl.user.emailVerified" ma-tr="users.emailVerified" ma-tr-args="[($ctrl.user.emailVerified | maDate:'shortDateTime')]"></span>
                 <span ng-if="!$ctrl.user.emailVerified" ma-tr="users.emailNotVerified"></span>
             </div>
         </md-input-container>

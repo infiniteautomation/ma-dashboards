@@ -3,6 +3,8 @@
  * @author Jared Wiltshire
  */
 
+import './ngMangoFilters';
+
 import Point from './services/Point';
 import UserProvider from './services/User';
 import PointEventManagerFactory from './services/PointEventManager';
@@ -51,8 +53,6 @@ import moduleLoader from './services/moduleLoader';
 import mailingListFactory from './services/mailingList';
 import eventTypeInfoProvider from './services/EventTypeInfo';
 import virtualSerialPortFactory from './services/virtualSerialPort';
-import dateFilterFactory from './filters/dateFilter';
-import trFilterFactory from './filters/trFilter';
 import scriptingEditorFactory from './services/scriptingEditor';
 import multipleValuesFactory from './services/MultipleValues';
 import serialPort from './services/serialPort';
@@ -86,7 +86,7 @@ rqlQuery.encodeValue = function(val) {
  *
  *
 **/
-const ngMangoServices = angular.module('ngMangoServices', ['ngResource', 'ngSanitize', 'LocalStorageModule', 'ngLocale', 'ngCookies']);
+const ngMangoServices = angular.module('ngMangoServices', ['ngMangoFilters', 'ngResource', 'ngSanitize', 'LocalStorageModule', 'ngLocale', 'ngCookies']);
 
 ngMangoServices.provider('maPoint', Point);
 ngMangoServices.provider('maUser', UserProvider);
@@ -136,8 +136,6 @@ ngMangoServices.factory('maVirtualSerialPort', virtualSerialPortFactory);
 ngMangoServices.factory('maScriptingEditor', scriptingEditorFactory);
 ngMangoServices.provider('$exceptionHandler', maExceptionHandler);
 ngMangoServices.factory('maMultipleValues', multipleValuesFactory);
-ngMangoServices.filter('maDate', dateFilterFactory);
-ngMangoServices.filter('maTr', trFilterFactory);
 ngMangoServices.factory('maSerialPort', serialPort);
 ngMangoServices.provider('maPublisher', Publisher);
 ngMangoServices.factory('maLogFile', logFileFactory);
@@ -158,6 +156,8 @@ ngMangoServices.constant('MA_TIMEOUTS', {
 ngMangoServices.constant('MA_WATCHDOG_TIMEOUT', 10000);
 ngMangoServices.constant('MA_RECONNECT_DELAY', 5000);
 
+// These are Moment.js format strings https://momentjs.com/docs/#/displaying/format/
+// They can be configured via UI Settings
 ngMangoServices.constant('MA_DATE_FORMATS', {
     dateTime: 'lll',
     shortDateTime: 'l LT',
@@ -170,7 +170,8 @@ ngMangoServices.constant('MA_DATE_FORMATS', {
     monthDay: 'MMM D',
     month: 'MMM',
     year: 'YYYY',
-    iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
+    iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
+    isoUtc: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]'
 });
 
 ngMangoServices.constant('MA_ROLLUP_TYPES', [
@@ -191,6 +192,7 @@ ngMangoServices.constant('MA_ROLLUP_TYPES', [
     //{name: 'FFT', nonNumeric: false}
 ]);
 
+// These are Java SimpleDateFormat format strings and are only used on the Watchlist download page
 ngMangoServices.constant('MA_DATE_TIME_FORMATS', [
     {
         translation: 'ui.app.timeFormat.iso',

@@ -73,7 +73,7 @@
                 <td md-cell ng-bind="auditItem.changeType"></td>
                 <td md-cell ng-bind="auditItem.typeName"></td>
                 <td md-cell ng-bind="auditItem.message"></td>
-                <td md-cell ng-bind="auditItem.timestamp| maMoment:'format':'l LT'"></td>
+                <td md-cell ng-bind="auditItem.timestamp| maDate:'shortDateTime'"></td>
                 <td md-cell ng-bind="auditItem.username"></td>
             </tr>
             </tbody>

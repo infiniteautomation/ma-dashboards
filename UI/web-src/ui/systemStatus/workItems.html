@@ -101,7 +101,7 @@
             <tr md-row ng-repeat="rejectedTaskStat in $ctrl.workItemsRejectedStats.highPriorityRejectedTaskStats | orderBy: sortOrder">
                 <td md-cell ng-bind="rejectedTaskStat.currentlyRunning"></td>
                 <td md-cell ng-bind="rejectedTaskStat.id"></td>
-                <td md-cell ng-bind="rejectedTaskStat.lastAccess | maMoment:'format':'l LT'"></td>
+                <td md-cell ng-bind="rejectedTaskStat.lastAccess | maDate:'shortDateTime'"></td>
                 <td md-cell ng-bind="rejectedTaskStat.name"></td>
                 <td md-cell ng-bind="rejectedTaskStat.poolFull"></td>
                 <td md-cell ng-bind="rejectedTaskStat.queueFull"></td>
@@ -131,7 +131,7 @@
             <tr md-row ng-repeat="rejectedTaskStat in $ctrl.workItemsRejectedStats.mediumPriorityRejectedTaskStats | orderBy: sortOrder">
                 <td md-cell ng-bind="rejectedTaskStat.currentlyRunning"></td>
                 <td md-cell ng-bind="rejectedTaskStat.id"></td>
-                <td md-cell ng-bind="rejectedTaskStat.lastAccess | maMoment:'format':'l LT'"></td>
+                <td md-cell ng-bind="rejectedTaskStat.lastAccess | maDate:'shortDateTime'"></td>
                 <td md-cell ng-bind="rejectedTaskStat.name"></td>
                 <td md-cell ng-bind="rejectedTaskStat.poolFull"></td>
                 <td md-cell ng-bind="rejectedTaskStat.queueFull"></td>

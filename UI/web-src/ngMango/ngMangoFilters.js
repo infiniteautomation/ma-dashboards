@@ -3,10 +3,11 @@
  * @author Jared Wiltshire
  */
 
+import dateFilterFactory from './filters/dateFilter';
+import trFilterFactory from './filters/trFilter';
 import momentFilter from './filters/momentFilter';
 import durationFilter from './filters/durationFilter';
 import angular from 'angular';
-
 
 /**
  * @ngdoc overview
@@ -21,6 +22,8 @@ import angular from 'angular';
  **/
 const ngMangoFilters = angular.module('ngMangoFilters', []);
 
+ngMangoFilters.filter('maDate', dateFilterFactory);
+ngMangoFilters.filter('maTr', trFilterFactory);
 ngMangoFilters.filter('maMoment', momentFilter);
 ngMangoFilters.filter('maDuration', durationFilter);
 

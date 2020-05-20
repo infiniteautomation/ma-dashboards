@@ -262,5 +262,18 @@
   },
   "pwaUseThemeColors": true,
   "pwaAutomaticName": "AUTO",
-  "pwaAutomaticNamePrefix": "Mango"
+  "pwaAutomaticNamePrefix": "Mango",
+  "dateFormats": {
+    "dateTime": "lll",
+    "shortDateTime": "l LT",
+    "dateTimeSeconds": "ll LTS",
+    "shortDateTimeSeconds": "l LTS",
+    "date": "ll",
+    "shortDate": "l",
+    "time": "LT",
+    "timeSeconds": "LTS",
+    "monthDay": "MMM D",
+    "month": "MMM",
+    "year": "YYYY"
+  }
 }

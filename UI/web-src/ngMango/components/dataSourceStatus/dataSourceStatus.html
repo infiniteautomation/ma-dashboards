@@ -10,7 +10,7 @@
         </thead>
         <tbody md-body>
             <tr md-row ng-repeat="poll in $ctrl.status.latestPolls | orderBy:$ctrl.order track by $index">
-                <td md-cell ng-bind="poll.startTime | maMoment:'format':'l LTS'"></td>
+                <td md-cell ng-bind="poll.startTime | maDate:'shortDateTimeSeconds'"></td>
                 <td md-cell ng-bind="poll.duration"></td>
                 <td md-cell><em ng-if="poll.aborted" ma-tr="event.ds.pollAborted" class="ma-error-text"></em></td>
             </tr>
@@ -24,7 +24,7 @@
     <table md-table md-progress="$ctrl.promise">
         <thead md-head md-order="$ctrl.order">
             <tr md-row>
-                <th md-column md-order-by="startTime | maMoment:'format':'l LTS'" ma-tr="dsEdit.pollStartTime"></th>
+                <th md-column md-order-by="startTime | maDate:'shortDateTimeSeconds'" ma-tr="dsEdit.pollStartTime"></th>
                 <th md-column md-order-by="duration" ma-tr="dsEdit.pollDuration"></th>
                 <th md-column md-order-by="aborted" ma-tr="event.ds.pollAborted"></th>
             </tr>

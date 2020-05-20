@@ -104,12 +104,13 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
     class EventsTableController {
         static get $$ngIsClass() { return true; }
-        static get $inject() { return ['$scope', '$attrs', '$element', 'maEventTypeInfo']; }
+        static get $inject() { return ['$scope', '$attrs', '$element', 'maEventTypeInfo', '$filter']; }
         
-        constructor($scope, $attrs, $element, EventTypeInfo) {
+        constructor($scope, $attrs, $element, EventTypeInfo, $filter) {
             this.$scope = $scope;
             this.$attrs = $attrs;
             this.$element = $element;
+            this.maDate = $filter('maDate');
             
             this.$mdMedia = $mdMedia;
             this.start = 0;
@@ -352,14 +353,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
         
         formatDate(date) {
-            const m = moment(date);
-            if (this.timezone) {
-                m.tz(this.timezone);
-            }
-            if (this.dateFormat) {
-                return m.format(this.dateFormat);
-            }
-            return m.format(mangoDateFormats.shortDateTimeSeconds);
+            return this.maDate(date, this.dateFormat || 'shortDateTimeSeconds', this.timezone);
         }
 
         removeEvent(eventId, replacement) {

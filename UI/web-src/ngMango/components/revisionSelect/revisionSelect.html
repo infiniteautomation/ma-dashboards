@@ -4,7 +4,7 @@
             md-on-open="$ctrl.queryPromise" ng-disabled="!$ctrl.typeName || !$ctrl.objectId">
         <md-option ng-repeat="value in $ctrl.values track by (value.typeName + value.objectId + value.timestamp)" ng-value="value">
             <span ng-if="$ctrl.optionText" ng-bind="$ctrl.optionText({$value: value})"></span>
-            <span ng-if="!$ctrl.optionText" ma-tr="ui.components.revisionText" ma-tr-args="[(value.timestamp | maMoment:'format':'ll LT'), value.changeType, value.username, value.alarmLevel]"></span>
+            <span ng-if="!$ctrl.optionText" ma-tr="ui.components.revisionText" ma-tr-args="[(value.timestamp | maDate), value.changeType, value.username, value.alarmLevel]"></span>
         </md-option>
     </md-select>
 </md-input-container>

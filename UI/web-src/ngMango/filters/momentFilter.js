@@ -43,5 +43,3 @@ function momentFilter(Util) {
 
 momentFilter.$inject = ['maUtil'];
 export default momentFilter;
-
-

@@ -31,12 +31,20 @@ iso: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 
 dateFilterFactory.$inject = ['MA_DATE_FORMATS'];
 function dateFilterFactory(mangoDateFormats) {
-    return function formatDate(date, format) {
+    return function formatDate(date, format, timezone) {
+        if (format === 'isoUtc') {
+            timezone = 'utc';
+        } else if (format === 'iso' && timezone === 'utc') {
+            format = 'isoUtc';
+        }
+        
         const momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
-        return moment(date).format(momentFormat);
+        const m = moment(date);
+        if (timezone) {
+            m.tz(timezone);
+        }
+        return m.format(momentFormat);
     };
 }
 
 export default dateFilterFactory;
-
-

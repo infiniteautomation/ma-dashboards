@@ -35,5 +35,3 @@ function durationFilter(Util) {
 
 durationFilter.$inject = ['maUtil'];
 export default durationFilter;
-
-

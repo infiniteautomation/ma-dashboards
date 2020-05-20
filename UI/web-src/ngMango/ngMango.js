@@ -4,7 +4,6 @@
  */
 
 import './ngMangoServices';
-import './ngMangoFilters';
 import pointList from './directives/pointList';
 import filteringPointList from './directives/filteringPointList';
 import pointValue from './directives/pointValue';
@@ -208,7 +207,7 @@ import './ngMango.css';
  *
  *
 **/
-const ngMango = angular.module('ngMango', ['ngMangoServices', 'ngMangoFilters', 'ngMap']);
+const ngMango = angular.module('ngMango', ['ngMangoServices', 'ngMap']);
 
 ngMango.directive('maFilteringPointList', filteringPointList);
 ngMango.directive('maPointList', pointList);

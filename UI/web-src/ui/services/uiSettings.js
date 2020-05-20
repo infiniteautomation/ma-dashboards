@@ -6,8 +6,8 @@
 import angular from 'angular';
 import defaultUiSettings from '../uiSettings.json';
 
-uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider', 'MA_TIMEOUTS'];
-function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS) {
+uiSettingsProvider.$inject = ['$mdThemingProvider', 'maPointValuesProvider', 'MA_TIMEOUTS', 'MA_DATE_FORMATS'];
+function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS, MA_DATE_FORMATS) {
 
     // md-theme attribute on the body is still watched as it is a interpolated attribute
     $mdThemingProvider.alwaysWatchTheme(false);
@@ -20,6 +20,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
     this.setUiSettings = function setUiSettings(uiSettings) {
         Object.assign(MA_UI_SETTINGS, uiSettings);
         Object.assign(MA_TIMEOUTS, uiSettings.timeouts);
+        Object.assign(MA_DATE_FORMATS, uiSettings.dateFormats);
         
         this.registerThemes();
         
@@ -168,6 +169,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 this.applyPreferredColorScheme();
                 this.generateTheme();
                 Object.assign(MA_TIMEOUTS, this.timeouts);
+                Object.assign(MA_DATE_FORMATS, this.dateFormats);
                 this.setPointValuesLimit();
             }
             
