@@ -88,7 +88,7 @@
             </div>
             
             <div>
-                <md-button class="md-raised md-primary" ui-sref="ui.settings.themeEditor">
+                <md-button class="md-raised md-primary" ng-click="$ctrl.theme = $ctrl.data.themes[$ctrl.data.defaultTheme]">
                     <span ma-tr="ui.app.themeEditor"></span>
                 </md-button>
             </div>
@@ -389,4 +389,48 @@
       <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
       <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="$ctrl.promise || !$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
+    
+    <ma-dialog show-dialog="$ctrl.theme" on-close="$ctrl.theme = null">
+        <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="80" flex-gt-lg="60" flex-gt-xl="60">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>
+                        <span ma-tr="ui.app.themeEditor"></span>
+                    </h2>
+                    <span flex></span>
+                    <md-switch class="ma-text-left" ng-model="showAllHues">
+                        <span ma-tr="ui.app.showAllHues" class="ma-standard-text"></span>
+                    </md-switch>
+                    <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                        <md-icon>close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+    
+            <md-dialog-content class="md-padding" flex layout="column" ng-form="theme" ma-get-ctrl="$ctrl.form.$addControl($ngForm)">
+                <md-checkbox flex ng-model="$ctrl.theme.dark" ng-change="$ctrl.uiSettings.generateTheme()">
+                    <span ma-tr="ui.app.darkTheme"></span>
+                </md-checkbox>
+
+                <div layout layout-wrap>
+                    <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch" ng-repeat="paletteName in ::$ctrl.maTheming.getPaletteNames()">
+                        <!--<h4 layout="column" layout-align="start center" ma-tr="ui.app.{{paletteName}}Palette"></h4>-->
+                        <md-input-container>
+                            <label ma-tr="ui.app.{{paletteName}}Palette"></label>
+                            <md-select ng-model="$ctrl.theme[paletteName + 'Palette']" ng-change="$ctrl.uiSettings.generateTheme()" required>
+                                <md-option ng-repeat="(name, palette) in ::$ctrl.maTheming.getPalettes()" ng-value="name" ng-bind="name"></md-option>
+                            </md-select>
+                        </md-input-container>
+                        <ma-color-preview theme="{{$ctrl.theme.name}}" palette="{{paletteName}}"></ma-color-preview>
+                    </div>
+                </div>
+            
+                <div layout layout-wrap ng-show="showAllHues">
+                    <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch" ng-repeat="paletteName in ::$ctrl.maTheming.getPaletteNames()">
+                        <ma-color-preview theme="{{$ctrl.theme.name}}" palette="{{paletteName}}" all-hues="true"></ma-color-preview>
+                    </div>
+                </div>
+            </md-dialog-content>
+        </md-dialog>
+    </ma-dialog>
 </form>

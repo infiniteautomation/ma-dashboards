@@ -1279,8 +1279,16 @@ table.md-table.ma-no-wrap tbody tr td {
 	font-size: 1.4rem;
 }
 
+.ma-standard-text {
+    font-size: 1.6rem;
+}
+
 .ma-larger-font {
 	font-size: 1.8rem;
+}
+
+.ma-large-font {
+	font-size: 2.0rem;
 }
 
 .ma-text-center {
@@ -1605,6 +1613,7 @@ md-input-container:not(.ma-has-hint) .md-errors-spacer {
 [ng-messages] {
     color: var(--ma-warn-A700);
 }
+
 /* Sparkline chart */
 .ma-sparkline-chart .amcharts-value-axis,
 .ma-sparkline-chart .amcharts-category-axis,
@@ -1612,4 +1621,9 @@ md-input-container:not(.ma-has-hint) .md-errors-spacer {
 .ma-sparkline-chart .amcharts-value-axis > *,
 .ma-sparkline-chart .amcharts-category-axis > * {
     visibility: hidden;
+}
+
+md-switch.ma-text-left .md-container {
+    order: 1;
+    margin: 0 0 0 8px;
 }

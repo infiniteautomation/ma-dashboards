@@ -6,12 +6,12 @@
 maThemingFactory.$inject = ['$mdTheming'];
 function maThemingFactory($mdTheming) {
     
-    const palettes = ['primary', 'accent', 'warn', 'background'];
-    const hues = ['default', 'hue-1', 'hue-2', 'hue-3', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
+    const paletteNames = ['primary', 'accent', 'warn', 'background'];
+    const hueNames = ['default', 'hue-1', 'hue-2', 'hue-3', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
     const foregroundHues = ['1', '2', '3', '4'];
     
-    const allHues = palettes.map(palette => {
-        return hues.map(hue => {
+    const allHues = paletteNames.map(palette => {
+        return hueNames.map(hue => {
             return {
                 palette,
                 hue,
@@ -89,6 +89,22 @@ function maThemingFactory($mdTheming) {
                 const themeObj = $mdTheming.THEMES[theme];
                 element.classList.add(themeObj.isDark ? 'ma-theme-dark' : 'ma-theme-light');
             }
+        }
+        
+        getPaletteNames() {
+            return paletteNames;
+        }
+        
+        getHueNames() {
+            return hueNames;
+        }
+        
+        getThemes() {
+            return $mdTheming.THEMES;
+        }
+        
+        getPalettes() {
+            return $mdTheming.PALETTES;
         }
     }
     

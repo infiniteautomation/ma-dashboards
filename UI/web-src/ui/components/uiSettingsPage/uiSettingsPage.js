@@ -8,12 +8,13 @@ import './uiSettingsPage.css';
 
 class UiSettingsPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUiSettings', '$scope', 'maDialogHelper', 'maEvents', 'MA_DATE_FORMATS', 'maDiscardCheck']; }
-    constructor(maUiSettings, $scope, maDialogHelper, Events, MA_DATE_FORMATS, maDiscardCheck) {
+    static get $inject() { return ['maUiSettings', '$scope', 'maDialogHelper', 'maEvents', 'MA_DATE_FORMATS', 'maDiscardCheck', 'maTheming']; }
+    constructor(maUiSettings, $scope, maDialogHelper, Events, MA_DATE_FORMATS, maDiscardCheck, maTheming) {
         this.uiSettings = maUiSettings;
         this.$scope = $scope;
         this.maDialogHelper = maDialogHelper
         this.maDiscardCheck = maDiscardCheck;
+        this.maTheming = maTheming;
         
         this.dateFormats = Object.keys(MA_DATE_FORMATS).filter(k => k !== 'iso' && k !== 'isoUtc')
         this.eventLevels = Events.levels.filter(l => l.key !== 'NONE' && l.key !== 'IGNORE');
@@ -23,12 +24,13 @@ class UiSettingsPageController {
     $onInit() {
         this.discardCheck = new this.maDiscardCheck({
             $scope: this.$scope,
-            isDirty: () => this.form && this.form.$dirty
+            isDirty: () => this.form && this.form.$dirty,
+            onDiscard: () => this.onDiscard() // TODO
         });
 
         this.get();
     }
-    
+
     save(event) {
         this.promise = this.uiSettings.saveStore(this.store).then(store => {
             this.setStore(store);

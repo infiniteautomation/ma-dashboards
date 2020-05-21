@@ -5,7 +5,6 @@
 
 import angular from 'angular';
 
-
 /**
 * @ngdoc service
 * @name ngMangoServices.maJsonStore
