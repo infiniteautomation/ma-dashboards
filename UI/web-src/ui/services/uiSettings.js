@@ -135,7 +135,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 }
 
                 const copy = angular.copy(store);
-                copy.jsonData = deepDiff(data, defaultUiSettings);
+                copy.jsonData = maUtil.deepDiff(data, defaultUiSettings);
                 return copy.$save().then(store => {
                     store.jsonData = angular.merge(angular.copy(defaultUiSettings), store.jsonData);
                     return store;
@@ -269,34 +269,25 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             }
             
             applyPreferredColorScheme() {
+                const defaultTheme = this.themes[this.defaultTheme];
+                const alternateTheme = this.themes[this.alternateTheme];
+                
                 const usePreferred = this.usePreferredColorScheme && typeof $window.matchMedia === 'function';
                 if (usePreferred && $window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    this.themeLogo = this.darkLogo;
-                    this.activeTheme = this.darkTheme;
+                    this.activeTheme = defaultTheme.dark ? this.defaultTheme : this.alternateTheme;
+                    this.themeLogo = defaultTheme.dark ? this.logoSrc : this.alternateLogo;
                 } else if (usePreferred && $window.matchMedia('(prefers-color-scheme: light)').matches) {
-                    this.themeLogo = this.lightLogo;
-                    this.activeTheme = this.lightTheme;
+                    this.activeTheme = !defaultTheme.dark ? this.defaultTheme : this.alternateTheme;
+                    this.themeLogo = !defaultTheme.dark ? this.logoSrc : this.alternateLogo;
                 } else {
-                    this.themeLogo = this.logoSrc;
                     this.activeTheme = this.defaultTheme;
+                    this.themeLogo = this.logoSrc;
                 }
             }
-        }
-        
-        function deepDiff(data, defaults) {
-            const differences = {};
-            for (const key in data) {
-                const fieldValue = data[key];
-                const defaultValue = defaults && defaults[key];
-                if (typeof fieldValue !== 'function' && !angular.equals(fieldValue, defaultValue)) {
-                    if (fieldValue && typeof fieldValue === 'object' && !Array.isArray(fieldValue)) {
-                        differences[key] = deepDiff(fieldValue, defaultValue);
-                    } else {
-                        differences[key] = fieldValue;
-                    }
-                }
+            
+            defaultThemeNames() {
+                return Object.keys(defaultUiSettings.themes);
             }
-            return differences;
         }
         
         return new UiSettings();

@@ -1,8 +1,8 @@
 <form name="$ctrl.form">
-    <div layout layout-align="start end" layout-wrap>
-      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
-      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="$ctrl.promise || !$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
+    <div>
+        <md-button class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
+        <md-button class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
+        <md-button class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="$ctrl.promise || !$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
     
     <md-card>
@@ -20,15 +20,21 @@
             </div>
             
             <div layout layout-wrap>
-                <md-input-container flex="100" flex-gt-md="50">
-                    <label ma-tr="ui.app.defaultColorScheme"></label>
-                    <md-select name="defaultTheme" ng-model="$ctrl.data.defaultTheme" class="ma-theme-select">
-                        <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes track by theme.name" ng-value="theme.name">
-                            <span ng-bind="theme.name" flex></span>
-                            <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
-                        </md-option>
-                    </md-select>
-                </md-input-container>
+                <div flex="100" flex-gt-md="50" layout layout-align="start center">
+                    <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.editTheme($ctrl.data.defaultTheme)" ng-disabled="$ctrl.defaultThemes[$ctrl.data.defaultTheme] && $ctrl.data.defaultTheme !== 'userTheme'">
+                        <md-icon>edit</md-icon>
+                        <md-tooltip><span ma-tr="ui.app.editTheme"></span></md-tooltip>
+                    </md-button>
+                    <md-input-container flex>
+                        <label ma-tr="ui.app.defaultColorScheme"></label>
+                        <md-select name="defaultTheme" ng-model="$ctrl.data.defaultTheme" class="ma-theme-select" ng-change="$ctrl.checkThemes()">
+                            <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes track by theme.name" ng-value="theme.name">
+                                <span ng-bind="theme.name" flex></span>
+                                <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
 
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.logoSource"></label>
@@ -41,56 +47,37 @@
     				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
     				</md-button>
                 </md-input-container>
- 
-                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.data.usePreferredColorScheme && !$ctrl.data.themes[$ctrl.data.defaultTheme].dark">
-                    <label ma-tr="ui.app.alternateThemeDark"></label>
-                    <md-select name="darkTheme" ng-model="$ctrl.data.darkTheme" class="ma-theme-select">
-                        <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark:true} track by theme.name" ng-value="theme.name">
-                            <span ng-bind="theme.name" flex></span>
-                            <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-                        
-                <md-input-container flex="100" flex-gt-md="50" ng-if-end>
-                    <label ma-tr="ui.app.alternateLogoDark"></label>
-                    <input name="darkLogo" ng-model="$ctrl.data.darkLogo" ma-empty-input ng-model-options="{debounce: 500}">
-                    <md-button class="ma-input-button md-icon-button"
-                            ma-choose-file="$ctrl.data.darkLogo = $url; $ctrl.form.darkLogo.$setDirty()"
-                            ma-choose-file-selected="$ctrl.data.darkLogo"
-                            ma-choose-file-options="{mimeTypes: 'image/*', extensions: 'png,jpg,jpeg,svg', preview:true, store:'public'}">
-                        <md-icon>attachment</md-icon>
-                        <md-tooltip ma-tr="common.chooseFile"></md-tooltip>
-                    </md-button>
-                </md-input-container>
                 
-                <md-input-container flex="100" flex-gt-md="50" ng-if-start="$ctrl.data.usePreferredColorScheme && $ctrl.data.themes[$ctrl.data.defaultTheme].dark">
-                    <label ma-tr="ui.app.alternateThemeLight"></label>
-                    <md-select name="lightTheme" ng-model="$ctrl.data.lightTheme" class="ma-theme-select">
-                        <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark:false} track by theme.name" ng-value="theme.name">
-                            <span ng-bind="theme.name" flex></span>
-                            <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-
-                <md-input-container flex="100" flex-gt-md="50" ng-if-end>
-                    <label ma-tr="ui.app.alternateLogoLight"></label>
-                    <input name="lightLogo" ng-model="$ctrl.data.lightLogo" ma-empty-input ng-model-options="{debounce: 500}">
+                 <div flex="100" flex-gt-md="50" layout layout-align="start center">
+                    <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.editTheme($ctrl.data.alternateTheme)" ng-disabled="$ctrl.defaultThemes[$ctrl.data.alternateTheme] && $ctrl.data.alternateTheme !== 'userTheme'">
+                        <md-icon>edit</md-icon>
+                        <md-tooltip><span ma-tr="ui.app.editTheme"></span></md-tooltip>
+                    </md-button>
+                    <md-input-container flex>
+                        <label ma-tr="{{$ctrl.data.themes[$ctrl.data.defaultTheme].dark ? 'ui.app.alternateThemeLight' : 'ui.app.alternateThemeDark'}}"></label>
+                        <md-select name="alternateTheme" ng-model="$ctrl.data.alternateTheme" class="ma-theme-select">
+                            <md-option class="ma-theme-select-option" ng-repeat="theme in $ctrl.themes | filter:{dark: !$ctrl.data.themes[$ctrl.data.defaultTheme].dark} track by theme.name" ng-value="theme.name">
+                                <span ng-bind="theme.name" flex></span>
+                                <ma-theme-preview theme="{{theme.name}}"></ma-theme-preview>
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                        
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="{{$ctrl.data.themes[$ctrl.data.defaultTheme].dark ? 'ui.app.alternateLogoLight' : 'ui.app.alternateLogoDark'}}"></label>
+                    <input name="alternateLogo" ng-model="$ctrl.data.alternateLogo" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
-                            ma-choose-file="$ctrl.data.lightLogo = $url; $ctrl.form.lightLogo.$setDirty()"
-                            ma-choose-file-selected="$ctrl.data.lightLogo"
+                            ma-choose-file="$ctrl.data.alternateLogo = $url; $ctrl.form.alternateLogo.$setDirty()"
+                            ma-choose-file-selected="$ctrl.data.alternateLogo"
                             ma-choose-file-options="{mimeTypes: 'image/*', extensions: 'png,jpg,jpeg,svg', preview:true, store:'public'}">
                         <md-icon>attachment</md-icon>
                         <md-tooltip ma-tr="common.chooseFile"></md-tooltip>
                     </md-button>
                 </md-input-container>
             </div>
-            
             <div>
-                <md-button class="md-raised md-primary" ng-click="$ctrl.theme = $ctrl.data.themes[$ctrl.data.defaultTheme]">
-                    <span ma-tr="ui.app.themeEditor"></span>
-                </md-button>
+                <md-button class="md-raised" ng-click="$ctrl.addNewTheme($event)"><span ma-tr="ui.app.addTheme"></span></md-button>
             </div>
         </md-card-content>
     </md-card>
@@ -384,18 +371,18 @@
         </md-card-content>
     </md-card>
 
-    <div layout layout-align="start end" layout-wrap>
-      <md-button flex="nogrow" class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-      <md-button flex="nogrow" class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
-      <md-button flex="nogrow" class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="$ctrl.promise || !$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
+    <div>
+        <md-button class="md-raised md-primary" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
+        <md-button class="md-raised" ng-click="$ctrl.get($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
+        <md-button class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="$ctrl.promise || !$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
     
-    <ma-dialog show-dialog="$ctrl.theme" on-close="$ctrl.theme = null">
+    <ma-dialog show-dialog="$ctrl.theme" on-close="$ctrl.themeEditorClosed()">
         <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="80" flex-gt-lg="60" flex-gt-xl="60">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2>
-                        <span ma-tr="ui.app.themeEditor"></span>
+                        <span ma-tr="ui.app.editThemeX" ma-tr-args="$ctrl.themeName"></span>
                     </h2>
                     <span flex></span>
                     <md-switch class="ma-text-left" ng-model="showAllHues">
@@ -407,10 +394,12 @@
                 </div>
             </md-toolbar>
     
-            <md-dialog-content class="md-padding" flex layout="column" ng-form="theme" ma-get-ctrl="$ctrl.form.$addControl($ngForm)">
-                <md-checkbox flex ng-model="$ctrl.theme.dark" ng-change="$ctrl.uiSettings.generateTheme()">
-                    <span ma-tr="ui.app.darkTheme"></span>
-                </md-checkbox>
+            <md-dialog-content class="md-padding" ng-form="theme" ma-get-ctrl="$ctrl.form.$addControl($ngForm)">
+                <div>
+                    <md-checkbox ng-model="$ctrl.theme.dark" ng-change="$ctrl.uiSettings.generateTheme()">
+                        <span ma-tr="ui.app.darkTheme"></span>
+                    </md-checkbox>
+                </div>
 
                 <div layout layout-wrap>
                     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch" ng-repeat="paletteName in ::$ctrl.maTheming.getPaletteNames()">
@@ -422,15 +411,15 @@
                             </md-select>
                         </md-input-container>
                         <ma-color-preview theme="{{$ctrl.theme.name}}" palette="{{paletteName}}"></ma-color-preview>
-                    </div>
-                </div>
-            
-                <div layout layout-wrap ng-show="showAllHues">
-                    <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch" ng-repeat="paletteName in ::$ctrl.maTheming.getPaletteNames()">
-                        <ma-color-preview theme="{{$ctrl.theme.name}}" palette="{{paletteName}}" all-hues="true"></ma-color-preview>
+                        <ma-color-preview ng-if="showAllHues" theme="{{$ctrl.theme.name}}" palette="{{paletteName}}" all-hues="true"></ma-color-preview>
                     </div>
                 </div>
             </md-dialog-content>
+            <md-dialog-actions>
+                <md-button class="md-raised" ng-click="$dialog.cancel()"><span ma-tr="common.cancel"></span></md-button>
+                <md-button class="md-raised md-warn" ng-click="$ctrl.removeTheme(); $dialog.cancel()" ng-disabled="$ctrl.defaultThemes[$ctrl.themeName]"><span ma-tr="common.delete"></span></md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.saveTheme(); $dialog.hide()"><span ma-tr="common.ok"></span></md-button>
+            </md-dialog-actions>
         </md-dialog>
     </ma-dialog>
 </form>

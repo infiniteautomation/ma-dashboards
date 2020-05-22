@@ -106,6 +106,20 @@ function maThemingFactory($mdTheming) {
         getPalettes() {
             return $mdTheming.PALETTES;
         }
+
+        defaultTheme() {
+            return {
+                primaryPalette: 'indigo',
+                primaryPaletteHues: {'default': '500', 'hue-1': '300', 'hue-2': '800', 'hue-3': 'A100'},
+                accentPalette: 'pink',
+                accentPaletteHues: {'default': 'A200', 'hue-1': 'A100', 'hue-2': 'A400', 'hue-3': 'A700'},
+                warnPalette: 'deep-orange',
+                warnPaletteHues: {'default': '500', 'hue-1': '300', 'hue-2': '800', 'hue-3': 'A100'},
+                backgroundPalette: 'grey',
+                backgroundPaletteHues: {'default': '50', 'hue-1': 'A100', 'hue-2': '100', 'hue-3': '300'},
+                dark: false
+            };
+        }
     }
     
     return new ThemeService();

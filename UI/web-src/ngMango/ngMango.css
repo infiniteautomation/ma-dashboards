@@ -1295,16 +1295,6 @@ table.md-table.ma-no-wrap tbody tr td {
 	text-align: center;
 }
 
-md-icon {
-	cursor: default;
-}
-
-.md-button md-icon,
-[ng-click] md-icon,
-[href] md-icon {
-	cursor: pointer;
-}
-
 /* acknowledge button */
 
 .ma-acknowledged-checkbox,

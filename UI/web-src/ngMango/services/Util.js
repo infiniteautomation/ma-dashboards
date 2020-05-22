@@ -973,6 +973,30 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
 
             return dst;
         },
+
+        deepDiff: function deepDiff(data, defaults) {
+            const differences = {};
+            for (const key in data) {
+                const fieldValue = data[key];
+                const defaultValue = defaults && defaults[key];
+                if (typeof fieldValue !== 'function' && !angular.equals(fieldValue, defaultValue)) {
+                    if (fieldValue && typeof fieldValue === 'object' && !Array.isArray(fieldValue)) {
+                        differences[key] = deepDiff(fieldValue, defaultValue);
+                    } else {
+                        differences[key] = fieldValue;
+                    }
+                }
+            }
+            return differences;
+        },
+        
+        merge() {
+            return angular.merge.apply(angular, arguments);
+        },
+        
+        copy() {
+            return angular.copy.apply(angular, arguments);
+        },
         
         inject(object) {
             if (Array.isArray(object) && object.length && typeof object[object.length - 1] === 'function' ||
