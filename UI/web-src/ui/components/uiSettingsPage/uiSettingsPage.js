@@ -91,9 +91,8 @@ class UiSettingsPageController {
             if (this.data.themes.hasOwnProperty(themeName)) {
                 this.maDialogHelper.errorToast(['ui.app.themeExists', themeName]);
                 this.addNewTheme(event);
-            } else if (themeName.match(/\s/)) {
-                // TODO
-                this.maDialogHelper.errorToast(['ui.app.themeExists', themeName]);
+            } else if (!themeName.match(/^[a-zA-Z][\w]*$/)) {
+                this.maDialogHelper.errorToast(['ui.app.themeNameOnlyWordCharacters']);
                 this.addNewTheme(event);
             } else {
                 const theme = this.maTheming.defaultTheme();
