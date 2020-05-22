@@ -48,7 +48,7 @@
     				</md-button>
                 </md-input-container>
                 
-                 <div flex="100" flex-gt-md="50" layout layout-align="start center">
+                 <div flex="100" flex-gt-md="50" layout layout-align="start center" ng-if-start="$ctrl.data.usePreferredColorScheme">
                     <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.editTheme($ctrl.data.alternateTheme)" ng-disabled="$ctrl.defaultThemes[$ctrl.data.alternateTheme] && $ctrl.data.alternateTheme !== 'userTheme'">
                         <md-icon>edit</md-icon>
                         <md-tooltip><span ma-tr="ui.app.editTheme"></span></md-tooltip>
@@ -64,7 +64,7 @@
                     </md-input-container>
                 </div>
                         
-                <md-input-container flex="100" flex-gt-md="50">
+                <md-input-container flex="100" flex-gt-md="50" ng-if-end>
                     <label ma-tr="{{$ctrl.data.themes[$ctrl.data.defaultTheme].dark ? 'ui.app.alternateLogoLight' : 'ui.app.alternateLogoDark'}}"></label>
                     <input name="alternateLogo" ng-model="$ctrl.data.alternateLogo" ma-empty-input ng-model-options="{debounce: 500}">
                     <md-button class="ma-input-button md-icon-button"
