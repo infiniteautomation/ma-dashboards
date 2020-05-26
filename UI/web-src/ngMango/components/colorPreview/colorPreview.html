@@ -1,8 +1,8 @@
-<div layout="column" class="color-preview-palette">
-    <div class="color-preview-box" layout layout-align="space-between center"
-      ng-repeat="color in $ctrl.colors track by $index"
-      md-colors="{background: color.spec}">
+<div layout="column" class="ma-color-preview-palette">
+    <div class="ma-color-preview-box" layout layout-align="space-between center"
+        ng-repeat="color in $ctrl.colors track by $index"
+        ng-style="color.style">
       <span ng-bind="color.name"></span>
-      <span ng-bind="color.cssColor"></span>
+      <span ng-bind="color.color"></span>
     </div>
 </div>

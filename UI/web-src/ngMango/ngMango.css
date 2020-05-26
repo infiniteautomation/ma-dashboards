@@ -333,7 +333,7 @@ ma-badge {
 }
 
 /* Color preview */
-.color-preview-box {
+.ma-color-preview-box {
     margin: 0 5px;
     padding: 10px 15px;
     font-weight: bold;

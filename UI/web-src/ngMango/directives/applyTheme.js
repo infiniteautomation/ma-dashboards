@@ -13,10 +13,12 @@ function applyThemeDirective(maTheming) {
         constructor($element) {
             this.$element = $element;
         }
-        
-        $onChanges(changes) {
-            if (changes.theme) {
+
+        $doCheck() {
+            const theme = maTheming.getThemes()[this.theme];
+            if (theme !== this.prevTheme) {
                 maTheming.themeElement(this.$element[0], this.theme);
+                this.prevTheme = theme;
             }
         }
     }

@@ -5,55 +5,63 @@
 
 import colorPreviewTemplate from './colorPreview.html';
 
-const hues = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
-const namedHues = ['default', 'hue-1', 'hue-2', 'hue-3'];
-
-ColorPreviewController.$inject = ['$mdColors'];
-function ColorPreviewController($mdColors) {
-    this.theme = '';
+class ColorPreviewController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['$element', 'maTheming']; }
     
-    this.$onChanges = function(changes) {
+    constructor($element, maTheming) {
+        this.$element = $element;
+        this.maTheming = maTheming;
+        this.themes = maTheming.getThemes();
+        this.hueNames = maTheming.getHueNames();
+    }
+    
+    $onChanges(changes) {
         if (changes.palette || changes.theme || changes.allHues) {
-            this.colors = this.allHues ? this.huesToColorStrings(hues) : this.huesToColorStrings(namedHues);
+            this.prevThemeObj = this.themeObj = this.themes[this.theme];
+            this.getColors();
         }
-    };
+    }
     
-    this.huesToColorStrings = function(hues) {
-        const colors = [];
-        const prefix = this.theme ? this.theme + '-' : '';
-        for (let i = 0; i < hues.length; i++) {
-            const hue = hues[i];
-            const suffix = hue === 'default' ? '' : '-' + hue;
-            const colorExpression = prefix + this.palette + suffix;
-            colors.push({
-                name: hue,
-                cssColor: this.toHex($mdColors.getThemeColor(colorExpression)),
-                spec: colorExpression
+    $doCheck() {
+        this.themeObj = this.themes[this.theme];
+        if (this.themeObj !== this.prevThemeObj) {
+            this.getColors();
+            this.prevThemeObj = this.themeObj;
+        }
+    }
+    
+    getColors() {
+        if (this.allHues) {
+            this.colors = this.huesToColors(this.hueNames.slice(4));
+        } else {
+            this.colors = this.huesToColors(this.hueNames.slice(0, 4));
+        }
+    }
+    
+    huesToColors(hues) {
+        return hues.map(hue => {
+            const colors = this.maTheming.getThemeColors({
+                theme: this.theme,
+                palette: this.palette,
+                hue
             });
-        }
-        return colors;
-    };
-    
-    this.toHex = function toHex(rgbaString) {
-        const matches = /^rgba\((.+?)\)$/.exec(rgbaString);
-        if (matches && matches.length === 2) {
-            const split = matches[1].split(/\s*,\s*/);
-            if (split.length < 3) return rgbaString;
-            let result = '#';
-            for (let i = 0; i < 3; i++) {
-                result += ('0' + parseInt(split[i], 10).toString(16)).slice(-2);
-            }
-            return result.toUpperCase();
-        }
-        return rgbaString;
-    };
+
+            return {
+                name: hue,
+                color: colors.color,
+                contrast: colors.contrast,
+                style: {'background-color': colors.color, color: colors.contrast}
+            };
+        });
+    }
 }
 
 export default {
     bindings: {
         theme: '@',
         palette: '@',
-        allHues: '<'
+        allHues: '<?'
     },
     controller: ColorPreviewController,
     template: colorPreviewTemplate
