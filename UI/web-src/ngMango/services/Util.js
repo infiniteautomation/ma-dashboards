@@ -981,7 +981,10 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
                 const defaultValue = defaults && defaults[key];
                 if (typeof fieldValue !== 'function' && !angular.equals(fieldValue, defaultValue)) {
                     if (fieldValue && typeof fieldValue === 'object' && !Array.isArray(fieldValue)) {
-                        differences[key] = deepDiff(fieldValue, defaultValue);
+                        const diff = deepDiff(fieldValue, defaultValue);
+                        if (Object.keys(diff).length) {
+                            differences[key] = diff;
+                        }
                     } else {
                         differences[key] = fieldValue;
                     }
