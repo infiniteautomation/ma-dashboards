@@ -17,3 +17,7 @@ ma-ui-settings-page md-select.ma-theme-select .md-select-value .md-text,
 ma-ui-settings-page .ma-date-formats-container > md-input-container {
     margin-bottom: 32px;
 }
+
+ma-ui-settings-page .md-button.ma-preview-theme[disabled] md-icon {
+    color: var(--ma-accent);
+}

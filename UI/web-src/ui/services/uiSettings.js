@@ -159,9 +159,9 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             }
             
             applyUiSettings() {
-                this.applyPreferredColorScheme();
-                this.generateTheme(this.activeTheme);
-                this.applyTheme(this.activeTheme);
+                const preferredTheme = this.getPreferredTheme();
+                this.generateTheme(preferredTheme);
+                this.applyTheme(preferredTheme);
                 Object.assign(MA_TIMEOUTS, this.timeouts);
                 Object.assign(MA_DATE_FORMATS, this.dateFormats);
                 this.setPointValuesLimit();
@@ -219,6 +219,12 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 // activate our new theme
                 $mdThemingProvider.setDefaultTheme(this.activeTheme);
                 this.addThemeColorMetaTags();
+                
+                if (!!this.themes[this.activeTheme].dark === !!this.themes[this.defaultTheme].dark) {
+                    this.themeLogo = this.logoSrc;
+                } else {
+                    this.themeLogo = this.alternateLogo;
+                }
             }
             
             themeFromSettings(themeName, themeSettings) {
@@ -275,20 +281,16 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 this.setMetaTag('msapplication-navbutton-color', themeColor);
             }
             
-            applyPreferredColorScheme() {
+            getPreferredTheme() {
                 const defaultTheme = this.themes[this.defaultTheme];
-                const alternateTheme = this.themes[this.alternateTheme];
-                
                 const usePreferred = this.usePreferredColorScheme && typeof $window.matchMedia === 'function';
+                
                 if (usePreferred && $window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    this.activeTheme = defaultTheme.dark ? this.defaultTheme : this.alternateTheme;
-                    this.themeLogo = defaultTheme.dark ? this.logoSrc : this.alternateLogo;
+                    return defaultTheme.dark ? this.defaultTheme : this.alternateTheme;
                 } else if (usePreferred && $window.matchMedia('(prefers-color-scheme: light)').matches) {
-                    this.activeTheme = !defaultTheme.dark ? this.defaultTheme : this.alternateTheme;
-                    this.themeLogo = !defaultTheme.dark ? this.logoSrc : this.alternateLogo;
+                    return !defaultTheme.dark ? this.defaultTheme : this.alternateTheme;
                 } else {
-                    this.activeTheme = this.defaultTheme;
-                    this.themeLogo = this.logoSrc;
+                    return this.defaultTheme;
                 }
             }
             

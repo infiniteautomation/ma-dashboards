@@ -109,34 +109,28 @@ class UiSettingsPageController {
     }
     
     editTheme(themeName) {
-        const theme = this.maUtil.deepMerge(this.maTheming.defaultTheme(), this.data.themes[themeName]);
         this.themeName = themeName;
-        this.theme = theme;
-        this.applyTheme();
+        this.theme = this.data.themes[themeName];
+        this.previewTheme();
     }
-    
-    applyTheme() {
-        this.uiSettings.generateTheme(this.themeName, this.theme);
-        this.uiSettings.applyTheme(this.themeName);
+
+    previewTheme(name = this.themeName, settings = this.theme) {
+        this.uiSettings.generateTheme(name, settings);
+        this.uiSettings.applyTheme(name);
     }
-    
-    saveTheme() {
-        this.data.themes[this.themeName] = this.theme;
-        this.updateThemesArray();
-        this.checkThemes();
-    }
-    
+
     themeEditorClosed() {
         delete this.themeName;
         delete this.theme;
-        this.uiSettings.applyUiSettings();
+        
+        // theme might change from light to dark or vice versa
+        this.checkThemes();
     }
     
     removeTheme() {
         delete this.data.themes[this.themeName];
-        this.form.$setDirty();
         this.updateThemesArray();
-        this.checkThemes();
+        this.form.$setDirty();
     }
     
     checkThemes() {
@@ -152,6 +146,12 @@ class UiSettingsPageController {
         
         if (defaultDark === alternateDark) {
             this.data.alternateTheme = this.themes.find(t => !!t.dark !== defaultDark).name;
+        }
+        
+        // active theme might have been deleted
+        const activeTheme = this.uiSettings.activeTheme;
+        if (activeTheme !== this.data.defaultTheme && activeTheme !== this.data.alternateTheme) {
+            this.previewTheme(this.data.defaultTheme);
         }
     }
 }
