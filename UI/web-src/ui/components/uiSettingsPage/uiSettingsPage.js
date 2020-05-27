@@ -28,7 +28,7 @@ class UiSettingsPageController {
         this.discardCheck = new this.maDiscardCheck({
             $scope: this.$scope,
             isDirty: () => this.form && this.form.$dirty,
-            onDiscard: () => this.onDiscard() // TODO
+            onDiscard: () => this.uiSettings.applyUiSettings()
         });
 
         this.get();
@@ -97,10 +97,13 @@ class UiSettingsPageController {
             } else {
                 const theme = this.maTheming.defaultTheme();
                 this.data.themes[themeName] = theme;
-                this.themeName = themeName;
-                this.theme = theme;
                 this.form.$setDirty();
                 this.updateThemesArray();
+                
+                this.data.defaultTheme = themeName;
+                this.checkThemes();
+                
+                this.editTheme(themeName);
             }
         });
     }
@@ -109,6 +112,12 @@ class UiSettingsPageController {
         const theme = this.maUtil.deepMerge(this.maTheming.defaultTheme(), this.data.themes[themeName]);
         this.themeName = themeName;
         this.theme = theme;
+        this.applyTheme();
+    }
+    
+    applyTheme() {
+        this.uiSettings.generateTheme(this.themeName, this.theme);
+        this.uiSettings.applyTheme(this.themeName);
     }
     
     saveTheme() {
@@ -120,6 +129,7 @@ class UiSettingsPageController {
     themeEditorClosed() {
         delete this.themeName;
         delete this.theme;
+        this.uiSettings.applyUiSettings();
     }
     
     removeTheme() {

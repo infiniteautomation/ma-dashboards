@@ -160,7 +160,8 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             
             applyUiSettings() {
                 this.applyPreferredColorScheme();
-                this.generateTheme();
+                this.generateTheme(this.activeTheme);
+                this.applyTheme(this.activeTheme);
                 Object.assign(MA_TIMEOUTS, this.timeouts);
                 Object.assign(MA_DATE_FORMATS, this.dateFormats);
                 this.setPointValuesLimit();
@@ -174,37 +175,43 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                     maPointValues.setDefaultLimit(this.pointValuesLimit);
                 }
             }
-
-            generateTheme() {
+            
+            generateTheme(name, settings) {
                 // cant modify the $mdTheming.THEMES object as it is a copy, the correct THEMES object is available here
                 const THEMES = $mdThemingProvider._THEMES;
-                const themeSettings = this.themes[this.activeTheme];
+                const themeSettings = settings || this.themes[name];
                 
                 // It is not possible to regenerate the styles for a theme once it is already registered.
                 // We generate a new theme with a temporary UUID name and then replace the UUID inside the styles with the
                 // actual theme name.
-                const tempName = maUtil.uuid();
+                const tempName = 'temp' + maUtil.uuid().replace(/-/g, '');
                 // controls the nonce attribute on the inserted style tags
                 $mdThemingProvider.setNonce(tempName);
                 // generate the theme
-                this.activeThemeObj = this.themeFromSettings(tempName, themeSettings);
+                const theme = this.themeFromSettings(tempName, themeSettings);
                 
                 // change the temporary theme's name and put it in the correct spot
-                this.activeThemeObj.name = this.activeTheme;
+                theme.name = name;
                 delete THEMES[tempName];
-                THEMES[this.activeTheme] = this.activeThemeObj;
+                THEMES[name] = theme;
                 
                 for (const e of $window.document.querySelectorAll('head > style[nonce]')) {
                     const nonce = e.getAttribute('nonce');
                     if (nonce === tempName) {
                         // replace the temporary theme name in the style contents with the actual theme name
-                        e.textContent = e.textContent.replace(new RegExp(tempName, 'g'), this.activeTheme);
-                        e.setAttribute('nonce', this.activeTheme);
-                    } else if (nonce === this.activeTheme) {
+                        e.textContent = e.textContent.replace(new RegExp(tempName, 'g'), name);
+                        e.setAttribute('nonce', name);
+                    } else if (nonce === name) {
                         // remove old style tags from the same theme
                         e.parentNode.removeChild(e);
                     }
                 }
+                
+                return theme;
+            }
+
+            applyTheme(name) {
+                this.activeTheme = name;
 
                 // setup the CSS variables for the theme
                 this.applyRootTheme(this.activeTheme);
