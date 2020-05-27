@@ -112,7 +112,7 @@ class WatchListBuilderController {
             param.name = param.options.tagKey;
             param.options.restrictions = {};
             prevParams.forEach(prevParam => {
-                param.options.restrictions[prevParam.options.tagKey] = '{{' + prevParam.name + '}}';
+                param.options.restrictions[prevParam.options.tagKey] = `{{this['${prevParam.name}']}}`;
             });
             prevParams.push(param);
         });
@@ -177,7 +177,7 @@ class WatchListBuilderController {
             }, response => {
                 // error saving
                 const toast = this.$mdToast.simple()
-                    .textContent(this.Translate.trSync('ui.app.errorSavingWatchlist', response.mangoStatusText))
+                    .textContent(this.Translate.trSync('ui.app.errorSavingWatchlist', [response.mangoStatusText]))
                     .action(this.Translate.trSync('common.ok'))
                     .actionKey('o')
                     .highlightAction(true)
