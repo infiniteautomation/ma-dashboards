@@ -102,8 +102,8 @@ import angular from 'angular';
 * @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions available to them.
 *
 */
-JsonStoreFactory.$inject = ['$resource', 'maUtil', 'maNotificationManager', '$q'];
-function JsonStoreFactory($resource, Util, NotificationManager, $q) {
+JsonStoreFactory.$inject = ['$resource'];
+function JsonStoreFactory($resource) {
     const jsonStoreUrl = '/rest/v2/json-data/';
     
     const defaultProperties = {
