@@ -33,13 +33,13 @@ function calc() {
             onChange: '&?'
         },
         link: function($scope, $element, attr) {
-        	const deregister = $scope.$parent.$watch(attr.input, function(newValue) {
-            	$scope.output = newValue;
-            	if ($scope.onChange) {
-            	    $scope.onChange({$value: newValue});
-            	}
-    		});
-        	$scope.$on('$destroy', deregister);
+            const deregister = $scope.$parent.$watch(attr.input, function(newValue) {
+                $scope.output = newValue;
+                if ($scope.onChange) {
+                    $scope.onChange({$value: newValue});
+                }
+            });
+            $scope.$on('$destroy', deregister);
         },
         designerInfo: {
             translation: 'ui.components.maCalc',

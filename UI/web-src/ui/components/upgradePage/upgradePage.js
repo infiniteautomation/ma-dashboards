@@ -27,17 +27,17 @@ UpgradePageController.prototype.$onInit = function() {
     }.bind(this));
 
     this.$scope.$on('maWatchdog', (event, current, previous) => {
-    	if (current.status === 'LOGGED_IN') {
-    	    this.checkForUpgrades();
-    	}
+        if (current.status === 'LOGGED_IN') {
+            this.checkForUpgrades();
+        }
     });
 
     this.maModules.notificationManager.subscribe((event, message) => {
-		if (event.name === 'webSocketMessage') {
-			if (message.type === 'UPGRADE_STATE_CHANGE') {
+        if (event.name === 'webSocketMessage') {
+            if (message.type === 'UPGRADE_STATE_CHANGE') {
                 this.upgradeState = message.upgradeProcessState;
                 this.upgradeStateDescription = message.stateDescription;
-			} else if (message.type === 'MODULE_DOWNLOADED') {
+            } else if (message.type === 'MODULE_DOWNLOADED') {
                 this.modulesDownloaded++;
                 this.upgradeProgress = Math.floor(this.modulesDownloaded / this.modulesToDownload * 100);
                 
@@ -45,47 +45,47 @@ UpgradePageController.prototype.$onInit = function() {
                     moduleDownloaded(message.name, this.installsSelected);
                 }
             } else if (message.type === 'UPGRADE_FINISHED') {
-			    if (this.upgradeDeferred) {
-			        this.upgradeDeferred.resolve();
+                if (this.upgradeDeferred) {
+                    this.upgradeDeferred.resolve();
                 }
-			} else if (message.type === 'UPGRADE_ERROR') {
+            } else if (message.type === 'UPGRADE_ERROR') {
                 this.error = this.maTranslate.trSync('ui.app.upgradeError', message.error);
                 
                 if (this.upgradeDeferred) {
                     this.upgradeDeferred.reject(message.error);
                 }
             }
-		}
-		
-		function moduleDownloaded(moduleName, searchArray) {
-			for (let i = searchArray.length - 1; i >= 0; i--) {
-				if (searchArray[i].name === moduleName) {
-					searchArray[i].downloaded = true;
-					searchArray.splice(i, 1);
-					return true;
-				}
-			}
-		}
-	}, this.$scope, ['webSocketMessage']);
+        }
+        
+        function moduleDownloaded(moduleName, searchArray) {
+            for (let i = searchArray.length - 1; i >= 0; i--) {
+                if (searchArray[i].name === moduleName) {
+                    searchArray[i].downloaded = true;
+                    searchArray.splice(i, 1);
+                    return true;
+                }
+            }
+        }
+    }, this.$scope, ['webSocketMessage']);
 };
 
 UpgradePageController.prototype.checkForUpgrades = function() {
-	this.installsSelected = [];
+    this.installsSelected = [];
     this.upgradesSelected = [];
     this.backupBeforeDownload = true;
     this.restartAfterDownload = true;
-	delete this.error;
-	// these are still set after a restart
+    delete this.error;
+    // these are still set after a restart
     delete this.upgradeState;
     delete this.upgradeStateDescription;
-	
-	this.checkPromise = this.maModules.checkForUpgrades().then(function(available) {
-		this.installs = available.newInstalls;
-		this.upgrades = available.upgrades;
-		
-		// ensure module has a dependencyVersions property
-		this.installs.concat(this.upgrades).forEach((module) => {
-		    if (!module.dependencyVersions) {
+    
+    this.checkPromise = this.maModules.checkForUpgrades().then(function(available) {
+        this.installs = available.newInstalls;
+        this.upgrades = available.upgrades;
+        
+        // ensure module has a dependencyVersions property
+        this.installs.concat(this.upgrades).forEach((module) => {
+            if (!module.dependencyVersions) {
                 module.dependencyVersions = {};
                 if (module.dependencies) {
                     module.dependencies.split(/\s*,\s*/).forEach(depStr => {
@@ -93,21 +93,21 @@ UpgradePageController.prototype.checkForUpgrades = function() {
                         module.dependencyVersions[parts[0]] = parts[1];
                     });
                 }
-		    }
-		});
-		
-	}.bind(this), function(error) {
-		this.error = error.mangoStatusText;
-	}.bind(this)).then(function() {
-		delete this.checkPromise;
-	}.bind(this));
+            }
+        });
+        
+    }.bind(this), function(error) {
+        this.error = error.mangoStatusText;
+    }.bind(this)).then(function() {
+        delete this.checkPromise;
+    }.bind(this));
 };
 
 UpgradePageController.prototype.showReleaseNotes = function($event, module) {
-	this.maDialogHelper.showBasicDialog($event, {
-		titleTr: 'ui.app.releaseNotes',
-		contentTemplate: module.releaseNotes
-	});
+    this.maDialogHelper.showBasicDialog($event, {
+        titleTr: 'ui.app.releaseNotes',
+        contentTemplate: module.releaseNotes
+    });
 };
 
 UpgradePageController.prototype.moduleSelected = function(selected) {
@@ -168,39 +168,39 @@ UpgradePageController.prototype.doUpgrade = function($event) {
     
     if (missingDep) return;
 
-	this.upgradePromise = this.maDialogHelper.confirm($event, 'ui.app.upgradeConfirm').then(function() {
-	    this.upgradeProgress = 0;
-	    this.modulesDownloaded = 0;
-	    this.modulesToDownload = this.upgradesSelected.length + this.installsSelected.length;
-	    
-		return this.maModules.doUpgrade(this.installsSelected, this.upgradesSelected,
-			this.backupBeforeDownload, this.restartAfterDownload);
-	}.bind(this)).then(function(response) {
-		this.upgradeDeferred = this.$q.defer();
-		return this.upgradeDeferred.promise;
-	}.bind(this))['finally'](function() {
-		delete this.upgradePromise;
-		delete this.upgradeDeferred;
+    this.upgradePromise = this.maDialogHelper.confirm($event, 'ui.app.upgradeConfirm').then(function() {
+        this.upgradeProgress = 0;
+        this.modulesDownloaded = 0;
+        this.modulesToDownload = this.upgradesSelected.length + this.installsSelected.length;
+        
+        return this.maModules.doUpgrade(this.installsSelected, this.upgradesSelected,
+            this.backupBeforeDownload, this.restartAfterDownload);
+    }.bind(this)).then(function(response) {
+        this.upgradeDeferred = this.$q.defer();
+        return this.upgradeDeferred.promise;
+    }.bind(this))['finally'](function() {
+        delete this.upgradePromise;
+        delete this.upgradeDeferred;
 
         delete this.upgradeProgress;
         delete this.modulesDownloaded;
         delete this.modulesToDownload;
-	}.bind(this));
+    }.bind(this));
 };
 
 UpgradePageController.prototype.restart = function($event) {
-	this.maDialogHelper.confirm($event, ['ui.app.restartInstanceConfirm', this.maUiServerInfo.instanceDescription]).then(function() {
-		this.maModules.restart();
-	}.bind(this)).then(function() {
-		const toast = this.$mdToast.simple()
-	        .textContent(this.maTranslate.trSync('modules.restartScheduled'))
-	        .action(this.maTranslate.trSync('common.ok'))
+    this.maDialogHelper.confirm($event, ['ui.app.restartInstanceConfirm', this.maUiServerInfo.instanceDescription]).then(function() {
+        this.maModules.restart();
+    }.bind(this)).then(function() {
+        const toast = this.$mdToast.simple()
+            .textContent(this.maTranslate.trSync('modules.restartScheduled'))
+            .action(this.maTranslate.trSync('common.ok'))
             .actionKey('o')
-	        .highlightAction(true)
-	        .position('bottom center')
-	        .hideDelay(10000);
-		this.$mdToast.show(toast);
-	}.bind(this));
+            .highlightAction(true)
+            .position('bottom center')
+            .hideDelay(10000);
+        this.$mdToast.show(toast);
+    }.bind(this));
 };
 
 export default {

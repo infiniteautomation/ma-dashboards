@@ -126,16 +126,16 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout,
         };
     };
 
-	const cursorSyncCharts = {};
-	
-	const addCursorSyncChart = (cursorSyncId, chart) => {
-	    if (!cursorSyncCharts.hasOwnProperty(cursorSyncId)) {
-	        cursorSyncCharts[cursorSyncId] = [];
-	    }
-	    if (cursorSyncCharts[cursorSyncId].includes(chart)) return;
-	    cursorSyncCharts[cursorSyncId].push(chart);
-	};
-	
+    const cursorSyncCharts = {};
+    
+    const addCursorSyncChart = (cursorSyncId, chart) => {
+        if (!cursorSyncCharts.hasOwnProperty(cursorSyncId)) {
+            cursorSyncCharts[cursorSyncId] = [];
+        }
+        if (cursorSyncCharts[cursorSyncId].includes(chart)) return;
+        cursorSyncCharts[cursorSyncId].push(chart);
+    };
+    
     const removeCursorSyncChart = (cursorSyncId, chart) => {
         const chartsArray = cursorSyncCharts[cursorSyncId];
         if (!chartsArray) return;
@@ -158,7 +158,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout,
             if (chart !== event.chart) {
                 chart.ignoreZoom = true;
                 try {
-                	chart.zoomToDates(event.startDate, event.endDate);
+                    chart.zoomToDates(event.startDate, event.endDate);
                 } catch (e) {} // throws error on first run
             }
         });

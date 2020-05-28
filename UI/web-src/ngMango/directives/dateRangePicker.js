@@ -121,8 +121,8 @@ function dateRangePicker($injector, MA_DATE_RANGE_PRESETS) {
         controller: ['$attrs', '$parse', '$scope', '$interval', 'maUtil', 'MA_DATE_FORMATS', 'maTranslate',
                      function($attrs, $parse, $scope, $interval, Util, mangoDateFormats, Translate) {
             
-        	const fromExpression = $parse($attrs.from);
-        	const toExpression = $parse($attrs.to);
+            const fromExpression = $parse($attrs.from);
+            const toExpression = $parse($attrs.to);
             const fromAssign = fromExpression.assign && fromExpression.assign.bind(null, $scope.$parent);
             const toAssign = toExpression.assign && toExpression.assign.bind(null, $scope.$parent);
             
@@ -220,15 +220,15 @@ function dateRangePicker($injector, MA_DATE_RANGE_PRESETS) {
 
                 if (mdPickers || this.format === 'false') {
                     if (fromAssign)
-                    	fromAssign(from.toDate());
+                        fromAssign(from.toDate());
                     if (toAssign)
-                    	toAssign(to.toDate());
+                        toAssign(to.toDate());
                 } else {
                     const format = this.format || mangoDateFormats.dateTimeSeconds;
                     if (fromAssign)
-                    	fromAssign(from.format(format));
+                        fromAssign(from.format(format));
                     if (toAssign)
-                    	toAssign(to.format(format));
+                        toAssign(to.format(format));
                 }
             }.bind(this);
 

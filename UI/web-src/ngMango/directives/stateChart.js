@@ -24,15 +24,15 @@ import moment from 'moment-timezone';
  *     Should be set to `.getTextRenderer().values` property of a multistate point.
  * @usage
  * <ma-state-chart style="height: 500px; width: 100%"
- 	series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-labels="point1.getTextRenderer().values"
- 	series-2-title="{{point2.name}}" series-2-values="point2Values" series-2-labels="point2.getTextRenderer().values">
+     series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-labels="point1.getTextRenderer().values"
+     series-2-title="{{point2.name}}" series-2-values="point2Values" series-2-labels="point2.getTextRenderer().values">
  </ma-state-chart>
  *
  */
  
 stateChart.$inject = ['MA_DATE_FORMATS', 'MA_AMCHARTS_DATE_FORMATS', 'maUtil'];
 function stateChart(mangoDateFormats, MA_AMCHARTS_DATE_FORMATS, maUtil) {
-	const MAX_SERIES = 10;
+    const MAX_SERIES = 10;
 
     const defaultOptions = function defaultOptions() {
         return {

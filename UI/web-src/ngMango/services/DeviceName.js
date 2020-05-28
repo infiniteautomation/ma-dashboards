@@ -142,7 +142,7 @@ function DeviceNameFactory($resource) {
             isArray: true
         },
         byDataSourceId: {
-        	url: '/rest/v2/device-names/by-data-source-id/:id',
+            url: '/rest/v2/device-names/by-data-source-id/:id',
             method: 'GET',
             isArray: true
         },

@@ -8,8 +8,8 @@ import JSZip from 'jszip';
 
 fileStore.$inject = ['$http', 'maUtil', '$q'];
 function fileStore($http, maUtil, $q) {
-	const fileStoreUrl = '/rest/v2/file-stores';
-	const fileStoreUrlSplit = fileStoreUrl.split('/');
+    const fileStoreUrl = '/rest/v2/file-stores';
+    const fileStoreUrlSplit = fileStoreUrl.split('/');
 
     const editModesByMime = {
         'application/json': 'json',
@@ -37,91 +37,91 @@ function fileStore($http, maUtil, $q) {
 
     class FileStore {
         toUrl(pathArray, isDirectory) {
-        	const parts = pathArray.map(function(part) {
-        		return encodeURIComponent(part);
-        	});
-        	let url = fileStoreUrl + '/' + parts.join('/');
-        	if (isDirectory) {
-        		url += '/';
-        	}
-        	return url;
+            const parts = pathArray.map(function(part) {
+                return encodeURIComponent(part);
+            });
+            let url = fileStoreUrl + '/' + parts.join('/');
+            if (isDirectory) {
+                url += '/';
+            }
+            return url;
         }
     
         fromUrl(url) {
-        	const path = [];
-        	url.split('/').forEach(function(part, i) {
-        		if (i < fileStoreUrlSplit.length) {
-        			if (part !== fileStoreUrlSplit[i]) {
-        				throw new Error('Not a file store url');
-        			}
-        		} else {
-        			path.push(decodeURIComponent(part));
-        		}
-        	});
-        	
-        	if (path.length < 1) {
-        		throw new Error('Must specify the file store name');
-        	}
-        	
-        	if (!path[path.length - 1]) {
-        		path.pop();
-        		path.directory = true;
-        	}
-        	
-        	return path;
+            const path = [];
+            url.split('/').forEach(function(part, i) {
+                if (i < fileStoreUrlSplit.length) {
+                    if (part !== fileStoreUrlSplit[i]) {
+                        throw new Error('Not a file store url');
+                    }
+                } else {
+                    path.push(decodeURIComponent(part));
+                }
+            });
+            
+            if (path.length < 1) {
+                throw new Error('Must specify the file store name');
+            }
+            
+            if (!path[path.length - 1]) {
+                path.pop();
+                path.directory = true;
+            }
+            
+            return path;
         }
         
         // lists the available file stores
         list() {
-        	return $http({
-        		method: 'GET',
-        		url: fileStoreUrl
-        	}).then(function(response) {
-        		return response.data;
-        	});
+            return $http({
+                method: 'GET',
+                url: fileStoreUrl
+            }).then(function(response) {
+                return response.data;
+            });
         }
         
         // lists files inside a file store directory
         listFiles(path) {
-        	if (path.length < 1) {
-        		throw new Error('Must specify the file store name');
-        	}
-        	const folderUrl = this.toUrl(path, true);
-        	return $http({
-        		method: 'GET',
-        		url: folderUrl
-        	}).then(function(response) {
-        		return response.data.map(function(file) {
-            		return new FileStoreFile(path[0], file);
-        		});
-        	});
+            if (path.length < 1) {
+                throw new Error('Must specify the file store name');
+            }
+            const folderUrl = this.toUrl(path, true);
+            return $http({
+                method: 'GET',
+                url: folderUrl
+            }).then(function(response) {
+                return response.data.map(function(file) {
+                    return new FileStoreFile(path[0], file);
+                });
+            });
         }
         
         remove(path, recursive) {
-        	if (path.length < 1) {
-        		throw new Error('Must specify the file store name');
-        	}
-        	const folderUrl = this.toUrl(path);
-        	return $http({
-        		method: 'DELETE',
-        		url: folderUrl,
-        		params: {
-        			recursive: recursive
-        		}
-        	}).then(function(response) {
-        		return response.data;
-        	});
+            if (path.length < 1) {
+                throw new Error('Must specify the file store name');
+            }
+            const folderUrl = this.toUrl(path);
+            return $http({
+                method: 'DELETE',
+                url: folderUrl,
+                params: {
+                    recursive: recursive
+                }
+            }).then(function(response) {
+                return response.data;
+            });
         }
         
         uploadFiles(path, files, overwrite) {
-        	if (path.length < 1) {
-        		throw new Error('Must specify the file store name');
-        	}
-        	
-        	const formData = new FormData();
-        	for (let i = 0; i < files.length; i++) {
-            	formData.append('files[]', files[i]);
-        	}
+            if (path.length < 1) {
+                throw new Error('Must specify the file store name');
+            }
+            
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files[]', files[i]);
+            }
     
             return this.uploadFormData(path, formData, overwrite);
         }
@@ -167,72 +167,72 @@ function fileStore($http, maUtil, $q) {
         }
         
         createNewFolder(path, name) {
-        	if (path.length < 1) {
-        		throw new Error('Must specify the file store name');
-        	}
-        	const folderUrl = this.toUrl(path.concat(name), true);
+            if (path.length < 1) {
+                throw new Error('Must specify the file store name');
+            }
+            const folderUrl = this.toUrl(path.concat(name), true);
     
-        	return $http({
-        		method: 'POST',
-        		url: folderUrl
-        	}).then(function(response) {
-        		return new FileStoreFile(path[0], response.data);
-        	});
+            return $http({
+                method: 'POST',
+                url: folderUrl
+            }).then(function(response) {
+                return new FileStoreFile(path[0], response.data);
+            });
         }
         
         createNewFile(path, name) {
-        	return this.uploadFiles(path, [new File([], name)], false).then(function(files) {
-        		return files[0];
-        	});
+            return this.uploadFiles(path, [new File([], name)], false).then(function(files) {
+                return files[0];
+            });
         }
         
         renameFile(path, oldFile, newName) {
-        	if (path.length < 1) {
-        		throw new Error('Must specify the file store name');
-        	}
-        	const fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
+            if (path.length < 1) {
+                throw new Error('Must specify the file store name');
+            }
+            const fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
     
-        	return $http({
-        		method: 'POST',
-        		url: fileUrl,
-        		params: {
-        			moveTo: newName
-        		}
-        	}).then(function(response) {
-        		return new FileStoreFile(path[0], response.data);
-        	});
+            return $http({
+                method: 'POST',
+                url: fileUrl,
+                params: {
+                    moveTo: newName
+                }
+            }).then(function(response) {
+                return new FileStoreFile(path[0], response.data);
+            });
         }
         
         copyFile(path, oldFile, newName) {
-        	if (path.length < 1) {
-        		throw new Error('Must specify the file store name');
-        	}
-        	const fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
+            if (path.length < 1) {
+                throw new Error('Must specify the file store name');
+            }
+            const fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
     
-        	return $http({
-        		method: 'POST',
-        		url: fileUrl,
-        		params: {
-        			copyTo: newName
-        		}
-        	}).then(function(response) {
-        		return new FileStoreFile(path[0], response.data);
-        	});
+            return $http({
+                method: 'POST',
+                url: fileUrl,
+                params: {
+                    copyTo: newName
+                }
+            }).then(function(response) {
+                return new FileStoreFile(path[0], response.data);
+            });
         }
         
         downloadFile(file, blob) {
-        	return $http({
-        		method: 'GET',
-        		url: file.url,
-        		responseType: blob ? 'blob' : '',
-        		transformResponse: angular.identity,
-        		headers: {
-        			'Accept': '*/*'
-        		},
-        		timeout: 0
-        	}).then(function(response) {
-        		return response.data;
-        	});
+            return $http({
+                method: 'GET',
+                url: file.url,
+                responseType: blob ? 'blob' : '',
+                transformResponse: angular.identity,
+                headers: {
+                    'Accept': '*/*'
+                },
+                timeout: 0
+            }).then(function(response) {
+                return response.data;
+            });
         }
     
         downloadFiles(path) {
@@ -294,23 +294,23 @@ function fileStore($http, maUtil, $q) {
 
     class FileStoreFile {
         constructor(fileStore, file) {
-        	angular.extend(this, file);
-        	this.fileStore = fileStore;
-        	
-        	const urlArray = [fileStore];
-        	if (this.folderPath) {
-        		urlArray.push(this.folderPath);
-        	}
-        	urlArray.push(this.filename);
+            angular.extend(this, file);
+            this.fileStore = fileStore;
+            
+            const urlArray = [fileStore];
+            if (this.folderPath) {
+                urlArray.push(this.folderPath);
+            }
+            urlArray.push(this.filename);
 
             this.filePath = urlArray.join('/');
-        	this.url = [fileStoreUrl, this.filePath].join('/');
+            this.url = [fileStoreUrl, this.filePath].join('/');
             this.evalUrl = ['/rest/v2/script', 'eval-file-store', this.filePath].join('/');
     
-        	this.editMode = this.getEditMode();
-        	
-        	const lastDot = this.filename.lastIndexOf('.');
-        	this.extension = lastDot >=0 ? this.filename.substring(lastDot + 1) : null;
+            this.editMode = this.getEditMode();
+            
+            const lastDot = this.filename.lastIndexOf('.');
+            this.extension = lastDot >=0 ? this.filename.substring(lastDot + 1) : null;
         }
         
         getEditMode() {
@@ -318,10 +318,10 @@ function fileStore($http, maUtil, $q) {
         }
         
         createFile(content) {
-        	return new File([content], this.filename, {
-        		type: this.mimeType,
-        		lastModified: moment(this.lastModified).valueOf()
-        	});
+            return new File([content], this.filename, {
+                type: this.mimeType,
+                lastModified: moment(this.lastModified).valueOf()
+            });
         }
 
         evalScript(data, params, httpOptions) {

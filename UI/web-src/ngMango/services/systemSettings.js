@@ -127,7 +127,7 @@ function SystemSettingsFactory(sections, systemAlarmLevelSettings, auditAlarmLev
     };
     
     SystemSettings.listPermissions = function() {
-    	return $http({
+        return $http({
             method: 'GET',
             url: permissionsUrl
         }).then(function(response) {

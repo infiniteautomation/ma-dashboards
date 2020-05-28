@@ -11,21 +11,21 @@ function fileStoreDialog($mdDialog, $mdMedia) {
     }
 
     FileStoreDialog.prototype.show = function($event, path, options) {
-    	return $mdDialog.show({
+        return $mdDialog.show({
             controller: function() {
-            	this.close = function(event) {
-            		$mdDialog.cancel();
-            	};
-            	
-            	this.done = function(event) {
-            	    if (this.editingFile) {
-            	        this.saveEditFile(event).then(() => {
+                this.close = function(event) {
+                    $mdDialog.cancel();
+                };
+                
+                this.done = function(event) {
+                    if (this.editingFile) {
+                        this.saveEditFile(event).then(() => {
                             $mdDialog.hide(this.path);
-            	        });
-            	    } else {
+                        });
+                    } else {
                         $mdDialog.hide(this.path);
-            	    }
-            	};
+                    }
+                };
             },
             template: fileStoreDialogTemplate,
             targetEvent: $event,
@@ -35,8 +35,8 @@ function fileStoreDialog($mdDialog, $mdMedia) {
             controllerAs: '$ctrl',
             bindToController: true,
             locals: {
-            	path: path,
-            	options: options
+                path: path,
+                options: options
             }
         });
     };

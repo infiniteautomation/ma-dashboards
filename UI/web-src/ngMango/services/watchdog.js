@@ -66,23 +66,23 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
     const LOGGED_IN = 'LOGGED_IN';
 
     class MangoWatchdog {
-    	constructor(options) {
-    		this.enabled = true;
-    		angular.extend(this, options);
-    		
-    		// assume good state until proved otherwise
-    		this.loggedIn = true;
-    		this.apiUp = true;
-    		
-    		if (this.timeout <= 0)
-    			this.enabled = false;
-    		
-    		if (this.enabled)
-    		    this.setInterval(this.timeout);
-    	}
+        constructor(options) {
+            this.enabled = true;
+            angular.extend(this, options);
+            
+            // assume good state until proved otherwise
+            this.loggedIn = true;
+            this.apiUp = true;
+            
+            if (this.timeout <= 0)
+                this.enabled = false;
+            
+            if (this.enabled)
+                this.setInterval(this.timeout);
+        }
     
-    	doPing() {
-    	    $http({
+        doPing() {
+            $http({
                 method: 'GET',
                 url: '/rest/v2/users/current',
                 timeout: this.interval / 3
@@ -200,22 +200,22 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             this.interval = interval;
             this.timer = $interval(this.doPing.bind(this), interval);
         }
-    	
-    	enable() {
-    	    if (this.enabled) return;
-    	    this.setInterval(this.timeout);
-    		this.enabled = true;
-    	}
+        
+        enable() {
+            if (this.enabled) return;
+            this.setInterval(this.timeout);
+            this.enabled = true;
+        }
     
-    	disable() {
-    	    if (this.timer) {
-    	        $interval.cancel(this.timer);
-    	    }
-    		this.enabled = false;
-    	}
+        disable() {
+            if (this.timer) {
+                $interval.cancel(this.timer);
+            }
+            this.enabled = false;
+        }
     }
 
-	return new MangoWatchdog({timeout: mangoWatchdogTimeout, reconnectDelay: mangoReconnectDelay});
+    return new MangoWatchdog({timeout: mangoWatchdogTimeout, reconnectDelay: mangoReconnectDelay});
 }
 
 export default mangoWatchdog;

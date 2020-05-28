@@ -38,11 +38,11 @@ function ServerFactory($http, $q) {
     
     Server.prototype.getSystemInfo = function(key) {
         let url = serverUrl + '/system-info/';
-    	if (key) {
-    		url += encodeURIComponent(key);
-    	}
-    	
-    	return $http({
+        if (key) {
+            url += encodeURIComponent(key);
+        }
+        
+        return $http({
             method: 'GET',
             url: url
         }).then(function(response) {

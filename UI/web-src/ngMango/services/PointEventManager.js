@@ -23,8 +23,8 @@
 */
 function PointEventManagerFactory(EventManager) {
     return new EventManager({
-    	url: '/rest/v2/websocket/point-value',
-    	replayLastPayload: true
+        url: '/rest/v2/websocket/point-value',
+        replayLastPayload: true
     });
 }
 

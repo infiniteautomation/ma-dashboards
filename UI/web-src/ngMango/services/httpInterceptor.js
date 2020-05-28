@@ -88,18 +88,18 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
     };
     
     return {
-    	request: function(config) {
-    		if (isApiCall(config)) {
-    			config.url = mangoBaseUrl + config.url;
-    		}
-    		if (config.timeout == null) {
-    			config.timeout = MA_TIMEOUTS.xhr;
-    		}
-    		return config;
-    	},
+        request: function(config) {
+            if (isApiCall(config)) {
+                config.url = mangoBaseUrl + config.url;
+            }
+            if (config.timeout == null) {
+                config.timeout = MA_TIMEOUTS.xhr;
+            }
+            return config;
+        },
 
-    	responseError: function(error) {
-    	    if (error.data instanceof Blob && error.data.type === 'application/json') {
+        responseError: function(error) {
+            if (error.data instanceof Blob && error.data.type === 'application/json') {
                 return $injector.get('maUtil').blobToJson(error.data).then(parsedData => {
                     error.data = parsedData;
                     return errorInterceptor(error);

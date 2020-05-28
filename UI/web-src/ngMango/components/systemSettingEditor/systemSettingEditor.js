@@ -26,7 +26,7 @@ class SystemSettingEditorController {
             this.inputType = this.type === 'INTEGER' ? 'number' : 'text';
         }
         if (this.onInit) {
-        	this.onInit({$ctrl: this});
+            this.onInit({$ctrl: this});
         }
     }
     
@@ -45,8 +45,8 @@ class SystemSettingEditorController {
     }
     
     setValue(value) {
-    	this.systemSetting.value = value;
-    	this.valueChanged();
+        this.systemSetting.value = value;
+        this.valueChanged();
     }
     
     valueChanged() {

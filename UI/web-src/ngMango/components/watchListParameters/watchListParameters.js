@@ -72,12 +72,12 @@ WatchListParametersController.prototype.inputChanged = function inputChanged() {
     this.parameters = Object.assign({}, this.parameters);
     this.paramOptions = {};
     
-	if (this.watchList && this.parametersChanged) {
-		this.parametersChanged({$parameters: this.parameters});
-	}
-	if (this.ngModelCtrl) {
-	    this.ngModelCtrl.$setViewValue(this.parameters);
-	}
+    if (this.watchList && this.parametersChanged) {
+        this.parametersChanged({$parameters: this.parameters});
+    }
+    if (this.ngModelCtrl) {
+        this.ngModelCtrl.$setViewValue(this.parameters);
+    }
 };
 
 WatchListParametersController.prototype.getParamOption = function getParamOption(param, optionName) {

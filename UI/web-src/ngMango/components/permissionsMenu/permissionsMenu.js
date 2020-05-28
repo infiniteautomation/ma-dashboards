@@ -44,7 +44,7 @@ class PermissionsMenuController {
                 this.permissions.splice(i, 1);
                 delete this.permissionsByName[permission.name];
             } else {
-            	permission.value = false;
+                permission.value = false;
                 i++;
             }
         }

@@ -7,9 +7,9 @@ import angular from 'angular';
 import systemSettingsPageTemplate from './systemSettingsPage.html';
 
 SystemSettingsPageController.$inject = ['maSystemSettings', 'maLocales', 'maUser', '$state', 'maUiMenu', '$mdMedia',
-	'$scope', '$timeout', 'maSystemActions', 'maDialogHelper', 'maServer', 'maUiServerInfo'];
+    '$scope', '$timeout', 'maSystemActions', 'maDialogHelper', 'maServer', 'maUiServerInfo'];
 function SystemSettingsPageController(SystemSettings, maLocales, User, $state, maUiMenu, $mdMedia,
-		$scope, $timeout, maSystemActions, maDialogHelper, maServer, maUiServerInfo) {
+        $scope, $timeout, maSystemActions, maDialogHelper, maServer, maUiServerInfo) {
     this.SystemSettings = SystemSettings;
     this.User = User;
     this.$state = $state;
@@ -53,65 +53,65 @@ SystemSettingsPageController.prototype.$onInit = function() {
     }.bind(this));
     
     this.SystemSettings.listPermissions().then(function(permissions) {
-    	this.permissions = permissions;
+        this.permissions = permissions;
     }.bind(this));
 };
 
 SystemSettingsPageController.prototype.actions = {
-	purgeUsingSettings: {
-		confirmTr: 'systemSettings.purgeDataWithPurgeSettingsConfirm',
-		descriptionTr: 'ui.app.purgeUsingSettings',
-		resultsTr: 'ui.app.purgeSuccess'
-	},
-	purgeAllPointValues: {
-		confirmTr: 'systemSettings.purgeDataConfirm',
-		descriptionTr: 'ui.app.pointValuePurge',
-		resultsTr: 'systemSettings.excelreports.purgeSuccess'
-	},
-	purgeAllEvents: {
-		confirmTr: 'systemSettings.purgeAllEventsConfirm',
-		descriptionTr: 'ui.app.eventPurge',
-		resultsTr: 'ui.app.eventPurgeSuccess'
-	},
-	backupConfiguration: {
-		confirmTr: 'systemSettings.backupNow',
-		descriptionTr: 'ui.app.configBackup',
-		resultsTr: 'ui.app.configBackupSuccess'
-	},
-	sqlBackup: {
-		confirmTr: 'systemSettings.backupNow',
-		descriptionTr: 'ui.app.sqlBackup',
-		resultsTr: 'ui.app.sqlBackupSuccess'
-	},
-	sqlRestore: {
-		confirmTr: 'systemSettings.confirmRestoreDatabase',
-		descriptionTr: 'ui.app.sqlRestore',
-		resultsTr: 'ui.app.sqlRestoreSuccess'
-	}
+    purgeUsingSettings: {
+        confirmTr: 'systemSettings.purgeDataWithPurgeSettingsConfirm',
+        descriptionTr: 'ui.app.purgeUsingSettings',
+        resultsTr: 'ui.app.purgeSuccess'
+    },
+    purgeAllPointValues: {
+        confirmTr: 'systemSettings.purgeDataConfirm',
+        descriptionTr: 'ui.app.pointValuePurge',
+        resultsTr: 'systemSettings.excelreports.purgeSuccess'
+    },
+    purgeAllEvents: {
+        confirmTr: 'systemSettings.purgeAllEventsConfirm',
+        descriptionTr: 'ui.app.eventPurge',
+        resultsTr: 'ui.app.eventPurgeSuccess'
+    },
+    backupConfiguration: {
+        confirmTr: 'systemSettings.backupNow',
+        descriptionTr: 'ui.app.configBackup',
+        resultsTr: 'ui.app.configBackupSuccess'
+    },
+    sqlBackup: {
+        confirmTr: 'systemSettings.backupNow',
+        descriptionTr: 'ui.app.sqlBackup',
+        resultsTr: 'ui.app.sqlBackupSuccess'
+    },
+    sqlRestore: {
+        confirmTr: 'systemSettings.confirmRestoreDatabase',
+        descriptionTr: 'ui.app.sqlRestore',
+        resultsTr: 'ui.app.sqlRestoreSuccess'
+    }
 };
 
 SystemSettingsPageController.prototype.doAction = function(event, name, data) {
-	this.maDialogHelper.confirmSystemAction(angular.extend({event: event, actionName: name, actionData: data}, this.actions[name]));
+    this.maDialogHelper.confirmSystemAction(angular.extend({event: event, actionName: name, actionData: data}, this.actions[name]));
 };
 
 SystemSettingsPageController.prototype.sendTestEmail = function() {
     const $ctrl = this;
     this.User.current.sendTestEmail().then(function(response) {
         $ctrl.maDialogHelper.toastOptions({
-    		text: response.data,
-    		hideDelay: 10000
-    	});
+            text: response.data,
+            hideDelay: 10000
+        });
     }, function(error) {
-    	$ctrl.maDialogHelper.toastOptions({
-    		textTr: ['ui.components.errorSendingEmail', this.User.current.email, error.mangoStatusText],
-    		hideDelay: 10000,
-    		classes: 'md-warn'
-    	});
+        $ctrl.maDialogHelper.toastOptions({
+            textTr: ['ui.components.errorSendingEmail', this.User.current.email, error.mangoStatusText],
+            hideDelay: 10000,
+            classes: 'md-warn'
+        });
     }.bind(this));
 };
 
 SystemSettingsPageController.prototype.confirm = function(event, onConfirmed, translation) {
-	return this.maDialogHelper.confirm(event, translation).then(onConfirmed);
+    return this.maDialogHelper.confirm(event, translation).then(onConfirmed);
 };
 
 SystemSettingsPageController.prototype.valueChanged = function(systemSetting) {
@@ -149,13 +149,13 @@ SystemSettingsPageController.prototype.saveSection = function() {
 };
 
 SystemSettingsPageController.prototype.currentTime = function() {
-	return Math.floor((new Date()).valueOf() / 1000);
+    return Math.floor((new Date()).valueOf() / 1000);
 };
 
 SystemSettingsPageController.prototype.getBackupFiles = function() {
-	return this.maServer.getSystemInfo('sqlDatabaseBackupFileList').then(function(list) {
-		return (this.backupFiles = list);
-	}.bind(this));
+    return this.maServer.getSystemInfo('sqlDatabaseBackupFileList').then(function(list) {
+        return (this.backupFiles = list);
+    }.bind(this));
 };
 
 export default {

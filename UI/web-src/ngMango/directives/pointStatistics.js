@@ -103,7 +103,7 @@ function pointValues(Point, Util, $q, statistics) {
         ' \' \' + point.unit"></span>',
         link: function ($scope, $element, attrs) {
             let pendingRequest = null;
-        	const stats = {};
+            const stats = {};
             const singlePoint = !attrs.points;
 
             $scope.$watch('pointXid', function() {
@@ -113,23 +113,23 @@ function pointValues(Point, Util, $q, statistics) {
 
             $scope.$watch('point.xid', function(newValue, oldValue) {
                 if (newValue === undefined) return;
-            	$scope.points = [$scope.point];
+                $scope.points = [$scope.point];
             });
 
             $scope.$watch(function() {
-            	const xids = [];
-            	if ($scope.points && $scope.points.length > 0) {
-	            	for (let i = 0; i < $scope.points.length; i++) {
-	            		if (!$scope.points[i]) continue;
-	            		xids.push($scope.points[i].xid);
-	            	}
-            	}
+                const xids = [];
+                if ($scope.points && $scope.points.length > 0) {
+                    for (let i = 0; i < $scope.points.length; i++) {
+                        if (!$scope.points[i]) continue;
+                        xids.push($scope.points[i].xid);
+                    }
+                }
 
-            	return {
-            		xids: xids,
+                return {
+                    xids: xids,
                     from: moment.isMoment($scope.from) ? $scope.from.valueOf() : $scope.from,
                     to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to
-            	};
+                };
             }, function(newValue, oldValue) {
                 let changedXids, i;
                 
@@ -143,56 +143,56 @@ function pointValues(Point, Util, $q, statistics) {
                     changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
                 }
 
-            	for (i = 0; i < changedXids.removed.length; i++) {
-            		const removedXid = changedXids.removed[i];
+                for (i = 0; i < changedXids.removed.length; i++) {
+                    const removedXid = changedXids.removed[i];
 
-                	// delete stats for removed xid from stats object
-                	delete stats[removedXid];
+                    // delete stats for removed xid from stats object
+                    delete stats[removedXid];
 
-                	// remove old values
-                	if (singlePoint) {
-                		delete $scope.statistics;
-                	}
-            	}
+                    // remove old values
+                    if (singlePoint) {
+                        delete $scope.statistics;
+                    }
+                }
 
-            	if (!$scope.points || !$scope.points.length) return;
-            	const points = $scope.points.slice(0);
+                if (!$scope.points || !$scope.points.length) return;
+                const points = $scope.points.slice(0);
 
-            	const promises = [];
-            	
-            	// cancel existing requests if there are any
+                const promises = [];
+                
+                // cancel existing requests if there are any
                 if (pendingRequest) {
                     pendingRequest.cancel();
                     pendingRequest = null;
                 }
 
-            	for (i = 0; i < points.length; i++) {
-            		if (!points[i] || !points[i].xid) continue;
-            		const queryPromise = doQuery(points[i]);
-            		promises.push(queryPromise);
-            	}
+                for (i = 0; i < points.length; i++) {
+                    if (!points[i] || !points[i].xid) continue;
+                    const queryPromise = doQuery(points[i]);
+                    promises.push(queryPromise);
+                }
 
-            	pendingRequest = $q.all(promises).then(function(results) {
-                	if (!results.length) return;
-            		let i;
+                pendingRequest = $q.all(promises).then(function(results) {
+                    if (!results.length) return;
+                    let i;
 
-            		for (i = 0; i < results.length; i++) {
-            			const point = points[i];
-            			const pointStats = results[i];
+                    for (i = 0; i < results.length; i++) {
+                        const point = points[i];
+                        const pointStats = results[i];
                         stats[point.xid] = pointStats;
-            		}
+                    }
 
-            		if (singlePoint) {
-            			$scope.statistics = stats[points[0].xid];
-            		} else {
-            			const outputStats = [];
-            			for (i = 0; i < points.length; i++) {
-            				outputStats.push(stats[points[i].xid]);
-            			}
-            			$scope.statistics = outputStats;
-            		}
-            	}, function(error) {
-            	    // consume error, most likely a cancel, timeouts will be captured by error interceptor
+                    if (singlePoint) {
+                        $scope.statistics = stats[points[0].xid];
+                    } else {
+                        const outputStats = [];
+                        for (i = 0; i < points.length; i++) {
+                            outputStats.push(stats[points[i].xid]);
+                        }
+                        $scope.statistics = outputStats;
+                    }
+                }, function(error) {
+                    // consume error, most likely a cancel, timeouts will be captured by error interceptor
                 }).then(function() {
                     pendingRequest = null;
                 });

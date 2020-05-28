@@ -140,7 +140,7 @@ function cssInjectorFactory($window) {
         }
     }
 
-	return new CssInjector();
+    return new CssInjector();
 }
 
 export default cssInjectorFactory;

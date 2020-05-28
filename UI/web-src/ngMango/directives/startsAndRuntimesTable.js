@@ -30,7 +30,7 @@ function startsAndRuntimesTable($injector) {
     return {
         restrict: 'E',
         scope: {
-        	startsAndRuntimes: '='
+            startsAndRuntimes: '='
         },
         replace: true,
         template: function() {

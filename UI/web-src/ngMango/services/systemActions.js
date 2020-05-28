@@ -11,25 +11,25 @@ function SystemActionsFactory($http, $q, $timeout) {
     const systemActionsUrl = '/rest/v2/actions';
     
     function SystemActionResource(data) {
-    	angular.extend(this, data);
+        angular.extend(this, data);
     }
     
     SystemActionResource.prototype.refresh = function() {
-    	return $http({
+        return $http({
             method: 'GET',
             url: systemActionsUrl + '/status/' + encodeURIComponent(this.resourceId)
         }).then(function(response) {
-        	return angular.extend(this, response.data);
+            return angular.extend(this, response.data);
         }.bind(this));
     };
     
     SystemActionResource.prototype.refreshUntilFinished = function(timeout) {
-    	if (this.finished) return $q.resolve(this);
-    	return $timeout(function() {
-    		return this.refresh();
-    	}.bind(this), timeout || 1000).then(function() {
-    		return this.refreshUntilFinished(timeout);
-    	}.bind(this));
+        if (this.finished) return $q.resolve(this);
+        return $timeout(function() {
+            return this.refresh();
+        }.bind(this), timeout || 1000).then(function() {
+            return this.refreshUntilFinished(timeout);
+        }.bind(this));
     };
     
     function SystemActions() {
@@ -41,7 +41,7 @@ function SystemActionsFactory($http, $q, $timeout) {
             url: systemActionsUrl + '/trigger/' + encodeURIComponent(name),
             data: content
         }).then(function(response) {
-        	return new SystemActionResource(response.data);
+            return new SystemActionResource(response.data);
         });
     };
 

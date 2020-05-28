@@ -158,7 +158,7 @@ function eventsFactory($resource, Util, EventTypeInfo) {
             url: '/rest/v2/events/acknowledge'
         },
         getActiveSummary: {
-        	url: '/rest/v2/events/active-summary',
+            url: '/rest/v2/events/active-summary',
             method: 'GET',
             isArray: true
         },

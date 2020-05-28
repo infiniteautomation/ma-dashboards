@@ -64,7 +64,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
             }
         }).then(response => {
             return response.data.map(module => {
-            	return new Module(module);
+                return new Module(module);
             });
         });
     };
@@ -82,19 +82,19 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
     };
     
     Modules.getUpdateLicensePayload = function() {
-    	return $http({
+        return $http({
             method: 'GET',
             url: modulesUrl + '/update-license-payload'
         }).then(response => response.data);
     };
     
     Modules.downloadLicense = function(username, password) {
-    	return $http({
+        return $http({
             method: 'PUT',
             url: modulesUrl + '/download-license',
             data: {
-            	username: username,
-            	password: password
+                username: username,
+                password: password
             },
             timeout: storeTimeout
         });
@@ -112,24 +112,24 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
     };
     
     Modules.doUpgrade = function(selectedInstalls, selectedUpgrades, backupBeforeDownload, restartAfterDownload) {
-    	const data = {
-			newInstalls: selectedInstalls,
-			upgrades: selectedUpgrades
-    	};
-    	
+        const data = {
+            newInstalls: selectedInstalls,
+            upgrades: selectedUpgrades
+        };
+        
         return $http({
             method: 'POST',
             data: data,
             url: modulesUrl + '/upgrade',
             params: {
-            	backup: backupBeforeDownload,
-            	restart: restartAfterDownload
+                backup: backupBeforeDownload,
+                restart: restartAfterDownload
             }
         }).then(response => response.data);
     };
     
     Modules.restart = function() {
-    	return maServer.restart();
+        return maServer.restart();
     };
     
     Modules.zipMimeTypes = ['application/zip', 'application/x-zip-compressed'];

@@ -194,10 +194,10 @@ function eventDetectorProvider() {
             maDialogHelper = $injector.get('maDialogHelper');
         }
         
-    	const defaultProperties = {
-	        detectorType: 'POINT_CHANGE',
-	        alarmLevel: 'NONE'
-    	};
+        const defaultProperties = {
+            detectorType: 'POINT_CHANGE',
+            alarmLevel: 'NONE'
+        };
     
         class EventDetector extends RestResource {
             static get defaultProperties() {

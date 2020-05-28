@@ -26,14 +26,14 @@ function copyBlurred() {
         restrict: 'A',
         require: 'ngModel',
         scope: {
-        	maCopyBlurred: '=',
+            maCopyBlurred: '=',
             ngModel: '='
         },
         link: function ($scope, $element) {
             $scope.$watch('maCopyBlurred', function(value) {
-            	if (!$element.maHasFocus()) {
-            		$scope.ngModel = value;
-            	}
+                if (!$element.maHasFocus()) {
+                    $scope.ngModel = value;
+                }
             });
         }
     };

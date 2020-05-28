@@ -32,13 +32,13 @@ function trFilterFactory(Translate) {
             args = Array.prototype.slice.call(arguments, 1);
         }
 
-    	let text;
-    	try {
-        	text = Translate.trSync(key, args);
-    	} catch (e) {
-    		text = '!!' + key + '!!';
-    	}
-    	return text;
+        let text;
+        try {
+            text = Translate.trSync(key, args);
+        } catch (e) {
+            text = '!!' + key + '!!';
+        }
+        return text;
     };
 }
 

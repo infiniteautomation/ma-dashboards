@@ -49,20 +49,20 @@ function publisherProvider() {
         const publisherXidPrefix = 'PUB_';
 
         // rest of the defaults are set by first registered type
-    	const defaultProperties = {
-    	    name: '',
-	        xid: '',
-	        enabled: false,
-	        publishType: 'ALL',
-	        cacheWarningSize: 100,
-	        cacheDiscardSize: 1000,
-	        sendSnapshot: false,
-	        snapshotSendPeriod: {
-	            periods: 5,
-	            type: 'MINUTES'
-	        },
-	        publishAttributeChanges: false
-    	};
+        const defaultProperties = {
+            name: '',
+            xid: '',
+            enabled: false,
+            publishType: 'ALL',
+            cacheWarningSize: 100,
+            cacheDiscardSize: 1000,
+            sendSnapshot: false,
+            snapshotSendPeriod: {
+                periods: 5,
+                type: 'MINUTES'
+            },
+            publishAttributeChanges: false
+        };
 
         class Publisher extends RestResource {
             

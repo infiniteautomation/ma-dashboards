@@ -89,7 +89,7 @@ function deviceNameList(DeviceName, $injector) {
                 promise = queryResult.$promise.then(function(deviceNames) {
                     $scope.deviceNames = deviceNames;
                     if ($scope.autoInit && deviceNames.length && deviceNames.indexOf(ngModelCtrl.$viewValue) < 0) {
-                    	ngModelCtrl.$setViewValue(deviceNames[0]);
+                        ngModelCtrl.$setViewValue(deviceNames[0]);
                     }
                 });
 

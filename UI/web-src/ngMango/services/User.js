@@ -392,36 +392,36 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
             
             getCredentialsFromUrl() {
-            	const params = new URL(window.location.href).searchParams;
-            	if (!params) return;
-            	
-            	const credentials = {
-            		username: params.get('autoLoginUsername'),
-            		password: params.get('autoLoginPassword') || ''
-            	};
-            	
-            	if (params.get('autoLoginDeleteCredentials') != null) {
-            		User.clearStoredCredentials();
-            	} else if (params.get('autoLoginStoreCredentials') != null && credentials.username) {
-            		User.storeCredentials(credentials.username, credentials.password);
-            	}
-            	
-            	return credentials.username && credentials;
+                const params = new URL(window.location.href).searchParams;
+                if (!params) return;
+                
+                const credentials = {
+                    username: params.get('autoLoginUsername'),
+                    password: params.get('autoLoginPassword') || ''
+                };
+                
+                if (params.get('autoLoginDeleteCredentials') != null) {
+                    User.clearStoredCredentials();
+                } else if (params.get('autoLoginStoreCredentials') != null && credentials.username) {
+                    User.storeCredentials(credentials.username, credentials.password);
+                }
+                
+                return credentials.username && credentials;
             },
             
             autoLogin(maUiSettings) {
                 let credentials = User.getCredentialsFromUrl() || localStorageService.get('storedCredentials');
-            	if (!credentials && (maUiSettings || $injector.has('maUiSettings'))) {
-            		maUiSettings = maUiSettings || $injector.get('maUiSettings');
-            		if (maUiSettings.autoLoginUsername) {
-            			credentials = {
-        					username: maUiSettings.autoLoginUsername,
-        					password: maUiSettings.autoLoginPassword || ''
-        				};
-            		}
-            	}
+                if (!credentials && (maUiSettings || $injector.has('maUiSettings'))) {
+                    maUiSettings = maUiSettings || $injector.get('maUiSettings');
+                    if (maUiSettings.autoLoginUsername) {
+                        credentials = {
+                            username: maUiSettings.autoLoginUsername,
+                            password: maUiSettings.autoLoginPassword || ''
+                        };
+                    }
+                }
                 if (!credentials) {
-                	return $q.reject('No stored credentials');
+                    return $q.reject('No stored credentials');
                 }
                 return this.login.call(this, credentials).$promise;
             },

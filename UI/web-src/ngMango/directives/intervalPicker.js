@@ -14,12 +14,12 @@ function intervalPicker() {
         replace: true,
         template: intervalPickerTemplate,
         link: function ($scope, $element, attr) {
-        	$scope.intervals = 1;
-        	$scope.type = 'MINUTES';
-        	
-        	$scope.$watchGroup(['intervals', 'type'], function() {
-        		$scope.interval = $scope.intervals + ' ' + $scope.type;
-        	});
+            $scope.intervals = 1;
+            $scope.type = 'MINUTES';
+            
+            $scope.$watchGroup(['intervals', 'type'], function() {
+                $scope.interval = $scope.intervals + ' ' + $scope.type;
+            });
         },
         designerInfo: {
             translation: 'ui.components.intervalPicker',

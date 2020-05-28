@@ -38,29 +38,29 @@ const button = {
     controller: ButtonController,
     template: buttonTemplate,
     bindings: {
-    	icon: '@?',
-    	label: '@?',
-    	tooltip: '@?',
-    	raised: '<?',
-    	palette: '@?',
-    	hue: '@?',
-    	labelTr: '@?',
-    	labelTrArgs: '<?',
-    	tooltipTr: '@?'
+        icon: '@?',
+        label: '@?',
+        tooltip: '@?',
+        raised: '<?',
+        palette: '@?',
+        hue: '@?',
+        labelTr: '@?',
+        labelTrArgs: '<?',
+        tooltipTr: '@?'
     },
     designerInfo: {
-    	category: 'basic',
-    	icon: 'touch_app',
-    	translation: 'dashboardDesigner.button',
-    	attributes: {
-    		raised: {type: 'boolean', defaultValue: true},
-    		palette: {options: ['primary', 'accent', 'warn']},
-    		hue: {options: ['hue-1', 'hue-2', 'hue-3']},
-    		uiSref: { type: 'state-name'},
-    		maChooseFile: {},
-    		maChooseFileSelected: {},
-    		maChooseFileOptions: {}
-    	}
+        category: 'basic',
+        icon: 'touch_app',
+        translation: 'dashboardDesigner.button',
+        attributes: {
+            raised: {type: 'boolean', defaultValue: true},
+            palette: {options: ['primary', 'accent', 'warn']},
+            hue: {options: ['hue-1', 'hue-2', 'hue-3']},
+            uiSref: { type: 'state-name'},
+            maChooseFile: {},
+            maChooseFileSelected: {},
+            maChooseFileOptions: {}
+        }
     }
 };
 
@@ -72,16 +72,16 @@ ButtonController.prototype.$onInit = function() {
 };
 
 ButtonController.prototype.$onChanges = function(changes) {
-	this.classes = {
-		'md-icon-button': this.icon && !(this.label || this.labelTr),
-		'md-warn': this.palette === 'warn',
-		'md-accent': this.palette === 'accent',
-		'md-primary': this.palette === 'primary',
-		'md-hue-1': this.hue === 'hue-1',
-		'md-hue-2': this.hue === 'hue-2',
-		'md-hue-3': this.hue === 'hue-3',
-		'md-raised': this.raised
-	};
+    this.classes = {
+        'md-icon-button': this.icon && !(this.label || this.labelTr),
+        'md-warn': this.palette === 'warn',
+        'md-accent': this.palette === 'accent',
+        'md-primary': this.palette === 'primary',
+        'md-hue-1': this.hue === 'hue-1',
+        'md-hue-2': this.hue === 'hue-2',
+        'md-hue-3': this.hue === 'hue-3',
+        'md-raised': this.raised
+    };
 };
 
 export default button;

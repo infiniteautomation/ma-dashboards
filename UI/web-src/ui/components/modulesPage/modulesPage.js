@@ -24,35 +24,35 @@ ModulesPageController.prototype.$onInit = function() {
     this.pageUrl = this.$window.location.href;
     
     this.maModules.getUpdateLicensePayload().then(function(payload) {
-    	this.storeUrl = this.$sce.trustAsResourceUrl(payload.storeUrl + '/account/store');
-    	delete payload.storeUrl;
-    	this.updateLicenseStr = angular.toJson(payload, false);
+        this.storeUrl = this.$sce.trustAsResourceUrl(payload.storeUrl + '/account/store');
+        delete payload.storeUrl;
+        this.updateLicenseStr = angular.toJson(payload, false);
     }.bind(this));
     
     this.$scope.$on('maWatchdog', (event, current, previous) => {
-    	if (current.status === 'LOGGED_IN') {
-    	    this.getModules();
-    	}
+        if (current.status === 'LOGGED_IN') {
+            this.getModules();
+        }
     });
 };
 
 ModulesPageController.prototype.getModules = function() {
-	this.maModules.getAll().then(function(modules) {
-	    let coreModule;
+    this.maModules.getAll().then(function(modules) {
+        let coreModule;
         this.modules = modules.filter(function(module) {
-        	if (module.name === 'core') {
-        		coreModule = module;
-        		return false;
-        	}
-        	return true;
+            if (module.name === 'core') {
+                coreModule = module;
+                return false;
+            }
+            return true;
         }).sort(function(a, b) {
-        	const aName = a.name.toLowerCase();
-        	const bName = b.name.toLowerCase();
+            const aName = a.name.toLowerCase();
+            const bName = b.name.toLowerCase();
             if (aName < bName) return -1;
             if (aName > bName) return 1;
             return 0;
         });
-		this.coreModule = coreModule;
+        this.coreModule = coreModule;
     }.bind(this));
 };
 
@@ -63,53 +63,53 @@ ModulesPageController.prototype.bgColor = function(module) {
 };
 
 ModulesPageController.prototype.deleteModule = function($event, module, doDelete) {
-	if (!doDelete)
-		return module.$delete(false);
-	
-	this.maDialogHelper.confirm($event, 'modules.module.deleteConfirm').then(function() {
-		return module.$delete(true);
-	}).catch(error => {
-		this.maDialogHelper.toastOptions({
-			textTr: ['ui.app.deleteModuleFailed', error.mangoStatusText],
-			hideDelay: 10000,
-			classes: 'md-warn'
-		});
-	});
+    if (!doDelete)
+        return module.$delete(false);
+    
+    this.maDialogHelper.confirm($event, 'modules.module.deleteConfirm').then(function() {
+        return module.$delete(true);
+    }).catch(error => {
+        this.maDialogHelper.toastOptions({
+            textTr: ['ui.app.deleteModuleFailed', error.mangoStatusText],
+            hideDelay: 10000,
+            classes: 'md-warn'
+        });
+    });
 };
 
 ModulesPageController.prototype.restart = function($event) {
-	this.maDialogHelper.confirm($event, ['ui.app.restartInstanceConfirm', this.maUiServerInfo.instanceDescription]).then(function() {
-		return this.maModules.restart();
-	}.bind(this)).then(function() {
-		this.maDialogHelper.toastOptions({
-			textTr: 'modules.restartScheduled',
-			hideDelay: 20000
-		});
-	}.bind(this), function(error) {
-		this.maDialogHelper.toastOptions({
-			textTr: ['ui.app.restartFailed', error.mangoStatusText],
-			hideDelay: 10000,
-			classes: 'md-warn'
-		});
-	}.bind(this));
+    this.maDialogHelper.confirm($event, ['ui.app.restartInstanceConfirm', this.maUiServerInfo.instanceDescription]).then(function() {
+        return this.maModules.restart();
+    }.bind(this)).then(function() {
+        this.maDialogHelper.toastOptions({
+            textTr: 'modules.restartScheduled',
+            hideDelay: 20000
+        });
+    }.bind(this), function(error) {
+        this.maDialogHelper.toastOptions({
+            textTr: ['ui.app.restartFailed', error.mangoStatusText],
+            hideDelay: 10000,
+            classes: 'md-warn'
+        });
+    }.bind(this));
 };
 
 ModulesPageController.prototype.downloadLicense = function($event) {
-	this.maDialogHelper.showBasicDialog($event, {
-		titleTr: 'ui.app.enterStoreCredentials',
-		contentTemplateUrl: 'modulesPage.usernamePasswordPrompt.html',
-		showCancel: true,
-		smallDialog: true
-	}).then(function(result) {
-		return this.maModules.downloadLicense(result.username, result.password);
-	}.bind(this)).then(function() {
-		this.maDialogHelper.toast('ui.app.licenseDownloaded');
-		this.getModules();
-	}.bind(this), function(error) {
-		if (!error) return; // prompt cancelled
-		const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-		this.maDialogHelper.toast('ui.app.failedToDownloadLicense', 'md-warn', msg);
-	}.bind(this));
+    this.maDialogHelper.showBasicDialog($event, {
+        titleTr: 'ui.app.enterStoreCredentials',
+        contentTemplateUrl: 'modulesPage.usernamePasswordPrompt.html',
+        showCancel: true,
+        smallDialog: true
+    }).then(function(result) {
+        return this.maModules.downloadLicense(result.username, result.password);
+    }.bind(this)).then(function() {
+        this.maDialogHelper.toast('ui.app.licenseDownloaded');
+        this.getModules();
+    }.bind(this), function(error) {
+        if (!error) return; // prompt cancelled
+        const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+        this.maDialogHelper.toast('ui.app.failedToDownloadLicense', 'md-warn', msg);
+    }.bind(this));
 };
 
 modulesPageFactory.$inject = ['$templateCache'];

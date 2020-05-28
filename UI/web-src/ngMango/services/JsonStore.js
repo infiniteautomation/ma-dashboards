@@ -23,16 +23,16 @@ import angular from 'angular';
 *
 * <pre prettyprint-mode="javascript">
 *  JsonStore.get({xid: newXid}).$promise.then(function(item) {
-*		return item;
+*        return item;
 *  }, function() {
-*		const item = new JsonStore();
-*		item.xid = newXid;
-*		item.name = newXid;
-*		item.jsonData = $scope.value || {};
-*		angular.extend(item, $scope.item);
-*		return $q.when(item);
+*        const item = new JsonStore();
+*        item.xid = newXid;
+*        item.name = newXid;
+*        item.jsonData = $scope.value || {};
+*        angular.extend(item, $scope.item);
+*        return $q.when(item);
 *  }).then(function(item) {
-*		$scope.item = item;
+*        $scope.item = item;
 *  });
 * </pre>
 *
@@ -135,7 +135,7 @@ function JsonStoreFactory($resource, Util, NotificationManager, $q) {
 
     const JsonStore = $resource(jsonStoreUrl + ':xid/:dataPathStr', {
         xid: data => data && (data.originalId || data.xid),
-    	dataPathStr: '@dataPathStr',
+        dataPathStr: '@dataPathStr',
         name: '@name',
         readPermission: '@readPermission',
         editPermission: '@editPermission',
@@ -152,8 +152,8 @@ function JsonStoreFactory($resource, Util, NotificationManager, $q) {
                 }
             }
         },
-    	get: {
-    	    interceptor: {
+        get: {
+            interceptor: {
                 response: setDataPathInterceptor
             },
             params: {
@@ -162,14 +162,14 @@ function JsonStoreFactory($resource, Util, NotificationManager, $q) {
                 editPermission: null,
                 publicData: null
             }
-    	},
+        },
         save: {
             method: 'POST',
             interceptor: {
                 response: setDataPathInterceptor
             },
             transformRequest: function(data, headersGetter) {
-            	return angular.toJson(data.jsonData);
+                return angular.toJson(data.jsonData);
             }
         },
         update: {
@@ -182,16 +182,16 @@ function JsonStoreFactory($resource, Util, NotificationManager, $q) {
             }
         },
         'delete': {
-        	method: 'DELETE',
+            method: 'DELETE',
             interceptor: {
                 response: setDataPathInterceptor
             },
-        	transformResponse: function(data, headersGetter, status) {
-        	    if (data && status < 400) {
-        	        const item = angular.fromJson(data);
+            transformResponse: function(data, headersGetter, status) {
+                if (data && status < 400) {
+                    const item = angular.fromJson(data);
                     item.jsonData = null;
                     return item;
-        	    }
+                }
             },
             params: {
                 name: null,

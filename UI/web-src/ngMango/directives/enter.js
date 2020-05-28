@@ -22,19 +22,19 @@
  */
 function enter() {
     return {
-    	restrict: 'A',
-    	compile: function() {
-    		const name = this.name;
+        restrict: 'A',
+        compile: function() {
+            const name = this.name;
 
-    		return function($scope, $element, attr) {
-    			$element.bind('keypress', function(event) {
-    				if (event.which !== 13) return;
-    				$scope.$apply(function() {
-        				$scope.$eval(attr[name]);
-    				});
-    			});
+            return function($scope, $element, attr) {
+                $element.bind('keypress', function(event) {
+                    if (event.which !== 13) return;
+                    $scope.$apply(function() {
+                        $scope.$eval(attr[name]);
+                    });
+                });
             };
-    	}
+        }
     };
 }
 

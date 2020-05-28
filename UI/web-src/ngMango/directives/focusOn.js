@@ -20,16 +20,16 @@
 focusOn.$inject = ['$timeout'];
 function focusOn($timeout) {
     return {
-    	restrict: 'A',
-    	scope: false,
-    	link: function($scope, $element, $attrs) {
-        	$scope.$watch($attrs.maFocusOn, function(newValue, oldValue) {
-        		if (newValue) {
-        		    $timeout(() => {
+        restrict: 'A',
+        scope: false,
+        link: function($scope, $element, $attrs) {
+            $scope.$watch($attrs.maFocusOn, function(newValue, oldValue) {
+                if (newValue) {
+                    $timeout(() => {
                         $element.focus();
-        		    });
-        		}
-        	});
+                    });
+                }
+            });
         }
     };
 }

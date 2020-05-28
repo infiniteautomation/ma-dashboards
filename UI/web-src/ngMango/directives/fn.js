@@ -32,11 +32,11 @@ function maFnDirective($parse, maUtil) {
             argNames: '<?',
             memoize: '<?'
         },
-    	compile: function($element, attrs) {
-    		const parsed = $parse(attrs.expression);
+        compile: function($element, attrs) {
+            const parsed = $parse(attrs.expression);
 
-    		return function($scope, $element, attrs) {
-    			const fn = function() {
+            return function($scope, $element, attrs) {
+                const fn = function() {
                     const overrides = {};
                     
                     for (let i = 0; i < arguments.length; i++) {
@@ -47,10 +47,10 @@ function maFnDirective($parse, maUtil) {
                     return parsed($scope.$parent, overrides);
                 };
 
-    			$scope.fn = $scope.memoize ? maUtil.memoize(fn, $scope.memoize) : fn;
-    			$scope.ready = true;
+                $scope.fn = $scope.memoize ? maUtil.memoize(fn, $scope.memoize) : fn;
+                $scope.ready = true;
             };
-    	},
+        },
         designerInfo: {
             translation: 'ui.components.maFn',
             icon: 'transform'

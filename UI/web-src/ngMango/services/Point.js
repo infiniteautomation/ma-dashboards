@@ -270,7 +270,7 @@ function dataPointProvider() {
     
         const Point = $resource('/rest/v2/data-points/:xid', {
                 xid: data => data && (data.originalId || data.xid)
-        	}, {
+            }, {
             query: {
                 method: 'GET',
                 isArray: true,
@@ -452,20 +452,20 @@ function dataPointProvider() {
                 const params = {};
                 const data = {};
                 
-            	if (value != null && typeof value === 'object') {
-            	    Object.assign(data, value);
-            	} else {
-            	    data.value = value;
-            	}
-            	
-            	if (!data.dataType) {
-            	    data.dataType = this.dataType;
-            	}
+                if (value != null && typeof value === 'object') {
+                    Object.assign(data, value);
+                } else {
+                    data.value = value;
+                }
+                
+                if (!data.dataType) {
+                    data.dataType = this.dataType;
+                }
                 if (!data.annotation) {
                     data.annotation = `Set from web by user: ${User.current.username}`;
                 }
 
-            	if (data.dataType === 'NUMERIC') {
+                if (data.dataType === 'NUMERIC') {
                     if (typeof data.value === 'string') {
                         data.value = Number(data.value);
                     }
@@ -476,12 +476,12 @@ function dataPointProvider() {
                     }
                 }
 
-            	return $http({
-            	    method: 'PUT',
-            	    url: `/rest/v2/point-values/${encodeURIComponent(this.xid)}`,
-            	    data,
-            	    params
-            	});
+                return $http({
+                    method: 'PUT',
+                    url: `/rest/v2/point-values/${encodeURIComponent(this.xid)}`,
+                    data,
+                    params
+                });
             },
         
             setValueResult(value, holdTimeout = 3000) {
@@ -532,15 +532,15 @@ function dataPointProvider() {
             },
         
             toggleValue() {
-            	const dataType = this.pointLocator.dataType;
-            	if (dataType === 'BINARY' && this.value !== undefined) {
-            		this.setValue(!this.value);
-        		}
+                const dataType = this.pointLocator.dataType;
+                if (dataType === 'BINARY' && this.value !== undefined) {
+                    this.setValue(!this.value);
+                }
             },
         
             valueFn(setValue) {
-            	if (setValue === undefined) return this.value;
-            	this.setValue(setValue);
+                if (setValue === undefined) return this.value;
+                this.setValue(setValue);
             },
             
             getTextRenderer() {

@@ -11,7 +11,7 @@ function setPointDialog($mdDialog, $mdMedia) {
     const SetPointDialog = {};
 
     SetPointDialog.show = function(ev, point, options) {
-    	return $mdDialog.show({
+        return $mdDialog.show({
             controller: function() {
                 this.point = point;
                 this.cancel = function cancel() {

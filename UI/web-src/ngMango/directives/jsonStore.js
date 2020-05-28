@@ -44,7 +44,7 @@ jsonStore.$inject = ['maJsonStore', '$q'];
 function jsonStore(JsonStore, $q) {
     return {
         scope: {
-        	xid: '@',
+            xid: '@',
             item: '=?',
             value: '=?',
             itemLoaded: '&?',
@@ -87,46 +87,46 @@ function jsonStore(JsonStore, $q) {
                 const oldXid = oldValue.xid;
                 const newPath = newValue.path || null;
                 
-            	if (!newXid) return;
-            	if (Array.isArray(newPath)) {
-            	    const invalidPath = newPath.some(component => component == null);
-            	    if (invalidPath) return;
-            	}
+                if (!newXid) return;
+                if (Array.isArray(newPath)) {
+                    const invalidPath = newPath.some(component => component == null);
+                    if (invalidPath) return;
+                }
 
-            	const storeItem = new JsonStore({xid: newXid, name: newXid, dataPath: newPath});
-            	storeItem.$get().then(null, (response) => {
-            	    if (response.status === 404) {
-            	        storeItem.jsonData = $scope.value || {};
-                		return angular.extend(storeItem, $scope.item);
-            	    }
-            		return $q.reject();
-            	}).then((item) => {
-            	    if ($scope.itemLoaded) {
-            	        $scope.itemLoaded({$item: item});
-            	    }
+                const storeItem = new JsonStore({xid: newXid, name: newXid, dataPath: newPath});
+                storeItem.$get().then(null, (response) => {
+                    if (response.status === 404) {
+                        storeItem.jsonData = $scope.value || {};
+                        return angular.extend(storeItem, $scope.item);
+                    }
+                    return $q.reject();
+                }).then((item) => {
+                    if ($scope.itemLoaded) {
+                        $scope.itemLoaded({$item: item});
+                    }
                     if ($scope.itemUpdated) {
                         $scope.itemUpdated({$item: item, $firstLoad: true});
                     }
-            		return ($scope.item = item);
-            	});
+                    return ($scope.item = item);
+                });
 
-            	const previousUnsubscribe = unsubscribe;
-            	
-            	unsubscribe = JsonStore.notificationManager.subscribe({
-            	    handler: websocketHandler,
-            	    xids: [newXid],
-            	    scope: $scope
-            	});
-            	
-            	if (previousUnsubscribe) {
-            	    previousUnsubscribe();
-            	}
+                const previousUnsubscribe = unsubscribe;
+                
+                unsubscribe = JsonStore.notificationManager.subscribe({
+                    handler: websocketHandler,
+                    xids: [newXid],
+                    scope: $scope
+                });
+                
+                if (previousUnsubscribe) {
+                    previousUnsubscribe();
+                }
             }, true);
 
             $scope.$watch('item.jsonData', (newData) => {
-            	if (newData) {
-            		$scope.value = newData;
-            	}
+                if (newData) {
+                    $scope.value = newData;
+                }
             });
         },
         designerInfo: {

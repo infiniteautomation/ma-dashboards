@@ -142,89 +142,89 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
             if ($scope.realtime === undefined) $scope.realtime = true;
 
             $scope.$on('$destroy', () => {
-            	unsubscribe();
+                unsubscribe();
             });
 
             $scope.$watch('realtime', (newValue, oldValue) => {
-            	if (newValue !== oldValue) {
-            		if (newValue) {
-            			subscribe();
-            		} else {
-            			unsubscribe();
-            		}
-            	}
+                if (newValue !== oldValue) {
+                    if (newValue) {
+                        subscribe();
+                    } else {
+                        unsubscribe();
+                    }
+                }
             });
 
             $scope.$watch(() => {
-            	const xids = [];
-            	if ($scope.points) {
-	            	for (let i = 0; i < $scope.points.length; i++) {
-	            		if (!$scope.points[i]) continue;
-	            		xids.push($scope.points[i].xid);
-	            	}
-            	}
+                const xids = [];
+                if ($scope.points) {
+                    for (let i = 0; i < $scope.points.length; i++) {
+                        if (!$scope.points[i]) continue;
+                        xids.push($scope.points[i].xid);
+                    }
+                }
 
-            	return {
-            		xids: xids,
-            		from: moment.isMoment($scope.from) ? $scope.from.valueOf() : $scope.from,
-            		to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to,
-            		latest: $scope.latest,
+                return {
+                    xids: xids,
+                    from: moment.isMoment($scope.from) ? $scope.from.valueOf() : $scope.from,
+                    to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to,
+                    latest: $scope.latest,
                     useCache: $scope.useCache,
                     refreshCount: $scope.refreshCount,
                     realtime: $scope.realtime,
-            		rollup: $scope.rollup,
-            		rollupInterval: $scope.rollupInterval,
-            		rendered: $scope.rendered,
+                    rollup: $scope.rollup,
+                    rollupInterval: $scope.rollupInterval,
+                    rendered: $scope.rendered,
                     autoRollupInterval: $scope.autoRollupInterval,
                     simplifyTolerance: $scope.simplifyTolerance
-            	};
+                };
             }, (newValue, oldValue) => {
                 let changedXids;
-            	
-            	// check initialization scenario
-            	if (newValue === oldValue) {
-            	    changedXids = {
-        	            added: newValue.xids || [],
-        	            removed: []
-            	    };
-            	} else {
+                
+                // check initialization scenario
+                if (newValue === oldValue) {
+                    changedXids = {
+                        added: newValue.xids || [],
+                        removed: []
+                    };
+                } else {
                     changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
-            	}
+                }
 
-            	for (let i = 0; i < changedXids.removed.length; i++) {
-            		const removedXid = changedXids.removed[i];
-                	unsubscribe(removedXid);
+                for (let i = 0; i < changedXids.removed.length; i++) {
+                    const removedXid = changedXids.removed[i];
+                    unsubscribe(removedXid);
 
-                	// delete values and temp values if they exist
-                	delete values[removedXid];
-                	delete tempValues[removedXid];
+                    // delete values and temp values if they exist
+                    delete values[removedXid];
+                    delete tempValues[removedXid];
 
-                	// remove old values
-                	if (singlePoint) {
-                		delete $scope.values;
-                	} else if ($scope.values) {
-                		// remove values for xid from combined values
-                		for (let j = 0; j < $scope.values.length; j++) {
-                			const item = $scope.values[j];
-                			delete item['value_' + removedXid];
+                    // remove old values
+                    if (singlePoint) {
+                        delete $scope.values;
+                    } else if ($scope.values) {
+                        // remove values for xid from combined values
+                        for (let j = 0; j < $scope.values.length; j++) {
+                            const item = $scope.values[j];
+                            delete item['value_' + removedXid];
                             delete item['value_' + removedXid + '_rendered'];
-                			// if this was the last value for this timestamp remove
-                			// the item from the combined values
-                			if (Util.numKeys(item, 'value') === 0) {
-                				$scope.values.splice(j--, 1);
-                			}
-                		}
-                	}
-            	}
+                            // if this was the last value for this timestamp remove
+                            // the item from the combined values
+                            if (Util.numKeys(item, 'value') === 0) {
+                                $scope.values.splice(j--, 1);
+                            }
+                        }
+                    }
+                }
 
-            	for (let i = 0; i < changedXids.added.length; i++) {
-            		if ($scope.realtime && $scope.latest) {
-            			subscribe(changedXids.added[i]);
-            		}
-            	}
+                for (let i = 0; i < changedXids.added.length; i++) {
+                    if ($scope.realtime && $scope.latest) {
+                        subscribe(changedXids.added[i]);
+                    }
+                }
 
-            	if (!$scope.points || !$scope.points.length) return;
-            	const points = $scope.points.slice(0);
+                if (!$scope.points || !$scope.points.length) return;
+                const points = $scope.points.slice(0);
 
                 // Calculate rollups automatically based on to/from/type (if turned on)
                 if ($scope.autoRollupInterval) {
@@ -233,56 +233,56 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                     $scope.actualRollupInterval = $scope.rollupInterval;
                 }
                 
-            	const promises = [];
+                const promises = [];
 
-            	// cancel existing requests if there are any
-            	if (pendingRequest) {
-            	    pendingRequest.cancel();
-            	    pendingRequest = null;
-            	}
+                // cancel existing requests if there are any
+                if (pendingRequest) {
+                    pendingRequest.cancel();
+                    pendingRequest = null;
+                }
                 
-            	for (let i = 0; i < points.length; i++) {
-            		if (!points[i] || !points[i].xid) continue;
-            		let queryPromise;
-            		if (!points[i].pointLocator) {
-            		    queryPromise = Point.get({xid: points[i].xid}).$promise.then(doQuery);
-            		} else {
-            		    queryPromise = doQuery(points[i]);
-            		}
+                for (let i = 0; i < points.length; i++) {
+                    if (!points[i] || !points[i].xid) continue;
+                    let queryPromise;
+                    if (!points[i].pointLocator) {
+                        queryPromise = Point.get({xid: points[i].xid}).$promise.then(doQuery);
+                    } else {
+                        queryPromise = doQuery(points[i]);
+                    }
                     promises.push(queryPromise);
-            	}
-            	
-            	pendingRequest = $q.all(promises).then(results => {
-                	if (!results.length) return;
+                }
+                
+                pendingRequest = $q.all(promises).then(results => {
+                    if (!results.length) return;
 
-            		for (let i = 0; i < results.length; i++) {
-            		    const point = points[i];
-            			const pointXid = point.xid;
-            			const pointValues = results[i];
+                    for (let i = 0; i < results.length; i++) {
+                        const point = points[i];
+                        const pointXid = point.xid;
+                        const pointValues = results[i];
 
-            			pointValues.concat(tempValues[pointXid]);
+                        pointValues.concat(tempValues[pointXid]);
                         delete tempValues[pointXid];
 
                         if ($scope.latest) {
-                        	limitValues(pointValues);
+                            limitValues(pointValues);
                         }
 
                         values[pointXid] = pointValues;
-            		}
+                    }
 
-            		if (singlePoint) {
-            			$scope.values = values[points[0].xid];
+                    if (singlePoint) {
+                        $scope.values = values[points[0].xid];
                         if ($scope.onValuesUpdated)
                             $scope.onValuesUpdated({$values: $scope.values});
-            		} else {
-            			combineValues();
-            		}
-            	}, error => {
+                    } else {
+                        combineValues();
+                    }
+                }, error => {
                     // consume error, most likely a cancel, timeouts will be captured by error interceptor
-            	}).then(() => {
-            	    pendingRequest = null;
-            	});
-            	
+                }).then(() => {
+                    pendingRequest = null;
+                });
+                
             }, true);
 
             if (singlePoint) {
@@ -316,12 +316,12 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
             }
 
             function combineValues() {
-            	const combined = {};
-            	
-            	for (const xid in values) {
-            		const seriesValues = values[xid];
-            		combineInto(combined, seriesValues, 'value_' + xid);
-            	}
+                const combined = {};
+                
+                for (const xid in values) {
+                    const seriesValues = values[xid];
+                    combineInto(combined, seriesValues, 'value_' + xid);
+                }
 
                 // convert object into array
                 const output = [];
@@ -356,27 +356,27 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
             }
 
             function subscribe(xid) {
-            	if (!xid) {
-            		for (let i = 0; i < $scope.points.length; i++) {
-                		if (!$scope.points[i]) continue;
-            			subscribe($scope.points[i].xid);
-            		}
-            	} else {
-            		if (subscriptions[xid]) return;
-            		pointEventManager.subscribe(xid, ['UPDATE'], websocketHandler);
+                if (!xid) {
+                    for (let i = 0; i < $scope.points.length; i++) {
+                        if (!$scope.points[i]) continue;
+                        subscribe($scope.points[i].xid);
+                    }
+                } else {
+                    if (subscriptions[xid]) return;
+                    pointEventManager.subscribe(xid, ['UPDATE'], websocketHandler);
                     subscriptions[xid] = true;
-            	}
+                }
             }
 
             function unsubscribe(xid) {
-            	if (!xid) {
-            		for (const key in subscriptions) {
-            			unsubscribe(key);
-            		}
-            	} else if (subscriptions[xid]) {
-            		pointEventManager.unsubscribe(xid, ['UPDATE'], websocketHandler);
-            		delete subscriptions[xid];
-            	}
+                if (!xid) {
+                    for (const key in subscriptions) {
+                        unsubscribe(key);
+                    }
+                } else if (subscriptions[xid]) {
+                    pointEventManager.unsubscribe(xid, ['UPDATE'], websocketHandler);
+                    delete subscriptions[xid];
+                }
             }
 
             function websocketHandler(event, payload) {
@@ -399,62 +399,62 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                         if (!point) return;
                     }
 
-                	let value;
-                	if (point.pointLocator.dataType === 'IMAGE') {
-                	    value = payload.value.value;
-                	} else if (payload.convertedValue != null) {
-                    	value = payload.convertedValue;
+                    let value;
+                    if (point.pointLocator.dataType === 'IMAGE') {
+                        value = payload.value.value;
+                    } else if (payload.convertedValue != null) {
+                        value = payload.convertedValue;
                     } else {
-                    	value = payload.value.value;
+                        value = payload.value.value;
                     }
 
-                	const item = {
+                    const item = {
                         value : value,
                         timestamp : payload.value.timestamp,
                         annotation : payload.value.annotation
                     };
-                	
-                	if ($scope.rendered) {
-                	    item.rendered = payload.renderedValue;
-                	}
+                    
+                    if ($scope.rendered) {
+                        item.rendered = payload.renderedValue;
+                    }
 
                     if (pendingRequest) {
-                    	if (!tempValues[xid]) tempValues[xid] = [];
-                    	tempValues[xid].push(item);
+                        if (!tempValues[xid]) tempValues[xid] = [];
+                        tempValues[xid].push(item);
                     } else {
-                    	values[xid].push(item);
-                    	if ($scope.latest) {
-                        	limitValues(values[xid]);
+                        values[xid].push(item);
+                        if ($scope.latest) {
+                            limitValues(values[xid]);
                         }
-                    	if (!singlePoint) {
-                    	    if ($scope.latest) {
+                        if (!singlePoint) {
+                            if ($scope.latest) {
                                 combineValues();
-                    	    } else {
-                        		const last = $scope.values.slice(-1)[0];
-                        		if (last && last.time === item.timestamp) {
-                        			last['value_' + xid] = item.value;
-                        			if (item.rendered) {
+                            } else {
+                                const last = $scope.values.slice(-1)[0];
+                                if (last && last.time === item.timestamp) {
+                                    last['value_' + xid] = item.value;
+                                    if (item.rendered) {
                                         last['value_' + xid + '_rendered'] = item.rendered;
-                        			}
-                        		} else {
-                        			const newVal = {time: item.timestamp};
-                        			newVal['value_' + xid] = item.value;
+                                    }
+                                } else {
+                                    const newVal = {time: item.timestamp};
+                                    newVal['value_' + xid] = item.value;
                                     if (item.rendered) {
                                         newVal['value_' + xid + '_rendered'] = item.rendered;
                                     }
-                        			$scope.values.push(newVal);
-                        		}
+                                    $scope.values.push(newVal);
+                                }
                                 if ($scope.onValuesUpdated)
                                     $scope.onValuesUpdated({$values: $scope.values});
-                    	    }
-                    	}
+                            }
+                        }
                     }
                 });
             }
 
             function limitValues(values) {
-            	while (values.length > $scope.latest) {
-            		values.shift();
+                while (values.length > $scope.latest) {
+                    values.shift();
                 }
             }
 

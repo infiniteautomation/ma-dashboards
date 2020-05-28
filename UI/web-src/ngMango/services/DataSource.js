@@ -191,7 +191,7 @@ function dataSourceProvider() {
         
         const DataSource = $resource('/rest/v2/data-sources/:xid', {
                 xid: data => data && (data.originalId || data.xid)
-        	}, {
+            }, {
             query: {
                 method: 'GET',
                 isArray: true,

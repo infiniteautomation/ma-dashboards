@@ -60,11 +60,11 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
             };
             
             $scope.getChildren = function getChildren() {
-            	if (!$scope.currentItem.children) {
-            		$scope.editItems = [];
-            		return;
-            	}
-            	
+                if (!$scope.currentItem.children) {
+                    $scope.editItems = [];
+                    return;
+                }
+                
                 // sort items by weight then name
                 $scope.editItems = $scope.currentItem.children.sort(function(a, b) {
                     if (a.weight < b.weight) return -1;

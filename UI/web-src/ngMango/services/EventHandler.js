@@ -64,7 +64,7 @@ function eventHandlerProvider() {
         Object.freeze(eventHandlerTypesByName);
         
         
-    	const defaultProperties = {
+        const defaultProperties = {
             name: '',
             eventTypes: [],
             handlerType: 'EMAIL',
@@ -88,8 +88,8 @@ function eventHandlerProvider() {
             activeAction: 'NONE',
             inactiveAction: 'NONE',
             subject: 'INCLUDE_EVENT_MESSAGE'
-    	};
-    	
+        };
+        
         class EventHandler extends RestResource {
             static get defaultProperties() {
                 return defaultProperties;

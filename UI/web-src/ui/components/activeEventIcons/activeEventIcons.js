@@ -48,7 +48,7 @@ class ActiveEventIconsController {
     
     counter(payloadEvent, payloadType) {
         if (payloadType === 'RAISED') {
-    	    // temporary fix/work-around for audit events / DO_NOT_LOG events coming through websocket
+            // temporary fix/work-around for audit events / DO_NOT_LOG events coming through websocket
             if (payloadEvent.id < 0) {
                 return;
             }

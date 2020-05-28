@@ -38,7 +38,7 @@ function pointQuery(Point) {
 
     return {
         scope: {
-        	query: '<?',
+            query: '<?',
             start: '<?',
             limit: '<?',
             sort: '<?',

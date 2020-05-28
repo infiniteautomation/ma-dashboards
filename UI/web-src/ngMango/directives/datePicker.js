@@ -77,7 +77,7 @@ function datePicker($injector, mangoDateFormats, $q) {
         };
         
         $scope.$watch('format + timezone', function(newVal, oldVal) {
-        	if (newVal === oldVal) return;
+            if (newVal === oldVal) return;
             ngModel.$processModelValue();
         });
         
@@ -127,8 +127,8 @@ function datePicker($injector, mangoDateFormats, $q) {
             const $mdpTimePicker = $injector.get('$mdpTimePicker');
 
             $scope.showPicker = function showPicker(ev) {
-            	if (ev.altKey) return;
-            	
+                if (ev.altKey) return;
+                
                 const autoSwitchTime = $scope.autoSwitchTime === undefined ? true : $scope.autoSwitchTime;
                 let initialDate;
                 

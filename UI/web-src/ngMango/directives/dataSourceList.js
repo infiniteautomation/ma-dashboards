@@ -122,15 +122,15 @@ function dataSourceList(DataSource, $injector, $filter, User) {
                     
                     if ($scope.autoInit && $scope.dataSources.length) {
                         let doSet = true;
-                    	if (ngModelCtrl.$viewValue && ngModelCtrl.$viewValue.xid) {
-                    		doSet = !dataSources.some(function(ds) {
-                        		return ds.xid === ngModelCtrl.$viewValue.xid;
-                        	});
-                    	}
-                    	
-                    	if (doSet) {
-                        	ngModelCtrl.$setViewValue($scope.dataSources[0]);
-                    	}
+                        if (ngModelCtrl.$viewValue && ngModelCtrl.$viewValue.xid) {
+                            doSet = !dataSources.some(function(ds) {
+                                return ds.xid === ngModelCtrl.$viewValue.xid;
+                            });
+                        }
+                        
+                        if (doSet) {
+                            ngModelCtrl.$setViewValue($scope.dataSources[0]);
+                        }
                     }
                 });
                 

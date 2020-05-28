@@ -32,12 +32,12 @@
     <input type="number" step="1" min="1" ng-model="updateInterval" ng-init="updateInterval=1">
  </md-input-container>
  <md-input-container>
-  	<label>Interval type</label>
- 	<ma-interval-type-picker ng-model="updateIntervalType" ng-init="updateIntervalType='MINUTES'"></ma-interval-type-picker>
+      <label>Interval type</label>
+     <ma-interval-type-picker ng-model="updateIntervalType" ng-init="updateIntervalType='MINUTES'"></ma-interval-type-picker>
  </md-input-container>
  <md-input-container>
- 	<label>Date range preset</label>
- 	<ma-date-range-picker from="from" to="to" preset="LAST_30_MINUTES" update-interval="{{updateInterval}} {{updateIntervalType}}"></ma-date-range-picker>
+     <label>Date range preset</label>
+     <ma-date-range-picker from="from" to="to" preset="LAST_30_MINUTES" update-interval="{{updateInterval}} {{updateIntervalType}}"></ma-date-range-picker>
  </md-input-container>
  *
  */
@@ -59,7 +59,7 @@ function intervalTypePicker($injector, MA_TIME_PERIOD_TYPES) {
             return `<select ng-options="t.type as (t.translation | maTr) for t in types track by t.type"></select>`;
         },
         link: function ($scope, $element, attr) {
-        	$scope.types = MA_TIME_PERIOD_TYPES;
+            $scope.types = MA_TIME_PERIOD_TYPES;
         },
         designerInfo: {
             translation: 'ui.components.intervalTypePicker',

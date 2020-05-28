@@ -28,56 +28,56 @@ ngMangoFilters.filter('maMoment', momentFilter);
 ngMangoFilters.filter('maDuration', durationFilter);
 
 ngMangoFilters.filter('maSum', function() {
-	return function(arrayData, propName) {
-	    let sum = 0;
-		let val;
-		if (!arrayData) return null;
-		if (arrayData.length !== undefined) {
-			for (let i = 0; i < arrayData.length; i++) {
-				if (arrayData[i] !== undefined) {
-					val = arrayData[i];
-					if (!propName) {
-						sum += val;
-					} else if (val[propName]) {
-						sum += val[propName];
-					}
-				}
-			}
-		} else {
-			for (const key in arrayData) {
-				if (arrayData[key] !== undefined) {
-					val = arrayData[key];
-					if (!propName) {
-						sum += val;
-					} else if (val[propName]) {
-						sum += val[propName];
-					}
-				}
-			}
-		}
-		return sum;
-	};
+    return function(arrayData, propName) {
+        let sum = 0;
+        let val;
+        if (!arrayData) return null;
+        if (arrayData.length !== undefined) {
+            for (let i = 0; i < arrayData.length; i++) {
+                if (arrayData[i] !== undefined) {
+                    val = arrayData[i];
+                    if (!propName) {
+                        sum += val;
+                    } else if (val[propName]) {
+                        sum += val[propName];
+                    }
+                }
+            }
+        } else {
+            for (const key in arrayData) {
+                if (arrayData[key] !== undefined) {
+                    val = arrayData[key];
+                    if (!propName) {
+                        sum += val;
+                    } else if (val[propName]) {
+                        sum += val[propName];
+                    }
+                }
+            }
+        }
+        return sum;
+    };
 });
 
 ngMangoFilters.filter('maSumColumn', function() {
-	return function(tableData, colNum) {
-	    let sum = 0;
-		if (!tableData) {
-			return sum;
-		}
-		if (tableData.length !== undefined) {
-			for (let i = 0; i < tableData.length; i++) {
-				if (tableData[i] && tableData[i][colNum] !== undefined)
-					sum += tableData[i][colNum];
-			}
-		} else {
-			for (const key in tableData) {
-				if (tableData[key] && tableData[key][colNum] !== undefined)
-					sum += tableData[key][colNum];
-			}
-		}
-		return sum;
-	};
+    return function(tableData, colNum) {
+        let sum = 0;
+        if (!tableData) {
+            return sum;
+        }
+        if (tableData.length !== undefined) {
+            for (let i = 0; i < tableData.length; i++) {
+                if (tableData[i] && tableData[i][colNum] !== undefined)
+                    sum += tableData[i][colNum];
+            }
+        } else {
+            for (const key in tableData) {
+                if (tableData[key] && tableData[key][colNum] !== undefined)
+                    sum += tableData[key][colNum];
+            }
+        }
+        return sum;
+    };
 });
 
 const zeros = '0000000000';
@@ -112,18 +112,18 @@ ngMangoFilters.filter('maHex', function() {
 });
 
 ngMangoFilters.filter('maFirst', function() {
-	  return function(a) {
-		  if (a && typeof a.length === 'number')
-			  return a[0];
-		  return a;
-	  };
+      return function(a) {
+          if (a && typeof a.length === 'number')
+              return a[0];
+          return a;
+      };
 });
 
 ngMangoFilters.filter('maUnique', ['maUtil', function(Util) {
-	const uniqueFilter = Util.memoize(function uniqueFilter(collection, propName) {
-	    
-	    const result = [];
-	    
+    const uniqueFilter = Util.memoize(function uniqueFilter(collection, propName) {
+        
+        const result = [];
+        
         if (collection.length !== undefined) {
             for (let i = 0; i < collection.length; i++)
                 addUnique(collection[i]);
@@ -139,12 +139,12 @@ ngMangoFilters.filter('maUnique', ['maUtil', function(Util) {
             if (result.indexOf(propValue) >= 0) return;
             result.push(propValue);
         }
-	});
+    });
 
-	return function(collection, propName) {
-		if (!collection) return collection;
-		return uniqueFilter.apply(null, arguments);
-	};
+    return function(collection, propName) {
+        if (!collection) return collection;
+        return uniqueFilter.apply(null, arguments);
+    };
 }]);
 
 ngMangoFilters.filter('maRange', function() {

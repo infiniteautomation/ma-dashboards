@@ -10,15 +10,15 @@ import angular from 'angular';
 NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUTS', '$q', '$timeout'];
 function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $timeout) {
 
-	//const READY_STATE_CONNECTING = 0;
-	const READY_STATE_OPEN = 1;
-	//const READY_STATE_CLOSING = 2;
-	//const READY_STATE_CLOSED = 3;
-	
-	const mapEventType = {
+    //const READY_STATE_CONNECTING = 0;
+    const READY_STATE_OPEN = 1;
+    //const READY_STATE_CLOSING = 2;
+    //const READY_STATE_CLOSED = 3;
+    
+    const mapEventType = {
         add: 'create'
-	};
-	
+    };
+    
 
     class NotificationManager {
         constructor(options) {
@@ -417,8 +417,8 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             return obj;
         }
     }
-	
-	return NotificationManager;
+    
+    return NotificationManager;
 }
 
 export default NotificationManagerFactory;
