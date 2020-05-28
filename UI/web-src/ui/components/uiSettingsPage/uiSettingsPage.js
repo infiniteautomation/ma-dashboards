@@ -45,6 +45,12 @@ class UiSettingsPageController {
         return this.promise;
     }
     
+    revert(event) {
+        this.get(event).then(() => {
+            this.uiSettings.applyUiSettings();
+        });
+    }
+    
     get(event) {
         this.promise = this.uiSettings.getStore().then(store => {
             this.setStore(store);
@@ -110,16 +116,23 @@ class UiSettingsPageController {
     
     editTheme(themeName) {
         this.themeName = themeName;
-        this.theme = this.data.themes[themeName];
+        
+        // ensures that the warn/background palette are always set
+        this.theme = this.maUtil.deepMerge(this.maTheming.defaultTheme(), this.data.themes[themeName]);
+        
         this.previewTheme();
     }
 
     previewTheme(name = this.themeName, settings = this.theme) {
+        this.form.$setDirty();
         this.uiSettings.generateTheme(name, settings);
         this.uiSettings.applyTheme(name);
     }
 
     themeEditorClosed() {
+        // removes any defaults settings from the theme
+        this.data.themes[this.themeName] = this.maUtil.deepDiff(this.theme, this.maTheming.defaultTheme());
+        
         delete this.themeName;
         delete this.theme;
         

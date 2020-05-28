@@ -22,40 +22,14 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
         Object.assign(MA_TIMEOUTS, uiSettings.timeouts);
         Object.assign(MA_DATE_FORMATS, uiSettings.dateFormats);
         
-        this.registerThemes();
-        
-        if (isFinite(uiSettings.pointValuesLimit)) {
-            pointValuesProvider.setDefaultLimit(uiSettings.pointValuesLimit);
-        }
-    };
-
-    this.registerThemes = function registerThemes() {
         if (MA_UI_SETTINGS.palettes) {
             for (const paletteName in MA_UI_SETTINGS.palettes) {
                 $mdThemingProvider.definePalette(paletteName, angular.copy(MA_UI_SETTINGS.palettes[paletteName]));
             }
         }
-
-        if (MA_UI_SETTINGS.themes) {
-            for (const name in MA_UI_SETTINGS.themes) {
-                const themeSettings = MA_UI_SETTINGS.themes[name];
-                const theme = $mdThemingProvider.theme(name);
-                if (themeSettings.primaryPalette) {
-                    theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
-                }
-                if (themeSettings.accentPalette) {
-                    theme.accentPalette(themeSettings.accentPalette, themeSettings.accentPaletteHues);
-                }
-                if (themeSettings.warnPalette) {
-                    theme.warnPalette(themeSettings.warnPalette, themeSettings.warnPaletteHues);
-                }
-                if (themeSettings.backgroundPalette) {
-                    theme.backgroundPalette(themeSettings.backgroundPalette, themeSettings.backgroundPaletteHues);
-                }
-                if (themeSettings.dark) {
-                    theme.dark();
-                }
-            }
+        
+        if (isFinite(uiSettings.pointValuesLimit)) {
+            pointValuesProvider.setDefaultLimit(uiSettings.pointValuesLimit);
         }
     };
 
@@ -160,7 +134,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
             
             applyUiSettings() {
                 const preferredTheme = this.getPreferredTheme();
-                this.generateTheme(preferredTheme);
+                this.generateThemes(preferredTheme);
                 this.applyTheme(preferredTheme);
                 Object.assign(MA_TIMEOUTS, this.timeouts);
                 Object.assign(MA_DATE_FORMATS, this.dateFormats);
@@ -176,7 +150,17 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 }
             }
             
-            generateTheme(name, settings) {
+            // ensures that the THEMES objects are up to date and will regenerate the styles for any theme which already has styles present
+            generateThemes(ensureGenerated) {
+                const styles = $window.document.querySelectorAll('head > style[nonce]');
+                const generatedThemes = new Set(Array.from(styles).map(e => e.getAttribute('nonce')));
+
+                for (const name in this.themes) {
+                    this.generateTheme(name, null, name === ensureGenerated || generatedThemes.has(name));
+                }
+            }
+            
+            generateTheme(name, settings, generateStyles = true) {
                 // cant modify the $mdTheming.THEMES object as it is a copy, the correct THEMES object is available here
                 const THEMES = $mdThemingProvider._THEMES;
                 const themeSettings = settings || this.themes[name];
@@ -185,25 +169,32 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 // We generate a new theme with a temporary UUID name and then replace the UUID inside the styles with the
                 // actual theme name.
                 const tempName = 'temp' + maUtil.uuid().replace(/-/g, '');
-                // controls the nonce attribute on the inserted style tags
-                $mdThemingProvider.setNonce(tempName);
-                // generate the theme
-                const theme = this.themeFromSettings(tempName, themeSettings);
+                // register the theme
+                const theme = this.registerTheme(tempName, themeSettings);
+
+                if (generateStyles) {
+                    // controls the nonce attribute on the inserted style tags
+                    $mdThemingProvider.setNonce(tempName);
+                    // generate and insert the styles
+                    $mdTheming.generateTheme(tempName);
+                }
                 
                 // change the temporary theme's name and put it in the correct spot
                 theme.name = name;
                 delete THEMES[tempName];
                 THEMES[name] = theme;
                 
-                for (const e of $window.document.querySelectorAll('head > style[nonce]')) {
-                    const nonce = e.getAttribute('nonce');
-                    if (nonce === tempName) {
-                        // replace the temporary theme name in the style contents with the actual theme name
-                        e.textContent = e.textContent.replace(new RegExp(tempName, 'g'), name);
-                        e.setAttribute('nonce', name);
-                    } else if (nonce === name) {
-                        // remove old style tags from the same theme
-                        e.parentNode.removeChild(e);
+                if (generateStyles) {
+                    for (const e of $window.document.querySelectorAll('head > style[nonce]')) {
+                        const nonce = e.getAttribute('nonce');
+                        if (nonce === tempName) {
+                            // replace the temporary theme name in the style contents with the actual theme name
+                            e.textContent = e.textContent.replace(new RegExp(tempName, 'g'), name);
+                            e.setAttribute('nonce', name);
+                        } else if (nonce === name) {
+                            // remove old style tags from the same theme
+                            e.parentNode.removeChild(e);
+                        }
                     }
                 }
                 
@@ -227,19 +218,22 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 }
             }
             
-            themeFromSettings(themeName, themeSettings) {
-                $mdTheming.defineTheme(themeName, {
-                    primary: themeSettings.primaryPalette,
-                    primaryHues: themeSettings.primaryPaletteHues,
-                    accent: themeSettings.accentPalette,
-                    accentHues: themeSettings.accentPaletteHues,
-                    warn: themeSettings.warnPalette,
-                    warnHues: themeSettings.warnPaletteHues,
-                    background: themeSettings.backgroundPalette,
-                    backgroundHues: themeSettings.backgroundPaletteHues,
-                    dark: !!themeSettings.dark
-                });
-                return $mdTheming.THEMES[themeName];
+            registerTheme(themeName, themeSettings) {
+                const theme = $mdThemingProvider.theme(themeName);
+                if (themeSettings.primaryPalette) {
+                    theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
+                }
+                if (themeSettings.accentPalette) {
+                    theme.accentPalette(themeSettings.accentPalette, themeSettings.accentPaletteHues);
+                }
+                if (themeSettings.warnPalette) {
+                    theme.warnPalette(themeSettings.warnPalette, themeSettings.warnPaletteHues);
+                }
+                if (themeSettings.backgroundPalette) {
+                    theme.backgroundPalette(themeSettings.backgroundPalette, themeSettings.backgroundPaletteHues);
+                }
+                theme.dark(!!themeSettings.dark);
+                return theme;
             }
 
             applyRootTheme(theme) {
