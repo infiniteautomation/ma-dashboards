@@ -51,10 +51,16 @@ class PermissionsMenuController {
         
         // undefined if invalid
         if (this.ngModelCtrl.$viewValue) {
-            // TODO Mango 4.0 can be array of arrays now
             const array = this.ngModelCtrl.$viewValue;
             for (let i = 0; i < array.length; i++) {
-                const permName = array[i].trim();
+                let permName;
+                // TODO Mango 4.0 can be array of arrays now
+                if (Array.isArray(array[i])) {
+                    permName = array[i].join(' & ');
+                } else {
+                    permName = array[i].trim();
+                }
+                
                 if (!permName) continue;
                 
                 if (this.permissionsByName[permName]) {
@@ -69,7 +75,6 @@ class PermissionsMenuController {
     }
     
     checkboxChanged() {
-        // TODO Mango 4.0 can be array of arrays now
         const permissionNames = [];
         for (let i = 0; i < this.permissions.length; i++) {
             const permission = this.permissions[i];
@@ -77,7 +82,8 @@ class PermissionsMenuController {
                 permissionNames.push(permission.name);
             }
         }
-        this.ngModelCtrl.$setViewValue(permissionNames);
+        // TODO Mango 4.0 can be array of arrays now
+        this.ngModelCtrl.$setViewValue(permissionNames.map(minterm => minterm.split(/\s*&\s*/)));
     }
 }
 
