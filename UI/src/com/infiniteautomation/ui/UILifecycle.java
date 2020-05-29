@@ -7,17 +7,11 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.zafarkhaja.semver.Version;
 import com.infiniteautomation.mango.permission.MangoPermission;
-import com.serotonin.ShouldNeverHappenException;
-import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.IMangoLifecycle;
 import com.serotonin.m2m2.db.dao.JsonDataDao;
-import com.serotonin.m2m2.db.dao.RoleDao;
-import com.serotonin.m2m2.i18n.TranslatableMessage;
 import com.serotonin.m2m2.module.ModuleElementDefinition;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
 import com.serotonin.m2m2.vo.permission.PermissionHolder;
-import com.serotonin.m2m2.vo.role.Role;
-import com.serotonin.m2m2.vo.role.RoleVO;
 import com.serotonin.provider.Providers;
 
 /**
@@ -29,9 +23,6 @@ public class UILifecycle extends ModuleElementDefinition {
     public static final String MA_UI_MENU_XID = "mangoUI-menu";
     public static final String MA_UI_PAGES_XID = "mangoUI-pages";
     public static final String MA_UI_SETTINGS_XID = "mangoUI-settings";
-    public static final String MA_UI_EDIT_MENUS_PERMISSION = "edit-ui-menus";
-    public static final String MA_UI_EDIT_PAGES_PERMISSION = "edit-ui-pages";
-    public static final String MA_UI_EDIT_SETTINGS_PERMISSION = "edit-ui-settings";
 
     private JsonNodeFactory nodeFactory;
 
@@ -40,7 +31,7 @@ public class UILifecycle extends ModuleElementDefinition {
     }
 
     @Override
-    public void postInitialize(Version previousVersion, Version curren) {
+    public void postInitialize(Version previousVersion, Version current) {
 
         /**
          * Add a startup task to run after the Audit system is ready
@@ -59,9 +50,7 @@ public class UILifecycle extends ModuleElementDefinition {
             menu = new JsonDataVO();
             menu.setXid(MA_UI_MENU_XID);
             menu.setName("UI Menu");
-            menu.setPublicData(false);
-            menu.setReadPermission(MangoPermission.createOrSet(getDefaultReadRole()));
-            menu.setEditPermission(MangoPermission.createOrSet(getEditMenuRole()));
+            menu.setReadPermission(MangoPermission.createOrSet(PermissionHolder.USER_ROLE));
             isNew = true;
         }
 
@@ -85,9 +74,7 @@ public class UILifecycle extends ModuleElementDefinition {
             pages = new JsonDataVO();
             pages.setXid(MA_UI_PAGES_XID);
             pages.setName("UI Pages");
-            pages.setPublicData(false);
-            pages.setReadPermission(MangoPermission.createOrSet(getDefaultReadRole()));
-            pages.setEditPermission(MangoPermission.createOrSet(getEditPagesRole()));
+            pages.setReadPermission(MangoPermission.createOrSet(PermissionHolder.USER_ROLE));
             isNew = true;
         }
 
@@ -111,9 +98,7 @@ public class UILifecycle extends ModuleElementDefinition {
             settings = new JsonDataVO();
             settings.setXid(MA_UI_SETTINGS_XID);
             settings.setName("UI Settings");
-            settings.setPublicData(true);
-            settings.setReadPermission(MangoPermission.createOrSet(getDefaultReadRole()));
-            settings.setEditPermission(MangoPermission.createOrSet(getEditSettingsRole()));
+            settings.setReadPermission(MangoPermission.createOrSet(PermissionHolder.ANONYMOUS_ROLE));
             isNew = true;
         }
 
@@ -127,47 +112,5 @@ public class UILifecycle extends ModuleElementDefinition {
         }else {
             JsonDataDao.getInstance().update(settings.getId(), settings);
         }
-    }
-
-    public Role getDefaultReadRole() {
-        RoleDao dao = RoleDao.getInstance();
-        RoleVO uiDefaultReadRole = dao.getByXid(PermissionHolder.USER_ROLE_XID);
-        if(uiDefaultReadRole == null) {
-            throw new ShouldNeverHappenException("Default role of 'user' not found!");
-        }
-        return uiDefaultReadRole.getRole();
-    }
-
-    public Role getEditMenuRole() {
-        RoleDao dao = RoleDao.getInstance();
-        RoleVO uiEditMenuRole = dao.getByXid(MA_UI_EDIT_MENUS_PERMISSION);
-        if(uiEditMenuRole == null) {
-            uiEditMenuRole = new RoleVO(Common.NEW_ID, MA_UI_EDIT_MENUS_PERMISSION,
-                    new TranslatableMessage("ui.permissions.editMenuRole").translate(Common.getTranslations()));
-            dao.insert(uiEditMenuRole);
-        }
-        return uiEditMenuRole.getRole();
-    }
-
-    public Role getEditPagesRole() {
-        RoleDao dao = RoleDao.getInstance();
-        RoleVO role = dao.getByXid(MA_UI_EDIT_PAGES_PERMISSION);
-        if(role == null) {
-            role = new RoleVO(Common.NEW_ID, MA_UI_EDIT_PAGES_PERMISSION,
-                    new TranslatableMessage("ui.permissions.editPagesRole").translate(Common.getTranslations()));
-            dao.insert(role);
-        }
-        return role.getRole();
-    }
-
-    public Role getEditSettingsRole() {
-        RoleDao dao = RoleDao.getInstance();
-        RoleVO role = dao.getByXid(MA_UI_EDIT_SETTINGS_PERMISSION);
-        if(role == null) {
-            role = new RoleVO(Common.NEW_ID, MA_UI_EDIT_SETTINGS_PERMISSION,
-                    new TranslatableMessage("ui.permissions.editSettingsRole").translate(Common.getTranslations()));
-            dao.insert(role);
-        }
-        return role.getRole();
     }
 }
