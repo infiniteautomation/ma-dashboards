@@ -3,33 +3,14 @@
  * @author Jared Wiltshire
  */
 
-PageFactory.$inject = ['maJsonStore', 'MA_UI_PAGES_XID', 'maUtil', '$q', 'MA_UI_EDIT_PAGES_PERMISSION', 'maDialogHelper', 'maUser'];
-function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERMISSION, maDialogHelper, maUser) {
+PageFactory.$inject = ['maJsonStore', 'MA_UI_PAGES_XID', 'maUtil', '$q', 'maDialogHelper', 'maUser'];
+function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, maDialogHelper, maUser) {
 
     class Page {
         getPages() {
             return JsonStore.get({
                 xid: MA_UI_PAGES_XID
-            }).$promise.then(null, error => {
-                if (error.status === 404) {
-                    return this.getDefaultPages();
-                }
-                return $q.reject(error);
-            });
-        }
-        
-        getDefaultPages() {
-            const storeObject = new JsonStore();
-            storeObject.xid = MA_UI_PAGES_XID;
-            storeObject.name = MA_UI_PAGES_XID;
-            storeObject.jsonData = {
-                pages: []
-            };
-            storeObject.editPermission = MA_UI_EDIT_PAGES_PERMISSION;
-            storeObject.readPermission = 'user';
-            storeObject.publicData = false;
-
-            return storeObject;
+            }).$promise;
         }
         
         loadPage(xid) {
@@ -72,9 +53,8 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, MA_UI_EDIT_PAGES_PERM
             storeObject.jsonData = {
                 markup: ''
             };
-            storeObject.editPermission = MA_UI_EDIT_PAGES_PERMISSION;
-            storeObject.readPermission = 'user';
-            storeObject.publicData = false;
+            storeObject.editPermission = []; // TODO Mango 4.0 get roles for ui.pages.edit and use it here
+            storeObject.readPermission = ['user'];
             return storeObject;
         }
     }

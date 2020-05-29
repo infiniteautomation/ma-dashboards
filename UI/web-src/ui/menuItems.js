@@ -30,6 +30,8 @@ const examplesTemplate = function(fileName) {
     };
 };
 
+// TODO Mango 4.0 remove permission references and use requiredPermission 
+
 export default [
     {
         name: 'login',
@@ -609,7 +611,7 @@ export default [
         },
         menuTr: 'ui.app.editPages',
         menuIcon: 'dashboard',
-        permission: 'edit-ui-pages',
+        requiredPermission: 'ui.pages.edit',
         params: {
             dateBar: {
                 rollupControls: true
@@ -627,7 +629,7 @@ export default [
         },
         menuTr: 'ui.app.editMenu',
         menuIcon: 'toc',
-        permission: 'edit-ui-menus',
+        requiredPermission: 'ui.settings.edit',
         params: {
             helpPage: 'ui.help.menuEditor'
         }
@@ -650,7 +652,7 @@ export default [
         template: '<ma-ui-settings-page></ma-ui-settings-page>',
         menuTr: 'ui.app.uiSettings',
         menuIcon: 'color_lens',
-        permission: 'edit-ui-settings',
+        requiredPermission: 'ui.settings.edit',
         params: {
             helpPage: 'ui.help.uiSettings'
         },
@@ -1238,7 +1240,7 @@ export default [
         menuTr: 'ui.dox.examples',
         menuIcon: 'info',
         // menuHidden: true,
-        permission: 'edit-ui-pages',
+        requiredPermission: 'ui.pages.edit',
         submenu: true,
         weight: 2001
     },

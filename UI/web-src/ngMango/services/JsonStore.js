@@ -108,9 +108,8 @@ function JsonStoreFactory($resource) {
     
     const defaultProperties = {
         name: '',
-        readPermission: 'user',
-        editPermission: '',
-        publicData: false,
+        readPermission: ['user'],
+        editPermission: [],
         jsonData: {},
         dataPath: []
     };
@@ -138,8 +137,7 @@ function JsonStoreFactory($resource) {
         dataPathStr: '@dataPathStr',
         name: '@name',
         readPermission: '@readPermission',
-        editPermission: '@editPermission',
-        publicData: '@publicData'
+        editPermission: '@editPermission'
     }, {
         query: {
             method: 'GET',
@@ -159,8 +157,7 @@ function JsonStoreFactory($resource) {
             params: {
                 name: null,
                 readPermission: null,
-                editPermission: null,
-                publicData: null
+                editPermission: null
             }
         },
         save: {
@@ -196,8 +193,7 @@ function JsonStoreFactory($resource) {
             params: {
                 name: null,
                 readPermission: null,
-                editPermission: null,
-                publicData: null
+                editPermission: null
             }
         },
         getPublic: {

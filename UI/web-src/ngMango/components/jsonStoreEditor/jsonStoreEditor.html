@@ -35,8 +35,6 @@
             </div>
             <ma-permissions-menu ng-model="$ctrl.storeItem.readPermission"></ma-permissions-menu>
         </md-input-container>
-        
-        <md-checkbox ng-model="$ctrl.storeItem.publicData"><span ma-tr="ui.app.publicData"></span></md-checkbox>
     </div>
     
     <ma-ace-editor mode="json" name="jsonData" ng-model="$ctrl.storeItem.jsonData" ng-model-options="{debounce: 500}" ma-json-model ma-json-model-pretty="4"></ma-ace-editor>

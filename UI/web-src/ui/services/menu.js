@@ -126,8 +126,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
 
     this.$get = MenuFactory;
 
-    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'MA_UI_EDIT_MENUS_PERMISSION', '$templateCache'];
-    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, MA_UI_EDIT_MENUS_PERMISSION, $templateCache) {
+    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope'];
+    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope) {
 
         class Menu {
             constructor() {
@@ -157,14 +157,14 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 });
             }
     
+            // TODO Mango 4.0 no longer needed?
             defaultMenuStore() {
                 const storeObject = new JsonStore();
                 
                 storeObject.xid = MA_UI_MENU_XID;
                 storeObject.name = 'UI Menu';
-                storeObject.editPermission = MA_UI_EDIT_MENUS_PERMISSION;
-                storeObject.readPermission = 'user';
-                storeObject.publicData = false;
+                storeObject.editPermission = [];
+                storeObject.readPermission = ['user'];
                 storeObject.jsonData = {
                     menuItems: []
                 };

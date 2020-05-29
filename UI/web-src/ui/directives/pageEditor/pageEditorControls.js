@@ -19,11 +19,11 @@ const pageToSummary = (input) => {
 class PageEditorControlsController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', 'maUiPages', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
-        'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q', 'MA_UI_EDIT_MENUS_PERMISSION',
+        'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q',
         '$templateRequest', 'maDialogHelper', 'maRevisionHistoryDialog', 'maJsonStore']; }
     
     constructor($scope, maUiPages, MA_UI_PAGES_XID, maUiMenuEditor, $state,
-            localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q, MA_UI_EDIT_MENUS_PERMISSION,
+            localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q,
             $templateRequest, maDialogHelper, maRevisionHistoryDialog, maJsonStore) {
         this.$scope = $scope;
         this.maUiPages = maUiPages;
@@ -38,7 +38,6 @@ class PageEditorControlsController {
         this.$window = $window;
         this.User = User; // used in template
         this.$q = $q;
-        this.MA_UI_EDIT_MENUS_PERMISSION = MA_UI_EDIT_MENUS_PERMISSION; // used in template
         this.$templateRequest = $templateRequest;
         this.$window = $window;
         this.maDialogHelper = maDialogHelper;
