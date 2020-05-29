@@ -49,7 +49,7 @@
                         <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                         <div ng-message="validationMessage" ng-bind="$ctrl.form.readPermissions.validationMessage"></div>
                     </div>
-                    <ma-permissions-menu ng-model="$ctrl.list.readPermissions" ma-array-input></ma-permissions-menu>
+                    <ma-permissions-menu ng-model="$ctrl.list.readPermissions"></ma-permissions-menu>
                 </md-input-container>
                 
                 <md-input-container flex="100" flex-gt-md="50">
@@ -60,7 +60,7 @@
                         <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                         <div ng-message="validationMessage" ng-bind="$ctrl.form.editPermissions.validationMessage"></div>
                     </div>
-                    <ma-permissions-menu ng-model="$ctrl.list.editPermissions" ma-array-input></ma-permissions-menu>
+                    <ma-permissions-menu ng-model="$ctrl.list.editPermissions"></ma-permissions-menu>
                 </md-input-container>
 
             </div>
