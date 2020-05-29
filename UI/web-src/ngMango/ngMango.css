@@ -1178,15 +1178,54 @@ md-input-container:not(.md-input-invalid).md-input-focused md-icon.ma-alarm-leve
     color: #9E9E9E;
 }
 
-/* Angular material fix */
+/* Angular material fixes */
+
 md-list-item.md-2-line md-icon.md-avatar-icon {
 	margin-top: 16px;
 	margin-bottom: 16px;
 }
 
-.md-toolbar-tools .md-button md-icon,
-.md-toolbar-tools .md-button.md-icon-button md-icon {
+/* affects main UI top toolbar */
+md-toolbar .md-button md-icon,
+md-toolbar .md-button.md-icon-button md-icon {
     color: inherit;
+}
+
+/* affects main UI top toolbar quick date picker */
+md-toolbar md-select:not([disabled]):focus.md-no-underline md-select-value.md-select-value {
+	color: var(--ma-accent);
+}
+
+/* affects main UI top toolbar quick date picker */
+md-toolbar md-select md-select-value.md-select-value .md-select-icon {
+	color: inherit; 
+}
+
+/* affects data point detail "Configure" checkbox */
+md-toolbar md-checkbox:not(.md-checked) .md-ink-ripple {
+	color: inherit;
+}
+
+/* affects data point detail "Configure" checkbox */
+md-toolbar md-checkbox:not(.md-checked) .md-icon {
+	border-color: currentColor !important;
+}
+
+/* affects data point detail "Number of values" input */
+md-toolbar md-input-container > input.md-input {
+	color: inherit !important;
+}
+
+/* affects the drop down button under the main logo (user profile, logout menu) */
+md-menu > [role=button]:focus {
+	outline: none;
+	color: var(--ma-accent);
+}
+
+/* affects bacnet local devices drop down */
+md-menu-content md-menu-item:focus {
+	outline: none;
+	color: var(--ma-primary);
 }
 
 .ma-scroll-parent {
