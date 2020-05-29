@@ -1,10 +1,9 @@
 <p ma-tr="ui.app.permissionsPageHeader"></p>
 
-<div layout layout-wrap>
-	<ma-system-setting-editor ng-repeat="permission in $ctrl.permissions track by $index"
-		flex="100" flex-gt-md="50"
-		label-tr="{{permission.translationKey}}" key="{{permission.systemSettingName}}"
-		input-type="permission"
-		ng-disabled="permission.systemSettingName === 'permissions.superadmin'">
-	</ma-system-setting-editor>
+<div layout layout-wrap layout-align="space-between start" class="ma-inputs-container">
+	<md-input-container ng-repeat="permission in $ctrl.permissions track by permission.name" flex="100" flex-gt-md="50">
+		<label ng-bind="permission.description"></label>
+		<input name="{{permission.name}}" ng-model="permission.permission" ng-change="permission.save()" ng-model-options="::{debounce: 1000}">
+		<ma-permissions-menu ng-model="permission.permission" ng-change="permission.save()"></ma-permissions-menu>
+	</md-input-container>
 </div>
