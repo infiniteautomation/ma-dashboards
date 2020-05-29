@@ -3,7 +3,7 @@
 <div layout layout-wrap layout-align="space-between start" class="ma-inputs-container">
 	<md-input-container ng-repeat="permission in $ctrl.permissions track by permission.name" flex="100" flex-gt-md="50">
 		<label ng-bind="permission.description"></label>
-		<input name="{{permission.name}}" ng-model="permission.permission" ng-change="permission.save()" ng-model-options="::{debounce: 1000}">
+		<input name="{{permission.name}}" ng-model="permission.permission" ng-change="permission.save()" ng-model-options="::{debounce: 1000}" ma-permission-expression>
 		<ma-permissions-menu ng-model="permission.permission" ng-change="permission.save()"></ma-permissions-menu>
 	</md-input-container>
 </div>

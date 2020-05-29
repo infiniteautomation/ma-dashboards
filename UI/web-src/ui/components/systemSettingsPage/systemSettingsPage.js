@@ -86,7 +86,9 @@ class SystemSettingsPageController {
             }
         });
         
-        this.maSystemPermission.list().then((permissions) => {
+        this.maSystemPermission.buildQuery()
+        .sort('moduleName', 'name')
+        .query().then((permissions) => {
             this.permissions = permissions;
         });
     }

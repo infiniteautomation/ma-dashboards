@@ -3,22 +3,43 @@
  * @author Jared Wiltshire
  */
 
-SystemPermissionFactory.$inject = ['$http'];
-function SystemPermissionFactory($http) {
+SystemPermissionFactory.$inject = ['$http', 'maRqlBuilder'];
+function SystemPermissionFactory($http, maRqlBuilder) {
     const permissionsUrl = '/rest/v2/system-permissions';
     
     class SystemPermission {
         constructor(options) {
             Object.assign(this, options);
         }
-        
-        static list() {
+
+        static query(queryObject) {
+            const params = {};
+            if (queryObject) {
+                const rqlQuery = queryObject.toString();
+                if (rqlQuery) {
+                    params.rqlQuery = rqlQuery;
+                }
+            }
+            
             return $http({
+                url: permissionsUrl,
                 method: 'GET',
-                url: permissionsUrl
-            }).then((response) => {
-                return response.data.map(item => new this(item));
+                params: params
+            }).then(response => {
+                const items = response.data.items.map(item => {
+                    return new this(item);
+                });
+                items.$total = response.data.total;
+                return items;
             });
+        }
+
+        static buildQuery() {
+            const builder = new maRqlBuilder();
+            builder.queryFunction = (queryObj) => {
+                return this.query(queryObj);
+            };
+            return builder;
         }
 
         get() {
